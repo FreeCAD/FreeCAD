@@ -1802,7 +1802,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
-      <translation>Insère plusieurs nouvelles vues liées aux objets sélectionnés dans la feuille actuelle.</translation>
+      <translation>Insère plusieurs nouvelles vues liées aux objets sélectionnés dans la feuille en cours.</translation>
     </message>
   </context>
   <context>
@@ -2209,7 +2209,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Créer une vue interrompue</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Enregistrer la feuille au format DXF</translation>
@@ -3233,7 +3233,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="630"/>
       <source>No break objects found in this selection</source>
-      <translation>Il n'y a pas d'objets à interrompre dans cette sélection.</translation>
+      <translation>Il n'y a pas d'objets cassés dans cette sélection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="640"/>
@@ -4245,7 +4245,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Erreur de paramètre</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Nom du document :</translation>
     </message>

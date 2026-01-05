@@ -5994,7 +5994,7 @@ Nastaviti?</translation>
       <translation>Uređivač dodataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1002"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation>Izgled po licu</translation>
     </message>

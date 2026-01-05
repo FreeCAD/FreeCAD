@@ -116,7 +116,7 @@
     <message>
       <location filename="../../../JointObject.py" line="52"/>
       <source>Cylindrical</source>
-      <translation>Clíndrica</translation>
+      <translation>Cilíndrica</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="53"/>

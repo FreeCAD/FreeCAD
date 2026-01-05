@@ -3600,8 +3600,8 @@ réutilisé lors de la prochaine exportation de cet objet. Cela permet de rédui
       <location filename="../ui/preferences-ifc-export.ui" line="199"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
-      <translation>Toutes les propriétés des objets de FreeCAD seront enregistrées dans les objets exportés, permettant de recréer un modèle
-paramétrique complet lors de la réimportation.</translation>
+      <translation>Toutes les propriétés des objets de FreeCAD seront enregistrées dans les objets exportés, permettant de recréer un modèle paramétrique
+complet lors de la réimportation.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-ifc-export.ui" line="203"/>
@@ -3893,7 +3893,7 @@ Le modèle par défaut se trouve à l'emplacement suivant :
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="441"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Préréglage</translation>
@@ -4450,17 +4450,17 @@ Si Longueur = 0, la longueur est calculée de manière à ce que la hauteur soit
       <translation>Aucune fenêtre trouvée. Impossible de continuer.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="390"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Options de la fenêtre</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="394"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Inclure automatiquement dans l'objet hôte</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Hauteur de l'allège</translation>
     </message>
@@ -5960,33 +5960,33 @@ La création du bâtiment est annulée.</translation>
       <translation>Créer une vue 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Actif</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Définir le plan de travail</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Enregistrer la position de la caméra</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
-      <translation>Nouveau groupe</translation>
+      <translation>Créer un groupe</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Réordonner les enfants par ordre alphabétique</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation>Cloner un niveau supérieur</translation>
     </message>
@@ -8441,7 +8441,7 @@ Attention : non « Tolérant au toponymage » si Sketch est seulement utilisé.<
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Enregistrer la position de la caméra</translation>
     </message>
@@ -10092,7 +10092,7 @@ détectées, à des fins d'inspection. Veiller à supprimer l'objet TinyLinesRes
       <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
-      <translation>Nouveau groupe</translation>
+      <translation>Créer un groupe</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
@@ -10777,7 +10777,7 @@ Vérifier votre installation FreeCAD ou fournir un modèle personnalisé dans le
     <message>
       <location filename="../../bimcommands/BimExtrude.py" line="38"/>
       <source>Extrude</source>
-      <translation>Extrusion</translation>
+      <translation>Extruder</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimExtrude.py" line="39"/>
@@ -11574,6 +11574,11 @@ Voir les préférences : Général → Document → Licence par défaut</transla
       <translation>Auteur par défaut pour les nouveaux fichiers</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; est absent de votre système. IfcOpenShell est nécessaire pour importer ou exporter des fichiers IFC vers/depuis FreeCAD. Voir &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;cette page wiki&lt;/a&gt; pour en savoir plus, ou &lt;a href="#install"&gt;télécharger et installer-le&lt;/a&gt; directement.&lt;/p&gt;</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Nombre de petits carreaux entre chaque ligne principale de la grille
@@ -11705,11 +11710,6 @@ Voir les préférences : Draft → Général → Plan de travail par défaut</tr
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Couleur des géométries</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; est absent de votre système. IfcOpenShell est nécessaire pour importer ou exporter des fichiers IFC vers/depuis FreeCAD. Consultez &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;cette page wiki&lt;/a&gt; pour en savoir plus, ou &lt;a href="#install"&gt;téléchargez et installez-le&lt;/a&gt; directement.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>
