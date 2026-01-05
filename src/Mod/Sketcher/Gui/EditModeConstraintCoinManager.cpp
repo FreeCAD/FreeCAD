@@ -26,6 +26,9 @@
 #include <QRegularExpression>
 #include <limits>
 #include <memory>
+#include <map>
+#include <stack>
+#include <cmath>
 
 #include <Inventor/SbImage.h>
 #include <Inventor/SbVec3f.h>
@@ -2490,64 +2493,104 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
 {
     // getScaleFactor gives us a ratio of pixels per some kind of real units
-    float maxDistSquared = pow(ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider), 2);
+    float scale = ViewProviderSketchCoinAttorney::getScaleFactor(viewProvider);
+    float maxDistSquared = pow(scale, 2);
 
     // There's room for optimisation here; we could reuse the combined icons...
     combinedConstrBoxes.clear();
 
-    while (!iconQueue.empty()) {
-        // A group starts with an item popped off the back of our initial queue
+    // Grid size needs to be slightly larger than the max merge distance to ensure
+    // we catch neighbors.
+    float gridSize = std::max(1.0f, std::abs(scale) * 1.1f);
+
+    // 2. FILTERING & PREPARATION
+    // We create a list of valid indices.
+    std::vector<int> validIndices;
+    validIndices.reserve(iconQueue.size());
+
+    for (size_t i = 0; i < iconQueue.size(); ++i) {
+        if (!iconQueue[i].visible) {
+            clearCoinImage(iconQueue[i].destination);
+            continue;
+        }
+
+        // Symmetric constraints render alone (original logic)
+        if (iconQueue[i].type == QStringLiteral("Constraint_Symmetric")) {
+            drawTypicalConstraintIcon(iconQueue[i]);
+            continue;
+        }
+
+        validIndices.push_back(static_cast<int>(i));
+    }
+
+    // 3. SPATIAL HASHING (The Grid)
+    // Map: Pair(GridX, GridY) -> List of indices in iconQueue
+    std::map<std::pair<int, int>, std::vector<int>> grid;
+
+    for (int idx : validIndices) {
+        const auto& icon = iconQueue[idx];
+        int gx = static_cast<int>(std::floor(icon.position[0] / gridSize));
+        int gy = static_cast<int>(std::floor(icon.position[1] / gridSize));
+        grid[{gx, gy}].push_back(idx);
+    }
+
+    // 4. CLUSTERING (Reversed Iteration)
+    std::vector<bool> processed(iconQueue.size(), false);
+
+    for (auto it = validIndices.rbegin(); it != validIndices.rend(); ++it) {
+        int startIdx = *it;
+        if (processed[startIdx]) {
+            continue;
+        }
+
+        // Start a new group with the "Anchor"
         IconQueue thisGroup;
-        thisGroup.push_back(iconQueue.back());
-        constrIconQueueItem init = iconQueue.back();
-        iconQueue.pop_back();
+        thisGroup.reserve(5);
 
-        // we group only icons not being Symmetry icons, because we want those on the line
-        // and only icons that are visible
-        if (init.type != QStringLiteral("Constraint_Symmetric") && init.visible) {
+        // Stack for recursive search (Chain reaction)
+        std::stack<int> searchStack;
+        searchStack.push(startIdx);
+        processed[startIdx] = true;
 
-            IconQueue::iterator i = iconQueue.begin();
+        while (!searchStack.empty()) {
+            int currentIdx = searchStack.top();
+            searchStack.pop();
+            thisGroup.push_back(iconQueue[currentIdx]);
 
+            // Check neighbors of current icon
+            const auto& currentIcon = iconQueue[currentIdx];
+            int cx = static_cast<int>(std::floor(currentIcon.position[0] / gridSize));
+            int cy = static_cast<int>(std::floor(currentIcon.position[1] / gridSize));
 
-            while (i != iconQueue.end()) {
-                if ((*i).visible) {
-                    bool addedToGroup = false;
-
-                    for (IconQueue::iterator j = thisGroup.begin(); j != thisGroup.end(); ++j) {
-                        float distSquared = pow(i->position[0] - j->position[0], 2)
-                            + pow(i->position[1] - j->position[1], 2);
-                        if (distSquared <= maxDistSquared
-                            && (*i).type != QStringLiteral("Constraint_Symmetric")) {
-                            // Found an icon in iconQueue that's close enough to
-                            // a member of thisGroup, so move it into thisGroup
-                            thisGroup.push_back(*i);
-                            i = iconQueue.erase(i);
-                            addedToGroup = true;
-                            break;
-                        }
+            // Check 3x3 grid neighborhood
+            for (int dx = -1; dx <= 1; ++dx) {
+                for (int dy = -1; dy <= 1; ++dy) {
+                    auto gridIt = grid.find({cx + dx, cy + dy});
+                    if (gridIt == grid.end()) {
+                        continue;
                     }
 
-                    if (addedToGroup) {
-                        if (i == iconQueue.end()) {
-                            // We just got the last icon out of iconQueue
-                            break;
+                    // Iterate over potential matches in this cell
+                    for (int neighborIdx : gridIt->second) {
+                        if (processed[neighborIdx]) {
+                            continue;
                         }
-                        else {
-                            // Start looking through the iconQueue again, in case
-                            // we have an icon that's now close enough to thisGroup
-                            i = iconQueue.begin();
+
+                        const auto& otherIcon = iconQueue[neighborIdx];
+
+                        float distSq = pow(currentIcon.position[0] - otherIcon.position[0], 2)
+                            + pow(currentIcon.position[1] - otherIcon.position[1], 2);
+
+                        if (distSq <= maxDistSquared) {
+                            processed[neighborIdx] = true;
+                            searchStack.push(neighborIdx);
                         }
                     }
-                    else {
-                        ++i;
-                    }
-                }
-                else {  // if !visible we skip it
-                    i++;
                 }
             }
         }
 
+        // 5. DRAW
         if (thisGroup.size() == 1) {
             drawTypicalConstraintIcon(thisGroup[0]);
         }
