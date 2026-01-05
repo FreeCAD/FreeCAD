@@ -78,6 +78,8 @@ using DrawSketchHandlerArcSlotBase = DrawSketchControllableHandler<DSHArcSlotCon
 
 class DrawSketchHandlerArcSlot: public DrawSketchHandlerArcSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcSlot)
+
     friend DSHArcSlotController;
     friend DSHArcSlotControllerBase;
 

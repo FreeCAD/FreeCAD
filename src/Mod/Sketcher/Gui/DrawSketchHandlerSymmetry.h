@@ -66,6 +66,8 @@ using DrawSketchHandlerSymmetryBase = DrawSketchControllableHandler<DSHSymmetryC
 
 class DrawSketchHandlerSymmetry: public DrawSketchHandlerSymmetryBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSymmetry)
+
     friend DSHSymmetryController;
     friend DSHSymmetryControllerBase;
 
