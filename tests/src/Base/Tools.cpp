@@ -113,6 +113,22 @@ TEST(BaseToolsSuite, TestEscapeQuotesFromString)
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\""), "\\\"");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\\"), "\\");
 }
+
+TEST(BaseToolsSuite, TestEscapeEncodeString)
+{
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\\b"), "a\\\\b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\"b"), "a\\\"b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a'b"), "a\\\'b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("plain"), "plain");
+}
+
+TEST(BaseToolsSuite, TestEscapeEncodeFilename)
+{
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a\"b"), "a\\\"b");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a'b"), "a\\\'b");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("plain"), "plain");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a\\b"), "a\\b");
+}
 TEST(BaseToolsSuite, TestGetIdentifier)
 {
     // ASCII and edge cases
