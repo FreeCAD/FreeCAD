@@ -27,6 +27,7 @@ add_executable(Base_tests_run
         Tools.cpp
         Tools2D.cpp
         Tools3D.cpp
+        Translation.cpp
         UnlimitedUnsigned.cpp
         UniqueNameManager.cpp
         Unit.cpp

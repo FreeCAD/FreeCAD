@@ -229,6 +229,7 @@ SET(FreeCADBase_CPP_SRCS
     Tools.cpp
     Tools2D.cpp
     Tools3D.cpp
+    Translation.cpp
     Translate.cpp
     Type.cpp
     TypePyImp.cpp
@@ -297,6 +298,7 @@ SET(FreeCADBase_HPP_SRCS
     Tools.h
     Tools2D.h
     Tools3D.h
+    Translation.h
     Translate.h
     Type.h
     UnlimitedUnsigned.h
