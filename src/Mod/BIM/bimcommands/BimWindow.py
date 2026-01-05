@@ -288,11 +288,6 @@ class Arch_Window:
                     # - see https://github.com/FreeCAD/FreeCAD/issues/24903#issuecomment-3475455946
                     # placement = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))
                     # TODO 2025.11.1 : To improve the algorithm to be more robust to allow the Base Sketch in any orientation but without problem
-                    #
-                    # Window object triggers onChanged() upon setting/changing Window.SillHeight to move Window's z position
-                    # For Window with SketchArch add-on, attachToHost() is to be run below to set the 'initial' Window's placement prior to triggering onChanged() below,
-                    # so window_sill parameter is not used here at the moment, see 'if self.Include' below.
-                    # FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.SillHeight.Value) + ")")
                     FreeCADGui.doCommand(
                         "pl90 = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))"
                     )
@@ -311,9 +306,7 @@ class Arch_Window:
                         + WindowPresets[self.Preset]
                         + "' "
                         + wp
-                        + ", placement=pl, window_sill="
-                        + str(self.SillHeight.Value)
-                        + ")"
+                        + ", placement=pl"
                     )
                     FreeCADGui.doCommand("win.AttachToAxisOrSketch = 'None'")
                 FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
@@ -327,9 +320,7 @@ class Arch_Window:
                     + WindowPresets[self.Preset]
                     + "' "
                     + wp
-                    + ", placement=pl, window_sill="
-                    + str(self.SillHeight.Value)
-                    + ")"
+                    + ", placement = pl)"
                 )
                 SketchArch = False
 
@@ -343,8 +334,6 @@ class Arch_Window:
                     )
                 if SketchArch:
                     ArchSketchObject.attachToHost(w, target=host, pl=wPl)
-                    # Trigger onChanged() in the window object by setting Window.SillHeight, after setting the Window's 'initial' placement by attachToHost() above
-                    FreeCADGui.doCommand("win.SillHeight = " + str(self.SillHeight.Value))
 
         self.doc.commitTransaction()
         self.doc.recompute()
