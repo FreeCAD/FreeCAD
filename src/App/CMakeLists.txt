@@ -74,7 +74,6 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${QtCore_INCLUDE_DIRS}
-    ${QtXml_INCLUDE_DIRS}
 )
 
 set(FreeCADApp_LIBS
@@ -89,7 +88,6 @@ endif()
 
 list(APPEND FreeCADApp_LIBS
         ${QtCore_LIBRARIES}
-        ${QtXml_LIBRARIES}
 )
 
 generate_from_py(ApplicationDirectories)
