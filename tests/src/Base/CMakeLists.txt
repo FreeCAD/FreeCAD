@@ -10,6 +10,7 @@ add_executable(Base_tests_run
         DualQuaternion.cpp
         FileLock.cpp
         FileInfo.cpp
+        InputSource.cpp
         Handle.cpp
         Matrix.cpp
         Parameter.cpp
