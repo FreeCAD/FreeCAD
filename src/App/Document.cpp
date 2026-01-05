@@ -58,6 +58,7 @@
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/FileInfo.h>
+#include <Base/PathUtils.h>
 #include <Base/Sha1.h>
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
@@ -1979,32 +1980,17 @@ bool Document::saveToFile(const char* filename) const
                       ->GetBool("BackupPolicy", true);
 
     auto canonical_path = [](const char* filename) {
-        try {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(utf8Name.toStdWString())));
-            std::string nativePath = QString::fromStdWString(realpath.native()).toStdString();
-#else
-            auto realpath = fs::weakly_canonical(fs::absolute(fs::path(filename)));
-            std::string nativePath = realpath.native();
-#endif
-            // In case some folders in the path do not exist
-            auto parentPath = realpath.parent_path();
-            fs::create_directories(parentPath);
+        Base::NormalizePathOptions options;
+        options.makeAbsolute = true;
+        options.weaklyCanonical = true;
+        options.createParentDirectories = true;
 
-            return nativePath;
+        const auto normalized =
+            Base::normalizePath(Base::pathFromUtf8(filename ? std::string_view(filename) : std::string_view()), options);
+        if (!normalized) {
+            return std::string(filename ? filename : "");
         }
-        catch (const std::exception&) {
-#ifdef FC_OS_WIN32
-            QString utf8Name = QString::fromUtf8(filename);
-            auto parentPath = fs::absolute(fs::path(utf8Name.toStdWString())).parent_path();
-#else
-            auto parentPath = fs::absolute(fs::path(filename)).parent_path();
-#endif
-            fs::create_directories(parentPath);
-
-            return std::string(filename);
-        }
+        return Base::FileInfo::pathToString(*normalized);
     };
 
     // realpath is canonical filename i.e. without symlink
