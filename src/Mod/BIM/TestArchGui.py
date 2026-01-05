@@ -27,4 +27,5 @@
 from bimtests.TestArchImportersGui import TestArchImportersGui
 from bimtests.TestArchBuildingPartGui import TestArchBuildingPartGui
 from bimtests.TestArchSiteGui import TestArchSiteGui
+from bimtests.TestArchReportGui import TestArchReportGui
 from bimtests.TestWebGLExportGui import TestWebGLExportGui

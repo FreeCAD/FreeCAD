@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>Az összeállítás dokumentumot el kell menteni, mielőtt új alkatrészt szúrnánk be.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -900,53 +900,53 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       <translation>El akarja mozgatni az objektumot és törölni a hozzá tartozó csatlakozásokat?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
       <source>Move part</source>
       <translation>Mozgassa a részt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>A szerkesztő néző szolgáltatója</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
       <source>Empty Assembly</source>
       <translation>Üres összeállítás</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
       <source>Over-constrained:</source>
       <translation>Eltúlzott kényszer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
       <source>Malformed joints:</source>
       <translation>Hibás csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>Redundant joints:</source>
       <translation>Felesleges csatlakozás:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Partially redundant:</source>
       <translation>Részben felesleges:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
       <source>Solver failed to converge</source>
       <translation>A megoldó nem tudott hasonlítani</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
       <source>Under-constrained:</source>
       <translation>Nem eléggé kényszerített:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Szabadsági fok</numerusform>
@@ -954,7 +954,7 @@ A fájlok neve "runPreDrag.asmt" és "dragging.log", és az std::ofstream alapé
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Fully constrained</source>
       <translation>Teljesen kényszertett</translation>
     </message>

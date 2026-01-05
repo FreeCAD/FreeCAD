@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -1034,8 +1036,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(SnapManager::SnapHandle snapHandle) override
-    {}
+    void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
+    {
+    }
 
     bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {

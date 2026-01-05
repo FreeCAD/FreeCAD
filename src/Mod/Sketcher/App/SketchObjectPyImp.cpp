@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -564,6 +566,18 @@ PyObject* SketchObjectPy::getIndexByName(PyObject* args) const
 
     PyErr_SetString(PyExc_LookupError, "No such constraint found");
     return nullptr;
+}
+
+PyObject* SketchObjectPy::setAllowUnaligned(PyObject* args)
+{
+    PyObject* allowObj;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &allowObj)) {
+        return nullptr;
+    }
+    bool allow = Base::asBoolean(allowObj);
+    this->getSketchObjectPtr()->setAllowUnaligned(allow);
+
+    Py_Return;
 }
 
 PyObject* SketchObjectPy::carbonCopy(PyObject* args)

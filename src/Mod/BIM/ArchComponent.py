@@ -41,6 +41,8 @@ Examples
 TODO put examples here.
 """
 
+import math
+
 import FreeCAD
 import ArchCommands
 import ArchIFC
@@ -271,7 +273,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "An optional standard (OmniClass, etc…) code for this component",
+                    "An optional standard (OmniClass, etc.) code for this component",
                 ),
                 locked=True,
             )
@@ -441,8 +443,6 @@ class Component(ArchIFC.IfcProduct):
         prop: string
             The name of the property that has changed.
         """
-
-        import math
 
         ArchIFC.IfcProduct.onChanged(self, obj, prop)
 
@@ -758,7 +758,6 @@ class Component(ArchIFC.IfcProduct):
             before being rotated.
         """
 
-        import math
         import DraftGeomUtils
 
         # Get the object's center.
@@ -1357,24 +1356,38 @@ class AreaCalculator:
         as vertical and be counted. This is an improvement over the fix for
         https://github.com/FreeCAD/FreeCAD/issues/14687.
         """
-        from Part import OCCError, Face
-        from DraftGeomUtils import findWires
-        from TechDraw import project
+        import Part
+        import DraftGeomUtils
+        import TechDraw
 
-        try:
-            projectedFace = Face(findWires(project(face, FreeCAD.Vector(0, 0, 1))[0].Edges))
-        except OCCError:
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", f"Could not project face from {self.obj.Label}\n")
-            )
-            return False
-
-        isProjectedAreaZero = projectedFace.Area < 0.0001
+        if face.Surface.TypeId == "Part::GeomCylinder":
+            angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomSurfaceOfExtrusion":
+            angle = face.Surface.Direction.getAngle(FreeCAD.Vector(0, 0, 1))
+            return self.isZeroAngle(angle)
+        elif face.Surface.TypeId == "Part::GeomPlane":
+            projectedArea = 0  # dummy value, isRightAngle check is sufficient here
+        elif face.findPlane() is not None:
+            projectedArea = 0  # dummy value, idem
+        else:
+            try:
+                edges = TechDraw.project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
+                wires = DraftGeomUtils.findWires(edges)
+                if len(wires) == 1 and not wires[0].isClosed():
+                    projectedArea = 0
+                else:
+                    projectedArea = Part.Face(wires).Area
+            except Part.OCCError:
+                FreeCAD.Console.PrintWarning(
+                    translate("Arch", f"Could not project face from {self.obj.Label}\n")
+                )
+                return False
 
         try:
             angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return self.isRightAngle(angle) and isProjectedAreaZero
-        except OCCError:
+            return self.isRightAngle(angle) and projectedArea < 0.0001
+        except Part.OCCError:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
@@ -1384,29 +1397,15 @@ class AreaCalculator:
             )
             return False
 
-    def isFaceHorizontal(self, face):
-        """Determine if a face is horizontal.
-
-        A face is considered horizontal if its normal vector is parallel to the Z-axis.
-        """
-        from Part import OCCError
-
-        try:
-            angle = face.normalAt(0, 0).getAngle(FreeCAD.Vector(0, 0, 1))
-            return not self.isRightAngle(angle)
-        except OCCError:
-            FreeCAD.Console.PrintWarning(
-                translate(
-                    "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
-                    " is horizontal: normalAt() failed\n",
-                )
-            )
-            return False
-
     def isRightAngle(self, angle):
         """Check if the angle is close to 90 degrees."""
-        return 1.57 < angle < 1.571
+        return math.isclose(angle, math.pi / 2, abs_tol=0.0005)
+
+    def isZeroAngle(self, angle):
+        """Check if the angle is close to 0 or 180 degrees."""
+        if math.isclose(angle, 0, abs_tol=0.0005):
+            return True
+        return math.isclose(angle, math.pi, abs_tol=0.0005)
 
     def compute(self):
         """Compute the vertical area, horizontal area, and perimeter length.
@@ -1427,53 +1426,64 @@ class AreaCalculator:
             return
 
         verticalArea = 0
-        horizontalFaces = []
+        horizontalAreaFaces = []
 
-        # Compute vertical area and collect horizontal faces
+        # Compute vertical area and collect faces to be projected for the horizontal area
         for face in self.obj.Shape.Faces:
             if self.isFaceVertical(face):
                 verticalArea += face.Area
-            elif self.isFaceHorizontal(face):
-                horizontalFaces.append(face)
+            else:
+                horizontalAreaFaces.append(face)
 
         # Update vertical area
-        if verticalArea and hasattr(self.obj, "VerticalArea"):
-            if self.obj.VerticalArea.Value != verticalArea:
-                self.obj.VerticalArea = verticalArea
+        if hasattr(self.obj, "VerticalArea") and self.obj.VerticalArea.Value != verticalArea:
+            self.obj.VerticalArea = verticalArea
 
         # Compute horizontal area and perimeter length
-        if horizontalFaces and hasattr(self.obj, "HorizontalArea"):
-            self._computeHorizontalAreaAndPerimeter(horizontalFaces)
+        if horizontalAreaFaces and hasattr(self.obj, "HorizontalArea"):
+            self._computeHorizontalAreaAndPerimeter(horizontalAreaFaces)
 
-    def _computeHorizontalAreaAndPerimeter(self, horizontalFaces):
+    def _computeHorizontalAreaAndPerimeter(self, horizontalAreaFaces):
         """Compute the horizontal area and perimeter length.
 
-        Projects the given horizontal faces onto the XY plane, fuses them,
-        and calculates:
+        Projects the given faces onto the XY plane, fuses them, and calculates:
         - The total horizontal area.
         - The perimeter length of the fused horizontal area.
 
         Parameters
         ----------
-        horizontalFaces : list of Part.Face
-            The horizontal faces to process.
-
-        Notes
-        -----
-        The operation of projecting faces is done with the `Part::FaceMakerCheese`
-        facemaker algorithm, so that holes in the faces are taken into account for
-        the area calculation.
+        horizontalAreaFaces: list of Part.Face
+            The faces to process.
         """
-        import Part
-        from DraftGeomUtils import findWires
-        from TechDraw import project
 
+        import Part
+        import TechDraw
+        import DraftGeomUtils
+
+        direction = FreeCAD.Vector(0, 0, 1)
         projectedFaces = []
-        for face in horizontalFaces:
+        for face in horizontalAreaFaces:
             try:
-                projectedEdges = project(face, FreeCAD.Vector(0, 0, 1))[0].Edges
-                wires = findWires(projectedEdges)
-                projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                if face.findPlane() is None:
+                    if len(face.Wires) > 1:
+                        # Non-planar faces with holes are not handled properly
+                        FreeCAD.Console.PrintWarning(
+                            translate(
+                                "Arch",
+                                f"Error computing areas for {self.obj.Label}: unable to project "
+                                "non-planar faces with holes. Area values will be reset to 0.\n",
+                            )
+                        )
+                        self.resetAreas()
+                        return
+                    wire = TechDraw.findShapeOutline(face, 1, direction)
+                    projectedFace = Part.makeFace([wire], "Part::FaceMakerSimple")
+                else:
+                    edges = TechDraw.project(face, direction)[0].Edges
+                    wires = DraftGeomUtils.findWires(edges)
+                    # Using "Part::FaceMakerCheese" as the face can have holes
+                    projectedFace = Part.makeFace(wires, "Part::FaceMakerCheese")
+                # Part.show(projectedFace)
                 projectedFaces.append(projectedFace)
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
@@ -1492,16 +1502,13 @@ class AreaCalculator:
             for face in projectedFaces:
                 fusedFace = fusedFace.fuse(face)
             fusedFace = fusedFace.removeSplitter()
+            # Part.show(fusedFace)
 
             if self.obj.HorizontalArea.Value != fusedFace.Area:
                 self.obj.HorizontalArea = fusedFace.Area
 
             if hasattr(self.obj, "PerimeterLength") and len(fusedFace.Faces) == 1:
-                edgeTable = {}
-                for edge in fusedFace.Edges:
-                    edgeTable.setdefault(edge.hashCode(), []).append(edge)
-                borderEdges = [edges[0] for edges in edgeTable.values() if len(edges) == 1]
-                perimeterLength = sum(edge.Length for edge in borderEdges)
+                perimeterLength = fusedFace.Faces[0].OuterWire.Length
                 if self.obj.PerimeterLength.Value != perimeterLength:
                     self.obj.PerimeterLength = perimeterLength
 

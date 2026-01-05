@@ -5459,7 +5459,7 @@ normalvektorn för ytan används som riktning</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="161"/>
       <source>Remove All Clipping Planes</source>
-      <translation type="unfinished">Remove All Clipping Planes</translation>
+      <translation>Ta bort alla klipplan</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="164"/>

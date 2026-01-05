@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef VELOCITYPROFILE_SPLINE_H
 #define VELOCITYPROFILE_SPLINE_H
 

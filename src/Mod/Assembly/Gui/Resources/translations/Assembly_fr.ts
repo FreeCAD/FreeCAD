@@ -37,12 +37,12 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="50"/>
       <source>Solve Assembly</source>
-      <translation>Résoudre l'assemblage</translation>
+      <translation>Résoudre un assemblage</translation>
     </message>
     <message>
       <location filename="../../../CommandSolveAssembly.py" line="55"/>
       <source>Solves the currently active assembly.</source>
-      <translation>Résout l'assemblage actuellement actif.</translation>
+      <translation>Résout l'assemblage actif en cours.</translation>
     </message>
   </context>
   <context>
@@ -321,7 +321,7 @@ double-cliquant dessus ou en appuyant sur F2 (le renommage d'une colonne entraî
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="118"/>
       <source>Create part in new file</source>
-      <translation>Créer une pièce dans un nouveau fichier</translation>
+      <translation>Crée une pièce dans un nouveau fichier.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="125"/>
@@ -342,7 +342,7 @@ double-cliquant dessus ou en appuyant sur F2 (le renommage d'une colonne entraî
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>Le document d'assemblage doit être sauvegardé avant d'insérer une nouvelle pièce.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -912,53 +912,53 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Fournisseur d'affichage d'Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>Redundant joints:</source>
       <translation>Liaisons redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Partially redundant:</source>
       <translation>Esquisse avec contraintes partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -966,7 +966,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -1130,12 +1130,12 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="54"/>
       <source>New Part</source>
-      <translation>Insérer une nouvelle pièce</translation>
+      <translation>Nouvelle pièce</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="59"/>
       <source>Insert a new part into the active assembly. The new part's origin can be positioned in the assembly.</source>
-      <translation>Insérer une nouvelle pièce dans l'assemblage actif. L'origine de la nouvelle pièce peut être positionnée dans l'assemblage.</translation>
+      <translation>Insère une nouvelle pièce dans l'assemblage actif. L'origine de la nouvelle pièce peut être positionnée dans l'assemblage.</translation>
     </message>
   </context>
   <context>
@@ -1168,7 +1168,7 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="95"/>
       <source>Start</source>
-      <translation>Début</translation>
+      <translation>Démarrer</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>

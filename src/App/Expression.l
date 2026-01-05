@@ -1,4 +1,6 @@
 %{
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *

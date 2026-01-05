@@ -574,7 +574,7 @@ SLOPE definierar brantheten i övergången mellan 0 och H1 och H2 till 0 vid tid
     <message>
       <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>Detta är vinkel för fogen. Den används endast av vinkelfogen.</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="420"/>
@@ -900,53 +900,53 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
       <source>Empty Assembly</source>
       <translation>Tomt montage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
       <source>Over-constrained:</source>
       <translation>Överbelastad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>Redundant joints:</source>
       <translation>Redundanta fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -954,7 +954,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
