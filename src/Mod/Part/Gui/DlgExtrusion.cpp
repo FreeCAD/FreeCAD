@@ -1029,4 +1029,3 @@ void TaskExtrusion::clicked(int id)
 }
 
 #include "moc_DlgExtrusion.cpp"
-
