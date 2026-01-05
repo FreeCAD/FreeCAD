@@ -34,6 +34,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
+#include <streambuf>
 #include "FileInfo.h"
 
 
@@ -389,6 +390,41 @@ private:
 };
 
 /**
+ * Streambuf for writing to a std::string.
+ *
+ * Designed as a replacement for Qt-based ByteArrayOStreambuf in core code paths.
+ */
+class BaseExport StringOStreambuf: public std::streambuf
+{
+public:
+    explicit StringOStreambuf(std::string& buffer);
+    ~StringOStreambuf() override;
+
+protected:
+    int_type overflow(std::streambuf::int_type c) override;
+    std::streamsize xsputn(const char* s, std::streamsize num) override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+
+public:
+    StringOStreambuf(const StringOStreambuf&) = delete;
+    StringOStreambuf(StringOStreambuf&&) = delete;
+    StringOStreambuf& operator=(const StringOStreambuf&) = delete;
+    StringOStreambuf& operator=(StringOStreambuf&&) = delete;
+
+private:
+    std::string& _buffer;
+    std::size_t _pos {0};
+};
+
+/**
  * This class implements the streambuf interface to read data from a QByteArray.
  * This class can only be used for reading but not for writing purposes.
  * @author Werner Mayer
@@ -422,6 +458,43 @@ public:
 
 private:
     const QByteArray& _buffer;
+    int _beg, _end, _cur;
+};
+
+/**
+ * Streambuf for reading from a std::string.
+ *
+ * Designed as a replacement for Qt-based ByteArrayIStreambuf in core code paths.
+ */
+class BaseExport StringIStreambuf: public std::streambuf
+{
+public:
+    explicit StringIStreambuf(const std::string& buffer);
+    ~StringIStreambuf() override;
+
+protected:
+    int_type uflow() override;
+    int_type underflow() override;
+    int_type pbackfail(int_type ch) override;
+    std::streamsize showmanyc() override;
+    pos_type seekoff(
+        std::streambuf::off_type off,
+        std::ios_base::seekdir way,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+    pos_type seekpos(
+        std::streambuf::pos_type pos,
+        std::ios_base::openmode which = std::ios::in | std::ios::out
+    ) override;
+
+public:
+    StringIStreambuf(const StringIStreambuf&) = delete;
+    StringIStreambuf(StringIStreambuf&&) = delete;
+    StringIStreambuf& operator=(const StringIStreambuf&) = delete;
+    StringIStreambuf& operator=(StringIStreambuf&&) = delete;
+
+private:
+    const std::string& _buffer;
     int _beg, _end, _cur;
 };
 

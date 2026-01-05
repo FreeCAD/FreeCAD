@@ -28,6 +28,10 @@
 # include <cstdint>
 #endif
 
+#include <cstring>
+#include <algorithm>
+#include <limits>
+
 #include "Stream.h"
 #include "Swap.h"
 #include <CXX/Objects.hxx>
@@ -318,6 +322,85 @@ std::streambuf::pos_type ByteArrayOStreambuf::seekpos(std::streambuf::pos_type p
 
 // ----------------------------------------------------------------------
 
+StringOStreambuf::StringOStreambuf(std::string& buffer)
+    : _buffer(buffer)
+{}
+
+StringOStreambuf::~StringOStreambuf() = default;
+
+std::streambuf::int_type StringOStreambuf::overflow(std::streambuf::int_type c)
+{
+    if (c == EOF) {
+        return EOF;
+    }
+
+    const char z = static_cast<char>(c);
+    if (xsputn(&z, 1) != 1) {
+        return EOF;
+    }
+    return c;
+}
+
+std::streamsize StringOStreambuf::xsputn(const char* s, std::streamsize num)
+{
+    if (num <= 0) {
+        return 0;
+    }
+
+    const auto count = static_cast<std::size_t>(num);
+    const auto needed = _pos + count;
+    if (needed > _buffer.size()) {
+        _buffer.resize(needed);
+    }
+
+    std::memcpy(_buffer.data() + _pos, s, count);
+    _pos += count;
+    return num;
+}
+
+std::streambuf::pos_type StringOStreambuf::seekoff(
+    std::streambuf::off_type off,
+    std::ios_base::seekdir way,
+    std::ios_base::openmode /*mode*/
+)
+{
+    off_type base = 0;
+    switch (way) {
+        case std::ios_base::beg:
+            base = 0;
+            break;
+        case std::ios_base::cur:
+            base = static_cast<off_type>(_pos);
+            break;
+        case std::ios_base::end:
+            base = static_cast<off_type>(_buffer.size());
+            break;
+        default:
+            return {off_type(-1)};
+    }
+
+    const off_type newpos = base + off;
+    if (newpos < 0) {
+        return {off_type(-1)};
+    }
+    if (static_cast<std::size_t>(newpos) > _buffer.size()) {
+        return {off_type(-1)};
+    }
+
+    _pos = static_cast<std::size_t>(newpos);
+    return {newpos};
+}
+
+std::streambuf::pos_type StringOStreambuf::seekpos(
+    std::streambuf::pos_type pos,
+    std::ios_base::openmode /*mode*/
+)
+{
+    return seekoff(pos, std::ios_base::beg);
+}
+
+// ----------------------------------------------------------------------
+
 ByteArrayIStreambuf::ByteArrayIStreambuf(const QByteArray& data)
     : _buffer(data)
     , _beg(0)
@@ -387,6 +470,95 @@ std::streambuf::pos_type ByteArrayIStreambuf::
 }
 
 std::streambuf::pos_type ByteArrayIStreambuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode /*mode*/)
+{
+    return seekoff(pos, std::ios_base::beg);
+}
+
+// ----------------------------------------------------------------------
+
+StringIStreambuf::StringIStreambuf(const std::string& buffer)
+    : _buffer(buffer)
+    , _beg(0)
+    , _end(0)
+    , _cur(0)
+{
+    const auto maxInt = static_cast<std::size_t>(std::numeric_limits<int>::max());
+    _end = static_cast<int>(std::min(_buffer.size(), maxInt));
+}
+
+StringIStreambuf::~StringIStreambuf() = default;
+
+StringIStreambuf::int_type StringIStreambuf::underflow()
+{
+    if (_cur == _end) {
+        return traits_type::eof();
+    }
+
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur])) & 0x000000ff;
+}
+
+StringIStreambuf::int_type StringIStreambuf::uflow()
+{
+    if (_cur == _end) {
+        return traits_type::eof();
+    }
+
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur++])) & 0x000000ff;
+}
+
+StringIStreambuf::int_type StringIStreambuf::pbackfail(int_type ch)
+{
+    if (_cur == _beg) {
+        return traits_type::eof();
+    }
+
+    if (ch != traits_type::eof()
+        && ch != static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur - 1]))) {
+        return traits_type::eof();
+    }
+
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[--_cur])) & 0x000000ff;
+}
+
+std::streamsize StringIStreambuf::showmanyc()
+{
+    return _end - _cur;
+}
+
+std::streambuf::pos_type StringIStreambuf::seekoff(
+    std::streambuf::off_type off,
+    std::ios_base::seekdir way,
+    std::ios_base::openmode /*mode*/
+)
+{
+    int p_pos = -1;
+    if (way == std::ios_base::beg) {
+        p_pos = _beg;
+    }
+    else if (way == std::ios_base::end) {
+        p_pos = _end;
+    }
+    else if (way == std::ios_base::cur) {
+        p_pos = _cur;
+    }
+
+    if (p_pos > _end) {
+        return traits_type::eof();
+    }
+
+    if (((p_pos + off) > _end) || ((p_pos + off) < _beg)) {
+        return traits_type::eof();
+    }
+
+    _cur = p_pos + off;
+
+    return ((p_pos + off) - _beg);
+}
+
+std::streambuf::pos_type StringIStreambuf::seekpos(
+    std::streambuf::pos_type pos,
+    std::ios_base::openmode /*mode*/
+)
 {
     return seekoff(pos, std::ios_base::beg);
 }

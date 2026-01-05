@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <limits>
+#include <string>
 #include <QAction>
 #include <QApplication>
 #include <QClipboard>
@@ -799,7 +800,8 @@ void SheetTableView::pasteClipboard()
         }
         else {
             QByteArray res = mimeData->data(_SheetMime);
-            Base::ByteArrayIStreambuf buf(res);
+            std::string buffer(res.constData(), static_cast<std::size_t>(res.size()));
+            Base::StringIStreambuf buf(buffer);
             std::istream in(nullptr);
             in.rdbuf(&buf);
             Base::XMLReader reader("<memory>", in);
