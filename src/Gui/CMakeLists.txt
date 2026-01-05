@@ -173,6 +173,7 @@ list(APPEND FreeCADGui_LIBS
     ${QtSvgWidgets_LIBRARIES}
     ${QtNetwork_LIBRARIES}
     ${QtUiTools_LIBRARIES}
+    ${QtXml_LIBRARIES}
 )
 
 link_directories(${YAML_CPP_LIBRARY_DIR})
