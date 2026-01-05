@@ -65,8 +65,11 @@ void FCCmdImportReadBREP::activated(int iMsg)
         return;
     }
 
-    fn = Base::Tools::escapeEncodeFilename(fn);
-    doCommand(Doc, "TopoShape = Import.ReadBREP(\"%s\")", (const char*)fn.toUtf8());
+    const QByteArray fnUtf8 = fn.toUtf8();
+    const std::string escaped = Base::Tools::escapeEncodeFilename(
+        std::string(fnUtf8.constData(), fnUtf8.size())
+    );
+    doCommand(Doc, "TopoShape = Import.ReadBREP(\"%s\")", escaped.c_str());
     commitCommand();
 }
 
@@ -105,8 +108,11 @@ void ImportStep::activated(int iMsg)
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "Part ImportSTEP Create"));
         doCommand(Doc, "f = App.document().addObject(\"ImportStep\",\"ImportStep\")");
-        fn = Base::Tools::escapeEncodeFilename(fn);
-        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toUtf8());
+        const QByteArray fnUtf8 = fn.toUtf8();
+        const std::string escaped = Base::Tools::escapeEncodeFilename(
+            std::string(fnUtf8.constData(), fnUtf8.size())
+        );
+        doCommand(Doc, "f.FileName = \"%s\"", escaped.c_str());
         commitCommand();
         updateActive();
     }
@@ -152,8 +158,11 @@ void ImportIges::activated(int iMsg)
     if (!fn.isEmpty()) {
         openCommand(QT_TRANSLATE_NOOP("Command", "ImportIGES Create"));
         doCommand(Doc, "f = App.document().addObject(\"ImportIges\",\"ImportIges\")");
-        fn = Base::Tools::escapeEncodeFilename(fn);
-        doCommand(Doc, "f.FileName = \"%s\"", (const char*)fn.toUtf8());
+        const QByteArray fnUtf8 = fn.toUtf8();
+        const std::string escaped = Base::Tools::escapeEncodeFilename(
+            std::string(fnUtf8.constData(), fnUtf8.size())
+        );
+        doCommand(Doc, "f.FileName = \"%s\"", escaped.c_str());
         commitCommand();
         updateActive();
     }
