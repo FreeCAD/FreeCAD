@@ -192,6 +192,7 @@ SET(FreeCADBase_CPP_SRCS
     GeometryPyCXX.cpp
     Handle.cpp
     PathUtils.cpp
+    PlatformPaths.cpp
     InputSource.cpp
     Interpreter.cpp
     Matrix.cpp
@@ -267,6 +268,7 @@ SET(FreeCADBase_HPP_SRCS
     GeometryPyCXX.h
     Handle.h
     PathUtils.h
+    PlatformPaths.h
     InputSource.h
     Interpreter.h
     Matrix.h
