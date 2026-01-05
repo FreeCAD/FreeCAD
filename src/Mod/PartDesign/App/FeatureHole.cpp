@@ -544,6 +544,10 @@ const App::PropertyAngle::Constraints Hole::floatAngle = {
 const App::PropertyQuantityConstraint::Constraints diameterRange
     = {10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
 
+// Custom clearance can be negative or positive to adjust for manufacturing
+const App::PropertyQuantityConstraint::Constraints clearanceRange
+    = {std::numeric_limits<float>::lowest(), std::numeric_limits<float>::max(), 0.1};
+
 Hole::Hole()
 {
     addSubType = FeatureAddSub::Subtractive;
@@ -636,6 +640,7 @@ Hole::Hole()
         App::Prop_None,
         "Custom thread clearance (overrides ThreadClass)"
     );
+    CustomThreadClearance.setConstraints(&clearanceRange);
 
     // Defaults to circles & arcs so that older files are kept intact
     // while new file get points, circles and arcs set in setupObject()
