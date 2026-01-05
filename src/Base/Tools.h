@@ -378,6 +378,10 @@ struct BaseExport Tools
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 
+    /**
+     * @brief currentDateTimeString
+     * @return Current time formatted as an ISO 8601 UTC timestamp, ending in 'Z'.
+     */
     static std::string currentDateTimeString();
 
     static std::vector<std::string> splitSubName(const std::string& subname);

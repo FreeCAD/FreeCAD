@@ -24,11 +24,12 @@
 
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
-#include <vector>
-#include <string>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include <sstream>
-#include <QDateTime>
-#include <QTimeZone>
+#include <string>
+#include <vector>
 
 #include "PyExport.h"
 #include "Interpreter.h"
@@ -252,10 +253,19 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 
 std::string Base::Tools::currentDateTimeString()
 {
-    return QDateTime::currentDateTime()
-        .toTimeZone(QTimeZone::systemTimeZone())
-        .toString(Qt::ISODate)
-        .toStdString();
+    const auto now = std::chrono::system_clock::now();
+    const std::time_t t = std::chrono::system_clock::to_time_t(now);
+
+    std::tm tmUtc {};
+#if defined(_WIN32)
+    gmtime_s(&tmUtc, &t);
+#else
+    gmtime_r(&t, &tmUtc);
+#endif
+
+    std::ostringstream out;
+    out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
+    return out.str();
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)
