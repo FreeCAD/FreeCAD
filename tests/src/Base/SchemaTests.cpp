@@ -24,9 +24,11 @@
 #include "Base/Tools.h"
 #include "Base/Unit.h"
 #include "Base/Quantity.h"
+#include "Base/Translation.h"
 #include "Base/UnitsApi.h"
 #include "Base/UnitsSchemasData.h"
 #include "Base/UnitsSchemas.h"
+#include "TranslationTestHelpers.h"
 
 #include <array>
 #include <string>
@@ -216,6 +218,19 @@ TEST_F(SchemaTest, internal_1_mm_precision_0)
     const auto expect {"1 mm"};
 
     EXPECT_EQ(result, expect);
+}
+
+TEST_F(SchemaTest, schema_descriptions_use_translation_handler)
+{
+    Base::Translation::Test::RecordingTranslator translator;
+    translator.translateMode = Base::Translation::Test::RecordingTranslator::TranslateMode::WrapSource;
+    translator.sourcePrefix = "T(";
+    translator.sourceSuffix = ")";
+    Base::Translation::Test::ScopedTranslator scoped(&translator);
+
+    const auto descriptions = UnitsApi::getDescriptions();
+    ASSERT_FALSE(descriptions.empty());
+    EXPECT_TRUE(descriptions.front().starts_with("T("));
 }
 
 TEST_F(SchemaTest, internal_100_mm_precision_0)
