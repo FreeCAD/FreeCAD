@@ -1003,41 +1003,6 @@ TaskExtrusion::TaskExtrusion()
 {
     widget = new DlgExtrusion();
     addTaskBox(Gui::BitmapFactory().pixmap("Part_Extrude"), widget);
-
-    // Create temporary object for expression binding
-    App::Document* doc = App::GetApplication().getActiveDocument();
-    if (doc) {
-        doc->openTransaction("Extrude");
-
-        // Get selected shape
-        std::vector<App::DocumentObject*> shapes = widget->getShapesToExtrude();
-        if (!shapes.empty()) {
-            std::string name = doc->getUniqueObjectName("Extrude").c_str();
-
-            // Create the extrusion object
-            Part::Extrusion* extrudeObj = static_cast<Part::Extrusion*>(
-                doc->addObject("Part::Extrusion", name.c_str())
-            );
-
-            // Set base shape
-            extrudeObj->Base.setValue(shapes[0]);
-
-            // Set default values
-            extrudeObj->Dir.setValue(Base::Vector3d(0, 0, 1));
-            extrudeObj->LengthFwd.setValue(10.0);
-            extrudeObj->LengthRev.setValue(0.0);
-            extrudeObj->Solid.setValue(true);
-            extrudeObj->Symmetric.setValue(false);
-
-            // Setup expression bindings in dialog
-            widget->setupExpressionBindings(extrudeObj);
-
-            // Load current values from object into dialog
-            widget->setDir(extrudeObj->Dir.getValue());
-            widget->ui->spinLenFwd->setValue(extrudeObj->LengthFwd.getValue());
-            widget->ui->spinLenRev->setValue(extrudeObj->LengthRev.getValue());
-        }
-    }
 }
 
 bool TaskExtrusion::accept()
@@ -1064,3 +1029,4 @@ void TaskExtrusion::clicked(int id)
 }
 
 #include "moc_DlgExtrusion.cpp"
+
