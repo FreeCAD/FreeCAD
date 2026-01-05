@@ -4396,7 +4396,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // see https://github.com/FreeCAD/FreeCAD/issues/13551
     if (addSymmetryConstraints) {
         for (auto* geo : symgeos) {
-            if (auto* arc = static_cast<Part::GeomArcOfCircle*>(geo)) {
+            if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(geo)) {
                 double start, end;
                 double perturbation = 0.001;
                 arc->getRange(start, end, true);
@@ -12139,3 +12139,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
