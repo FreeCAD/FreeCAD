@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 #include <algorithm>
-
-#include <QDir>
-#include <QFileInfo>
+#include <filesystem>
+#include <string_view>
+#include <system_error>
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <Base/Console.h>
@@ -3324,7 +3324,7 @@ bool PropertyLinkSubList::adjustLink(const std::set<App::DocumentObject*>& inLis
 // has now been changed to simply use the absoluteFilePath(), and rely on user
 // to be aware of possible duplicated file location. The reason being that
 // some user (especially Linux user) use symlink to organize file tree.
-using DocInfoMap = std::map<QString, DocInfoPtr>;
+using DocInfoMap = std::map<std::string, DocInfoPtr>;
 DocInfoMap _DocInfoMap;
 
 class App::DocInfo: public std::enable_shared_from_this<App::DocInfo>
@@ -3345,57 +3345,56 @@ public:
     static std::string getDocPath(const char* filename,
                                   App::Document* pDoc,
                                   bool relative,
-                                  QString* fullPath = nullptr)
+                                  std::string* fullPath = nullptr)
     {
-        bool absolute;
-        // The path could be an URI, in that case
-        // TODO: build a far much more resilient approach to test for an URI
-        QString path = QString::fromUtf8(filename);
-        if (path.startsWith(QLatin1String("https://"))) {
-            // We do have an URI
-            if (fullPath) {
-                *fullPath = path;
-            }
-            return std::string(filename);
+        if (!filename) {
+            return {};
         }
 
-        // make sure the filename is absolute path
-        path = QDir::cleanPath(path);
-        if ((absolute = QFileInfo(path).isAbsolute())) {
+        const std::string_view fileView(filename);
+        if (boost::algorithm::starts_with(fileView, "https://")) {
             if (fullPath) {
-                *fullPath = path;
+                *fullPath = std::string(fileView);
             }
-            if (!relative) {
-                return std::string(path.toUtf8().constData());
-            }
+            return std::string(fileView);
         }
+
+        std::error_code error;
+        std::filesystem::path input = Base::FileInfo::stringToPath(filename).lexically_normal();
+        const bool absolute = input.is_absolute();
 
         const char* docPath = pDoc->getFileName();
         if (!docPath || *docPath == 0) {
             throw Base::RuntimeError("Owner document not saved");
         }
 
-        QFileInfo docFileInfo{QString::fromUtf8(docPath)};
-        QDir docDir(docFileInfo.canonicalPath());
+        const std::filesystem::path docDir =
+            std::filesystem::absolute(Base::FileInfo::stringToPath(docPath).parent_path(), error);
+
+        std::filesystem::path full = input;
         if (!absolute) {
-            path = QDir::cleanPath(docDir.absoluteFilePath(path));
-            if (fullPath) {
-                *fullPath = path;
-            }
+            full = (docDir / full).lexically_normal();
+        }
+        full = std::filesystem::absolute(full, error).lexically_normal();
+        const std::string fullString = Base::FileInfo::pathToString(full);
+        if (fullPath) {
+            *fullPath = fullString;
         }
 
         if (relative) {
-            return std::string(docDir.relativeFilePath(path).toUtf8().constData());
+            std::error_code relativeError;
+            const std::filesystem::path relativePath = std::filesystem::relative(full, docDir, relativeError);
+            if (!relativeError) {
+                return Base::FileInfo::pathToString(relativePath);
+            }
         }
-        else {
-            return std::string(path.toUtf8().constData());
-        }
+        return fullString;
     }
 
     static DocInfoPtr
     get(const char* filename, App::Document* pDoc, PropertyXLink* l, const char* objName)
     {
-        QString path;
+        std::string path;
         l->filePath = getDocPath(filename, pDoc, true, &path);
 
         FC_LOG("finding doc " << filename);
@@ -3405,10 +3404,10 @@ public:
         if (it != _DocInfoMap.end()) {
             info = it->second;
             if (!info->pcDoc) {
-                QString fullpath(info->getFullPath());
-                if (fullpath.size()
+                const std::string fullpath(info->getFullPath());
+                if (!fullpath.empty()
                     && App::GetApplication().addPendingDocument(
-                           fullpath.toUtf8().constData(),
+                           fullpath.c_str(),
                            objName,
                            l->testFlag(PropertyLinkBase::LinkAllowPartial))
                         == 0) {
@@ -3439,30 +3438,26 @@ public:
         return info;
     }
 
-    static QString getFullPath(const char* p)
+    static std::string getFullPath(const char* p)
     {
-        QString path = QString::fromUtf8(p);
-        if (path.isEmpty()) {
-            return path;
+        if (!p || !*p) {
+            return {};
         }
 
-        if (path.startsWith(QLatin1String("https://"))) {
-            return path;
+        const std::string_view view(p);
+        if (boost::algorithm::starts_with(view, "https://")) {
+            return std::string(view);
         }
-        else {
-            return QFileInfo(path).absoluteFilePath();
-        }
+
+        std::error_code error;
+        std::filesystem::path path = Base::FileInfo::stringToPath(p).lexically_normal();
+        path = std::filesystem::absolute(path, error).lexically_normal();
+        return Base::FileInfo::pathToString(path);
     }
 
-    QString getFullPath() const
+    std::string getFullPath() const
     {
-        QString path = myPos->first;
-        if (path.startsWith(QLatin1String("https://"))) {
-            return path;
-        }
-        else {
-            return QFileInfo(myPos->first).absoluteFilePath();
-        }
+        return getFullPath(myPos->first.c_str());
     }
 
     const char* filePath() const
@@ -3490,7 +3485,7 @@ public:
     void init(DocInfoMap::iterator pos, const char* objName, PropertyXLink* l)
     {
         myPos = pos;
-        myPath = myPos->first.toUtf8().constData();
+        myPath = myPos->first;
         App::Application& app = App::GetApplication();
         // NOLINTBEGIN
         connFinishRestoreDocument = app.signalFinishRestoreDocument.connect(
@@ -3503,8 +3498,8 @@ public:
             app.signalSaveDocument.connect(std::bind(&DocInfo::slotSaveDocument, this, sp::_1));
         // NOLINTEND
 
-        QString fullpath(getFullPath());
-        if (fullpath.isEmpty()) {
+        const std::string fullpath(getFullPath());
+        if (fullpath.empty()) {
             FC_ERR("document not found " << filePath());
         }
         else {
@@ -3518,7 +3513,7 @@ public:
                 }
             }
             FC_LOG("document pending " << filePath());
-            app.addPendingDocument(fullpath.toUtf8().constData(),
+            app.addPendingDocument(fullpath.c_str(),
                                    objName,
                                    l->testFlag(PropertyLinkBase::LinkAllowPartial));
         }
@@ -3606,8 +3601,8 @@ public:
         if (pcDoc) {
             return;
         }
-        QString fullpath(getFullPath());
-        if (!fullpath.isEmpty() && getFullPath(doc.getFileName()) == fullpath) {
+        const std::string fullpath(getFullPath());
+        if (!fullpath.empty() && getFullPath(doc.getFileName()) == fullpath) {
             attach(const_cast<App::Document*>(&doc));
         }
     }
@@ -3622,12 +3617,11 @@ public:
             return;
         }
 
-        QFileInfo info(myPos->first);
-        QString path(info.absoluteFilePath());
+        const std::string path(getFullPath());
         const char* filename = doc.getFileName();
-        QString docPath(getFullPath(filename));
+        const std::string docPath(getFullPath(filename));
 
-        if (path.isEmpty() || path != docPath) {
+        if (path.empty() || path != docPath) {
             FC_LOG("document '" << doc.getName() << "' path changed");
             auto me = shared_from_this();
             auto ret = _DocInfoMap.insert(std::make_pair(docPath, me));
