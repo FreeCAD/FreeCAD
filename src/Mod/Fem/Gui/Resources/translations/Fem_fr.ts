@@ -1347,8 +1347,7 @@ with the last used dialog settings</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle
-lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
+      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -4172,7 +4171,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Pavé droit</translation>
+      <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>

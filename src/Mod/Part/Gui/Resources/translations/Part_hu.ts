@@ -5973,7 +5973,7 @@ Folytassa?</translation>
       <translation>Csatolmány szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1002"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation>Felületenkénti megjelenés</translation>
     </message>

@@ -320,7 +320,7 @@
 Additionally, the surface may be constrained by edges and
 vertices that are not on the boundary.</source>
       <translation>Létrehoz egy felületet egy kiválasztott szegély élek sorozatából. 
-Ezenkívül a felületenrk olyan él és csomópont kényszerei is lehetnek, amelyek nem esnek a szegélyre.</translation>
+Ezenkívül a felületen olyan él és csomópont kényszerei is lehetnek, amelyek nem esnek a szegélyre.</translation>
     </message>
   </context>
   <context>
@@ -468,9 +468,9 @@ Ez a parancs csak háló objektummal működik.</translation>
     <message numerus="yes">
       <location filename="../../TaskFillingEdge.cpp" line="406"/>
       <source>Edge has %n adjacent face(s)</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
-        <numerusform>Edge has %n adjacent face(s)</numerusform>
+      <translation>
+        <numerusform>Az élnek %n szomszédos felülete van</numerusform>
+        <numerusform>Az élnek %n szomszédos oldala van</numerusform>
       </translation>
     </message>
     <message>
@@ -481,7 +481,7 @@ Ez a parancs csak háló objektummal működik.</translation>
     <message>
       <location filename="../../TaskFillingEdge.cpp" line="431"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Az élnek nincs szomszédos felülete</translation>
     </message>
   </context>
   <context>
@@ -490,7 +490,7 @@ Ez a parancs csak háló objektummal működik.</translation>
       <location filename="../../TaskGeomFillSurface.cpp" line="61"/>
       <location filename="../../TaskFilling.cpp" line="64"/>
       <source>Edit Filling</source>
-      <translation type="unfinished">Edit Filling</translation>
+      <translation>Kitöltés szerkesztése</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="661"/>
@@ -500,7 +500,7 @@ Ez a parancs csak háló objektummal működik.</translation>
     <message>
       <location filename="../../TaskSections.cpp" line="59"/>
       <source>Edit Sections</source>
-      <translation type="unfinished">Edit Sections</translation>
+      <translation>Szakasz szerkesztése</translation>
     </message>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
@@ -523,9 +523,9 @@ Ez a parancs csak háló objektummal működik.</translation>
     <message numerus="yes">
       <location filename="../../TaskFilling.cpp" line="615"/>
       <source>Edge has %n adjacent faces</source>
-      <translation type="unfinished">
-        <numerusform>Edge has %n adjacent faces</numerusform>
-        <numerusform>Edge has %n adjacent faces</numerusform>
+      <translation>
+        <numerusform>Az élnek %n szomszédos felülete van</numerusform>
+        <numerusform>Az élnek %n szomszédos oldala van</numerusform>
       </translation>
     </message>
     <message>
@@ -536,7 +536,7 @@ Ez a parancs csak háló objektummal működik.</translation>
     <message>
       <location filename="../../TaskFilling.cpp" line="640"/>
       <source>Edge has no adjacent faces</source>
-      <translation type="unfinished">Edge has no adjacent faces</translation>
+      <translation>Az élnek nincs szomszédos felülete</translation>
     </message>
   </context>
   <context>
