@@ -17,17 +17,17 @@
    <item row="0" column="0">
     <widget class="QLabel" name="label_NumberOfTeeth">
      <property name="text">
-      <string>Number of teeth</string>
+      <string>z, Number of teeth</string>
      </property>
     </widget>
    </item>
    <item row="0" column="1">
     <widget class="QSpinBox" name="spinBox_NumberOfTeeth">
      <property name="minimum">
-      <number>3</number>
+      <number>5</number>
      </property>
      <property name="maximum">
-      <number>9999</number>
+      <number>1000</number>
      </property>
      <property name="value">
       <number>26</number>
@@ -37,7 +37,7 @@
    <item row="1" column="0">
     <widget class="QLabel" name="label_Modules">
      <property name="text">
-      <string>Module</string>
+      <string>mₙ, Normal module</string>
      </property>
     </widget>
    </item>
@@ -81,7 +81,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="label_PressureAngle">
      <property name="text">
-      <string>Pressure angle</string>
+      <string>αₙ, Normal pressure angle</string>
      </property>
     </widget>
    </item>
