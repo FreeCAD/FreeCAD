@@ -98,24 +98,25 @@ class _InvoluteGear:
                 else:
                     setattr(obj, name, default)
 
+        # parameter's name from ISO 21771:2007
         # for details about the property's docstring translation,
         # see https://tracker.freecad.org/view.php?id=2524
         ensure_property(
             "App::PropertyInteger",
             "NumberOfTeeth",
-            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Number of gear teeth"),
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "z, Number of teeth"),
             default=26,
         )
         ensure_property(
             "App::PropertyLength",
             "Modules",
-            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Module of the gear"),
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "mₙ, Normal module"),
             default="2.5 mm",
         )
         ensure_property(
             "App::PropertyAngle",
             "PressureAngle",
-            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "Pressure angle of gear teeth"),
+            doc=QtCore.QT_TRANSLATE_NOOP("App::Property", "αₙ, Normal pressure angle"),
             default="20 deg",
         )
         ensure_property(
