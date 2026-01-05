@@ -21,6 +21,8 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+
 #include <boost/algorithm/string/predicate.hpp>
 #include <QAbstractItemView>
 #include <QContextMenuEvent>
@@ -893,7 +895,16 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
 
     init();
 
-    QString completionPrefix = tokenizer.perform(prefix, pos);
+    const QByteArray prefixUtf8 = prefix.toUtf8();
+    const int posBytes = prefix.left(pos).toUtf8().size();
+    const std::string completionPrefixUtf8 = tokenizer.perform(
+        std::string_view(prefixUtf8.constData(), static_cast<std::size_t>(prefixUtf8.size())),
+        static_cast<std::size_t>(posBytes)
+    );
+    const QString completionPrefix = QString::fromUtf8(
+        completionPrefixUtf8.c_str(),
+        static_cast<int>(completionPrefixUtf8.size())
+    );
     if (completionPrefix.isEmpty()) {
         if (auto itemView = popup()) {
             itemView->setVisible(false);
@@ -915,6 +926,34 @@ void ExpressionCompleter::slotUpdate(const QString& prefix, int pos)
     }
 
     Q_EMIT completerSlotUpdated();
+}
+
+void ExpressionCompleter::getPrefixRange(int& start, int& end) const
+{
+    int startBytes = 0;
+    int endBytes = 0;
+    tokenizer.getPrefixRange(startBytes, endBytes);
+
+    QString line;
+    if (auto lineEdit = qobject_cast<QLineEdit*>(widget())) {
+        line = lineEdit->text();
+    }
+    else if (auto textEdit = qobject_cast<QPlainTextEdit*>(widget())) {
+        line = textEdit->textCursor().block().text();
+    }
+    else {
+        start = 0;
+        end = 0;
+        return;
+    }
+
+    const QByteArray utf8 = line.toUtf8();
+    const int utf8Size = static_cast<int>(utf8.size());
+    startBytes = std::clamp(startBytes, 0, utf8Size);
+    endBytes = std::clamp(endBytes, 0, utf8Size);
+
+    start = QString::fromUtf8(utf8.constData(), startBytes).size();
+    end = QString::fromUtf8(utf8.constData(), endBytes).size();
 }
 
 ExpressionValidator::ExpressionValidator(QObject* parent)
@@ -1041,7 +1080,7 @@ void ExpressionLineEdit::slotCompleteText(const QString& completionPrefix, Activ
         before += completionPrefix;
         setText(before + after);
         setCursorPosition(before.length());
-        completer->updatePrefixEnd(before.length());
+        completer->updatePrefixEndBytes(before.toUtf8().size());
     }
 
     // chain completions if we select an entry from the completer drop down
@@ -1184,7 +1223,11 @@ void ExpressionTextEdit::slotCompleteText(const QString& completionPrefix, Activ
 
     Base::FlagToggler<bool> flag(block, false);
     cursor.insertText(completionPrefix);
-    completer->updatePrefixEnd(cursor.positionInBlock());
+    {
+        const QString line = cursor.block().text();
+        const int endBytes = line.left(cursor.positionInBlock()).toUtf8().size();
+        completer->updatePrefixEndBytes(endBytes);
+    }
 
     // chain completions only when activated (Enter/Click), not when highlighted (arrow keys)
     if (mode == ActivationMode::Activated) {
