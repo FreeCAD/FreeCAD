@@ -2296,7 +2296,9 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ConstrId =
                             Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
                         selection.SelConstraintSet.insert(ConstrId);
-                        editCoinManager->drawConstraintIcons();
+                        if (!selection.selectionBuffering) {
+                            editCoinManager->drawConstraintIcons();
+                        }
                     }
                     updateColor();
                 }
@@ -2594,13 +2596,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     if (corners[0].getValue()[0] > corners[1].getValue()[0])
         touchMode = true;
 
-    auto selectVertex = [this](int vertexid) {
-        std::stringstream ss;
-        ss << "Vertex" << vertexid;
-        addSelection2(ss.str());
+    std::vector<std::string> batchSelection;
+    batchSelection.reserve(geomlist.size());
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
     };
 
-    auto selectEdge = [this](int edgeid) {
+    auto selectVertex = [&addConvertedName](int vertexid) {
+        std::stringstream ss;
+        ss << "Vertex" << vertexid;
+        addConvertedName(ss.str());
+    };
+
+    auto selectEdge = [&addConvertedName](int edgeid) {
         std::stringstream ss;
         if (edgeid >= 0) {
             ss << "Edge" << edgeid;
@@ -2608,7 +2618,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
         else {
             ss << "ExternalEdge" << -edgeid - 1;
         }
-        addSelection2(ss.str());
+        addConvertedName(ss.str());
     };
 
     auto selectVertexIfInsideBox = [&polygon, &VertexId, &selectVertex](const Base::Vector3d & point) {
@@ -2650,6 +2660,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
             selectEdge(GeoId+1);
         }
     };
+
+    selection.selectionBuffering = true;
 
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
          it != geomlist.end() - 2;
@@ -2753,17 +2765,29 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     Base::Vector3d pnt0 = proj(Plm.getPosition());
     if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-        std::stringstream ss;
-        ss << "RootPoint";
-        addSelection2(ss.str());
+        addConvertedName("RootPoint");
     }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            getSketchObject()->getDocument()->getName(),
+            getSketchObject()->getNameInDocument(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
 }
 
 void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
 
-    editCoinManager->updateColor();
+    if (!selection.selectionBuffering) {
+        editCoinManager->updateColor();
+    }
 }
 
 bool ViewProviderSketch::selectAll()
@@ -2809,6 +2833,18 @@ bool ViewProviderSketch::selectAll()
 
     Gui::Selection().clearSelection();
 
+    std::vector<std::string> batchSelection;
+    // Heuristic reservation: Geometry count * 3 (start/end/edge) + Constraint count
+    batchSelection.reserve(
+        sketchObject->Geometry.getValues().size() * 3 + sketchObject->Constraints.getSize()
+    );
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
+    };
+
+    selection.selectionBuffering = true;
     if (focusOnElementWidget || noWidgetSelected) {
         int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
         int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -2817,16 +2853,17 @@ bool ViewProviderSketch::selectAll()
 
         int GeoId = 0;
 
-        auto selectVertex = [this](int geoId, Sketcher::PointPos pos) {
+        auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
             int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
-            addSelection2(fmt::format("Vertex{}", vertexId + 1));
+            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
         };
 
-        auto selectEdge = [this](int GeoId) {
+        auto selectEdge = [&addConvertedName](int GeoId) {
             if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+            }
+            else {
+                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -2868,7 +2905,7 @@ bool ViewProviderSketch::selectAll()
         }
 
         if (!focusOnElementWidget) {
-            addSelection2("RootPoint");
+            addConvertedName("RootPoint");
         }
 
         if (hasUnselectedGeometry) {
@@ -2882,9 +2919,21 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, i) == ids.end()) {
                 continue;
             }
-            addSelection2(fmt::format("Constraint{}", i + 1));
+            addConvertedName(fmt::format("Constraint{}", i + 1));
         }
     }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            getSketchObject()->getDocument()->getName(),
+            getSketchObject()->getNameInDocument(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
 
     return true;
 }
@@ -3143,6 +3192,11 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3154,43 +3208,6 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
     }
-
-    // clang-format on
-    // update placement changes while in edit mode
-    if (isInEditMode() && prop) {
-        // check if the changed property is `placement` or `attachmentoffset`
-        if (strcmp(prop->getName(), "Placement") == 0
-            || strcmp(prop->getName(), "AttachmentOffset") == 0) {
-
-#ifdef FC_DEBUG
-            Base::Console().warning("updating editing transform!\n");
-#endif
-            // recalculate the placement matrix
-            Sketcher::SketchObject* sketchObj = getSketchObject();
-            if (sketchObj) {
-                // use globalPlacement for both attached and unattached sketches
-                Base::Placement plm = sketchObj->Placement.getValue();
-
-#ifdef FC_DEBUG
-                // log what is actually being set
-                Base::Console().warning(
-                    "Placement: pos=(%f,%f,%f)\n",
-                    plm.getPosition().x,
-                    plm.getPosition().y,
-                    plm.getPosition().z
-                );
-#endif
-
-                // update the document's editing transform
-                getDocument()->setEditingTransform(plm.toMatrix());
-            }
-        }
-    }
-    if (std::string(prop->getName()) != "ShapeMaterial") {
-        // We don't want material to override the colors of sketches.
-        ViewProvider2DObject::updateData(prop);
-    }
-    // clang-format off
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -3433,9 +3450,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
-
-    // update the documents stored transform
-    getDocument()->setEditingTransform(plm.toMatrix());
 
     // create the container for the additional edit data
     assert(!isInEditMode());

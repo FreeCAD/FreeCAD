@@ -46,6 +46,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerArcOfEllipse: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcOfEllipse)
+
 public:
     DrawSketchHandlerArcOfEllipse()
         : Mode(STATUS_SEEK_First)

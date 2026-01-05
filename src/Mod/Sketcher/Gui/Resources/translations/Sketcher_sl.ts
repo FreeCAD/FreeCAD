@@ -854,27 +854,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Preimenuj očrtno omejilo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Point</source>
       <translation>Vleci točko</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Curve</source>
       <translation>Vleci krivuljo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1792"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
       <source>Drag geometries</source>
       <translation type="unfinished">Drag geometries</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1135"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
       <source>Drag Constraint</source>
       <translation>Vleci omejilo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
       <source>Modify sketch constraints</source>
       <translation>Spremeni očrtno omejilo</translation>
     </message>
@@ -3790,112 +3790,112 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3370"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Očrt je neveljaven in ga ni mogoče urejati.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Naslednje omejilo je deloma čezmerno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3553"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Naslednja omejila so deloma čezmerna:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3353"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3389"/>
       <source>Close this dialog?</source>
       <translation>Želite zapreti to pogovorno okno?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3408"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3391"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3538"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3556"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3557"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3563"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3546"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3560"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3637"/>
       <source>Empty sketch</source>
       <translation>Prazen očrt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3642"/>
       <source>Over-constrained:</source>
       <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3630"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3648"/>
       <source>Malformed constraints:</source>
       <translation type="unfinished">Malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
       <source>Redundant constraints:</source>
       <translation>Čezmerna omejila:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3644"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
       <source>Partially redundant:</source>
       <translation>Delno čezmerno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
       <source>Solver failed to converge</source>
       <translation>Reševalniku je zbliževanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3657"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3675"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3677"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -3905,7 +3905,7 @@ Izvede se s pregledom geometrij in omejil očrta.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3663"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3681"/>
       <source>Fully constrained</source>
       <translation>Polnoomejen</translation>
     </message>
@@ -4374,7 +4374,7 @@ Eigen Sparse QR algoritem je optimiziran za redke razpredelnice; običajno hitre
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3620"/>
       <source>and %1 more</source>
       <translation>in še %1</translation>
     </message>

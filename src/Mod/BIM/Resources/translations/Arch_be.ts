@@ -3968,7 +3968,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="441"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Папярэдняе ўсталяванне</translation>
@@ -4528,17 +4528,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Акно не знойдзена. Працягнуць не атрымалася.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="390"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Налады акна</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="394"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Аўтаматычнае ўключэнне ў аб'ект вузла</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Вышыня падаконніку</translation>
     </message>
@@ -6050,33 +6050,33 @@ Building creation aborted.</source>
       <translation>Стварыць двухмернае прадстаўленне</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Задзейнічаць</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Задаць працоўную плоскасць</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Запісаць становішча камеры</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
       <translation>Новая суполка</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Змяніць парадак размяшчэння спадчыннікаў у алфавітным парадку</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation>Дубліраваць узровень уверх</translation>
     </message>
@@ -8502,7 +8502,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Запісвае становішча камеры</translation>
     </message>
@@ -11658,6 +11658,13 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>Першапачатковы аўтар для новых файлаў</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>У вашай сістэме адсутнічае &lt;b&gt;IfcOpenShell&lt;/b&gt;.
+IfcOpenShell неабходны для імпартавання ці экспартавання файлаў IFC з FreeCAD.
+Праверце &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;вікі-старонку&lt;/a&gt; каб даведацца больш, ці &lt;a href="#install"&gt;спампуйце і ўсталюйце бібліятэку&lt;/a&gt; непасрэдна.</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>Колькі маленькіх квадратаў паміж кожнымі асноўнымі лініямі сеткі.
@@ -11789,13 +11796,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Колер геаметрыі</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>У вашай сістэме адсутнічае &lt;b&gt;IfcOpenShell&lt;/b&gt;.
-IfcOpenShell неабходны для імпартавання ці экспартавання файлаў IFC з FreeCAD.
-Праверце &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;вікі-старонку&lt;/a&gt; каб даведацца больш, ці &lt;a href="#install"&gt;загрузіце і ўсталюйце гэтую бібліятэку непасрэдна&lt;/a&gt;.</translation>
     </message>
   </context>
   <context>

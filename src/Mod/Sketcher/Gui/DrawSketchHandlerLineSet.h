@@ -51,6 +51,8 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerLineSet)
+
 public:
     DrawSketchHandlerLineSet()
         : Mode(STATUS_SEEK_First)

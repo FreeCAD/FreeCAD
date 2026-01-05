@@ -1149,7 +1149,9 @@ class TaskPanel:
         toolbit = selector.get_selected_tool()
         toolbit.attach_to_doc(FreeCAD.ActiveDocument)
         toolNum = self.obj.Proxy.nextToolNumber()
-        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
+        tc = PathToolControllerGui.Create(
+            name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
+        )
         self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()

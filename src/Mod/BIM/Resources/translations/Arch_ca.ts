@@ -3799,7 +3799,7 @@ La plantilla predeterminada es troba a:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="441"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Predefinits</translation>
@@ -4357,17 +4357,17 @@ Si Carrer = 0, la carrera es calcula de manera que l'alçada sigui la mateixa qu
       <translation>No s'ha trobat cap finestra. No es pot continuar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="390"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Opcions de finestra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="394"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Inclou automàticament a l'objecte amfitrió</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Alçada de suport</translation>
     </message>
@@ -5877,33 +5877,33 @@ S'avorta la creació de la construcció.</translation>
       <translation>Crea una vista 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Actiu</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Estableix el pla de treball</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Escriu la posició de la càmera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
       <translation>Grup nou</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Reorganitza els fills alfabèticament</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation>Clonar el nivell cap amunt</translation>
     </message>
@@ -8291,7 +8291,7 @@ S'avorta la creació de la construcció.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Escrivint la posició de la càmera</translation>
     </message>
@@ -11397,6 +11397,11 @@ Comproveu la instal·lació de FreeCAD o proporcioneu una plantilla personalitza
       <translation>Autor predeterminat per als fitxers nous</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>Falta &lt;b&gt;IfcOpenShell&lt;/b&gt; al vostre sistema. IfcOpenShell és necessari per importar o exportar fitxers IFC a/des de FreeCAD. Consulteu &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;aquesta pàgina wiki&lt;/a&gt; per obtenir més informació, o bé &lt;a href="#install"&gt;baixeu-la i instal·leu-la&lt;/a&gt; directament.&lt;/p&gt;</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Quants quadrats petits hi ha entre línies principals de la quadrícula. Ubicat a preferències: &lt;span style=" font-weight:600;"&gt;Esbós &amp;gt; Quadrícula i ajustament &amp;gt; Línia principal cada&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -11517,11 +11522,6 @@ Comproveu la instal·lació de FreeCAD o proporcioneu una plantilla personalitza
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Color de la geometria</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>Falta &lt;b&gt;IfcOpenShell&lt;/b&gt; al vostre sistema. IfcOpenShell és necessari per importar o exportar fitxers IFC a/des de FreeCAD. Consulteu &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;aquesta pàgina wiki&lt;/a&gt; per obtenir més informació, o bé &lt;a href="#install"&gt;baixeu-la i instal·leu-la&lt;/a&gt; directament.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

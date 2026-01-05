@@ -255,12 +255,12 @@ som spejlingsreference</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="89"/>
       <source>Switch Virtual Space</source>
-      <translation type="unfinished">Switch Virtual Space</translation>
+      <translation>Skift virtuelt rum</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="90"/>
       <source>Switches the selected constraints or the view to the other virtual space</source>
-      <translation type="unfinished">Switches the selected constraints or the view to the other virtual space</translation>
+      <translation>Skifter visningen og de markerede relationer til det andet virtuelle rum</translation>
     </message>
   </context>
   <context>
@@ -547,7 +547,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7005"/>
       <source>Swap coincident+tangency with ptp tangency</source>
-      <translation>Byt sammenfaldende+tangent med tangerende punkt-punkt</translation>
+      <translation>Byt sammenfaldende+tangentel relation til tangerende punkt-til-punkt</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7135"/>
@@ -558,7 +558,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="7711"/>
       <location filename="../../CommandConstraints.cpp" line="7744"/>
       <source>Add tangent constraint</source>
-      <translation>Tilføj tangential relation</translation>
+      <translation>Tilføj tangentiel relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7332"/>
@@ -689,7 +689,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="502"/>
       <source>Add sketch box</source>
-      <translation type="unfinished">Add sketch box</translation>
+      <translation>Tilføj skitseboks</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="281"/>
@@ -835,13 +835,13 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="170"/>
       <source>Toggle constraints to the other virtual space</source>
-      <translation type="unfinished">Toggle constraints to the other virtual space</translation>
+      <translation>Flyt relationer til det andet virtuelle rum</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1537"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="180"/>
       <source>Update constraint's virtual space</source>
-      <translation type="unfinished">Update constraint's virtual space</translation>
+      <translation>Opdater relationens virtuelle rum</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="706"/>
@@ -854,27 +854,27 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Omdøb skitserelation</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Point</source>
       <translation>Træk Punkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Curve</source>
       <translation>Træk Kurve</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1792"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
       <source>Drag geometries</source>
       <translation>Træk geometrier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1135"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
       <source>Drag Constraint</source>
       <translation>Træk relation</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
       <source>Modify sketch constraints</source>
       <translation>Tilpas skitserelationer</translation>
     </message>
@@ -966,7 +966,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../../App/SketchObject.cpp" line="6734"/>
       <location filename="../../../App/SketchObject.cpp" line="6912"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>B-splines geometri-index (GeoID) er uden for grænseværdierne.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6751"/>
@@ -1080,7 +1080,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>There are no modes that accept the selected set of subelements</source>
-      <translation type="unfinished">There are no modes that accept the selected set of subelements</translation>
+      <translation>Der er ingen tilstande, der accepterer det valgte sæt af delelementer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="125"/>
@@ -1398,7 +1398,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7468"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation type="unfinished">Only tangent-via-point is supported with a B-spline.</translation>
+      <translation>Kun tangent-til-punkt understøttes med en B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7953"/>
@@ -3789,120 +3789,120 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3370"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skitsen er ugyldig og kan ikke redigeres.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Følgende relation er delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3553"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Følgende relationer er delvis overflødige:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3353"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
       <source>Edit Sketch</source>
       <translation>Rediger skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3389"/>
       <source>Close this dialog?</source>
       <translation>Luk denne dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3408"/>
       <source>Invalid Sketch</source>
       <translation>Ugyldig Skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3391"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>Open the sketch validation tool?</source>
       <translation>Åbn valideringsværktøjet?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3538"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3556"/>
       <source>Remove the following constraint:</source>
       <translation>Fjern følgende relation:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3557"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Fjern mindst en af følgende relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3563"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Fjern følgende overflødige begrænsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3546"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Fjern følgende overflødige begrænsninger:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Fjern følgende fejlbehæftede relation:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3560"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Fjern følgende fejlbehæftede relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3637"/>
       <source>Empty sketch</source>
       <translation>Tom skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3642"/>
       <source>Over-constrained:</source>
       <translation>For mange låse:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3630"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3648"/>
       <source>Malformed constraints:</source>
       <translation>Fejlbehæftede relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
       <source>Redundant constraints:</source>
       <translation>Overflødige relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3644"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
       <source>Partially redundant:</source>
       <translation>Delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
       <source>Solver failed to converge</source>
       <translation>Løsningen konvergerer ikke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3657"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3675"/>
       <source>Under-constrained:</source>
       <translation>Ulåst:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3677"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
-        <numerusform>%n Frihedsgrader</numerusform>
+        <numerusform>%n frihedsgrader</numerusform>
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3663"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3681"/>
       <source>Fully constrained</source>
       <translation>Låst:</translation>
     </message>
@@ -4018,7 +4018,7 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
     <message>
       <location filename="../../Command.cpp" line="710"/>
       <source> (incompatible with selection)</source>
-      <translation type="unfinished"> (incompatible with selection)</translation>
+      <translation> (ikke kompatibelt med valg)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="711"/>
@@ -4371,7 +4371,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3620"/>
       <source>and %1 more</source>
       <translation>og %1 mere</translation>
     </message>
@@ -4421,7 +4421,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Visual Helpers</source>
-      <translation type="unfinished">Visual Helpers</translation>
+      <translation>Visuelle hælpeværktøjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -4852,7 +4852,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="119"/>
       <source>Invalid scale factor. Scale factor must be a positive number.</source>
-      <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
+      <translation>Ugyldig skaleringsfaktor. Skaleringsfaktoren skal være et positivt tal.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="148"/>
@@ -5105,12 +5105,12 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="80"/>
       <source>Coordinate text</source>
-      <translation type="unfinished">Coordinate text</translation>
+      <translation>Koordinatbetegnelser</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="87"/>
       <source>Text color of the coordinates</source>
-      <translation type="unfinished">Text color of the coordinates</translation>
+      <translation>Tekstfarve for koordinaterne</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="107"/>
@@ -5480,7 +5480,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="470"/>
       <source>Preserve corner (U)</source>
-      <translation type="unfinished">Preserve corner (U)</translation>
+      <translation>Bevar hjørne (U)</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="474"/>
@@ -5706,14 +5706,14 @@ Dette vil rydde 'AttachmentSupport' egenskaben.</translation>
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Snap to grid</source>
-      <translation type="unfinished">Snap to grid</translation>
+      <translation>Fastgør til gitter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1186"/>
       <source>New points will snap to the nearest grid line.
 Points must be set closer than a fifth of the grid spacing to a grid line to snap.</source>
-      <translation type="unfinished">New points will snap to the nearest grid line.
-Points must be set closer than a fifth of the grid spacing to a grid line to snap.</translation>
+      <translation>Nye punkter vil blive placeret på den nærmeste gitterlinje.
+Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gitterlinje.</translation>
     </message>
   </context>
   <context>
@@ -5734,12 +5734,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <source>Snap to objects</source>
-      <translation type="unfinished">Snap to objects</translation>
+      <translation>Fastgør til objekt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1419"/>
       <source>New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</source>
-      <translation type="unfinished">New points will snap to the currently preselected object. It will also snap to the middle of lines and arcs.</translation>
+      <translation>Nye punkter vil blive placeret på det aktuelt valgte objekt. Eller de vil blive fastgjort på midten af linjer og cirkelbuer.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1423"/>
@@ -5757,12 +5757,12 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../Command.cpp" line="1511"/>
       <source>Toggle Snap</source>
-      <translation type="unfinished">Toggle Snap</translation>
+      <translation>Slå fastgørelse til/fra</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
       <source>Toggles snapping</source>
-      <translation type="unfinished">Toggles snapping</translation>
+      <translation>Slår fastgørelse til gitter, objekter og vinkler, til og fra</translation>
     </message>
   </context>
   <context>
@@ -7383,7 +7383,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
       <source>%1 pick first control point</source>
-      <translation type="unfinished">%1 pick first control point</translation>
+      <translation>%1 vælg første kontrolpunkt</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
@@ -7569,7 +7569,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="428"/>
       <source>%1 toggle preserve corner</source>
-      <translation type="unfinished">%1 toggle preserve corner</translation>
+      <translation>%1 slå bevarelse af hjørne til/fra</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="437"/>

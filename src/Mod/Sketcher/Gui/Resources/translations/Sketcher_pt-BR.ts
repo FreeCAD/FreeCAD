@@ -854,27 +854,27 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Renomear restrição do esboço</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Point</source>
       <translation>Arrastar Ponto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Curve</source>
       <translation>Arrastar Curva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1792"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
       <source>Drag geometries</source>
       <translation>Arraste geometrias</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1135"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
       <source>Drag Constraint</source>
       <translation>Restrição de arrasto</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
       <source>Modify sketch constraints</source>
       <translation>Modificar restrições do esboço</translation>
     </message>
@@ -3789,112 +3789,112 @@ Isso é feito analisando as geometrias e restrições do esboço.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3370"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Uma caixa de diálogo já está aberta no painel de tarefas</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>O esboço é inválido e não pode ser editado.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
       <source>The following constraint is partially redundant:</source>
       <translation>A restrição seguinte é parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3553"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
       <source>The following constraints are partially redundant:</source>
       <translation>As restrições seguintes são parcialmente redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3353"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
       <source>Edit Sketch</source>
       <translation type="unfinished">Edit Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3389"/>
       <source>Close this dialog?</source>
       <translation type="unfinished">Close this dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3408"/>
       <source>Invalid Sketch</source>
       <translation type="unfinished">Invalid Sketch</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3391"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>Open the sketch validation tool?</source>
       <translation type="unfinished">Open the sketch validation tool?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3538"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3556"/>
       <source>Remove the following constraint:</source>
       <translation type="unfinished">Remove the following constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3557"/>
       <source>Remove at least one of the following constraints:</source>
       <translation type="unfinished">Remove at least one of the following constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3563"/>
       <source>Remove the following redundant constraint:</source>
       <translation type="unfinished">Remove the following redundant constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3546"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
       <source>Remove the following redundant constraints:</source>
       <translation type="unfinished">Remove the following redundant constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
       <source>Remove the following malformed constraint:</source>
       <translation type="unfinished">Remove the following malformed constraint:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3560"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
       <source>Remove the following malformed constraints:</source>
       <translation type="unfinished">Remove the following malformed constraints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3637"/>
       <source>Empty sketch</source>
       <translation>Esboço vazio</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3642"/>
       <source>Over-constrained:</source>
       <translation>Sobre-restrito:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3630"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3648"/>
       <source>Malformed constraints:</source>
       <translation>Restrições malformadas:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
       <source>Redundant constraints:</source>
       <translation>Restrições redundantes:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3644"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
       <source>Partially redundant:</source>
       <translation>Parcialmente redundante:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
       <source>Solver failed to converge</source>
       <translation>O solucionador falhou na conversão</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3657"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3675"/>
       <source>Under-constrained:</source>
       <translation>Subrestrito:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3677"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -3902,7 +3902,7 @@ Isso é feito analisando as geometrias e restrições do esboço.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3663"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3681"/>
       <source>Fully constrained</source>
       <translation>Totalmente restrito</translation>
     </message>
@@ -4370,7 +4370,7 @@ o algorítimo Eigen Sparse QR é otimizado para matrizes escassas; geralmente é
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3620"/>
       <source>and %1 more</source>
       <translation>e %1 mais</translation>
     </message>

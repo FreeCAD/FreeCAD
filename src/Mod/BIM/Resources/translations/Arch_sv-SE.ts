@@ -3829,7 +3829,7 @@ Standardmallen finns på följande plats:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="441"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Förval</translation>
@@ -4387,17 +4387,17 @@ Om Run = 0 beräknas Run så att höjden blir densamma som för den relativa pro
       <translation>Inget fönster hittades. Det går inte att fortsätta.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="390"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Alternativ för fönster</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="394"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Automatisk inkludering i värdobjekt</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Höjd på tröskel</translation>
     </message>
@@ -5907,33 +5907,33 @@ Skapandet av byggnaden avbröts.</translation>
       <translation>Skapa 2D-vy</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Aktiv</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Ställ in arbetsplanet</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Skriva kameraposition</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
       <translation>Ny prisgrupp</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Ordna om barnen i alfabetisk ordning</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation>Klona nivå upp</translation>
     </message>
@@ -8321,7 +8321,7 @@ Skapandet av byggnaden avbröts.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Skriva kameraposition</translation>
     </message>
@@ -11423,6 +11423,11 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
       <translation>Standardförfattare för nya filer</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; saknas på ditt system. IfcOpenShell behövs för att importera eller exportera IFC-filer till/från FreeCAD. Läs mer på &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;den här wiki-sidan&lt;/a&gt; eller &lt;a href="#install"&gt;ladda ner och installera det&lt;/a&gt; direkt.&lt;/p&gt;</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Hur många små rutor mellan varje huvudlinje i rutnätet. Plats i inställningar: &lt;span style=" font-weight:600;"&gt;Släppning &amp;gt; Rutnät och snäppning &amp;gt; Huvudlinje varje&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -11543,11 +11548,6 @@ Kontrollera din FreeCAD-installation eller ange en anpassad mall under menyn Ins
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Geometri färg</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; saknas på ditt system. IfcOpenShell behövs för att importera eller exportera IFC-filer till/från FreeCAD. Läs mer på &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;den här wiki-sidan&lt;/a&gt; eller &lt;a href="#install"&gt;ladda ner och installera det&lt;/a&gt; direkt.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

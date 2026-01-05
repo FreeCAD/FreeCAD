@@ -34,6 +34,7 @@
 
 #include "ConstraintFilters.h"
 
+class ConstraintItem;
 
 namespace App
 {
@@ -221,6 +222,19 @@ private:
                                                             // selected geometry
     ConstraintFilterList* filterList;
     boost::signals2::scoped_connection changedSketchView;
+
+    // Buffering structures
+    std::unordered_map<int, ConstraintItem*> constraintMap;
+
+    struct PendingSelectionUpdate
+    {
+        ConstraintItem* item;
+        bool select;
+    };
+    std::vector<PendingSelectionUpdate> selectionBuffer;
+    bool selectionUpdateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui

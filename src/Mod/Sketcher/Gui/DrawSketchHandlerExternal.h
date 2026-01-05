@@ -127,6 +127,8 @@ public:
 
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerExternal)
+
 public:
     DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
         : alwaysReference {alwaysReference}

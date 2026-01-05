@@ -3820,7 +3820,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="441"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Preconfiguración</translation>
@@ -4378,17 +4378,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>No se ha encontrado ninguna ventana. No se puede continuar.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="390"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Opciones de ventana</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="394"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Auto incluir en el objeto anfitrión</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="403"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Altura de antepecho</translation>
     </message>
@@ -5898,33 +5898,33 @@ Creación de Edificio cancelada.</translation>
       <translation>Crear vista 2D</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Activo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Configurar Plano de Trabajo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Establecer posición de cámara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
       <translation>Nuevo grupo</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Reordenar hijos alfabéticamente</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation type="unfinished">Clone Level Up</translation>
     </message>
@@ -8312,7 +8312,7 @@ Creación de Edificio cancelada.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Escribiendo posición de la cámara</translation>
     </message>
@@ -11418,6 +11418,11 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>Autor por defecto para nuevos archivos</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; está ausente en su sistema. IfcOpenShell es necesario para importar o exportar archivos IFC desde/hacia FreeCAD. Consulte &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt; esta página wiki&lt;/a&gt; para saber más, o &lt;a href="#install"&gt;descargue e instálelo&lt;/a&gt; directamente.&lt;/p&gt;</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Cuántos cuadrados pequeños hay entre cada línea principal de la cuadrícula. Ubicación en preferencias: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Cuadrícula y ajuste &amp;gt; Líneas principales cada&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -11538,11 +11543,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Color de la geometría</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; Falta en su sistema. IfcOpenShell es necesario para importar o exportar archivos IFC desde/hacia FreeCAD. Consulte &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt; esta pagina wiki&lt;/a&gt; para saber más, o &lt;a href="#install"&gt;descargue e instálelo&lt;/a&gt; directamente.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

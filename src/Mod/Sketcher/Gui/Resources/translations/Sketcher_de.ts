@@ -854,27 +854,27 @@ ungültigen Randbedingungen und degenerierter Geometrie</translation>
       <translation>Sketcher-Randbedingung umbenannt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Point</source>
       <translation>Punkt ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1791"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
       <source>Drag Curve</source>
       <translation>Kurve ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1792"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
       <source>Drag geometries</source>
       <translation>Geometrien ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1135"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
       <source>Drag Constraint</source>
       <translation>Randbedingung ziehen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1351"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
       <source>Modify sketch constraints</source>
       <translation>Sketcher-Randbedingung geändert</translation>
     </message>
@@ -3175,17 +3175,17 @@ Standardmäßig: %N = %V
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="318"/>
       <source>Use system decimals setting for cursor coordinates</source>
-      <translation>Benutze die dezimalen Einstellungen des Systems für Koordinaten des Eingabezeigers</translation>
+      <translation>Benutze die Einstellung der Dezimalstellen des Systems für Zeiger-Koordinaten</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="370"/>
       <source>Hide all objects that depend on the sketch</source>
-      <translation>Alle Objekte verstecken, die von der Skizze abhängen</translation>
+      <translation>Alle Objekte ausblenden, die von der Skizze abhängen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="389"/>
       <source>Show objects used for external geometry</source>
-      <translation>Objekte für externe Geometrie anzeigen</translation>
+      <translation>Objekte anzeigen, die für die externe Geometrie verwendet werden</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="408"/>
@@ -3791,112 +3791,112 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3370"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Im Aufgaben-Fenster ist bereits ein Dialog geöffnet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Die Skizze ist ungültig und kann nicht bearbeitet werden.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3552"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Die folgende Randbedingung ist teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3553"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Die folgenden Randbedingungen sind teilweise überflüssig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3353"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
       <source>Edit Sketch</source>
       <translation>Skizze bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3389"/>
       <source>Close this dialog?</source>
       <translation>Diesen Dialog schließen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3390"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3408"/>
       <source>Invalid Sketch</source>
       <translation>Ungültige Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3391"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>Open the sketch validation tool?</source>
       <translation>Skizzenprüfung öffnen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3538"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3556"/>
       <source>Remove the following constraint:</source>
       <translation>Folgende Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3539"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3557"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Wenigstens eine der folgenden Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3545"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3563"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Folgende überflüssige Randbedingung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3546"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Folgende überflüssige Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3559"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Folgende fehlerhafte Randbedingung entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3560"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Folgende fehlerhafte Randbedingungen entfernen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3637"/>
       <source>Empty sketch</source>
       <translation>Leere Skizze</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3624"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3642"/>
       <source>Over-constrained:</source>
       <translation>Überbestimmt:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3630"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3648"/>
       <source>Malformed constraints:</source>
       <translation>Fehlerhafte Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
       <source>Redundant constraints:</source>
       <translation>Überflüssige Randbedingungen:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3644"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
       <source>Partially redundant:</source>
       <translation>Teilweise redundant:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
       <source>Solver failed to converge</source>
       <translation>Der Gleichungslöser konnte keine Lösung annähern</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3657"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3675"/>
       <source>Under-constrained:</source>
       <translation>Unterbestimmt:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3659"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3677"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n (nicht bestimmter) Freiheitsgrad</numerusform>
@@ -3904,7 +3904,7 @@ Dies erfolgt durch Analyse der Skizzengeometrien und Randbedingungen.</translati
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3663"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3681"/>
       <source>Fully constrained</source>
       <translation>Vollständig bestimmt</translation>
     </message>
@@ -4372,7 +4372,7 @@ Eigen Sparse QR ein Algorithmus, der für dünn besetzte Matrizen optimiert ist;
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3620"/>
       <source>and %1 more</source>
       <translation>und %1 mehr</translation>
     </message>
@@ -7181,7 +7181,7 @@ Punkte müssen näher als ein Fünftel der Rasterweite an eine Rasterlinie geset
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2328"/>
       <source>Offset</source>
-      <translation>Äquidistante Kontur</translation>
+      <translation>Versatzkontur</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2329"/>
