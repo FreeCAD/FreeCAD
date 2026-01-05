@@ -27,9 +27,8 @@
 #define BASE_TRANSLATE_H
 
 #include <CXX/Extensions.hxx>
-#include <QTranslator>
-#include <memory>
-#include <list>
+#include <string>
+#include <vector>
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
 #endif
@@ -58,7 +57,7 @@ private:
     Py::Object removeTranslators(const Py::Tuple& args);
 
 private:
-    std::list<std::shared_ptr<QTranslator>> translators;
+    std::vector<std::string> translators;
 };
 
 }  // namespace Base
