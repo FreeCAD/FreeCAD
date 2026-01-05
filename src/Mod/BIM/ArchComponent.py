@@ -273,7 +273,7 @@ class Component(ArchIFC.IfcProduct):
                 "Component",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "An optional standard (OmniClass, etc…) code for this component",
+                    "An optional standard (OmniClass, etc.) code for this component",
                 ),
                 locked=True,
             )
