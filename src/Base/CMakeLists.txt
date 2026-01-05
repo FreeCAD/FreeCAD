@@ -194,6 +194,7 @@ SET(FreeCADBase_CPP_SRCS
     BindingManager.cpp
     BoundBoxPyImp.cpp
     Builder3D.cpp
+    ByteBuffer.cpp
     Console.cpp
     ${Console_MODULE_GENERATED_SRCS}
     ConsoleObserver.cpp
@@ -269,6 +270,8 @@ SET(FreeCADBase_HPP_SRCS
     Bitmask.h
     BoundBox.h
     Builder3D.h
+    ByteBuffer.h
+    BytesView.h
     Console.h
     ConsoleObserver.h
     Converter.h
