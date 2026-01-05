@@ -25,6 +25,7 @@
 #include <QHash>
 #include <deque>
 
+#include <Base/BytesView.h>
 #include <Base/Console.h>
 #include <Base/Reader.h>
 #include <Base/Stream.h>
@@ -307,7 +308,7 @@ StringIDRef StringHasher::getID(const Data::MappedName& name, const QVector<Stri
     if (tempID._postfix.size() != 0) {
         // Only check for IndexedName if there is postfix, because of the way
         // we restore the StringID. See StringHasher::saveStream/restoreStreamNew()
-        indexed = Data::IndexedName(name.dataBytes());
+        indexed = Data::IndexedName(Base::BytesView(name.dataBytes().constData(), name.dataBytes().size()));
     }
     if (indexed) {
         // If this is an IndexedName, then _data only stores the base part of the name, without the

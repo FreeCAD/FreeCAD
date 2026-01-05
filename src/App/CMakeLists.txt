@@ -299,7 +299,6 @@ SET(FreeCADApp_CPP_SRCS
     ApplicationPy.cpp
     AutoTransaction.cpp
     Branding.cpp
-    ByteArray.cpp
     CleanupProcess.cpp
     ColorModel.cpp
     ComplexGeoData.cpp
@@ -333,7 +332,6 @@ SET(FreeCADApp_HPP_SRCS
     ApplicationDirectories.h
     AutoTransaction.h
     Branding.h
-    ByteArray.h
     CleanupProcess.h
     ColorModel.h
     ComplexGeoData.h
