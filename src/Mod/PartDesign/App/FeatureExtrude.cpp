@@ -154,7 +154,7 @@ void FeatureExtrude::onChanged(const App::Property* prop)
     ProfileBased::onChanged(prop);
 }
 
-TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir)
+TopoShape FeatureExtrude::makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir)
 {
 
     // Find nearest/furthest face
