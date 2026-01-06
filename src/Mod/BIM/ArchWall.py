@@ -725,15 +725,15 @@ class _Wall(ArchComponent.Component):
         # Check if there is base, and if width and height is provided or not
         # Provide users message below to check the setting of the Wall object
         if not base and (self.noWidths or self.noHeight):
-            FreeCAD.Console.PrintMessage("Wall object.Label ", obj.Label + "\n")
+            FreeCAD.Console.PrintMessage(translate("Arch", "Wall object.Label "), obj.Label + "\n")
             if self.noWidths:
                 FreeCAD.Console.PrintMessage(
-                    "- Found 0 in Width (also found 0 in OverrideWidth and return 0 width from Base ArchSketch, if using)." + "\n"
+                    translate("Arch", "- Found 0 in Width (also found 0 in OverrideWidth and return 0 width from Base ArchSketch, if using).") + "\n"
                 )
             if self.noHeight:
-                FreeCAD.Console.PrintMessage("- Found 0 in Height." + "\n")
+                FreeCAD.Console.PrintMessage(translate("Arch", "- Found 0 in Height.") + "\n")
             FreeCAD.Console.PrintMessage(
-                "- The Wall object would have no volume unless  1) its Base has object which has Solid or  2) there is object in its Additions." + "\n")
+                translate("Arch", "- The Wall object would have no volume unless  1) its Base has object which has Solid or  2) there is object in its Additions.") + "\n"
             )
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
