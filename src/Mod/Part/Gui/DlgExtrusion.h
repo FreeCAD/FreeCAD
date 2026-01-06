@@ -49,6 +49,8 @@ public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion() override;
     void bindToObject(Part::Extrusion* obj);
+    void createPreviewObject();
+    void setupExpressionBindings(Part::Extrusion* obj);
     void accept() override;
     void apply();
     void reject() override;
@@ -133,3 +135,4 @@ private:
 }  // namespace PartGui
 
 #endif  // PARTGUI_DLGEXTRUSION_H
+
