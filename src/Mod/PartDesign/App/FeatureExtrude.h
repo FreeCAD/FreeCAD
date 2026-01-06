@@ -116,8 +116,8 @@ protected:
         gp_Dir dir,
         double offsetVal,
         bool makeFace,
-        const TopoShape& base,  // The base shape for context (global CS)
-        TopLoc_Location& invObjLoc // MUST be passed. Cannot be re-accessed, see #26677
+        const TopoShape& base,      // The base shape for context (global CS)
+        TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
 };
 
