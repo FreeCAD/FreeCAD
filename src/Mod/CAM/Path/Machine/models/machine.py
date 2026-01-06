@@ -65,13 +65,6 @@ class MachineUnits(Enum):
     IMPERIAL = "G20"
 
 
-class MotionMode(Enum):
-    """Motion mode for machine movements."""
-
-    ABSOLUTE = "G90"
-    RELATIVE = "G91"
-
-
 class OutputUnits(Enum):
     """Output unit system for G-code generation."""
 
@@ -120,9 +113,6 @@ class OutputOptions:
     # Filter options
     filter_double_parameters: bool = False  # Renamed from 'output_double_parameters'
     filter_double_commands: bool = False  # Renamed from 'modal' (moved from ProcessingOptions)
-
-    # UI and display options
-    show_editor: bool = True  # Show editor after G-code generation
 
     # Numeric precision settings
     axis_precision: int = 3  # Decimal places for axis coordinates
@@ -174,7 +164,6 @@ class ProcessingOptions:
 
     # Conversion and expansion of Path Objects. Does not affect final gcode generation
 
-    adaptive: bool = False  # Enable adaptive toolpath optimization
     drill_cycles_to_translate: List[str] = field(
         default_factory=lambda: ["G73", "G81", "G82", "G83"]
     )
@@ -439,9 +428,6 @@ class Machine:
     # Post-processor selection
     postprocessor_file_name: str = ""
     postprocessor_args: str = ""
-
-    # Motion mode
-    motion_mode: MotionMode = MotionMode.ABSOLUTE
 
     # Dynamic state (for runtime)
     parameter_functions: Dict[str, Callable] = field(default_factory=dict)
@@ -797,7 +783,6 @@ class Machine:
         data["postprocessor"] = {
             "file_name": self.postprocessor_file_name,
             "args": self.postprocessor_args,
-            "motion_mode": self.motion_mode.value,
         }
 
         # Output options
@@ -824,7 +809,6 @@ class Machine:
             "output_labels": self.output.output_labels,
             "output_operation_labels": self.output.output_operation_labels,
             "output_units": self.output.output_units.value,
-            "show_editor": self.output.show_editor,
             "axis_precision": self.output.axis_precision,
             "feed_precision": self.output.feed_precision,
             "spindle_precision": self.output.spindle_precision,
@@ -866,7 +850,6 @@ class Machine:
 
         # Processing options
         data["processing"] = {
-            "adaptive": self.processing.adaptive,
             "drill_cycles_to_translate": self.processing.drill_cycles_to_translate,
             "show_machine_units": self.processing.show_machine_units,
             "spindle_wait": self.processing.spindle_wait,
@@ -1021,7 +1004,6 @@ class Machine:
         if post_data:
             config.postprocessor_file_name = post_data.get("file_name", "")
             config.postprocessor_args = post_data.get("args", "")
-            config.motion_mode = MotionMode(post_data.get("motion_mode", "G90"))
 
         # Load output options
         output_data = data.get("output", {})
@@ -1072,9 +1054,6 @@ class Machine:
             # filter_double_commands comes from processing.modal in old format
             config.output.filter_double_commands = output_data.get("filter_double_commands", False)
 
-            # UI and display options
-            config.output.show_editor = output_data.get("show_editor", True)
-
             # Numeric precision settings (with backward compatibility)
             config.output.axis_precision = output_data.get("axis_precision", 3)
             config.output.feed_precision = output_data.get("feed_precision", 3)
@@ -1091,13 +1070,10 @@ class Machine:
             # These fields are now in ProcessingOptions (backward compatibility)
             if "tool_change" in output_data:
                 config.processing.tool_change = output_data["tool_change"]
-            if "adaptive" in output_data:
-                config.processing.adaptive = output_data["adaptive"]
 
         # Load processing options
         processing_data = data.get("processing", {})
         if processing_data:
-            config.processing.adaptive = processing_data.get("adaptive", False)
             config.processing.drill_cycles_to_translate = processing_data.get(
                 "drill_cycles_to_translate", ["G73", "G81", "G82", "G83"]
             )

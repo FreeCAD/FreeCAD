@@ -20,7 +20,6 @@ from Path.Machine.models.machine import (
     OutputOptions,
     GCodeBlocks,
     ProcessingOptions,
-    MotionMode,
     MachineFactory,
 )
 
@@ -74,9 +73,6 @@ class TestMachineDataclass(PathTestUtils.PathTestBase):
         self.assertIsInstance(machine.output, OutputOptions)
         self.assertIsInstance(machine.blocks, GCodeBlocks)
         self.assertIsInstance(machine.processing, ProcessingOptions)
-
-        # Motion mode
-        self.assertEqual(machine.motion_mode, MotionMode.ABSOLUTE)
 
     def test_custom_initialization(self):
         """Test Machine initialization with custom values and verify machine_type is derived"""
