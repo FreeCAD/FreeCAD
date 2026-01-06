@@ -89,6 +89,14 @@ enum InternalAlignmentType
     ParabolaFocalAxis = 11,
     NumInternalAlignmentType  // must be the last item!
 };
+enum class ConstraintOrientation
+{
+    None = 0,
+    CounterClockwise = 1,
+    Clockwise = 2,
+    Internal = 4,
+    External = 8
+};
 
 class SketcherExport Constraint: public Base::Persistence
 {
@@ -212,6 +220,8 @@ private:
 public:
     ConstraintType Type {None};
     InternalAlignmentType AlignmentType {Undef};
+    ConstraintOrientation Orientation {ConstraintOrientation::None};
+
     std::string Name;
     float LabelDistance {10.F};
     float LabelPosition {0.F};
