@@ -3042,7 +3042,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         h = std::abs(h);
     }
     double dh = (darea - h * dlength) / length;
-    
+
     bool solve_internal = (internal && isDriving()) || (h < *circle.rad && !isDriving());
 
     if (err) {
@@ -3059,7 +3059,7 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     }
     else if (grad) {
         if (param == distance()) {
-            *grad =  solve_internal ? -1.0 : 1.0;
+            *grad = solve_internal ? -1.0 : 1.0;
         }
         else if (param == circle.rad) {
             *grad = ccw ? 1.0 : -1.0;
