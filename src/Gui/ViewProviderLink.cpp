@@ -2053,9 +2053,9 @@ QPixmap ViewProviderLink::getOverlayPixmap() const
         return BitmapFactory().pixmapFromSvg("LinkSubOverlay", QSizeF(px, px));
     }
     else {
-        if(getObject()->getLinkedObject()->getDocument()->isReadOnlyFile()){
+        if (getObject()->getLinkedObject()->getDocument()->isReadOnlyFile()) {
             return BitmapFactory().pixmapFromSvg("LinkOverlayReadOnly", QSizeF(px, px));
-        } 
+        }
         else {
             return BitmapFactory().pixmapFromSvg("LinkOverlay", QSizeF(px, px));
         }
