@@ -508,6 +508,63 @@ class TestSketcherSolver(unittest.TestCase):
             msg="Negative length constraint did not return the expected distance.",
         )
 
+    def testCircleToLineDistanceOriented(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        radius = 20
+
+        c_idx = sketch.addGeometry(Part.Circle(vec(0, 0), xy_normal, radius))
+        l_left_ext = sketch.addGeometry(
+            Part.LineSegment(vec(-2 * radius, -20), vec(-2 * radius, 20))
+        )
+        l_left_int = sketch.addGeometry(
+            Part.LineSegment(vec(-0.5 * radius, -20), vec(-0.5 * radius, 20))
+        )
+        l_right_ext = sketch.addGeometry(
+            Part.LineSegment(vec(2 * radius, -20), vec(2 * radius, 20))
+        )
+        l_right_int = sketch.addGeometry(
+            Part.LineSegment(vec(0.5 * radius, -20), vec(0.5 * radius, 20))
+        )
+
+        radius_idx = sketch.addConstraint(
+            [
+                Sketcher.Constraint("Coincident", c_idx, 3, -1, 1),  # constrain circle to origin
+                Sketcher.Constraint("Vertical", l_left_ext),
+                Sketcher.Constraint("Vertical", l_left_int),
+                Sketcher.Constraint("Vertical", l_right_ext),
+                Sketcher.Constraint("Vertical", l_right_int),
+                Sketcher.Constraint("Distance", c_idx, l_left_ext, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_left_int, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_right_ext, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_right_int, 0.25 * radius),
+                Sketcher.Constraint("Radius", c_idx, radius),
+            ]
+        )[-1]
+
+        self.assertSuccessfulSolve(sketch)
+
+        self.assertLess(sketch.Geometry[l_left_ext].StartPoint.x, -radius)
+        self.assertLess(sketch.Geometry[l_left_int].StartPoint.x, 0)
+        self.assertGreater(sketch.Geometry[l_left_int].StartPoint.x, -radius)
+
+        self.assertGreater(sketch.Geometry[l_right_ext].StartPoint.x, radius)
+        self.assertGreater(sketch.Geometry[l_right_int].StartPoint.x, 0)
+        self.assertLess(sketch.Geometry[l_right_int].StartPoint.x, radius)
+
+        # Try to flip the sketch
+        radius = 200.0
+        sketch.setDatum(radius_idx, App.Units.Quantity("{} mm".format(radius)))
+
+        self.assertSuccessfulSolve(sketch)
+
+        self.assertLess(sketch.Geometry[l_left_ext].StartPoint.x, -radius)
+        self.assertLess(sketch.Geometry[l_left_int].StartPoint.x, 0)
+        self.assertGreater(sketch.Geometry[l_left_int].StartPoint.x, -radius)
+
+        self.assertGreater(sketch.Geometry[l_right_ext].StartPoint.x, radius)
+        self.assertGreater(sketch.Geometry[l_right_int].StartPoint.x, 0)
+        self.assertLess(sketch.Geometry[l_right_int].StartPoint.x, radius)
+
     def testPointToLineDistanceSigned(self):
         # Test the signed p2l constraint by trying to flip the sketch
         # with a big constraint datum change
