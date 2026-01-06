@@ -4387,8 +4387,9 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
                     continue;
                 }
                 if (!refIsAxisAligned
-                    && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY
-                        || constr->Type == Sketcher::Vertical
+                    && (constr->Type == Sketcher::DistanceX     //
+                        || constr->Type == Sketcher::DistanceY  //
+                        || constr->Type == Sketcher::Vertical   //
                         || constr->Type == Sketcher::Horizontal)) {
                     // this includes all non-directional single GeoId constraints, as radius,
                     // diameter, weight,...
@@ -4425,11 +4426,14 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
             };
 
             if (constr->Third == GeoEnum::GeoUndef) {
-                if (!(constr->Type == Sketcher::Coincident
-                      || constr->Type == Sketcher::Perpendicular
-                      || constr->Type == Sketcher::Parallel || constr->Type == Sketcher::Tangent
-                      || constr->Type == Sketcher::Distance || constr->Type == Sketcher::Equal
-                      || constr->Type == Sketcher::Angle || constr->Type == Sketcher::PointOnObject
+                if (!(constr->Type == Sketcher::Coincident        //
+                      || constr->Type == Sketcher::Perpendicular  //
+                      || constr->Type == Sketcher::Parallel       //
+                      || constr->Type == Sketcher::Tangent        //
+                      || constr->Type == Sketcher::Distance       //
+                      || constr->Type == Sketcher::Equal          //
+                      || constr->Type == Sketcher::Angle          //
+                      || constr->Type == Sketcher::PointOnObject  //
                       || constr->Type == Sketcher::InternalAlignment)) {
                     continue;
                 }
@@ -4529,8 +4533,10 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList,
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(geoId1, geoId2, PointPos::mid, PointPos::mid);
             }
-            else if (geo->is<Part::GeomArcOfCircle>() || geo->is<Part::GeomArcOfEllipse>()
-                     || geo->is<Part::GeomArcOfHyperbola>() || geo->is<Part::GeomArcOfParabola>()) {
+            else if (geo->is<Part::GeomArcOfCircle>()        //
+                     || geo->is<Part::GeomArcOfEllipse>()    //
+                     || geo->is<Part::GeomArcOfHyperbola>()  //
+                     || geo->is<Part::GeomArcOfParabola>()) {
                 createEqualityConstr(geoId1, geoId2);
                 createSymConstr(geoId1,
                                 geoId2,
