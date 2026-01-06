@@ -510,6 +510,181 @@ class TestSketcherSolver(unittest.TestCase):
             msg="Negative length constraint did not return the expected distance.",
         )
 
+    def testCircleToLineDistanceOriented(self):
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+        radius = 20
+
+        c_idx = sketch.addGeometry(Part.Circle(vec(0, 0), xy_normal, radius))
+        l_left_ext = sketch.addGeometry(
+            Part.LineSegment(vec(-2 * radius, -20), vec(-2 * radius, 20))
+        )
+        l_left_int = sketch.addGeometry(
+            Part.LineSegment(vec(-0.5 * radius, -20), vec(-0.5 * radius, 20))
+        )
+        l_right_ext = sketch.addGeometry(
+            Part.LineSegment(vec(2 * radius, -20), vec(2 * radius, 20))
+        )
+        l_right_int = sketch.addGeometry(
+            Part.LineSegment(vec(0.5 * radius, -20), vec(0.5 * radius, 20))
+        )
+
+        radius_idx = sketch.addConstraint(
+            [
+                Sketcher.Constraint("Coincident", c_idx, 3, -1, 1),  # constrain circle to origin
+                Sketcher.Constraint("Vertical", l_left_ext),
+                Sketcher.Constraint("Vertical", l_left_int),
+                Sketcher.Constraint("Vertical", l_right_ext),
+                Sketcher.Constraint("Vertical", l_right_int),
+                Sketcher.Constraint("Distance", c_idx, l_left_ext, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_left_int, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_right_ext, 0.25 * radius),
+                Sketcher.Constraint("Distance", c_idx, l_right_int, 0.25 * radius),
+                Sketcher.Constraint("Radius", c_idx, radius),
+            ]
+        )[-1]
+
+        self.assertSuccessfulSolve(sketch)
+
+        self.assertLess(sketch.Geometry[l_left_ext].StartPoint.x, -radius)
+        self.assertLess(sketch.Geometry[l_left_int].StartPoint.x, 0)
+        self.assertGreater(sketch.Geometry[l_left_int].StartPoint.x, -radius)
+
+        self.assertGreater(sketch.Geometry[l_right_ext].StartPoint.x, radius)
+        self.assertGreater(sketch.Geometry[l_right_int].StartPoint.x, 0)
+        self.assertLess(sketch.Geometry[l_right_int].StartPoint.x, radius)
+
+        # Try to flip the sketch
+        radius = 200.0
+        sketch.setDatum(radius_idx, App.Units.Quantity("{} mm".format(radius)))
+
+        self.assertSuccessfulSolve(sketch)
+
+        self.assertLess(sketch.Geometry[l_left_ext].StartPoint.x, -radius)
+        self.assertLess(sketch.Geometry[l_left_int].StartPoint.x, 0)
+        self.assertGreater(sketch.Geometry[l_left_int].StartPoint.x, -radius)
+
+        self.assertGreater(sketch.Geometry[l_right_ext].StartPoint.x, radius)
+        self.assertGreater(sketch.Geometry[l_right_int].StartPoint.x, 0)
+        self.assertLess(sketch.Geometry[l_right_int].StartPoint.x, radius)
+
+    def testPointToLineDistanceSigned(self):
+        # Test the signed p2l constraint by trying to flip the sketch
+        # with a big constraint datum change
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+
+        lv_idx = sketch.addGeometry(Part.LineSegment(vec(0, -25), vec(0, 0)))
+        lh_idx = sketch.addGeometry(Part.LineSegment(vec(0, 0), vec(25, 0)))
+        ln_idx = sketch.addGeometry(Part.LineSegment(vec(0, -25), vec(25, 0)))
+        pt_idx = sketch.addGeometry(Part.Point(vec(20, -20)))
+
+        linepose_idx = sketch.addConstraint(
+            [
+                Sketcher.Constraint("PointOnObject", lv_idx, 1, -2),
+                Sketcher.Constraint("Coincident", lv_idx, 2, -1, 1),
+                Sketcher.Constraint("Coincident", lh_idx, 1, lv_idx, 2),
+                Sketcher.Constraint("PointOnObject", lh_idx, 2, -1),
+                Sketcher.Constraint("Coincident", ln_idx, 1, lv_idx, 1),
+                Sketcher.Constraint("Coincident", ln_idx, 2, lh_idx, 2),
+                Sketcher.Constraint("Equal", lv_idx, lh_idx),
+                Sketcher.Constraint("DistanceX", lh_idx, 1, lh_idx, 2, 25.0),
+                Sketcher.Constraint("Distance", pt_idx, 1, ln_idx, 5.0),
+            ]
+        )[7]
+
+        self.assertSuccessfulSolve(sketch)
+
+        sketch.setDatum(linepose_idx, App.Units.Quantity("100.000000 mm"))
+
+        self.assertSuccessfulSolve(sketch)
+
+        A = sketch.Geometry[pt_idx]
+        ln = sketch.Geometry[ln_idx]
+        B = ln.StartPoint
+        C = ln.EndPoint
+
+        ccw = B.x * C.y - B.y * C.x - A.X * C.y + A.Y * C.x + A.X * B.y - A.Y * B.x > 0.0
+
+        self.assertEqual(ccw, False)
+
+    def testCircleToCircleDistanceOriented(self):
+        # Make a set of two circles a small and a big
+        # the small is fully contained in the big
+        # add a distance between the small and the big
+        # then set the small's diameter to a big value
+        # it should remain smaller
+        # tests concentric and non concentric and both distance orders (small-big, big-small)
+
+        sketch = self.Doc.addObject("Sketcher::SketchObject", "Sketch")
+
+        sm1_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(-27.105705, 20.597332, 0.000000), xy_normal, 9.964653)
+        )
+        bg1_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(-27.105705, 20.597332, 0.000000), xy_normal, 19.924598)
+        )
+
+        sm2_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(-21.745829, -21.056572, 0.000000), xy_normal, 9.019634)
+        )
+        bg2_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(-27.871407, -22.434828, 0.000000), xy_normal, 18.524801)
+        )
+
+        sm3_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(27.565046, 20.750475, 0.000000), xy_normal, 12.809815)
+        )
+        bg3_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(27.565046, 20.750475, 0.000000), xy_normal, 22.553629)
+        )
+
+        sm4_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(20.980043, -21.822269, 0.000000), xy_normal, 10.010452)
+        )
+        bg4_idx = sketch.addGeometry(
+            Part.Circle(App.Vector(29.249569, -24.272499, 0.000000), xy_normal, 22.875263)
+        )
+
+        sm_diam = sketch.addConstraint(
+            [
+                Sketcher.Constraint("Coincident", bg1_idx, 3, sm1_idx, 3),
+                Sketcher.Constraint("Coincident", sm3_idx, 3, bg3_idx, 3),
+                Sketcher.Constraint("Equal", sm1_idx, sm2_idx),
+                Sketcher.Constraint("Equal", sm2_idx, sm3_idx),
+                Sketcher.Constraint("Equal", sm3_idx, sm4_idx),
+                Sketcher.Constraint("Diameter", sm1_idx, 20.0),
+                Sketcher.Constraint("Distance", sm2_idx, bg2_idx, 3.0),
+                Sketcher.Constraint("Distance", sm4_idx, bg4_idx, 4.0),
+                Sketcher.Constraint("Distance", bg3_idx, sm3_idx, 5.0),
+                Sketcher.Constraint("Distance", bg1_idx, sm1_idx, 6.0),
+            ]
+        )[5]
+
+        self.assertSuccessfulSolve(sketch)
+
+        # Change the small radiuses by a big amount
+
+        sketch.setDatum(sm_diam, App.Units.Quantity("100.00 mm"))
+
+        self.assertSuccessfulSolve(sketch)
+
+        sm1 = sketch.Geometry[sm1_idx]
+        bg1 = sketch.Geometry[bg1_idx]
+
+        sm2 = sketch.Geometry[sm2_idx]
+        bg2 = sketch.Geometry[bg2_idx]
+
+        sm3 = sketch.Geometry[sm3_idx]
+        bg3 = sketch.Geometry[bg3_idx]
+
+        sm4 = sketch.Geometry[sm4_idx]
+        bg4 = sketch.Geometry[bg4_idx]
+
+        self.assertGreater(bg1.Radius, sm1.Radius)
+        self.assertGreater(bg2.Radius, sm2.Radius)
+        self.assertGreater(bg3.Radius, sm3.Radius)
+        self.assertGreater(bg4.Radius, sm4.Radius)
+
     def testRemovedExternalGeometryReference(self):
         if "BUILD_PARTDESIGN" in FreeCAD.__cmake__:
             body = self.Doc.addObject("PartDesign::Body", "Body")

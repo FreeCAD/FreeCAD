@@ -40,6 +40,7 @@
 #include <boost/thread/mutex.hpp>
 #include <boost/thread/thread.hpp>
 #include "Constraint.h"
+
 #include "ConstraintPy.h"
 
 
@@ -80,6 +81,7 @@ Constraint* Constraint::copy() const
     temp->Value = this->Value;
     temp->Type = this->Type;
     temp->AlignmentType = this->AlignmentType;
+    temp->Orientation = this->Orientation;
     temp->Name = this->Name;
     temp->LabelDistance = this->LabelDistance;
     temp->LabelPosition = this->LabelPosition;
@@ -156,6 +158,7 @@ void Constraint::Save(Writer& writer) const
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
                         << "InternalAlignmentIndex=\"" << InternalAlignmentIndex << "\" ";
     }
+    writer.Stream() << "Orientation=\"" << Orientation.toUnderlyingType() << "\" ";
     writer.Stream() << "Value=\"" << Value << "\" "
                     << "LabelDistance=\"" << LabelDistance << "\" "
                     << "LabelPosition=\"" << LabelPosition << "\" "
@@ -207,6 +210,12 @@ void Constraint::Restore(XMLReader& reader)
     }
     else {
         AlignmentType = Undef;
+    }
+    if (reader.hasAttribute("Orientation")) {
+        Orientation = reader.getAttribute<ConstraintOrientations>("Orientation");
+    }
+    else {
+        Orientation = ConstraintOrientations::None;
     }
 
     // Read the distance a constraint label has been moved

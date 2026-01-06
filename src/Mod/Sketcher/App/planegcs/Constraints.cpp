@@ -838,7 +838,8 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 
 // --------------------------------------------------------
 // P2LDistance
-ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d)
+ConstraintP2LDistance::ConstraintP2LDistance(Point& p, Line& l, double* d, bool ccw)
+    : ccw(ccw)
 {
     pvec.push_back(p.x);
     pvec.push_back(p.y);
@@ -860,11 +861,17 @@ double ConstraintP2LDistance::error()
 {
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
-    double dist = *distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
-    double area = std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+    double area = (-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
+
+    // Making sure the distance is positive when driven
+    if (!isDriving()) {
+        area = std::abs(area);
+    }
+    double dist = (ccw || !isDriving()) ? std::abs(*distance()) : -std::abs(*distance());
+
     return scale * (area / d - dist);
 }
 
@@ -881,6 +888,7 @@ double ConstraintP2LDistance::grad(double* param)
         double d2 = dx * dx + dy * dy;
         double d = sqrt(d2);
         double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
+
         if (param == p0x()) {
             deriv += (y1 - y2) / d;
         }
@@ -899,12 +907,14 @@ double ConstraintP2LDistance::grad(double* param)
         if (param == p2y()) {
             deriv += ((x1 - x0) * d - (dy / d) * area) / d2;
         }
-        if (area < 0) {
-            deriv *= -1;
+        // Making sure the distance is positive when driven
+        if (!isDriving() && area < 0.0) {
+            deriv = -deriv;
         }
     }
+    // Making sure the distance is positive when driven
     if (param == distance()) {
-        deriv += -1;
+        deriv += (ccw || !isDriving()) ? -1 : 1;
     }
 
     return scale * deriv;
@@ -2874,9 +2884,10 @@ void ConstraintEqualLineLength::errorgrad(double* err, double* grad, double* par
 
 // --------------------------------------------------------
 // ConstraintC2CDistance
-ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d)
+ConstraintC2CDistance::ConstraintC2CDistance(Circle& c1, Circle& c2, double* d, std::optional<bool> c1Bigger)
     : c1(c1)
     , c2(c2)
+    , c1Bigger(c1Bigger)
 {
     pvec.push_back(d);
     this->c1.PushOwnParams(pvec);
@@ -2927,8 +2938,21 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
     else {
-        double* bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
-        double* smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        double* bigradius = nullptr;
+        double* smallradius = nullptr;
+
+        if (!c1Bigger.has_value()) {
+            bigradius = (*c1.rad >= *c2.rad) ? c1.rad : c2.rad;
+            smallradius = (*c1.rad >= *c2.rad) ? c2.rad : c1.rad;
+        }
+        else if (*c1Bigger) {
+            bigradius = c1.rad;
+            smallradius = c2.rad;
+        }
+        else {  // c2Bigger
+            bigradius = c2.rad;
+            smallradius = c1.rad;
+        }
 
         double smallspan = *smallradius + length_ct12 + *distance();
 
@@ -2959,9 +2983,11 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
 
 // --------------------------------------------------------
 // ConstraintC2LDistance
-ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d)
+ConstraintC2LDistance::ConstraintC2LDistance(Circle& c, Line& l, double* d, bool ccw, bool internal)
     : circle(c)
     , line(l)
+    , ccw(ccw)
+    , internal(internal)
 {
     pvec.push_back(d);
     this->circle.PushOwnParams(pvec);
@@ -3011,32 +3037,34 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     // the base, which is the distance from the center of the circle to the line.
     //
     // However, the vector (which points in z direction), can be positive or negative.
-    // the area is the absolute value
-    double h = std::abs(area) / length;
-
-    // darea is the magnitude of a vector in the z direction, which makes the area vector
-    // increase or decrease. If area vector is negative a negative value makes the area increase
-    // and a positive value makes it decrease.
-    darea = std::signbit(area) ? -darea : darea;
-
+    // here our area is signed which does not make geometric sense, but allows
+    // us to solve for a signed distance
+    double h = area / length;
+    if (!isDriving()) {
+        h = std::abs(h);
+    }
     double dh = (darea - h * dlength) / length;
 
+    bool solve_internal = (internal && isDriving()) || (h < *circle.rad && !isDriving());
+
     if (err) {
-        if (h < *circle.rad) {
-            *err = *circle.rad - std::abs(*distance()) - h;
+        double target;
+        if (solve_internal) {
+            target = *circle.rad - std::abs(*distance());
         }
         else {
-            *err = *circle.rad + std::abs(*distance()) - h;
+            target = *circle.rad + std::abs(*distance());
         }
+        target = (ccw || !isDriving()) ? target
+                                       : -target;  // Solve for one side of the line or the other
+        *err = target - h;
     }
     else if (grad) {
-        if (param == distance() || param == circle.rad) {
-            if (h < *circle.rad) {
-                *grad = -1.0;
-            }
-            else {
-                *grad = 1.0;
-            }
+        if (param == distance()) {
+            *grad = solve_internal ? -1.0 : 1.0;
+        }
+        else if (param == circle.rad) {
+            *grad = ccw ? 1.0 : -1.0;
         }
         else {
             *grad = -dh;
