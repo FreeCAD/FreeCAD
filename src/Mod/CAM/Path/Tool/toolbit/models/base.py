@@ -307,6 +307,16 @@ class ToolBit(Asset, ABC):
         self.obj.setEditorMode("Shape", 2)
 
         # Create the ToolBit properties that are shared by all tool bits
+
+        if not hasattr(self.obj, "Units"):
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
         if not hasattr(self.obj, "SpindleDirection"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -670,7 +680,7 @@ class ToolBit(Asset, ABC):
         self, name: str, default: str | None = None, precision: int | None = None
     ) -> str | None:
         value = self.get_property(name)
-        return format_value(value, precision=precision) if value else default
+        return format_value(value, precision=precision, units=self.obj.Units) if value else default
 
     def set_property(self, name: str, value: Any):
         return self.obj.setPropertyByName(name, value)
@@ -781,7 +791,23 @@ class ToolBit(Asset, ABC):
                 PathUtil.setProperty(self.obj, name, value)
             self.obj.setEditorMode(name, 0)
 
-        # 3. Ensure SpindleDirection property exists and is set
+        # 3. Ensure Units property exists and is set
+        if not hasattr(self.obj, "Units"):
+            Path.Log.debug("Adding Units property")
+            self.obj.addProperty(
+                "App::PropertyEnumeration",
+                "Units",
+                "Attributes",
+                QT_TRANSLATE_NOOP("App::Property", "Measurement units for the tool bit"),
+            )
+            self.obj.Units = ["Metric", "Imperial"]
+            self.obj.Units = "Metric"  # Default value
+
+        units_value = self._tool_bit_shape.get_parameters().get("Units")
+        if units_value in ("Metric", "Imperial") and self.obj.Units != units_value:
+            PathUtil.setProperty(self.obj, "Units", units_value)
+
+        # 4. Ensure SpindleDirection property exists and is set
         # Maybe this could be done with a global schema or added to each
         # shape schema?
         if not hasattr(self.obj, "SpindleDirection"):
@@ -802,7 +828,7 @@ class ToolBit(Asset, ABC):
             # self.obj.SpindleDirection = spindle_value
             PathUtil.setProperty(self.obj, "SpindleDirection", spindle_value)
 
-        # 4. Ensure Material property exists and is set
+        # 5. Ensure Material property exists and is set
         if not hasattr(self.obj, "Material"):
             self.obj.addProperty(
                 "App::PropertyEnumeration",
@@ -959,6 +985,14 @@ class ToolBit(Asset, ABC):
         return state
 
     def get_spindle_direction(self) -> toolchange.SpindleDirection:
+        """
+        Returns the spindle direction for this toolbit.
+        The direction is determined by the ToolBit's properties and safety rules:
+        - Returns SpindleDirection.OFF if the tool cannot rotate (e.g., a probe).
+        - Returns SpindleDirection.CW for clockwise or 'forward' spindle direction.
+        - Returns SpindleDirection.CCW for counterclockwise or any other value.
+        - Defaults to SpindleDirection.OFF if not specified.
+        """
         # To be safe, never allow non-rotatable shapes (such as probes) to rotate.
         if not self.can_rotate():
             return toolchange.SpindleDirection.OFF

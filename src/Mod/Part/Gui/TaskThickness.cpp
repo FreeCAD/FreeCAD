@@ -361,7 +361,7 @@ void ThicknessWidget::setGizmoPositions()
     }
 
     Part::Thickness* thickness = getObject();
-    auto base = thickness->getTopoShape(
+    auto base = Part::Thickness::getTopoShape(
         thickness->Faces.getValue(),
         Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
     );

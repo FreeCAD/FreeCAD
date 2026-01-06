@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -67,6 +69,8 @@ using DrawSketchHandlerScaleBase = DrawSketchControllableHandler<DSHScaleControl
 
 class DrawSketchHandlerScale: public DrawSketchHandlerScaleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerScale)
+
     friend DSHScaleController;
     friend DSHScaleControllerBase;
 
@@ -138,6 +142,7 @@ public:
                 reassignFacadeIds();
             }
 
+            scaleLabels();
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -271,7 +276,15 @@ private:
     }
 
 private:
+    struct LabelToScale
+    {
+        int constrId;
+        float position;
+        float distance;
+    };
+
     std::vector<int> listOfGeoIds;
+    std::vector<LabelToScale> listOfLabelsToScale;
     std::vector<long> listOfFacadeIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
@@ -332,6 +345,25 @@ private:
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());
+        }
+    }
+    void scaleLabels()
+    {
+        SketchObject* sketch = sketchgui->getSketchObject();
+
+        for (auto toScale : listOfLabelsToScale) {
+            sketch->setLabelDistance(toScale.constrId, toScale.distance * scaleFactor);
+
+            // Label position or radii and diameters represent an angle, so
+            // they should not be scaled
+            Sketcher::ConstraintType type = sketch->Constraints[toScale.constrId]->Type;
+            if (type == Sketcher::ConstraintType::Radius
+                || type == Sketcher::ConstraintType::Diameter) {
+                sketch->setLabelPosition(toScale.constrId, toScale.position);
+            }
+            else {
+                sketch->setLabelPosition(toScale.constrId, toScale.position * scaleFactor);
+            }
         }
     }
 
@@ -465,7 +497,8 @@ private:
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
 
-            for (auto& cstr : vals) {
+            for (size_t i = 0; i < vals.size(); ++i) {
+                auto cstr = vals[i];
                 if (skipConstraint(cstr)) {
                     continue;
                 }
@@ -475,6 +508,16 @@ private:
                 int thirdIndex = offsetGeoID(cstr->Third, firstCurveCreated);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
+
+                if (firstIndex != GeoEnum::GeoUndef) {
+                    listOfLabelsToScale.push_back(
+                        LabelToScale {
+                            .constrId = static_cast<int>(i),
+                            .position = cstr->LabelPosition,
+                            .distance = cstr->LabelDistance
+                        }
+                    );
+                }
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)

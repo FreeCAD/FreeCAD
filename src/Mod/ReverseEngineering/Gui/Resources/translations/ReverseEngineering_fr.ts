@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="248"/>
       <source>Approximates a cylinder</source>
-      <translation type="unfinished">Approximates a cylinder</translation>
+      <translation>Approxime un cylindre</translation>
     </message>
   </context>
   <context>

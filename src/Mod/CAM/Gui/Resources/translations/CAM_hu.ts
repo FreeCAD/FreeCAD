@@ -715,7 +715,7 @@ Csak betűket, számjegyeket és aláhúzásjeleket tartalmazhat. Az olyan nevek
 Add features for processing by selecting them and then pressing &apos;Add&apos;. If a feature is accidentally added to the list, it can be removed through &apos;Remove&apos; and will no longer be processed.
 
 Reset deletes all current items from the list and fills the list with all circular holes eligible for the operation from the model. Refine the list afterwards by enabling/disabling, removing and adding features.</source>
-      <translation>A furat jellemzőinke és a kapcsolódó furat meghatározott sugarának táblázata.
+      <translation>A furat jellemzőinek és a kapcsolódó furat meghatározott sugarának táblázata.
 Jellemzők hozzáadásához válassza ki őket, majd nyomja meg az &apos;Hozzáadás&apos; gombot. Ha egy jellemzőt véletlenül a listához adtak, akkor eltávolítható az &apos;Eltávolítás&apos; révén, és többé nem kerül feldolgozásra.
 
 A visszaállítás törli az aktuális elemeket a listából, és feltölti a listát az összes kör alakú furattal, amely jogosult a műveletre a modellből. Finomítsa a listát később tulajdonságok engedélyezésével/letiltásával, eltávolításával és hozzáadásával.</translation>
@@ -1015,7 +1015,7 @@ A nagyobb értékek (tovább jobbra) gyorsabb számításokat eredményeznek; a 
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="146"/>
       <source>XY stock to leave</source>
-      <translation>A felesleges anyag az XY síkon való megőrzésre</translation>
+      <translation>Nyers XY-anyag megőrzése</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="189"/>
@@ -1135,7 +1135,7 @@ A nagyobb értékek (tovább jobbra) gyorsabb számításokat eredményeznek; a 
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
       <source>Keep tool down</source>
-      <translation>Szerszám lenttartása</translation>
+      <translation>Tartsd az eszközt lent</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="85"/>
@@ -1914,7 +1914,7 @@ Az utóbbi a teljes állományterületre használható, hogy egységes magasság
       <location filename="../panels/PageOpSurfaceEdit.ui" line="274"/>
       <location filename="../panels/PageOpWaterlineEdit.ui" line="214"/>
       <source>Optimize linear paths</source>
-      <translation>Optimalizáld a vonalmenti utakat</translation>
+      <translation>Optimalizáld a vonal menti útvonalakat</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="281"/>
@@ -2180,7 +2180,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="104"/>
       <source>Filter colinear lines</source>
-      <translation>Egy vonalba eső, kolineáris vonalak szűrése</translation>
+      <translation>Egy vonalba eső, kollineáris vonalak szűrése</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="111"/>
@@ -4000,7 +4000,7 @@ Default: 3 mm</source>
       <translation>Az érvényesítési jelentés mentése</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="92"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
       <translation>Válasszon egy CAM-munkát</translation>
     </message>
@@ -4458,7 +4458,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="187"/>
-      <location filename="../../../Path/Op/Base.py" line="441"/>
+      <location filename="../../../Path/Op/Base.py" line="444"/>
       <location filename="../../../Path/Main/Job.py" line="487"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Műveleti ciklus időbecslése</translation>
@@ -4664,7 +4664,7 @@ Ez a tulajdonság csak akkor használható, ha az 'Kísérleti modell bevonása'
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1936"/>
       <source>Orders cuts by region instead of depth.</source>
-      <translation>Vágások területek szerini rendezése a mélység helyett.</translation>
+      <translation>Vágások területek szerinti rendezése a mélység helyett.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Area.py" line="98"/>
@@ -4747,7 +4747,7 @@ Ez a tulajdonság csak akkor használható, ha az 'Kísérleti modell bevonása'
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="260"/>
-      <location filename="../../../Path/Op/Base.py" line="449"/>
+      <location filename="../../../Path/Op/Base.py" line="452"/>
       <source>Incremental Step Down of Tool</source>
       <translation>Visszaléptetés növekménye ehhez szerszámhoz</translation>
     </message>
@@ -4791,7 +4791,7 @@ Ez a tulajdonság csak akkor használható, ha az 'Kísérleti modell bevonása'
     </message>
     <message>
       <location filename="../../../CAMTests/TestRefactoredTestPost.py" line="665"/>
-      <location filename="../../../Path/Op/Base.py" line="421"/>
+      <location filename="../../../Path/Op/Base.py" line="424"/>
       <source>Coolant option for this operation</source>
       <translation>Hűtőközeg beállítás ehhez a művelethez</translation>
     </message>
@@ -5582,7 +5582,7 @@ A változtatáshoz használja a KeepToolDown tulajdonságot</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="279"/>
       <source>The tool shape type</source>
-      <translation>Szerszám forma típusa</translation>
+      <translation>Szerszám formája</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="292"/>
@@ -6176,7 +6176,7 @@ A változtatáshoz használja a KeepToolDown tulajdonságot</translation>
       <translation>Állítsa hamisra annak megakadályozására, hogy a művelet, kódot generálhasson</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="192"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="191"/>
       <source>Edit</source>
       <translation>Szerkesztés</translation>
     </message>
@@ -6243,14 +6243,14 @@ Ha szükséges a Végleges-mélység kézi beállítása, kérem válasszon egy 
       <translation>Kiválasztja a kiindulópontot</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1482"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1485"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Nem található megfelelő szerszámvezérlő.
 Az op-létrehozás megszakítása</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1486"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1489"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Nincs eszközvezérlő, megszakítja az op létrehozását</translation>
     </message>
@@ -6443,7 +6443,7 @@ Az op-létrehozás megszakítása</translation>
       <translation>Ív</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1391"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
       <source>Lead In/Out</source>
       <translation>Belépés/kilépés</translation>
     </message>
@@ -6503,22 +6503,22 @@ Az op-létrehozás megszakítása</translation>
       <translation>Nincs kijelölve eszközvezérlő az alapművelethez: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1399"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>Létrehozza a kiválasztott útvonal belépési és kilépési mozgásait</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1418"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1422"/>
       <source>Select one toolpath object</source>
       <translation>Válassz egy szerszámpálya útvonal objektumot</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1431"/>
       <source>Select a Profile object</source>
       <translation>Szelvény objektum választása</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1423"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
       <source>The selected object is not a toolpath</source>
       <translation>A kijelölt tárgy nem szerszámpálya útvonal</translation>
     </message>
@@ -7060,7 +7060,7 @@ Az op-létrehozás megszakítása</translation>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="275"/>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="280"/>
       <source>Select exactly one path object</source>
-      <translation>Jelöljön ki pontosan egy útvomnal objektumot</translation>
+      <translation>Jelöljön ki pontosan egy útvonal objektumot</translation>
     </message>
   </context>
   <context>
@@ -7073,7 +7073,7 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="106"/>
       <source>Exports the CAM job as a template to be used for other jobs</source>
-      <translation>CAM feladat exportája sablonként, felhasználható más munkahelyeken</translation>
+      <translation>CAM feladat exportálja sablonként, felhasználható más munkahelyeken</translation>
     </message>
   </context>
   <context>
@@ -7474,17 +7474,17 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="359"/>
+      <location filename="../../../Path/Op/Base.py" line="362"/>
       <source>None</source>
       <translation>Egyik sem</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="360"/>
+      <location filename="../../../Path/Op/Base.py" line="363"/>
       <source>Flood</source>
       <translation>Áradás</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="361"/>
+      <location filename="../../../Path/Op/Base.py" line="364"/>
       <source>Mist</source>
       <translation>Pára</translation>
     </message>
@@ -7507,62 +7507,62 @@ Az op-létrehozás megszakítása</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="617"/>
+      <location filename="../../../Path/Op/Base.py" line="623"/>
       <source>No parent job found for operation.</source>
       <translation>Nincs szülő munka a feladathoz.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="622"/>
+      <location filename="../../../Path/Op/Base.py" line="628"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>A %s forrásobjektumnak nincs forrásobjektuma</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="764"/>
+      <location filename="../../../Path/Op/Base.py" line="770"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Nincs kijelölve szerszámvezérlő. A pálya kiszámításához szükség van egyre.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="778"/>
+      <location filename="../../../Path/Op/Base.py" line="784"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Nincs szerszám vagy a munka átmérő nulla. Az egyikre szükség van a pálya kiszámításához.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="848"/>
+      <location filename="../../../Path/Op/Base.py" line="854"/>
       <source>No Tool Controller selected.</source>
       <translation>Nincs kijelölve szerszámvezérlő.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="851"/>
+      <location filename="../../../Path/Op/Base.py" line="857"/>
       <source>Tool Error</source>
       <translation>Szerszám hiba</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="863"/>
+      <location filename="../../../Path/Op/Base.py" line="869"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Az eszközvezérlőnek előtolási sebességre van szüksége a feldolgozási idő kiszámításához.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="872"/>
       <source>Tool Feedrate Error</source>
       <translation>Szerszám előtolási sebesség hiba</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="872"/>
+      <location filename="../../../Path/Op/Base.py" line="878"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation>Gyors sebesség hozzáadása a szerszámvezérlőhöz a beállítási lapon a megmunkálási idő nagyobb pontossága érdekében.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="881"/>
+      <location filename="../../../Path/Op/Base.py" line="887"/>
       <source>Cycletime Error</source>
       <translation>Hiba a feldolgozási idő kiszámításakor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="823"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s already in the list</source>
       <translation>Forrásobjektum %s.%s már szerepel a listában</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="833"/>
+      <location filename="../../../Path/Op/Base.py" line="839"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>Forrásobjektum: %s.%s művelet elutasította</translation>
     </message>
@@ -7693,12 +7693,12 @@ Az op-létrehozás megszakítása</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/drill.py" line="45"/>
       <source>{diameter} drill, {tip_angle} tip, {flutes}-flute</source>
-      <translation>{diameter} furó, {tip_angle} hegy, {flutes}-él</translation>
+      <translation>{diameter} fúró, {tip_angle} hegy, {flutes}-él</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/endmill.py" line="47"/>
       <source>{diameter} {flutes}-flute endmill, {cutting_edge_height} cutting edge</source>
-      <translation>{flutes} élű, {diameter} átmérőjű, {cutting_edge_height} vágóélmagasságú maró</translation>
+      <translation>{flutes} élű, {diameter} átmérőjű, {cutting_edge_height} vágóél magasságú maró</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/probe.py" line="48"/>
@@ -9074,7 +9074,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="100"/>
       <source>Select Asset Directory</source>
-      <translation>Erűforáskönyvtár kiválasztása</translation>
+      <translation>Erőforráskönyvtár kiválasztása</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="119"/>
@@ -9290,7 +9290,7 @@ This will not delete the toolbits contained within it.</source>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="45"/>
       <source>Cap height</source>
-      <translation>Szeszámfej magasság</translation>
+      <translation>Szerszámfej magasság</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="69"/>

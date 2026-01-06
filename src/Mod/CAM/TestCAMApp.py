@@ -101,6 +101,7 @@ from CAMTests.TestPathVoronoi import TestPathVoronoi
 
 from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestFanucPost import TestFanucPost
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post
 from CAMTests.TestCentroidPost import TestCentroidPost
@@ -116,3 +117,4 @@ from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
 from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
 
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestTSPSolver import TestTSPSolver

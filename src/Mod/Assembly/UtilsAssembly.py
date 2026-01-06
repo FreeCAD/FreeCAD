@@ -383,7 +383,7 @@ def getGlobalPlacement(ref, targetObj=None):
     rootObj = ref[0]
     subName = ref[1][0]
 
-    return App.GeoFeature.getGlobalPlacementOf(targetObj, rootObj, subName)
+    return rootObj.getPlacementOf(subName, targetObj)
 
 
 def isThereOneRootAssembly():
@@ -1139,6 +1139,8 @@ def isRefValid(ref, number_sub):
     if len(ref) != 2:
         return False
     if len(ref[1]) < number_sub:
+        return False
+    if ref[1][0].find("?") != -1:
         return False
 
     return True

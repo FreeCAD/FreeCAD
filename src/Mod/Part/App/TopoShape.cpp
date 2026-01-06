@@ -295,8 +295,10 @@ TopoShape::TopoShape(const TopoShape& shape)
     *this = shape;
 }
 
-std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* Name)
+std::pair<std::string, unsigned long> TopoShape::getElementTypeAndIndex(const char* RawName)
 {
+    std::string strName = Data::oldElementName(RawName);
+    const char* Name = strName.c_str();
     int index = 0;
     std::string element;
     boost::regex ex("^(Face|Edge|Vertex)([1-9][0-9]*)$");

@@ -71,6 +71,7 @@
 #include "QGVPage.h"
 #include "ViewProviderPage.h"
 #include "PagePrinter.h"
+#include "PreferencesGui.h"
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -88,6 +89,9 @@ MDIViewPage::MDIViewPage(ViewProviderPage* pageVp, Gui::Document* doc, QWidget* 
 
     m_toggleKeepUpdatedAction = new QAction(tr("Toggle &Keep Updated"), this);
     connect(m_toggleKeepUpdatedAction, &QAction::triggered, this, &MDIViewPage::toggleKeepUpdated);
+
+    m_toggleFrameAction = new QAction(tr("Toggle &Frames"), this);
+    connect(m_toggleFrameAction, &QAction::triggered, this, &MDIViewPage::toggleFrame);
 
     m_exportSVGAction = new QAction(tr("&Export SVG"), this);
 
@@ -331,12 +335,12 @@ void MDIViewPage::print()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
@@ -352,12 +356,12 @@ void MDIViewPage::printPreview()
 
     QPrinter printer(QPrinter::HighResolution);
     printer.setFullPage(true);
-    if (pageAttr.pageSize() == QPageSize::Custom) {
+    if (pageAttr.pageSizeId() == QPageSize::Custom) {
         printer.setPageSize(
             QPageSize(QSizeF(pageAttr.pageWidth(), pageAttr.pageHeight()), QPageSize::Millimeter));
     }
     else {
-        printer.setPageSize(QPageSize(pageAttr.pageSize()));
+        printer.setPageSize(QPageSize(pageAttr.pageSizeId()));
     }
     printer.setPageOrientation(pageAttr.orientation());
 
@@ -402,7 +406,7 @@ void MDIViewPage::print(QPrinter* printer)
                 return;
             }
         }
-        if (doPrint && psPrtSetting != pageAttr.pageSize()) {
+        if (doPrint && psPrtSetting != pageAttr.pageSizeId()) {
             int ret = QMessageBox::warning(
                 this, tr("Different paper size"),
                 tr("The printer uses a different paper size than the drawing.\n"
@@ -435,17 +439,22 @@ PyObject* MDIViewPage::getPyObject()
 
 void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
 {
-    //    Base::Console().message("MDIVP::contextMenuEvent() - reason: %d\n", event->reason());
     if (isContextualMenuEnabled) {
         QMenu menu;
+        menu.addAction(m_toggleFrameAction);
         menu.addAction(m_toggleKeepUpdatedAction);
         menu.addAction(m_exportSVGAction);
         menu.addAction(m_exportDXFAction);
         menu.addAction(m_exportPDFAction);
         menu.addAction(m_printAllAction);
+        if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+            m_toggleFrameAction->setEnabled(false);
+        }
         menu.exec(event->globalPos());
     }
 }
+
+void MDIViewPage::toggleFrame() { m_vpPage->toggleFrameState(); }
 
 void MDIViewPage::toggleKeepUpdated()
 {

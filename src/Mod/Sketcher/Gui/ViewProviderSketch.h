@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Juergen Riegel <juergen.riegel@web.de>             *
  *                                                                         *
@@ -449,6 +451,7 @@ private:
         std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
         std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
         std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
+        bool selectionBuffering {false};
     };
     //@}
 
@@ -690,6 +693,11 @@ public:
 
     void deleteSelected();
 
+    bool isSelected(const std::string& ss) const;
+    void rmvSelection(const std::string& subNameSuffix);
+    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
+
     /// Control the overlays appearing on the Tree and reflecting different sketcher states
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
 
@@ -829,10 +837,6 @@ private:
     void removeSelectPoint(int SelectPoint);
     void clearSelectPoints();
 
-    bool isSelected(const std::string& ss) const;
-    void rmvSelection(const std::string& subNameSuffix);
-    bool addSelection(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
-    bool addSelection2(const std::string& subNameSuffix, float x = 0, float y = 0, float z = 0);
     void preselectToSelection(
         const std::stringstream& ss,
         boost::scoped_ptr<SoPickedPoint>& pp,

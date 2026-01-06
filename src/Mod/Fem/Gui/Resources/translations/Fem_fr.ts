@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Contrainte de roulement</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
@@ -83,7 +83,7 @@
     <message>
       <location filename="../../Command.cpp" line="534"/>
       <source>Fluid Boundary Condition</source>
-      <translation type="unfinished">Fluid Boundary Condition</translation>
+      <translation>Conditions limites du fluide</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="535"/>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Contrainte d'engrenage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1014"/>
       <source>Pulley Constraint</source>
-      <translation type="unfinished">Pulley Constraint</translation>
+      <translation>Contrainte de poulie</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1015"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1280"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Ensemble de nœuds</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
@@ -301,7 +301,7 @@
     <message>
       <location filename="../../Command.cpp" line="1480"/>
       <source>Select a single FEM Mesh.</source>
-      <translation type="unfinished">Select a single FEM Mesh.</translation>
+      <translation>Sélectionner un seul maillage FEM, svp.</translation>
     </message>
   </context>
   <context>
@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1221"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Nœud défini par un Polygone</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Crée un nœud défini par la sélection du polygone</translation>
     </message>
   </context>
   <context>
@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="269"/>
       <source>Edit Mirror</source>
-      <translation>Modifier la mise en miroir</translation>
+      <translation>Éditer la symétrie</translation>
     </message>
   </context>
   <context>
@@ -1347,8 +1347,7 @@ with the last used dialog settings</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle
-lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
+      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -1429,6 +1428,41 @@ adding an analysis container</source>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
       <translation>L'exécutable « %1 » est introuvable.</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
+      <source>Silent</source>
+      <translation>Silencieux</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
+      <source>Errors</source>
+      <translation>Erreurs</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
+      <source>Warnings</source>
+      <translation>Avertissements</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
+      <source>Direct</source>
+      <translation>Direct</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
+      <source>Information</source>
+      <translation>Informations</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
+      <source>Status</source>
+      <translation>État</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
+      <source>Debug</source>
+      <translation>Débogage</translation>
     </message>
   </context>
   <context>
@@ -1831,7 +1865,7 @@ et que vous avez le message d'erreur indiquant que "MAXKOI" doit être augmenté
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>Utiliser une seule référence pour la contrainte de roulement</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
@@ -4137,7 +4171,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Pavé droit</translation>
+      <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4152,12 +4186,12 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-Search</source>
-      <translation type="unfinished">Angle-Search</translation>
+      <translation>Recherche d'angle</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle</source>
-      <translation type="unfinished">Stop angle</translation>
+      <translation>Angle d'arrêt</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -4924,7 +4958,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="236"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="263"/>
@@ -4985,7 +5019,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
@@ -6954,7 +6988,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
@@ -7229,7 +7263,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
@@ -8019,6 +8053,44 @@ visualisation des données de sommets.</translation>
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Version du solveur</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Il n'y a pas de fichier binaire ccx de CalculiX ou le fichier est incorrect.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>FEM : le binaire ccx est incorrect.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>FEM : le binaire ccx « {} » de CalculiX est introuvable. Définir le chemin d'accès au binaire ccx de CalculiX dans l'onglet CalculiX des
+préférences de l'atelier FEM.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>FEM : ccx « {} » de CalculiX donnant « {} » ne contient pas la phrase attendue « {} ». Il y a des problèmes lors de l'exécution du binaire ccx.
+Vérifier si ccx fonctionne de manière autonome sans FreeCAD.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Tout</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Les plus élevés</translation>
     </message>
   </context>
 </TS>

@@ -76,6 +76,15 @@ class QGCustomImage;
 class QGTracker;
 class QGIVertex;
 
+
+enum class ViewFrameMode {
+    Auto,
+    AlwaysOn,
+    AlwaysOff,
+    Manual
+};
+
+
 class TechDrawGuiExport QGIView : public QObject, public QGraphicsItemGroup
 {
     Q_OBJECT
@@ -176,6 +185,9 @@ public:
 
     static bool hasSelectedChildren(QGIView* parent);
 
+    bool isExporting() const;
+
+
 protected:
     QGIView* getQGIVByName(std::string name) const;
 
@@ -190,6 +202,9 @@ protected:
     void dumpRect(const char* text, QRectF rect);
     bool m_isHovered;
 
+    void updateFrameVisibility();
+    bool shouldShowFromViewProvider() const;
+    bool shouldShowFrame() const;
 
     Base::Reference<ParameterGrp> getParmGroupCol();
 

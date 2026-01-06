@@ -71,7 +71,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>ფართობი %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>გაზო&amp;მვა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
@@ -225,14 +225,19 @@
       <translation>გამართვა</translation>
     </message>
     <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>ავტო</translation>
+    </message>
+    <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>რეჟიმი:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>შედეგი:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
@@ -256,6 +261,49 @@
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>შენახვა</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>მასის ცენტრი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>დაშორება</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation type="unfinished">Distance Free</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>კუთხე</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>სიგრძე</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>პოზიცია</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>ფართობი</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>რადიუსი</translation>
     </message>
   </context>
 </TS>

@@ -1451,7 +1451,7 @@ void TaskCheckGeometryDialog::onClicked(QAbstractButton* btn)
 void TaskCheckGeometryDialog::modifyStandardButtons(QDialogButtonBox* box)
 {
     okBtn = box->button(QDialogButtonBox::Ok);
-    okBtn->setText(tr("Run check"));
+    okBtn->setText(tr("Run Check"));
     settingsBtn = box->addButton(tr("Settings"), QDialogButtonBox::ActionRole);
     ParameterGrp::handle group = App::GetApplication()
                                      .GetUserParameter()
