@@ -57,6 +57,10 @@
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-pro-bounds-pointer-arithmetic)
 constexpr const float ZCONSTR {0.006F};
+// Z offset for arrowheads and text to render them ON TOP of geometry lines.
+// Geometry lines are at Z ~0.005-0.008, so this offset ensures arrowheads
+// and text selection primitives are above them and remain selectable.
+constexpr const float ZARROW_TEXT_OFFSET {0.010F};
 
 using namespace Gui;
 
@@ -117,9 +121,11 @@ void glDrawArrow(const SbVec3f& base, const SbVec3f& dir, float width, float len
     SbVec3f arrowLeft = base - length * dir + width * normal;
     SbVec3f arrowRight = base - length * dir - width * normal;
 
-    // Draw arrowheads
+    // Draw arrowheads at elevated Z to render ON TOP of geometry lines
     glBegin(GL_TRIANGLES);
-    glVertexes({base, arrowLeft, arrowRight});
+    glVertex3f(base[0], base[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(arrowLeft[0], arrowLeft[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(arrowRight[0], arrowRight[1], ZARROW_TEXT_OFFSET);
     glEnd();
 }
 
@@ -701,19 +707,19 @@ void SoDatumLabel::generateDistancePrimitives(SoAction* action, const SbVec3f& p
 
     DistanceGeometry geom = calculateDistanceGeometry(points);
 
-    // generate selectable primitive for txt label
-    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, 0.F);
-    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, 0.F);
+    // generate selectable primitive for txt label at elevated Z for selection above geometry
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
 
     float s = sin(geom.angle);
     float c = cos(geom.angle);
 
-    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
-    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
-    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
-    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), ZARROW_TEXT_OFFSET);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), ZARROW_TEXT_OFFSET);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), ZARROW_TEXT_OFFSET);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), ZARROW_TEXT_OFFSET);
 
     img1 += geom.textOffset;
     img2 += geom.textOffset;
@@ -746,24 +752,24 @@ void SoDatumLabel::generateDistancePrimitives(SoAction* action, const SbVec3f& p
     generateLineSelectionPrimitive(action, geom.par1, geom.par2, lineWidth);
     generateLineSelectionPrimitive(action, geom.par3, geom.par4, lineWidth);
 
-    // begin generation of selectable primitives for arrow-heads
+    // begin generation of selectable primitives for arrow-heads at elevated Z
     this->beginShape(action, TRIANGLES);
     pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     // 1st arrow-head
-    pv.setPoint(geom.par1);
+    pv.setPoint(SbVec3f(geom.par1[0], geom.par1[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar1);
+    pv.setPoint(SbVec3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar2);
+    pv.setPoint(SbVec3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
 
     // 2nd arrow-head
-    pv.setPoint(geom.par4);
+    pv.setPoint(SbVec3f(geom.par4[0], geom.par4[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar3);
+    pv.setPoint(SbVec3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar4);
+    pv.setPoint(SbVec3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
 
     this->endShape();
@@ -774,19 +780,19 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction* action, const SbVec3f& p
     SbVec3f points[2] = {p1, p2};
     DiameterGeometry geom = calculateDiameterGeometry(points);
 
-    // generate selectable primitive for text label
-    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, 0.F);
-    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, 0.F);
+    // generate selectable primitive for text label at elevated Z for selection above geometry
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
 
     float s = sin(geom.angle);
     float c = cos(geom.angle);
 
-    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
-    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
-    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
-    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), ZARROW_TEXT_OFFSET);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), ZARROW_TEXT_OFFSET);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), ZARROW_TEXT_OFFSET);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), ZARROW_TEXT_OFFSET);
 
     img1 += geom.textOffset;
     img2 += geom.textOffset;
@@ -815,25 +821,25 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction* action, const SbVec3f& p
     generateLineSelectionPrimitive(action, geom.p1, geom.pnt1, lineWidth);
     generateLineSelectionPrimitive(action, geom.pnt2, geom.p2, lineWidth);
 
-    // Generate selectable primitives for arrow heads
+    // Generate selectable primitives for arrow heads at elevated Z
     this->beginShape(action, TRIANGLES);
     pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     // first arrow-head
-    pv.setPoint(geom.ar0);
+    pv.setPoint(SbVec3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar1);
+    pv.setPoint(SbVec3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar2);
+    pv.setPoint(SbVec3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
 
     // second arrow-head but only for diameter
     if (geom.isDiameter) {
-        pv.setPoint(geom.ar0_1);
+        pv.setPoint(SbVec3f(geom.ar0_1[0], geom.ar0_1[1], ZARROW_TEXT_OFFSET));
         shapeVertex(&pv);
-        pv.setPoint(geom.ar1_1);
+        pv.setPoint(SbVec3f(geom.ar1_1[0], geom.ar1_1[1], ZARROW_TEXT_OFFSET));
         shapeVertex(&pv);
-        pv.setPoint(geom.ar2_1);
+        pv.setPoint(SbVec3f(geom.ar2_1[0], geom.ar2_1[1], ZARROW_TEXT_OFFSET));
         shapeVertex(&pv);
     }
 
@@ -867,11 +873,11 @@ void SoDatumLabel::generateAnglePrimitives(SoAction* action, const SbVec3f& p0)
     SbVec3f points[1] = {p0};
     AngleGeometry geom = calculateAngleGeometry(points);
 
-    // generate selectable primitive for text label
-    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, 0.F);
-    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, 0.F);
+    // generate selectable primitive for text label at elevated Z for selection above geometry
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
 
     img1 += geom.textOffset;
     img2 += geom.textOffset;
@@ -953,26 +959,26 @@ void SoDatumLabel::generateSymmetricPrimitives(SoAction* action, const SbVec3f& 
     generateLineSelectionPrimitive(action, geom.p1, geom.ar0, lineWidth);
     generateLineSelectionPrimitive(action, geom.p2, geom.ar3, lineWidth);
 
-    // generate selectable primitives for arrow heads as triangles
+    // generate selectable primitives for arrow heads as triangles at elevated Z
     SoPrimitiveVertex pv;
     pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     this->beginShape(action, TRIANGLES);
 
     // first arrow
-    pv.setPoint(geom.ar0);
+    pv.setPoint(SbVec3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar1);
+    pv.setPoint(SbVec3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar2);
+    pv.setPoint(SbVec3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
 
     // second arrow
-    pv.setPoint(geom.ar3);
+    pv.setPoint(SbVec3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar4);
+    pv.setPoint(SbVec3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(geom.ar5);
+    pv.setPoint(SbVec3f(geom.ar5[0], geom.ar5[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
 
     this->endShape();
@@ -989,19 +995,19 @@ void SoDatumLabel::generateArcLengthPrimitives(
     SbVec3f points[3] = {ctr, p1, p2};
     ArcLengthGeometry geom = calculateArcLengthGeometry(points);
 
-    // generate selectable primitive for text label
-    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, 0.F);
-    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, 0.F);
-    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, 0.F);
+    // generate selectable primitive for text label at elevated Z for selection above geometry
+    SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img2 = SbVec3f(-this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img3 = SbVec3f(this->imgWidth / 2, -this->imgHeight / 2, ZARROW_TEXT_OFFSET);
+    SbVec3f img4 = SbVec3f(this->imgWidth / 2, this->imgHeight / 2, ZARROW_TEXT_OFFSET);
 
     float s = sin(geom.angle);
     float c = cos(geom.angle);
 
-    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), 0.F);
-    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), 0.F);
-    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.F);
-    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.F);
+    img1 = SbVec3f((img1[0] * c) - (img1[1] * s), (img1[0] * s) + (img1[1] * c), ZARROW_TEXT_OFFSET);
+    img2 = SbVec3f((img2[0] * c) - (img2[1] * s), (img2[0] * s) + (img2[1] * c), ZARROW_TEXT_OFFSET);
+    img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), ZARROW_TEXT_OFFSET);
+    img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), ZARROW_TEXT_OFFSET);
 
     img1 += geom.textOffset;
     img2 += geom.textOffset;
@@ -1173,9 +1179,16 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
     state->push();
 
     // Set General OpenGL Properties
-    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT);
+    glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glDisable(GL_LIGHTING);
     glDisable(GL_CULL_FACE);
+
+    // Explicitly enable depth testing for constraint lines. This is needed because the
+    // constraint group may have depth testing disabled (to allow icons to render on top),
+    // but we want constraint LINES to render BELOW geometry lines.
+    // Arrowheads are drawn at elevated Z (ZARROW_TEXT_OFFSET) so they render on top.
+    // Text rendering disables depth testing separately.
+    glEnable(GL_DEPTH_TEST);
 
     // Enable Anti-alias
     if (action->isSmoothing()) {
@@ -1282,15 +1295,15 @@ void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& te
     glVertex2f(geom.par4[0], geom.par4[1]);
     glEnd();
 
-    // Draw the arrowheads
+    // Draw the arrowheads at elevated Z to render ON TOP of geometry lines
     glBegin(GL_TRIANGLES);
-    glVertex2f(geom.par1[0], geom.par1[1]);
-    glVertex2f(geom.ar1[0], geom.ar1[1]);
-    glVertex2f(geom.ar2[0], geom.ar2[1]);
+    glVertex3f(geom.par1[0], geom.par1[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
 
-    glVertex2f(geom.par4[0], geom.par4[1]);
-    glVertex2f(geom.ar3[0], geom.ar3[1]);
-    glVertex2f(geom.ar4[0], geom.ar4[1]);
+    glVertex3f(geom.par4[0], geom.par4[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET);
     glEnd();
 
     if (this->datumtype.getValue() == DISTANCE) {
@@ -1335,18 +1348,19 @@ void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbV
     glVertex2f(geom.p2[0], geom.p2[1]);
     glEnd();
 
+    // Draw arrowhead at elevated Z to render ON TOP of geometry lines
     glBegin(GL_TRIANGLES);
-    glVertex2f(geom.ar0[0], geom.ar0[1]);
-    glVertex2f(geom.ar1[0], geom.ar1[1]);
-    glVertex2f(geom.ar2[0], geom.ar2[1]);
+    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
     glEnd();
 
     if (geom.isDiameter) {
-        // Draw second arrowhead
+        // Draw second arrowhead at elevated Z
         glBegin(GL_TRIANGLES);
-        glVertex2f(geom.ar0_1[0], geom.ar0_1[1]);
-        glVertex2f(geom.ar1_1[0], geom.ar1_1[1]);
-        glVertex2f(geom.ar2_1[0], geom.ar2_1[1]);
+        glVertex3f(geom.ar0_1[0], geom.ar0_1[1], ZARROW_TEXT_OFFSET);
+        glVertex3f(geom.ar1_1[0], geom.ar1_1[1], ZARROW_TEXT_OFFSET);
+        glVertex3f(geom.ar2_1[0], geom.ar2_1[1], ZARROW_TEXT_OFFSET);
         glEnd();
     }
 
@@ -1386,24 +1400,32 @@ void SoDatumLabel::drawSymmetric(const SbVec3f* points)
     // use shared geometry calculation
     SymmetricGeometry geom = calculateSymmetricGeometry(points);
 
-    // draw first arrow
+    // draw first constraint line (at constraint Z)
     glBegin(GL_LINES);
     glVertex3f(geom.p1[0], geom.p1[1], ZCONSTR);
     glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
-    glVertex3f(geom.ar1[0], geom.ar1[1], ZCONSTR);
-    glVertex3f(geom.ar0[0], geom.ar0[1], ZCONSTR);
-    glVertex3f(geom.ar2[0], geom.ar2[1], ZCONSTR);
     glEnd();
 
-    // draw second arrow
+    // draw first arrowhead at elevated Z to render ON TOP of geometry lines
+    glBegin(GL_LINES);
+    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar1[0], geom.ar1[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar0[0], geom.ar0[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar2[0], geom.ar2[1], ZARROW_TEXT_OFFSET);
+    glEnd();
+
+    // draw second constraint line (at constraint Z)
     glBegin(GL_LINES);
     glVertex3f(geom.p2[0], geom.p2[1], ZCONSTR);
     glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
-    glVertex3f(geom.ar4[0], geom.ar4[1], ZCONSTR);
-    glVertex3f(geom.ar3[0], geom.ar3[1], ZCONSTR);
-    glVertex3f(geom.ar5[0], geom.ar5[1], ZCONSTR);
+    glEnd();
+
+    // draw second arrowhead at elevated Z to render ON TOP of geometry lines
+    glBegin(GL_LINES);
+    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar4[0], geom.ar4[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar3[0], geom.ar3[1], ZARROW_TEXT_OFFSET);
+    glVertex3f(geom.ar5[0], geom.ar5[1], ZARROW_TEXT_OFFSET);
     glEnd();
 }
 
@@ -1888,7 +1910,7 @@ void SoDatumLabel::generateArrowSelectionPrimitive(
     float length
 )
 {
-    // create selectable arrow as a triangle
+    // create selectable arrow as a triangle at elevated Z for selection above geometry
     SbVec3f tip = base + dir * length;
     SbVec3f perp = SbVec3f(-dir[1], dir[0], 0) * (width / 2.0f);
 
@@ -1899,11 +1921,11 @@ void SoDatumLabel::generateArrowSelectionPrimitive(
     pv.setNormal(SbVec3f(0.F, 0.F, 1.F));
 
     this->beginShape(action, TRIANGLES);
-    pv.setPoint(tip);
+    pv.setPoint(SbVec3f(tip[0], tip[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(p1);
+    pv.setPoint(SbVec3f(p1[0], p1[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
-    pv.setPoint(p2);
+    pv.setPoint(SbVec3f(p2[0], p2[1], ZARROW_TEXT_OFFSET));
     shapeVertex(&pv);
     this->endShape();
 }
