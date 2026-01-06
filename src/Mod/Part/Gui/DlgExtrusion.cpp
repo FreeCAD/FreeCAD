@@ -51,7 +51,7 @@
 #include <Gui/ExpressionBinding.h>
 
 #include <Mod/Part/App/Part2DObject.h>
-#include <Mod/Part/App/FeatureExtrude.h>
+#include <Mod/Part/App/FeatureExtrusion.h>
 
 #include "ui_DlgExtrusion.h"
 #include "DlgExtrusion.h"
@@ -118,7 +118,6 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , ui(new Ui_DlgExtrusion)
     , filter(nullptr)
-    , extrudeObject(nullptr)
 {
     ui->setupUi(this);
     setupConnections();
@@ -147,7 +146,6 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     QMetaObject::invokeMethod(ui->spinLenFwd, "setFocus", Qt::QueuedConnection);
 
     this->autoSolid();
-    createPreviewObject();
 }
 
 /*
@@ -192,7 +190,8 @@ void DlgExtrusion::createPreviewObject()
 
         // Set defaults
         obj->Dir.setValue(Base::Vector3d(0, 0, 1));
-        obj->LengthFwd.setValue(10.0);
+        constexpr double defaultExtrusionLength = 10.0;
+        obj->LengthFwd.setValue(defaultExtrusionLength);
         obj->LengthRev.setValue(0.0);
 
         // Setup bindings
@@ -1029,3 +1028,4 @@ void TaskExtrusion::clicked(int id)
 }
 
 #include "moc_DlgExtrusion.cpp"
+
