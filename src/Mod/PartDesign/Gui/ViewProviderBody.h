@@ -99,6 +99,8 @@ public:
     };
 
     void show();
+    /// Override to return the color of the tip instead of the body, which doesn't really have color
+    std::map<std::string, Base::Color> getElementColors(const char* element) const override;
 
 protected:
     /// Copy over all visual properties to the child features

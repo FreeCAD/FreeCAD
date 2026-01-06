@@ -401,6 +401,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             Defaults to 'CalculiX'. Expected output from `ccx` when run empty.
 
         """
+        error_title = self.tr("No or wrong CalculiX binary ccx")
         self.ccx_binary = ccx_binary
         if self.ccx_binary is None:
             self.ccx_binary = FreeCAD.ParamGet(
@@ -434,7 +435,7 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
             if ccx_binary_sig in str(ccx_stdout):
                 self.ccx_binary_present = True
             else:
-                error_message = "FEM: wrong ccx binary\n"
+                error_message = self.tr("FEM: wrong ccx binary")
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 FreeCAD.Console.PrintError(error_message)
@@ -444,25 +445,23 @@ class FemToolsCcx(QtCore.QRunnable, QtCore.QObject):
         except OSError as e:
             FreeCAD.Console.PrintError(f"{e}\n")
             if e.errno == 2:
-                error_message = (
+                error_message = self.tr(
                     "FEM: CalculiX binary ccx '{}' not found. "
                     "Please set the CalculiX binary ccx path in "
-                    "FEM preferences tab CalculiX.\n".format(self.ccx_binary)
-                )
+                    "FEM preferences tab CalculiX."
+                ).format(self.ccx_binary)
                 if FreeCAD.GuiUp:
                     QtGui.QMessageBox.critical(None, error_title, error_message)
                 FreeCAD.Console.PrintError(error_message)
 
         except Exception as e:
             FreeCAD.Console.PrintError(f"{e}\n")
-            error_message = (
+            error_message = self.tr(
                 "FEM: CalculiX ccx '{}' output '{}' doesn't "
                 "contain expected phrase '{}'. "
                 "There are some problems when running the ccx binary. "
-                "Check if ccx runs standalone without FreeCAD.\n".format(
-                    self.ccx_binary, ccx_stdout, ccx_binary_sig
-                )
-            )
+                "Check if ccx runs standalone without FreeCAD."
+            ).format(self.ccx_binary, ccx_stdout, ccx_binary_sig)
             if FreeCAD.GuiUp:
                 QtGui.QMessageBox.critical(None, error_title, error_message)
             FreeCAD.Console.PrintError(error_message)

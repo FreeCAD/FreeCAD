@@ -13,29 +13,37 @@ from Base.Placement import Placement
 @class_declarations("mutable Py::Dict parameters_copy_dict;")
 class Command(Persistence):
     """
-    Command([name],[parameters]): Represents a basic Gcode command
+    Command([name],[parameters],[annotations]): Represents a basic Gcode command
     name (optional) is the name of the command, ex. G1
     parameters (optional) is a dictionary containing string:number
     pairs, or a placement, or a vector
+    annotations (optional) is a dictionary containing string:string or string:number pairs
     """
 
     @constmethod
     def toGCode(self) -> str:
-        """toGCode(): returns a GCode representation of the command"""
+        """returns a GCode representation of the command"""
         ...
 
-    def setFromGCode(self, gcode: str) -> None:
-        """setFromGCode(): sets the path from the contents of the given GCode string"""
+    def setFromGCode(self, gcode: str, /) -> None:
+        """sets the path from the contents of the given GCode string"""
         ...
 
-    def transform(self, placement: Placement) -> "CommandPy":
-        """transform(Placement): returns a copy of this command transformed by the given placement"""
+    def transform(self, placement: Placement, /) -> Command:
+        """returns a copy of this command transformed by the given placement"""
+        ...
+
+    def addAnnotations(self, annotations, /) -> "Command":
+        """addAnnotations(annotations): adds annotations from dictionary or string and returns self for chaining"""
         ...
     Name: str
     """The name of the command"""
 
     Parameters: dict[str, float]
     """The parameters of the command"""
+
+    Annotations: dict[str, str]
+    """The annotations of the command"""
 
     Placement: Placement
     """The coordinates of the endpoint of the command"""

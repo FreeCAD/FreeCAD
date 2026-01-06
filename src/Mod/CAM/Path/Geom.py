@@ -27,7 +27,6 @@ import Path
 import math
 
 from FreeCAD import Vector
-from PySide import QtCore
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -112,7 +111,7 @@ def pointsCoincide(p1, p2, error=Tolerance):
 def edgesMatch(e0, e1, error=Tolerance):
     """edgesMatch(e0, e1, [error=Tolerance]
     Return true if the edges start and end at the same point and have the same type of curve."""
-    if type(e0.Curve) != type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
+    if type(e0.Curve) is not type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
         return False
     return all(
         pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point, error)
@@ -164,42 +163,43 @@ def diffAngle(a1, a2, direction="CW"):
 
 def isVertical(obj):
     """isVertical(obj) ... answer True if obj points into Z"""
-    if type(obj) == FreeCAD.Vector:
+    if isinstance(obj, FreeCAD.Vector):
         return isRoughly(obj.x, 0) and isRoughly(obj.y, 0)
 
     if obj.ShapeType == "Face":
-        if type(obj.Surface) == Part.Plane:
+        if isinstance(obj.Surface, Part.Plane):
             return isHorizontal(obj.Surface.Axis)
-        if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
+        if isinstance(obj.Surface, (Part.Cylinder, Part.Cone)):
             return isVertical(obj.Surface.Axis)
-        if type(obj.Surface) == Part.Sphere:
+        if isinstance(obj.Surface, Part.Sphere):
             return True
-        if type(obj.Surface) == Part.SurfaceOfExtrusion:
+        if isinstance(obj.Surface, Part.SurfaceOfExtrusion):
             return isVertical(obj.Surface.Direction)
-        if type(obj.Surface) == Part.SurfaceOfRevolution:
+        if isinstance(obj.Surface, Part.SurfaceOfRevolution):
             return isHorizontal(obj.Surface.Direction)
-        if type(obj.Surface) != Part.BSplineSurface:
-            Path.Log.info(
-                translate("PathGeom", "face %s not handled, assuming not vertical")
-                % type(obj.Surface)
-            )
+        if isinstance(obj.Surface, Part.BSplineSurface):
+            # simple face after scale
+            vertEdges = [e for e in obj.Edges if isVertical(e)]
+            return len(vertEdges) == 2 and len(obj.Edges) == 4
+
+        Path.Log.info(
+            translate("PathGeom", "face %s not handled, assuming not vertical") % type(obj.Surface)
+        )
         return None
 
     if obj.ShapeType == "Edge":
-        if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+        if isinstance(obj.Curve, (Part.Line, Part.LineSegment)):
             return isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-        if (
-            type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse
-        ):  # or type(obj.Curve) == Part.BSplineCurve:
+        if isinstance(obj.Curve, (Part.Circle, Part.Ellipse)):
             return isHorizontal(obj.Curve.Axis)
-        if type(obj.Curve) == Part.BezierCurve:
-            # the current assumption is that a bezier curve is vertical if its end points are vertical
+        if isinstance(obj.Curve, (Part.BezierCurve, Part.BSplineCurve)):
+            # the current assumption is that
+            # a curve is vertical if its end points are vertical
             return isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
-        if type(obj.Curve) != Part.BSplineCurve:
-            Path.Log.info(
-                translate("PathGeom", "edge %s not handled, assuming not vertical")
-                % type(obj.Curve)
-            )
+
+        Path.Log.info(
+            translate("PathGeom", "edge %s not handled, assuming not vertical") % type(obj.Curve)
+        )
         return None
 
     Path.Log.error(translate("PathGeom", "isVertical(%s) not supported") % obj)
@@ -208,28 +208,27 @@ def isVertical(obj):
 
 def isHorizontal(obj):
     """isHorizontal(obj) ... answer True if obj points into X or Y"""
-    if type(obj) == FreeCAD.Vector:
+    if isinstance(obj, FreeCAD.Vector):
         return isRoughly(obj.z, 0)
 
     if obj.ShapeType == "Face":
-        if type(obj.Surface) == Part.Plane:
+        if isinstance(obj.Surface, Part.Plane):
             return isVertical(obj.Surface.Axis)
-        if type(obj.Surface) == Part.Cylinder or type(obj.Surface) == Part.Cone:
+        if isinstance(obj.Surface, (Part.Cylinder, Part.Cone)):
             return isHorizontal(obj.Surface.Axis)
-        if type(obj.Surface) == Part.Sphere:
+        if isinstance(obj.Surface, Part.Sphere):
             return True
-        if type(obj.Surface) == Part.SurfaceOfExtrusion:
+        if isinstance(obj.Surface, Part.SurfaceOfExtrusion):
             return isHorizontal(obj.Surface.Direction)
-        if type(obj.Surface) == Part.SurfaceOfRevolution:
+        if isinstance(obj.Surface, Part.SurfaceOfRevolution):
             return isVertical(obj.Surface.Direction)
         return isRoughly(obj.BoundBox.ZLength, 0.0)
 
     if obj.ShapeType == "Edge":
-        if type(obj.Curve) == Part.Line or type(obj.Curve) == Part.LineSegment:
+        if isinstance(obj.Curve, (Part.Line, Part.LineSegment)):
             return isHorizontal(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
-        if (
-            type(obj.Curve) == Part.Circle or type(obj.Curve) == Part.Ellipse
-        ):  # or type(obj.Curve) == Part.BSplineCurve:
+        if isinstance(obj.Curve, (Part.Circle, Part.Ellipse)):
+            # or isinstance(obj.Curve, Part.BSplineCurve):
             return isVertical(obj.Curve.Axis)
         return isRoughly(obj.BoundBox.ZLength, 0.0)
 
@@ -279,18 +278,17 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vSpeed=0):
-    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50) -> List(Path.Command)
+def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
+    """cmdsForEdge(edge, flip=False) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
-    If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
-    to represent a helix and results in G2 or G3 command. Otherwise edge has
-    no direct Path.Command mapping and will be approximated by straight segments.
-    segm is a factor for the segmentation of arbitrary curves not mapped to G1/2/3
-    commands. The higher the value the more segments will be used."""
+    Edge based on a Part.Line is results in G1 command.
+    Horizontal Edge based on a Part.Circle is results in G2 or G3 command.
+    Other edge has no direct Path.Command mapping
+    and will be approximated by straight segments."""
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
-    if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+    if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
         if hSpeed > 0 and vSpeed > 0:
             pt2 = (
                 edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
@@ -302,13 +300,11 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
         p3 = pt
 
-        if hasattr(edge.Curve, "Axis") and (
-            (
-                type(edge.Curve) == Part.Circle
-                and isRoughly(edge.Curve.Axis.x, 0)
-                and isRoughly(edge.Curve.Axis.y, 0)
-            )
-            or (useHelixForBSpline and type(edge.Curve) == Part.BSplineCurve)
+        if (
+            hasattr(edge.Curve, "Axis")
+            and isinstance(edge.Curve, Part.Circle)
+            and isRoughly(edge.Curve.Axis.x, 0)
+            and isRoughly(edge.Curve.Axis.y, 0)
         ):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
@@ -320,24 +316,10 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
                 # A full circle
                 offset = edge.Curve.Center - pt
             else:
-                pd = Part.Circle(xy(p1), xy(p2), xy(p3)).Center
+                # pd = Part.Circle(xy(p1), xy(p2), xy(p3)).Center
                 # Path.Log.debug(
                 #    "**** %s.%d: (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f) -> center=(%.2f, %.2f)"
-                #    % (
-                #        cmd,
-                #        flip,
-                #        p1.x,
-                #        p1.y,
-                #        p1.z,
-                #        p2.x,
-                #        p2.y,
-                #        p2.z,
-                #        p3.x,
-                #        p3.y,
-                #        p3.z,
-                #        pd.x,
-                #        pd.y,
-                #    )
+                #    % (cmd, flip, p1.x, p1.y, p1.z, p2.x, p2.y, p2.z, p3.x, p3.y, p3.z, pd.x, pd.y)
                 # )
 
                 # Have to calculate the center in the XY plane, using pd leads to an error if this is a helix
@@ -365,7 +347,7 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, segm=50, hSpeed=0, vS
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            points = edge.discretize(Deflection=0.01)
+            points = edge.discretize(Deflection=tol)
             if flip:
                 points = points[::-1]
 
@@ -560,13 +542,13 @@ def splitEdgeAt(edge, pt):
     p3 = edge.valueAt(edge.LastParameter)
     # edges = []
 
-    if type(edge.Curve) == Part.Line or type(edge.Curve) == Part.LineSegment:
+    if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
         # it's a line
         return [
             Part.Edge(Part.LineSegment(p1, p2)),
             Part.Edge(Part.LineSegment(p2, p3)),
         ]
-    elif type(edge.Curve) == Part.Circle:
+    elif isinstance(edge.Curve, Part.Circle):
         # it's an arc
         return splitArcAt(edge, pt)
     else:
@@ -615,13 +597,13 @@ def flipEdge(edge):
     Flips given edge around so the new Vertexes[0] was the old Vertexes[-1] and vice versa, without changing the shape.
     Currently only lines, line segments, circles and arcs are supported."""
 
-    if Part.Line == type(edge.Curve) and not edge.Vertexes:
+    if isinstance(edge.Curve, Part.Line) and not edge.Vertexes:
         return Part.Edge(
             Part.Line(edge.valueAt(edge.LastParameter), edge.valueAt(edge.FirstParameter))
         )
-    elif Part.Line == type(edge.Curve) or Part.LineSegment == type(edge.Curve):
+    elif isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
         return Part.Edge(Part.LineSegment(edge.Vertexes[-1].Point, edge.Vertexes[0].Point))
-    elif Part.Circle == type(edge.Curve):
+    elif isinstance(edge.Curve, Part.Circle):
         # Create an inverted circle
         circle = Part.Circle(edge.Curve.Center, -edge.Curve.Axis, edge.Curve.Radius)
         # Rotate the circle appropriately so it starts at edge.valueAt(edge.LastParameter)
@@ -635,8 +617,8 @@ def flipEdge(edge):
         # Now the edge always starts at 0 and LastParameter is the value range
         arc = Part.Edge(circle, 0, edge.LastParameter - edge.FirstParameter)
         return arc
-    elif type(edge.Curve) in [Part.BSplineCurve, Part.BezierCurve]:
-        if type(edge.Curve) == Part.BSplineCurve:
+    elif isinstance(edge.Curve, (Part.BSplineCurve, Part.BezierCurve)):
+        if isinstance(edge.Curve, Part.BSplineCurve):
             spline = edge.Curve
         else:
             spline = edge.Curve.toBSpline()
@@ -662,7 +644,7 @@ def flipEdge(edge):
         flipped.buildFromPolesMultsKnots(poles, mults, knots, perio, degree, weights, ratio)
 
         return Part.Edge(flipped, ma + mi - edge.LastParameter, ma + mi - edge.FirstParameter)
-    elif type(edge.Curve) == Part.OffsetCurve:
+    elif isinstance(edge.Curve, Part.OffsetCurve):
         return edge.reversed()
 
     Path.Log.warning(translate("PathGeom", "%s not supported for flipping") % type(edge.Curve))

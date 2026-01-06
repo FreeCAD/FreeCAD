@@ -889,6 +889,9 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
 
     getSplitter()->setSizes(sizes);
     hGrp = handle;
+
+    // if updated save the state into settings to preserve layout in case of defaults change
+    saveTabs();
 }
 
 void OverlayTabWidget::saveTabs()

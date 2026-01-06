@@ -46,8 +46,6 @@ public:
     /// The type of the boolean operation
     App::PropertyEnumeration Type;
 
-    App::PropertyBool UsePlacement;
-
     /** @name methods override feature */
     //@{
     /// Recalculate the feature

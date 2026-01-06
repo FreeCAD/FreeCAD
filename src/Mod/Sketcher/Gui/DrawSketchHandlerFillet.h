@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -75,6 +77,7 @@ public:
             std::vector<int> GeoIdList;
             std::vector<Sketcher::PointPos> PosIdList;
             Sketch->getDirectlyCoincidentPoints(VtId, GeoIdList, PosIdList);
+            GeoIdList = Sketch->chooseFilletsEdges(GeoIdList);
             if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
                 const Part::Geometry* geom1 = Sketch->getGeometry(GeoIdList[0]);
                 const Part::Geometry* geom2 = Sketch->getGeometry(GeoIdList[1]);
@@ -119,6 +122,8 @@ using DrawSketchHandlerFilletBase = DrawSketchControllableHandler<DSHFilletContr
 
 class DrawSketchHandlerFillet: public DrawSketchHandlerFilletBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerFillet)
+
     friend DSHFilletController;
     friend DSHFilletControllerBase;
 
@@ -172,6 +177,7 @@ private:
                 std::vector<int> GeoIdList;
                 std::vector<Sketcher::PointPos> PosIdList;
                 obj->getDirectlyCoincidentPoints(GeoId, PosId, GeoIdList, PosIdList);
+                GeoIdList = obj->chooseFilletsEdges(GeoIdList);
                 if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
                     const Part::Geometry* geo1 = obj->getGeometry(GeoIdList[0]);
                     const Part::Geometry* geo2 = obj->getGeometry(GeoIdList[1]);

@@ -100,13 +100,15 @@ class TestQuantityPropertyEditorWidget(unittest.TestCase):
         # Check if the real widget's value is updated
         self.assertEqual(self.editor.property("rawValue"), 10.0)
         # Check if the real widget's value and unit are updated
-        self.assertEqual(self.editor.property("value").UserString, "10.00 mm")
+        self.assertEqual(
+            self.editor.property("value"), FreeCAD.Units.Quantity(10.0, FreeCAD.Units.Length)
+        )
 
         # Simulate changing the raw value and check if the object's value updates
         self.editor.lineEdit().setText("12.0")
         self.widget.updateProperty()
         self.assertEqual(self.obj.Length.Value, 12.0)
-        self.assertEqual(self.obj.Length.UserString, "12.00 mm")
+        self.assertEqual(self.obj.Length, FreeCAD.Units.Quantity(12.0, FreeCAD.Units.Length))
 
         # Try assignment with unit.
         self.editor.lineEdit().setText("15.5 in")

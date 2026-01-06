@@ -466,7 +466,7 @@ def _get_param_dictionary():
     # fmt: off
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
-        "AnnotationStyleEditorWidth":  ("int",       450),
+        "AnnotationStyleEditorWidth":  ("int",       600),
         "CenterPlaneOnView":           ("bool",      False),
         "ChainedMode":                 ("bool",      False),
         "CopyMode":                    ("bool",      False),
@@ -493,7 +493,6 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "MakeFaceMode":                ("bool",      True),
         "maxSnapEdges":                ("int",       0),
-        "maxSnapFaces":                ("int",       0),
         "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
         "RelativeMode":                ("bool",      True),
@@ -620,6 +619,12 @@ def _get_param_dictionary():
         "WindowW1":                    ("float",     100.0),
         "WindowW2":                    ("float",     50.0),
         "WindowWidth":                 ("float",     1000.0),
+    }
+
+    # BIM parameters that are not in the preferences:
+    # Note: incomplete!
+    param_dict["Mod/BIM"] = {
+        "BIMSketchPlacementOnly":      ("bool",      False),
     }
 
     # For the Mod/Mesh parameters we do not check the preferences:

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -30,9 +32,11 @@
 #include <QRegularExpressionMatch>
 #include <QShortcut>
 #include <QString>
+#include <QTimer>
 #include <QWidgetAction>
 #include <boost/core/ignore_unused.hpp>
 #include <limits>
+#include <cstring>
 
 #include <fmt/format.h>
 
@@ -1478,150 +1482,121 @@ void TaskSketcherElements::updateVisibility()
     }
 }
 
-/*------------------*/
-// clang-format on
 void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    // update the listwidget
-    auto updateListWidget = [this](auto& modified_item) {
-        QSignalBlocker sigblk(this->ui->listWidgetElements);
-        if (modified_item == nullptr) {
-            return;
-        }
-        bool is_selected = modified_item->isSelected();
-        const bool should_be_selected = modified_item->isLineSelected
-            || modified_item->isStartingPointSelected || modified_item->isEndPointSelected
-            || modified_item->isMidPointSelected;
+    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        clearWidget();
+        return;
+    }
 
-        // If an element is already selected and a new subelement gets selected
-        // (eg., if you select the arc of a circle then select the center as
-        // well), the new subelement won't get highlighted in the list until you
-        // mouseover the list.  To avoid this, we deselect first to trigger a
-        // redraw.
-        if (should_be_selected && is_selected) {
-            modified_item->setSelected(false);
-            is_selected = false;
-        }
+    if (msg.Type != Gui::SelectionChanges::AddSelection
+        && msg.Type != Gui::SelectionChanges::RmvSelection) {
+        return;
+    }
 
-        if (should_be_selected != is_selected) {
-            modified_item->setSelected(should_be_selected);
-        }
-    };
+    // is it this object??
+    if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
+        || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0
+        || !msg.pSubName) {
+        return;
+    }
 
-    switch (msg.Type) {
-        case Gui::SelectionChanges::ClrSelection: {
-            clearWidget();
-            return;
-        }
-        case Gui::SelectionChanges::AddSelection:
-        case Gui::SelectionChanges::RmvSelection: {
-            bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
-            // is it this object??
-            if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) != 0
-                || strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) != 0) {
-                return;
-            }
-            if (!msg.pSubName) {
-                return;
-            }
-            ElementItem* modified_item = nullptr;
-            QString expr = QString::fromLatin1(msg.pSubName);
-            std::string shapetype(msg.pSubName);
-            // if-else edge vertex
-            if (shapetype.starts_with("Edge")) {
-                QRegularExpression rx(QStringLiteral("^Edge(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = match.captured(1).toInt(&ok) - 1;
-                if (!ok) {
-                    return;
-                }
-                int countItems = ui->listWidgetElements->count();
-                // TODO: This and the loop below get slow when we have a lot of items.
-                // Perhaps we should also maintain a map so that we can look up items
-                // by element number.
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == ElementId) {
-                        item->isLineSelected = select;
-                        modified_item = item;
-                        SketcherGui::scrollTo(ui->listWidgetElements, i, select);
-                        break;
-                    }
-                }
-            }
-            else if (shapetype.starts_with("ExternalEdge")) {
-                QRegularExpression rx(QStringLiteral("^ExternalEdge(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = -match.captured(1).toInt(&ok) - 2;
-                if (!ok) {
-                    return;
-                }
-                int countItems = ui->listWidgetElements->count();
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == ElementId) {
-                        item->isLineSelected = select;
-                        modified_item = item;
-                        break;
-                    }
-                }
-            }
-            else if (shapetype.starts_with("Vertex")) {
-                QRegularExpression rx(QStringLiteral("^Vertex(\\d+)$"));
-                QRegularExpressionMatch match;
-                boost::ignore_unused(expr.indexOf(rx, 0, &match));
-                if (!match.hasMatch()) {
-                    return;
-                }
-                bool ok;
-                int ElementId = match.captured(1).toInt(&ok) - 1;
-                if (!ok) {
-                    return;
-                }
-                // Get the GeoID&Pos
-                int GeoId;
-                Sketcher::PointPos PosId;
-                sketchView->getSketchObject()->getGeoVertexIndex(ElementId, GeoId, PosId);
 
-                int countItems = ui->listWidgetElements->count();
-                for (int i = 0; i < countItems; i++) {
-                    auto* item = static_cast<ElementItem*>(ui->listWidgetElements->item(i));
-                    if (item->ElementNbr == GeoId) {
-                        modified_item = item;
-                        switch (PosId) {
-                            case Sketcher::PointPos::start:
-                                item->isStartingPointSelected = select;
-                                break;
-                            case Sketcher::PointPos::end:
-                                item->isEndPointSelected = select;
-                                break;
-                            case Sketcher::PointPos::mid:
-                                item->isMidPointSelected = select;
-                                break;
-                            default:
-                                break;
-                        }
-                        break;
-                    }
-                }
-            }
-            updateListWidget(modified_item);
+    bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
+    const char* subName = msg.pSubName;
+    ElementItem* modified_item = nullptr;
+
+    // Format: "Edge123" -> offset 4
+    if (std::strncmp(subName, "Edge", 4) == 0) {
+        int id = std::atoi(subName + 4) - 1;
+        auto it = elementMap.find(id);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            modified_item->isLineSelected = select;
         }
-        default:
-            return;
+    }
+    // Format: "ExternalEdge123" -> offset 12
+    else if (std::strncmp(subName, "ExternalEdge", 12) == 0) {
+        int id = -std::atoi(subName + 12) - 2;
+        auto it = elementMap.find(id);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            modified_item->isLineSelected = select;
+        }
+    }
+    // Format: "Vertex123" -> offset 6
+    else if (std::strncmp(subName, "Vertex", 6) == 0) {
+        int vtId = std::atoi(subName + 6) - 1;
+        int GeoId;
+        Sketcher::PointPos PosId;
+        sketchView->getSketchObject()->getGeoVertexIndex(vtId, GeoId, PosId);
+
+        auto it = elementMap.find(GeoId);
+        if (it != elementMap.end()) {
+            modified_item = it->second;
+            switch (PosId) {
+                case Sketcher::PointPos::start:
+                    modified_item->isStartingPointSelected = select;
+                    break;
+                case Sketcher::PointPos::end:
+                    modified_item->isEndPointSelected = select;
+                    break;
+                case Sketcher::PointPos::mid:
+                    modified_item->isMidPointSelected = select;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    // 3. Queue the UI update instead of applying immediately
+    if (modified_item) {
+        selectionBuffer.push_back({modified_item, select});
+
+        if (!updateTimerPending) {
+            updateTimerPending = true;
+            // Schedule processing for the next event loop cycle (0ms)
+            QTimer::singleShot(0, this, &TaskSketcherElements::processSelectionBuffer);
+        }
     }
 }
-// clang-format off
+
+void TaskSketcherElements::processSelectionBuffer()
+{
+    updateTimerPending = false;
+    if (selectionBuffer.empty()) {
+        return;
+    }
+
+    QSignalBlocker sigblk(ui->listWidgetElements);
+
+    QItemSelection selectionObj;
+    for (const auto& update : selectionBuffer) {
+        bool should_be = update.item->isLineSelected ||
+                            update.item->isStartingPointSelected ||
+                            update.item->isEndPointSelected ||
+                            update.item->isMidPointSelected;
+
+        if (should_be) {
+            QModelIndex idx = ui->listWidgetElements->model()->index(ui->listWidgetElements->row(update.item), 0);
+            selectionObj.select(idx, idx);
+        }
+        else {
+            update.item->setSelected(false);
+        }
+    }
+
+    // Apply all selections in ONE go
+    ui->listWidgetElements->selectionModel()->select(selectionObj, QItemSelectionModel::Select);
+
+    // Only scroll if a single item was clicked/selected
+    if (selectionBuffer.size() == 1 && selectionBuffer[0].select) {
+            SketcherGui::scrollTo(ui->listWidgetElements, ui->listWidgetElements->row(selectionBuffer[0].item), true);
+    }
+
+    selectionBuffer.clear();
+}
 
 void TaskSketcherElements::onListWidgetElementsItemPressed(QListWidgetItem* it)
 {
@@ -1899,6 +1874,7 @@ void TaskSketcherElements::slotElementsChanged()
     const std::vector<Part::Geometry*>& vals = sketch->Geometry.getValues();
 
     ui->listWidgetElements->clear();
+    elementMap.clear();
 
     using GeometryState = ElementItem::GeometryState;
 
@@ -2006,6 +1982,8 @@ void TaskSketcherElements::slotElementsChanged()
 
         ui->listWidgetElements->addItem(itemN);
 
+        elementMap[itemN->ElementNbr] = itemN;
+
         setItemVisibility(itemN);
     }
 
@@ -2109,6 +2087,8 @@ void TaskSketcherElements::slotElementsChanged()
                 sketchView);
 
             ui->listWidgetElements->addItem(itemN);
+
+            elementMap[itemN->ElementNbr] = itemN;
 
             setItemVisibility(itemN);
         }

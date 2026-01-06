@@ -29,6 +29,7 @@
 #include <ctime>
 #include <algorithm>
 #include <numbers>
+#include <optional>
 
 namespace ClipperLib
 {
@@ -1117,72 +1118,84 @@ public:
 
     void clear()
     {
-        angles.clear();
-        areas.clear();
+        m_min.reset();
+        m_max.reset();
+    }
+    bool bothSides()
+    {
+        return m_min && m_max && m_min->second < 0 && m_max->second >= 0;
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
-    void addPoint(double area, double angle)
+    void addPoint(double error, std::pair<double, IntPoint> angle, bool allowSkip = false)
     {
-        std::size_t size = areas.size();
-        if (size == 0 || area > areas[size - 1] + NTOL) {  // first point or largest area point
-            areas.push_back(area);
-            angles.push_back(angle);
-            return;
+        if (!m_min) {
+            m_min = {angle, error};
         }
-
-        for (std::size_t i = 0; i < size; i++) {
-            if (area < areas[i] - NTOL && (i == 0 || area > areas[i - 1] + NTOL)) {
-                areas.insert(areas.begin() + i, area);
-                angles.insert(angles.begin() + i, angle);
+        else if (!m_max) {
+            m_max = {angle, error};
+            if (m_min->second > m_max->second) {
+                auto tmp = m_min;
+                m_min = m_max;
+                m_max = tmp;
             }
+        }
+        else if (bothSides()) {
+            if (error < 0) {
+                m_min = {angle, error};
+            }
+            else {
+                m_max = {angle, error};
+            }
+        }
+        else {
+            if (allowSkip && abs(error) > abs(m_min->second) && abs(error) > abs(m_max->second)) {
+                return;
+            }
+            if (abs(m_min->second) > abs(m_max->second)) {
+                m_min.reset();
+            }
+            else {
+                m_max.reset();
+            }
+            addPoint(error, angle);
         }
     }
 
-    double interpolateAngle(double targetArea)
+    double interpolateAngle()
     {
-        std::size_t size = areas.size();
-        if (size < 2 || targetArea > areas[size - 1]) {
-            return MIN_ANGLE;  // max engage angle - convenient value to initially measure cut area
-        }
-        if (targetArea < areas[0]) {
-            return MAX_ANGLE;  // min engage angle
+        if (!m_min) {
+            return MIN_ANGLE;
         }
 
-        for (size_t i = 1; i < size; i++) {
-            // find 2 subsequent points where target area is between
-            if (areas[i - 1] <= targetArea && areas[i] > targetArea) {
-                // linear interpolation
-                double af = (targetArea - areas[i - 1]) / (areas[i] - areas[i - 1]);
-                double a = angles[i - 1] + af * (angles[i] - angles[i - 1]);
-                return a;
-            }
+        if (!m_max) {
+            return MAX_ANGLE;
         }
-        return MIN_ANGLE;
+        double p = (0 - m_min->second) / (m_max->second - m_min->second);
+
+        // Ensure search is sufficiently efficient -- this is a compromise
+        // between binary search (p = 0.5, guaranteed search completion in log
+        // time) and following linear interpolation completely (often faster
+        // since area cut is locally linear in movement angle)
+        const double minInterp = .2;
+        p = max(min(p, 1 - minInterp), minInterp);
+
+        return m_min->first.first * (1 - p) + m_max->first.first * p;
     }
 
     double clampAngle(double angle)
     {
-        if (angle < MIN_ANGLE) {
-            return MIN_ANGLE;
-        }
-        if (angle > MAX_ANGLE) {
-            return MAX_ANGLE;
-        }
-        return angle;
+        return max(min(angle, MAX_ANGLE), MIN_ANGLE);
     }
 
-    double getRandomAngle()
-    {
-        return MIN_ANGLE + (MAX_ANGLE - MIN_ANGLE) * double(rand()) / double(RAND_MAX);
-    }
     size_t getPointCount()
     {
-        return areas.size();
+        return (m_min ? 1 : 0) + (m_max ? 1 : 0);
     }
 
-private:
-    vector<double> angles;
-    vector<double> areas;
+public:
+    // {{angle, clipper point}, error}
+    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_min;
+    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_max;
 };
 
 //***************************************
@@ -1570,7 +1583,7 @@ double Adaptive2d::CalcCutArea(
             maxFi += 2 * std::numbers::pi;
         }
 
-        if (preventConventional && interPathLen >= RESOLUTION_FACTOR) {
+        if (preventConventional && interPathLen >= MIN_STEP_CLIPPER) {
             // detect conventional mode cut - we want only climb mode
             IntPoint midPoint(
                 long(c2.X + toolRadiusScaled * cos(0.5 * (maxFi + minFi))),
@@ -1588,7 +1601,7 @@ double Adaptive2d::CalcCutArea(
 
         double scanDistance = 2.5 * toolRadiusScaled;
         // stepping through path discretized to stepDistance
-        double stepDistance = min(double(RESOLUTION_FACTOR), interPathLen / 24) + 1;
+        double stepDistance = min(double(MIN_STEP_CLIPPER), interPathLen / 24) + 1;
         const IntPoint* prevPt = &interPath->front();
         double distance = 0;
         for (size_t j = 1; j < ipc2_size; j++) {
@@ -1742,29 +1755,16 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     //**********************************
 
     // keep the tolerance in workable range
-    if (tolerance < 0.01) {
-        tolerance = 0.01;
-    }
-    if (tolerance > 0.2) {
-        tolerance = 0.2;
-    }
+    tolerance = max(tolerance, 0.01);
+    tolerance = min(tolerance, 1.0);
 
-    scaleFactor = RESOLUTION_FACTOR / tolerance;
-    long maxScaleFactor = toolDiameter < 1.0 ? 10000 : 1000;
-
-    if (stepOverFactor * toolDiameter < 1.0) {
-        scaleFactor *= 1.0 / (stepOverFactor * toolDiameter);
-    }
-
-
-    if (scaleFactor > maxScaleFactor) {
-        scaleFactor = maxScaleFactor;
-    }
-    // scaleFactor = round(scaleFactor);
+    // 1/"tolerance" = number of min-size adaptive steps per stepover
+    scaleFactor = MIN_STEP_CLIPPER / tolerance / min(1.0, stepOverFactor * toolDiameter);
 
     current_region = 0;
     cout << "Tool Diameter: " << toolDiameter << endl;
-    cout << "Accuracy: " << round(10000.0 / scaleFactor) / 10 << " um" << endl;
+    cout << "Min step size: " << round(MIN_STEP_CLIPPER / scaleFactor * 1000 * 10) / 10 << " um"
+         << endl;
     cout << flush;
 
     toolRadiusScaled = long(toolDiameter * scaleFactor / 2);
@@ -1912,8 +1912,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
         double offset = opType == OperationType::otProfilingInside
-            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - RESOLUTION_FACTOR
-            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + RESOLUTION_FACTOR;
+            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - MIN_STEP_CLIPPER
+            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + MIN_STEP_CLIPPER;
         for (const auto& current : inputPaths) {
             int nesting = getPathNestingLevel(current, inputPaths);
             if (nesting % 2 != 0 && (polyTreeNestingLimit == 0 || nesting <= polyTreeNestingLimit)) {
@@ -1990,7 +1990,7 @@ bool Adaptive2d::FindEntryPoint(
     for (int iter = 0; iter < 10; iter++) {
         clipof.Clear();
         clipof.AddPaths(checkPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-        double step = RESOLUTION_FACTOR;
+        double step = MIN_STEP_CLIPPER;
         double currentDelta = -1;
         clipof.Execute(incOffset, currentDelta);
         while (!incOffset.empty()) {
@@ -2176,7 +2176,7 @@ bool Adaptive2d::IsAllowedToCutTrough(
     else {
         Clipper clip;
         double distance = sqrt(DistanceSqrd(p1, p2));
-        double stepSize = min(0.5 * stepOverScaled, 8 * RESOLUTION_FACTOR);
+        double stepSize = min(0.5 * stepOverScaled, 8 * MIN_STEP_CLIPPER);
         if (distance < stepSize / 2) {  // not significant cut
             Perf_IsAllowedToCutTrough.Stop();
             return true;
@@ -2226,7 +2226,7 @@ bool Adaptive2d::ResolveLinkPath(
     double directDistance = sqrt(DistanceSqrd(startPoint, endPoint));
     Paths linkPaths;
 
-    double scanStep = 2 * RESOLUTION_FACTOR;
+    double scanStep = 2 * MIN_STEP_CLIPPER;
     if (scanStep > scaleFactor * 0.1) {
         scanStep = scaleFactor * 0.1;
     }
@@ -2411,8 +2411,8 @@ bool Adaptive2d::MakeLeadPath(
     for (int i = 0; i < 10000; i++) {
         if (IsAllowedToCutTrough(
                 IntPoint(
-                    currentPoint.X + RESOLUTION_FACTOR * nextDir.X,
-                    currentPoint.Y + RESOLUTION_FACTOR * nextDir.Y
+                    currentPoint.X + MIN_STEP_CLIPPER * nextDir.X,
+                    currentPoint.Y + MIN_STEP_CLIPPER * nextDir.Y
                 ),
                 nextPoint,
                 clearedArea,
@@ -2478,7 +2478,6 @@ void Adaptive2d::AppendToolPath(
         );
         IntPoint startPoint(long(lastTPoint.first * scaleFactor), long(lastTPoint.second * scaleFactor));
 
-        ClipperOffset clipof;
         // first we try to cut through the linking move for short distances
         bool linkFound = false;
         double linkDistance = sqrt(DistanceSqrd(startPoint, endPoint));
@@ -2834,8 +2833,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     EngagePoint engage(engageBounds);  // engage point stepping instance
 
     if (outsideEntry) {
-        engage.moveToClosestPoint(toolPos, 2 * RESOLUTION_FACTOR);
-        engage.moveForward(RESOLUTION_FACTOR);
+        engage.moveToClosestPoint(toolPos, 2 * MIN_STEP_CLIPPER);
+        engage.moveForward(MIN_STEP_CLIPPER);
         toolPos = engage.getCurrentPoint();
         toolDir = engage.getCurrentDir();
         entryPoint = toolPos;
@@ -2849,7 +2848,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
 
-    long stepScaled = long(RESOLUTION_FACTOR);
+    long stepScaled = long(MIN_STEP_CLIPPER);
     IntPoint engagePoint;
 
     IntPoint newToolPos;
@@ -2947,24 +2946,24 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
             double targetAreaPD = optimalCutAreaPD;
 
-            // set the step size
-            double slowDownDistance = max(double(toolRadiusScaled) / 4, RESOLUTION_FACTOR * 8);
+            // set the step size: 1x to 8x base size
+            double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
             if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
-                stepScaled = long(RESOLUTION_FACTOR);
+                stepScaled = long(MIN_STEP_CLIPPER);
             }
             else if (fabs(angle) > NTOL) {
-                stepScaled = long(RESOLUTION_FACTOR / fabs(angle));
+                stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
             }
             else {
-                stepScaled = long(RESOLUTION_FACTOR * 4);
+                stepScaled = long(MIN_STEP_CLIPPER * 8);
             }
 
             // clamp the step size - for stability
-            if (stepScaled > min(long(toolRadiusScaled / 4), long(RESOLUTION_FACTOR * 8))) {
-                stepScaled = min(long(toolRadiusScaled / 4), long(RESOLUTION_FACTOR * 8));
+            if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
+                stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
             }
-            if (stepScaled < RESOLUTION_FACTOR) {
-                stepScaled = long(RESOLUTION_FACTOR);
+            if (stepScaled < MIN_STEP_CLIPPER) {
+                stepScaled = long(MIN_STEP_CLIPPER);
             }
 
             //*****************************
@@ -2979,22 +2978,30 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             Perf_PointIterations.Start();
             int iteration;
             double prev_error = __DBL_MAX__;
+            bool pointNotInterp;
             for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
                 total_iterations++;
                 if (iteration == 0) {
                     angle = predictedAngle;
+                    pointNotInterp = true;
                 }
                 else if (iteration == 1) {
                     angle = interp.MIN_ANGLE;  // max engage
+                    pointNotInterp = true;
                 }
-                else if (iteration == 3) {
-                    angle = interp.MAX_ANGLE;  // min engage
-                }
-                else if (interp.getPointCount() < 2) {
-                    angle = interp.getRandomAngle();
+                else if (iteration == 2) {
+                    if (interp.bothSides()) {
+                        angle = interp.interpolateAngle();
+                        pointNotInterp = false;
+                    }
+                    else {
+                        angle = interp.MAX_ANGLE;  // min engage
+                        pointNotInterp = true;
+                    }
                 }
                 else {
-                    angle = interp.interpolateAngle(targetAreaPD);
+                    angle = interp.interpolateAngle();
+                    pointNotInterp = false;
                 }
                 angle = interp.clampAngle(angle);
 
@@ -3004,11 +3011,51 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     long(toolPos.Y + newToolDir.Y * stepScaled)
                 );
 
+                // Skip iteration if this IntPoint has already been processed
+                bool intRepeat = false;
+                if (interp.m_min && newToolPos == interp.m_min->first.second) {
+                    interp.m_min = {{angle, newToolPos}, interp.m_min->second};
+                    intRepeat = true;
+                }
+                if (interp.m_max && newToolPos == interp.m_max->first.second) {
+                    interp.m_max = {{angle, newToolPos}, interp.m_max->second};
+                    intRepeat = true;
+                }
+
+                if (intRepeat) {
+                    if (interp.m_min && interp.m_max
+                        && abs(interp.m_min->first.second.X - interp.m_max->first.second.X) <= 1
+                        && abs(interp.m_min->first.second.Y - interp.m_max->first.second.Y) <= 1) {
+                        if (pointNotInterp) {
+                            // if this happens while testing min/max of the range it doesn't mean
+                            // anything; only exit early if interpolation is down to adjacent
+                            // integers
+                            continue;
+                        }
+                        // exit early, selecting the better of the two adjacent integers
+                        double error;
+                        if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
+                            newToolDir = rotate(toolDir, interp.m_min->first.first);
+                            newToolPos = interp.m_min->first.second;
+                            error = interp.m_min->second;
+                        }
+                        else {
+                            newToolDir = rotate(toolDir, interp.m_max->first.first);
+                            newToolPos = interp.m_max->first.second;
+                            error = interp.m_max->second;
+                        }
+                        areaPD = error + targetAreaPD;
+                        area = areaPD * double(stepScaled);
+                        break;
+                    }
+                    continue;
+                }
+
                 area = CalcCutArea(clip, toolPos, newToolPos, cleared);
 
                 areaPD = area / double(stepScaled);  // area per distance
-                interp.addPoint(areaPD, angle);
                 double error = areaPD - targetAreaPD;
+                interp.addPoint(error, {angle, newToolPos}, pointNotInterp);
                 // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
                 //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
                 //      << endl;
@@ -3017,9 +3064,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
                         angleHistory.erase(angleHistory.begin());
                     }
-                    break;
-                }
-                if (iteration > 5 && fabs(error - prev_error) < 0.001) {
                     break;
                 }
                 if (iteration == MAX_ITERATIONS - 1) {
@@ -3091,8 +3135,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             prevDistTrend = distanceTrend;
             prevDistFromStart = distFromStart;
 
-            if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD
-                    * RESOLUTION_FACTOR) {  // cut is ok - record it
+            if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {  // cut is ok - record it
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
@@ -3155,7 +3198,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
-        if (cumulativeCutArea > MIN_CUT_AREA_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR) {
+        if (cumulativeCutArea > MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {
             Path cleaned;
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
             total_output_points += long(cleaned.size());
@@ -3185,7 +3228,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                     this,
                     cleared,
                     moveDistance,
-                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
+                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
                     4 * referenceCutArea * stepOverFactor
                 )) {
                 // check if there are any uncleared area left
@@ -3223,7 +3266,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                         this,
                         cleared,
                         moveDistance,
-                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * RESOLUTION_FACTOR,
+                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
                         4 * referenceCutArea * stepOverFactor
                     )) {
                     break;

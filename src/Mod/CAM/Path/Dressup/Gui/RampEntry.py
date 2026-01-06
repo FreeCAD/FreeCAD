@@ -182,18 +182,6 @@ class ObjectDressup:
             QT_TRANSLATE_NOOP("App::Property", "Ramping Method"),
         )
         obj.addProperty(
-            "App::PropertyEnumeration",
-            "RampFeedRate",
-            "FeedRate",
-            QT_TRANSLATE_NOOP("App::Property", "Which feed rate to use for ramping"),
-        )
-        obj.addProperty(
-            "App::PropertySpeed",
-            "CustomFeedRate",
-            "FeedRate",
-            QT_TRANSLATE_NOOP("App::Property", "Custom feed rate"),
-        )
-        obj.addProperty(
             "App::PropertyBool",
             "UseStartDepth",
             "StartDepth",
@@ -246,21 +234,6 @@ class ObjectDressup:
                 (translate("CAM_DressupRampEntry", "RampMethod3"), "RampMethod3"),
                 (translate("CAM_DressupRampEntry", "Helix"), "Helix"),
             ],
-            "RampFeedRate": [
-                (
-                    translate("CAM_DressupRampEntry", "Horizontal Feed Rate"),
-                    "Horizontal Feed Rate",
-                ),
-                (
-                    translate("CAM_DressupRampEntry", "Vertical Feed Rate"),
-                    "Vertical Feed Rate",
-                ),
-                (
-                    translate("CAM_DressupRampEntry", "Ramp Feed Rate"),
-                    "Ramp Feed Rate",
-                ),
-                (translate("CAM_DressupRampEntry", "Custom"), "Custom"),
-            ],
         }
 
         if dataType == "raw":
@@ -284,7 +257,7 @@ class ObjectDressup:
         return None
 
     def onChanged(self, obj, prop):
-        if prop in ["RampFeedRate", "UseStartDepth"]:
+        if prop in ["UseStartDepth"]:
             self.setEditorProperties(obj)
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
@@ -296,13 +269,23 @@ class ObjectDressup:
             else:
                 obj.setEditorMode("DressupStartDepth", 2)
 
-        if obj.RampFeedRate == "Custom":
-            obj.setEditorMode("CustomFeedRate", 0)
-        else:
-            obj.setEditorMode("CustomFeedRate", 2)
-
     def onDocumentRestored(self, obj):
         self.setEditorProperties(obj)
+
+        # Remove RampFeedRate + CustomFeedRate properties, but keep the values around temporarily
+        # This is required for tool controller migration: if a TC migrates with onDocumentRestored
+        # called after this, the prior ramp feed rate still needs to be accessible.
+        if hasattr(obj, "RampFeedRate"):
+            obj.Proxy.RampFeedRate = obj.RampFeedRate
+            obj.removeProperty("RampFeedRate")
+
+        if hasattr(obj, "CustomFeedRate"):
+            tmp = obj.CustomFeedRate.Value
+            for prop, exp in obj.ExpressionEngine:
+                if prop == "CustomFeedRate":
+                    tmp = exp
+            obj.Proxy.CustomFeedRate = tmp
+            obj.removeProperty("CustomFeedRate")
 
     def setup(self, obj):
         obj.Angle = 60
@@ -360,13 +343,6 @@ class ObjectDressup:
 
             last_params.update(params)
 
-            if cmd.Name in Path.Geom.CmdMoveAll and (
-                "X" not in params or "Y" not in params or "Z" not in params
-            ):
-                params["X"] = params.get("X", start_point[0])
-                params["Y"] = params.get("Y", start_point[1])
-                params["Z"] = params.get("Z", start_point[2])
-                cmd = Path.Command(cmd.Name, params)
             annotated = AnnotatedGCode(cmd, start_point)
             self.edges.append(annotated)
             start_point = annotated.end_point
@@ -424,7 +400,9 @@ class ObjectDressup:
                             covered = True
                         i = i + 1
                     if len(rampedges) == 0:
-                        Path.Log.warn("No suitable edges for ramping, plunge will remain as such")
+                        Path.Log.warning(
+                            "No suitable edges for ramping, plunge will remain as such"
+                        )
                         outedges.append(edge)
                     else:
                         # Path.Log.debug("Doing ramp to edges: {}".format(rampedges))
@@ -499,7 +477,7 @@ class ObjectDressup:
                         rampedges.append(candidate)
                         j = j + 1
                     if not loopFound:
-                        Path.Log.warn("No suitable helix found, leaving as a plunge")
+                        Path.Log.warning("No suitable helix found, leaving as a plunge")
                         outedges.append(edge)
                     else:
                         outedges.extend(self.createHelix(rampedges, edge.start_point[2]))
@@ -683,15 +661,7 @@ class ObjectDressup:
         vertFeed = tc.VertFeed.Value
         horizRapid = tc.HorizRapid.Value
         vertRapid = tc.VertRapid.Value
-
-        if obj.RampFeedRate == "Horizontal Feed Rate":
-            rampFeed = horizFeed
-        elif obj.RampFeedRate == "Vertical Feed Rate":
-            rampFeed = vertFeed
-        elif obj.RampFeedRate == "Ramp Feed Rate":
-            rampFeed = math.sqrt(pow(vertFeed, 2) + pow(horizFeed, 2))
-        else:
-            rampFeed = obj.CustomFeedRate.Value
+        rampFeed = tc.RampFeed.Value
 
         lastX = lastY = lastZ = 0
         for cmd in commands:

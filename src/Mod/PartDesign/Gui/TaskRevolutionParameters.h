@@ -121,6 +121,7 @@ private:
     QWidget* proxy;
     bool selectionFace;
     bool isGroove;
+    double defaultGizmoMultFactor;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
@@ -137,8 +138,6 @@ private:
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
     void setupGizmos(ViewProvider* vp);
     void setGizmoPositions();
-    void reverseGizmoDir();
-    void setGizmoVisibility();
 };
 
 class TaskDlgRevolutionParameters: public TaskDlgSketchBasedParameters
