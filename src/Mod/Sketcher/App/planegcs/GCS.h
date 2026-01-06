@@ -478,6 +478,7 @@ public:
     int addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId, bool driving = true);
     int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving = true);
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
+    int addConstraintOffset(OffsetCurve& cOffset, double* dist, int tagId, bool driving = true);
     int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
 
     // internal alignment constraints

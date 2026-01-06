@@ -44,6 +44,7 @@
 #include <GeomAPI_ProjectPointOnCurve.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <GeomConvert_BSplineCurveKnotSplitting.hxx>
+#include <GeomConvert.hxx>
 #include <GeomLProp_CLProps.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <Geom_Circle.hxx>
@@ -1629,6 +1630,38 @@ Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomBSplineCurve 
     return Base::Vector3d();
 }
 
+template <>
+Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomRestrictedCurve *resc, PointPos PosId)
+{
+    switch (PosId) {
+    case PointPos::start: {
+        return resc->getStartPoint();
+    }
+    case PointPos::end: {
+        return resc->getEndPoint();
+    }
+    default:
+        break;
+    }
+    return Base::Vector3d();
+}
+
+template <>
+Base::Vector3d SketchObject::getPointForGeometry<>(const Part::GeomOffsetCurve *offc, PointPos PosId)
+{
+    switch (PosId) {
+    case PointPos::start: {
+        return offc->getStartPoint();
+    }
+    case PointPos::end: {
+        return offc->getEndPoint();
+    }
+    default:
+        break;
+    }
+    return Base::Vector3d();
+}
+
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
     if (auto point = freecad_cast<Part::GeomPoint*>(geo)) {
@@ -1657,6 +1690,12 @@ Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
     }
     else if (auto bSplineCurve = freecad_cast<Part::GeomBSplineCurve*>(geo)) {
         return getPointForGeometry<Part::GeomBSplineCurve>(bSplineCurve, PosId);
+    }
+    else if (auto offsetCurve = freecad_cast<Part::GeomOffsetCurve*>(geo)) {
+        return getPointForGeometry<Part::GeomOffsetCurve>(offsetCurve, PosId);
+    }
+    else if (auto restrictedCurve = freecad_cast<Part::GeomRestrictedCurve*>(geo)) {
+        return getPointForGeometry<Part::GeomRestrictedCurve>(restrictedCurve, PosId);
     }
     return Base::Vector3d();
 }
@@ -1725,6 +1764,8 @@ bool SketchObject::isSupportedGeometry(const Part::Geometry* geo) const
         || geo->is<Part::GeomArcOfHyperbola>()
         || geo->is<Part::GeomArcOfParabola>()
         || geo->is<Part::GeomBSplineCurve>()
+        || geo->is<Part::GeomRestrictedCurve>()
+        || geo->is<Part::GeomOffsetCurve>()
         || geo->is<Part::GeomLineSegment>()) {
         return true;
     }
@@ -8393,6 +8434,13 @@ void processEdge2(TopoDS_Edge& projEdge, std::vector<std::unique_ptr<Part::Geome
             geos.emplace_back(aoe);
         }
     }
+    else if (projCurve.GetType() == GeomAbs_OffsetCurve) {
+        // this will only be an approximation
+        Handle(Geom_BSplineCurve) bspOCC = GeomConvert::CurveToBSplineCurve(projCurve.OffsetCurve());
+        auto* bsp = new Part::GeomBSplineCurve(bspOCC);
+        GeometryFacade::setConstruction(bsp, true);
+        geos.emplace_back(bsp);
+    }
     else {
         throw Base::NotImplementedError("Not yet supported geometry for external geometry");
     }
@@ -9592,6 +9640,18 @@ void SketchObject::rebuildVertexIndex()
             VertexId2PosId.push_back(PointPos::mid);
         }
         else if ((*it)->is<Part::GeomBSplineCurve>()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::end);
+        }
+        else if ((*it)->is<Part::GeomRestrictedCurve>()) {
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::start);
+            VertexId2GeoId.push_back(i);
+            VertexId2PosId.push_back(PointPos::end);
+        }
+        else if ((*it)->is<Part::GeomOffsetCurve>()) {
             VertexId2GeoId.push_back(i);
             VertexId2PosId.push_back(PointPos::start);
             VertexId2GeoId.push_back(i);

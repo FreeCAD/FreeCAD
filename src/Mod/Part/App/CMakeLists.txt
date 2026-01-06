@@ -56,6 +56,7 @@ generate_from_py(Hyperbola)
 generate_from_py(ArcOfHyperbola)
 generate_from_py(Parabola)
 generate_from_py(OffsetCurve)
+generate_from_py(RestrictedCurve)
 generate_from_py(Geometry)
 generate_from_py(GeometryExtension)
 generate_from_py(GeometryIntExtension)
@@ -292,6 +293,8 @@ SET(Python_SRCS
     ParabolaPyImp.cpp
     OffsetCurve.pyi
     OffsetCurvePyImp.cpp
+    RestrictedCurve.pyi
+    RestrictedCurvePyImp.cpp
     Geometry.pyi
     GeometryPyImp.cpp
     GeometryExtension.pyi

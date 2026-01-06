@@ -232,6 +232,10 @@ public:
     int addArcOfParabola(const Part::GeomArcOfParabola& parabolaSegment, bool fixed = false);
     /// add a BSpline
     int addBSpline(const Part::GeomBSplineCurve& spline, bool fixed = false);
+    /// add an offset curve
+    int addOffsetCurve(const Part::GeomOffsetCurve& offc, bool fixed = false);
+    /// add a restricted curve
+    int addRestrictedCurve(const Part::GeomRestrictedCurve& offc, bool fixed = false);
     //@}
 
 
@@ -356,6 +360,30 @@ public:
      *   Parameters array, as the case may be.
      */
     int addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving = true);
+
+    /**
+     *   add an offset constraint
+     *
+     *   double * value is a pointer to double allocated in the heap, containing the
+     *   constraint value and already inserted into either the FixParameters or
+     *   Parameters array, as the case may be.
+     */
+    int addOffsetConstraint(int geoIdBasis, int geoIdOffCurve, double* value, bool driving = true);
+
+    /**
+     *   add a restriction constraint
+     *
+     *   double * value, secondValue are pointers to double allocated in the heap, containing the
+     *   constraint value and already inserted into either the FixParameters or
+     *   Parameters array, as the case may be.
+     */
+    int addRestrictionConstraint(
+        int geoIdBasis,
+        int geoIdResCurve,
+        double* value,
+        double* secondValue,
+        bool driving = true
+    );
 
     /// add a parallel constraint between two lines
     int addParallelConstraint(int geoId1, int geoId2);
@@ -547,7 +575,9 @@ public:
         ArcOfEllipse = 6,
         ArcOfHyperbola = 7,
         ArcOfParabola = 8,
-        BSpline = 9
+        BSpline = 9,
+        OffsetCurve = 10,
+        RestrictedCurve = 11
     };
 
 private:
@@ -570,6 +600,7 @@ private:
         int startPointId = -1;   ///< Index in Points of the start point of this geometry
         int midPointId = -1;     ///< Index in Points of the mid point of this geometry
         int endPointId = -1;     ///< Index in Points of the end point of this geometry
+        int basisId = GeoEnum::GeoUndef;  ///< Index of basis geometry (if relevant)
     };
     /// container element to store and work with the constraints of this sketch
     struct ConstrDef
@@ -619,6 +650,8 @@ private:
     std::vector<GCS::ArcOfHyperbola> ArcsOfHyperbola;
     std::vector<GCS::ArcOfParabola> ArcsOfParabola;
     std::vector<GCS::BSpline> BSplines;
+    std::vector<GCS::OffsetCurve> OffsetCurves;
+    std::vector<GCS::RestrictedCurve> RestrictedCurves;
 
     bool isInitMove;
     bool isFine;
@@ -750,6 +783,8 @@ private:
     void updateCircle(const GeoDef&);
     void updateEllipse(const GeoDef&);
     void updateBSpline(const GeoDef&);
+    void updateOffsetCurve(const GeoDef&);
+    void updateRestrictedCurve(const GeoDef&);
     bool updateNonDrivingConstraints();
 
     void calculateDependentParametersElements();

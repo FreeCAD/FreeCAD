@@ -70,6 +70,8 @@ enum ConstraintType : int
     Block = 17,
     Diameter = 18,
     Weight = 19,
+    Offset = 20,
+    Restriction = 21,
     NumConstraintTypes  // must be the last item!
 };
 
@@ -133,7 +135,8 @@ public:
     inline bool isDimensional() const
     {
         return Type == Distance || Type == DistanceX || Type == DistanceY || Type == Radius
-            || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight;
+            || Type == Diameter || Type == Angle || Type == SnellsLaw || Type == Weight
+            || Type == Offset;
     }
 
     /// utility function to swap the index in elements of the provided constraint from the
@@ -190,7 +193,9 @@ private:
          "SnellsLaw",
          "Block",
          "Diameter",
-         "Weight"}};
+         "Weight",
+         "Offset",
+         "Restriction"}};
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>

@@ -341,6 +341,7 @@ private:
         gp_Pnt end = curve.Value(curve.LastParameter());
 
         if (beg.SquareDistance(end) < Precision::Confusion()) {
+            // assuming parameters are far apart this has to be the whole ellipse
             auto* gEllipse = new Part::GeomEllipse();
             Handle(Geom_Ellipse) hEllipse = new Geom_Ellipse(ellipse);
 
@@ -368,6 +369,15 @@ private:
         }
     }
 
+    Part::Geometry* curveToOffsetCurve(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    {
+        Handle(Geom_OffsetCurve) gOffsetCurveOCC = curve.OffsetCurve();
+
+        auto* gOffsetCurve = new Part::GeomOffsetCurve(gOffsetCurveOCC);
+
+        return gOffsetCurve;
+    }
+
     void getOffsetGeos(std::vector<Part::Geometry*>& geometriesToAdd, std::vector<int>& listOfOffsetGeoIds)
     {
         TopoDS_Shape offsetShape = makeOffsetShape();
@@ -390,6 +400,10 @@ private:
             }
             else if (curve.GetType() == GeomAbs_Ellipse) {
                 geometriesToAdd.push_back(curveToEllipseOrArc(curve, edge));
+                listOfOffsetGeoIds.push_back(geoIdToAdd);
+            }
+            else if (curve.GetType() == GeomAbs_OffsetCurve) {
+                geometriesToAdd.push_back(curveToOffsetCurve(curve, edge));
                 listOfOffsetGeoIds.push_back(geoIdToAdd);
             }
             // TODO Bspline support
@@ -499,7 +513,7 @@ private:
 
     bool needTangent(int geoId1, int geoId2, PointPos pos1, PointPos pos2)
     {
-        // Todo: add cases for arcOfellipse parabolas hyperbolas bspline
+        // TODO: add cases for arcOfellipse parabolas hyperbolas bspline
 
         SketchObject* Obj = sketchgui->getSketchObject();
         const Part::Geometry* geo1 = Obj->getGeometry(geoId1);

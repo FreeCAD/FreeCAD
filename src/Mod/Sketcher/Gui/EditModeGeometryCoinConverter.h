@@ -154,6 +154,22 @@ public:
         return std::move(arcGeoIds);
     }
 
+    /**
+     * returns the GeoIds of OffsetCurve geometries
+     */
+    auto getOffsetCurveGeoIds()
+    {
+        return std::move(offsetCurveGeoIds);
+    }
+
+    /**
+     * returns the GeoIds of RestrictedCurve geometries
+     */
+    auto getRestrictedCurveGeoIds()
+    {
+        return std::move(restrictedCurveGeoIds);
+    }
+
 private:
     template<typename GeoType, PointsMode pointmode, CurveMode curvemode, AnalyseMode analysemode>
     void convert(
@@ -190,6 +206,8 @@ private:
                               // calculation.
     std::vector<int> bsplineGeoIds;
     std::vector<int> arcGeoIds;
+    std::vector<int> offsetCurveGeoIds;
+    std::vector<int> restrictedCurveGeoIds;
 };
 
 
