@@ -36,6 +36,7 @@
 #include <Inventor/SbVec3f.h>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/nodes/SoAnnotation.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoGroup.h>
 #include <Inventor/nodes/SoImage.h>
@@ -2985,9 +2986,20 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability();  // Ensure default value;
 
+    // disable depth testing for constraint icons so they render ON TOP of geometry lines
+    // check issues #25840 and #11603
+    SoDepthBuffer* constrDepthOff = new SoDepthBuffer();
+    constrDepthOff->test.setValue(false);
+    editModeScenegraphNodes.EditRoot->addChild(constrDepthOff);
+
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
+
+    // re-enable depth testing for the rest of the nodes
+    SoDepthBuffer* constrDepthOn = new SoDepthBuffer();
+    constrDepthOn->test.setValue(true);
+    editModeScenegraphNodes.EditRoot->addChild(constrDepthOn);
 
     SoPickStyle* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
