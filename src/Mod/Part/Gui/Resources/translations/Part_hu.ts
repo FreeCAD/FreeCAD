@@ -1245,7 +1245,7 @@
     <message>
       <location filename="../../Command.cpp" line="1418"/>
       <source>Applies a boolean operations with the selected shapes</source>
-      <translation>Boolean műveletet végez a kiválasztott formákon</translation>
+      <translation>Logikai műveletet végez a kiválasztott formákon</translation>
     </message>
   </context>
   <context>
@@ -1465,7 +1465,7 @@
     <message>
       <location filename="../../CommandParametric.cpp" line="203"/>
       <source>Creates a solid cone</source>
-      <translation>Crea un con sòlid</translation>
+      <translation>Szilárd kúpot hoz létre</translation>
     </message>
   </context>
   <context>
@@ -1501,7 +1501,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Cuts 2 selected shapes</source>
-      <translation>Két kiválasztott forma vágása</translation>
+      <translation>2 kiválasztott forma vágása</translation>
     </message>
   </context>
   <context>
@@ -1827,7 +1827,7 @@
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Creates solid geometric primitives parametrically</source>
-      <translation>Parametrikussan hozz létre szilárd geometriai alaptesteket</translation>
+      <translation>Parametrikusan hozz létre szilárd geometriai alaptesteket</translation>
     </message>
   </context>
   <context>
@@ -2178,7 +2178,7 @@ irányát.</translation>
     <message>
       <location filename="../../Command.cpp" line="2549"/>
       <source>Add coordinate system</source>
-      <translation>Koordinátarendszer hozzáadása</translation>
+      <translation>Koordináta rendszer hozzáadása</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2587"/>
@@ -2312,7 +2312,7 @@ irányát.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation>Csatlakozási eltolás a helyi koordinátarendszerben</translation>
+      <translation>Csatlakozási eltolás a helyi koordináta rendszerben</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.ui" line="235"/>
@@ -4582,7 +4582,7 @@ from the cut objects.
 Works only properly if all objects
 have the same values.</source>
       <translation>Átveszi a kivágott objektumok színét és átlátszóságát. 
-Csak akkor működik helyesen, ha minden objektumnak azonos étékekkel rendelkezik.</translation>
+Csak akkor működik megfelelően, ha minden objektum azonos értékekkel rendelkezik.</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="330"/>
@@ -4686,7 +4686,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="282"/>
       <location filename="../../TaskShapeBuilder.cpp" line="379"/>
       <source>Select at least 1 edge</source>
-      <translation> legalább 1 tengelyt</translation>
+      <translation>Jelölj legalább 1 tengelyt</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="433"/>
@@ -4849,7 +4849,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskAttacher.ui" line="124"/>
       <source>Attachment Offset in its Local Coordinate System</source>
-      <translation>Csatlakozási eltolás a helyi koordinátarendszerben</translation>
+      <translation>Csatlakozási eltolás a helyi koordináta rendszerben</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="155"/>
@@ -4945,7 +4945,7 @@ of the object being attached.</source>
     <message>
       <location filename="../../TaskAttacher.cpp" line="425"/>
       <source>Attachment offset (in its local coordinate system):</source>
-      <translation>Kapcsolódási eltolás (helyi koordinátarendszerében):</translation>
+      <translation>Kapcsolódási eltolás (helyi koordináta rendszerében):</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="426"/>
@@ -5629,7 +5629,7 @@ Folytassa?</translation>
     <message>
       <location filename="../../Command.cpp" line="2291"/>
       <source>Select either 2 edges or 2 wires.</source>
-      <translation>Válassz két élt vagy két dróthálót.</translation>
+      <translation>Válassz 2 élt vagy 2 dróthálót.</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="73"/>
@@ -5973,7 +5973,7 @@ Folytassa?</translation>
       <translation>Csatolmány szerkesztő</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1002"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation>Felületenkénti megjelenés</translation>
     </message>
@@ -6010,7 +6010,7 @@ Folytassa?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="242"/>
       <source>tool object</source>
-      <translation>eszköz objekzum</translation>
+      <translation>eszköz objektum</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="247"/>
@@ -6041,7 +6041,7 @@ Folytassa?</translation>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
-      <translation>Az "%1" egysítésnek %2 rész objektuma van. Szeretnéd ezeket is törölni?</translation>
+      <translation>Az "%1" egyesítésnek %2 rész objektuma van. Szeretnéd ezeket is törölni?</translation>
     </message>
   </context>
   <context>
@@ -6307,67 +6307,67 @@ Ha egy második objektum van kiválasztva, akkor referenciaként használja, pé
       <translation>Ennek a csatolmánynak a szerkesztése {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="450"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Figyelmen kívül hagyja. Nem lehet csatolni objektumot saját magába!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="458"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation>{} a csatolni kívánt objektumtól függ, nem használható egybefűzésre</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="610"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
       <translation>{} (hozzáadás {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="614"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
       <translation>{} (további hivatkozás hozzáadása)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="650"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
       <translation>Hivatkozás kombinációk:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="665"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
       <translation>Hivatkozás{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="672"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
       <translation>Kiválasztás…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="701"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
       <translation>Nem sikerült feloldani a összekötéseket. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="712"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
       <translation>Nem csatolt</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="715"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
       <translation>Csatolt ezzel a móddal {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="725"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
       <translation>Hiba: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="731"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Csatolás eltolása (helyi koordinátákban):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Csatolás eltolás (inaktív - nem csatolt):</translation>
     </message>

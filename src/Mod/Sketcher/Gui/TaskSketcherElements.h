@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -23,6 +25,7 @@
 #ifndef GUI_TASKVIEW_TaskSketcherElements_H
 #define GUI_TASKVIEW_TaskSketcherElements_H
 
+#include <unordered_map>
 #include <QListWidget>
 #include <QStyledItemDelegate>
 
@@ -163,6 +166,19 @@ private:
     ElementFilterList* filterList;
 
     bool isNamingBoxChecked;
+
+    // Buffering to speed up large selections
+    std::unordered_map<int, ElementItem*> elementMap;
+
+    struct PendingUpdate
+    {
+        ElementItem* item;
+        bool select;
+    };
+    std::vector<PendingUpdate> selectionBuffer;
+    bool updateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui

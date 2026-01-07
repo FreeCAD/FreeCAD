@@ -159,6 +159,7 @@ class MeshSetsGetter:
         self.get_constraints_temperature_nodes()
         self.get_constraints_initialtemperature_nodes()
         self.get_constraints_electrostatic_nodes()
+        self.get_constraints_electricchargedensity_nodes()
 
         # constraints sets with constraint data
         self.get_constraints_force_nodeloads()
@@ -289,6 +290,18 @@ class MeshSetsGetter:
                     self.femmesh, femobj
                 )
 
+    def get_constraints_electricchargedensity_nodes(self):
+        if not self.member.cons_electricchargedensity:
+            return
+        # get nodes
+        for femobj in self.member.cons_electricchargedensity:
+            # femobj --> dict, FreeCAD document object is femobj["Object"]
+            if femobj["Object"].Concentrated:
+                print_obj_info(femobj["Object"])
+                femobj["Nodes"] = meshtools.get_femnodes_by_femobj_with_references(
+                    self.femmesh, femobj
+                )
+
     def get_constraints_force_nodeloads(self):
         if not self.member.cons_force:
             return
@@ -410,51 +423,11 @@ class MeshSetsGetter:
             femobj["TieMasterFaces"] = result[-1:]
 
     def get_constraints_sectionprint_faces(self):
-        if not self.member.cons_sectionprint:
-            return
-        # TODO: use meshtools to get the surfaces
-        # see constraint contact or constraint tie
         for femobj in self.member.cons_sectionprint:
-            # femobj --> dict, FreeCAD document object is femobj["Object"]
-            sectionprint_obj = femobj["Object"]
-            if len(sectionprint_obj.References) > 1:
-                FreeCAD.Console.PrintError(
-                    "Only one reference shape allowed for a section print "
-                    "but {} found: {}\n".format(
-                        len(sectionprint_obj.References), sectionprint_obj.References
-                    )
-                )
-            for o, elem_tup in sectionprint_obj.References:
-                for elem in elem_tup:
-                    # there should only be one reference for each section print object
-                    # in the gui this is checked
-                    ref_shape = o.Shape.getElement(elem)
-                    if ref_shape.ShapeType == "Face":
-                        v = self.mesh_object.FemMesh.getccxVolumesByFace(ref_shape)
-                        if len(v) > 0:
-                            femobj["SectionPrintFaces"] = v
-                            # volume elements found
-                            FreeCAD.Console.PrintLog(
-                                "{}, surface {}, {} touching volume elements found\n".format(
-                                    sectionprint_obj.Label, sectionprint_obj.Name, len(v)
-                                )
-                            )
-                        else:
-                            # no volume elements found, shell elements not allowed
-                            FreeCAD.Console.PrintError(
-                                "{}, surface {}, Error: "
-                                "No volume elements found!\n".format(
-                                    sectionprint_obj.Label, sectionprint_obj.Name
-                                )
-                            )
-                    else:
-                        # in Gui only Faces can be added
-                        FreeCAD.Console.PrintError(
-                            "Wrong reference shape type for {} "
-                            "Only Faces are allowed, but a {} was found.\n".format(
-                                sectionprint_obj.Name, ref_shape.ShapeType
-                            )
-                        )
+            obj = femobj["Object"]
+            result = self._get_ccx_elements(obj)
+
+            femobj["SectionPrintFaces"] = result
 
     def get_constraints_heatflux_faces(self):
         for femobj in self.member.cons_heatflux:

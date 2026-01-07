@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -79,6 +81,8 @@ using DrawSketchHandlerLineBase = DrawSketchControllableHandler<DSHLineControlle
 
 class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerLine)
+
     friend DSHLineController;
     friend DSHLineControllerBase;
 

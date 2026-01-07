@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -434,26 +436,11 @@ void EditDatumDialog::performAutoScale(double newDatum)
 
             double oldDatum = sketch->getDatum(ConstrNbr);
             double scaleFactor = newDatum / oldDatum;
-            float initLabelDistance = sketch->Constraints[ConstrNbr]->LabelDistance;
-            float initLabelPosition = sketch->Constraints[ConstrNbr]->LabelPosition;
             centerScale(scaleFactor);
 
             // Some constraints cannot be scaled so the actual datum constraint
             // might change index
             ConstrNbr = sketch->getSingleScaleDefiningConstraint();
-
-            sketch->setLabelDistance(ConstrNbr, initLabelDistance * scaleFactor);
-
-            // Label position or radii and diameters represent an angle, so
-            // they should not be scaled
-            Sketcher::ConstraintType type = sketch->Constraints[ConstrNbr]->Type;
-            if (type == Sketcher::ConstraintType::Radius
-                || type == Sketcher::ConstraintType::Diameter) {
-                sketch->setLabelPosition(ConstrNbr, initLabelPosition);
-            }
-            else {
-                sketch->setLabelPosition(ConstrNbr, initLabelPosition * scaleFactor);
-            }
         }
         catch (const Base::Exception& e) {
             Base::Console().error("Exception performing autoscale: %s\n", e.what());
