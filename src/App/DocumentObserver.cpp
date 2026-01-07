@@ -709,7 +709,7 @@ public:
     }
 
     App::Document* _document;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectApplicationDeletedDocument;
 };
 
@@ -800,7 +800,7 @@ public:
 
     App::DocumentObject* object;
     bool indocument {false};
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectApplicationDeletedDocument;
     Connection connectDocumentCreatedObject;
     Connection connectDocumentDeletedObject;

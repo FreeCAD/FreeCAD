@@ -25,7 +25,7 @@
 #ifndef SKETCHERGUI_TaskDlgEditSketch_H
 #define SKETCHERGUI_TaskDlgEditSketch_H
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -37,7 +37,7 @@
 #include "ViewProviderSketch.h"
 
 
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace SketcherGui
 {
@@ -75,7 +75,7 @@ public:
 
     /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
     template<typename F>
-    boost::signals2::connection registerToolWidgetChanged(F&& f)
+    fastsignals::connection registerToolWidgetChanged(F&& f)
     {
         return ToolSettings->registerToolWidgetChanged(std::forward<F>(f));
     }

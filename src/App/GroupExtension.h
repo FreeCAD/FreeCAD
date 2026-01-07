@@ -154,7 +154,7 @@ private:
 
     // for tracking children visibility
     void slotChildChanged(const App::DocumentObject&, const App::Property&);
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection> _Conns;
+    std::unordered_map<const App::DocumentObject*, fastsignals::scoped_connection> _Conns;
 };
 
 

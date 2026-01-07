@@ -3304,7 +3304,7 @@ DocInfoMap _DocInfoMap;
 class App::DocInfo: public std::enable_shared_from_this<App::DocInfo>
 {
 public:
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connFinishRestoreDocument;
     Connection connPendingReloadDocument;
     Connection connDeleteDocument;
