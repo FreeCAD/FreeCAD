@@ -34,29 +34,22 @@
 # include <FCGlobal.h>
 #endif
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-# define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class BinInputStream;
 }
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class BinInputStream;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 namespace Base
 {
 
 
-class BaseExport StdInputStream: public XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream
+class BaseExport StdInputStream: public XERCES_CPP_NAMESPACE::BinInputStream
 {
 public:
     // clang-format off
     explicit StdInputStream(std::istream& Stream,
-                   XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager =
-                   XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager);
+                   XERCES_CPP_NAMESPACE::MemoryManager* const manager =
+                   XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgMemoryManager);
     ~StdInputStream() override;
     // clang-format on
 
@@ -92,18 +85,18 @@ private:
 };
 
 
-class BaseExport StdInputSource: public XERCES_CPP_NAMESPACE_QUALIFIER InputSource
+class BaseExport StdInputSource: public XERCES_CPP_NAMESPACE::InputSource
 {
 public:
     StdInputSource(
         std::istream& Stream,
         const char* filePath,
-        XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager
-        = XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager
+        XERCES_CPP_NAMESPACE::MemoryManager* const manager
+        = XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgMemoryManager
     );
     ~StdInputSource() override;
 
-    XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const override;
+    XERCES_CPP_NAMESPACE::BinInputStream* makeStream() const override;
 
     StdInputSource(const StdInputSource&) = delete;
     StdInputSource(StdInputSource&&) = delete;
