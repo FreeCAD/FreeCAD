@@ -523,7 +523,7 @@ TaskPostFunction::TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* p
     : TaskPostWidget(view, Gui::BitmapFactory().pixmap("fem-post-geo-plane"), tr("Implicit function"), parent)
 {
     // we load the views widget
-    FunctionWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
+    ShapeWidget* w = getTypedView<ViewProviderFemPostFunction>()->createControlWidget();
     w->setParent(this);
     w->setViewProvider(getTypedView<ViewProviderFemPostFunction>());
 

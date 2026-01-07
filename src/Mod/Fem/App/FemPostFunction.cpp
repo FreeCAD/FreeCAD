@@ -81,15 +81,13 @@ DocumentObjectExecReturn* FemPostFunction::execute()
 
 // ***************************************************************************
 // box function
-PROPERTY_SOURCE(Fem::FemPostBoxFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostBoxFunction, Fem::FemPostFunction)
 
 FemPostBoxFunction::FemPostBoxFunction()
     : FemPostFunction()
+    , BoxExtension()
 {
-    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Length, (10.0));
-    ADD_PROPERTY(Width, (10.0));
-    ADD_PROPERTY(Height, (10.0));
+    BoxExtension::initExtension(this);
 
     m_box = vtkSmartPointer<vtkBox>::New();
     m_implicit = m_box;
@@ -101,11 +99,11 @@ FemPostBoxFunction::~FemPostBoxFunction() = default;
 
 void FemPostBoxFunction::onChanged(const Property* prop)
 {
-    if (prop == &Center || prop == &Length || prop == &Width || prop == &Height) {
-        const Base::Vector3d& vec = Center.getValue();
-        float l = Length.getValue();
-        float w = Width.getValue();
-        float h = Height.getValue();
+    if (prop == &BoxCenter || prop == &BoxLength || prop == &BoxWidth || prop == &BoxHeight) {
+        const Base::Vector3d& vec = BoxCenter.getValue();
+        float l = BoxLength.getValue();
+        float w = BoxWidth.getValue();
+        float h = BoxHeight.getValue();
         m_box->SetBounds(
             vec[0] - l / 2,
             vec[0] + l / 2,
@@ -122,20 +120,56 @@ void FemPostBoxFunction::onChanged(const Property* prop)
 void FemPostBoxFunction::onDocumentRestored()
 {
     // This is to notify the view provider that the document has been fully restored
-    Center.touch();
+    BoxCenter.touch();
+}
+
+void FemPostBoxFunction::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+
+    App::PropertyVectorDistance BoxCenter;
+    App::PropertyDistance BoxLength;
+    App::PropertyDistance BoxWidth;
+    App::PropertyDistance BoxHeight;
+
+    if (strcmp(propName, "Center") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVectorDistance::getClassTypeId()) {
+
+        BoxCenter.Restore(reader);
+    }
+
+    if (strcmp(propName, "Length") == 0
+        && Base::Type::fromName(typeName) == App::PropertyDistance::getClassTypeId()) {
+
+        BoxLength.Restore(reader);
+    }
+
+    if (strcmp(propName, "Width") == 0
+        && Base::Type::fromName(typeName) == App::PropertyDistance::getClassTypeId()) {
+
+        BoxWidth.Restore(reader);
+    }
+
+    if (strcmp(propName, "Height") == 0
+        && Base::Type::fromName(typeName) == App::PropertyDistance::getClassTypeId()) {
+
+        BoxHeight.Restore(reader);
+    }
 }
 
 
 // ***************************************************************************
 // cylinder function
-PROPERTY_SOURCE(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostCylinderFunction, Fem::FemPostFunction)
 
 FemPostCylinderFunction::FemPostCylinderFunction()
     : FemPostFunction()
+    , CylinderExtension()
 {
-    ADD_PROPERTY(Center, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Axis, (Base::Vector3d(0.0, 0.0, 1.0)));
-    ADD_PROPERTY(Radius, (5.0));
+    CylinderExtension::initExtension(this);
 
     m_cylinder = vtkSmartPointer<vtkCylinder>::New();
     m_implicit = m_cylinder;
@@ -149,16 +183,16 @@ FemPostCylinderFunction::~FemPostCylinderFunction() = default;
 
 void FemPostCylinderFunction::onChanged(const Property* prop)
 {
-    if (prop == &Axis) {
-        const Base::Vector3d& vec = Axis.getValue();
+    if (prop == &CylinderAxis) {
+        const Base::Vector3d& vec = CylinderAxis.getValue();
         m_cylinder->SetAxis(vec[0], vec[1], vec[2]);
     }
-    else if (prop == &Center) {
-        const Base::Vector3d& vec = Center.getValue();
+    else if (prop == &CylinderCenter) {
+        const Base::Vector3d& vec = CylinderCenter.getValue();
         m_cylinder->SetCenter(vec[0], vec[1], vec[2]);
     }
-    else if (prop == &Radius) {
-        m_cylinder->SetRadius(Radius.getValue());
+    else if (prop == &CylinderRadius) {
+        m_cylinder->SetRadius(CylinderRadius.getValue());
     }
 
     Fem::FemPostFunction::onChanged(prop);
@@ -167,20 +201,45 @@ void FemPostCylinderFunction::onChanged(const Property* prop)
 void FemPostCylinderFunction::onDocumentRestored()
 {
     // This is to notify the view provider that the document has been fully restored
-    Axis.touch();
+    CylinderAxis.touch();
+}
+
+void FemPostCylinderFunction::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "Radius") == 0
+        && Base::Type::fromName(typeName) == App::PropertyDistance::getClassTypeId()) {
+
+        CylinderRadius.Restore(reader);
+    }
+
+    if (strcmp(propName, "Center") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVectorDistance::getClassTypeId()) {
+
+        CylinderCenter.Restore(reader);
+    }
+
+    if (strcmp(propName, "Axis") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVector::getClassTypeId()) {
+
+        CylinderAxis.Restore(reader);
+    }
 }
 
 
 // ***************************************************************************
 // plane function
-PROPERTY_SOURCE(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostPlaneFunction, Fem::FemPostFunction)
 
 FemPostPlaneFunction::FemPostPlaneFunction()
     : FemPostFunction()
+    , PlaneExtension()
 {
 
-    ADD_PROPERTY(Origin, (Base::Vector3d(0.0, 0.0, 0.0)));
-    ADD_PROPERTY(Normal, (Base::Vector3d(0.0, 0.0, 1.0)));
+    PlaneExtension::initExtension(this);
 
     m_plane = vtkSmartPointer<vtkPlane>::New();
     m_implicit = m_plane;
@@ -194,12 +253,12 @@ FemPostPlaneFunction::~FemPostPlaneFunction() = default;
 void FemPostPlaneFunction::onChanged(const Property* prop)
 {
 
-    if (prop == &Origin) {
-        const Base::Vector3d& vec = Origin.getValue();
+    if (prop == &PlaneOrigin) {
+        const Base::Vector3d& vec = PlaneOrigin.getValue();
         m_plane->SetOrigin(vec[0], vec[1], vec[2]);
     }
-    else if (prop == &Normal) {
-        const Base::Vector3d& vec = Normal.getValue();
+    else if (prop == &PlaneNormal) {
+        const Base::Vector3d& vec = PlaneNormal.getValue();
         m_plane->SetNormal(vec[0], vec[1], vec[2]);
     }
 
@@ -209,20 +268,38 @@ void FemPostPlaneFunction::onChanged(const Property* prop)
 void FemPostPlaneFunction::onDocumentRestored()
 {
     // This is to notify the view provider that the document has been fully restored
-    Normal.touch();
+    PlaneNormal.touch();
+}
+
+void FemPostPlaneFunction::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "Normal") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVector::getClassTypeId()) {
+
+        PlaneNormal.Restore(reader);
+    }
+
+    if (strcmp(propName, "Origin") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVectorDistance::getClassTypeId()) {
+
+        PlaneOrigin.Restore(reader);
+    }
 }
 
 
 // ***************************************************************************
 // sphere function
-PROPERTY_SOURCE(Fem::FemPostSphereFunction, Fem::FemPostFunction)
+PROPERTY_SOURCE_WITH_EXTENSIONS(Fem::FemPostSphereFunction, Fem::FemPostFunction)
 
 FemPostSphereFunction::FemPostSphereFunction()
     : FemPostFunction()
+    , SphereExtension()
 {
-
-    ADD_PROPERTY(Radius, (5.0));
-    ADD_PROPERTY(Center, (Base::Vector3d(1.0, 0.0, 0.0)));
+    SphereExtension::initExtension(this);
 
     m_sphere = vtkSmartPointer<vtkSphere>::New();
     m_implicit = m_sphere;
@@ -236,13 +313,32 @@ FemPostSphereFunction::~FemPostSphereFunction() = default;
 void FemPostSphereFunction::onChanged(const Property* prop)
 {
 
-    if (prop == &Center) {
-        const Base::Vector3d& vec = Center.getValue();
+    if (prop == &SphereCenter) {
+        const Base::Vector3d& vec = SphereCenter.getValue();
         m_sphere->SetCenter(vec[0], vec[1], vec[2]);
     }
-    else if (prop == &Radius) {
-        m_sphere->SetRadius(Radius.getValue());
+    else if (prop == &SphereRadius) {
+        m_sphere->SetRadius(SphereRadius.getValue());
     }
 
     Fem::FemPostFunction::onChanged(prop);
+}
+
+void FemPostSphereFunction::handleChangedPropertyName(
+    Base::XMLReader& reader,
+    const char* typeName,
+    const char* propName
+)
+{
+    if (strcmp(propName, "Radius") == 0
+        && Base::Type::fromName(typeName) == App::PropertyDistance::getClassTypeId()) {
+
+        SphereRadius.Restore(reader);
+    }
+
+    if (strcmp(propName, "Center") == 0
+        && Base::Type::fromName(typeName) == App::PropertyVectorDistance::getClassTypeId()) {
+
+        SphereCenter.Restore(reader);
+    }
 }

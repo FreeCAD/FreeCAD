@@ -113,7 +113,8 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         QtCore.QObject.connect(self.timer, QtCore.SIGNAL("timeout()"), self.update_timer_text)
 
     def thread_started(self):
-        self.text_log.clear()
+        if self.text_log:
+            self.text_log.clear()
         self.write_log("Prepare process...\n", QtGui.QColor(getOutputWinColor("Text")))
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
 
@@ -169,6 +170,9 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         )
 
     def write_log(self, data, color):
+        if not self.text_log:
+            return
+
         cursor = QtGui.QTextCursor(self.text_log.document())
         cursor.beginEditBlock()
         cursor.movePosition(QtGui.QTextCursor.End)
@@ -233,7 +237,8 @@ class _BaseLogTaskPanel(base_femtaskpanel._BaseTaskPanel, ABC):
         self.run_process()
 
     def update_timer_text(self):
-        self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
+        if self.text_time:
+            self.text_time.setText(f"Time: {self.elapsed.elapsed()/1000:4.1f} s")
 
     def stop_timer(self, *reason):
         self.timer.stop()
