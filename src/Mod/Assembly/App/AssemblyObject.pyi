@@ -79,7 +79,6 @@ class AssemblyObject(Part):
         ...
 
     @constmethod
-
     def updateSolveStatus(self) -> Any:
         """updateSolveStatus()
 
