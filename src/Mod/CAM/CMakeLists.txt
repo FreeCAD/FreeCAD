@@ -173,6 +173,7 @@ SET(PathPythonToolsGui_SRCS
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/util.py
+    Path/Tool/toolbit/migration.py
 )
 
 SET(PathPythonToolsToolBitMixins_SRCS
@@ -501,6 +502,7 @@ SET(Tests_SRCS
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidPost.py
     CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestFanucPost.py
     CAMTests/TestGenericPost.py
     CAMTests/TestGrblPost.py
     CAMTests/TestGrblLegacyPost.py
@@ -569,6 +571,7 @@ SET(Tests_SRCS
     CAMTests/TestPostGCodes.py
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
+    CAMTests/TestTSPSolver.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd

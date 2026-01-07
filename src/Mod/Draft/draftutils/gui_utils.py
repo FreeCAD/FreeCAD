@@ -69,7 +69,7 @@ def get_3d_view():
         return None
 
     # FIXME The following two imports were added as part of PR4926
-    # Also see discussion https://forum.freecadweb.org/viewtopic.php?f=3&t=60251
+    # Also see discussion https://forum.freecad.org/viewtopic.php?f=3&t=60251
     import FreeCADGui as Gui
     from pivy import coin
 
@@ -939,16 +939,27 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
-# Code by Yorik van Havre.
+# Code by Yorik van Havre (adapted).
 def find_coin_node(parent, nodetype):
+    if not hasattr(parent, "getNumChildren"):
+        return None
     for i in range(parent.getNumChildren()):
         if isinstance(parent.getChild(i), nodetype):
             return parent.getChild(i)
     return None
 
 
+def find_coin_node_by_name(parent, name):
+    if not hasattr(parent, "getNumChildren"):
+        return None
+    for i in range(parent.getNumChildren()):
+        if parent.getChild(i).getName() == name:
+            return parent.getChild(i)
+    return None
+
+
 # Code by Chris Hennes (chennes).
-# See https://forum.freecadweb.org/viewtopic.php?p=656362#p656362.
+# See https://forum.freecad.org/viewtopic.php?p=656362#p656362.
 # Used to fix https://github.com/FreeCAD/FreeCAD/issues/10469.
 def end_all_events():
     view = get_3d_view()

@@ -295,8 +295,8 @@ class CommandCreateJointRackPinion:
             "Accel": "Q",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointRackPinion",
-                "<p>Creates a rack and pinion joint that links a part with a sliding joint to a part with a revolute joint</p>"
-                "<p>Selects the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>",
+                "<p>Creates a rack and pinion joint that links a part with a slider joint to a part with a revolute joint</p>"
+                "<p>Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rack and the pinion.</p>",
             ),
             "CmdType": "ForEdit",
         }
@@ -319,8 +319,8 @@ class CommandCreateJointScrew:
             "Accel": "W",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointScrew",
-                "<p>Creates a screw joint that links a part with a sliding joint to a part with a revolute joint</p>"
-                "<p>Select the same coordinate systems as the revolute and sliding joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</p>",
+                "<p>Creates a screw joint that links a part with a slider joint to a part with a revolute joint</p>"
+                "<p>Select the same coordinate systems as the revolute and slider joints. The pitch radius defines the movement ratio between the rotating screw and the sliding part.</p>",
             ),
             "CmdType": "ForEdit",
         }

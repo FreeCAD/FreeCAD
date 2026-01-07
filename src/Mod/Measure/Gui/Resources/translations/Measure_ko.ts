@@ -60,7 +60,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="212"/>
       <source>Total area: %1</source>
-      <translation type="unfinished">Total area: %1</translation>
+      <translation>총 면적: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="223"/>
@@ -71,17 +71,17 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>면적: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>
       <source>Area: %1, Radius: %2</source>
-      <translation type="unfinished">Area: %1, Radius: %2</translation>
+      <translation>면적: %1, 반경: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="234"/>
       <source>Area: %1, Diameter: %2</source>
-      <translation type="unfinished">Area: %1, Diameter: %2</translation>
+      <translation>면적: %1, 직경: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="243"/>
@@ -101,22 +101,22 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="263"/>
       <source>Angle: %1, Total length: %2</source>
-      <translation type="unfinished">Angle: %1, Total length: %2</translation>
+      <translation>각도: %1, 총 거리: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="267"/>
       <source>Length: %1</source>
-      <translation type="unfinished">Length: %1</translation>
+      <translation>거리: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="270"/>
       <source>Radius: %1</source>
-      <translation type="unfinished">Radius: %1</translation>
+      <translation>반경: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="273"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>직경: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="276"/>
@@ -225,6 +225,11 @@
       <translation>설정</translation>
     </message>
     <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>자동</translation>
+    </message>
+    <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
       <translation type="unfinished">Mode:</translation>
@@ -256,6 +261,49 @@
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>저장</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>무게중심</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation type="unfinished">Distance</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation type="unfinished">Distance Free</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>각</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>길이:</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation type="unfinished">Position</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>면적</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>반지름</translation>
     </message>
   </context>
 </TS>

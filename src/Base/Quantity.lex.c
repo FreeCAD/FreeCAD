@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 // clang-format off
-#line 2 "Quantity.lex.c"
+#line 1 "Quantity.lex.c"
 
-#line 4 "Quantity.lex.c"
+#line 3 "Quantity.lex.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -356,8 +356,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 154
-#define YY_END_OF_BUFFER 155
+#define YY_NUM_RULES 155
+#define YY_END_OF_BUFFER 156
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -367,34 +367,34 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[265] =
     {   0,
-        0,    0,    0,    0,  155,  153,    4,    5,   45,   47,
-        6,  153,    7,  153,  131,  130,   33,   94,   98,   96,
-      104,  109,   37,  126,   61,  153,  153,   87,   95,   82,
-       78,    1,  153,  153,  153,  153,  136,  153,   27,   32,
-      153,  153,   17,   15,  153,  153,  153,  153,   30,   29,
-      153,  153,  153,  153,    3,  154,    2,    5,  134,  132,
-      133,  131,  131,    0,  128,  114,    0,    0,   19,   36,
-        0,   64,    0,    0,   85,    0,    0,  112,    0,   65,
-        0,    0,   81,   97,  115,    0,    0,    0,    0,    0,
-        0,   43,    0,   13,    0,    0,    0,   14,  117,    0,
+        0,    0,    0,    0,  156,  154,    4,    5,   45,   47,
+        6,  154,    7,  154,  132,  131,   33,   94,   99,   97,
+      105,  110,   37,  127,   61,  154,  154,   87,   95,   82,
+       78,    1,  154,  154,  154,  154,  137,  154,   27,   32,
+      154,  154,   17,   15,  154,  154,  154,  154,   30,   29,
+      154,  154,  154,  154,    3,  155,    2,    5,  135,  133,
+      134,  132,  132,    0,  129,  115,    0,    0,   19,   36,
+        0,   64,    0,    0,   85,    0,    0,  113,    0,   65,
+        0,    0,   81,   98,  116,    0,    0,    0,    0,    0,
+        0,   43,    0,   13,    0,    0,    0,   14,  118,    0,
 
-       46,    0,   44,   35,    0,  111,   63,    0,    0,   86,
+       46,    0,   44,   35,    0,  112,   63,    0,    0,   86,
        83,   80,    0,    0,   28,   16,    0,   55,    0,   34,
-       99,  105,  110,   38,   62,   88,    0,   84,   79,    0,
-       26,   51,   18,   12,    0,    0,  102,  108,    9,   57,
-      103,  135,    0,    0,    0,    0,    0,   58,    0,    0,
-      101,  107,   40,   90,    0,   24,   10,   50,  122,    0,
-        0,    0,    0,    0,  133,    0,  131,    0,    0,  131,
-       22,   68,   21,    0,   67,  119,    0,   91,   23,    0,
-      113,  143,    0,    0,    0,   69,  120,   54,  141,   59,
-      123,  142,  125,   20,    0,   66,  116,    0,  118,   76,
+      100,  106,  111,   38,   62,   88,   96,   84,   79,    0,
+       26,   51,   18,   12,    0,    0,  103,  109,    9,   57,
+      104,  136,    0,    0,    0,    0,    0,   58,    0,    0,
+      102,  108,   40,   90,    0,   24,   10,   50,  123,    0,
+        0,    0,    0,    0,  134,    0,  132,    0,    0,  132,
+       22,   68,   21,    0,   67,  120,    0,   91,   23,    0,
+      114,  144,    0,    0,    0,   69,  121,   54,  142,   59,
+      124,  143,  126,   20,    0,   66,  117,    0,  119,   76,
 
-       60,   56,  145,    0,    0,   49,   31,    0,  144,   41,
-       52,  147,   75,  124,  148,    0,    0,  150,    0,    0,
-      100,  106,   39,   89,    0,   25,   11,  127,  129,    8,
-        0,  134,    0,  132,    0,  133,    0,  131,   93,   77,
-       71,  137,  138,  139,   92,  121,    0,    0,   70,   42,
-      149,   53,  152,  151,   48,    0,    0,  140,  146,   72,
+       60,   56,  146,    0,    0,   49,   31,    0,  145,   41,
+       52,  148,   75,  125,  149,    0,    0,  151,    0,    0,
+      101,  107,   39,   89,    0,   25,   11,  128,  130,    8,
+        0,  135,    0,  133,    0,  134,    0,  132,   93,   77,
+       71,  138,  139,  140,   92,  122,    0,    0,   70,   42,
+      150,   53,  153,  152,   48,    0,    0,  141,  147,   72,
        73,    0,   74,    0
     } ;
 
@@ -631,6 +631,8 @@ int yy_flex_debug = 0;
 char *yytext;
 #line 1 "Quantity.l"
 #line 2 "Quantity.l"
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
 /***************************************************************************
  *   Copyright (c) 2013 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -657,12 +659,12 @@ char *yytext;
  * on Win32. The C++ scanner uses STL streams instead. */
 #define YY_NO_UNISTD_H
 
-#line 658 "Quantity.lex.c"
+#line 659 "Quantity.lex.c"
 /*** Flex Declarations and Options ***/
 /* the manual says "somewhat more optimized" */
 /* no support for include files is planned */
 
-#line 663 "Quantity.lex.c"
+#line 664 "Quantity.lex.c"
 
 #define INITIAL 0
 #define C_COMMENT 1
@@ -878,10 +880,10 @@ YY_DECL
 		}
 
 	{
-#line 49 "Quantity.l"
+#line 51 "Quantity.l"
 
 
-#line 882 "Quantity.lex.c"
+#line 883 "Quantity.lex.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -936,776 +938,781 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 51 "Quantity.l"
+#line 53 "Quantity.l"
 { BEGIN(C_COMMENT); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 52 "Quantity.l"
+#line 54 "Quantity.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 53 "Quantity.l"
+#line 55 "Quantity.l"
 { ;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 56 "Quantity.l"
+#line 58 "Quantity.l"
 ;
 	YY_BREAK
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 57 "Quantity.l"
+#line 59 "Quantity.l"
 ;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 59 "Quantity.l"
+#line 61 "Quantity.l"
 return *yytext;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 61 "Quantity.l"
+#line 63 "Quantity.l"
 return MINUSSIGN;
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 62 "Quantity.l"
+#line 64 "Quantity.l"
 return MINUSSIGN;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 64 "Quantity.l"
+#line 66 "Quantity.l"
 yylval = Quantity::NanoMetre;           return UNIT; // nano meter
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 65 "Quantity.l"
+#line 67 "Quantity.l"
 yylval = Quantity::MicroMetre;          return UNIT; // micro meter
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 66 "Quantity.l"
+#line 68 "Quantity.l"
 yylval = Quantity::MicroMetre;          return UNIT; // micro meter    (greek micro in UTF8)
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 67 "Quantity.l"
+#line 69 "Quantity.l"
 yylval = Quantity::MilliMetre;          return UNIT; // milli meter    (internal standard length)
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 68 "Quantity.l"
+#line 70 "Quantity.l"
 yylval = Quantity::CentiMetre;          return UNIT; // centi meter
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 69 "Quantity.l"
+#line 71 "Quantity.l"
 yylval = Quantity::DeciMetre;           return UNIT; // deci meter
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 70 "Quantity.l"
+#line 72 "Quantity.l"
 yylval = Quantity::Metre;               return UNIT; // Metre
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 71 "Quantity.l"
+#line 73 "Quantity.l"
 yylval = Quantity::KiloMetre;           return UNIT; // kilo meter
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 73 "Quantity.l"
+#line 75 "Quantity.l"
 yylval = Quantity::Liter;               return UNIT; // Liter  (dm^3)
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 74 "Quantity.l"
+#line 76 "Quantity.l"
 yylval = Quantity::MilliLiter;          return UNIT; // milli Liter
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 76 "Quantity.l"
+#line 78 "Quantity.l"
 yylval = Quantity::Hertz;               return UNIT; // Hertz
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 77 "Quantity.l"
+#line 79 "Quantity.l"
 yylval = Quantity::KiloHertz;           return UNIT; // kilo Hertz
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 78 "Quantity.l"
+#line 80 "Quantity.l"
 yylval = Quantity::MegaHertz;           return UNIT; // mega Hertz
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 79 "Quantity.l"
+#line 81 "Quantity.l"
 yylval = Quantity::GigaHertz;           return UNIT; // giga Hertz
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 80 "Quantity.l"
+#line 82 "Quantity.l"
 yylval = Quantity::TeraHertz;           return UNIT; // tera Hertz
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 82 "Quantity.l"
+#line 84 "Quantity.l"
 yylval = Quantity::MicroGram;           return UNIT; // micro gram
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 83 "Quantity.l"
+#line 85 "Quantity.l"
 yylval = Quantity::MicroGram;           return UNIT; // micro gram
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 84 "Quantity.l"
+#line 86 "Quantity.l"
 yylval = Quantity::MilliGram;           return UNIT; // milli gram
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 85 "Quantity.l"
+#line 87 "Quantity.l"
 yylval = Quantity::Gram;                return UNIT; // gram
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 86 "Quantity.l"
+#line 88 "Quantity.l"
 yylval = Quantity::KiloGram;            return UNIT; // kilo gram      (internal standard for mass)
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 87 "Quantity.l"
+#line 89 "Quantity.l"
 yylval = Quantity::Ton;                 return UNIT; // Metric Tonne
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 89 "Quantity.l"
+#line 91 "Quantity.l"
 yylval = Quantity::Second;              return UNIT; // second         (internal standard time)
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 90 "Quantity.l"
+#line 92 "Quantity.l"
 yylval = Quantity::Minute;              return UNIT; // minute
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 91 "Quantity.l"
+#line 93 "Quantity.l"
 yylval = Quantity::Hour;                return UNIT; // hour
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 93 "Quantity.l"
+#line 95 "Quantity.l"
 yylval = Quantity::Ampere;              return UNIT; // Ampere         (internal standard electric current)
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 94 "Quantity.l"
+#line 96 "Quantity.l"
 yylval = Quantity::MilliAmpere;         return UNIT; // milli Ampere
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 95 "Quantity.l"
+#line 97 "Quantity.l"
 yylval = Quantity::KiloAmpere;          return UNIT; // kilo Ampere
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 96 "Quantity.l"
+#line 98 "Quantity.l"
 yylval = Quantity::MegaAmpere;          return UNIT; // mega Ampere
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 98 "Quantity.l"
+#line 100 "Quantity.l"
 yylval = Quantity::Kelvin;              return UNIT; // Kelvin         (internal standard thermodynamic temperature)
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 99 "Quantity.l"
+#line 101 "Quantity.l"
 yylval = Quantity::MilliKelvin;         return UNIT; // milli Kelvin
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 100 "Quantity.l"
+#line 102 "Quantity.l"
 yylval = Quantity::MicroKelvin;         return UNIT; // micro Kelvin
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 101 "Quantity.l"
+#line 103 "Quantity.l"
 yylval = Quantity::MicroKelvin;         return UNIT; // micro Kelvin
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 103 "Quantity.l"
+#line 105 "Quantity.l"
 yylval = Quantity::Mole;                return UNIT; // Mole           (internal standard amount of substance)
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 104 "Quantity.l"
+#line 106 "Quantity.l"
 yylval = Quantity::MilliMole;           return UNIT; // Milli Mole
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 106 "Quantity.l"
+#line 108 "Quantity.l"
 yylval = Quantity::Candela;             return UNIT; // Candela        (internal standard luminous intensity)
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 108 "Quantity.l"
+#line 110 "Quantity.l"
 yylval = Quantity::Inch;                return UNIT; // inch
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 109 "Quantity.l"
+#line 111 "Quantity.l"
 yylval = Quantity::Inch;                return UNIT; // inch
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 110 "Quantity.l"
+#line 112 "Quantity.l"
 yylval = Quantity::Foot;                return UNIT; // foot
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 111 "Quantity.l"
+#line 113 "Quantity.l"
 yylval = Quantity::Foot;                return UNIT; // foot
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 112 "Quantity.l"
+#line 114 "Quantity.l"
 yylval = Quantity::Thou;                return UNIT; // thou (in/1000)
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 113 "Quantity.l"
+#line 115 "Quantity.l"
 yylval = Quantity::Thou;                return UNIT; // mil  (the thou in US)
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 114 "Quantity.l"
+#line 116 "Quantity.l"
 yylval = Quantity::Yard;                return UNIT; // yard
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 115 "Quantity.l"
+#line 117 "Quantity.l"
 yylval = Quantity::Mile;                return UNIT; // mile
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 117 "Quantity.l"
+#line 119 "Quantity.l"
 yylval = Quantity::MilePerHour;         return UNIT; // mile per hour
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 118 "Quantity.l"
+#line 120 "Quantity.l"
 yylval = Quantity::SquareFoot;          return UNIT; // square foot
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 119 "Quantity.l"
+#line 121 "Quantity.l"
 yylval = Quantity::CubicFoot;           return UNIT; // cubic foot
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 121 "Quantity.l"
+#line 123 "Quantity.l"
 yylval = Quantity::Pound;               return UNIT; // pound
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 122 "Quantity.l"
+#line 124 "Quantity.l"
 yylval = Quantity::Pound;               return UNIT; // pound
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 123 "Quantity.l"
+#line 125 "Quantity.l"
 yylval = Quantity::Ounce;               return UNIT; // ounce
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 124 "Quantity.l"
+#line 126 "Quantity.l"
 yylval = Quantity::Stone;               return UNIT; // Stone
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 125 "Quantity.l"
+#line 127 "Quantity.l"
 yylval = Quantity::Hundredweights;      return UNIT; // hundredweights
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 127 "Quantity.l"
+#line 129 "Quantity.l"
 yylval = Quantity::PoundForce;          return UNIT; // pound
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 129 "Quantity.l"
+#line 131 "Quantity.l"
 yylval = Quantity::Newton;              return UNIT; // Newton (kg*m/s^2)
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 130 "Quantity.l"
+#line 132 "Quantity.l"
 yylval = Quantity::MilliNewton;         return UNIT; // milli Newton
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 131 "Quantity.l"
+#line 133 "Quantity.l"
 yylval = Quantity::KiloNewton;          return UNIT; // kilo Newton
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 132 "Quantity.l"
+#line 134 "Quantity.l"
 yylval = Quantity::MegaNewton;          return UNIT; // mega Newton
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 134 "Quantity.l"
+#line 136 "Quantity.l"
 yylval = Quantity::Pascal;              return UNIT; // Pascal (kg/m/s^2 or N/m^2)
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 135 "Quantity.l"
+#line 137 "Quantity.l"
 yylval = Quantity::KiloPascal;          return UNIT; // kilo Pascal
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 136 "Quantity.l"
+#line 138 "Quantity.l"
 yylval = Quantity::MegaPascal;          return UNIT; // mega Pascal
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 137 "Quantity.l"
+#line 139 "Quantity.l"
 yylval = Quantity::GigaPascal;          return UNIT; // giga Pascal
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 139 "Quantity.l"
+#line 141 "Quantity.l"
 yylval = Quantity::Bar;                 return UNIT; // 1 bar = 100 kPa
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 140 "Quantity.l"
+#line 142 "Quantity.l"
 yylval = Quantity::MilliBar;            return UNIT; // milli Bar
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 142 "Quantity.l"
+#line 144 "Quantity.l"
 yylval = Quantity::Torr;                return UNIT; // portion of Pascal ( 101325/760 )
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 143 "Quantity.l"
+#line 145 "Quantity.l"
 yylval = Quantity::mTorr;               return UNIT; //
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 144 "Quantity.l"
+#line 146 "Quantity.l"
 yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 145 "Quantity.l"
+#line 147 "Quantity.l"
 yylval = Quantity::yTorr;               return UNIT; //
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 147 "Quantity.l"
+#line 149 "Quantity.l"
 yylval = Quantity::PSI;                 return UNIT; // pounds/in^2
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 148 "Quantity.l"
+#line 150 "Quantity.l"
 yylval = Quantity::KSI;                 return UNIT; // 1000 x pounds/in^2
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 149 "Quantity.l"
+#line 151 "Quantity.l"
 yylval = Quantity::MPSI;                return UNIT; // 1000 ksi
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 151 "Quantity.l"
+#line 153 "Quantity.l"
 yylval = Quantity::Watt;                return UNIT; // Watt (kg*m^2/s^3)
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 152 "Quantity.l"
+#line 154 "Quantity.l"
 yylval = Quantity::MilliWatt;           return UNIT; // milli Watt
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 153 "Quantity.l"
+#line 155 "Quantity.l"
 yylval = Quantity::KiloWatt;            return UNIT; // kilo Watt
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 154 "Quantity.l"
+#line 156 "Quantity.l"
 yylval = Quantity::VoltAmpere;          return UNIT; // VoltAmpere (kg*m^2/s^3)
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 156 "Quantity.l"
+#line 158 "Quantity.l"
 yylval = Quantity::Volt;                return UNIT; // Volt (kg*m^2/A/s^3)
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 157 "Quantity.l"
+#line 159 "Quantity.l"
 yylval = Quantity::KiloVolt;            return UNIT; // kilo Volt
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 158 "Quantity.l"
+#line 160 "Quantity.l"
 yylval = Quantity::MilliVolt;           return UNIT; // milli Volt
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 160 "Quantity.l"
+#line 162 "Quantity.l"
 yylval = Quantity::MegaSiemens;         return UNIT; // mega Siemens
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 161 "Quantity.l"
+#line 163 "Quantity.l"
 yylval = Quantity::KiloSiemens;         return UNIT; // kilo Siemens
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 162 "Quantity.l"
+#line 164 "Quantity.l"
 yylval = Quantity::Siemens;             return UNIT; // Siemens (A^2*s^3/kg/m^2)
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 163 "Quantity.l"
+#line 165 "Quantity.l"
 yylval = Quantity::MilliSiemens;        return UNIT; // milli Siemens
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 164 "Quantity.l"
+#line 166 "Quantity.l"
 yylval = Quantity::MicroSiemens;        return UNIT; // micro Siemens
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 165 "Quantity.l"
+#line 167 "Quantity.l"
 yylval = Quantity::MicroSiemens;        return UNIT; // micro Siemens
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 167 "Quantity.l"
+#line 169 "Quantity.l"
 yylval = Quantity::Ohm;                 return UNIT; // Ohm (kg*m^2/A^2/s^3)
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 168 "Quantity.l"
+#line 170 "Quantity.l"
 yylval = Quantity::KiloOhm;             return UNIT; // kilo Ohm
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 169 "Quantity.l"
+#line 171 "Quantity.l"
 yylval = Quantity::MegaOhm;             return UNIT; // mega Ohm
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 171 "Quantity.l"
+#line 173 "Quantity.l"
 yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 173 "Quantity.l"
+#line 175 "Quantity.l"
 yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 174 "Quantity.l"
-yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
+#line 176 "Quantity.l"
+yylval = Quantity::MilliTesla;          return UNIT; // milli Tesla
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 176 "Quantity.l"
-yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)
+#line 177 "Quantity.l"
+yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 178 "Quantity.l"
-yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
+#line 179 "Quantity.l"
+yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 179 "Quantity.l"
-yylval = Quantity::MilliFarad;          return UNIT; // milli Farad
+#line 181 "Quantity.l"
+yylval = Quantity::Farad;               return UNIT; // Farad (s^4*A^2/m^2/kg)
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 180 "Quantity.l"
-yylval = Quantity::MicroFarad;          return UNIT; // micro Farad
+#line 182 "Quantity.l"
+yylval = Quantity::MilliFarad;          return UNIT; // milli Farad
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 181 "Quantity.l"
+#line 183 "Quantity.l"
 yylval = Quantity::MicroFarad;          return UNIT; // micro Farad
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 182 "Quantity.l"
-yylval = Quantity::NanoFarad;           return UNIT; // nano Farad
+#line 184 "Quantity.l"
+yylval = Quantity::MicroFarad;          return UNIT; // micro Farad
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 183 "Quantity.l"
-yylval = Quantity::PicoFarad;           return UNIT; // pico Farad
+#line 185 "Quantity.l"
+yylval = Quantity::NanoFarad;           return UNIT; // nano Farad
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 185 "Quantity.l"
-yylval = Quantity::Henry;               return UNIT; // Henry (kg*m^2/s^2/A^2)
+#line 186 "Quantity.l"
+yylval = Quantity::PicoFarad;           return UNIT; // pico Farad
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 186 "Quantity.l"
-yylval = Quantity::MilliHenry;          return UNIT; // milli Henry
+#line 188 "Quantity.l"
+yylval = Quantity::Henry;               return UNIT; // Henry (kg*m^2/s^2/A^2)
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 187 "Quantity.l"
-yylval = Quantity::MicroHenry;          return UNIT; // micro Henry
+#line 189 "Quantity.l"
+yylval = Quantity::MilliHenry;          return UNIT; // milli Henry
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 188 "Quantity.l"
+#line 190 "Quantity.l"
 yylval = Quantity::MicroHenry;          return UNIT; // micro Henry
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 189 "Quantity.l"
-yylval = Quantity::NanoHenry;           return UNIT; // nano Henry
+#line 191 "Quantity.l"
+yylval = Quantity::MicroHenry;          return UNIT; // micro Henry
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 191 "Quantity.l"
-yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
+#line 192 "Quantity.l"
+yylval = Quantity::NanoHenry;           return UNIT; // nano Henry
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 192 "Quantity.l"
-yylval = Quantity::MilliJoule;          return UNIT; // milli Joule
+#line 194 "Quantity.l"
+yylval = Quantity::Joule;               return UNIT; // Joule (kg*m^2/s^2)
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 193 "Quantity.l"
-yylval = Quantity::KiloJoule;           return UNIT; // kilo Joule
+#line 195 "Quantity.l"
+yylval = Quantity::MilliJoule;          return UNIT; // milli Joule
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 194 "Quantity.l"
-yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
+#line 196 "Quantity.l"
+yylval = Quantity::KiloJoule;           return UNIT; // kilo Joule
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 195 "Quantity.l"
-yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
+#line 197 "Quantity.l"
+yylval = Quantity::NewtonMeter;         return UNIT; // N*m = Joule
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 196 "Quantity.l"
-yylval = Quantity::WattSecond;          return UNIT; //
+#line 198 "Quantity.l"
+yylval = Quantity::VoltAmpereSecond;    return UNIT; // V*A*s = Joule
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 197 "Quantity.l"
-yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
+#line 199 "Quantity.l"
+yylval = Quantity::WattSecond;          return UNIT; //
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 198 "Quantity.l"
-yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
+#line 200 "Quantity.l"
+yylval = Quantity::WattSecond;          return UNIT; // W*s = Joule
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 199 "Quantity.l"
-yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
+#line 201 "Quantity.l"
+yylval = Quantity::KiloWattHour;        return UNIT; // 1 kWh = 3.6e6 J
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 200 "Quantity.l"
-yylval = Quantity::KiloElectronVolt;    return UNIT;
+#line 202 "Quantity.l"
+yylval = Quantity::ElectronVolt;        return UNIT; // 1 eV = 1.602176634e-19 J
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 201 "Quantity.l"
-yylval = Quantity::MegaElectronVolt;    return UNIT;
+#line 203 "Quantity.l"
+yylval = Quantity::KiloElectronVolt;    return UNIT;
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 202 "Quantity.l"
-yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J
+#line 204 "Quantity.l"
+yylval = Quantity::MegaElectronVolt;    return UNIT;
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 203 "Quantity.l"
-yylval = Quantity::KiloCalorie;         return UNIT;
+#line 205 "Quantity.l"
+yylval = Quantity::Calorie;             return UNIT; // 1 cal = 4.1868 J
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 205 "Quantity.l"
-yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
+#line 206 "Quantity.l"
+yylval = Quantity::KiloCalorie;         return UNIT;
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 206 "Quantity.l"
+#line 208 "Quantity.l"
 yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 207 "Quantity.l"
-yylval = Quantity::Radian;              return UNIT; // radian
+#line 209 "Quantity.l"
+yylval = Quantity::Degree;              return UNIT; // degree         (internal standard angle)
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 208 "Quantity.l"
-yylval = Quantity::Gon;                 return UNIT; // gon
+#line 210 "Quantity.l"
+yylval = Quantity::Radian;              return UNIT; // radian
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 209 "Quantity.l"
-yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
+#line 211 "Quantity.l"
+yylval = Quantity::Gon;                 return UNIT; // gon
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 210 "Quantity.l"
+#line 212 "Quantity.l"
 yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 211 "Quantity.l"
-yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
+#line 213 "Quantity.l"
+yylval = Quantity::AngMinute;           return UNIT; // minute(Angular)
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 212 "Quantity.l"
+#line 214 "Quantity.l"
 yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
 	YY_BREAK
 case 130:
 YY_RULE_SETUP
-#line 214 "Quantity.l"
-yylval = Quantity(1.0);                 return ONE;
+#line 215 "Quantity.l"
+yylval = Quantity::AngSecond;           return UNIT; // second(Angular)
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 215 "Quantity.l"
-yylval = Quantity(num_change(yytext,'.',','));  return NUM;
+#line 217 "Quantity.l"
+yylval = Quantity(1.0);                 return ONE;
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 216 "Quantity.l"
+#line 218 "Quantity.l"
 yylval = Quantity(num_change(yytext,'.',','));  return NUM;
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 217 "Quantity.l"
-yylval = Quantity(num_change(yytext,',','.'));  return NUM;
+#line 219 "Quantity.l"
+yylval = Quantity(num_change(yytext,'.',','));  return NUM;
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 218 "Quantity.l"
+#line 220 "Quantity.l"
 yylval = Quantity(num_change(yytext,',','.'));  return NUM;
 	YY_BREAK
 case 135:
 YY_RULE_SETUP
-#line 220 "Quantity.l"
-yylval = Quantity(std::numbers::pi);    return NUM; // constant pi
+#line 221 "Quantity.l"
+yylval = Quantity(num_change(yytext,',','.'));  return NUM;
 	YY_BREAK
 case 136:
 YY_RULE_SETUP
-#line 221 "Quantity.l"
-yylval = Quantity(std::numbers::e);     return NUM; // constant e
+#line 223 "Quantity.l"
+yylval = Quantity(std::numbers::pi);    return NUM; // constant pi
 	YY_BREAK
 case 137:
 YY_RULE_SETUP
-#line 223 "Quantity.l"
-return ACOS;
+#line 224 "Quantity.l"
+yylval = Quantity(std::numbers::e);     return NUM; // constant e
 	YY_BREAK
 case 138:
 YY_RULE_SETUP
-#line 224 "Quantity.l"
-return ASIN;
+#line 226 "Quantity.l"
+return ACOS;
 	YY_BREAK
 case 139:
 YY_RULE_SETUP
-#line 225 "Quantity.l"
-return ATAN;
+#line 227 "Quantity.l"
+return ASIN;
 	YY_BREAK
 case 140:
 YY_RULE_SETUP
-#line 226 "Quantity.l"
-return ATAN2;
+#line 228 "Quantity.l"
+return ATAN;
 	YY_BREAK
 case 141:
 YY_RULE_SETUP
-#line 227 "Quantity.l"
-return COS;
+#line 229 "Quantity.l"
+return ATAN2;
 	YY_BREAK
 case 142:
 YY_RULE_SETUP
-#line 228 "Quantity.l"
-return EXP;
+#line 230 "Quantity.l"
+return COS;
 	YY_BREAK
 case 143:
 YY_RULE_SETUP
-#line 229 "Quantity.l"
-return ABS;
+#line 231 "Quantity.l"
+return EXP;
 	YY_BREAK
 case 144:
 YY_RULE_SETUP
-#line 230 "Quantity.l"
-return MOD;
+#line 232 "Quantity.l"
+return ABS;
 	YY_BREAK
 case 145:
 YY_RULE_SETUP
-#line 231 "Quantity.l"
-return LOG;
+#line 233 "Quantity.l"
+return MOD;
 	YY_BREAK
 case 146:
 YY_RULE_SETUP
-#line 232 "Quantity.l"
-return LOG10;
+#line 234 "Quantity.l"
+return LOG;
 	YY_BREAK
 case 147:
 YY_RULE_SETUP
-#line 233 "Quantity.l"
-return POW;
+#line 235 "Quantity.l"
+return LOG10;
 	YY_BREAK
 case 148:
 YY_RULE_SETUP
-#line 234 "Quantity.l"
-return SIN;
+#line 236 "Quantity.l"
+return POW;
 	YY_BREAK
 case 149:
 YY_RULE_SETUP
-#line 235 "Quantity.l"
-return SINH;
+#line 237 "Quantity.l"
+return SIN;
 	YY_BREAK
 case 150:
 YY_RULE_SETUP
-#line 236 "Quantity.l"
-return TAN;
+#line 238 "Quantity.l"
+return SINH;
 	YY_BREAK
 case 151:
 YY_RULE_SETUP
-#line 237 "Quantity.l"
-return TANH;
+#line 239 "Quantity.l"
+return TAN;
 	YY_BREAK
 case 152:
 YY_RULE_SETUP
-#line 238 "Quantity.l"
-return SQRT;
+#line 240 "Quantity.l"
+return TANH;
 	YY_BREAK
 case 153:
 YY_RULE_SETUP
-#line 240 "Quantity.l"
-return *yytext;
+#line 241 "Quantity.l"
+return SQRT;
 	YY_BREAK
 case 154:
 YY_RULE_SETUP
-#line 241 "Quantity.l"
+#line 243 "Quantity.l"
+return *yytext;
+	YY_BREAK
+case 155:
+YY_RULE_SETUP
+#line 244 "Quantity.l"
 ECHO;
 	YY_BREAK
-#line 1706 "Quantity.lex.c"
+#line 1712 "Quantity.lex.c"
 case YY_STATE_EOF(INITIAL):
 case YY_STATE_EOF(C_COMMENT):
 	yyterminate();
@@ -1850,7 +1857,7 @@ case YY_STATE_EOF(C_COMMENT):
  */
 static int yy_get_next_buffer (void)
 {
-	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
+    	char *dest = YY_CURRENT_BUFFER_LVALUE->yy_ch_buf;
 	char *source = (yytext_ptr);
 	int number_to_move, i;
 	int ret_val;
@@ -2021,7 +2028,7 @@ static int yy_get_next_buffer (void)
     static yy_state_type yy_try_NUL_trans  (yy_state_type yy_current_state )
 {
 	int yy_is_jam;
-	char *yy_cp = (yy_c_buf_p);
+    	char *yy_cp = (yy_c_buf_p);
 
 	YY_CHAR yy_c = 1;
 	if ( yy_accept[yy_current_state] )
@@ -2174,7 +2181,7 @@ static int yy_get_next_buffer (void)
 
 static void yy_load_buffer_state  (void)
 {
-	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
+    	(yy_n_chars) = YY_CURRENT_BUFFER_LVALUE->yy_n_chars;
 	(yytext_ptr) = (yy_c_buf_p) = YY_CURRENT_BUFFER_LVALUE->yy_buf_pos;
 	yyin = YY_CURRENT_BUFFER_LVALUE->yy_input_file;
 	(yy_hold_char) = *(yy_c_buf_p);
@@ -2263,7 +2270,7 @@ static void yy_load_buffer_state  (void)
  */
     void yy_flush_buffer (YY_BUFFER_STATE  b )
 {
-	if ( ! b )
+    	if ( ! b )
 		return;
 
 	b->yy_n_chars = 0;
@@ -2292,7 +2299,7 @@ static void yy_load_buffer_state  (void)
  */
 void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
 {
-	if (new_buffer == NULL)
+    	if (new_buffer == NULL)
 		return;
 
 	yyensure_buffer_stack();
@@ -2322,7 +2329,7 @@ void yypush_buffer_state (YY_BUFFER_STATE new_buffer )
  */
 void yypop_buffer_state (void)
 {
-	if (!YY_CURRENT_BUFFER)
+    	if (!YY_CURRENT_BUFFER)
 		return;
 
 	yy_delete_buffer(YY_CURRENT_BUFFER );
@@ -2675,4 +2682,4 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 241 "Quantity.l"
+#line 244 "Quantity.l"

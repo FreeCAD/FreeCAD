@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation>Affiche des informations sur les faces sélectionnées</translation>
+      <translation>Affiche des informations sur les faces sélectionnées.</translation>
     </message>
   </context>
   <context>

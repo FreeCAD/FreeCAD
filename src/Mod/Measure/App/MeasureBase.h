@@ -74,7 +74,6 @@ public:
     {
         return {};
     }
-    virtual Base::Placement getPlacement();
 
     // Return the objects that are measured
     virtual std::vector<App::DocumentObject*> getSubject() const;

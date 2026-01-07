@@ -336,7 +336,10 @@ class ObjectOp(object):
 
         if not hasattr(obj, "DoNotSetDefaultValues") or not obj.DoNotSetDefaultValues:
             if parentJob:
-                self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
+                self.job = parentJob
+                self.model = parentJob.Model.Group if parentJob.Model else []
+                self.stock = parentJob.Stock if hasattr(parentJob, "Stock") else None
+                PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
             if job:
                 job.SetupSheet.Proxy.setOperationProperties(obj, name)
@@ -550,7 +553,10 @@ class ObjectOp(object):
             job = self.job
         else:
             job = PathUtils.addToJob(obj)
-
+        if not job:
+            raise ValueError(
+                "No job associated with the operation. Please ensure the operation is part of a job."
+            )
         obj.Active = True
 
         features = self.opFeatures(obj)

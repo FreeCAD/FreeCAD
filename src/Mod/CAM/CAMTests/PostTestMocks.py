@@ -28,6 +28,11 @@ without requiring disk I/O or loading actual FreeCAD documents.
 import Path
 
 
+class MockTool:
+    def __init__(self):
+        self.ShapeName = "endmill"
+
+
 class MockToolController:
     """Mock ToolController for operations."""
 
@@ -38,6 +43,7 @@ class MockToolController:
         spindle_speed=1000,
         spindle_dir="Forward",
     ):
+        self.Tool = MockTool()
         self.ToolNumber = tool_number
         self.Label = label
         self.SpindleSpeed = spindle_speed

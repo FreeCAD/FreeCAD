@@ -225,6 +225,11 @@
       <translation>设置</translation>
     </message>
     <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>自动</translation>
+    </message>
+    <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
       <translation>模式：</translation>
@@ -256,6 +261,49 @@
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>保存</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>质心</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>距离</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation>无距离</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>角度</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>长度</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>位置</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>区域</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>半径</translation>
     </message>
   </context>
 </TS>

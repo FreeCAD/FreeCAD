@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -32,6 +34,7 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepOffsetAPI_MakeOffset.hxx>
@@ -112,6 +115,8 @@ using DrawSketchHandlerOffsetBase = DrawSketchControllableHandler<DSHOffsetContr
 
 class DrawSketchHandlerOffset: public DrawSketchHandlerOffsetBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerOffset)
+
     friend DSHOffsetController;
     friend DSHOffsetControllerBase;
 
@@ -269,7 +274,7 @@ private:
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }
@@ -297,7 +302,7 @@ private:
         return line;
     }
 
-    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToCircleOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Circ circle = curve.Circle();
         gp_Pnt cnt = circle.Location();
@@ -329,7 +334,7 @@ private:
         }
     }
 
-    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& edge)
+    Part::Geometry* curveToEllipseOrArc(BRepAdaptor_Curve curve, const TopoDS_Edge& /*edge*/)
     {
         gp_Elips ellipse = curve.Ellipse();
         gp_Pnt beg = curve.Value(curve.FirstParameter());
@@ -965,12 +970,29 @@ private:
                 mkWire.Add(TopoDS::Edge(geo->toShape()));
             }
 
+            TopoDS_Wire wire = mkWire.Wire();
+
+            // Fix orientation: ensure all closed wires are CCW relative to Sketch Plane (+Z)
+            if (wire.Closed()) {
+                BRepBuilderAPI_MakeFace mkFace(wire);
+                if (mkFace.IsDone()) {
+                    TopoDS_Face face = mkFace.Face();
+                    BRepAdaptor_Surface surf(face);
+                    if (surf.GetType() == GeomAbs_Plane) {
+                        gp_Dir norm = surf.Plane().Axis().Direction();
+                        if (norm.Z() < 0) {
+                            wire.Reverse();
+                        }
+                    }
+                }
+            }
+
             // Here we make sure that if possible the first wire is not a single line.
             if (CC.size() == 1 && isLineSegment(*Obj->getGeometry(CC[0]))) {
-                sourceWires.push_back(mkWire.Wire());
+                sourceWires.push_back(wire);
             }
             else {
-                sourceWires.insert(sourceWires.begin(), mkWire.Wire());
+                sourceWires.insert(sourceWires.begin(), wire);
                 onlySingleLines = false;
             }
         }

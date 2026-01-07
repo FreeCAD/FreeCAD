@@ -240,6 +240,11 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <translation>Ustawienia</translation>
     </message>
     <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>Automatycznie</translation>
+    </message>
+    <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
       <translation>Tryb:</translation>
@@ -271,6 +276,49 @@ w przeciwnym razie zostanie rozpoczęty nowy pomiar.</translation>
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>Zapisz</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>Środek ciężkości</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>Odległość</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation>Dystans swobodny</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>Kąt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>Długość</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>Pozycja</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>Powierzchnia</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>Promień</translation>
     </message>
   </context>
 </TS>

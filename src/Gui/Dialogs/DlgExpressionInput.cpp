@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *   Copyright (c) 2025 Pieter Hijma <info@pieterhijma.net>                *
@@ -1058,7 +1060,8 @@ void DlgExpressionInput::setMsgText()
     // elide text if it is going out of widget bounds
     // note: this is only 'rough elide', as this text is usually not very long;
     const int msgLinesLimit = 3;
-    if (wrappedMsg.size() > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
+    if (static_cast<int>(wrappedMsg.size())
+        > msgContentWidth / msgFontMetrics.averageCharWidth() * msgLinesLimit) {
         const QString elidedMsg = msgFontMetrics.elidedText(
             QString::fromStdString(wrappedMsg),
             Qt::ElideRight,

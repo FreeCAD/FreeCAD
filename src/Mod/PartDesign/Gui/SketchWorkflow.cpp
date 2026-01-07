@@ -436,7 +436,7 @@ public:
                 }
                 else {
                     if ((geoGroup && geoGroup->hasObject(plane, true))
-                        || !App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
+                        || App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
                         status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
                     }
                     else {

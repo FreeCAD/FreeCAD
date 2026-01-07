@@ -22,6 +22,7 @@
  **************************************************************************/
 
 #include <FCConfig.h>
+#include <ParamHandler.h>
 
 #ifdef FC_OS_WIN32
 # include <windows.h>
@@ -37,6 +38,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QWindow>
+
 #include <Inventor/SoDB.h>
 
 #include <set>
@@ -44,6 +46,7 @@
 #include <ranges>
 
 #include "StartupProcess.h"
+#include "PreferencePackManager.h"
 #include "Application.h"
 #include "AutoSaver.h"
 #include "Dialogs/DlgCheckableMessageBox.h"
@@ -52,6 +55,8 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include "Dialogs/DlgVersionMigrator.h"
+#include "FreeCADStyle.h"
+
 #include <App/Application.h>
 #include <Base/Console.h>
 
@@ -309,19 +314,36 @@ void StartupPostProcess::setCursorFlashing()
     QApplication::setCursorFlashTime(blinkTime);
 }
 
+
 void StartupPostProcess::setQtStyle()
 {
+    static ParamHandlers handlers;
+
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
-    auto qtStyle = hGrp->GetASCII("QtStyle");
-    if (qtStyle.empty()) {
-        qtStyle = "Fusion";
-        hGrp->SetASCII("QtStyle", qtStyle);
+
+    const auto setStyleFromParameters = [hGrp]() {
+        const auto style = hGrp->GetASCII("QtStyle");
+
+        Application::Instance->setStyle(QString::fromStdString(style));
+    };
+
+    auto handler = handlers.addHandler(hGrp, "QtStyle", [setStyleFromParameters](const ParamKey*) {
+        setStyleFromParameters();
+    });
+
+    setStyleFromParameters();
+}
+
+void StartupPostProcess::migrateOldTheme(const std::string& style)
+{
+    auto prefPackManager = Application::Instance->prefPackManager();
+
+    if (style == "FreeCAD Light.qss") {
+        prefPackManager->apply("FreeCAD Light");
     }
-    else if (qtStyle == "System") {
-        // Special value to not set a QtStyle explicitly
-        return;
+    else if (style == "FreeCAD Dark.qss") {
+        prefPackManager->apply("FreeCAD Dark");
     }
-    QApplication::setStyle(QString::fromStdString(qtStyle));
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -527,7 +549,11 @@ void StartupPostProcess::setStyleSheet()
         }
     }
 
-    guiApp.setStyleSheet(QLatin1String(style.c_str()), hGrp->GetBool("TiledBackground", false));
+    // In 1.1 we migrated to a common parametrized stylesheet.
+    // if we detect an old style, we need to reapply the theme pack.
+    migrateOldTheme(style);
+
+    guiApp.setStyleSheet(QString::fromStdString(style), hGrp->GetBool("TiledBackground", false));
 }
 
 void StartupPostProcess::autoloadModules(const QStringList& wb)
