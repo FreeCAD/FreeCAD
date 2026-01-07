@@ -289,7 +289,7 @@ DlgFilletEdges::DlgFilletEdges(
     if (d->filletType == DlgFilletEdges::CHAMFER) {
         ui->parameterName->setTitle(tr("Chamfer parameters"));
         ui->labelfillet->setText(tr("Chamfer type"));
-        ui->labelRadius->setText(tr("Length:"));
+        ui->labelRadius->setText(tr("Length"));
         ui->filletType->setItemText(0, tr("Equal distance"));
         ui->filletType->setItemText(1, tr("Two distances"));
 

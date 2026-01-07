@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <FCConfig.h>
+
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/errors/SoError.h>
@@ -45,8 +47,6 @@
 #include <fmt/format.h>
 #include <list>
 #include <ranges>
-
-#include <FCConfig.h>
 
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -2773,11 +2773,11 @@ QString Application::replaceVariablesInQss(const QString& qssText)
 void Application::setStyle(const QString& name)
 {
     const auto createStyleFromName = [](const QString& name) -> QStyle* {
-        if (name == "FreeCAD") {
+        if (name == QStringLiteral("FreeCAD")) {
             return new FreeCADStyle();
         }
 
-        if (name.compare("System", Qt::CaseInsensitive) == 0) {
+        if (name.compare(QStringLiteral("System"), Qt::CaseInsensitive) == 0) {
             return nullptr;
         }
 

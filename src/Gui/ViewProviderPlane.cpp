@@ -34,6 +34,7 @@
 #include <Inventor/SbColor.h>
 
 #include <App/Datums.h>
+#include <App/Document.h>
 #include <Gui/ViewParams.h>
 
 #include "ViewProviderPlane.h"
@@ -158,13 +159,36 @@ void ViewProviderPlane::setLabelVisibility(bool val)
     labelSwitch->whichChild = val ? SO_SWITCH_ALL : SO_SWITCH_NONE;
 }
 
-void ViewProviderPlane::onSelectionChanged(const SelectionChanges&)
+void ViewProviderPlane::onSelectionChanged(const SelectionChanges& msg)
 {
-    isSelected = Gui::Selection().isSelected(getObject());
-    isHovered = Gui::Selection().getPreselection().Object.getSubObject() == getObject()
-        || Gui::Selection().getPreselection().Object.getObject() == getObject();
+    bool isSelectedOrHoveredBefore = isSelected || isHovered;
 
-    updatePlaneSize();
+    if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        isSelected = false;
+    }
+
+    auto obj = getObject();
+    if (!obj) {
+        return;
+    }
+    auto doc = obj->getDocument();
+    if (!doc) {
+        return;
+    }
+    const char* nameInDoc = getObject()->getNameInDocument();
+
+    if (nameInDoc && strcmp(msg.pDocName, doc->getName()) == 0
+        && strcmp(msg.pObjectName, nameInDoc) == 0) {
+        isSelected = Gui::Selection().isSelected(getObject());
+        isHovered = Gui::Selection().getPreselection().Object.getSubObject() == getObject()
+            || Gui::Selection().getPreselection().Object.getObject() == getObject();
+    }
+
+    bool isSelectedOrHovered = isSelected || isHovered;
+
+    if (isSelectedOrHoveredBefore != isSelectedOrHovered) {
+        updatePlaneSize();
+    }
 }
 
 void ViewProviderPlane::updatePlaneSize()

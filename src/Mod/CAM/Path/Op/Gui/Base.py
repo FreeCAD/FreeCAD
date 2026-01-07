@@ -551,7 +551,7 @@ class TaskPanelPage(object):
         helper function to update obj's Coolant property if a different
         one has been selected in the combo box."""
         option = combo.currentText()
-        if hasattr(obj, "CoolantMode"):
+        if hasattr(obj, "CoolantMode") and option:
             if obj.CoolantMode != option:
                 obj.CoolantMode = option
 
@@ -670,22 +670,13 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
             return "edges"
         return "nothing"
 
-    def selectionSupportedAsBaseGeometry(self, selection, ignoreErrors):
-        if len(selection) != 1:
-            if not ignoreErrors:
-                msg = translate(
-                    "PathOp",
-                    "Please select %s from a single solid" % self.featureName(),
-                )
-                Path.Log.debug(msg)
-            return False
-        sel = selection[0]
+    def selectionSupportedAsBaseGeometry(self, sel, ignoreErrors):
         if sel.HasSubObjects:
-            if not self.supportsVertexes() and selection[0].SubObjects[0].ShapeType == "Vertex":
+            if not self.supportsVertexes() and sel.SubObjects[0].ShapeType == "Vertex":
                 return False
-            if not self.supportsEdges() and selection[0].SubObjects[0].ShapeType == "Edge":
+            if not self.supportsEdges() and sel.SubObjects[0].ShapeType == "Edge":
                 return False
-            if not self.supportsFaces() and selection[0].SubObjects[0].ShapeType == "Face":
+            if not self.supportsFaces() and sel.SubObjects[0].ShapeType == "Face":
                 return False
         else:
             if not self.supportsPanels() or "Panel" not in sel.Object.Name:
@@ -694,11 +685,11 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def addBaseGeometry(self, selection):
         Path.Log.track(selection)
-        if self.selectionSupportedAsBaseGeometry(selection, False):
-            sel = selection[0]
-            for sub in sel.SubElementNames:
-                self.obj.Proxy.addBase(self.obj, sel.Object, sub)
-            return True
+        for sel in selection:
+            # check each selection
+            if self.selectionSupportedAsBaseGeometry(sel, False):
+                for sub in sel.SubElementNames:
+                    self.obj.Proxy.addBase(self.obj, sel.Object, sub)
         return False
 
     def addBase(self):
@@ -760,11 +751,12 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
         if prop in ["Base"]:
             self.setFields(obj)
 
-    def updateSelection(self, obj, sel):
-        if self.selectionSupportedAsBaseGeometry(sel, True):
-            self.form.addBase.setEnabled(True)
-        else:
-            self.form.addBase.setEnabled(False)
+    def updateSelection(self, obj, selection):
+        for sel in selection:
+            if self.selectionSupportedAsBaseGeometry(sel, True):
+                self.form.addBase.setEnabled(True)
+            else:
+                self.form.addBase.setEnabled(False)
 
     def resizeBaseList(self):
         # Set base geometry list window to resize based on contents

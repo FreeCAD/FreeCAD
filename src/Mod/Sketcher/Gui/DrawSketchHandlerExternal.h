@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -125,6 +127,8 @@ public:
 
 class DrawSketchHandlerExternal: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerExternal)
+
 public:
     DrawSketchHandlerExternal(bool alwaysReference, bool intersection)
         : alwaysReference {alwaysReference}

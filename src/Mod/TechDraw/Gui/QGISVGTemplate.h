@@ -55,9 +55,11 @@ public:
     int type() const override { return Type; }
 
     void draw() override;
+    void drawPageRectangle();
+
     void updateView(bool update = false) override;
 
-    TechDraw::DrawSVGTemplate* getSVGTemplate();
+    TechDraw::DrawSVGTemplate* getSVGTemplate() const;
     std::vector<TemplateTextField*> getTextFields() override;
 
 protected:
@@ -70,6 +72,8 @@ protected:
 private:
     QGraphicsSvgItem* m_svgItem;
     QSvgRenderer* m_svgRender;
+    QGraphicsRectItem* m_pageRectangle;
+
 };// class QGISVGTemplate
 
 }// namespace TechDrawGui
