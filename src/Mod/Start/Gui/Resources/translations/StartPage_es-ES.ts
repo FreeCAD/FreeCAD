@@ -9,35 +9,35 @@
       <translation>Hecho</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="94"/>
+      <location filename="../../FirstStartWidget.cpp" line="95"/>
       <source>Welcome to %1</source>
       <translation>Bienvenido a %1</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="97"/>
+      <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Establezca sus opciones básicas de configuración a continuación.</translation>
     </message>
     <message>
-      <location filename="../../FirstStartWidget.cpp" line="98"/>
+      <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Estas opciones (y muchas más) se pueden cambiar más tarde en las preferencias.</translation>
     </message>
   </context>
   <context>
     <name>StartGui::GeneralSettingsWidget</name>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="211"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="222"/>
       <source>Language</source>
       <translation>Idioma</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="212"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="223"/>
       <source>Unit System</source>
       <translation>Sistema de unidades</translation>
     </message>
     <message>
-      <location filename="../../GeneralSettingsWidget.cpp" line="228"/>
+      <location filename="../../GeneralSettingsWidget.cpp" line="240"/>
       <source>Navigation Style</source>
       <translation>Estilo de navegación</translation>
     </message>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Muestra la página de inicio</translation>
     </message>
   </context>
   <context>
@@ -68,90 +68,90 @@
       <translation>Abrir archivo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="217"/>
+      <location filename="../../StartView.cpp" line="219"/>
       <source>Assembly</source>
       <translation>Ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="221"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>2D Draft</source>
       <translation>Dibujo 2D</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="222"/>
+      <location filename="../../StartView.cpp" line="224"/>
       <source>Creates a 2D Draft document</source>
       <translation type="unfinished">Creates a 2D Draft document</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="225"/>
+      <location filename="../../StartView.cpp" line="227"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arquitectura</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="204"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Archivo vacío</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="206"/>
+      <location filename="../../StartView.cpp" line="205"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Crear un nuevo archivo de FreeCAD vacío</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="210"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
-    </message>
-    <message>
-      <location filename="../../StartView.cpp" line="213"/>
-      <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Abre un archivo CAD existente o un modelo 3D</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="214"/>
+      <source>Parametric Body</source>
+      <translation>Cuerpo paramétrico</translation>
+    </message>
+    <message>
+      <location filename="../../StartView.cpp" line="215"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Crea un cuerpo con el banco de trabajo Diseño de piezas</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="218"/>
+      <location filename="../../StartView.cpp" line="220"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Crear un proyecto de ensamblaje</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="226"/>
+      <location filename="../../StartView.cpp" line="228"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Crea un proyecto arquitectónico</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="494"/>
+      <location filename="../../StartView.cpp" line="503"/>
       <source>New File</source>
       <translation>Archivo nuevo</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="495"/>
+      <location filename="../../StartView.cpp" line="504"/>
       <source>Examples</source>
       <translation>Ejemplos</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="496"/>
+      <location filename="../../StartView.cpp" line="505"/>
       <source>Recent Files</source>
       <translation>Archivos recientes</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="511"/>
+      <location filename="../../StartView.cpp" line="521"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Abrir configuración de primer inicio</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="513"/>
+      <location filename="../../StartView.cpp" line="522"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>No volver a mostrar esta página de inicio (empezar con la pantalla en blanco)</translation>
     </message>
   </context>
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="488"/>
+      <location filename="../../StartView.cpp" line="497"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>
@@ -159,44 +159,44 @@
   <context>
     <name>StartGui::ThemeSelectorWidget</name>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="113"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
       <source>FreeCAD Classic</source>
       <translation>FreeCAD Clásico</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="114"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
       <source>FreeCAD Dark</source>
       <translation>FreeCAD Oscuro</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="115"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="116"/>
       <source>FreeCAD Light</source>
       <translation>FreeCAD Claro</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="238"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
       <source>Theme</source>
       <translation>Tema</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="240"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="250"/>
       <source>Looking for more themes? You can obtain them using &lt;a href="freecad:Std_AddonMgr"&gt;Addon Manager&lt;/a&gt;.</source>
       <translation>¿Busca más temas? Puede obtenerlos usando el &lt;a href="freecad:Std_AddonMgr"&gt;Administrador de complementos&lt;/a&gt;.</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="246"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="257"/>
       <source>FreeCAD Dark</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Oscuro</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="247"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="258"/>
       <source>FreeCAD Light</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Claro</translation>
     </message>
     <message>
-      <location filename="../../ThemeSelectorWidget.cpp" line="248"/>
+      <location filename="../../ThemeSelectorWidget.cpp" line="259"/>
       <source>FreeCAD Classic</source>
       <comment>Visual theme name</comment>
       <translation>FreeCAD Clásico</translation>
@@ -234,18 +234,18 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Una carpeta personalizada opcional que se mostrará en la página de inicio.
+Se pueden añadir múltiples carpetas usando ";;" para separar las rutas.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Muestra archivos de ejemplo en la página de inicio</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>La página de inicio se cierra automáticamente cuando FreeCAD se inicia</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>
@@ -261,7 +261,7 @@ Multiple folders can be added using ";;" to separate paths.</translation>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../AppStartGui.cpp" line="129"/>
+      <location filename="../../AppStartGui.cpp" line="125"/>
       <source>Start</source>
       <translation>Inicio</translation>
     </message>

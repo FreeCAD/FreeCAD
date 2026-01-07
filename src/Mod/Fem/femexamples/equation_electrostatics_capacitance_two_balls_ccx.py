@@ -41,7 +41,7 @@ def get_information():
         "name": "Electrostatics Capacitance Two Balls CCX",
         "meshtype": "solid",
         "meshelement": "Tet4",
-        "constraints": ["electrostatic potential, electric charge density"],
+        "constraints": ["electrostatic potential", "electric charge density"],
         "solvers": ["calculix"],
         "material": "fluid",
         "equations": ["electrostatic"],

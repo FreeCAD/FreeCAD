@@ -17,7 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Это позволит получить документацию со страниц, опубликованных на GitHub.
+      <translation>Получить документацию со страниц, опубликованных на GitHub.
 Сейчас это недоступно.</translation>
     </message>
     <message>
@@ -105,7 +105,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>
       <source>The documentation will open in the default web browser</source>
-      <translation>Документация откроется в веб-браузере по умолчанию</translation>
+      <translation>Документация откроется в веб браузере по умолчанию</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="183"/>
@@ -121,7 +121,7 @@ custom stylesheet below and can look nicer than the wiki option. The &apos;Markd
       <location filename="../../dlgPreferencesHelp.ui" line="221"/>
       <source>Documentation opens in a dockable dialog within FreeCAD, allowing simultaneous work in the 3D view.
 Requires the PySide QtWebengineWidgets component.</source>
-      <translation>Документация откроется непосредственно в диалоговом окне FreeCAD с возможностью закрепления, что позволит одновременно работать с 3D-видом.
+      <translation>Документация откроется непосредственно в диалоговом окне FreeCAD с возможностью закрепления, что позволит одновременно работать с трехмерным видом.
 Требуется компонент QtWebEngineWidgets PySide.</translation>
     </message>
     <message>
@@ -134,7 +134,7 @@ Requires the PySide QtWebengineWidgets component.</source>
       <source>Specify the path to an alternative CSS file for styling Markdown pages.
 This only applies if Markdown is selected above.</source>
       <translation>Укажите путь к альтернативному CSS-файлу для оформления страниц Markdown.
-Это применимо только в том случае, если Markdown выбран выше.</translation>
+Это применимо только в том случае, если выше выбран Markdown.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="202"/>
@@ -155,27 +155,27 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>Help</name>
     <message>
-      <location filename="../../Help.py" line="73"/>
+      <location filename="../../Help.py" line="75"/>
       <source>Contents for this page could not be retrieved. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Не удалось получить содержимое этой страницы. Пожалуйста, проверьте настройки в меню Правка → Настройки → Общие → Справка</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="77"/>
+      <location filename="../../Help.py" line="79"/>
       <source>Help files location could not be determined. Please check settings under menu Edit → Preferences → General → Help</source>
       <translation>Не удалось определить местоположение файлов справки. Пожалуйста, проверьте настройки в меню Правка → Настройки → Общие → Помощь</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="81"/>
+      <location filename="../../Help.py" line="83"/>
       <source>PySide QtWebEngineWidgets module is not available. Help rendering is done with the system browser</source>
       <translation>Модуль PySide QtWebEngineWidgets недоступен. Отображение справки осуществляется с помощью системного браузера</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="85"/>
+      <location filename="../../Help.py" line="87"/>
       <source>There is no Markdown renderer installed on your system, so this help page is rendered as is. Please install the Markdown or Pandoc Python modules to improve the rendering of this page.</source>
       <translation>В вашей системе не установлен визуализатор Markdown, поэтому эта страница справки отображается как есть. Пожалуйста, установите Python модули Markdown или Pandoc, чтобы улучшить отображение этой страницы.</translation>
     </message>
     <message>
-      <location filename="../../Help.py" line="117"/>
+      <location filename="../../Help.py" line="119"/>
       <source>Help</source>
       <translation>Справка</translation>
     </message>
@@ -183,7 +183,7 @@ This only applies if Markdown is selected above.</source>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Help.py" line="433"/>
+      <location filename="../../Help.py" line="435"/>
       <source>General</source>
       <translation>Основные</translation>
     </message>

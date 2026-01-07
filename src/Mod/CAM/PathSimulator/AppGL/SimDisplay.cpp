@@ -240,7 +240,7 @@ SimDisplay::~SimDisplay()
     CleanGL();
 }
 
-void SimDisplay::InitGL()
+void SimDisplay::InitGL(qreal devicePixelRatio)
 {
     if (displayInitiated) {
         return;
@@ -249,8 +249,9 @@ void SimDisplay::InitGL()
     // setup light object
     mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
-    mWidth = gWindowSizeW;
-    mHeight = gWindowSizeH;
+    mDevicePixelRatio = devicePixelRatio;
+    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
+    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
     InitShaders();
     CreateDisplayFbos();
     CreateSsaoFbos();
@@ -550,8 +551,8 @@ void SimDisplay::UpdateEyeFactor(float factor)
 
 void SimDisplay::UpdateWindowScale()
 {
-    mWidth = gWindowSizeW;
-    mHeight = gWindowSizeH;
+    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
+    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     CleanFbos();
     CreateDisplayFbos();

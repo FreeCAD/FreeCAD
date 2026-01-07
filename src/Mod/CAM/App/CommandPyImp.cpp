@@ -71,9 +71,20 @@ PyObject* CommandPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Pytho
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
     PyObject* parameters = nullptr;
+    PyObject* annotations = nullptr;
     const char* name = "";
-    static const std::array<const char*, 3> kwlist {"name", "parameters", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
+    static const std::array<const char*, 4> kwlist {"name", "parameters", "annotations", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "|sO!O!",
+            kwlist,
+            &name,
+            &PyDict_Type,
+            &parameters,
+            &PyDict_Type,
+            &annotations
+        )) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -112,16 +123,54 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             }
             getCommandPtr()->Parameters[ckey] = cvalue;
         }
+
+        // Parse annotations
+        pos = 0;
+        while (annotations && PyDict_Next(annotations, &pos, &key, &value)) {
+            std::string ckey;
+            if (PyUnicode_Check(key)) {
+                ckey = PyUnicode_AsUTF8(key);
+            }
+            else {
+                PyErr_SetString(
+                    PyExc_TypeError,
+                    "The annotations dictionary can only contain string keys"
+                );
+                return -1;
+            }
+
+            if (PyUnicode_Check(value)) {
+                std::string cvalue = PyUnicode_AsUTF8(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else if (PyObject_TypeCheck(value, &(PyLong_Type))) {
+                double cvalue = (double)PyLong_AsLong(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
+                double cvalue = PyFloat_AsDouble(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else {
+                PyErr_SetString(
+                    PyExc_TypeError,
+                    "The annotations dictionary can only contain string or number values"
+                );
+                return -1;
+            }
+        }
+
         parameters_copy_dict.clear();
         return 0;
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
+    static const std::array<const char*, 3> kwlist_placement {"name", "parameters", nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(
             args,
             kwd,
             "|sO!",
-            kwlist,
+            kwlist_placement,
             &name,
             &(Base::PlacementPy::Type),
             &parameters
@@ -203,6 +252,57 @@ void CommandPy::setParameters(Py::Dict arg)
     }
 }
 
+// Annotations attribute get/set
+
+Py::Dict CommandPy::getAnnotations() const
+{
+    Py::Dict annotationsDict;
+    for (const auto& pair : getCommandPtr()->Annotations) {
+        if (std::holds_alternative<std::string>(pair.second)) {
+            annotationsDict.setItem(pair.first, Py::String(std::get<std::string>(pair.second)));
+        }
+        else if (std::holds_alternative<double>(pair.second)) {
+            annotationsDict.setItem(pair.first, Py::Float(std::get<double>(pair.second)));
+        }
+    }
+    return annotationsDict;
+}
+
+void CommandPy::setAnnotations(Py::Dict arg)
+{
+    getCommandPtr()->Annotations.clear();
+    PyObject *key, *value;
+    Py_ssize_t pos = 0;
+    while (PyDict_Next(arg.ptr(), &pos, &key, &value)) {
+        std::string ckey;
+        if (PyUnicode_Check(key)) {
+            ckey = PyUnicode_AsUTF8(key);
+
+            if (PyUnicode_Check(value)) {
+                // String value
+                std::string cvalue = PyUnicode_AsUTF8(value);
+                getCommandPtr()->Annotations[ckey] = cvalue;
+            }
+            else if (PyFloat_Check(value)) {
+                // Float value
+                double dvalue = PyFloat_AsDouble(value);
+                getCommandPtr()->Annotations[ckey] = dvalue;
+            }
+            else if (PyLong_Check(value)) {
+                // Integer value (convert to double)
+                double dvalue = static_cast<double>(PyLong_AsLong(value));
+                getCommandPtr()->Annotations[ckey] = dvalue;
+            }
+            else {
+                throw Py::TypeError("Annotation values must be strings or numbers");
+            }
+        }
+        else {
+            throw Py::TypeError("Annotation keys must be strings");
+        }
+    }
+}
+
 // GCode methods
 
 PyObject* CommandPy::toGCode(PyObject* args) const
@@ -263,6 +363,47 @@ PyObject* CommandPy::transform(PyObject* args)
     }
     else {
         throw Py::TypeError("Argument must be a placement");
+    }
+}
+
+PyObject* CommandPy::addAnnotations(PyObject* args)
+{
+    PyObject* annotationsObj;
+    if (PyArg_ParseTuple(args, "O", &annotationsObj)) {
+        if (PyDict_Check(annotationsObj)) {
+            // Handle dictionary input
+            PyObject *key, *value;
+            Py_ssize_t pos = 0;
+            while (PyDict_Next(annotationsObj, &pos, &key, &value)) {
+                std::string ckey, cvalue;
+                if (PyUnicode_Check(key) && PyUnicode_Check(value)) {
+                    ckey = PyUnicode_AsUTF8(key);
+                    cvalue = PyUnicode_AsUTF8(value);
+                    getCommandPtr()->setAnnotation(ckey, cvalue);
+                }
+                else {
+                    PyErr_SetString(PyExc_TypeError, "Dictionary keys and values must be strings");
+                    return nullptr;
+                }
+            }
+        }
+        else if (PyUnicode_Check(annotationsObj)) {
+            // Handle string input like "xyz:abc test:1234"
+            std::string annotationString = PyUnicode_AsUTF8(annotationsObj);
+            getCommandPtr()->setAnnotations(annotationString);
+        }
+        else {
+            PyErr_SetString(PyExc_TypeError, "Argument must be a dictionary or string");
+            return nullptr;
+        }
+
+        // Return self for chaining
+        Py_INCREF(this);
+        return static_cast<PyObject*>(this);
+    }
+    else {
+        PyErr_SetString(PyExc_TypeError, "Invalid arguments");
+        return nullptr;
     }
 }
 

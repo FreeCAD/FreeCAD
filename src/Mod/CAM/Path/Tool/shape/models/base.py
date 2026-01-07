@@ -718,8 +718,23 @@ class ToolBitShape(Asset):
             # Recompute the document to apply property changes
             tmp_doc.recompute()
 
-            # Copy the body to the given document without immediate compute.
-            return doc.copyObject(shape, True)
+            # Temporarily disable duplicate labels to let FreeCAD automatically
+            # make labels unique during the copy operation
+
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Document")
+            original_setting = param.GetBool("DuplicateLabels", False)
+
+            try:
+                # Disable duplicate labels temporarily
+                param.SetBool("DuplicateLabels", False)
+
+                # Copy the body - FreeCAD will now automatically make labels unique
+                copied_shape = doc.copyObject(shape, True)
+
+                return copied_shape
+            finally:
+                # Restore the original setting
+                param.SetBool("DuplicateLabels", original_setting)
 
         """
         Retrieves the thumbnail data for the tool bit shape in PNG format.

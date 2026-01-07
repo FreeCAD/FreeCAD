@@ -648,8 +648,6 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
 {
     auto vp = DocumentP::throwIfCastFails(p);
 
-    resetIfEditing();
-
     auto obj = DocumentP::tryGetObject(vp);
 
     std::string _subname = subname ? subname : "";
@@ -660,10 +658,19 @@ bool Document::trySetEdit(Gui::ViewProvider* p, int ModNum, const char* subname)
             obj = finder.getObject();
             vp = finder.getViewProvider();
             if (vp->getDocument() != this) {
+                resetIfEditing();
+
                 return vp->getDocument()->setEdit(vp, ModNum, _subname.c_str());
             }
         }
     }
+
+    // Fix for #13852: When switching edit directly between sketches, resetIfEditing()
+    // triggers unsetEdit() on the previous sketch which restores its selection.
+    // This clobbers the selection of the new sketch that ParentFinder relies on.
+    // Moving resetIfEditing() after ParentFinder ensures we resolve the parent context correctly
+    // using the current selection before closing the previous edit.
+    resetIfEditing();
 
     d->throwIfNotInMap(obj, getDocument());
 
@@ -1414,11 +1421,11 @@ static bool checkCanonicalPath(const std::map<App::Document*, bool>& docs)
 
     auto docName = [](App::Document* doc) -> QString {
         if (doc->Label.getStrValue() == doc->getName()) {
-            return QString::fromLatin1(doc->getName());
+            return QString::fromUtf8(doc->getName());
         }
         return QStringLiteral("%1 (%2)").arg(
             QString::fromUtf8(doc->Label.getValue()),
-            QString::fromLatin1(doc->getName())
+            QString::fromUtf8(doc->getName())
         );
     };
     int count = 0;
@@ -1780,16 +1787,19 @@ void Document::Save(Base::Writer& writer) const
             int size = hGrp->GetInt("ThumbnailSize", 256);
             size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
+
+            View3DInventorViewer* view = nullptr;
             for (const auto& it : mdi) {
                 if (it->isDerivedFrom<View3DInventor>()) {
-                    View3DInventorViewer* view = static_cast<View3DInventor*>(it)->getViewer();
-                    d->thumb.setFileName(d->_pcDocument->FileName.getValue());
-                    d->thumb.setSize(size);
-                    d->thumb.setViewer(view);
-                    d->thumb.Save(writer);
+                    view = static_cast<View3DInventor*>(it)->getViewer();
                     break;
                 }
             }
+
+            d->thumb.setFileName(d->_pcDocument->FileName.getValue());
+            d->thumb.setSize(size);
+            d->thumb.setViewer(view);
+            d->thumb.Save(writer);
         }
     }
 }
@@ -1823,6 +1833,7 @@ void Document::RestoreDocFile(Base::Reader& reader)
     localreader->readElement("Document");
     long scheme = localreader->getAttribute<long>("SchemaVersion");
     localreader->DocumentSchema = scheme;
+    localreader->ProgramVersion = d->_pcDocument->getProgramVersion();
 
     bool hasExpansion = localreader->hasAttribute("HasExpansion");
     if (hasExpansion) {

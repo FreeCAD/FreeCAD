@@ -336,7 +336,10 @@ class ObjectOp(object):
 
         if not hasattr(obj, "DoNotSetDefaultValues") or not obj.DoNotSetDefaultValues:
             if parentJob:
-                self.job = PathUtils.addToJob(obj, jobname=parentJob.Name)
+                self.job = parentJob
+                self.model = parentJob.Model.Group if parentJob.Model else []
+                self.stock = parentJob.Stock if hasattr(parentJob, "Stock") else None
+                PathUtils.addToJob(obj, jobname=parentJob.Name)
             job = self.setDefaultValues(obj)
             if job:
                 job.SetupSheet.Proxy.setOperationProperties(obj, name)
@@ -550,7 +553,10 @@ class ObjectOp(object):
             job = self.job
         else:
             job = PathUtils.addToJob(obj)
-
+        if not job:
+            raise ValueError(
+                "No job associated with the operation. Please ensure the operation is part of a job."
+            )
         obj.Active = True
 
         features = self.opFeatures(obj)
@@ -839,6 +845,219 @@ class ObjectOp(object):
         This function can safely be overwritten by subclasses."""
 
         return True
+
+
+class Compass:
+    """
+    A compass is a tool to help with direction so the Compass is a helper
+    class to manage settings that affect tool and spindle direction.
+
+    Settings managed:
+        - Spindle Direction: Forward / Reverse / None
+        - Cut Side: Inside / Outside (for perimeter operations)
+        - Cut Mode: Climb / Conventional
+        - Path Direction: CW / CCW (derived for perimeter operations)
+        - Operation Type: Perimeter / Area (for facing/pocketing operations)
+
+    This class allows the user to set and get any of these properties and the rest will update accordingly.
+    Supports both perimeter operations (profiling) and area operations (facing, pocketing).
+
+    Args:
+        spindle_direction: "Forward", "Reverse", or "None"
+        operation_type: "Perimeter" or "Area" (defaults to "Perimeter")
+    """
+
+    FORWARD = "Forward"
+    REVERSE = "Reverse"
+    NONE = "None"
+    CW = "CW"
+    CCW = "CCW"
+    CLIMB = "Climb"
+    CONVENTIONAL = "Conventional"
+    INSIDE = "Inside"
+    OUTSIDE = "Outside"
+    PERIMETER = "Perimeter"
+    AREA = "Area"
+
+    def __init__(self, spindle_direction, operation_type=None):
+        self._spindle_dir = (
+            spindle_direction
+            if spindle_direction in (self.FORWARD, self.REVERSE, self.NONE)
+            else self.NONE
+        )
+        self._cut_side = self.OUTSIDE
+        self._cut_mode = self.CLIMB
+        self._operation_type = (
+            operation_type or self.PERIMETER
+        )  # Default to perimeter for backward compatibility
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def spindle_dir(self):
+        return self._spindle_dir
+
+    @spindle_dir.setter
+    def spindle_dir(self, value):
+        if value in (self.FORWARD, self.REVERSE, self.NONE):
+            self._spindle_dir = value
+            self._path_dir = self._calculate_path_dir()
+        else:
+            self._spindle_dir = self.NONE
+            self._path_dir = self._calculate_path_dir()
+
+    @property
+    def cut_side(self):
+        return self._cut_side
+
+    @cut_side.setter
+    def cut_side(self, value):
+        self._cut_side = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def cut_mode(self):
+        return self._cut_mode
+
+    @cut_mode.setter
+    def cut_mode(self, value):
+        self._cut_mode = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def operation_type(self):
+        return self._operation_type
+
+    @operation_type.setter
+    def operation_type(self, value):
+        self._operation_type = value.capitalize()
+        self._path_dir = self._calculate_path_dir()
+
+    @property
+    def path_dir(self):
+        return self._path_dir
+
+    def _calculate_path_dir(self):
+        if self.spindle_dir == self.NONE:
+            return "UNKNOWN"
+
+        # For area operations (facing, pocketing), path direction is not applicable
+        if self._operation_type == self.AREA:
+            return "N/A"
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        for candidate in (self.CW, self.CCW):
+            mode = self._expected_cut_mode(self._cut_side, spindle_rotation, candidate)
+            if mode == self._cut_mode:
+                return candidate
+
+        return "UNKNOWN"
+
+    def _rotation_from_spindle(self, direction):
+        return self.CW if direction == self.FORWARD else self.CCW
+
+    def _expected_cut_mode(self, cut_side, spindle_rotation, path_dir):
+        lookup = {
+            (self.INSIDE, self.CW, self.CCW): self.CLIMB,
+            (self.INSIDE, self.CCW, self.CW): self.CLIMB,
+            (self.OUTSIDE, self.CW, self.CW): self.CLIMB,
+            (self.OUTSIDE, self.CCW, self.CCW): self.CLIMB,
+        }
+        return lookup.get((cut_side, spindle_rotation, path_dir), self.CONVENTIONAL)
+
+    def get_step_direction(self, approach_direction):
+        """
+        For area operations, determine the step direction for climb/conventional milling.
+
+        Args:
+            approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
+
+        Returns:
+            True if steps should be in positive direction, False for negative direction
+        """
+        if self._operation_type != self.AREA:
+            raise ValueError("Step direction is only applicable for area operations")
+
+        if self.spindle_dir == self.NONE:
+            return True  # Default to positive direction
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        # For area operations, climb/conventional depends on relationship between
+        # spindle rotation, approach direction, and step direction
+        if approach_direction in ["X-", "X+"]:
+            # Stepping in Y direction
+            if self._cut_mode == self.CLIMB:
+                # Climb: step direction matches spindle for X- approach
+                return (approach_direction == "X-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                # Conventional: step direction opposite to spindle for X- approach
+                return (approach_direction == "X-") != (spindle_rotation == self.CW)
+        else:  # Y approach
+            # Stepping in X direction
+            if self._cut_mode == self.CLIMB:
+                # Climb: step direction matches spindle for Y- approach
+                return (approach_direction == "Y-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                # Conventional: step direction opposite to spindle for Y- approach
+                return (approach_direction == "Y-") != (spindle_rotation == self.CW)
+
+    def get_cutting_direction(self, approach_direction, pass_index=0, pattern="zigzag"):
+        """
+        For area operations, determine the cutting direction for each pass.
+
+        Args:
+            approach_direction: "X+", "X-", "Y+", "Y-" - the primary cutting direction
+            pass_index: Index of the current pass (0-based)
+            pattern: "zigzag", "unidirectional", "spiral"
+
+        Returns:
+            True if cutting should be in forward direction, False for reverse
+        """
+        if self._operation_type != self.AREA:
+            raise ValueError("Cutting direction is only applicable for area operations")
+
+        if self.spindle_dir == self.NONE:
+            return True  # Default to forward direction
+
+        spindle_rotation = self._rotation_from_spindle(self.spindle_dir)
+
+        # Determine base cutting direction for climb/conventional
+        if approach_direction in ["X-", "X+"]:
+            # Cutting along Y axis
+            if self._cut_mode == self.CLIMB:
+                base_forward = (approach_direction == "X-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                base_forward = (approach_direction == "X-") != (spindle_rotation == self.CW)
+        else:  # Y approach
+            # Cutting along X axis
+            if self._cut_mode == self.CLIMB:
+                base_forward = (approach_direction == "Y-") == (spindle_rotation == self.CW)
+            else:  # Conventional
+                base_forward = (approach_direction == "Y-") != (spindle_rotation == self.CW)
+
+        # Apply pattern modifications
+        if pattern == "zigzag" and pass_index % 2 == 1:
+            base_forward = not base_forward
+        elif pattern == "unidirectional":
+            # Always same direction
+            pass
+
+        return base_forward
+
+    def report(self):
+        report_data = {
+            "spindle_dir": self.spindle_dir,
+            "cut_side": self.cut_side,
+            "cut_mode": self.cut_mode,
+            "operation_type": self.operation_type,
+            "path_dir": self.path_dir,
+        }
+
+        Path.Log.debug("Machining Compass config:")
+        for k, v in report_data.items():
+            Path.Log.debug(f"  {k:15s}: {v}")
+        return report_data
 
 
 def getCycleTimeEstimate(obj):

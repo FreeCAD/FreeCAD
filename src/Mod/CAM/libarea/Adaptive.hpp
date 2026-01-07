@@ -200,7 +200,7 @@ private:
     void ApplyStockToLeave(Paths& inputPaths);
 
 private:  // constants for fine tuning
-    const double RESOLUTION_FACTOR = 16.0;
+    const double MIN_STEP_CLIPPER = 16.0;
     const int MAX_ITERATIONS = 10;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
                                                   reasonable value: 0.05 = 5%*/
@@ -208,9 +208,9 @@ private:  // constants for fine tuning
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts (should
-                                             // be < ENGAGE_AREA_THR_FACTOR)
-    const double ENGAGE_AREA_THR_FACTOR = 0.5;       // influences minimal engage area
+    const double MIN_CUT_AREA_FACTOR = 0.1
+        * 16;  // used for filtering out of insignificant cuts (should be < ENGAGE_AREA_THR_FACTOR)
+    const double ENGAGE_AREA_THR_FACTOR = 0.5 * 16;  // influences minimal engage area
     const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
 
     const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1

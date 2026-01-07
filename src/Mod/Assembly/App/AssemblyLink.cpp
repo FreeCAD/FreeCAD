@@ -252,8 +252,41 @@ void AssemblyLink::synchronizeComponents()
     std::vector<App::DocumentObject*> assemblyGroup = assembly->Group.getValues();
     std::vector<App::DocumentObject*> assemblyLinkGroup = Group.getValues();
 
-    // We check if a component needs to be added to the AssemblyLink
+    // Filter out child objects from Part-workbench features to get only top-level components.
+    // An object is considered a child if it's referenced by another object's 'Base', 'Tool',
+    // or 'Shapes' property within the same group.
+    std::set<App::DocumentObject*> children;
     for (auto* obj : assemblyGroup) {
+        if (auto* partFeat = dynamic_cast<PartApp::Feature*>(obj)) {
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Base"))) {
+                if (prop->getValue()) {
+                    children.insert(prop->getValue());
+                }
+            }
+            if (auto* prop = dynamic_cast<App::PropertyLink*>(partFeat->getPropertyByName("Tool"))) {
+                if (prop->getValue()) {
+                    children.insert(prop->getValue());
+                }
+            }
+            if (auto* prop
+                = dynamic_cast<App::PropertyLinkList*>(partFeat->getPropertyByName("Shapes"))) {
+                for (auto* shapeObj : prop->getValues()) {
+                    children.insert(shapeObj);
+                }
+            }
+        }
+    }
+
+    std::vector<App::DocumentObject*> topLevelComponents;
+    std::copy_if(
+        assemblyGroup.begin(),
+        assemblyGroup.end(),
+        std::back_inserter(topLevelComponents),
+        [&children](App::DocumentObject* obj) { return children.find(obj) == children.end(); }
+    );
+
+    // We check if a component needs to be added to the AssemblyLink
+    for (auto* obj : topLevelComponents) {
         if (!obj->isDerivedFrom<App::Part>() && !obj->isDerivedFrom<PartApp::Feature>()
             && !obj->isDerivedFrom<App::Link>()) {
             continue;
@@ -290,7 +323,7 @@ void AssemblyLink::synchronizeComponents()
                             = srcLink->ElementList.getValues();
                         const std::vector<App::DocumentObject*> newElements
                             = link2->ElementList.getValues();
-                        for (int i = 0; i < srcElements.size(); ++i) {
+                        for (size_t i = 0; i < srcElements.size(); ++i) {
                             objLinkMap[srcElements[i]] = newElements[i];
                         }
                         break;
@@ -340,7 +373,7 @@ void AssemblyLink::synchronizeComponents()
                 newLink->ElementCount.setValue(srcLink->ElementCount.getValue());
                 const std::vector<App::DocumentObject*> srcElements = srcLink->ElementList.getValues();
                 const std::vector<App::DocumentObject*> newElements = newLink->ElementList.getValues();
-                for (int i = 0; i < srcElements.size(); ++i) {
+                for (size_t i = 0; i < srcElements.size(); ++i) {
                     auto* newObj = newElements[i];
                     auto* srcObj = srcElements[i];
                     if (newObj && srcObj) {

@@ -71,7 +71,7 @@ void TaskAssemblyMessages::updateToolTip(const QString& link)
     }
 }
 
-void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& str)
+void TaskAssemblyMessages::onLabelStatusLinkClicked(const QString& /*str*/)
 {
     if (str == QStringLiteral("#conflicting")) {
         Gui::Application::Instance->commandManager().runCommandByName(

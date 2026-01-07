@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any
 
 from Base.Metadata import export
@@ -137,44 +141,44 @@ class Sheet(DocumentObject):
         """Get given spreadsheet row height"""
         ...
 
-    def touchCells(self) -> Any:
-        """touchCells(from, to=None): touch cells in the given range"""
+    def touchCells(self, address: str, address_to: str | None = None, /) -> None:
+        """touch cells in the given range"""
         ...
 
-    def recomputeCells(self) -> Any:
-        """recomputeCells(from, to=None)
-
+    def recomputeCells(self, address: str, address_to: str | None = None, /) -> Any:
+        """
         Manually recompute cells in the given range with the given order without
-        following dependency order."""
+        following dependency order.
+        """
         ...
 
-    def getUsedCells(self) -> Any:
-        """getUsedCells()
-
+    def getUsedCells(self) -> list[str]:
+        """
         Get a list of the names of all cells that are marked as used. These cells may
-        or may not have a non-empty string content."""
+        or may not have a non-empty string content.
+        """
         ...
 
-    def getNonEmptyCells(self) -> Any:
-        """getNonEmptyCells()
-
-        Get a list of the names of all cells with data in them."""
+    def getNonEmptyCells(self) -> list[str]:
+        """
+        Get a list of the names of all cells with data in them.
+        """
         ...
 
-    def getUsedRange(self) -> Any:
-        """getUsedRange()
-
+    def getUsedRange(self) -> tuple[str, str]:
+        """
         Get a the total range of the used cells in a sheet, as a pair of strings
         representing the lowest row and column that are used, and the highest row and
         column that are used (inclusive). Note that the actual first and last cell
-        of the block are not necessarily used."""
+        of the block are not necessarily used.
+        """
         ...
 
-    def getNonEmptyRange(self) -> Any:
-        """getNonEmptyRange()
-
+    def getNonEmptyRange(self) -> tuple[str, str]:
+        """
         Get a the total range of the used cells in a sheet, as a pair of cell addresses
         representing the lowest row and column that contain data, and the highest row and
         column that contain data (inclusive). Note that the actual first and last cell
-        of the block do not necessarily contain anything."""
+        of the block do not necessarily contain anything.
+        """
         ...

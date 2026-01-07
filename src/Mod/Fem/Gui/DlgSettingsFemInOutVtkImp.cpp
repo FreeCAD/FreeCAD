@@ -45,11 +45,6 @@ DlgSettingsFemInOutVtkImp::~DlgSettingsFemInOutVtkImp() = default;
 
 void DlgSettingsFemInOutVtkImp::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    hGrp->SetInt("ImportObject", ui->comboBoxVtkImportObject->currentIndex());
-
     ui->comboBoxVtkImportObject->onSave();
     ui->cb_export_level->onSave();
 }
@@ -58,17 +53,8 @@ void DlgSettingsFemInOutVtkImp::loadSettings()
 {
     ui->comboBoxVtkImportObject->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    int index = hGrp->GetInt("ImportObject", 0);
-    // 0 is standard on first initialize, 0 .. vtk res obj, 1 .. FEM mesh obj, 2 .. FreeCAD res obj
-    if (index > -1) {
-        ui->comboBoxVtkImportObject->setCurrentIndex(index);
-    }
-
     populateExportLevel();
-    ui->cb_export_level->onRestore();
+    ui->cb_export_level->onSave();
 }
 
 /**
@@ -80,6 +66,7 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
         int c_index = ui->comboBoxVtkImportObject->currentIndex();
         ui->retranslateUi(this);
         ui->comboBoxVtkImportObject->setCurrentIndex(c_index);
+        populateExportLevel();
     }
     else {
         QWidget::changeEvent(e);
@@ -88,17 +75,17 @@ void DlgSettingsFemInOutVtkImp::changeEvent(QEvent* e)
 
 void DlgSettingsFemInOutVtkImp::populateExportLevel() const
 {
-    std::list<std::string> values = {"All", "Highest"};
+    std::list<std::string> values = {QT_TR_NOOP("All"), QT_TR_NOOP("Highest")};
 
+    ui->cb_export_level->clear();
     for (const auto& val : values) {
-        ui->cb_export_level->addItem(QString::fromStdString(val));
+        ui->cb_export_level->addItem(tr(val.c_str()), QByteArray::fromStdString(val));
     }
 
-    auto hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/InOutVtk"
-    );
-    std::string current = hGrp->GetASCII("MeshExportLevel", "Highest");
-    int index = ui->cb_export_level->findText(QString::fromStdString(current));
+    // set default index
+    auto hGrp = ui->cb_export_level->getWindowParameter();
+    std::string current = hGrp->GetASCII(ui->cb_export_level->entryName(), "Highest");
+    int index = ui->cb_export_level->findData(QByteArray::fromStdString(current));
     ui->cb_export_level->setCurrentIndex(index);
 }
 

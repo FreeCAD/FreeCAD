@@ -206,6 +206,11 @@ locations = [
         "../Mod/Start/Gui/Resources/Start.qrc",
     ],
     [
+        "Surface",
+        "../Mod/Surface/Gui/Resources/translations",
+        "../Mod/Surface/Gui/Resources/Surface.qrc",
+    ],
+    [
         "Test",
         "../Mod/Test/Gui/Resources/translations",
         "../Mod/Test/Gui/Resources/Test.qrc",
@@ -337,7 +342,7 @@ def load_token():
             token = file.read().strip()
             if token:
                 return token
-    # if file does'nt exists read from CROWDIN_TOKEN
+    # if file doesn't exist, read from CROWDIN_TOKEN
     return os.environ.get("CROWDIN_TOKEN")
 
 

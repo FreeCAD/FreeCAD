@@ -9,17 +9,17 @@
       <translation>Standard (mm, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="323"/>
+      <location filename="../../UnitsSchemasData.h" line="326"/>
       <source>MKS (m, kg, s, °)</source>
       <translation>MKS (m, kg, s, °)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="587"/>
+      <location filename="../../UnitsSchemasData.h" line="593"/>
       <source>US customary (in, lb)</source>
       <translation>US-amerikanska mått (in, lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="636"/>
+      <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
       <translation>Imperiala för civilingenjörsvetenskap (ft, lb, mph)</translation>
     </message>
@@ -29,12 +29,12 @@
       <translation>Brittiska enheter (in/lb)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="548"/>
+      <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Europeiska byggenheter (cm, m², m³)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="625"/>
+      <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Amerikanska byggenheter (ft-in, sqft, cft)</translation>
     </message>
@@ -44,7 +44,7 @@
       <translation>Metriska smådelar &amp; CNC (mm, mm/min)</translation>
     </message>
     <message>
-      <location filename="../../UnitsSchemasData.h" line="575"/>
+      <location filename="../../UnitsSchemasData.h" line="581"/>
       <source>FEM (mm, N, s)</source>
       <translation>FEM (mm, N, s)</translation>
     </message>

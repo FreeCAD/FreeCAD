@@ -78,6 +78,8 @@ public:
 
     /// build window title
     QString buildWindowTitle() const;
+    /// reimplementation of QWidget::setWindowTitle(const QString &title)
+    void setWindowTitle(const QString& title);
 
     /// Message handler
     bool onMsg(const char* pMsg, const char** ppReturn) override;

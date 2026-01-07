@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.Persistence import Persistence
 from Base.Matrix import Matrix
@@ -11,10 +15,8 @@ class Document(Persistence):
     Licence: LGPL
     """
 
-    def show(self, objName: str) -> None:
+    def show(self, objName: str, /) -> None:
         """
-        show(objName) -> None
-
         Show an object.
 
         objName : str
@@ -22,10 +24,8 @@ class Document(Persistence):
         """
         ...
 
-    def hide(self, objName: str) -> None:
+    def hide(self, objName: str, /) -> None:
         """
-        hide(objName) -> None
-
         Hide an object.
 
         objName : str
@@ -33,10 +33,8 @@ class Document(Persistence):
         """
         ...
 
-    def setPos(self, objName: str, matrix: Matrix) -> None:
+    def setPos(self, objName: str, matrix: Matrix, /) -> None:
         """
-        setPos(objName, matrix) -> None
-
         Set the position of an object.
 
         objName : str
@@ -47,10 +45,8 @@ class Document(Persistence):
         """
         ...
 
-    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None) -> bool:
+    def setEdit(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> bool:
         """
-        setEdit(obj, mod=0, subName) -> bool
-
         Set an object in edit mode.
 
         obj : str, App.DocumentObject, Gui.ViewPrivider
@@ -64,24 +60,18 @@ class Document(Persistence):
 
     def getInEdit(self) -> Optional[Any]:
         """
-        getInEdit() -> Gui.ViewProviderDocumentObject or None
-
         Returns the current object in edit mode or None if there is no such object.
         """
         ...
 
     def resetEdit(self) -> None:
         """
-        resetEdit() -> None
-
         End the current editing.
         """
         ...
 
-    def addAnnotation(self, annoName: str, fileName: str, modName: str) -> None:
+    def addAnnotation(self, annoName: str, fileName: str, modName: str, /) -> None:
         """
-        addAnnotation(annoName, fileName, modName) -> None
-
         Add an Inventor object from a file.
 
         annoName : str
@@ -95,16 +85,12 @@ class Document(Persistence):
 
     def update(self) -> None:
         """
-        update() -> None
-
         Update the view representations of all objects.
         """
         ...
 
-    def getObject(self, objName: str) -> Optional[Any]:
+    def getObject(self, objName: str, /) -> Optional[Any]:
         """
-        getObject(objName) -> object or None
-
         Return the object with the given name. If no one exists, return None.
 
         ObjName : str
@@ -114,24 +100,18 @@ class Document(Persistence):
 
     def activeObject(self) -> Optional[Any]:
         """
-        activeObject() -> object or None
-
         The active object of the document. Deprecated, use ActiveObject.
         """
         ...
 
     def activeView(self) -> Optional[Any]:
         """
-        activeView() -> object or None
-
         The active view of the document. Deprecated, use ActiveView.
         """
         ...
 
-    def createView(self, type: str) -> Optional[Any]:
+    def createView(self, type: str, /) -> Optional[Any]:
         """
-        createView(type) -> object or None
-
         Return a newly created view of a given type.
 
         type : str
@@ -140,10 +120,8 @@ class Document(Persistence):
         ...
 
     @constmethod
-    def mdiViewsOfType(self, type: str) -> List[Any]:
+    def mdiViewsOfType(self, type: str, /) -> List[Any]:
         """
-        mdiViewsOfType(type) -> list of MDIView
-
         Return a list of mdi views of a given type.
 
         type : str
@@ -153,34 +131,26 @@ class Document(Persistence):
 
     def save(self) -> bool:
         """
-        save() -> bool
-
         Attempts to save the document
         """
         ...
 
     def saveAs(self) -> bool:
         """
-        saveAs() -> bool
-
         Attempts to save the document under a new name
         """
         ...
 
-    def sendMsgToViews(self, msg: str) -> None:
+    def sendMsgToViews(self, msg: str, /) -> None:
         """
-        sendMsgToViews(msg) -> None
-
         Send a message to all views of the document.
 
         msg : str
         """
         ...
 
-    def mergeProject(self, fileName: str) -> None:
+    def mergeProject(self, fileName: str, /) -> None:
         """
-        mergeProject(fileName) -> None
-
         Merges this document with another project file.
 
         fileName : str
@@ -188,10 +158,8 @@ class Document(Persistence):
         """
         ...
 
-    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None) -> None:
+    def toggleTreeItem(self, obj: Any, mod: int = 0, subName: Optional[str] = None, /) -> None:
         """
-        toggleTreeItem(obj, mod=0, subName) -> None
-
         Change TreeItem of a document object.
 
         obj : App.DocumentObject
@@ -203,20 +171,16 @@ class Document(Persistence):
         """
         ...
 
-    def scrollToTreeItem(self, obj: Any) -> None:
+    def scrollToTreeItem(self, obj: Any, /) -> None:
         """
-        scrollToTreeItem(obj) -> None
-
         Scroll the tree view to the item of a view object.
 
         obj : Gui.ViewProviderDocumentObject
         """
         ...
 
-    def toggleInSceneGraph(self, obj: Any) -> None:
+    def toggleInSceneGraph(self, obj: Any, /) -> None:
         """
-        toggleInSceneGraph(obj) -> None
-
         Add or remove view object from scene graph of all views depending
         on its canAddToSceneGraph().
 

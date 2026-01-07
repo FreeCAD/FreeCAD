@@ -427,7 +427,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->hintLabel = new InputHintWidget(statusBar());
     d->hintLabel->setObjectName(QStringLiteral("hintLabel"));
     //: A context menu action used to show or hide the input hints in the status bar
-    d->hintLabel->setWindowTitle(tr("Input hints"));
+    d->hintLabel->setWindowTitle(tr("Input Hints"));
 
     statusBar()->addWidget(d->hintLabel);
 
@@ -437,7 +437,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     statusBar()->addPermanentWidget(d->rightSideLabel);
     d->rightSideLabel->setObjectName(QStringLiteral("rightSideLabel"));
     //: A context menu action used to enable or disable quick measure in the status bar
-    d->rightSideLabel->setWindowTitle(tr("Quick measure"));
+    d->rightSideLabel->setWindowTitle(tr("Quick Measure"));
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/NotificationArea"
@@ -652,6 +652,36 @@ bool MainWindow::setupPythonConsole()
 
     return false;
 }
+
+bool MainWindow::checkFirstRun()
+{
+    ParameterGrp::handle hGrpRF = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/RecentFiles"
+    );
+    auto RecentFilesCount = hGrpRF->GetInt("RecentFiles");
+    ParameterGrp::handle hGrpFS2024 = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Start"
+    );
+    auto firstStart = hGrpFS2024->GetBool("FirstStart2024", true);  // NOLINT
+    if (firstStart && RecentFilesCount < 1) {
+        return true;
+    }
+    return false;
+}
+
+
+void MainWindow::moveToDefaultPosition(QRect rect, QPoint pos)
+{
+    int x1 {}, x2 {}, y1 {}, y2 {};
+    // make sure that the main window is not totally out of the visible rectangle
+    rect.getCoords(&x1, &y1, &x2, &y2);
+    const int offsetX = 30;
+    const int offsetY = 10;
+    pos.setX(qMin(qMax(pos.x(), x1 - this->width() + offsetX), x2 - offsetX));
+    pos.setY(qMin(qMax(pos.y(), y1 - offsetY), y2 - offsetY));
+    this->move(pos);
+}
+
 
 bool MainWindow::updateTreeView(bool show)
 {
@@ -1923,12 +1953,25 @@ void MainWindow::loadWindowSettings()
     }
 
     resize(size);
-    int x1 {}, x2 {}, y1 {}, y2 {};
-    // make sure that the main window is not totally out of the visible rectangle
-    rect.getCoords(&x1, &y1, &x2, &y2);
-    pos.setX(qMin(qMax(pos.x(), x1 - this->width() + 30), x2 - 30));
-    pos.setY(qMin(qMax(pos.y(), y1 - 10), y2 - 10));
-    this->move(pos);
+    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
+#ifdef FC_OS_WIN64
+    if (checkFirstRun()) {
+        const int topLeftXY = 10;
+        this->move(topLeftXY, topLeftXY);
+    }
+    else {
+        moveToDefaultPosition(rect, pos);
+    }
+#else
+    // TODO: Hotfix to be removed as soon as possible after 1.1.0 Release
+    if (QGuiApplication::platformName() == QString::fromStdString("wayland") && checkFirstRun()) {
+        const int topLeftXY = 10;
+        this->move(topLeftXY, topLeftXY);
+    }
+    else {  // all Linux x11 and Mac
+        moveToDefaultPosition(rect, pos);
+    }
+#endif
 
     Base::StateLocker guard(d->_restoring);
 

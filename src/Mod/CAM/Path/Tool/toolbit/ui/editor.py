@@ -30,6 +30,7 @@ import FreeCADGui
 from ...shape.ui.shapewidget import ShapeWidget
 from ...docobject.ui import DocumentObjectEditorWidget
 from ..models.base import ToolBit
+from ..util import setToolBitSchema
 
 translate = FreeCAD.Qt.translate
 
@@ -54,6 +55,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         self._toolbit = None
         self._show_shape = icon
         self._tool_no = tool_no
+        setToolBitSchema()
 
         # UI Elements
         self._label_edit = QtGui.QLineEdit()
@@ -72,7 +74,7 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         toolbit_group_box = QtGui.QGroupBox(translate("CAM", "Toolbit"))
         form_layout = QtGui.QFormLayout(toolbit_group_box)
         form_layout.addRow(translate("CAM", "Label:"), self._label_edit)
-        form_layout.addRow(translate("CAM", "ID:"), self._id_label)
+        # form_layout.addRow(translate("CAM", "ID:"), self._id_label)
 
         # Optional tool number edit field.
         self._tool_no_edit = QtGui.QSpinBox()
@@ -133,6 +135,18 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
 
     def load_toolbit(self, toolbit: ToolBit):
         """Load a ToolBit object into the editor."""
+        # Set schema based on the toolbit's Units property if available
+        toolbit_units = None
+        if toolbit and hasattr(toolbit.obj, "Units"):
+            toolbit_units = getattr(toolbit.obj, "Units", None)
+            # If Units is an enumeration, get the value
+            if isinstance(toolbit_units, (list, tuple)) and len(toolbit_units) > 0:
+                toolbit_units = toolbit_units[0]
+        if toolbit_units in ("Metric", "Imperial"):
+            setToolBitSchema(toolbit_units)
+        elif FreeCAD.ActiveDocument is None:
+            setToolBitSchema()
+
         self._toolbit = toolbit
         if not self._toolbit or not self._toolbit.obj:
             # Clear or disable fields if toolbit is invalid
@@ -256,16 +270,24 @@ class ToolBitEditor(QtGui.QWidget):
         self.tool_no = tool_no
         self.default_title = self.form.windowTitle()
 
+        # Store the original schema to restore on close
+        self._original_schema = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "UserSchema", 6
+        )
+        self._tab_closed = False
+
         # Get first tab from the form, add the shape widget at the top.
         tool_tab_layout = self.form.toolTabLayout
         widget = ShapeWidget(toolbit._tool_bit_shape)
         tool_tab_layout.addWidget(widget)
 
         # Add tool properties editor to the same tab.
-        props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
-        props.toolBitChanged.connect(self._update)
-        props.toolNoChanged.connect(self._on_tool_no_changed)
-        tool_tab_layout.addWidget(props)
+        self._props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
+        self._last_units_value = self._get_units_value(self._props)
+        self._props.toolBitChanged.connect(self._on_toolbit_changed)
+        self._props.toolBitChanged.connect(self._update)
+        self._props.toolNoChanged.connect(self._on_tool_no_changed)
+        tool_tab_layout.addWidget(self._props)
 
         self.form.tabWidget.setCurrentIndex(0)
         self.form.tabWidget.currentChanged.connect(self._on_tab_switched)
@@ -296,6 +318,58 @@ class ToolBitEditor(QtGui.QWidget):
         self.form.plainTextEditNotes.setPlainText(tool.get_notes())
         self.form.plainTextEditNotes.textChanged.connect(self._on_notes_changed)
         """
+
+        self._update()
+
+    def _get_units_value(self, props):
+        """
+        Helper to extract the Units value from the toolbit properties.
+        """
+        if props and hasattr(props._toolbit.obj, "Units"):
+            units_value = getattr(props._toolbit.obj, "Units", None)
+            if isinstance(units_value, (list, tuple)) and len(units_value) > 0:
+                units_value = units_value[0]
+            return units_value
+        return None
+
+    def _on_toolbit_changed(self):
+        """
+        Slot called when the toolbit is changed. If the Units value has changed,
+        refreshes the property editor widget to update the schema and UI.
+        """
+        units_value = self._get_units_value(self._props)
+        if units_value in ("Metric", "Imperial") and units_value != self._last_units_value:
+            self._refresh_property_editor()
+        self._last_units_value = units_value
+
+    def _refresh_property_editor(self):
+        """
+        Refreshes the property editor widget in the tab.
+        Removes the current ToolBitPropertiesWidget, restores the original units schema,
+        recreates the widget, and reconnects all signals. This ensures the UI and schema
+        are in sync with the current toolbit's units, and user changes are preserved
+        because the ToolBit object is always up to date.
+        """
+        # Remove the current property editor widget
+        tool_tab_layout = self.form.toolTabLayout
+        tool_tab_layout.removeWidget(self._props)
+        self._props.deleteLater()
+        # Restore the original schema
+        FreeCAD.Units.setSchema(self._original_schema)
+        # Recreate the property editor with the current toolbit
+        self._props = ToolBitPropertiesWidget(self.toolbit, self.tool_no, self, icon=False)
+        self._last_units_value = self._get_units_value(self._props)
+        self._props.toolBitChanged.connect(self._on_toolbit_changed)
+        self._props.toolBitChanged.connect(self._update)
+        self._props.toolNoChanged.connect(self._on_tool_no_changed)
+        tool_tab_layout.addWidget(self._props)
+        self.form.tabWidget.setCurrentIndex(0)
+
+    def _restore_original_schema(self):
+        """
+        Restores the original units schema that was active before the ToolBit editor was opened.
+        """
+        FreeCAD.Units.setSchema(self._original_schema)
 
     def _update(self):
         title = self.default_title

@@ -312,30 +312,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnDocumentRestored(self, obj):
         self.propertiesReady = False
-
         self.initAreaOpProperties(obj, warn=True)
         self.areaOpSetDefaultValues(obj, PathUtils.findParentJob(obj))
         self.setOpEditorProperties(obj)
-        if not hasattr(obj, "NumPasses"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "NumPasses",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The number of passes to do. Requires a non-zero value for Stepover",
-                ),
-            )
-        if not hasattr(obj, "Stepover"):
-            obj.addProperty(
-                "App::PropertyDistance",
-                "Stepover",
-                "Profile",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "If doing multiple passes, the extra offset of each additional pass",
-                ),
-            )
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""

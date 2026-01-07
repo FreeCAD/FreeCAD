@@ -191,12 +191,12 @@ SheetTableView::SheetTableView(QWidget* parent)
         return act;
     };
 
-    actionProperties = createAction("", tr("Properties…"), &SheetTableView::cellProperties);
+    actionProperties = createAction("", tr("Properties"), &SheetTableView::cellProperties);
     contextMenu.addSeparator();
     actionRecompute
         = createAction(":/icons/view-refresh.svg", tr("Recompute"), &SheetTableView::onRecompute);
     actionBind = createAction("", tr("Bind…"), &SheetTableView::onBind);
-    actionConf = createAction("", tr("Configuration Table…"), &SheetTableView::onConfSetup);
+    actionConf = createAction("", tr("Configuration Table"), &SheetTableView::onConfSetup);
     contextMenu.addSeparator();
     actionMerge = createAction(
         ":/icons/SpreadsheetMergeCells.svg",

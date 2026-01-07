@@ -39,6 +39,7 @@
         <file>icons/CAM_OperationB.svg</file>
         <file>icons/CAM_Pocket.svg</file>
         <file>icons/CAM_Post.svg</file>
+        <file>icons/CAM_PostSelected.svg</file>
         <file>icons/CAM_Probe.svg</file>
         <file>icons/CAM_Profile_Edges.svg</file>
         <file>icons/CAM_Profile_Face.svg</file>
@@ -110,6 +111,7 @@
         <file>panels/PageOpHelixEdit.ui</file>
         <file>panels/PageOpPocketExtEdit.ui</file>
         <file>panels/PageOpPocketFullEdit.ui</file>
+        <file>panels/PageOpMillFacingEdit.ui</file>
         <file>panels/PageOpProbeEdit.ui</file>
         <file>panels/PageOpProfileFullEdit.ui</file>
         <file>panels/PageOpSlotEdit.ui</file>

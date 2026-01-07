@@ -716,6 +716,10 @@ void TaskView::removeDialog()
 }
 void TaskView::setShowTaskWatcher(bool show)
 {
+    if (showTaskWatcher == show) {
+        return;
+    }
+
     showTaskWatcher = show;
     if (show) {
         addTaskWatcher();

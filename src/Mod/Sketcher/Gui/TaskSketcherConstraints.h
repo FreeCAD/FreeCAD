@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2009 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -32,6 +34,7 @@
 
 #include "ConstraintFilters.h"
 
+class ConstraintItem;
 
 namespace App
 {
@@ -203,9 +206,13 @@ protected:
 private:
     void onChangedSketchView(const Gui::ViewProvider&, const App::Property&);
 
+private Q_SLOTS:
+    void deferredUpdateList();
+
 private:
     QWidget* proxy;
     bool inEditMode;
+    bool updateListPending;
     std::unique_ptr<Ui_TaskSketcherConstraints> ui;
     ConstraintFilter::FilterValueBitset multiFilterStatus;  // Stores the filters to be aggregated
                                                             // to form the multifilter.
@@ -215,6 +222,19 @@ private:
                                                             // selected geometry
     ConstraintFilterList* filterList;
     boost::signals2::scoped_connection changedSketchView;
+
+    // Buffering structures
+    std::unordered_map<int, ConstraintItem*> constraintMap;
+
+    struct PendingSelectionUpdate
+    {
+        ConstraintItem* item;
+        bool select;
+    };
+    std::vector<PendingSelectionUpdate> selectionBuffer;
+    bool selectionUpdateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui

@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from typing import Any
 
 from Base.Metadata import export
@@ -22,22 +26,10 @@ class ViewProviderSpreadsheet(ViewProviderDocumentObject):
         """Get access to the sheet view"""
         ...
 
-    def showSheetMdi(self) -> Any:
-        """
-        Create (if necessary) and switch to the Spreadsheet MDI.
-
-        showSheetMdi()
-
-        Returns: None
-        """
+    def showSheetMdi(self) -> None:
+        """Create (if necessary) and switch to the Spreadsheet MDI."""
         ...
 
-    def exportAsFile(self) -> Any:
-        """
-        Export the sheet as a file.
-
-        exportAsFile()
-
-        Returns: None
-        """
+    def exportAsFile(self) -> None:
+        """Export the sheet as a file."""
         ...
