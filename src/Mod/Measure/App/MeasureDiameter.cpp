@@ -126,14 +126,6 @@ void MeasureDiameter::onChanged(const App::Property* prop)
     MeasureBase::onChanged(prop);
 }
 
-Base::Placement MeasureDiameter::getPlacement()
-{
-    auto loc = getMeasureInfoFirst()->pointOnCurve;
-    auto p = Base::Placement();
-    p.setPosition(loc);
-    return p;
-}
-
 Base::Vector3d MeasureDiameter::getPointOnCurve() const
 {
     return getMeasureInfoFirst()->pointOnCurve;
