@@ -68,7 +68,7 @@ public:
         return &this->Diameter;
     }
 
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
     Base::Vector3d getPointOnCurve() const;
 
     std::vector<App::DocumentObject*> getSubject() const override;
