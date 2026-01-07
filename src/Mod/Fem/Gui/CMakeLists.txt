@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # Many warnings caused by vtk
 if(CMAKE_COMPILER_IS_CLANGXX)
     add_compile_options(-Wno-pedantic) # needed for vtk headers

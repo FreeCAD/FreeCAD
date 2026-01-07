@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2020 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2022 Uwe Stöhr <uwestoehr@lyx.org>                      *
