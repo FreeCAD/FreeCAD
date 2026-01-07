@@ -1610,6 +1610,72 @@ class _Wall(ArchComponent.Component):
             super(_Wall, self).handleComponentRemoval(obj, subobject)
 
 
+if FreeCAD.GuiUp:
+
+    class WallTaskPanel(ArchComponent.ComponentTaskPanel):
+        def __init__(self, obj):
+            ArchComponent.ComponentTaskPanel.__init__(self)
+            self.obj = obj
+            self.wallWidget = QtGui.QWidget()
+            self.wallWidget.setWindowTitle(
+                QtGui.QApplication.translate("Arch", "Wall options", None)
+            )
+
+            layout = QtGui.QFormLayout(self.wallWidget)
+
+            self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.length.setProperty("unit", "mm")
+            self.length.setText(obj.Length.UserString)
+            layout.addRow(QtGui.QApplication.translate("Arch", "Length", None), self.length)
+
+            self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.width.setProperty("unit", "mm")
+            self.width.setText(obj.Width.UserString)
+            layout.addRow(QtGui.QApplication.translate("Arch", "Width", None), self.width)
+
+            self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.height.setProperty("unit", "mm")
+            self.height.setText(obj.Height.UserString)
+            layout.addRow(QtGui.QApplication.translate("Arch", "Height", None), self.height)
+
+            self.alignLayout = QtGui.QHBoxLayout()
+            self.alignLeft = QtGui.QRadioButton(QtGui.QApplication.translate("Arch", "Left", None))
+            self.alignCenter = QtGui.QRadioButton(
+                QtGui.QApplication.translate("Arch", "Center", None)
+            )
+            self.alignRight = QtGui.QRadioButton(
+                QtGui.QApplication.translate("Arch", "Right", None)
+            )
+            self.alignLayout.addWidget(self.alignLeft)
+            self.alignLayout.addWidget(self.alignCenter)
+            self.alignLayout.addWidget(self.alignRight)
+            self.alignLayout.addStretch()
+
+            if obj.Align == "Left":
+                self.alignLeft.setChecked(True)
+            elif obj.Align == "Right":
+                self.alignRight.setChecked(True)
+            else:
+                self.alignCenter.setChecked(True)
+
+            layout.addRow(QtGui.QApplication.translate("Arch", "Alignment", None), self.alignLayout)
+
+            # Wall Options first, then Components (inherited self.form)
+            self.form = [self.wallWidget, self.form]
+
+        def accept(self):
+            self.obj.Length = self.length.text()
+            self.obj.Width = self.width.text()
+            self.obj.Height = self.height.text()
+            if self.alignLeft.isChecked():
+                self.obj.Align = "Left"
+            elif self.alignRight.isChecked():
+                self.obj.Align = "Right"
+            else:
+                self.obj.Align = "Center"
+            return ArchComponent.ComponentTaskPanel.accept(self)
+
+
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
 
@@ -1792,6 +1858,15 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     self.fset.coordIndex.setValues(0, len(fdata), fdata)
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        taskd = WallTaskPanel(vobj.Object)
+        taskd.obj = self.Object
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
     def setupContextMenu(self, vobj, menu):
 
