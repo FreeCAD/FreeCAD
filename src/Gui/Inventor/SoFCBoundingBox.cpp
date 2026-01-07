@@ -20,17 +20,20 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <sstream>
+#include <FCConfig.h>
 
 #ifdef FC_OS_WIN32
-# include <windows.h>
+# include <Windows.h>
 #endif
 #ifdef FC_OS_MACOSX
 # include <OpenGL/gl.h>
+# include <OpenGL/glext.h>
 #else
 # include <GL/gl.h>
 # include <GL/glext.h>
 #endif
+
+#include <sstream>
 
 #include <Inventor/SbBox.h>
 #include <Inventor/elements/SoLazyElement.h>
