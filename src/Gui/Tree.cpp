@@ -5365,9 +5365,12 @@ void DocumentItem::testStatus()
     }
 
     auto tree = getTree();
-    setBaseIcon(0, document()->getDocument()->testStatus(App::Document::PartialDoc) ? 
-        *(tree->documentPartialPixmap) : 
-        *(tree->documentPixmap));
+    setBaseIcon(
+        0,
+        document()->getDocument()->testStatus(App::Document::PartialDoc)
+            ? *(tree->documentPartialPixmap)
+            : *(tree->documentPixmap)
+    );
 }
 
 void DocumentItem::setData(int column, int role, const QVariant& value)
@@ -6311,8 +6314,16 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
             }
             bool externalReadOnly = getOwnerDocument()->document()->getDocument()->isReadOnlyFile()
                 || (linked && linked->getDocument()->isReadOnlyFile());
-            pxOff = BitmapFactory().merge(pxOff, externalReadOnly ? pxReadOnly : pxExternal, BitmapFactoryInst::BottomRight);
-            pxOn = BitmapFactory().merge(pxOn, externalReadOnly ? pxReadOnly : pxExternal, BitmapFactoryInst::BottomRight);
+            pxOff = BitmapFactory().merge(
+                pxOff,
+                externalReadOnly ? pxReadOnly : pxExternal,
+                BitmapFactoryInst::BottomRight
+            );
+            pxOn = BitmapFactory().merge(
+                pxOn,
+                externalReadOnly ? pxReadOnly : pxExternal,
+                BitmapFactoryInst::BottomRight
+            );
         }
 
         if (currentStatus & Status::Freezed) {
