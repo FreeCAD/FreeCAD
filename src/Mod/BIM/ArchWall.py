@@ -1651,6 +1651,12 @@ if FreeCAD.GuiUp:
             self.alignLayout.addWidget(self.alignRight)
             self.alignLayout.addStretch()
 
+            self.alignGroup = QtGui.QButtonGroup(self.wallWidget)
+            self.alignGroup.addButton(self.alignLeft)
+            self.alignGroup.addButton(self.alignCenter)
+            self.alignGroup.addButton(self.alignRight)
+            self.alignGroup.buttonClicked.connect(self.setAlign)
+
             if obj.Align == "Left":
                 self.alignLeft.setChecked(True)
             elif obj.Align == "Right":
@@ -1663,16 +1669,19 @@ if FreeCAD.GuiUp:
             # Wall Options first, then Components (inherited self.form)
             self.form = [self.wallWidget, self.form]
 
+        def setAlign(self, button):
+            if button == self.alignLeft:
+                self.obj.Align = "Left"
+            elif button == self.alignRight:
+                self.obj.Align = "Right"
+            else:
+                self.obj.Align = "Center"
+            self.obj.recompute()
+
         def accept(self):
             self.obj.Length = self.length.text()
             self.obj.Width = self.width.text()
             self.obj.Height = self.height.text()
-            if self.alignLeft.isChecked():
-                self.obj.Align = "Left"
-            elif self.alignRight.isChecked():
-                self.obj.Align = "Right"
-            else:
-                self.obj.Align = "Center"
             return ArchComponent.ComponentTaskPanel.accept(self)
 
 
