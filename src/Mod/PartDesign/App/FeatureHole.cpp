@@ -1732,6 +1732,11 @@ App::DocumentObjectExecReturn* Hole::execute()
     }
 
     try {
+        if (Diameter.getValue() < diameterRange.LowerBound) {
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Hole error: Diameter too small")
+            );
+        }
         std::string method(DepthType.getValueAsString());
         double length = 0.0;
 
