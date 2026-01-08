@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileCopyrightText: 2009 Dan Heeks
+// SPDX-FileCopyrightText: 2018 wandererfan
+// SPDX-FileNotice: Part of the FreeCAD project.
 
-// dxf.h
-// Copyright (c) 2009, Dan Heeks
-// This program is released under the BSD license. See the file COPYING for details.
-// modified 2018 wandererfan
 
 #ifndef Included_dxf_h_
 #define Included_dxf_h_

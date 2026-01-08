@@ -1,9 +1,7 @@
 ﻿// SPDX-License-Identifier: BSD-3-Clause
-
-// dxf.cpp
-// Copyright (c) 2009, Dan Heeks
-// This program is released under the BSD license. See the file COPYING for details.
-// modified 2018 wandererfan
+// SPDX-FileCopyrightText: 2009 Dan Heeks
+// SPDX-FileCopyrightText: 2018 wandererfan
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 
 #include <cmath>
