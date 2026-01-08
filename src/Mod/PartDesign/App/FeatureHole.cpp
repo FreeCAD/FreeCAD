@@ -539,8 +539,9 @@ const App::PropertyAngle::Constraints Hole::floatAngle = {
     1.0
 };
 // OCC can only create holes with a min diameter of 10 times the Precision::Confusion()
+// In practice less than 170nm will result in failure
 const App::PropertyQuantityConstraint::Constraints diameterRange
-    = {10 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
+    = {1700 * Precision::Confusion(), std::numeric_limits<float>::max(), 1.0};
 
 // Custom clearance can be negative or positive to adjust for manufacturing
 const App::PropertyQuantityConstraint::Constraints clearanceRange
