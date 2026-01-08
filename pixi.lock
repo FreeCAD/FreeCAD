@@ -348,6 +348,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/pyyaml-6.0.2-py311h2dc5d0c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/qhull-2020.2-h434a139_5.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/qt6-main-6.8.3-h75f3359_4.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/qt6-wayland-6.8.3-hf501273_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rapidjson-1.1.0.post20240409-h3f2d84a_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rav1e-0.7.1-h8fae777_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/readline-8.2-h8c095d6_2.conda
@@ -767,6 +768,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/pyyaml-6.0.2-py311h58d527c_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/qhull-2020.2-h70be974_5.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/qt6-main-6.8.3-he176c03_4.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/qt6-wayland-6.8.3-h6948401_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/rapidjson-1.1.0.post20240409-h5ad3122_2.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/readline-8.2-h8382b9d_2.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/requests-2.32.4-pyhd8ed1ab_0.conda
@@ -18879,6 +18881,63 @@ packages:
   purls: []
   size: 92900449
   timestamp: 1750923594107
+- conda: https://conda.anaconda.org/conda-forge/linux-64/qt6-wayland-6.8.3-hf501273_0.conda
+  sha256: 82d09a7bd753766f06b3c81696053a24637b9e33e4f32baf32ca071f51273760
+  md5: 984c2eefffc5d3937883b10748d16a34
+  depends:
+  - __glibc >=2.17,<3.0.a0
+  - fontconfig >=2.15.0,<3.0a0
+  - fonts-conda-ecosystem
+  - freetype >=2.13.3,<3.0a0
+  - libegl >=1.7.0,<2.0a0
+  - libgcc >=13
+  - libgl >=1.7.0,<2.0a0
+  - libglib >=2.84.0,<3.0a0
+  - libglx >=1.7.0,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
+  - libstdcxx >=13
+  - libxkbcommon >=1.8.1,<2.0a0
+  - libzlib >=1.3.1,<2.0a0
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  - wayland >=1.23.1,<2.0a0
+  - xorg-libx11 >=1.8.12,<2.0a0
+  - xorg-libxcomposite >=0.4.6,<1.0a0
+  - xorg-libxext >=1.3.6,<2.0a0
+  - xorg-libxrandr >=1.5.4,<2.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  purls: []
+  size: 1550598
+  timestamp: 1743159191270
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/qt6-wayland-6.8.3-h6948401_0.conda
+  sha256: 775a5615e3f763920f91366014a4111c58907694615c1d03752e0efcb5db2fdc
+  md5: 55b2a18347cd8fc340ecd553c70a8eee
+  depends:
+  - fontconfig >=2.15.0,<3.0a0
+  - fonts-conda-ecosystem
+  - freetype >=2.13.3,<3.0a0
+  - libegl >=1.7.0,<2.0a0
+  - libgcc >=13
+  - libgl >=1.7.0,<2.0a0
+  - libglib >=2.84.0,<3.0a0
+  - libglx >=1.7.0,<2.0a0
+  - libopengl >=1.7.0,<2.0a0
+  - libstdcxx >=13
+  - libxkbcommon >=1.8.1,<2.0a0
+  - libzlib >=1.3.1,<2.0a0
+  - qt6-main 6.8.3.*
+  - qt6-main >=6.8.3,<6.9.0a0
+  - wayland >=1.23.1,<2.0a0
+  - xorg-libx11 >=1.8.12,<2.0a0
+  - xorg-libxcomposite >=0.4.6,<1.0a0
+  - xorg-libxext >=1.3.6,<2.0a0
+  - xorg-libxrandr >=1.5.4,<2.0a0
+  license: LGPL-3.0-only
+  license_family: LGPL
+  purls: []
+  size: 1639641
+  timestamp: 1743262388133
 - pypi: https://files.pythonhosted.org/packages/69/76/37c0ccd5ab968a6a438f9c623aeecc84c202ab2fabc6a8fd927580c15b5a/QtPy-2.4.3-py3-none-any.whl
   name: qtpy
   version: 2.4.3
