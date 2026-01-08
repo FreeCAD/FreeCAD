@@ -126,26 +126,33 @@ private:
         Type
     };
 
+    struct SupportedTypes
+    {
+        std::vector<Base::Type> commonTypes;
+        std::vector<Base::Type> otherTypes;
+    };
+
     DlgAddProperty(QWidget* parent, App::PropertyContainer* container, ViewProviderVarSet* viewProvider);
 
     void setupMacroRedirector();
 
     void initializeGroup();
 
-    std::vector<Base::Type> getSupportedTypes();
+    SupportedTypes getSupportedTypes();
     void initializeTypes();
 
     void removeSelectionEditor();
     QVariant getEditorData() const;
     void setEditorData(const QVariant& data);
-    bool isSubLinkPropertyItem() const;
     bool isEnumPropertyItem() const;
     void addEnumEditor(PropertyEditor::PropertyItem* propertyItem);
     void addNormalEditor(PropertyEditor::PropertyItem* propertyItem);
     void addEditor(PropertyEditor::PropertyItem* propertyItem);
-    bool isTypeWithEditor(const Base::Type& type);
-    bool isTypeWithEditor(const std::string& type);
-    void createEditorForType(const Base::Type& type);
+    bool isExcluded(const Base::Type& type) const;
+    bool isTypeWithEditor(PropertyEditor::PropertyItem* propertyItem) const;
+    bool isTypeWithEditor(const Base::Type& type) const;
+    bool isTypeWithEditor(const std::string& type) const;
+    void createSupportDataForType(const Base::Type& type);
     void initializeValue();
 
     void setTitle();
