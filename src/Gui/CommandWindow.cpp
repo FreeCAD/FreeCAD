@@ -344,14 +344,14 @@ Action* StdCmdToolBarMenu::createAction()
 DEF_STD_CMD_C(StdCmdToggleTitleToolBarLock)
 
 StdCmdToggleTitleToolBarLock::StdCmdToggleTitleToolBarLock()
-  :Command("Std_DlgToggleTitleToolBarLock")
+    : Command("Std_DlgToggleTitleToolBarLock")
 {
-    sGroup        = "Tools";
-    sMenuText     = QT_TR_NOOP("Lock menubar toolbars");
-    sToolTipText  = QT_TR_NOOP("Lock menubar and status bar toolbars so they are no longer moveable");
-    sWhatsThis    = "Std_DlgToggleTitleToolBarLock";
-    sStatusTip    = sToolTipText;
-    eType         = 0;
+    sGroup = "Tools";
+    sMenuText = QT_TR_NOOP("Lock menubar toolbars");
+    sToolTipText = QT_TR_NOOP("Lock menubar and status bar toolbars so they are no longer moveable");
+    sWhatsThis = "Std_DlgToggleTitleToolBarLock";
+    sStatusTip = sToolTipText;
+    eType = 0;
 }
 
 

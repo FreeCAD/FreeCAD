@@ -1260,8 +1260,7 @@ void Gui::ToolBarManager::setMovable(bool movable) const
 {
     for (auto& tb : toolBars()) {
         auto parent = tb->parentWidget();
-        if (parent == statusBarAreaWidget
-            || parent == menuBarLeftAreaWidget
+        if (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
             || parent == menuBarRightAreaWidget) {
             continue;
         }
@@ -1275,8 +1274,7 @@ void Gui::ToolBarManager::setTitleToolbarsMovable(bool movable) const
     for (auto& tb : toolBars()) {
         auto parent = tb->parentWidget();
 
-        if (parent == statusBarAreaWidget
-            || parent == menuBarLeftAreaWidget
+        if (parent == statusBarAreaWidget || parent == menuBarLeftAreaWidget
             || parent == menuBarRightAreaWidget) {
             tb->setMovable(movable);
             tb->updateCustomGripVisibility();
