@@ -409,9 +409,7 @@ public:
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject&) {
             refresh();
         });
-        Application::Instance->signalActivateWorkbench.connect([this](const char*) {
-            refresh();
-        });
+        Application::Instance->signalActivateWorkbench.connect([this](const char*) { refresh(); });
 
         _actOverlay.setData(QStringLiteral("OBTN Overlay"));
         _actFloat.setData(QStringLiteral("OBTN Float"));
