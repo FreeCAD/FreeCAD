@@ -53,6 +53,7 @@ struct ExtrusionParameters
     double taperAngleFwd {0};  // in radians
     double taperAngleRev {0};
     std::string faceMakerClass;
+    bool isPartDesign {false};  // affects inner wire taper handling for single-edge circles
 };
 
 class PartExport ExtrusionHelper

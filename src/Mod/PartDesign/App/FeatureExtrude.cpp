@@ -902,6 +902,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
 
         Part::ExtrusionParameters params;
         params.taperAngleFwd = Base::toRadians(taperAngleDeg);
+        params.isPartDesign = true;
 
         if (std::fabs(params.taperAngleFwd) >= Precision::Angular()
             || std::fabs(params.taperAngleRev) >= Precision::Angular()) {

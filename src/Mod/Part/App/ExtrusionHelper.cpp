@@ -615,13 +615,25 @@ void ExtrusionHelper::makeElementDraft(
                 Standard_Failure::Raise("Failed to make drafted extrusion");
             }
             std::vector<TopoShape> inner;
-            TopoShape innerWires(0);
-            innerWires.makeElementCompound(
-                wires,
-                "",
-                TopoShape::SingleShapeCompoundCreationPolicy::returnShape
-            );
-            makeElementDraft(params, innerWires, inner, hasher);
+            // process each inner wire individually to check edge count
+            // Inner wires (holes) need negated taper angles
+            for (auto& innerWire : wires) {
+                ExtrusionParameters innerParams = params;
+
+                // count edges and if it's a circle and partDesign object, then don't flip the angle
+                int numEdges = 0;
+                TopExp_Explorer xp(innerWire.getShape(), TopAbs_EDGE);
+                while (xp.More()) {
+                    numEdges++;
+                    xp.Next();
+                }
+
+                if (numEdges > 1 || !params.isPartDesign) {
+                    innerParams.taperAngleFwd = -params.taperAngleFwd;
+                    innerParams.taperAngleRev = -params.taperAngleRev;
+                }
+                makeElementDraft(innerParams, innerWire, inner, hasher);
+            }
             if (inner.empty()) {
                 Standard_Failure::Raise("Failed to make drafted extrusion with inner hole");
             }
