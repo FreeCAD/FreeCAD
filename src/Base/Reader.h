@@ -43,21 +43,13 @@ namespace zipios
 {
 class ZipInputStream;
 }
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-# define XERCES_CPP_NAMESPACE_QUALIFIER
+
 namespace XERCES_CPP_NAMESPACE
 {
 class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class Attributes;
-class DefaultHandler;
-class SAX2XMLReader;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 namespace Base
 {
@@ -128,7 +120,7 @@ void PropertyContainer::Restore(Base::Reader &reader)
  * \see Base::Persistence
  * \author Juergen Riegel
  */
-class BaseExport XMLReader: public XERCES_CPP_NAMESPACE_QUALIFIER DefaultHandler
+class BaseExport XMLReader: public XERCES_CPP_NAMESPACE::DefaultHandler
 {
 public:
     enum ReaderStatus
@@ -332,7 +324,7 @@ protected:
         const XMLCh* const uri,
         const XMLCh* const localname,
         const XMLCh* const qname,
-        const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs
+        const XERCES_CPP_NAMESPACE::Attributes& attrs
     ) override;
     void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname) override;
     void characters(const XMLCh* const chars, const XMLSize_t length) override;
@@ -356,9 +348,9 @@ protected:
     // -----------------------------------------------------------------------
     /** @name Error handler */
     //@{
-    void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
-    void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
-    void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
+    void warning(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
+    void error(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
+    void fatalError(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
     void resetErrors() override;
     //@}
 
@@ -387,8 +379,8 @@ private:
 
 
     FileInfo _File;
-    XERCES_CPP_NAMESPACE_QUALIFIER SAX2XMLReader* parser;
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLPScanToken token;
+    XERCES_CPP_NAMESPACE::SAX2XMLReader* parser;
+    XERCES_CPP_NAMESPACE::XMLPScanToken token;
     bool _valid {false};
     bool _verbose {true};
 
