@@ -21,9 +21,9 @@
 ################################################################################
 
 
-'''
+"""
 StepZ Import Export compressed STEP files for FreeCAD
-'''
+"""
 
 # workaround for unicode in gzipping filename
 # OCC7 doesn't support non-ASCII characters at the moment

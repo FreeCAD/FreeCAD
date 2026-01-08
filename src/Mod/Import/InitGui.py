@@ -20,11 +20,11 @@
 #                                                                              #
 ################################################################################
 
-'''
+"""
 Gathering all the information to start FreeCAD
-This is the second one of three init scripts, 
+This is the second one of three init scripts,
 the third one runs when the gui is up.
-'''
+"""
 
 
 # Registered in Part's Init.py file
