@@ -20,7 +20,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef SPREADSHEET_GUI_PRECOMPILED_H
 #define SPREADSHEET_GUI_PRECOMPILED_H

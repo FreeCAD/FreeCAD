@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef PROPERTYROWHEIGHTS_H
 #define PROPERTYROWHEIGHTS_H

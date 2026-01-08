@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
 #define SRC_MOD_SPREADSHEET_APP_SHEET_H_
