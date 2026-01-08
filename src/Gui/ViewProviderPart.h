@@ -23,7 +23,7 @@
 #ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
-#include "ViewProviderDragger.h"
+#include "ViewProviderGeometryObject.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderFeaturePython.h"
 
@@ -31,7 +31,8 @@
 namespace Gui
 {
 
-class GuiExport ViewProviderPart: public ViewProviderDragger, public ViewProviderOriginGroupExtension
+class GuiExport ViewProviderPart: public ViewProviderGeometryObject,
+                                  public ViewProviderOriginGroupExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);
 

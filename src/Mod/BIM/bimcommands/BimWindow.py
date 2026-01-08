@@ -79,7 +79,7 @@ class Arch_Window:
         self.RemoveExternal = params.get_param_arch("archRemoveExternal")
         self.Preset = 0
         self.LibraryPreset = 0
-        self.Sill = 0
+        self.SillHeight = 0
         self.Include = True
         self.baseFace = None
         self.wparams = ["Width", "Height", "H1", "H2", "H3", "W1", "W2", "O1", "O2"]
@@ -179,6 +179,8 @@ class Arch_Window:
         from draftutils.messages import _wrn
         from ArchWindowPresets import WindowPresets
 
+        SketchArch = False
+
         FreeCAD.activeDraftCommand = None
         FreeCADGui.Snapper.off()
         self.tracker.off()
@@ -187,7 +189,7 @@ class Arch_Window:
         # if something was selected, override the underlying object
         if self.sel:
             obj = self.sel[0]
-        point = point.add(FreeCAD.Vector(0, 0, self.Sill))
+        point = point.add(FreeCAD.Vector(0, 0, self.SillHeight))
         self.doc.openTransaction(translate("Arch", "Create Window"))
 
         FreeCADGui.doCommand("import FreeCAD, Arch, DraftGeomUtils, WorkingPlane")
@@ -273,6 +275,7 @@ class Arch_Window:
 
             if (
                 host
+                and hasattr(host, "Base")
                 and Draft.getType(host.Base) == "ArchSketch"
                 and hasattr(ArchSketchObject, "attachToHost")
                 and hasattr(FreeCAD, "ArchSketchLock")
@@ -285,11 +288,6 @@ class Arch_Window:
                     # - see https://github.com/FreeCAD/FreeCAD/issues/24903#issuecomment-3475455946
                     # placement = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))
                     # TODO 2025.11.1 : To improve the algorithm to be more robust to allow the Base Sketch in any orientation but without problem
-                    #
-                    # Window object triggers onChanged() upon setting/changing Window.Sill to move Window's z position
-                    # For Window with SketchArch add-on, attachToHost() is to be run below to set the 'initial' Window's placement prior to triggering onChanged() below,
-                    # so window_sill parameter is not used here at the moment, see 'if self.Include' below.
-                    # FreeCADGui.doCommand("win = Arch.makeWindowPreset('" + WindowPresets[self.Preset] + "' " + wp + ", window_sill=" + str(self.Sill.Value) + ")")
                     FreeCADGui.doCommand(
                         "pl90 = FreeCAD.Placement(App.Vector(0,0,0),App.Rotation(App.Vector(1,0,0),90))"
                     )
@@ -308,9 +306,7 @@ class Arch_Window:
                         + WindowPresets[self.Preset]
                         + "' "
                         + wp
-                        + ", placement=pl, window_sill="
-                        + str(self.Sill.Value)
-                        + ")"
+                        + ", placement=pl"
                     )
                     FreeCADGui.doCommand("win.AttachToAxisOrSketch = 'None'")
                 FreeCADGui.doCommand("FreeCADGui.Selection.addSelection(win)")
@@ -324,9 +320,7 @@ class Arch_Window:
                     + WindowPresets[self.Preset]
                     + "' "
                     + wp
-                    + ", placement=pl, window_sill="
-                    + str(self.Sill.Value)
-                    + ")"
+                    + ", placement = pl)"
                 )
                 SketchArch = False
 
@@ -340,8 +334,6 @@ class Arch_Window:
                     )
                 if SketchArch:
                     ArchSketchObject.attachToHost(w, target=host, pl=wPl)
-                    # Trigger onChanged() in the window object by setting Window.Sill, after setting the Window's 'initial' placement by attachToHost() above
-                    FreeCADGui.doCommand("win.Sill = " + str(self.Sill.Value))
 
         self.doc.commitTransaction()
         self.doc.recompute()
@@ -353,7 +345,7 @@ class Arch_Window:
         "this function is called by the Snapper when the mouse is moved"
 
         delta = FreeCAD.Vector(self.Width / 2, self.W1 / 2, self.Height / 2)
-        delta = delta.add(FreeCAD.Vector(0, 0, self.Sill))
+        delta = delta.add(FreeCAD.Vector(0, 0, self.SillHeight))
 
         if self.baseFace is None:
             rot = FreeCAD.Rotation(self.wp.u, self.wp.v, -self.wp.axis, "XZY")
@@ -402,7 +394,7 @@ class Arch_Window:
         values = ui.createWidget("Gui::InputField")
         grid.addWidget(labels, 1, 0, 1, 1)
         grid.addWidget(values, 1, 1, 1, 1)
-        values.valueChanged.connect(self.setSill)
+        values.valueChanged.connect(self.setSillHeight)
 
         # check for Parts library and Arch presets
 
@@ -503,11 +495,11 @@ class Arch_Window:
 
         return lambda d: self.setParams(p, d)
 
-    def setSill(self, d):
+    def setSillHeight(self, d):
 
         from draftutils import params
 
-        self.Sill = d
+        self.SillHeight = d
         if self.doormode:
             params.set_param_arch("DoorSill", d)
         else:

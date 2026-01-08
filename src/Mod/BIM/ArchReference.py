@@ -102,10 +102,13 @@ class ArchReference:
     def onDocumentRestored(self, obj):
 
         ArchReference.setProperties(self, obj)
-        self.reload = False
         if obj.ReferenceMode == "Lightweight":
+            self.reload = False
             if obj.ViewObject and obj.ViewObject.Proxy:
                 obj.ViewObject.Proxy.loadInventor(obj)
+        else:
+            self.reload = True
+            self.execute(obj)  # sets self.reload to False again
 
     def dumps(self):
 
@@ -508,6 +511,7 @@ class ArchReference:
 
         if writemode2:
             # Old DiffuseColor support:
+            alpha_to_transparency = False
             for i in range(1, int(len(buf) / 4)):
                 # ShapeAppearance material with default v0.21 properties:
                 material = FreeCAD.Material()
@@ -515,6 +519,13 @@ class ArchReference:
                 material.DiffuseColor = color[:3] + (255,)
                 material.Transparency = color[3] / 255.0
                 colors.append(material)
+                if material.Transparency == 1.0:
+                    # Assumption: a face with 100% transparency indicates
+                    # we are actually dealing with alpha values.
+                    alpha_to_transparency = True
+            if alpha_to_transparency:
+                for material in colors:
+                    material.Transparency = 1.0 - material.Transparency
 
         if writemode3:
             # File format ShapeAppearance files in FCStd file:
@@ -744,6 +755,7 @@ class ViewProviderArchReference:
             FreeCAD.Console.PrintWarning(t + " " + obj.Label + "\n")
             return
         from pivy import coin
+        from draftutils import gui_utils
 
         inputnode = coin.SoInput()
         inputnode.setBuffer(ivstring)
@@ -762,13 +774,9 @@ class ViewProviderArchReference:
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )
@@ -793,16 +801,14 @@ class ViewProviderArchReference:
             return
         if (not hasattr(self, "orig_wireframe")) or (not self.orig_wireframe):
             return
+        from pivy import coin
+        from draftutils import gui_utils
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )

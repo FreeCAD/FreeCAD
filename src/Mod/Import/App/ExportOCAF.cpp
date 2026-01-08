@@ -47,7 +47,6 @@
 #include <App/Part.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF.h"
 #include "Tools.h"
@@ -175,14 +174,6 @@ int ExportOCAF::exportObject(
         }
 
         return_label = root_id;
-    }
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip && tip->isDerivedFrom<Part::Feature>()) {
-            // use the tip instead of the body for export
-            obj = tip;
-        }
     }
 
     if (obj->isDerivedFrom<Part::Feature>()) {

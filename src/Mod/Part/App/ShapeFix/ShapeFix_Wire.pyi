@@ -1,6 +1,9 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Part.App.ShapeFix.ShapeFix_Root import ShapeFix_Root
-from typing import Final
 
 @export(
     PythonName="Part.ShapeFix.Wire",
@@ -54,7 +57,7 @@ class ShapeFix_Wire(ShapeFix_Root):
         """
         pass
 
-    def setSurface(self, surface: object, Placement: object = ...) -> None:
+    def setSurface(self, surface: object, Placement: object = ..., /) -> None:
         """
         setSurface(surface, [Placement])
         Set surface for the wire
@@ -127,7 +130,7 @@ class ShapeFix_Wire(ShapeFix_Root):
         """
         pass
 
-    def fixConnected(self, num: int) -> None:
+    def fixConnected(self, num: int, /) -> None:
         """
         Applies fixConnected(num) to all edges in the wire
         Connection between first and last edges is treated only if
@@ -176,13 +179,13 @@ class ShapeFix_Wire(ShapeFix_Root):
         """
         pass
 
-    def fixGaps3d(self, num: int) -> None:
+    def fixGaps3d(self, num: int, /) -> None:
         """
         Fixes gaps between ends of 3d curves on adjacent edges
         """
         pass
 
-    def fixGaps2d(self, num: int) -> None:
+    def fixGaps2d(self, num: int, /) -> None:
         """
         Fixes gaps between ends of pcurves on adjacent edges
         """
@@ -207,13 +210,13 @@ class ShapeFix_Wire(ShapeFix_Root):
         """
         pass
 
-    def fixGap3d(self, num: int) -> None:
+    def fixGap3d(self, num: int, /) -> None:
         """
         Fixes gap between ends of 3d curves on num-1 and num-th edges
         """
         pass
 
-    def fixGap2d(self, num: int) -> None:
+    def fixGap2d(self, num: int, /) -> None:
         """
         Fixes gap between ends of pcurves on num-1 and num-th edges
         """

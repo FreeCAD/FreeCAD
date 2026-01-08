@@ -3,7 +3,7 @@ files_to_sync:
     - .packit.yaml
 actions:
   post-upstream-clone:
-    - bash -c 'BUILD_TAG=dev /usr/bin/python3 package/rattler-build/scripts/make_version_file.py freecad_version.txt'
+    - bash -c '/usr/bin/python3 package/scripts/write_version_info.py freecad_version.txt'
     - rm -f freecad-sources.tar.gz
   changelog-entry:
     - bash -c 'git log --no-merges --pretty="format:- %s (%an)" $(git describe --tags --abbrev=0 )..HEAD -- |sed 's/%/%%/g''

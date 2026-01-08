@@ -116,6 +116,10 @@ void TaskExtrudeParameters::setupDialog()
     updateUI(Side::First);
 
     setupGizmos();
+
+    // trigger recompute to ensure external geometry references update correctly.
+    // see freecad issue #25794
+    tryRecomputeFeature();
 }
 
 void TaskExtrudeParameters::setupSideDialog(SideController& side)
@@ -1311,8 +1315,8 @@ void TaskExtrudeParameters::applyParameters()
     FCMD_OBJ_CMD(obj, "SideType = " << getSidesMode());
     FCMD_OBJ_CMD(obj, "Type = " << type1);
     FCMD_OBJ_CMD(obj, "Type2 = " << type2);
-    FCMD_OBJ_CMD(obj, "UpToFace = " << facename.toLatin1().data());
-    FCMD_OBJ_CMD(obj, "UpToFace2 = " << facename2.toLatin1().data());
+    FCMD_OBJ_CMD(obj, "UpToFace = " << facename.toUtf8().data());
+    FCMD_OBJ_CMD(obj, "UpToFace2 = " << facename2.toUtf8().data());
     FCMD_OBJ_CMD(obj, "Reversed = " << (getReversed() ? 1 : 0));
     FCMD_OBJ_CMD(obj, "Offset = " << getOffset());
     FCMD_OBJ_CMD(obj, "Offset2 = " << getOffset2());

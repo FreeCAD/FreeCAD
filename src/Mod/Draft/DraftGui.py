@@ -803,11 +803,12 @@ class DraftToolBar:
             self.xValue.setFocus()
             self.xValue.setSelection(0, self.number_length(self.xValue.text()))
 
-    def number_length(self, str):
-        nl = 0
-        for char in str:
-            if char in "0123456789.,-":
-                nl += 1
+    def number_length(self, st):
+        nl = len(st)
+        for char in st[::-1]:
+            if char in "0123456789.,-+/":
+                break
+            nl -= 1
         return nl
 
     def extraLineUi(self):

@@ -1,5 +1,9 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from DocumentObject import DocumentObject
-from Base import Placement
+from Base.Placement import Placement
 from typing import Any, Final, Optional
 
 
@@ -19,8 +23,6 @@ class GeoFeature(DocumentObject):
 
     def getPaths(self) -> Any:
         """
-        getPaths()
-
         Returns all possible paths to the root of the document.
         Note: Not implemented.
         """
@@ -28,7 +30,6 @@ class GeoFeature(DocumentObject):
 
     def getGlobalPlacement(self) -> Placement:
         """
-        getGlobalPlacement() -> Base.Placement
         Deprecated: This function does not handle Links correctly. Use getGlobalPlacementOf instead.
 
         Returns the placement of the object in the global coordinate space, respecting all stacked
@@ -39,16 +40,18 @@ class GeoFeature(DocumentObject):
         ...
 
     @staticmethod
-    def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str) -> Placement:
+    def getGlobalPlacementOf(targetObj: Any, rootObj: Any, subname: str, /) -> Placement:
         """
-        getGlobalPlacementOf(targetObj, rootObj, subname) -> Base.Placement
-        Selection example: obj = "part1" sub = "linkToPart2.LinkToBody.Pad.face1"
+        Examples:
+            obj = "part1"
+            sub = "linkToPart2.LinkToBody.Pad.face1"
 
-        Global placement of Pad in this context :
-        getGlobalPlacementOf(pad, part1, "linkToPart2.LinkToBody.Pad.face1")
+            Global placement of Pad in this context:
+            getGlobalPlacementOf(pad, part1, "linkToPart2.LinkToBody.Pad.face1")
 
-        Global placement of linkToPart2 in this context :
-        getGlobalPlacementOf(linkToPart2, part1, "linkToPart2.LinkToBody.Pad.face1")
+
+            Global placement of linkToPart2 in this context:
+            getGlobalPlacementOf(linkToPart2, part1, "linkToPart2.LinkToBody.Pad.face1")
 
         Returns the placement of the object in the global coordinate space, respecting all stacked
         relationships.
@@ -57,8 +60,6 @@ class GeoFeature(DocumentObject):
 
     def getPropertyNameOfGeometry(self) -> Optional[str]:
         """
-        getPropertyNameOfGeometry() -> str or None
-
         Returns the property name of the actual geometry.
         For example for a Part feature it returns the value 'Shape', for a mesh feature the value
         'Mesh' and so on.
@@ -68,8 +69,6 @@ class GeoFeature(DocumentObject):
 
     def getPropertyOfGeometry(self) -> Optional[Any]:
         """
-        getPropertyOfGeometry() -> object or None
-
         Returns the property of the actual geometry.
         For example for a Part feature it returns its Shape property, for a Mesh feature its
         Mesh property and so on.

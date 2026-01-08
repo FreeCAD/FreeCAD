@@ -27,7 +27,7 @@
 #include <memory>
 #include <vector>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <QBrush>
 #include <QGraphicsScene>
@@ -87,7 +87,7 @@ private Q_SLOTS:
 private:
     Model() = default;
     // documentObject slots.
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectNewObject;
     Connection connectDelObject;
     Connection connectChgObject;

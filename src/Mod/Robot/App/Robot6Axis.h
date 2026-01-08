@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -20,8 +22,8 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_ROBOT6AXLE_H
-#define ROBOT_ROBOT6AXLE_H
+#ifndef ROBOT_ROBOT6AXIS_H
+#define ROBOT_ROBOT6AXIS_H
 
 #include "kdl_cp/chain.hpp"
 #include "kdl_cp/jntarray.hpp"
@@ -87,11 +89,10 @@ protected:
     KDL::JntArray Max;
     KDL::Frame Tcp;
 
-    double Velocity[6];
-    double RotDir[6];
+    double Velocity[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    double RotDir[6] = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 };
 
 }  // namespace Robot
 
-
-#endif  // PART_TOPOSHAPE_H
+#endif  // ROBOT_ROBOT6AXIS_H

@@ -251,7 +251,7 @@ public:
     std::string label2;
     std::string internalName;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;
@@ -1357,7 +1357,7 @@ void TreeWidget::onCreateGroup()
                           "App.getDocument(\"%1\").addObject"
                           "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\""
         )
-                          .arg(QString::fromLatin1(doc->getName()), name);
+                          .arg(QString::fromUtf8(doc->getName()), name);
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
     }
     else if (this->contextItem->type() == ObjectType) {
@@ -1369,8 +1369,8 @@ void TreeWidget::onCreateGroup()
                           ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\""
         )
                           .arg(
-                              QString::fromLatin1(doc->getName()),
-                              QString::fromLatin1(obj->getNameInDocument()),
+                              QString::fromUtf8(doc->getName()),
+                              QString::fromUtf8(obj->getNameInDocument()),
                               name
                           );
         Gui::Command::runCommand(Gui::Command::App, cmd.toUtf8());
@@ -5451,7 +5451,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
         item->setCheckState(false);
     }
 
-    if ((selected && item->selected > 0) || (!selected && !item->selected)) {
+    if (!selected && !item->selected) {
         return;
     }
     if (item->selected != -1) {
@@ -5484,7 +5484,38 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
 #endif
 
     if (!selected) {
-        Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        // Handles deselection for same name object and subname
+        bool keep = false;
+        auto items = getTree()->selectedItems();
+        for (auto it : items) {
+            if (it->type() == TreeWidget::ObjectType) {
+                auto docitem = static_cast<DocumentObjectItem*>(it);
+                auto obj2 = docitem->object()->getObject();
+                if (!obj2 || !obj2->isAttachedToDocument()) {
+                    continue;
+                }
+
+                std::ostringstream str2;
+                App::DocumentObject* topParent2 = nullptr;
+                docitem->getSubName(str2, topParent2);
+
+                if (topParent2) {
+                    if (!obj2->redirectSubName(str2, topParent2, nullptr)) {
+                        str2 << obj2->getNameInDocument() << '.';
+                    }
+                    obj2 = topParent2;
+                }
+
+                if (obj2 == obj && str2.str() == subname) {
+                    keep = true;
+                    break;
+                }
+            }
+        }
+
+        if (!keep) {
+            Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        }
         return;
     }
 
@@ -5492,14 +5523,16 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     selected = false;
     if (!item->mySubs.empty()) {
         for (auto& sub : item->mySubs) {
-            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
+            if (Gui::Selection().isSelected(docname, objname, (subname + sub).c_str())
+                || Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
                 selected = true;
             }
         }
     }
     if (!selected) {
         item->mySubs.clear();
-        if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
+        if (!Gui::Selection().isSelected(docname, objname, subname.c_str())
+            && !Gui::Selection().addSelection(docname, objname, subname.c_str())) {
             // Safely re-access the item
             DocumentObjectItem* item2 = findItem(vobj->getObject(), subname);
             if (item2) {

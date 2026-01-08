@@ -280,7 +280,14 @@ Command = PathOpGui.SetupOperation(
     "CAM_Slot",
     QtCore.QT_TRANSLATE_NOOP("CAM_Slot", "Slot"),
     QtCore.QT_TRANSLATE_NOOP(
-        "CAM_Slot", "Create a Slot operation from selected geometry or custom points."
+        "CAM_Slot",
+        "Create a single horizontal slot between two points."
+        "\n\nPoints can be specified through selected geometry or custom points."
+        "\nAllowed selection only from one model:"
+        "\n  - two vertexes,"
+        "\n  - one or two edges,"
+        "\n  - one horizontal or vertical face,"
+        "\n  - one or two vertical faces.",
     ),
     PathSlot.SetupProperties,
 )

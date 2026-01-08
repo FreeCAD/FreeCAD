@@ -74,8 +74,8 @@ class TestFemImport(unittest.TestCase):
 # ************************************************************************************************
 # ************************************************************************************************
 # to be sure this is run on very first of FEM test this is here and not in objects
-class TestObjectExistance(unittest.TestCase):
-    fcc_print("import TestObjectExistance")
+class TestObjectexistence(unittest.TestCase):
+    fcc_print("import TestObjectexistence")
 
     # ********************************************************************************************
     def setUp(self):
@@ -94,13 +94,13 @@ class TestObjectExistance(unittest.TestCase):
         # since method name starts with 00 this will be run first
         # this test just prints a line with stars
         fcc_print(
-            "\n{0}\n{1} run FEM TestObjectExistance tests {2}\n{0}".format(
+            "\n{0}\n{1} run FEM TestObjectexistence tests {2}\n{0}".format(
                 100 * "*", 10 * "*", 55 * "*"
             )
         )
 
     # ********************************************************************************************
-    def test_objects_existance(self):
+    def test_objects_existence(self):
 
         expected_obj_types = [
             "Fem::Constraint",

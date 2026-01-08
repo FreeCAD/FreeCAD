@@ -23,7 +23,7 @@
 #ifndef DrawView_h_
 #define DrawView_h_
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <QCoreApplication>
 #include <QRectF>
 
@@ -101,8 +101,8 @@ public:
     virtual Base::Vector3d getPosition() const { return Base::Vector3d(X.getValue(), Y.getValue(), 0.0); }
     virtual bool keepUpdated(void);
 
-    boost::signals2::signal<void (const DrawView*)> signalGuiPaint;
-    boost::signals2::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
+    fastsignals::signal<void (const DrawView*)> signalGuiPaint;
+    fastsignals::signal<void (const DrawView*, std::string, std::string)> signalProgressMessage;
     void requestPaint(void);
     void showProgressMessage(std::string featureName, std::string text);
 

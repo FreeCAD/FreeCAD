@@ -46,6 +46,16 @@ def _vstr(v):
 
 
 class DressupPathBoundary(object):
+    def promoteStockToBoundary(self, stock):
+        """Ensure stock object has boundary properties set."""
+        if stock:
+            if not hasattr(stock, "IsBoundary"):
+                stock.addProperty("App::PropertyBool", "IsBoundary", "Base")
+            stock.IsBoundary = True
+            if hasattr(stock, "setEditorMode"):
+                stock.setEditorMode("IsBoundary", 3)
+            stock.Label = "Boundary"
+
     def __init__(self, obj, base, job):
         obj.addProperty(
             "App::PropertyLink",
@@ -64,6 +74,7 @@ class DressupPathBoundary(object):
             ),
         )
         obj.Stock = PathStock.CreateFromBase(job)
+        self.promoteStockToBoundary(obj.Stock)
         obj.addProperty(
             "App::PropertyBool",
             "Inside",
@@ -99,8 +110,14 @@ class DressupPathBoundary(object):
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
 
+        # If Stock is changed, ensure boundary stock properties are set
+        if prop == "Stock" and obj.Stock:
+            self.promoteStockToBoundary(obj.Stock)
+
     def onDocumentRestored(self, obj):
         self.obj = obj
+        # Ensure Stock property exists and is flagged as boundary stock
+        self.promoteStockToBoundary(obj.Stock)
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -120,12 +137,20 @@ class DressupPathBoundary(object):
             if obj.Base.ViewObject:
                 obj.Base.ViewObject.Visibility = True
             obj.Base = None
-        if obj.Stock:
+        if hasattr(obj, "Stock") and obj.Stock:
             obj.Document.removeObject(obj.Stock.Name)
             obj.Stock = None
         return True
 
     def execute(self, obj):
+        if not hasattr(obj, "Stock") or obj.Stock is None:
+            Path.Log.error("BoundaryStock (Stock) missing; cannot execute dressup.")
+            obj.Path = Path.Path([])
+            return
+        if not hasattr(obj.Stock, "Shape") or obj.Stock.Shape is None:
+            Path.Log.error("Boundary stock has no Shape; cannot execute dressup.")
+            obj.Path = Path.Path([])
+            return
         pb = PathBoundary(obj.Base, obj.Stock.Shape, obj.Inside, obj.KeepToolDown)
         obj.Path = pb.execute()
 
@@ -283,8 +308,6 @@ class PathBoundary:
                                         Path.Geom.cmdsForEdge(
                                             e,
                                             flip,
-                                            False,
-                                            50,
                                             tc.HorizFeed.Value,
                                             tc.VertFeed.Value,
                                         )

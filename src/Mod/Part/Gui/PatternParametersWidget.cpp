@@ -46,8 +46,8 @@ using namespace PartGui;
 
 PatternParametersWidget::PatternParametersWidget(PatternType type, QWidget* parent)
     : QWidget(parent)
-    , type(type)
     , ui(new Ui_PatternParametersWidget)
+    , type(type)
 {
     ui->setupUi(this);
     setupUiElements();

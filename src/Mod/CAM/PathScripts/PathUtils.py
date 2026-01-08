@@ -2,6 +2,7 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2014 Dan Falck <ddfalck@gmail.com>                      *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -29,6 +30,7 @@ import Path
 import Path.Main.Job as PathJob
 import math
 from numpy import linspace
+import tsp_solver
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -109,6 +111,17 @@ def loopdetect(obj, edge1, edge2):
         return None
     loopwire = next(x for x in loop)[1]
     return loopwire.Edges
+
+
+def wiredetect(obj, edgeName):
+    """Returns all edges from wire which includes the edge."""
+    edge = obj.Shape.getElement(edgeName)
+    for wire in obj.Shape.Wires:
+        for e in wire.Edges:
+            if e.hashCode() == edge.hashCode():
+                return wire.Edges
+
+    return None
 
 
 def horizontalEdgeLoop(obj, edge, verbose=False):
@@ -196,7 +209,8 @@ def tangentEdgeLoop(obj, edge):
             # stop because next tangency edge was not found
             break
 
-    if loop:
+    if len(loop) > 1:
+        # only if found tangent edges
         return loop
 
     return None
@@ -597,6 +611,60 @@ def sort_locations(locations, keys, attractors=None):
         locations.remove(closest)
 
     return out
+
+
+def sort_locations_tsp(locations, keys, attractors=None, startPoint=None, endPoint=None):
+    """
+    Python wrapper for the C++ TSP solver. Takes a list of dicts (locations),
+    a list of keys (e.g. ['x', 'y']), and optional parameters.
+
+    Parameters:
+    - locations: List of dictionaries with point coordinates
+    - keys: List of keys to use for coordinates (e.g. ['x', 'y'])
+    - attractors: Optional parameter (not used, kept for compatibility)
+    - startPoint: Optional starting point [x, y]
+    - endPoint: Optional ending point [x, y]
+
+    Returns the sorted list of locations in TSP order.
+    If startPoint is None, the path is optimized to start near the first point in the original list,
+    but may not start exactly at that point.
+    """
+    # Extract points from locations
+    points = [(loc[keys[0]], loc[keys[1]]) for loc in locations]
+    order = tsp_solver.solve(points=points, startPoint=startPoint, endPoint=endPoint)
+
+    # Return the reordered locations
+    return [locations[i] for i in order]
+
+
+def sort_tunnels_tsp(tunnels, allowFlipping=False, routeStartPoint=None, routeEndPoint=None):
+    """
+    Python wrapper for the C++ TSP tunnel solver. Takes a list of dicts (tunnels),
+    a list of keys for start/end coordinates, and optional parameters.
+
+    Parameters:
+    - tunnels: List of dictionaries with tunnel data. Each tunnel dictionary should contain:
+        - startX: X-coordinate of the tunnel start point
+        - startY: Y-coordinate of the tunnel start point
+        - endX: X-coordinate of the tunnel end point
+        - endY: Y-coordinate of the tunnel end point
+        - isOpen: Boolean indicating if the tunnel is open (optional, defaults to True)
+    - allowFlipping: Whether tunnels can be reversed (entry becomes exit)
+    - routeStartPoint: Optional starting point [x, y] for the entire route
+    - routeEndPoint: Optional ending point [x, y] for the entire route
+
+    Returns the sorted list of tunnels in TSP order. Each returned tunnel dictionary
+    will include the original keys plus:
+    - flipped: Boolean indicating if the tunnel was reversed during optimization
+    - index: Original index of the tunnel in the input list
+    """
+    # Call C++ TSP tunnel solver directly - it handles all the processing
+    return tsp_solver.solveTunnels(
+        tunnels=tunnels,
+        allowFlipping=allowFlipping,
+        routeStartPoint=routeStartPoint,
+        routeEndPoint=routeEndPoint,
+    )
 
 
 def guessDepths(objshape, subs=None):

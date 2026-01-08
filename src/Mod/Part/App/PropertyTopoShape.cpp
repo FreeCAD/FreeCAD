@@ -492,7 +492,7 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
             if (owner ? owner->checkElementMapVersion(this, _Ver.c_str())
                       : _Shape.checkElementMapVersion(_Ver.c_str())) {
                 auto ver = owner ? owner->getElementMapVersion(this) : _Shape.getElementMapVersion();
-                if (!owner || !owner->getNameInDocument() || !_Shape.getElementMapSize()) {
+                if (!owner || !owner->getNameInDocument()) {
                     _Ver = ver;
                 }
                 else {
@@ -507,6 +507,10 @@ void PropertyPartShape::Restore(Base::XMLReader& reader)
                         );
                     }
                     owner->getDocument()->addRecomputeObject(owner);
+
+                    // sometimes objects will not update _Ver properly,
+                    // so lets do it here to avoid unnecessary remigration
+                    _Ver = ver;
                 }
             }
         }

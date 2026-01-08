@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -71,6 +73,8 @@ using DrawSketchHandlerArcBase = DrawSketchControllableHandler<DSHArcController>
 
 class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArc)
+
     friend DSHArcController;
     friend DSHArcControllerBase;
 

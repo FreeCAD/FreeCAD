@@ -83,6 +83,8 @@ target_include_directories(
     FreeCADGui
     SYSTEM
     PRIVATE
+    ${FastSignals_INCLUDE_DIRS}
+    ${Boost_INCLUDE_DIRS}
     ${EIGEN3_INCLUDE_DIR}
     ${3DCONNEXION_INCLUDE_DIR}
 )
@@ -99,6 +101,7 @@ endif(MSVC)
 if(MSVC)
     set(FreeCADGui_LIBS
          FreeCADApp
+         libfastsignals
          ${OPENGL_gl_LIBRARY}
     )
 
@@ -111,6 +114,7 @@ if(MSVC)
 else(MSVC)
     set(FreeCADGui_LIBS
         FreeCADApp
+        libfastsignals
         ${Boost_LIBRARIES}
         ${OPENGL_gl_LIBRARY}
         ${3DCONNEXION_LINKFLAGS}
@@ -130,7 +134,12 @@ else()
 endif()
 
 if (WIN32)
+    # In order to make menus and tooltips usable in fullscreen under Windows we need to call setHasBorderInFullScreen(),
+    # defined in Qt's private Gui code. See issue #7563, and the calls to QNativeInterface::Private in MainWindow.cpp
     if(FREECAD_QT_MAJOR_VERSION EQUAL 6)
+        if(Qt6_VERSION VERSION_GREATER_EQUAL "6.10.0")
+            find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
+        endif()
         list(APPEND FreeCADGui_LIBS
             Qt6::GuiPrivate
         )
@@ -1226,6 +1235,7 @@ SET(Widget_CPP_SRCS
     ElideLabel.cpp
     ElideCheckBox.cpp
     FontScaledSVG.cpp
+    SplitButton.cpp
 )
 SET(Widget_HPP_SRCS
     ComboLinks.h
@@ -1251,6 +1261,7 @@ SET(Widget_HPP_SRCS
     ElideLabel.h
     ElideCheckBox.h
     FontScaledSVG.h
+    SplitButton.h
 )
 SET(Widget_SRCS
     ${Widget_CPP_SRCS}
@@ -1369,6 +1380,7 @@ SET(FreeCADGui_CPP_SRCS
     ExpressionCompleter.cpp
     FileHandler.cpp
     FileHandler.h
+    FreeCADStyle.cpp
     GuiApplication.cpp
     GuiApplicationNativeEventAware.cpp
     GuiConsole.cpp
@@ -1406,6 +1418,7 @@ SET(FreeCADGui_SRCS
     ExpressionBindingPy.h
     ExpressionCompleter.h
     FreeCADGuiInit.py
+    FreeCADStyle.h
     GraphicsViewZoom.h
     GuiApplication.h
     GuiApplicationNativeEventAware.h

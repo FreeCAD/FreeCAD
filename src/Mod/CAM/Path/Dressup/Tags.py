@@ -272,10 +272,9 @@ class Tag:
 
 
 class MapWireToTag:
-    def __init__(self, edge, tag, i, segm, maxZ, hSpeed, vSpeed):
+    def __init__(self, edge, tag, i, maxZ, hSpeed, vSpeed):
         debugEdge(edge, "MapWireToTag(%.2f, %.2f, %.2f)" % (i.x, i.y, i.z))
         self.tag = tag
-        self.segm = segm
         self.maxZ = maxZ
         self.hSpeed = hSpeed
         self.vSpeed = vSpeed
@@ -285,16 +284,12 @@ class MapWireToTag:
             debugEdge(tail, ".........=")
         elif Path.Geom.pointsCoincide(edge.valueAt(edge.LastParameter), i):
             debugEdge(edge, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(
-                edge, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
-            )
+            self.commands = Path.Geom.cmdsForEdge(edge, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
             tail = None
         else:
             e, tail = Path.Geom.splitEdgeAt(edge, i)
             debugEdge(e, "++++++++ .")
-            self.commands = Path.Geom.cmdsForEdge(
-                e, segm=segm, hSpeed=self.hSpeed, vSpeed=self.vSpeed
-            )
+            self.commands = Path.Geom.cmdsForEdge(e, hSpeed=self.hSpeed, vSpeed=self.vSpeed)
             debugEdge(tail, ".........-")
             self.initialEdge = edge
         self.tail = tail
@@ -561,8 +556,6 @@ class MapWireToTag:
                             Path.Geom.cmdsForEdge(
                                 e,
                                 False,
-                                False,
-                                self.segm,
                                 hSpeed=self.hSpeed,
                                 vSpeed=self.vSpeed,
                             )
@@ -940,15 +933,6 @@ class ObjectTagDressup:
             "Tag",
             QT_TRANSLATE_NOOP("App::Property", "IDs of disabled holding tags"),
         )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "SegmentationFactor",
-            "Tag",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Factor determining the # of segments used to approximate rounded tags.",
-            ),
-        )
 
         self.obj = obj
         self.solids = []
@@ -1014,7 +998,6 @@ class ObjectTagDressup:
         obj.Height = fromObj.Height
         obj.Angle = fromObj.Angle
         obj.Radius = fromObj.Radius
-        obj.SegmentationFactor = fromObj.SegmentationFactor
 
         self.tags = self.pathData.copyTags(
             obj, fromObj, obj.Width.Value, obj.Height.Value, obj.Angle, obj.Radius.Value
@@ -1041,13 +1024,6 @@ class ObjectTagDressup:
         lastTag = 0
         t = 0
         edge = None
-
-        segm = 50
-        if hasattr(obj, "SegmentationFactor"):
-            segm = obj.SegmentationFactor
-            if segm <= 0:
-                segm = 50
-                obj.SegmentationFactor = 50
 
         self.mappers = []
         mapper = None
@@ -1083,7 +1059,6 @@ class ObjectTagDressup:
                         edge,
                         tags[tIndex],
                         i,
-                        segm,
                         pathData.maxZ,
                         hSpeed=horizFeed,
                         vSpeed=vertFeed,
@@ -1111,9 +1086,7 @@ class ObjectTagDressup:
                             )
                     else:
                         commands.extend(
-                            Path.Geom.cmdsForEdge(
-                                edge, segm=segm, hSpeed=horizFeed, vSpeed=vertFeed
-                            )
+                            Path.Geom.cmdsForEdge(edge, hSpeed=horizFeed, vSpeed=vertFeed)
                         )
                 edge = None
                 t = 0

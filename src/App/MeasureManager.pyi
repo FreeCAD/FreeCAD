@@ -1,14 +1,18 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, no_args
 from Base.PyObjectBase import PyObjectBase
 from typing import List, Tuple, TypeAlias
 
-
 MeasureType: TypeAlias = object
+
 
 @export(
     Constructor=False,
     Delete=True,
-    )
+)
 class MeasureManager(PyObjectBase):
     """
     MeasureManager class.
@@ -21,10 +25,8 @@ class MeasureManager(PyObjectBase):
     """
 
     @staticmethod
-    def addMeasureType(id: str, label: str, measureType: MeasureType) -> None:
+    def addMeasureType(id: str, label: str, measureType: MeasureType, /) -> None:
         """
-        addMeasureType(id, label, measureType) -> None
-
         Add a new measure type.
 
         id : str
@@ -40,8 +42,6 @@ class MeasureManager(PyObjectBase):
     @no_args
     def getMeasureTypes() -> List[Tuple[str, str, MeasureType]]:
         """
-        getMeasureTypes() -> List[(id, label, pythonMeasureType)]
-
         Returns a list of all registered measure types.
         """
         ...
