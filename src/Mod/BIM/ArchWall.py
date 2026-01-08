@@ -1616,7 +1616,9 @@ if FreeCAD.GuiUp:
         def __init__(self, obj):
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
-            self.storedAlign = obj.Align  # Store initial state for reversal on cancel (Esc key)
+            FreeCAD.ActiveDocument.openTransaction("Edit Wall")
+            if hasattr(self.obj, "Proxy"):
+                self.obj.Proxy.InTransaction = True
             self.wallWidget = QtGui.QWidget()
             self.wallWidget.setWindowTitle(
                 QtGui.QApplication.translate("Arch", "Wall options", None)
@@ -1687,12 +1689,15 @@ if FreeCAD.GuiUp:
             self.obj.Length = self.length.text()
             self.obj.Width = self.width.text()
             self.obj.Height = self.height.text()
+            FreeCAD.ActiveDocument.commitTransaction()
+            if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "InTransaction"):
+                del self.obj.Proxy.InTransaction
             return ArchComponent.ComponentTaskPanel.accept(self)
 
         def reject(self):
-            self.obj.Align = self.storedAlign
-            self.obj.recompute()
-            FreeCAD.Console.PrintWarning("Reject called")
+            FreeCAD.ActiveDocument.abortTransaction()
+            if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "InTransaction"):
+                del self.obj.Proxy.InTransaction
             FreeCADGui.ActiveDocument.resetEdit()
             return True
 

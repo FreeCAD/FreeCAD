@@ -2223,7 +2223,16 @@ def debaseWall(wall):
         return False
 
     doc = wall.Document
-    doc.openTransaction(f"Debase Wall: {wall.Label}")
+
+    is_in_transaction = doc.HasPendingTransaction
+    if hasattr(wall, "Proxy") and getattr(wall.Proxy, "InTransaction", False):
+        is_in_transaction = True
+
+    start_transaction = not is_in_transaction
+
+    if start_transaction:
+        doc.openTransaction(f"Debase Wall: {wall.Label}")
+
     try:
         # Calculate the final state before making any changes
         # A wall's final position and orientation are derived from its Base object and its own
@@ -2299,10 +2308,12 @@ def debaseWall(wall):
         doc.recompute()
 
     except Exception as e:
-        doc.abortTransaction()
+        if start_transaction:
+            doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
-    finally:
+
+    if start_transaction:
         doc.commitTransaction()
 
     return True
