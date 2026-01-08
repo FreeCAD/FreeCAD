@@ -44,12 +44,23 @@ public:
         return true;
     }
 
+    std::string getTreeLabel() const override;
+
+    void attach(App::DocumentObject* pcObject) override;
+
     bool doubleClicked() override;
 
     void onFinished(int);
 
 private:
+    void onDynamicPropertyAdded(const App::Property& prop);
+    void onDynamicPropertyRemoved(const App::Property& prop);
+
     std::unique_ptr<Dialog::DlgAddProperty> dialog;
+
+    using Connection = boost::signals2::scoped_connection;
+    Connection connPropertyAdded;
+    Connection connPropertyRemoved;
 };
 
 }  // namespace Gui

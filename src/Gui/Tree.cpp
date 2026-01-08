@@ -254,6 +254,7 @@ public:
     using Connection = boost::signals2::scoped_connection;
 
     Connection connectIcon;
+    Connection connectLabel;
     Connection connectTool;
     Connection connectStat;
     Connection connectHl;
@@ -266,6 +267,9 @@ public:
         //  Setup connections
         connectIcon = viewObject->signalChangeIcon.connect(
             std::bind(&DocumentObjectData::slotChangeIcon, this)
+        );
+        connectLabel = viewObject->signalChangeTreeLabel.connect(
+            std::bind(&DocumentObjectData::slotChangeTreeLabel, this)
         );
         connectTool = viewObject->signalChangeToolTip.connect(
             std::bind(&DocumentObjectData::slotChangeToolTip, this, sp::_1)
@@ -280,7 +284,7 @@ public:
 
         removeChildrenFromRoot = viewObject->canRemoveChildrenFromRoot();
         itemHidden = !viewObject->showInTree();
-        label = viewObject->getObject()->Label.getValue();
+        label = viewObject->getTreeLabel();
         label2 = viewObject->getObject()->Label2.getValue();
         internalName = viewObject->getObject()->getNameInDocument();
     }
@@ -398,6 +402,15 @@ public:
     void slotChangeIcon()
     {
         testStatus(true);
+    }
+
+    void slotChangeTreeLabel()
+    {
+        label = viewObject->getTreeLabel();
+        auto displayName = QString::fromUtf8(label.c_str());
+        for (auto item : items) {
+            item->setText(0, displayName);
+        }
     }
 
     void slotChangeToolTip(const QString& tip)
@@ -4967,12 +4980,14 @@ void TreeWidget::slotChangeObject(const Gui::ViewProviderDocumentObject& view, c
     }
 
     if (&prop == &obj->Label) {
-        const char* label = obj->Label.getValue();
+        // When Label changes, the tree label may also need updating
+        // Call getTreeLabel() which ViewProviders can override
+        std::string newLabel = view.getTreeLabel();
         auto firstData = *itEntry->second.begin();
-        if (firstData->label != label) {
+        if (firstData->label != newLabel) {
             for (const auto& data : itEntry->second) {
-                data->label = label;
-                auto displayName = QString::fromUtf8(label);
+                data->label = newLabel;
+                auto displayName = QString::fromUtf8(newLabel.c_str());
                 for (auto item : data->items) {
                     item->setText(0, displayName);
                 }

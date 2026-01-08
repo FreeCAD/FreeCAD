@@ -652,6 +652,14 @@ bool ViewProviderDocumentObject::showInTree() const
     return ShowInTree.getValue();
 }
 
+std::string ViewProviderDocumentObject::getTreeLabel() const
+{
+    if (pcObject && pcObject->isAttachedToDocument()) {
+        return pcObject->Label.getValue();
+    }
+    return {};
+}
+
 bool ViewProviderDocumentObject::getElementPicked(const SoPickedPoint* pp, std::string& subname) const
 {
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
