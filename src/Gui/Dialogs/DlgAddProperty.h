@@ -30,6 +30,7 @@
 #include <QDialog>
 #include <QComboBox>
 #include <QFormLayout>
+#include <QStandardItemModel>
 
 #include <FCGlobal.h>
 
@@ -84,6 +85,29 @@ private:
 };
 
 class Ui_DlgAddProperty;
+
+class TypeItemModel: public QStandardItemModel
+{
+    Q_OBJECT
+public:
+    static constexpr int SeparatorRole = Qt::UserRole + 1;
+
+    explicit TypeItemModel(QObject* parent = nullptr)
+        : QStandardItemModel(parent)
+    {}
+
+    Qt::ItemFlags flags(const QModelIndex& index) const override
+    {
+        Qt::ItemFlags flags = QStandardItemModel::flags(index);
+        if (index.isValid()) {
+            QVariant isSeparator = index.data(SeparatorRole);
+            if (isSeparator.isValid() && isSeparator.toBool()) {
+                return flags & ~(Qt::ItemIsEnabled | Qt::ItemIsSelectable);
+            }
+        }
+        return flags;
+    }
+};
 
 class GuiExport DlgAddProperty: public QDialog
 {

@@ -309,6 +309,9 @@ DlgAddProperty::SupportedTypes DlgAddProperty::getSupportedTypes()
 
 void DlgAddProperty::initializeTypes()
 {
+    auto* model = new TypeItemModel(this);
+    ui->comboBoxType->setModel(model);
+
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/PropertyView"
     );
@@ -330,10 +333,15 @@ void DlgAddProperty::initializeTypes()
         }
     };
 
+
+    const auto addSeparator = [this]() {
+        ui->comboBoxType->addItem("──────────────────────");
+        const int idx = ui->comboBoxType->count() - 1;
+        ui->comboBoxType->setItemData(idx, true, TypeItemModel::SeparatorRole);
+    };
+
     addTypes(commonTypes);
-    ui->comboBoxType->addItem("────────────────────");
-    ui->comboBoxType
-        ->setItemData(ui->comboBoxType->count() - 1, Qt::NoItemFlags, Qt::StandardItemFlagsRole);
+    addSeparator();
     addTypes(otherTypes);
 
     completerType.setModel(ui->comboBoxType->model());
