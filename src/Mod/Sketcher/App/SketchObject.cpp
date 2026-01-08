@@ -596,10 +596,22 @@ int SketchObject::solve(bool updateGeoAfterSolving /*=true*/)
     }
 
     if (lastHasPartialRedundancies) {
-        Base::Console().warning(
-            this->getFullLabel(),
-            QT_TRANSLATE_NOOP("Notifications",
-                              "The Sketch has partially redundant constraints!") "\n");
+        QString uniqueName = QString::fromLatin1(this->getNameInDocument());
+        QString userLabel = QString::fromUtf8(Label.getValue());
+
+        QString ref;
+        if (uniqueName == userLabel) {
+            ref = uniqueName;
+        } else {
+            ref = QStringLiteral("%1 (%2)").arg(uniqueName).arg(userLabel);
+        }
+
+        QString msg = QCoreApplication::translate(
+            "Notifications",
+            "\"%1\" has partially redundant constraint(s)."
+        ).arg(ref);
+
+        Base::Console().warning(this->getFullLabel(), "%s\n", msg.toUtf8().constData());
     }
 
     lastSolveTime = solvedSketch.getSolveTime();
