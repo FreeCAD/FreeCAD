@@ -5365,12 +5365,9 @@ void DocumentItem::testStatus()
     }
 
     auto tree = getTree();
-    if (document()->getDocument()->testStatus(App::Document::PartialDoc)) {
-        setBaseIcon(0, *(tree->documentPartialPixmap));
-    }
-    else {
-        setBaseIcon(0, *(tree->documentPixmap));
-    }
+    setBaseIcon(0, document()->getDocument()->testStatus(App::Document::PartialDoc) ? 
+        *(tree->documentPartialPixmap) : 
+        *(tree->documentPixmap));
 }
 
 void DocumentItem::setData(int column, int role, const QVariant& value)
@@ -6303,25 +6300,19 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
         }
 
         if (currentStatus & Status::External) {
+            static QPixmap pxExternal;
+            static QPixmap pxReadOnly;
             constexpr int px = 12;
-            if (getOwnerDocument()->document()->getDocument()->isReadOnlyFile()
-                || (linked && linked->getDocument()->isReadOnlyFile())) {
-                static QPixmap pxReadOnly;
-                if (pxReadOnly.isNull()) {
-                    pxReadOnly
-                        = Gui::BitmapFactory().pixmapFromSvg("LinkOverlayReadOnly", QSize(px, px));
-                }
-                pxOff = BitmapFactory().merge(pxOff, pxReadOnly, BitmapFactoryInst::BottomRight);
-                pxOn = BitmapFactory().merge(pxOn, pxReadOnly, BitmapFactoryInst::BottomRight);
+            if (pxExternal.isNull()) {
+                pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
             }
-            else {
-                static QPixmap pxExternal;
-                if (pxExternal.isNull()) {
-                    pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
-                }
-                pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
-                pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
+            if (pxReadOnly.isNull()) {
+                pxReadOnly = Gui::BitmapFactory().pixmapFromSvg("LinkOverlayReadOnly", QSize(px, px));
             }
+            bool externalReadOnly = getOwnerDocument()->document()->getDocument()->isReadOnlyFile()
+                || (linked && linked->getDocument()->isReadOnlyFile());
+            pxOff = BitmapFactory().merge(pxOff, externalReadOnly ? pxReadOnly : pxExternal, BitmapFactoryInst::BottomRight);
+            pxOn = BitmapFactory().merge(pxOn, externalReadOnly ? pxReadOnly : pxExternal, BitmapFactoryInst::BottomRight);
         }
 
         if (currentStatus & Status::Freezed) {
