@@ -71,15 +71,13 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     Base::FileInfo fi(Name);
 
     if (!fi.exists()) {
-        std::stringstream str;
-        str << "File '" << Name << "' does not exist!";
-        throw Base::FileException(str.str().c_str());
+        throw Base::FileNotFoundException(Name);
     }
     std::string encodednamestr = encodeFilename(std::string(Name));
     const char* encodedname = encodednamestr.c_str();
 
     if (aReader.ReadFile((Standard_CString)encodedname) != IFSelect_RetDone) {
-        throw Base::FileException("Cannot open STEP file");
+        throw Base::FileReadException(Name, "Cannot open STEP file");
     }
 
     // Root transfers
@@ -92,7 +90,7 @@ int Part::ImportStepParts(App::Document* pcDoc, const char* Name)
     // Collecting resulting entities
     Standard_Integer nbs = aReader.NbShapes();
     if (nbs == 0) {
-        throw Base::FileException("No shapes found in file ");
+        throw Base::FileReadException(Name, "No shapes found in file");
     }
     else {
 
