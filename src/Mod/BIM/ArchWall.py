@@ -1616,6 +1616,7 @@ if FreeCAD.GuiUp:
         def __init__(self, obj):
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
+            self.storedAlign = obj.Align  # Store initial state for reversal on cancel (Esc key)
             self.wallWidget = QtGui.QWidget()
             self.wallWidget.setWindowTitle(
                 QtGui.QApplication.translate("Arch", "Wall options", None)
@@ -1678,11 +1679,22 @@ if FreeCAD.GuiUp:
                 self.obj.Align = "Center"
             self.obj.recompute()
 
+        def getStandardButtons(self):
+            # Necessary to map the Esc key to the reject() method
+            return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
+
         def accept(self):
             self.obj.Length = self.length.text()
             self.obj.Width = self.width.text()
             self.obj.Height = self.height.text()
             return ArchComponent.ComponentTaskPanel.accept(self)
+
+        def reject(self):
+            self.obj.Align = self.storedAlign
+            self.obj.recompute()
+            FreeCAD.Console.PrintWarning("Reject called")
+            FreeCADGui.ActiveDocument.resetEdit()
+            return True
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
