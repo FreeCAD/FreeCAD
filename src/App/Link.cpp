@@ -797,7 +797,7 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
 bool LinkBaseExtension::setupCopyOnChange(
     DocumentObject* parent,
     DocumentObject* linked,
-    std::vector<boost::signals2::scoped_connection>* copyOnChangeConns,
+    std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
     bool checkExisting)
 {
     if (!parent || !linked) {

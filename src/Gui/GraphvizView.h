@@ -23,8 +23,9 @@
 #ifndef GUI_GRAPHVIZVIEW_H
 #define GUI_GRAPHVIZVIEW_H
 
-#include "MDIView.h"
+#include <fastsignals/signal.h>
 
+#include "MDIView.h"
 
 class QGraphicsScene;
 class QGraphicsView;
@@ -81,7 +82,7 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;

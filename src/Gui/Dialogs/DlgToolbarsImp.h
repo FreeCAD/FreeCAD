@@ -26,7 +26,7 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 #include "PropertyPage.h"
 #include <memory>
 
@@ -100,7 +100,7 @@ protected:
 
 private:
     Type type;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 };
 
 /** This class implements the creation of user defined toolbars.

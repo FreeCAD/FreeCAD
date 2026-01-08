@@ -300,9 +300,9 @@ bool ViewProviderAssembly::setEdit(int mode)
         }
 
         auto* assembly = getObject<AssemblyObject>();
-        connectSolverUpdate = assembly->signalSolverUpdate.connect(
-            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
-        );
+        connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
+            UpdateSolverInformation();
+        });
 
         return true;
     }

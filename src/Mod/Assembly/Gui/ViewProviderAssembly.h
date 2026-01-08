@@ -25,7 +25,7 @@
 #define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
 
 #include <QCoreApplication>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -247,7 +247,7 @@ public:
     SoFieldSensor* translationSensor = nullptr;
     SoFieldSensor* rotationSensor = nullptr;
 
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
 
@@ -284,8 +284,8 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    boost::signals2::connection connectSolverUpdate;
-    boost::signals2::scoped_connection m_preTransactionConn;
+    fastsignals::connection connectSolverUpdate;
+    fastsignals::scoped_connection m_preTransactionConn;
 };
 
 }  // namespace AssemblyGui

@@ -971,8 +971,8 @@ public:
     std::vector<Base::Vector3d> getOpenVertices() const;
 
     // Signaled when solver has done update
-    boost::signals2::signal<void()> signalSolverUpdate;
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalSolverUpdate;
+    fastsignals::signal<void()> signalElementsChanged;
 
     Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
 
@@ -1161,8 +1161,8 @@ private:
     std::vector<int> lastPartiallyRedundant;
     std::vector<int> lastMalformedConstraints;
 
-    boost::signals2::scoped_connection constraintsRenamedConn;
-    boost::signals2::scoped_connection constraintsRemovedConn;
+    fastsignals::scoped_connection constraintsRenamedConn;
+    fastsignals::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 

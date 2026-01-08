@@ -251,7 +251,7 @@ public:
     std::string label2;
     std::string internalName;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;
