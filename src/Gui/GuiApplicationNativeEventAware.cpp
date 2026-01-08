@@ -86,7 +86,7 @@ void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
     nativeEvent->initSpaceball(window);
 # endif
 #else
-    Base::Console.log("3D mouse support not enabled in this build\n");
+    Base::Console().log("3D mouse support not enabled in this build\n");
     Q_UNUSED(window);
 #endif
     Spaceball::MotionEvent::MotionEventType = QEvent::registerEventType();
