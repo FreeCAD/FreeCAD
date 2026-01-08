@@ -2650,7 +2650,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
             if rawValue(point, 30):
                 z = vec(rawValue(point, 30))
             else:
-                z=0
+                z = 0
             lay = rawValue(point, 8)
             if dxfImportLayouts or (not rawValue(point, 67)):
                 if dxfMakeBlocks:
