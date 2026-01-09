@@ -591,10 +591,7 @@ class Arch_Wall:
 
     def setBaseline(self, i):
         """Simple callback to set the wall baseline creation mode."""
-        try:
-            self.baseline_mode = WallBaselineMode(i)
-        except Exception:
-            self.baseline_mode = WallBaselineMode.NONE
+        self.baseline_mode = WallBaselineMode(i)
         PARAMS.SetInt("WallBaseline", i)
 
     def createFromGUI(self):
