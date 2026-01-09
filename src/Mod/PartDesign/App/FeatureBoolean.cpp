@@ -209,10 +209,6 @@ void Boolean::onChanged(const App::Property* prop)
         touch();
     }
 
-    if (strcmp(prop->getName(), "Shape") == 0) {
-        updatePreviewShape();
-    }
-
     Feature::onChanged(prop);
 }
 
