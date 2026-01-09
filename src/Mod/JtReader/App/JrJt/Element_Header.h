@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef Element_Header_HEADER
 #define Element_Header_HEADER

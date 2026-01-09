@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef REVERSE_ENGINEERING_GUI_PRECOMPILED_H
 #define REVERSE_ENGINEERING_GUI_PRECOMPILED_H

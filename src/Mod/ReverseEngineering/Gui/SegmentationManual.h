@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H
 #define REVERSEENGINEERINGGUI_SEGMENTATIONMANUAL_H

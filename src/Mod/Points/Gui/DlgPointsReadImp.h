@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef POINTSGUI_DLGREADPOINTS_H
 #define POINTSGUI_DLGREADPOINTS_H

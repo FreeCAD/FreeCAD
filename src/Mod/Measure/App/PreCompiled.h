@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef MEASUREGUI_PRECOMPILED_H
 #define MEASUREGUI_PRECOMPILED_H

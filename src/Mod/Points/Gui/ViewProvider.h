@@ -19,7 +19,7 @@
  *   License along with FreeCAD. If not, see https://www.gnu.org/licenses     *
  *                                                                            *
  ******************************************************************************/
- 
+
 
 #ifndef POINTSGUI_VIEWPROVIDERPOINTS_H
 #define POINTSGUI_VIEWPROVIDERPOINTS_H
