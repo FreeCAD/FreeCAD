@@ -676,7 +676,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Centerline Between 2 Faces");
+    sMenuText       = QT_TR_NOOP("Centerline on Face");
     sToolTipText    = QT_TR_NOOP("Adds a centerline to selected faces");
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;
