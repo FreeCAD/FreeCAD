@@ -25,9 +25,9 @@ from lazy_loader.lazy_loader import LazyLoader
 import Path
 import Path.Op.Base as PathOp
 import Path.Op.Util as PathOpUtil
-import PathScripts.PathUtils as PathUtils
 
-# import copy
+# import PathScripts.PathUtils as PathUtils
+from PathScripts import tsp
 
 __doc__ = "Base class for all ops in the engrave family."
 
@@ -64,103 +64,163 @@ class ObjectOp(PathOp.ObjectOp):
         """buildpathocc(obj, wires, zValues, relZ=False) ... internal helper function to generate engraving commands."""
         Path.Log.track(obj.Label, len(wires), zValues)
 
-        # sort wires, adapted from Area.py
-        if len(wires) > 1:
-            locations = []
-            for w in wires:
-                locations.append({"x": w.BoundBox.Center.x, "y": w.BoundBox.Center.y, "wire": w})
+        tol = self.job.GeometryTolerance.Value if getattr(self, "job", None) else 0.01
+        biDir = getattr(obj, "Pattern", None) == "Bidirectional"
 
-            locations = PathUtils.sort_locations(locations, ["x", "y"])
-            wires = [j["wire"] for j in locations]
+        # decompose wires
+        wires = [w for wire in wires for w in PathOpUtil.makeWires(wire.Edges)]
 
-        decomposewires = []
+        # sorting wires
+        if len(wires) > 1 and getattr(obj, "SortingMode", None) == "Automatic":
+            endPoint = obj.EndPoint if obj.UseEndPoint else None
+            if len(zValues) % 2 == 0 and biDir and getattr(obj, "FixedStartPoint", None):
+                # sorting points
+                print("sorting points")
+                points = []
+                for indexWire, wire in enumerate(wires):
+                    indexStart = -1 if not wire.isClosed() and not forward else 0
+                    points.append(
+                        {
+                            "x": wire.OrderedVertexes[indexStart].X,
+                            "y": wire.OrderedVertexes[indexStart].Y,
+                            "index": indexWire,
+                        }
+                    )
+                sortedPoints = tsp.tsp_solver_points(
+                    points, routeStartPoint=obj.StartPoint, routeEndPoint=endPoint
+                )
+                wires = [wires[point["index"]] for point in sortedPoints]
+
+            elif len(zValues) % 2 == 0 and biDir and not getattr(obj, "test", None):
+                # sorting pairs points
+                print("sorting pairs points")
+                pairs = []
+                for indexWire, wire in enumerate(wires):
+                    indexAlt = -1 if not wire.isClosed() else 0
+                    pairs.append(
+                        {
+                            "x": wire.OrderedVertexes[0].X,
+                            "y": wire.OrderedVertexes[0].Y,
+                            "xAlt": wire.OrderedVertexes[indexAlt].X,
+                            "yAlt": wire.OrderedVertexes[indexAlt].Y,
+                            "index": indexWire,
+                        }
+                    )
+
+                sortedPairs = tsp.tsp_solver_pairs(
+                    pairs, routeStartPoint=obj.StartPoint, routeEndPoint=endPoint
+                )
+                orderedWires = []
+                for pair in sortedPairs:
+                    x = wires[pair["index"]].OrderedVertexes[0].X
+                    y = wires[pair["index"]].OrderedVertexes[0].Y
+                    if pair["x"] != x or pair["y"] != y:
+                        orderedWires.append(Path.Geom.flipWire(wires[pair["index"]]))
+                    else:
+                        orderedWires.append(wires[pair["index"]])
+
+                wires = orderedWires
+
+            else:  # len(zValues) % 2 != 0 or not biDir:
+                print("sorting tunnels")
+                tunnels = []
+                for wire in wires:
+                    indexEnd = -1 if not wire.isClosed() else 0
+                    tunnels.append(
+                        {
+                            "startX": wire.OrderedVertexes[0].X,
+                            "startY": wire.OrderedVertexes[0].Y,
+                            "endX": wire.OrderedVertexes[indexEnd].X,
+                            "endY": wire.OrderedVertexes[indexEnd].Y,
+                        }
+                    )
+                sortedTunnels = tsp.tsp_solver_tunnels(
+                    tunnels,
+                    allowFlipping=biDir,
+                    routeStartPoint=obj.StartPoint,
+                    routeEndPoint=endPoint,
+                )
+                orderedWires = []
+                for tunnel in sortedTunnels:
+                    if tunnel["flipped"]:
+                        orderedWires.append(Path.Geom.flipWire(wires[tunnel["index"]]))
+                    else:
+                        orderedWires.append(wires[tunnel["index"]])
+                wires = orderedWires
+
         for wire in wires:
-            decomposewires.extend(PathOpUtil.makeWires(wire.Edges))
+            reverseDir = not forward
+            startIdx = min(start_idx, len(wire.Edges) - 1)
 
-        wires = decomposewires
-        for wire in wires:
-            # offset = wire
+            # get start point of wire
+            if wire.isClosed():
+                # forward and reversed closed wire
+                edges = wire.OrderedEdges[startIdx:] + wire.OrderedEdges[:startIdx]
+                startPoint = wire.OrderedVertexes[startIdx].Point
+            elif forward:
+                # forward open wire
+                edges = wire.OrderedEdges[startIdx:]
+                startPoint = wire.OrderedVertexes[startIdx].Point
+            else:
+                # reversed open wire
+                edges = wire.OrderedEdges[: len(wire.Edges) - startIdx]
+                startPoint = wire.OrderedVertexes[len(wire.Vertexes) - startIdx - 1].Point
 
-            # reorder the wire
-            if hasattr(obj, "StartVertex"):
-                start_idx = obj.StartVertex
-            edges = wire.Edges
-
-            # edges = copy.copy(PathOpUtil.orientWire(offset, forward).Edges)
-            # Path.Log.track("wire: {} offset: {}".format(len(wire.Edges), len(edges)))
-            # edges = Part.sortEdges(edges)[0]
-            # Path.Log.track("edges: {}".format(len(edges)))
-
-            last = None
-
-            for z in zValues:
+            for indexZ, z in enumerate(zValues):
                 Path.Log.debug(z)
-                if last and wire.isClosed():
-                    # Add step down to next Z for closed profile
+                if indexZ and (wire.isClosed() or biDir):
+                    # Skip retract and add step down to next Z for closed profile
                     self.appendCommand(
-                        Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                        Path.Command("G1", {"Z": startPoint.z}),
                         z,
                         relZ,
                         self.vertFeed,
                     )
 
-                first = True
-                if start_idx > len(edges) - 1:
-                    start_idx = len(edges) - 1
+                edgesDir = reversed(edges) if reverseDir else edges
 
-                edges = edges[start_idx:] + edges[:start_idx]
-                for edge in edges:
-                    Path.Log.debug(
-                        "points: {} -> {}".format(edge.Vertexes[0].Point, edge.Vertexes[-1].Point)
-                    )
-                    Path.Log.debug(
-                        "valueat {} -> {}".format(
-                            edge.valueAt(edge.FirstParameter),
-                            edge.valueAt(edge.LastParameter),
-                        )
-                    )
-                    if first and (not last or not wire.isClosed()):
+                for indexE, edge in enumerate(edgesDir):
+                    if indexE == 0 and (indexZ == 0 or (not wire.isClosed() and not biDir)):
                         Path.Log.debug("processing first edge entry")
                         # Add moves to first point of wire
-                        last = edge.Vertexes[0].Point
-
                         self.commandlist.append(
                             Path.Command(
                                 "G0",
-                                {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid},
+                                {"Z": obj.ClearanceHeight.Value},
                             )
                         )
                         self.commandlist.append(
-                            Path.Command("G0", {"X": last.x, "Y": last.y, "F": self.horizRapid})
+                            Path.Command("G0", {"X": startPoint.x, "Y": startPoint.y})
                         )
-                        self.commandlist.append(
-                            Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid})
-                        )
+                        self.commandlist.append(Path.Command("G0", {"Z": obj.SafeHeight.Value}))
                         self.appendCommand(
-                            Path.Command("G1", {"X": last.x, "Y": last.y, "Z": last.z}),
+                            Path.Command("G1", {"Z": startPoint.z}),
                             z,
                             relZ,
                             self.vertFeed,
                         )
-                    first = False
+                        lastPoint = startPoint
 
-                    if Path.Geom.pointsCoincide(last, edge.valueAt(edge.FirstParameter)):
-                        # if Path.Geom.pointsCoincide(last, edge.Vertexes[0].Point):
-                        # Edge not reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge):
-                            # Add gcode for edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[-1].Point
+                    if Path.Geom.pointsCoincide(
+                        edge.valueAt(edge.FirstParameter), edge.valueAt(edge.LastParameter)
+                    ):
+                        # wire with one closed edge
+                        flip = reverseDir
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.FirstParameter)):
+                        flip = False
+                        lastPoint = edge.valueAt(edge.LastParameter)
+                    elif Path.Geom.pointsCoincide(lastPoint, edge.valueAt(edge.LastParameter)):
+                        flip = True
+                        lastPoint = edge.valueAt(edge.FirstParameter)
                     else:
-                        # Edge reversed
-                        for cmd in Path.Geom.cmdsForEdge(edge, True):
-                            # Add gcode for reversed edge
-                            self.appendCommand(cmd, z, relZ, self.horizFeed)
-                        last = edge.Vertexes[0].Point
+                        Path.Log.warning("Error while checks points coincide")
 
-            self.commandlist.append(
-                Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-            )
+                    for cmd in Path.Geom.cmdsForEdge(edge, flip=flip, tol=tol):
+                        # Add gcode for edge
+                        self.appendCommand(cmd, z, relZ, self.horizFeed)
+
+                if biDir and not wire.isClosed():
+                    reverseDir = not reverseDir
 
     def appendCommand(self, cmd, z, relZ, feed):
         params = cmd.Parameters
