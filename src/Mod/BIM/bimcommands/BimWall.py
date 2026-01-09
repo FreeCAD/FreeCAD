@@ -218,10 +218,14 @@ class Arch_Wall:
             f"height={self.Height}, align='{self.Align}')"
         )
 
-        # Execute creation and placement commands
+        # Execute creation and property-setting commands
         FreeCADGui.doCommand("import Arch")
         FreeCADGui.doCommand(make_wall_cmd)
         FreeCADGui.doCommand(f"{wall_var}.Placement = {placement_str}")
+        if self.MultiMat:
+            FreeCADGui.doCommand(
+                f"{wall_var}.Material = FreeCAD.ActiveDocument.{self.MultiMat.Name}"
+            )
 
         # Get a reference to the newly created object
         newly_created_wall = getattr(__main__, wall_var)
@@ -314,6 +318,10 @@ class Arch_Wall:
         FreeCADGui.doCommand("import Arch")
         FreeCADGui.doCommand(make_wall_cmd)
         FreeCADGui.doCommand(set_normal_cmd)
+        if self.MultiMat:
+            FreeCADGui.doCommand(
+                f"{wall_var}.Material = FreeCAD.ActiveDocument.{self.MultiMat.Name}"
+            )
 
         # Get a reference to the newly-created object
         wall_obj = getattr(__main__, wall_var)
