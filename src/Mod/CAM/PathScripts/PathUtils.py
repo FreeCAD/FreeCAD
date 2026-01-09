@@ -260,6 +260,28 @@ def tangentEdgeLoop(obj, edge):
     return None
 
 
+def innerEdgesFromFace(obj, face):
+    """innerEdgesFromFace(obj, face) ... returns a list of inner edges from face."""
+    outerPoints = [v.Point for v in face.OuterWire.Vertexes]
+    edges = [e for e in face.Edges for v in e.Vertexes if v.Point not in outerPoints]
+
+    return edges
+
+
+def horizontalCoplanarFaces(obj, face, tol=0.01):
+    """horizontalCoplanarFaces(obj, face) ... returns a list of face names with same height."""
+    targetZ = face.CenterOfMass.z
+    isRoughly = Path.Geom.isRoughly
+    isHorizontal = Path.Geom.isHorizontal
+    names = [
+        f"Face{i + 1}"
+        for i, f in enumerate(obj.Shape.Faces)
+        if isHorizontal(f) and isRoughly(f.CenterOfMass.z, targetZ, tol)
+    ]
+
+    return names
+
+
 def horizontalFaceLoop(obj, faces, subNames):
     """horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
     All face names listed in faceList must be part of the hole for the solution to be returned."""
