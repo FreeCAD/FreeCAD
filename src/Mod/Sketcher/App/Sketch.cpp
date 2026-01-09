@@ -204,7 +204,7 @@ int Sketch::setUpSketch(
     // these geometries are blocked, frozen and sent as fixed parameters to the solver
     std::vector<bool> onlyBlockedGeometry(intGeoList.size(), false);
 
-    	
+
     int restartCount = 0;
     while (true) {
         clear();
@@ -212,13 +212,13 @@ int Sketch::setUpSketch(
         // these constraints are unenforceable due to a Blocked constraint
         std::vector<bool> unenforceableConstraints(ConstraintList.size(), false);
 
-        /* This implements the old block constraint. I have decided not to remove it at this time while
-         * the new is tested, just in case the change needs to be reverted */
+        /* This implements the old block constraint. I have decided not to remove it at this time
+         * while the new is tested, just in case the change needs to be reverted */
         /*if(!intGeoList.empty())
             getBlockedGeometry(blockedGeometry, unenforceableConstraints, ConstraintList);*/
 
-        // Pre-analysis of blocked geometry (new block constraint) to fix geometry only affected by a
-        // block constraint (see comment in Sketch.h)
+        // Pre-analysis of blocked geometry (new block constraint) to fix geometry only affected by
+        // a block constraint (see comment in Sketch.h)
         std::vector<int> blockedGeoIds;
         bool doesBlockAffectOtherConstraints
             = analyseBlockedGeometry(intGeoList, ConstraintList, onlyBlockedGeometry, blockedGeoIds);
@@ -233,7 +233,7 @@ int Sketch::setUpSketch(
             doesBlockAffectOtherConstraints = false;
         }
 
-    #ifdef DEBUG_BLOCK_CONSTRAINT
+#ifdef DEBUG_BLOCK_CONSTRAINT
         if (doesBlockAffectOtherConstraints) {
             Base::Console().log("\n  Block interferes with other constraints: Post-analysis required");
         }
@@ -260,7 +260,7 @@ int Sketch::setUpSketch(
             Base::Console().log("\n  None");
         }
         Base::Console().log("\n");
-    #endif  // DEBUG_BLOCK_CONSTRAINT
+#endif  // DEBUG_BLOCK_CONSTRAINT
 
         buildInternalAlignmentGeometryMap(ConstraintList);
 
@@ -299,8 +299,8 @@ int Sketch::setUpSketch(
         GCSsys.initSolution(defaultSolverRedundant);
 
         // Post-analysis
-        // Now that we have all the parameters information, we deal properly with the block constraints
-        // if necessary
+        // Now that we have all the parameters information, we deal properly with the block
+        // constraints if necessary
         if (doesBlockAffectOtherConstraints) {
 
             std::vector<double*> params_to_block;
@@ -308,16 +308,17 @@ int Sketch::setUpSketch(
             bool unsatisfied_groups
                 = analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
-            // I am unsure if more than one QR iterations are needed with the current implementation.
+            // I am unsure if more than one QR iterations are needed with the current
+            // implementation.
             //
-            // With previous implementations mostly one QR iteration was enough, but if block constraint
-            // is abused, more iterations were needed.
+            // With previous implementations mostly one QR iteration was enough, but if block
+            // constraint is abused, more iterations were needed.
             int index = 0;
             while (unsatisfied_groups) {
                 // We tried hard not to arrive to an unsatisfied group, so we try harder
                 // This loop has the advantage that the user will notice increased effort to solve,
-                // so they may understand that they are abusing the block constraint, while guaranteeing
-                // that wrong behaviour of the block constraint is not undetected.
+                // so they may understand that they are abusing the block constraint, while
+                // guaranteeing that wrong behaviour of the block constraint is not undetected.
 
                 // Another QR iteration
                 fixParametersAndDiagnose(params_to_block);
@@ -326,7 +327,10 @@ int Sketch::setUpSketch(
                     = analyseBlockedConstraintDependentParameters(blockedGeoIds, params_to_block);
 
                 if (debugMode == GCS::IterationLevel) {
-                    Base::Console().log("Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n", index);
+                    Base::Console().log(
+                        "Sketcher::setUpSketch()-BlockConstraint-PostAnalysis:%d\n",
+                        index
+                    );
                 }
                 index++;
             }
@@ -354,7 +358,7 @@ int Sketch::setUpSketch(
             }
             // DIAGNOSIS END
 
-    #ifdef DEBUG_BLOCK_CONSTRAINT
+#ifdef DEBUG_BLOCK_CONSTRAINT
             if (params_to_block.size() > 0) {
                 std::vector<std::vector<double*>> groups;
                 GCSsys.getDependentParamsGroups(groups);
@@ -366,8 +370,7 @@ int Sketch::setUpSketch(
                         Base::Console().warning(
                             "\n  Param=%f ,GeoId=%d, GeoPos=%d",
                             *param2geoelement.find(*std::next(groups[i].begin(), j))->first,
-                            std::get<0>(param2geoelement.find(*std::next(groups[i].begin(), j))->second
-                            ),
+                            std::get<0>(param2geoelement.find(*std::next(groups[i].begin(), j))->second),
                             (int)std::get<1>(
                                 param2geoelement.find(*std::next(groups[i].begin(), j))->second
                             )
@@ -375,7 +378,7 @@ int Sketch::setUpSketch(
                     }
                 }
             }
-    #endif  // DEBUG_BLOCK_CONSTRAINT
+#endif  // DEBUG_BLOCK_CONSTRAINT
         }
 
         break;  // Finished setup
