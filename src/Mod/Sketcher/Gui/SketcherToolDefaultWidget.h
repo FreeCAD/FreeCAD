@@ -201,9 +201,9 @@ public:
     }
 
     template<typename F>
-    boost::signals2::connection registerLineEditTextChanged(F&& fn)
+    fastsignals::advanced_connection registerLineEditTextChanged(F&& fn)
     {
-        return signalLineEditTextChanged.connect(std::forward<F>(fn));
+        return signalLineEditTextChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
     // Q_SIGNALS:
@@ -248,11 +248,11 @@ private:
 private:
     std::unique_ptr<Ui_SketcherToolDefaultWidget> ui;
 
-    fastsignals<void(int parameterindex)> signalParameterTabOrEnterPressed;
-    fastsignals<void(int parameterindex, double value)> signalParameterValueChanged;
-    fastsignals<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
-    fastsignals<void(int comboindex, int value)> signalComboboxSelectionChanged;
-    fastsignals<void(int lineeditindex, const QString& text)> signalLineEditTextChanged;
+    fastsignals::signal<void(int parameterindex)> signalParameterTabOrEnterPressed;
+    fastsignals::signal<void(int parameterindex, double value)> signalParameterValueChanged;
+    fastsignals::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
+    fastsignals::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;
+    fastsignals::signal<void(int lineeditindex, const QString& text)> signalLineEditTextChanged;
 
     /// lock to block QT slots
     bool blockParameterSlots;
@@ -267,3 +267,4 @@ private:
 }  // namespace SketcherGui
 
 #endif  // SketcherGui_SketcherToolDefaultWidget_H
+
