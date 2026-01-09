@@ -95,6 +95,10 @@ class Arch_Wall:
         self.Offset = params.get_param_arch("WallOffset")
         # Baseline creation mode (NONE / DRAFT_LINE / SKETCH)
         mode_index = PARAMS.GetInt("WallBaseline", 0)
+        # TODO (REVIEW): Combining params and PARAMS in the same file is not a good idea.
+        # Use params.get_param("WallBaseline", path="Mod/BIM") and add the default to
+        # Draft\draftutils\params.py.
+
         try:
             self.baseline_mode = WallBaselineMode(mode_index)
         except Exception:
@@ -192,6 +196,7 @@ class Arch_Wall:
 
     def _create_baseless_wall(self, p0, p1):
         """Creates a baseless wall and ensures all steps are macro-recordable."""
+        import __main__
 
         line_vector = p1.sub(p0)
         length = line_vector.Length
@@ -222,17 +227,18 @@ class Arch_Wall:
         FreeCADGui.doCommand(make_wall_cmd)
         FreeCADGui.doCommand(f"{wall_var}.Placement = {placement_str}")
 
-        # Get a reference to the newly created object to find its final name
-        newly_created_wall = self.doc.Objects[-1]
+        # Get a reference to the newly created object
+        newly_created_wall = getattr(__main__, wall_var)
 
         # Now, issue the autogroup command using the object's actual name
         FreeCADGui.doCommand("import Draft")
-        FreeCADGui.doCommand(f"Draft.autogroup(FreeCAD.ActiveDocument.{newly_created_wall.Name})")
+        FreeCADGui.doCommand(f"Draft.autogroup({wall_var})")
 
-        return newly_created_wall.Name
+        return newly_created_wall
 
     def _create_baseline_object(self, p0, p1):
         """Creates a baseline object (Draft line or Sketch) and returns its name."""
+        import __main__
 
         placement = self.wp.get_placement()
         placement_str = (
@@ -247,22 +253,22 @@ class Arch_Wall:
 
         FreeCADGui.doCommand("import FreeCAD")
         FreeCADGui.doCommand("import Part")
+        FreeCADGui.addModule("WorkingPlane")
         FreeCADGui.doCommand(trace_cmd)
 
-        baseline_name = None
         if self.baseline_mode == WallBaselineMode.DRAFT_LINE:
             FreeCADGui.doCommand("import Draft")
 
             # Execute creation command. FreeCAD will ensure a unique name.
             FreeCADGui.doCommand("base = Draft.make_line(trace)")
 
-            # The `make_line` command sets the new object as active.
-            if self.doc.ActiveObject:
-                baseline_name = self.doc.ActiveObject.Name
-                # Apply placement using the correctly identified object name.
-                FreeCADGui.doCommand(
-                    f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
-                )
+            # Execute placement command.
+            FreeCADGui.doCommand(f"base.Placement = {placement_str}")
+
+            # The created line should not stay selected as this causes an issue in continue mode.
+            # Two walls would then be created based on the same line.
+            FreeCADGui.Selection.clearSelection()
+            FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
 
         elif self.baseline_mode == WallBaselineMode.SKETCH:
             # Execute creation command with a suggested name. FreeCAD will ensure uniqueness.
@@ -270,33 +276,24 @@ class Arch_Wall:
                 "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
             )
 
-            # The `addObject` command sets the new object as active.
-            if self.doc.ActiveObject:
-                baseline_name = self.doc.ActiveObject.Name
-                user_label = translate("BimWall", "Wall Trace")
-                # Apply placement and geometry using the correctly identified object name.
-                FreeCADGui.doCommand(
-                    f"FreeCAD.ActiveDocument.{baseline_name}.Placement = {placement_str}"
-                )
-                # Set the user-facing, translated label.
-                FreeCADGui.doCommand(
-                    f"FreeCAD.ActiveDocument.{baseline_name}.Label = {repr(user_label)}"
-                )
-                FreeCADGui.doCommand(f"FreeCAD.ActiveDocument.{baseline_name}.addGeometry(trace)")
+            user_label = translate("BimWall", "Wall Trace")
+            # Apply placement and geometry using the correctly identified object name.
+            FreeCADGui.doCommand(f"base.Placement = {placement_str}")
+            # Set the user-facing, translated label.
+            FreeCADGui.doCommand(f"base.Label = {repr(user_label)}")
+            FreeCADGui.doCommand(f"base.addGeometry(trace)")
 
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
 
-        return baseline_name
+        # Get a reference to the newly created object
+        baseline_obj = getattr(__main__, "base")
 
-    def _create_wall_from_baseline(self, baseline_name):
+        return baseline_obj
+
+    def _create_wall_from_baseline(self, base_obj):
         """Creates a wall from a baseline object, ensuring all steps are macro-recordable."""
+        import __main__
 
-        if baseline_name is None:
-            return None
-
-        # Get a reference to the baseline object to ensure it exists, although we use its name in
-        # the command
-        base_obj = self.doc.getObject(baseline_name)
         if base_obj is None:
             return None
 
@@ -305,7 +302,7 @@ class Arch_Wall:
 
         # Construct command strings
         make_wall_cmd = (
-            f"{wall_var} = Arch.makeWall(FreeCAD.ActiveDocument.{baseline_name}, "
+            f"{wall_var} = Arch.makeWall(FreeCAD.ActiveDocument.{base_obj.Name}, "
             f"width={self.Width}, height={self.Height}, align='{self.Align}')"
         )
         set_normal_cmd = f"{wall_var}.Normal = FreeCAD.{self.wp.axis}"
@@ -315,14 +312,14 @@ class Arch_Wall:
         FreeCADGui.doCommand(make_wall_cmd)
         FreeCADGui.doCommand(set_normal_cmd)
 
-        # Get a reference to the newly created object to find its final name
-        newly_created_wall = self.doc.Objects[-1]
+        # Get a reference to the newly-created object
+        wall_obj = getattr(__main__, wall_var)
 
-        # Now, issue the autogroup command using the object's actual name
+        # Issue the autogroup command using the object's actual name
         FreeCADGui.doCommand("import Draft")
-        FreeCADGui.doCommand(f"Draft.autogroup(FreeCAD.ActiveDocument.{newly_created_wall.Name})")
+        FreeCADGui.doCommand(f"Draft.autogroup({wall_var})")
 
-        return newly_created_wall.Name
+        return wall_obj
 
     def create_wall(self):
         """Orchestrate wall creation according to the baseline mode."""
@@ -340,21 +337,18 @@ class Arch_Wall:
         # Ensure baseline_mode is initialized (some tests call create_wall()
         # directly without going through Activated()).
         if not hasattr(self, "baseline_mode"):
-            try:
-                self.baseline_mode = WallBaselineMode(PARAMS.GetInt("WallBaseline", 0))
-            except Exception:
-                self.baseline_mode = WallBaselineMode.NONE
+            self.baseline_mode = WallBaselineMode(PARAMS.GetInt("WallBaseline", 0))
 
         if self.baseline_mode == WallBaselineMode.NONE:
-            wall_name = self._create_baseless_wall(p0, p1)
+            wall_obj = self._create_baseless_wall(p0, p1)
             # If autojoin is requested and something was snapped to, add components
-            if self.existing and self.AUTOJOIN and wall_name:
+            if self.existing and self.AUTOJOIN and wall_obj:
                 FreeCADGui.doCommand(
-                    f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
+                    f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_obj.Name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
                 )
         else:
-            baseline_name = self._create_baseline_object(p0, p1)
-            if baseline_name and self.baseline_mode == WallBaselineMode.SKETCH and self.existing:
+            baseline_obj = self._create_baseline_object(p0, p1)
+            if baseline_obj and self.baseline_mode == WallBaselineMode.SKETCH and self.existing:
                 # try to join existing sketches first
                 joined = Arch.joinWalls(self.existing)
                 if joined:
@@ -364,15 +358,15 @@ class Arch_Wall:
                             f"FreeCAD.ActiveDocument.{joined.Name}.Base.addGeometry(trace)"
                         )
                         FreeCADGui.doCommand(
-                            f"FreeCAD.ActiveDocument.removeObject('{baseline_name}')"
+                            f"FreeCAD.ActiveDocument.removeObject('{baseline_obj.Name}')"
                         )
                     except Exception:
                         # fallback: create a wall from the baseline
-                        self._create_wall_from_baseline(baseline_name)
+                        self._create_wall_from_baseline(baseline_obj)
                 else:
-                    self._create_wall_from_baseline(baseline_name)
+                    self._create_wall_from_baseline(baseline_obj)
             else:
-                wall_name = self._create_wall_from_baseline(baseline_name)
+                wall_name = self._create_wall_from_baseline(baseline_obj).Name
                 if self.existing and self.AUTOJOIN and wall_name:
                     FreeCADGui.doCommand(
                         f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
