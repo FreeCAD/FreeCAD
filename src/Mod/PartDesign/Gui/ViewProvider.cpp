@@ -214,7 +214,7 @@ void ViewProvider::updateData(const App::Property* prop)
         updatePreview();
     }
     else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (!previewExtension->isPreviewFresh() && isEditing()) {
+        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
             previewExtension->updatePreview();
         }
     }
