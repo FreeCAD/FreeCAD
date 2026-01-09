@@ -211,7 +211,6 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         self.printTestMessage("Testing stretch on a rotated baseless wall...")
 
         from draftguitools.gui_stretch import Stretch
-        import Arch
 
         # 1. Arrange: Create a rotated baseless wall
         wall = Arch.makeWall(length=2000, width=200, height=1500)
