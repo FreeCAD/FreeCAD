@@ -31,8 +31,6 @@ from enum import Enum
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
-PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
-
 
 class WallBaselineMode(Enum):
     NONE = 0
@@ -94,10 +92,7 @@ class Arch_Wall:
         self.Height = params.get_param_arch("WallHeight")
         self.Offset = params.get_param_arch("WallOffset")
         # Baseline creation mode (NONE / DRAFT_LINE / SKETCH)
-        mode_index = PARAMS.GetInt("WallBaseline", 0)
-        # TODO (REVIEW): Combining params and PARAMS in the same file is not a good idea.
-        # Use params.get_param("WallBaseline", path="Mod/BIM") and add the default to
-        # Draft\draftutils\params.py.
+        mode_index = params.get_param("WallBaseline", path="Mod/BIM")
 
         try:
             self.baseline_mode = WallBaselineMode(mode_index)
@@ -324,6 +319,7 @@ class Arch_Wall:
     def create_wall(self):
         """Orchestrate wall creation according to the baseline mode."""
         import Arch
+        from draftutils import params
 
         p0 = self.wp.get_local_coords(self.points[0])
         p1 = self.wp.get_local_coords(self.points[1])
@@ -337,7 +333,7 @@ class Arch_Wall:
         # Ensure baseline_mode is initialized (some tests call create_wall()
         # directly without going through Activated()).
         if not hasattr(self, "baseline_mode"):
-            self.baseline_mode = WallBaselineMode(PARAMS.GetInt("WallBaseline", 0))
+            self.baseline_mode = WallBaselineMode(params.get_param("WallBaseline", path="Mod/BIM"))
 
         if self.baseline_mode == WallBaselineMode.NONE:
             wall_obj = self._create_baseless_wall(p0, p1)
@@ -496,7 +492,7 @@ class Arch_Wall:
                 translate("Arch", "Sketch"),
             ]
         )
-        comboBaseline.setCurrentIndex(PARAMS.GetInt("WallBaseline", 0))
+        comboBaseline.setCurrentIndex(params.get_param("WallBaseline", path="Mod/BIM"))
         grid.addWidget(labelBaseline, 6, 0, 1, 1)
         grid.addWidget(comboBaseline, 6, 1, 1, 1)
 
@@ -591,8 +587,10 @@ class Arch_Wall:
 
     def setBaseline(self, i):
         """Simple callback to set the wall baseline creation mode."""
+        from draftutils import params
+
         self.baseline_mode = WallBaselineMode(i)
-        PARAMS.SetInt("WallBaseline", i)
+        params.set_param("WallBaseline", i, path="Mod/BIM")
 
     def createFromGUI(self):
         """Callback to create wall by using the _CommandWall.taskbox()"""
