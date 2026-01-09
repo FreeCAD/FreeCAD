@@ -1223,4 +1223,3 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
 
 
 #include "moc_FileDialog.cpp"
-
