@@ -93,6 +93,7 @@ class Arch_Wall:
         self.Offset = params.get_param_arch("WallOffset")
         # Baseline creation mode (NONE / DRAFT_LINE / SKETCH)
         mode_index = params.get_param("WallBaseline", path="Mod/BIM")
+        self.JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
 
         try:
             self.baseline_mode = WallBaselineMode(mode_index)
@@ -316,9 +317,46 @@ class Arch_Wall:
 
         return wall_obj
 
+    def _handle_wall_joining(self, wall_obj):
+        """Helper to handle wall joining/autogrouping logic after a new wall is created."""
+        import ArchWall
+        from draftutils import params
+
+        JOIN_WALLS_SKETCHES = params.get_param_arch("joinWallSketches")
+        AUTOJOIN = params.get_param_arch("autoJoinWalls")
+
+        if wall_obj and self.existing:
+            oldWall = self.existing[-1]
+            wallGrp = wall_obj.getParentGroup()
+            oldWallGrp = oldWall.getParentGroup()
+
+            if wallGrp == oldWallGrp:
+                joined = False
+                # Attempt destructive merge first if conditions allow
+                if (
+                    JOIN_WALLS_SKETCHES
+                    and wall_obj.Base
+                    and ArchWall.areSameWallTypes([wall_obj, oldWall])
+                ):
+                    FreeCADGui.doCommand(
+                        f"Arch.joinWalls([FreeCAD.ActiveDocument.{wall_obj.Name}, FreeCAD.ActiveDocument.{oldWall.Name}], delete=True, deletebase=True)"
+                    )
+                    joined = True
+
+                # If no destructive merge, attempt non-destructive autojoin
+                if not joined and AUTOJOIN:
+                    if wallGrp:
+                        # Remove the new wall from its default autogroup if one was assigned,
+                        # before adding it to the existing wall's additions.
+                        FreeCADGui.doCommand(
+                            f"FreeCAD.ActiveDocument.{wallGrp.Name}.removeObject(FreeCAD.ActiveDocument.{wall_obj.Name})"
+                        )
+                    FreeCADGui.doCommand(
+                        f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_obj.Name}, FreeCAD.ActiveDocument.{oldWall.Name})"
+                    )
+
     def create_wall(self):
         """Orchestrate wall creation according to the baseline mode."""
-        import Arch
         from draftutils import params
 
         p0 = self.wp.get_local_coords(self.points[0])
@@ -335,39 +373,19 @@ class Arch_Wall:
         if not hasattr(self, "baseline_mode"):
             self.baseline_mode = WallBaselineMode(params.get_param("WallBaseline", path="Mod/BIM"))
 
+        # Create the wall object (either baseless or from a baseline)
+        wall_obj = None
         if self.baseline_mode == WallBaselineMode.NONE:
             wall_obj = self._create_baseless_wall(p0, p1)
-            # If autojoin is requested and something was snapped to, add components
-            if self.existing and self.AUTOJOIN and wall_obj:
-                FreeCADGui.doCommand(
-                    f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_obj.Name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
-                )
         else:
             baseline_obj = self._create_baseline_object(p0, p1)
-            if baseline_obj and self.baseline_mode == WallBaselineMode.SKETCH and self.existing:
-                # try to join existing sketches first
-                joined = Arch.joinWalls(self.existing)
-                if joined:
-                    # add trace geometry to joined sketch
-                    try:
-                        FreeCADGui.doCommand(
-                            f"FreeCAD.ActiveDocument.{joined.Name}.Base.addGeometry(trace)"
-                        )
-                        FreeCADGui.doCommand(
-                            f"FreeCAD.ActiveDocument.removeObject('{baseline_obj.Name}')"
-                        )
-                    except Exception:
-                        # fallback: create a wall from the baseline
-                        self._create_wall_from_baseline(baseline_obj)
-                else:
-                    self._create_wall_from_baseline(baseline_obj)
-            else:
-                wall_name = self._create_wall_from_baseline(baseline_obj).Name
-                if self.existing and self.AUTOJOIN and wall_name:
-                    FreeCADGui.doCommand(
-                        f"Arch.addComponents(FreeCAD.ActiveDocument.{wall_name}, FreeCAD.ActiveDocument.{self.existing[0].Name})"
-                    )
+            if baseline_obj:
+                wall_obj = self._create_wall_from_baseline(baseline_obj)
 
+        # Delegate all joining logic to the helper function
+        self._handle_wall_joining(wall_obj)
+
+        # Finalization
         self.doc.commitTransaction()
         self.doc.recompute()
         self.tracker.finalize()
