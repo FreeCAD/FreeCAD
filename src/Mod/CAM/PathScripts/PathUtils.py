@@ -223,6 +223,27 @@ def tangentEdgeLoop(obj, edge1, edge2):
     return None
 
 
+def innerEdgesFromFace(obj, face):
+    """innerEdgesFromFace(obj, face) ... returns a list of inner edges from face."""
+    outerHash = [e.hashCode() for e in face.OuterWire.Edges]
+    edges = [e for e in face.Edges if e.hashCode() not in outerHash]
+
+    return edges
+
+
+def horizontalFacesAtHeight(obj, z, tol=0.01):
+    """horizontalCoplanarFaces(obj, z) ... returns a list of face names with requested height."""
+    names = [
+        f"Face{i}"
+        for i, f in enumerate(obj.Shape.Faces, 1)
+        if Path.Geom.isHorizontal(f) and Path.Geom.isRoughly(f.CenterOfMass.z, z, tol)
+    ]
+    if len(names) > 1:
+        return names
+
+    return None
+
+
 def horizontalFaceLoops(obj, faces):
     """horizontalFaceLoops(obj, faces) ... returns a list of face names
     which form the walls of a vertical hole face is a part of."""
