@@ -267,4 +267,3 @@ private:
 }  // namespace SketcherGui
 
 #endif  // SketcherGui_SketcherToolDefaultWidget_H
-
