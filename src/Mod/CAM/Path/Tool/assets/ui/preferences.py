@@ -48,20 +48,21 @@ def _is_writable_dir(path: pathlib.Path) -> bool:
 
 class AssetPreferencesPage:
     def __init__(self, parent=None):
-        self.form = QtGui.QToolBox()
+        self.form = QtGui.QWidget()
         self.form.setWindowTitle(translate("CAM_PreferencesAssets", "Assets"))
 
-        asset_path_widget = QtGui.QWidget()
-        main_layout = QtGui.QHBoxLayout(asset_path_widget)
+        # Set up main layout directly on the form
+        self.main_layout = QtGui.QVBoxLayout(self.form)
 
         # Create widgets
-        self.asset_path_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Asset directory"))
+        self.assets_group = QtGui.QGroupBox(translate("CAM_PreferencesAssets", "Asset Location"))
+        self.asset_path_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Default path"))
         self.asset_path_edit = QtGui.QLineEdit()
         self.asset_path_note_label = QtGui.QLabel(
             translate(
                 "CAM_PreferencesAssets",
                 "Note: Select the directory that will contain the "
-                "Tool folder with Bit/, Shape/, and Library/ subfolders.",
+                "Tools folder with Bit/, Shape/, and Library/ subfolders and the Machines/ folder.",
             )
         )
         self.asset_path_note_label.setWordWrap(True)
@@ -76,39 +77,52 @@ class AssetPreferencesPage:
         font.setItalic(True)
         self.asset_path_note_label.setFont(font)
 
-        # Layout for asset path section
-        edit_button_layout = QtGui.QGridLayout()
-        edit_button_layout.addWidget(self.asset_path_label, 0, 0, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.asset_path_edit, 0, 1, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.select_path_button, 0, 2, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.reset_path_button, 0, 3, QtCore.Qt.AlignVCenter)
-        edit_button_layout.addWidget(self.asset_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
-        edit_button_layout.setRowStretch(3, 1)
+        # Assets group box
+        self.assets_layout = QtGui.QGridLayout(self.assets_group)
+        self.assets_layout.addWidget(self.asset_path_label, 0, 0, QtCore.Qt.AlignVCenter)
+        self.assets_layout.addWidget(self.asset_path_edit, 0, 1, QtCore.Qt.AlignVCenter)
+        self.assets_layout.addWidget(self.select_path_button, 0, 2, QtCore.Qt.AlignVCenter)
+        self.assets_layout.addWidget(self.reset_path_button, 0, 3, QtCore.Qt.AlignVCenter)
+        self.assets_layout.addWidget(self.asset_path_note_label, 1, 1, 1, 1, QtCore.Qt.AlignTop)
+        self.main_layout.addWidget(self.assets_group)
 
-        main_layout.addLayout(edit_button_layout, QtCore.Qt.AlignTop)
+        # Machines group box
+        self.machines_group = QtGui.QGroupBox(translate("CAM_PreferencesAssets", "Machines"))
+        self.machines_layout = QtGui.QVBoxLayout(self.machines_group)
 
-        self.form.addItem(asset_path_widget, translate("CAM_PreferencesAssets", "Assets"))
+        self.warning_label = QtGui.QLabel(
+            translate(
+                "CAM_PreferencesAssets",
+                "Warning: Machine definition is an experimental feature. Changes "
+                "made here will not affect any CAM functionality",
+            )
+        )
+        self.warning_label.setWordWrap(True)
+        warning_font = self.warning_label.font()
+        warning_font.setItalic(True)
+        self.warning_label.setFont(warning_font)
+        self.warning_label.setContentsMargins(0, 0, 0, 10)
+        self.machines_layout.addWidget(self.warning_label)
 
-        # Integrate machines list into the Assets panel
-        machines_list_layout = QtGui.QVBoxLayout()
-        machines_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Machines"))
-        machines_list_layout.addWidget(machines_label)
+        self.machines_label = QtGui.QLabel(translate("CAM_PreferencesAssets", "Machines"))
+        self.machines_layout.addWidget(self.machines_label)
 
         self.machines_list = QtGui.QListWidget()
-        machines_list_layout.addWidget(self.machines_list)
+        self.machines_layout.addWidget(self.machines_list)
 
         # Buttons: Add / Edit / Delete
-        btn_layout = QtGui.QHBoxLayout()
+        self.btn_layout = QtGui.QHBoxLayout()
         self.add_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Add"))
         self.edit_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Edit"))
         self.delete_machine_btn = QtGui.QPushButton(translate("CAM_PreferencesAssets", "Delete"))
-        btn_layout.addWidget(self.add_machine_btn)
-        btn_layout.addWidget(self.edit_machine_btn)
-        btn_layout.addWidget(self.delete_machine_btn)
-        machines_list_layout.addLayout(btn_layout)
+        self.btn_layout.addWidget(self.add_machine_btn)
+        self.btn_layout.addWidget(self.edit_machine_btn)
+        self.btn_layout.addWidget(self.delete_machine_btn)
+        self.machines_layout.addLayout(self.btn_layout)
 
-        # Insert the machines list directly under the path controls
-        edit_button_layout.addLayout(machines_list_layout, 2, 0, 1, 4)
+        self.machines_layout.addStretch()  # Prevent the list from stretching
+
+        self.main_layout.addWidget(self.machines_group)
 
         # Wire up buttons
         self.add_machine_btn.clicked.connect(self.add_machine)

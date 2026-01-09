@@ -302,13 +302,12 @@ class MachineEditorDialog(QtGui.QDialog):
 
     def __init__(self, machine_filename: Optional[str] = None, parent=None):
         super().__init__(parent)
-        self.setWindowTitle(translate("CAM_MachineEditor", "Machine Editor"))
         self.setMinimumSize(700, 900)
         self.resize(700, 900)
 
         self.current_units = "metric"
 
-        # Initialize machine object first (needed by setup_post_tab)
+        # Initialize machine object first (needed by setup methods)
         self.filename = machine_filename
         self.machine = None  # Store the Machine object
 
@@ -316,6 +315,16 @@ class MachineEditorDialog(QtGui.QDialog):
             self.machine = MachineFactory.load_configuration(machine_filename)
         else:
             self.machine = Machine(name="New Machine")
+
+        # Set window title with machine name
+        title = translate("CAM_MachineEditor", "Machine Editor")
+        if self.machine and self.machine.name:
+            title += f" - {self.machine.name}"
+        self.setWindowTitle(title)
+
+        # Initialize widget and processor caches
+        self.post_widgets = {}
+        self.processor = {}
 
         self.layout = QtGui.QVBoxLayout(self)
 
@@ -328,15 +337,33 @@ class MachineEditorDialog(QtGui.QDialog):
         self.tabs.addTab(self.machine_tab, translate("CAM_MachineEditor", "Machine"))
         self.setup_machine_tab()
 
-        # Post tab
-        self.post_tab = QtGui.QWidget()
-        self.tabs.addTab(self.post_tab, translate("CAM_MachineEditor", "Post Processor"))
-        self.setup_post_tab()
+        # Output Options tab
+        self.output_tab = QtGui.QWidget()
+        self.tabs.addTab(self.output_tab, translate("CAM_MachineEditor", "Output Options"))
+        self.setup_output_tab()
+
+        # G-Code Blocks tab
+        self.blocks_tab = QtGui.QWidget()
+        self.tabs.addTab(self.blocks_tab, translate("CAM_MachineEditor", "G-Code Blocks"))
+        self.setup_blocks_tab()
+
+        # Processing Options tab
+        self.processing_tab = QtGui.QWidget()
+        self.tabs.addTab(self.processing_tab, translate("CAM_MachineEditor", "Processing Options"))
+        self.setup_processing_tab()
 
         # Check experimental flag for machine post processor
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         self.enable_machine_postprocessor = param.GetBool("EnableMachinePostprocessor", True)
-        self.tabs.setTabVisible(self.tabs.indexOf(self.post_tab), self.enable_machine_postprocessor)
+        self.tabs.setTabVisible(
+            self.tabs.indexOf(self.output_tab), self.enable_machine_postprocessor
+        )
+        self.tabs.setTabVisible(
+            self.tabs.indexOf(self.blocks_tab), self.enable_machine_postprocessor
+        )
+        self.tabs.setTabVisible(
+            self.tabs.indexOf(self.processing_tab), self.enable_machine_postprocessor
+        )
         # Text editor (initially hidden)
         self.text_editor = CodeEditor()
 
@@ -375,6 +402,9 @@ class MachineEditorDialog(QtGui.QDialog):
 
         # Populate GUI from machine object
         self.populate_from_machine(self.machine)
+
+        # Update spindle button state
+        self._update_spindle_button_state()
 
         # Set focus and select the name field for new machines
         if not machine_filename:
@@ -496,6 +526,11 @@ class MachineEditorDialog(QtGui.QDialog):
         """Update machine name when text changes."""
         if self.machine:
             self.machine.name = text
+            # Update window title with new name
+            title = translate("CAM_MachineEditor", "Machine Editor")
+            if self.machine.name:
+                title += f" - {self.machine.name}"
+            self.setWindowTitle(title)
 
     def _on_rotary_sequence_changed(self, axis_name, value):
         """Update rotary axis sequence."""
@@ -524,6 +559,52 @@ class MachineEditorDialog(QtGui.QDialog):
         if self.machine and spindle_index < len(self.machine.spindles):
             spindle = self.machine.spindles[spindle_index]
             setattr(spindle, field_name, value)
+
+    def _add_spindle(self):
+        """Add a new spindle to the machine."""
+        if self.machine and len(self.machine.spindles) < 9:
+            new_index = len(self.machine.spindles) + 1
+            new_spindle = Spindle(
+                name=f"Spindle {new_index}",
+                id=f"spindle{new_index}",
+                max_power_kw=3.0,
+                max_rpm=24000,
+                min_rpm=6000,
+                tool_change="manual",
+            )
+            self.machine.spindles.append(new_spindle)
+            self.update_spindles()
+            self._update_spindle_button_state()
+            # Set focus to the new tab
+            self.spindles_tabs.setCurrentIndex(len(self.machine.spindles) - 1)
+
+    def _remove_spindle(self, index):
+        """Remove a spindle from the machine with confirmation.
+
+        Args:
+            index: Index of the tab/spindle to remove
+        """
+        if not self.machine or len(self.machine.spindles) <= 1:
+            return  # Don't allow removing the last spindle
+
+        spindle = self.machine.spindles[index]
+        reply = QtGui.QMessageBox.question(
+            self,
+            translate("CAM_MachineEditor", "Remove Spindle"),
+            translate("CAM_MachineEditor", f"Remove '{spindle.name}'? This cannot be undone."),
+            QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
+            QtGui.QMessageBox.No,
+        )
+
+        if reply == QtGui.QMessageBox.Yes:
+            self.machine.spindles.pop(index)
+            self.update_spindles()
+            self._update_spindle_button_state()
+
+    def _update_spindle_button_state(self):
+        """Enable/disable the add spindle button based on count."""
+        if self.machine:
+            self.add_spindle_button.setEnabled(len(self.machine.spindles) < 9)
 
     def _on_manufacturer_changed(self, text):
         """Update manufacturer when text changes."""
@@ -639,13 +720,30 @@ class MachineEditorDialog(QtGui.QDialog):
         self.type_combo.currentIndexChanged.connect(self._on_type_changed)
         layout.addRow(translate("CAM_MachineEditor", "Type"), self.type_combo)
 
-        self.spindle_count_combo = QtGui.QComboBox()
-        for i in range(1, 10):  # 1 to 9 spindles
-            self.spindle_count_combo.addItem(str(i), i)
-        self.spindle_count_combo.currentIndexChanged.connect(self.update_spindles)
-        layout.addRow(
-            translate("CAM_MachineEditor", "Number of spindles"), self.spindle_count_combo
+        # Post Processor Selection
+        self.post_processor_combo = QtGui.QComboBox()
+        postProcessors = Path.Preferences.allEnabledPostProcessors([""])
+        for post in postProcessors:
+            self.post_processor_combo.addItem(post)
+        self.post_processor_combo.currentIndexChanged.connect(self.updatePostProcessorTooltip)
+        self.post_processor_combo.currentIndexChanged.connect(
+            lambda: self._update_machine_field(
+                "postprocessor_file_name", self.post_processor_combo.currentText()
+            )
         )
+        self.postProcessorDefaultTooltip = translate("CAM_MachineEditor", "Select a post processor")
+        self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
+        layout.addRow(translate("CAM_MachineEditor", "Post Processor"), self.post_processor_combo)
+
+        # self.post_processor_args_edit = QtGui.QLineEdit()
+        # self.post_processor_args_edit.textChanged.connect(
+        #     lambda text: self._update_machine_field("postprocessor_args", text)
+        # )
+        # self.postProcessorArgsDefaultTooltip = translate(
+        #     "CAM_MachineEditor", "Additional arguments"
+        # )
+        # self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
+        # layout.addRow(translate("CAM_MachineEditor", "Arguments"), self.post_processor_args_edit)
 
         # Axes group
         self.axes_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Axes"))
@@ -656,7 +754,25 @@ class MachineEditorDialog(QtGui.QDialog):
         # Spindles group
         self.spindles_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Spindles"))
         spindles_layout = QtGui.QVBoxLayout(self.spindles_group)
+
         self.spindles_tabs = QtGui.QTabWidget()
+        self.spindles_tabs.setTabsClosable(True)
+        self.spindles_tabs.tabCloseRequested.connect(self._remove_spindle)
+
+        # Add + button to the tab bar corner, vertically centered
+        corner_container = QtGui.QWidget()
+        corner_container_layout = QtGui.QVBoxLayout(corner_container)
+        corner_container_layout.setContentsMargins(0, 0, 0, 0)
+        corner_container_layout.setSpacing(0)
+        corner_container_layout.addStretch()
+        self.add_spindle_button = QtGui.QPushButton("+")
+        self.add_spindle_button.setToolTip(translate("CAM_MachineEditor", "Add Spindle"))
+        self.add_spindle_button.clicked.connect(self._add_spindle)
+        self.add_spindle_button.setSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        corner_container_layout.addWidget(self.add_spindle_button, 0, QtCore.Qt.AlignCenter)
+        corner_container_layout.addStretch()
+        self.spindles_tabs.setCornerWidget(corner_container, QtCore.Qt.TopRightCorner)
+
         spindles_layout.addWidget(self.spindles_tabs)
         layout.addRow(self.spindles_group)
 
@@ -700,8 +816,6 @@ class MachineEditorDialog(QtGui.QDialog):
         if not all_axes:
             self.axes_group.setVisible(False)
             return
-
-        axes_form = QtGui.QFormLayout()
 
         # Get axes directly from machine object
         linear_axes = list(self.machine.linear_axes.keys()) if self.machine else []
@@ -852,7 +966,10 @@ class MachineEditorDialog(QtGui.QDialog):
                 axis_grid.addWidget(QtGui.QLabel("Prefer+"), 1, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(prefer_positive, 1, 5)
 
-                rotary_layout.addRow(f"{axis}", axis_grid)
+                axis_label = QtGui.QLabel(f"{axis}")
+                axis_label.setMinimumWidth(30)  # Prevent layout shift when axis names change
+                rotary_layout.addRow(axis_label, axis_grid)
+
                 self.axis_edits[axis] = {
                     "min": min_edit,
                     "max": max_edit,
@@ -874,26 +991,6 @@ class MachineEditorDialog(QtGui.QDialog):
         input fields for name, ID, power, speed, and tool holder.
         Updates Machine.spindles directly.
         """
-        # Update machine spindles with current edits before rebuilding UI
-        if hasattr(self, "spindle_edits") and self.machine:
-            # Resize spindles list to match current edits
-            while len(self.machine.spindles) < len(self.spindle_edits):
-                self.machine.spindles.append(Spindle(name=""))
-            while len(self.machine.spindles) > len(self.spindle_edits):
-                self.machine.spindles.pop()
-
-            # Update each spindle from UI
-            for i, edits in enumerate(self.spindle_edits):
-                spindle = self.machine.spindles[i]
-                spindle.name = edits["name"].text()
-                spindle.id = edits["id"].text()
-                spindle.max_power_kw = edits["max_power_kw"].value()
-                spindle.max_rpm = edits["max_rpm"].value()
-                spindle.min_rpm = edits["min_rpm"].value()
-                spindle.tool_change = edits["tool_change"].itemData(
-                    edits["tool_change"].currentIndex()
-                )
-
         # Clear existing spindle tabs - this properly disconnects signals
         while self.spindles_tabs.count() > 0:
             tab = self.spindles_tabs.widget(0)
@@ -903,9 +1000,9 @@ class MachineEditorDialog(QtGui.QDialog):
             self.spindles_tabs.removeTab(0)
 
         self.spindle_edits = []
-        count = self.spindle_count_combo.itemData(self.spindle_count_combo.currentIndex())
+        count = len(self.machine.spindles) if self.machine else 1
 
-        # Ensure machine has enough spindles
+        # Ensure machine has at least 1 spindle
         if self.machine:
             while len(self.machine.spindles) < count:
                 self.machine.spindles.append(
@@ -996,8 +1093,8 @@ class MachineEditorDialog(QtGui.QDialog):
                 }
             )
 
-    def setup_post_tab(self):
-        """Set up the post processor configuration tab dynamically from Machine dataclass."""
+    def setup_output_tab(self):
+        """Set up the output options configuration tab."""
         # Use scroll area for all the options
         scroll = QtGui.QScrollArea()
         scroll.setWidgetResizable(True)
@@ -1005,61 +1102,55 @@ class MachineEditorDialog(QtGui.QDialog):
         layout = QtGui.QVBoxLayout(scroll_widget)
         scroll.setWidget(scroll_widget)
 
-        main_layout = QtGui.QVBoxLayout(self.post_tab)
+        main_layout = QtGui.QVBoxLayout(self.output_tab)
         main_layout.addWidget(scroll)
 
-        # Store widgets for later population
-        self.post_widgets = {}
-
-        # === Post Processor Selection (special handling for combo box) ===
-        pp_group = QtGui.QGroupBox("Post Processor Selection")
-        pp_layout = QtGui.QFormLayout(pp_group)
-
-        self.post_processor_combo = QtGui.QComboBox()
-        postProcessors = Path.Preferences.allEnabledPostProcessors([""])
-        for post in postProcessors:
-            self.post_processor_combo.addItem(post)
-        self.post_processor_combo.currentIndexChanged.connect(self.updatePostProcessorTooltip)
-        self.post_processor_combo.currentIndexChanged.connect(
-            lambda: self._update_machine_field(
-                "postprocessor_file_name", self.post_processor_combo.currentText()
-            )
-        )
-        self.postProcessorDefaultTooltip = translate("CAM_MachineEditor", "Select a post processor")
-        self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
-        pp_layout.addRow("Post Processor", self.post_processor_combo)
-        self.post_widgets["postprocessor_file_name"] = self.post_processor_combo
-
-        self.post_processor_args_edit = QtGui.QLineEdit()
-        self.post_processor_args_edit.textChanged.connect(
-            lambda text: self._update_machine_field("postprocessor_args", text)
-        )
-        self.postProcessorArgsDefaultTooltip = translate(
-            "CAM_MachineEditor", "Additional arguments"
-        )
-        self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
-        pp_layout.addRow("Arguments", self.post_processor_args_edit)
-        self.post_widgets["postprocessor_args"] = self.post_processor_args_edit
-
-        layout.addWidget(pp_group)
-
-        # === Dynamically generate groups for nested dataclasses ===
+        # === Output Options ===
         if self.machine:
-            # Output Options
             output_group, output_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output, "Output Options"
             )
             layout.addWidget(output_group)
             self._connect_widgets_to_machine(output_widgets, "output")
 
-            # G-Code Blocks
+        layout.addStretch()
+
+    def setup_blocks_tab(self):
+        """Set up the G-Code blocks configuration tab."""
+        # Use scroll area for all the options
+        scroll = QtGui.QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll_widget = QtGui.QWidget()
+        layout = QtGui.QVBoxLayout(scroll_widget)
+        scroll.setWidget(scroll_widget)
+
+        main_layout = QtGui.QVBoxLayout(self.blocks_tab)
+        main_layout.addWidget(scroll)
+
+        # === G-Code Blocks ===
+        if self.machine:
             blocks_group, blocks_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.blocks, "G-Code Blocks"
             )
             layout.addWidget(blocks_group)
             self._connect_widgets_to_machine(blocks_widgets, "blocks")
 
-            # Processing Options
+        layout.addStretch()
+
+    def setup_processing_tab(self):
+        """Set up the processing options configuration tab."""
+        # Use scroll area for all the options
+        scroll = QtGui.QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll_widget = QtGui.QWidget()
+        layout = QtGui.QVBoxLayout(scroll_widget)
+        scroll.setWidget(scroll_widget)
+
+        main_layout = QtGui.QVBoxLayout(self.processing_tab)
+        main_layout.addWidget(scroll)
+
+        # === Processing Options ===
+        if self.machine:
             processing_group, processing_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.processing, "Processing Options"
             )
@@ -1067,9 +1158,6 @@ class MachineEditorDialog(QtGui.QDialog):
             self._connect_widgets_to_machine(processing_widgets, "processing")
 
         layout.addStretch()
-
-        # Cache for post processors
-        self.processor = {}
 
     def _connect_widgets_to_machine(self, widgets: Dict[str, QtGui.QWidget], parent_path: str):
         """Connect widgets to update Machine object fields.
@@ -1267,13 +1355,13 @@ class MachineEditorDialog(QtGui.QDialog):
                 self.post_processor_combo, name, self.postProcessorDefaultTooltip
             )
             processor = self.getPostProcessor(name)
-            if processor.tooltipArgs:
-                self.post_processor_args_edit.setToolTip(processor.tooltipArgs)
-            else:
-                self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
+            # if processor.tooltipArgs:
+            #     self.post_processor_args_edit.setToolTip(processor.tooltipArgs)
+            # else:
+            #     self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
         else:
             self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
-            self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
+            # self.post_processor_args_edit.setToolTip(self.postProcessorArgsDefaultTooltip)
 
     def populate_from_machine(self, machine: Machine):
         """Populate UI fields from Machine object.
@@ -1285,14 +1373,31 @@ class MachineEditorDialog(QtGui.QDialog):
         self.manufacturer_edit.setText(machine.manufacturer)
         self.description_edit.setText(machine.description)
         units = machine.configuration_units
+        self.units_combo.blockSignals(True)
         index = self.units_combo.findData(units)
         if index >= 0:
             self.units_combo.setCurrentIndex(index)
+        self.units_combo.blockSignals(False)
         self.current_units = units
         machine_type = machine.machine_type
+        self.type_combo.blockSignals(True)
         index = self.type_combo.findData(machine_type)
         if index >= 0:
             self.type_combo.setCurrentIndex(index)
+        self.type_combo.blockSignals(False)
+
+        # Post processor selection
+        if self.enable_machine_postprocessor:
+            post_processor = machine.postprocessor_file_name
+            index = self.post_processor_combo.findText(post_processor, QtCore.Qt.MatchFixedString)
+            if index >= 0:
+                self.post_processor_combo.setCurrentIndex(index)
+            else:
+                self.post_processor_combo.setCurrentIndex(0)
+            self.updatePostProcessorTooltip()
+
+            # Post processor arguments
+            # self.post_processor_args_edit.setText(machine.postprocessor_args)
 
         # Get units for suffixes in populate
         units = self.units_combo.itemData(self.units_combo.currentIndex())
@@ -1300,28 +1405,23 @@ class MachineEditorDialog(QtGui.QDialog):
         # Update axes UI after loading machine data
         self.update_axes()
 
-        spindles = machine.spindles
-        spindle_count = len(spindles)
-        if spindle_count == 0:
-            spindle_count = 1  # Default to 1 if none
-        spindle_count = min(spindle_count, 9)  # Cap at 9
-        self.spindle_count_combo.setCurrentText(str(spindle_count))
-        self.update_spindles()  # Update spindles after setting count (will populate from machine.spindles)
+        # Ensure at least 1 spindle
+        if len(machine.spindles) == 0:
+            machine.spindles.append(
+                Spindle(
+                    name="Spindle 1",
+                    id="spindle1",
+                    max_power_kw=3.0,
+                    max_rpm=24000,
+                    min_rpm=6000,
+                    tool_change="manual",
+                )
+            )
+        self.update_spindles()  # Update spindles UI
+        self._update_spindle_button_state()
 
         # Post processor configuration - populate dynamically generated widgets
         if self.enable_machine_postprocessor and hasattr(self, "post_widgets"):
-            # Post processor selection
-            post_processor = machine.postprocessor_file_name
-            index = self.post_processor_combo.findText(post_processor, QtCore.Qt.MatchFixedString)
-            if index >= 0:
-                self.post_processor_combo.setCurrentIndex(index)
-            else:
-                self.post_processor_combo.setCurrentIndex(0)
-
-            # Post processor arguments
-            self.post_processor_args_edit.setText(machine.postprocessor_args)
-            self.updatePostProcessorTooltip()
-
             # Update all post-processor widgets from machine object
             self._populate_post_widgets_from_machine(machine)
 
