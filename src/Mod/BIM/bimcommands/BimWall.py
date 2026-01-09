@@ -267,10 +267,17 @@ class Arch_Wall:
             FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
 
         elif self.baseline_mode == WallBaselineMode.SKETCH:
-            # Execute creation command with a suggested name. FreeCAD will ensure uniqueness.
-            FreeCADGui.doCommand(
-                "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
-            )
+            # Use ArchSketch if SketchArch add-on is present
+            try:
+                import ArchSketchObject
+
+                FreeCADGui.doCommand("import ArchSketchObject")
+                FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
+            except ImportError:
+                # Execute creation command with a suggested name. FreeCAD will ensure uniqueness.
+                FreeCADGui.doCommand(
+                    "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
+                )
 
             user_label = translate("BimWall", "Wall Trace")
             # Apply placement and geometry using the correctly identified object name.
