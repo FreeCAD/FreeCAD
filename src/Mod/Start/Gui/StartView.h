@@ -118,6 +118,7 @@ private:
     QPushButton* _openFirstStart;
     QCheckBox* _showOnStartupCheckBox;
 
+    bool isInitialized = false;
 
 };  // namespace StartGui
 

@@ -128,6 +128,11 @@ protected:
     static int countSolids(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);
 
     /**
+     * Fix solids
+     */
+    TopoShape fixSolids(const TopoShape&);
+
+    /**
      * Checks if the single-solid body rule is fulfilled.
      */
     bool isSingleSolidRuleSatisfied(const TopoDS_Shape&, TopAbs_ShapeEnum type = TopAbs_SOLID);

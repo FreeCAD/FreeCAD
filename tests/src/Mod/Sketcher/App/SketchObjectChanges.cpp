@@ -8,11 +8,155 @@
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
+#include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "SketcherTestHelpers.h"
 
 using namespace SketcherTestHelpers;
+
+TEST_F(SketchObjectTest, testAddExternalIncreasesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    int numboxes = doc->countObjectsOfType<Part::Box>();
+    int numExtPre = getObject()->ExternalGeo.getSize();
+    doc->recompute();
+
+    // Act
+    getObject()->addExternal(box, "Face6");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Assert
+    EXPECT_TRUE(numExt > numExtPre);
+}
+
+TEST_F(SketchObjectTest, testDelExternalUndef)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::GeoUndef);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmpty)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmptyWithPositiveId)
+{
+    // Act
+    int res = getObject()->delExternal(1);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalReducesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    doc->recompute();
+    // NOTE: When adding, say, `Face6` instead, `delExternal` removes all the edges. This could be
+    // intended behaviour, ensuring that adding a face always gives a closed loop, or a side effect,
+    // or should instead be an option at time of external geometry creation.
+    // TODO: Consider whether this should be intended behaviour, and add tests accordingly.
+    getObject()->addExternal(box, "Edge6");
+    getObject()->addExternal(box, "Edge4");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(getObject()->ExternalGeo.getSize(), numExt - 1);
+}
+
+// TODO: `delExternal` situation of constraints
+// TODO: `delExternal` situation of constraint containing more than 3 entities
+
+// TODO: `addCopy` tests
+// TODO: ensure new item(s) is/are added and of same type
+// TODO: behaviour of `addCopy` when external
+// TODO: constraints on new copies?
+// TODO: when empty list is passed
+
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId}, newCurves);
+
+    // Assert
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesTwoToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1, lineSeg2;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    setupLineSegment(lineSeg2);
+    int geoId2 = getObject()->addGeometry(&lineSeg2);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId1, geoId2}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToTwo)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    std::vector<Part::Geometry*> newCurves {
+        createTypicalNonPeriodicBSpline().release(),
+        createTypicalNonPeriodicBSpline().release()
+    };
+
+    // Act
+    getObject()->replaceGeometries({geoId1}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+    geo = getObject()->getGeometry(geoId1 + 1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+// TODO: formulate and add any constraint related changes when replacing geometries
+// Currently, `replageGeometries` is a very "low level" operation that directly replaces the
+// elements of the vector of geometries. Constraint handling is intended to be done by the
+// operations that call this method. We may want to add tests that ensure constraints aren't
+// touched. Alternatively, we may want to change `replaceGeometries` such that it modifies
+// constraints, though that will limit our control in individual operations.
 
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {

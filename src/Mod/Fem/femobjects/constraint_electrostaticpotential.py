@@ -210,9 +210,9 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
         prop.append(
             _PropHelper(
                 type="App::PropertyBool",
-                name="ElectricInfinity",
+                name="FarField",
                 group="Parameter",
-                doc="Electric Infinity",
+                doc="Far field approximation assuming spherical symmetry",
                 value=False,
             )
         )
@@ -241,6 +241,89 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
                 name="CapacitanceBodyEnabled",
                 group="Parameter",
                 doc="Capacitance body enabled",
+                value=False,
+            )
+        )
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_re_1",
+                group="Magnetic Flux Density",
+                doc="Real part of magnetic flux density x-component",
+                value="0 Wb/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_re_2",
+                group="Magnetic Flux Density",
+                doc="Real part of magnetic flux density y-component",
+                value="0 Wb/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_re_3",
+                group="Magnetic Flux Density",
+                doc="Real part of magnetic flux density z-component",
+                value="0 Wb/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_im_1",
+                group="Magnetic Flux Density",
+                doc="Imaginary part of magnetic flux density x-component",
+                value="0 Wb/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_im_2",
+                group="Magnetic Flux Density",
+                doc="Imaginary part of magnetic flux density y-component",
+                value="0 Wb/m^2",
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyMagneticFluxDensity",
+                name="Magnetic_im_3",
+                group="Magnetic Flux Density",
+                doc="Imaginary part of magnetic flux density z-component",
+                value="0 Wb/m^2",
+            )
+        )
+
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableMagnetic_1",
+                group="Magnetic Flux Density",
+                doc="Enable magnetic flux density x-component boundary condition",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableMagnetic_2",
+                group="Magnetic Flux Density",
+                doc="Enable magnetic flux density y-component boundary condition",
+                value=False,
+            )
+        )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="EnableMagnetic_3",
+                group="Magnetic Flux Density",
+                doc="Enable magnetic flux density z-component boundary condition",
                 value=False,
             )
         )
@@ -281,7 +364,9 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             obj.EnableAV_3 = not obj.getPropertyByName(
                 "AV_re_3_Disabled"
             ) or not obj.getPropertyByName("AV_im_3_Disabled")
-            obj.EnableAV = not obj.getPropertyByName("AV_im_Disabled")
+            obj.EnableAV = not obj.getPropertyByName("AV_re_Disabled") or not obj.getPropertyByName(
+                "AV_im_Disabled"
+            )
 
             # remove old properties
             obj.setPropertyStatus("AV_re_1_Disabled", "-LockDynamic")
@@ -296,9 +381,10 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             obj.removeProperty("AV_im_2_Disabled")
             obj.setPropertyStatus("AV_im_3_Disabled", "-LockDynamic")
             obj.removeProperty("AV_im_3_Disabled")
+            obj.setPropertyStatus("AV_re_Disabled", "-LockDynamic")
+            obj.removeProperty("AV_re_Disabled")
             obj.setPropertyStatus("AV_im_Disabled", "-LockDynamic")
             obj.removeProperty("AV_im_Disabled")
-
         except Base.PropertyError:
             pass
 
@@ -307,6 +393,15 @@ class ConstraintElectrostaticPotential(base_fempythonobject.BaseFemPythonObject)
             obj.ElectricFluxDensity = obj.getPropertyByName("SurfaceChargeDensity")
             obj.setPropertyStatus("SurfaceChargeDensity", "-LockDynamic")
             obj.removeProperty("SurfaceChargeDensity")
+
+        except Base.PropertyError:
+            pass
+
+        # rename ElectricInfinity
+        try:
+            obj.FarField = obj.getPropertyByName("ElectricInfinity")
+            obj.setPropertyStatus("ElectricInfinity", "-LockDynamic")
+            obj.removeProperty("ElectricInfinity")
 
         except Base.PropertyError:
             pass

@@ -315,7 +315,7 @@ QString DimensionFormatter::formatValueToSpec(const double value, QString format
     else if (spec == QStringLiteral("r")) {
         // round the value to the given precision
         double rounder = dec.toDouble();
-        double roundValue = std::ceil(value / rounder) * rounder;
+        double roundValue = std::round(value / rounder) * rounder;
         // format the result with the same decimal count than the rounder
         int dotIndex = dec.indexOf(QStringLiteral("."));
         int nDecimals = 0;

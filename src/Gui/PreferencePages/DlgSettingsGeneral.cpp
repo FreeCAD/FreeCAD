@@ -275,10 +275,7 @@ void DlgSettingsGeneral::saveSettings()
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
 
     if (themeChanged) {
-        auto qtStyle = QString::fromStdString(hGrp->GetASCII("QtStyle"));
-
         saveThemes();
-        qApp->setStyle(qtStyle);
     }
 }
 

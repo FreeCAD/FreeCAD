@@ -121,7 +121,7 @@ class Gui::LinkInfo
 public:
     std::atomic<int> ref;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connChangeIcon;
 
     ViewProviderDocumentObject* pcLinked;
@@ -3271,7 +3271,7 @@ bool ViewProviderLink::initDraggingPlacement()
     dragCtx = std::make_unique<DraggerContext>();
 
     dragCtx->preTransform = doc->getEditingTransform();
-    const auto& pla = getPlacementProperty()->getValue();
+    const auto& pla = getObject()->getPlacementProperty()->getValue();
 
     // Cancel out our own transformation from the editing transform, because
     // the dragger is meant to change our transformation.

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -69,6 +71,8 @@ using DrawSketchHandlerEllipseBase = DrawSketchControllableHandler<DSHEllipseCon
 
 class DrawSketchHandlerEllipse: public DrawSketchHandlerEllipseBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerEllipse)
+
     friend DSHEllipseController;
     friend DSHEllipseControllerBase;
 

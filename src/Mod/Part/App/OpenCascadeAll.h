@@ -150,6 +150,7 @@
 #include <BRepCheck_Analyzer.hxx>
 #include <BRepCheck_ListIteratorOfListOfStatus.hxx>
 #include <BRepCheck_Result.hxx>
+#include <BRepCheck_Solid.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepClass3d.hxx>
 #include <BRepClass3d_SolidClassifier.hxx>

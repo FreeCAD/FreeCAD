@@ -81,3 +81,7 @@ class CodeEditor(QPlainTextEdit):
         self.lineNumberArea.setGeometry(
             QRect(cr.left(), cr.top(), self.lineNumberAreaWidth(), cr.height())
         )
+
+    def setText(self, text):
+        """Backward compatibility method for setText() calls."""
+        self.setPlainText(text)

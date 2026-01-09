@@ -168,7 +168,7 @@ protected:
     SoSeparator* pLineSeparatorSecondary;
 
 private:
-    boost::signals2::connection _mVisibilityChangedConnection;
+    fastsignals::connection _mVisibilityChangedConnection;
 };
 
 
@@ -242,6 +242,17 @@ public:
     ViewProviderMeasureRadius()
     {
         sPixmap = "Measurement-Radius";
+    }
+};
+
+class ViewProviderMeasureDiameter: public ViewProviderMeasure
+{
+    PROPERTY_HEADER(MeasureGui::ViewProviderMeasureDiameter);
+
+public:
+    ViewProviderMeasureDiameter()
+    {
+        sPixmap = "Measurement-Diameter";
     }
 };
 

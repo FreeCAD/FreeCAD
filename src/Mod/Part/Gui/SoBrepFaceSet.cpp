@@ -854,20 +854,12 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction* action, SelContext
 
     if ((mb == SoMaterialBindingElement::OVERALL
          || (mb == SoMaterialBindingElement::PER_PART && diffuse_size >= partIndex.getNum()))
-        && ((ctx && Gui::Selection().needPickedList()) || trans0 != 0.0
-            || (ctx2 && !ctx2->colors.empty()))) {
+        && (trans0 != 0.0 || (ctx2 && !ctx2->colors.empty()))) {
         state->push();
 
         packedColors.clear();
 
-        if (ctx && Gui::Selection().needPickedList()) {
-            hasTransparency = true;
-            trans_size = 1;
-            if (ctx2) {
-                ctx2->trans0 = trans0;
-            }
-        }
-        else if (ctx2) {
+        if (ctx2) {
             ctx2->trans0 = 0.0;
         }
 

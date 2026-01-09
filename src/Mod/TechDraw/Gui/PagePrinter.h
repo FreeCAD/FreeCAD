@@ -52,11 +52,11 @@ class TechDrawGuiExport PaperAttributes
 public:
     PaperAttributes();
     PaperAttributes(QPageLayout::Orientation orientation,
-                    QPageSize::PageSizeId paperSize,
+                    QPageSize::PageSizeId paperSizeId,
                     double pageWidth,
                     double pageHeight)
         : m_orientation(orientation)
-        , m_paperSize(paperSize)
+        , m_paperSizeId(paperSizeId)
         , m_pagewidth(pageWidth)
         , m_pageheight(pageHeight)
     {}
@@ -65,9 +65,9 @@ public:
     {
         return m_orientation;
     }
-    QPageSize::PageSizeId pageSize() const
+    QPageSize::PageSizeId pageSizeId() const
     {
-        return m_paperSize;
+        return m_paperSizeId;
     }
     double pageWidth() const
     {
@@ -80,7 +80,7 @@ public:
 
 private:
     QPageLayout::Orientation m_orientation;
-    QPageSize::PageSizeId m_paperSize;
+    QPageSize::PageSizeId m_paperSizeId;
     double m_pagewidth;
     double m_pageheight;
 };

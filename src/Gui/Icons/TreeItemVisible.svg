@@ -547,7 +547,7 @@
         <dc:title />
         <dc:title>Path-FaceProfile</dc:title>
         <dc:date>2016-01-19</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

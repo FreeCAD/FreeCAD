@@ -23,11 +23,15 @@
 
 #include <BRep_Tool.hxx>
 #include <BRepBuilderAPI_MakeFace.hxx>
+#include <BRepCheck_Solid.hxx>
+#include <BRepCheck_Status.hxx>
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
+#include <ShapeFix_Solid.hxx>
 #include <Standard_Failure.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS.hxx>
+#include <TopoDS_Builder.hxx>
 
 
 #include "App/Datums.h"
@@ -239,6 +243,44 @@ int Feature::countSolids(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)
         result++;
     }
     return result;
+}
+
+TopoShape Feature::fixSolids(const TopoShape& solids)
+{
+    if (solids.isNull()) {
+        return solids;
+    }
+
+    std::vector<TopoDS_Solid> fixSolids;
+
+    TopExp_Explorer xp;
+    xp.Init(solids.getShape(), TopAbs_SOLID);
+    for (; xp.More(); xp.Next()) {
+        TopoDS_Solid solid = TopoDS::Solid(xp.Current());
+        BRepCheck_Solid bs(solid);
+        if (bs.IsStatusOnShape(solid)) {
+            const auto& listOfStatus = bs.StatusOnShape(solid);
+            if (listOfStatus.Contains(BRepCheck_EnclosedRegion)) {
+                fixSolids.emplace_back(solid);
+            }
+        }
+    }
+
+    if (fixSolids.empty()) {
+        return solids;
+    }
+
+    TopoDS_Compound comp;
+    TopoDS_Builder bb;
+    bb.MakeCompound(comp);
+    for (const TopoDS_Solid& it : fixSolids) {
+        ShapeFix_Solid fix(it);
+        fix.Perform();
+        bb.Add(comp, fix.Solid());
+    }
+
+    TopoShape fixShape(comp);
+    return fixShape;
 }
 
 bool Feature::isSingleSolidRuleSatisfied(const TopoDS_Shape& shape, TopAbs_ShapeEnum type)

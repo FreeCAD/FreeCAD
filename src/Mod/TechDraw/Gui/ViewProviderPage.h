@@ -27,7 +27,7 @@
 #include <QObject>
 #include <QPointer>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderDocumentObject.h>
@@ -110,7 +110,7 @@ public:
     void onGuiRepaint(const TechDraw::DrawPage* dp);
 
 // NOLINTBEGIN
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
 // NOLINTEND
 
@@ -121,6 +121,10 @@ public:
     void switchToMdiViewPage();
 
     Gui::MDIView* getMDIView() const override;
+
+    bool getFrameState() const;
+    void setFrameState(bool state);
+    void toggleFrameState();
 
     void setTemplateMarkers(bool state) const;
 
@@ -148,6 +152,8 @@ private:
     std::string m_pageName;
     QPointer<QGVPage> m_graphicsView;
     QGSPage* m_graphicsScene;
+
+    bool m_frameToggle{false};      // replacement for ShowFrame property to avoid marking document changed
 };
 
 }// namespace TechDrawGui

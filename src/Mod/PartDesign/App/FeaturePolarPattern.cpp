@@ -169,20 +169,42 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
+            axis *= refSketch->Placement.getValue();
         }
         else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
+            axis *= refSketch->Placement.getValue();
         }
         else if (subStrings[0] == "N_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+            axis *= refSketch->Placement.getValue();
         }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4, 4000).c_str());
             if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
             }
+            axis *= refSketch->Placement.getValue();
         }
-        axis *= refSketch->Placement.getValue();
+        else if (subStrings[0].compare(0, 4, "Edge") == 0) {
+            Part::TopoShape refShape = refSketch->Shape.getShape();
+            TopoDS_Shape ref = refShape.getSubShape(subStrings[0].c_str());
+            TopoDS_Edge refEdge = TopoDS::Edge(ref);
+            if (refEdge.IsNull()) {
+                throw Base::ValueError("Failed to extract direction edge");
+            }
+            BRepAdaptor_Curve adapt(refEdge);
+            if (adapt.GetType() != GeomAbs_Line) {
+                throw Base::TypeError("Direction edge must be a straight line");
+            }
+
+            gp_Pnt p = adapt.Line().Location();
+            gp_Dir d = adapt.Line().Direction();
+
+            axis.setBase(Base::Vector3d(p.X(), p.Y(), p.Z()));
+            axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
+        }
+
         axbase = gp_Pnt(axis.getBase().x, axis.getBase().y, axis.getBase().z);
         axdir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     }

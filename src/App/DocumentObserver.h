@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -26,7 +28,7 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <memory>
 #include <set>
 #include <FCGlobal.h>
@@ -557,7 +559,7 @@ protected:
 
 private:
     App::Document* _document;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationActivateDocument;

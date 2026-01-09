@@ -2211,7 +2211,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Стварыць выгляд разбіўкі</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Захаваць старонку ў файл DXF</translation>
@@ -4259,7 +4259,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Памылка налады</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Назва дакументу:</translation>
     </message>

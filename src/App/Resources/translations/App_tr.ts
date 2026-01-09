@@ -7,7 +7,7 @@
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Aynı yapılandırılabilir nesneye başvuran tüm bağlantılara CopyOnChange kurulumunun uygulanıp uygulanmayacağına ilişkin son kullanıcı seçimini depolar</translation>
+      <translation>Aynı yapılandırılabilir nesneye başvuran tüm bağlantılara CopyOnChange kurulumunun uygulanıp uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     </message>
   </context>
   <context>
@@ -23,7 +23,7 @@ that reference the same configurable object</source>
     <message>
       <location filename="../../OriginGroupExtension.cpp" line="161"/>
       <source>Origin</source>
-      <translation>Orijin</translation>
+      <translation>Orjin</translation>
     </message>
   </context>
   <context>
@@ -35,8 +35,7 @@ It is recommended that the user right-click the root of the document and select 
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-Kullanıcının belgenin köküne sağ tıklaması ve “Yeniden hesaplamak için imle”yi seçmesi önerilir.
-Kullanıcı daha sonra ana araç çubuğundaki Yenile düğmesine tıklamalıdır.
+Kullanıcının belgenin kök dizinine sağ tıklayıp "Yeniden hesaplamak için işaretle" seçeneğini seçmesi önerilir. Ardından kullanıcı ana araç çubuğundaki "Yenile" düğmesine tıklamalıdır.
 </translation>
     </message>
   </context>

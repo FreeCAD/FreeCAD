@@ -246,7 +246,7 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation>I (szürkeárnyalat érték)</translation>
+      <translation>I (szürke árnyalat érték)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>

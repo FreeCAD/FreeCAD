@@ -74,7 +74,7 @@ public:
     }
     QString getResultString() override;
 
-    Base::Placement getPlacement() override;
+    Base::Placement getPlacement() const override;
 
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;

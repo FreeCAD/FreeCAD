@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -616,7 +618,7 @@ public:
 
     void setSilentRestore(bool enable);
 
-    boost::signals2::signal<void(const std::string&, const std::string&)>
+    fastsignals::signal<void(const std::string&, const std::string&)>
         signalUpdateElementReference;
 
 protected:

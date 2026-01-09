@@ -113,7 +113,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="102"/>
       <source>Use ViewProviders in Tree View</source>
-      <translation>Használja a NézetSzolgáltatót a fa nézetben</translation>
+      <translation>Használja a nézet szolgáltatót a fa nézetben</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="182"/>

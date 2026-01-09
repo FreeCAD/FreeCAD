@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Konstantinos Poulios <logari81@gmail.com>          *
  *                                                                         *
@@ -484,6 +486,8 @@ System::System()
     , convergence(1e-10)
     , convergenceRedundant(1e-10)
     , qrAlgorithm(EigenSparseQR)
+    , autoChooseAlgorithm(true)
+    , autoQRThreshold(1000)
     , dogLegGaussStep(FullPivLU)
     , qrpivotThreshold(1E-13)
     , debugMode(Minimal)
@@ -4805,6 +4809,15 @@ int System::diagnose(Algorithm alg)
     // DoFs
     hasDiagnosis = true;
     dofs = pdiagnoselist.size();
+
+    // Use DenseQR for small to medium systems to avoid SparseQR rank issues.
+    // SparseQR is known to fail rank detection on specific geometric structures (e.g. aligned slots).
+    // 200 parameters roughly corresponds to ~100 points/curves, covering most complex sketches
+    // where stability is preferred over pure O(N) performance.
+    // See: https://github.com/FreeCAD/FreeCAD/issues/10903
+    if (autoChooseAlgorithm) {
+        qrAlgorithm = dofs < autoQRThreshold ? EigenDenseQR : EigenSparseQR;
+    }
 
     // There is a legacy decision to use QR decomposition. I (abdullah) do not know all the
     // consideration taken in that decisions. I see that:

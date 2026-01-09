@@ -346,7 +346,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="161"/>
       <source>Creates a refined shape</source>
-      <translation>Erzeugt ein verfeinertes Netz</translation>
+      <translation>Erstellt eine aufbereitete Form</translation>
     </message>
   </context>
   <context>

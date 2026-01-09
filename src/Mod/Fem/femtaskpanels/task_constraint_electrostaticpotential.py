@@ -166,14 +166,66 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.potential_constant_changed,
         )
         QtCore.QObject.connect(
-            self.parameter_widget.ckb_electric_infinity,
+            self.parameter_widget.ckb_far_field,
             QtCore.SIGNAL("toggled(bool)"),
-            self.electric_infinity_changed,
+            self.far_field_changed,
         )
         QtCore.QObject.connect(
             self.parameter_widget.qsb_electric_flux_density,
             QtCore.SIGNAL("valueChanged(Base::Quantity)"),
             self.electric_flux_density_changed,
+        )
+
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetic,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetic_enabled_changed,
+        )
+
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetic_1,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetic_1_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_re_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_re_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_im_1,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_im_1_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetic_2,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetic_2_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_re_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_re_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_im_2,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_im_2_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.ckb_magnetic_3,
+            QtCore.SIGNAL("toggled(bool)"),
+            self.magnetic_3_enabled_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_re_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_re_3_changed,
+        )
+        QtCore.QObject.connect(
+            self.parameter_widget.qsb_magnetic_im_3,
+            QtCore.SIGNAL("valueChanged(Base::Quantity)"),
+            self.magnetic_im_3_changed,
         )
 
         self.init_parameter_widget()
@@ -229,10 +281,21 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         self.boundary_condition = self.obj.BoundaryCondition
         self.potential_constant = self.obj.PotentialConstant
-        self.electric_infinity = self.obj.ElectricInfinity
+        self.far_field = self.obj.FarField
         self.capacitance_body_enabled = self.obj.CapacitanceBodyEnabled
         self.capacitance_body = self.obj.CapacitanceBody
         self.electric_flux_density = self.obj.ElectricFluxDensity
+
+        self.magnetic_1_enabled = self.obj.EnableMagnetic_1
+        self.magnetic_2_enabled = self.obj.EnableMagnetic_2
+        self.magnetic_3_enabled = self.obj.EnableMagnetic_3
+
+        self.magnetic_re_1 = self.obj.Magnetic_re_1
+        self.magnetic_re_2 = self.obj.Magnetic_re_2
+        self.magnetic_re_3 = self.obj.Magnetic_re_3
+        self.magnetic_im_1 = self.obj.Magnetic_im_1
+        self.magnetic_im_2 = self.obj.Magnetic_im_2
+        self.magnetic_im_3 = self.obj.Magnetic_im_3
 
     def _set_params(self):
         self.obj.Potential = self.potential
@@ -254,11 +317,22 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         self.obj.BoundaryCondition = self.boundary_condition
         self.obj.PotentialConstant = self.potential_constant
-        self.obj.ElectricInfinity = self.electric_infinity
+        self.obj.FarField = self.far_field
         self.obj.CapacitanceBodyEnabled = self.capacitance_body_enabled
         self.obj.CapacitanceBody = self.capacitance_body
 
         self.obj.ElectricFluxDensity = self.electric_flux_density
+
+        self.obj.Magnetic_re_1 = self.magnetic_re_1
+        self.obj.Magnetic_re_2 = self.magnetic_re_2
+        self.obj.Magnetic_re_3 = self.magnetic_re_3
+        self.obj.Magnetic_im_1 = self.magnetic_im_1
+        self.obj.Magnetic_im_2 = self.magnetic_im_2
+        self.obj.Magnetic_im_3 = self.magnetic_im_3
+
+        self.obj.EnableMagnetic_1 = self.magnetic_1_enabled
+        self.obj.EnableMagnetic_2 = self.magnetic_2_enabled
+        self.obj.EnableMagnetic_3 = self.magnetic_3_enabled
 
     def init_parameter_widget(self):
         self._get_params()
@@ -305,7 +379,7 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
 
         self.parameter_widget.ckb_potential_constant.setChecked(self.potential_constant)
 
-        self.parameter_widget.ckb_electric_infinity.setChecked(self.electric_infinity)
+        self.parameter_widget.ckb_far_field.setChecked(self.far_field)
 
         self.parameter_widget.ckb_capacitance_body.setChecked(self.capacitance_body_enabled)
         self.parameter_widget.spb_capacitance_body.setProperty("value", self.capacitance_body)
@@ -320,6 +394,43 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
             self.obj, "ElectricFluxDensity"
         )
 
+        # magnetic flux density
+        self.parameter_widget.qsb_magnetic_re_1.setProperty("value", self.magnetic_re_1)
+        self.parameter_widget.qsb_magnetic_re_1.setEnabled(self.magnetic_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_re_1).bind(
+            self.obj, "Magnetic_re_1"
+        )
+        self.parameter_widget.qsb_magnetic_re_2.setProperty("value", self.magnetic_re_2)
+        self.parameter_widget.qsb_magnetic_re_2.setEnabled(self.magnetic_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_re_2).bind(
+            self.obj, "Magnetic_re_2"
+        )
+        self.parameter_widget.qsb_magnetic_re_3.setProperty("value", self.magnetic_re_3)
+        self.parameter_widget.qsb_magnetic_re_3.setEnabled(self.magnetic_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_re_3).bind(
+            self.obj, "Magnetic_re_3"
+        )
+
+        self.parameter_widget.qsb_magnetic_im_1.setProperty("value", self.magnetic_im_1)
+        self.parameter_widget.qsb_magnetic_im_1.setEnabled(self.magnetic_1_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_im_1).bind(
+            self.obj, "Magnetic_im_1"
+        )
+        self.parameter_widget.qsb_magnetic_im_2.setProperty("value", self.magnetic_im_2)
+        self.parameter_widget.qsb_magnetic_im_2.setEnabled(self.magnetic_2_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_im_2).bind(
+            self.obj, "Magnetic_im_2"
+        )
+        self.parameter_widget.qsb_magnetic_im_3.setProperty("value", self.magnetic_im_3)
+        self.parameter_widget.qsb_magnetic_im_3.setEnabled(self.magnetic_3_enabled)
+        FreeCADGui.ExpressionBinding(self.parameter_widget.qsb_magnetic_im_3).bind(
+            self.obj, "Magnetic_im_3"
+        )
+
+        self.parameter_widget.ckb_magnetic_1.setChecked(self.magnetic_1_enabled)
+        self.parameter_widget.ckb_magnetic_2.setChecked(self.magnetic_2_enabled)
+        self.parameter_widget.ckb_magnetic_3.setChecked(self.magnetic_3_enabled)
+
         self.bc_enum = self.obj.getEnumerationsOfProperty("BoundaryCondition")
         index = self.bc_enum.index(self.boundary_condition)
         self.parameter_widget.cb_boundary_condition.addItems(self.bc_enum)
@@ -328,6 +439,10 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         # start with electromagnetic inputs hidden if no field is set
         if not (self.av_enabled or self.av_1_enabled or self.av_2_enabled or self.av_3_enabled):
             self.parameter_widget.ckb_electromagnetic.setChecked(False)
+
+        # start with magnetic inputs hidden if no field is set
+        if not (self.magnetic_1_enabled or self.magnetic_2_enabled or self.magnetic_3_enabled):
+            self.parameter_widget.ckb_magnetic.setChecked(False)
 
     def potential_changed(self, value):
         self.potential = value
@@ -386,8 +501,8 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
     def potential_constant_changed(self, value):
         self.potential_constant = value
 
-    def electric_infinity_changed(self, value):
-        self.electric_infinity = value
+    def far_field_changed(self, value):
+        self.far_field = value
 
     def capacitance_body_enabled_changed(self, value):
         self.capacitance_body_enabled = value
@@ -408,3 +523,39 @@ class _TaskPanel(base_femtaskpanel._BaseTaskPanel):
         elif self.boundary_condition == "Neumann":
             self.parameter_widget.gb_neumann.setEnabled(True)
             self.parameter_widget.gb_dirichlet.setEnabled(False)
+
+    def magnetic_enabled_changed(self, value):
+        self.parameter_widget.gb_magnetic.setVisible(value)
+
+    def magnetic_1_enabled_changed(self, value):
+        self.magnetic_1_enabled = value
+        self.parameter_widget.qsb_magnetic_re_1.setEnabled(value)
+        self.parameter_widget.qsb_magnetic_im_1.setEnabled(value)
+
+    def magnetic_2_enabled_changed(self, value):
+        self.magnetic_2_enabled = value
+        self.parameter_widget.qsb_magnetic_re_2.setEnabled(value)
+        self.parameter_widget.qsb_magnetic_im_2.setEnabled(value)
+
+    def magnetic_3_enabled_changed(self, value):
+        self.magnetic_3_enabled = value
+        self.parameter_widget.qsb_magnetic_re_3.setEnabled(value)
+        self.parameter_widget.qsb_magnetic_im_3.setEnabled(value)
+
+    def magnetic_re_1_changed(self, value):
+        self.magnetic_re_1 = value
+
+    def magnetic_re_2_changed(self, value):
+        self.magnetic_re_2 = value
+
+    def magnetic_re_3_changed(self, value):
+        self.magnetic_re_3 = value
+
+    def magnetic_im_1_changed(self, value):
+        self.magnetic_im_1 = value
+
+    def magnetic_im_2_changed(self, value):
+        self.magnetic_im_2 = value
+
+    def magnetic_im_3_changed(self, value):
+        self.magnetic_im_3 = value

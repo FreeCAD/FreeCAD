@@ -6,7 +6,7 @@
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="20"/>
       <source>Appearance</source>
-      <translation>Définir l'apparence</translation>
+      <translation>Apparence</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsMeasureAppearanceImp.ui" line="51"/>

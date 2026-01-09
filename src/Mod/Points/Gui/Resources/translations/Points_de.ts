@@ -299,7 +299,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
-      <translation>Punkte-Werkzeuge</translation>
+      <translation>Points-Werkzeuge</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>

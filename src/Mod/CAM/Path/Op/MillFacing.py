@@ -114,6 +114,9 @@ class ObjectMillFacing(PathOp.ObjectOp):
             elif obj.StepOver > 100:
                 obj.StepOver = 100
 
+        if prop == "Active" and obj.ViewObject:
+            obj.ViewObject.signalChangeIcon()
+
     def opPropertyDefinitions(self):
         """opPropertyDefinitions(obj) ... Store operation specific properties"""
 
@@ -323,7 +326,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
 
         boundary_wire = boundary_wire.makeOffset2D(
             obj.StockExtension.Value, 2
-        )  # offset with interesection joins
+        )  # offset with intersection joins
 
         # Determine milling direction
         milling_direction = "climb" if obj.CutMode == "Climb" else "conventional"
@@ -505,13 +508,10 @@ class ObjectMillFacing(PathOp.ObjectOp):
                                     for k in ("X", "Y")
                                 ):
                                     # But if Z is different, keep it (it's a plunge or retract)
-                                    z_changed = (
-                                        abs(
-                                            new_params.get("Z", 0)
-                                            - last_params.get("Z", new_params.get("Z", 0) + 1)
-                                        )
-                                        > 1e-9
-                                    )
+                                    # Use sentinel values that won't conflict with depth == 0
+                                    z_new = new_params.get("Z", float("inf"))
+                                    z_last = last_params.get("Z", float("-inf"))
+                                    z_changed = abs(z_new - z_last) > 1e-9
                                     if not z_changed:
                                         continue
                             self.commandlist.append(Path.Command(cmd.Name, new_params))
@@ -593,11 +593,11 @@ class ObjectMillFacing(PathOp.ObjectOp):
                         # Append linking moves, ensuring full XYZ continuity
                         current = last_position
                         for lc in link_commands:
-                            params = dict(lc.Parameters)
-                            X = params.get("X", current.x)
-                            Y = params.get("Y", current.y)
-                            Z = params.get("Z", current.z)
-                            # Skip zero-length
+                            params = lc.Parameters
+                            X = params["X"]
+                            Y = params["Y"]
+                            Z = params["Z"]
+                            # Skip zero-length moves
                             if not (
                                 abs(X - current.x) <= 1e-9
                                 and abs(Y - current.y) <= 1e-9
@@ -606,7 +606,7 @@ class ObjectMillFacing(PathOp.ObjectOp):
                                 self.commandlist.append(
                                     Path.Command(lc.Name, {"X": X, "Y": Y, "Z": Z})
                                 )
-                            current = FreeCAD.Vector(X, Y, Z)
+                                current = FreeCAD.Vector(X, Y, Z)
 
                         # Remove the entire initial G0 bundle (up, XY, down) from the copy
                         del copy_commands[bundle_start:bundle_end]
@@ -628,11 +628,13 @@ class ObjectMillFacing(PathOp.ObjectOp):
                                     cp["Z"] = depth  # Cutting moves at depth
                                 else:
                                     cp.setdefault("Z", last.get("Z"))
-                        # Skip zero-length
+                        # Skip zero-length moves
                         if self.commandlist:
                             last = self.commandlist[-1].Parameters
+                            # Use sentinel values that won't conflict with depth == 0
                             if all(
-                                abs(cp[k] - last.get(k, cp[k] + 1)) <= 1e-9 for k in ("X", "Y", "Z")
+                                abs(cp.get(k, float("inf")) - last.get(k, float("-inf"))) <= 1e-9
+                                for k in ("X", "Y", "Z")
                             ):
                                 continue
                         self.commandlist.append(Path.Command(cc.Name, cp))

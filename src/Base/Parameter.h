@@ -51,7 +51,7 @@ using PyObject = struct _object;
 
 #include <map>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <xercesc/util/XercesDefs.hpp>
 
 #include "Handle.h"
@@ -66,8 +66,6 @@ using PyObject = struct _object;
 # pragma warning(disable : 4275)
 #endif
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-# define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
@@ -76,15 +74,6 @@ class DOMDocument;
 class XMLFormatTarget;
 class InputSource;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMNode;
-class DOMElement;
-class DOMDocument;
-class XMLFormatTarget;
-class InputSource;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 class ParameterManager;
 
@@ -438,7 +427,7 @@ public:
 protected:
     /// constructor is protected (handle concept)
     ParameterGrp(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* GroupNode = nullptr,
+        XERCES_CPP_NAMESPACE::DOMElement* GroupNode = nullptr,
         const char* sName = nullptr,
         ParameterGrp* Parent = nullptr
     );
@@ -453,8 +442,8 @@ protected:
     void _SetAttribute(ParamType Type, const char* Name, const char* Value);
     void _Notify(ParamType Type, const char* Name, const char* Value);
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* FindNextElement(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Prev,
+    XERCES_CPP_NAMESPACE::DOMElement* FindNextElement(
+        XERCES_CPP_NAMESPACE::DOMNode* Prev,
         const char* Type
     ) const;
 
@@ -464,8 +453,8 @@ protected:
      *  the pointer to that element, otherwise NULL
      *  If the names not given it returns the first occurrence of Type.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* FindElement(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
+    XERCES_CPP_NAMESPACE::DOMElement* FindElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
         const char* Type,
         const char* Name = nullptr
     ) const;
@@ -475,27 +464,27 @@ protected:
      *  element of Type and with the attribute Name=Name. On success it returns
      *  the pointer to that element, otherwise it creates the element and returns the pointer.
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* FindOrCreateElement(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
+    XERCES_CPP_NAMESPACE::DOMElement* FindOrCreateElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
         const char* Type,
         const char* Name
     );
 
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* CreateElement(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* Start,
+    XERCES_CPP_NAMESPACE::DOMElement* CreateElement(
+        XERCES_CPP_NAMESPACE::DOMElement* Start,
         const char* Type,
         const char* Name
     );
 
     /** Find an attribute specified by Name
      */
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* FindAttribute(
-        XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* Node,
+    XERCES_CPP_NAMESPACE::DOMNode* FindAttribute(
+        XERCES_CPP_NAMESPACE::DOMNode* Node,
         const char* Name
     ) const;
 
     /// DOM Node of the Base node of this group
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* _pGroupNode;
+    XERCES_CPP_NAMESPACE::DOMElement* _pGroupNode;
     /// the own name
     std::string _cName;
     /// map of already exported groups
@@ -576,15 +565,15 @@ public:
      *  - Group removal: both 'name' and 'value' are empty
      *  - Group rename: 'name' is the new name, and 'value' is the old name
      */
-    boost::signals2::signal<
+    fastsignals::signal<
         void(ParameterGrp* /*param*/, ParamType /*type*/, const char* /*name*/, const char* /*value*/)>
         signalParamChanged;
 
     int LoadDocument(const char* sFileName);
-    int LoadDocument(const XERCES_CPP_NAMESPACE_QUALIFIER InputSource&);
+    int LoadDocument(const XERCES_CPP_NAMESPACE::InputSource&);
     bool LoadOrCreateDocument(const char* sFileName);
     void SaveDocument(const char* sFileName) const;
-    void SaveDocument(XERCES_CPP_NAMESPACE_QUALIFIER XMLFormatTarget* pFormatTarget) const;
+    void SaveDocument(XERCES_CPP_NAMESPACE::XMLFormatTarget* pFormatTarget) const;
     void CreateDocument();
     void CheckDocument() const;
 
@@ -607,7 +596,7 @@ public:
     //@}
 
 private:
-    XERCES_CPP_NAMESPACE_QUALIFIER DOMDocument* _pDocument {nullptr};
+    XERCES_CPP_NAMESPACE::DOMDocument* _pDocument {nullptr};
     ParameterSerializer* paramSerializer {nullptr};
 
     bool gIgnoreSave;

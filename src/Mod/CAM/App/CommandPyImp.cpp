@@ -71,9 +71,20 @@ PyObject* CommandPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Pytho
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
     PyObject* parameters = nullptr;
+    PyObject* annotations = nullptr;
     const char* name = "";
-    static const std::array<const char*, 3> kwlist {"name", "parameters", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
+    static const std::array<const char*, 4> kwlist {"name", "parameters", "annotations", nullptr};
+    if (Base::Wrapped_ParseTupleAndKeywords(
+            args,
+            kwd,
+            "|sO!O!",
+            kwlist,
+            &name,
+            &PyDict_Type,
+            &parameters,
+            &PyDict_Type,
+            &annotations
+        )) {
         std::string sname(name);
         boost::to_upper(sname);
         try {
@@ -112,16 +123,54 @@ int CommandPy::PyInit(PyObject* args, PyObject* kwd)
             }
             getCommandPtr()->Parameters[ckey] = cvalue;
         }
+
+        // Parse annotations
+        pos = 0;
+        while (annotations && PyDict_Next(annotations, &pos, &key, &value)) {
+            std::string ckey;
+            if (PyUnicode_Check(key)) {
+                ckey = PyUnicode_AsUTF8(key);
+            }
+            else {
+                PyErr_SetString(
+                    PyExc_TypeError,
+                    "The annotations dictionary can only contain string keys"
+                );
+                return -1;
+            }
+
+            if (PyUnicode_Check(value)) {
+                std::string cvalue = PyUnicode_AsUTF8(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else if (PyObject_TypeCheck(value, &(PyLong_Type))) {
+                double cvalue = (double)PyLong_AsLong(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else if (PyObject_TypeCheck(value, &(PyFloat_Type))) {
+                double cvalue = PyFloat_AsDouble(value);
+                getCommandPtr()->setAnnotation(ckey, cvalue);
+            }
+            else {
+                PyErr_SetString(
+                    PyExc_TypeError,
+                    "The annotations dictionary can only contain string or number values"
+                );
+                return -1;
+            }
+        }
+
         parameters_copy_dict.clear();
         return 0;
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
+    static const std::array<const char*, 3> kwlist_placement {"name", "parameters", nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(
             args,
             kwd,
             "|sO!",
-            kwlist,
+            kwlist_placement,
             &name,
             &(Base::PlacementPy::Type),
             &parameters

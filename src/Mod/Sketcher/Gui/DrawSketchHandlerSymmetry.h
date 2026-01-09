@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -64,6 +66,8 @@ using DrawSketchHandlerSymmetryBase = DrawSketchControllableHandler<DSHSymmetryC
 
 class DrawSketchHandlerSymmetry: public DrawSketchHandlerSymmetryBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSymmetry)
+
     friend DSHSymmetryController;
     friend DSHSymmetryControllerBase;
 

@@ -304,6 +304,7 @@ public:
     static const Quantity Coulomb;
 
     static const Quantity Tesla;
+    static const Quantity MilliTesla;
     static const Quantity Gauss;
 
     static const Quantity Weber;

@@ -327,6 +327,7 @@ MeasureType Measurement::getType()
 
 TopoDS_Shape Measurement::getShape(App::DocumentObject* obj, const char* subName, TopAbs_ShapeEnum hint) const
 {
+    (void)hint;
     return Part::Feature::getShape(
         obj,
         Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink

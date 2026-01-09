@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -649,8 +651,8 @@ struct DocTiming {
 class DocOpenGuard {
 public:
     bool &flag;
-    boost::signals2::signal<void ()> &signal;
-    DocOpenGuard(bool &f, boost::signals2::signal<void ()> &s)
+    fastsignals::signal<void ()> &signal;
+    DocOpenGuard(bool &f, fastsignals::signal<void ()> &s)
         :flag(f),signal(s)
     {
         flag = true;

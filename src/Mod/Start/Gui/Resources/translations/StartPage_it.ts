@@ -105,17 +105,17 @@
     <message>
       <location filename="../../StartView.cpp" line="214"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Corpo Parametrico</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="215"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Crea un corpo con l'ambiente di lavoro Part Design</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="220"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Crea un progetto di assembly</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="228"/>
@@ -218,7 +218,7 @@
       <location filename="../../DlgStartPreferences.ui" line="26"/>
       <location filename="../../DlgStartPreferences.ui" line="86"/>
       <source>Show only FreeCAD files in additional folder</source>
-      <translation type="unfinished">Show only FreeCAD files in additional folder</translation>
+      <translation>Mostra solo i file FreeCAD nella cartella aggiuntiva</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>

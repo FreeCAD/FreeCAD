@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // Copyright (C) 2013 Stephen Roderick <kiwi dot net at mac dot com>
 
 // This library is free software; you can redistribute it and/or

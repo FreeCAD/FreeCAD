@@ -2255,7 +2255,7 @@ TopoShape& TopoShape::makeElementRuledSurface(
     auto& S2 = curves[1];
     bool isWire = S1.shapeType() == TopAbs_WIRE;
 
-    // https://forum.freecadweb.org/viewtopic.php?f=8&t=24052
+    // https://forum.freecad.org/viewtopic.php?f=8&t=24052
     //
     // if both shapes are sub-elements of one common shape then the fill
     // algorithm leads to problems if the shape has set a placement. The
@@ -2854,7 +2854,7 @@ TopoShape& TopoShape::makeElementOffset2D(
             }
 
             // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            //  http://www.freecadweb.org/tracker/view.php?id=2699
+            //  http://www.freecad.org/tracker/view.php?id=2699
             offsetShape = shape.makeElementShape(mkOffset, op).makeElementCopy();
         }
         else {
@@ -4745,7 +4745,7 @@ TopoShape& TopoShape::makeElementDraft(
                 // Note: the function ProblematicShape returns the face on which the error occurred
                 // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
                 //       therefore unusable. See
-                //       http://forum.freecadweb.org/viewtopic.php?f=10&t=3209&start=10#p25341 The
+                //       http://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341 The
                 //       only solution is to discard mkDraft and start over without the current face
                 // mkDraft.Remove(face);
                 FC_ERR("Failed to add some face for drafting, skip");
@@ -5341,7 +5341,7 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     // outbound wire. And practice shows it sometimes returns the incorrect
     // result. Need more investigation. Note that this may be related to
     // unreliable solid face orientation
-    // (https://forum.freecadweb.org/viewtopic.php?p=446006#p445674)
+    // (https://forum.freecad.org/viewtopic.php?p=446006#p445674)
     //
     // Use BrepTools::OuterWire() instead. OCC source code shows it is
     // implemented using simple bound box checking. This should be a

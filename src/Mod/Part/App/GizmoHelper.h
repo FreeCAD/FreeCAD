@@ -39,7 +39,20 @@ EdgeMidPointProps PartExport getEdgeMidPointProps(Part::TopoShape& edge);
 
 Base::Vector3d PartExport getCentreOfMassFromFace(TopoDS_Face& face);
 
-std::optional<std::pair<Base::Vector3d, Base::Vector3d>> PartExport
+struct PartExport PointOnFaceNearEdgeProps
+{
+    enum class State : std::uint8_t
+    {
+        OnFace,
+        OutsideFace,
+        Undefined
+    };
+
+    Base::Vector3d position;
+    Base::Vector3d normal;
+    State state;
+};
+PointOnFaceNearEdgeProps PartExport
 getFaceNormalFromPointNearEdge(Part::TopoShape& edge, double middle, TopoDS_Face& face);
 
 Base::Vector3d PartExport getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face);

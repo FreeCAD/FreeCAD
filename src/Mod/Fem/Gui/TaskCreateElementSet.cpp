@@ -487,9 +487,14 @@ TaskCreateElementSet::TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObje
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
     this->groupLayout()->addWidget(proxy);
-    QObject::connect(ui->toolButton_Poly, SIGNAL(clicked()), this, SLOT(Poly()));
-    QObject::connect(ui->toolButton_Restore, SIGNAL(clicked()), this, SLOT(Restore()));
-    QObject::connect(ui->toolButton_Rename, SIGNAL(clicked()), this, SLOT(CopyResultsMesh()));
+    QObject::connect(ui->toolButton_Poly, &QToolButton::clicked, this, &TaskCreateElementSet::Poly);
+    QObject::connect(ui->toolButton_Restore, &QToolButton::clicked, this, &TaskCreateElementSet::Restore);
+    QObject::connect(
+        ui->toolButton_Rename,
+        &QToolButton::clicked,
+        this,
+        &TaskCreateElementSet::CopyResultsMesh
+    );
     // check if the Link to the FemMesh is defined
     assert(pcObject->FemMesh.getValue<Fem::FemMeshObject*>());
     MeshViewProvider = freecad_cast<ViewProviderFemMesh*>(

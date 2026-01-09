@@ -226,7 +226,7 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>Show available alternative file formats for library items (STEP, IFC, etc...)</string>
+         <string>Show available alternative file formats for library items (STEP, IFC, etc.)</string>
         </property>
         <property name="text">
          <string>Display alternative formats</string>

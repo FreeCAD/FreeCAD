@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -73,6 +75,7 @@
 # include <GC_MakeCircle.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomConvert.hxx>
 # include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <Geom_BSplineCurve.hxx>

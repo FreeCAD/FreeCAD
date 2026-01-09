@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -94,6 +96,8 @@ public:
 
 class DrawSketchHandlerSplitting: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSplitting)
+
 public:
     DrawSketchHandlerSplitting() = default;
     ~DrawSketchHandlerSplitting() override

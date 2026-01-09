@@ -45,6 +45,13 @@ from draftutils.translate import translate
 bool(Draft_rc.__name__)
 
 
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
+
+
 class TaskPanelCircularArray:
     """TaskPanel code for the CircularArray command.
 
@@ -266,7 +273,7 @@ class TaskPanelCircularArray:
         """Get the distance parameters from the widgets."""
         r_d_str = self.form.spinbox_r_distance.text()
         tan_d_str = self.form.spinbox_tan_distance.text()
-        return (U.Quantity(r_d_str).Value, U.Quantity(tan_d_str).Value)
+        return _quantity(r_d_str), _quantity(tan_d_str)
 
     def get_number_symmetry(self):
         """Get the number and symmetry parameters from the widgets."""
@@ -279,9 +286,7 @@ class TaskPanelCircularArray:
         c_x_str = self.form.input_c_x.text()
         c_y_str = self.form.input_c_y.text()
         c_z_str = self.form.input_c_z.text()
-        center = App.Vector(
-            U.Quantity(c_x_str).Value, U.Quantity(c_y_str).Value, U.Quantity(c_z_str).Value
-        )
+        center = App.Vector(_quantity(c_x_str), _quantity(c_y_str), _quantity(c_z_str))
         return center
 
     def get_axis(self):

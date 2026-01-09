@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -325,11 +327,8 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
         if (!prop) {
             propName = "<null>";
         }
-        else if (prop->getContainer()) {
-            propName = prop->getName();
-        }
         else {
-            propName = extensionGetPropertyName(prop);
+            propName = prop->getName();
         }
         if (!Property::isValidName(propName)) {
             propName = "?";
@@ -798,7 +797,7 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
 bool LinkBaseExtension::setupCopyOnChange(
     DocumentObject* parent,
     DocumentObject* linked,
-    std::vector<boost::signals2::scoped_connection>* copyOnChangeConns,
+    std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
     bool checkExisting)
 {
     if (!parent || !linked) {
@@ -2671,7 +2670,7 @@ Base::Placement Link::getPlacementOf(const std::string& sub, DocumentObject* tar
         }
 
         std::vector<Base::Placement> plcs = PlacementList.getValues();
-        if (plcs.size() <= i) {
+        if (plcs.size() <= static_cast<size_t>(i)) {
             return plc;
         }
         plc = plc * plcs[i];

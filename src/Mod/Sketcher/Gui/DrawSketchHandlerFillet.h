@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -120,6 +122,8 @@ using DrawSketchHandlerFilletBase = DrawSketchControllableHandler<DSHFilletContr
 
 class DrawSketchHandlerFillet: public DrawSketchHandlerFilletBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerFillet)
+
     friend DSHFilletController;
     friend DSHFilletControllerBase;
 

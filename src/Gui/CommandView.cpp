@@ -3860,7 +3860,6 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
     sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
-    sAccel = "F4";
     eType = 0;
 }
 
@@ -3887,7 +3886,6 @@ StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
     );
     sWhatsThis = "Std_DockOverlayTransparentAll";
     sStatusTip = sToolTipText;
-    sAccel = "SHIFT+F4";
     eType = 0;
 }
 
@@ -3911,7 +3909,6 @@ StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
     sToolTipText = QT_TR_NOOP("Toggles overlay mode for the docked window under the cursor");
     sWhatsThis = "Std_DockOverlayToggle";
     sStatusTip = sToolTipText;
-    sAccel = "F3";
     eType = 0;
 }
 
@@ -3938,7 +3935,6 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
     );
     sWhatsThis = "Std_DockOverlayToggleTransparent";
     sStatusTip = sToolTipText;
-    sAccel = "SHIFT+F3";
     eType = 0;
 }
 

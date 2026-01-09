@@ -38,7 +38,24 @@ import FreeCADGui as Gui
 import TechDrawTools.TDToolsUtil as Utils
 
 import TechDraw
-from math import degrees
+import math
+
+# A hack to deal with garbage in the low bits causing wrong decisions. dimensionLineAngle is in radians.  If 
+# dimensionLineAngle is 90deg +/- AngularTolerance, we treat it as a vertical dimension line.  This affects which
+# side of the dimension line is used for the dimension text.
+def makePlumb(dimensionLineAngle):
+    HalfPi = math.pi / 2.0
+    
+    AngularTolerance = 0.01   # This value is a guess.  It works for the file in issue #16172, but
+                              # seems small (~0.5deg).  
+
+    if math.isclose(dimensionLineAngle, HalfPi, abs_tol=AngularTolerance):
+        return HalfPi
+    elif math.isclose(dimensionLineAngle, -HalfPi, abs_tol=AngularTolerance):
+        return -HalfPie
+ 
+    return dimensionLineAngle
+    
 
 class CommandAxoLengthDimension:
     """Creates a 3D length dimension."""
@@ -68,33 +85,57 @@ class CommandAxoLengthDimension:
         edges = Utils.getSelEdges(2)
         vertexes = Utils.getSelVertexes(0)
 
+        vertNames = list()
+        edgeNames = list()
         if len(vertexes)<2:
             vertexes.append(edges[0].Vertexes[0])
             vertexes.append(edges[0].Vertexes[1])
+            edgeNames = Utils.getSelEdgeNames(2)
+        else:
+            vertNames = Utils.getSelVertexNames(2)
 
         view = Utils.getSelView()
+        page = view.findParentPage()
         scale = view.getScale()
 
         StartPt, EndPt = edges[1].Vertexes[0].Point, edges[1].Vertexes[1].Point
         extLineVec = EndPt.sub(StartPt)
         StartPt, EndPt = edges[0].Vertexes[0].Point, edges[0].Vertexes[1].Point
         dimLineVec = EndPt.sub(StartPt)
+
         xAxis = App.Vector(1,0,0)
-        extAngle = degrees(extLineVec.getAngle(xAxis))
-        lineAngle = degrees(dimLineVec.getAngle(xAxis))
+        extAngle = math.degrees(extLineVec.getAngle(xAxis))
+        lineAngle = math.degrees(makePlumb(dimLineVec.getAngle(xAxis)))
 
         if extLineVec.y < 0.0:
             extAngle = 180-extAngle
         if dimLineVec.y < 0.0:
             lineAngle = 180-lineAngle
+
         if abs(extAngle-lineAngle)>0.1:
-            distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            # re issue: https://github.com/FreeCAD/FreeCAD/issues/13677
+            # Instead of using makeDistanceDim (which is meant for extent dimensions), we use the 
+            # same steps as in CommandCreateDims.cpp to create a regular length dimension.  This avoids
+            # the creation of CosmeticVertex objects to serve as dimension points.  These CosmeticVertex
+            # objects are never deleted, but are no longer used once their dimension is deleted. 
+            # distanceDim=TechDraw.makeDistanceDim(view,'Distance',vertexes[0].Point*scale,vertexes[1].Point*scale)
+            distanceDim = view.Document.addObject("TechDraw::DrawViewDimension", "Dimension")
+            distanceDim.Type = "Distance"
+            distanceDim.MeasureType = "Projected"       #should this not be True?
+            self.setReferences(distanceDim, view, edgeNames, vertNames)
+            page.addView(distanceDim)
+
             distanceDim.AngleOverride = True
             distanceDim.LineAngle = lineAngle
             distanceDim.ExtensionAngle = extAngle
-            distanceDim.X = scale*(vertexes[0].Point.x+vertexes[1].Point.x)/2
-            distanceDim.Y = scale*(vertexes[0].Point.y+vertexes[1].Point.y)/2
-            distanceDim.recompute()
+
+            distanceDim.recompute()     # ensure linearPoints has been set
+
+            # as in CmdCreateDims::positionDimText:
+            linearPoints = distanceDim.getLinearPoints()
+            mid = (linearPoints[0] + linearPoints[1]) / 2
+            distanceDim.X = mid.x
+            distanceDim.Y = -mid.y
 
             (px,py,pz) = Utils.getCoordinateVectors(view)
             arrowTips = distanceDim.getArrowPositions()
@@ -114,8 +155,10 @@ class CommandAxoLengthDimension:
 
             distanceDim.recompute()
             view.requestPaint()
+
         Gui.Selection.clearSelection()
         App.closeActiveTransaction()
+        view.touch()	# make view claim its new child
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""
@@ -145,6 +188,16 @@ class CommandAxoLengthDimension:
                 return ''.join(strValueList)
         else:
             return formatSpec.format(value)
+
+    def setReferences(self, dimension, view, edgeNameList, vertexNameList):
+        references = list()
+        if vertexNameList:
+            for vert in vertexNameList:
+                references.append((view, vert))
+        else:
+            references.append((view, edgeNameList[0]))
+
+        dimension.References2D = references
 
 #
 # The command must be "registered" with a unique name by calling its class.

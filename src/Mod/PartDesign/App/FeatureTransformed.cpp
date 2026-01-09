@@ -103,7 +103,15 @@ Part::Feature* Transformed::getBaseObject(bool silent) const
         }
     }
     else {
-        err = QT_TRANSLATE_NOOP("Exception", "No originals linked to the transformed feature.");
+        if (freecad_cast<const Mirrored*>(this)) {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be mirrored.");
+        }
+        else if (freecad_cast<const LinearPattern*>(this) || freecad_cast<const PolarPattern*>(this)) {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be patterned.");
+        }
+        else {
+            err = QT_TRANSLATE_NOOP("Exception", "No features selected to be transformed.");
+        }
     }
 
     if (!silent && err) {

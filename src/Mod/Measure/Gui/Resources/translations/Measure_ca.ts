@@ -278,7 +278,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Distància lliure</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Posició</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="155"/>

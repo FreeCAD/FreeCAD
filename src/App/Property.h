@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
 #include <FCGlobal.h>
@@ -606,7 +608,7 @@ private:
 
 public:
     /// Signal emitted when the property value has changed.
-    boost::signals2::signal<void(const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::Property&)> signalChanged;
 };
 
 
