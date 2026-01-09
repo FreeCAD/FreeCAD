@@ -197,17 +197,6 @@ int Sketch::setUpSketch(
 
     clear();
 
-    // The geometries that are in groups are going to be ignored by the solver.
-    std::set<int> slaveGeoIds;
-    for (const auto& c : ConstraintList) {
-        if (c->Type == Group || c->Type == Text) {
-            // Start from index 1, as 0 is the frame.
-            for (int i = 1; c->hasElement(i); ++i) {
-                slaveGeoIds.insert(c->getGeoId(i));
-            }
-        }
-    }
-
     std::vector<Part::Geometry*> intGeoList, extGeoList;
     std::copy(GeoList.begin(), GeoList.end() - extGeoCount, std::back_inserter(intGeoList));
     std::copy(GeoList.end() - extGeoCount, GeoList.end(), std::back_inserter(extGeoList));
@@ -5606,4 +5595,3 @@ void Sketch::Save(Writer&) const
 
 void Sketch::Restore(XMLReader&)
 {}
-
