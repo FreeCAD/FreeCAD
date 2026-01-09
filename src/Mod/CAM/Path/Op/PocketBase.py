@@ -105,15 +105,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
     def areaOpOnChanged(self, obj, prop):
         print("areaOpOnChanged PocketBase", prop)
 
-        if hasattr(obj, "ExtraOffsetZigZag"):
-            extraOffsetZigZagMode = 0 if obj.ClearingPattern == "ZigZagOffset" else 2
-            obj.setEditorMode("ExtraOffsetZigZag", extraOffsetZigZagMode)
+        if hasattr(obj, "ExtraFinishOffset"):
+            extraFinishOffsetMode = 0 if obj.ClearingPattern == "ZigZagOffset" else 2
+            obj.setEditorMode("ExtraFinishOffset", extraFinishOffsetMode)
 
-        if hasattr(obj, "StartAt") and hasattr(obj, "OffsetOneStepDown"):
-            offsetOneStepDownMode = (
+        if hasattr(obj, "StartAt") and hasattr(obj, "FinishOneStepDown"):
+            finishOneStepDownMode = (
                 0 if obj.ClearingPattern == "ZigZagOffset" and obj.StartAt == "Center" else 2
             )
-            obj.setEditorMode("OffsetOneStepDown", offsetOneStepDownMode)
+            obj.setEditorMode("FinishOneStepDown", finishOneStepDownMode)
 
     def opExecute(self, obj):
         print("opExecute PocketBase")
@@ -156,7 +156,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyDistance",
-            "ExtraOffsetZigZag",
+            "ExtraFinishOffset",
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
@@ -224,12 +224,12 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "OffsetOneStepDown",
+            "FinishOneStepDown",
             "Pocket",
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "With clearing pattern ZigZagOffset and start at center,"
-                "\nOffset path will processing with one step down at final depth.",
+                "\nFinish pass will processing with one step down at final depth.",
             ),
         )
 
@@ -257,7 +257,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if self.pocketInvertExtraOffset():
             extraOffset = -extraOffset
         if obj.ClearingPattern == "ZigZagOffset":
-            params["PocketExtraOffset"] = extraOffset + obj.ExtraOffsetZigZag.Value
+            params["PocketExtraOffset"] = extraOffset + obj.ExtraFinishOffset.Value
         else:
             params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
@@ -266,9 +266,11 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Pattern = {
             "ZigZag": 1,
             "Offset": 2,
+            "Spiral": 3,
             "ZigZagOffset": 4,
             "Line": 5,
             "Grid": 6,
+            "Triangle": 7,
         }
 
         params["PocketMode"] = Pattern.get(obj.ClearingPattern, 1)
@@ -328,22 +330,21 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Set distance which will attempts to avoid unnecessary retractions.",
                 ),
             )
-        if not hasattr(obj, "ExtraOffsetZigZag"):
+        if not hasattr(obj, "ExtraFinishOffset"):
             obj.addProperty(
                 "App::PropertyDistance",
-                "ExtraOffsetZigZag",
+                "ExtraFinishOffset",
                 "Pocket",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
                 ),
             )
-            expr = f"{obj.Name}.ToolController.Tool.Diameter.Value * 0.25"
-            obj.setExpression("ExtraOffsetZigZag", expr)
-        if not hasattr(obj, "OffsetOneStepDown"):
+            obj.setExpression("ExtraFinishOffset", "OpToolDiameter * 0.25")
+        if not hasattr(obj, "FinishOneStepDown"):
             obj.addProperty(
                 "App::PropertyBool",
-                "OffsetOneStepDown",
+                "FinishOneStepDown",
                 "Pocket",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
@@ -360,8 +361,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
         if hasattr(obj, "KeepToolDown"):
             if obj.KeepToolDown:
-                expr = f"{obj.Name}.ToolController.Tool.Diameter.Value"
-                obj.setExpression("RetractThreshold", expr)
+                obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
             obj.removeProperty("KeepToolDown")
 
         Path.Log.track()

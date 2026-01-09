@@ -29,7 +29,6 @@ import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
 
 import math
-import re
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -132,11 +131,12 @@ class ObjectOp(PathOp.ObjectOp):
         changes.
         Do not overwrite, overwrite areaOpOnChanged(obj, prop) instead."""
         # Path.Log.track(obj.Label, prop)
-        if prop in ["AreaParams", "PathParams", "removalshape"]:
+        if prop in ("AreaParams", "PathParams", "removalshape"):
             obj.setEditorMode(prop, 2)
 
+        # Offer side while creating new operation
         if (
-            getattr(self, "init", None)
+            getattr(self, "init", False)
             and hasattr(obj, "Side")
             and prop == "FinalDepth"
             and len(obj.Base) == 1
@@ -186,9 +186,10 @@ class ObjectOp(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         Path.Log.track()
-        for prop in ["AreaParams", "PathParams", "removalshape"]:
+        for prop in ("AreaParams", "PathParams", "removalshape"):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
+
         if not hasattr(obj, "SplitArcs"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -247,21 +248,20 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses."""
         pass
 
-    def getCornerPoint(self, edges):
-        """Use point intersection of the edges
-        and two points by distance 1 mm from intersection
-        to determine angle between edge"""
+    def getCornerPoint(self, shape):
+        """Use point connection of the edges and two points by distance 1 mm from connection
+        to determine angle between edges and find corner with angle near 90 degrees"""
 
-        candidate = edges[0].Vertexes[0].Point
-        lastAngle = math.pi
-        for i, _ in enumerate(edges):
+        candidate = shape.Edges[0].Vertexes[0].Point
+        lastAngle = math.pi  # worst angle
+        for i in range(len(shape.Edges)):
             p1, p2, p3 = None, None, None
-            e1 = edges[i]
-            if i < len(edges) - 1:
-                e2 = edges[i + 1]
+            e1 = shape.Edges[i]
+            if i < len(shape.Edges) - 1:
+                e2 = shape.Edges[i + 1]
             else:
                 # compare last edge with first
-                e2 = edges[0]
+                e2 = shape.Edges[0]
 
             if Path.Geom.pointsCoincide(e1.Vertexes[-1].Point, e2.Vertexes[0].Point):
                 p2, p1 = e1.discretize(Distance=1)[-2:]
@@ -279,66 +279,96 @@ class ObjectOp(PathOp.ObjectOp):
 
         return candidate
 
-    def isStraightEdge(self, edge, key=None):
-        tol = self.job.GeometryTolerance.getValueAs("mm")
-        if Path.Geom.isRoughly(edge.Length, tol):
-            # skip too short edge
+    def isStraightEdge(self, edge):
+        if edge.Length < 1:
+            # exclude too short edge
             return False
         if isinstance(edge.Curve, Part.Line):
             # line is always straight
             return True
-        elif key == "line":
-            return False
-        # check bspline
+        # check other edge types
         p1 = edge.Vertexes[0].Point
         p2 = edge.Vertexes[-1].Point
+        tol = self.job.GeometryTolerance.Value
         if Path.Geom.isRoughly(edge.Length, p1.distanceToPoint(p2), tol):
             return True
 
         return False
 
-    def getMiddleLongPoint(self, shape, key=None):
+    def getMiddlePoint(self, shape, longest, straight):
         candidate = None
         for edge in shape.Edges:
-            if key and not self.isStraightEdge(edge, key):
+            if straight and not self.isStraightEdge(edge):
+                # skip not straight edge
                 continue
-            if candidate is None or edge.Length > candidate.Length:
+            if (
+                candidate is None
+                or (longest and edge.Length > candidate.Length)
+                or (not longest and edge.Length < candidate.Length)
+            ):
                 candidate = edge
 
-        if candidate is None:
+        if candidate:
+            return candidate.discretize(3)[1]
+        else:
             return shape.Edges[0].Vertexes[0].Point
 
-        return candidate.discretize(3)[1]
+    def getStartIndex(self, cmds1, cmds2, threshold):
+        # get index of command from which continue path to skip retract
+        lastPoint = lastX = lastY = None
+        nextPoint = nextX = nextY = None
+        # determine last point in previous path
+        for cmd in reversed(cmds1):
+            if cmd.Name in Path.Geom.CmdMoveMill:
+                lastX = cmd.x if cmd.x is not None and lastX is None else lastX
+                lastY = cmd.y if cmd.y is not None and lastY is None else lastY
+                if lastX is not None and lastY is not None:
+                    lastPoint = FreeCAD.Vector(lastX, lastY, 0)
+                    break
+        # determine first point in new path
+        indexG1 = None
+        for i, cmd in enumerate(cmds2):
+            if cmd.Name in Path.Geom.CmdMoveStraight:
+                indexG1 = i if indexG1 is None else indexG1
+                nextX = cmd.x if cmd.x is not None and nextX is None else nextX
+                nextY = cmd.y if cmd.y is not None and nextY is None else nextY
+                if nextX is not None and nextY is not None:
+                    nextPoint = FreeCAD.Vector(nextX, nextY, 0)
+                    break
+        if (
+            indexG1 is not None
+            and lastPoint is not None
+            and nextPoint is not None
+            and lastPoint.distanceToPoint(nextPoint) <= threshold
+        ):
+            return indexG1
+        else:
+            return 0
 
-    def getMiddleShortPoint(self, shape, key=None):
-        candidate = None
-        for edge in shape.Edges:
-            if key and not self.isStraightEdge(edge, key):
-                continue
-            if candidate is None or edge.Length < candidate.Length:
-                candidate = edge
-
-        if candidate is None:
-            return shape.Edges[0].Vertexes[0].Point
-
-        return candidate.discretize(3)[1]
+    def getEndVector(self, cmds):
+        # get index of command from which continue path to skip retract
+        lastX = lastY = lastZ = None
+        for cmd in reversed(cmds):
+            if cmd.Name in Path.Geom.CmdMoveMill:
+                lastX = cmd.x if cmd.x is not None and lastX is None else lastX
+                lastY = cmd.y if cmd.y is not None and lastY is None else lastY
+                lastZ = cmd.z if cmd.z is not None and lastZ is None else lastZ
+                if lastX is not None and lastY is not None and lastZ is not None:
+                    return FreeCAD.Vector(lastX, lastY, lastZ)
 
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
 
         areaParamsList = []
-        if getattr(obj, "ClearingPattern", None) == "ZigZagOffset" and obj.ExtraOffsetZigZag:
-            # Pocket operation: split area and get order 'ZigZag' -> 'Offset'
-            # 'ZigZag' area parameters
-            areaParamsList.append(self.areaOpAreaParams(obj, isHole))
-            areaParamsList[-1]["PocketMode"] = 1
-            # 'Offset' area parameters
-            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))
-            if getattr(obj, "StartAt", None) == "Edge":
-                # reverse order to 'Offset' -> 'ZigZag'
-                areaParamsList.reverse()
-        elif obj.Proxy and obj.Proxy.__module__ == "Path.Op.Profile":
+        if "Path.Op.Pocket" in obj.Proxy.__module__ and obj.FinishOffset:
+            # Pocket operation: split area and get order "main" -> 'Offset'
+            areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # "main" area
+            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Offset' area
+            # if getattr(obj, "StartAt", None) == "Edge":
+            #     # reverse order 'Offset' -> "main"
+            #     areaParamsList.reverse()
+        elif obj.Proxy.__module__ == "Path.Op.Profile":
             # Profile operation: split area for multiple passes
             areaParams = self.areaOpAreaParams(obj, isHole)
             offsets = areaParams["Offset"]
@@ -350,7 +380,37 @@ class ObjectOp(PathOp.ObjectOp):
 
         cmds = []
         sims = []
-        for areaParams in areaParamsList:
+        for index, areaParams in enumerate(areaParamsList):
+
+            """
+            Notes:
+            Finish pass mill last, no metter value 'StartAt'
+            For 'StartAt' 'Center' in Pocket op need to set sort_mode = 0 to get correct order
+            """
+
+            oneStepDown = False
+            if obj.Proxy.__module__ == "Path.Op.Profile":
+                if (
+                    getattr(obj, "OffsetFinish", None)
+                    and getattr(obj, "NumPasses", 1) > 1
+                    and index == len(areaParamsList) - 1
+                    and getattr(obj, "FinishOneStepDown", False)
+                ):
+                    oneStepDown = True
+
+            isPocketFinishPass = False
+            sortMode_0 = False
+            if "Path.Op.Pocket" in obj.Proxy.__module__:
+                if "JoinType" in areaParams:
+                    isPocketFinishPass = True
+                    if getattr(obj, "FinishOneStepDown", False):
+                        oneStepDown = True
+                elif (
+                    getattr(obj, "ClearingPattern", None) == "Offset"
+                    and getattr(obj, "StartAt", None) == "Center"
+                ):
+                    sortMode_0 = True
+
             area = Path.Area()
             area.setPlane(PathUtils.makeWorkplane(baseobject))
             area.add(baseobject)
@@ -411,16 +471,12 @@ class ObjectOp(PathOp.ObjectOp):
             Path.Log.debug("shapelist = %s" % shapelist)
 
             pathParams = self.areaOpPathParams(obj, isHole)
-            if getattr(obj, "ClearingPattern", None) == "ZigZagOffset" and "JoinType" in areaParams:
-                # invert orientation for Offset in ZigZagOffset
-                pathParams["orientation"] = 0 if pathParams["orientation"] == 1 else 1
 
-            if (
-                getattr(obj, "ClearingPattern", None) == "ZigZagOffset"
-                and getattr(obj, "StartAt", None) == "Center"
-                and getattr(obj, "OffsetOneStepDown", False)
-                and "JoinType" in areaParams
-            ):
+            if isPocketFinishPass:
+                # invert orientation for finish Offset pass in Pocket operation
+                pathParams["orientation"] = not pathParams["orientation"]
+
+            if oneStepDown:
                 pathParams["shapes"] = shapelist[-1]
             else:
                 pathParams["shapes"] = shapelist
@@ -435,14 +491,13 @@ class ObjectOp(PathOp.ObjectOp):
             # and prevents path optimization on some controllers
             pathParams["preamble"] = False
 
-            # disable path sorting for offset and zigzag-offset paths
-            # TODO Why need to disable sorting ???
-            if (
-                getattr(obj, "ClearingPattern", None) == "Offset"  # in ("ZigZagOffset", "Offset")
-                and hasattr(obj, "MinTravel")
-                and not obj.MinTravel
-            ):
+            if sortMode_0:
                 pathParams["sort_mode"] = 0
+            elif isPocketFinishPass:
+                pathParams["sort_mode"] = 3
+
+            if hasattr(obj, "SortMode"):
+                pathParams["sort_mode"] = obj.SortMode
 
             if hasattr(obj, "RetractThreshold"):
                 pathParams["threshold"] = obj.RetractThreshold.Value
@@ -454,19 +509,15 @@ class ObjectOp(PathOp.ObjectOp):
                 and obj.StartPointOverride != "No"
             ):
                 if obj.StartPointOverride == "Corner":
-                    pathParams["start"] = self.getCornerPoint(pathParams["shapes"][0].Edges)
+                    pathParams["start"] = self.getCornerPoint(shapelist[0])
                 elif obj.StartPointOverride == "Middle-Long":
-                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0])
-                elif obj.StartPointOverride == "Middle-Long-Line":
-                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="line")
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], True, False)
                 elif obj.StartPointOverride == "Middle-Long-Straight":
-                    pathParams["start"] = self.getMiddleLongPoint(shapelist[0], key="straight")
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], True, True)
                 elif obj.StartPointOverride == "Middle-Short":
-                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0])
-                elif obj.StartPointOverride == "Middle-Short-Line":
-                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="line")
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], False, False)
                 elif obj.StartPointOverride == "Middle-Short-Straight":
-                    pathParams["start"] = self.getMiddleShortPoint(shapelist[0], key="straight")
+                    pathParams["start"] = self.getMiddlePoint(shapelist[0], False, True)
             elif self.endVector is not None:
                 if self.endVector[:2] != (0, 0):
                     pathParams["start"] = self.endVector
@@ -484,6 +535,9 @@ class ObjectOp(PathOp.ObjectOp):
             # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
             if pp.Size:
                 self.endVector = end_vector
+                if end_vector[:2] == (0, 0):
+                    # need for finish pass after pocket offset pattern
+                    self.endVector = self.getEndVector(pp.Commands)
 
             simobj = None
             if getsim:
@@ -495,45 +549,13 @@ class ObjectOp(PathOp.ObjectOp):
 
             sims.append(simobj)
 
-            # remove retract in ZigZagOffset between ZigZag and Offset
-            startIndex = 0
-            if obj.RetractThreshold and cmds and pp.Commands:
-                lastPoint = lastX = lastY = None
-                nextPoint = nextX = nextY = None
-                # determine last point in first path
-                for cmd in reversed(cmds):
-                    if re.search(r"^G0?[123]$", cmd.Name, re.IGNORECASE):
-                        lastX = cmd.x if cmd.x is not None and lastX is None else lastX
-                        lastY = cmd.y if cmd.y is not None and lastY is None else lastY
-                        if lastX is not None and lastY is not None:
-                            lastPoint = FreeCAD.Vector(lastX, lastY, 0)
-                            break
-                # determine first point in second path
-                for cmd in pp.Commands:
-                    if (
-                        re.search(r"^G0?[1]$", cmd.Name, re.IGNORECASE)
-                        and nextX is not None
-                        and nextY is not None
-                    ):
-                        # this is start point of the first mill command
-                        nextPoint = FreeCAD.Vector(nextX, nextY, 0)
-                        break
-                    nextX = cmd.x if cmd.x is not None else nextX
-                    nextY = cmd.y if cmd.y is not None else nextY
-
-                if (
-                    lastPoint is not None
-                    and nextPoint is not None
-                    and lastPoint.distanceToPoint(nextPoint) <= obj.RetractThreshold
-                ):
-                    # needs remove retract
-                    for i, cmd in enumerate(pp.Commands):
-                        # get index of first G1 command
-                        if cmd.Name == "G1":
-                            startIndex = i
-                            break
-
-            cmds.extend(pp.Commands[startIndex:])
+            commands = pp.Commands
+            # remove retract between "main" area and Offset
+            if obj.RetractThreshold and cmds and commands:
+                startIndex = self.getStartIndex(cmds, commands, obj.RetractThreshold.Value)
+                cmds.extend(commands[startIndex:])
+            else:
+                cmds.extend(commands)
 
         return Path.Path(cmds), sims
 
@@ -674,11 +696,7 @@ class ObjectOp(PathOp.ObjectOp):
                 else:
                     sims.append(sim)
 
-            if (
-                self.areaOpRetractTool(obj)
-                and self.endVector is not None
-                and len(self.commandlist) > 1
-            ):
+            if self.endVector is not None and len(self.commandlist) > 1:
                 self.endVector[2] = obj.ClearanceHeight.Value
                 self.commandlist.append(
                     Path.Command("G0", {"Z": obj.ClearanceHeightOut.Value, "F": self.vertRapid})
@@ -686,10 +704,6 @@ class ObjectOp(PathOp.ObjectOp):
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
-
-    def areaOpRetractTool(self, obj):
-        """areaOpRetractTool(obj) ... return False to keep the tool at current level between shapes. Default is True."""
-        return True
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... return operation specific area parameters in a dictionary.

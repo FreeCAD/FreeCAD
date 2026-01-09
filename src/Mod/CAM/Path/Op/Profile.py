@@ -193,6 +193,24 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             ),
             (
                 "App::PropertyLength",
+                "OffsetFinish",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If doing multiple passes, the extra offset of each additional pass",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "FinishOneStepDown",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Finish pass will processing with one step down at final depth",
+                ),
+            ),
+            (
+                "App::PropertyLength",
                 "RetractThreshold",
                 "Profile",
                 QT_TRANSLATE_NOOP(
@@ -255,14 +273,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "No"), "No"),
                 (translate("PathProfile", "Corner"), "Corner"),
                 (translate("PathProfile", "Middle-Long"), "Middle-Long"),
-                (translate("PathProfile", "Middle-Long-Line"), "Middle-Long-Line"),
                 (translate("PathProfile", "Middle-Long-Straight"), "Middle-Long-Straight"),
                 (translate("PathProfile", "Middle-Short"), "Middle-Short"),
-                (translate("PathProfile", "Middle-Short-Line"), "Middle-Short-Line"),
                 (translate("PathProfile", "Middle-Short-Straight"), "Middle-Short-Straight"),
             ],
             "StartAt": [
-                (translate("CAM_Pocket", "Center"), "Center"),
+                (translate("CAM_Pocket", "OutOfEdge"), "OutOfEdge"),
                 (translate("CAM_Pocket", "Edge"), "Edge"),
             ],
         }
@@ -317,6 +333,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     setattr(prop, "Value", val)
                 else:
                     setattr(obj, n, val)
+
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpSetDefaultValues(self, obj, job):
         if self.addNewProps and self.addNewProps.__len__() > 0:
@@ -375,8 +393,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         params["Coplanar"] = 0
         params["SectionCount"] = -1
 
-        offset = obj.OffsetExtra.Value  # 0.0
-        num_passes = max(1, obj.NumPasses)
+        num_passes = max(1, obj.NumPasses - bool(obj.OffsetFinish))
         stepover = obj.Stepover.Value
         if num_passes > 1 and stepover == 0:
             # This check is important because C++ code has a default value for stepover
@@ -386,19 +403,28 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 "Multipass profile requires a non-zero stepover. Reducing to a single pass."
             )
 
+        offset = obj.OffsetExtra.Value
+        offsetFinish = obj.OffsetFinish.Value
+        if obj.NumPasses > 1:
+            offset += offsetFinish
         if obj.UseComp:
-            offset = self.radius + obj.OffsetExtra.Value
+            offset += self.radius
         if obj.Side == "Inside":
             offset = -offset
             stepover = -stepover
+            offsetFinish = -offsetFinish
         if isHole:
             offset = -offset
             stepover = -stepover
+            offsetFinish = -offsetFinish
 
         # Create list of offsets for multiple passes
         offsets = [offset + i * stepover for i in range(num_passes)]
-        if obj.StartAt == "Center":
+        if obj.StartAt != "Edge":
             offsets.reverse()
+        if obj.NumPasses > 1:
+            offsets.append(offset - offsetFinish)
+
         params["Offset"] = offsets
         params["ExtraPass"] = 0
         params["Stepover"] = 0

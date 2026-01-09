@@ -180,9 +180,9 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         obj.StepOver = 50
         obj.ZigZagAngle = 45
         obj.UseOutline = False
-        expr = f"{obj.Name}.ToolController.Tool.Diameter.Value * 0.25"
-        obj.setExpression("ExtraOffsetZigZag", expr)
+        obj.setExpression("ExtraFinishOffset", "OpToolDiameter * 0.25")
         FeatureExtensions.set_default_property_values(obj, job)
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
