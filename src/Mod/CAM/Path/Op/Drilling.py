@@ -272,12 +272,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     global_clearance=obj.ClearanceHeight.Value,
                     tool_shape=self.tool.Shape,
                     solids=solids,
-                    retract_height_offset=obj.RetractHeight.Value,
+                    skip_if_no_collision=True,
                 )
-                if len(linking_moves) == 1:  # straight move possible.  Do nothing.
-                    pass
-                else:
+                # Add linking moves if they were generated (collision detected)
+                if linking_moves:
                     self.commandlist.extend(linking_moves)
+                    for move in linking_moves:
+                        machinestate.addCommand(move)
 
             # Perform drilling
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
@@ -306,7 +307,15 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 annotations["RetractMode"] = mode
                 command.Annotations = annotations
                 self.commandlist.append(command)
-                # machine.addCommand(command)
+                machinestate.addCommand(command)
+            
+            # Update Z position based on RetractMode
+            # G98: retract to initial Z (ClearanceHeight)
+            # G99: retract to R parameter (RetractHeight)
+            if mode == "G98":
+                machinestate.Z = obj.ClearanceHeight.Value
+            else:  # G99
+                machinestate.Z = obj.RetractHeight.Value
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
