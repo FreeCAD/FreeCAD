@@ -21,19 +21,6 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <FCConfig.h>
-
-#ifdef FC_OS_WIN32
-# include <windows.h>
-# undef min
-# undef max
-#endif
-#ifdef FC_OS_MACOSX
-# include <OpenGL/gl.h>
-#else
-# include <GL/gl.h>
-#endif
-
 #include <algorithm>
 #include <cstdint>
 #include <cmath>
@@ -42,21 +29,28 @@
 #include <QFontMetrics>
 #include <QPainter>
 
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec2f.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/elements/SoFocalDistanceElement.h>
 #include <Inventor/elements/SoModelMatrixElement.h>
+#include <Inventor/elements/SoLazyElement.h>
+#include <Inventor/elements/SoTextureQualityElement.h>
 #include <Inventor/elements/SoViewportRegionElement.h>
 #include <Inventor/elements/SoViewVolumeElement.h>
 #include <Inventor/misc/SoState.h>
 #include <Inventor/nodes/SoBaseColor.h>
-#include <Inventor/nodes/SoCallback.h>
 #include <Inventor/nodes/SoDepthBuffer.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFaceSet.h>
 #include <Inventor/nodes/SoLightModel.h>
 #include <Inventor/nodes/SoLineSet.h>
 #include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoShapeHints.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 
 #include <Base/Tools.h>
@@ -173,10 +167,25 @@ SbVec3f getArcTextCenter(const SbVec3f& center, float startAngle, float endAngle
     return center + getArcMidDirection(startAngle, endAngle) * distanceFromCenter;
 }
 
-bool isGLRenderAction(SoAction* action)
+float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
 {
-    return action && action->getTypeId().isDerivedFrom(SoGLRenderAction::getClassTypeId());
+    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
+    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
+
+    camRight.normalize();
+    camUp.normalize();
+
+    const SbMatrix& matrix = SoModelMatrixElement::get(state);
+    SbVec3f xWorld;
+    matrix.multDirMatrix(SbVec3f(1.0f, 0.0f, 0.0f), xWorld);
+
+    const float cosAngle = xWorld.dot(camRight);
+    const float sinAngle = xWorld.dot(camUp);
+    const float angle = std::atan2(sinAngle, cosAngle);
+
+    return flip ? angle : -angle;
 }
+
 }  // namespace
 
 
@@ -247,23 +256,59 @@ SoDatumLabel::SoDatumLabel()
     m_DrawStyle->lineWidth.connectFrom(&this->lineWidth);
     m_Root->addChild(m_DrawStyle);
 
+    // Keep the label two-sided even when inherited rendering state enables face culling.
+    auto* hints = new SoShapeHints;
+    hints->vertexOrdering.setValue(SoShapeHints::UNKNOWN_ORDERING);
+    hints->shapeType.setValue(SoShapeHints::UNKNOWN_SHAPE_TYPE);
+    hints->faceType.setValue(SoShapeHints::UNKNOWN_FACE_TYPE);
+    m_Root->addChild(hints);
+
     m_LineVertexProperty = new SoVertexProperty;
     m_LineSet = new SoLineSet;
     m_LineSet->vertexProperty.setValue(m_LineVertexProperty);
     m_Root->addChild(m_LineSet);
-
-    auto* triangleCullDisable = new SoCallback;
-    triangleCullDisable->setCallback(SoDatumLabel::disableCullFaceCallback, this);
-    m_Root->addChild(triangleCullDisable);
 
     m_TriangleVertexProperty = new SoVertexProperty;
     m_TriangleFaceSet = new SoFaceSet;
     m_TriangleFaceSet->vertexProperty.setValue(m_TriangleVertexProperty);
     m_Root->addChild(m_TriangleFaceSet);
 
-    auto* triangleCullRestore = new SoCallback;
-    triangleCullRestore->setCallback(SoDatumLabel::restoreCullFaceCallback, this);
-    m_Root->addChild(triangleCullRestore);
+    m_TextSwitch = new SoSwitch;
+    m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+    m_Root->addChild(m_TextSwitch);
+
+    m_TextSeparator = new SoSeparator;
+    m_TextSwitch->addChild(m_TextSeparator);
+
+    m_TextDepth = new SoDepthBuffer;
+    m_TextDepth->test.setValue(false);
+    m_TextDepth->write.setValue(false);
+    m_TextDepth->function.setValue(SoDepthBuffer::ALWAYS);
+    m_TextSeparator->addChild(m_TextDepth);
+
+    auto* textLightModel = new SoLightModel;
+    textLightModel->model.setValue(SoLightModel::BASE_COLOR);
+    m_TextSeparator->addChild(textLightModel);
+
+    m_TextBaseColor = new SoBaseColor;
+    m_TextBaseColor->rgb.setValue(1.0f, 1.0f, 1.0f);
+    m_TextSeparator->addChild(m_TextBaseColor);
+
+    m_TextTexture = new SoTexture2;
+    m_TextTexture->wrapS = SoTexture2::CLAMP;
+    m_TextTexture->wrapT = SoTexture2::CLAMP;
+    m_TextTexture->model = SoTexture2::MODULATE;
+    m_TextTexture->image.connectFrom(&this->image);
+    m_TextSeparator->addChild(m_TextTexture);
+
+    m_TextTransform = new SoTransform;
+    m_TextSeparator->addChild(m_TextTransform);
+
+    m_TextVertexProperty = new SoVertexProperty;
+    m_TextFaceSet = new SoFaceSet;
+    m_TextFaceSet->vertexProperty.setValue(m_TextVertexProperty);
+    m_TextFaceSet->numVertices.set1Value(0, 4);
+    m_TextSeparator->addChild(m_TextFaceSet);
 }
 
 SoDatumLabel::~SoDatumLabel()
@@ -280,6 +325,14 @@ SoDatumLabel::~SoDatumLabel()
     m_LineSet = nullptr;
     m_TriangleVertexProperty = nullptr;
     m_TriangleFaceSet = nullptr;
+    m_TextSwitch = nullptr;
+    m_TextSeparator = nullptr;
+    m_TextDepth = nullptr;
+    m_TextBaseColor = nullptr;
+    m_TextTexture = nullptr;
+    m_TextTransform = nullptr;
+    m_TextVertexProperty = nullptr;
+    m_TextFaceSet = nullptr;
 }
 
 void SoDatumLabel::drawImage()
@@ -1229,51 +1282,6 @@ float SoDatumLabel::getScaleFactor(SoState* state) const
     return scale;
 }
 
-void SoDatumLabel::disableCullFaceCallback(void* userdata, SoAction* action)
-{
-    if (!userdata) {
-        return;
-    }
-
-    static_cast<SoDatumLabel*>(userdata)->disableCullFaceIfNeeded(action);
-}
-
-void SoDatumLabel::restoreCullFaceCallback(void* userdata, SoAction* action)
-{
-    if (!userdata) {
-        return;
-    }
-
-    static_cast<SoDatumLabel*>(userdata)->restoreCullFaceIfNeeded(action);
-}
-
-void SoDatumLabel::disableCullFaceIfNeeded(SoAction* action)
-{
-    if (!isGLRenderAction(action)) {
-        return;
-    }
-
-    m_CullFaceWasEnabled = (glIsEnabled(GL_CULL_FACE) == GL_TRUE);
-    if (m_CullFaceWasEnabled) {
-        GLint mode = GL_BACK;
-        glGetIntegerv(GL_CULL_FACE_MODE, &mode);
-        m_CullFaceMode = mode;
-        glDisable(GL_CULL_FACE);
-    }
-}
-
-void SoDatumLabel::restoreCullFaceIfNeeded(SoAction* action)
-{
-    if (!isGLRenderAction(action)) {
-        return;
-    }
-
-    if (m_CullFaceWasEnabled) {
-        glEnable(GL_CULL_FACE);
-        glCullFace(static_cast<GLenum>(m_CullFaceMode));
-    }
-}
-
 void SoDatumLabel::setVertexZ(SbVec3f& point, float z) const
 {
     point[2] = z;
@@ -1511,6 +1519,70 @@ void SoDatumLabel::ensureCoinGeometry(const SbVec3f* points, int numPoints)
     }
 }
 
+void SoDatumLabel::ensureCoinText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
+{
+    if (!state || !m_TextSwitch || !m_TextVertexProperty || !m_TextFaceSet || !m_TextTransform
+        || !m_TextTexture) {
+        return;
+    }
+
+    SbVec2s imgsize;
+    int nc {};
+    const unsigned char* dataptr = this->image.getValue(imgsize, nc);
+    if (!dataptr || srcw <= 0 || srch <= 0 || imgWidth <= 0.0f || imgHeight <= 0.0f) {
+        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+        m_TextVertexProperty->vertex.setNum(0);
+        m_TextVertexProperty->texCoord.setNum(0);
+        m_TextFaceSet->numVertices.setNum(0);
+        return;
+    }
+
+    const SbViewVolume& vv = SoViewVolumeElement::get(state);
+    const SbVec3f z = vv.zVector();
+    const bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
+    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
+    const float absLabelAngle = std::abs(sketchAngle + angle);
+
+    constexpr float quarter = 90.0F;
+    constexpr float hysteresis = 15.0F;
+    constexpr float threshold = Base::toRadians(quarter + hysteresis);
+
+    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
+        angle += std::numbers::pi;
+    }
+
+    m_TextTransform->translation.setValue(textOffset);
+    m_TextTransform->rotation.setValue(SbRotation(SbVec3f(0.0f, 0.0f, 1.0f), angle));
+
+    const float left = -imgWidth / 2.0f;
+    const float right = imgWidth / 2.0f;
+    const float bottom = -imgHeight / 2.0f;
+    const float top = imgHeight / 2.0f;
+
+    m_TextVertexProperty->vertex.setNum(4);
+    m_TextVertexProperty->vertex.set1Value(0, SbVec3f(left, top, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(1, SbVec3f(left, bottom, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(2, SbVec3f(right, bottom, 0.0f));
+    m_TextVertexProperty->vertex.set1Value(3, SbVec3f(right, top, 0.0f));
+
+    m_TextVertexProperty->texCoord.setNum(4);
+    if (flip) {
+        m_TextVertexProperty->texCoord.set1Value(0, SbVec2f(0.0f, 1.0f));
+        m_TextVertexProperty->texCoord.set1Value(1, SbVec2f(0.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(2, SbVec2f(1.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(3, SbVec2f(1.0f, 1.0f));
+    }
+    else {
+        m_TextVertexProperty->texCoord.set1Value(0, SbVec2f(1.0f, 1.0f));
+        m_TextVertexProperty->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(2, SbVec2f(0.0f, 0.0f));
+        m_TextVertexProperty->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
+    }
+
+    m_TextFaceSet->numVertices.set1Value(0, 4);
+    m_TextSwitch->whichChild.setValue(0);
+}
+
 void SoDatumLabel::GLRender(SoGLRenderAction* action)
 {
     SoState* state = action->getState();
@@ -1542,14 +1614,22 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
 
     state->push();
 
-    ensureCoinGeometry(points, this->pnts.getNum());
-    if (m_Root) {
-        m_Root->GLRender(action);
-    }
+    // Annotation faces should stay visible even when an ancestor enables back-face culling.
+    SoLazyElement::setBackfaceCulling(state, FALSE);
 
     if (hasText) {
-        float angle = 0.0F;
-        SbVec3f textOffset;
+        // Text labels are rendered as SoTexture2 on a quad. Coin's default texture quality
+        // (0.5) enables mipmaps, which can blur small UI text. Keep linear filtering but
+        // avoid mipmaps for crisper results.
+        SoTextureQualityElement::set(state, this, 0.49F);
+        SoLazyElement::setTransparencyType(state, static_cast<int32_t>(SoGLRenderAction::BLEND));
+    }
+
+    ensureCoinGeometry(points, this->pnts.getNum());
+
+    float angle = 0.0F;
+    SbVec3f textOffset;
+    if (hasText) {
         const auto type = static_cast<Type>(datumtype.getValue());
         if (type == DISTANCE || type == DISTANCEX || type == DISTANCEY) {
             const DistanceGeometry geom = calculateDistanceGeometry(points);
@@ -1572,9 +1652,14 @@ void SoDatumLabel::GLRender(SoGLRenderAction* action)
             textOffset = geom.textOffset;
         }
 
-        glPushAttrib(GL_ENABLE_BIT | GL_PIXEL_MODE_BIT | GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        drawText(state, srcw, srch, angle, textOffset);
-        glPopAttrib();
+        ensureCoinText(state, srcw, srch, angle, textOffset);
+    }
+    else if (m_TextSwitch) {
+        m_TextSwitch->whichChild.setValue(SO_SWITCH_NONE);
+    }
+
+    if (m_Root) {
+        m_Root->GLRender(action);
     }
 
     state->pop();
@@ -1607,225 +1692,6 @@ void SoDatumLabel::getDimension(float scale, int& srcw, int& srch)
     float aspectRatio = (float)srcw / (float)srch;
     this->imgHeight = scale * (float)(srch) / sampling.getValue();
     this->imgWidth = aspectRatio * (float)this->imgHeight;
-}
-
-void SoDatumLabel::drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    (void)points;
-    angle = 0.0F;
-    textOffset = {};
-}
-
-void SoDatumLabel::drawDistance(const SbVec3f* points)
-{
-    (void)points;
-}
-
-void SoDatumLabel::drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    (void)points;
-    angle = 0.0F;
-    textOffset = {};
-}
-
-void SoDatumLabel::drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    (void)points;
-    angle = 0.0F;
-    textOffset = {};
-}
-
-void SoDatumLabel::drawSymmetric(const SbVec3f* points)
-{
-    (void)points;
-}
-
-void SoDatumLabel::drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset)
-{
-    (void)points;
-    angle = 0.0F;
-    textOffset = {};
-}
-
-namespace
-{
-/*!
- * \brief Compute sketch rotation angle in screen space.
- *
- * Calculates the rotation of the sketch relative to the camera view.
- * The angle is measured from the camera right vector to the sketch's local X axis.
- *
- * \param state Current Coin3D traversal state used to retrieve view and model matrices.
- * \param viewVolume Active view volume describing the camera projection and orientation.
- * \param flip If true, the resulting angle is inverted to account for back-facing view direction.
- *
- * \return Rotation angle in radians in the range [-pi, pi].
- *         Positive values correspond to counter-clockwise (CCW) rotation,
- *         negative values correspond to clockwise (CW) rotation.
- */
-float getSketchRotationAngle(SoState* state, const SbViewVolume& viewVolume, bool flip)
-{
-    // Camera basis from view volume (screen space axes
-    SbVec3f camRight = viewVolume.lrf - viewVolume.llf;
-    SbVec3f camUp = viewVolume.ulf - viewVolume.llf;
-
-    camRight.normalize();
-    camUp.normalize();
-
-    // Sketch local X axis in world space
-    const SbMatrix& m = SoModelMatrixElement::get(state);
-    SbVec3f xWorld;
-    m.multDirMatrix(SbVec3f(1, 0, 0), xWorld);
-
-    // Compute angle in screen space
-    float cosA = xWorld.dot(camRight);
-    float sinA = xWorld.dot(camUp);
-
-    float angleRad = std::atan2(sinA, cosA);
-
-    // Optional flip correction (back-facing view)
-    return flip ? angleRad : -angleRad;
-}
-}  // unnamed namespace
-
-// NOLINTNEXTLINE
-void SoDatumLabel::drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset)
-{
-    SbVec2s imgsize;
-    int nc {};
-    const unsigned char* dataptr = this->image.getValue(imgsize, nc);
-
-    // Get the camera z-direction
-    const SbViewVolume& vv = SoViewVolumeElement::get(state);
-    SbVec3f z = vv.zVector();
-
-    bool flip = norm.getValue().dot(z) > std::numeric_limits<float>::epsilon();
-
-    const float sketchAngle = getSketchRotationAngle(state, vv, flip);
-    const float absLabelAngle = std::abs(sketchAngle + angle);
-
-    constexpr float quarter = 90.0F;  // vertical line
-    constexpr float hysteresis = 15.0F;  // extra to avoid flipping back and forth when close to vertical
-    constexpr float threshold = Base::toRadians(quarter + hysteresis);
-
-    if ((flip && absLabelAngle > threshold) || (!flip && absLabelAngle < threshold)) {
-        angle += std::numbers::pi;
-    }
-
-    static bool init = false;
-    static bool npot = false;
-    if (!init) {
-        init = true;
-        std::string ext = reinterpret_cast<const char*>(glGetString(GL_EXTENSIONS));  // NOLINT
-        npot = (ext.find("GL_ARB_texture_non_power_of_two") != std::string::npos);
-    }
-
-    int w = srcw;
-    int h = srch;
-    if (!npot) {
-        // make power of two
-        if ((w & (w - 1)) != 0) {
-            int i = 1;
-            while (i < 8) {
-                if ((w >> i) == 0) {
-                    break;
-                }
-                i++;
-            }
-            w = (1 << i);
-        }
-        // make power of two
-        if ((h & (h - 1)) != 0) {
-            int i = 1;
-            while (i < 8) {
-                if ((h >> i) == 0) {
-                    break;
-                }
-                i++;
-            }
-            h = (1 << i);
-        }
-    }
-
-    glDisable(GL_DEPTH_TEST);
-    glEnable(GL_TEXTURE_2D);  // Enable Textures
-    glEnable(GL_BLEND);
-
-    // glGenTextures/glBindTexture was commented out but it must be active, see:
-    // #0000971: Tracing over a background image in Sketcher: image is overwritten by first
-    // dimensional constraint text #0001185: Planer image changes to number graphic when a part
-    // design constraint is made after the planar image
-    //
-    // Copy the text bitmap into memory and bind
-    GLuint myTexture {};
-    // generate a texture
-    glGenTextures(1, &myTexture);
-    glBindTexture(GL_TEXTURE_2D, myTexture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-    if (!npot) {
-        QImage imagedata(w, h, QImage::Format_ARGB32_Premultiplied);
-        imagedata.fill(0x00000000);
-        int sx = (w - srcw) / 2;
-        int sy = (h - srch) / 2;
-        glTexImage2D(
-            GL_TEXTURE_2D,
-            0,
-            nc,
-            w,
-            h,
-            0,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            (const GLvoid*)imagedata.bits()
-        );
-        glTexSubImage2D(
-            GL_TEXTURE_2D,
-            0,
-            sx,
-            sy,
-            srcw,
-            srch,
-            GL_RGBA,
-            GL_UNSIGNED_BYTE,
-            (const GLvoid*)dataptr
-        );
-    }
-    else {
-        glTexImage2D(GL_TEXTURE_2D, 0, nc, srcw, srch, 0, GL_RGBA, GL_UNSIGNED_BYTE, (const GLvoid*)dataptr);
-    }
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-    // Apply a rotation and translation matrix
-    glTranslatef(textOffset[0], textOffset[1], textOffset[2]);
-    glRotatef(Base::toDegrees<GLfloat>(angle), 0, 0, 1);
-    glBegin(GL_QUADS);
-
-    glColor3f(1.F, 1.F, 1.F);
-
-    glTexCoord2f(flip ? 0.F : 1.F, 1.F);
-    glVertex2f(-this->imgWidth / 2, this->imgHeight / 2);
-    glTexCoord2f(flip ? 0.F : 1.F, 0.F);
-    glVertex2f(-this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f(flip ? 1.F : 0.F, 0.F);
-    glVertex2f(this->imgWidth / 2, -this->imgHeight / 2);
-    glTexCoord2f(flip ? 1.F : 0.F, 1.F);
-    glVertex2f(this->imgWidth / 2, this->imgHeight / 2);
-
-    glEnd();
-
-    // Reset the Mode
-    glPopMatrix();
-
-    // wmayer: see bug report below which is caused by generating but not
-    // deleting the texture.
-    // #0000721: massive memory leak when dragging an unconstrained model
-    glDeleteTextures(1, &myTexture);
 }
 
 void SoDatumLabel::setPoints(SbVec3f p1, SbVec3f p2)

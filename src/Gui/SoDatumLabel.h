@@ -38,10 +38,6 @@
 
 #include <FCGlobal.h>
 
-
-namespace Gui
-{
-
 class SoBaseColor;
 class SoDepthBuffer;
 class SoDrawStyle;
@@ -50,7 +46,12 @@ class SoLineSet;
 class SoSeparator;
 class SoLightModel;
 class SoSwitch;
+class SoTexture2;
+class SoTransform;
 class SoVertexProperty;
+
+namespace Gui
+{
 
 class GuiExport SoDatumLabel: public SoShape
 {
@@ -196,8 +197,6 @@ private:
     };
 
     float getScaleFactor(SoState*) const;
-    static void disableCullFaceCallback(void* userdata, SoAction* action);
-    static void restoreCullFaceCallback(void* userdata, SoAction* action);
     void generateDistancePrimitives(SoAction* action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction* action, const SbVec3f&, const SbVec3f&);
     void generateAnglePrimitives(SoAction* action, const SbVec3f&);
@@ -235,25 +234,15 @@ private:
         float width,
         float length
     );
-    void drawDistance(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawDistance(const SbVec3f* points);
-    void drawRadiusOrDiameter(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawAngle(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawSymmetric(const SbVec3f* points);
-    void drawArcLength(const SbVec3f* points, float& angle, SbVec3f& textOffset);
-    void drawText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset);
 
 private:
     void drawImage();
-    void disableCullFaceIfNeeded(SoAction* action);
     void ensureCoinGeometry(const SbVec3f* points, int numPoints);
-    void restoreCullFaceIfNeeded(SoAction* action);
+    void ensureCoinText(SoState* state, int srcw, int srch, float angle, const SbVec3f& textOffset);
     void setVertexZ(SbVec3f& point, float z) const;
     float imgWidth;
     float imgHeight;
     bool glimagevalid;
-    bool m_CullFaceWasEnabled {false};
-    int m_CullFaceMode {0};
 
     SoSeparator* m_Root {nullptr};
     SoDepthBuffer* m_GeometryDepth {nullptr};
@@ -264,6 +253,15 @@ private:
     SoLineSet* m_LineSet {nullptr};
     SoVertexProperty* m_TriangleVertexProperty {nullptr};
     SoFaceSet* m_TriangleFaceSet {nullptr};
+
+    SoSwitch* m_TextSwitch {nullptr};
+    SoSeparator* m_TextSeparator {nullptr};
+    SoDepthBuffer* m_TextDepth {nullptr};
+    SoBaseColor* m_TextBaseColor {nullptr};
+    SoTexture2* m_TextTexture {nullptr};
+    SoTransform* m_TextTransform {nullptr};
+    SoVertexProperty* m_TextVertexProperty {nullptr};
+    SoFaceSet* m_TextFaceSet {nullptr};
 };
 
 }  // namespace Gui
