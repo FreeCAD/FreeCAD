@@ -91,7 +91,7 @@ class TestFanucPost(PathTestUtils.PathTestBase):
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         gcode = self.post.export()[0][1]
-        self.assertEqual(28, len(gcode.splitlines()))
+        self.assertEqual(27, len(gcode.splitlines()))
         # Test without header
         expected = """%
 (BEGIN PREAMBLE)
@@ -117,7 +117,6 @@ G54
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -143,7 +142,6 @@ G54
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -166,7 +164,7 @@ M30
         # Header contains a time stamp that messes up unit testing.
         # Only test length of result.
         gcode = self.post.export()[0][1]
-        self.assertEqual(32, len(gcode.splitlines()))
+        self.assertEqual(31, len(gcode.splitlines()))
         # Test without header
         expected = """%
 (BEGIN PREAMBLE)
@@ -196,7 +194,6 @@ M6 T0
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -225,7 +222,6 @@ M6 T0
 M05
 G17 G54 G90 G80 G40
 M30
-%
 """
 
         self.profile_op.Path = Path.Path([])
@@ -290,9 +286,8 @@ M30
             "--no-header --no-comments --postamble='G0 Z50\nM30' --no-show-editor"
         )
         gcode = self.post.export()[0][1]
-        self.assertEqual(gcode.splitlines()[-3], "G0 Z50")
-        self.assertEqual(gcode.splitlines()[-2], "M30")
-        self.assertEqual(gcode.splitlines()[-1], "%")
+        self.assertEqual(gcode.splitlines()[-2], "G0 Z50")
+        self.assertEqual(gcode.splitlines()[-1], "M30")
 
     def test_inches(self):
         """
