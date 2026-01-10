@@ -110,6 +110,7 @@ public:
     void splitCell(App::CellAddress address);
 
     Cell* getCell(App::CellAddress address);
+    const Cell* getCell(App::CellAddress address) const;
 
     Cell* getNewCell(App::CellAddress address);
 
