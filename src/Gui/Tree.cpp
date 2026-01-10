@@ -6340,9 +6340,25 @@ void DocumentObjectItem::displayStatusInfo()
     if (Obj->mustExecute() == 1 && !Obj->isError()) {
         info += TreeWidget::tr(" (but must be executed)");
     }
-
-    QString status = TreeWidget::tr("%1, Internal name: %2")
-                         .arg(info, QString::fromLatin1(Obj->getNameInDocument()));
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/View");
+    bool showFullfilePath = hGrp->GetBool("StatusBarShowFullfilePath", false);
+    QString status;
+    MDIView* view = object()->getDocument()->getActiveView();
+    if (view) {
+        if (auto document = view->getGuiDocument()) {
+            if (showFullfilePath) {
+                status = TreeWidget::tr("%1, Internal name: %2 - %3")
+                .arg(info,
+                     QString::fromLatin1(Obj->getNameInDocument()),
+                     QString::fromUtf8(document->getDocument()->FileName.getValue()));
+            }
+            else {
+                status = TreeWidget::tr("%1, Internal name: %2")
+                .arg(info, QString::fromLatin1(Obj->getNameInDocument()));
+            }
+        }
+    }
 
     if (!Obj->isError()) {
         getMainWindow()->showMessage(status);
