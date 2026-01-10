@@ -1,24 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2004 Jürgen Riegel <juergen.riegel@web.de>              *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2004 Jürgen Riegel <juergen.riegel@web.de>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #include <FCConfig.h>
 
@@ -42,6 +43,7 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
 #include <Inventor/actions/SoRayPickAction.h>
 #include <Inventor/annex/HardCopy/SoVectorizePSAction.h>
@@ -74,6 +76,11 @@
 #include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoDepthBuffer.h>
+#include <Inventor/nodes/SoFaceSet.h>
+#include <Inventor/nodes/SoTexture2.h>
+#include <Inventor/nodes/SoTextureCoordinate2.h>
+#include <Inventor/nodes/SoVertexProperty.h>
 #include <QBitmap>
 #include <QEventLoop>
 #if defined(Q_OS_LINUX) && QT_VERSION < QT_VERSION_CHECK(6, 6, 0)
@@ -167,6 +174,208 @@ public:
 private:
     View3DInventorViewer& viewer;
 };
+
+namespace
+{
+int qImageByteCount(const QImage& image)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return static_cast<int>(image.sizeInBytes());
+#else
+    return image.byteCount();
+#endif
+}
+
+void setOverlayCacheContext(SoGLRenderAction& action, const View3DInventorViewer* viewer)
+{
+    if (!viewer || !viewer->getSoRenderManager()) {
+        return;
+    }
+
+    if (auto* glra = viewer->getSoRenderManager()->getGLRenderAction()) {
+        action.setCacheContext(glra->getCacheContext());
+    }
+}
+
+SoSeparator* create2DOverlayRoot(int viewportWidth, int viewportHeight)
+{
+    auto* root = new SoSeparator;
+    root->ref();
+
+    auto* camera = new SoOrthographicCamera;
+    camera->aspectRatio.setValue(
+        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
+    );
+    camera->height.setValue(static_cast<float>(viewportHeight));
+    root->addChild(camera);
+
+    auto* depth = new SoDepthBuffer;
+    depth->test.setValue(false);
+    depth->write.setValue(false);
+    depth->function.setValue(SoDepthBuffer::ALWAYS);
+    root->addChild(depth);
+
+    auto* lightModel = new SoLightModel;
+    lightModel->model.setValue(SoLightModel::BASE_COLOR);
+    root->addChild(lightModel);
+
+    return root;
+}
+
+void applyOverlay(SoNode* root, int viewportWidth, int viewportHeight, const View3DInventorViewer* viewer)
+{
+    SoGLRenderAction action(SbViewportRegion(viewportWidth, viewportHeight));
+    setOverlayCacheContext(action, viewer);
+    action.setTransparencyType(SoGLRenderAction::BLEND);
+    action.apply(root);
+}
+
+struct OverlayImageState
+{
+    SoSeparator* root {nullptr};
+    SoOrthographicCamera* camera {nullptr};
+    SoDepthBuffer* depth {nullptr};
+    SoLightModel* lightModel {nullptr};
+    SoMaterial* material {nullptr};
+    SoTexture2* texture {nullptr};
+    SoTextureCoordinate2* texCoord {nullptr};
+    SoVertexProperty* vertices {nullptr};
+    SoFaceSet* quad {nullptr};
+    std::vector<unsigned char> pixelStorage;
+
+    void ensureCreated()
+    {
+        if (root) {
+            return;
+        }
+
+        root = new SoSeparator;
+        root->ref();
+
+        camera = new SoOrthographicCamera;
+        root->addChild(camera);
+
+        depth = new SoDepthBuffer;
+        depth->test.setValue(false);
+        depth->write.setValue(false);
+        depth->function.setValue(SoDepthBuffer::ALWAYS);
+        root->addChild(depth);
+
+        lightModel = new SoLightModel;
+        lightModel->model.setValue(SoLightModel::BASE_COLOR);
+        root->addChild(lightModel);
+
+        material = new SoMaterial;
+        material->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+        material->transparency.setValue(0.0f);
+        root->addChild(material);
+
+        texture = new SoTexture2;
+        texture->wrapS.setValue(SoTexture2::CLAMP);
+        texture->wrapT.setValue(SoTexture2::CLAMP);
+        root->addChild(texture);
+
+        texCoord = new SoTextureCoordinate2;
+        texCoord->point.set1Value(0, SbVec2f(0.0f, 0.0f));
+        texCoord->point.set1Value(1, SbVec2f(1.0f, 0.0f));
+        texCoord->point.set1Value(2, SbVec2f(1.0f, 1.0f));
+        texCoord->point.set1Value(3, SbVec2f(0.0f, 1.0f));
+        root->addChild(texCoord);
+
+        vertices = new SoVertexProperty;
+
+        quad = new SoFaceSet;
+        quad->vertexProperty.setValue(vertices);
+        quad->numVertices.setValue(4);
+        root->addChild(quad);
+    }
+};
+
+OverlayImageState& overlayImageState()
+{
+    static OverlayImageState state;
+    return state;
+}
+
+bool hasFramebufferBlitSupport()
+{
+    return QOpenGLFramebufferObject::hasOpenGLFramebufferBlit();
+}
+
+void renderOverlayImage(
+    const QImage& image,
+    int viewportWidth,
+    int viewportHeight,
+    float drawWidth,
+    float drawHeight,
+    const View3DInventorViewer* viewer
+)
+{
+    if (viewportWidth <= 0 || viewportHeight <= 0 || image.isNull()) {
+        return;
+    }
+
+    auto& overlay = overlayImageState();
+    overlay.ensureCreated();
+    if (!overlay.root || !overlay.camera || !overlay.texture || !overlay.vertices) {
+        return;
+    }
+
+    overlay.camera->aspectRatio.setValue(
+        static_cast<float>(viewportWidth) / static_cast<float>(viewportHeight)
+    );
+    overlay.camera->height.setValue(static_cast<float>(viewportHeight));
+
+    QImage rgba = image.convertToFormat(QImage::Format_RGBA8888);
+    overlay.pixelStorage.assign(rgba.constBits(), rgba.constBits() + qImageByteCount(rgba));
+    overlay.texture->image
+        .setValue(SbVec2s(rgba.width(), rgba.height()), 4, overlay.pixelStorage.data());
+
+    const float baseX = -0.5f * static_cast<float>(viewportWidth);
+    const float baseY = -0.5f * static_cast<float>(viewportHeight);
+
+    overlay.vertices->vertex.set1Value(0, SbVec3f(baseX, baseY, 0.0f));
+    overlay.vertices->vertex.set1Value(1, SbVec3f(baseX + drawWidth, baseY, 0.0f));
+    overlay.vertices->vertex.set1Value(2, SbVec3f(baseX + drawWidth, baseY + drawHeight, 0.0f));
+    overlay.vertices->vertex.set1Value(3, SbVec3f(baseX, baseY + drawHeight, 0.0f));
+
+    applyOverlay(overlay.root, viewportWidth, viewportHeight, viewer);
+}
+
+void renderOverlaySolidColor(
+    const QColor& col,
+    int viewportWidth,
+    int viewportHeight,
+    const View3DInventorViewer* viewer
+)
+{
+    SoSeparator* root = create2DOverlayRoot(viewportWidth, viewportHeight);
+
+    auto* material = new SoMaterial;
+    material->diffuseColor.setValue(
+        static_cast<float>(col.redF()),
+        static_cast<float>(col.greenF()),
+        static_cast<float>(col.blueF())
+    );
+    material->transparency.setValue(1.0f - static_cast<float>(col.alphaF()));
+    root->addChild(material);
+
+    auto* vertices = new SoVertexProperty;
+    vertices->vertex.set1Value(0, SbVec3f(-0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(1, SbVec3f(0.5f * viewportWidth, -0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(2, SbVec3f(0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
+    vertices->vertex.set1Value(3, SbVec3f(-0.5f * viewportWidth, 0.5f * viewportHeight, 0.0f));
+
+    auto* face = new SoFaceSet;
+    face->vertexProperty.setValue(vertices);
+    face->numVertices.setValue(4);
+    root->addChild(face);
+
+    applyOverlay(root, viewportWidth, viewportHeight, viewer);
+    root->unref();
+}
+
+}  // namespace
 
 /*!
 As ProgressBar has no chance to control the incoming Qt events of Quarter so we need to stop
@@ -2330,7 +2539,7 @@ void View3DInventorViewer::setRenderType(RenderType type)
                 fboFormat.setSamples(getNumSamples());
                 fboFormat.setAttachment(QOpenGLFramebufferObject::Depth);
                 auto fbo = new QOpenGLFramebufferObject(width, height, fboFormat);
-                if (fbo->format().samples() > 0) {
+                if (fbo->format().samples() > 0 && hasFramebufferBlitSupport()) {
                     renderToFramebuffer(fbo);
                     framebuffer = new QOpenGLFramebufferObject(fbo->size());
                     // this is needed to be able to render the texture later
@@ -2338,6 +2547,16 @@ void View3DInventorViewer::setRenderType(RenderType type)
                     delete fbo;
                 }
                 else {
+                    if (fbo->format().samples() > 0 && !hasFramebufferBlitSupport()) {
+                        Base::Console().warning(
+                            "Framebuffer blit is unavailable; falling back to a single-sample "
+                            "offscreen buffer\n"
+                        );
+                        delete fbo;
+                        QOpenGLFramebufferObjectFormat fallbackFormat;
+                        fallbackFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+                        fbo = new QOpenGLFramebufferObject(width, height, fallbackFormat);
+                    }
                     renderToFramebuffer(fbo);
                     framebuffer = fbo;
                 }
@@ -2482,8 +2701,6 @@ void View3DInventorViewer::renderToFramebuffer(QOpenGLFramebufferObject* fbo)
     int width = fbo->size().width();
     int height = fbo->size().height();
 
-    glDisable(GL_TEXTURE_2D);
-    glEnable(GL_LIGHTING);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_LINE_SMOOTH);
 
@@ -2541,68 +2758,74 @@ void View3DInventorViewer::renderFramebuffer()
 {
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (!this->framebuffer || viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glViewport(0, 0, size[0], size[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glDisable(GL_DEPTH_TEST);
+    static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
+    glViewport(0, 0, viewportWidth, viewportHeight);
 
-    glClear(GL_COLOR_BUFFER_BIT);
-    glEnable(GL_TEXTURE_2D);
-    glBindTexture(GL_TEXTURE_2D, this->framebuffer->texture());
-    glColor3f(1.0, 1.0, 1.0);
-
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0F, 0.0F);
-    glVertex2f(-1.0, -1.0F);
-    glTexCoord2f(1.0F, 0.0F);
-    glVertex2f(1.0F, -1.0F);
-    glTexCoord2f(1.0F, 1.0F);
-    glVertex2f(1.0F, 1.0F);
-    glTexCoord2f(0.0F, 1.0F);
-    glVertex2f(-1.0F, 1.0F);
-    glEnd();
+    if (hasFramebufferBlitSupport()) {
+        const QSize srcSize = this->framebuffer->size();
+        QOpenGLFramebufferObject::blitFramebuffer(
+            nullptr,
+            QRect(0, 0, viewportWidth, viewportHeight),
+            this->framebuffer,
+            QRect(0, 0, srcSize.width(), srcSize.height()),
+            GL_COLOR_BUFFER_BIT,
+            GL_NEAREST
+        );
+    }
+    else {
+        renderOverlayImage(
+            this->framebuffer->toImage(false),
+            viewportWidth,
+            viewportHeight,
+            static_cast<float>(viewportWidth),
+            static_cast<float>(viewportHeight),
+            this
+        );
+    }
 
     printDimension();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
     }
-
-    glPopAttrib();
 }
 
 void View3DInventorViewer::renderGLImage()
 {
     const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
     SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (viewportWidth <= 0 || viewportHeight <= 0 || glImage.isNull()) {
+        return;
+    }
 
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    glDisable(GL_LIGHTING);
-    glViewport(0, 0, size[0], size[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, size[0], 0, size[1], 0, 100);  // NOLINT
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glDisable(GL_DEPTH_TEST);
+    static_cast<QOpenGLWidget*>(this->viewport())->makeCurrent();  // NOLINT
+    glViewport(0, 0, viewportWidth, viewportHeight);
+    const QColor col = this->backgroundColor();
+    glClearColor(float(col.redF()), float(col.greenF()), float(col.blueF()), 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glRasterPos2f(0, 0);
-    glDrawPixels(glImage.width(), glImage.height(), GL_BGRA, GL_UNSIGNED_BYTE, glImage.bits());
+    renderOverlayImage(
+        glImage,
+        viewportWidth,
+        viewportHeight,
+        static_cast<float>(glImage.width()),
+        static_cast<float>(glImage.height()),
+        this
+    );
 
     printDimension();
 
     for (auto it : this->graphicsItems) {
         it->paintGL();
     }
-
-    glPopAttrib();
 }
 
 // #define ENABLE_GL_DEPTH_RANGE
@@ -2775,11 +2998,17 @@ void View3DInventorViewer::renderScene()
     // https://bugreports.qt.io/browse/QTBUG-119214
     // https://github.com/FreeCAD/FreeCAD/issues/8341
     // https://github.com/FreeCAD/FreeCAD/issues/6177
-    glPushAttrib(GL_COLOR_BUFFER_BIT);
+    GLboolean colorMask[4] = {GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE};
+    glGetBooleanv(GL_COLOR_WRITEMASK, colorMask);
+    GLfloat clearColor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    glGetFloatv(GL_COLOR_CLEAR_VALUE, clearColor);
+
     glColorMask(false, false, false, true);
     glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
-    glPopAttrib();
+
+    glColorMask(colorMask[0], colorMask[1], colorMask[2], colorMask[3]);
+    glClearColor(clearColor[0], clearColor[1], clearColor[2], clearColor[3]);
 }
 
 void View3DInventorViewer::setSeekMode(bool on)
@@ -4553,32 +4782,15 @@ void View3DInventorViewer::drawSingleBackground(const QColor& col)
     // Note: After changing the NaviCube code the content of an image plane may appear black.
     // A workaround is this function.
     // See also: https://github.com/FreeCAD/FreeCAD/pull/9356#issuecomment-1529521654
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    glOrtho(-1, 1, -1, 1, -1, 1);
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    glLoadIdentity();
-    glPushAttrib(GL_ENABLE_BIT);
-    glDisable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glBegin(GL_TRIANGLE_STRIP);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(-1, 1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(-1, -1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(1, 1);
-    glColor3f(float(col.redF()), float(col.greenF()), float(col.blueF()));
-    glVertex2f(1, -1);
-    glEnd();
-    glPopAttrib();
-    glPopMatrix();
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
+    const SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    const SbVec2s size = vp.getViewportSizePixels();
+    const int viewportWidth = size[0];
+    const int viewportHeight = size[1];
+    if (viewportWidth <= 0 || viewportHeight <= 0) {
+        return;
+    }
+
+    renderOverlaySolidColor(col, viewportWidth, viewportHeight, this);
 }
 
 // ************************************************************************
