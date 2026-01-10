@@ -983,34 +983,35 @@ QString getPreselectionInfo(
 
     int numberDecimals = std::min(6, static_cast<int>(Base::UnitsApi::getDecimals()));
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View");
+        "User parameter:BaseApp/Preferences/View"
+    );
     QString message;
     bool showFullfilePath = hGrp->GetBool("StatusBarShowFullfilePath", false);
-        if (showFullfilePath) {
-            message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9) - %10")
-                          .arg(QString::fromUtf8(documentName))
-                          .arg(QString::fromUtf8(objectName))
-                          .arg(QString::fromUtf8(subElementName))
-                          .arg(QString::number(pts[0].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[0].second))
-                          .arg(QString::number(pts[1].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[1].second))
-                          .arg(QString::number(pts[2].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[2].second))
-                          .arg(QString::fromUtf8(doc->getDocument()->FileName.getValue()));
-        }
-        else {
-            message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
-                          .arg(QString::fromUtf8(documentName))
-                          .arg(QString::fromUtf8(objectName))
-                          .arg(QString::fromUtf8(subElementName))
-                          .arg(QString::number(pts[0].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[0].second))
-                          .arg(QString::number(pts[1].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[1].second))
-                          .arg(QString::number(pts[2].first, 'f', numberDecimals))
-                          .arg(QString::fromStdString(pts[2].second));
-        }
+    if (showFullfilePath) {
+        message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9) - %10")
+                      .arg(QString::fromUtf8(documentName))
+                      .arg(QString::fromUtf8(objectName))
+                      .arg(QString::fromUtf8(subElementName))
+                      .arg(QString::number(pts[0].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[0].second))
+                      .arg(QString::number(pts[1].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[1].second))
+                      .arg(QString::number(pts[2].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[2].second))
+                      .arg(QString::fromUtf8(doc->getDocument()->FileName.getValue()));
+    }
+    else {
+        message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
+                      .arg(QString::fromUtf8(documentName))
+                      .arg(QString::fromUtf8(objectName))
+                      .arg(QString::fromUtf8(subElementName))
+                      .arg(QString::number(pts[0].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[0].second))
+                      .arg(QString::number(pts[1].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[1].second))
+                      .arg(QString::number(pts[2].first, 'f', numberDecimals))
+                      .arg(QString::fromStdString(pts[2].second));
+    }
     return message;
 }
 
