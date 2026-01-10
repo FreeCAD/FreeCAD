@@ -92,21 +92,26 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         return PathOp.FeatureBaseGeometry | PathOp.FeatureLocations | PathOp.FeatureCoolant
 
     def onDocumentRestored(self, obj):
-        if not hasattr(obj, "chipBreakEnabled"):
+        if hasattr(obj, "chipBreakEnabled"):
+            obj.renameProperty("chipBreakEnabled", "ChipBreakEnabled")
+        elif not hasattr(obj, "ChipBreakEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "chipBreakEnabled",
+                "ChipBreakEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
             )
 
-        if not hasattr(obj, "feedRetractEnabled"):
+        if hasattr(obj, "feedRetractEnabled"):
+            obj.renameProperty("feedRetractEnabled", "FeedRetractEnabled")
+        elif not hasattr(obj, "FeedRetractEnabled"):
             obj.addProperty(
                 "App::PropertyBool",
-                "feedRetractEnabled",
+                "FeedRetractEnabled",
                 "Drill",
                 QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
             )
+
         if hasattr(obj, "RetractMode"):
             obj.removeProperty("RetractMode")
 
@@ -140,7 +145,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "chipBreakEnabled",
+            "ChipBreakEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use chipbreaking"),
         )
@@ -191,10 +196,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
-            "feedRetractEnabled",
+            "FeedRetractEnabled",
             "Drill",
             QT_TRANSLATE_NOOP("App::Property", "Use G85 boring cycle with feed out"),
         )
+
+        for n in self.propertyEnumerations():
+            setattr(obj, n[0], n[1])
 
     def circularHoleExecute(self, obj, holes):
         """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
@@ -220,7 +228,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # build list of solids for collision detection.
         # Include base objects from job
         solids = []
-        for base in job.BaseObjects:
+        for base in self.job.Model.Group:
             solids.append(base.Shape)
 
         # http://linuxcnc.org/docs/html/gcode/g-code.html#gcode:g98-g99
@@ -258,13 +266,13 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
             else:  # Use get_linking_moves generator
                 linking_moves = linking.get_linking_moves(
-                    machinestate.getPosition(),
-                    startPoint,
-                    obj.ClearanceHeight.Value,
-                    obj.SafeHeight.Value,
-                    self.tool,
-                    solids,
-                    obj.RetractHeight.Value,
+                    start_position=machinestate.getPosition(),
+                    target_position=startPoint,
+                    local_clearance=obj.SafeHeight.Value,
+                    global_clearance=obj.ClearanceHeight.Value,
+                    tool_shape=self.tool.Shape,
+                    solids=solids,
+                    retract_height_offset=obj.RetractHeight.Value,
                 )
                 if len(linking_moves) == 1:  # straight move possible.  Do nothing.
                     pass
@@ -275,7 +283,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             dwelltime = obj.DwellTime if obj.DwellEnabled else 0.0
             peckdepth = obj.PeckDepth.Value if obj.PeckEnabled else 0.0
             repeat = 1  # technical debt:  Add a repeat property for user control
-            chipBreak = obj.chipBreakEnabled and obj.PeckEnabled
+            chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
 
             try:
                 drillcommands = drill.generate(
@@ -285,7 +293,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                     repeat,
                     obj.RetractHeight.Value,
                     chipBreak=chipBreak,
-                    feedRetract=obj.feedRetractEnabled,
+                    feedRetract=obj.FeedRetractEnabled,
                 )
 
             except ValueError as e:  # any targets that fail the generator are ignored

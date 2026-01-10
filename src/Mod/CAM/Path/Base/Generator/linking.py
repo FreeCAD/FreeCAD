@@ -59,7 +59,7 @@ def get_linking_moves(
         if len(solids) == 1:
             collision_model = solids[0]
         elif len(solids) > 1:
-            collision_model = Part.makeFuse(solids)
+            collision_model = Part.makeCompound(solids)
 
     # Determine candidate heights
     if retract_height_offset is not None:
