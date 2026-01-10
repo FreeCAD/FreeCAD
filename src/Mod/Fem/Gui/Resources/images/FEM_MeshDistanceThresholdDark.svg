@@ -7,7 +7,7 @@
    id="svg2860"
    version="1.1"
    sodipodi:docname="FEM_MeshDistanceThresholdDark.svg"
-   inkscape:version="1.4.1 (93de688d07, 2025-03-30)"
+   inkscape:version="1.4.2 (ebf0e940d0, 2025-05-08)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -25,9 +25,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
-     inkscape:zoom="4.3172182"
-     inkscape:cx="192.94832"
-     inkscape:cy="103.19145"
+     inkscape:zoom="3.0527343"
+     inkscape:cx="247.97442"
+     inkscape:cy="-25.387077"
      inkscape:window-width="3132"
      inkscape:window-height="1772"
      inkscape:window-x="0"
@@ -138,8 +138,8 @@
        id="path1" />
     <path
        style="fill:none;fill-opacity:1;stroke:#02317b;stroke-width:3.44466;stroke-linecap:square;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
-       d="M 15.811894,99.018495 H 115.64404 L 254.38534,35.191231"
+       d="m 15.811894,99.018495 h 99.832146 l 140.45447,-64.364049 39.9394,-0.0055"
        id="path3"
-       sodipodi:nodetypes="ccc" />
+       sodipodi:nodetypes="cccc" />
   </g>
 </svg>
