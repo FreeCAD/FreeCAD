@@ -815,6 +815,9 @@ App::DocumentObject* DocumentObjectWeakPtrT::_get() const noexcept
     return d->get();
 }
 
+DocumentObjectWeakPtrT::DocumentObjectWeakPtrT(DocumentObjectWeakPtrT&&) = default;
+DocumentObjectWeakPtrT& DocumentObjectWeakPtrT::operator=(DocumentObjectWeakPtrT&&) = default;
+
 void DocumentObjectWeakPtrT::reset()
 {
     d->reset();
