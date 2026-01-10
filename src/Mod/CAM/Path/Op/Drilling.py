@@ -308,7 +308,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 command.Annotations = annotations
                 self.commandlist.append(command)
                 machinestate.addCommand(command)
-            
+
             # Update Z position based on RetractMode
             # G98: retract to initial Z (ClearanceHeight)
             # G99: retract to R parameter (RetractHeight)

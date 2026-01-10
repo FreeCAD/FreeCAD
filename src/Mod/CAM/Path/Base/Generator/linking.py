@@ -46,7 +46,7 @@ def check_collision(
     """
     if start_position == target_position:
         return False
-    
+
     # Build collision model
     collision_model = None
     if solids:
@@ -55,10 +55,10 @@ def check_collision(
             collision_model = solids[0]
         elif len(solids) > 1:
             collision_model = Part.makeCompound(solids)
-    
+
     if not collision_model:
         return False
-    
+
     # Create direct path wire
     wire = Part.Wire([Part.makeLine(start_position, target_position)])
     distance = wire.distToShape(collision_model)[0]
@@ -77,14 +77,14 @@ def get_linking_moves(
 ) -> list:
     """
     Generate linking moves from start to target position.
-    
+
     If skip_if_no_collision is True and the direct path at the current height
     is collision-free, returns empty list (useful for canned drill cycles that
     handle their own retraction).
     """
     if start_position == target_position:
         return []
-    
+
     # For canned cycles: if we're already at a safe height and can move directly, skip linking
     if skip_if_no_collision:
         if not check_collision(start_position, target_position, solids):
@@ -148,19 +148,19 @@ def make_linking_wire(start: Vector, target: Vector, z: float) -> Part.Wire:
     p1 = Vector(start.x, start.y, z)
     p2 = Vector(target.x, target.y, z)
     edges = []
-    
+
     # Only add retract edge if there's actual movement
     if not start.isEqual(p1, 1e-6):
         edges.append(Part.makeLine(start, p1))
-    
+
     # Only add traverse edge if there's actual movement
     if not p1.isEqual(p2, 1e-6):
         edges.append(Part.makeLine(p1, p2))
-    
+
     # Only add plunge edge if there's actual movement
     if not p2.isEqual(target, 1e-6):
         edges.append(Part.makeLine(p2, target))
-    
+
     return Part.Wire(edges) if edges else Part.Wire([Part.makeLine(start, target)])
 
 
