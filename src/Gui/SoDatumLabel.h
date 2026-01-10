@@ -1,24 +1,25 @@
-/***************************************************************************
- *   Copyright (c) 2011-2012 Luke Parry <l.parry@warwick.ac.uk>            *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
- *                                                                         *
- *   This library is free software; you can redistribute it and/or         *
- *   modify it under the terms of the GNU Library General Public           *
- *   License as published by the Free Software Foundation; either          *
- *   version 2 of the License, or (at your option) any later version.      *
- *                                                                         *
- *   This library  is distributed in the hope that it will be useful,      *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU Library General Public License for more details.                  *
- *                                                                         *
- *   You should have received a copy of the GNU Library General Public     *
- *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
- *   Suite 330, Boston, MA  02111-1307, USA                                *
- *                                                                         *
- ***************************************************************************/
+// SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileCopyrightText: 2011-2012 Luke Parry <l.parry@warwick.ac.uk>
+// SPDX-FileCopyrightText: 2026 Joao Matos
+// SPDX-FileNotice: Part of the FreeCAD project.
+
+/******************************************************************************
+ *                                                                            *
+ *   FreeCAD is free software: you can redistribute it and/or modify          *
+ *   it under the terms of the GNU Lesser General Public License as           *
+ *   published by the Free Software Foundation, either version 2.1 of the     *
+ *   License, or (at your option) any later version.                          *
+ *                                                                            *
+ *   FreeCAD is distributed in the hope that it will be useful, but           *
+ *   WITHOUT ANY WARRANTY; without even the implied warranty of               *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the            *
+ *   GNU Lesser General Public License for more details.                      *
+ *                                                                            *
+ *   You should have received a copy of the GNU Lesser General Public         *
+ *   License along with FreeCAD.  If not, see                                *
+ *   <https://www.gnu.org/licenses/>.                                         *
+ *                                                                            *
+ ******************************************************************************/
 
 #pragma once
 
@@ -40,6 +41,16 @@
 
 namespace Gui
 {
+
+class SoBaseColor;
+class SoDepthBuffer;
+class SoDrawStyle;
+class SoFaceSet;
+class SoLineSet;
+class SoSeparator;
+class SoLightModel;
+class SoSwitch;
+class SoVertexProperty;
 
 class GuiExport SoDatumLabel: public SoShape
 {
@@ -94,7 +105,7 @@ public:
     bool useAntialiasing;
 
 protected:
-    ~SoDatumLabel() override = default;
+    ~SoDatumLabel() override;
     void GLRender(SoGLRenderAction* action) override;
     void computeBBox(SoAction*, SbBox3f& box, SbVec3f& center) override;
     void generatePrimitives(SoAction* action) override;
@@ -185,6 +196,8 @@ private:
     };
 
     float getScaleFactor(SoState*) const;
+    static void disableCullFaceCallback(void* userdata, SoAction* action);
+    static void restoreCullFaceCallback(void* userdata, SoAction* action);
     void generateDistancePrimitives(SoAction* action, const SbVec3f&, const SbVec3f&);
     void generateDiameterPrimitives(SoAction* action, const SbVec3f&, const SbVec3f&);
     void generateAnglePrimitives(SoAction* action, const SbVec3f&);
@@ -232,9 +245,25 @@ private:
 
 private:
     void drawImage();
+    void disableCullFaceIfNeeded(SoAction* action);
+    void ensureCoinGeometry(const SbVec3f* points, int numPoints);
+    void restoreCullFaceIfNeeded(SoAction* action);
+    void setVertexZ(SbVec3f& point, float z) const;
     float imgWidth;
     float imgHeight;
     bool glimagevalid;
+    bool m_CullFaceWasEnabled {false};
+    int m_CullFaceMode {0};
+
+    SoSeparator* m_Root {nullptr};
+    SoDepthBuffer* m_GeometryDepth {nullptr};
+    SoLightModel* m_LightModel {nullptr};
+    SoBaseColor* m_GeometryColor {nullptr};
+    SoDrawStyle* m_DrawStyle {nullptr};
+    SoVertexProperty* m_LineVertexProperty {nullptr};
+    SoLineSet* m_LineSet {nullptr};
+    SoVertexProperty* m_TriangleVertexProperty {nullptr};
+    SoFaceSet* m_TriangleFaceSet {nullptr};
 };
 
 }  // namespace Gui
