@@ -29,6 +29,7 @@
 #include <boost/signals2.hpp>
 #include <memory>
 #include <set>
+#include <string>
 #include <FCGlobal.h>
 
 
@@ -370,6 +371,14 @@ public:
     explicit DocumentObjectWeakPtrT(App::DocumentObject*);
     ~DocumentObjectWeakPtrT();
 
+    // disable copy
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT &) = delete;
+    DocumentObjectWeakPtrT &operator=(const DocumentObjectWeakPtrT &) = delete;
+
+    // default move
+    DocumentObjectWeakPtrT(DocumentObjectWeakPtrT &&);
+    DocumentObjectWeakPtrT &operator=(DocumentObjectWeakPtrT &&);
+
     /*!
      * \brief reset
      * Releases the reference to the managed object. After the call *this manages no object.
@@ -414,11 +423,6 @@ public:
 
 private:
     App::DocumentObject* _get() const noexcept;
-
-public:
-    // disable
-    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&) = delete;
-    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&) = delete;
 
 private:
     class Private;
@@ -611,6 +615,15 @@ private:
 };
 
 }  // namespace App
+
+template<>
+struct std::hash<App::DocumentObjectWeakPtrT>
+{
+    std::size_t operator()(const App::DocumentObjectWeakPtrT& ptr) const noexcept
+    {
+        return std::hash<App::DocumentObject*>{}(*ptr);
+    }
+};
 
 ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)
 
