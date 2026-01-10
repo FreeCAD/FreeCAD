@@ -38,6 +38,9 @@
 
 #include <fmt/format.h>
 
+#include <algorithm>
+#include <array>
+
 #include <Inventor/SbBox.h>
 #include <Inventor/SoEventManager.h>
 #include <Inventor/SoPickedPoint.h>
@@ -373,6 +376,250 @@ void renderOverlaySolidColor(
 
     applyOverlay(root, viewportWidth, viewportHeight, viewer);
     root->unref();
+}
+
+SoSeparator* createAxisArrowGeometry()
+{
+    constexpr float shaftLength = 1.0f - 1.0f / 3.0f;
+    constexpr float halfThickness = 0.02f;
+    constexpr float headHalfExtent = 0.5f / 4.0f;
+
+    auto* root = new SoSeparator;
+
+    auto* vertices = new SoVertexProperty;
+    int v = 0;
+
+    auto add = [&](float x, float y, float z) {
+        vertices->vertex.set1Value(v++, SbVec3f(x, y, z));
+    };
+
+    // Shaft (5 quads)
+    add(0.0f, -halfThickness, halfThickness);
+    add(0.0f, halfThickness, halfThickness);
+    add(shaftLength, halfThickness, halfThickness);
+    add(shaftLength, -halfThickness, halfThickness);
+
+    add(0.0f, -halfThickness, -halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, -halfThickness);
+
+    add(0.0f, -halfThickness, halfThickness);
+    add(0.0f, -halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, -halfThickness);
+    add(shaftLength, -halfThickness, halfThickness);
+
+    add(0.0f, halfThickness, halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, -halfThickness);
+    add(shaftLength, halfThickness, halfThickness);
+
+    add(0.0f, halfThickness, halfThickness);
+    add(0.0f, halfThickness, -halfThickness);
+    add(0.0f, -halfThickness, -halfThickness);
+    add(0.0f, -halfThickness, halfThickness);
+
+    // Tip (2 triangles)
+    add(1.0f, 0.0f, 0.0f);
+    add(shaftLength, headHalfExtent, 0.0f);
+    add(shaftLength, -headHalfExtent, 0.0f);
+
+    add(1.0f, 0.0f, 0.0f);
+    add(shaftLength, 0.0f, headHalfExtent);
+    add(shaftLength, 0.0f, -headHalfExtent);
+
+    // Tip base (1 quad)
+    add(shaftLength, headHalfExtent, 0.0f);
+    add(shaftLength, 0.0f, headHalfExtent);
+    add(shaftLength, -headHalfExtent, 0.0f);
+    add(shaftLength, 0.0f, -headHalfExtent);
+
+    static constexpr int faceCounts[] = {4, 4, 4, 4, 4, 3, 3, 4};
+    auto* faceSet = new SoFaceSet;
+    faceSet->vertexProperty.setValue(vertices);
+    faceSet->numVertices.setValues(0, static_cast<int>(std::size(faceCounts)), faceCounts);
+
+    root->addChild(faceSet);
+    return root;
+}
+
+struct OverlayAxisCrossState
+{
+    SoSeparator* axisRoot {nullptr};
+    SoPerspectiveCamera* axisCamera {nullptr};
+    SoDepthBuffer* axisDepth {nullptr};
+    SoLightModel* axisLightModel {nullptr};
+    SoTransform* axisTransform {nullptr};
+    SoSeparator* axisGroup {nullptr};
+
+    SoSeparator* xAxis {nullptr};
+    SoMaterial* xMaterial {nullptr};
+
+    SoSeparator* yAxis {nullptr};
+    SoMaterial* yMaterial {nullptr};
+    SoRotation* yRotation {nullptr};
+
+    SoSeparator* zAxis {nullptr};
+    SoMaterial* zMaterial {nullptr};
+    SoRotation* zRotation {nullptr};
+
+    SoSeparator* lettersRoot {nullptr};
+    SoOrthographicCamera* lettersCamera {nullptr};
+    SoDepthBuffer* lettersDepth {nullptr};
+    SoLightModel* lettersLightModel {nullptr};
+    SoMaterial* lettersMaterial {nullptr};
+
+    struct Letter
+    {
+        SoSeparator* root {nullptr};
+        SoTranslation* position {nullptr};
+        SoScale* scale {nullptr};
+        SoTexture2* texture {nullptr};
+        SoVertexProperty* vertices {nullptr};
+        SoFaceSet* quad {nullptr};
+    };
+
+    Letter xLetter;
+    Letter yLetter;
+    Letter zLetter;
+
+    void ensureCreated()
+    {
+        if (axisRoot) {
+            return;
+        }
+
+        axisRoot = new SoSeparator;
+        axisRoot->ref();
+
+        axisCamera = new SoPerspectiveCamera;
+        axisCamera->position.setValue(0.0f, 0.0f, 0.0f);
+        axisCamera->orientation.setValue(SbRotation::identity());
+        axisCamera->heightAngle.setValue(static_cast<float>(std::numbers::pi / 4.0));
+        axisCamera->nearDistance.setValue(0.1f);
+        axisCamera->farDistance.setValue(10.0f);
+        axisRoot->addChild(axisCamera);
+
+        axisDepth = new SoDepthBuffer;
+        axisDepth->test.setValue(false);
+        axisDepth->write.setValue(false);
+        axisDepth->function.setValue(SoDepthBuffer::ALWAYS);
+        axisRoot->addChild(axisDepth);
+
+        axisLightModel = new SoLightModel;
+        axisLightModel->model.setValue(SoLightModel::BASE_COLOR);
+        axisRoot->addChild(axisLightModel);
+
+        axisTransform = new SoTransform;
+        axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
+        axisRoot->addChild(axisTransform);
+
+        axisGroup = new SoSeparator;
+        axisRoot->addChild(axisGroup);
+
+        auto* arrow = createAxisArrowGeometry();
+
+        xAxis = new SoSeparator;
+        xAxis->ref();
+        xMaterial = new SoMaterial;
+        xAxis->addChild(xMaterial);
+        xAxis->addChild(arrow);
+
+        yAxis = new SoSeparator;
+        yAxis->ref();
+        yMaterial = new SoMaterial;
+        yAxis->addChild(yMaterial);
+        yRotation = new SoRotation;
+        yRotation->rotation.setValue(
+            SbVec3f(0.0f, 0.0f, 1.0f),
+            static_cast<float>(std::numbers::pi / 2.0)
+        );
+        yAxis->addChild(yRotation);
+        yAxis->addChild(arrow);
+
+        zAxis = new SoSeparator;
+        zAxis->ref();
+        zMaterial = new SoMaterial;
+        zAxis->addChild(zMaterial);
+        zRotation = new SoRotation;
+        zRotation->rotation.setValue(
+            SbVec3f(0.0f, 1.0f, 0.0f),
+            static_cast<float>(-std::numbers::pi / 2.0)
+        );
+        zAxis->addChild(zRotation);
+        zAxis->addChild(arrow);
+
+        lettersRoot = new SoSeparator;
+        lettersRoot->ref();
+
+        lettersCamera = new SoOrthographicCamera;
+        lettersRoot->addChild(lettersCamera);
+
+        lettersDepth = new SoDepthBuffer;
+        lettersDepth->test.setValue(false);
+        lettersDepth->write.setValue(false);
+        lettersDepth->function.setValue(SoDepthBuffer::ALWAYS);
+        lettersRoot->addChild(lettersDepth);
+
+        lettersLightModel = new SoLightModel;
+        lettersLightModel->model.setValue(SoLightModel::BASE_COLOR);
+        lettersRoot->addChild(lettersLightModel);
+
+        lettersMaterial = new SoMaterial;
+        lettersMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+        lettersMaterial->transparency.setValue(0.0f);
+        lettersRoot->addChild(lettersMaterial);
+
+        auto buildLetter = [](Letter& out, int w, int h) {
+            out.root = new SoSeparator;
+
+            out.position = new SoTranslation;
+            out.root->addChild(out.position);
+
+            out.scale = new SoScale;
+            out.root->addChild(out.scale);
+
+            out.texture = new SoTexture2;
+            out.texture->wrapS.setValue(SoTexture2::CLAMP);
+            out.texture->wrapT.setValue(SoTexture2::CLAMP);
+            out.texture->model.setValue(SoTexture2::MODULATE);
+            out.texture->enableCompressedTexture.setValue(FALSE);
+            out.root->addChild(out.texture);
+
+            out.vertices = new SoVertexProperty;
+            out.vertices->vertex.set1Value(0, SbVec3f(0.0f, 0.0f, 0.0f));
+            out.vertices->vertex.set1Value(1, SbVec3f(static_cast<float>(w), 0.0f, 0.0f));
+            out.vertices->vertex.set1Value(
+                2,
+                SbVec3f(static_cast<float>(w), static_cast<float>(h), 0.0f)
+            );
+            out.vertices->vertex.set1Value(3, SbVec3f(0.0f, static_cast<float>(h), 0.0f));
+
+            out.vertices->texCoord.set1Value(0, SbVec2f(0.0f, 0.0f));
+            out.vertices->texCoord.set1Value(1, SbVec2f(1.0f, 0.0f));
+            out.vertices->texCoord.set1Value(2, SbVec2f(1.0f, 1.0f));
+            out.vertices->texCoord.set1Value(3, SbVec2f(0.0f, 1.0f));
+
+            out.quad = new SoFaceSet;
+            out.quad->vertexProperty.setValue(out.vertices);
+            out.quad->numVertices.setValue(4);
+            out.root->addChild(out.quad);
+        };
+
+        buildLetter(xLetter, XPM_WIDTH, XPM_HEIGHT);
+        buildLetter(yLetter, YPM_WIDTH, YPM_HEIGHT);
+        buildLetter(zLetter, ZPM_WIDTH, ZPM_HEIGHT);
+
+        lettersRoot->addChild(xLetter.root);
+        lettersRoot->addChild(yLetter.root);
+        lettersRoot->addChild(zLetter.root);
+    }
+};
+
+OverlayAxisCrossState& overlayAxisCrossState()
+{
+    static OverlayAxisCrossState state;
+    return state;
 }
 
 }  // namespace
@@ -4540,241 +4787,138 @@ void View3DInventorViewer::updateColors()
 
 void View3DInventorViewer::drawAxisCross()
 {
-    // NOLINTBEGIN
-    // FIXME: convert this to a superimposition scenegraph instead of
-    // OpenGL calls. 20020603 mortene.
+    const SbVec2s view = this->getSoRenderManager()->getSize();
+    const int viewWidth = view[0];
+    const int viewHeight = view[1];
+    if (viewWidth <= 0 || viewHeight <= 0) {
+        return;
+    }
 
-    // Store GL state.
-    glPushAttrib(GL_ALL_ATTRIB_BITS);
-    GLfloat depthrange[2];
-    glGetFloatv(GL_DEPTH_RANGE, depthrange);
-    GLdouble projectionmatrix[16];
-    glGetDoublev(GL_PROJECTION_MATRIX, projectionmatrix);
+    const int pixelarea = static_cast<int>(
+        static_cast<float>(this->axiscrossSize) / 100.0F * std::min(viewWidth, viewHeight)
+    );
+    if (pixelarea <= 0) {
+        return;
+    }
 
-    glDepthFunc(GL_ALWAYS);
-    glDepthMask(GL_TRUE);
-    glDepthRange(0, 0);
-    glEnable(GL_DEPTH_TEST);
-    glDisable(GL_LIGHTING);
-    glEnable(GL_COLOR_MATERIAL);
-    glDisable(GL_BLEND);  // Kills transparency.
+    const SbVec2s origin(viewWidth - pixelarea, 0);
 
-    // Set the viewport in the OpenGL canvas. Dimensions are calculated
-    // as a percentage of the total canvas size.
-    SbVec2s view = this->getSoRenderManager()->getSize();
-    const int pixelarea = int(float(this->axiscrossSize) / 100.0F * std::min(view[0], view[1]));
-    SbVec2s origin(view[0] - pixelarea, 0);
-    glViewport(origin[0], origin[1], pixelarea, pixelarea);
+    constexpr float nearVal = 0.1f;
+    constexpr float farVal = 10.0f;
+    const float dim = nearVal * static_cast<float>(std::tan(std::numbers::pi / 8.0));
 
-    // Set up the projection matrix.
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    const float NEARVAL = 0.1F;
-    const float FARVAL = 10.0F;
-    const float dim = NEARVAL * float(tan(std::numbers::pi / 8.0));  // FOV is 45 deg (45/360 = 1/8)
-    glFrustum(-dim, dim, -dim, dim, NEARVAL, FARVAL);
-
-
-    // Set up the model matrix.
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-    SbMatrix mx;
+    SbMatrix model;
     SoCamera* cam = this->getSoRenderManager()->getCamera();
-
-    // If there is no camera (like for an empty scene, for instance),
-    // just use an identity rotation.
     if (cam) {
-        mx = cam->orientation.getValue();
+        model = cam->orientation.getValue();
     }
     else {
-        mx = SbMatrix::identity();
+        model = SbMatrix::identity();
     }
+    model = model.inverse();
+    model[3][0] = 0.0f;
+    model[3][1] = 0.0f;
+    model[3][2] = -3.5f;
 
-    mx = mx.inverse();
-    mx[3][2] = -3.5;  // Translate away from the projection point (along z axis).
-    glLoadMatrixf((float*)mx);
+    SbViewVolume vv;
+    vv.frustum(-dim, dim, -dim, dim, nearVal, farVal);
+    SbMatrix affine;
+    SbMatrix projection;
+    vv.getMatrices(affine, projection);
 
-
-    // Find unit vector end points.
-    SbMatrix px;
-    glGetFloatv(GL_PROJECTION_MATRIX, (float*)px);
-    SbMatrix comb = mx.multRight(px);  // clazy:exclude=rule-of-two-soft
-
+    const SbMatrix comb = model.multRight(projection);
     SbVec3f xpos;
     comb.multVecMatrix(SbVec3f(1, 0, 0), xpos);
-    xpos[0] = (1 + xpos[0]) * view[0] / 2;
-    xpos[1] = (1 + xpos[1]) * view[1] / 2;
+    xpos[0] = (1 + xpos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    xpos[1] = (1 + xpos[1]) * static_cast<float>(viewHeight) / 2.0f;
     SbVec3f ypos;
     comb.multVecMatrix(SbVec3f(0, 1, 0), ypos);
-    ypos[0] = (1 + ypos[0]) * view[0] / 2;
-    ypos[1] = (1 + ypos[1]) * view[1] / 2;
+    ypos[0] = (1 + ypos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    ypos[1] = (1 + ypos[1]) * static_cast<float>(viewHeight) / 2.0f;
     SbVec3f zpos;
     comb.multVecMatrix(SbVec3f(0, 0, 1), zpos);
-    zpos[0] = (1 + zpos[0]) * view[0] / 2;
-    zpos[1] = (1 + zpos[1]) * view[1] / 2;
+    zpos[0] = (1 + zpos[0]) * static_cast<float>(viewWidth) / 2.0f;
+    zpos[1] = (1 + zpos[1]) * static_cast<float>(viewHeight) / 2.0f;
 
-
-    // Render the cross.
-    {
-        glLineWidth(2.0);
-
-        enum
-        {
-            XAXIS,
-            YAXIS,
-            ZAXIS
-        };
-        int idx[3] = {XAXIS, YAXIS, ZAXIS};
-        float val[3] = {xpos[2], ypos[2], zpos[2]};
-
-        // Bubble sort.. :-}
-        if (val[0] < val[1]) {
-            std::swap(val[0], val[1]);
-            std::swap(idx[0], idx[1]);
-        }
-
-        if (val[1] < val[2]) {
-            std::swap(val[1], val[2]);
-            std::swap(idx[1], idx[2]);
-        }
-
-        if (val[0] < val[1]) {
-            std::swap(val[0], val[1]);
-            std::swap(idx[0], idx[1]);
-        }
-
-        assert((val[0] >= val[1]) && (val[1] >= val[2]));  // Just checking..
-
-        for (const int& i : idx) {
-            glPushMatrix();
-
-            if (i == XAXIS) {                                             // X axis.
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {  // What is this
-                    glColor3f(0.500F, 0.5F, 0.5F);                        // Why different colors??
-                }
-                else {
-                    glColor3f(m_xColor.r, m_xColor.g, m_xColor.b);
-                }
-            }
-            else if (i == YAXIS) {  // Y axis.
-                glRotatef(90, 0, 0, 1);
-
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-                    glColor3f(0.400F, 0.4F, 0.4F);
-                }
-                else {
-                    glColor3f(m_yColor.r, m_yColor.g, m_yColor.b);
-                }
-            }
-            else {  // Z axis.
-                glRotatef(-90, 0, 1, 0);
-
-                if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-                    glColor3f(0.300F, 0.3F, 0.3F);
-                }
-                else {
-                    glColor3f(m_zColor.r, m_zColor.g, m_zColor.b);
-                }
-            }
-
-            drawArrow();
-            glPopMatrix();
-        }
+    auto& overlay = overlayAxisCrossState();
+    overlay.ensureCreated();
+    if (!overlay.axisRoot || !overlay.axisTransform || !overlay.axisGroup || !overlay.lettersRoot
+        || !overlay.lettersCamera) {
+        return;
     }
 
-    // Render axis notation letters ("X", "Y", "Z").
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrtho(0, view[0], 0, view[1], -1, 1);
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    GLint unpack {};
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, &unpack);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
-    if (stereoMode() != Quarter::SoQTQuarterAdaptor::MONO) {
-        glColor3fv(SbVec3f(1.0F, 1.0F, 1.0F).getValue());
+    SbRotation inv;
+    if (cam) {
+        inv = cam->orientation.getValue().inverse();
     }
     else {
-        glColor3fv(SbVec3f(0.0F, 0.0F, 0.0F).getValue());
+        inv = SbRotation::identity();
+    }
+    overlay.axisTransform->rotation.setValue(inv);
+    overlay.axisTransform->translation.setValue(0.0f, 0.0f, -3.5f);
+
+    const bool stereo = stereoMode() != Quarter::SoQTQuarterAdaptor::MONO;
+    if (stereo) {
+        overlay.xMaterial->diffuseColor.setValue(0.5f, 0.5f, 0.5f);
+        overlay.yMaterial->diffuseColor.setValue(0.4f, 0.4f, 0.4f);
+        overlay.zMaterial->diffuseColor.setValue(0.3f, 0.3f, 0.3f);
+    }
+    else {
+        overlay.xMaterial->diffuseColor.setValue(m_xColor.r, m_xColor.g, m_xColor.b);
+        overlay.yMaterial->diffuseColor.setValue(m_yColor.r, m_yColor.g, m_yColor.b);
+        overlay.zMaterial->diffuseColor.setValue(m_zColor.r, m_zColor.g, m_zColor.b);
     }
 
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glPixelZoom((float)axiscrossSize / 30, (float)axiscrossSize / 30);  // 30 = 3 (character pixmap
-                                                                        // ratio) * 10 (default
-                                                                        // axiscrossSize)
-    glRasterPos2d(xpos[0], xpos[1]);
-    glDrawPixels(XPM_WIDTH, XPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, XPM_pixel_data);
-    glRasterPos2d(ypos[0], ypos[1]);
-    glDrawPixels(YPM_WIDTH, YPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, YPM_pixel_data);
-    glRasterPos2d(zpos[0], zpos[1]);
-    glDrawPixels(ZPM_WIDTH, ZPM_HEIGHT, GL_RGBA, GL_UNSIGNED_BYTE, ZPM_pixel_data);
+    std::array<std::pair<float, SoNode*>, 3> axes = {
+        std::pair<float, SoNode*> {xpos[2], overlay.xAxis},
+        std::pair<float, SoNode*> {ypos[2], overlay.yAxis},
+        std::pair<float, SoNode*> {zpos[2], overlay.zAxis},
+    };
+    std::sort(axes.begin(), axes.end(), [](const auto& a, const auto& b) {
+        return a.first > b.first;
+    });
+    overlay.axisGroup->removeAllChildren();
+    for (const auto& axis : axes) {
+        overlay.axisGroup->addChild(axis.second);
+    }
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, unpack);
-    glPopMatrix();
+    overlay.lettersCamera->aspectRatio.setValue(
+        static_cast<float>(viewWidth) / static_cast<float>(viewHeight)
+    );
+    overlay.lettersCamera->height.setValue(static_cast<float>(viewHeight));
 
-    // Reset original state.
+    // The overlay viewport above is sized in physical framebuffer pixels, so
+    // the axis letters must scale by the device pixel ratio to keep the same
+    // perceived size as the axis cross on HiDPI displays.
+    const float scale = static_cast<float>(axiscrossSize) / 30.0f
+        * static_cast<float>(devicePixelRatio());
+    overlay.xLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    overlay.yLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
+    overlay.zLetter.scale->scaleFactor.setValue(scale, scale, 1.0f);
 
-    // FIXME: are these 3 lines really necessary, as we push
-    // GL_ALL_ATTRIB_BITS at the start? 20000604 mortene.
-    glDepthRange(depthrange[0], depthrange[1]);
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(projectionmatrix);
+    overlay.xLetter.position->translation
+        .setValue(xpos[0] - 0.5f * viewWidth, xpos[1] - 0.5f * viewHeight, 0.0f);
+    overlay.yLetter.position->translation
+        .setValue(ypos[0] - 0.5f * viewWidth, ypos[1] - 0.5f * viewHeight, 0.0f);
+    overlay.zLetter.position->translation
+        .setValue(zpos[0] - 0.5f * viewWidth, zpos[1] - 0.5f * viewHeight, 0.0f);
 
-    glPopAttrib();
-    // NOLINTEND
-}
+    overlay.xLetter.texture->image.setValue(SbVec2s(XPM_WIDTH, XPM_HEIGHT), 4, XPM_pixel_data);
+    overlay.yLetter.texture->image.setValue(SbVec2s(YPM_WIDTH, YPM_HEIGHT), 4, YPM_pixel_data);
+    overlay.zLetter.texture->image.setValue(SbVec2s(ZPM_WIDTH, ZPM_HEIGHT), 4, ZPM_pixel_data);
 
-// Draw an arrow for the axis representation directly through OpenGL.
-void View3DInventorViewer::drawArrow()
-{
-    // NOLINTBEGIN
-    glDisable(GL_CULL_FACE);
-    glBegin(GL_QUADS);
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, 0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, 0.02F);
+    SbViewportRegion vp = this->getSoRenderManager()->getViewportRegion();
+    vp.setViewportPixels(origin[0], origin[1], pixelarea, pixelarea);
 
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, -0.02F);
+    SoGLRenderAction axisAction(vp);
+    setOverlayCacheContext(axisAction, this);
+    axisAction.setTransparencyType(SoGLRenderAction::BLEND);
+    axisAction.apply(overlay.axisRoot);
 
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.02F, 0.02F);
-
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, -0.02F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.02F, 0.02F);
-
-    glVertex3f(0.0F, 0.02F, 0.02F);
-    glVertex3f(0.0F, 0.02F, -0.02F);
-    glVertex3f(0.0F, -0.02F, -0.02F);
-    glVertex3f(0.0F, -0.02F, 0.02F);
-    glEnd();
-    glBegin(GL_TRIANGLES);
-    glVertex3f(1.0F, 0.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, +0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F, 0.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, +0.5F / 4.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, -0.5F / 4.0F);
-    glEnd();
-    glBegin(GL_QUADS);
-    glVertex3f(1.0F - 1.0F / 3.0F, +0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, +0.5F / 4.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, -0.5F / 4.0F, 0.0F);
-    glVertex3f(1.0F - 1.0F / 3.0F, 0.0F, -0.5F / 4.0F);
-    glEnd();
-    // NOLINTEND
+    SoGLRenderAction letterAction(vp);
+    setOverlayCacheContext(letterAction, this);
+    letterAction.setTransparencyType(SoGLRenderAction::BLEND);
+    letterAction.apply(overlay.lettersRoot);
 }
 
 void View3DInventorViewer::drawSingleBackground(const QColor& col)
