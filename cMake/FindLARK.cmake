@@ -23,9 +23,10 @@ if(Python3_EXECUTABLE)
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 
-    message(STATUS "FindLark: Result = ${_LARK_SEARCH_SUCCESS}")
-    message(STATUS "FindLark: Version = ${LARK_VERSION}")
-    message(STATUS "FindLark: Error = ${_LARK_ERROR_VALUE}")
+    message(DEBUG "FindLark: Result = ${_LARK_SEARCH_SUCCESS}")
+    message(DEBUG "FindLark: Version = ${LARK_VERSION}")
+    message(DEBUG "FindLark: Error = ${_LARK_ERROR_VALUE}")
+    message(STATUS "The BIM workbench requires the lark python package / module to be installed")
 
     if(_LARK_SEARCH_SUCCESS MATCHES 0)
         # extract version components
