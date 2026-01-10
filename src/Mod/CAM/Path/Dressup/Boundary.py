@@ -307,9 +307,9 @@ class PathBoundary:
                                     commands.extend(
                                         Path.Geom.cmdsForEdge(
                                             e,
-                                            flip,
-                                            tc.HorizFeed.Value,
-                                            tc.VertFeed.Value,
+                                            flip=flip,
+                                            hSpeed=tc.HorizFeed.Value,
+                                            vSpeed=tc.VertFeed.Value,
                                         )
                                     )
                                     # restore G0 movement
