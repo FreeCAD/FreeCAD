@@ -721,28 +721,6 @@ class _Wall(ArchComponent.Component):
                                 translate("Arch", "This mesh is an invalid solid") + "\n"
                             )
                             obj.Base.ViewObject.show()
-
-        # Check if there is base, and if width and height is provided or not
-        # Provide users message below to check the setting of the Wall object
-        if not base and (self.noWidths or self.noHeight):
-            FreeCAD.Console.PrintMessage(translate("Arch", "Wall object.Label "), obj.Label + "\n")
-            if self.noWidths:
-                FreeCAD.Console.PrintMessage(
-                    translate(
-                        "Arch",
-                        "- Found 0 in Width (also found 0 in OverrideWidth and return 0 width from Base ArchSketch, if using).",
-                    )
-                    + "\n"
-                )
-            if self.noHeight:
-                FreeCAD.Console.PrintMessage(translate("Arch", "- Found 0 in Height.") + "\n")
-            FreeCAD.Console.PrintMessage(
-                translate(
-                    "Arch",
-                    "- The Wall object would have no volume unless  1) its Base has object which has Solid or  2) there is object in its Additions.",
-                )
-                + "\n"
-            )
         if not base:
             # FreeCAD.Console.PrintError(translate("Arch","Error: Invalid base object")+"\n")
             # return
@@ -750,6 +728,14 @@ class _Wall(ArchComponent.Component):
             base = Part.Shape()
         base = self.processSubShapes(obj, base, pl)
         self.applyShape(obj, base, pl)
+
+        # Check if there is base, and if width and height is provided or not
+        # Provide users message below to check the setting of the Wall object
+        if base.isNull() and (self.noWidths or self.noHeight):
+            FreeCAD.Console.PrintMessage(translate("Arch", "Wall object.Label "), obj.Label + "\n")
+            FreeCAD.Console.PrintMessage(
+                translate("Arch", "- Cannot create or update Wall as its length, height or width is zero, and there is no solid in the Additions") + "\n"
+            )
 
         # count blocks
         if hasattr(obj, "MakeBlocks"):
