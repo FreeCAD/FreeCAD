@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *                                                                         *
 # *   based upon linuxcnc_post.py (c) sliptonic (shopinthewoods@gmail.com)  *
@@ -505,7 +507,7 @@ def export(objectslist, filename, argstring):
     # Show the results
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

@@ -26,22 +26,15 @@
 
 #include <qglobal.h>
 #if QT_VERSION < 0x060000
-#include <QTextCodec>
+# include <QTextCodec>
 #else
-#include <QByteArray>
-#include <QStringDecoder>
-#include <QStringEncoder>
+# include <QByteArray>
+# include <QStringDecoder>
+# include <QStringEncoder>
 #endif
 
 #include "InputSource.h"
 #include "XMLTools.h"
-
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
-using namespace XERCES_CPP_NAMESPACE;
-#else
-XERCES_CPP_NAMESPACE_USE
-#endif
 
 using namespace Base;
 using namespace std;
@@ -66,9 +59,8 @@ struct StdInputStream::TextCodec
         QTextCodec* textCodec = QTextCodec::codecForName("UTF-8");
         if (textCodec) {
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-            const QString text = textCodec->toUnicode(reinterpret_cast<char*>(toFill),
-                                                      static_cast<int>(len),
-                                                      &state);
+            const QString text
+                = textCodec->toUnicode(reinterpret_cast<char*>(toFill), static_cast<int>(len), &state);
             if (state.invalidChars > 0) {
                 // In case invalid characters were found decode back to 'utf-8' and replace
                 // them with '?'
@@ -114,8 +106,7 @@ struct StdInputStream::TextCodec
 };
 #endif
 
-StdInputStream::StdInputStream(std::istream& Stream,
-                               XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager)
+StdInputStream::StdInputStream(std::istream& Stream, XERCES_CPP_NAMESPACE::MemoryManager* const manager)
     : stream(Stream)
     , codec(new TextCodec)
 {
@@ -153,9 +144,11 @@ XMLSize_t StdInputStream::readBytes(XMLByte* const toFill, const XMLSize_t maxTo
 // ---------------------------------------------------------------------------
 //  StdInputSource: Constructors and Destructor
 // ---------------------------------------------------------------------------
-StdInputSource::StdInputSource(std::istream& Stream,
-                               const char* filePath,
-                               XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager)
+StdInputSource::StdInputSource(
+    std::istream& Stream,
+    const char* filePath,
+    XERCES_CPP_NAMESPACE::MemoryManager* const manager
+)
     : InputSource(manager)
     , stream(Stream)
 {
@@ -171,7 +164,7 @@ StdInputSource::~StdInputSource() = default;
 // ---------------------------------------------------------------------------
 //  StdInputSource: InputSource interface implementation
 // ---------------------------------------------------------------------------
-BinInputStream* StdInputSource::makeStream() const
+XERCES_CPP_NAMESPACE::BinInputStream* StdInputSource::makeStream() const
 {
     StdInputStream* retStrm = new StdInputStream(stream /*, getMemoryManager()*/);
     return retStrm;

@@ -85,7 +85,7 @@ class BIM_Material:
         w = PARAMS.GetInt("BimMaterialDialogWidth", 230)
         h = PARAMS.GetInt("BimMaterialDialogHeight", 350)
         self.dlg.resize(w, h)
-        self.dlg.setWindowTitle(translate("BIM", "Select material"))
+        self.dlg.setWindowTitle(translate("BIM", "Select Material"))
         self.dlg.setWindowIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
         mw = FreeCADGui.getMainWindow()
         self.dlg.move(mw.frameGeometry().topLeft() + mw.rect().center() - self.dlg.rect().center())
@@ -104,8 +104,8 @@ class BIM_Material:
             searchLayout = QtGui.QHBoxLayout()
             searchLayout.setSpacing(2)
             searchBox = MatLineEdit(self.dlg)
-            searchBox.setPlaceholderText(translate("BIM", "Search Objects"))
-            searchBox.setToolTip(translate("BIM", "Searches for objects in the tree"))
+            searchBox.setPlaceholderText(translate("BIM", "Search materials"))
+            searchBox.setToolTip(translate("BIM", "Searches for materials in the list"))
             self.dlg.searchBox = searchBox
             searchLayout.addWidget(searchBox)
             searchBox.textChanged.connect(self.onSearch)
@@ -138,7 +138,7 @@ class BIM_Material:
             buttonCreate.clicked.connect(self.onCreate)
 
             # create multi
-            buttonMulti = QtGui.QPushButton(translate("BIM", "Create new Multi-Material"), self.dlg)
+            buttonMulti = QtGui.QPushButton(translate("BIM", "New Multi-Material"), self.dlg)
             buttonMulti.setIcon(QtGui.QIcon(":/icons/Arch_Material_Multi.svg"))
             createButtonsLayout.addWidget(buttonMulti, 0, 1)
             buttonMulti.clicked.connect(self.onMulti)
@@ -545,7 +545,7 @@ class Arch_Material:
         FreeCADGui.Control.closeDialog()
         FreeCADGui.doCommand("mat = Arch.makeMaterial()")
         for obj in sel:
-            if hasattr(obj, "Material"):
+            if hasattr(obj, "Material") and hasattr(obj, "MoveWithHost"):  # 'isComponent' check
                 FreeCADGui.doCommand(
                     'FreeCAD.ActiveDocument.getObject("' + obj.Name + '").Material = mat'
                 )

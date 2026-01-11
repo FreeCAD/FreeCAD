@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -68,11 +70,13 @@ class ParametersDialog: public QDialog
     Q_OBJECT
 
 public:
-    ParametersDialog(std::vector<float>&,
-                     FitParameter*,
-                     ParameterList,
-                     Mesh::Feature* mesh,
-                     QWidget* parent = nullptr);
+    ParametersDialog(
+        std::vector<float>&,
+        FitParameter*,
+        ParameterList,
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr
+    );
     ~ParametersDialog() override;
     void accept() override;
     void reject() override;
@@ -99,9 +103,11 @@ class MeshGuiExport SegmentationBestFit: public QWidget
     Q_OBJECT
 
 public:
-    explicit SegmentationBestFit(Mesh::Feature* mesh,
-                                 QWidget* parent = nullptr,
-                                 Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit SegmentationBestFit(
+        Mesh::Feature* mesh,
+        QWidget* parent = nullptr,
+        Qt::WindowFlags fl = Qt::WindowFlags()
+    );
     ~SegmentationBestFit() override;
     void accept();
 

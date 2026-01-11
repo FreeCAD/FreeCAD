@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -53,10 +55,9 @@ DlgMacroRecordImp::DlgMacroRecordImp(QWidget* parent, Qt::WindowFlags fl)
     setupConnections();
 
     // get the macro home path
-    this->macroPath =
-        QString::fromUtf8(getWindowParameter()
-                              ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str())
-                              .c_str());
+    this->macroPath = QString::fromUtf8(
+        getWindowParameter()->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str()).c_str()
+    );
     this->macroPath = QDir::toNativeSeparators(QDir(this->macroPath).path() + QDir::separator());
 
     // set the edit fields
@@ -98,9 +99,11 @@ void DlgMacroRecordImp::onButtonStartClicked()
 {
     // test if the path already set
     if (ui->lineEditPath->text().isEmpty()) {
-        QMessageBox::information(getMainWindow(),
-                                 tr("Macro recorder"),
-                                 tr("Specify a place to save first."));
+        QMessageBox::information(
+            getMainWindow(),
+            tr("Macro recorder"),
+            tr("Specify a place to save first.")
+        );
         return;
     }
 
@@ -109,7 +112,8 @@ void DlgMacroRecordImp::onButtonStartClicked()
         QMessageBox::information(
             getMainWindow(),
             tr("Macro recorder"),
-            tr("The macro directory does not exist. Choose another one."));
+            tr("The macro directory does not exist. Choose another one.")
+        );
         return;
     }
 
@@ -126,7 +130,8 @@ void DlgMacroRecordImp::onButtonStartClicked()
                 tr("Existing macro"),
                 tr("The macro '%1' already exists. Overwrite it?").arg(fn),
                 QMessageBox::Yes | QMessageBox::No,
-                QMessageBox::No)
+                QMessageBox::No
+            )
             == QMessageBox::No) {
             return;
         }
@@ -137,7 +142,8 @@ void DlgMacroRecordImp::onButtonStartClicked()
         QMessageBox::information(
             getMainWindow(),
             tr("Macro recorder"),
-            tr("You have no write permission for the directory. Choose another one."));
+            tr("You have no write permission for the directory. Choose another one.")
+        );
         return;
     }
     file.close();
@@ -181,8 +187,8 @@ void DlgMacroRecordImp::onButtonStopClicked()
 
 void DlgMacroRecordImp::onButtonChooseDirClicked()
 {
-    QString newDir =
-        QFileDialog::getExistingDirectory(nullptr, tr("Choose macro directory"), macroPath);
+    QString newDir
+        = QFileDialog::getExistingDirectory(nullptr, tr("Choose macro directory"), macroPath);
     if (!newDir.isEmpty()) {
         macroPath = QDir::toNativeSeparators(newDir + QDir::separator());
         ui->lineEditMacroPath->setText(macroPath);

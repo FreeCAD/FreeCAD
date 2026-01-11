@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -65,30 +67,25 @@ namespace sp = std::placeholders;
  *
  * This class is not intended to control based on a custom widget.
  */
-template<typename HandlerT,           // The name of the actual handler of the tool
-         typename SelectModeT,        // The state machine defining the working of the tool
-         int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
-         typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view
-         typename WidgetParametersT,  // The number of parameter spinboxes in the default widget
-         typename WidgetCheckboxesT,  // The number of checkboxes in the default widget
-         typename WidgetComboboxesT,  // The number of comboboxes in the default widget
-         typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
-         bool PFirstComboboxIsConstructionMethod =
-             false>  // The handler template or class having this as inner class
-class DrawSketchDefaultWidgetController: public DrawSketchController<HandlerT,
-                                                                     SelectModeT,
-                                                                     PAutoConstraintSize,
-                                                                     OnViewParametersT,
-                                                                     ConstructionMethodT>
+template<
+    typename HandlerT,           // The name of the actual handler of the tool
+    typename SelectModeT,        // The state machine defining the working of the tool
+    int PAutoConstraintSize,     // The initial size of the AutoConstraint vector
+    typename OnViewParametersT,  // The number of parameter spinboxes in the 3D view
+    typename WidgetParametersT,  // The number of parameter spinboxes in the default widget
+    typename WidgetCheckboxesT,  // The number of checkboxes in the default widget
+    typename WidgetComboboxesT,  // The number of comboboxes in the default widget
+    typename ConstructionMethodT = ConstructionMethods::DefaultConstructionMethod,
+    bool PFirstComboboxIsConstructionMethod = false>  // The handler template or class having this
+                                                      // as inner class
+class DrawSketchDefaultWidgetController
+    : public DrawSketchController<HandlerT, SelectModeT, PAutoConstraintSize, OnViewParametersT, ConstructionMethodT>
 {
 public:
     /** @name Meta-programming definitions and members */
     //@{
-    using ControllerBase = DrawSketchController<HandlerT,
-                                                SelectModeT,
-                                                PAutoConstraintSize,
-                                                OnViewParametersT,
-                                                ConstructionMethodT>;
+    using ControllerBase
+        = DrawSketchController<HandlerT, SelectModeT, PAutoConstraintSize, OnViewParametersT, ConstructionMethodT>;
     //@}
 
 private:
@@ -98,7 +95,7 @@ private:
 
     SketcherToolDefaultWidget* toolWidget;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::advanced_connection;
 
     Connection connectionParameterTabOrEnterPressed;
     Connection connectionParameterValueChanged;
@@ -313,8 +310,8 @@ protected:
 
             if (parameterindex < static_cast<unsigned int>(nParameter)) {
                 toolWidget->setParameterFocus(parameterindex);
-                ControllerBase::parameterWithFocus =
-                    ControllerBase::onViewParameters.size() + parameterindex;
+                ControllerBase::parameterWithFocus = ControllerBase::onViewParameters.size()
+                    + parameterindex;
             }
         }
     }
@@ -362,37 +359,31 @@ private:
         toolWidget = static_cast<SketcherToolDefaultWidget*>(widget);  // NOLINT
 
         connectionParameterTabOrEnterPressed = toolWidget->registerParameterTabOrEnterPressed(
-            std::bind(&DrawSketchDefaultWidgetController::parameterTabOrEnterPressed,
-                      this,
-                      sp::_1));
+            std::bind(&DrawSketchDefaultWidgetController::parameterTabOrEnterPressed, this, sp::_1)
+        );
 
         connectionParameterValueChanged = toolWidget->registerParameterValueChanged(
-            std::bind(&DrawSketchDefaultWidgetController::parameterValueChanged,
-                      this,
-                      sp::_1,
-                      sp::_2));
+            std::bind(&DrawSketchDefaultWidgetController::parameterValueChanged, this, sp::_1, sp::_2)
+        );
 
         connectionCheckboxCheckedChanged = toolWidget->registerCheckboxCheckedChanged(
-            std::bind(&DrawSketchDefaultWidgetController::checkboxCheckedChanged,
-                      this,
-                      sp::_1,
-                      sp::_2));
+            std::bind(&DrawSketchDefaultWidgetController::checkboxCheckedChanged, this, sp::_1, sp::_2)
+        );
 
         connectionComboboxSelectionChanged = toolWidget->registerComboboxSelectionChanged(
-            std::bind(&DrawSketchDefaultWidgetController::comboboxSelectionChanged,
-                      this,
-                      sp::_1,
-                      sp::_2));
+            std::bind(&DrawSketchDefaultWidgetController::comboboxSelectionChanged, this, sp::_1, sp::_2)
+        );
     }
 
     /// Resets the widget
     void resetDefaultWidget()
     {
-        boost::signals2::shared_connection_block parameter_focus_block(
-            connectionParameterTabOrEnterPressed);
-        boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
-        boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
-        boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+        fastsignals::shared_connection_block parameter_focus_block(
+            connectionParameterTabOrEnterPressed
+        );
+        fastsignals::shared_connection_block parameter_block(connectionParameterValueChanged);
+        fastsignals::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
+        fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
 
         nParameter = WidgetParametersT::size(handler->constructionMethod());
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
@@ -412,8 +403,7 @@ private:
 
             if (currentindex != methodint) {
                 // avoid triggering of method change
-                boost::signals2::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged);
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
             }
         }
@@ -462,8 +452,7 @@ private:
             auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
 
             if (constructionmethod != actualconstructionmethod) {
-                boost::signals2::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged);
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
             }
         }

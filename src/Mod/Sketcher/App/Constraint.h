@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -192,18 +194,20 @@ private:
     // clang-format on
 
     constexpr static std::array<const char*, InternalAlignmentType::NumInternalAlignmentType>
-        internalAlignmentType2str {{"Undef",
-                                    "EllipseMajorDiameter",
-                                    "EllipseMinorDiameter",
-                                    "EllipseFocus1",
-                                    "EllipseFocus2",
-                                    "HyperbolaMajor",
-                                    "HyperbolaMinor",
-                                    "HyperbolaFocus",
-                                    "ParabolaFocus",
-                                    "BSplineControlPoint",
-                                    "BSplineKnotPoint",
-                                    "ParabolaFocalAxis"}};
+        internalAlignmentType2str {
+            {"Undef",
+             "EllipseMajorDiameter",
+             "EllipseMinorDiameter",
+             "EllipseFocus1",
+             "EllipseFocus2",
+             "HyperbolaMajor",
+             "HyperbolaMinor",
+             "HyperbolaFocus",
+             "ParabolaFocus",
+             "BSplineControlPoint",
+             "BSplineKnotPoint",
+             "ParabolaFocalAxis"}
+        };
 
 public:
     ConstraintType Type {None};

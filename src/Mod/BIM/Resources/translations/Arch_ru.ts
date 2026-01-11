@@ -202,8 +202,8 @@
       <translation>Описание операции</translation>
     </message>
     <message>
-      <location filename="../ui/dialogTree.ui" line="65"/>
       <location filename="../ui/ArchSchedule.ui" line="68"/>
+      <location filename="../ui/dialogTree.ui" line="65"/>
       <source>Property</source>
       <translation>Свойство</translation>
     </message>
@@ -409,11 +409,11 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Оставаться в системе во всех сеансах FreeCAD</translation>
     </message>
     <message>
+      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
+      <location filename="../ui/dialogPhases.ui" line="14"/>
+      <location filename="../ui/dialogExport.ui" line="14"/>
       <location filename="../ui/DialogDisplayText.ui" line="14"/>
       <location filename="../ui/dialogListWidget.ui" line="14"/>
-      <location filename="../ui/dialogQuantitySurveying.ui" line="14"/>
-      <location filename="../ui/dialogExport.ui" line="14"/>
-      <location filename="../ui/dialogPhases.ui" line="14"/>
       <source>Dialog</source>
       <translation>Диалог</translation>
     </message>
@@ -433,8 +433,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Только выбранные объекты</translation>
     </message>
     <message>
-      <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <location filename="../ui/dialogIfcElements.ui" line="30"/>
+      <location filename="../ui/dialogIfcQuantities.ui" line="30"/>
       <location filename="../ui/dialogIfcProperties.ui" line="39"/>
       <source>Only visible BIM objects</source>
       <translation>Только видимые объекты BIM</translation>
@@ -456,8 +456,8 @@ of that project, no matter if they are expanded or not.</source>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="80"/>
-      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <location filename="../ui/dialogIfcProperties.ui" line="141"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="53"/>
       <source>Select All</source>
       <translation>Выделить всё</translation>
     </message>
@@ -743,9 +743,9 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Добавляет этот слой в проект IFC</translation>
     </message>
     <message>
+      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <location filename="../ui/dialogPhases.ui" line="55"/>
       <location filename="../ui/dialogLayersIFC.ui" line="46"/>
-      <location filename="../ui/dialogProjectManager.ui" line="679"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
@@ -775,17 +775,17 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Назначить</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <location filename="../ui/dialogProjectManager.ui" line="728"/>
       <location filename="../ui/dialogProjectManager.ui" line="731"/>
+      <location filename="../ui/dialogLayersIFC.ui" line="97"/>
       <source>Cancel</source>
       <translation>Отмена</translation>
     </message>
     <message>
+      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <location filename="../ui/dialogPreflightResults.ui" line="103"/>
       <location filename="../ui/dialogQuantitySurveying.ui" line="26"/>
       <location filename="../ui/dialogLayersIFC.ui" line="104"/>
-      <location filename="../ui/dialogProjectManager.ui" line="717"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
@@ -845,8 +845,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Добавить стандартный набор IFC PSet</translation>
     </message>
     <message>
-      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
+      <location filename="../ui/dialogAddPSet.ui" line="43"/>
       <location filename="../ui/dialogProjectManager.ui" line="246"/>
       <location filename="../ui/dialogProjectManager.ui" line="366"/>
       <source>Name</source>
@@ -1184,8 +1184,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Ниже приведены фазы, настроенные для этой модели</translation>
     </message>
     <message>
-      <location filename="../ui/dialogPhases.ui" line="48"/>
       <location filename="../ui/dialogProjectManager.ui" line="665"/>
+      <location filename="../ui/dialogPhases.ui" line="48"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
@@ -1291,10 +1291,10 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Информация о пространстве</translation>
     </message>
     <message>
-      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <location filename="../ui/dialogProjectManager.ui" line="457"/>
       <location filename="../ui/dialogProjectManager.ui" line="480"/>
       <location filename="../ui/dialogProjectManager.ui" line="493"/>
+      <location filename="../ui/dialogSpaces.ui" line="92"/>
       <source>0</source>
       <translation>0</translation>
     </message>
@@ -1695,8 +1695,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Остановить</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <location filename="../ui/ArchNest.ui" line="177"/>
+      <location filename="../ui/dialogLibrary.ui" line="95"/>
       <source>Preview</source>
       <translation>Предварительный просмотр</translation>
     </message>
@@ -1729,8 +1729,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>Может содержать только буквенно-цифровые символы без пробелов. Используйте CamelCase для автоматического определения пробелов</translation>
     </message>
     <message>
-      <location filename="../ui/dialogWindows.ui" line="189"/>
       <location filename="../ui/dialogCustomProperties.ui" line="37"/>
+      <location filename="../ui/dialogWindows.ui" line="189"/>
       <source>Description</source>
       <translation>Описание</translation>
     </message>
@@ -2125,8 +2125,8 @@ of that project, no matter if they are expanded or not.</source>
       <translation>IfcRectangleProfileDef экспорт отключен? (Только Revit)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogViews.ui" line="14"/>
       <location filename="../ui/dialogReorder.ui" line="14"/>
+      <location filename="../ui/dialogViews.ui" line="14"/>
       <source>Form</source>
       <translation>Форма</translation>
     </message>
@@ -2506,7 +2506,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="96"/>
       <source>Apply Draft construction style to subcomponents</source>
-      <translation>Применить стиль Эскиза конструкции к подкомпонентам</translation>
+      <translation>Применить стиль конструкции наброска к подкомпонентам</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="157"/>
@@ -2561,7 +2561,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="93"/>
       <source>If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</source>
-      <translation>Если этот параметр отмечен, то при вычитании или добавлении объекта арматуры получается цвет чертежа.</translation>
+      <translation>Если этот параметр отмечен, то при вычитании или добавлении объекта архитектуры получается цвет наброска.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="109"/>
@@ -2616,7 +2616,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferences-arch.ui" line="45"/>
       <source>Join base sketches of walls if possible</source>
-      <translation>По возможности соедините базовые эскизы стен</translation>
+      <translation>По возможности объединять базовые эскизы стен</translation>
     </message>
     <message>
       <location filename="../ui/preferences-arch.ui" line="61"/>
@@ -2847,7 +2847,7 @@ a footprint display mode</source>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="321"/>
       <source>Use sketches for walls</source>
-      <translation>Используйте эскизы для стен</translation>
+      <translation>Использовать эскизы для стен</translation>
     </message>
     <message>
       <location filename="../ui/preferences-archdefaults.ui" line="363"/>
@@ -2896,7 +2896,6 @@ a footprint display mode</source>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="32"/>
-      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Show this dialog when importing</source>
       <translation>Показывать этот диалог при импорте</translation>
     </message>
@@ -3073,64 +3072,64 @@ a footprint display mode</source>
       <translation>Объединить с существующим документом</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="45"/>
+      <location filename="../ui/preferences-ifc.ui" line="32"/>
       <source>Shows verbose debug messages during import and export
 of IFC files in the Report view panel</source>
       <translation>Показывает подробные отладочные сообщения при импорте и экспорте
 файлов IFC в панели просмотра Отчётов</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="49"/>
+      <location filename="../ui/preferences-ifc.ui" line="36"/>
       <source>Show debug messages</source>
       <translation>Показывать отладочные сообщения</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="62"/>
+      <location filename="../ui/preferences-ifc.ui" line="49"/>
       <source>Clones are used when objects have shared geometry
 One object is the base object, the others are clones.</source>
       <translation>Клоны используются, когда объекты имеют общую геометрию
 Один объект - базовый объект, другие - клоны.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="66"/>
+      <location filename="../ui/preferences-ifc.ui" line="53"/>
       <source>Create clones when objects have shared geometry</source>
       <translation>Создавать клоны, если объекты имеют общую геометрию</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="120"/>
+      <location filename="../ui/preferences-ifc.ui" line="107"/>
       <source>Number of cores to use (experimental)</source>
       <translation>Количество используемых ядер (экспериментальная)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="156"/>
+      <location filename="../ui/preferences-ifc.ui" line="143"/>
       <source>Import arch IFC objects as</source>
       <translation>Импорт архитектурных IFC-объектов как</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="163"/>
-      <location filename="../ui/preferences-ifc.ui" line="212"/>
+      <location filename="../ui/preferences-ifc.ui" line="150"/>
+      <location filename="../ui/preferences-ifc.ui" line="199"/>
       <source>Specifies what kind of objects will be created in FreeCAD</source>
       <translation>Определяет, какие типы объектов будут создаваться во FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="173"/>
+      <location filename="../ui/preferences-ifc.ui" line="160"/>
       <source>Parametric BIM objects</source>
       <translation>Параметрические BIM объекты</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="178"/>
-      <location filename="../ui/preferences-ifc.ui" line="222"/>
+      <location filename="../ui/preferences-ifc.ui" line="165"/>
+      <location filename="../ui/preferences-ifc.ui" line="209"/>
       <source>Non-parametric BIM objects</source>
       <translation>Непараметрические BIM объекты</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="183"/>
-      <location filename="../ui/preferences-ifc.ui" line="227"/>
+      <location filename="../ui/preferences-ifc.ui" line="170"/>
+      <location filename="../ui/preferences-ifc.ui" line="214"/>
       <source>Simple Part shapes</source>
       <translation>Простые фигуры Деталей</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="188"/>
+      <location filename="../ui/preferences-ifc.ui" line="175"/>
       <source>One compound per floor</source>
       <translation>Составной объект для всех объектов этажа</translation>
     </message>
@@ -3140,8 +3139,8 @@ One object is the base object, the others are clones.</source>
       <translation>Импорт IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="90"/>
-      <location filename="../ui/preferences-ifc.ui" line="110"/>
+      <location filename="../ui/preferences-ifc.ui" line="77"/>
+      <location filename="../ui/preferences-ifc.ui" line="97"/>
       <source>EXPERIMENTAL
 The number of cores to use in multicore mode.
 Keep 0 to disable multicore mode.
@@ -3160,127 +3159,127 @@ if crashes occur when multiple cores are set.</source>
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="67"/>
-      <location filename="../ui/preferences-ifc.ui" line="148"/>
+      <location filename="../ui/preferences-ifc.ui" line="135"/>
       <source>Import Options</source>
       <translation>Параметры импорта</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="193"/>
+      <location filename="../ui/preferences-ifc.ui" line="180"/>
       <source>Do not import BIM objects</source>
       <translation>Не импортировать объекты BIM</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="205"/>
+      <location filename="../ui/preferences-ifc.ui" line="192"/>
       <source>Import structure IFC objects as</source>
       <translation>Импортировать структуру IFC объектов как</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="232"/>
+      <location filename="../ui/preferences-ifc.ui" line="219"/>
       <source>One compound for all</source>
       <translation>Один составной объект для всего</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="237"/>
+      <location filename="../ui/preferences-ifc.ui" line="224"/>
       <source>Do not import structural objects</source>
       <translation>Не импортировать структурные объекты</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="249"/>
+      <location filename="../ui/preferences-ifc.ui" line="236"/>
       <source>Root element:</source>
       <translation>Корневой элемент:</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="256"/>
+      <location filename="../ui/preferences-ifc.ui" line="243"/>
       <source>Only subtypes of the specified element will be imported.
 Keep the element IfcProduct to import all building elements.</source>
       <translation>Импортируются только подтипы указанного элемента.
 Сохраните элемент "IfcProduct" для импорта всех строительных элементов.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="275"/>
+      <location filename="../ui/preferences-ifc.ui" line="262"/>
       <source>Openings will be imported as subtractions, otherwise wall shapes
 will already have their openings subtracted</source>
       <translation>Если флажок установлен, отверстия будут импортированы как вычитания. В противном случае формы стен уже будут иметь вычтенные отверстия</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="279"/>
+      <location filename="../ui/preferences-ifc.ui" line="266"/>
       <source>Separate openings</source>
       <translation>Разъединить отверстия</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="292"/>
+      <location filename="../ui/preferences-ifc.ui" line="279"/>
       <source>The importer will try to detect extrusions.
 Note that this might slow things down.</source>
       <translation>Определение экструзий при импорте. Может замедлить процесс.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="296"/>
+      <location filename="../ui/preferences-ifc.ui" line="283"/>
       <source>Detect extrusions</source>
       <translation>Обнаружить выдавливания</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="309"/>
+      <location filename="../ui/preferences-ifc.ui" line="296"/>
       <source>Split walls made of multiple layers</source>
       <translation>Разделить стены, состоящие из нескольких слоёв</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="312"/>
+      <location filename="../ui/preferences-ifc.ui" line="299"/>
       <source>Split multilayer walls</source>
       <translation>Разделить многослойные стены</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="325"/>
+      <location filename="../ui/preferences-ifc.ui" line="312"/>
       <source>Object names will be prefixed with the IFC ID number</source>
       <translation>Имена объектов будут иметь префикс с номером идентификатора IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="328"/>
+      <location filename="../ui/preferences-ifc.ui" line="315"/>
       <source>Prefix names with ID number</source>
       <translation>Добавлять префикс идентификатора к именам</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="341"/>
+      <location filename="../ui/preferences-ifc.ui" line="328"/>
       <source>If several materials with the same name and color are found in the IFC file,
 they will be treated as one.</source>
       <translation>Если в IFC файле будут найдены несколько материалов с одинаковым именем и одинаковым цветом, они будут рассматриваться как один материал</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="345"/>
+      <location filename="../ui/preferences-ifc.ui" line="332"/>
       <source>Merge materials with same name and same color</source>
       <translation>Объединить материалы с одинаковым именем и цветом</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="358"/>
+      <location filename="../ui/preferences-ifc.ui" line="345"/>
       <source>Each object will have their IFC properties stored in a spreadsheet object</source>
       <translation>Каждый объект будет иметь свои свойства IFC в объекте электронной таблицы</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="361"/>
+      <location filename="../ui/preferences-ifc.ui" line="348"/>
       <source>Import IFC properties in spreadsheet</source>
       <translation>Импорт свойств IFC в электронную таблицу</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="374"/>
+      <location filename="../ui/preferences-ifc.ui" line="361"/>
       <source>IFC files can contain unclean or non-solid geometry. If this option is checked, all the geometry is imported, regardless of their validity.</source>
       <translation>Файлы IFC могут содержать нечистую или нетвёрдую геометрию. Если эта опция отмечена, будет импортирована вся геометрия, независимо от её достоверности.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="377"/>
+      <location filename="../ui/preferences-ifc.ui" line="364"/>
       <source>Allow invalid shapes</source>
       <translation>Разрешить недопустимые фигуры</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="392"/>
+      <location filename="../ui/preferences-ifc.ui" line="379"/>
       <source>Exclude list</source>
       <translation>Список исключений</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="399"/>
+      <location filename="../ui/preferences-ifc.ui" line="386"/>
       <source>Comma-separated list of IFC entities to be excluded from imports</source>
       <translation>Список исключаемых из IFC импорта объектов (через запятую)</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="420"/>
+      <location filename="../ui/preferences-ifc.ui" line="407"/>
       <source>Fit view during import on the imported objects.
 This will slow down the import, but one can watch the import.</source>
       <translation>Вписать в вид при импорте импортируемых объектов.
@@ -3289,24 +3288,24 @@ This will slow down the import, but one can watch the import.</source>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="464"/>
       <location filename="../ui/preferences-sh3d-import.ui" line="467"/>
-      <location filename="../ui/preferences-ifc.ui" line="424"/>
+      <location filename="../ui/preferences-ifc.ui" line="411"/>
       <source>Fit view while importing</source>
       <translation>Вписать в вид при импорте</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="437"/>
+      <location filename="../ui/preferences-ifc.ui" line="424"/>
       <source>Creates a full parametric model on import using stored
 FreeCAD object properties</source>
       <translation>Создаёт полностью параметрическую модель при импорте, используя
 сохранённые FreeCAD свойства объекта</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="441"/>
+      <location filename="../ui/preferences-ifc.ui" line="428"/>
       <source>Import full FreeCAD parametric definitions if available</source>
       <translation>Импортировать полные параметрические определения FreeCAD, если они доступны</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="454"/>
+      <location filename="../ui/preferences-ifc.ui" line="441"/>
       <source>If this option is checked, the default 'Project', 'Site', 'Building', and 'Storeys'
 objects that are usually found in an IFC file are not imported, and all objects
 are placed in a 'Group' instead.
@@ -3316,7 +3315,7 @@ are placed in a 'Group' instead.
 "Здания" и "Этажи" по-прежнему импортируются, если их больше, чем один.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc.ui" line="460"/>
+      <location filename="../ui/preferences-ifc.ui" line="447"/>
       <source>Replace 'Project', 'Site', 'Building', and 'Storey' with 'Group'</source>
       <translation>Заменить 'Проект', 'Местность', Здание' и 'Этаж' на 'Группа'</translation>
     </message>
@@ -3373,8 +3372,8 @@ If using Netgen, make sure that it is available.</source>
     </message>
     <message>
       <location filename="../ui/preferences-webgl.ui" line="26"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-dae.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="57"/>
       <source>Export Options</source>
       <translation>Настройки экспорта</translation>
     </message>
@@ -3453,42 +3452,37 @@ The gradient of the local mesh size h(x) is bound by |Δh(x)| ≤ 1/value.</tran
       <translation>Разрешить четырёхугольники</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="41"/>
-      <source>Show this dialog when exporting</source>
-      <translation>Показывать этот диалог при экспорте</translation>
-    </message>
-    <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="71"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="49"/>
       <source>Export type</source>
       <translation>Тип IFC экспорта</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="91"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="69"/>
       <source>Standard model</source>
       <translation>Стандартная модель</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="96"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="74"/>
       <source>Structural analysis</source>
       <translation>Структурный анализ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="101"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="79"/>
       <source>Standard + structural</source>
       <translation>Стандартная+Структурная</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="128"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="106"/>
       <source>Use triangulation options set in the DAE options page</source>
       <translation>Использовать параметры триангуляции, заданные на странице настроек DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="131"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="109"/>
       <source>Use DAE triangulation options</source>
       <translation>Использовать параметры триангуляции DAE</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="144"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="122"/>
       <source>Curved shapes that cannot be represented as curves in IFC
 are decomposed into flat facets.
 If this is checked, an additional calculation is done to join coplanar facets.</source>
@@ -3496,69 +3490,69 @@ If this is checked, an additional calculation is done to join coplanar facets.</
 Если эта опция включена потребуются дополнительные расчеты для соединения сопланарных граней.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="149"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="127"/>
       <source>Join coplanar facets when triangulating</source>
       <translation>Объединять компланарные грани при триангуляции</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="162"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="140"/>
       <source>When exporting objects without unique ID (UID), the generated UID
 will be stored inside the FreeCAD object for reuse next time that object
 is exported. This leads to smaller differences between file versions.</source>
       <translation>При экспорте объектов без уникально ID (UID), сгенерированный UID будет храниться внутри объекта FreeCAD для повторного использования при следующем экспорте, что даёт меньше различий между версиями.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="145"/>
       <source>Store IFC unique ID in FreeCAD objects</source>
       <translation>Хранить уникальный ID для IFC в объектах FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="189"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="167"/>
       <source>Use IfcOpenShell serializer if available</source>
       <translation>Использовать сериализатор IfcOpenShell, если доступен</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="202"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="180"/>
       <source>2D objects will be exported as IfcAnnotation</source>
       <translation>2D объекты будут экспортированы как IfcAnnotation</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="205"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
       <source>Export 2D objects as IfcAnnotations</source>
       <translation>Экспорт двумерных объектов как IfcAnnotations</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="221"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="199"/>
       <source>All FreeCAD object properties will be stored inside the exported objects,
 allowing to recreate a full parametric model on reimport.</source>
       <translation>Все свойства объекта FreeCAD будут храниться внутри экспортируемых объектов,
 позволяя при импорте воссоздать полную параметрическую модель.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="225"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="203"/>
       <source>Export full FreeCAD parametric model</source>
       <translation>Экспорт полной параметрической модели FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="220"/>
       <source>Reuse similar entities</source>
       <translation>Повторное использование аналогичных записей</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="264"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="242"/>
       <source>Disable IfcRectangleProfileDef</source>
       <translation>Отключить IfcRectangleProfileDef</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="277"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="255"/>
       <source>Some IFC types such as IfcWall or IfcBeam have special standard versions like IfcWallStandardCase or IfcBeamStandardCase. If this option is turned on, FreeCAD will automatically export such objects
 as standard cases when the necessary conditions are met.</source>
       <translation>Некоторые типы IFC, такие как IfcWall или IfcBeam, имеют специальные стандартные версии типа IfcWallStandardCase или IfcBeamStandardCase.
 Если эта опция включена, FreeCAD будет автоматически экспортировать такие объекты как стандартные при соблюдении необходимых условий.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="330"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="345"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="308"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="323"/>
       <source>Desired units in the exported IFC file.
 
 Note that IFC files are ALWAYS written in metric units; imperial units
@@ -3570,30 +3564,30 @@ unit to work with when opening the file.</source>
 Обратите внимание, что файлы IFC ВСЕГДА записаны в метрических единицах. Имперские единицы – это только конверсия, наложенная на него. Но некоторые приложения BIM будут использовать эту конверсию для выбора, с какой системой единиц работать при открытии файла.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="375"/>
-      <location filename="../ui/preferences-ifc.ui" line="473"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="353"/>
+      <location filename="../ui/preferences-ifc.ui" line="460"/>
       <source>Check also native-IFC-specific preferences under BIM -&gt; Native IFC</source>
       <translation>Проверьте также настройки, специфичные для оригинального IFC, в разделе BIM -&gt; Оригинальный IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="391"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="369"/>
       <source>If no building is found in the FreeCAD document, a default one will be added.
 Warning: The IFC standard asks for at least one building in each file. By turning this option off, a non-standard IFC file will be produced.</source>
       <translation>Если в документе FreeCAD ничего не найдено, то будет добавлен документ по умолчанию.
 Предупреждение: IFC стандарт запрашивает хотя бы одну сборку в каждом файле. Выключив эту опцию, будет выпущен нестандартный IFC файл.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="395"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="373"/>
       <source>Add default building if one is not found in the document</source>
       <translation>Добавить здание по умолчанию, если оно не найдено в документе</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="435"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="413"/>
       <source>Export nested groups as assemblies</source>
       <translation>Экспортировать вложенные группы как сборки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="281"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="259"/>
       <source>Auto-detect and export as standard cases when applicable</source>
       <translation>Автоопределение и экспорт в качестве стандартных случаев, когда это применимо</translation>
     </message>
@@ -3604,14 +3598,13 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
     </message>
     <message>
       <location filename="../ui/preferences-sh3d-import.ui" line="26"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="35"/>
       <location filename="../ui/preferences-ifc.ui" line="26"/>
       <source>General Options</source>
       <translation>Основные настройки</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="65"/>
-      <location filename="../ui/preferences-ifc-export.ui" line="78"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="43"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="56"/>
       <source>The type of objects to export:
 - Standard model: solid objects
 - Structural analysis: wireframe model for structural calculations
@@ -3622,18 +3615,18 @@ Warning: The IFC standard asks for at least one building in each file. By turnin
 - Стандартная + конструкция: оба типа моделей</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="111"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="89"/>
       <source>Some IFC viewers do not like objects exported as extrusions.
 Use this to force all objects to be exported as BREP geometry.</source>
       <translation>Некоторым IFC-просмотрщикам не нравятся объекты, экспортируемые как экструзии. Используйте это для принудительного экспорта всех объектов в виде BREP-геометрии.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="115"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="93"/>
       <source>Force export as BREP</source>
       <translation>Принудительно экспортировать как BREP</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="183"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="161"/>
       <source>IFCOpenShell is a library that enables importing IFC files.
 Its serializer functionality allows giving it an OCC shape and it will
 produce adequate IFC geometry: NURBS, faceted, or anything else.
@@ -3644,14 +3637,14 @@ Note: The serializer is still an experimental feature!</source>
 Примечание: Сериализатор всё ещё является экспериментальной функцией!</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="238"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="216"/>
       <source>When possible, similar entities will be used only once in the file if possible.
 This can reduce the file size considerably, but will make it less easily readable.</source>
       <translation>Когда это возможно, подобные объекты будут использоваться только один раз в файле.
 Это может значительно уменьшить размер файла, но сделает его менее лёгким для чтения.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="258"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="236"/>
       <source>When possible, IFC objects that are extruded rectangles will be
 exported as IfcRectangleProfileDef.
 However, some other applications might have problems importing that entity.
@@ -3659,61 +3652,61 @@ If this is the case, it can disabled and then all profiles will be exported as I
       <translation>По возможности, IFC объекты, которые являются экструзией прямоугольников, экспортируются как IfcRectangleProfileDef. Однако, в некоторых приложениях могут возникнуть проблемы при попытке импорта таких объектов. Если для Вас это важно, отключите данную опцию, и все профили будут экспортированы как IfcArbitraryClosedProfileDef.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="294"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="272"/>
       <source>If no site is found in the FreeCAD document, a default one will be added.
 A site is not mandatory but a common practice is to have at least one in the file.</source>
       <translation>Если в документе нет ни одной площадки, то она будет создана по умолчанию.
 Ее наличие необязательно, но иметь в файле хотя бы одну - общепринятая практика.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="298"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="276"/>
       <source>Add default site if one is not found in the document</source>
       <translation>Добавить местность по умолчанию, если она не найдена в документе</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="411"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="389"/>
       <source>If not checked, standard FreeCAD groups (App::DocumentObjectGroup) will not be exported as IfcGroup or IfcElementAssembly.\nTheir children will be re-parented to the container of the skipped group in the IFC structure.</source>
       <translation>Если этот флажок не установлен, стандартные группы FreeCAD (App::DocumentObjectGroup) не будут экспортированы как IfcGroup или IfcElementAssembly.\nИх дочерние элементы будут переименованы в контейнер пропущенной группы в структуре IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="414"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="392"/>
       <source>Export FreeCAD Groups</source>
       <translation>Экспорт групп FreeCAD</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="432"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="410"/>
       <source>In FreeCAD, it is possible to nest groups inside buildings or storeys. If this option is disabled, FreeCAD groups will be saved as IfcGroups and aggregated to the building structure. Aggregating non-building elements such as IfcGroups is however not recommended by the IFC standards. It is therefore also possible to export these groups as IfcElementAssemblies, which produces an IFC-compliant file.</source>
       <translation>В FreeCAD можно вкладывать группы внутри зданий или этажей. Если эта опция отключена, группы FreeCAD будут сохранены как IfcGroups и объединены в структуру здания. Однако объединение нестроительных элементов, таких как IfcGroups, не рекомендуется стандартами IFC. Поэтому также можно экспортировать эти группы как IfcElementAssemblies, что создает файл, совместимый с IFC.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="385"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="363"/>
       <source>IFC standard compliance</source>
       <translation>Соблюдение стандартов IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="311"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="289"/>
       <source>If no building storey is found in the FreeCAD document, a default one will be added.
 A building storey is not mandatory but a common practice to have at least one in the file.</source>
       <translation>Если в документе здание не имеет ни одного этажа, то этаж будет создан по умолчанию.
 Здание может не иметь этажей, но наличие хотя бы одного - общепринятая практика.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="315"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="293"/>
       <source>Add default building storey if one is not found in the document</source>
       <translation>Добавьте этаж здания по умолчанию, если он не найден в документе</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="316"/>
       <source>IFC file units</source>
       <translation>Единицы файлов IFC</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="360"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="338"/>
       <source>Metric</source>
       <translation>Метрическая</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-ifc-export.ui" line="365"/>
+      <location filename="../ui/preferences-ifc-export.ui" line="343"/>
       <source>Imperial</source>
       <translation>Имперская</translation>
     </message>
@@ -3806,8 +3799,8 @@ The default template is located at:
       <translation>Параметры конструкции</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1699"/>
       <location filename="../../ArchStructure.py" line="554"/>
+      <location filename="../../ArchCommands.py" line="1699"/>
       <location filename="../../bimcommands/BimProfile.py" line="83"/>
       <source>Category</source>
       <translation>Категория</translation>
@@ -3815,32 +3808,32 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
+      <location filename="../../bimcommands/BimWindow.py" line="442"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
-      <location filename="../../bimcommands/BimWindow.py" line="429"/>
       <source>Preset</source>
       <translation>Предустановка</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../ArchStructure.py" line="570"/>
       <location filename="../../ArchPrecast.py" line="1719"/>
-      <location filename="../../bimcommands/BimPanel.py" line="194"/>
+      <location filename="../../ArchCommands.py" line="1332"/>
       <location filename="../../bimcommands/BimWall.py" line="341"/>
+      <location filename="../../bimcommands/BimPanel.py" line="194"/>
       <source>Length</source>
       <translation>Длина</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="584"/>
       <location filename="../../ArchPrecast.py" line="1720"/>
-      <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <location filename="../../bimcommands/BimWall.py" line="348"/>
+      <location filename="../../bimcommands/BimPanel.py" line="201"/>
       <source>Width</source>
       <translation>Ширина</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../ArchStructure.py" line="591"/>
       <location filename="../../ArchPrecast.py" line="1721"/>
+      <location filename="../../ArchRoof.py" line="1084"/>
       <location filename="../../bimcommands/BimWall.py" line="355"/>
       <source>Height</source>
       <translation>Высота</translation>
@@ -3861,39 +3854,39 @@ The default template is located at:
       <translation>Переключить Длина/Ширина</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="721"/>
       <location filename="../../ArchStructure.py" line="1170"/>
+      <location filename="../../ArchWall.py" line="721"/>
       <source>This mesh is an invalid solid</source>
       <translation>Эта сетка является недействительным телом</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="319"/>
       <location filename="../../ArchStructure.py" line="1289"/>
+      <location filename="../../ArchPanel.py" line="319"/>
       <source>Facemaker returned an error</source>
       <translation>Генератор граней вернул ошибку</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1690"/>
+      <location filename="../../ArchStructure.py" line="1700"/>
       <source>Node Tools</source>
       <translation>Инструменты узлов</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1715"/>
+      <location filename="../../ArchStructure.py" line="1725"/>
       <source>Extends the nodes of this element to reach the nodes of another element</source>
       <translation>Расширяет узлы элемента для доступа к узлам другого элемента</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1726"/>
+      <location filename="../../ArchStructure.py" line="1736"/>
       <source>Connects nodes of this element with the nodes of another element</source>
       <translation>Соединяет узлы элемента с узлами другого элемента</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1737"/>
+      <location filename="../../ArchStructure.py" line="1747"/>
       <source>Toggles all structural nodes of the document on/off</source>
       <translation>Включает/выключает все структурные узлы документа</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1744"/>
+      <location filename="../../ArchStructure.py" line="1754"/>
       <source>Extrusion Tools</source>
       <translation>Инструменты выдавливания</translation>
     </message>
@@ -3913,85 +3906,85 @@ The default template is located at:
       <translation>Ошибка: Базовая фигура не может быть выдана вдоль этого инструмента объекта</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1695"/>
+      <location filename="../../ArchStructure.py" line="1705"/>
       <source>Reset Nodes</source>
       <translation>Сбросить узлы</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1702"/>
+      <location filename="../../ArchStructure.py" line="1712"/>
       <source>Edit Nodes</source>
       <translation>Редактировать узлы</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1708"/>
+      <location filename="../../ArchStructure.py" line="1718"/>
       <source>Extend Nodes</source>
       <translation>Расширить узлы</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1721"/>
+      <location filename="../../ArchStructure.py" line="1731"/>
       <source>Connect Nodes</source>
       <translation>Подключить узлы</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1732"/>
+      <location filename="../../ArchStructure.py" line="1742"/>
       <source>Toggle All Nodes</source>
       <translation>Переключить все узлы</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1749"/>
-      <location filename="../../ArchStructure.py" line="1951"/>
+      <location filename="../../ArchStructure.py" line="1759"/>
+      <location filename="../../ArchStructure.py" line="1961"/>
       <source>Select Tool</source>
       <translation>Выбрать инструмент</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1754"/>
+      <location filename="../../ArchStructure.py" line="1764"/>
       <source>Selects object or edges to be used as a tool (extrusion path)</source>
       <translation>Выберите объект или края, которые будут использоваться в качестве инструмента (путь выдавливания)</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1779"/>
-      <location filename="../../ArchStructure.py" line="1829"/>
+      <location filename="../../ArchStructure.py" line="1789"/>
+      <location filename="../../ArchStructure.py" line="1839"/>
       <source>Choose another Structure object:</source>
       <translation>Выберите другой объект структуры:</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1785"/>
-      <location filename="../../ArchStructure.py" line="1835"/>
+      <location filename="../../ArchStructure.py" line="1795"/>
+      <location filename="../../ArchStructure.py" line="1845"/>
       <source>The chosen object is not a Structure</source>
       <translation>Выбранный объект не является структурой</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1790"/>
-      <location filename="../../ArchStructure.py" line="1840"/>
+      <location filename="../../ArchStructure.py" line="1800"/>
+      <location filename="../../ArchStructure.py" line="1850"/>
       <source>The chosen object has no structural nodes</source>
       <translation>Выбранный объект не имеет структурных узлов</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1795"/>
-      <location filename="../../ArchStructure.py" line="1845"/>
+      <location filename="../../ArchStructure.py" line="1805"/>
+      <location filename="../../ArchStructure.py" line="1855"/>
       <source>One of these objects has more than 2 nodes</source>
       <translation>Один из объектов имеет более 2-х узлов</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1808"/>
-      <location filename="../../ArchStructure.py" line="1858"/>
+      <location filename="../../ArchStructure.py" line="1818"/>
+      <location filename="../../ArchStructure.py" line="1868"/>
       <source>Unable to find a suitable intersection point</source>
       <translation>Не удаётся найти подходящую точку пересечения</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1812"/>
+      <location filename="../../ArchStructure.py" line="1822"/>
       <source>Intersection found.
 </source>
       <translation>Пересечение найдено.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1863"/>
+      <location filename="../../ArchStructure.py" line="1873"/>
       <source>Intersection found.</source>
       <translation>Пересечение найдено.</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1916"/>
+      <location filename="../../ArchStructure.py" line="1926"/>
       <source>Done</source>
       <translation>Готово</translation>
     </message>
@@ -4098,14 +4091,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Свес крыши</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <location filename="../../bimcommands/BimSpace.py" line="70"/>
+      <location filename="../../bimcommands/BimRoof.py" line="93"/>
       <source>Please select a base object</source>
       <translation>Пожалуйста, выберите базовый объект</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1068"/>
       <location filename="../../Arch.py" line="1143"/>
+      <location filename="../../ArchRoof.py" line="1068"/>
       <source>Roof</source>
       <translation>Крыша</translation>
     </message>
@@ -4190,90 +4183,88 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Улучшение</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="170"/>
+      <location filename="../../ArchReference.py" line="173"/>
       <source>Part not found in file</source>
       <translation>Деталь не найдена в файле</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="192"/>
-      <location filename="../../ArchReference.py" line="237"/>
-      <location filename="../../ArchReference.py" line="433"/>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="195"/>
+      <location filename="../../ArchReference.py" line="240"/>
+      <location filename="../../ArchReference.py" line="436"/>
+      <location filename="../../ArchReference.py" line="874"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation>Собственный IFC недоступен – невозможно обрабатывать файлы IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="293"/>
       <source>Error removing splitter</source>
       <translation>Ошибка удаления разделителя</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="700"/>
+      <location filename="../../ArchReference.py" line="711"/>
       <source>Reload reference</source>
       <translation>Перезагрузить ссылку</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchReference.py" line="717"/>
       <source>Open reference</source>
       <translation>Открыть ссылку</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="744"/>
+      <location filename="../../ArchReference.py" line="755"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation>Невозможно получить узел LightWeight для объекта, на который есть ссылка</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="753"/>
-      <location filename="../../ArchReference.py" line="757"/>
+      <location filename="../../ArchReference.py" line="765"/>
+      <location filename="../../ArchReference.py" line="769"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation>Неверный узел LightWeight для объекта, на который есть ссылка</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="767"/>
-      <location filename="../../ArchReference.py" line="773"/>
-      <location filename="../../ArchReference.py" line="801"/>
-      <location filename="../../ArchReference.py" line="807"/>
+      <location filename="../../ArchReference.py" line="781"/>
+      <location filename="../../ArchReference.py" line="813"/>
       <source>Invalid root node in</source>
       <translation>Неверный корневой узел в</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="892"/>
+      <location filename="../../ArchReference.py" line="898"/>
       <source>External reference</source>
       <translation>Внешняя ссылка</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="900"/>
       <source>External file</source>
       <translation>Внешний файл</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="904"/>
       <source>Open</source>
       <translation>Открыть</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="905"/>
+      <location filename="../../ArchReference.py" line="911"/>
       <source>Part to use:</source>
       <translation>Деталь для использования:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="910"/>
+      <location filename="../../ArchReference.py" line="916"/>
       <source>Choose File</source>
       <translation>Выбрать файл</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="921"/>
-      <location filename="../../ArchReference.py" line="984"/>
+      <location filename="../../ArchReference.py" line="927"/>
+      <location filename="../../ArchReference.py" line="990"/>
       <source>None (Use whole object)</source>
       <translation>Нет (Использовать весь объект)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="972"/>
+      <location filename="../../ArchReference.py" line="978"/>
       <source>Reference files</source>
       <translation>Справочные файлы</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="974"/>
+      <location filename="../../ArchReference.py" line="980"/>
       <source>Choose reference file</source>
       <translation>Выберите справочный файл</translation>
     </message>
@@ -4350,7 +4341,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="109"/>
       <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="191"/>
+      <location filename="../../bimcommands/BimWindow.py" line="193"/>
       <source>Create Window</source>
       <translation>Добавить окно</translation>
     </message>
@@ -4360,178 +4351,178 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Выберите грань на существующем объекте или выберите преднастройку</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="241"/>
+      <location filename="../../bimcommands/BimWindow.py" line="243"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Окно не основано на эскизе. Невозможно выровнять или изменить его размер.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="260"/>
+      <location filename="../../bimcommands/BimWindow.py" line="262"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
-      <translation>В эскизе окна нет ограничений ширины и/или высоты. Окно не изменилось.</translation>
+      <translation>В эскизе окна нет ограничений ширины и/или высоты. Размер окна не изменён.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="265"/>
       <source>No window found. Cannot continue.</source>
       <translation>Окно не найдено. Невозможно продолжить.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="378"/>
+      <location filename="../../bimcommands/BimWindow.py" line="391"/>
       <source>Window options</source>
       <translation>Параметры окна</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="382"/>
+      <location filename="../../bimcommands/BimWindow.py" line="395"/>
       <source>Auto include in host object</source>
       <translation>Автоматически добавлять в исходный объект</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="391"/>
+      <location filename="../../bimcommands/BimWindow.py" line="404"/>
       <source>Sill height</source>
       <translation>Высота подоконника</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1162"/>
-      <location filename="../../ArchWindow.py" line="1765"/>
+      <location filename="../../ArchWindow.py" line="1168"/>
+      <location filename="../../ArchWindow.py" line="1771"/>
       <source>Invert Opening Direction</source>
       <translation>Инвертировать направление открытия</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1173"/>
-      <location filename="../../ArchWindow.py" line="1768"/>
+      <location filename="../../ArchWindow.py" line="1179"/>
+      <location filename="../../ArchWindow.py" line="1774"/>
       <source>Invert Hinge Position</source>
       <translation>Инвертировать положение петли</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1235"/>
+      <location filename="../../ArchWindow.py" line="1241"/>
       <source>This window has no defined opening</source>
       <translation>Это окно не имеет определённого проёма</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1525"/>
-      <location filename="../../ArchWindow.py" line="1576"/>
+      <location filename="../../ArchWindow.py" line="1531"/>
+      <location filename="../../ArchWindow.py" line="1582"/>
       <source>Get selected edge</source>
       <translation>Выбрать край</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1678"/>
+      <location filename="../../ArchWindow.py" line="1684"/>
       <source>Unable to create component</source>
       <translation>Невозможно создать компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1722"/>
       <source>Window elements</source>
       <translation>Элементы окна</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1723"/>
       <source>Hole wire</source>
       <translation>Направляющая отверстия</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1724"/>
+      <location filename="../../ArchWindow.py" line="1730"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Число направляющих, которое определяет отверстие в основном объекте. При нулевом значении автоматически принимается самая большая направляющая</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1725"/>
+      <location filename="../../ArchWindow.py" line="1731"/>
       <source>Pick Selected</source>
       <translation>Указать выбранное</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
+      <location filename="../../ArchWindow.py" line="1737"/>
       <source>Create/Update Component</source>
       <translation>Создать/Обновить компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1735"/>
+      <location filename="../../ArchWindow.py" line="1741"/>
       <source>Create new Component</source>
       <translation>Создать новый компонент</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1745"/>
       <source>Frame depth</source>
       <translation>Глубина кадра</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1750"/>
+      <location filename="../../ArchWindow.py" line="1756"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation>Если этот флажок установлен, значение свойства рамки окна будет добавлено к значению, указанному здесь</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1758"/>
+      <location filename="../../ArchWindow.py" line="1764"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation>Если этот флажок установлен, значение свойства окна будет добавлено в значение, введенное здесь</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchSpace.py" line="944"/>
       <location filename="../../ArchSectionPlane.py" line="1736"/>
+      <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchComponent.py" line="2343"/>
-      <location filename="../../ArchWindow.py" line="1726"/>
+      <location filename="../../ArchWindow.py" line="1732"/>
       <location filename="../../ArchAxis.py" line="955"/>
+      <location filename="../../ArchSpace.py" line="944"/>
       <source>Remove</source>
       <translation>Удалить</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchSpace.py" line="938"/>
       <location filename="../../ArchComponent.py" line="2344"/>
-      <location filename="../../ArchWindow.py" line="1727"/>
+      <location filename="../../ArchWindow.py" line="1733"/>
       <location filename="../../ArchAxis.py" line="956"/>
+      <location filename="../../ArchSpace.py" line="938"/>
       <source>Add</source>
       <translation>Добавить</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="459"/>
-      <location filename="../../ArchMaterial.py" line="786"/>
-      <location filename="../../ArchReference.py" line="695"/>
       <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchSectionPlane.py" line="1503"/>
-      <location filename="../../ArchSite.py" line="1288"/>
-      <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchGrid.py" line="384"/>
+      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1874"/>
-      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchSchedule.py" line="766"/>
+      <location filename="../../ArchWindow.py" line="1734"/>
       <location filename="../../ArchAxis.py" line="788"/>
+      <location filename="../../ArchMaterial.py" line="470"/>
+      <location filename="../../ArchMaterial.py" line="797"/>
       <source>Edit</source>
       <translation>Редактировать</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchWindow.py" line="1738"/>
       <source>Base 2D object</source>
       <translation>Базовый 2D-объект</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1733"/>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1744"/>
       <source>Wires</source>
       <translation>Направляющие</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2351"/>
-      <location filename="../../ArchWindow.py" line="1734"/>
+      <location filename="../../ArchWindow.py" line="1740"/>
       <source>Components</source>
       <translation>Компоненты</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="868"/>
-      <location filename="../../ArchMaterial.py" line="894"/>
-      <location filename="../../ArchWindow.py" line="1736"/>
+      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchMaterial.py" line="879"/>
+      <location filename="../../ArchMaterial.py" line="905"/>
       <source>Name</source>
       <translation>Название</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../ArchComponent.py" line="2419"/>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1743"/>
+      <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
       <translation>Тип</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="870"/>
-      <location filename="../../ArchMaterial.py" line="896"/>
+      <location filename="../../ArchMaterial.py" line="881"/>
+      <location filename="../../ArchMaterial.py" line="907"/>
       <location filename="../../ArchRoof.py" line="1082"/>
       <location filename="../../bimcommands/BimPanel.py" line="208"/>
       <source>Thickness</source>
@@ -4539,38 +4530,38 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../ArchWindow.py" line="1740"/>
+      <location filename="../../ArchWindow.py" line="1746"/>
       <location filename="../../bimcommands/BimWall.py" line="371"/>
       <source>Offset</source>
       <translation>Смещение</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1747"/>
       <source>Hinge</source>
       <translation>Петли</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchWindow.py" line="1748"/>
       <source>Opening mode</source>
       <translation>Способ открывания</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1743"/>
+      <location filename="../../ArchWindow.py" line="1749"/>
       <source>+ Frame property</source>
       <translation>+ Свойство Окно</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1751"/>
+      <location filename="../../ArchWindow.py" line="1757"/>
       <source>+ Offset property</source>
       <translation>+ Свойство Смещение</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1759"/>
+      <location filename="../../ArchWindow.py" line="1765"/>
       <source>Get Selected Edge</source>
       <translation>Получить выбранный край</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1762"/>
+      <location filename="../../ArchWindow.py" line="1768"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Нажмите, чтобы поставить выделенный край</translation>
     </message>
@@ -4595,8 +4586,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Выберите хотя бы одну ось</translation>
     </message>
     <message>
-      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../Arch.py" line="104"/>
+      <location filename="../../ArchAxisSystem.py" line="337"/>
       <location filename="../../ArchComponent.py" line="2350"/>
       <location filename="../../ArchAxis.py" line="954"/>
       <source>Axes</source>
@@ -4608,10 +4599,10 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Компоненты системы координат</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
+      <location filename="../../importers/importOBJ.py" line="301"/>
+      <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
       <translation>Успешно записано</translation>
     </message>
@@ -4701,9 +4692,9 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Создать многослойный материал</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="869"/>
-      <location filename="../../ArchMaterial.py" line="895"/>
       <location filename="../../Arch.py" line="533"/>
+      <location filename="../../ArchMaterial.py" line="880"/>
+      <location filename="../../ArchMaterial.py" line="906"/>
       <source>Material</source>
       <translation>Материал</translation>
     </message>
@@ -4718,17 +4709,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Объединить дубликаты</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="934"/>
+      <location filename="../../ArchMaterial.py" line="945"/>
       <source>New layer</source>
       <translation>Новый слой</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="971"/>
+      <location filename="../../ArchMaterial.py" line="982"/>
       <source>Total thickness</source>
       <translation>Общая толщина</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="985"/>
+      <location filename="../../ArchMaterial.py" line="996"/>
       <source>depends on the object</source>
       <translation>зависит от объекта</translation>
     </message>
@@ -4799,8 +4790,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Удалить промежуток</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="497"/>
       <location filename="../../ArchGrid.py" line="488"/>
+      <location filename="../../Arch.py" line="497"/>
       <source>Grid</source>
       <translation>Сетка</translation>
     </message>
@@ -4945,8 +4936,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Уклон</translation>
     </message>
     <message>
-      <location filename="../../Arch.py" line="207"/>
       <location filename="../../ArchPrecast.py" line="1723"/>
+      <location filename="../../Arch.py" line="207"/>
       <source>Level</source>
       <translation>Уровень</translation>
     </message>
@@ -4997,8 +4988,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Ошибка вычисления формы</translation>
     </message>
     <message>
+      <location filename="../../ArchStructure.py" line="2075"/>
       <location filename="../../ArchPanel.py" line="563"/>
-      <location filename="../../ArchStructure.py" line="2065"/>
       <source>Could not compute a shape</source>
       <translation>Не удалось вычислить фигуру</translation>
     </message>
@@ -5023,8 +5014,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Фасад</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <location filename="../../bimcommands/BimTruss.py" line="61"/>
+      <location filename="../../bimcommands/BimCurtainwall.py" line="62"/>
       <source>Select only one base object or none</source>
       <translation>Выберите только один базовый объект или ничего</translation>
     </message>
@@ -5188,18 +5179,18 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Объект не имеет настроенных атрибутов IFC</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1702"/>
+      <location filename="../../ArchComponent.py" line="2420"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
-      <location filename="../../ArchComponent.py" line="2420"/>
+      <location filename="../../ArchCommands.py" line="1702"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="479"/>
       <source>Value</source>
       <translation>Значение</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1703"/>
       <location filename="../../ArchSchedule.py" line="990"/>
       <location filename="../../ArchSchedule.py" line="1016"/>
+      <location filename="../../ArchCommands.py" line="1703"/>
       <source>Unit</source>
       <translation>Единица измерения</translation>
     </message>
@@ -5260,8 +5251,8 @@ Floor creation aborted.</source>
       <translation>Расстояние</translation>
     </message>
     <message>
-      <location filename="../../ArchRoof.py" line="1079"/>
       <location filename="../../ArchAxis.py" line="966"/>
+      <location filename="../../ArchRoof.py" line="1079"/>
       <source>Angle</source>
       <translation>Угол</translation>
     </message>
@@ -5276,7 +5267,7 @@ Floor creation aborted.</source>
       <translation>Найдена фигура, содержащая кривые. Триангулирование...</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="451"/>
+      <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
       <translation>Успешно импортировано</translation>
     </message>
@@ -5355,7 +5346,7 @@ Floor creation aborted.</source>
       <translation>Неправильный базовый тип</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="1294"/>
+      <location filename="../../ArchSite.py" line="1300"/>
       <location filename="../../ArchComponent.py" line="1881"/>
       <source>Toggle Subcomponents</source>
       <translation>Переключить субкомпоненты</translation>
@@ -5363,11 +5354,11 @@ Floor creation aborted.</source>
     <message>
       <location filename="../../ArchComponent.py" line="2011"/>
       <source>Closing Sketch edit</source>
-      <translation>Закрытие редактирования эскиза</translation>
+      <translation>Закрытие редактора эскиза</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="287"/>
       <location filename="../../ArchComponent.py" line="2342"/>
+      <location filename="../../ArchCommands.py" line="287"/>
       <source>Component</source>
       <translation>Компонент</translation>
     </message>
@@ -5576,8 +5567,8 @@ Floor creation aborted.</source>
       <translation>Центровать плоскость по объектам в списке</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="214"/>
       <location filename="../../Arch.py" line="234"/>
+      <location filename="../../ArchBuilding.py" line="214"/>
       <source>Building</source>
       <translation>Здание</translation>
     </message>
@@ -5707,7 +5698,7 @@ Building creation aborted.</source>
       <translation>Ошибка: Не удается изменить базовый объект этой стены</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1715"/>
+      <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
       <translation>Изменить направление</translation>
     </message>
@@ -5895,33 +5886,33 @@ Building creation aborted.</source>
       <translation>Создать 2D вид</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1152"/>
       <source>Active</source>
       <translation>Активный</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1163"/>
       <source>Set Working Plane</source>
       <translation>Установить рабочую плоскость</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1173"/>
       <source>Write Camera Position</source>
       <translation>Записать позицию камеры</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1179"/>
       <source>New Group</source>
       <translation>Новая Группа</translation>
     </message>
     <message>
+      <location filename="../../ArchBuildingPart.py" line="1183"/>
       <location filename="../../ArchMaterial.py" line="100"/>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
       <source>Reorder Children Alphabetically</source>
       <translation>Порядок дочерних элементов в алфавитном порядке</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1187"/>
       <source>Clone Level Up</source>
       <translation>Клонировать уровень выше</translation>
     </message>
@@ -5969,7 +5960,7 @@ Building creation aborted.</source>
     <name>App::Property</name>
     <message>
       <location filename="../../ArchStructure.py" line="783"/>
-      <location filename="../../ArchStructure.py" line="1941"/>
+      <location filename="../../ArchStructure.py" line="1951"/>
       <source>An optional extrusion path for this element</source>
       <translation>Необязательный путь выдавливания для этого элемента</translation>
     </message>
@@ -6014,14 +6005,14 @@ Building creation aborted.</source>
       <translation>Вращение базы вокруг оси инструмента (используется только если BasePerpendicularToTool равен True)</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="85"/>
       <location filename="../../ArchStructure.py" line="879"/>
+      <location filename="../../ArchPanel.py" line="85"/>
       <source>The length of this element, if not based on a profile</source>
       <translation>Длина элемента, если не определена в профиле</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="95"/>
       <location filename="../../ArchStructure.py" line="889"/>
+      <location filename="../../ArchPanel.py" line="95"/>
       <source>The width of this element, if not based on a profile</source>
       <translation>Ширина элемента, если она не определена в профиле</translation>
     </message>
@@ -6031,9 +6022,9 @@ Building creation aborted.</source>
       <translation>Высота или глубина выдавливания элемента. Задайте 0 для автоматического определения</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="209"/>
-      <location filename="../../ArchWall.py" line="272"/>
       <location filename="../../ArchStructure.py" line="911"/>
+      <location filename="../../ArchWall.py" line="272"/>
+      <location filename="../../ArchPanel.py" line="209"/>
       <source>The normal extrusion direction of this object (keep (0,0,0) for automatic normal)</source>
       <translation>Нормальное направление выдавливания для этого объекта (оставить (0,0,0) для задания автоматической нормали)</translation>
     </message>
@@ -6054,8 +6045,8 @@ Building creation aborted.</source>
       <translation>Расстояние смещения между осевой и узловой линией</translation>
     </message>
     <message>
-      <location filename="../../ArchPanel.py" line="197"/>
       <location filename="../../ArchStructure.py" line="950"/>
+      <location filename="../../ArchPanel.py" line="197"/>
       <source>The facemaker type to use to build the profile of this object</source>
       <translation>Facemaker тип, используемый для построения профиля объекта</translation>
     </message>
@@ -6063,51 +6054,51 @@ Building creation aborted.</source>
       <location filename="../../ArchStructure.py" line="974"/>
       <location filename="../../ArchStructure.py" line="991"/>
       <source>Selected edges (or group of edges) of the base ArchSketch, to use in creating the shape of this BIM Structure (instead of using all the Base shape's edges by default).  Input are index numbers of edges or groups.</source>
-      <translation>Выбранные края (или группа краев) основного ArchSketch, для создания формы этой арки (вместо использования по умолчанию всех краев базовой фигуры). Введенные данные - это число краев или групп.</translation>
+      <translation>Выбранные рёбра (или группа рёбер) основного архитектурного эскиза, для создания формы этой  BIM Конструкции (вместо использования по умолчанию всех рёбер базовой фигуры). Введенные данные - это номера индексов рёбер или групп.</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="543"/>
       <location filename="../../ArchStructure.py" line="1003"/>
       <source>Select User Defined PropertySet to use in creating variant shape, with same ArchSketch </source>
-      <translation>Выберите пользовательский определенный набор свойств для использования при создании формы варианта, с тем же архивированием </translation>
+      <translation>Выберите заданный пользователем набор свойств для использования при создании варианта формы, с тем же архитектурным эскизом </translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1522"/>
+      <location filename="../../ArchStructure.py" line="1532"/>
       <source>If the nodes are visible or not</source>
       <translation>Видны ли узлы или нет</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1530"/>
+      <location filename="../../ArchStructure.py" line="1540"/>
       <source>The width of the nodes line</source>
       <translation>Ширина узловых линий</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1538"/>
+      <location filename="../../ArchStructure.py" line="1548"/>
       <source>The size of the node points</source>
       <translation>Размер узловых точек</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1547"/>
+      <location filename="../../ArchStructure.py" line="1557"/>
       <source>The color of the nodes line</source>
       <translation>Цвет линии узлов</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1556"/>
+      <location filename="../../ArchStructure.py" line="1566"/>
       <source>The type of structural node</source>
       <translation>Тип конструкционного узла</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1989"/>
+      <location filename="../../ArchStructure.py" line="1999"/>
       <source>Axes systems this structure is built on</source>
       <translation>Структура системы осей построена на</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="1999"/>
+      <location filename="../../ArchStructure.py" line="2009"/>
       <source>The element numbers to exclude when this structure is based on axes</source>
       <translation>Число исключающихся элементов при построении структуры на осях</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2006"/>
+      <location filename="../../ArchStructure.py" line="2016"/>
       <source>If true the element are aligned with axes</source>
       <translation>Если истина, элемент выравнивается по осям</translation>
     </message>
@@ -6122,8 +6113,8 @@ Building creation aborted.</source>
       <translation>URL-алрес страницы производителя оборудования</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="198"/>
       <location filename="../../ArchEquipment.py" line="211"/>
+      <location filename="../../ArchMaterial.py" line="208"/>
       <source>A standard code (MasterFormat, OmniClass,…)</source>
       <translation>Стандартный код (Гост, Ту, MasterFormat, OmniClass)</translation>
     </message>
@@ -6138,15 +6129,15 @@ Building creation aborted.</source>
       <translation>Электрическая мощность в ваттах, необходимая оборудованию</translation>
     </message>
     <message>
-      <location filename="../../ArchBuilding.py" line="308"/>
       <location filename="../../Arch.py" line="237"/>
       <location filename="../../Arch.py" line="310"/>
+      <location filename="../../ArchBuilding.py" line="308"/>
       <source>The type of this building</source>
       <translation>Тип здания</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="236"/>
       <location filename="../../ArchBuildingPart.py" line="229"/>
+      <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Высота объекта</translation>
     </message>
@@ -6161,8 +6152,8 @@ Building creation aborted.</source>
       <translation>Уровень точки отсчета (0,0,0) этого этажа</translation>
     </message>
     <message>
-      <location filename="../../ArchFloor.py" line="244"/>
       <location filename="../../ArchBuildingPart.py" line="257"/>
+      <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Расчётная площадь этого этажа</translation>
     </message>
@@ -6179,8 +6170,8 @@ Building creation aborted.</source>
       <translation>Необязательный тэг для этого компонента</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="954"/>
       <location filename="../../ArchBuildingPart.py" line="281"/>
+      <location filename="../../ArchSectionPlane.py" line="954"/>
       <source>The shape of this object</source>
       <translation>Форма этого объекта</translation>
     </message>
@@ -6200,8 +6191,8 @@ Building creation aborted.</source>
       <translation>Карта MaterialName:SolidIndexesList, которая связывает имена материалов со сплошными индексами, которые будут использоваться при ссылке на этот объект из других файлов</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1126"/>
       <location filename="../../ArchBuildingPart.py" line="519"/>
+      <location filename="../../ArchSectionPlane.py" line="1126"/>
       <source>The line width of this object</source>
       <translation>Ширина линий этого объекта</translation>
     </message>
@@ -6552,8 +6543,8 @@ Building creation aborted.</source>
       <translation>Опционально смещение между началом координат модели (0,0,0) и точкой, обозначенную геокоординатами</translation>
     </message>
     <message>
-      <location filename="../../ArchIFC.py" line="87"/>
       <location filename="../../ArchSite.py" line="744"/>
+      <location filename="../../ArchIFC.py" line="87"/>
       <source>The type of this object</source>
       <translation>Тип данного объекта</translation>
     </message>
@@ -6648,17 +6639,17 @@ Building creation aborted.</source>
       <translation>Показывать текстовые метки для часов на пути солнца</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2038"/>
+      <location filename="../../ArchSite.py" line="2044"/>
       <source>The altitude of the sun above the horizon</source>
       <translation>Высота солнца над горизонтом</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2048"/>
+      <location filename="../../ArchSite.py" line="2054"/>
       <source>The compass direction of the sun (0° is North)</source>
       <translation>Направление компаса на солнце (0° - северный)</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="2056"/>
+      <location filename="../../ArchSite.py" line="2062"/>
       <source>The date and time for this sun position</source>
       <translation>Дата и время положения Солнца</translation>
     </message>
@@ -6738,12 +6729,12 @@ Building creation aborted.</source>
       <translation>Объединять объекты из одного материала</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="584"/>
+      <location filename="../../ArchReference.py" line="595"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Последняя отметка времени привязанного файла</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="590"/>
+      <location filename="../../ArchReference.py" line="601"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Если истина, то цвета из связанного файла будет обновляться</translation>
     </message>
@@ -6788,8 +6779,8 @@ Building creation aborted.</source>
       <translation>Если истина, геометрия объединённая, иначе составная</translation>
     </message>
     <message>
-      <location filename="../../ArchSketchObject.py" line="52"/>
       <location filename="../../ArchWindow.py" line="144"/>
+      <location filename="../../ArchSketchObject.py" line="52"/>
       <source>The objects that host this window</source>
       <translation>Объекты, содержащие данное окно</translation>
     </message>
@@ -6831,7 +6822,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWindow.py" line="211"/>
       <source>When normal direction is in auto mode (0,0,0), use reversed normal direction of the Base Sketch, i.e. -z.</source>
-      <translation>Если направление нормали находится в автоматическом режиме (0,0,0), используйте обратное направление нормали базового эскиза, т. е. -z.</translation>
+      <translation>Если направление нормали в автоматическом режиме (0,0,0), использовать обратное направление нормали базового эскиза, т. е. -z.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="223"/>
@@ -6884,7 +6875,7 @@ Building creation aborted.</source>
       <translation>Показать символы показа фасада, если они доступны</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1464"/>
+      <location filename="../../ArchWindow.py" line="1470"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Номер направляющей, определяющей отверстие. Значение 0 означает автоматическое</translation>
     </message>
@@ -7136,7 +7127,7 @@ Building creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="462"/>
-      <location filename="../../ArchStairs.py" line="1738"/>
+      <location filename="../../ArchStairs.py" line="1753"/>
       <source>The overlap of the stringers above the bottom of the treads</source>
       <translation>Нахлест несущих по низу ступеней</translation>
     </message>
@@ -7163,12 +7154,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchStairs.py" line="519"/>
       <source>Use Base ArchSketch (if used) data (e.g. selected edge, widths, aligns) instead of Stairs' properties</source>
-      <translation>Использовать базовые данные ArchSketch (если используется) (например, выделенные края, ширина, выравнивания) вместо свойств лестниц</translation>
+      <translation>Использовать данные (если имеются) Архитектурного эскиза (например выбранные рёбра, ширину, выравнивание) вместо свойств Лестницы</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="532"/>
       <source>Selected edges of the base Sketch/ArchSketch, to use in creating the shape (flight) of this Arch Stairs (instead of using all the Base ArchSketch's edges by default).  Input are index numbers of edges.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Flight Axis) information, with getStairsBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Stairs' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Выбранные рёбра базового Эскиза/Архитектуры, используется для создания формы (пролёта) этой арки (вместо использования всех рёбер базовых Архитектур эскизов по умолчанию). Ввод - это номера индексов рёбер. Отключено и игнорируется, если базовый объект (Архитектура) предоставляет выбранную информацию о рёбрах (в качестве осей пролёта) методом getStairsBaseShapeEdgesInfo(). [УЛУЧШЕНИЕ от Архитектуры] Инструмент графического интерфейса 'Редактировать лестницу'  предоставляется во внешнем дополнении Архитектуры, позволяя пользователям интерактивно задавать (или отменять) выбор рёбер. 'Толерантны к топонимам' в случае использования Архитектуры в базовой версии (и установленном дополнении). Предупреждение : не 'Толерантны к топонимам' в том случае, если используется только эскиз.</translation>
+      <translation>Выбранные рёбра базового Эскиза/Архитектурного эскиза, используется для создания формы (пролёта) этой лестницы (вместо использования всех рёбер базовых Архитектурных эскизовов по умолчанию). Ввод - это номера индексов рёбер. Отключено и игнорируется, если базовый объект (Архитектурный эскиз) предоставляет выбранную информацию о рёбрах (в качестве осей пролёта) методом getStairsBaseShapeEdgesInfo(). [УЛУЧШЕНИЕ из Архитектурного эскиза] Инструмент графического интерфейса 'Редактировать лестницу'  предоставляется во внешнем дополнении SketchArch, позволяя пользователям интерактивно задавать (или отменять) выбор рёбер. 'не подвержен проблеме топологического именования' в случае использования Архитектурного эскиза в качестве базового (и установленном дополнении SketchArch). Предупреждение : подвержен 'проблеме топологического именования' в том случае, если используется обычный эскиз.</translation>
     </message>
     <message>
       <location filename="../../ArchFence.py" line="70"/>
@@ -7201,43 +7192,43 @@ Building creation aborted.</source>
       <translation>Когда значение истинно, ограждение будет окрашено как первоначальная деталь и секция.</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="190"/>
-      <location filename="../../ArchMaterial.py" line="718"/>
+      <location filename="../../ArchMaterial.py" line="200"/>
+      <location filename="../../ArchMaterial.py" line="729"/>
       <source>A description for this material</source>
       <translation>Описание материала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="208"/>
+      <location filename="../../ArchMaterial.py" line="218"/>
       <source>A URL where to find information about this material</source>
       <translation>URL-адрес, где можно найти информацию об этом материале</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="216"/>
+      <location filename="../../ArchMaterial.py" line="226"/>
       <source>The transparency value of this material</source>
       <translation>Прозрачность материала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="224"/>
+      <location filename="../../ArchMaterial.py" line="234"/>
       <source>The color of this material</source>
       <translation>Цвет этого материала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="232"/>
+      <location filename="../../ArchMaterial.py" line="242"/>
       <source>The color of this material when cut</source>
       <translation>Цвет разреза этого материала</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="725"/>
+      <location filename="../../ArchMaterial.py" line="736"/>
       <source>The list of layer names</source>
       <translation>Список имён слоёв</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="732"/>
+      <location filename="../../ArchMaterial.py" line="743"/>
       <source>The list of layer materials</source>
       <translation>Список материалов слоя</translation>
     </message>
     <message>
-      <location filename="../../ArchMaterial.py" line="739"/>
+      <location filename="../../ArchMaterial.py" line="750"/>
       <source>The list of layer thicknesses</source>
       <translation>Список толщин слоя</translation>
     </message>
@@ -7657,7 +7648,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchCurtainWall.py" line="350"/>
       <source>Input are index numbers of edges of Base ArchSketch/Sketch geometries (in Edit mode).  Selected edges are used to create the shape of this Arch Curtain Wall (instead of using all edges by default).  [ENHANCED by ArchSketch] GUI 'Edit Curtain Wall' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges.</source>
-      <translation>Входные данные — индексные номера ребер геометрии Base ArchSketch/Sketch (в режиме редактирования). Выбранные ребра используются для создания формы этой арочной навесной стены (вместо использования всех ребер по умолчанию). [УЛУЧШЕНО ArchSketch] Инструмент GUI «Редактировать навесную стену» предоставляется во внешнем дополнении («SketchArch»), чтобы позволить пользователям выбирать ребра в интерактивном режиме. «Toponaming-Tolerant», если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не «Toponaming-Tolerant», если используется только Sketch. Свойство игнорируется, если Base ArchSketch предоставил выбранные ребра.</translation>
+      <translation>Входные данные — номера индексов рёбер базовой геометрии архитектурного эскиза/эскиза(в режиме редактирования). Выбранные ребра используются для создания формы этой арочной навесной стены (вместо использования всех ребер по умолчанию). [УЛУЧШЕНИЕ из архитектурного эскиза] Инструмент графического интерфейса 'Редактировать навесную стену' предоставляется во внешнем дополнении ('SketchArch'), чтобы позволить пользователям выбирать ребра в интерактивном режиме. 'не подвержен проблеме топологического именования' в случае использования Архитектурного эскиза в качестве базового (и установленном дополнении SketchArch). Предупреждение : подвержен 'проблеме топологического именования' в том случае, если используется обычный эскиз. Свойство игнорируется, если базовый архитектурный эскиз предоставил выбранные ребра.</translation>
     </message>
     <message>
       <location filename="../../ArchPipe.py" line="85"/>
@@ -8047,14 +8038,14 @@ Building creation aborted.</source>
       <translation>Отображение метки в представлении 3D</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="579"/>
       <location filename="../../ArchSectionPlane.py" line="1180"/>
+      <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Название шрифта</translation>
     </message>
     <message>
-      <location filename="../../ArchSpace.py" line="597"/>
       <location filename="../../ArchSectionPlane.py" line="1189"/>
+      <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Размер шрифта текста</translation>
     </message>
@@ -8191,32 +8182,32 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="192"/>
       <source>The width of this wall. Not used if this wall is based on a face. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>Ширина этой стены. Не используется, если эта стена основана на грани. Отключено и игнорируется, если базовый объект (ArchSketch) предоставляет информацию.</translation>
+      <translation>Ширина этой стены. Не используется, если эта стена основана на грани. Отключено и игнорируется, если базовый объект (архитектурный эскиз) предоставляет информацию.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="181"/>
       <source>The length of this wall. Read-only if this wall is not based on an unconstrained sketch with a single edge, or on a Draft Wire with a single edge. Refer to wiki for details how length is deduced.</source>
-      <translation>Длина этой стены. Только для чтения, если эта стена не основана на неограниченном эскизе с одним краем или на чертежной проволоке с одним краем. Подробности того, как выводится длина, см. в вики.</translation>
+      <translation>Длина этой стены. Только для чтения, если эта стена не основана на неограниченном эскизе с одним ребром или на наброске ломаной с одним ребром. Подробности того, как выводится длина, см. в вики.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="205"/>
       <source>This overrides Width attribute to set width of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Widths information, with getWidths() method  (If a value is zero, the value of 'Width' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Width' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Это переопределяет атрибут Width для установки ширины каждого сегмента стены. Отключено и игнорируется, если объект Base (ArchSketch) предоставляет информацию о ширине с помощью метода getWidths() (если значение равно нулю, будет использоваться значение «Ширина»). [УЛУЧШЕНИЕ от ArchSketch] Инструмент GUI «Изменить ширину сегмента стены» предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли устанавливать значения в интерактивном режиме. «Toponaming-Tolerant», если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не «Toponaming-Tolerant», если используется только Sketch.</translation>
+      <translation>Это переопределяет атрибут width для установки ширины каждого сегмента стены. Отключено и игнорируется, если базовый объект (архитектурный эскиз) предоставляет информацию о ширине с помощью метода getWidths() (если значение равно нулю, будет использоваться значение 'width '). [УЛУЧШЕНИЕ от архитектурного эскиза] Инструмент графического интерфейса 'Изменить ширину сегмента стены' предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли устанавливать значения в интерактивном режиме. 'не подвержен проблеме топологического именования' в случае использования Архитектурного эскиза в качестве базового (и установленном дополнении SketchArch). Предупреждение : подвержен 'проблеме топологического именования' в том случае, если используется обычный эскиз.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="216"/>
       <source>This overrides Align attribute to set align of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Aligns information, with getAligns() method  (If a value is not 'Left, Right, Center', the value of 'Align' will be followed).  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment Align' Tool is provided in external SketchArch Add-on to let users to set the values interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Это переопределяет атрибут Align для установки выравнивания каждого сегмента стены. Отключено и игнорируется, если объект Base (ArchSketch) предоставляет информацию Aligns с методом getAligns() (если значение не равно «Left, Right, Center», будет использоваться значение «Align»). [УЛУЧШЕНИЕ от ArchSketch] Инструмент GUI «Изменить выравнивание сегмента стены» предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли устанавливать значения в интерактивном режиме. «Toponaming-Tolerant», если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не «Toponaming-Tolerant», если используется только Sketch.</translation>
+      <translation>Это переопределяет атрибут align для установки выравнивания каждого сегмента стены. Отключено и игнорируется, если базовый объект (Архитектурный эскиз) предоставляет информацию выравнивания методом getAligns() (если значение не равно «Left, Right, Center», будет использоваться значение «Align»). [УЛУЧШЕНИЕ от архитектурного эскиза] Инструмент графического интерфейса 'Изменить выравнивание сегмента стены' предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли устанавливать значения в интерактивном режиме.  'не подвержен проблеме топологического именования' в случае использования Архитектурного эскиза в качестве базового (и установленном дополнении SketchArch). Предупреждение : подвержен 'проблеме топологического именования' в том случае, если используется обычный эскиз.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="227"/>
       <source>This overrides Offset attribute to set offset of each segment of wall.  Disabled and ignored if Base object (ArchSketch) provides Offsets information, with getOffsets() method  (If a value is zero, the value of 'Offset' will be followed).  [ENHANCED by ArchSketch] GUI 'Edit Wall Segment Offset' Tool is provided in external Add-on ('SketchArch') to let users to select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used. Property is ignored if Base ArchSketch provided the selected edges. </source>
-      <translation>Это переопределяет атрибут Offset для установки смещения каждого сегмента стены. Отключено и игнорируется, если объект Base (ArchSketch) предоставляет информацию Offsets с методом getOffsets() (если значение равно нулю, будет использоваться значение 'Offset'). [УЛУЧШЕНО ArchSketch] Инструмент GUI 'Изменить смещение сегмента стены' предоставляется во внешнем дополнении ('SketchArch'), чтобы пользователи могли выбирать края в интерактивном режиме. 'Toponaming-Tolerant', если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не 'Toponaming-Tolerant', если используется только Sketch. Свойство игнорируется, если Base ArchSketch предоставил выбранные края. </translation>
+      <translation>Это переопределяет атрибут Offset для установки смещения каждого сегмента стены. Отключено и игнорируется, если базовый объект (архитектурный эскиз) предоставляет информацию смещения методом getOffsets() (если значение равно нулю, будет использоваться значение 'Offset'). [УЛУЧШЕНИЕ из архитектурного эскиза] Инструмент графического интерфейса 'Изменить смещение сегмента стены' предоставляется во внешнем дополнении ('SketchArch'), чтобы пользователи могли выбирать рёбра в интерактивном режиме.  'не подвержен проблеме топологического именования' в случае использования Архитектурного эскиза в качестве базового (и установленном дополнении SketchArch). Предупреждение : подвержен 'проблеме топологического именования' в том случае, если используется обычный эскиз. Свойство игнорируется, если базовый архитектурный эскиз предоставил выбранные рёбра. </translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="260"/>
       <source>The alignment of this wall on its base object, if applicable. Disabled and ignored if Base object (ArchSketch) provides the information.</source>
-      <translation>Выравнивание этой стены на ее базовом объекте, если применимо. Отключено и игнорируется, если базовый объект (ArchSketch) предоставляет информацию.</translation>
+      <translation>Выравнивание этой стены на ее базовом объекте, если применимо. Отключено и игнорируется, если базовый объект (Архитектурный эскиз) предоставляет информацию.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="293"/>
@@ -8266,29 +8257,29 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Выбранные ребра (или группа ребер) базового Sketch/ArchSketch для использования при создании формы этой арочной стены (вместо использования всех ребер базового Sketch/ArchSketch по умолчанию). Вводимые данные — индексные номера ребер или групп. Отключено и игнорируется, если базовый объект (ArchSketch) предоставляет информацию о выбранных ребрах (как осях стены) с помощью метода getWallBaseShapeEdgesInfo(). [УЛУЧШЕНИЕ от ArchSketch] Инструмент графического интерфейса «Редактировать сегмент стены» предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли интерактивно выбирать (отменять) ребра. «Toponaming-Tolerant», если ArchSketch используется в Base (и установлено дополнение SketchArch). Предупреждение: не «Toponaming-Tolerant», если используется только Sketch.</translation>
+      <translation>Выбранные ребра (или группа ребер) базового Эскиза/Архитектурного эскиза для использования при создании формы этой арочной стены (вместо использования всех ребер базового Эскиза/Архитектурного эскиза по умолчанию). Вводимые данные — индексные номера ребер или групп. Отключено и игнорируется, если базовый объект (Архитектурный эскиз) предоставляет информацию о выбранных ребрах (как осях стены) с помощью метода getWallBaseShapeEdgesInfo(). [УЛУЧШЕНИЕ от Архитектурного эскиза] Инструмент графического интерфейса «Редактировать сегмент стены» предоставляется во внешнем дополнении SketchArch, чтобы пользователи могли интерактивно выбирать (отменять) ребра. «Toponaming-Tolerant», если Архитектурный эскиз используется в качестве базового (и установлено дополнение SketchArch). Предупреждение: не «толерантен к проблеме топологичнского именования», если используется только Эскиз.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>
       <source>Select User Defined PropertySet to use in creating variant shape, layers of the Arch Wall with same ArchSketch </source>
-      <translation>Выберите пользовательский определенный набор свойств для использования при создании формы варианта, слои стены, с тем же архивированием </translation>
+      <translation>Выберите определенный пользователем набор свойств для использования при создании варианта формы, слоёв стены, с тем же архитектурным эскизом </translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="381"/>
       <location filename="../../ArchStructure.py" line="962"/>
+      <location filename="../../ArchWall.py" line="381"/>
       <source>Use Base ArchSketch (if used) data (e.g. widths, aligns, offsets) instead of Wall's properties</source>
-      <translation>Использовать данные Base ArchSketch (если используются) (например, ширину, выравнивание, смещения) вместо свойств стены</translation>
+      <translation>Использовать данные (если имеются) Архитектурного эскиза (например, ширину, выравнивание, смещения) вместо свойств стены</translation>
     </message>
   </context>
   <context>
     <name>Arch_StructureTools</name>
     <message>
-      <location filename="../../ArchStructure.py" line="2128"/>
+      <location filename="../../ArchStructure.py" line="2138"/>
       <source>Structure Tools</source>
       <translation>Инструменты структуры</translation>
     </message>
     <message>
-      <location filename="../../ArchStructure.py" line="2129"/>
+      <location filename="../../ArchStructure.py" line="2139"/>
       <source>Structure tools</source>
       <translation>Инструменты конструкции</translation>
     </message>
@@ -8309,7 +8300,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1247"/>
       <source>Writing camera position</source>
       <translation>Записать позицию камеры</translation>
     </message>
@@ -8319,7 +8310,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="440"/>
       <source>&amp;2D Drafting</source>
-      <translation>&amp;2D Черновик</translation>
+      <translation>&amp;2-мерный набросок</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="441"/>
@@ -8329,12 +8320,12 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="419"/>
       <source>Drafting Tools</source>
-      <translation>Инструменты черчения</translation>
+      <translation>Инструменты наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="420"/>
       <source>Draft Snap</source>
-      <translation>Привязка черновика</translation>
+      <translation>Привязка наброска</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="421"/>
@@ -8695,7 +8686,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../bimcommands/BimPanel.py" line="60"/>
       <source>Creates a panel object from scratch or from a selected object (sketch, wire, face or solid)</source>
-      <translation>Создаёт новый объект панели без или на основе выбранного объекта (эскиза, ломаной линии, грани или твердотельного объекта)</translation>
+      <translation>Создаёт новый объект панели с нуля или на основе выбранного объекта (эскиза, ломаной линии, грани или твердотельного объекта)</translation>
     </message>
   </context>
   <context>
@@ -9059,7 +9050,7 @@ Building creation aborted.</source>
     <name>Command</name>
     <message>
       <location filename="../../ArchIFCView.py" line="73"/>
-      <location filename="../../ArchSite.py" line="1308"/>
+      <location filename="../../ArchSite.py" line="1314"/>
       <location filename="../../ArchAxis.py" line="798"/>
       <source>Transform</source>
       <translation>Преобразовать</translation>
@@ -9075,7 +9066,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../InitGui.py" line="480"/>
       <source>Draft</source>
-      <translation>Черновик</translation>
+      <translation>Набросок</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="712"/>
@@ -9239,20 +9230,20 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="91"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="458"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="460"/>
       <source>Create new material</source>
       <translation>Создать новый материал</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimIfcElements.py" line="92"/>
-      <location filename="../../bimcommands/BimIfcElements.py" line="459"/>
+      <location filename="../../bimcommands/BimIfcElements.py" line="461"/>
       <source>Create new multi-material</source>
       <translation>Создать новый многокомпонентный материал</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <location filename="../../bimcommands/BimIfcElements.py" line="139"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="206"/>
+      <location filename="../../bimcommands/BimIfcQuantities.py" line="247"/>
       <source>Label</source>
       <translation>Метка</translation>
     </message>
@@ -9268,8 +9259,8 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
       <translation>Материал</translation>
     </message>
     <message>
-      <location filename="../../nativeifc/ifc_tools.py" line="60"/>
       <location filename="../../bimcommands/BimIfcExplorer.py" line="60"/>
+      <location filename="../../nativeifc/ifc_tools.py" line="60"/>
       <source>IfcOpenShell was not found on this system. IFC support is disabled</source>
       <translation>IfcOpenShell не найден в этой системе. Поддержка IFC отключена</translation>
     </message>
@@ -9885,78 +9876,78 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
       <translation>Подсказка: Результаты лучше всего просматривать в режиме Wireframe (меню Вид - Стиль представления - Каркас)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="288"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
       <translation>Разметка Строения</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="314"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
       <translation>Контур Строения</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="333"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
       <translation>Название Строения</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="343"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
       <translation>Вертикальные Оси</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="354"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
       <translation>Горизонтальные оси</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="364"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
       <source>Axes</source>
       <translation>Оси</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="378"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="385"/>
       <source>Level</source>
       <translation>Уровень</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="439"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
       <translation>Сохранить предварительные установки</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="440"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
       <translation>Название предустановки</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="489"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
       <translation>Предустановка пользователя</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="779"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
       <translation>Шаблон успешно загружен в текущий документ</translation>
     </message>
     <message>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
-      <location filename="../../bimcommands/BimProjectManager.py" line="424"/>
       <source>New Group</source>
       <translation>Новая Группа</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="643"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
       <translation>Сохранить файл шаблона</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="652"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
       <translation>Шаблон успешно сохранен</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="665"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
       <translation>Открыть файл шаблона</translation>
     </message>
@@ -10038,7 +10029,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="136"/>
       <source>Draft clones are not supported yet!</source>
-      <translation>Клонирование черновиков пока не поддерживается!</translation>
+      <translation>Клонирование набросков пока не поддерживается!</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimUnclone.py" line="140"/>
@@ -10278,7 +10269,7 @@ CTRL+PgUp для удлинения выдавливанияCTRL+PgDown для �
     <message>
       <location filename="../../bimcommands/BimTDView.py" line="76"/>
       <source>No section view, Draft object, or page found or selected in the document</source>
-      <translation>В документе не найдено или не выбрано ни раздела, ни объекта - черновика, ни страницы</translation>
+      <translation>В документе не найдено или не выбрано ни сечения, ни наброска, ни страницы</translation>
     </message>
     <message>
       <location filename="../../importers/importSH3DHelper.py" line="524"/>
@@ -10851,8 +10842,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <name>BIM_Project</name>
     <message>
       <location filename="../../bimcommands/BimProject.py" line="38"/>
-      <source>Project</source>
-      <translation>Проект</translation>
+      <source>IFC Project</source>
+      <translation>Проект IFC</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProject.py" line="39"/>
@@ -11103,8 +11094,8 @@ Please check your FreeCAD installation or provide a custom template under menu P
     </message>
     <message>
       <location filename="../../nativeifc/ifc_commands.py" line="143"/>
-      <source>Create IFC Project</source>
-      <translation>Создать проект IFC</translation>
+      <source>Convert to IFC Project</source>
+      <translation>Преобразовать в проект IFC</translation>
     </message>
   </context>
   <context>
@@ -11208,7 +11199,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="290"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default line width. Location in preferences: &lt;span style=" font-weight:600;"&gt;Display &amp;gt; Part colors &amp;gt; Default line width, Draft &amp;gt; Visual settings &amp;gt; Default line width&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Толщина линии по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Отображение &amp;gt; Цвета деталей &amp;gt; Ширина линии по умолчанию, Черновик &amp;gt; Визуальные настройки &amp;gt; Ширина линии по умолчанию&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Толщина линии по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Отображение &amp;gt; Цвета деталей &amp;gt; Толщина линии по умолчанию, Набросок &amp;gt; Визуальные настройки &amp;gt; Толщина линии по умолчанию&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="293"/>
@@ -11248,12 +11239,12 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="556"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default font. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font family, TechDraw &amp;gt; TechDraw 1 &amp;gt; Label Font&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Шрифт по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Тексты и размеры &amp;gt; Семейство шрифтов, TechDraw &amp;gt; TechDraw 1 &amp;gt; Шрифт этикетки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Шрифт по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Тексты и размеры &amp;gt; Семейство шрифтов, Чертёж &amp;gt; Технический чертёж 1 &amp;gt; Шрифт метки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="543"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension arrow size. Location in preferences: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow size, Draft &amp;gt; Texts and dimensions &amp;gt; Arrow size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Размер стрелки размера по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;TechDraw &amp;gt; TechDraw 2 &amp;gt; Размер стрелки, черновик &amp;gt; Тексты и размеры &amp;gt; Размер стрелки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Размер стрелки размера по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Чертёж &amp;gt; Технический чертёж 2 &amp;gt; Размер стрелки, набросок &amp;gt; Тексты и размеры &amp;gt; Размер стрелки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="23"/>
@@ -11313,7 +11304,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="189"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Default dimension style. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Arrow style, TechDraw &amp;gt; TechDraw 2 &amp;gt; Arrow Style&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Стиль размера по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Тексты и размеры &amp;gt; Стиль стрелки, TechDraw &amp;gt; TechDraw 2 &amp;gt; Стиль стрелки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Стиль размера по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Тексты и размеры &amp;gt; Стиль стрелки, чертёж &amp;gt; Технический чертёж 2 &amp;gt; Стиль стрелки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="193"/>
@@ -11411,9 +11402,14 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation>Автор по умолчанию для новых файлов</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation>В вашей системе отсутствует &lt;b&gt;IfcOpenShell&lt;/b&gt;. IfcOpenShell необходим для импорта и экспорта файлов IFC в FreeCAD. Дополнительную информацию можно найти на &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;этой вики-странице&lt;/a&gt;, или вы можете &lt;a href="#install"&gt;скачать и установить его&lt;/a&gt; напрямую.</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сколько маленьких квадратов между каждой основной линией сетки. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Сетка и привязка &amp;gt; Основная линия каждые&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Сколько маленьких квадратов между каждой основной линией сетки. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;набросок &amp;gt; Сетка и привязка &amp;gt; Основная линия каждые&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="179"/>
@@ -11438,17 +11434,17 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="334"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This is the size of the smallest square of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Grid spacing&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это размер наименьшего квадрата сетки. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Сетка и привязка &amp;gt; Интервал сетки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Это размер наименьшего квадрата сетки. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Сетка и привязка &amp;gt; Интервал сетки&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="349"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default color of construction geometry. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Construction geometry color&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Цвет конструктивной геометрии по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Общие &amp;gt; Цвет конструктивной геометрии&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Цвет конструктивной геометрии по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Общие &amp;gt; Цвет вспомогательной геометрии&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="486"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The default size of texts and dimension texts. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Texts and dimensions &amp;gt; Font size, TechDraw &amp;gt; TechDraw 2 &amp;gt; Font size&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Размер текстов и размерных текстов по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Тексты и размеры &amp;gt; Размер шрифта, TechDraw &amp;gt; TechDraw 2 &amp;gt; Размер шрифта&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Размер текстов и размерных надписей по умолчанию. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Тексты и размеры &amp;gt; Размер шрифта, чертёж &amp;gt; Технический чертёж 2 &amp;gt; Размер шрифта&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="499"/>
@@ -11515,7 +11511,7 @@ Please check your FreeCAD installation or provide a custom template under menu P
     <message>
       <location filename="../ui/dialogSetup.ui" line="570"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Where the grid appears at FreeCAD startup. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; General &amp;gt; Default working plane&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Где сетка появляется при запуске FreeCAD. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Черновик &amp;gt; Общие &amp;gt; Рабочая плоскость по умолчанию&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Где сетка появляется при запуске FreeCAD. Расположение в настройках: &lt;span style=" font-weight:600;"&gt;Набросок &amp;gt; Общие &amp;gt; Рабочая плоскость по умолчанию&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogSetup.ui" line="454"/>
@@ -11531,11 +11527,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation>Цвет геометрии</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation>&lt;b&gt;IfcOpenShell&lt;/b&gt; отсутствует в вашей системе. IfcOpenShell необходим для импорта или экспорта файлов IFC в/из FreeCAD. Проверьте &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;эту страницу вики&lt;/a&gt;, чтобы узнать больше, или &lt;a href="#install"&gt;загрузите и установите его&lt;/a&gt; напрямую.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #ifndef __millpathline_h__
 #define __millpathline_h__
 #include <vector>

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -52,9 +54,7 @@ DrawSketchKeyboardManager::DrawSketchKeyboardManager()
 
     timer.setSingleShot(true);
 
-    QObject::connect(&timer, &QTimer::timeout, [this]() {
-        onTimeOut();
-    });
+    QObject::connect(&timer, &QTimer::timeout, [this]() { onTimeOut(); });
 }
 
 bool DrawSketchKeyboardManager::isMode(KeyboardEventHandlingMode mode)

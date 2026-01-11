@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -23,6 +25,7 @@
 #ifndef PART_OCAF_IMPORTEXPORTSETTINGS_H
 #define PART_OCAF_IMPORTEXPORTSETTINGS_H
 
+#include <list>
 #include <memory>
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>
@@ -34,15 +37,17 @@
 namespace Part
 {
 
-namespace STEP {
+namespace STEP
+{
 class ImportExportSettings;
 using ImportExportSettingsPtr = std::shared_ptr<ImportExportSettings>;
-}
+}  // namespace STEP
 
-namespace IGES {
+namespace IGES
+{
 class ImportExportSettings;
 using ImportExportSettingsPtr = std::shared_ptr<ImportExportSettings>;
-}
+}  // namespace IGES
 
 namespace OCAF
 {
@@ -50,14 +55,16 @@ namespace OCAF
 class PartExport ImportExportSettings
 {
 public:
-    enum class ImportMode {
+    enum class ImportMode
+    {
         SingleDocument = 0,
         GroupPerDocument = 1,
         GroupPerDirectory = 2,
         ObjectPerDocument = 3,
         ObjectPerDirectory = 4,
     };
-    struct CodePage {
+    struct CodePage
+    {
         std::string codePageName;
         Resource_FormatType codePage;
     };
@@ -148,7 +155,7 @@ private:
     // clang-format on
 };
 
-} //namespace OCAF
-} //namespace Part
+}  // namespace OCAF
+}  // namespace Part
 
 #endif

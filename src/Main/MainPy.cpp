@@ -25,16 +25,16 @@
 #include <FCConfig.h>
 
 #if defined(FC_OS_WIN32)
-#include <windows.h>
+# include <windows.h>
 #endif
 
 #ifdef FC_OS_MACOSX
-#include <mach-o/dyld.h>
-#include <string>
+# include <mach-o/dyld.h>
+# include <string>
 #endif
 
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif  // HAVE_CONFIG_H
 
 #include <cstdio>
@@ -69,12 +69,12 @@ BOOL APIENTRY DllMain(HANDLE hModule, DWORD ul_reason_for_call, LPVOID /*lpReser
     return true;
 }
 #elif defined(FC_OS_LINUX) || defined(FC_OS_BSD)
-#ifndef GNU_SOURCE
-#define GNU_SOURCE
-#endif
-#include <dlfcn.h>
+# ifndef GNU_SOURCE
+#  define GNU_SOURCE
+# endif
+# include <dlfcn.h>
 #elif defined(FC_OS_CYGWIN)
-#include <windows.h>
+# include <windows.h>
 #endif
 
 PyMOD_INIT_FUNC(FreeCAD)
@@ -156,7 +156,7 @@ PyMOD_INIT_FUNC(FreeCAD)
     }
 
 #else
-#error "Implement: Retrieve the path of the module for your platform."
+# error "Implement: Retrieve the path of the module for your platform."
 #endif
     int argc = 1;
     std::vector<char*> argv;

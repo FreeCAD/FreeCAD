@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 // stdafx.cpp : source file that includes just the standard includes
 // FreeCAD_widget.pch will be the pre-compiled header
 // stdafx.obj will contain the pre-compiled type information

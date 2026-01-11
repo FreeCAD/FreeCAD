@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -55,8 +57,7 @@ private:
 };
 
 
-class MeasureExport MeasureDistance
-    : public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
+class MeasureExport MeasureDistance: public Measure::MeasureBaseExtendable<Part::MeasureDistanceInfo>
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureDistance);
 
@@ -153,9 +154,11 @@ public:
     // Return the object we are measuring
     std::vector<App::DocumentObject*> getSubject() const override;
 
-    void handleChangedPropertyName(Base::XMLReader& reader,
-                                   const char* TypeName,
-                                   const char* PropName) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* TypeName,
+        const char* PropName
+    ) override;
 
 private:
     void onChanged(const App::Property* prop) override;

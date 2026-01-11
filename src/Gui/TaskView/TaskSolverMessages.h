@@ -24,12 +24,12 @@
 #ifndef GUI_TASKVIEW_TaskSolverMessages_H
 #define GUI_TASKVIEW_TaskSolverMessages_H
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskSolverMessages;
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace App
 {
@@ -44,15 +44,11 @@ class GuiExport TaskSolverMessages: public Gui::TaskView::TaskBox
     Q_OBJECT
 
 public:
-    explicit TaskSolverMessages(const QPixmap& icon,
-                                const QString& title);
+    explicit TaskSolverMessages(const QPixmap& icon, const QString& title);
     ~TaskSolverMessages() override;
     FC_DISABLE_COPY_MOVE(TaskSolverMessages)
 
-    void slotSetUp(const QString& state,
-                   const QString& msg,
-                   const QString& link,
-                   const QString& linkText);
+    void slotSetUp(const QString& state, const QString& msg, const QString& link, const QString& linkText);
 
 private:
     void setupConnections();

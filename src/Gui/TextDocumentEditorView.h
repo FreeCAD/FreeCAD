@@ -39,9 +39,7 @@ class GuiExport TextDocumentEditorView: public MDIView
     TYPESYSTEM_HEADER_WITH_OVERRIDE();  // NOLINT
 
 public:
-    TextDocumentEditorView(App::TextDocument* textDocument,
-                           QPlainTextEdit* editor,
-                           QWidget* parent);
+    TextDocumentEditorView(App::TextDocument* textDocument, QPlainTextEdit* editor, QWidget* parent);
     ~TextDocumentEditorView() override;
     const char* getName() const override
     {
@@ -77,8 +75,8 @@ private:
 private:
     QPlainTextEdit* const editor;
     App::TextDocument* const textDocument;
-    boost::signals2::connection textConnection;
-    boost::signals2::connection labelConnection;
+    fastsignals::advanced_connection textConnection;
+    fastsignals::connection labelConnection;
     bool aboutToClose = false;
 };
 

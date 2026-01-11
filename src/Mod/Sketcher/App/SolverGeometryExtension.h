@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -143,11 +145,11 @@ public:
 
         ParameterStatus getStatus() const
         {
-            return std::all_of(pstatus.begin(),
-                               pstatus.end(),
-                               [](const auto& v) {
-                                   return v == Independent;
-                               })
+            return std::all_of(
+                       pstatus.begin(),
+                       pstatus.end(),
+                       [](const auto& v) { return v == Independent; }
+                   )
                 ? Independent
                 : Dependent;
         }

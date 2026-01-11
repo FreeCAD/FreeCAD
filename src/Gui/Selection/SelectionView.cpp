@@ -138,8 +138,10 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
                                     ->GetGroup("Preferences")
                                     ->GetGroup("Selection");
     bool autoShow = hGrp->GetBool("AutoShowSelectionView", false);
-    hGrp->SetBool("AutoShowSelectionView",
-                  autoShow);  // Remove this line once the preferences window item is implemented
+    hGrp->SetBool(
+        "AutoShowSelectionView",
+        autoShow
+    );  // Remove this line once the preferences window item is implemented
 
     if (autoShow) {
         if (!parentWidget()->isVisible() && Selection().hasSelection()) {
@@ -160,9 +162,9 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
                                const char* objName,
                                const char* subName,
                                App::DocumentObject* obj) {
-        str << docName;
+        str << QString::fromUtf8(docName);
         str << "#";
-        str << objName;
+        str << QString::fromUtf8(objName);
         if (subName != 0 && subName[0] != 0) {
             str << ".";
             /* Original code doesn't take account of histories in subelement names and displays
@@ -191,8 +193,8 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
     if (Reason.Type == SelectionChanges::AddSelection) {
         // save as user data
         QStringList list;
-        list << QString::fromLatin1(Reason.pDocName);
-        list << QString::fromLatin1(Reason.pObjectName);
+        list << QString::fromUtf8(Reason.pDocName);
+        list << QString::fromUtf8(Reason.pObjectName);
         App::Document* doc = App::GetApplication().getDocument(Reason.pDocName);
         App::DocumentObject* obj = doc->getObject(Reason.pObjectName);
         getSelectionName(str, Reason.pDocName, Reason.pObjectName, Reason.pSubName, obj);
@@ -230,13 +232,13 @@ void SelectionView::onSelectionChanged(const SelectionChanges& Reason)
     else if (Reason.Type == SelectionChanges::SetSelection) {
         // remove all items
         selectionView->clear();
-        std::vector<SelectionSingleton::SelObj> objs =
-            Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
+        std::vector<SelectionSingleton::SelObj> objs
+            = Gui::Selection().getSelection(Reason.pDocName, ResolveMode::NoResolve);
         for (const auto& it : objs) {
             // save as user data
             QStringList list;
-            list << QString::fromLatin1(it.DocName);
-            list << QString::fromLatin1(it.FeatName);
+            list << QString::fromUtf8(it.DocName);
+            list << QString::fromUtf8(it.FeatName);
 
             App::Document* doc = App::GetApplication().getDocument(it.DocName);
             App::DocumentObject* obj = doc->getObject(it.FeatName);
@@ -296,8 +298,8 @@ void SelectionView::search(const QString& text)
                     QString selObject;
                     QTextStream str(&selObject);
                     QStringList list;
-                    list << QString::fromLatin1(doc->getName());
-                    list << QString::fromLatin1(it->getNameInDocument());
+                    list << QString::fromUtf8(doc->getName());
+                    list << QString::fromUtf8(it->getNameInDocument());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
@@ -344,10 +346,11 @@ void SelectionView::select(QListWidgetItem* item)
         // Gui::Selection().clearSelection();
         Gui::Command::runCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");
         // Gui::Selection().addSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-        QString cmd = QStringLiteral(
-                          R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))")
+        QString cmd = QString::fromUtf8(
+                          R"(Gui.Selection.addSelection(App.getDocument("%1").getObject("%2")))"
+        )
                           .arg(elements[0], elements[1]);
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -366,11 +369,12 @@ void SelectionView::deselect()
     }
 
     // Gui::Selection().rmvSelection(elements[0].toLatin1(),elements[1].toLatin1(),0);
-    QString cmd = QStringLiteral(
-                      R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))")
+    QString cmd = QString::fromUtf8(
+                      R"(Gui.Selection.removeSelection(App.getDocument("%1").getObject("%2")))"
+    )
                       .arg(elements[0], elements[1]);
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -382,7 +386,7 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toLatin1().constData();
+    std::string name = item->text().toUtf8().constData();
     char* docname = &name.at(0);
     char* objname = std::strchr(docname, '#');
     if (!objname) {
@@ -405,24 +409,28 @@ void SelectionView::toggleSelect(QListWidgetItem* item)
     }
     QString cmd;
     if (Gui::Selection().isSelected(docname, objname, subname)) {
-        cmd = QStringLiteral("Gui.Selection.removeSelection("
-                                  "App.getDocument('%1').getObject('%2'),'%3')")
-                  .arg(QString::fromLatin1(docname),
-                       QString::fromLatin1(objname),
-                       QString::fromLatin1(subname));
+        cmd = QString::fromUtf8(
+                  "Gui.Selection.removeSelection("
+                  "App.getDocument('%1').getObject('%2'),'%3')"
+        )
+                  .arg(
+                      QString::fromUtf8(docname),
+                      QString::fromUtf8(objname),
+                      QString::fromUtf8(subname)
+                  );
     }
     else {
-        cmd = QStringLiteral("Gui.Selection.addSelection("
-                                  "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)")
-                  .arg(QString::fromLatin1(docname),
-                       QString::fromLatin1(objname),
-                       QString::fromLatin1(subname))
+        cmd = QString::fromUtf8(
+                  "Gui.Selection.addSelection("
+                  "App.getDocument('%1').getObject('%2'),'%3',%4,%5,%6)"
+        )
+                  .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname))
                   .arg(x)
                   .arg(y)
                   .arg(z);
     }
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -434,7 +442,7 @@ void SelectionView::preselect(QListWidgetItem* item)
     if (!item) {
         return;
     }
-    std::string name = item->text().toLatin1().constData();
+    std::string name = item->text().toUtf8().constData();
     char* docname = &name.at(0);
     char* objname = std::strchr(docname, '#');
     if (!objname) {
@@ -455,13 +463,14 @@ void SelectionView::preselect(QListWidgetItem* item)
             *end = 0;
         }
     }
-    QString cmd = QStringLiteral("Gui.Selection.setPreselection("
-                                      "App.getDocument('%1').getObject('%2'),'%3',tp=2)")
-                      .arg(QString::fromLatin1(docname),
-                           QString::fromLatin1(objname),
-                           QString::fromLatin1(subname));
+    QString cmd
+        = QString::fromUtf8(
+              "Gui.Selection.setPreselection("
+              "App.getDocument('%1').getObject('%2'),'%3',tp=2)"
+        )
+              .arg(QString::fromUtf8(docname), QString::fromUtf8(objname), QString::fromUtf8(subname));
     try {
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -500,10 +509,10 @@ void SelectionView::touch()
     if (elements.size() < 2) {
         return;
     }
-    QString cmd = QStringLiteral(R"(App.getDocument("%1").getObject("%2").touch())")
+    QString cmd = QString::fromUtf8(R"(App.getDocument("%1").getObject("%2").touch())")
                       .arg(elements[0], elements[1]);
     try {
-        Gui::Command::runCommand(Gui::Command::Doc, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Doc, cmd.toUtf8());
     }
     catch (Base::Exception& e) {
         e.reportException();
@@ -522,22 +531,22 @@ void SelectionView::toPython()
     }
 
     try {
-        QString cmd = QStringLiteral(R"(obj = App.getDocument("%1").getObject("%2"))")
+        QString cmd = QString::fromUtf8(R"(obj = App.getDocument("%1").getObject("%2"))")
                           .arg(elements[0], elements[1]);
-        Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+        Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
         if (elements.length() > 2) {
-            App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
-            App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+            App::Document* doc = App::GetApplication().getDocument(elements[0].toUtf8());
+            App::DocumentObject* obj = doc->getObject(elements[1].toUtf8());
             QString property = getProperty(obj);
 
-            cmd = QStringLiteral(R"(shp = App.getDocument("%1").getObject("%2").%3)")
+            cmd = QString::fromUtf8(R"(shp = App.getDocument("%1").getObject("%2").%3)")
                       .arg(elements[0], elements[1], property);
-            Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+            Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
 
             if (supportPart(obj, elements[2])) {
-                cmd = QStringLiteral(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
+                cmd = QString::fromUtf8(R"(elt = App.getDocument("%1").getObject("%2").%3.%4)")
                           .arg(elements[0], elements[1], property, elements[2]);
-                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
             }
         }
     }
@@ -554,17 +563,18 @@ void SelectionView::showPart()
     }
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
-        App::Document* doc = App::GetApplication().getDocument(elements[0].toLatin1());
-        App::DocumentObject* obj = doc->getObject(elements[1].toLatin1());
+        App::Document* doc = App::GetApplication().getDocument(elements[0].toUtf8());
+        App::DocumentObject* obj = doc->getObject(elements[1].toUtf8());
         QString module = getModule(obj->getTypeId().getName());
         QString property = getProperty(obj);
         if (!module.isEmpty() && !property.isEmpty() && supportPart(obj, elements[2])) {
             try {
-                Gui::Command::addModule(Gui::Command::Gui, module.toLatin1());
-                QString cmd =
-                    QStringLiteral(R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))")
-                        .arg(module, elements[0], elements[1], property, elements[2]);
-                Gui::Command::runCommand(Gui::Command::Gui, cmd.toLatin1());
+                Gui::Command::addModule(Gui::Command::Gui, module.toUtf8());
+                QString cmd = QString::fromUtf8(
+                                  R"(%1.show(App.getDocument("%2").getObject("%3").%4.%5))"
+                )
+                                  .arg(module, elements[0], elements[1], property, elements[2]);
+                Gui::Command::runCommand(Gui::Command::Gui, cmd.toUtf8());
             }
             catch (const Base::Exception& e) {
                 e.reportException();
@@ -608,7 +618,7 @@ QString SelectionView::getProperty(App::DocumentObject* obj) const
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
         const char* name = data ? data->getName() : nullptr;
         if (App::Property::isValidName(name)) {
-            property = QString::fromLatin1(name);
+            property = QString::fromUtf8(name);
         }
     }
 
@@ -624,7 +634,7 @@ bool SelectionView::supportPart(App::DocumentObject* obj, const QString& part) c
             const Data::ComplexGeoData* geometry = data->getComplexData();
             std::vector<const char*> types = geometry->getElementTypes();
             for (auto it : types) {
-                if (part.startsWith(QString::fromLatin1(it))) {
+                if (part.startsWith(QString::fromUtf8(it))) {
                     return true;
                 }
             }
@@ -641,9 +651,7 @@ void SelectionView::onItemContextMenu(const QPoint& point)
         return;
     }
     QMenu menu;
-    QAction* selectAction = menu.addAction(tr("Select Only"), this, [&] {
-        this->select(nullptr);
-    });
+    QAction* selectAction = menu.addAction(tr("Select Only"), this, [&] { this->select(nullptr); });
     selectAction->setIcon(QIcon::fromTheme(QStringLiteral("view-select")));
     selectAction->setToolTip(tr("Selects only this object"));
 
@@ -662,17 +670,14 @@ void SelectionView::onItemContextMenu(const QPoint& point)
     touchAction->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
     touchAction->setToolTip(tr("Marks this object to be recomputed"));
 
-    QAction* toPythonAction =
-        menu.addAction(tr("To Python Console"), this, &SelectionView::toPython);
+    QAction* toPythonAction = menu.addAction(tr("To Python Console"), this, &SelectionView::toPython);
     toPythonAction->setIcon(QIcon::fromTheme(QStringLiteral("applications-python")));
-    toPythonAction->setToolTip(
-        tr("Reveals this object and its subelements in the Python console."));
+    toPythonAction->setToolTip(tr("Reveals this object and its subelements in the Python console."));
 
     QStringList elements = item->data(Qt::UserRole).toStringList();
     if (elements.length() > 2) {
         // subshape-specific entries
-        QAction* showPart =
-            menu.addAction(tr("Duplicate Subshape"), this, &SelectionView::showPart);
+        QAction* showPart = menu.addAction(tr("Duplicate Subshape"), this, &SelectionView::showPart);
         showPart->setIcon(QIcon(QStringLiteral(":/icons/ClassBrowser/member.svg")));
         showPart->setToolTip(tr("Creates a standalone copy of this subshape in the document"));
     }
@@ -708,25 +713,27 @@ void SelectionView::onEnablePickList()
 /// @endcond
 
 // SelectionMenu implementation
-SelectionMenu::SelectionMenu(QWidget *parent)
+SelectionMenu::SelectionMenu(QWidget* parent)
     : QMenu(parent)
 {
     connect(this, &QMenu::hovered, this, &SelectionMenu::onHover);
 }
 
-struct ElementInfo {
-    QMenu *menu = nullptr;
+struct ElementInfo
+{
+    QMenu* menu = nullptr;
     QIcon icon;
     std::vector<int> indices;
 };
 
-struct SubMenuInfo {
-    QMenu *menu = nullptr;
+struct SubMenuInfo
+{
+    QMenu* menu = nullptr;
     // Map from sub-object label to map from object path to element info
     std::map<std::string, std::map<std::string, ElementInfo>> items;
 };
 
-PickData SelectionMenu::doPick(const std::vector<PickData> &sels, const QPoint& pos)
+PickData SelectionMenu::doPick(const std::vector<PickData>& sels, const QPoint& pos)
 {
     clear();
     Gui::Selection().setClarifySelectionActive(true);
@@ -741,59 +748,68 @@ PickData SelectionMenu::doPick(const std::vector<PickData> &sels, const QPoint& 
     return onPicked(picked, currentSelections);
 }
 
-void SelectionMenu::processSelections(std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus)
+void SelectionMenu::processSelections(
+    std::vector<PickData>& selections,
+    std::map<std::string, SubMenuInfo>& menus
+)
 {
     std::map<App::DocumentObject*, QIcon> icons;
     std::set<std::string> createdElementTypes;
     std::set<std::string> processedItems;
-    
+
     for (int i = 0; i < (int)selections.size(); ++i) {
-        const auto &sel = selections[i];
-        
+        const auto& sel = selections[i];
+
         App::DocumentObject* sobj = getSubObject(sel);
         std::string elementType = extractElementType(sel);
         std::string objKey = createObjectKey(sel);
-        std::string itemId = elementType + "|" + std::string(sobj->Label.getValue()) + "|" + sel.subName;
-        
+        std::string itemId = elementType + "|" + std::string(sobj->Label.getValue()) + "|"
+            + sel.subName;
+
         if (processedItems.find(itemId) != processedItems.end()) {
             continue;
         }
         processedItems.insert(itemId);
-        
+
         QIcon icon = getOrCreateIcon(sobj, icons);
-        
-        auto &elementInfo = menus[elementType].items[sobj->Label.getValue()][objKey];
+
+        auto& elementInfo = menus[elementType].items[sobj->Label.getValue()][objKey];
         elementInfo.icon = icon;
         elementInfo.indices.push_back(i);
-        
+
         addGeoFeatureTypes(sobj, menus, createdElementTypes);
         addWholeObjectSelection(sel, sobj, selections, menus, icon);
     }
 }
 
-void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus, const std::vector<PickData> &selections)
+void SelectionMenu::buildMenuStructure(
+    std::map<std::string, SubMenuInfo>& menus,
+    const std::vector<PickData>& selections
+)
 {
-    std::vector<std::string> preferredOrder = {"Object", "Solid", "Face", "Edge", "Vertex", "Wire", "Shell", "Compound", "CompSolid"};
+    std::vector<std::string> preferredOrder
+        = {"Object", "Solid", "Face", "Edge", "Vertex", "Wire", "Shell", "Compound", "CompSolid"};
     std::vector<std::map<std::string, SubMenuInfo>::iterator> menuArray;
     menuArray.reserve(menus.size());
-    
+
     for (const auto& category : preferredOrder) {
         if (auto it = menus.find(category); it != menus.end()) {
             menuArray.push_back(it);
         }
     }
-    
+
     for (auto it = menus.begin(); it != menus.end(); ++it) {
-        if (std::find(preferredOrder.begin(), preferredOrder.end(), it->first) == preferredOrder.end()) {
+        if (std::find(preferredOrder.begin(), preferredOrder.end(), it->first)
+            == preferredOrder.end()) {
             menuArray.push_back(it);
         }
     }
-        
+
     for (auto elementTypeIterator : menuArray) {
-        auto &elementTypeEntry = *elementTypeIterator;
-        auto &subMenuInfo = elementTypeEntry.second;
-        const std::string &elementType = elementTypeEntry.first;
-        
+        auto& elementTypeEntry = *elementTypeIterator;
+        auto& subMenuInfo = elementTypeEntry.second;
+        const std::string& elementType = elementTypeEntry.first;
+
         if (subMenuInfo.items.empty()) {
             continue;
         }
@@ -801,17 +817,19 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
         subMenuInfo.menu = addMenu(QString::fromUtf8(elementType.c_str()));
 
         // for "Object" type, and "Other", always use flat menu (no submenus for individual objects)
-        bool groupMenu = (elementType != "Object" && elementType != "Other") && shouldGroupMenu(subMenuInfo);
+        bool groupMenu = (elementType != "Object" && elementType != "Other")
+            && shouldGroupMenu(subMenuInfo);
 
-        for (auto &objectLabelEntry : subMenuInfo.items) {
-            const std::string &objectLabel = objectLabelEntry.first;
+        for (auto& objectLabelEntry : subMenuInfo.items) {
+            const std::string& objectLabel = objectLabelEntry.first;
 
-            for (auto &objectPathEntry : objectLabelEntry.second) {
-                auto &elementInfo = objectPathEntry.second;
-                
+            for (auto& objectPathEntry : objectLabelEntry.second) {
+                auto& elementInfo = objectPathEntry.second;
+
                 if (!groupMenu) {
                     createFlatMenu(elementInfo, subMenuInfo.menu, objectLabel, elementType, selections);
-                } else {
+                }
+                else {
                     createGroupedMenu(elementInfo, subMenuInfo.menu, objectLabel, elementType, selections);
                 }
             }
@@ -819,66 +837,72 @@ void SelectionMenu::buildMenuStructure(std::map<std::string, SubMenuInfo> &menus
     }
 }
 
-PickData SelectionMenu::onPicked(QAction *picked, const std::vector<PickData> &sels)
+PickData SelectionMenu::onPicked(QAction* picked, const std::vector<PickData>& sels)
 {
     // Clear the ClarifySelection active flag when menu is done
     Gui::Selection().setClarifySelectionActive(false);
-    
+
     Gui::Selection().rmvPreselect();
-    if (!picked)
-        return PickData{};
-    
+    if (!picked) {
+        return PickData {};
+    }
+
     int index = picked->data().toInt();
     if (index >= 0 && index < (int)sels.size()) {
-        const auto &sel = sels[index];
+        const auto& sel = sels[index];
         if (sel.obj) {
-            Gui::Selection().addSelection(sel.docName.c_str(),
-                                          sel.objName.c_str(),
-                                          sel.subName.c_str());
+            Gui::Selection().addSelection(sel.docName.c_str(), sel.objName.c_str(), sel.subName.c_str());
         }
         return sel;
     }
-    return PickData{};
+    return PickData {};
 }
 
-void SelectionMenu::onHover(QAction *action)
+void SelectionMenu::onHover(QAction* action)
 {
-    if (!action || currentSelections.empty())
+    if (!action || currentSelections.empty()) {
         return;
-    
+    }
+
     // Clear previous preselection
     Gui::Selection().rmvPreselect();
 
     // Get the selection index from the action data
     bool ok;
     int index = action->data().toInt(&ok);
-    if (!ok || index < 0 || index >= (int)currentSelections.size())
+    if (!ok || index < 0 || index >= (int)currentSelections.size()) {
         return;
+    }
 
-    const auto &sel = currentSelections[index];
-    if (!sel.obj)
+    const auto& sel = currentSelections[index];
+    if (!sel.obj) {
         return;
+    }
 
     // set preselection for both sub-objects and whole objects
-    Gui::Selection().setPreselect(sel.docName.c_str(), 
-                                    sel.objName.c_str(), 
-                                    !sel.subName.empty() ? sel.subName.c_str() : "",
-                                    0, 0, 0, 
-                                    SelectionChanges::MsgSource::TreeView);
+    Gui::Selection().setPreselect(
+        sel.docName.c_str(),
+        sel.objName.c_str(),
+        !sel.subName.empty() ? sel.subName.c_str() : "",
+        0,
+        0,
+        0,
+        SelectionChanges::MsgSource::TreeView
+    );
 }
 
-bool SelectionMenu::eventFilter(QObject *obj, QEvent *event)
+bool SelectionMenu::eventFilter(QObject* obj, QEvent* event)
 {
     return QMenu::eventFilter(obj, event);
 }
 
-void SelectionMenu::leaveEvent(QEvent *e)
+void SelectionMenu::leaveEvent(QEvent* e)
 {
     Gui::Selection().rmvPreselect();
     QMenu::leaveEvent(e);
 }
 
-App::DocumentObject* SelectionMenu::getSubObject(const PickData &sel)
+App::DocumentObject* SelectionMenu::getSubObject(const PickData& sel)
 {
     App::DocumentObject* sobj = sel.obj;
     if (!sel.subName.empty()) {
@@ -890,17 +914,19 @@ App::DocumentObject* SelectionMenu::getSubObject(const PickData &sel)
     return sobj;
 }
 
-std::string SelectionMenu::extractElementType(const PickData &sel)
+std::string SelectionMenu::extractElementType(const PickData& sel)
 {
     std::string actualElement;
-    
+
     if (!sel.element.empty()) {
         actualElement = sel.element;
-    } else if (!sel.subName.empty()) {
-        const char *elementName = Data::findElementName(sel.subName.c_str());
+    }
+    else if (!sel.subName.empty()) {
+        const char* elementName = Data::findElementName(sel.subName.c_str());
         if (elementName && elementName[0]) {
             actualElement = elementName;
-        } else {
+        }
+        else {
             // for link objects like "Bucket.Edge222", extract "Edge222"
             std::string subName = sel.subName;
             std::size_t lastDot = subName.find_last_of('.');
@@ -909,7 +935,7 @@ std::string SelectionMenu::extractElementType(const PickData &sel)
             }
         }
     }
-    
+
     if (!actualElement.empty()) {
         std::size_t pos = actualElement.find_first_of("0123456789");
         if (pos != std::string::npos) {
@@ -917,16 +943,16 @@ std::string SelectionMenu::extractElementType(const PickData &sel)
         }
         return actualElement;
     }
-    
+
     return "Other";
 }
 
-std::string SelectionMenu::createObjectKey(const PickData &sel)
+std::string SelectionMenu::createObjectKey(const PickData& sel)
 {
     std::string objKey = std::string(sel.objName);
     if (!sel.subName.empty()) {
         std::string subNameNoElement = sel.subName;
-        const char *elementName = Data::findElementName(sel.subName.c_str());
+        const char* elementName = Data::findElementName(sel.subName.c_str());
         if (elementName && elementName[0]) {
             std::string elementStr = elementName;
             std::size_t elementPos = subNameNoElement.rfind(elementStr);
@@ -939,18 +965,26 @@ std::string SelectionMenu::createObjectKey(const PickData &sel)
     return objKey;
 }
 
-QIcon SelectionMenu::getOrCreateIcon(App::DocumentObject* sobj, std::map<App::DocumentObject*, QIcon> &icons)
+QIcon SelectionMenu::getOrCreateIcon(
+    App::DocumentObject* sobj,
+    std::map<App::DocumentObject*, QIcon>& icons
+)
 {
-    auto &icon = icons[sobj];
+    auto& icon = icons[sobj];
     if (icon.isNull()) {
         auto vp = Application::Instance->getViewProvider(sobj);
-        if (vp)
+        if (vp) {
             icon = vp->getIcon();
+        }
     }
     return icon;
 }
 
-void SelectionMenu::addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::string, SubMenuInfo> &menus, std::set<std::string> &createdTypes)
+void SelectionMenu::addGeoFeatureTypes(
+    App::DocumentObject* sobj,
+    std::map<std::string, SubMenuInfo>& menus,
+    std::set<std::string>& createdTypes
+)
 {
     auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
     if (geoFeature) {
@@ -964,18 +998,29 @@ void SelectionMenu::addGeoFeatureTypes(App::DocumentObject* sobj, std::map<std::
     }
 }
 
-void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentObject* sobj, 
-                                          std::vector<PickData> &selections, std::map<std::string, SubMenuInfo> &menus, const QIcon &icon)
+void SelectionMenu::addWholeObjectSelection(
+    const PickData& sel,
+    App::DocumentObject* sobj,
+    std::vector<PickData>& selections,
+    std::map<std::string, SubMenuInfo>& menus,
+    const QIcon& icon
+)
 {
-    if (sel.subName.empty()) return;
-    
+    if (sel.subName.empty()) {
+        return;
+    }
+
     std::string actualElement = extractElementType(sel) != "Other" ? sel.element : "";
     if (actualElement.empty() && !sel.subName.empty()) {
-        const char *elementName = Data::findElementName(sel.subName.c_str());
-        if (elementName) actualElement = elementName;
+        const char* elementName = Data::findElementName(sel.subName.c_str());
+        if (elementName) {
+            actualElement = elementName;
+        }
     }
-    if (actualElement.empty()) return;
-    
+    if (actualElement.empty()) {
+        return;
+    }
+
     bool shouldAdd = false;
     if (sobj) {
         if (sobj != sel.obj) {
@@ -983,7 +1028,8 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
             std::string typeName = sobj->getTypeId().getName();
             if (typeName == "App::Part" || typeName == "PartDesign::Body") {
                 shouldAdd = true;
-            } else {
+            }
+            else {
                 auto geoFeature = freecad_cast<App::GeoFeature*>(sobj->getLinkedObject(true));
                 if (geoFeature) {
                     std::vector<const char*> types = geoFeature->getElementTypes(true);
@@ -992,7 +1038,8 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
                     }
                 }
             }
-        } else {
+        }
+        else {
             // top-level objects (sobj == sel.obj)
             // check if subName is just an element name
             if (sel.subName.find('.') == std::string::npos) {
@@ -1006,7 +1053,7 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
             }
         }
     }
-    
+
     if (shouldAdd) {
         std::string wholeObjKey;
         std::string wholeObjSubName;
@@ -1020,7 +1067,8 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
                 std::string subObjName;
                 if (prevDot != std::string::npos) {
                     subObjName = subNameStr.substr(prevDot + 1, lastDot - prevDot - 1);
-                } else {
+                }
+                else {
                     subObjName = subNameStr.substr(0, lastDot);
                 }
 
@@ -1029,14 +1077,15 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
                     wholeObjSubName = subObjName + ".";
                 }
             }
-        } else {
+        }
+        else {
             // top-level objects (sobj == sel.obj)
             wholeObjKey = std::string(sel.objName) + ".";
             wholeObjSubName = "";  // empty subName for top-level whole object
         }
 
         if (!wholeObjKey.empty()) {
-            auto &objItems = menus["Object"].items[sobj->Label.getValue()];
+            auto& objItems = menus["Object"].items[sobj->Label.getValue()];
             if (objItems.find(wholeObjKey) == objItems.end()) {
                 PickData wholeObjSel = sel;
                 wholeObjSel.subName = wholeObjSubName;
@@ -1044,7 +1093,7 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
 
                 selections.push_back(wholeObjSel);
 
-                auto &wholeObjInfo = objItems[wholeObjKey];
+                auto& wholeObjInfo = objItems[wholeObjKey];
                 wholeObjInfo.icon = icon;
                 wholeObjInfo.indices.push_back(selections.size() - 1);
             }
@@ -1052,20 +1101,21 @@ void SelectionMenu::addWholeObjectSelection(const PickData &sel, App::DocumentOb
     }
 }
 
-bool SelectionMenu::shouldGroupMenu(const SubMenuInfo &info)
+bool SelectionMenu::shouldGroupMenu(const SubMenuInfo& info)
 {
     constexpr std::size_t MAX_MENU_ITEMS_BEFORE_GROUPING = 20;
     if (info.items.size() > MAX_MENU_ITEMS_BEFORE_GROUPING) {
         return true;
     }
-    
+
     std::size_t objCount = 0;
     std::size_t count = 0;
     constexpr std::size_t MAX_SELECTION_COUNT_BEFORE_GROUPING = 5;
-    for (auto &objectLabelEntry : info.items) {
+    for (auto& objectLabelEntry : info.items) {
         objCount += objectLabelEntry.second.size();
-        for (auto &objectPathEntry : objectLabelEntry.second) 
+        for (auto& objectPathEntry : objectLabelEntry.second) {
             count += objectPathEntry.second.indices.size();
+        }
         if (count > MAX_SELECTION_COUNT_BEFORE_GROUPING && objCount > 1) {
             return true;
         }
@@ -1073,15 +1123,21 @@ bool SelectionMenu::shouldGroupMenu(const SubMenuInfo &info)
     return false;
 }
 
-void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
-                                 const std::string &elementType, const std::vector<PickData> &selections)
+void SelectionMenu::createFlatMenu(
+    ElementInfo& elementInfo,
+    QMenu* parentMenu,
+    const std::string& label,
+    const std::string& elementType,
+    const std::vector<PickData>& selections
+)
 {
     for (int idx : elementInfo.indices) {
-        const auto &sel = selections[idx];
+        const auto& sel = selections[idx];
         QString text = QString::fromUtf8(label.c_str());
         if (!sel.element.empty()) {
             text += QStringLiteral(" (%1)").arg(QString::fromUtf8(sel.element.c_str()));
-        } else if (!sel.subName.empty() && elementType != "Object" && elementType != "Other") {
+        }
+        else if (!sel.subName.empty() && elementType != "Object" && elementType != "Other") {
             // For link objects, extract element name from subName
             // For "Bucket.Face74", we want to show "Bucket001 (Face74)"
             std::string subName = sel.subName;
@@ -1092,47 +1148,52 @@ void SelectionMenu::createFlatMenu(ElementInfo &elementInfo, QMenu *parentMenu, 
             }
         }
 
-        QAction *action = parentMenu->addAction(elementInfo.icon, text);
+        QAction* action = parentMenu->addAction(elementInfo.icon, text);
         action->setData(idx);
-        connect(action, &QAction::hovered, this, [this, action]() {
-            onHover(action);
-        });
+        connect(action, &QAction::hovered, this, [this, action]() { onHover(action); });
     }
 }
 
-void SelectionMenu::createGroupedMenu(ElementInfo &elementInfo, QMenu *parentMenu, const std::string &label, 
-                                    const std::string &elementType, const std::vector<PickData> &selections)
+void SelectionMenu::createGroupedMenu(
+    ElementInfo& elementInfo,
+    QMenu* parentMenu,
+    const std::string& label,
+    const std::string& elementType,
+    const std::vector<PickData>& selections
+)
 {
     if (!elementInfo.menu) {
         elementInfo.menu = parentMenu->addMenu(elementInfo.icon, QString::fromUtf8(label.c_str()));
     }
-    
+
     for (int idx : elementInfo.indices) {
-        const auto &sel = selections[idx];
+        const auto& sel = selections[idx];
         QString text;
         if (!sel.element.empty()) {
             text = QString::fromUtf8(sel.element.c_str());
-        } else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
+        }
+        else if (elementType == "Object" && !sel.subName.empty() && sel.subName.back() == '.') {
             text = tr("Whole Object");
-        } else if (!sel.subName.empty()) {
+        }
+        else if (!sel.subName.empty()) {
             // extract just the element name from subName for link objects
             // for "Bucket.Edge222", we want just "Edge222"
             std::string subName = sel.subName;
             std::size_t lastDot = subName.find_last_of('.');
             if (lastDot != std::string::npos && lastDot + 1 < subName.length()) {
                 text = QString::fromUtf8(subName.substr(lastDot + 1).c_str());
-            } else {
+            }
+            else {
                 text = QString::fromUtf8(sel.subName.c_str());
             }
-        } else {
+        }
+        else {
             text = QString::fromUtf8(sel.subName.c_str());
         }
 
-        QAction *action = elementInfo.menu->addAction(text);
+        QAction* action = elementInfo.menu->addAction(text);
         action->setData(idx);
-        connect(action, &QAction::hovered, this, [this, action]() {
-            onHover(action);
-        });
+        connect(action, &QAction::hovered, this, [this, action]() { onHover(action); });
     }
 }
 

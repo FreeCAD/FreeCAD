@@ -23,8 +23,9 @@
 #ifndef GUI_GRAPHVIZVIEW_H
 #define GUI_GRAPHVIZVIEW_H
 
-#include "MDIView.h"
+#include <fastsignals/signal.h>
 
+#include "MDIView.h"
 
 class QGraphicsScene;
 class QGraphicsView;
@@ -37,18 +38,18 @@ namespace Gui
 
 class GraphvizWorker;
 
-class GuiExport GraphvizView : public MDIView
+class GuiExport GraphvizView: public MDIView
 {
     Q_OBJECT
 
 public:
-    explicit GraphvizView(App::Document &_doc, QWidget* parent=nullptr);
+    explicit GraphvizView(App::Document& _doc, QWidget* parent = nullptr);
     ~GraphvizView() override;
 
     QByteArray exportGraph(const QString& filter);
 
     /// Message handler
-    bool onMsg(const char* pMsg,const char** ppReturn) override;
+    bool onMsg(const char* pMsg, const char** ppReturn) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /** @name Printing */
@@ -63,12 +64,12 @@ public:
     //@}
 
 private Q_SLOTS:
-    void svgFileRead(const QByteArray & data);
+    void svgFileRead(const QByteArray& data);
     void error();
     void done();
 
 private:
-    void updateSvgItem(const App::Document &doc);
+    void updateSvgItem(const App::Document& doc);
     void disconnectSignals();
 
     const App::Document& doc;
@@ -81,12 +82,12 @@ private:
     GraphvizWorker* thread;
     int nPending;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection recomputeConnection;
     Connection undoConnection;
     Connection redoConnection;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_GRAPHVIZVIEW_H
+#endif  // GUI_GRAPHVIZVIEW_H

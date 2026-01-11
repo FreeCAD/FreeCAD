@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -56,6 +58,10 @@ class ToolBitShapeRadius(ToolBitShape):
             ),
             "ShankDiameter": (
                 FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
+                "App::PropertyLength",
+            ),
+            "TipDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Tip diameter"),
                 "App::PropertyLength",
             ),
         }

@@ -8,11 +8,155 @@
 #include <App/Document.h>
 #include <App/Expression.h>
 #include <App/ObjectIdentifier.h>
+#include <Mod/Part/App/FeaturePartBox.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include "SketcherTestHelpers.h"
 
 using namespace SketcherTestHelpers;
+
+TEST_F(SketchObjectTest, testAddExternalIncreasesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    int numboxes = doc->countObjectsOfType<Part::Box>();
+    int numExtPre = getObject()->ExternalGeo.getSize();
+    doc->recompute();
+
+    // Act
+    getObject()->addExternal(box, "Face6");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Assert
+    EXPECT_TRUE(numExt > numExtPre);
+}
+
+TEST_F(SketchObjectTest, testDelExternalUndef)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::GeoUndef);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmpty)
+{
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalWhenEmptyWithPositiveId)
+{
+    // Act
+    int res = getObject()->delExternal(1);
+
+    // Assert
+    EXPECT_EQ(res, -1);
+}
+
+TEST_F(SketchObjectTest, testDelExternalReducesCount)
+{
+    // Arrange
+    auto* doc = getObject()->getDocument();
+    auto box {doc->addObject("Part::Box")};
+    doc->recompute();
+    // NOTE: When adding, say, `Face6` instead, `delExternal` removes all the edges. This could be
+    // intended behaviour, ensuring that adding a face always gives a closed loop, or a side effect,
+    // or should instead be an option at time of external geometry creation.
+    // TODO: Consider whether this should be intended behaviour, and add tests accordingly.
+    getObject()->addExternal(box, "Edge6");
+    getObject()->addExternal(box, "Edge4");
+    int numExt = getObject()->ExternalGeo.getSize();
+
+    // Act
+    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+
+    // Assert
+    EXPECT_EQ(getObject()->ExternalGeo.getSize(), numExt - 1);
+}
+
+// TODO: `delExternal` situation of constraints
+// TODO: `delExternal` situation of constraint containing more than 3 entities
+
+// TODO: `addCopy` tests
+// TODO: ensure new item(s) is/are added and of same type
+// TODO: behaviour of `addCopy` when external
+// TODO: constraints on new copies?
+// TODO: when empty list is passed
+
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg;
+    setupLineSegment(lineSeg);
+    int geoId = getObject()->addGeometry(&lineSeg);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId}, newCurves);
+
+    // Assert
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesTwoToOne)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1, lineSeg2;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    setupLineSegment(lineSeg2);
+    int geoId2 = getObject()->addGeometry(&lineSeg2);
+    std::vector<Part::Geometry*> newCurves {createTypicalNonPeriodicBSpline().release()};
+
+    // Act
+    getObject()->replaceGeometries({geoId1, geoId2}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+TEST_F(SketchObjectTest, testReplaceGeometriesOneToTwo)
+{
+    // Arrange
+    Part::GeomLineSegment lineSeg1;
+    setupLineSegment(lineSeg1);
+    int geoId1 = getObject()->addGeometry(&lineSeg1);
+    std::vector<Part::Geometry*> newCurves {
+        createTypicalNonPeriodicBSpline().release(),
+        createTypicalNonPeriodicBSpline().release()
+    };
+
+    // Act
+    getObject()->replaceGeometries({geoId1}, newCurves);
+
+    // Assert
+    // Ensure only one curve
+    EXPECT_EQ(getObject()->getHighestCurveIndex(), 1);
+    // Ensure geoId1 is now a B-Spline
+    auto* geo = getObject()->getGeometry(geoId1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+    geo = getObject()->getGeometry(geoId1 + 1);
+    EXPECT_TRUE(geo->is<Part::GeomBSplineCurve>());
+}
+
+// TODO: formulate and add any constraint related changes when replacing geometries
+// Currently, `replageGeometries` is a very "low level" operation that directly replaces the
+// elements of the vector of geometries. Constraint handling is intended to be done by the
+// operations that call this method. We may want to add tests that ensure constraints aren't
+// touched. Alternatively, we may want to change `replaceGeometries` such that it modifies
+// constraints, though that will limit our control in individual operations.
 
 TEST_F(SketchObjectTest, testSplitLineSegment)
 {
@@ -234,8 +378,7 @@ TEST_F(SketchObjectTest, testTrimLineSegmentMid)
     // TODO: Once this line segment is trimmed, there should be two "smaller" curves in its place
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // TODO: There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -297,8 +440,7 @@ TEST_F(SketchObjectTest, testTrimCircleMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -362,8 +504,7 @@ TEST_F(SketchObjectTest, testTrimArcOfCircleMid)
     EXPECT_EQ(result, 0);
     EXPECT_EQ(getObject()->getHighestCurveIndex(), geoId + 1);
     // There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     // There should be 2 coincident constraints: one with lineSegCut1 and one between centers of the
     // new arcs
@@ -438,8 +579,7 @@ TEST_F(SketchObjectTest, testTrimEllipseMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -510,8 +650,7 @@ TEST_F(SketchObjectTest, testTrimPeriodicBSplineMid)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 2);
     // There should be one "coincident" and one "point-on-object" constraint on the intersecting
     // curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -587,8 +726,7 @@ TEST_F(SketchObjectTest, testTrimNonPeriodicBSplineMid)
     // Only remaining: one line segment and the trimmed B-spline
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 3);
     // There should be a "point-on-object" constraint on the intersecting curves
-    int numberOfPointOnObjectConstraints =
-        countConstraintsOfType(getObject(), Sketcher::PointOnObject);
+    int numberOfPointOnObjectConstraints = countConstraintsOfType(getObject(), Sketcher::PointOnObject);
     EXPECT_EQ(numberOfPointOnObjectConstraints, 1);
     int numberOfCoincidentConstraints = countConstraintsOfType(getObject(), Sketcher::Coincident);
     EXPECT_EQ(numberOfCoincidentConstraints, 1);
@@ -740,9 +878,11 @@ TEST_F(SketchObjectTest, testTrimEndEffectOnUnrelatedTangent)
     EXPECT_EQ(result, 0);
     // TODO: find tangent and confirm nature
     const auto& constraints = getObject()->Constraints.getValues();
-    auto tangIt = std::ranges::find(constraints,
-                                    Sketcher::ConstraintType::Tangent,
-                                    &Sketcher::Constraint::Type);
+    auto tangIt = std::ranges::find(
+        constraints,
+        Sketcher::ConstraintType::Tangent,
+        &Sketcher::Constraint::Type
+    );
     EXPECT_NE(tangIt, constraints.end());
     EXPECT_EQ((*tangIt)->FirstPos, Sketcher::PointPos::none);
     EXPECT_EQ((*tangIt)->SecondPos, Sketcher::PointPos::none);
@@ -1067,9 +1207,7 @@ TEST_F(SketchObjectTest, testJoinCurvesWhenTangent)
     EXPECT_EQ(getObject()->getHighestCurveIndex(), 0);
     // TODO: Check the shape is conserved (how?)
     // Check there is no C-0 knot (should be possible for the chosen example)
-    auto mults = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))
-                     ->getMultiplicities();
-    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) {
-        return mult >= 1;
-    }));
+    auto mults
+        = static_cast<const Part::GeomBSplineCurve*>(getObject()->getGeometry(0))->getMultiplicities();
+    EXPECT_TRUE(std::all_of(mults.begin(), mults.end(), [](auto mult) { return mult >= 1; }));
 }

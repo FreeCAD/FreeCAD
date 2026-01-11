@@ -1,4 +1,6 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Werner Mayer LGPL
 #
 # Python script to make source tarballs.

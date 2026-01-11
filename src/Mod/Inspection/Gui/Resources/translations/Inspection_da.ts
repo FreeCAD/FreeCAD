@@ -4,17 +4,17 @@
   <context>
     <name>CmdInspectElement</name>
     <message>
-      <location filename="../../Command.cpp" line="72"/>
+      <location filename="../../Command.cpp" line="74"/>
       <source>Inspection</source>
       <translation>Inspektion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="73"/>
+      <location filename="../../Command.cpp" line="75"/>
       <source>Inspection…</source>
       <translation>Inspektion…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="74"/>
+      <location filename="../../Command.cpp" line="76"/>
       <source>Inspects distance information</source>
       <translation>Inspicerer information om afstande</translation>
     </message>
@@ -22,17 +22,17 @@
   <context>
     <name>CmdVisualInspection</name>
     <message>
-      <location filename="../../Command.cpp" line="46"/>
+      <location filename="../../Command.cpp" line="48"/>
       <source>Inspection</source>
       <translation>Inspektion</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="47"/>
+      <location filename="../../Command.cpp" line="49"/>
       <source>Visual Inspection…</source>
       <translation>Visuel Inspektion…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="48"/>
+      <location filename="../../Command.cpp" line="50"/>
       <source>Inspects the objects visually</source>
       <translation>Inspektion af objekterne visuelt</translation>
     </message>
@@ -93,38 +93,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="499"/>
+      <location filename="../../ViewProviderInspection.cpp" line="510"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>Fjern mål</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="500"/>
+      <location filename="../../ViewProviderInspection.cpp" line="511"/>
       <source>Do you want to remove all annotations?</source>
-      <translation type="unfinished">Do you want to remove all annotations?</translation>
+      <translation>Vil du fjerne alle mål?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="558"/>
+      <location filename="../../ViewProviderInspection.cpp" line="569"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Målsætning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="561"/>
+      <location filename="../../ViewProviderInspection.cpp" line="572"/>
       <source>Leave Info Mode</source>
       <translation>Forlad Informationstilstand</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="692"/>
+      <location filename="../../ViewProviderInspection.cpp" line="708"/>
       <source>Distance: &gt; %1</source>
       <translation>Afstand: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="696"/>
+      <location filename="../../ViewProviderInspection.cpp" line="711"/>
       <source>Distance: &lt; %1</source>
       <translation>Afstand: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="716"/>
-      <location filename="../../ViewProviderInspection.cpp" line="733"/>
+      <location filename="../../ViewProviderInspection.cpp" line="730"/>
+      <location filename="../../ViewProviderInspection.cpp" line="748"/>
       <source>Distance: %1</source>
       <translation>Afstand: %1</translation>
     </message>

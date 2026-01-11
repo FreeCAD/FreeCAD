@@ -26,7 +26,7 @@
 #define SRC_BASE_UNLIMITEDUNSIGNED_H_
 
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 #include <vector>
 #include <string>
@@ -52,8 +52,8 @@ private:
     // calculate the corresponding maxPartPlusOne in a static const initializer, so we just wire
     // in the values for 4-byte PartType.
     static const size_t partDigitCount = 9;
-    static const PartType maxPartPlusOne =
-        1000000000;  // (PartType)pow(10, partDigitCount); but can't call pow in a const ctor.
+    static const PartType maxPartPlusOne = 1000000000;  // (PartType)pow(10, partDigitCount); but
+                                                        // can't call pow in a const ctor.
 
 public:
     explicit UnlimitedUnsigned(SmallDeltaType value)
@@ -75,7 +75,8 @@ public:
             else {
                 lastStartPosition -= partDigitCount;
                 result[i] = static_cast<PartType>(
-                    std::stoul(text.substr(lastStartPosition, partDigitCount)));
+                    std::stoul(text.substr(lastStartPosition, partDigitCount))
+                );
             }
             if (result[i] != 0) {
                 minimumSize = i + 1;
@@ -211,10 +212,12 @@ public:
         // invert the result to get <= and we compare the most significant chunks first.
         return parts.size() < right.parts.size()
             || (parts.size() == right.parts.size()
-                && !std::lexicographical_compare(right.parts.rbegin(),
-                                                 right.parts.rend(),
-                                                 parts.rbegin(),
-                                                 parts.rend()));
+                && !std::lexicographical_compare(
+                    right.parts.rbegin(),
+                    right.parts.rend(),
+                    parts.rbegin(),
+                    parts.rend()
+                ));
     }
     bool operator>(const UnlimitedUnsigned& right) const
     {

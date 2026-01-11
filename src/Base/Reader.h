@@ -43,21 +43,13 @@ namespace zipios
 {
 class ZipInputStream;
 }
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
+
 namespace XERCES_CPP_NAMESPACE
 {
 class Attributes;
 class DefaultHandler;
 class SAX2XMLReader;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class Attributes;
-class DefaultHandler;
-class SAX2XMLReader;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 namespace Base
 {
@@ -128,13 +120,13 @@ void PropertyContainer::Restore(Base::Reader &reader)
  * \see Base::Persistence
  * \author Juergen Riegel
  */
-class BaseExport XMLReader: public XERCES_CPP_NAMESPACE_QUALIFIER DefaultHandler
+class BaseExport XMLReader: public XERCES_CPP_NAMESPACE::DefaultHandler
 {
 public:
     enum ReaderStatus
     {
-        PartialRestore =
-            0,  // This bit indicates that a partial restore took place somewhere in this Document
+        PartialRestore = 0,  // This bit indicates that a partial restore took place somewhere in
+                             // this Document
         PartialRestoreInDocumentObject = 1,  // This bit is local to the DocumentObject being read
                                              // indicating a partial restore therein
         PartialRestoreInProperty = 2,        // Local to the Property
@@ -233,9 +225,9 @@ private:
     // all explicit template instantiations - this is for getting
     // a compile error, rather than linker error.
     template<typename T>
-    static constexpr bool instantiated =
-        std::is_same_v<T, bool> || std::is_same_v<T, const char*> || std::is_same_v<T, double>
-        || std::is_same_v<T, int> || std::is_same_v<T, long> || std::is_same_v<T, unsigned long>;
+    static constexpr bool instantiated = std::is_same_v<T, bool> || std::is_same_v<T, const char*>
+        || std::is_same_v<T, double> || std::is_same_v<T, int> || std::is_same_v<T, long>
+        || std::is_same_v<T, unsigned long>;
 
 public:
     /// return the named attribute as T (does type checking); if missing return defaultValue.
@@ -271,7 +263,8 @@ public:
     T getAttribute(const char* AttrName, T defaultValue) const
     {
         return static_cast<T>(
-            getAttribute<unsigned long>(AttrName, static_cast<unsigned long>(defaultValue)));
+            getAttribute<unsigned long>(AttrName, static_cast<unsigned long>(defaultValue))
+        );
     }
     /// Enum classes
     template<typename T>
@@ -327,13 +320,13 @@ protected:
     //@{
     void startDocument() override;
     void endDocument() override;
-    void startElement(const XMLCh* const uri,
-                      const XMLCh* const localname,
-                      const XMLCh* const qname,
-                      const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs) override;
-    void endElement(const XMLCh* const uri,
-                    const XMLCh* const localname,
-                    const XMLCh* const qname) override;
+    void startElement(
+        const XMLCh* const uri,
+        const XMLCh* const localname,
+        const XMLCh* const qname,
+        const XERCES_CPP_NAMESPACE::Attributes& attrs
+    ) override;
+    void endElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname) override;
     void characters(const XMLCh* const chars, const XMLSize_t length) override;
     void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length) override;
     //@}
@@ -355,9 +348,9 @@ protected:
     // -----------------------------------------------------------------------
     /** @name Error handler */
     //@{
-    void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
-    void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
-    void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& exc) override;
+    void warning(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
+    void error(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
+    void fatalError(const XERCES_CPP_NAMESPACE::SAXParseException& exc) override;
     void resetErrors() override;
     //@}
 
@@ -386,8 +379,8 @@ private:
 
 
     FileInfo _File;
-    XERCES_CPP_NAMESPACE_QUALIFIER SAX2XMLReader* parser;
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLPScanToken token;
+    XERCES_CPP_NAMESPACE::SAX2XMLReader* parser;
+    XERCES_CPP_NAMESPACE::XMLPScanToken token;
     bool _valid {false};
     bool _verbose {true};
 

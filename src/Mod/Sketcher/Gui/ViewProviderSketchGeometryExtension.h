@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -30,8 +32,7 @@
 namespace SketcherGui
 {
 
-class SketcherGuiExport ViewProviderSketchGeometryExtension
-    : public Part::GeometryPersistenceExtension
+class SketcherGuiExport ViewProviderSketchGeometryExtension: public Part::GeometryPersistenceExtension
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 

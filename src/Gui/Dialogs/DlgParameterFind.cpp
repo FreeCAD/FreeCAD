@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -303,9 +305,7 @@ void DlgParameterFind::accept()
             groupTree->setCurrentItem(next);
         }
         else {
-            QMessageBox::warning(this,
-                                 tr("Not found"),
-                                 tr("Cannot find the text: %1").arg(opt.text));
+            QMessageBox::warning(this, tr("Not found"), tr("Cannot find the text: %1").arg(opt.text));
         }
     }
 }

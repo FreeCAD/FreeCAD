@@ -1,5 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 import sys
-from os import sys, path
+from os import path
 
 # Actual code generation is done in Base/param_utils.py.
 

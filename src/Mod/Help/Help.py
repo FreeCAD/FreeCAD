@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -34,7 +36,7 @@ Basic usage:
     import Help
     Help.show("Draft Line")
     Help.show("Draft_Line") # works with spaces or underscores
-    Help.show("https://wiki.freecadweb.org/Draft_Line")
+    Help.show("https://wiki.freecad.org/Draft_Line")
     Help.show("https://gitlab.com/freecad/FreeCAD-documentation/-/raw/main/wiki/Draft_Line.md")
     Help.show("/home/myUser/.FreeCAD/Documentation/Draft_Line.md")
     Help.show("http://myserver.com/myfolder/Draft_Line.html")

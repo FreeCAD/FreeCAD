@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -24,14 +26,16 @@
 #ifndef GUI_DIALOG_DLGTOOLBARS_IMP_H
 #define GUI_DIALOG_DLGTOOLBARS_IMP_H
 
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/connection.h>
 #include "PropertyPage.h"
 #include <memory>
 
 class QTreeWidgetItem;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 class Ui_DlgCustomToolbars;
 
 /** This class implements the creation of user defined toolbars.
@@ -42,12 +46,16 @@ class Ui_DlgCustomToolbars;
  *
  * \author Werner Mayer
  */
-class DlgCustomToolbars : public CustomizeActionPage
+class DlgCustomToolbars: public CustomizeActionPage
 {
     Q_OBJECT
 
 protected:
-    enum Type { Toolbar, Toolboxbar };
+    enum Type
+    {
+        Toolbar,
+        Toolboxbar
+    };
 
     explicit DlgCustomToolbars(Type, QWidget* parent = nullptr);
     ~DlgCustomToolbars() override;
@@ -72,8 +80,8 @@ protected Q_SLOTS:
     void onModifyMacroAction(const QByteArray&) override;
 
 protected:
-    void changeEvent(QEvent *e) override;
-    void hideEvent(QHideEvent * event) override;
+    void changeEvent(QEvent* e) override;
+    void hideEvent(QHideEvent* event) override;
     virtual void addCustomToolbar(const QString&);
     virtual void removeCustomToolbar(const QString&);
     virtual void renameCustomToolbar(const QString&, const QString&);
@@ -89,9 +97,10 @@ private:
 
 protected:
     std::unique_ptr<Ui_DlgCustomToolbars> ui;
+
 private:
     Type type;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 };
 
 /** This class implements the creation of user defined toolbars.
@@ -99,7 +108,7 @@ private:
  * @see DlgCustomCmdbarsImp
  * \author Werner Mayer
  */
-class DlgCustomToolbarsImp : public DlgCustomToolbars
+class DlgCustomToolbarsImp: public DlgCustomToolbars
 {
     Q_OBJECT
 
@@ -109,7 +118,7 @@ public:
 
 protected:
     void showEvent(QShowEvent* e) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void addCustomToolbar(const QString&) override;
     void removeCustomToolbar(const QString&) override;
     void renameCustomToolbar(const QString&, const QString&) override;
@@ -133,7 +142,7 @@ private:
  * @see DlgCustomToolbarsImp
  * \author Werner Mayer
  */
-class DlgCustomToolBoxbarsImp : public DlgCustomToolbars
+class DlgCustomToolBoxbarsImp: public DlgCustomToolbars
 {
     Q_OBJECT
 
@@ -142,10 +151,10 @@ public:
     ~DlgCustomToolBoxbarsImp() override;
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGTOOLBARS_IMP_H
+#endif  // GUI_DIALOG_DLGTOOLBARS_IMP_H

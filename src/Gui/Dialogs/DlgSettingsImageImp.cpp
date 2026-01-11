@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -182,8 +184,9 @@ bool DlgSettingsImageImp::addWatermark() const
 
 void DlgSettingsImageImp::onSelectedFilter(const QString& filter)
 {
-    bool ok = (filter.startsWith(QLatin1String("JPG")) || filter.startsWith(QLatin1String("JPEG"))
-               || filter.startsWith(QLatin1String("PNG")));
+    bool ok
+        = (filter.startsWith(QLatin1String("JPG")) || filter.startsWith(QLatin1String("JPEG"))
+           || filter.startsWith(QLatin1String("PNG")));
     ui->buttonGroupComment->setEnabled(ok);
 }
 

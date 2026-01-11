@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -52,10 +54,6 @@ Transaction::Transaction(int id)
     transID = id;
 }
 
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
 Transaction::~Transaction()
 {
     auto& index = _Objects.get<0>();
@@ -291,16 +289,8 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::TransactionObject, Base::Persistence)
 //**************************************************************************
 // Construction/Destruction
 
-/**
- * A constructor.
- * A more elaborate description of the constructor.
- */
 TransactionObject::TransactionObject() = default;
 
-/**
- * A destructor.
- * A more elaborate description of the destructor.
- */
 TransactionObject::~TransactionObject()
 {
     for (auto& v : _PropChangeMap) {
@@ -344,7 +334,7 @@ void TransactionObject::applyChn(Document& /*Doc*/, TransactionalObject* pcObj, 
             }
 
             // getPropertyName() is specially coded to be safe even if prop has
-            // been destroies. We must prepare for the case where user removed
+            // been destroyed. We must prepare for the case where user removed
             // a dynamic property but does not recordered as transaction.
             auto name = pcObj->getPropertyName(prop);
             if (!name || (!data.name.empty() && data.name != name)

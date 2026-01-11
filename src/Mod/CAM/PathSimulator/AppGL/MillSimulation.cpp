@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -87,7 +89,7 @@ void MillSimulation::SimNext()
     }
 }
 
-void MillSimulation::InitSimulation(float quality)
+void MillSimulation::InitSimulation(float quality, qreal devicePixelRatio)
 {
     ClearMillPathSegments();
     millPathLine.Clear();
@@ -108,8 +110,8 @@ void MillSimulation::InitSimulation(float quality)
         mDestMotion = mCodeParser.Operations[i];
         EndMill* tool = GetTool(mDestMotion.tool);
         if (tool != nullptr) {
-            MillSim::MillPathSegment* segment =
-                new MillSim::MillPathSegment(tool, &mCurMotion, &mDestMotion);
+            MillSim::MillPathSegment* segment
+                = new MillSim::MillPathSegment(tool, &mCurMotion, &mDestMotion);
             segment->indexInArray = i;
             segment->segmentIndex = segId++;
             mNTotalSteps += segment->numSimSteps;
@@ -119,7 +121,7 @@ void MillSimulation::InitSimulation(float quality)
     }
     mNPathSteps = (int)MillPathSegments.size();
     millPathLine.GenerateModel();
-    InitDisplay(quality);
+    InitDisplay(quality, devicePixelRatio);
 }
 
 EndMill* MillSimulation::GetTool(int toolId)
@@ -527,7 +529,7 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 }
 
 
-void MillSimulation::InitDisplay(float quality)
+void MillSimulation::InitDisplay(float quality, qreal devicePixelRatio)
 {
     // generate tools
     for (unsigned int i = 0; i < mToolTable.size(); i++) {
@@ -535,7 +537,7 @@ void MillSimulation::InitDisplay(float quality)
     }
 
     // init 3d display
-    simDisplay.InitGL();
+    simDisplay.InitGL(devicePixelRatio);
 
     // init gui elements
     guiDisplay.InitGui();

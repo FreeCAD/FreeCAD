@@ -31,7 +31,7 @@
 #include <memory>
 #include <list>
 #ifndef FC_GLOBAL_H
-#include <FCGlobal.h>
+# include <FCGlobal.h>
 #endif
 
 namespace Py

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -28,10 +30,13 @@
 #include <memory>
 #include <string>
 
-namespace Gui { namespace Dialog {
+namespace Gui
+{
+namespace Dialog
+{
 
 class Ui_DlgProjectUtility;
-class DlgProjectUtility : public QDialog
+class DlgProjectUtility: public QDialog
 {
     Q_OBJECT
 
@@ -49,9 +54,8 @@ protected:
     std::unique_ptr<Ui_DlgProjectUtility> ui;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
 
-#endif // GUI_DIALOG_DLGPROJECTUTILITY_H
-
+#endif  // GUI_DIALOG_DLGPROJECTUTILITY_H

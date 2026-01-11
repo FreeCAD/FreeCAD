@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -24,8 +26,8 @@
 #define SRC_MOD_SPREADSHEET_APP_SHEET_H_
 
 #ifdef signals
-#undef signals
-#define signals signals
+# undef signals
+# define signals signals
 #endif
 
 #include <map>
@@ -87,23 +89,28 @@ public:
         return "SpreadsheetGui::ViewProviderSheet";
     }
 
-    bool importFromFile(const std::string& filename,
-                        char delimiter = '\t',
-                        char quoteChar = '\0',
-                        char escapeChar = '\\');
+    bool importFromFile(
+        const std::string& filename,
+        char delimiter = '\t',
+        char quoteChar = '\0',
+        char escapeChar = '\\'
+    );
 
     bool getCharsFromPrefs(char& delimiter, char& quote, char& escape, std::string& errMsg);
 
-    bool exportToFile(const std::string& filename,
-                      char delimiter = '\t',
-                      char quoteChar = '\0',
-                      char escapeChar = '\\') const;
+    bool exportToFile(
+        const std::string& filename,
+        char delimiter = '\t',
+        char quoteChar = '\0',
+        char escapeChar = '\\'
+    ) const;
 
     bool mergeCells(const App::Range& range);
 
     void splitCell(App::CellAddress address);
 
     Cell* getCell(App::CellAddress address);
+    const Cell* getCell(App::CellAddress address) const;
 
     Cell* getNewCell(App::CellAddress address);
 
@@ -117,10 +124,12 @@ public:
     };
     unsigned getCellBindingBorder(App::CellAddress address) const;
 
-    PropertySheet::BindingType getCellBinding(App::Range& range,
-                                              App::ExpressionPtr* pStart = nullptr,
-                                              App::ExpressionPtr* pEnd = nullptr,
-                                              App::ObjectIdentifier* pTarget = nullptr) const;
+    PropertySheet::BindingType getCellBinding(
+        App::Range& range,
+        App::ExpressionPtr* pStart = nullptr,
+        App::ExpressionPtr* pEnd = nullptr,
+        App::ObjectIdentifier* pTarget = nullptr
+    ) const;
 
     void setCell(const char* address, const char* value);
 
@@ -192,8 +201,7 @@ public:
 
     App::Property* getDynamicPropertyByName(const char* name) const override;
 
-    void
-    getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
+    void getPropertyNamedList(std::vector<std::pair<const char*, App::Property*>>& List) const override;
 
     /// See PropertyContainer::visitProperties for semantics
     void visitProperties(const std::function<void(App::Property*)>& visitor) const override;
@@ -224,18 +232,19 @@ public:
 
     // Signals
 
-    boost::signals2::signal<void(App::CellAddress)> cellUpdated;
+    fastsignals::signal<void(App::CellAddress)> cellUpdated;
 
-    boost::signals2::signal<void(App::Range)> rangeUpdated;
+    fastsignals::signal<void(App::Range)> rangeUpdated;
 
-    boost::signals2::signal<void(App::CellAddress)> cellSpanChanged;
+    fastsignals::signal<void(App::CellAddress)> cellSpanChanged;
 
-    boost::signals2::signal<void(int, int)> columnWidthChanged;
+    fastsignals::signal<void(int, int)> columnWidthChanged;
 
-    boost::signals2::signal<void(int, int)> rowHeightChanged;
+    fastsignals::signal<void(int, int)> rowHeightChanged;
 
     void renameObjectIdentifiers(
-        const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths) override;
+        const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths
+    ) override;
 
     void setCopyOrCutRanges(const std::vector<App::Range>& ranges, bool copy = true);
     const std::vector<App::Range>& getCopyOrCutRange(bool copy = true) const;

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Carter <dcarter@david.carter.ca>             *
  *                                                                         *
@@ -29,7 +31,6 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
-#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Gui/Command.h>

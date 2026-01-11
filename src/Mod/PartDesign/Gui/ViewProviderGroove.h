@@ -27,9 +27,10 @@
 #include "ViewProviderSketchBased.h"
 
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
-class PartDesignGuiExport ViewProviderGroove : public ViewProviderSketchBased
+class PartDesignGuiExport ViewProviderGroove: public ViewProviderSketchBased
 {
     PROPERTY_HEADER_WITH_OVERRIDE(PartDesignGui::ViewProviderGroove);
 
@@ -46,12 +47,11 @@ protected:
      * Returns a newly created TaskDlgRevolutionParameters
      * NOTE: as for now groove and revolution share the dialog implementation
      */
-    TaskDlgFeatureParameters *getEditDialog() override;
-
+    TaskDlgFeatureParameters* getEditDialog() override;
 };
 
 
-} // namespace PartDesignGui
+}  // namespace PartDesignGui
 
 
-#endif // PARTGUI_ViewProviderGroove_H
+#endif  // PARTGUI_ViewProviderGroove_H

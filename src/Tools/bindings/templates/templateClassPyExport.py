@@ -1,4 +1,6 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2006 Juergen Riegel
 
 
@@ -333,6 +335,7 @@ public:
 
     /// getter for the object handled by this class
     @self.export.TwinPointer@ *get@self.export.Twin@Ptr() const;
+    @self.export.TwinPointer@ *getTwinPtr() const;
 
 + if(self.export.ClassDeclarations != ""):
     /** @name additional declarations and methods for the wrapper class */
@@ -888,6 +891,11 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
 @self.export.TwinPointer@ *@self.export.Name@::get@self.export.Twin@Ptr() const
 {
     return static_cast<@self.export.TwinPointer@ *>(_pcTwinPointer);
+}
+
+@self.export.TwinPointer@ *@self.export.Name@::getTwinPtr() const
+{
+    return get@self.export.Twin@Ptr();
 }
 
 #if defined(__clang__)

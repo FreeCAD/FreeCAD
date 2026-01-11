@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -37,7 +39,7 @@ std::string Part2DObjectPy::representation() const
     return {"<Part::Part2DObject>"};
 }
 
-PyObject *Part2DObjectPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* Part2DObjectPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
@@ -46,5 +48,3 @@ int Part2DObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }
-
-

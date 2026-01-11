@@ -55,9 +55,11 @@ using namespace Measure;
 //! ResolveResult is a class to hold the result of resolving a selection into the actual target
 //! object and traditional subElement name (Vertex1).
 
-ResolveResult::ResolveResult(const App::DocumentObject* realTarget,
-                             const std::string& shortSubName,
-                             const App::DocumentObject* targetParent)
+ResolveResult::ResolveResult(
+    const App::DocumentObject* realTarget,
+    const std::string& shortSubName,
+    const App::DocumentObject* targetParent
+)
     : m_target(App::SubObjectT(realTarget, shortSubName.c_str()))
     , m_targetParent(App::DocumentObjectT(targetParent))
 {}
@@ -80,14 +82,16 @@ App::DocumentObject& ResolveResult::getTargetParent() const
 
 //! returns the actual target object and subname pointed to by selectObj and selectLongSub (which
 //! is likely a result from getSelection or getSelectionEx)
-ResolveResult ShapeFinder::resolveSelection(const App::DocumentObject& selectObj,
-                                            const std::string& selectLongSub)
+ResolveResult ShapeFinder::resolveSelection(
+    const App::DocumentObject& selectObj,
+    const std::string& selectLongSub
+)
 {
     App::DocumentObject* targetParent {nullptr};
     std::string childName {};
     const char* subElement {nullptr};
-    App::DocumentObject* realTarget =
-        selectObj.resolve(selectLongSub.c_str(), &targetParent, &childName, &subElement);
+    App::DocumentObject* realTarget
+        = selectObj.resolve(selectLongSub.c_str(), &targetParent, &childName, &subElement);
     auto shortSub = getLastTerm(selectLongSub);
     return {realTarget, shortSub, targetParent};
 }
@@ -100,8 +104,7 @@ ResolveResult ShapeFinder::resolveSelection(const App::DocumentObject& selectObj
 // TODO: to truly locate the shape, we need to consider attachments - see
 // ShapeExtractor::getShapesFromXRoot()
 //       and ShapeFinder::getLinkAttachParent()
-TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject,
-                                          const std::string& leafSub)
+TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject, const std::string& leafSub)
 {
     auto resolved = resolveSelection(rootObject, leafSub);
     auto target = &resolved.getTarget();
@@ -110,9 +113,10 @@ TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject,
         return {};
     }
 
-    TopoDS_Shape shape =
-        Part::Feature::getShape(target,
-                                Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform);
+    TopoDS_Shape shape = Part::Feature::getShape(
+        target,
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+    );
     if (isShapeReallyNull(shape)) {
         return {};
     }
@@ -131,8 +135,10 @@ TopoDS_Shape ShapeFinder::getLocatedShape(const App::DocumentObject& rootObject,
 
 
 //! convenient version of previous method
-Part::TopoShape ShapeFinder::getLocatedTopoShape(const App::DocumentObject& rootObject,
-                                                 const std::string& leafSub)
+Part::TopoShape ShapeFinder::getLocatedTopoShape(
+    const App::DocumentObject& rootObject,
+    const std::string& leafSub
+)
 {
     return {getLocatedShape(rootObject, leafSub)};
 }
@@ -142,10 +148,12 @@ Part::TopoShape ShapeFinder::getLocatedTopoShape(const App::DocumentObject& root
 //! the placements will need to be applied in the reverse order (ie top down) of what is delivered
 //! in plm stack.  leafSub is a dot separated longSubName which DOES NOT include rootObject.  the
 //! result does not include rootObject's transform.
-void ShapeFinder::crawlPlacementChain(std::vector<Base::Placement>& plmStack,
-                                      std::vector<Base::Matrix4D>& scaleStack,
-                                      const App::DocumentObject& rootObject,
-                                      const std::string& leafSub)
+void ShapeFinder::crawlPlacementChain(
+    std::vector<Base::Placement>& plmStack,
+    std::vector<Base::Matrix4D>& scaleStack,
+    const App::DocumentObject& rootObject,
+    const std::string& leafSub
+)
 {
     auto currentSub = leafSub;
     std::string previousSub {};
@@ -169,9 +177,11 @@ void ShapeFinder::crawlPlacementChain(std::vector<Base::Placement>& plmStack,
 
 //! return inShape with placement and scaler applied.  If inShape contains any infinite subshapes
 //! (such as Datum planes), the infinite shapes will not be included in the result.
-TopoDS_Shape ShapeFinder::transformShape(TopoDS_Shape& inShape,
-                                         const Base::Placement& placement,
-                                         const Base::Matrix4D& scaler)
+TopoDS_Shape ShapeFinder::transformShape(
+    TopoDS_Shape& inShape,
+    const Base::Placement& placement,
+    const Base::Matrix4D& scaler
+)
 {
     if (isShapeReallyNull(inShape)) {
         return {};
@@ -294,8 +304,10 @@ bool ShapeFinder::isShapeReallyNull(const TopoDS_Shape& shape)
 
 //! Returns the net transformation of a path from rootObject to leafSub. rootObject's transform
 //! is included in the result.
-std::pair<Base::Placement, Base::Matrix4D>
-ShapeFinder::getGlobalTransform(const App::DocumentObject& rootObject, const std::string& leafSub)
+std::pair<Base::Placement, Base::Matrix4D> ShapeFinder::getGlobalTransform(
+    const App::DocumentObject& rootObject,
+    const std::string& leafSub
+)
 {
     // we prune the last term if it is a vertex, edge or face
     std::string newSub = removeGeometryTerm(leafSub);
@@ -321,8 +333,9 @@ ShapeFinder::getGlobalTransform(const App::DocumentObject& rootObject, const std
 
 //! tries to get the global position and scale for a object with no information about the
 //! path through the tree from a root to cursor object.
-std::pair<Base::Placement, Base::Matrix4D>
-ShapeFinder::getGlobalTransform(const App::DocumentObject* cursorObject)
+std::pair<Base::Placement, Base::Matrix4D> ShapeFinder::getGlobalTransform(
+    const App::DocumentObject* cursorObject
+)
 {
     if (!cursorObject) {
         return {};
@@ -346,9 +359,10 @@ ShapeFinder::getGlobalTransform(const App::DocumentObject* cursorObject)
 
 //! combine a series of placement & scale transforms.  The input stacks are expected in leaf to root
 //! order, but the result is in the expected root to leaf order.
-std::pair<Base::Placement, Base::Matrix4D>
-ShapeFinder::sumTransforms(const std::vector<Base::Placement>& plmStack,
-                           const std::vector<Base::Matrix4D>& scaleStack)
+std::pair<Base::Placement, Base::Matrix4D> ShapeFinder::sumTransforms(
+    const std::vector<Base::Placement>& plmStack,
+    const std::vector<Base::Matrix4D>& scaleStack
+)
 {
     Base::Placement netPlm;
     Base::Matrix4D netScale;
@@ -398,9 +412,11 @@ std::string ShapeFinder::PlacementAsString(const Base::Placement& inPlacement)
 //! debug routine. return readable form of TopLoc_Location from OCC
 std::string ShapeFinder::LocationAsString(const TopLoc_Location& location)
 {
-    auto position = Base::Vector3d {location.Transformation().TranslationPart().X(),
-                                    location.Transformation().TranslationPart().Y(),
-                                    location.Transformation().TranslationPart().Z()};
+    auto position = Base::Vector3d {
+        location.Transformation().TranslationPart().X(),
+        location.Transformation().TranslationPart().Y(),
+        location.Transformation().TranslationPart().Z()
+    };
     gp_XYZ axisDir;
     double angle {0};
     auto isRotation = location.Transformation().GetRotation(axisDir, angle);

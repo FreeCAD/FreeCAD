@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2016 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *
@@ -24,7 +26,10 @@ import Part
 import Path
 import traceback
 
+import Path.Dressup.Utils as PathDressup
+
 from PathScripts.PathUtils import loopdetect
+from PathScripts.PathUtils import wiredetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
 from PathScripts.PathUtils import horizontalFaceLoop
@@ -35,10 +40,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
     import FreeCADGui
-    from PySide import QtCore
-    from PySide import QtGui
 
-# translate = FreeCAD.Qt.translate
+translate = FreeCAD.Qt.translate
 
 __title__ = "FreeCAD Path Commands"
 __author__ = "sliptonic"
@@ -60,7 +63,12 @@ class _CommandSelectLoop:
             "Accel": "P, L",
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_SelectLoop",
-                "Completes the selection of edges that form a loop\n Select one edge to search loop edges in horizontal plane\n Select two edges to search loop edges in wires of the shape\n Select one or more vertical faces to search loop faces which form the walls",
+                "Completes the selection of edges or faces that form a loop"
+                "\n\nSelect faces: searching loop faces which form the walls."
+                "\n\nSelect one edge: searching loop edges in horizontal plane"
+                "\nor wire which contain selected edge."
+                "\n\nSelect two edges: searching loop edges in wires of the shape"
+                "\nor tangent edges.",
             ),
             "CmdType": "ForEdit",
         }
@@ -110,16 +118,20 @@ class _CommandSelectLoop:
 
         elif "Edge" in names[0]:
             if len(sub) == 1:
-                # One edge selected
+                # One edge selected: searching horizontal edge loop
                 loop = horizontalEdgeLoop(obj, sub[0], verbose=True)
 
-            if len(sub) >= 2:
-                # Several edges selected
+            elif len(sub) >= 2:
+                # Two edges selected: searching wire in shape which contain both edges
                 loop = loopdetect(obj, sub[0], sub[1])
 
+                if not loop:
+                    # Two edges selected: searching edges in tangency
+                    loop = tangentEdgeLoop(obj, sub[0])
+
             if not loop:
-                # Try to find tangent non planar loop
-                loop = tangentEdgeLoop(obj, sub[0])
+                # Searching any wire with first selected edge
+                loop = wiredetect(obj, names[0])
 
         if isinstance(loop, list) and len(loop) > 0 and isinstance(loop[0], Part.Edge):
             # Select edges from list
@@ -131,13 +143,7 @@ class _CommandSelectLoop:
                         FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
             return
 
-        # Final fallback
-        if FreeCAD.GuiUp:
-            QtGui.QMessageBox.information(
-                None,
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Feature Completion"),
-                QT_TRANSLATE_NOOP("CAM_SelectLoop", "Closed loop detection failed."),
-            )
+        Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
 
     def formsPartOfALoop(self, obj, sub, names):
         try:
@@ -177,6 +183,14 @@ class _ToggleOperation:
         if not selection:
             return False
 
+        if len(selection) == 1:
+            # allows to toggle all operations in Job
+            sel = selection[0]
+            if hasattr(sel, "Group") and sel.Name.startswith("Job"):
+                return True
+            if hasattr(sel, "Group") and sel.Name.startswith("Operations"):
+                return True
+
         for sel in selection:
             baseOp = Path.Dressup.Utils.baseOp(sel)
             if not hasattr(baseOp, "Active"):
@@ -186,18 +200,32 @@ class _ToggleOperation:
 
     def Activated(self):
         selection = FreeCADGui.Selection.getSelection()
-        for sel in selection:
-            baseOp = Path.Dressup.Utils.baseOp(sel)
-            baseOp.Active = not baseOp.Active
-            if sel == baseOp:
-                # selected not a Dressup
-                baseOp.ViewObject.Visibility = baseOp.Active
-            elif not baseOp.Active:
-                # only hide operation under Dressup
-                baseOp.ViewObject.Visibility = False
-            elif baseOp.Active:
-                # only unhide Dressup
-                sel.ViewObject.Visibility = True
+        if (len(selection) == 1 and hasattr(selection[0], "Group")) and (
+            selection[0].Name.startswith("Job") or selection[0].Name.startswith("Operations")
+        ):
+            sel = selection[0]
+            # process all Operations in Job
+            if sel.Name.startswith("Job"):
+                selection = sel.Operations.Group
+            elif sel.Name.startswith("Operations"):
+                selection = sel.Group
+
+            states = [Path.Dressup.Utils.baseOp(sel).Active for sel in selection]
+            if all(states) or not any(states):
+                # all operations in one state (active or inactive) - toggle state
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = not baseOp.Active
+            else:
+                # operations in different states - set Active state
+                for sel in selection:
+                    baseOp = Path.Dressup.Utils.baseOp(sel)
+                    baseOp.Active = True
+
+        else:
+            for sel in selection:
+                baseOp = Path.Dressup.Utils.baseOp(sel)
+                baseOp.Active = not baseOp.Active
 
         FreeCAD.ActiveDocument.recompute()
 
@@ -218,20 +246,35 @@ class _CopyOperation:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelection()
+        if not selection:
             return False
-        try:
-            for sel in FreeCADGui.Selection.getSelectionEx():
-                if not isinstance(sel.Object.Proxy, Path.Op.Base.ObjectOp):
-                    return False
-            return True
-        except (IndexError, AttributeError):
+        if any([not hasattr(sel, "Path") for sel in selection]):
+            return False
+        if any([sel.Name.startswith("Job") for sel in selection]):
             return False
 
+        return True
+
     def Activated(self):
-        for sel in FreeCADGui.Selection.getSelectionEx():
-            jobname = findParentJob(sel.Object).Name
-            addToJob(FreeCAD.ActiveDocument.copyObject(sel.Object, False), jobname)
+        selection = FreeCADGui.Selection.getSelection()
+        for sel in selection:
+            job = findParentJob(sel)
+            prevOp = PathDressup.baseOp(sel)
+            prevOpCopy = FreeCAD.ActiveDocument.copyObject(prevOp, False)
+            while prevOp != sel:
+                # recursive processing Dressup
+                op = sel
+                while op.Base != prevOp:
+                    # get higher level operation
+                    op = op.Base
+                opCopy = FreeCAD.ActiveDocument.copyObject(op, False)
+                opCopy.Base = prevOpCopy
+                prevOpCopy = opCopy
+                prevOp = op
+
+            # add to Job top object
+            addToJob(prevOpCopy, job.Name)
 
 
 if FreeCAD.GuiUp:

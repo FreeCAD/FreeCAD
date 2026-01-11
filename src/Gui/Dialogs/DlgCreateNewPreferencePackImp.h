@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Chris Hennes <chennes@pioneerlibrarysystem.org>    *
  *                                                                         *
@@ -32,9 +34,11 @@
 
 class QTreeWidgetItem;
 
-namespace Gui {
+namespace Gui
+{
 
-namespace Dialog {
+namespace Dialog
+{
 
 class Ui_DlgCreateNewPreferencePack;
 
@@ -45,16 +49,17 @@ class Ui_DlgCreateNewPreferencePack;
  *
  * \author Chris Hennes
  */
-class GuiExport DlgCreateNewPreferencePackImp : public QDialog
+class GuiExport DlgCreateNewPreferencePackImp: public QDialog
 {
-  Q_OBJECT
+    Q_OBJECT
 
 public:
-
     explicit DlgCreateNewPreferencePackImp(QWidget* parent = nullptr);
     ~DlgCreateNewPreferencePackImp() override;
 
-    void setPreferencePackTemplates(const std::vector<PreferencePackManager::TemplateFile> &availableTemplates);
+    void setPreferencePackTemplates(
+        const std::vector<PreferencePackManager::TemplateFile>& availableTemplates
+    );
     void setPreferencePackNames(const std::vector<std::string>& usedNames);
 
     std::vector<PreferencePackManager::TemplateFile> selectedTemplates() const;
@@ -65,7 +70,7 @@ protected Q_SLOTS:
 
     void onItemChanged(QTreeWidgetItem* item, int column);
 
-    void onLineEditTextEdited(const QString &text);
+    void onLineEditTextEdited(const QString& text);
 
     void onBrowseButtonClicked();
 
@@ -80,7 +85,7 @@ private:
     QString _cfgFileDirectory;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGCREATENEWTHEMEIMP_H
+#endif  // GUI_DIALOG_DLGCREATENEWTHEMEIMP_H

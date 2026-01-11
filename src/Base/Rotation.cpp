@@ -167,8 +167,10 @@ void Rotation::getValue(Matrix4D& matrix) const
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
-    const double l = sqrt(this->quat[0] * this->quat[0] + this->quat[1] * this->quat[1]
-                          + this->quat[2] * this->quat[2] + this->quat[3] * this->quat[3]);
+    const double l = sqrt(
+        this->quat[0] * this->quat[0] + this->quat[1] * this->quat[1]
+        + this->quat[2] * this->quat[2] + this->quat[3] * this->quat[3]
+    );
     const double x = this->quat[0] / l;
     const double y = this->quat[1] / l;
     const double z = this->quat[2] / l;
@@ -311,8 +313,10 @@ void Rotation::setValue(const Vector3d& rotateFrom, const Vector3d& rotateTo)
 
 void Rotation::normalize()
 {
-    double len = sqrt(this->quat[0] * this->quat[0] + this->quat[1] * this->quat[1]
-                      + this->quat[2] * this->quat[2] + this->quat[3] * this->quat[3]);
+    double len = sqrt(
+        this->quat[0] * this->quat[0] + this->quat[1] * this->quat[1]
+        + this->quat[2] * this->quat[2] + this->quat[3] * this->quat[3]
+    );
     if (len > 0.0) {
         this->quat[0] /= len;
         this->quat[1] /= len;
@@ -388,10 +392,12 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
     double w1 {};
     q.getValue(x1, y1, z1, w1);
 
-    this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
-                   w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
-                   w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
-                   w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1);
+    this->setValue(
+        w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
+        w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
+        w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
+        w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1
+    );
     return *this;
 }
 
@@ -416,10 +422,12 @@ Rotation& Rotation::multLeft(const Base::Rotation& q)
     double w1 {};
     this->getValue(x1, y1, z1, w1);
 
-    this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
-                   w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
-                   w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
-                   w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1);
+    this->setValue(
+        w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
+        w0 * y1 - x0 * z1 + y0 * w1 + z0 * x1,
+        w0 * z1 + x0 * y1 - y0 * x1 + z0 * w1,
+        w0 * w1 - x0 * x1 - y0 * y1 - z0 * z1
+    );
     return *this;
 }
 
@@ -451,12 +459,12 @@ void Rotation::multVec(const Vector3d& src, Vector3d& dst) const
     double z2 = z * z;
     double w2 = w * w;
 
-    double dx =
-        (x2 + w2 - y2 - z2) * src.x + 2.0 * (x * y - z * w) * src.y + 2.0 * (x * z + y * w) * src.z;
-    double dy =
-        2.0 * (x * y + z * w) * src.x + (w2 - x2 + y2 - z2) * src.y + 2.0 * (y * z - x * w) * src.z;
-    double dz =
-        2.0 * (x * z - y * w) * src.x + 2.0 * (x * w + y * z) * src.y + (w2 - x2 - y2 + z2) * src.z;
+    double dx = (x2 + w2 - y2 - z2) * src.x + 2.0 * (x * y - z * w) * src.y
+        + 2.0 * (x * z + y * w) * src.z;
+    double dy = 2.0 * (x * y + z * w) * src.x + (w2 - x2 + y2 - z2) * src.y
+        + 2.0 * (y * z - x * w) * src.z;
+    double dz = 2.0 * (x * z - y * w) * src.x + 2.0 * (x * w + y * z) * src.y
+        + (w2 - x2 - y2 + z2) * src.z;
     dst.x = dx;
     dst.y = dy;
     dst.z = dz;
@@ -530,8 +538,7 @@ Rotation Rotation::identity()
     return {0.0, 0.0, 0.0, 1.0};
 }
 
-Rotation
-Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
+Rotation Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const char* priorityOrder)
 {
     const double tol = Precision::Confusion();
     enum dirIndex
@@ -549,9 +556,11 @@ Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const 
     for (int i = 0; i < 3; ++i) {
         order[i] = priorityOrder[i] - 'X';
         if (order[i] < 0 || order[i] > 2) {
-            THROWM(ValueError,
-                   "makeRotationByAxes: characters in priorityOrder must be uppercase X, Y, or Z. "
-                   "Some other character encountered.")
+            THROWM(
+                ValueError,
+                "makeRotationByAxes: characters in priorityOrder must be uppercase X, Y, or Z. "
+                "Some other character encountered."
+            )
         }
     }
 
@@ -705,10 +714,12 @@ void Rotation::setYawPitchRoll(double y, double p, double r)
     double c3 = cos(r / 2.0);
     double s3 = sin(r / 2.0);
 
-    this->setValue(c1 * c2 * s3 - s1 * s2 * c3,
-                   c1 * s2 * c3 + s1 * c2 * s3,
-                   s1 * c2 * c3 - c1 * s2 * s3,
-                   c1 * c2 * c3 + s1 * s2 * s3);
+    this->setValue(
+        c1 * c2 * s3 - s1 * s2 * c3,
+        c1 * s2 * c3 + s1 * c2 * s3,
+        s1 * c2 * c3 - c1 * s2 * s3,
+        c1 * c2 * c3 + s1 * s2 * s3
+    );
 }
 
 void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
@@ -779,15 +790,17 @@ bool Rotation::isSame(const Rotation& q, double tol) const
     // Is it safe to assume that?
     // Because a quaternion (x1,x2,x3,x4) is equal to (-x1,-x2,-x3,-x4) we use the
     // absolute value of the scalar product
-    double dot =
-        q.quat[0] * quat[0] + q.quat[1] * quat[1] + q.quat[2] * quat[2] + q.quat[3] * quat[3];
+    double dot = q.quat[0] * quat[0] + q.quat[1] * quat[1] + q.quat[2] * quat[2]
+        + q.quat[3] * quat[3];
     return fabs(dot) >= 1.0 - tol / 2;
 }
 
 bool Rotation::isIdentity() const
 {
-    return ((this->quat[0] == 0.0 && this->quat[1] == 0.0 && this->quat[2] == 0.0)
-            && (this->quat[3] == 1.0 || this->quat[3] == -1.0));
+    return (
+        (this->quat[0] == 0.0 && this->quat[1] == 0.0 && this->quat[2] == 0.0)
+        && (this->quat[3] == 1.0 || this->quat[3] == -1.0)
+    );
 }
 
 bool Rotation::isIdentity(double tol) const
@@ -797,8 +810,9 @@ bool Rotation::isIdentity(double tol) const
 
 bool Rotation::isNull() const
 {
-    return (this->quat[0] == 0.0 && this->quat[1] == 0.0 && this->quat[2] == 0.0
-            && this->quat[3] == 0.0);
+    return (
+        this->quat[0] == 0.0 && this->quat[1] == 0.0 && this->quat[2] == 0.0 && this->quat[3] == 0.0
+    );
 }
 
 //=======================================================================
@@ -979,10 +993,7 @@ Rotation::EulerSequence Rotation::eulerSequenceFromName(const char* name)
     return Invalid;
 }
 
-void Rotation::setEulerAngles(EulerSequence theOrder,
-                              double theAlpha,
-                              double theBeta,
-                              double theGamma)
+void Rotation::setEulerAngles(EulerSequence theOrder, double theAlpha, double theBeta, double theGamma)
 {
     using std::numbers::pi;
 
@@ -1045,10 +1056,7 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
     this->evaluateVector();
 }
 
-void Rotation::getEulerAngles(EulerSequence theOrder,
-                              double& theAlpha,
-                              double& theBeta,
-                              double& theGamma) const
+void Rotation::getEulerAngles(EulerSequence theOrder, double& theAlpha, double& theBeta, double& theGamma) const
 {
     Mat M;
     getValue(M);

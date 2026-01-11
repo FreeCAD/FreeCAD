@@ -36,27 +36,32 @@
 
 using namespace Gui;
 
-VectorTableModel::VectorTableModel(int decimals, QObject *parent)
+VectorTableModel::VectorTableModel(int decimals, QObject* parent)
     : QAbstractTableModel(parent)
     , decimals(decimals)
-{
-}
+{}
 
 QVariant VectorTableModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (role == Qt::DisplayRole && orientation == Qt::Vertical)
+    if (role == Qt::DisplayRole && orientation == Qt::Vertical) {
         return section + 1;
+    }
 
-    if (role != Qt::DisplayRole || orientation != Qt::Horizontal)
+    if (role != Qt::DisplayRole || orientation != Qt::Horizontal) {
         return {};
-    if (section == 0)
+    }
+    if (section == 0) {
         return {QLatin1Char('x')};
-    if (section == 1)
+    }
+    if (section == 1) {
         return {QLatin1Char('y')};
-    if (section == 2)
+    }
+    if (section == 2) {
         return {QLatin1Char('z')};
-    else
+    }
+    else {
         return {};
+    }
 }
 
 int VectorTableModel::columnCount(const QModelIndex&) const
@@ -64,19 +69,19 @@ int VectorTableModel::columnCount(const QModelIndex&) const
     return 3;
 }
 
-int VectorTableModel::rowCount(const QModelIndex &) const
+int VectorTableModel::rowCount(const QModelIndex&) const
 {
     return vectors.size();
 }
 
-Qt::ItemFlags VectorTableModel::flags (const QModelIndex & index) const
+Qt::ItemFlags VectorTableModel::flags(const QModelIndex& index) const
 {
     Qt::ItemFlags fl = QAbstractTableModel::flags(index);
     fl = fl | Qt::ItemIsEditable;
     return fl;
 }
 
-bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool VectorTableModel::setData(const QModelIndex& index, const QVariant& value, int role)
 {
     int r = index.row();
     int c = index.column();
@@ -88,12 +93,15 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
         }
         else if (c < 3) {
             double d = value.toDouble();
-            if (c == 0)
+            if (c == 0) {
                 vectors[r].x = d;
-            else if (c == 1)
+            }
+            else if (c == 1) {
                 vectors[r].y = d;
-            else if (c == 2)
+            }
+            else if (c == 2) {
                 vectors[r].z = d;
+            }
             Q_EMIT dataChanged(index, index);
             return true;
         }
@@ -101,19 +109,22 @@ bool VectorTableModel::setData(const QModelIndex &index, const QVariant &value, 
     return QAbstractTableModel::setData(index, value, role);
 }
 
-QVariant VectorTableModel::data(const QModelIndex &index, int role) const
+QVariant VectorTableModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         int r = index.row();
         int c = index.column();
         if (r < vectors.size() && c < 3) {
             double d = 0.0;
-            if (c == 0)
+            if (c == 0) {
                 d = vectors[r].x;
-            else if (c == 1)
+            }
+            else if (c == 1) {
                 d = vectors[r].y;
-            else if (c == 2)
+            }
+            else if (c == 2) {
                 d = vectors[r].z;
+            }
 
             if (role == Qt::DisplayRole) {
                 QString str = QStringLiteral("%1").arg(d, 0, 'f', decimals);
@@ -127,7 +138,7 @@ QVariant VectorTableModel::data(const QModelIndex &index, int role) const
     return {};
 }
 
-QModelIndex VectorTableModel::parent(const QModelIndex &) const
+QModelIndex VectorTableModel::parent(const QModelIndex&) const
 {
     return {};
 }
@@ -144,8 +155,8 @@ void Gui::VectorTableModel::copyToClipboard() const
     QString clipboardText;
     QTextStream stream(&clipboardText);
     int precision = App::GetApplication()
-                         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units")
-                         ->GetInt("PropertyVectorListCopyPrecision", 16);
+                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units")
+                        ->GetInt("PropertyVectorListCopyPrecision", 16);
 
     for (const auto& vector : vectors) {
         stream << QString::number(vector.x, 'f', precision) << '\t'
@@ -158,7 +169,7 @@ void Gui::VectorTableModel::copyToClipboard() const
 
 void Gui::VectorTableModel::pasteFromClipboard()
 {
-    QClipboard *clipboard = QApplication::clipboard();
+    QClipboard* clipboard = QApplication::clipboard();
     QStringList lines = clipboard->text().split(QLatin1Char('\n'));
     bool okAll = !lines.empty();
     QList<Base::Vector3d> newVectors;
@@ -171,9 +182,9 @@ void Gui::VectorTableModel::pasteFromClipboard()
             continue;
         }
         QChar delimiter = line.count(tab) == 2 ? tab
-            : line.count(semicolon) == 2 ? semicolon
-            : line.count(comma) == 2 ? comma
-            : QChar(QChar::Null);
+            : line.count(semicolon) == 2       ? semicolon
+            : line.count(comma) == 2           ? comma
+                                               : QChar(QChar::Null);
 
         if (delimiter.isNull()) {
             okAll = false;
@@ -204,7 +215,11 @@ void Gui::VectorTableModel::pasteFromClipboard()
         setValues(newVectors);
     }
     else {
-        QString msg(tr("Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or commas:") + QLatin1String("\n"));
+        QString msg(
+            tr("Unsupported format.  Must be 3 values per row separated by tabs, semicolons, or "
+               "commas:")
+            + QLatin1String("\n")
+        );
         msg += clipboard->text();
         Base::Console().error(msg.toStdString().c_str());
     }
@@ -215,13 +230,14 @@ const QList<Base::Vector3d>& VectorTableModel::values() const
     return vectors;
 }
 
-bool VectorTableModel::insertRows(int row, int count, const QModelIndex &parent)
+bool VectorTableModel::insertRows(int row, int count, const QModelIndex& parent)
 {
     if (vectors.size() >= row) {
-        beginInsertRows(parent, row, row+count-1);
+        beginInsertRows(parent, row, row + count - 1);
         Base::Vector3d v;
-        for (int i=0; i<count; i++)
+        for (int i = 0; i < count; i++) {
             vectors.insert(row, v);
+        }
         endInsertRows();
         return true;
     }
@@ -229,12 +245,13 @@ bool VectorTableModel::insertRows(int row, int count, const QModelIndex &parent)
     return false;
 }
 
-bool VectorTableModel::removeRows(int row, int count, const QModelIndex &parent)
+bool VectorTableModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     if (vectors.size() > row) {
-        beginRemoveRows(parent, row, row+count-1);
-        for (int i=0; i<count; i++)
+        beginRemoveRows(parent, row, row + count - 1);
+        for (int i = 0; i < count; i++) {
             vectors.removeAt(row);
+        }
         endRemoveRows();
         return true;
     }
@@ -244,14 +261,13 @@ bool VectorTableModel::removeRows(int row, int count, const QModelIndex &parent)
 
 // --------------------------------------------------------------
 
-VectorTableDelegate::VectorTableDelegate(int decimals, QObject *parent)
+VectorTableDelegate::VectorTableDelegate(int decimals, QObject* parent)
     : QItemDelegate(parent)
     , decimals(decimals)
-{
-}
+{}
 
-QWidget *VectorTableDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &/* option */,
-                                           const QModelIndex & /*index*/) const
+QWidget* VectorTableDelegate::
+    createEditor(QWidget* parent, const QStyleOptionViewItem& /* option */, const QModelIndex& /*index*/) const
 {
     auto editor = new QDoubleSpinBox(parent);
     editor->setDecimals(decimals);
@@ -262,7 +278,7 @@ QWidget *VectorTableDelegate::createEditor(QWidget *parent, const QStyleOptionVi
     return editor;
 }
 
-void VectorTableDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void VectorTableDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
     double value = index.model()->data(index, Qt::EditRole).toDouble();
 
@@ -270,8 +286,11 @@ void VectorTableDelegate::setEditorData(QWidget *editor, const QModelIndex &inde
     spinBox->setValue(value);
 }
 
-void VectorTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
-                                       const QModelIndex &index) const
+void VectorTableDelegate::setModelData(
+    QWidget* editor,
+    QAbstractItemModel* model,
+    const QModelIndex& index
+) const
 {
     auto spinBox = static_cast<QDoubleSpinBox*>(editor);
     spinBox->interpretText();
@@ -279,8 +298,8 @@ void VectorTableDelegate::setModelData(QWidget *editor, QAbstractItemModel *mode
     model->setData(index, value, Qt::EditRole);
 }
 
-void VectorTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
-                                               const QModelIndex &/* index */) const
+void VectorTableDelegate::
+    updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& /* index */) const
 {
     editor->setGeometry(option.rect);
 }
@@ -290,23 +309,20 @@ void VectorTableDelegate::updateEditorGeometry(QWidget *editor, const QStyleOpti
 /* TRANSLATOR Gui::VectorListEditor */
 
 VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
-  : QDialog(parent)
-  , ui(new Ui_VectorListEditor)
-  , model(new VectorTableModel(decimals))
+    : QDialog(parent)
+    , ui(new Ui_VectorListEditor)
+    , model(new VectorTableModel(decimals))
 {
     ui->setupUi(this);
     ui->tableWidget->setItemDelegate(new VectorTableDelegate(decimals, this));
     ui->tableWidget->setModel(model);
     ui->widget->hide();
 
-    ui->coordX->setRange(std::numeric_limits<int>::min(),
-                         std::numeric_limits<int>::max());
+    ui->coordX->setRange(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
     ui->coordX->setDecimals(decimals);
-    ui->coordY->setRange(std::numeric_limits<int>::min(),
-                         std::numeric_limits<int>::max());
+    ui->coordY->setRange(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
     ui->coordY->setDecimals(decimals);
-    ui->coordZ->setRange(std::numeric_limits<int>::min(),
-                         std::numeric_limits<int>::max());
+    ui->coordZ->setRange(std::numeric_limits<int>::min(), std::numeric_limits<int>::max());
     ui->coordZ->setDecimals(decimals);
 
     ui->toolButtonMouse->setDisabled(true);
@@ -322,7 +338,6 @@ VectorListEditor::VectorListEditor(int decimals, QWidget* parent)
 
     ui->tableWidget->setContextMenuPolicy(Qt::CustomContextMenu);
     connect(ui->tableWidget, &QWidget::customContextMenuRequested, this, &VectorListEditor::showContextMenu);
-
 }
 
 VectorListEditor::~VectorListEditor() = default;
@@ -330,11 +345,11 @@ VectorListEditor::~VectorListEditor() = default;
 void VectorListEditor::showContextMenu(const QPoint& pos)
 {
     QMenu contextMenu(ui->tableWidget);
-    QAction *copyAction = contextMenu.addAction(tr("Copy Table"));
+    QAction* copyAction = contextMenu.addAction(tr("Copy Table"));
     connect(copyAction, &QAction::triggered, model, &VectorTableModel::copyToClipboard);
     copyAction->setEnabled(!data.empty());
 
-    QAction *pasteAction = contextMenu.addAction(tr("Paste Table"));
+    QAction* pasteAction = contextMenu.addAction(tr("Paste Table"));
     connect(pasteAction, &QAction::triggered, model, &VectorTableModel::pasteFromClipboard);
     pasteAction->setEnabled(QApplication::clipboard()->mimeData()->hasText());
 
@@ -414,7 +429,7 @@ void VectorListEditor::addRow()
     ui->spinBox->setEnabled(true);
     ui->toolButtonRemove->setEnabled(true);
     ui->toolButtonAccept->setEnabled(true);
-    acceptCurrent(); // The new row gets the values from the spinboxes
+    acceptCurrent();  // The new row gets the values from the spinboxes
 }
 
 void VectorListEditor::removeRow()

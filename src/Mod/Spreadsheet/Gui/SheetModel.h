@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -58,8 +60,8 @@ private:
     void cellUpdated(App::CellAddress address);
     void rangeUpdated(const App::Range& range);
 
-    boost::signals2::scoped_connection cellUpdatedConnection;
-    boost::signals2::scoped_connection rangeUpdatedConnection;
+    fastsignals::scoped_connection cellUpdatedConnection;
+    fastsignals::scoped_connection rangeUpdatedConnection;
     Spreadsheet::Sheet* sheet;
     QColor aliasBgColor;
     QColor textFgColor;

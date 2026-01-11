@@ -152,24 +152,24 @@ freecad-stubs = "*"
 
 ## Qt 6 Configuration Presets
 [target.linux-64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.linux-aarch64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "--preset", "conda-linux-debug" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-linux-release" ], depends-on= ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.osx-arm64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release", "-DBUILD_REVERSEENGINEERING=OFF" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "--preset", "conda-macos-debug" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-macos-release" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 
 [target.win-64.tasks]
-configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
-configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DBUILD_REVERSEENGINEERING=OFF", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-debug = { cmd = [ "cmake", "--preset", "conda-windows-debug", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
+configure-release = { cmd = [ "cmake", "--preset", "conda-windows-release", "-DCMAKE_GENERATOR_PLATFORM=", "-DCMAKE_GENERATOR_TOOLSET=" ], depends-on = ["initialize"], env={ CFLAGS="", CXXFLAGS="", DEBUG_CFLAGS="", DEBUG_CXXFLAGS="" }}
 freecad-debug = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-debug"]}
 freecad-release = { cmd = [ ".pixi/envs/default/Library/bin/FreeCAD.exe" ], depends-on = ["install-release"]}
 

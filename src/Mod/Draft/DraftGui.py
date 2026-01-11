@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # -*- coding: utf8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2009 Yorik van Havre <yorik@uncreated.net>              *
@@ -434,7 +436,7 @@ class DraftToolBar:
             FreeCAD.activeDraftCommand, "featureName", None
         ):
             self.continueMode = params.get_param(
-                FreeCAD.activeDraftCommand.featureName, "Mod/ContinueMode", silent=True
+                FreeCAD.activeDraftCommand.featureName, "Mod/Draft/ContinueMode", silent=True
             )
 
         self.chainedMode = params.get_param("ChainedMode")
@@ -801,11 +803,12 @@ class DraftToolBar:
             self.xValue.setFocus()
             self.xValue.setSelection(0, self.number_length(self.xValue.text()))
 
-    def number_length(self, str):
-        nl = 0
-        for char in str:
-            if char in "0123456789.,-":
-                nl += 1
+    def number_length(self, st):
+        nl = len(st)
+        for char in st[::-1]:
+            if char in "0123456789.,-+/":
+                break
+            nl -= 1
         return nl
 
     def extraLineUi(self):

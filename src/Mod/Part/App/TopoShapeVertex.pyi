@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Vector import Vector
 from TopoShape import TopoShape
 from typing import Final
-
 
 @export(
     Twin="TopoShape",

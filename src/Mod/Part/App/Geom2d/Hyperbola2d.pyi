@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Part.Conic2d import Conic2d
 from typing import Final, overload
@@ -8,7 +12,7 @@ from typing import Final, overload
     PythonName="Part.Geom2d.Hyperbola2d",
     FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h",
     Include="Mod/Part/App/Geometry2d.h",
-    Constructor=True
+    Constructor=True,
 )
 class Hyperbola2d(Conic2d):
     """

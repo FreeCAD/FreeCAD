@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
 # *                                                                         *
@@ -534,7 +536,8 @@ class ObjectJob:
     def baseObject(self, obj, base):
         """Return the base object, not its clone."""
         if isResourceClone(obj, base, "Model") or isResourceClone(obj, base, "Base"):
-            return base.Objects[0]
+            if hasattr(base, "Objects") and base.Objects:
+                return base.Objects[0]
         return base
 
     def baseObjects(self, obj):
@@ -703,7 +706,7 @@ class ObjectJob:
                 "VertRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.VertRapid,
                 ),
             )
@@ -711,7 +714,7 @@ class ObjectJob:
                 "HorizRapid",
                 "%s.%s"
                 % (
-                    self.setupSheet.expressionReference(),
+                    self.obj.SetupSheet.Proxy.expressionReference(),
                     PathSetupSheet.Template.HorizRapid,
                 ),
             )
@@ -741,7 +744,6 @@ class ObjectJob:
     def setCenterOfRotation(self, center):
         if center != self.obj.Path.Center:
             self.obj.Path.Center = center
-            self.obj.Operations.Path.Center = center
             for op in self.allOperations():
                 op.Path.Center = center
 

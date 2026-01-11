@@ -32,7 +32,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
-#include "DrawBrokenView.h"
+#include "DrawProjGroup.h"
 #include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
@@ -151,7 +151,9 @@ bool Preferences::useGlobalDecimals()
 
 int Preferences::projectionAngle()
 {
-    return getPreferenceGroup("General")->GetInt("ProjectionAngle", 0);  //First angle
+    int defaultConvention = (int)DrawProjGroup::ViewProjectionConvention::FirstAngle;
+    return getPreferenceGroup("General")->GetInt("ProjectionAngle",
+                                                 defaultConvention);
 }
 
 bool Preferences::groupAutoDistribute()
@@ -707,3 +709,20 @@ double Preferences::detailSnapRadius()
     return getPreferenceGroup("General")->GetFloat("DetailSnapRadius", 0.6);
 }
 
+
+bool Preferences::showCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("ShowCenterMarks", false);
+}
+
+bool Preferences::printCenterMarks()
+{
+    return getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);
+}
+
+
+//! true if old style transparency values should be converted to new style alpha values for color properties.
+bool Preferences::fixColorAlphaOnLoad()
+{
+    return getPreferenceGroup("General")->GetBool("FixColorAlphaOnLoad", true);
+}

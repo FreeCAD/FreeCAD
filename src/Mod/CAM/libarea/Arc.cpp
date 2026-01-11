@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 // Arc.cpp
 
 // Copyright 2011, Dan Heeks

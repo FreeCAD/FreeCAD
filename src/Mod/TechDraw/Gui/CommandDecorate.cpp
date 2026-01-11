@@ -52,6 +52,7 @@
 #include "ViewProviderPage.h"
 #include "MDIViewPage.h"
 #include "CommandHelpers.h"
+#include "PreferencesGui.h"
 
 
 using namespace TechDrawGui;
@@ -60,6 +61,72 @@ using DU = DrawUtil;
 
 //internal functions
 bool _checkSelectionHatch(Gui::Command* cmd);
+
+//===========================================================================
+// TechDraw_ToggleFrame
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawToggleFrame)
+
+CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
+  : Command("TechDraw_ToggleFrame")
+{
+    sAppModule      = "TechDraw";
+    sGroup          = QT_TR_NOOP("TechDraw");
+    sMenuText       = QT_TR_NOOP("Turn View Frames On/Off");
+    sToolTipText    = QT_TR_NOOP("Turn View Frames On/Off");
+    sWhatsThis      = "TechDraw_Toggle";
+    sStatusTip      = sToolTipText;
+    sPixmap         = "actions/TechDraw_ToggleFrame";
+}
+
+// This is a toggle.  Each press flips the fame state.
+// Gui::Action *CmdTechDrawToggleFrame::createAction()
+// {
+//     Gui::Action *action = Gui::Command::createAction();
+//     action->setCheckable(true);
+//     action->setChecked(false);
+
+//     return action;
+// }
+
+void CmdTechDrawToggleFrame::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+        return;
+    }
+
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
+        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
+            QObject::tr("Need a TechDraw Page for this command"));
+        return;
+    }
+
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
+
+    vpp->toggleFrameState();
+
+    // Gui::Action *action = this->getAction();
+    // if (action) {
+    //     action->setChecked(vpp->getFrameState());
+    // }
+}
+
+bool CmdTechDrawToggleFrame::isActive()
+{
+    if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+        return false;
+    }
+
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    return mvp != nullptr;
+}
 
 //===========================================================================
 // TechDraw_Hatch
@@ -297,6 +364,8 @@ void CreateTechDrawCommandsDecorate()
     rcCmdMgr.addCommand(new CmdTechDrawHatch());
     rcCmdMgr.addCommand(new CmdTechDrawGeometricHatch());
     rcCmdMgr.addCommand(new CmdTechDrawImage());
+    rcCmdMgr.addCommand(new CmdTechDrawToggleFrame());
+
 //    rcCmdMgr.addCommand(new CmdTechDrawLeaderLine());
 //    rcCmdMgr.addCommand(new CmdTechDrawRichTextAnnotation());
 }

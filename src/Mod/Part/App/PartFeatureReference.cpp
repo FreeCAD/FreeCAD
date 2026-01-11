@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -21,8 +23,8 @@
  ***************************************************************************/
 
 
-# include <gp_Ax1.hxx>
-# include <gp_Trsf.hxx>
+#include <gp_Ax1.hxx>
+#include <gp_Trsf.hxx>
 
 
 #include <Base/Placement.h>
@@ -47,7 +49,7 @@ short FeatureReference::mustExecute() const
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *FeatureReference::execute()
+App::DocumentObjectExecReturn* FeatureReference::execute()
 {
     return App::DocumentObject::StdReturn;
 }
@@ -61,10 +63,8 @@ TopLoc_Location FeatureReference::getLocation() const
     rot.getValue(axis, angle);
     gp_Trsf trf;
     trf.SetRotation(gp_Ax1(gp_Pnt(), gp_Dir(axis.x, axis.y, axis.z)), angle);
-    trf.SetTranslationPart(gp_Vec(pl.getPosition().x,pl.getPosition().y,pl.getPosition().z));
+    trf.SetTranslationPart(gp_Vec(pl.getPosition().x, pl.getPosition().y, pl.getPosition().z));
     return TopLoc_Location(trf);
 }
 
 // ---------------------------------------------------------
-
-

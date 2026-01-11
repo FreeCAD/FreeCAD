@@ -37,6 +37,7 @@ cmake \
     -D OCC_LIBRARY_DIR:FILEPATH="$PREFIX/lib" \
     -D Python_EXECUTABLE:FILEPATH="$PYTHON" \
     -D Python3_EXECUTABLE:FILEPATH="$PYTHON" \
+    -D BUILD_DYNAMIC_LINK_PYTHON:BOOL=OFF \
     -B build \
     -S .
 

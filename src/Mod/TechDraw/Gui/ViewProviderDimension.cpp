@@ -349,3 +349,41 @@ std::vector<App::DocumentObject*> ViewProviderDimension::claimChildren() const
 }
 
 
+void ViewProviderDimension::finishRestoring()
+{
+    fixTextSize();
+    fixArrowSize();
+
+    ViewProviderDrawingView::finishRestoring();
+}
+
+
+void ViewProviderDimension::fixTextSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+        return;
+    }
+
+    double size = Fontsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Fontsize.setValue(size);
+    }
+}
+
+
+void ViewProviderDimension::fixArrowSize()
+{
+    App::Document* ourDoc = getDocument()->getDocument();
+    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+        return;
+    }
+
+    double size = Arrowsize.getValue();
+    if (size == 0.0) {
+        size = Preferences::dimFontSizeMM();
+        Arrowsize.setValue(size);
+    }
+}
+
