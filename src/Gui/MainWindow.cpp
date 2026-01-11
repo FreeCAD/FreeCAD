@@ -303,6 +303,7 @@ struct MainWindowP
     DimensionWidget* sizeLabel;
     QLabel* actionLabel;
     InputHintWidget* hintLabel;
+    QLabel* showFullPathLabel;
     QLabel* rightSideLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -431,6 +432,27 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     d->hintLabel->setWindowTitle(tr("Input Hints"));
 
     statusBar()->addWidget(d->hintLabel);
+
+ 
+    // Specifically for ShowFullfilePath it is to be Off by default for new users
+    auto hGrpMW = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
+    auto showFullPathLabelEnabled = hGrpMW->GetBool("StatusBarShowFullFilePath");
+    if (!showFullPathLabelEnabled) {
+        hGrpMW->SetBool("StatusBarShowFullFilePath", false);
+    }
+
+    // show full path label
+    d->showFullPathLabel =
+    new StatusBarLabel(statusBar(), "StatusBarShowFullFilePath");
+    d->showFullPathLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
+    statusBar()->addPermanentWidget(d->showFullPathLabel);
+    d->showFullPathLabel->setObjectName(QStringLiteral("showFullPathLabel"));
+    //: A context menu action used to show or hide the full file path next to
+    //: Preselected or Tree info in the status bar
+    d->showFullPathLabel->setWindowTitle(tr("Show full file path"));
+    d->showFullPathLabel->setVisible(showFullPathLabelEnabled);
 
     // right side label
     d->rightSideLabel = new StatusBarLabel(statusBar(), "QuickMeasureEnabled");
@@ -2508,6 +2530,11 @@ void MainWindow::setRightSideMessage(const QString& message)
 bool MainWindow::isRightSideMessageVisible() const
 {
     return d->rightSideLabel->isVisible();
+}
+
+bool MainWindow::isShowFullFilePathVisible() const
+{
+    return d->showFullPathLabel->isVisible();
 }
 
 void MainWindow::showStatus(int type, const QString& message)

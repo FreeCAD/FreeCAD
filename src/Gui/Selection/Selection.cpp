@@ -982,12 +982,10 @@ QString getPreselectionInfo(
     auto pts = schemaTranslatePoint(x, y, z, precision);
 
     int numberDecimals = std::min(6, static_cast<int>(Base::UnitsApi::getDecimals()));
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/View"
-    );
+
     QString message;
-    bool showFullfilePath = hGrp->GetBool("StatusBarShowFullfilePath", false);
-    if (showFullfilePath) {
+
+    if (Gui::getMainWindow()->isShowFullFilePathVisible()) {
         message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9) - %10")
                       .arg(QString::fromUtf8(documentName))
                       .arg(QString::fromUtf8(objectName))
