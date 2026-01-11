@@ -628,7 +628,7 @@ void ExtrusionHelper::makeElementDraft(
                     xp.Next();
                 }
 
-                if (numEdges > 1 || !params.isPartDesign) {
+                if (numEdges > 1 || params.innerWireTaper == InnerWireTaper::Inverted) {
                     innerParams.taperAngleFwd = -params.taperAngleFwd;
                     innerParams.taperAngleRev = -params.taperAngleRev;
                 }
