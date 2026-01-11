@@ -177,12 +177,12 @@ def buildPostList(processor: Any, early_tool_prep: bool = False) -> List[Tuple[s
 def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, List]]:
     """
     Apply early tool preparation optimization to the postlist.
-    
+
     This function modifies tool change commands to enable early tool preparation:
     - Always outputs tool changes as "Tn M6" (tool number followed by change command)
     - Additionally emits standalone "Tn" prep commands immediately after the previous M6
       to allow the machine to prepare the next tool while the current tool is working
-    
+
     Example output:
         T4 M6      <- change to tool 4
         T5         <- prep tool 5 early (while T4 is working)
@@ -198,7 +198,7 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
         for item_idx, item in enumerate(sublist):
             if hasattr(item, "Proxy") and isinstance(item.Proxy, PathToolController.ToolController):
                 all_tool_controllers.append((group_idx, item_idx, item))
-    
+
     new_postlist = []
     for group_idx, (name, sublist) in enumerate(postlist):
         new_sublist = []
@@ -214,21 +214,31 @@ def apply_early_tool_prep(postlist: List[Tuple[str, List]]) -> List[Tuple[str, L
                     if cmd.Name == "M6":
                         m6_cmd = cmd
                         break
-                
+
                 if m6_cmd and len(m6_cmd.Parameters) > 0:
                     # M6 command has parameters like {'T': 5}, access via key
-                    tool_number = m6_cmd.Parameters.get('T', item.ToolNumber)
-                    
+                    tool_number = m6_cmd.Parameters.get("T", item.ToolNumber)
+
                     # Find this TC in the global list and check if there's a next one
-                    tc_position = next((idx for idx, (g_idx, i_idx, tc) in enumerate(all_tool_controllers) 
-                                       if g_idx == group_idx and i_idx == i), None)
-                    
-                    next_tc = all_tool_controllers[tc_position + 1][2] if tc_position is not None and tc_position + 1 < len(all_tool_controllers) else None
-                    
+                    tc_position = next(
+                        (
+                            idx
+                            for idx, (g_idx, i_idx, tc) in enumerate(all_tool_controllers)
+                            if g_idx == group_idx and i_idx == i
+                        ),
+                        None,
+                    )
+
+                    next_tc = (
+                        all_tool_controllers[tc_position + 1][2]
+                        if tc_position is not None and tc_position + 1 < len(all_tool_controllers)
+                        else None
+                    )
+
                     # Keep the original M6 command with tool parameter (M6 T5 format)
                     # This is the valid FreeCAD format, postprocessor will reformat if needed
                     new_sublist.append(item)
-                    
+
                     # If there's a next tool controller, add Tn prep for it immediately after M6
                     if next_tc is not None:
                         next_tool_number = next_tc.ToolNumber

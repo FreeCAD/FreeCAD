@@ -91,7 +91,6 @@ class PostProcessorFactory:
         Path.Log.debug(f"PostProcessorFactory.get_post_processor() - postname: {postname}")
         Path.Log.debug(f"PostProcessorFactory.get_post_processor() - module_name: {module_name}")
         Path.Log.debug(f"PostProcessorFactory.get_post_processor() - class_name: {class_name}")
-        
 
         # Iterate all the paths to find the module
         for path in paths:
@@ -163,15 +162,15 @@ class PostProcessor:
 
     def _buildPostList(self, early_tool_prep=False):
         """Determine the specific objects and order to postprocess.
-        
+
         Returns a list of objects which can be passed to exportObjectsWith()
         for final posting. The ordering strategy is determined by the job's
         OrderOutputBy setting.
-        
+
         Args:
-            early_tool_prep: If True, split tool changes into separate prep (Tn) 
+            early_tool_prep: If True, split tool changes into separate prep (Tn)
                            and change (M6) commands for better machine efficiency
-        
+
         Returns:
             List of (name, operations) tuples
         """
