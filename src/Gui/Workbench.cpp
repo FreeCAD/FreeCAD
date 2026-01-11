@@ -842,6 +842,16 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *edit << "Std_Undo" << "Std_Redo"
           << "Separator" << "Std_Refresh";
 
+    // Structure
+    auto structure = new ToolBarItem(root);
+    structure->setCommand("Structure");
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
+
+    // Help
+    auto help = new ToolBarItem(root);
+    help->setCommand("Help");
+    *help << "Std_WhatsThis";
+
     // Clipboard
     auto clipboard = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     clipboard->setCommand("Clipboard");
@@ -874,16 +884,6 @@ ToolBarItem* StdWorkbench::setupToolBars() const
                      << "Std_ViewRear"
                      << "Std_ViewBottom"
                      << "Std_ViewLeft";
-
-    // Structure
-    auto structure = new ToolBarItem(root);
-    structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
-
-    // Help
-    auto help = new ToolBarItem(root);
-    help->setCommand("Help");
-    *help << "Std_WhatsThis";
 
     return root;
 }
