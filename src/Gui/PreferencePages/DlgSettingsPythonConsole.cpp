@@ -30,8 +30,8 @@ using namespace Gui::Dialog;
 /* TRANSLATOR Gui::Dialog::DlgSettingsPythonConsole */
 
 DlgSettingsPythonConsole::DlgSettingsPythonConsole(QWidget* parent)
-  : PreferencePage(parent)
-  , ui(new Ui_DlgSettingsPythonConsole)
+    : PreferencePage(parent)
+    , ui(new Ui_DlgSettingsPythonConsole)
 {
     ui->setupUi(this);
 }
@@ -44,7 +44,7 @@ void DlgSettingsPythonConsole::saveSettings()
     ui->PythonBlockCursor->onSave();
     ui->PythonSaveHistory->onSave();
     ui->ProfilerInterval->onSave();
-    ui->ExternalPythonExecutable->onSave();
+    ui->PathToPythonExecutable->onSave();
 }
 
 void DlgSettingsPythonConsole::loadSettings()
@@ -53,7 +53,7 @@ void DlgSettingsPythonConsole::loadSettings()
     ui->PythonBlockCursor->onRestore();
     ui->PythonSaveHistory->onRestore();
     ui->ProfilerInterval->onRestore();
-    ui->ExternalPythonExecutable->onRestore();
+    ui->PathToPythonExecutable->onRestore();
 }
 
 void DlgSettingsPythonConsole::changeEvent(QEvent* event)

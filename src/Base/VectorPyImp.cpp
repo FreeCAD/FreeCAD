@@ -268,9 +268,11 @@ PyObject* VectorPy::mapping_subscript(PyObject* self, PyObject* item)
         }
     }
 
-    PyErr_Format(PyExc_TypeError,
-                 "Vector indices must be integers or slices, not %.200s",
-                 Py_TYPE(item)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "Vector indices must be integers or slices, not %.200s",
+        Py_TYPE(item)->tp_name
+    );
     return nullptr;
 }
 
@@ -740,10 +742,12 @@ PyObject* VectorPy::number_divide_handler(PyObject* self, PyObject* other)
         // slots of the PyNumberMethods structure. So, it must be explicitly
         // filered out here.
         if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
-            PyErr_Format(PyExc_TypeError,
-                         "unsupported operand type(s) for /: '%s' and '%s'",
-                         Py_TYPE(self)->tp_name,
-                         Py_TYPE(other)->tp_name);
+            PyErr_Format(
+                PyExc_TypeError,
+                "unsupported operand type(s) for /: '%s' and '%s'",
+                Py_TYPE(self)->tp_name,
+                Py_TYPE(other)->tp_name
+            );
             return nullptr;
         }
 
@@ -758,44 +762,51 @@ PyObject* VectorPy::number_divide_handler(PyObject* self, PyObject* other)
         return new VectorPy(vec);
     }
 
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for /: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for /: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_remainder_handler(PyObject* self, PyObject* other)
 {
-    if (PyObject_TypeCheck(self, &(VectorPy::Type))
-        && PyObject_TypeCheck(other, &(VectorPy::Type))) {
+    if (PyObject_TypeCheck(self, &(VectorPy::Type)) && PyObject_TypeCheck(other, &(VectorPy::Type))) {
         Vector3d a = static_cast<VectorPy*>(self)->value();
         Vector3d b = static_cast<VectorPy*>(other)->value();
         return new VectorPy(a % b);
     }
 
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for %%: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for %%: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_divmod_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for divmod(): '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for divmod(): '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_power_handler(PyObject* self, PyObject* other, PyObject* /*arg*/)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for ** or pow(): '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for ** or pow(): '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
@@ -848,61 +859,75 @@ PyObject* VectorPy::number_invert_handler(PyObject* self)
 
 PyObject* VectorPy::number_lshift_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for <<: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for <<: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_rshift_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for >>: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for >>: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_and_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for &: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for &: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_xor_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for ^: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for ^: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_or_handler(PyObject* self, PyObject* other)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "unsupported operand type(s) for |: '%s' and '%s'",
-                 Py_TYPE(self)->tp_name,
-                 Py_TYPE(other)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "unsupported operand type(s) for |: '%s' and '%s'",
+        Py_TYPE(self)->tp_name,
+        Py_TYPE(other)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_int_handler(PyObject* self)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "int() argument must be a string or a number, not '%s'",
-                 Py_TYPE(self)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "int() argument must be a string or a number, not '%s'",
+        Py_TYPE(self)->tp_name
+    );
     return nullptr;
 }
 
 PyObject* VectorPy::number_float_handler(PyObject* self)
 {
-    PyErr_Format(PyExc_TypeError,
-                 "float() argument must be a string or a number, not '%s'",
-                 Py_TYPE(self)->tp_name);
+    PyErr_Format(
+        PyExc_TypeError,
+        "float() argument must be a string or a number, not '%s'",
+        Py_TYPE(self)->tp_name
+    );
     return nullptr;
 }

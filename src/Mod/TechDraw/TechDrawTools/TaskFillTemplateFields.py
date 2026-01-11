@@ -35,6 +35,7 @@ import datetime
 from datetime import date
 import csv
 import codecs
+from fractions import Fraction
 import os.path
 
 CreatedByChkLst = []
@@ -55,7 +56,6 @@ listofkeys = [
     "CreatedDateChkLst",
     "LastModifiedDateChkLst",
 ]
-
 
 """Run the following code when the command is activated (button press)."""
 file_path = App.getResourceDir() + "Mod/TechDraw/CSVdata/FillTemplateFields.csv"
@@ -91,11 +91,11 @@ keyLst = []
 
 class TaskFillTemplateFields:
     def __init__(self):
-        objs = App.ActiveDocument.Objects
+        objs = App.ActiveDocument.findObjects(Type="TechDraw::DrawPage")
+
         for obj in objs:
             if (
-                obj.TypeId == "TechDraw::DrawPage"
-                and os.path.exists(file_path)
+                os.path.exists(file_path)
                 and listofkeys == reader.fieldnames
             ):
                 self.page = obj
@@ -112,15 +112,17 @@ class TaskFillTemplateFields:
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.exec_()
                     break
 
                 projgrp_view = None
                 for pageObj in obj.Views:
-                    if pageObj.isDerivedFrom("TechDraw::DrawViewPart"):
-                        projgrp_view = self.page.Views[0]
-                    elif pageObj.isDerivedFrom("TechDraw::DrawProjGroup"):
-                        projgrp_view = self.page.Views[0]
+                    if hasattr(pageObj, "Scale"):
+                        # use the scale from the first DVP or DPG encountered to fill the template's
+                        # Scale editable text.
+                        projgrp_view = pageObj
+                        break
 
                 self.texts = self.page.Template.EditableTexts
 
@@ -170,7 +172,9 @@ class TaskFillTemplateFields:
                         self.checkBoxList.append(self.cb1)
                         self.lineTextList.append(self.s1)
                         self.cb1.clicked.connect(self.on_cb1_clicked)
-                        longestText = max(longestText, len(App.ActiveDocument.CreatedBy))
+                        longestText = max(
+                            longestText, len(App.ActiveDocument.CreatedBy)
+                        )
                         dialogRow += 1
                     if str(key).lower() in ScaleChkLst and projgrp_view:
                         t2 = QtGui.QLabel(value)
@@ -193,9 +197,30 @@ class TaskFillTemplateFields:
                         self.lineTextList.append(self.s2)
                         self.cb2.clicked.connect(self.on_cb2_clicked)
                         if projgrp_view.Scale < 1:
-                            self.s2.setText("1 : " + str(int(1 / projgrp_view.Scale)))
-                        else:
+                            fracScale = Fraction(projgrp_view.Scale).limit_denominator()
+                            self.s2.setText(
+                                str(fracScale.numerator)
+                                + " : "
+                                + str(fracScale.denominator)
+                            )
+                        elif int(projgrp_view.Scale) == 1 or (
+                            projgrp_view.Scale > 1
+                            and int(projgrp_view.Scale) == projgrp_view.Scale
+                        ):
                             self.s2.setText(str(int(projgrp_view.Scale)) + " : 1")
+                        else:  # must be something like 2.5 = 5 : 2
+                            for x in range(2, 10):
+                                if (
+                                    int(projgrp_view.Scale * x)
+                                    == projgrp_view.Scale * x
+                                ):
+                                    fracScale = Fraction(projgrp_view.Scale)
+                                    self.s2.setText(
+                                        str(fracScale.numerator)
+                                        + " : "
+                                        + str(fracScale.denominator)
+                                    )
+                                    break
                         dialogRow += 1
                     if str(key).lower() in LabelChkLst:
                         t3 = QtGui.QLabel(value)
@@ -419,17 +444,18 @@ class TaskFillTemplateFields:
                     QtCore.QObject.connect(
                         self.okbox, QtCore.SIGNAL("rejected()"), self.close
                     )
-                    self.okbox.button(QtGui.QDialogButtonBox.Ok).setText("&Ok")
+                    self.okbox.button(QtGui.QDialogButtonBox.Ok).setText("&OK")
                     self.okbox.button(QtGui.QDialogButtonBox.Cancel).setText("&Cancel")
                     self.button = self.okbox.button(QtGui.QDialogButtonBox.Ok)
                     self.button.setEnabled(True)
                     self.dialog.resize(600 + longestText, dialogRow * 50 + 75)
                     self.dialog.move(400, 200 * (400 / (dialogRow * 50 + 75)))
+                    self.dialog.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     QtCore.QMetaObject.connectSlotsByName(self.dialog)
                     self.dialog.show()
                     self.dialog.exec_()
 
-                    App.setActiveTransaction("Fill template fields")
+                # App.setActiveTransaction("Fill template fields")
                 else:
                     msgBox = QtGui.QMessageBox()
                     msgTitle = QtCore.QT_TRANSLATE_NOOP(
@@ -441,8 +467,10 @@ class TaskFillTemplateFields:
                         "There were no corresponding fields found in "
                         + self.page.Label,
                     )
+                    msgBox.setWindowFlag(QtCore.Qt.WindowStaysOnTopHint, True)
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
+                    msgBox.move(400, 450)
                     msgBox.exec_()
 
     def on_cbAll_clicked(self):
@@ -520,17 +548,22 @@ class TaskFillTemplateFields:
             self.button.setEnabled(False)
 
     def proceed(self):
+        transactionName = QtCore.QT_TRANSLATE_NOOP(
+            "Techdraw_FillTemplateFields", "Fill template fields"
+        )
+        App.setActiveTransaction(transactionName)
         i = 0
         for cb in self.checkBoxList:
             if cb.isChecked():
                 self.texts[keyLst[i]] = self.lineTextList[i].text()
             i += 1
         self.page.Template.EditableTexts = self.texts
+        App.closeActiveTransaction(False)
         self.close()
 
         App.closeActiveTransaction()
 
     def close(self):
         self.dialog.hide()
-        App.closeActiveTransaction(True)
+        keyLst.clear()
         return True

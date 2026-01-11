@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from App.GeoFeature import GeoFeature
 from App.DocumentObject import DocumentObject
 from typing import List, Tuple, Union
-
 
 @export(
     Twin="Feature",

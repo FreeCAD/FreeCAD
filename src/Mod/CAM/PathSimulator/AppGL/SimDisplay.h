@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2024 Shai Seger <shaise at gmail>                       *
  *                                                                         *
@@ -45,7 +47,7 @@ class SimDisplay
 {
 public:
     ~SimDisplay();
-    void InitGL();
+    void InitGL(qreal devicePixelRatio);
     void CleanGL();
     void CleanFbos();
     void PrepareDisplay(vec3 objCenter);
@@ -106,6 +108,7 @@ protected:
     mat4x4 mMatLookAt;
     StockObject mlightObject;
 
+    qreal mDevicePixelRatio;
     int mWidth;
     int mHeight;
 

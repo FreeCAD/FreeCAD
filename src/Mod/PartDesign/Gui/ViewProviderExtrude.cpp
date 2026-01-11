@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-
-# include <QMenu>
+#include <QMenu>
 
 
 #include <App/Document.h>
@@ -43,8 +42,9 @@ void PartDesignGui::ViewProviderExtrude::highlightShapeFaces(const std::vector<s
     auto extrude = getObject<PartDesign::FeatureExtrude>();
     auto base = static_cast<Part::Feature*>(extrude->UpToShape.getValue());
 
-    auto baseViewProvider =
-        dynamic_cast<PartGui::ViewProviderPart*>(Gui::Application::Instance->getViewProvider(base));
+    auto baseViewProvider = dynamic_cast<PartGui::ViewProviderPart*>(
+        Gui::Application::Instance->getViewProvider(base)
+    );
 
     if (!baseViewProvider) {
         return;

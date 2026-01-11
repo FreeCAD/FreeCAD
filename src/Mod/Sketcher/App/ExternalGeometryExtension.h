@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2019 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -84,7 +86,8 @@ public:
     // <realthunder.dev@gmail.com>
 
     constexpr static std::array<const char*, NumFlags> flag2str {
-        {"Defining", "Frozen", "Detached", "Missing", "Sync"}};
+        {"Defining", "Frozen", "Detached", "Missing", "Sync"}
+    };
 
 public:
     ExternalGeometryExtension() = default;

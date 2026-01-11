@@ -111,9 +111,11 @@ CmdSurfaceFilling::CmdSurfaceFilling()
     sAppModule = "Surface";
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Filling");
-    sToolTipText = QT_TR_NOOP("Creates a surface from a series of selected boundary edges.\n"
-                              "Additionally, the surface may be constrained by edges and\n"
-                              "vertices that are not on the boundary.");
+    sToolTipText = QT_TR_NOOP(
+        "Creates a surface from a series of selected boundary edges.\n"
+        "Additionally, the surface may be constrained by edges and\n"
+        "vertices that are not on the boundary."
+    );
     sStatusTip = sToolTipText;
     sWhatsThis = "Surface_Filling";
     sPixmap = "Surface_Filling";
@@ -162,9 +164,7 @@ void CmdSurfaceGeomFillSurface::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Surface");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create surface"));
-    doCommand(Doc,
-              "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")",
-              FeatName.c_str());
+    doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::GeomFillSurface\",\"%s\")", FeatName.c_str());
     doCommand(Doc, "Gui.ActiveDocument.setEdit('%s',0)", FeatName.c_str());
 }
 
@@ -177,8 +177,10 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
     sAppModule = "MeshPart";
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Curve on Mesh");
-    sToolTipText = QT_TR_NOOP("Creates an approximated curve on top of a mesh.\n"
-                              "This command only works with a mesh object.");
+    sToolTipText = QT_TR_NOOP(
+        "Creates an approximated curve on top of a mesh.\n"
+        "This command only works with a mesh object."
+    );
     sWhatsThis = "Surface_CurveOnMesh";
     sStatusTip = sToolTipText;
     sPixmap = "Surface_CurveOnMesh";
@@ -187,9 +189,11 @@ CmdSurfaceCurveOnMesh::CmdSurfaceCurveOnMesh()
 
 void CmdSurfaceCurveOnMesh::activated(int)
 {
-    doCommand(Doc,
-              "import MeshPartGui, FreeCADGui\n"
-              "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n");
+    doCommand(
+        Doc,
+        "import MeshPartGui, FreeCADGui\n"
+        "FreeCADGui.runCommand('MeshPart_CurveOnMesh')\n"
+    );
 }
 
 bool CmdSurfaceCurveOnMesh::isActive()
@@ -227,8 +231,8 @@ void CmdBlendCurve::activated(int)
     std::string objName[2];
     std::string edge[2];
     std::string featName = getUniqueObjectName("BlendCurve");
-    std::vector<Gui::SelectionObject> sel =
-        getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId());
+    std::vector<Gui::SelectionObject> sel
+        = getSelection().getSelectionEx(nullptr, Part::Feature::getClassTypeId());
 
     objName[0] = sel[0].getFeatName();
     edge[0] = sel[0].getSubNames()[0];
@@ -242,21 +246,27 @@ void CmdBlendCurve::activated(int)
         edge[1] = sel[1].getSubNames()[0];
     }
     openCommand(QT_TRANSLATE_NOOP("Command", "Blend Curve"));
-    doCommand(Doc,
-              "App.ActiveDocument.addObject(\"Surface::FeatureBlendCurve\",\"%s\")",
-              featName.c_str());
-    doCommand(Doc,
-              "App.ActiveDocument.%s.StartEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
-              featName.c_str(),
-              docName.c_str(),
-              objName[0].c_str(),
-              edge[0].c_str());
-    doCommand(Doc,
-              "App.ActiveDocument.%s.EndEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
-              featName.c_str(),
-              docName.c_str(),
-              objName[1].c_str(),
-              edge[1].c_str());
+    doCommand(
+        Doc,
+        "App.ActiveDocument.addObject(\"Surface::FeatureBlendCurve\",\"%s\")",
+        featName.c_str()
+    );
+    doCommand(
+        Doc,
+        "App.ActiveDocument.%s.StartEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
+        featName.c_str(),
+        docName.c_str(),
+        objName[0].c_str(),
+        edge[0].c_str()
+    );
+    doCommand(
+        Doc,
+        "App.ActiveDocument.%s.EndEdge = (App.getDocument('%s').getObject('%s'),['%s'])",
+        featName.c_str(),
+        docName.c_str(),
+        objName[1].c_str(),
+        edge[1].c_str()
+    );
     updateActive();
     commitCommand();
 }
@@ -275,8 +285,10 @@ CmdSurfaceExtendFace::CmdSurfaceExtendFace()
     sAppModule = "Surface";
     sGroup = QT_TR_NOOP("Surface");
     sMenuText = QT_TR_NOOP("Extend Face");
-    sToolTipText = QT_TR_NOOP("Extrapolates the selected face or surface at its boundaries with "
-                              "its local U and V parameters");
+    sToolTipText = QT_TR_NOOP(
+        "Extrapolates the selected face or surface at its boundaries with "
+        "its local U and V parameters"
+    );
     sWhatsThis = "Surface_ExtendFace";
     sStatusTip = sToolTipText;
     sPixmap = "Surface_ExtendFace";
@@ -291,21 +303,18 @@ void CmdSurfaceExtendFace::activated(int)
             openCommand(QT_TRANSLATE_NOOP("Command", "Extend surface"));
             std::string FeatName = getUniqueObjectName("Surface");
             std::string supportString = faceFilter.Result[0][0].getAsPropertyLinkSubString();
-            doCommand(Doc,
-                      "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")",
-                      FeatName.c_str());
-            doCommand(Doc,
-                      "App.ActiveDocument.%s.Face = %s",
-                      FeatName.c_str(),
-                      supportString.c_str());
+            doCommand(Doc, "App.ActiveDocument.addObject(\"Surface::Extend\",\"%s\")", FeatName.c_str());
+            doCommand(Doc, "App.ActiveDocument.%s.Face = %s", FeatName.c_str(), supportString.c_str());
             updateActive();
             commitCommand();
         }
     }
     else {
-        QMessageBox::warning(Gui::getMainWindow(),
-                             qApp->translate("Surface_ExtendFace", "Wrong selection"),
-                             qApp->translate("Surface_ExtendFace", "Select a single face"));
+        QMessageBox::warning(
+            Gui::getMainWindow(),
+            qApp->translate("Surface_ExtendFace", "Wrong selection"),
+            qApp->translate("Surface_ExtendFace", "Select a single face")
+        );
     }
 }
 

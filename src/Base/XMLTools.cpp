@@ -28,13 +28,7 @@
 #include "Exception.h"
 #include "XMLTools.h"
 
-
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-#define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
-#else
-XERCES_CPP_NAMESPACE_USE
-#endif
 
 std::unique_ptr<XMLTranscoder> XMLTools::transcoder;  // NOLINT
 
@@ -42,11 +36,10 @@ void XMLTools::initialize()
 {
     if (!transcoder) {
         XMLTransService::Codes res {};
-        transcoder.reset(XMLPlatformUtils::fgTransService->makeNewTranscoderFor(
-            XMLRecognizer::UTF_8,
-            res,
-            4096,
-            XMLPlatformUtils::fgMemoryManager));
+        transcoder.reset(
+            XMLPlatformUtils::fgTransService
+                ->makeNewTranscoderFor(XMLRecognizer::UTF_8, res, 4096, XMLPlatformUtils::fgMemoryManager)
+        );
         if (res != XMLTransService::Ok) {
             throw Base::UnicodeError("Can't create transcoder");
         }
@@ -67,12 +60,14 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
     XMLSize_t inputLength = XMLString::stringLen(toTranscode);
 
     while (inputLength) {
-        outputLength = transcoder->transcodeTo(toTranscode + offset,
-                                               inputLength,
-                                               outBuff,
-                                               128,
-                                               eaten,
-                                               XMLTranscoder::UnRep_RepChar);
+        outputLength = transcoder->transcodeTo(
+            toTranscode + offset,
+            inputLength,
+            outBuff,
+            128,
+            eaten,
+            XMLTranscoder::UnRep_RepChar
+        );
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         str.append(reinterpret_cast<const char*>(outBuff), outputLength);
         offset += eaten;
@@ -106,12 +101,8 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 
     unsigned char* charSizes = new unsigned char[inputLength];
     while (inputLength) {
-        outputLength = transcoder->transcodeFrom(xmlBytes + offset,
-                                                 inputLength,
-                                                 outBuff,
-                                                 128,
-                                                 eaten,
-                                                 charSizes);
+        outputLength
+            = transcoder->transcodeFrom(xmlBytes + offset, inputLength, outBuff, 128, eaten, charSizes);
         str.append(outBuff, outputLength);
         offset += eaten;
         inputLength -= eaten;
@@ -133,9 +124,11 @@ void XMLTools::terminate()
 
 void* XStrMemoryManager::allocate(XMLSize_t size)
 {
-    auto ptr = ::operator new(static_cast<size_t>(size),
-                              static_cast<std::align_val_t>(alignof(XMLCh)),
-                              std::nothrow);
+    auto ptr = ::operator new(
+        static_cast<size_t>(size),
+        static_cast<std::align_val_t>(alignof(XMLCh)),
+        std::nothrow
+    );
     if (ptr == nullptr && size != 0) {
         throw XERCES_CPP_NAMESPACE::OutOfMemoryException();
     }

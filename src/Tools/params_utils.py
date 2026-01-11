@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2022 Zheng Lei (realthunder) <realthunder.dev@gmail.com>*
 # *                                                                         *
@@ -80,7 +82,7 @@ def declare_begin(module, header=True):
             f"""
 {trace_comment()}
 #include <Base/Parameter.h>
-{"#include <boost/signals2.hpp>" if signal else ""}
+{"#include <fastsignals/signal.h>" if signal else ""}
 """
         )
 
@@ -126,7 +128,7 @@ public:
     if signal:
         cog.out(
             f"""
-    static boost::signals2::signal<void (const char*)> &signalParamChanged();
+    static fastsignals::signal<void (const char*)> &signalParamChanged();
     static void signalAll();
 """
         )
@@ -216,7 +218,7 @@ public:
         cog.out(
             f"""
     {trace_comment()}
-    boost::signals2::signal<void (const char*)> signalParamChanged;
+    fastsignals::signal<void (const char*)> signalParamChanged;
     void signalAll()
     {{"""
         )
@@ -328,7 +330,7 @@ ParameterGrp::handle {class_name}::getHandle() {{
         cog.out(
             f"""
 {trace_comment()}
-boost::signals2::signal<void (const char*)> &
+fastsignals::signal<void (const char*)> &
 {class_name}::signalParamChanged() {{
     return instance()->signalParamChanged;
 }}
@@ -1195,7 +1197,7 @@ class Property:
             )
         cog.out(
             f"""
-    if (auto prop = freecad_cast<{self.type_name}*>(
+    if (auto prop = Base::freecad_dynamic_cast<{self.type_name}>(
             obj->getPropertyByName("{self.name}")))
     {{
         if (prop->getContainer() == obj)

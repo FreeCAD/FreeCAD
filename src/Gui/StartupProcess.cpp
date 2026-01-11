@@ -22,9 +22,10 @@
  **************************************************************************/
 
 #include <FCConfig.h>
+#include <ParamHandler.h>
 
 #ifdef FC_OS_WIN32
-#include <windows.h>
+# include <windows.h>
 #endif
 
 #include <QApplication>
@@ -37,6 +38,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QWindow>
+
 #include <Inventor/SoDB.h>
 
 #include <set>
@@ -44,6 +46,7 @@
 #include <ranges>
 
 #include "StartupProcess.h"
+#include "PreferencePackManager.h"
 #include "Application.h"
 #include "AutoSaver.h"
 #include "Dialogs/DlgCheckableMessageBox.h"
@@ -52,6 +55,8 @@
 #include "MainWindow.h"
 #include "Language/Translator.h"
 #include "Dialogs/DlgVersionMigrator.h"
+#include "FreeCADStyle.h"
+
 #include <App/Application.h>
 #include <Base/Console.h>
 
@@ -67,35 +72,39 @@ void StartupProcess::setupApplication()
     QCoreApplication::setAttribute(Qt::AA_UseDesktopOpenGL);
 
     // Automatic scaling for legacy apps (disable once all parts of GUI are aware of HiDpi)
-    ParameterGrp::handle hDPI =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/HighDPI");
+    ParameterGrp::handle hDPI = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/HighDPI"
+    );
     bool disableDpiScaling = hDPI->GetBool("DisableDpiScaling", false);
     if (disableDpiScaling) {
 #ifdef FC_OS_WIN32
-        SetProcessDPIAware(); // call before the main event loop
+        SetProcessDPIAware();  // call before the main event loop
 #endif
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QApplication::setAttribute(Qt::AA_DisableHighDpiScaling);
 #endif
     }
     else {
         // Enable automatic scaling based on pixel density of display (added in Qt 5.6)
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 #endif
 #if defined(Q_OS_WIN)
-        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
+        QGuiApplication::setHighDpiScaleFactorRoundingPolicy(
+            Qt::HighDpiScaleFactorRoundingPolicy::PassThrough
+        );
 #endif
     }
 
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    //Enable support for highres images (added in Qt 5.1, but off by default)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    // Enable support for highres images (added in Qt 5.1, but off by default)
     QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
 #endif
 
     // Use software rendering for OpenGL
-    ParameterGrp::handle hOpenGL =
-        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/OpenGL");
+    ParameterGrp::handle hOpenGL = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/OpenGL"
+    );
     bool useSoftwareOpenGL = hOpenGL->GetBool("UseSoftwareOpenGL", false);
     if (useSoftwareOpenGL) {
         QApplication::setAttribute(Qt::AA_UseSoftwareOpenGL);
@@ -135,17 +144,15 @@ void StartupProcess::setStyleSheetPaths()
 {
     // setup the search paths for Qt style sheets
     QStringList qssPaths;
-    qssPaths << QString::fromUtf8(
-        (App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
-            << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
-            << QLatin1String(":/stylesheets");
+    qssPaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/Stylesheets/").c_str())
+             << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
+             << QLatin1String(":/stylesheets");
     QDir::setSearchPaths(QStringLiteral("qss"), qssPaths);
     // setup the search paths for Qt overlay style sheets
     QStringList qssOverlayPaths;
-    qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
-                        + "Gui/Stylesheets/overlay").c_str())
-                    << QString::fromUtf8((App::Application::getResourceDir()
-                        + "Gui/Stylesheets/overlay").c_str());
+    qssOverlayPaths << QString::fromUtf8(
+        (App::Application::getUserAppDataDir() + "Gui/Stylesheets/overlay").c_str()
+    ) << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/overlay").c_str());
     QDir::setSearchPaths(QStringLiteral("overlay"), qssOverlayPaths);
 }
 
@@ -154,8 +161,8 @@ void StartupProcess::setImagePaths()
     // set search paths for images
     QStringList imagePaths;
     imagePaths << QString::fromUtf8((App::Application::getUserAppDataDir() + "Gui/images").c_str())
-            << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
-            << QLatin1String(":/icons");
+               << QString::fromUtf8((App::Application::getUserAppDataDir() + "pixmaps").c_str())
+               << QLatin1String(":/icons");
     QDir::setSearchPaths(QStringLiteral("images"), imagePaths);
 }
 
@@ -168,12 +175,12 @@ void StartupProcess::registerEventType()
 void StartupProcess::setThemePaths()
 {
 #if !defined(Q_OS_LINUX)
-    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths()
-                            << QStringLiteral(":/icons/FreeCAD-default"));
+    QIcon::setThemeSearchPaths(QIcon::themeSearchPaths() << QStringLiteral(":/icons/FreeCAD-default"));
 #endif
 
     ParameterGrp::handle hTheme = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Bitmaps/Theme");
+        "User parameter:BaseApp/Preferences/Bitmaps/Theme"
+    );
 
     std::string searchpath = hTheme->GetASCII("SearchPath");
     if (!searchpath.empty()) {
@@ -203,11 +210,10 @@ void StartupProcess::setupFileDialog()
 // ------------------------------------------------------------------------------------------------
 
 StartupPostProcess::StartupPostProcess(MainWindow* mw, Application& guiApp, QApplication* app)
-    : mainWindow{mw}
-    , guiApp{guiApp}
+    : mainWindow {mw}
+    , guiApp {guiApp}
     , qtApp(app)
-{
-}
+{}
 
 void StartupPostProcess::setLoadFromPythonModule(bool value)
 {
@@ -224,6 +230,7 @@ void StartupPostProcess::execute()
     setLocale();
     setCursorFlashing();
     setQtStyle();
+    setStyleSheet();
     checkOpenGL();
     loadOpenInventor();
     setBranding();
@@ -242,15 +249,19 @@ void StartupPostProcess::setWindowTitle()
 void StartupPostProcess::setProcessMessages()
 {
     if (!loadFromPythonModule) {
-        QObject::connect(qtApp, SIGNAL(messageReceived(const QList<QString> &)),
-                         mainWindow, SLOT(processMessages(const QList<QString> &)));
+        QObject::connect(
+            qtApp,
+            SIGNAL(messageReceived(const QList<QString>&)),
+            mainWindow,
+            SLOT(processMessages(const QList<QString>&))
+        );
     }
 }
 
 void StartupPostProcess::setAutoSaving()
 {
     ParameterGrp::handle hDocGrp = WindowParameter::getDefaultParameter()->GetGroup("Document");
-    int timeout = int(hDocGrp->GetInt("AutoSaveTimeout", 15L)); // 15 min
+    int timeout = int(hDocGrp->GetInt("AutoSaveTimeout", 15L));  // 15 min
     if (!hDocGrp->GetBool("AutoSaveEnabled", true)) {
         timeout = 0;
     }
@@ -266,7 +277,7 @@ void StartupPostProcess::setToolBarIconSize()
     int size = int(hGrp->GetInt("ToolbarIconSize", 0));
     // must not be lower than this
     if (size >= 16) {  // NOLINT
-        mainWindow->setIconSize(QSize(size,size));
+        mainWindow->setIconSize(QSize(size, size));
     }
 }
 
@@ -287,7 +298,8 @@ void StartupPostProcess::setLocale()
     auto localeFormat = hGrp->GetInt("UseLocaleFormatting", 0);
     if (localeFormat == 1) {
         Translator::instance()->setLocale(
-            hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str()));
+            hGrp->GetASCII("Language", Translator::instance()->activeLanguage().c_str())
+        );
     }
     else if (localeFormat == 2) {
         Translator::instance()->setLocale("C.UTF-8");
@@ -302,19 +314,36 @@ void StartupPostProcess::setCursorFlashing()
     QApplication::setCursorFlashTime(blinkTime);
 }
 
+
 void StartupPostProcess::setQtStyle()
 {
-    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
-    auto qtStyle = hGrp->GetASCII("QtStyle");
-    if (qtStyle.empty()) {
-        qtStyle = "Fusion";
-        hGrp->SetASCII("QtStyle", qtStyle);
-    } else if (qtStyle == "System") {
-        // Special value to not set a QtStyle explicitly
-        return;
-    }
-    QApplication::setStyle(QString::fromStdString(qtStyle));
+    static ParamHandlers handlers;
 
+    ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("MainWindow");
+
+    const auto setStyleFromParameters = [hGrp]() {
+        const auto style = hGrp->GetASCII("QtStyle");
+
+        Application::Instance->setStyle(QString::fromStdString(style));
+    };
+
+    auto handler = handlers.addHandler(hGrp, "QtStyle", [setStyleFromParameters](const ParamKey*) {
+        setStyleFromParameters();
+    });
+
+    setStyleFromParameters();
+}
+
+void StartupPostProcess::migrateOldTheme(const std::string& style)
+{
+    auto prefPackManager = Application::Instance->prefPackManager();
+
+    if (style == "FreeCAD Light.qss") {
+        prefPackManager->apply("FreeCAD Light");
+    }
+    else if (style == "FreeCAD Dark.qss") {
+        prefPackManager->apply("FreeCAD Dark");
+    }
 }
 
 void StartupPostProcess::checkOpenGL()
@@ -340,18 +369,20 @@ void StartupPostProcess::checkOpenGL()
         // In release mode, issue a warning to users that their version of OpenGL is
         // potentially going to cause problems
         if (major < 2) {
-            auto message =
-                QObject::tr("This system is running OpenGL %1.%2. "
-                            "FreeCAD requires OpenGL 2.0 or above. "
-                            "Upgrade the graphics driver and/or card as required.")
-                    .arg(major)
-                    .arg(minor)
+            auto message = QObject::tr(
+                               "This system is running OpenGL %1.%2. "
+                               "FreeCAD requires OpenGL 2.0 or above. "
+                               "Upgrade the graphics driver and/or card as required."
+                           )
+                               .arg(major)
+                               .arg(minor)
                 + QStringLiteral("\n");
             Base::Console().warning(message.toStdString().c_str());
             Dialog::DlgCheckableMessageBox::showMessage(
                 QCoreApplication::applicationName() + QStringLiteral(" - ")
                     + QObject::tr("Invalid OpenGL Version"),
-                message);
+                message
+            );
         }
 #endif
         const char* glVersion = reinterpret_cast<const char*>(glGetString(GL_VERSION));
@@ -376,8 +407,8 @@ void StartupPostProcess::setBranding()
 {
     QString home = QString::fromStdString(App::Application::getHomePath());
 
-    const std::map<std::string,std::string>& cfg = App::Application::Config();
-    std::map<std::string,std::string>::const_iterator it;
+    const std::map<std::string, std::string>& cfg = App::Application::Config();
+    std::map<std::string, std::string>::const_iterator it;
     it = cfg.find("WindowTitle");
     if (it != cfg.end()) {
         QString title = QString::fromUtf8(it->second.c_str());
@@ -438,7 +469,6 @@ void StartupPostProcess::showMainWindow()
         Base::Console().error("Error in FreeCADGuiInit.py: %s\n", e.what());
         mainWindow->stopSplasher();
         throw;
-
     }
 
     // stop splash screen and set immediately the active window that may be of interest
@@ -452,10 +482,9 @@ void StartupPostProcess::activateWorkbench()
     // Activate the correct workbench
     std::string start = App::Application::Config()["StartWorkbench"];
     Base::Console().log("Init: Activating default workbench %s\n", start.c_str());
-    std::string autoload =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-            ->GetASCII("AutoloadModule", start.c_str());
+    std::string autoload = App::GetApplication()
+                               .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                               ->GetASCII("AutoloadModule", start.c_str());
     if ("$LastModule" == autoload) {
         start = App::GetApplication()
                     .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
@@ -492,12 +521,10 @@ void StartupPostProcess::activateWorkbench()
         mainWindow->loadWindowSettings();
     }
 
-    //initialize spaceball.
+    // initialize spaceball.
     if (auto fcApp = qobject_cast<GUIApplicationNativeEventAware*>(qtApp)) {
         fcApp->initSpaceball(mainWindow);
     }
-
-    setStyleSheet();
 
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately
@@ -510,7 +537,8 @@ void StartupPostProcess::activateWorkbench()
 void StartupPostProcess::setStyleSheet()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/MainWindow");
+        "User parameter:BaseApp/Preferences/MainWindow"
+    );
     std::string style = hGrp->GetASCII("StyleSheet");
     if (style.empty()) {
         // check the branding settings
@@ -521,17 +549,20 @@ void StartupPostProcess::setStyleSheet()
         }
     }
 
-    guiApp.setStyleSheet(QLatin1String(style.c_str()), hGrp->GetBool("TiledBackground", false));
+    // In 1.1 we migrated to a common parametrized stylesheet.
+    // if we detect an old style, we need to reapply the theme pack.
+    migrateOldTheme(style);
+
+    guiApp.setStyleSheet(QString::fromStdString(style), hGrp->GetBool("TiledBackground", false));
 }
 
 void StartupPostProcess::autoloadModules(const QStringList& wb)
 {
     // Now run the background autoload, for workbenches that should be loaded at startup, but not
     // displayed to the user immediately
-    std::string autoloadCSV =
-        App::GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
-            ->GetASCII("BackgroundAutoloadModules", "");
+    std::string autoloadCSV = App::GetApplication()
+                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/General")
+                                  ->GetASCII("BackgroundAutoloadModules", "");
 
     // Tokenize the comma-separated list and load the requested workbenches if they exist in this
     // installation
@@ -547,17 +578,22 @@ void StartupPostProcess::autoloadModules(const QStringList& wb)
 void StartupPostProcess::checkParameters()
 {
     if (App::GetApplication().GetSystemParameter().IgnoreSave()) {
-        Base::Console().warning("System parameter file couldn't be opened.\n"
-                                "Continue with an empty configuration that won't be saved.\n");
+        Base::Console().warning(
+            "System parameter file couldn't be opened.\n"
+            "Continue with an empty configuration that won't be saved.\n"
+        );
     }
     if (App::GetApplication().GetUserParameter().IgnoreSave()) {
-        Base::Console().warning("User parameter file couldn't be opened.\n"
-                                "Continue with an empty configuration that won't be saved.\n");
+        Base::Console().warning(
+            "User parameter file couldn't be opened.\n"
+            "Continue with an empty configuration that won't be saved.\n"
+        );
     }
 }
 
-void StartupPostProcess::checkVersionMigration() const {
-    auto migrator = new Dialog::DlgVersionMigrator (mainWindow);
+void StartupPostProcess::checkVersionMigration() const
+{
+    auto migrator = new Dialog::DlgVersionMigrator(mainWindow);
     migrator->exec();
     migrator->deleteLater();
 }

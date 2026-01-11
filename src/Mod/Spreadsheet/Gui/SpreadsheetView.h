@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) Eivind Kvedalen (eivind@kvedalen.name) 2015             *
  *                                                                         *
@@ -98,9 +100,11 @@ public:
 
     void select(App::CellAddress cell, QItemSelectionModel::SelectionFlags flags);
 
-    void select(App::CellAddress topLeft,
-                App::CellAddress bottomRight,
-                QItemSelectionModel::SelectionFlags flags);
+    void select(
+        App::CellAddress topLeft,
+        App::CellAddress bottomRight,
+        QItemSelectionModel::SelectionFlags flags
+    );
 
     QModelIndex currentIndex() const;
 
@@ -135,9 +139,9 @@ protected:
     Spreadsheet::Sheet* sheet;
     SpreadsheetDelegate* delegate;
     SheetModel* model;
-    boost::signals2::scoped_connection columnWidthChangedConnection;
-    boost::signals2::scoped_connection rowHeightChangedConnection;
-    boost::signals2::scoped_connection positionChangedConnection;
+    fastsignals::scoped_connection columnWidthChangedConnection;
+    fastsignals::scoped_connection rowHeightChangedConnection;
+    fastsignals::scoped_connection positionChangedConnection;
 
     std::map<int, int> newColumnSizes;
     std::map<int, int> newRowSizes;

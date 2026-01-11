@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2025 Samuel Abels <knipknap@gmail.com>                  *
 # *                                                                         *
@@ -25,6 +27,14 @@ from .base import ToolBitShape
 
 
 class ToolBitShapeBullnose(ToolBitShape):
+    @classmethod
+    def filter_parameters(cls, params: dict) -> dict:
+        # Remove FlatRadius if present
+        params = dict(params)  # shallow copy
+        if "FlatRadius" in params:
+            del params["FlatRadius"]
+        return params
+
     name = "Bullnose"
     aliases = "bullnose", "torus"
 

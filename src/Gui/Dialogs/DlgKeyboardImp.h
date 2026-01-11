@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2005 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -24,7 +26,7 @@
 #ifndef GUI_DIALOG_DLGKEYBOARD_IMP_H
 #define GUI_DIALOG_DLGKEYBOARD_IMP_H
 
-#include <boost/signals2.hpp>
+#include <fastsignals/connection.h>
 #include <memory>
 #include <QPointer>
 #include <QAction>
@@ -36,11 +38,13 @@ class QComboBox;
 class QLineEdit;
 class QAbstractButton;
 
-namespace Gui {
+namespace Gui
+{
 
 class AccelLineEdit;
 
-namespace Dialog {
+namespace Dialog
+{
 class Ui_DlgCustomKeyboard;
 
 /** Shows an overview of all available commands of all groups and modules.
@@ -50,12 +54,12 @@ class Ui_DlgCustomKeyboard;
  * customize your own toolbars or commandbars.
  * \author Werner Mayer
  */
-class DlgCustomKeyboardImp : public CustomizeActionPage
+class DlgCustomKeyboardImp: public CustomizeActionPage
 {
     Q_OBJECT
 
 public:
-    explicit DlgCustomKeyboardImp( QWidget* parent = nullptr );
+    explicit DlgCustomKeyboardImp(QWidget* parent = nullptr);
     ~DlgCustomKeyboardImp() override;
 
     /** Public helper function for handling command widgets
@@ -73,32 +77,37 @@ public:
      * @return Return a boost signal connection for monitoring command changes.
      * Most disconnect the signal before widgets gets destroyed.
      */
-    static boost::signals2::connection
-        initCommandWidgets(QTreeWidget *commandTreeWidget,
-                           QTreeWidgetItem *separatorItem,
-                           QComboBox *comboGroups,
-                           QLineEdit *editCommand,
-                           QTreeWidget *priorityList = nullptr,
-                           QAbstractButton *buttonUp = nullptr,
-                           QAbstractButton *buttonDown = nullptr,
-                           Gui::AccelLineEdit *editShortcut = nullptr,
-                           Gui::AccelLineEdit *currentShortcut = nullptr);
+    static fastsignals::connection initCommandWidgets(
+        QTreeWidget* commandTreeWidget,
+        QTreeWidgetItem* separatorItem,
+        QComboBox* comboGroups,
+        QLineEdit* editCommand,
+        QTreeWidget* priorityList = nullptr,
+        QAbstractButton* buttonUp = nullptr,
+        QAbstractButton* buttonDown = nullptr,
+        Gui::AccelLineEdit* editShortcut = nullptr,
+        Gui::AccelLineEdit* currentShortcut = nullptr
+    );
 
 protected:
     /** @name Internal helper function for handling command list widgets
      */
     //@{
-    static void initCommandCompleter(QLineEdit *,
-                                     QComboBox *combo,
-                                     QTreeWidget *treeWidget,
-                                     QTreeWidgetItem *separatorItem);
-    static boost::signals2::connection initCommandList(QTreeWidget *, QTreeWidgetItem *, QComboBox *combo);
-    static void initPriorityList(QTreeWidget *, QAbstractButton *buttonUp, QAbstractButton *buttonDown);
-    static void populateCommandGroups(QComboBox *);
-    static void populateCommandList(QTreeWidget *, QTreeWidgetItem *, QComboBox *);
-    static void populatePriorityList(QTreeWidget *priorityList,
-                                     AccelLineEdit *editor,
-                                     AccelLineEdit *current);
+    static void initCommandCompleter(
+        QLineEdit*,
+        QComboBox* combo,
+        QTreeWidget* treeWidget,
+        QTreeWidgetItem* separatorItem
+    );
+    static fastsignals::connection initCommandList(QTreeWidget*, QTreeWidgetItem*, QComboBox* combo);
+    static void initPriorityList(QTreeWidget*, QAbstractButton* buttonUp, QAbstractButton* buttonDown);
+    static void populateCommandGroups(QComboBox*);
+    static void populateCommandList(QTreeWidget*, QTreeWidgetItem*, QComboBox*);
+    static void populatePriorityList(
+        QTreeWidget* priorityList,
+        AccelLineEdit* editor,
+        AccelLineEdit* current
+    );
     //@}
 protected:
     void setupConnections();
@@ -117,16 +126,16 @@ protected Q_SLOTS:
 
 protected:
     void showEvent(QShowEvent* e) override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     void setShortcutOfCurrentAction(const QString&);
 
 private:
     std::unique_ptr<Ui_DlgCustomKeyboard> ui;
     bool firstShow;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 };
 
-} // namespace Dialog
-} // namespace Gui
+}  // namespace Dialog
+}  // namespace Gui
 
-#endif // GUI_DIALOG_DLGKEYBOARD_IMP_H
+#endif  // GUI_DIALOG_DLGKEYBOARD_IMP_H

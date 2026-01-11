@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -44,8 +46,9 @@ PROPERTY_SOURCE(RobotGui::ViewProviderTrajectoryCompound, RobotGui::ViewProvider
 
 bool ViewProviderTrajectoryCompound::setEdit(int)
 {
-    Gui::TaskView::TaskDialog* dlg =
-        new TaskDlgTrajectoryCompound(getObject<Robot::TrajectoryCompound>());
+    Gui::TaskView::TaskDialog* dlg = new TaskDlgTrajectoryCompound(
+        getObject<Robot::TrajectoryCompound>()
+    );
     Gui::Control().showDialog(dlg);
     return true;
 }

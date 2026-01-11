@@ -29,10 +29,11 @@
 #include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
 #if OCC_VERSION_HEX >= 0x070800
-#include <functional>
+# include <functional>
 #endif
 
-namespace Part {
+namespace Part
+{
 
 class ShapeMapHasher
 {
@@ -42,11 +43,11 @@ public:
 #if OCC_VERSION_HEX < 0x070800
         return theShape.HashCode(std::numeric_limits<int>::max());
 #else
-        return std::hash<TopoDS_Shape>{}(theShape);
+        return std::hash<TopoDS_Shape> {}(theShape);
 #endif
     }
 };
 
-}
+}  // namespace Part
 
 #endif  // PART_SHAPEMAPHASHER_H

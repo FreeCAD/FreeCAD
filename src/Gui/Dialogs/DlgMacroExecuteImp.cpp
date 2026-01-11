@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -108,9 +110,10 @@ DlgMacroExecuteImp::DlgMacroExecuteImp(QWidget* parent, Qt::WindowFlags fl)
     // retrieve the macro path from parameter or use the user data as default
     {
         QSignalBlocker blocker(ui->fileChooser);
-        std::string path =
-            getWindowParameter()->GetASCII("MacroPath",
-                                           App::Application::getUserMacroDir().c_str());
+        std::string path = getWindowParameter()->GetASCII(
+            "MacroPath",
+            App::Application::getUserMacroDir().c_str()
+        );
         this->macroPath = QString::fromUtf8(path.c_str());
         ui->fileChooser->setFileName(this->macroPath);
     }
@@ -125,7 +128,8 @@ DlgMacroExecuteImp::DlgMacroExecuteImp(QWidget* parent, Qt::WindowFlags fl)
     fillUpList();
     ui->LineEditFind->setFocus();
     ui->addonsButton->setEnabled(
-        Application::Instance->commandManager().getCommandByName("Std_AddonMgr") != nullptr);
+        Application::Instance->commandManager().getCommandByName("Std_AddonMgr") != nullptr
+    );
 }
 
 /**
@@ -266,8 +270,8 @@ void DlgMacroExecuteImp::fillUpList()
 {
     fillUpListForDir(this->macroPath, false);
 
-    QString dirstr =
-        QString::fromStdString(App::Application::getHomePath()) + QStringLiteral("Macro");
+    QString dirstr = QString::fromStdString(App::Application::getHomePath())
+        + QStringLiteral("Macro");
     fillUpListForDir(dirstr, true);
 
     auto& config = App::Application::Config();
@@ -464,13 +468,15 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
         .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
         ->SetBool("ReplaceSpaces", replaceSpaces);  // create parameter
 
-    QString fn = QInputDialog::getText(this,
-                                       tr("Macro file"),
-                                       tr("Enter a file name:"),
-                                       QLineEdit::Normal,
-                                       QString(),
-                                       nullptr,
-                                       Qt::MSWindowsFixedSizeDialogHint);
+    QString fn = QInputDialog::getText(
+        this,
+        tr("Macro file"),
+        tr("Enter a file name:"),
+        QLineEdit::Normal,
+        QString(),
+        nullptr,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
 
     if (replaceSpaces) {
         fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
@@ -488,9 +494,11 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
         }
         QFileInfo fi(dir, fn);
         if (fi.exists() && fi.isFile()) {
-            QMessageBox::warning(this,
-                                 tr("Existing file"),
-                                 tr("'%1'.\nThis file already exists.").arg(fi.fileName()));
+            QMessageBox::warning(
+                this,
+                tr("Existing file"),
+                tr("'%1'.\nThis file already exists.").arg(fi.fileName())
+            );
         }
         else {
             QFile file(fi.absoluteFilePath());
@@ -498,7 +506,8 @@ void DlgMacroExecuteImp::onCreateButtonClicked()
                 QMessageBox::warning(
                     this,
                     tr("Cannot create file"),
-                    tr("Creation of file '%1' failed.").arg(fi.absoluteFilePath()));
+                    tr("Creation of file '%1' failed.").arg(fi.absoluteFilePath())
+                );
                 return;
             }
             file.close();
@@ -527,18 +536,22 @@ void DlgMacroExecuteImp::onDeleteButtonClicked()
     }
 
     if (item->systemWide) {
-        QMessageBox::critical(Gui::getMainWindow(),
-                              QObject::tr("Delete macro"),
-                              QObject::tr("Not allowed to delete system-wide macros"));
+        QMessageBox::critical(
+            Gui::getMainWindow(),
+            QObject::tr("Delete macro"),
+            QObject::tr("Not allowed to delete system-wide macros")
+        );
         return;
     }
 
     QString fn = item->text(0);
-    auto ret = QMessageBox::question(this,
-                                     tr("Delete macro"),
-                                     tr("Delete the macro '%1'?").arg(fn),
-                                     QMessageBox::Yes | QMessageBox::No,
-                                     QMessageBox::No);
+    auto ret = QMessageBox::question(
+        this,
+        tr("Delete macro"),
+        tr("Delete the macro '%1'?").arg(fn),
+        QMessageBox::Yes | QMessageBox::No,
+        QMessageBox::No
+    );
     if (ret == QMessageBox::Yes) {
         QDir dir(this->macroPath);
         dir.remove(fn);
@@ -568,8 +581,8 @@ void DlgMacroExecuteImp::onToolbarButtonClicked()
                          ->GetBool("ShowWalkthroughMessage", true);
     if (showAgain) {
         QMessageBox msgBox(this);
-        QAbstractButton* doNotShowAgainButton =
-            msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
+        QAbstractButton* doNotShowAgainButton
+            = msgBox.addButton(tr("Do not show again"), QMessageBox::YesRole);
         msgBox.setText(tr("Guided Walkthrough"));
         msgBox.setObjectName(QStringLiteral("macroGuideWalkthrough"));
         msgBox.setInformativeText(tr("This will guide you in setting up this macro in a custom \
@@ -595,8 +608,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
     }
 
     QString fn = item->text(0);
-    QString bareFileName =
-        QFileInfo(fn).baseName();  // for use as default menu text (filename without extension)
+    QString bareFileName = QFileInfo(fn).baseName();  // for use as default menu text (filename
+                                                      // without extension)
 
     /** check if user already has custom toolbar, so we can tailor instructions accordingly **/
     bool hasCustomToolbar = true;
@@ -635,8 +648,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
             return;
         }
 
-        auto setupCustomMacrosPage =
-            tabWidget->findChild<QWidget*>(QStringLiteral("Gui__Dialog__DlgCustomActions"));
+        auto setupCustomMacrosPage = tabWidget->findChild<QWidget*>(
+            QStringLiteral("Gui__Dialog__DlgCustomActions")
+        );
         if (!setupCustomMacrosPage) {
             std::cerr << "Toolbar walkthrough error: Unable to find setupCustomMacrosPage"
                       << std::endl;
@@ -644,21 +658,23 @@ Note: your changes will be applied when you next switch workbenches\n"));
         }
         tabWidget->setCurrentWidget(setupCustomMacrosPage);
 
-        auto groupBox7 =
-            setupCustomMacrosPage->findChild<QGroupBox*>(QStringLiteral("GroupBox7"));
+        auto groupBox7 = setupCustomMacrosPage->findChild<QGroupBox*>(QStringLiteral("GroupBox7"));
         if (!groupBox7) {
             Base::Console().warning("Toolbar walkthrough: Unable to find groupBox7\n");
             // just warn when not a fatal error
         }
         else {
             /** normally the groupbox title is "Setup Custom Macros", but we change it here **/
-            groupBox7->setTitle(tr("Walkthrough instructions: Fill in missing fields (optional) "
-                                   "then click Add, then Close"));
+            groupBox7->setTitle(
+                tr("Walkthrough instructions: Fill in missing fields (optional) "
+                   "then click Add, then Close")
+            );
             groupBox7->setStyleSheet(QStringLiteral("QGroupBox::title {color:red}"));
         }
 
-        auto buttonAddAction =
-            setupCustomMacrosPage->findChild<QPushButton*>(QStringLiteral("buttonAddAction"));
+        auto buttonAddAction = setupCustomMacrosPage->findChild<QPushButton*>(
+            QStringLiteral("buttonAddAction")
+        );
         if (!buttonAddAction) {
             Base::Console().warning("Toolbar walkthrough: Unable to find buttonAddAction\n");
         }
@@ -666,19 +682,18 @@ Note: your changes will be applied when you next switch workbenches\n"));
             buttonAddAction->setStyleSheet(QStringLiteral("color:red"));
         }
 
-        auto macroListBox =
-            setupCustomMacrosPage->findChild<QComboBox*>(QStringLiteral("actionMacros"));
+        auto macroListBox = setupCustomMacrosPage->findChild<QComboBox*>(
+            QStringLiteral("actionMacros")
+        );
         if (!macroListBox) {
             Base::Console().warning("Toolbar walkthrough: Unable to find actionMacros combo box\n");
         }
         else {
             int macroIndex = macroListBox->findText(fn);  // fn is the macro filename
-            macroListBox->setCurrentIndex(
-                macroIndex);  // select it for the user so they don't have to
+            macroListBox->setCurrentIndex(macroIndex);  // select it for the user so they don't have to
         }
 
-        auto menuText =
-            setupCustomMacrosPage->findChild<QLineEdit*>(QStringLiteral("actionMenu"));
+        auto menuText = setupCustomMacrosPage->findChild<QLineEdit*>(QStringLiteral("actionMenu"));
         if (!menuText) {
             Base::Console().warning("Toolbar walkthrough: Unable to find actionMenu menuText\n");
         }
@@ -692,8 +707,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
     /** now for the toolbar selection dialog **/
 
     Gui::Dialog::DlgCustomizeImp dlg(this);
-    dlg.setWindowTitle(hasMacroCommand ? tr("Walkthrough, Dialog 1 of 1")
-                                       : tr("Walkthrough, Dialog 2 of 2"));
+    dlg.setWindowTitle(
+        hasMacroCommand ? tr("Walkthrough, Dialog 1 of 1") : tr("Walkthrough, Dialog 2 of 2")
+    );
 
     tabWidget = nullptr;
     tabWidget = dlg.findChild<QTabWidget*>(QStringLiteral("Gui__Dialog__TabWidget"));
@@ -704,7 +720,8 @@ Note: your changes will be applied when you next switch workbenches\n"));
     }
 
     auto setupToolbarPage = tabWidget->findChild<DlgCustomToolbars*>(
-        QStringLiteral("Gui__Dialog__DlgCustomToolbars"));
+        QStringLiteral("Gui__Dialog__DlgCustomToolbars")
+    );
     if (!setupToolbarPage) {
         std::cerr
             << "Toolbar walkthrough: Unable to find setupToolbarPage Gui__Dialog__DlgCustomToolbars"
@@ -713,8 +730,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
     }
 
     tabWidget->setCurrentWidget(setupToolbarPage);
-    auto moveActionRightButton =
-        setupToolbarPage->findChild<QPushButton*>(QStringLiteral("moveActionRightButton"));
+    auto moveActionRightButton = setupToolbarPage->findChild<QPushButton*>(
+        QStringLiteral("moveActionRightButton")
+    );
     if (!moveActionRightButton) {
         Base::Console().warning("Toolbar walkthrough: Unable to find moveActionRightButton\n");
     }
@@ -725,10 +743,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
      * if not, they need to click New button to create one first
      **/
 
-    QString instructions2 =
-        tr("Walkthrough instructions: Select macro from list, then click right arrow button (->), then Close.");
-    auto workbenchBox =
-        setupToolbarPage->findChild<QComboBox*>(QStringLiteral("workbenchBox"));
+    QString instructions2
+        = tr("Walkthrough instructions: Select macro from list, then click right arrow button (->), then Close.");
+    auto workbenchBox = setupToolbarPage->findChild<QComboBox*>(QStringLiteral("workbenchBox"));
     if (!workbenchBox) {
         Base::Console().warning("Toolbar walkthrough: Unable to find workbenchBox\n");
     }
@@ -745,15 +762,16 @@ Note: your changes will be applied when you next switch workbenches\n"));
         }
 
         if (!hasCustomToolbar) {
-            auto newButton =
-                setupToolbarPage->findChild<QPushButton*>(QStringLiteral("newButton"));
+            auto newButton = setupToolbarPage->findChild<QPushButton*>(QStringLiteral("newButton"));
             if (!newButton) {
                 Base::Console().warning("Toolbar walkthrough: Unable to find newButton\n");
             }
             else {
                 newButton->setStyleSheet(QStringLiteral("color:red"));
-                instructions2 = tr("Walkthrough instructions: Click New, select macro, then right arrow (->) "
-                                   "button, then Close.");
+                instructions2 = tr(
+                    "Walkthrough instructions: Click New, select macro, then right arrow (->) "
+                    "button, then Close."
+                );
             }
         }
     }
@@ -785,8 +803,9 @@ Note: your changes will be applied when you next switch workbenches\n"));
     }
 
     /** expand custom toolbar items **/
-    auto toolbarTreeWidget =
-        setupToolbarPage->findChild<QTreeWidget*>(QStringLiteral("toolbarTreeWidget"));
+    auto toolbarTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(
+        QStringLiteral("toolbarTreeWidget")
+    );
     if (!toolbarTreeWidget) {
         Base::Console().warning("Toolbar walkthrough: Unable to find toolbarTreeWidget\n");
     }
@@ -798,22 +817,25 @@ Note: your changes will be applied when you next switch workbenches\n"));
      tree widget to populate all the actions
      **/
     QTimer::singleShot(500, [=]() {
-        auto commandTreeWidget =
-            setupToolbarPage->findChild<QTreeWidget*>(QStringLiteral("commandTreeWidget"));
+        auto commandTreeWidget = setupToolbarPage->findChild<QTreeWidget*>(
+            QStringLiteral("commandTreeWidget")
+        );
         if (!commandTreeWidget) {
             Base::Console().warning("Toolbar walkthrough: Unable to find commandTreeWidget\n");
         }
         else {
             if (!hasMacroCommand) {  // will be the last in the list, the one just created
                 commandTreeWidget->setCurrentItem(
-                    commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1));
+                    commandTreeWidget->topLevelItem(commandTreeWidget->topLevelItemCount() - 1)
+                );
                 commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
             }
             else {  // preselect it for the user (will be the macro menu text)
-                QList<QTreeWidgetItem*> items =
-                    commandTreeWidget->findItems(macroMenuText,
-                                                 Qt::MatchFixedString | Qt::MatchWrap,
-                                                 1);
+                QList<QTreeWidgetItem*> items = commandTreeWidget->findItems(
+                    macroMenuText,
+                    Qt::MatchFixedString | Qt::MatchWrap,
+                    1
+                );
                 if (!items.empty()) {
                     commandTreeWidget->setCurrentItem(items[0]);
                     commandTreeWidget->scrollToItem(commandTreeWidget->currentItem());
@@ -860,13 +882,15 @@ void DlgMacroExecuteImp::onRenameButtonClicked()
     QFile oldfile(oldfi.absoluteFilePath());
 
     // query new name
-    QString fn = QInputDialog::getText(this,
-                                       tr("Renaming Macro File"),
-                                       tr("Enter new name"),
-                                       QLineEdit::Normal,
-                                       oldName,
-                                       nullptr,
-                                       Qt::MSWindowsFixedSizeDialogHint);
+    QString fn = QInputDialog::getText(
+        this,
+        tr("Renaming Macro File"),
+        tr("Enter new name"),
+        QLineEdit::Normal,
+        oldName,
+        nullptr,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
 
     if (replaceSpaces) {
         fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
@@ -880,15 +904,19 @@ void DlgMacroExecuteImp::onRenameButtonClicked()
         QFileInfo fi(dir, fn);
         // check if new name exists
         if (fi.exists()) {
-            QMessageBox::warning(this,
-                                 tr("Existing file"),
-                                 tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(
+                this,
+                tr("Existing file"),
+                tr("'%1'\n already exists.").arg(fi.absoluteFilePath())
+            );
         }
         else if (!oldfile.rename(fi.absoluteFilePath())) {
-            QMessageBox::warning(this,
-                                 tr("Rename Failed"),
-                                 tr("Failed to rename to '%1'.\nPerhaps a file permission error?")
-                                     .arg(fi.absoluteFilePath()));
+            QMessageBox::warning(
+                this,
+                tr("Rename Failed"),
+                tr("Failed to rename to '%1'.\nPerhaps a file permission error?")
+                    .arg(fi.absoluteFilePath())
+            );
         }
         else {
             // keep the item selected although it's not necessarily in alphabetic order
@@ -972,8 +1000,7 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
             }
             baseName = baseName.left(baseName.size() - 3);  // strip digits
             if (baseName.endsWith(neutralSymbol)) {
-                baseName =
-                    baseName.left(baseName.size() - 1);  // trim the "@", will be added back later
+                baseName = baseName.left(baseName.size() - 1);  // trim the "@", will be added back later
             }
         }
     }
@@ -994,8 +1021,8 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     }
 
 
-    QString oldNameDigitized =
-        baseName + neutralSymbol + last3 + QStringLiteral(".") + completeSuffix;
+    QString oldNameDigitized = baseName + neutralSymbol + last3 + QStringLiteral(".")
+        + completeSuffix;
     QFileInfo fi(dir, oldNameDigitized);
 
 
@@ -1011,8 +1038,7 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
         while (last3.size() < 3) {
             last3.prepend(QStringLiteral("0"));  // pad 0's if needed
         }
-        oldNameDigitized =
-            baseName + neutralSymbol + last3 + QStringLiteral(".") + completeSuffix;
+        oldNameDigitized = baseName + neutralSymbol + last3 + QStringLiteral(".") + completeSuffix;
         fi = QFileInfo(dir, oldNameDigitized);
     }
 
@@ -1021,13 +1047,15 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
     }
 
     // give user a chance to pick a different name from digitized name suggested
-    QString fn = QInputDialog::getText(this,
-                                       tr("Duplicate Macro"),
-                                       tr("Enter new name"),
-                                       QLineEdit::Normal,
-                                       oldNameDigitized,
-                                       nullptr,
-                                       Qt::MSWindowsFixedSizeDialogHint);
+    QString fn = QInputDialog::getText(
+        this,
+        tr("Duplicate Macro"),
+        tr("Enter new name"),
+        QLineEdit::Normal,
+        oldNameDigitized,
+        nullptr,
+        Qt::MSWindowsFixedSizeDialogHint
+    );
     if (replaceSpaces) {
         fn = fn.replace(QStringLiteral(" "), QStringLiteral("_"));
     }
@@ -1039,16 +1067,19 @@ void DlgMacroExecuteImp::onDuplicateButtonClicked()
         QFileInfo fi(dir, fn);
         // check again if new name exists in case user changed it
         if (fi.exists()) {
-            QMessageBox::warning(this,
-                                 tr("Existing file"),
-                                 tr("'%1'\n already exists.").arg(fi.absoluteFilePath()));
+            QMessageBox::warning(
+                this,
+                tr("Existing file"),
+                tr("'%1'\n already exists.").arg(fi.absoluteFilePath())
+            );
         }
         else if (!oldfile.copy(fi.absoluteFilePath())) {
             QMessageBox::warning(
                 this,
                 tr("Duplicate Failed"),
                 tr("Failed to duplicate to '%1'.\nPerhaps a file permission error?")
-                    .arg(fi.absoluteFilePath()));
+                    .arg(fi.absoluteFilePath())
+            );
         }
 
         this->fillUpList();  // repopulate list to show new file

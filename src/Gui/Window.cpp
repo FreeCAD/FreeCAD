@@ -21,8 +21,6 @@
  ***************************************************************************/
 
 
-
-
 #include <boost/algorithm/string.hpp>
 #include <qglobal.h>
 
@@ -42,15 +40,16 @@ using namespace Gui;
 //**************************************************************************
 // Construction/Destruction
 
-WindowParameter::WindowParameter(const char *name)
+WindowParameter::WindowParameter(const char* name)
 {
     // not allowed to use a Window without a name, see the constructor
     // of a DockWindow or a other QT Widget
     assert(name);
 
     // if string is empty do not create group
-    if ( strcmp(name, "") != 0 )
-      _handle = getDefaultParameter()->GetGroup( name );
+    if (strcmp(name, "") != 0) {
+        _handle = getDefaultParameter()->GetGroup(name);
+    }
 }
 
 WindowParameter::~WindowParameter()
@@ -85,13 +84,13 @@ bool WindowParameter::setGroupName(const char* name)
     return true;
 }
 
-void WindowParameter::OnChange(Base::Subject<const char*> &rCaller, const char * sReason)
+void WindowParameter::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
 {
     Q_UNUSED(rCaller);
     Q_UNUSED(sReason);
 }
 
-ParameterGrp::handle  WindowParameter::getWindowParameter()
+ParameterGrp::handle WindowParameter::getWindowParameter()
 {
     return _handle;
 }
@@ -100,7 +99,7 @@ ParameterGrp::handle  WindowParameter::getWindowParameter()
  * Returns a handle to the parameter group to the user parameter
  * under BaseApp/Preferences.
  */
-ParameterGrp::handle  WindowParameter::getDefaultParameter()
+ParameterGrp::handle WindowParameter::getDefaultParameter()
 {
     return App::GetApplication().GetUserParameter().GetGroup("BaseApp")->GetGroup("Preferences");
 }

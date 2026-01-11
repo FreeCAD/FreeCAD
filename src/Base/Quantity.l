@@ -173,6 +173,7 @@ CGRP     '\,'[0-9][0-9][0-9]
 "C"             yylval = Quantity::Coulomb;             return UNIT; // Coulomb (A*s)
 
 "T"             yylval = Quantity::Tesla;               return UNIT; // Tesla (kg/s^2/A)
+"mT"            yylval = Quantity::MilliTesla;          return UNIT; // milli Tesla
 "G"             yylval = Quantity::Gauss;               return UNIT; // Gauss (1 G = 1e-4 T)
 
 "Wb"            yylval = Quantity::Weber;               return UNIT; // Weber (kg*m^2/s^2/A)

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 #
 # Build and install QuickLook for FCStd files (org.freecad.fcstd)

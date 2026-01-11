@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2021 Russell Johnson (russ4262) <russ4262@gmail.com>    *
 # *                                                                         *
@@ -113,7 +115,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -147,7 +148,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -175,7 +175,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = True
@@ -216,7 +215,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -259,7 +257,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -302,7 +299,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -345,7 +341,6 @@ class TestPathAdaptive(PathTestBase):
         # setDepthsAndHeights(adaptive)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -406,7 +401,6 @@ class TestPathAdaptive(PathTestBase):
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -476,7 +470,6 @@ class TestPathAdaptive(PathTestBase):
         setDepthsAndHeights(adaptive, 15, 10)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -538,7 +531,6 @@ class TestPathAdaptive(PathTestBase):
         setDepthsAndHeights(adaptive, 15, 0)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False
@@ -620,7 +612,6 @@ class TestPathAdaptive(PathTestBase):
         setDepthsAndHeights(adaptive, 15, 5)
         adaptive.FinishingProfile = False
         adaptive.HelixAngle = 75.0
-        adaptive.HelixDiameterLimit.Value = 1.0
         adaptive.LiftDistance.Value = 1.0
         adaptive.StepOver = 75
         adaptive.UseOutline = False

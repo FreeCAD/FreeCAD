@@ -21,11 +21,11 @@
  ***************************************************************************/
 
 
-# include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
-# include <gp_Dir.hxx>
-# include <Precision.hxx>
-# include <TopExp_Explorer.hxx>
-# include <TopoDS_Face.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
+#include <gp_Dir.hxx>
+#include <Precision.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Face.hxx>
 
 
 #include <App/DocumentObject.h>
@@ -41,7 +41,8 @@ using namespace PartDesign;
 // because the files store the enum index. So it is not possible to migrate files if the
 // enum entry is removed (see #23612). In the distant future, when all files are reasonably
 // migrated we can drop this.
-const char* Pocket::TypeEnums[]= {"Length", "ThroughAll", "UpToFirst", "UpToFace", "?TwoLengths", "UpToShape", nullptr};
+const char* Pocket::TypeEnums[]
+    = {"Length", "ThroughAll", "UpToFirst", "UpToFace", "?TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pocket, PartDesign::FeatureExtrude)
 
@@ -57,16 +58,52 @@ Pocket::Pocket()
     Type2.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(Length, (5.0), "Side1", App::Prop_None, "Pocket length");
     ADD_PROPERTY_TYPE(Length2, (5.0), "Side2", App::Prop_None, "Pocket length in 2nd direction");
-    ADD_PROPERTY_TYPE(UseCustomVector, (false), "Pocket", App::Prop_None, "Use custom vector for pocket direction");
-    ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
+    ADD_PROPERTY_TYPE(
+        UseCustomVector,
+        (false),
+        "Pocket",
+        App::Prop_None,
+        "Use custom vector for pocket direction"
+    );
+    ADD_PROPERTY_TYPE(
+        Direction,
+        (Base::Vector3d(1.0, 1.0, 1.0)),
+        "Pocket",
+        App::Prop_None,
+        "Pocket direction vector"
+    );
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
-    ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
+    ADD_PROPERTY_TYPE(
+        AlongSketchNormal,
+        (true),
+        "Pocket",
+        App::Prop_None,
+        "Measure pocket length along the sketch normal direction"
+    );
     ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Side1", App::Prop_None, "Face where pocket will end");
-    ADD_PROPERTY_TYPE(UpToShape, (nullptr), "Side1", App::Prop_None, "Face(s) or shape(s) where pocket will end");
+    ADD_PROPERTY_TYPE(
+        UpToShape,
+        (nullptr),
+        "Side1",
+        App::Prop_None,
+        "Face(s) or shape(s) where pocket will end"
+    );
     ADD_PROPERTY_TYPE(UpToFace2, (nullptr), "Side2", App::Prop_None, "Face where pocket will end");
-    ADD_PROPERTY_TYPE(UpToShape2, (nullptr), "Side2", App::Prop_None, "Face(s) or shape(s) where pocket will end");
+    ADD_PROPERTY_TYPE(
+        UpToShape2,
+        (nullptr),
+        "Side2",
+        App::Prop_None,
+        "Face(s) or shape(s) where pocket will end"
+    );
     ADD_PROPERTY_TYPE(Offset, (0.0), "Side1", App::Prop_None, "Offset from face in which pocket will end");
-    ADD_PROPERTY_TYPE(Offset2, (0.0), "Side2", App::Prop_None, "Offset from face in which pocket will end on side 2");
+    ADD_PROPERTY_TYPE(
+        Offset2,
+        (0.0),
+        "Side2",
+        App::Prop_None,
+        "Offset from face in which pocket will end on side 2"
+    );
     Offset.setConstraints(&signedLengthConstraint);
     Offset2.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Side1", App::Prop_None, "Taper angle");
@@ -80,13 +117,14 @@ Pocket::Pocket()
     Length2.setConstraints(nullptr);
 }
 
-App::DocumentObjectExecReturn *Pocket::execute()
+App::DocumentObjectExecReturn* Pocket::execute()
 {
     // MakeFace|MakeFuse: because we want a solid.
     // InverseDirection: to inverse the auto detected extrusion direction for
     // backward compatibility to upstream
-    ExtrudeOptions options(ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse
-                           | ExtrudeOption::InverseDirection);
+    ExtrudeOptions options(
+        ExtrudeOption::MakeFace | ExtrudeOption::MakeFuse | ExtrudeOption::InverseDirection
+    );
     return buildExtrusion(options);
 }
 
@@ -96,4 +134,3 @@ Base::Vector3d Pocket::getProfileNormal() const
     // turn around for pockets
     return res * -1;
 }
-

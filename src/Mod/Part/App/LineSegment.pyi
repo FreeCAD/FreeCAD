@@ -1,9 +1,12 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from Base.Type import Type
 from TrimmedCurve import TrimmedCurve
 from Point import Point
-from typing import Final, overload
-
+from typing import overload
 
 @export(
     PythonName="Part.LineSegment",
@@ -35,13 +38,10 @@ class LineSegment(TrimmedCurve):
 
     @overload
     def __init__(self) -> None: ...
-
     @overload
     def __init__(self, line_segment: "LineSegment") -> None: ...
-
     @overload
     def __init__(self, point1: Point, point2: Point) -> None: ...
-
     def setParameterRange(self) -> None:
         """
         Set the parameter range of the underlying line geometry

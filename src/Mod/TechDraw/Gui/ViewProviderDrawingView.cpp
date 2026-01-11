@@ -22,10 +22,14 @@
  ***************************************************************************/
 
 #include <limits>
-#include <boost/signals2.hpp>
-#include <boost/signals2/connection.hpp>
+#include <fastsignals/signal.h>
+#include <fastsignals/connection.h>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Metadata.h>
+#include <Base/Color.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -61,6 +65,7 @@ ViewProviderDrawingView::ViewProviderDrawingView() :
     static const char *group = "Base";
 
     auto showLabel = Preferences::alwaysShowLabel();
+    // TODO: KeepLabel is not used. Make it ReadOnly or Hidden?
     ADD_PROPERTY_TYPE(KeepLabel ,(showLabel), group, App::Prop_None, "Keep Label on Page even if toggled off");
     ADD_PROPERTY_TYPE(StackOrder,(0),group,App::Prop_None,"Over or under lap relative to other views");
 
@@ -75,7 +80,6 @@ ViewProviderDrawingView::~ViewProviderDrawingView()
 
 void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
 {
-//    Base::Console().message("VPDV::attach(%s)\n", pcFeat->getNameInDocument());
     ViewProviderDocumentObject::attach(pcFeat);
 
     //NOLINTBEGIN
@@ -108,14 +112,9 @@ void ViewProviderDrawingView::onChanged(const App::Property *prop)
             return;
     }
 
-    if (prop == &Visibility) {
-        //handled by ViewProviderDocumentObject
-    } else if (prop == &KeepLabel) {
-        QGIView* qgiv = getQView();
-        if (qgiv) {
-            qgiv->updateView(true);
-        }
-    }
+    // if (prop == &Visibility) {
+    //     //handled by ViewProviderDocumentObject
+    // }
 
     if (prop == &StackOrder) {
         QGIView* qgiv = getQView();
@@ -209,11 +208,8 @@ void ViewProviderDrawingView::startRestoring()
 
 void ViewProviderDrawingView::finishRestoring()
 {
-    if (Visibility.getValue()) {
-        show();
-    } else {
-        hide();
-    }
+    fixColorAlphaValues();
+
     Gui::ViewProviderDocumentObject::finishRestoring();
 }
 
@@ -290,10 +286,10 @@ Gui::MDIView *ViewProviderDrawingView::getMDIView() const
 
 void ViewProviderDrawingView::onGuiRepaint(const TechDraw::DrawView* dv)
 {
-//    Base::Console().message("VPDV::onGuiRepaint(%s) - this: %x\n", dv->getNameInDocument(), this);
     Gui::Document* guiDoc = Gui::Application::Instance->getDocument(getViewObject()->getDocument());
-    if (!guiDoc)
+    if (!guiDoc) {
         return;
+    }
 
     std::vector<TechDraw::DrawPage*> pages = getViewObject()->findAllParentPages();
     if (pages.size() > 1) {
@@ -351,9 +347,7 @@ void ViewProviderDrawingView::onProgressMessage(const TechDraw::DrawView* dv,
                                               const std::string featureName,
                                               const std::string text)
 {
-//    Q_UNUSED(featureName)
     Q_UNUSED(dv)
-//    Q_UNUSED(text)
     showProgressMessage(featureName, text);
 }
 
@@ -481,7 +475,6 @@ TechDraw::DrawView* ViewProviderDrawingView::getViewObject() const
 //! handled by the undo mechanism, but the QGraphicsScene parentage is not reset.
 void ViewProviderDrawingView::fixSceneDependencies()
 {
-    Base::Console().message("VPDV::fixSceneDependencies()\n");
     auto page = getViewProviderPage();
     if (!page) {
         return;
@@ -525,4 +518,59 @@ std::vector<App::DocumentObject*> ViewProviderDrawingView::claimChildren() const
     }
     return temp;
 }
+
+
+//! convert old style transparency values in PropertyColor to new style alpha channel values
+void ViewProviderDrawingView::fixColorAlphaValues()
+{
+    if (!Preferences::fixColorAlphaOnLoad() ||
+        checkMiniumumDocumentVersion(1, 1)) {
+        return;
+    }
+
+    // check every PropertyColor for transparency vs alpha
+    std::vector<App::Property*> allProperties;
+    getPropertyList(allProperties);
+
+    constexpr double alphaNone{0.0};
+    constexpr double alphaFull{1.0};
+
+    for (auto& prop : allProperties) {
+        auto* colorProp = freecad_cast<App::PropertyColor*>(prop);
+        if (colorProp) {
+            // Here we are assuming that transparent colors are not used/need not be converted.
+            // To invert more generally, colorOut.a = 1 - colorIn.a;, but we would need a different
+            // mechanism to determine when to do the conversion.
+            Base::Color colorTemp = colorProp->getValue();
+            if (colorTemp.a == alphaNone) {
+                colorTemp.a = alphaFull;
+                colorProp->setValue(colorTemp);
+            }
+        }
+    }
+}
+
+
+//! true if document toBeChecked was written by a program with version >= minMajor.minMinor.
+//! note that we can not check point releases as only the major and minor are recorded in the Document.xml
+//! file.
+//! (ex <Document SchemaVersion="4" ProgramVersion="1.2R44322 +1 (Git)" FileVersion="1" StringHasher="1">)
+bool ViewProviderDrawingView::checkMiniumumDocumentVersion(App::Document* toBeChecked,
+                                                           int minMajor,
+                                                           int minMinor)
+{
+    const char* docVersionText = toBeChecked->getProgramVersion();
+    int docMajor{0};
+    int docMinor{0};
+    // stole this bit from App::AttachExtension.
+    // NOLINTNEXTLINE
+    if (sscanf(docVersionText, "%d.%d", &docMajor, &docMinor) != 2) {
+        Base::Console().warning("Failed to retrieve document version number for %s\n",
+                    toBeChecked ? toBeChecked->getName() : "noname");
+        return false;   // ?? should we fail here? the file appears broken.
+    }
+
+    return std::tie(docMajor, docMinor) >= std::tie(minMajor, minMinor);
+}
+
 

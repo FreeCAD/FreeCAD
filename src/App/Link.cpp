@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *   Copyright (c) 2017 Zheng Lei (realthunder) <realthunder.dev@gmail.com> *
  *                                                                          *
@@ -325,11 +327,8 @@ void LinkBaseExtension::setProperty(int idx, Property* prop)
         if (!prop) {
             propName = "<null>";
         }
-        else if (prop->getContainer()) {
-            propName = prop->getName();
-        }
         else {
-            propName = extensionGetPropertyName(prop);
+            propName = prop->getName();
         }
         if (!Property::isValidName(propName)) {
             propName = "?";
@@ -798,7 +797,7 @@ void LinkBaseExtension::setupCopyOnChange(DocumentObject* parent, bool checkSour
 bool LinkBaseExtension::setupCopyOnChange(
     DocumentObject* parent,
     DocumentObject* linked,
-    std::vector<boost::signals2::scoped_connection>* copyOnChangeConns,
+    std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
     bool checkExisting)
 {
     if (!parent || !linked) {
@@ -2635,6 +2634,76 @@ bool Link::canLinkProperties() const
     return true;
 }
 
+Base::Placement Link::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    if (isLinkGroup() && _getShowElementValue()) {
+        // In this case we have child document objects, the subname can be used.
+        // and in this case the Link itself acts as a normal DocumentObject
+        return DocumentObject::getPlacementOf(sub, targetObj);
+    }
+
+    Base::Placement plc;
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return plc;
+    }
+    plc = propPlacement->getValue();
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj || !getLinkedObject()) {
+        return plc;
+    }
+
+    Document* doc = getLinkedObject()->getDocument();
+
+    if (isLinkGroup()) {
+        // !ShowElement, so there are no objects.
+        // The subname looks like : '1.pad.face3' or '1.face3'
+        // So names.front() is supposed to be an integer. If not something is wrong.
+        int i = -1;
+        try {
+            i = std::stoi(names.front());
+        }
+        catch (...) {  // Conversion failed (not an integer)
+            return plc;
+        }
+
+        std::vector<Base::Placement> plcs = PlacementList.getValues();
+        if (plcs.size() <= static_cast<size_t>(i)) {
+            return plc;
+        }
+        plc = plc * plcs[i];
+
+        // now that we handled the non-existing LinkElement, we can remove this subname and continue.
+        if (names.size() < 2) {  // Subname was just "1", we are done.
+            return plc;
+        }
+
+        DocumentObject* subObj = doc->getObject(names[1].c_str());
+        if (!subObj) {
+            return plc;
+        }
+
+        std::vector<std::string> newNames(names.begin() + 2, names.end());
+        std::string newSub = Base::Tools::joinList(newNames, ".");
+
+        return plc * subObj->getPlacementOf(newSub, targetObj);
+    }
+
+    // case of a normal link
+    DocumentObject* subObj = doc->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
 bool Link::isLink() const
 {
     return ElementCount.getValue() == 0;
@@ -2699,6 +2768,35 @@ App::Link* LinkElement::getLinkGroup() const
         }
     }
     return nullptr;
+}
+
+Base::Placement LinkElement::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (!propPlacement) {
+        return plc;
+    }
+    plc = propPlacement->getValue();
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj || !getLinkedObject()) {
+        return plc;
+    }
+
+    Document* doc = getLinkedObject()->getDocument();
+
+    DocumentObject* subObj = doc->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

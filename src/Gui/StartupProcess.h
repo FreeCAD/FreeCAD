@@ -30,7 +30,8 @@
 class QApplication;
 class QMessageBox;
 
-namespace Gui {
+namespace Gui
+{
 
 class Application;
 class MainWindow;
@@ -67,6 +68,7 @@ private:
     void setLocale();
     void setCursorFlashing();
     void setQtStyle();
+    void migrateOldTheme(const std::string& style);
     void checkOpenGL();
     void loadOpenInventor();
     void setBranding();
@@ -86,6 +88,6 @@ private:
 };
 
 
-}
+}  // namespace Gui
 
-#endif // GUI_STARTUPPROCESS_H
+#endif  // GUI_STARTUPPROCESS_H

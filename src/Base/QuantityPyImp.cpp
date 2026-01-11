@@ -229,11 +229,8 @@ PyObject* QuantityPy::getValueAs(PyObject* args) const
         return Quantity::parse(str);
     };
 
-    const std::vector<std::function<std::optional<Quantity>()>> funcs = {tryQuantity,
-                                                                         tryUnit,
-                                                                         tryUnitAndValue,
-                                                                         tryUnitPartsAndValue,
-                                                                         tryString};
+    const std::vector<std::function<std::optional<Quantity>()>> funcs
+        = {tryQuantity, tryUnit, tryUnitAndValue, tryUnitPartsAndValue, tryString};
 
     auto tryFuncs = [&]() -> std::optional<Quantity> {
         for (const auto& func : funcs) {

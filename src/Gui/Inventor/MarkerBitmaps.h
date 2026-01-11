@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2016 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -29,9 +31,13 @@
 #include <FCGlobal.h>
 
 
-namespace Gui { namespace Inventor {
+namespace Gui
+{
+namespace Inventor
+{
 
-class GuiExport MarkerBitmaps {
+class GuiExport MarkerBitmaps
+{
 
 public:
     static void initClass();
@@ -46,9 +52,8 @@ private:
     static std::map<Marker, int> markerIndex;  // NOLINT
 };
 
-} // namespace Inventor
+}  // namespace Inventor
 
-} // namespace Gui
+}  // namespace Gui
 
-#endif // GUI_INVENTOR_MARKERBITMAPS_H
-
+#endif  // GUI_INVENTOR_MARKERBITMAPS_H

@@ -1,8 +1,11 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export
 from TrimmedCurve import TrimmedCurve
 from Geometry import Geom_Circle, Geom_Ellipse
 from typing import overload
-
 
 @export(
     Father="TrimmedCurvePy",
@@ -23,6 +26,5 @@ class Arc(TrimmedCurve):
 
     @overload
     def __init__(self, circ: Geom_Circle, T: type = ...) -> None: ...
-
     @overload
     def __init__(self, circ: Geom_Ellipse, T: type = ...) -> None: ...

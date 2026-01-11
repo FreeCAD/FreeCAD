@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Pierre-Louis Boyer <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -69,22 +71,10 @@ void SnapManager::ParameterObserver::initParameters()
     // key->first               => String of parameter,
     // key->second              => Update function to be called for the parameter,
     str2updatefunction = {
-        {"Snap",
-         [this](const std::string& param) {
-             updateSnapParameter(param);
-         }},
-        {"SnapToObjects",
-         [this](const std::string& param) {
-             updateSnapToObjectParameter(param);
-         }},
-        {"SnapToGrid",
-         [this](const std::string& param) {
-             updateSnapToGridParameter(param);
-         }},
-        {"SnapAngle",
-         [this](const std::string& param) {
-             updateSnapAngleParameter(param);
-         }},
+        {"Snap", [this](const std::string& param) { updateSnapParameter(param); }},
+        {"SnapToObjects", [this](const std::string& param) { updateSnapToObjectParameter(param); }},
+        {"SnapToGrid", [this](const std::string& param) { updateSnapToGridParameter(param); }},
+        {"SnapAngle", [this](const std::string& param) { updateSnapAngleParameter(param); }},
     };
 
     for (auto& val : str2updatefunction) {
@@ -120,8 +110,8 @@ void SnapManager::ParameterObserver::updateSnapAngleParameter(const std::string&
 {
     ParameterGrp::handle hGrp = getParameterGrpHandle();
 
-    client.snapAngle =
-        fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
+    client.snapAngle
+        = fmod(Base::toRadians(hGrp->GetFloat(parametername.c_str(), 5.)), 2 * std::numbers::pi);
 }
 
 void SnapManager::ParameterObserver::subscribeToParameters()
@@ -142,15 +132,14 @@ void SnapManager::ParameterObserver::unsubscribeToParameters()
         ParameterGrp::handle hGrp = getParameterGrpHandle();
         hGrp->Detach(this);
     }
-    catch (const Base::ValueError&
-               e) {  // ensure that if parameter strings are not well-formed, the program is not
-                     // terminated when calling the noexcept destructor.
+    catch (const Base::ValueError& e) {  // ensure that if parameter strings are not well-formed,
+                                         // the program is not terminated when calling the noexcept
+                                         // destructor.
         Base::Console().developerError("SnapManager", "Malformed parameter string: %s\n", e.what());
     }
 }
 
-void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller,
-                                              const char* sReason)
+void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCaller, const char* sReason)
 {
     (void)rCaller;
 
@@ -166,7 +155,8 @@ void SnapManager::ParameterObserver::OnChange(Base::Subject<const char*>& rCalle
 ParameterGrp::handle SnapManager::ParameterObserver::getParameterGrpHandle()
 {
     return App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Snap"
+    );
 }
 
 //**************************** SnapManager class ******************************
@@ -204,25 +194,34 @@ Base::Vector2d SnapManager::snap(Base::Vector2d inputPos, SnapType mask)
         lastMouseAngle = 0.0;
     }
 
-    // 2 - Snap to objects
+    // 2 - Snap to objects (may partially snap to axis, leaving other coordinate for grid)
+    bool snappedToObject = false;
     if ((static_cast<int>(mask)
          & (static_cast<int>(SnapType::Point) | static_cast<int>(SnapType::Edge)))
-        && snapToObjectsRequested && snapToObject(inputPos, snapPos, mask)) {
-        return snapPos;
+        && snapToObjectsRequested) {
+        snappedToObject = snapToObject(inputPos, snapPos, mask);
+        if (snappedToObject) {
+            return snapPos;  // Full snap (point or curve) - done
+        }
+        // if false was returned but snapPos was modified (axis case), continue to grid snap
     }
 
-    // 3 - Snap to grid
+    // 3 - Snap to grid (will work on coordinates not already locked by axis snap)
     if ((static_cast<int>(mask) & static_cast<int>(SnapType::Grid)) && snapToGridRequested
-        && snapToGrid(inputPos, snapPos)
-        /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is
-                                                     // enabled
-                                                     // even if the grid is not
-                                                     // visible.
+        /*&& viewProvider.ShowGrid.getValue() */) {  // Snap to grid is enabled
+                                                     // even if the grid is not visible.
 
+        // use snapPos as input (which may have one coordinate locked by axis)
+        Base::Vector2d gridSnapResult = snapPos;
+        if (snapToGrid(snapPos, gridSnapResult)) {
+            return gridSnapResult;
+        }
+        // if grid snap happened, return the result which combines axis + grid
+        // if axis locked a coordinate, snapPos already had it, and grid snap respected it
         return snapPos;
     }
 
-    return inputPos;
+    return snapPos;
 }
 
 bool SnapManager::snapAtAngle(Base::Vector2d inputPos, Base::Vector2d& snapPos)
@@ -265,11 +264,13 @@ bool SnapManager::snapToObject(Base::Vector2d inputPos, Base::Vector2d& snapPos,
     else if (static_cast<int>(mask) & static_cast<int>(SnapType::Edge)) {
         if (CrsId == 1) {  // H_Axis
             snapPos.y = 0;
-            return true;
+            // dont return true, allow grid snap to handle X coordinate
+            return false;
         }
         else if (CrsId == 2) {  // V_Axis
             snapPos.x = 0;
-            return true;
+            // dont return true, allow grid snap to handle Y coordinate
+            return false;
         }
         else if (CrvId >= 0 || CrvId <= Sketcher::GeoEnum::RefExt) {  // Curves
 
@@ -291,15 +292,13 @@ bool SnapManager::snapToObject(Base::Vector2d inputPos, Base::Vector2d& snapPos,
 
                 // If it is a line, then we check if we need to snap to the middle.
                 if (geo->is<Part::GeomLineSegment>()) {
-                    const Part::GeomLineSegment* line =
-                        static_cast<const Part::GeomLineSegment*>(geo);
+                    const Part::GeomLineSegment* line = static_cast<const Part::GeomLineSegment*>(geo);
                     snapToLineMiddle(pointToOverride, line);
                 }
 
                 // If it is an arc, then we check if we need to snap to the middle (not the center).
                 if (geo->is<Part::GeomArcOfCircle>()) {
-                    const Part::GeomArcOfCircle* arc =
-                        static_cast<const Part::GeomArcOfCircle*>(geo);
+                    const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                     snapToArcMiddle(pointToOverride, arc);
                 }
 
@@ -341,8 +340,7 @@ bool SnapManager::snapToGrid(Base::Vector2d inputPos, Base::Vector2d& snapPos)
     return snapped;
 }
 
-bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride,
-                                   const Part::GeomLineSegment* line)
+bool SnapManager::snapToLineMiddle(Base::Vector3d& pointToOverride, const Part::GeomLineSegment* line)
 {
     Base::Vector3d startPoint = line->getStartPoint();
     Base::Vector3d endPoint = line->getEndPoint();

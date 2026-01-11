@@ -22,7 +22,6 @@
  ***************************************************************************/
 
 
-
 #include <QAction>
 #include <QKeyEvent>
 #include <QListWidget>
@@ -185,7 +184,8 @@ void TaskDraftParameters::onButtonPlane(bool checked)
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(new ReferenceSelection(
             this->getBase(),
-            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR));
+            AllowSelection::EDGE | AllowSelection::FACE | AllowSelection::PLANAR
+        ));
     }
 }
 
@@ -197,7 +197,8 @@ void TaskDraftParameters::onButtonLine(bool checked)
         selectionMode = line;
         Gui::Selection().clearSelection();
         Gui::Selection().addSelectionGate(
-            new ReferenceSelection(this->getBase(), AllowSelection::EDGE | AllowSelection::PLANAR));
+            new ReferenceSelection(this->getBase(), AllowSelection::EDGE | AllowSelection::PLANAR)
+        );
     }
 }
 

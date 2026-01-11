@@ -20,16 +20,16 @@
  *                                                                         *
  ***************************************************************************/
 
-# include <limits>
+#include <limits>
 
-# include <QApplication>
-# include <QKeyEvent>
-# include <QLabel>
-# include <QPlainTextEdit>
-# include <QRegularExpression>
-# include <QRegularExpressionMatch>
-# include <QTextCursor>
-# include <QToolTip>
+#include <QApplication>
+#include <QKeyEvent>
+#include <QLabel>
+#include <QPlainTextEdit>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
+#include <QTextCursor>
+#include <QToolTip>
 
 #include <App/Property.h>
 #include <App/PropertyContainer.h>
@@ -47,7 +47,7 @@
 #include "CallTips.h"
 
 
-Q_DECLARE_METATYPE( Gui::CallTip ) //< allows use of QVariant
+Q_DECLARE_METATYPE(Gui::CallTip)  //< allows use of QVariant
 
 namespace Gui
 {
@@ -56,20 +56,25 @@ namespace Gui
  * template class Temporary.
  * Allows variable changes limited to a scope.
  */
-template <typename TYPE>
+template<typename TYPE>
 class Temporary
 {
 public:
-    Temporary( TYPE &var, const TYPE tmpVal )
-      : _var(var), _saveVal(var)
-    { var = tmpVal; }
+    Temporary(TYPE& var, const TYPE tmpVal)
+        : _var(var)
+        , _saveVal(var)
+    {
+        var = tmpVal;
+    }
 
-    ~Temporary( )
-    { _var = _saveVal; }
+    ~Temporary()
+    {
+        _var = _saveVal;
+    }
 
 private:
-    TYPE &_var;
-    TYPE  _saveVal;
+    TYPE& _var;
+    TYPE _saveVal;
 };
 
 } /* namespace Gui */
@@ -77,13 +82,25 @@ private:
 using namespace Gui;
 
 CallTipsList::CallTipsList(QPlainTextEdit* parent)
-  :  QListWidget(parent), textEdit(parent), cursorPos(0), validObject(true), doCallCompletion(false)
+    : QListWidget(parent)
+    , textEdit(parent)
+    , cursorPos(0)
+    , validObject(true)
+    , doCallCompletion(false)
 {
     // make the user assume that the widget is active
     QPalette pal = parent->palette();
-    pal.setColor(QPalette::Inactive, QPalette::Highlight, pal.color(QPalette::Active, QPalette::Highlight));
-    pal.setColor(QPalette::Inactive, QPalette::HighlightedText, pal.color(QPalette::Active, QPalette::HighlightedText));
-    parent->setPalette( pal );
+    pal.setColor(
+        QPalette::Inactive,
+        QPalette::Highlight,
+        pal.color(QPalette::Active, QPalette::Highlight)
+    );
+    pal.setColor(
+        QPalette::Inactive,
+        QPalette::HighlightedText,
+        pal.color(QPalette::Active, QPalette::HighlightedText)
+    );
+    parent->setPalette(pal);
 
     connect(this, &QListWidget::itemActivated, this, &CallTipsList::callTipItemActivated);
 
@@ -123,7 +140,7 @@ CallTipsList::~CallTipsList() = default;
 void CallTipsList::keyboardSearch(const QString& wordPrefix)
 {
     // first search for the item that matches perfectly
-    for (int i=0; i<count(); ++i) {
+    for (int i = 0; i < count(); ++i) {
         QString text = item(i)->text();
         if (text.startsWith(wordPrefix)) {
             setCurrentRow(i);
@@ -132,7 +149,7 @@ void CallTipsList::keyboardSearch(const QString& wordPrefix)
     }
 
     // now do a case insensitive comparison
-    for (int i=0; i<count(); ++i) {
+    for (int i = 0; i < count(); ++i) {
         QString text = item(i)->text();
         if (text.startsWith(wordPrefix, Qt::CaseInsensitive)) {
             setCurrentRow(i);
@@ -140,8 +157,9 @@ void CallTipsList::keyboardSearch(const QString& wordPrefix)
         }
     }
 
-    if (currentItem())
+    if (currentItem()) {
         currentItem()->setSelected(false);
+    }
 }
 
 void CallTipsList::validateCursor()
@@ -157,15 +175,16 @@ void CallTipsList::validateCursor()
         QString word = cursor.selectedText();
         if (!word.isEmpty()) {
             // the following text might be an operator, brackets, ...
-            const QChar underscore =  QLatin1Char('_');
+            const QChar underscore = QLatin1Char('_');
             const QChar ch = word.at(0);
-            if (!ch.isLetterOrNumber() && ch != underscore)
+            if (!ch.isLetterOrNumber() && ch != underscore) {
                 word.clear();
+            }
         }
-        if (currentPos > this->cursorPos+word.length()) {
+        if (currentPos > this->cursorPos + word.length()) {
             hide();
         }
-        else if (!word.isEmpty()){
+        else if (!word.isEmpty()) {
             // If the word is empty we should not allow one to do a search,
             // otherwise we may select the next item which is not okay in this
             // context. This might happen if e.g. Shift is pressed.
@@ -177,18 +196,20 @@ void CallTipsList::validateCursor()
 QString CallTipsList::extractContext(const QString& line) const
 {
     int len = line.size();
-    int index = len-1;
-    for (int i=0; i<len; i++) {
-        int pos = len-1-i;
+    int index = len - 1;
+    for (int i = 0; i < len; i++) {
+        int pos = len - 1 - i;
         const char ch = line.at(pos).toLatin1();
-        if ((ch >= 48 && ch <= 57)  ||    // Numbers
-            (ch >= 65 && ch <= 90)  ||    // Uppercase letters
-            (ch >= 97 && ch <= 122) ||    // Lowercase letters
-            (ch == '.') || (ch == '_') || // dot or underscore
-            (ch == ' ') || (ch == '\t'))  // whitespace (between dot and text)
+        if ((ch >= 48 && ch <= 57) ||       // Numbers
+            (ch >= 65 && ch <= 90) ||       // Uppercase letters
+            (ch >= 97 && ch <= 122) ||      // Lowercase letters
+            (ch == '.') || (ch == '_') ||   // dot or underscore
+            (ch == ' ') || (ch == '\t')) {  // whitespace (between dot and text)
             index = pos;
-        else
+        }
+        else {
             break;
+        }
     }
 
     return line.mid(index);
@@ -198,8 +219,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 {
     Base::PyGILStateLocker lock;
     QMap<QString, CallTip> tips;
-    if (context.isEmpty())
+    if (context.isEmpty()) {
         return tips;
+    }
 
     try {
         PyErr_Clear();
@@ -213,10 +235,16 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         QStringList items = context.split(QLatin1Char('.'));
         QString modname = items.front();
         items.pop_front();
-        if (!dict.hasKey(std::string(modname.toLatin1())))
-            return tips; // unknown object
-        // Don't use hasattr & getattr because if a property is bound to a method this will be executed twice.
-        PyObject* code = Py_CompileString(static_cast<const char*>(context.toLatin1()), "<CallTipsList>", Py_eval_input);
+        if (!dict.hasKey(std::string(modname.toLatin1()))) {
+            return tips;  // unknown object
+        }
+        // Don't use hasattr & getattr because if a property is bound to a method this will be
+        // executed twice.
+        PyObject* code = Py_CompileString(
+            static_cast<const char*>(context.toLatin1()),
+            "<CallTipsList>",
+            Py_eval_input
+        );
         if (!code) {
             PyErr_Clear();
             return tips;
@@ -239,9 +267,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
         // Note: 3rd party libraries may use their own type object classes so that we cannot
         // reliably use Py::Type. To be on the safe side we should use Py::Object to assign
         // the used type object to.
-        //Py::Object type = obj.type();
+        // Py::Object type = obj.type();
         Py::Object type(PyObject_Type(obj.ptr()), true);
-        Py::Object inst = obj; // the object instance
+        Py::Object inst = obj;  // the object instance
         PyObject* typeobj = Base::getTypeAsObject(&Base::PyObjectBase::Type);
         PyObject* typedoc = Base::getTypeAsObject(&App::DocumentObjectPy::Type);
         PyObject* basetype = Base::getTypeAsObject(&PyBaseObject_Type);
@@ -250,8 +278,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             // From the template Python object we don't query its type object because there we keep
             // a list of additional methods that we won't see otherwise. But to get the correct doc
             // strings we query the type's dict in the class itself.
-            // To see if we have a template Python object we check for the existence of '__fc_template__'
-            // See also: FeaturePythonPyT
+            // To see if we have a template Python object we check for the existence of
+            // '__fc_template__' See also: FeaturePythonPyT
             if (!obj.hasAttr("__fc_template__")) {
                 obj = type;
             }
@@ -270,7 +298,8 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
 
                 // this should be now a user-defined Python class
                 // http://stackoverflow.com/questions/12233103/in-python-at-runtime-determine-if-an-object-is-a-class-old-and-new-type-instan
-                if (!typestr.startsWith(QLatin1String("PySide")) && Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
+                if (!typestr.startsWith(QLatin1String("PySide"))
+                    && Py_TYPE(obj.ptr())->tp_flags & Py_TPFLAGS_HEAPTYPE) {
                     obj = type;
                 }
             }
@@ -307,8 +336,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
             if (document) {
                 std::vector<App::DocumentObject*> objects = document->getObjects();
                 Py::List list;
-                for (const auto & object : objects)
+                for (const auto& object : objects) {
                     list.append(Py::String(object->getNameInDocument()));
+                }
                 extractTipsFromObject(inst, list, tips);
             }
         }
@@ -324,8 +354,9 @@ QMap<QString, CallTip> CallTipsList::extractTips(const QString& context) const
                 if (document) {
                     std::vector<App::DocumentObject*> objects = document->getObjects();
                     Py::List list;
-                    for (const auto & object : objects)
+                    for (const auto& object : objects) {
                         list.append(Py::String(object->getNameInDocument()));
+                    }
                     extractTipsFromObject(inst, list, tips);
                 }
             }
@@ -362,8 +393,7 @@ bool shibokenMayCrash(void)
 Py::Object CallTipsList::getAttrWorkaround(Py::Object& obj, Py::String& name) const
 {
     QString typestr(QLatin1String(Py_TYPE(obj.ptr())->tp_name));
-    bool hasWorkingGetAttr =
-        !(typestr == QLatin1String("Shiboken.ObjectType") && shibokenMayCrash());
+    bool hasWorkingGetAttr = !(typestr == QLatin1String("Shiboken.ObjectType") && shibokenMayCrash());
 
     if (hasWorkingGetAttr) {
         return obj.getAttr(name.as_string());
@@ -403,7 +433,7 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     tip.type = CallTip::Class;
                 }
                 else {
-                    PyErr_Clear(); // PyObject_IsSubclass might set an exception
+                    PyErr_Clear();  // PyObject_IsSubclass might set an exception
                     tip.type = CallTip::Method;
                 }
             }
@@ -421,8 +451,9 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     QString longdoc = QString::fromUtf8(doc.as_string().c_str());
                     int pos = longdoc.indexOf(QLatin1Char('\n'));
                     pos = qMin(pos, 70);
-                    if (pos < 0)
+                    if (pos < 0) {
                         pos = qMin(longdoc.length(), 70);
+                    }
                     tip.description = stripWhiteSpace(longdoc);
                     tip.parameter = longdoc.left(pos);
                 }
@@ -434,8 +465,9 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
                     QString longdoc = QString::fromUtf8(doc.as_string().c_str());
                     int pos = longdoc.indexOf(QLatin1Char('\n'));
                     pos = qMin(pos, 70);
-                    if (pos < 0)
+                    if (pos < 0) {
                         pos = qMin(longdoc.length(), 70);
+                    }
                     tip.description = stripWhiteSpace(longdoc);
                     tip.parameter = longdoc.left(pos);
                 }
@@ -443,8 +475,9 @@ void CallTipsList::extractTipsFromObject(Py::Object& obj, Py::List& list, QMap<Q
 
             // Do not override existing items
             QMap<QString, CallTip>::iterator pos = tips.find(str);
-            if (pos == tips.end())
+            if (pos == tips.end()) {
                 tips[str] = tip;
+            }
         }
         catch (Py::Exception& e) {
             // Just clear the Python exception
@@ -458,12 +491,13 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
     auto cont = static_cast<App::PropertyContainerPy*>(obj.ptr());
     App::PropertyContainer* container = cont->getPropertyContainerPtr();
     // Make sure that the C++ object is alive
-    if (!container)
+    if (!container) {
         return;
-    std::map<std::string,App::Property*> Map;
+    }
+    std::map<std::string, App::Property*> Map;
     container->getPropertyMap(Map);
 
-    for (const auto & It : Map) {
+    for (const auto& It : Map) {
         CallTip tip;
         QString str = QString::fromLatin1(It.first.c_str());
         tip.name = str;
@@ -483,8 +517,9 @@ void CallTipsList::extractTipsFromProperties(Py::Object& obj, QMap<QString, Call
         if (!longdoc.isEmpty()) {
             int pos = longdoc.indexOf(QLatin1Char('\n'));
             pos = qMin(pos, 70);
-            if (pos < 0)
+            if (pos < 0) {
                 pos = qMin(longdoc.length(), 70);
+            }
             tip.description = stripWhiteSpace(longdoc);
             tip.parameter = longdoc.left(pos);
         }
@@ -502,12 +537,19 @@ void CallTipsList::showTips(const QString& line)
     static QPixmap property_icon = BitmapFactory().pixmap("ClassBrowser/property.svg");
 
     // object is in error state
-    static QPixmap forbidden_icon(Gui::BitmapFactory().pixmapFromSvg("forbidden", property_icon.size() / 4));
-    static QPixmap forbidden_type_module_icon = BitmapFactory().merge(type_module_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
-    static QPixmap forbidden_type_class_icon = BitmapFactory().merge(type_class_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
-    static QPixmap forbidden_method_icon = BitmapFactory().merge(method_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
-    static QPixmap forbidden_member_icon = BitmapFactory().merge(member_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
-    static QPixmap forbidden_property_icon = BitmapFactory().merge(property_icon,forbidden_icon,BitmapFactoryInst::BottomLeft);
+    static QPixmap forbidden_icon(
+        Gui::BitmapFactory().pixmapFromSvg("forbidden", property_icon.size() / 4)
+    );
+    static QPixmap forbidden_type_module_icon
+        = BitmapFactory().merge(type_module_icon, forbidden_icon, BitmapFactoryInst::BottomLeft);
+    static QPixmap forbidden_type_class_icon
+        = BitmapFactory().merge(type_class_icon, forbidden_icon, BitmapFactoryInst::BottomLeft);
+    static QPixmap forbidden_method_icon
+        = BitmapFactory().merge(method_icon, forbidden_icon, BitmapFactoryInst::BottomLeft);
+    static QPixmap forbidden_member_icon
+        = BitmapFactory().merge(member_icon, forbidden_icon, BitmapFactoryInst::BottomLeft);
+    static QPixmap forbidden_property_icon
+        = BitmapFactory().merge(property_icon, forbidden_icon, BitmapFactoryInst::BottomLeft);
 
     this->validObject = true;
     QString context = extractContext(line);
@@ -516,38 +558,33 @@ void CallTipsList::showTips(const QString& line)
     clear();
     for (QMap<QString, CallTip>::Iterator it = tips.begin(); it != tips.end(); ++it) {
         addItem(it.key());
-        QListWidgetItem *item = this->item(this->count()-1);
+        QListWidgetItem* item = this->item(this->count() - 1);
         item->setData(Qt::ToolTipRole, QVariant(it.value().description));
-        item->setData(Qt::UserRole, QVariant::fromValue( it.value() )); //< store full CallTip data
-        switch (it.value().type)
-        {
-        case CallTip::Module:
-            {
+        item->setData(Qt::UserRole, QVariant::fromValue(it.value()));  //< store full CallTip data
+        switch (it.value().type) {
+            case CallTip::Module: {
                 item->setIcon((this->validObject ? type_module_icon : forbidden_type_module_icon));
-            }   break;
-        case CallTip::Class:
-            {
+            } break;
+            case CallTip::Class: {
                 item->setIcon((this->validObject ? type_class_icon : forbidden_type_class_icon));
-            }   break;
-        case CallTip::Method:
-            {
+            } break;
+            case CallTip::Method: {
                 item->setIcon((this->validObject ? method_icon : forbidden_method_icon));
-            }   break;
-        case CallTip::Member:
-            {
+            } break;
+            case CallTip::Member: {
                 item->setIcon((this->validObject ? member_icon : forbidden_member_icon));
-            }   break;
-        case CallTip::Property:
-            {
+            } break;
+            case CallTip::Property: {
                 item->setIcon((this->validObject ? property_icon : forbidden_property_icon));
-            }   break;
-        default:
-            break;
+            } break;
+            default:
+                break;
         }
     }
 
-    if (count()==0)
-        return; // nothing found
+    if (count() == 0) {
+        return;  // nothing found
+    }
 
     // get the minimum width and height of the box
     int h = 0;
@@ -559,8 +596,8 @@ void CallTipsList::showTips(const QString& line)
     }
 
     // Add an offset
-    w += 2*frameWidth();
-    h += 2*frameWidth();
+    w += 2 * frameWidth();
+    h += 2 * frameWidth();
 
     // get the start position of the word prefix
     QTextCursor cursor = textEdit->textCursor();
@@ -571,17 +608,19 @@ void CallTipsList::showTips(const QString& line)
     int boxH = h;
 
     // Decide whether to show downstairs or upstairs
-    if (posY > textEdit->viewport()->height()/2) {
-        h = qMin(qMin(h,posY), 250);
-        if (h < boxH)
+    if (posY > textEdit->viewport()->height() / 2) {
+        h = qMin(qMin(h, posY), 250);
+        if (h < boxH) {
             w += textEdit->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-        setGeometry(posX,posY-h, w, h);
+        }
+        setGeometry(posX, posY - h, w, h);
     }
     else {
-        h = qMin(qMin(h,textEdit->viewport()->height()-fontMetrics().height()-posY), 250);
-        if (h < boxH)
+        h = qMin(qMin(h, textEdit->viewport()->height() - fontMetrics().height() - posY), 250);
+        if (h < boxH) {
             w += textEdit->style()->pixelMetric(QStyle::PM_ScrollBarExtent);
-        setGeometry(posX, posY+fontMetrics().height(), w, h);
+        }
+        setGeometry(posX, posY + fontMetrics().height(), w, h);
     }
 
     setCurrentRow(0);
@@ -605,19 +644,21 @@ void CallTipsList::hideEvent(QHideEvent* e)
  * Get all incoming events of the text edit and redirect some of them, like key up and
  * down, mouse press events, ... to the widget itself.
  */
-bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
+bool CallTipsList::eventFilter(QObject* watched, QEvent* event)
 {
     // This is a trick to avoid to hide the tooltip window after the defined time span
     // of 10 seconds. We just filter out all timer events to keep the label visible.
     if (watched->inherits("QLabel")) {
         auto label = qobject_cast<QLabel*>(watched);
         // Ignore the timer events to prevent from being closed
-        if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer)
+        if (label->windowFlags() & Qt::ToolTip && event->type() == QEvent::Timer) {
             return true;
+        }
     }
     if (isVisible() && watched == textEdit->viewport()) {
-        if (event->type() == QEvent::MouseButtonPress)
+        if (event->type() == QEvent::MouseButtonPress) {
             hide();
+        }
     }
     else if (isVisible() && watched == textEdit) {
         if (event->type() == QEvent::KeyPress) {
@@ -648,32 +689,34 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
             else if (ke->key() == Qt::Key_Tab) {
                 // enable call completion for activating items
-                Temporary<bool> tmp( this->doCallCompletion, true ); //< previous state restored on scope exit
-                Q_EMIT itemActivated( currentItem() );
+                Temporary<bool> tmp(this->doCallCompletion, true);  //< previous state restored on
+                                                                    // scope exit
+                Q_EMIT itemActivated(currentItem());
                 return true;
             }
             else if (this->compKeys.indexOf(ke->key()) > -1) {
                 Q_EMIT itemActivated(currentItem());
                 return false;
             }
-            else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control ||
-                     ke->key() == Qt::Key_Meta || ke->key() == Qt::Key_Alt ||
-                     ke->key() == Qt::Key_AltGr) {
+            else if (ke->key() == Qt::Key_Shift || ke->key() == Qt::Key_Control
+                     || ke->key() == Qt::Key_Meta || ke->key() == Qt::Key_Alt
+                     || ke->key() == Qt::Key_AltGr) {
                 // filter these meta keys to avoid to call keyboardSearch()
                 return true;
             }
         }
         else if (event->type() == QEvent::KeyRelease) {
             auto ke = static_cast<QKeyEvent*>(event);
-            if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down ||
-                ke->key() == Qt::Key_PageUp || ke->key() == Qt::Key_PageDown) {
-                QList<QListWidgetItem *> items = selectedItems();
+            if (ke->key() == Qt::Key_Up || ke->key() == Qt::Key_Down || ke->key() == Qt::Key_PageUp
+                || ke->key() == Qt::Key_PageDown) {
+                QList<QListWidgetItem*> items = selectedItems();
                 if (!items.isEmpty()) {
                     QPoint p(width(), 0);
                     QString text = items.front()->toolTip();
-                    if (!text.isEmpty()){
+                    if (!text.isEmpty()) {
                         QToolTip::showText(mapToGlobal(p), text);
-                    } else {
+                    }
+                    else {
                         QToolTip::showText(p, QString());
                     }
                 }
@@ -681,19 +724,21 @@ bool CallTipsList::eventFilter(QObject * watched, QEvent * event)
             }
         }
         else if (event->type() == QEvent::FocusOut) {
-            if (!hasFocus())
+            if (!hasFocus()) {
                 hide();
+            }
         }
     }
 
     return QListWidget::eventFilter(watched, event);
 }
 
-void CallTipsList::callTipItemActivated(QListWidgetItem *item)
+void CallTipsList::callTipItemActivated(QListWidgetItem* item)
 {
     hide();
-    if (!item->isSelected())
+    if (!item->isSelected()) {
         return;
+    }
 
     QString text = item->text();
     QTextCursor cursor = textEdit->textCursor();
@@ -702,34 +747,37 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
     QString sel = cursor.selectedText();
     if (!sel.isEmpty()) {
         // in case the cursor moved too far on the right side
-        const QChar underscore =  QLatin1Char('_');
-        const QChar ch = sel.at(sel.size()-1);
-        if (!ch.isLetterOrNumber() && ch != underscore)
+        const QChar underscore = QLatin1Char('_');
+        const QChar ch = sel.at(sel.size() - 1);
+        if (!ch.isLetterOrNumber() && ch != underscore) {
             cursor.movePosition(QTextCursor::Left, QTextCursor::KeepAnchor);
+        }
     }
-    cursor.insertText( text );
+    cursor.insertText(text);
 
     // get CallTip from item's UserRole-data
     auto callTip = item->data(Qt::UserRole).value<CallTip>();
 
     // if call completion enabled and we've something callable (method or class constructor) ...
     if (this->doCallCompletion
-     && (callTip.type == CallTip::Method || callTip.type == CallTip::Class))
-    {
-      cursor.insertText( QLatin1String("()") ); //< just append parenthesis to identifier even inserted.
+        && (callTip.type == CallTip::Method || callTip.type == CallTip::Class)) {
+        cursor.insertText(QLatin1String("()"));  //< just append parenthesis to identifier even inserted.
 
-      /**
-       * Try to find out if call needs arguments.
-       * For this we search the description for appropriate hints ...
-       */
-      QRegularExpression argumentMatcher( QRegularExpression::escape( callTip.name ) + QLatin1String(R"(\s*\(\s*\w+.*\))") );
-      argumentMatcher.setPatternOptions( QRegularExpression::InvertedGreedinessOption ); //< set regex non-greedy!
-      if (argumentMatcher.match( callTip.description ).hasMatch())
-      {
-        // if arguments are needed, we just move the cursor one left, to between the parentheses.
-        cursor.movePosition( QTextCursor::Left, QTextCursor::MoveAnchor, 1 );
-        textEdit->setTextCursor( cursor );
-      }
+        /**
+         * Try to find out if call needs arguments.
+         * For this we search the description for appropriate hints ...
+         */
+        QRegularExpression argumentMatcher(
+            QRegularExpression::escape(callTip.name) + QLatin1String(R"(\s*\(\s*\w+.*\))")
+        );
+        argumentMatcher.setPatternOptions(
+            QRegularExpression::InvertedGreedinessOption
+        );  //< set regex non-greedy!
+        if (argumentMatcher.match(callTip.description).hasMatch()) {
+            // if arguments are needed, we just move the cursor one left, to between the parentheses.
+            cursor.movePosition(QTextCursor::Left, QTextCursor::MoveAnchor, 1);
+            textEdit->setTextCursor(cursor);
+        }
     }
     textEdit->ensureCursorVisible();
 
@@ -739,33 +787,36 @@ void CallTipsList::callTipItemActivated(QListWidgetItem *item)
 
     QPoint p(posX, posY);
     p = textEdit->mapToGlobal(p);
-    QToolTip::showText( p, callTip.parameter );
+    QToolTip::showText(p, callTip.parameter);
 }
 
 QString CallTipsList::stripWhiteSpace(const QString& str) const
 {
     QString stripped = str;
     QStringList lines = str.split(QLatin1String("\n"));
-    int minspace=std::numeric_limits<int>::max();
-    int line=0;
+    int minspace = std::numeric_limits<int>::max();
+    int line = 0;
     for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
         if (it->size() > 0 && line > 0) {
             int space = 0;
-            for (int i=0; i<it->size(); i++) {
-                if ((*it)[i] == QLatin1Char('\t'))
+            for (int i = 0; i < it->size(); i++) {
+                if ((*it)[i] == QLatin1Char('\t')) {
                     space++;
-                else
+                }
+                else {
                     break;
+                }
             }
 
-            if (it->size() > space)
+            if (it->size() > space) {
                 minspace = std::min<int>(minspace, space);
+            }
         }
     }
 
     // remove all leading tabs from each line
     if (minspace > 0 && minspace < std::numeric_limits<int>::max()) {
-        int line=0;
+        int line = 0;
         QStringList strippedlines;
         for (QStringList::iterator it = lines.begin(); it != lines.end(); ++it, ++line) {
             if (line == 0 && !it->isEmpty()) {

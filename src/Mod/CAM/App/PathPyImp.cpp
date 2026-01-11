@@ -62,8 +62,7 @@ int PathPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             Py::List list(pcObj);
             for (Py::List::iterator it = list.begin(); it != list.end(); ++it) {
                 if (PyObject_TypeCheck((*it).ptr(), &(Path::CommandPy::Type))) {
-                    Path::Command& cmd =
-                        *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
+                    Path::Command& cmd = *static_cast<Path::CommandPy*>((*it).ptr())->getCommandPtr();
                     getToolpathPtr()->addCommand(cmd);
                 }
                 else {
@@ -91,7 +90,8 @@ Py::List PathPy::getCommands() const
     Py::List list;
     for (unsigned int i = 0; i < getToolpathPtr()->getSize(); i++) {
         list.append(
-            Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i)))));
+            Py::asObject(new Path::CommandPy(new Path::Command(getToolpathPtr()->getCommand(i))))
+        );
     }
     return list;
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
 #include <boost/any.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
 #include <FCGlobal.h>
@@ -108,6 +110,8 @@ public:
         CopyOnChange = 16,
         /// Whether the property editor should create a button for user defined editing.
         UserEdit = 17,
+        /// Do not propagate changes of the property to its container
+        DisableNotify = 18,
 
         // The following bits are corresponding to PropertyType set when the
         // property added. These types are meant to be static, and cannot be
@@ -354,11 +358,16 @@ public:
      */
     virtual void onContainerRestored() {}
 
-    /** @name Property status handling
-     * @{
+    /** Property status handling
      */
-
-    /// Set the property touched.
+    //@{
+    /// This method sets whether notification will be propagated on changing
+    /// the value of the property. The old value of the setting is returned.
+    bool enableNotify(bool on);
+    /// This method returns whether notification of changes to the property value
+    /// are propagated to the container.
+    bool isNotifyEnabled() const;
+    /// Set the property touched
     void touch();
 
     /**
@@ -599,7 +608,7 @@ private:
 
 public:
     /// Signal emitted when the property value has changed.
-    boost::signals2::signal<void(const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::Property&)> signalChanged;
 };
 
 

@@ -1,16 +1,17 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # (c) 2010 Werner Mayer LGPL
 # FreeCAD Python script to work with the FCStd file format.
 
 import os
-import xml.sax
-import xml.sax.handler
-import xml.sax.xmlreader
+from defusedxml import sax as defused_sax
+from xml.sax.handler import ContentHandler
 import zipfile
 
 
 # SAX handler to parse the Document.xml
-class DocumentHandler(xml.sax.handler.ContentHandler):
+class DocumentHandler(ContentHandler):
     def __init__(self, dirname):
         super().__init__()
         self.files = []
@@ -59,7 +60,7 @@ def createDocument(filename, outpath):
 def getFilesList(filename):
     dirname = os.path.dirname(filename)
     handler = DocumentHandler(dirname)
-    parser = xml.sax.make_parser()
+    parser = defused_sax.make_parser()
     parser.setContentHandler(handler)
     parser.parse(filename)
 

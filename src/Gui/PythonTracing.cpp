@@ -41,8 +41,8 @@ using TimePoint = std::chrono::time_point<Clock>;
 
 struct PythonTracing::Private
 {
-    bool active{false};
-    int timeout{200}; //NOLINT
+    bool active {false};
+    int timeout {200};  // NOLINT
 
     // NOLINTBEGIN
     static int profilerInterval;
@@ -56,9 +56,8 @@ bool PythonTracing::Private::profilerDisabled = false;
 // NOLINTEND
 
 PythonTracing::PythonTracing()
-    : d{std::make_unique<Private>()}
-{
-}
+    : d {std::make_unique<Private>()}
+{}
 
 PythonTracing::~PythonTracing() = default;
 
@@ -84,7 +83,8 @@ void PythonTracing::fetchFromSettings()
     const long defaultTimeout = 200;
 
     auto parameterGroup = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/PythonConsole");
+        "User parameter:BaseApp/Preferences/PythonConsole"
+    );
     int interval = static_cast<int>(parameterGroup->GetInt("ProfilerInterval", defaultTimeout));
     setTimeout(interval);
 }
@@ -133,7 +133,7 @@ void PythonTracing::setPythonTraceEnabled(bool enabled) const
  * This callback is even called for per-opcode events in the Python code, so unoptimized code could
  * dramatically slow down the execution of Python code and FreeCAD macros.
  */
-int PythonTracing::tracer_callback(PyObject *obj, PyFrameObject *frame, int what, PyObject *arg)
+int PythonTracing::tracer_callback(PyObject* obj, PyFrameObject* frame, int what, PyObject* arg)
 {
     Q_UNUSED(obj)
     Q_UNUSED(frame)
@@ -168,7 +168,7 @@ int PythonTracing::tracer_callback(PyObject *obj, PyFrameObject *frame, int what
 // ------------------------------------------------------------------------------------------------
 
 PythonTracingLocker::PythonTracingLocker(PythonTracing& trace)
-    : trace{trace}
+    : trace {trace}
 {
     trace.activate();
 }

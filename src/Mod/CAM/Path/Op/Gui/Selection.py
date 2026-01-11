@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2015 Dan Falck <ddfalck@gmail.com>                      *
 # *   Copyright (c) 2021 Schildkroet                                        *
@@ -370,6 +372,7 @@ def select(op):
     opsel["Engrave"] = engraveselect
     opsel["Helix"] = drillselect
     opsel["MillFace"] = pocketselect
+    opsel["MillFacing"] = pocketselect
     opsel["Pocket"] = pocketselect
     opsel["Pocket 3D"] = pocketselect
     opsel["Pocket3D"] = pocketselect  # deprecated

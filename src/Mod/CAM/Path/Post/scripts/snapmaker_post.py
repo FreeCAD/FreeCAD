@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: EUPL-1.2
 # A FreeCAD postprocessor targeting Snapmaker machines with CNC capabilities
 # ***************************************************************************
 # *  Copyright (c) 2025 Clair-Loup Sergent <clsergent@free.fr>              *
@@ -814,12 +815,12 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
             dia = PostUtils.GCodeEditorDialog()
             # the editor expects lines to end in "\n", and returns lines ending in "\n"
             if self.values["END_OF_LINE_CHARACTERS"] == "\n":
-                dia.editor.setText(final)
+                dia.editor.setPlainText(final)
                 if dia.exec_():
                     final = dia.editor.toPlainText()
             else:
                 final_for_editor = "\n".join(gcode)
-                dia.editor.setText(final_for_editor)
+                dia.editor.setPlainText(final_for_editor)
                 if dia.exec_():
                     final_for_editor = dia.editor.toPlainText()
                     # convert all "\n" to the appropriate end-of-line characters

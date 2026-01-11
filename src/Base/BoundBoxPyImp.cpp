@@ -103,9 +103,11 @@ int BoundBoxPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         return 0;
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "Either six floats, two instances of "
-                    "Vector/Tuple or instance of BoundBox expected");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Either six floats, two instances of "
+        "Vector/Tuple or instance of BoundBox expected"
+    );
     return -1;
 }
 
@@ -152,16 +154,20 @@ PyObject* BoundBoxPy::add(PyObject* args)
     }
 
     PyErr_Clear();
-    if (PyArg_ParseTuple(args,
-                         "O!;Need a Vector, BoundBox or three floats as argument",
-                         &(BoundBoxPy::Type),
-                         &object)) {
+    if (PyArg_ParseTuple(
+            args,
+            "O!;Need a Vector, BoundBox or three floats as argument",
+            &(BoundBoxPy::Type),
+            &object
+        )) {
         getBoundBoxPtr()->Add(*(static_cast<BoundBoxPy*>(object)->getBoundBoxPtr()));
         Py_Return;
     }
 
-    PyErr_SetString(PyExc_TypeError,
-                    "Either three floats, instance of Vector or instance of BoundBox expected");
+    PyErr_SetString(
+        PyExc_TypeError,
+        "Either three floats, instance of Vector or instance of BoundBox expected"
+    );
     return nullptr;
 }
 
@@ -248,15 +254,11 @@ PyObject* BoundBoxPy::intersect(PyObject* args)
     }
 
     do {
-        if (PyArg_ParseTuple(args,
-                             "O!O!",
-                             &(VectorPy::Type),
-                             &object1,
-                             &(VectorPy::Type),
-                             &object2)) {
-            retVal =
-                getBoundBoxPtr()->IsCutLine(*(static_cast<VectorPy*>(object1)->getVectorPtr()),
-                                            *(static_cast<VectorPy*>(object2)->getVectorPtr()));
+        if (PyArg_ParseTuple(args, "O!O!", &(VectorPy::Type), &object1, &(VectorPy::Type), &object2)) {
+            retVal = getBoundBoxPtr()->IsCutLine(
+                *(static_cast<VectorPy*>(object1)->getVectorPtr()),
+                *(static_cast<VectorPy*>(object2)->getVectorPtr())
+            );
             break;
         }
 
@@ -266,8 +268,9 @@ PyObject* BoundBoxPy::intersect(PyObject* args)
                 PyErr_SetString(PyExc_FloatingPointError, "Invalid bounding box argument");
                 return nullptr;
             }
-            retVal =
-                getBoundBoxPtr()->Intersect(*(static_cast<BoundBoxPy*>(object1)->getBoundBoxPtr()));
+            retVal = getBoundBoxPtr()->Intersect(
+                *(static_cast<BoundBoxPy*>(object1)->getBoundBoxPtr())
+            );
             break;
         }
 
@@ -294,8 +297,9 @@ PyObject* BoundBoxPy::intersected(PyObject* args)
         return nullptr;
     }
 
-    BoundBox3d bbox =
-        getBoundBoxPtr()->Intersected(*static_cast<BoundBoxPy*>(object)->getBoundBoxPtr());
+    BoundBox3d bbox = getBoundBoxPtr()->Intersected(
+        *static_cast<BoundBoxPy*>(object)->getBoundBoxPtr()
+    );
     return new BoundBoxPy(new BoundBox3d(bbox));
 }
 
@@ -334,22 +338,25 @@ PyObject* BoundBoxPy::getIntersectionPoint(PyObject* args)
     PyObject* object1 {};
     PyObject* object2 {};
     double epsilon = 0.0001;
-    if (!PyArg_ParseTuple(args,
-                          "O!O!|d;Need base and direction vector",
-                          &(VectorPy::Type),
-                          &object1,
-                          &(VectorPy::Type),
-                          &object2,
-                          &epsilon)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!|d;Need base and direction vector",
+            &(VectorPy::Type),
+            &object1,
+            &(VectorPy::Type),
+            &object2,
+            &epsilon
+        )) {
         return nullptr;
     }
 
     Vector3d point;
-    bool ok =
-        getBoundBoxPtr()->IntersectionPoint(*(static_cast<VectorPy*>(object1)->getVectorPtr()),
-                                            *(static_cast<VectorPy*>(object2)->getVectorPtr()),
-                                            point,
-                                            epsilon);
+    bool ok = getBoundBoxPtr()->IntersectionPoint(
+        *(static_cast<VectorPy*>(object1)->getVectorPtr()),
+        *(static_cast<VectorPy*>(object2)->getVectorPtr()),
+        point,
+        epsilon
+    );
     if (ok) {
         return new VectorPy(point);
     }
@@ -460,17 +467,21 @@ PyObject* BoundBoxPy::isCutPlane(PyObject* args)
         return nullptr;
     }
 
-    if (!PyArg_ParseTuple(args,
-                          "O!O!;Need base and normal vector of a plane",
-                          &(VectorPy::Type),
-                          &object,
-                          &(VectorPy::Type),
-                          &object2)) {
+    if (!PyArg_ParseTuple(
+            args,
+            "O!O!;Need base and normal vector of a plane",
+            &(VectorPy::Type),
+            &object,
+            &(VectorPy::Type),
+            &object2
+        )) {
         return nullptr;
     }
 
-    retVal = getBoundBoxPtr()->IsCutPlane(*(static_cast<VectorPy*>(object)->getVectorPtr()),
-                                          *(static_cast<VectorPy*>(object2)->getVectorPtr()));
+    retVal = getBoundBoxPtr()->IsCutPlane(
+        *(static_cast<VectorPy*>(object)->getVectorPtr()),
+        *(static_cast<VectorPy*>(object2)->getVectorPtr())
+    );
 
     return Py::new_reference_to(retVal);
 }
@@ -512,8 +523,7 @@ PyObject* BoundBoxPy::isInside(PyObject* args)
                 PyErr_SetString(PyExc_FloatingPointError, "Invalid bounding box argument");
                 return nullptr;
             }
-            retVal =
-                getBoundBoxPtr()->IsInBox(*(static_cast<BoundBoxPy*>(object)->getBoundBoxPtr()));
+            retVal = getBoundBoxPtr()->IsInBox(*(static_cast<BoundBoxPy*>(object)->getBoundBoxPtr()));
             break;
         }
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Yorik van Havre <yorik@uncreated.net>              *
  *                                                                         *
@@ -38,6 +40,11 @@ class SoBaseColor;
 class SoMaterialBinding;
 class SoTransform;
 class SoSwitch;
+
+namespace Path
+{
+class Toolpath;
+}
 
 namespace PathGui
 {
@@ -86,6 +93,10 @@ public:
     void showBoundingBox(bool show) override;
 
     friend class PathSelectionObserver;
+
+private:
+    /// Find the index of the first non-rapid move command
+    long findFirstFeedMoveIndex(const Path::Toolpath& path) const;
 
 protected:
     void onChanged(const App::Property* prop) override;

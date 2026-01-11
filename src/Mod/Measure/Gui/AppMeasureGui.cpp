@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 David Friedli <david[at]friedli-be.ch>             *
  *                                                                         *
@@ -99,12 +101,14 @@ PyMOD_INIT_FUNC(MeasureGui)
     MeasureGui::ViewProviderMeasureLength              ::init();
     MeasureGui::ViewProviderMeasurePosition            ::init();
     MeasureGui::ViewProviderMeasureRadius              ::init();
+    MeasureGui::ViewProviderMeasureDiameter            ::init();
     MeasureGui::ViewProviderMeasureCOM                 ::init();
     // clang-format on
 
     // register preferences pages
     new Gui::PrefPageProducer<MeasureGui::DlgPrefsMeasureAppearanceImp>(
-        QT_TRANSLATE_NOOP("QObject", "Measure"));
+        QT_TRANSLATE_NOOP("QObject", "Measure")
+    );
 
     //    Q_INIT_RESOURCE(Measure);
 

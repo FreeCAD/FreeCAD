@@ -34,9 +34,9 @@
 #include <typeinfo>
 
 #ifdef FC_OS_WIN32
-#include <Windows.h>
-#include <io.h>
-#include <shellapi.h>
+# include <Windows.h>
+# include <io.h>
+# include <shellapi.h>
 #endif
 
 // streams
@@ -67,7 +67,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
@@ -88,7 +88,7 @@
 #include "InventorAll.h"
 
 #if defined(FC_OS_WIN32)
-#include <windows.h>
+# include <windows.h>
 #endif
 
-#endif // GUI_PRECOMPILED_H
+#endif  // GUI_PRECOMPILED_H

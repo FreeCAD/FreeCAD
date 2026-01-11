@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -49,14 +51,14 @@ extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGe
 
 class DrawSketchHandlerSymmetry;
 
-using DSHSymmetryController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerSymmetry,
-                                      StateMachines::OneSeekEnd,
-                                      /*PAutoConstraintSize =*/0,
-                                      /*OnViewParametersT =*/OnViewParameters<0>,
-                                      /*WidgetParametersT =*/WidgetParameters<0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+using DSHSymmetryController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerSymmetry,
+    StateMachines::OneSeekEnd,
+    /*PAutoConstraintSize =*/0,
+    /*OnViewParametersT =*/OnViewParameters<0>,
+    /*WidgetParametersT =*/WidgetParameters<0>,
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2>,
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
 
 using DSHSymmetryControllerBase = DSHSymmetryController::ControllerBase;
 
@@ -64,6 +66,8 @@ using DrawSketchHandlerSymmetryBase = DrawSketchControllableHandler<DSHSymmetryC
 
 class DrawSketchHandlerSymmetry: public DrawSketchHandlerSymmetryBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSymmetry)
+
     friend DSHSymmetryController;
     friend DSHSymmetryControllerBase;
 
@@ -146,16 +150,21 @@ private:
         }
         catch (const Base::Exception& e) {
             e.reportException();
-            Gui::NotifyError(sketchgui,
-                             QT_TRANSLATE_NOOP("Notifications", "Error"),
-                             QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry"));
+            Gui::NotifyError(
+                sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to create symmetry")
+            );
 
             Gui::Command::abortCommand();
-            THROWM(Base::RuntimeError,
-                   QT_TRANSLATE_NOOP(
-                       "Notifications",
-                       "Tool execution aborted") "\n")  // This prevents constraints from being
-                                                        // applied on non existing geometry
+            THROWM(
+                Base::RuntimeError,
+                QT_TRANSLATE_NOOP(
+                    "Notifications",
+                    "Tool execution aborted"
+                ) "\n"
+            )  // This prevents constraints from being
+               // applied on non existing geometry
         }
     }
 
@@ -233,9 +242,7 @@ public:
         }
         stream << listOfGeoIds[listOfGeoIds.size() - 1];
         try {
-            Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                  "delGeometries([%s])",
-                                  stream.str().c_str());
+            Gui::cmdAppObjectArgs(sketchgui->getObject(), "delGeometries([%s])", stream.str().c_str());
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());
@@ -255,8 +262,8 @@ public:
         if (onlyeditoutline) {
             std::map<int, int> dummy1;
             std::map<int, bool> dummy2;
-            std::vector<Part::Geometry*> symGeos =
-                Obj->getSymmetric(listOfGeoIds, dummy1, dummy2, refGeoId, refPosId);
+            std::vector<Part::Geometry*> symGeos
+                = Obj->getSymmetric(listOfGeoIds, dummy1, dummy2, refGeoId, refPosId);
 
             for (auto* geo : symGeos) {
                 ShapeGeometry.emplace_back(geo);
@@ -269,12 +276,14 @@ template<>
 void DSHSymmetryController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        toolWidget->setCheckboxLabel(WCheckbox::FirstBox,
-                                     QApplication::translate("TaskSketcherTool_c1_symmetry",
-                                                             "Delete original geometries (U)"));
-        toolWidget->setCheckboxLabel(WCheckbox::SecondBox,
-                                     QApplication::translate("TaskSketcherTool_c2_symmetry",
-                                                             "Create symmetry constraints (J)"));
+        toolWidget->setCheckboxLabel(
+            WCheckbox::FirstBox,
+            QApplication::translate("TaskSketcherTool_c1_symmetry", "Delete original geometries (U)")
+        );
+        toolWidget->setCheckboxLabel(
+            WCheckbox::SecondBox,
+            QApplication::translate("TaskSketcherTool_c2_symmetry", "Create symmetry constraints (J)")
+        );
     }
 }
 
