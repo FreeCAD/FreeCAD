@@ -271,6 +271,9 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/Hardness.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
+    Resources/Models/Mechanical/MetalIsotropicLinearElasticArrays.yml
+    Resources/Models/Mechanical/MetalLinearElasticTemperatureArrays.yml
+    Resources/Models/Mechanical/MetalToughnessTemperatureArrays.yml
     Resources/Models/Mechanical/MooneyRivlin.yml
     Resources/Models/Mechanical/NeoHooke.yml
     Resources/Models/Mechanical/OgdenN1.yml
