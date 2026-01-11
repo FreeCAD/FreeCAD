@@ -170,7 +170,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     QString msg = tr("Pick a point for cosmetic vertex");
     getMainWindow()->statusBar()->show();
     Gui::getMainWindow()->showMessage(msg, 3000);
-    ui->pbTracker->setText(tr("Escape picking"));
+    ui->pbTracker->setText(tr("Escape Picking"));
     ui->pbTracker->setEnabled(true);
     m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
