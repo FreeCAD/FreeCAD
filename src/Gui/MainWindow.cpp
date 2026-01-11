@@ -433,7 +433,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     statusBar()->addWidget(d->hintLabel);
 
- 
+
     // Specifically for ShowFullfilePath it is to be Off by default for new users
     auto hGrpMW = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/MainWindow"
@@ -444,8 +444,7 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     }
 
     // show full path label
-    d->showFullPathLabel =
-    new StatusBarLabel(statusBar(), "StatusBarShowFullFilePath");
+    d->showFullPathLabel = new StatusBarLabel(statusBar(), "StatusBarShowFullFilePath");
     d->showFullPathLabel->setTextInteractionFlags(Qt::TextSelectableByMouse);
     statusBar()->addPermanentWidget(d->showFullPathLabel);
     d->showFullPathLabel->setObjectName(QStringLiteral("showFullPathLabel"));
