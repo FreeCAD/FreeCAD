@@ -153,7 +153,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick points"));
+        ui->pbTracker->setText(tr("Pick Points"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -245,7 +245,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick points"));
+    ui->pbTracker->setText(tr("Pick Points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);
