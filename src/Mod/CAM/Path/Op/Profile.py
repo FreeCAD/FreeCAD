@@ -294,6 +294,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
+        multiPassMode = 0 if obj.NumPasses > 1 else 2
+
+        obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("JoinType", 2)
         obj.setEditorMode("MiterLimit", 2)  # ml
         obj.setEditorMode("Side", side)
@@ -318,9 +321,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
     def areaOpOnChanged(self, obj, prop):
         """areaOpOnChanged(obj, prop) ... updates certain property visibilities depending on changed properties."""
-        if prop in ["UseComp", "JoinType", "Base"]:
-            if hasattr(self, "propertiesReady") and self.propertiesReady:
-                self.setOpEditorProperties(obj)
+        if hasattr(self, "propertiesReady") and self.propertiesReady:
+            self.setOpEditorProperties(obj)
 
     def areaOpAreaParams(self, obj, isHole):
         """areaOpAreaParams(obj, isHole) ... returns dictionary with area parameters.
