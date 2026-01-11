@@ -116,7 +116,7 @@ def get_linking_moves(
     else:
         candidate_heights = {local_clearance, global_clearance}
 
-    heights = sorted(candidate_heights, reverse=True)
+    heights = sorted(candidate_heights)
 
     # Try each height
     for height in heights:
