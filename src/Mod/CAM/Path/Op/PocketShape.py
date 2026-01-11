@@ -178,7 +178,8 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.ClearingPattern = "Offset"
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
+        obj.setEditorMode("Angle", 2)
         obj.UseOutline = False
         FeatureExtensions.set_default_property_values(obj, job)
 
