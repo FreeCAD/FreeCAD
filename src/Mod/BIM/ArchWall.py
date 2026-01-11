@@ -734,7 +734,11 @@ class _Wall(ArchComponent.Component):
         if base.isNull() and (self.noWidths or self.noHeight):
             FreeCAD.Console.PrintMessage(translate("Arch", "Wall object.Label "), obj.Label + "\n")
             FreeCAD.Console.PrintMessage(
-                translate("Arch", "- Cannot create or update Wall as its length, height or width is zero, and there is no solid in the Additions") + "\n"
+                translate(
+                    "Arch",
+                    "- Cannot create or update Wall as its length, height or width is zero, and there is no solid in the Additions",
+                )
+                + "\n"
             )
 
         # count blocks
