@@ -1173,9 +1173,7 @@ std::string SelectionSingleton::_SelObj::getSubString() const
             return "'" + SubName.substr(0, SubName.size() - elementName.newName.size())
                 + elementName.oldName + "'";
         }
-        else {
-            return "'" + SubName + "'";
-        }
+        return "'" + SubName + "'";
     }
     return "";
 }
@@ -3180,3 +3178,4 @@ void SelectionSingleton::setClarifySelectionActive(bool active)
 {
     clarifySelectionActive = active;
 }
+
