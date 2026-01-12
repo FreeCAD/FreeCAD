@@ -24,7 +24,6 @@
 import FreeCAD
 import Part
 import Path
-import traceback
 
 import Path.Dressup.Utils as PathDressup
 
@@ -74,24 +73,14 @@ class _CommandSelectLoop:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if not selection:
             return False
-        try:
-            sel = FreeCADGui.Selection.getSelectionEx()[0]
-            if sel.Object == self.obj and sel.SubElementNames == self.sub:
-                return self.active
-            self.obj = sel.Object
-            self.sub = sel.SubElementNames
-            if sel.SubObjects:
-                # self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
-                self.active = True
-            else:
-                self.active = False
-            return self.active
-        except Exception as exc:
-            Path.Log.error(exc)
-            traceback.print_exc(exc)
+
+        if not selection[0].SubObjects:
             return False
+
+        return True
 
     def Activated(self):
         from PathScripts.PathUtils import horizontalEdgeLoop, horizontalFaceLoop
@@ -144,20 +133,6 @@ class _CommandSelectLoop:
             return
 
         Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
-
-    def formsPartOfALoop(self, obj, sub, names):
-        try:
-            if names[0][0:4] != "Edge":
-                if names[0][0:4] == "Face" and horizontalFaceLoop(obj, sub, names):
-                    return True
-                return False
-            if len(names) == 1 and horizontalEdgeLoop(obj, sub):
-                return True
-            if len(names) == 1 or names[1][0:4] != "Edge":
-                return False
-            return True
-        except Exception:
-            return False
 
 
 if FreeCAD.GuiUp:
