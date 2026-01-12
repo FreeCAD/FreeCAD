@@ -83,7 +83,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="45"/>
       <source>Kuka Compact Subroutine</source>
-      <translation>Kompaktes Kuka-Unterprogramm</translation>
+      <translation>Kuka-Compact-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="46"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandExport.cpp" line="126"/>
       <source>Kuka Full Subroutine</source>
-      <translation>Vollständiges Kuka-Unterprogramm</translation>
+      <translation>Kuka-Vollständiges-Unterprogramm</translation>
     </message>
     <message>
       <location filename="../../CommandExport.cpp" line="127"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="441"/>
       <source>Dress-Up Trajectory</source>
-      <translation>Überlagerungs-Trajektorie</translation>
+      <translation>Bewegungsbahn anpassen</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="442"/>
       <source>Creates a dress-up object that overrides aspects of a trajectory</source>
-      <translation>Erstellt ein Überlagerungs-Objekt das Teile der Trajektorie überschreibt</translation>
+      <translation>Erstellt ein Anpassungs-Objekt das Teile der Trajektorie überschreibt</translation>
     </message>
   </context>
   <context>

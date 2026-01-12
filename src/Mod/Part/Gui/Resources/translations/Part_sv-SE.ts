@@ -6047,12 +6047,12 @@ Fortsättning?</translation>
       <translation>Skärning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Ta bort sammansättningsinnehåll?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Sammansättningen "%1" har %2 barnobjekt. Vill du ta bort dem också?</translation>
     </message>

@@ -2086,12 +2086,12 @@ a raw wire from the original shape is added</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="120"/>
       <source>Apply Cuts</source>
-      <translation type="unfinished">Apply Cuts</translation>
+      <translation>Applica Tagli</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="140"/>
       <source>Coordinate precision (crucial for detecting closed paths)</source>
-      <translation type="unfinished">Coordinate precision (crucial for detecting closed paths)</translation>
+      <translation>Precisione delle coordinate (fondamentale per individuare i percorsi chiusi)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="166"/>
@@ -2293,7 +2293,7 @@ workbench. </translation>
       <location filename="../ui/preferences-dxf.ui" line="187"/>
       <location filename="../ui/preferences-dxf.ui" line="211"/>
       <source>DxfImportMode</source>
-      <translation type="unfinished">DxfImportMode</translation>
+      <translation>Modalità di importazione DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="145"/>
@@ -2316,9 +2316,7 @@ script-based post-processing and Part workbench integration.</translation>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation type="unfinished">Creates a non-parametric shape for each DXF entity. Block definitions are
-imported as reusable objects (Part Compounds) and instances become `App::Link`
-objects, maintaining the block structure. Good for referencing and measuring.</translation>
+      <translation>Crea una forma non parametrica per ogni entità DXF. Le definizioni dei blocchi sono importate come oggetti riutilizzabili (Composti di Parti) e le istanze diventano oggetti `App::Link`, mantenendo la struttura dei blocchi. Buono da usare come riferimento e per le misurazioni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="175"/>
@@ -2365,7 +2363,7 @@ in feet: 304.8</source>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="304"/>
       <source>If checked, point entities will be imported</source>
-      <translation type="unfinished">If checked, point entities will be imported</translation>
+      <translation>Se selezionato, le entità dei punti saranno importate</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
@@ -2908,7 +2906,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="20"/>
       <source>In-Command Shortcuts</source>
-      <translation type="unfinished">In-Command Shortcuts</translation>
+      <translation>Scorciatoie comandi</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="87"/>
@@ -3028,7 +3026,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="828"/>
       <source>Show the Draft Scale Widget in the Draft Workbench</source>
-      <translation type="unfinished">Show the Draft Scale Widget in the Draft Workbench</translation>
+      <translation>Mostra il widget Draft Snap nell'ambiente di lavoro Draft</translation>
     </message>
   </context>
   <context>
@@ -3052,7 +3050,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../DraftGui.py" line="649"/>
       <source>If checked, the command will not finish until pressing the command button again</source>
-      <translation type="unfinished">If checked, the command will not finish until pressing the command button again</translation>
+      <translation>Se selezionato, il comando non termina finché non si preme nuovamente il pulsante di comando</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="657"/>
@@ -3222,7 +3220,7 @@ se corrispondono agli assi X, Y o Z del sistema di coordinate globali</translati
     <message>
       <location filename="../../DraftGui.py" line="714"/>
       <source>Creates the text object and finishes the command</source>
-      <translation type="unfinished">Creates the text object and finishes the command</translation>
+      <translation>Crea l'oggetto di testo e termina il comando</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="736"/>
@@ -3352,13 +3350,13 @@ Deseleziona per usare il sistema di coordinate del piano di lavoro</translation>
       <location filename="../../DraftGui.py" line="633"/>
       <source>If checked, the object will be filled with a face.
 Not available if the 'Use Part Primitives' preference is enabled</source>
-      <translation type="unfinished">If checked, the object will be filled with a face.
-Not available if the 'Use Part Primitives' preference is enabled</translation>
+      <translation>Se selezionato, l'oggetto sarà riempito con una faccia.
+Non disponibile se la preferenza 'Usa parte primitive' è abilitata</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="650"/>
       <source>Chained mode</source>
-      <translation type="unfinished">Chained mode</translation>
+      <translation>Modalità smusso</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="673"/>
@@ -3854,7 +3852,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="96"/>
       <source>Only Draft lines and wires can be joined</source>
-      <translation type="unfinished">Only Draft lines and wires can be joined</translation>
+      <translation>Solo linee e fili possono essere uniti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="106"/>
@@ -3981,34 +3979,34 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="110"/>
       <source>%1 toggle relative</source>
-      <translation type="unfinished">%1 toggle relative</translation>
+      <translation>%1 attiva/disattiva relativo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="119"/>
       <source>%1 toggle global</source>
-      <translation type="unfinished">%1 toggle global</translation>
+      <translation>%1 attiva/disattiva globale</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="128"/>
       <source>%1 toggle continue</source>
-      <translation type="unfinished">%1 toggle continue</translation>
+      <translation>%1 attiva/disattiva continua</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="310"/>
       <location filename="../../draftguitools/gui_arcs.py" line="487"/>
       <source>%1 pick center</source>
-      <translation type="unfinished">%1 pick center</translation>
+      <translation>%1 scegli il centro</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="312"/>
       <location filename="../../draftguitools/gui_arcs.py" line="489"/>
       <source>%1 pick radius</source>
-      <translation type="unfinished">%1 pick radius</translation>
+      <translation>%1 scegli raggio</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="495"/>
       <source>%1 pick aperture</source>
-      <translation type="unfinished">%1 pick aperture</translation>
+      <translation>%1 scegli ampiezza</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="337"/>
@@ -4038,7 +4036,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="492"/>
       <source>%1 pick start angle</source>
-      <translation type="unfinished">%1 pick start angle</translation>
+      <translation>%1 scegli angolo di partenza</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="544"/>
@@ -4311,7 +4309,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="444"/>
       <source>New named group</source>
-      <translation type="unfinished">New named group</translation>
+      <translation>Nuovo gruppo con nome</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_groups.py" line="96"/>
@@ -4506,7 +4504,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="383"/>
       <source>Set Last Angle</source>
-      <translation type="unfinished">Set Last Angle</translation>
+      <translation>Imposta ultimo angolo</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="390"/>
@@ -4516,7 +4514,7 @@ L'angolo finale sarà l'angolo base più questa quantità.</translation>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="417"/>
       <source>Invert Arc</source>
-      <translation type="unfinished">Invert Arc</translation>
+      <translation>Inverti arco</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_edit_draft_objects.py" line="679"/>
@@ -8713,9 +8711,7 @@ script-based post-processing.</translation>
       <source>Creates a non-parametric shape for each DXF entity. Block definitions are
 imported as reusable objects (Part Compounds) and instances become `App::Link`
 objects, maintaining the block structure. Good for referencing and measuring.</source>
-      <translation type="unfinished">Creates a non-parametric shape for each DXF entity. Block definitions are
-imported as reusable objects (Part Compounds) and instances become `App::Link`
-objects, maintaining the block structure. Good for referencing and measuring.</translation>
+      <translation>Crea una forma non parametrica per ogni entità DXF. Le definizioni dei blocchi sono importate come oggetti riutilizzabili (Composti di Parti) e le istanze diventano oggetti `App::Link`, mantenendo la struttura dei blocchi. Buono da usare come riferimento e per le misurazioni.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf-import.ui" line="57"/>
