@@ -356,6 +356,35 @@ class TestArchComponent(TestArchBase.TestArchBase):
                 f"Expected exactly 1 vertical face on cylinder, found {cyl_vertical_count}",
             )
 
+        with self.subTest(case="Generic Vertical Surface"):
+            # Create two B-spline curves, vertically aligned
+            points1 = [App.Vector(0, 0, 0), App.Vector(5, 5, 0), App.Vector(10, 0, 0)]
+            bspline1 = Draft.makeBSpline(points1, closed=False)
+
+            points2 = [App.Vector(0, 0, 20), App.Vector(5, 5, 20), App.Vector(10, 0, 20)]
+            bspline2 = Draft.makeBSpline(points2, closed=False)
+
+            # Create a ruled surface (Loft)
+            loft = self.document.addObject("Part::Loft", "GenericVerticalLoft")
+            loft.Sections = [bspline1, bspline2]
+            loft.Solid = False
+            loft.Ruled = True
+            self.document.recompute()
+
+            comp = Arch.makeComponent(loft)
+            calc_loft = ArchComponent.AreaCalculator(comp)
+
+            generic_vertical_count = 0
+            for face in comp.Shape.Faces:
+                if calc_loft.isFaceVertical(face):
+                    generic_vertical_count += 1
+
+            self.assertEqual(
+                generic_vertical_count,
+                1,
+                f"Expected generic vertical surface to be detected as vertical, found {generic_vertical_count}",
+            )
+
         with self.subTest(case="Tapered Wedge"):
             wedge = self.document.addObject("Part::Wedge", "Wedge")
             wedge.Ymin = 0
