@@ -478,7 +478,7 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type) const
     static const std::initializer_list<Base::Type> typesWithEditor = {
         // These types have editors but not necessarily their subtypes.
 
-        // Allthough sublink properties have editors, they need the 3D view to
+        // Although sublink properties have editors, they need the 3D view to
         // select an object.  Because the dialog is modal, it is not possible
         // to make use of the 3D view, hence we do not provide an editor for
         // sublinks and their lists.  It is possible to create a property of
