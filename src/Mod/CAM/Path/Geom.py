@@ -109,7 +109,7 @@ def pointsCoincide(p1, p2, error=Tolerance):
 
 
 def edgesMatch(e0, e1, error=Tolerance):
-    """edgesMatch(e0, e1, [error=Tolerance]
+    """edgesMatch(e0, e1, [error=Tolerance])
     Return true if the edges start and end at the same point and have the same type of curve."""
     if type(e0.Curve) is not type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
         return False
@@ -117,6 +117,27 @@ def edgesMatch(e0, e1, error=Tolerance):
         pointsCoincide(e0.Vertexes[i].Point, e1.Vertexes[i].Point, error)
         for i in range(len(e0.Vertexes))
     )
+
+
+def edgesSimilar(e0, e1, error=Tolerance):
+    """edgesSimilar(e0, e1, [error=Tolerance])
+    The same as edgesMatch(), but edges can be flipped."""
+    if e0.hashCode() == e1.hashCode():
+        # edges absolutely identical
+        return True
+    if type(e0.Curve) is not type(e1.Curve) or len(e0.Vertexes) != len(e1.Vertexes):
+        return False
+    if not isRoughly(e0.Length, e1.Length, error):
+        return False
+    e0p1 = e0.Vertexes[0].Point
+    e0p2 = e0.Vertexes[-1].Point
+    e1p1 = e1.Vertexes[0].Point
+    e1p2 = e1.Vertexes[-1].Point
+    for i in range(2):
+        if pointsCoincide(e0p1, e1p1, error) and pointsCoincide(e0p2, e1p2, error):
+            return True
+        e1p1, e1p2 = e1p2, e1p1
+    return False
 
 
 def edgeConnectsTo(edge, vector, error=Tolerance):
