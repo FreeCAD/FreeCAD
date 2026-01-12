@@ -1424,12 +1424,12 @@ Wenn Null, ist er gleich Radius2</translation>
       <translation>Schnittmenge</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation>Parameter der booleschen Verknüpfung</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
@@ -1544,17 +1544,17 @@ Wenn Null, ist er gleich Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>Leere Körperliste</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>Die Körperliste darf nicht leer sein</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Akzeptieren: Eingabefehler</translation>
     </message>
@@ -4425,12 +4425,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Das verknüpfte Objekt ist kein Part-Design-Formelement</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>Form der "Spitze" ist leer</translation>
     </message>
@@ -4476,9 +4476,9 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Ergebnis hat mehrere Festkörper: aktiviere 'Verbund erlauben' im aktiven Körper.</translation>
     </message>
@@ -4493,22 +4493,22 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Nicht unterstützte boolesche Verknüpfung</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>Ein Block mit einer Gesamtlänge von Null kann nicht erstellt werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>Eine Vertiefung mit einer Gesamtlänge von null kann nicht erstellt werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Es wurde keine Extrusionsgeometrie erstellt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Die resultierende vereinigte Extrusion ist null.</translation>
     </message>
@@ -4516,7 +4516,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
@@ -4587,19 +4587,19 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
 - Die gewählte Skizze gehört nicht zum aktiven Körper.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Profilform konnte nicht ermittelt werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Erstellen fehlgeschlagen, weil die Richtung senkrecht auf dem Normalvektor der Skizze steht</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>Es konnte keine Fläche aus der Skizze erstellt werden</translation>
     </message>
@@ -4840,7 +4840,7 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
       <translation>Ausformung: Fehler beim Erstellen des Hüllkörpers</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
@@ -5080,7 +5080,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Referenzachse ist ungültig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Fusion with base feature failed</source>
       <translation>Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
     </message>

@@ -215,10 +215,15 @@ void ViewProvider::updateData(const App::Property* prop)
     }
     else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
         if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
-            previewExtension->updatePreview();
+            // Properties can be updated in batches, where some properties trigger other updates.
+            // We don't need to compute the preview for intermediate steps. Instead of updating
+            // the preview immediately (and potentially doing it multiple times in a row), we
+            // schedule the update to happen at a more convenient time.
+            if (auto* scheduler = Base::provideService<Part::PreviewUpdateScheduler>()) {
+                scheduler->schedulePreviewRecompute(getObject());
+            }
         }
     }
-
     inherited::updateData(prop);
 }
 

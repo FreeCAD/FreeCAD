@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation>Cote de l'angle</translation>
+      <translation>Insérer une cote angulaire</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Clip Group</source>
-      <translation>Groupe de rognage</translation>
+      <translation>Fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1340"/>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Add View To Clip Group</source>
-      <translation>Projeter une forme</translation>
+      <translation>Ajouter une vue à la fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Adds the selected view to a clip group</source>
-      <translation type="unfinished">Adds the selected view to a clip group</translation>
+      <translation>Ajoute la vue sélectionnée à une fenêtre de rognage</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Remove From Clip Group</source>
-      <translation type="unfinished">Remove From Clip Group</translation>
+      <translation>Supprimer une vue à la fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Removes a view based on the selected clip group</source>
-      <translation type="unfinished">Removes a view based on the selected clip group</translation>
+      <translation>Supprime une vue basée à la fenêtre de rognage.</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1364"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Insérer une cote</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1365"/>
@@ -472,7 +472,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1831"/>
       <source>Area Annotation</source>
-      <translation>Annotation de surface</translation>
+      <translation>Insérer une cote de surface</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1832"/>
@@ -3365,7 +3365,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
-      <translation>La page contient une vue BIM qui ne sera pas exportée. Continuer ?</translation>
+      <translation>La page contient une vue BIM qui ne sera pas exportée. Faut-il continuer ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
@@ -4401,7 +4401,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="93"/>
       <source>Crop to height</source>
-      <translation>Recadrer à une hauteur</translation>
+      <translation>Recadrer à la hauteur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="100"/>
@@ -4426,12 +4426,12 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="162"/>
       <source>Crop to width</source>
-      <translation>Recadrer à une largeur</translation>
+      <translation>Recadrer à la largeur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="169"/>
       <source>Crop image</source>
-      <translation>Recadrer une image</translation>
+      <translation>Redimensionner l'image</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="136"/>
@@ -5348,7 +5348,8 @@ extrémités plates ou carrées sont utiles pour utiliser les dessins comme guid
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
       <source>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</source>
-      <translation>Utilise un texte et des lignes clairs sur fond sombre et définit la couleur de la feuille sur une couleur sombre. Il est recommandé d'utiliser des polices transparentes ou de couleur claire avec cette option.</translation>
+      <translation>Utilise un texte et des lignes clairs sur fond sombre et définit la couleur de la feuille sur une couleur sombre. Il est recommandé d'utiliser des
+polices transparentes ou de couleur claire avec cette option.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="428"/>
@@ -5756,8 +5757,7 @@ pour les groupes de projection</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
       <source>Controls whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update with 3D&apos; parameter</source>
-      <translation>Contrôle si l'option « Maintenir les feuilles à jour » des feuilles
-peut remplacer le paramètre global « Mettre à jour avec la 3D ».</translation>
+      <translation>Permet ou pas à la propriété « Keep Updated» des feuilles de supplanter le paramètre global « Mettre à jour avec la 3D ».</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
@@ -7335,7 +7335,7 @@ par la valeur négative de la « Tolérance supérieure ».</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>Format specifier</source>
-      <translation>Spécificateur de format</translation>
+      <translation>Spécificateur du format</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
@@ -7350,12 +7350,12 @@ par la valeur négative de la « Tolérance supérieure ».</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="129"/>
       <source>Overtolerance format specifier</source>
-      <translation>Spécificateur de format de la tolérance supérieure</translation>
+      <translation>Spécificateur du format de la tolérance supérieure</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="122"/>
       <source>Undertolerance format specifier</source>
-      <translation>Spécificateur de format de la tolérance inférieure</translation>
+      <translation>Spécificateur du format de la tolérance inférieure</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="52"/>
@@ -7446,7 +7446,7 @@ Utilise les angles par défaut si cette option n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Override angles</source>
-      <translation>Remplacer des angles</translation>
+      <translation>Remplacer les angles</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="348"/>
@@ -9877,7 +9877,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1790"/>
       <source>Area Annotation</source>
-      <translation>Annotation de surface</translation>
+      <translation>Insérer une cote de surface</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1791"/>

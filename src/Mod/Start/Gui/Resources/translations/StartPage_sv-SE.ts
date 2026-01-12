@@ -63,87 +63,87 @@
   <context>
     <name>StartGui::StartView</name>
     <message>
-      <location filename="../../StartView.cpp" line="209"/>
+      <location filename="../../StartView.cpp" line="211"/>
       <source>Open File</source>
       <translation>Öppna fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="219"/>
+      <location filename="../../StartView.cpp" line="221"/>
       <source>Assembly</source>
       <translation>Montering</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>2D Draft</source>
       <translation>2D-släppning</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="224"/>
+      <location filename="../../StartView.cpp" line="226"/>
       <source>Creates a 2D Draft document</source>
       <translation>Skapar ett 2D-släppningsdokument</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="227"/>
+      <location filename="../../StartView.cpp" line="229"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arkitektur</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="204"/>
+      <location filename="../../StartView.cpp" line="206"/>
       <source>Empty File</source>
       <translation>Tom fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="205"/>
+      <location filename="../../StartView.cpp" line="207"/>
       <source>Creates a new empty FreeCAD file</source>
       <translation>Skapar en ny tom FreeCAD-fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="210"/>
+      <location filename="../../StartView.cpp" line="212"/>
       <source>Opens an existing CAD file or 3D model</source>
       <translation>Öppnar en befintlig CAD-fil eller 3D-modell</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="214"/>
+      <location filename="../../StartView.cpp" line="216"/>
       <source>Parametric Body</source>
       <translation>Parametrisk kropp</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="215"/>
+      <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
       <translation>Skapar en kropp med arbetsbänken Part Design</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="220"/>
+      <location filename="../../StartView.cpp" line="222"/>
       <source>Creates an assembly project</source>
       <translation>Skapar ett monteringsprojekt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="228"/>
+      <location filename="../../StartView.cpp" line="230"/>
       <source>Creates an architectural project</source>
       <translation>Skapar ett arkitektoniskt projekt</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="503"/>
+      <location filename="../../StartView.cpp" line="509"/>
       <source>New File</source>
       <translation>Ny fil</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="504"/>
+      <location filename="../../StartView.cpp" line="510"/>
       <source>Examples</source>
       <translation>Exempel</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="505"/>
+      <location filename="../../StartView.cpp" line="511"/>
       <source>Recent Files</source>
       <translation>Senaste filer</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="521"/>
+      <location filename="../../StartView.cpp" line="527"/>
       <source>Open First Start Setup</source>
       <translation>Öppna första startkonfigurationen</translation>
     </message>
     <message>
-      <location filename="../../StartView.cpp" line="522"/>
+      <location filename="../../StartView.cpp" line="528"/>
       <source>Do not show this Start page again (start with blank screen)</source>
       <translation>Visa inte denna startsida igen (börja med en tom skärm)</translation>
     </message>
@@ -151,7 +151,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../StartView.cpp" line="497"/>
+      <location filename="../../StartView.cpp" line="503"/>
       <source>Start</source>
       <translation>Start</translation>
     </message>

@@ -6029,12 +6029,12 @@ Continue?</source>
       <translation>交集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>删除复合体内容？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>复合体“%1”包含%2个子对象。您是否也要删除它们？</translation>
     </message>

@@ -2294,10 +2294,9 @@ workbench. </translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing and Part workbench integration.</translation>
+      <translation>Crea objetos paramétricos de Pieza (por ejemplo, Parte::Línea, Parte::Círculo). Las definiciones de bloques se importan como objetos reutilizables (Compuestos de Pieza) y las instancias se convierten en objetos App::Link, conservando la estructura de bloque. Es la opción ideal para el posprocesado basado en scripts y la integración con el banco de trabajo Pieza (Part).
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="151"/>
@@ -2322,9 +2321,7 @@ importadas como objetos reutilizables (componentes de partes) y las instancias s
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for importing and viewing very large files with maximum performance.</translation>
+      <translation>Fusiona toda la geometría por capa en una única forma no editable. Las estructuras de bloque no se conservan; su geometría pasa a formar parte de la forma de la capa. Es la opción ideal para importar y visualizar archivos muy grandes con el máximo rendimiento.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
@@ -2360,7 +2357,7 @@ en pies: 304.8</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="304"/>
       <source>If checked, point entities will be imported</source>
-      <translation type="unfinished">If checked, point entities will be imported</translation>
+      <translation>Si está marcada, las entidades de punto se importarán</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
@@ -2371,20 +2368,20 @@ en pies: 304.8</translation>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
       <source>If checked, entities from the paper space will also be imported. By default,
 only model space is imported</source>
-      <translation type="unfinished">If checked, entities from the paper space will also be imported. By default,
-only model space is imported</translation>
+      <translation>Si está marcada, también se importarán las entidades del espacio papel. Por defecto, solo se importa el espacio modelo.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="327"/>
       <source>Paper space objects</source>
-      <translation type="unfinished">Paper space objects</translation>
+      <translation>Objetos del espacio papel.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="340"/>
       <source>If checked, anonymous blocks (whose names begin with *) will also be imported.
 These are often used for hatches and dimensions</source>
-      <translation type="unfinished">If checked, anonymous blocks (whose names begin with *) will also be imported.
-These are often used for hatches and dimensions</translation>
+      <translation>Si está marcada, también se importarán los bloques anónimos (cuyos nombres comienzan con *). Estos se utilizan frecuentemente para sombreado (hatches) y cotas.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="344"/>
@@ -2401,7 +2398,7 @@ These are often used for hatches and dimensions</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="364"/>
       <source>Hatch boundaries</source>
-      <translation type="unfinished">Hatch boundaries</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="379"/>

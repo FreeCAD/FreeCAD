@@ -141,7 +141,7 @@
       <translation>Växla arrayelement</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Redigera bild</translation>
@@ -7974,12 +7974,12 @@ Kontrollera rapportvyn för mer information.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Detta system kör OpenGL %1.%2. FreeCAD kräver OpenGL 2.0 eller högre. Uppgradera grafikdrivrutinen och/eller kortet efter behov.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Ogiltig OpenGL-version</translation>
     </message>
@@ -8607,12 +8607,12 @@ Välj "Avbryt" för att avbryta</translation>
       <translation>Kan inte öppna din systemwebbläsare.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2562"/>
       <source>Out of memory</source>
       <translation>Slut på minne</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2563"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Det finns inte tillräckligt med minne för att visa datan.</translation>
     </message>
