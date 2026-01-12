@@ -141,7 +141,7 @@
       <translation>Tömbelemek váltása</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Kép szerkesztése</translation>
@@ -7967,12 +7967,12 @@ További részletekért kérjük, nézze meg a jelentés nézetet.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Ezen a rendszeren OpenGL %1.%2 fut. A FreeCAD-hez OpenGL 2.0 vagy magasabb verziószám szükséges. Szükség szerint frissítse grafikus illesztőprogramját és/vagy kártyáját.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Érvénytelen OpenGL verzió</translation>
     </message>
@@ -8600,12 +8600,12 @@ A 'Megszakítás' választásával megszakít</translation>
       <translation>Nem lehet megnyitni a rendszer böngészőt.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2562"/>
       <source>Out of memory</source>
       <translation>Kevés a memória</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2563"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nincs elég memória az adatok megjelenítéséhez.</translation>
     </message>

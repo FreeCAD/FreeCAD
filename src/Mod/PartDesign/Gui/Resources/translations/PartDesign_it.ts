@@ -699,7 +699,7 @@ in modo da evitare l'intersezione automatica.</translation>
     <message>
       <location filename="../../Command.cpp" line="1745"/>
       <source>Subtractive Helix</source>
-      <translation type="unfinished">Subtractive Helix</translation>
+      <translation>Elica sottrattiva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
@@ -1423,12 +1423,12 @@ Se zero, è uguale a Raggio2</translation>
       <translation>Comune</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation>Parametri booleani</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Rimuovi</translation>
     </message>
@@ -1543,17 +1543,17 @@ Se zero, è uguale a Raggio2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>La lista dei corpi è vuota</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>La lista dei corpi non può essere vuota</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Booleana: Accettare: errore di Input</translation>
     </message>
@@ -1733,12 +1733,12 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1359"/>
       <source>One sided</source>
-      <translation type="unfinished">One sided</translation>
+      <translation>Un lato</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1360"/>
       <source>Two sided</source>
-      <translation type="unfinished">Two sided</translation>
+      <translation>Due lati</translation>
     </message>
     <message>
       <location filename="../../TaskExtrudeParameters.cpp" line="1361"/>
@@ -4219,12 +4219,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Additive Features</source>
-      <translation type="unfinished">Additive Features</translation>
+      <translation>Funzioni additive</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>Subtractive Features</source>
-      <translation type="unfinished">Subtractive Features</translation>
+      <translation>Funzioni sottrattive</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
@@ -4420,12 +4420,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>L'oggetto collegato non è una funzione PartDesign</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>Forma punta vuota</translation>
     </message>
@@ -4471,9 +4471,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Il risultato ha più solidi: abilita 'Consenti Composta' nel corpo attivo.</translation>
     </message>
@@ -4488,22 +4488,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>Operazione booleana non supportata</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
       <source>No extrusion geometry was generated.</source>
       <translation type="unfinished">No extrusion geometry was generated.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4511,7 +4511,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma risultante non è un solido</translation>
     </message>
@@ -4583,19 +4583,19 @@ over 90: larger hole radius at the bottom</source>
   - lo schizzo selezionato non appartiene al corpo attivo.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Impossibile ottenere la forma del profilo</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Creazione fallita perché la direzione è ortogonale al vettore normale dello schizzo</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>Creazione di una faccia dallo schizzo fallita</translation>
     </message>
@@ -4836,7 +4836,7 @@ Intersecando entità di schizzo o più facce in uno schizzo non sono consentiti 
       <translation>Loft: Creazione della shell non riuscita</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Impossibile creare la faccia dallo schizzo.
@@ -5076,7 +5076,7 @@ L'intersezione delle entità dello schizzo in uno schizzo non è consentita.</tr
       <translation>Asse di riferimento non valido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Fusion with base feature failed</source>
       <translation>La fusione con la lavorazione di base è fallita</translation>
     </message>
