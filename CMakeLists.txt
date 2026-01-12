@@ -115,6 +115,10 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
     SetupBoost()
+
+    if(BUILD_BIM)
+        SetupLark()
+    endif()
 endif()
 
 if(BUILD_VR)

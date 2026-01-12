@@ -257,7 +257,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="371"/>
       <source>Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</source>
-      <translation type="unfinished">Sub-assembly children: the children of sub-assemblies will be included in the bill of materials</translation>
+      <translation>子裝配的子項目：唾字項 子項目從子裝配體的將被包含在這波材料中</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="377"/>
@@ -282,7 +282,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="404"/>
       <source>Any column (custom or not), can be deleted by pressing the Delete key</source>
-      <translation type="unfinished">Any column (custom or not), can be deleted by pressing the Delete key</translation>
+      <translation>未保存</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="406"/>
@@ -322,7 +322,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="161"/>
       <source>If the new document is not saved the new part cannot be linked in the assembly.</source>
-      <translation type="unfinished">If the new document is not saved the new part cannot be linked in the assembly.</translation>
+      <translation>如果新文件界沒有保存到本地，新模型不能聯加帶到組裝上。</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="78"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>大學寫字母是你需要替換爲真實值的變數。有關每個關係例子的其他細節在它的工具提示小組件。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>

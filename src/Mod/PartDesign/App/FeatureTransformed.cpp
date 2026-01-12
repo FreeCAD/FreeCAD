@@ -235,18 +235,33 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
 {
     const auto mode = static_cast<Mode>(TransformMode.getValue());
 
-    const auto makeCompoundOfToolShapes = [this]() {
+    const Part::Feature* supportFeature = getBaseObject();
+    const Part::TopoShape supportShape = supportFeature->Shape.getShape();
+
+    if (supportShape.isNull()) {
+        return App::DocumentObject::StdReturn;
+    }
+
+    gp_Trsf supportTransform = supportShape.getShape().Location().Transformation();
+
+    const auto makeCompoundOfToolShapes = [this, &supportTransform]() {
         BRep_Builder builder;
         TopoDS_Compound compound;
 
         builder.MakeCompound(compound);
         for (const auto& original : getOriginals()) {
             if (auto* feature = freecad_cast<FeatureAddSub*>(original)) {
-                const auto& shape = feature->AddSubShape.getShape();
+                auto shape = feature->AddSubShape.getShape();
+
+                gp_Trsf trsf = feature->getLocation().Transformation().Multiplied(
+                    supportTransform.Inverted()
+                );
 
                 if (shape.isNull()) {
                     continue;
                 }
+
+                shape = shape.makeElementTransform(trsf);
 
                 builder.Add(compound, shape.getShape());
             }
@@ -260,9 +275,14 @@ App::DocumentObjectExecReturn* Transformed::recomputePreview()
             PreviewShape.setValue(makeCompoundOfToolShapes());
             return StdReturn;
 
-        case Mode::WholeShape:
-            PreviewShape.setValue(getBaseShape());
+        case Mode::WholeShape: {
+            auto shape = getBaseTopoShape();
+            shape = shape.makeElementTransform(supportTransform.Inverted());
+
+            PreviewShape.setValue(shape.getShape());
+
             return StdReturn;
+        }
 
         default:
             return FeatureRefine::recomputePreview();
