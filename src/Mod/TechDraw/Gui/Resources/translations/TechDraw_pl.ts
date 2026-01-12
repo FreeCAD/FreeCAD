@@ -5789,7 +5789,7 @@ dla grup projektowych</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
       <source>Controls whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update with 3D&apos; parameter</source>
-      <translation>Określa, czy właściwość strony "Aktualizuj automatycznie” może nadpisywać globalny parametr "Aktualizuj za widokiem 3D".</translation>
+      <translation>Określa, czy właściwość strony "Włącz / wyłącz automatyczną aktualizację” może nadpisywać globalny parametr "Aktualizuj za widokiem 3D".</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>

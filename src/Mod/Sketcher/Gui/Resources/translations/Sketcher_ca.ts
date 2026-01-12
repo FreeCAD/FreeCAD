@@ -4587,7 +4587,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4742,7 +4742,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="156"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
@@ -4848,7 +4848,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <translation>Factor d'escala no vàlid. El factor d'escala ha de ser un nombre positiu.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
       <source>Failed to scale</source>
       <translation>No s'ha pogut escalar</translation>
     </message>
@@ -5394,7 +5394,7 @@ En el seu lloc, s'aplicaran restriccions d'igualtat entre els objectes originals
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="611"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
       <source>Keep original geometries (U)</source>
       <translation>Mantenir geometries originals (U)</translation>
     </message>
@@ -7781,17 +7781,17 @@ Els punts s’han d’establir més a prop que una cinquena part de l'espaiat de
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="176"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
       <source>%1 pick reference point</source>
       <translation>%1 tria el punt de referència</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 set scale factor</source>
       <translation>%1 estableix el factor d'escala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="244"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
       <source>Scale Parameters</source>
       <translation>Paràmetres d'escalat</translation>
     </message>

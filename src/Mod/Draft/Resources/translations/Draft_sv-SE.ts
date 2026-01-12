@@ -5921,7 +5921,7 @@ För att aktivera FreeCAD för att ladda ner dessa bibliotek, svara Ja.</transla
     <message>
       <location filename="../../InitGui.py" line="128"/>
       <source>&amp;Drafting</source>
-      <translation>&amp;Släppning</translation>
+      <translation>&amp;Drafting</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="130"/>
@@ -7942,7 +7942,7 @@ bortom dimensionslinjen</translation>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Släppning</translation>
+      <translation>Draft</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>

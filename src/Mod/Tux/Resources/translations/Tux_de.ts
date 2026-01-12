@@ -91,7 +91,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
       <source>Trackball</source>
-      <translation>Steuerkugel</translation>
+      <translation>Trackball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>

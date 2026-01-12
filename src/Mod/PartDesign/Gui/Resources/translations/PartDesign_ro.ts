@@ -1423,12 +1423,12 @@ If zero, it is equal to Radius2</translation>
       <translation>Intersecție</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation type="unfinished">Boolean Parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Elimină</translation>
     </message>
@@ -1543,17 +1543,17 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>Lista cu corpurile vide</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>Lista corpurilor nu poate fi goală</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Boolean: Accepta: eroare de intrare</translation>
     </message>
@@ -4423,12 +4423,12 @@ peste 90: rază mai mare la partea de jos</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>Obiectul legat nu este o caracteristică PartDesign</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>Forma bacșișului este goală</translation>
     </message>
@@ -4474,9 +4474,9 @@ peste 90: rază mai mare la partea de jos</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4491,22 +4491,22 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation type="unfinished">Unsupported boolean operation</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
       <source>No extrusion geometry was generated.</source>
       <translation type="unfinished">No extrusion geometry was generated.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4514,7 +4514,7 @@ peste 90: rază mai mare la partea de jos</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
       <source>Resulting shape is not a solid</source>
       <translation>Forma rezultată nu este solidă</translation>
     </message>
@@ -4586,19 +4586,19 @@ peste 90: rază mai mare la partea de jos</translation>
   - schița selectată nu aparține Organismului activ.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Nu s-a reușit obținerea formei profilului</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>Crearea a eșuat deoarece direcția este ortogonală pentru vectorul normal al schiței</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>Crearea unei fațete din schiță a eșuat</translation>
     </message>
@@ -4839,7 +4839,7 @@ Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu
       <translation type="unfinished">Loft: Failed to create shell</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Nu s-a putut crea fața din schiță.
@@ -5079,7 +5079,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
       <translation type="unfinished">Reference axis is invalid</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
       <source>Fusion with base feature failed</source>
       <translation>Fuziunea cu caracteristica de bază a eșuat</translation>
     </message>
