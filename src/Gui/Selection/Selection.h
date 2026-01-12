@@ -906,4 +906,3 @@ private:
 }  // namespace Gui
 
 #endif  // GUI_SELECTION_H
-
