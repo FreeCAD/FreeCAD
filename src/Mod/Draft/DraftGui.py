@@ -1720,7 +1720,9 @@ class DraftToolBar:
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.mask = val
                 if self.new_point is not None:
-                    self.new_point = FreeCADGui.Snapper.constrain(self.new_point, self.get_last_point())
+                    self.new_point = FreeCADGui.Snapper.constrain(
+                        self.new_point, self.get_last_point()
+                    )
 
     def changeXValue(self, d):
         if self.display_point_active:
