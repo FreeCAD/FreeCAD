@@ -83,53 +83,48 @@ class _CommandSelectLoop:
         return True
 
     def Activated(self):
-        from PathScripts.PathUtils import horizontalEdgeLoop, horizontalFaceLoop
-
-        if not FreeCADGui.Selection.getSelectionEx():
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if not selection:
             return
 
-        sel = FreeCADGui.Selection.getSelectionEx()[0]
+        sel = selection[0]
         if not sel.SubObjects:
             return
 
         obj = sel.Object
-        sub = sel.SubObjects
-        names = sel.SubElementNames
-        loop = None
+        subs = sel.SubObjects
+        subNames = sel.SubElementNames
+        edges = None
+        names = None
 
-        # Face selection
-        if "Face" in names[0]:
-            loop = horizontalFaceLoop(obj, sub[0], names)
-            if loop:
-                FreeCADGui.Selection.clearSelection()
-                FreeCADGui.Selection.addSelection(obj, loop)
-                return
+        if isinstance(subs[0], Part.Face):
+            # face(s) selected
+            if all(Path.Geom.isVertical(face) for face in subs):
+                names = horizontalFaceLoop(obj, subs, subNames)
 
-        elif "Edge" in names[0]:
-            if len(sub) == 1:
-                # One edge selected: searching horizontal edge loop
-                loop = horizontalEdgeLoop(obj, sub[0], verbose=True)
+        elif isinstance(subs[0], Part.Edge):
+            if len(subs) == 1:
+                # one edge selected: searching horizontal edge loop
+                edges = horizontalEdgeLoop(obj, subs[0])
+            else:
+                # two edges selected: searching wire in shape which contain both edges
+                edges = loopdetect(obj, subs[0], subs[1])
+                if not edges:
+                    # two edges selected: searching edges in tangency
+                    edges = tangentEdgeLoop(obj, subs[0], subs[1])
 
-            elif len(sub) >= 2:
-                # Two edges selected: searching wire in shape which contain both edges
-                loop = loopdetect(obj, sub[0], sub[1])
+            if not edges:
+                # searching any wire with first selected edge
+                edges = wiredetect(obj, subs[0])
 
-                if not loop:
-                    # Two edges selected: searching edges in tangency
-                    loop = tangentEdgeLoop(obj, sub[0])
-
-            if not loop:
-                # Searching any wire with first selected edge
-                loop = wiredetect(obj, names[0])
-
-        if isinstance(loop, list) and len(loop) > 0 and isinstance(loop[0], Part.Edge):
-            # Select edges from list
+        if edges and not names:
+            hashList = [e.hashCode() for e in edges]
             objEdges = obj.Shape.Edges
+            names = [f"Edge{i + 1}" for i, e in enumerate(objEdges) if e.hashCode() in hashList]
+
+        if names:
             FreeCADGui.Selection.clearSelection()
-            for el in loop:
-                for eo in objEdges:
-                    if eo.hashCode() == el.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
+            FreeCADGui.Selection.addSelection(obj, names)
             return
 
         Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
