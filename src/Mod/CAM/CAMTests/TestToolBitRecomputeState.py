@@ -13,6 +13,7 @@ import FreeCAD
 from CAMTests.PathTestUtils import PathTestWithAssets
 from Path.Tool.toolbit import ToolBitEndmill
 
+
 class TestToolBitRecomputeState(PathTestWithAssets):
     """Test toolbit recompute state handling (issue #26652)"""
 
@@ -38,7 +39,7 @@ class TestToolBitRecomputeState(PathTestWithAssets):
         # set initial diameter
         obj.Diameter = FreeCAD.Units.Quantity("5 mm")
         self.doc.recompute()
-        
+
         # now set expression without unit - this triggers issue #26652
         obj.setExpression("Diameter", "5")
         self.doc.recompute()
@@ -46,6 +47,5 @@ class TestToolBitRecomputeState(PathTestWithAssets):
         # after recompute, toolbit should not be in touched state
         self.assertFalse(
             "Touched" in obj.State,
-            "Toolbit with unitless expression should not be touched after recompute"
+            "Toolbit with unitless expression should not be touched after recompute",
         )
-
