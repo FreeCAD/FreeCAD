@@ -214,7 +214,7 @@ void ViewProvider::updateData(const App::Property* prop)
         updatePreview();
     }
     else if (auto* previewExtension = getObject()->getExtensionByType<Part::PreviewExtension>(true)) {
-        if (!previewExtension->isPreviewFresh() && isEditing()) {
+        if (isPreviewEnabled() && !previewExtension->isPreviewFresh() && isEditing()) {
             // Properties can be updated in batches, where some properties trigger other updates.
             // We don't need to compute the preview for intermediate steps. Instead of updating
             // the preview immediately (and potentially doing it multiple times in a row), we
