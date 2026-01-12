@@ -1171,7 +1171,7 @@ std::string SelectionSingleton::_SelObj::getSubString() const
     if (!SubName.empty()) {
         if (!elementName.oldName.empty() && !elementName.newName.empty()) {
             return "'" + SubName.substr(0, SubName.size() - elementName.newName.size())
-               + elementName.oldName + "'";
+                + elementName.oldName + "'";
         }
         else {
             return "'" + SubName + "'";
@@ -1467,7 +1467,7 @@ bool SelectionSingleton::addSelections(
         temp.x = 0;
         temp.y = 0;
         temp.z = 0;
-    
+
         if (!logDisabled && !temp.SubName.empty()) {
             temp.logged = true;
             if (anyLogged) {
