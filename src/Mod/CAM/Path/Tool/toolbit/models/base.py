@@ -869,9 +869,6 @@ class ToolBit(Asset, ABC):
             Path.Log.debug(f"Processing queued visual update for {self.obj.Label}")
             self._update_visual_representation()
 
-            # clear the touched state since visual updates shouldn't require recompute
-            self.obj.purgeTouched()
-
             # Clean up the observer
             if hasattr(self, "_recompute_observer"):
                 FreeCAD.removeDocumentObserver(self._recompute_observer)
@@ -916,6 +913,9 @@ class ToolBit(Asset, ABC):
                 f" '{self._tool_bit_shape.name}': {e}"
             )
             raise
+
+        # clear the touched state since visual updates shouldn't require recompute
+        self.obj.purgeTouched()
 
     def to_dict(self):
         """
