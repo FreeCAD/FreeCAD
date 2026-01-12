@@ -425,14 +425,6 @@ void Application::setupPythonException(PyObject* module)
 //**************************************************************************
 // Interface
 
-/// get called by the document when the name is changing
-void Application::renameDocument(const char *OldName, const char *NewName)
-{
-    (void)OldName;
-    (void)NewName;
-    throw Base::RuntimeError("Renaming document internal name is no longer allowed!");
-}
-
 Document* Application::newDocument(const char * proposedName, const char * proposedLabel, DocumentInitFlags CreateFlags)
 {
     bool isUsingDefaultName = Base::Tools::isNullOrEmpty(proposedName);
@@ -1308,11 +1300,11 @@ Base::Reference<ParameterGrp>  Application::GetParameterGroupByPath(const char* 
     return It->second->GetGroup(cName.c_str());
 }
 
-void Application::addImportType(const char* Type, const char* ModuleName)
+void Application::addImportType(const char* filter, const char* moduleName)
 {
     FileTypeItem item;
-    item.filter = Type;
-    item.module = ModuleName;
+    item.filter = filter;
+    item.module = moduleName;
 
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
@@ -1325,7 +1317,7 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 
     // Due to branding stuff replace "FreeCAD" with the branded application name
-    if (strncmp(Type, "FreeCAD", 7) == 0) {
+    if (strncmp(filter, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
         item.filter = std::move(AppName);
@@ -1337,26 +1329,26 @@ void Application::addImportType(const char* Type, const char* ModuleName)
     }
 }
 
-void Application::changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+void Application::changeImportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mImportTypes) {
-        if (it.filter == Type && it.module == OldModuleName) {
-            it.module = NewModuleName;
+        if (it.filter == filter && it.module == oldModuleName) {
+            it.module = newModuleName;
             break;
         }
     }
 }
 
-std::vector<std::string> Application::getImportModules(const char* Type) const
+std::vector<std::string> Application::getImportModules(const char* extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
+            if (strcasecmp(extension, jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt.c_str()) == 0)
+            if (_stricmp(extension, jt.c_str()) == 0)
 #endif
                 modules.push_back(it.module);
         }
@@ -1405,16 +1397,16 @@ std::vector<std::string> Application::getImportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getImportFilters(const char* extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
+            if (strcasecmp(extension,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt.c_str()) == 0)
+            if (_stricmp(extension,jt.c_str()) == 0)
 #endif
                 moduleFilter[it.filter] = it.module;
         }
@@ -1433,11 +1425,11 @@ std::map<std::string, std::string> Application::getImportFilters() const
     return filter;
 }
 
-void Application::addExportType(const char* Type, const char* ModuleName)
+void Application::addExportType(const char* filter, const char* moduleName)
 {
     FileTypeItem item;
-    item.filter = Type;
-    item.module = ModuleName;
+    item.filter = filter;
+    item.module = moduleName;
 
     // Extract each filetype from 'Type' literal
     std::string::size_type pos = item.filter.find("*.");
@@ -1450,7 +1442,7 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
 
     // Due to branding stuff replace "FreeCAD" with the branded application name
-    if (strncmp(Type, "FreeCAD", 7) == 0) {
+    if (strncmp(filter, "FreeCAD", 7) == 0) {
         std::string AppName = Config()["ExeName"];
         AppName += item.filter.substr(7);
         item.filter = std::move(AppName);
@@ -1462,26 +1454,26 @@ void Application::addExportType(const char* Type, const char* ModuleName)
     }
 }
 
-void Application::changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName)
+void Application::changeExportModule(const char* filter, const char* oldModuleName, const char* newModuleName)
 {
     for (auto& it : _mExportTypes) {
-        if (it.filter == Type && it.module == OldModuleName) {
-            it.module = NewModuleName;
+        if (it.filter == filter && it.module == oldModuleName) {
+            it.module = newModuleName;
             break;
         }
     }
 }
 
-std::vector<std::string> Application::getExportModules(const char* Type) const
+std::vector<std::string> Application::getExportModules(const char* extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
+            if (strcasecmp(extension,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt.c_str()) == 0)
+            if (_stricmp(extension,jt.c_str()) == 0)
 #endif
                 modules.push_back(it.module);
         }
@@ -1530,16 +1522,16 @@ std::vector<std::string> Application::getExportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getExportFilters(const char* extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
 #ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
+            if (strcasecmp(extension,jt.c_str()) == 0)
 #else
-            if (_stricmp(Type,jt.c_str()) == 0)
+            if (_stricmp(extension,jt.c_str()) == 0)
 #endif
                 moduleFilter[it.filter] = it.module;
         }
@@ -2889,7 +2881,6 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
 
 void Application::processCmdLineFiles()
 {
-    // process files passed to command line
     const std::list<std::string> files = getCmdLineFiles();
     const std::list<std::string> processed = processFiles(files);
 
