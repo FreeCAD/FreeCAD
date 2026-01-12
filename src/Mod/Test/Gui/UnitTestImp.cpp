@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "FCGlobal.h"
+
 #include <QFontMetrics>
 #include <QMessageBox>
 #include <QClipboard>
@@ -194,7 +196,7 @@ void UnitTestDialog::onCopyButtonClicked()
     QString text;
     QTreeWidgetItemIterator it(ui->treeViewFailure);
     while (*it) {
-        text += (*it)->data(0, Qt::UserRole).toString() + "\n\n";
+        text += (*it)->data(0, Qt::UserRole).toString() + QStringLiteral("\n\n");
         ++it;
     }
     if (text.isEmpty()) {

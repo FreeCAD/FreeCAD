@@ -313,10 +313,10 @@
   <tabstop>comboTests</tabstop>
   <tabstop>startButton</tabstop>
   <tabstop>treeViewFailure</tabstop>
+  <tabstop>copyButton</tabstop>
   <tabstop>helpButton</tabstop>
   <tabstop>aboutButton</tabstop>
   <tabstop>closeButton</tabstop>
-  <tabstop>copyButton</tabstop>
  </tabstops>
  <resources/>
  <connections>
