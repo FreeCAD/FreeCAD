@@ -1452,6 +1452,10 @@ bool SelectionSingleton::addSelections(
         temp.y = 0;
         temp.z = 0;
 
+        if (!logDisabled) {
+            temp.log(false, false);
+        }
+
         _SelList.push_back(temp);
         _SelStackForward.clear();
 
@@ -3149,3 +3153,4 @@ void SelectionSingleton::setClarifySelectionActive(bool active)
 {
     clarifySelectionActive = active;
 }
+
