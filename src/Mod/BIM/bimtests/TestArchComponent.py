@@ -452,3 +452,62 @@ class TestArchComponent(TestArchBase.TestArchBase):
 
         final_area = wall.VerticalArea.Value
         self.assertEqual(final_area, 0.0, f"VerticalArea must update to zero, found {final_area}")
+
+    def test_complex_composite_area(self):
+        """
+        Integration test: verify that AreaCalculator correctly sums areas from
+        mixed geometry types (planar, cylindrical, and generic) within a single object,
+        while correctly ignoring horizontal faces.
+        """
+        import Part
+        from math import pi
+
+        # Create planar geometry (Box)
+        # 10x10x10 box.
+        # 4 Vertical faces = 10 * 10 * 4 = 400.
+        # 2 Horizontal faces (Top/Bottom) should be ignored.
+        box = Part.makeBox(10, 10, 10)
+        box.translate(App.Vector(0, 0, 0))
+        expected_box_v_area = 400.0
+
+        # Create cylindrical geometry (Cylinder)
+        # Radius 5, Height 10.
+        # 1 Vertical Face = 2 * pi * r * h = 100 * pi.
+        # 2 Horizontal faces (caps) should be ignored.
+        cyl = Part.makeCylinder(5, 10)
+        cyl.translate(App.Vector(20, 0, 0))
+        expected_cyl_v_area = 100 * pi
+
+        # Create generic geometry (Ruled Surface / Loft)
+        # Reuse the B-Spline logic that triggers the fallback projection path
+        points1 = [App.Vector(40, 0, 0), App.Vector(45, 5, 0), App.Vector(50, 0, 0)]
+        bspline1 = Draft.makeBSpline(points1, closed=False)
+        points2 = [App.Vector(40, 0, 10), App.Vector(45, 5, 10), App.Vector(50, 0, 10)]
+        bspline2 = Draft.makeBSpline(points2, closed=False)
+
+        loft = self.document.addObject("Part::Loft", "IntegrationLoft")
+        loft.Sections = [bspline1, bspline2]
+        loft.Solid = False
+        loft.Ruled = True
+        self.document.recompute()
+
+        # The entire loft is a vertical surface, so we take its total area.
+        expected_loft_v_area = loft.Shape.Area
+
+        # Combine into an Arch Component using a compound to simulate a complex single object
+        compound_shape = Part.makeCompound([box, cyl, loft.Shape])
+
+        complex_obj = Arch.makeComponent(compound_shape, name="ComplexStructure")
+
+        # Execute calculation
+        complex_obj.Proxy.computeAreas(complex_obj)
+
+        # Verify
+        total_expected = expected_box_v_area + expected_cyl_v_area + expected_loft_v_area
+
+        self.assertAlmostEqual(
+            complex_obj.VerticalArea.Value,
+            total_expected,
+            places=3,
+            msg=f"Failed to aggregate vertical areas of mixed types. Expected {total_expected}, got {complex_obj.VerticalArea.Value}",
+        )
