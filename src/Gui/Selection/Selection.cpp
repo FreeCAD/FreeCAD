@@ -3178,4 +3178,3 @@ void SelectionSingleton::setClarifySelectionActive(bool active)
 {
     clarifySelectionActive = active;
 }
-
