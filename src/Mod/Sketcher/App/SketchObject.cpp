@@ -4598,6 +4598,10 @@ int SketchObject::addSymmetric(
             }
             // Note bspline has symmetric by the internal aligned circles.
         }
+
+        if (newconstrVals.size() > constrvals.size()) {
+            Constraints.setValues(std::move(newconstrVals));
+        }
     }
 
     // we delayed update, so trigger it now.
