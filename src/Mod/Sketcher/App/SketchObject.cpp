@@ -4377,7 +4377,7 @@ int SketchObject::addSymmetric(
     bool refIsAxisAligned = refGeoId == Sketcher::GeoEnum::VAxis
         || refGeoId == Sketcher::GeoEnum::HAxis || !refIsLine
         || std::ranges::any_of(constrvals, [&refGeoId](auto* constr) {
-                                return constr->First == refGeoId
+                                return constr->getElement(0).GeoId == refGeoId
                                     && (constr->Type == Sketcher::Vertical
                                         || constr->Type == Sketcher::Horizontal);
                             });
@@ -4390,7 +4390,7 @@ int SketchObject::addSymmetric(
 
         for (auto* constr : constrvals) {
             // we look in the map, because we might have skipped internal alignment geometry
-            auto firstIt = geoIdMap.find(constr->First);
+            auto firstIt = geoIdMap.find(constr->getElement(0).GeoId);
 
             if (firstIt == geoIdMap.end()) {
                 continue;
@@ -4403,7 +4403,8 @@ int SketchObject::addSymmetric(
                 continue;
             }
 
-            if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
+            if (constr->getElement(1).GeoId == GeoEnum::GeoUndef  //
+                /*&& constr->getElement(2).GeoId == GeoEnum::GeoUndef*/) {
                 if (refIsAxisAligned
                     && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)) {
                     // In this case we want to keep the Vertical, Horizontal constraints.
@@ -4423,14 +4424,16 @@ int SketchObject::addSymmetric(
                 }
                 Constraint* constNew = constr->copy();
                 constNew->Name = "";
-                constNew->First = firstIt->second;
+                GeoElementId rep = constr->getElement(0);
+                rep.GeoId = firstIt->second;
+                constNew->setElement(0, rep);
                 newconstrVals.push_back(constNew);
 
                 continue;
             }
 
             // other geoids intervene in this constraint
-            auto secondIt = geoIdMap.find(constr->Second);
+            auto secondIt = geoIdMap.find(constr->getElement(1).GeoId);
 
             if (secondIt == geoIdMap.end()) {
                 continue;
@@ -4438,22 +4441,19 @@ int SketchObject::addSymmetric(
 
             // Second is also in the list
 
-            auto flipStartEndIfRelevant = [&isStartEndInverted](
-                                              int geoId,
-                                              const Sketcher::PointPos posId,
-                                              Sketcher::PointPos& posIdNew
-                                          ) {
-                if (isStartEndInverted[geoId]) {
-                    if (posId == Sketcher::PointPos::start) {
-                        posIdNew = Sketcher::PointPos::end;
+            auto flipStartEndIfRelevant =
+                [&isStartEndInverted](GeoElementId geId, Sketcher::PointPos& posIdNew) {
+                    if (isStartEndInverted[geId.GeoId]) {
+                        if (geId.Pos == Sketcher::PointPos::start) {
+                            posIdNew = Sketcher::PointPos::end;
+                        }
+                        else if (geId.Pos == Sketcher::PointPos::end) {
+                            posIdNew = Sketcher::PointPos::start;
+                        }
                     }
-                    else if (posId == Sketcher::PointPos::end) {
-                        posIdNew = Sketcher::PointPos::start;
-                    }
-                }
-            };
+                };
 
-            if (constr->Third == GeoEnum::GeoUndef) {
+            if (constr->getElement(2).GeoId == GeoEnum::GeoUndef) {
                 if (!(constr->Type == Sketcher::Coincident        //
                       || constr->Type == Sketcher::Perpendicular  //
                       || constr->Type == Sketcher::Parallel       //
@@ -4468,10 +4468,14 @@ int SketchObject::addSymmetric(
 
                 Constraint* constNew = constr->copy();
                 constNew->Name = "";
-                constNew->First = firstIt->second;
-                constNew->Second = secondIt->second;
-                flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
-                flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
+                auto rep0 = constNew->getElement(0);
+                auto rep1 = constNew->getElement(1);
+                rep0.GeoId = firstIt->second;
+                rep1.GeoId = secondIt->second;
+                flipStartEndIfRelevant(constr->getElement(0), rep0.Pos);
+                flipStartEndIfRelevant(constr->getElement(1), rep1.Pos);
+                constNew->setElement(0, rep0);
+                constNew->setElement(1, rep1);
 
                 if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
                     AutoLockTangencyAndPerpty(constNew, true);
@@ -4486,7 +4490,7 @@ int SketchObject::addSymmetric(
             }
 
             // three GeoIds intervene in constraint
-            auto thirdIt = geoIdMap.find(constr->Third);
+            auto thirdIt = geoIdMap.find(constr->getElement(2).GeoId);
 
             if (thirdIt == geoIdMap.end()) {
                 continue;
@@ -4495,12 +4499,18 @@ int SketchObject::addSymmetric(
             // Third is also in the list
             Constraint* constNew = constr->copy();
             constNew->Name = "";
-            constNew->First = firstIt->second;
-            constNew->Second = secondIt->second;
-            constNew->Third = thirdIt->second;
-            flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
-            flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
-            flipStartEndIfRelevant(constr->Third, constr->ThirdPos, constNew->ThirdPos);
+            auto rep0 = constNew->getElement(0);
+            auto rep1 = constNew->getElement(1);
+            auto rep2 = constNew->getElement(2);
+            rep0.GeoId = firstIt->second;
+            rep1.GeoId = secondIt->second;
+            rep2.GeoId = thirdIt->second;
+            flipStartEndIfRelevant(constr->getElement(0), rep0.Pos);
+            flipStartEndIfRelevant(constr->getElement(1), rep1.Pos);
+            flipStartEndIfRelevant(constr->getElement(2), rep2.Pos);
+            constNew->setElement(0, rep0);
+            constNew->setElement(1, rep1);
+            constNew->setElement(2, rep2);
             newconstrVals.push_back(constNew);
         }
 
@@ -4521,19 +4531,16 @@ int SketchObject::addSymmetric(
             [&](int first, int second, Sketcher::PointPos firstPos, Sketcher::PointPos secondPos) {
                 auto* symConstr = new Constraint();
                 symConstr->Type = Symmetric;
-                symConstr->First = first;
-                symConstr->Second = second;
-                symConstr->Third = refGeoId;
-                symConstr->FirstPos = firstPos;
-                symConstr->SecondPos = secondPos;
-                symConstr->ThirdPos = refPosId;
+                symConstr->setElement(0, GeoElementId {first, firstPos});
+                symConstr->setElement(1, GeoElementId {second, secondPos});
+                symConstr->setElement(2, GeoElementId {refGeoId, refPosId});
                 newconstrVals.push_back(symConstr);
             };
         auto createEqualityConstr = [&](int first, int second) {
             auto* symConstr = new Constraint();
             symConstr->Type = Equal;
-            symConstr->First = first;
-            symConstr->Second = second;
+            symConstr->setElement(0, GeoElementId {first});
+            symConstr->setElement(1, GeoElementId {second});
             newconstrVals.push_back(symConstr);
         };
 
@@ -4625,9 +4632,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(
         // only add if the corresponding geometry it defines is also in the list.
         const auto& constraints = Constraints.getValues();
         auto constrIt = std::ranges::find_if(constraints, [&geoId](auto* c) {
-            return c->Type == Sketcher::InternalAlignment && c->First == geoId;
+            return c->Type == Sketcher::InternalAlignment && c->getElement(0).GeoId == geoId;
         });
-        int definedGeo = (constrIt == constraints.end()) ? GeoEnum::GeoUndef : (*constrIt)->Second;
+        int definedGeo = (constrIt == constraints.end()) ? GeoEnum::GeoUndef
+                                                         : (*constrIt)->getElement(1).GeoId;
         // Return true if definedGeo is in geoIdList, false otherwise
         return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
     };
