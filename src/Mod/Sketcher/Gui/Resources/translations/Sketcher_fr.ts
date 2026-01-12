@@ -2851,9 +2851,10 @@ Cela nécessite de re-rentrer en mode édition pour que cela prenne effet.</tran
 'Never': Automatic scaling upon first dimension is never performed.
 'When no scale feature is visible': Automatic scaling upon first dimension is only performed if there are no visible objects in the 3D view.</source>
       <translation>Sélectionner le mode de mise à l'échelle automatique de la géométrie lors de la première contrainte :
-« Toujours » : la mise à l'échelle automatique lors de la première contrainte est toujours effectuée.
-« Jamais » : la mise à l'échelle automatique lors de la première contrainte n'est jamais effectuée.
-« Lorsque aucune fonction de mise à l'échelle n'est visible » : la mise à l'échelle automatique lors de la première contrainte n'est effectuée que s'il n'y a aucun objet visible dans la vue 3D.</translation>
+- « Toujours » : la mise à l'échelle automatique lors de la première contrainte est toujours effectuée.
+- « Jamais » : la mise à l'échelle automatique lors de la première contrainte n'est jamais effectuée.
+- « Lorsque aucune fonction de mise à l'échelle n'est visible » : la mise à l'échelle automatique lors de la première contrainte n'est effectuée
+que s'il n'y a aucun objet visible dans la vue 3D.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="332"/>
@@ -3591,37 +3592,37 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="116"/>
       <source>Executes a recomputation of active document after every sketch action</source>
-      <translation>Exécute un recalcul du document actif après chaque modification de l'esquisse</translation>
+      <translation>Exécute un recalcul du document actif après chaque modification de l'esquisse.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="62"/>
       <source>Click to select these conflicting constraints.</source>
-      <translation>Cliquez pour sélectionner les contraintes en conflit.</translation>
+      <translation>Cliquer pour sélectionner les contraintes en conflit</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="43"/>
       <source>Sketch Edit</source>
-      <translation>Modification d'une esquisse</translation>
+      <translation>Degrés de liberté de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="65"/>
       <source>Click to select these redundant constraints.</source>
-      <translation>Cliquez pour sélectionner les contraintes redondantes.</translation>
+      <translation>Cliquer pour sélectionner les contraintes redondantes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="68"/>
       <source>The sketch has unconstrained elements giving rise to those Degrees Of Freedom. Click to select these unconstrained elements.</source>
-      <translation>L'esquisse contient des éléments non contraints, donnant naissance à ces degrés de liberté. Cliquez pour sélectionner les éléments non contraints.</translation>
+      <translation>L'esquisse comporte des éléments non contraints qui créent ces degrés de liberté. Cliquer pour sélectionner ces éléments non contraints.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="72"/>
       <source>Click to select these malformed constraints.</source>
-      <translation>Cliquez pour sélectionner les contraintes défectueuses.</translation>
+      <translation>Cliquer pour sélectionner les contraintes défectueuses</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="76"/>
       <source>Some constraints in combination are partially redundant. Click to select these partially redundant constraints.</source>
-      <translation>Certaines contraintes combinées sont partiellement redondantes. Cliquez pour sélectionner ces contraintes partiellement redondantes.</translation>
+      <translation>Certaines contraintes combinées sont partiellement redondantes. Cliquer pour sélectionner ces contraintes partiellement redondantes.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherMessages.cpp" line="115"/>
@@ -3644,7 +3645,8 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
       <source>Highlights open and non-manifold vertices that could lead to errors if the sketch is used to generate solids. This is purely based on the topological shape of the sketch and not on its geometry/constraint set.</source>
-      <translation>Met en évidence les sommets ouverts et non-manifold qui pourraient entraîner des erreurs si l'esquisse est utilisée pour générer des solides. Cela repose uniquement sur la forme topologique de l'esquisse et non sur sa géométrie/ses contraintes.</translation>
+      <translation>Met en évidence les sommets ouverts et non-manifold qui pourraient entraîner des erreurs si l'esquisse est utilisée pour générer des solides.
+Cela repose uniquement sur la forme topologique de l'esquisse et non sur sa géométrie/ses contraintes.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="41"/>
@@ -4594,7 +4596,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4749,7 +4751,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="156"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
@@ -4855,7 +4857,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Facteur d'échelle non valide. Le facteur d'échelle doit être un nombre positif.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
       <source>Failed to scale</source>
       <translation>Impossible de mettre à l'échelle</translation>
     </message>
@@ -5401,7 +5403,7 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="611"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
       <source>Keep original geometries (U)</source>
       <translation>Garder les géométries d'origine (U)</translation>
     </message>
@@ -7791,17 +7793,17 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="176"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
       <source>%1 pick reference point</source>
       <translation>%1 Sélectionner un point de référence</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 set scale factor</source>
       <translation>%1 Définir un facteur d'échelle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="244"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
       <source>Scale Parameters</source>
       <translation>Paramètres de la mise à l'échelle</translation>
     </message>

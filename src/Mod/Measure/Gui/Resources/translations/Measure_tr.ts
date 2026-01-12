@@ -116,7 +116,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="273"/>
       <source>Diameter: %1</source>
-      <translation type="unfinished">Diameter: %1</translation>
+      <translation>Çap: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="276"/>
@@ -126,43 +126,43 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="279"/>
       <source>Minimum distance: %1</source>
-      <translation type="unfinished">Minimum distance: %1</translation>
+      <translation>Minimum mesafe: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="283"/>
       <source>Minimum distance: %1, Axis distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Axis distance: %2</translation>
+      <translation>Minimum mesafe: %1, Eksen mesafesi: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="289"/>
       <source>Minimum distance: %1, Center distance: %2</source>
-      <translation type="unfinished">Minimum distance: %1, Center distance: %2</translation>
+      <translation>Minimum mesafe: %1, Merkez mesafesi: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="296"/>
       <location filename="../../QuickMeasure.cpp" line="313"/>
       <source>Total length: %1, Center distance: %2</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2</translation>
+      <translation>Toplam uzunluk: %1, Merkez mesafesi: %2</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="303"/>
       <source>Total length: %1, Center distance: %2, Axis angle: %3</source>
-      <translation type="unfinished">Total length: %1, Center distance: %2, Axis angle: %3</translation>
+      <translation>Toplam uzunluk: %1, Merkez mesafesi: %2, Eksen açısı: %3</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="318"/>
       <source>Center surface distance: %1</source>
-      <translation type="unfinished">Center surface distance: %1</translation>
+      <translation>Merkez yüzey mesafesi: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="323"/>
       <source>Center axis distance: %1</source>
-      <translation type="unfinished">Center axis distance: %1</translation>
+      <translation>Merkez eksen mesafesi: %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="326"/>
       <source>Center axis distance: %1, Axis angle: %2</source>
-      <translation type="unfinished">Center axis distance: %1, Axis angle: %2</translation>
+      <translation>Merkez eksen mesafesi: %1, Eksen açısı: %2</translation>
     </message>
   </context>
   <context>
@@ -178,13 +178,13 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>&amp;Ölçüm</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <location filename="../../Command.cpp" line="54"/>
       <source>Measure a feature</source>
-      <translation type="unfinished">Measure a feature</translation>
+      <translation>Bir özelliği ölçün</translation>
     </message>
   </context>
   <context>
@@ -192,32 +192,32 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="67"/>
       <source>Measurement</source>
-      <translation type="unfinished">Measurement</translation>
+      <translation>Ölçüm</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="88"/>
       <source>Show Delta:</source>
-      <translation type="unfinished">Show Delta:</translation>
+      <translation>Deltayı göster:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="94"/>
       <source>Auto Save</source>
-      <translation type="unfinished">Auto Save</translation>
+      <translation>Otomatik Kaydet</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="98"/>
       <source>Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</source>
-      <translation type="unfinished">Auto saving of the last measurement when starting a new measurement. Use the Shift key to temporarily invert the behaviour.</translation>
+      <translation>Yeni bir ölçüme başlarken son ölçümün otomatik olarak kaydedilmesi. Bu davranışı geçici olarak tersine çevirmek için Shift tuşunu kullanın.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="103"/>
       <source>Additive Selection</source>
-      <translation type="unfinished">Additive Selection</translation>
+      <translation>Seçime ekle</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="109"/>
       <source>If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</source>
-      <translation type="unfinished">If checked, new selection will be added to the measurement. If unchecked, the Ctrl key must be pressed to add a selection to the current measurement otherwise a new measurement will be started</translation>
+      <translation>İşaretlenirse, yeni seçim ölçüme eklenecektir. İşaretlenmezse, mevcut ölçüme bir seçim eklemek için Ctrl tuşuna basılması gerekir, aksi takdirde yeni bir ölçüm başlatılacaktır.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
@@ -232,17 +232,17 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>Kip:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>Sonuç:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
       <source>Saves the measurement in the active document</source>
-      <translation type="unfinished">Saves the measurement in the active document</translation>
+      <translation>Ölçümü aktif belgeye kaydeder.</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="203"/>
@@ -252,7 +252,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="204"/>
       <source>Close the measurement task.</source>
-      <translation type="unfinished">Close the measurement task.</translation>
+      <translation>Ölçüm fonksiyonunu kapatın</translation>
     </message>
   </context>
   <context>
@@ -278,7 +278,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="123"/>
       <source>Distance Free</source>
-      <translation type="unfinished">Distance Free</translation>
+      <translation>Serbest mesafe</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="131"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Konum</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="155"/>

@@ -6051,12 +6051,12 @@ Continue?</source>
       <translation>Перасячэнне</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Ці выдаліць змест злучэння?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>У злучэнні '%1' ёсць даччыныя аб'екты '%2'.
 Ці выдаліць іх?</translation>

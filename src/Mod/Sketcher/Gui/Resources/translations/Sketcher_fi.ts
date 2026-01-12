@@ -4600,7 +4600,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4755,7 +4755,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="156"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
@@ -4861,7 +4861,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation type="unfinished">Invalid scale factor. Scale factor must be a positive number.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
       <source>Failed to scale</source>
       <translation>Skaalaaminen ei onnistu</translation>
     </message>
@@ -5407,7 +5407,7 @@ Sen sijaan kopiot ja alkuperäiset rajoitetaan yhteneviksi.</translation>
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="611"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
       <source>Keep original geometries (U)</source>
       <translation>Säilytä alkuperäiset geometriat (U)</translation>
     </message>
@@ -7794,17 +7794,17 @@ Pisteen täyty olla lähempänä kuin ruudukkovälin viidesosa, jotta tarttumine
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="176"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
       <source>%1 pick reference point</source>
       <translation type="unfinished">%1 pick reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 set scale factor</source>
       <translation type="unfinished">%1 set scale factor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="244"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
       <source>Scale Parameters</source>
       <translation type="unfinished">Scale Parameters</translation>
     </message>

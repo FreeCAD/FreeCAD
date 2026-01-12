@@ -141,7 +141,7 @@
       <translation>Uključi/Isključi umnožene elemente</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Uredi sliku</translation>
@@ -7969,12 +7969,12 @@ Za više detalja pogledaj Pregledač objava.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Ovaj sistem koristi OpenGL %1.%2. FreeCAD zahteva OpenGL 2.0 ili noviji. Ažuriraj svoj grafički drajver i/ili karticu.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Pogrešna OpenGL verzija</translation>
     </message>
@@ -8602,12 +8602,12 @@ Izaberi „Prekini“ da bi prekinuo</translation>
       <translation>Ne mogu otvoriti vaš sistemski pregledač.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2562"/>
       <source>Out of memory</source>
       <translation>Nema dovoljno memorije</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2563"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nema dovoljno memorije za prikazivanje podataka.</translation>
     </message>
