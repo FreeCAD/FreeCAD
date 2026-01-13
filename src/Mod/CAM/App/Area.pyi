@@ -61,10 +61,6 @@ class Area(BaseClass):
         """Make a list of area holding the sectioned children shapes on given heights."""
         ...
 
-    def getClearedArea(self) -> Any:
-        """Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox."""
-        ...
-
     def getRestArea(self) -> Any:
         """Rest machining: Gets the area left to be machined, assuming some of this area has already been cleared by previous tool paths."""
         ...

@@ -260,7 +260,7 @@ public:
         const TopoDS_Shape& plane = TopoDS_Shape()
     );
 
-    std::shared_ptr<Area> getClearedArea(
+    static std::shared_ptr<Area> getClearedArea(
         const Toolpath* path,
         double diameter,
         double zmax,
