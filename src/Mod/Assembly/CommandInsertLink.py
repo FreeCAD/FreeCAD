@@ -205,6 +205,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     def buildPartList(self):
         self.form.partList.clear()
+        self.doc_item_map.clear()
 
         docList = App.listDocuments().values()
 
