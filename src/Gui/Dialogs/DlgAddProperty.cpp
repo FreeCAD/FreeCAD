@@ -335,7 +335,7 @@ void DlgAddProperty::initializeTypes()
 
 
     const auto addSeparator = [this]() {
-        ui->comboBoxType->addItem("──────────────────────");
+        ui->comboBoxType->addItem(QStringLiteral("──────────────────────"));
         const int idx = ui->comboBoxType->count() - 1;
         ui->comboBoxType->setItemData(idx, true, TypeItemModel::SeparatorRole);
     };
