@@ -620,7 +620,6 @@ void ExtrusionHelper::makeElementDraft(
             for (auto& innerWire : wires) {
                 ExtrusionParameters innerParams = params;
 
-                // count edges and if it's a circle and partDesign object, then don't flip the angle
                 int numEdges = 0;
                 TopExp_Explorer xp(innerWire.getShape(), TopAbs_EDGE);
                 while (xp.More()) {
