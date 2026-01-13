@@ -130,6 +130,7 @@ if(DOXYGEN_FOUND)
     # Exclude directories (not relevant, legacy or deprecated)
     set(DOXYGEN_EXCLUDE_DIR_LIST
         "${CMAKE_SOURCE_DIR}/src/Tools"
+        "${CMAKE_SOURCE_DIR}/src/Doc/legacy"
         "${CMAKE_SOURCE_DIR}/src/Mod/Complete"
     )
     list(JOIN DOXYGEN_EXCLUDE_DIR_LIST " " DOXYGEN_EXCLUDE)
