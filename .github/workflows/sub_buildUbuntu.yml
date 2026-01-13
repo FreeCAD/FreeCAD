@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Ubuntu 22.04 using GCC.
+# This workflow aims at building and testing FreeCAD on Ubuntu 24.04 using GCC.
 
-name: Build Ubuntu 22.04
+name: Build Ubuntu 24.04
 
 on:
   workflow_call:
@@ -47,7 +47,7 @@ on:
 jobs:
 
   Build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
@@ -94,7 +94,8 @@ jobs:
           sudo apt-get update -y -qq
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
-          python3 -m pip install ifcopenshell==0.8.2
+          python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
+          python3 -m pip install pyside6==6.4.2 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
