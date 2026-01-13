@@ -115,6 +115,17 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         if hasattr(obj, "RetractMode"):
             obj.removeProperty("RetractMode")
 
+        # Migration: Remove RetractHeight property and adjust StartDepth if needed
+        if hasattr(obj, "RetractHeight"):
+            # If RetractHeight was higher than StartDepth, migrate to StartDepth
+            if obj.RetractHeight.Value > obj.StartDepth.Value:
+                Path.Log.warning(
+                    f"Migrating RetractHeight ({obj.RetractHeight.Value}) to StartDepth. "
+                    f"Old StartDepth was {obj.StartDepth.Value}"
+                )
+                obj.StartDepth = obj.RetractHeight.Value
+            obj.removeProperty("RetractHeight")
+
         if not hasattr(obj, "KeepToolDown"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -122,7 +133,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 "Drill",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                    "Apply G99 retraction: only retract to StartDepth between holes in this operation",
                 ),
             )
 
@@ -171,15 +182,6 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             ),
         )
         obj.addProperty(
-            "App::PropertyDistance",
-            "RetractHeight",
-            "Drill",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The height where cutting feed rate starts and retract height for peck operation",
-            ),
-        )
-        obj.addProperty(
             "App::PropertyEnumeration",
             "ExtraOffset",
             "Drill",
@@ -191,7 +193,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             "Drill",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Apply G99 retraction: only retract to RetractHeight between holes in this operation",
+                "Apply G99 retraction: only retract to StartDepth between holes in this operation",
             ),
         )
         obj.addProperty(
@@ -208,6 +210,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         """circularHoleExecute(obj, holes) ... generate drill operation for each hole in holes."""
         Path.Log.track()
         machinestate = PathMachineState.MachineState()
+        # We should be at clearance height.
 
         mode = "G99" if obj.KeepToolDown else "G98"
 
@@ -243,6 +246,8 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
 
         # Make sure tool is at a clearance height
         command = Path.Command("G0", {"Z": obj.ClearanceHeight.Value})
+        machinestate.addCommand(command)
+
         # machine.addCommand(command)
         self.commandlist.append(command)
 
@@ -286,13 +291,16 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             repeat = 1  # technical debt:  Add a repeat property for user control
             chipBreak = obj.ChipBreakEnabled and obj.PeckEnabled
 
+            # Save Z position before canned cycle for G98 retract
+            z_before_cycle = machinestate.Z
+
             try:
                 drillcommands = drill.generate(
                     edge,
                     dwelltime,
                     peckdepth,
                     repeat,
-                    obj.RetractHeight.Value,
+                    obj.StartDepth.Value,
                     chipBreak=chipBreak,
                     feedRetract=obj.FeedRetractEnabled,
                 )
@@ -310,28 +318,20 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 machinestate.addCommand(command)
 
             # Update Z position based on RetractMode
-            # G98: retract to initial Z (ClearanceHeight)
-            # G99: retract to R parameter (RetractHeight)
+            # G98: retract to initial Z (Z before cycle started)
+            # G99: retract to R parameter (StartDepth)
             if mode == "G98":
-                machinestate.Z = obj.ClearanceHeight.Value
+                machinestate.Z = z_before_cycle
             else:  # G99
-                machinestate.Z = obj.RetractHeight.Value
+                machinestate.Z = obj.StartDepth.Value
 
         # Apply feedrates to commands
         PathFeedRate.setFeedRate(self.commandlist, obj.ToolController)
 
     def opSetDefaultValues(self, obj, job):
-        """opSetDefaultValues(obj, job) ... set default value for RetractHeight"""
+        """opSetDefaultValues(obj, job) ... set default values for drilling operation"""
         obj.ExtraOffset = "None"
         obj.KeepToolDown = False  # default to safest option: G98
-
-        if hasattr(job.SetupSheet, "RetractHeight"):
-            obj.RetractHeight = job.SetupSheet.RetractHeight
-        elif self.applyExpression(obj, "RetractHeight", "StartDepth+SetupSheet.SafeHeightOffset"):
-            if not job:
-                obj.RetractHeight = 10
-            else:
-                obj.RetractHeight.Value = obj.StartDepth.Value + 1.0
 
         if hasattr(job.SetupSheet, "PeckDepth"):
             obj.PeckDepth = job.SetupSheet.PeckDepth
@@ -352,7 +352,6 @@ def SetupProperties():
     setup.append("DwellEnabled")
     setup.append("AddTipLength")
     setup.append("ExtraOffset")
-    setup.append("RetractHeight")
     setup.append("KeepToolDown")
     return setup
 
