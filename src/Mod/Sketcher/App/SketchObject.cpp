@@ -4401,7 +4401,6 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
                 double start, end;
                 arc->getRange(start, end, true);
                 arc->setRange(start + Precision::Angular(), end, true);
-
             }
         }
     }
