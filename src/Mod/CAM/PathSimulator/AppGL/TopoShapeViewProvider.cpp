@@ -22,72 +22,67 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
+#include "TopoShapeViewProvider.h"
 
-#include "MillMotion.h"
-#include "EndMill.h"
-#include "linmath.h"
-#include "MillPathLine.h"
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSwitch.h>
+#include <Mod/Part/App/TopoShape.h>
 
 namespace CAMSimulator
 {
 
-enum MotionType
+TopoShapeViewProvider::TopoShapeViewProvider()
 {
-    MTVertical = 0,
-    MTHorizontal,
-    MTCurved
-};
+    pcSwitch = new SoSwitch;
+    pcRoot->addChild(pcSwitch);
 
-class MillPathSegment
+    setShapeVisible(true);
+}
+
+TopoShapeViewProvider& TopoShapeViewProvider::operator=(TopoShapeViewProvider&& vp)
 {
-public:
-    /// <summary>
-    /// Create a mill path segment primitive
-    /// </summary>
-    /// <param name="endmill">Mill object</param>
-    /// <param name="from">Start point</param>
-    /// <param name="to">End point</param>
-    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
-    virtual ~MillPathSegment();
+    clear();
 
-    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
-    virtual void render(int substep);
-    virtual void GetHeadPosition(vec3 headPos);
-    static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
+    pcShape = vp.pcShape;
+    if (pcShape) {
+        pcSwitch->addChild(pcShape);
+    }
 
-public:
-    const EndMill* endmill = nullptr;
-    bool isMultyPart;
-    int numSimSteps;
-    int indexInArray = -1;
-    int segmentIndex = -1;
+    vp.clear();
 
-protected:
-    mat4x4 mShearMat;
-    Shape mShape;
-    float mXYDistance;
-    float mXYZDistance;
-    float mZDistance;
-    float mXYAngle;
-    float mStartAngRad;
-    float mStepAngRad;
-    float mStepDistance = 0;
-    float mSweepAng;
-    float mRadius = 0;
-    float mArcDir = 0;
-    bool mSmallRad = false;
-    int mStepNumber = 0;
+    return *this;
+}
 
-    static float mSmallRadStep;
-    static float mResolution;
+void TopoShapeViewProvider::clear()
+{
+    if (!pcShape) {
+        return;
+    }
 
-    vec3 mDiff;
-    vec3 mStepLength = {0};
-    vec3 mCenter = {0};
-    vec3 mStartPos;
-    vec3 mHeadPos = {0};
-    MotionType mMotionType;
-};
+    pcSwitch->removeChild(pcShape);
+    pcShape = nullptr;
+}
 
-}  // namespace CAMSimulator
+void TopoShapeViewProvider::setShape(const Part::TopoShape& shape)
+{
+    clear();
+
+    // create SoNode from TopoShape
+
+    std::stringstream s;
+    shape.exportFaceSet(0.1f, 0.0f, {}, s);
+
+    const auto str = s.str();
+    SoInput in;
+    in.setBuffer(str.data(), str.length());
+
+    SoDB::read(&in, pcShape);
+    pcSwitch->addChild(pcShape);
+}
+
+void TopoShapeViewProvider::setShapeVisible(bool b)
+{
+    pcSwitch->whichChild = b ? SO_SWITCH_ALL : SO_SWITCH_NONE;
+}
+
+} /* namespace CAMSimulator */

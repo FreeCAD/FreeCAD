@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #pragma once
+
 #include <vector>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct MillPathPosition
@@ -29,4 +30,4 @@ protected:
     int mNumVerts;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

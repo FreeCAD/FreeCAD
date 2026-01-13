@@ -31,8 +31,9 @@
 #define PROFILE_BUFFER_SIZE(npoints) (PROFILE_BUFFER_POINTS(npoints) * 2)
 #define MILL_HEIGHT 10
 
-namespace MillSim
+namespace CAMSimulator
 {
+
 class EndMill
 {
 public:
@@ -50,9 +51,10 @@ public:
     EndMill(const std::vector<float>& toolProfile, int toolid, float diameter);
     virtual ~EndMill();
     void GenerateDisplayLists(float quality);
-    unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape);
+    unsigned int GenerateArcSegmentDL(float radius, float angleRad, float zShift, Shape* retShape) const;
 
 protected:
     void MirrorPointBuffer();
 };
-}  // namespace MillSim
+
+}  // namespace CAMSimulator

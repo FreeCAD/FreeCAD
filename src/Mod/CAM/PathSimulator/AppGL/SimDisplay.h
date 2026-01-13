@@ -24,18 +24,25 @@
 
 #pragma once
 
+#include <vector>
+#include <random>
+#include <algorithm>
+#include <cmath>
+#include <numbers>
+
+#include <Inventor/SbVec3f.h>
+#include <Inventor/SbRotation.h>
+
 #include "GlUtils.h"
 #include "Shader.h"
 #include "StockObject.h"
 #include "MillPathLine.h"
-#include <vector>
-#include <random>
-#include <algorithm>
 
-namespace MillSim
+class SoCamera;
+class SoPerspectiveCamera;
+
+namespace CAMSimulator
 {
-
-constexpr auto pi = std::numbers::pi_v<float>;
 
 struct Point3D
 {
@@ -49,7 +56,6 @@ public:
     void InitGL();
     void CleanGL();
     void CleanFbos();
-    void PrepareDisplay(const vec3& objCenter);
     void PrepareFrameBuffer();
     void StartDepthPass();
     void StartGeometryPass(const vec3& objColor, bool invertNormals);
@@ -60,19 +66,13 @@ public:
     void RenderResultStandard();
     void RenderResultSSAO(bool recalculate);
     void SetupLinePathPass(int curSegment, bool isHidden);
-    void TiltEye(float tiltStep);
-    void RotateEye(float rotStep);
-    void MoveEye(float x, float z);
-    void MoveEyeCenter();
-    void UpdateEyeFactor(float factor);
     void UpdateWindowScale(int width, int height);
+    void UpdateCamera(const SoCamera& camera);
 
-    void UpdateProjection();
-    float GetEyeFactor();
+    void SetPathColor(const vec3& normal, const vec3& rapid);
 
 public:
     bool updateDisplay = false;
-    float maxFar = 100;
     bool displayInitiated = false;
 
 protected:
@@ -84,21 +84,25 @@ protected:
     void UniformHemisphere(vec3& randVec);
     void UniformCircle(vec3& randVec);
 
+private:
+    void UpdateCameraView(const SoCamera& camera);
+    void UpdateCameraProjection(const SoCamera& camera);
+
+    void UpdateViewMatrix();
+    void UpdateProjectionMatrix();
+
 protected:
     // shaders
     Shader shader3D, shaderInv3D, shaderFlat, shaderSimFbo;
     Shader shaderGeom, shaderSSAO, shaderSSAOLighting, shaderSSAOBlur;
     Shader shaderGeomCloser;
     Shader shaderLinePath;
+
     vec3 lightColor = {0.5f, 0.6f, 0.7f};
     vec3 lightPos = {20.0f, 20.0f, 10.0f};
     vec3 ambientCol = {0.2f, 0.2f, 0.25f};
     vec4 pathLineColor = {0.0f, 0.9f, 0.0f, 1.0};
     vec3 pathLineColorPassed = {0.9f, 0.3f, 0.3f};
-
-    vec3 eye = {0, 100, 40};
-    vec3 target = {0, 0, 0};
-    vec3 upvec = {0, 0, 1};
 
     mat4x4 mMatLookAt;
     StockObject mlightObject;
@@ -109,17 +113,15 @@ protected:
     std::mt19937 generator;
     std::uniform_real_distribution<float> distr01;
 
-    float mEyeDistance = 30;
-    float mEyeRoration = 0;
-    float mEyeInclination = pi / 6;  // 30 degree
-    float mEyeStep = pi / 36;        // 5 degree
+    bool mCameraPerspective = true;
+    float mCameraHeightAngle = std::numbers::pi / 4;
+    float mCameraHeight = 100.0f;
+    float mCameraNearDistance = 1.0f;
+    float mCameraFarDistance = 100.0f;
+    float mMaxStockDimension = 100.0f;
 
-    float mMaxStockDim = 100;
-    float mEyeDistFactor = 0.0f;
-    float mEyeXZFactor = 0.01f;
-    float mEyeXZScale = 0;
-    float mEyeX = 0.0f;
-    float mEyeZ = 0.0f;
+    SbVec3f mCameraPosition;
+    SbRotation mCameraOrientation;
 
     // base frame buffer
     unsigned int mFbo = 0;
@@ -139,4 +141,4 @@ protected:
     unsigned int mFboRandTexture = 0;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator

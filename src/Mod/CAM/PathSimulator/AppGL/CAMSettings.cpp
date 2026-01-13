@@ -22,72 +22,56 @@
  *                                                                         *
  ***************************************************************************/
 
-#pragma once
+#include "PreCompiled.h"
 
-#include "MillMotion.h"
-#include "EndMill.h"
-#include "linmath.h"
-#include "MillPathLine.h"
+#include <string_view>
+
+#include "CAMSettings.h"
+#include "DlgCAMSimulator.h"
+
+using namespace std::literals;
 
 namespace CAMSimulator
 {
 
-enum MotionType
+CAMSettings::CAMSettings(ParameterGrp::handle hGrp, DlgCAMSimulator& dlg)
+    : hGrp(hGrp)
+    , mDlg(dlg)
 {
-    MTVertical = 0,
-    MTHorizontal,
-    MTCurved
-};
+    hGrp->Attach(this);
+}
 
-class MillPathSegment
+CAMSettings::~CAMSettings()
 {
-public:
-    /// <summary>
-    /// Create a mill path segment primitive
-    /// </summary>
-    /// <param name="endmill">Mill object</param>
-    /// <param name="from">Start point</param>
-    /// <param name="to">End point</param>
-    MillPathSegment(const EndMill& endmill, const MillMotion& from, const MillMotion& to);
-    virtual ~MillPathSegment();
+    hGrp->Detach(this);
+}
 
-    virtual void AppendPathPoints(std::vector<MillPathPosition>& pointsBuffer);
-    virtual void render(int substep);
-    virtual void GetHeadPosition(vec3 headPos);
-    static float SetQuality(float quality, float maxStockDimension);  // 1 minimum, 10 maximum
+void CAMSettings::applySettings()
+{
+    OnChange(*hGrp, "DefaultNormalPathColor");
+    OnChange(*hGrp, "DefaultRapidPathColor");
+}
 
-public:
-    const EndMill* endmill = nullptr;
-    bool isMultyPart;
-    int numSimSteps;
-    int indexInArray = -1;
-    int segmentIndex = -1;
+void CAMSettings::OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason)
+{
+    if (Reason == "DefaultNormalPathColor"sv || Reason == "DefaultRapidPathColor"sv) {
 
-protected:
-    mat4x4 mShearMat;
-    Shape mShape;
-    float mXYDistance;
-    float mXYZDistance;
-    float mZDistance;
-    float mXYAngle;
-    float mStartAngRad;
-    float mStepAngRad;
-    float mStepDistance = 0;
-    float mSweepAng;
-    float mRadius = 0;
-    float mArcDir = 0;
-    bool mSmallRad = false;
-    int mStepNumber = 0;
+        const unsigned long lcol
+            = hGrp->GetUnsigned("DefaultNormalPathColor", 11141375UL);  // dark green (0,170,0)
+        float lr, lg, lb;
+        lr = ((lcol >> 24) & 0xff) / 255.0;
+        lg = ((lcol >> 16) & 0xff) / 255.0;
+        lb = ((lcol >> 8) & 0xff) / 255.0;
 
-    static float mSmallRadStep;
-    static float mResolution;
+        const unsigned long rcol
+            = hGrp->GetUnsigned("DefaultRapidPathColor", 2852126975UL);  // dark red (170,0,0)
+        float rr, rg, rb;
+        rr = ((rcol >> 24) & 0xff) / 255.0;
+        rg = ((rcol >> 16) & 0xff) / 255.0;
+        rb = ((rcol >> 8) & 0xff) / 255.0;
 
-    vec3 mDiff;
-    vec3 mStepLength = {0};
-    vec3 mCenter = {0};
-    vec3 mStartPos;
-    vec3 mHeadPos = {0};
-    MotionType mMotionType;
-};
+        mDlg.setPathColor(QColor::fromRgbF(lr, lg, lb), QColor::fromRgbF(rr, rg, rb));
+    }
+}
 
 }  // namespace CAMSimulator
