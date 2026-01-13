@@ -4,12 +4,6 @@ set -euo pipefail
 # Update package lists quietly
 sudo apt-get update -qq
 
-if apt-cache show libvtk9-dev >/dev/null 2>&1; then
-  vtk_dev="libvtk9-dev"
-else
-  vtk_dev="libvtk7-dev"
-fi
-
 packages=(
   ccache
   cmake
@@ -35,13 +29,10 @@ packages=(
   libopencv-dev
   libproj-dev
   libpcl-dev
-  libpyside2-dev
-  libqt5opengl5-dev
-  libqt5svg5-dev
-  libqt5x11extras5-dev
-  libshiboken2-dev
+  libqt6opengl6-dev
+  libqt6svg6-dev
   libspnav-dev
-  ${vtk_dev}
+  libvtk9-dev
   libx11-dev
   libxerces-c-dev
   libyaml-cpp-dev
@@ -50,8 +41,6 @@ packages=(
   netgen-headers
   ninja-build
   occt-draw
-  pyqt5-dev-tools
-  pyside2-tools
   python3-dev
   python3-defusedxml
   python3-git
@@ -62,14 +51,10 @@ packages=(
   python3-pivy
   python3-ply
   python3-pybind11
-  python3-pyside2.qtcore
-  python3-pyside2.qtgui
-  python3-pyside2.qtnetwork
-  python3-pyside2.qtsvg
-  python3-pyside2.qtwidgets
-  qtbase5-dev
-  qttools5-dev
-  shiboken2
+  qt6-base-dev
+  qt6-l10n-tools
+  qt6-tools-dev
+  qt6-tools-dev-tools
   swig
   xvfb
 )
