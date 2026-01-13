@@ -4389,6 +4389,21 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
 
     std::vector<Part::Geometry*> symgeos = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
+    // Perturb geometry to avoid numerical singularities in the solver (Jacobian Rank).
+    // If geometry is "perfect", the solver cannot distinguish between the derivative
+    // of a Symmetry constraint and an Equal constraint, flagging one as redundant.
+    // see https://github.com/FreeCAD/FreeCAD/issues/13551
+    // This does not happen with other arcs types.
+    if (addSymmetryConstraints) {
+        for (auto* geo : symgeos) {
+            if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(geo)) {
+                double start, end;
+                arc->getRange(start, end, true);
+                arc->setRange(start + Precision::Angular(), end, true);
+            }
+        }
+    }
+
     {
         addGeometry(symgeos);
 
