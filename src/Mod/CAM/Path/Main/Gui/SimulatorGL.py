@@ -294,11 +294,17 @@ class CAMSimulation:
         self.job = j
         form.listOperations.clear()
         self.operations = []
+        noVisibleOp = all(
+            not op.Visibility for op in j.Operations.OutList if PathUtil.opProperty(op, "Active")
+        )
         for op in j.Operations.OutList:
             if PathUtil.opProperty(op, "Active"):
                 listItem = QtGui.QListWidgetItem(op.ViewObject.Icon, op.Label)
                 listItem.setFlags(listItem.flags() | QtCore.Qt.ItemIsUserCheckable)
-                listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                if op.Visibility or noVisibleOp:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Checked)
+                else:
+                    listItem.setCheckState(QtCore.Qt.CheckState.Unchecked)
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
