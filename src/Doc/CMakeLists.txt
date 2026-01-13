@@ -75,8 +75,8 @@ if(DOXYGEN_FOUND)
     set(DOXYGEN_PROJECT_NUMBER "${PACKAGE_VERSION}${PACKAGE_VERSION_SUFFIX}")
 
     # Doxygen project assets, layout, HTML templates, stylesheets and extra files
-    set(DOXYGEN_PROJECT_LOGO "")
-    set(DOXYGEN_PROJECT_ICON "")
+    set(DOXYGEN_PROJECT_LOGO "${CMAKE_CURRENT_BINARY_DIR}/templates/FreeCAD-wordmark-light.svg")
+    set(DOXYGEN_PROJECT_ICON "${CMAKE_CURRENT_BINARY_DIR}/templates/favicon.svg")
 
     set(DOXYGEN_IMAGE_PATH "${CMAKE_SOURCE_DIR}/src/Gui/Icons")
     set(DOXYGEN_LAYOUT_FILE "${CMAKE_SOURCE_DIR}/src/Doc/FreecadDoxygenLayout.xml")
