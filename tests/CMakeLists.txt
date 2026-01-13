@@ -12,14 +12,14 @@ set(CMAKE_AUTOMOC ON)
 
 # With BUILD_DYNAMIC_LINK_PYTHON OFF the FreeCAD libraries do not link against Python: they
 # resolve the Python symbols at load time from the executable hosting them. A test runner must
-# therefore keep libpython in its own link, but the linker discards a library the executable
-# itself never references, so force a reference to one Python symbol.
+# therefore keep libpython in its own link. GNU ld's default --as-needed drops a library nothing
+# on the link line references yet (and ignores -u for that decision), so disable it here.
 function(keep_python_linked _target)
     if(NOT BUILD_DYNAMIC_LINK_PYTHON)
         if(APPLE)
             target_link_options(${_target} PRIVATE "LINKER:-u,_PyBaseObject_Type")
         elseif(UNIX)
-            target_link_options(${_target} PRIVATE "LINKER:-u,PyBaseObject_Type")
+            target_link_options(${_target} PRIVATE "LINKER:--no-as-needed")
         endif()
     endif()
 endfunction()
