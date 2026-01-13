@@ -42,6 +42,8 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
 #include <Inventor/elements/SoGLCoordinateElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoLineWidthElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
@@ -67,6 +69,33 @@ struct SoBrepEdgeSet::SelContext: Gui::SoFCSelectionContextEx
     std::vector<int32_t> hl, sl;
 };
 
+static void renderOverlayLines(
+    SoGLRenderAction* action,
+    SoIndexedLineSet* lineSet,
+    const int32_t* indices,
+    int numIndices,
+    const SbColor& color
+)
+{
+    if (!action || !lineSet || !indices || numIndices <= 0) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    SoLazyElement::setEmissive(state, &color);
+    uint32_t packedColor = color.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, lineSet, 1, &packedColor, false);
+
+    lineSet->coordIndex.setValues(0, numIndices, indices);
+    lineSet->GLRender(action);
+
+    state->pop();
+}
+
 void SoBrepEdgeSet::initClass()
 {
     SO_NODE_INIT_CLASS(SoBrepEdgeSet, SoIndexedLineSet, "IndexedLineSet");
@@ -77,6 +106,23 @@ SoBrepEdgeSet::SoBrepEdgeSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepEdgeSet);
+    SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
+    SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
+    SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
+    SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
+
+    highlightCoordIndex.setNum(0);
+    selectionCoordIndex.setNum(0);
+    overlayLineSet = new SoIndexedLineSet;
+    overlayLineSet->ref();
+}
+
+SoBrepEdgeSet::~SoBrepEdgeSet()
+{
+    if (overlayLineSet) {
+        overlayLineSet->unref();
+        overlayLineSet = nullptr;
+    }
 }
 
 void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
@@ -349,6 +395,28 @@ void SoBrepEdgeSet::GLRender(SoGLRenderAction* action)
         renderHighlight(action, ctx);
     }
     // #endif
+
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    const int hlNum = highlightCoordIndex.getNum();
+    if (hlNum > 0) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            highlightCoordIndex.getValues(0),
+            hlNum,
+            highlightColor.getValue()
+        );
+    }
+    const int selNum = selectionCoordIndex.getNum();
+    if (selNum > 0) {
+        renderOverlayLines(
+            action,
+            overlayLineSet,
+            selectionCoordIndex.getValues(0),
+            selNum,
+            selectionColor.getValue()
+        );
+    }
 }
 
 void SoBrepEdgeSet::GLRenderBelowPath(SoGLRenderAction* action)
