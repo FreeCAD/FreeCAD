@@ -206,6 +206,9 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
         Component.setProperties(self, obj)
 
+        # Add features from the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
+
     def setProperties(self, obj):
         """Give the component its component specific properties, such as material.
 
@@ -377,6 +380,9 @@ class Component(ArchIFC.IfcProduct):
             The component object.
         """
         Component.setProperties(self, obj)
+
+        # Add features from the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
 
     def execute(self, obj):
         """Method run when the object is recomputed.

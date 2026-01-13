@@ -164,8 +164,6 @@ class _Equipment(ArchComponent.Component):
             obj.IfcType = "Furnishing Element"
         else:
             obj.IfcType = "Building Element Proxy"
-        # Add features in the SketchArch External Add-on, if present
-        self.addSketchArchFeatures(obj)
 
     def setProperties(self, obj):
 
@@ -220,9 +218,6 @@ class _Equipment(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj)
-
-        # Add features in the SketchArch External Add-on, if present
-        self.addSketchArchFeatures(obj)
 
     def loads(self, state):
 

@@ -113,9 +113,6 @@ class _Window(ArchComponent.Component):
         obj.IfcType = "Window"
         obj.MoveWithHost = True
 
-        # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj)
-
     def setProperties(self, obj, mode=None):
 
         lp = obj.PropertiesList
@@ -295,9 +292,6 @@ class _Window(ArchComponent.Component):
 
         ArchComponent.Component.onDocumentRestored(self, obj)
         self.setProperties(obj, mode="ODR")
-
-        # Add features in the SketchArch External Add-on
-        self.addSketchArchFeatures(obj, mode="ODR")
 
         # During the v1.1 dev cycle an experiment with a new SillHeight handling was
         # undertaken. This did not work out as intended and was therefore reverted.

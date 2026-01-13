@@ -273,14 +273,14 @@ class Arch_Wall:
         elif self.baseline_mode == WallBaselineMode.SKETCH:
             import ArchSketchObject
 
-            if not hasattr(ArchSketchObject, "makeArchSketch"):
-                # Regular path without SketchArch add-on installed. Execute creation command with a
-                # suggested name. FreeCAD will ensure uniqueness.
+            if not ArchSketchObject.is_installed():
+                # Regular path (Common): Standard Sketcher object.
                 FreeCADGui.doCommand(
-                    "base = FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
+                    "FreeCAD.ActiveDocument.addObject('Sketcher::SketchObject', 'WallTrace')"
                 )
             else:
-                # Use ArchSketch if SketchArch add-on is present
+                # Add-on path: ArchSketch object.
+                # The module must be imported in the console scope for the command to run.
                 FreeCADGui.doCommand("import ArchSketchObject")
                 FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
 
