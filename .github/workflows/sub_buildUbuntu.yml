@@ -95,7 +95,6 @@ jobs:
           sudo apt-get install -y -qq python3-pip
           python3 -m pip install --upgrade pip
           python3 -m pip install ifcopenshell==0.8.2 --break-system-packages
-          python3 -m pip install pyside6==6.4.2 --break-system-packages
 
       - name: Make needed directories, files and initializations
         id: Init
