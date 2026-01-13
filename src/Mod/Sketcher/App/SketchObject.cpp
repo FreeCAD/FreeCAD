@@ -4394,6 +4394,7 @@ int SketchObject::addSymmetric(const std::vector<int>& geoIdList, int refGeoId,
     // If geometry is "perfect", the solver cannot distinguish between the derivative
     // of a Symmetry constraint and an Equal constraint, flagging one as redundant.
     // see https://github.com/FreeCAD/FreeCAD/issues/13551
+    // This does not happen with other arcs types.
     if (addSymmetryConstraints) {
         for (auto* geo : symgeos) {
             if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(geo)) {
@@ -12138,4 +12139,5 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
 
