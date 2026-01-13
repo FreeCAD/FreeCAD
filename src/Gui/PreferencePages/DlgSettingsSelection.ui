@@ -201,7 +201,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
          <string>Auto switch to the 3D view containing the selected item</string>
         </property>
         <property name="toolTip">
-         <string>Automatically activates the document's last used docked 3D View when selecting an object from a different document in the Tree View.</string>
+         <string>Selecting an item in the Tree View automatically activates its document and switches to its 3D view.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>SyncView</cstring>
