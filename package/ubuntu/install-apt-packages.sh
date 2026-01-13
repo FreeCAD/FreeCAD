@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# Add the KDE Neon repository for up-to-date and matching Qt6 and PySide packages
+# Ubuntu 24.04 does not have PySide6 packages available
+sudo wget -qO- http://archive.neon.kde.org/public.key | sudo gpg --dearmor -o /usr/share/keyrings/neon-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/neon-keyring.gpg] http://archive.neon.kde.org/user noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
+
 # Update package lists quietly
 sudo apt-get update -qq
 
@@ -29,6 +34,7 @@ packages=(
   libopencv-dev
   libproj-dev
   libpcl-dev
+  libpyside6-dev
   libqt6opengl6-dev
   libqt6svg6-dev
   libspnav-dev
@@ -41,6 +47,7 @@ packages=(
   netgen-headers
   ninja-build
   occt-draw
+  pyside6-tools
   python3-dev
   python3-defusedxml
   python3-git
@@ -51,6 +58,11 @@ packages=(
   python3-pivy
   python3-ply
   python3-pybind11
+  python3-pyside6.qtcore
+  python3-pyside6.qtgui
+  python3-pyside6.qtnetwork
+  python3-pyside6.qtsvg
+  python3-pyside6.qtwidgets
   qt6-base-dev
   qt6-l10n-tools
   qt6-tools-dev
