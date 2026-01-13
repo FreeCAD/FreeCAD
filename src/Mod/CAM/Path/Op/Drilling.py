@@ -272,7 +272,9 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
             else:  # Use get_linking_moves generator
                 # For drilling, target position should be at SafeHeight (XY of hole, Z at safe height)
                 # The canned cycle will handle the rapid from SafeHeight to R internally
-                target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, obj.SafeHeight.Value)
+                target_at_safe_height = FreeCAD.Vector(
+                    startPoint.x, startPoint.y, obj.SafeHeight.Value
+                )
                 linking_moves = linking.get_linking_moves(
                     start_position=machinestate.getPosition(),
                     target_position=target_at_safe_height,
