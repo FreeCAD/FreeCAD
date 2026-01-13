@@ -1102,6 +1102,9 @@ PyObject* SheetPy::getUsedRange(PyObject* args)
         return nullptr;
     }
     auto usedRange = getSheetPtr()->getCells()->getUsedRange();
+    if (!std::get<0>(usedRange).isValid()) {
+        Py_Return;
+    }
     Py::Tuple pyTuple(2);
     pyTuple[0] = Py::String(std::get<0>(usedRange).toString());
     pyTuple[1] = Py::String(std::get<1>(usedRange).toString());
