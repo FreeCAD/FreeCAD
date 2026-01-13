@@ -32,6 +32,7 @@
 
 namespace CAMSimulator
 {
+
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -54,7 +55,6 @@ PyObject* initModule()
 
 
 }  // namespace CAMSimulator
-
 
 /* Python entry */
 PyMOD_INIT_FUNC(CAMSimulator)

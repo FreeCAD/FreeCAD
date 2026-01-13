@@ -24,134 +24,66 @@
 
 #ifndef __guidisplay_t__
 #define __guidisplay_t__
-#include "OpenGlWrapper.h"
-#include "Texture.h"
-#include "Shader.h"
-#include "TextureLoader.h"
-#include "GlUtils.h"
-#include <QString>
 
-namespace MillSim
+#include <QWidget>
+
+namespace CAMSimulator
 {
-class MillSimulation;
+class Ui_GuiDisplay;
 
-enum eGuiItems
+class GuiDisplay: public QWidget
 {
-    eGuiItemSlider,
-    eGuiItemThumb,
-    eGuiItemPause,
-    eGuiItemPlay,
-    eGuiItemSingleStep,
-    eGuiItemSlower,
-    eGuiItemFaster,
-    eGuiItemX,
-    eGuiItem1,
-    eGuiItem5,
-    eGuiItem10,
-    eGuiItem25,
-    eGuiItem50,
-    eGuiItemRotate,
-    eGuiItemPath,
-    eGuiItemAmbientOclusion,
-    eGuiItemView,
-    eGuiItemHome,
-    eGuiItemMax  // this element must be the last item always
-};
-
-struct DefaultGuiItem
-{
-    eGuiItems name;
-    unsigned int vbo, vao;
-    int sx, sy;      // screen location
-    int actionKey;   // action key when item pressed
-    bool hidden {};  // is item hidden
-    unsigned int flags {};
-};
-
-class GuiDisplay;
-
-class GuiItem: public DefaultGuiItem
-{
-public:
-    explicit GuiItem(const DefaultGuiItem& item, GuiDisplay& d);
-
-    int posx();
-    int posy();
-    void setPosx(int x);
-    void setPosy(int y);
+    Q_OBJECT
 
 public:
-    bool mouseOver {};
-    TextureItem texItem {};
-    QString toolTip {};
+    explicit GuiDisplay(QWidget* parent = nullptr);
+    ~GuiDisplay();
 
-    GuiDisplay& display;
-};
+    void setPlaying(bool b);
+    void setSpeed(int s);
+    void setStage(float f, int total);
 
-#define GUIITEM_CHECKABLE 0x01
-#define GUIITEM_CHECKED 0x02
-#define GUIITEM_STRETCHED 0x04
+    void setStockVisible(bool b);
+    void setBaseVisible(bool b);
+    void setRotateEnabled(bool b);
+    void setPathVisible(bool b);
+    void setSsaoEnabled(bool b);
 
-struct Vertex2D
-{
-    float x, y;
-    float tx, ty;
-};
+Q_SIGNALS:
+    void play(bool b);
+    void singleStep();
+    void speedChanged(int s);
+    void stageChanged(float f);
 
-class GuiDisplay
-{
-public:
-    GuiDisplay();
+    void viewAll();
+    void stockVisibleChanged(bool b);
+    void baseVisibleChanged(bool b);
+    void rotateEnableChanged(bool b);
+    void pathVisibleChanged(bool b);
+    void ssaoEnableChanged(bool b);
 
-    bool InitGui();
-    void ResetGui();
-    void Render(float progress);
-    void MouseCursorPos(int x, int y);
-    void HandleActionItem(GuiItem* guiItem);
-    void MousePressed(int button, bool isPressed, bool isRunning);
-    void MouseDrag(int buttons, int dx, int dy);
-    void SetMillSimulator(MillSimulation* millSim);
-    void UpdatePlayState(bool isRunning);
-    void UpdateSimSpeed(int speed);
-    void HandleKeyPress(int key);
-    bool IsChecked(eGuiItems item);
-    void UpdateWindowScale(int width, int height);
+protected:
+    void resizeEvent(QResizeEvent* event) override;
 
-    int width() const;
-    int height() const;
+private Q_SLOTS:
+    void on_playButton_clicked();
+    void on_singleStepButton_clicked();
 
-public:
-    bool guiInitiated = false;
+    void onSlowerFasterButtonClicked();
+    void on_stageSlider_sliderMoved(int value);
+
+    void on_stockModelButton_clicked();
 
 private:
-    void UpdateProjection();
-    bool GenerateGlItem(GuiItem* guiItem);
-    bool HStretchGlItem(GuiItem* guiItem, float newWidth, float edgeWidth);
-    void DestroyGlItem(GuiItem* guiItem);
-    void RenderItem(int itemId);
-    void SetupTooltips();
+    Ui_GuiDisplay* ui;
 
-    std::vector<GuiItem> mItems;
+    bool playing = true;
+    int speed = 1;
 
-    int mWidth = -1;
-    int mHeight = -1;
-
-    vec3 mStdColor = {0.8f, 0.8f, 0.4f};
-    vec3 mToggleColor = {0.9f, 0.6f, 0.2f};
-    vec3 mHighlightColor = {1.0f, 1.0f, 0.9f};
-    vec3 mPressedColor = {1.0f, 0.5f, 0.0f};
-    vec3 mTextColor = {1.0f, 0.5f, 0.0f};
-
-    Shader mShader;
-    Texture mTexture;
-    GuiItem* mPressedItem = nullptr;
-    GuiItem* mMouseOverItem = nullptr;
-    MillSimulation* mMillSim = nullptr;
-    unsigned int mIbo = 0;
-    int mThumbStartX = 0;
-    float mThumbMaxMotion = 0;
+    bool stockVisible = true;
+    bool baseVisible = false;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif  // __guidisplay_t__

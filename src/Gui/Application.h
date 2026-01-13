@@ -92,7 +92,11 @@ public:
     /** @name methods for View handling */
     //@{
     /// send Messages to the active view
-    bool sendMsgToActiveView(const char* pMsg, const char** ppReturn = nullptr);
+    bool sendMsgToActiveView(
+        const char* pMsg,
+        const char** ppReturn = nullptr,
+        bool callUpdateActions = true
+    );
     /// send Messages test to the active view
     bool sendHasMsgToActiveView(const char* pMsg);
     /// send Messages to the focused view
