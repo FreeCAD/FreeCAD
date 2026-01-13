@@ -31,12 +31,14 @@
 
 import Path
 import Path.Op.Base as PathOp
+import Path.Op.Util as PathOpUtil
 import PathScripts.PathUtils as PathUtils
 import FreeCAD
 import time
 import json
 import math
 import area
+from FreeCAD import BoundBox
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if FreeCAD.GuiUp:
@@ -589,12 +591,35 @@ def Execute(op, obj):
         if hasattr(obj, "KeepToolDownRatio"):
             keepToolDownRatio = float(obj.KeepToolDownRatio)
 
+        clearedArea = []
+        if obj.UseRestMachining:
+            bbox = BoundBox()
+            for path in pathArray:
+                for seg in path:
+                    # path is closed, so adding just the start point of each segment is sufficient
+                    bbox.add(seg[0])
+            # TODO expand bbox for pofile mode
+            for ca in PathOpUtil.getClearedAreas(op, bbox):
+                shape = ca.toTopoShape()
+                outputArea = []
+                for edge in shape.Edges:
+                    assert edge.Curve.TypeId == "Part::GeomLine"
+                    v = edge.Vertexes[0].Point
+                    outputArea.append([v.x, v.y])
+                clearedArea.append(outputArea)
+
         # put here all properties that influence calculation of adaptive base paths,
 
+        op.clearedArea = clearedArea
+
+        import random
+
         inputStateObject = {
+            "TODO REMOVE": random.random(),
             "tool": float(op.tool.Diameter),
             "tolerance": float(obj.Tolerance),
             "geometry": path2d,
+            "clearedArea": clearedArea,  # TODO add this to the model aware branch too
             "stockGeometry": stockPath2d,
             "stepover": float(obj.StepOver),
             "effectiveHelixDiameter": float(helixDiameter),
@@ -650,7 +675,9 @@ def Execute(op, obj):
             a2d.opType = opType
 
             # EXECUTE
-            results = a2d.Execute(stockPath2d, path2d, progressFn)
+            results = a2d.Execute(
+                stockPath2d, path2d, clearedArea, progressFn
+            )  # TODO update model aware
 
             # need to convert results to python object to be JSON serializable
             adaptiveResults = []
@@ -1924,6 +1951,15 @@ class PathAdaptive(PathOp.ObjectOp):
         )
         obj.addProperty(
             "App::PropertyBool",
+            "UseRestMachining",
+            "Adaptive",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Skips machining regions that have already been cleared by previous operations.",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
             "OrderCutsByRegion",
             "Adaptive",
             QT_TRANSLATE_NOOP(
@@ -1978,6 +2014,7 @@ class PathAdaptive(PathOp.ObjectOp):
         obj.KeepToolDownRatio = 3.0
         obj.UseHelixArcs = False
         obj.UseOutline = False
+        obj.UseRestMachining = False
         obj.OrderCutsByRegion = False
         obj.ModelAwareExperiment = False
         FeatureExtensions.set_default_property_values(obj, job)
@@ -2019,6 +2056,17 @@ class PathAdaptive(PathOp.ObjectOp):
                 "UseOutline",
                 "Adaptive",
                 "Uses the outline of the base geometry.",
+            )
+
+        if not hasattr(obj, "UseRestMachining"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseRestMachining",
+                "Adaptive",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Skips machining regions that have already been cleared by previous operations.",
+                ),
             )
 
         if not hasattr(obj, "OrderCutsByRegion"):
@@ -2123,6 +2171,7 @@ def SetupProperties():
         "HelixMaxDiameterPercent",
         "HelixMinDiameterPercent",
         "UseOutline",
+        "UseRestMachining",
         "OrderCutsByRegion",
     ]
     return setup

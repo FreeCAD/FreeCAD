@@ -980,6 +980,18 @@ public:
         bboxPathsInvalid = true;
         bboxClippedInvalid = true;
     }
+
+    void AddClearedPaths(const Paths& paths)
+    {
+        clip.Clear();
+        clip.AddPaths(clearedPaths, PolyType::ptSubject, true);
+        clip.AddPaths(paths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctUnion, clearedPaths);
+        CleanPolygons(clearedPaths);
+        bboxPathsInvalid = true;
+        bboxClippedInvalid = true;
+    }
+
     void ExpandCleared(const Path toClearToolPath)
     {
         if (toClearToolPath.empty()) {
@@ -1262,6 +1274,7 @@ public:
         calculateCurrentPathLength();
         ResetPasses();
     }
+
     bool nextEngagePoint(
         Adaptive2d* parent,
         ClearedArea& clearedArea,
@@ -1281,6 +1294,7 @@ public:
                     state.passes++;
                     if (state.passes >= maxPases) {
                         Perf_NextEngagePoint.Stop();
+                        cout << "Engage failed\n\n";
                         return false;  // nothing more to cut
                     }
                     prevArea = 0;
@@ -1288,13 +1302,17 @@ public:
             }
             IntPoint cpt = getCurrentPoint();
             double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea);
+            cout << "Try engage (" << cpt.X << ", " << cpt.Y << "): Area " << area << " (min "
+                 << minCutArea << " max " << maxCutArea << ")" << endl;
             if (area > minCutArea && area < maxCutArea && area > prevArea) {
                 Perf_NextEngagePoint.Stop();
+                cout << "Engage succeeded!\n\n";
                 return true;
             }
             prevArea = area;
         }
     }
+
     IntPoint getCurrentPoint()
     {
         const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
@@ -1693,9 +1711,15 @@ void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
 // Adaptive2d - Execute
 //********************************************
 
+void halt()
+{
+    cout << "halt\n";
+}
+
 std::list<AdaptiveOutput> Adaptive2d::Execute(
     const DPaths& stockPaths,
     const DPaths& paths,
+    const DPaths& clearedPaths,
     std::function<bool(TPaths)> progressCallbackFn
 )
 {
@@ -1795,6 +1819,18 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         stockInputPaths.push_back(cpth);
     }
 
+    // Convert cleared area
+    Paths initialClearedPaths;
+    for (size_t i = 0; i < clearedPaths.size(); i++) {
+        Path p;
+        for (size_t j = 0; j < clearedPaths[i].size(); j++) {
+            long x = long(clearedPaths[i][j].first * scaleFactor);
+            long y = long(clearedPaths[i][j].second * scaleFactor);
+            p.push_back({x, y});
+        }
+        initialClearedPaths.push_back(p);
+    }
+
     SimplifyPolygons(stockInputPaths);
     // CleanPolygons(stockInputPaths,0.707);
 
@@ -1852,7 +1888,13 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 clipof.Clear();
                 clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
                 clipof.Execute(boundPaths, toolRadiusScaled + finishPassOffsetScaled);
-                ProcessPolyNode(boundPaths, toolBoundPaths);
+                try {
+                    ProcessPolyNode(boundPaths, toolBoundPaths, initialClearedPaths);
+                }
+                catch (...) {
+                    halt();
+                    throw;
+                }
             }
         }
     }
@@ -1909,7 +1951,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                     clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
                     clipof.Execute(boundPaths, toolRadiusScaled + finishPassOffsetScaled);
 
-                    ProcessPolyNode(boundPaths, toolBoundPaths);
+                    ProcessPolyNode(boundPaths, toolBoundPaths, initialClearedPaths);
                 }
             }
         }
@@ -2005,7 +2047,7 @@ bool Adaptive2d::FindEntryPoint(
                 }
                 helixRadiusScaled = minSize;
                 checkHelixFit(helixRadiusScaled);  // set clearedPaths for final size
-                clearedArea.SetClearedPaths(clearedPaths);
+                clearedArea.AddClearedPaths(clearedPaths);
             }
         }
 
@@ -2047,19 +2089,15 @@ bool Adaptive2d::FindEntryPoint(
     return found;
 }
 
+// TODO delete, unused
 bool Adaptive2d::FindEntryPointOutside(
-    TPaths& progressPaths,
     const Paths& toolBoundPaths,
-    const Paths& boundPaths,
     ClearedArea& clearedArea /*output-initial cleared area by helix*/,
     IntPoint& entryPoint /*output*/,
     IntPoint& toolPos,
     DoublePoint& toolDir
 )
 {
-
-    UNUSED(progressPaths);  // to silence compiler warning
-    UNUSED(boundPaths);     // to silence compiler warning
 
     Clipper clip;
     ClipperOffset clipof;
@@ -2082,7 +2120,7 @@ bool Adaptive2d::FindEntryPointOutside(
                 clip.Execute(ClipType::ctDifference, clearedPaths);
                 CleanPolygons(clearedPaths);
                 SimplifyPolygons(clearedPaths);
-                clearedArea.SetClearedPaths(clearedPaths);
+                clearedArea.AddClearedPaths(clearedPaths);
                 entryPoint = checkPoint;
                 toolPos = entryPoint;
                 // find tool dir
@@ -2737,7 +2775,7 @@ void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, Motion
     }
 }
 
-void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
+void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths, Paths initialClearedPaths)
 {
     Perf_ProcessPolyNode.Start();
     current_region++;
@@ -2763,64 +2801,186 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
 
     IntPoint toolPos;
     DoublePoint toolDir;
-    ClearedArea cleared(toolRadiusScaled);
-    bool outsideEntry = false;
+    bool plungeEntry = false;
     bool firstEngagePoint = true;
-    Paths engageBounds = toolBoundPaths;
+    Paths engageBounds = {};  // TODO FIXME TMP toolBoundPaths;
 
-    if (!forceInsideOut
-        && FindEntryPointOutside(
-            progressPaths,
-            toolBoundPaths,
-            boundPaths,
-            cleared,
-            entryPoint,
-            toolPos,
-            toolDir
-        )) {
-        if (!Orientation(engageBounds[0])) {
-            ReversePath(engageBounds[0]);
-        }
-        // add initial offset of cleared area to engage paths
-        Paths outsideEngage;
+    // Initialize cleared area from previously cleared paths
+    ClearedArea cleared(toolRadiusScaled);
+    cleared.SetClearedPaths(initialClearedPaths);
+
+    // Compute region in which you cannot engage
+    Paths noEngage;
+    {
+        // (stock - boundPaths) offset by tool radius = no-go region
+        clip.Clear();
+        clip.AddPaths(stockInputPaths, PolyType::ptSubject, true);
+        clip.AddPaths(boundPaths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, noEngage);
+
+        long shrinkSize = 2;
         clipof.Clear();
-        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(outsideEngage, toolRadiusScaled - stepOverFactor * toolRadiusScaled);
-        CleanPolygons(outsideEngage);
-        ReversePaths(outsideEngage);
-        for (const auto& p : outsideEngage) {
+        clipof.AddPaths(noEngage, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(noEngage, -shrinkSize);
+
+        cout << "Stock minus bounds, shrunk" << endl;
+        for (auto path : noEngage) {
+            cout << "[" << endl;
+            for (auto p : path) {
+                cout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            cout << "]" << endl;
+        }
+
+
+        clipof.Clear();
+        clipof.AddPaths(noEngage, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(noEngage, toolRadiusScaled + shrinkSize);
+        CleanPolygons(noEngage);
+    }
+
+    // Compute how far into the material the first engagement should be
+    long engagementProtrusion;
+    {
+        double targetArea = optimalCutAreaPD * MIN_STEP_CLIPPER;
+        // Area of a segment of a circle: A = R^2 / 2 * (theta - sin(theta))
+        // 2nd order Taylor expansion: A = R^2 / 2 * (theta^3/6) = R^2 * theta^3 / 12
+        // Solve for theta: theta = (12 * A / R^2)^(1/3)
+        double theta = std::pow(12 * targetArea / toolRadiusScaled / toolRadiusScaled, 1 / 3.);
+        double protrusion = toolRadiusScaled - cos(theta / 2) * toolRadiusScaled;
+        engagementProtrusion = (long)protrusion;
+        cout << "Tool Radius Scaled: " << toolRadiusScaled << endl;
+        cout << "targetArea: " << targetArea << endl;
+        cout << "stepOverScaled: " << stepOverScaled << endl;
+        cout << "Engagement protrusion: " << engagementProtrusion << endl;
+    }
+
+    // Initialize engagement points from previously cleared paths
+    long engageBuffer = stepOverScaled;  // TODO document this, make a careful decision
+    {
+        Paths engagePaths;
+        clipof.Clear();
+        clipof.AddPaths(initialClearedPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, toolRadiusScaled + engageBuffer);
+        clipof.Clear();
+        clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, -engagementProtrusion - engageBuffer);
+
+        clip.Clear();
+        clip.AddPaths(engagePaths, PolyType::ptSubject, true);
+        clip.AddPaths(noEngage, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, engagePaths);
+
+        CleanPolygons(engagePaths);
+        for (const auto& p : engagePaths) {
             engageBounds.push_back(p);
         }
-        outsideEntry = true;
     }
-    else {
-        if (!FindEntryPoint(
-                progressPaths,
-                toolBoundPaths,
-                boundPaths,
-                cleared,
-                entryPoint,
-                toolPos,
-                toolDir,
-                helixRadiusScaled
-            )) {
-            Perf_ProcessPolyNode.Stop();
-            return;
+
+    // Add outside of stock to cleared area
+    if (!forceInsideOut) {
+        // Produce the stock boundary as a hole in a large shape
+        // The large shape should be big enough that its exterior boundary is not
+        // close enough to slow down cut area computation (not merely large enough to
+        // fit the tool)
+
+        Paths outerBoundary;
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
+        clipof.Execute(outerBoundary, 1000 * toolRadiusScaled);
+
+        Paths clearedPaths;
+        clip.Clear();
+        clip.AddPaths(outerBoundary, PolyType::ptSubject, true);
+        clip.AddPaths(stockInputPaths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, clearedPaths);
+        CleanPolygons(clearedPaths);
+        SimplifyPolygons(clearedPaths);
+        cleared.AddClearedPaths(clearedPaths);
+    }
+
+    // Add engagement points from outside of stock
+    if (!forceInsideOut) {
+        Paths engagePaths;
+        clipof.Clear();
+        cout << "Stock input paths" << endl;
+        for (auto path : stockInputPaths) {
+            cout << "[" << endl;
+            for (auto p : path) {
+                cout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            cout << "]" << endl;
+        }
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, toolRadiusScaled + engageBuffer);
+        clipof.Clear();
+        clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, -engagementProtrusion - engageBuffer);
+
+        clip.Clear();
+        // Take the difference of the open path and the noEngage region:
+        // we're not looking to difference areas, we want the border minus the area
+        PolyTree result;
+        clip.AddPaths(engagePaths, PolyType::ptSubject, false);  // TODO make this edit for cleared
+                                                                 // paths too
+        clip.AddPaths(noEngage, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, result);
+        Paths openPaths, closedPaths;
+        OpenPathsFromPolyTree(result, openPaths);
+        ClosedPathsFromPolyTree(result, closedPaths);
+
+        for (auto& path : openPaths) {
+            cout << "GOT HERE open!" << path << endl;
+            Path outAndBack;
+            for (const auto p : path) {
+                outAndBack.push_back(p);
+            }
+            ReversePath(path);
+            for (const auto p : path) {
+                outAndBack.push_back(p);
+            }
+            engageBounds.push_back(outAndBack);
+        }
+        for (const auto& path : closedPaths) {
+            cout << "GOT HERE closed!" << endl;
+            engageBounds.push_back(path);
         }
     }
 
+    // Attempt first engagement
     EngagePoint engage(engageBounds);  // engage point stepping instance
 
-    if (outsideEntry) {
-        engage.moveToClosestPoint(toolPos, 2 * MIN_STEP_CLIPPER);
-        engage.moveForward(MIN_STEP_CLIPPER);
+    // This constant is chosen so that when cutting a small strip (i.e. when
+    // approaching a boundary), the strip size at which the cut is too small to
+    // continue is _also_ too small to be worth starting a new engagement
+    // elsewhere in the strip
+    const double CORRECT_MIN_CUT_VS_ENGAGE = toolRadiusScaled * 1. / MIN_STEP_CLIPPER;
+    double engageMoveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled;
+
+    if (engage.nextEngagePoint(
+            this,
+            cleared,
+            engageMoveDistance,
+            ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
+            4 * referenceCutArea * stepOverFactor
+        )) {
+        plungeEntry = true;
         toolPos = engage.getCurrentPoint();
         toolDir = engage.getCurrentDir();
         entryPoint = toolPos;
     }
+    else {
+        // Engagement failed; instead helix down
+        cout << "No enage, helixing down\n";
+        if (!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir, helixRadiusScaled)) {
+            Perf_ProcessPolyNode.Stop();
+            return;
+        }
+        engage.ResetPasses();
+    }
 
-    // cout << "Entry point:" << double(entryPoint.X)/scaleFactor << "," <<
-    // double(entryPoint.Y)/scaleFactor << endl;
+    cout << "Entry point:" << double(entryPoint.X) / scaleFactor << ","
+         << double(entryPoint.Y) / scaleFactor << endl;
 
     AdaptiveOutput output;
     output.ReturnMotionType = 0;
@@ -2854,7 +3014,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     long over_cut_count = 0;
     long bad_engage_count = 0;
     double prevDistFromStart = 0;
-    double refinement_factor = 1;
     bool prevDistTrend = false;
 
     double perf_total_len = 0;
@@ -3141,7 +3300,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 if (passToolPath.empty()) {
                     // in outside entry first successful cut defines the "helix center" and start
                     // point in this case helix diameter is 0 (straight line downwards)
-                    if (output.AdaptivePaths.empty() && outsideEntry) {
+                    if (output.AdaptivePaths.empty() && plungeEntry) {
                         entryPoint = toolPos;
                         output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
                         output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
@@ -3210,18 +3369,10 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         }
 
         {
-            // This constant is chosen so that when cutting a small strip (i.e. when
-            // approaching a boundary), the strip size at which the cut is too small to
-            // continue is _also_ too small to be worth starting a new engagement
-            // elsewhere in the strip
-            const double CORRECT_MIN_CUT_VS_ENGAGE = toolRadiusScaled * 1. / MIN_STEP_CLIPPER;
-
-            double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled * refinement_factor;
-
             if (!engage.nextEngagePoint(
                     this,
                     cleared,
-                    moveDistance,
+                    engageMoveDistance,
                     ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                     4 * referenceCutArea * stepOverFactor
                 )) {
@@ -3259,7 +3410,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 if (!engage.nextEngagePoint(
                         this,
                         cleared,
-                        moveDistance,
+                        engageMoveDistance,
                         ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                         4 * referenceCutArea * stepOverFactor
                     )) {

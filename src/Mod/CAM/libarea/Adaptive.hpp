@@ -99,6 +99,7 @@ public:
     std::list<AdaptiveOutput> Execute(
         const DPaths& stockPaths,
         const DPaths& paths,
+        const DPaths& clearedPaths,
         std::function<bool(TPaths)> progressCallbackFn
     );
 
@@ -129,7 +130,7 @@ private:
     std::function<bool(TPaths)>* progressCallback = NULL;
     Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
-    void ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths);
+    void ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths, Paths initialClearedPaths);
     bool FindEntryPoint(
         TPaths& progressPaths,
         const Paths& toolBoundPaths,
@@ -141,9 +142,7 @@ private:
         long& helixRadiusScaled
     );
     bool FindEntryPointOutside(
-        TPaths& progressPaths,
         const Paths& toolBoundPaths,
-        const Paths& bound,
         ClearedArea& cleared /*output*/,
         IntPoint& entryPoint /*output*/,
         IntPoint& toolPos,
