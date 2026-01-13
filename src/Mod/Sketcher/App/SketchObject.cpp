@@ -2756,7 +2756,7 @@ int SketchObject::transferConstraints(
             continue;
         }
         else if (vals[i]->involvesGeoIdAndPosId(fromGeoId, fromPosId)
-                 && !vals[i]->involvesGeoIdAndPosId(toGeoId, toPosId)) {
+                 && !vals[i]->involvesGeoId(toGeoId)) {
             std::unique_ptr<Constraint> constNew(newVals[i]->clone());
             constNew->substituteIndexAndPos(fromGeoId, fromPosId, toGeoId, toPosId);
             if (vals[i]->First < 0 && vals[i]->Second < 0) {
@@ -12291,3 +12291,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
