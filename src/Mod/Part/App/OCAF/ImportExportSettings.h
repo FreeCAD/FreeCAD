@@ -25,6 +25,7 @@
 #ifndef PART_OCAF_IMPORTEXPORTSETTINGS_H
 #define PART_OCAF_IMPORTEXPORTSETTINGS_H
 
+#include <list>
 #include <memory>
 #include <Mod/Part/App/Interface.h>
 #include <Base/Parameter.h>

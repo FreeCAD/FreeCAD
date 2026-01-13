@@ -26,7 +26,7 @@
 #include <QToolBar>
 #include <QPointer>
 #include <QWidget>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <Base/Parameter.h>
 
 namespace Gui
@@ -56,7 +56,7 @@ public:
         QWidget* parent,
         ToolBarArea area,
         const ParameterGrp::handle& hParam,
-        boost::signals2::scoped_connection& conn,
+        fastsignals::advanced_scoped_connection& conn,
         QTimer* timer = nullptr
     );
 
@@ -110,7 +110,7 @@ private:
     QHBoxLayout* _layout;
     QPointer<QTimer> _sizingTimer;
     ParameterGrp::handle _hParam;
-    boost::signals2::scoped_connection& _conn;
+    fastsignals::advanced_scoped_connection& _conn;
     ToolBarArea _area;
 };
 

@@ -232,7 +232,7 @@ void Mirroring::onSelectButtonClicked()
 {
     if (!ui->selectButton->isChecked()) {
         Gui::Selection().rmvSelectionGate();
-        ui->selectButton->setText(tr("Select reference"));
+        ui->selectButton->setText(tr("Select Reference"));
     }
     else {
         MirrorPlaneSelection* gate = new MirrorPlaneSelection();

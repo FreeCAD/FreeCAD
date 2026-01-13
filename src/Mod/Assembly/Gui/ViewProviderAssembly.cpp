@@ -300,9 +300,9 @@ bool ViewProviderAssembly::setEdit(int mode)
         }
 
         auto* assembly = getObject<AssemblyObject>();
-        connectSolverUpdate = assembly->signalSolverUpdate.connect(
-            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
-        );
+        connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
+            UpdateSolverInformation();
+        });
 
         return true;
     }
@@ -861,24 +861,27 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
         for (auto& partRef : refs) {
-            if (!partRef.obj) {
+            auto obj = partRef.obj;
+            auto ref = partRef.ref;
+            if (!obj || !ref) {
                 continue;
             }
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
-                partRef.obj->getPropertyByName("Placement")
-            );
-            if (pPlc) {
-                App::DocumentObject* selRoot = partRef.ref->getValue();
-                if (!selRoot) {
-                    continue;
-                }
-                std::vector<std::string> subs = partRef.ref->getSubValues();
-                if (subs.empty()) {
-                    continue;
-                }
 
-                docsToMove.emplace_back(partRef.obj, pPlc->getValue(), selRoot, subs[0]);
+            auto pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            if (!pPlc) {
+                continue;
             }
+
+            App::DocumentObject* selRoot = ref->getValue();
+            if (!selRoot) {
+                continue;
+            }
+            std::vector<std::string> subs = ref->getSubValues();
+            if (subs.empty()) {
+                continue;
+            }
+
+            docsToMove.emplace_back(obj, pPlc->getValue(), selRoot, subs[0]);
         }
     };
 

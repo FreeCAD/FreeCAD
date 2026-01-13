@@ -1431,7 +1431,7 @@ afegir un contenidor d'anàlisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
       <source>Silent</source>
-      <translation type="unfinished">Silent</translation>
+      <translation>Silenciós</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
@@ -1446,7 +1446,7 @@ afegir un contenidor d'anàlisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
       <source>Direct</source>
-      <translation type="unfinished">Direct</translation>
+      <translation>Directe</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
@@ -1461,7 +1461,7 @@ afegir un contenidor d'anàlisis</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
       <source>Debug</source>
-      <translation type="unfinished">Debug</translation>
+      <translation>Depuració</translation>
     </message>
   </context>
   <context>
@@ -8071,22 +8071,22 @@ Deixeu-ho en blanc per a utilitzar l'executable de Python predeterminat</transla
     <message>
       <location filename="../../../femtools/ccxtools.py" line="405"/>
       <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <translation>El binari ccx de CalculiX no s'ha trobat o és incorrecte</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="439"/>
       <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
+      <translation>FEM: binari ccx incorrecte</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="452"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+      <translation>FEM: No s'ha trobat el binari ccx de CalculiX '{}'. Si us plau, estableix la ruta del binari ccx de CalculiX a la pestanya de preferències FEM CalculiX.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="464"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <translation>FEM: ccx '{}' de CalculiX retorna '{}', que no conté la frase esperada '{}'. Hi ha alguns problemes en executar el binari ccx. Comproveu si ccx s'executa de manera autònoma sense FreeCAD.</translation>
     </message>
   </context>
   <context>

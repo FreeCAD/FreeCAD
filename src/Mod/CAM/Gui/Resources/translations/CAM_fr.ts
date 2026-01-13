@@ -1302,7 +1302,7 @@ activées seront en violet et les extensions non activées en jaune.</translatio
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="101"/>
       <source>Tree of existing edges and their potential extensions</source>
-      <translation>Arborescence des bords existants et leurs extensions potentielles</translation>
+      <translation>Arborescence des arêtes existantes et leurs extensions potentielles</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="126"/>
@@ -1364,11 +1364,10 @@ activées seront en violet et les extensions non activées en jaune.</translatio
       <source>Specify if the facing should be restricted by the actual shape of the selected face (or the part if no face is selected), or if the bounding box should be faced off.
 
 The latter can be used to face of the entire stock area to ensure uniform heights for the following operations.</source>
-      <translation>Spécifier si le parement doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si
-aucune face n'est sélectionnée) ou si la boîte englobante doit être mise de côté.
+      <translation>Spécifier si le parement doit être limité par la forme réelle de la face sélectionnée (ou de la pièce si aucune face n'est sélectionnée) ou si la
+boîte englobante doit être mise de côté.
 
-Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs
-uniformes pour les opérations suivantes.</translation>
+Ce dernier peut être utilisé pour surfacer l'ensemble de la zone du brut afin de garantir des hauteurs uniformes pour les opérations suivantes.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="95"/>

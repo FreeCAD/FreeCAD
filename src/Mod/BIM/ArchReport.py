@@ -687,7 +687,15 @@ class _ArchReport:
                 f"Report '{getattr(obj, 'Label', '')}': No target spreadsheet found.\n"
             )
             return
-        sp.clearAll()
+        # clear all the content of the spreadsheet
+        used_range = sp.getUsedRange()
+        if used_range:
+            sp.clear(f"{used_range[0]}:{used_range[1]}")
+        else:
+            FreeCAD.Console.PrintError(
+                f"Report '{getattr(obj, 'Label', '')}': Invalid cell address found, clearing spreadsheet.\n"
+            )
+            sp.clearAll()
 
         # Reset the row counter for a new report build.
         self.spreadsheet_current_row = 1

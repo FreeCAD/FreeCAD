@@ -966,7 +966,7 @@ Alapértelmezett értéke: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>Uses the custom presentation to display cell string</source>
-      <translation>A testreszabott megjelenítést használja a cella szövegének megjelenítéséhez</translation>
+      <translation>A testre szabott megjelenítést használja a cella szövegének megjelenítéséhez</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>

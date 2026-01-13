@@ -260,7 +260,7 @@ private:
     void _onSelectionChanged(const SelectionChanges& msg);
 
 private:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectSelection;
     std::string filterDocName;
     std::string filterObjName;
@@ -503,12 +503,12 @@ public:
     void setClarifySelectionActive(bool active);
 
     /// signal on new object
-    boost::signals2::signal<void(const SelectionChanges& msg)> signalSelectionChanged;
+    fastsignals::signal<void(const SelectionChanges& msg)> signalSelectionChanged;
 
     /// signal on selection change with resolved object
-    boost::signals2::signal<void(const SelectionChanges& msg)> signalSelectionChanged2;
+    fastsignals::signal<void(const SelectionChanges& msg)> signalSelectionChanged2;
     /// signal on selection change with resolved object and sub element map
-    boost::signals2::signal<void(const SelectionChanges& msg)> signalSelectionChanged3;
+    fastsignals::signal<void(const SelectionChanges& msg)> signalSelectionChanged3;
 
     /** Returns a vector of selection objects
      *

@@ -158,7 +158,7 @@ struct DockWindowManagerP
     QMap<QString, QPointer<QWidget>> _dockWindows;
     DockWindowItems _dockWindowItems;
     ParameterGrp::handle _hPref;
-    boost::signals2::scoped_connection _connParam;
+    fastsignals::advanced_scoped_connection _connParam;
     QTimer _timer;
     DockWidgetEventFilter _dockWidgetEventFilter;
     QPointer<OverlayManager> overlayManager;
@@ -228,7 +228,8 @@ void DockWindowManager::setupOverlayManagement()
                         break;
                 }
             }
-        }
+        },
+        fastsignals::advanced_tag()
     );
 
     d->_timer.setSingleShot(true);

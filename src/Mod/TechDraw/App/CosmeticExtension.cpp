@@ -64,7 +64,6 @@ TechDraw::DrawViewPart*  CosmeticExtension::getOwner()
 //! remove cosmetic elements for a list of subelement names
 void CosmeticExtension::deleteCosmeticElements(std::vector<std::string> removables)
 {
-    // Base::Console().message("CEx::deleteCosmeticElements(%d removables)\n", removables.size());
     DrawViewPart* viewPart = getOwner();
     for (auto& name : removables) {
         if (DU::getGeomTypeFromName(name) == "Vertex" &&
@@ -113,7 +112,6 @@ void CosmeticExtension::clearCosmeticVertexes()
 /// add the cosmetic verts in the property list to view's vertex geometry list
 void CosmeticExtension::addCosmeticVertexesToGeom()
 {
-//    Base::Console().message("CE::addCosmeticVertexesToGeom()\n");
     const std::vector<TechDraw::CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
     for (auto& cv : cVerts) {
         double scale = getOwner()->getScale();
@@ -127,7 +125,6 @@ void CosmeticExtension::addCosmeticVertexesToGeom()
 /// add a single cosmetic vertex in the property list to the view's vertex geometry list
 int CosmeticExtension::add1CVToGV(const std::string& tag)
 {
-//    Base::Console().message("CE::add1CVToGV(%s)\n", tag.c_str());
     TechDraw::CosmeticVertex* cv = getCosmeticVertex(tag);
     if (!cv) {
         Base::Console().message("CE::add1CVToGV - cv %s not found\n", tag.c_str());
@@ -144,8 +141,6 @@ int CosmeticExtension::add1CVToGV(const std::string& tag)
 /// update the parent view's vertex geometry with all the cosmetic vertices in the list property
 void CosmeticExtension::refreshCVGeoms()
 {
-    //    Base::Console().message("CE::refreshCVGeoms()\n");
-
     std::vector<TechDraw::VertexPtr> gVerts = getOwner()->getVertexGeometry();
     std::vector<TechDraw::VertexPtr> newGVerts;
     for (auto& gv : gVerts) {
@@ -243,7 +238,6 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
 /// retrieve a cosmetic vertex by index (the 5 in Vertex5)
 TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const int i) const
 {
-//    Base::Console().message("CEx::getCVBySelection(%d)\n", i);
     std::stringstream ss;
     ss << "Vertex" << i;
     std::string vName = ss.str();
@@ -253,13 +247,10 @@ TechDraw::CosmeticVertex* CosmeticExtension::getCosmeticVertexBySelection(const 
 /// remove the cosmetic vertex with the given tag from the list property
 void CosmeticExtension::removeCosmeticVertex(const std::string& delTag)
 {
-//    Base::Console().message("DVP::removeCV(%s)\n", delTag.c_str());
     std::vector<CosmeticVertex*> cVerts = CosmeticVertexes.getValues();
     std::vector<CosmeticVertex*> newVerts;
     for (auto& cv: cVerts) {
-        if (cv->getTagAsString() == delTag)  {
-            delete cv;
-        } else {
+        if (cv->getTagAsString() != delTag)  {
             newVerts.push_back(cv);
         }
     }
@@ -291,7 +282,6 @@ void CosmeticExtension::clearCosmeticEdges()
 /// add the cosmetic edges to geometry edge list
 void CosmeticExtension::addCosmeticEdgesToGeom()
 {
-//    Base::Console().message("CEx::addCosmeticEdgesToGeom()\n");
     const std::vector<TechDraw::CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& ce : cEdges) {
         double scale = getOwner()->getScale();
@@ -307,7 +297,6 @@ void CosmeticExtension::addCosmeticEdgesToGeom()
 /// add a single cosmetic edge to the geometry edge list
 int CosmeticExtension::add1CEToGE(const std::string& tag)
 {
-    //    Base::Console().message("CEx::add1CEToGE(%s) 2\n", tag.c_str());
     TechDraw::CosmeticEdge* ce = getCosmeticEdge(tag);
     if (!ce) {
         Base::Console().message("CEx::add1CEToGE 2 - ce %s not found\n", tag.c_str());
@@ -324,7 +313,6 @@ int CosmeticExtension::add1CEToGE(const std::string& tag)
 /// update Edge geometry with current CE's
 void CosmeticExtension::refreshCEGeoms()
 {
-    //    Base::Console().message("CEx::refreshCEGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> oldGEdges;
     for (auto& ge : gEdges) {
@@ -341,7 +329,6 @@ void CosmeticExtension::refreshCEGeoms()
 std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
                                                Base::Vector3d end)
 {
-//    Base::Console().message("CEx::addCosmeticEdge(s, e)\n");
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(start, end);
     edges.push_back(ce);
@@ -353,7 +340,6 @@ std::string CosmeticExtension::addCosmeticEdge(Base::Vector3d start,
 /// returns unique CE id
 std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
 {
-//    Base::Console().message("CEx::addCosmeticEdge(bg: %X)\n", bg);
     std::vector<CosmeticEdge*> edges = CosmeticEdges.getValues();
     TechDraw::CosmeticEdge* ce = new TechDraw::CosmeticEdge(bg);
     edges.push_back(ce);
@@ -364,7 +350,6 @@ std::string CosmeticExtension::addCosmeticEdge(TechDraw::BaseGeomPtr bg)
 /// retrieve a CE by unique id
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& tagString) const
 {
-//    Base::Console().message("CEx::getCosmeticEdge(%s)\n", tagString.c_str());
     const std::vector<TechDraw::CosmeticEdge*> edges = CosmeticEdges.getValues();
     for (auto& ce: edges) {
         std::string ceTag = ce->getTagAsString();
@@ -374,7 +359,6 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& ta
     }
 
     // None found
-//    Base::Console().message("CEx::getCosmeticEdge - CE for tag: %s not found.\n", tagString.c_str());
     return nullptr;
 }
 
@@ -382,7 +366,6 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& ta
 /// used when selecting
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std::string& name) const
 {
-    // Base::Console().message("CEx::getCEBySelection(%s)\n", name.c_str());
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
     if (!dvp) {
@@ -400,7 +383,6 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(const std:
 /// find the cosmetic edge corresponding to the input parameter (the 5 in Edge5)
 TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) const
 {
-    // Base::Console().message("CEx::getCEBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
     return getCosmeticEdgeBySelection(edgeName.str());
@@ -409,15 +391,14 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdgeBySelection(int i) con
 /// remove the cosmetic edge with the given tag from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 {
-    // Base::Console().message("DVP::removeCE(%s)\n", delTag.c_str());
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     std::vector<CosmeticEdge*> newEdges;
     for (auto& ce: cEdges) {
-        if (ce->getTagAsString() == delTag)  {
-            delete ce;
-        } else {
+        if (ce->getTagAsString() != delTag)  {
             newEdges.push_back(ce);
         }
+        // delete ce; here leads to a crash.  https://github.com/FreeCAD/FreeCAD/issues/24196
+        // Something(?) is still accessing the edge.  Also applies to CosmeticVertex and CenterLine.
     }
     CosmeticEdges.setValues(newEdges);
 }
@@ -426,7 +407,6 @@ void CosmeticExtension::removeCosmeticEdge(const std::string& delTag)
 /// remove the cosmetic edges with the given tags from the list property
 void CosmeticExtension::removeCosmeticEdge(const std::vector<std::string>& delTags)
 {
-    // Base::Console().message("DVP::removeCE(%d tags)\n", delTags.size());
     std::vector<CosmeticEdge*> cEdges = CosmeticEdges.getValues();
     for (auto& t: delTags) {
         removeCosmeticEdge(t);
@@ -448,10 +428,8 @@ void CosmeticExtension::clearCenterLines()
 
 int CosmeticExtension::add1CLToGE(const std::string& tag)
 {
-    //    Base::Console().message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
     TechDraw::CenterLine* cl = getCenterLine(tag);
     if (!cl) {
-//        Base::Console().message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;
     }
     TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
@@ -463,7 +441,6 @@ int CosmeticExtension::add1CLToGE(const std::string& tag)
 //update Edge geometry with current CL's
 void CosmeticExtension::refreshCLGeoms()
 {
-    // Base::Console().message("CE::refreshCLGeoms()\n");
     std::vector<TechDraw::BaseGeomPtr> gEdges = getOwner()->getEdgeGeometry();
     std::vector<TechDraw::BaseGeomPtr> newGEdges;
     for (auto& ge : gEdges) {
@@ -478,7 +455,6 @@ void CosmeticExtension::refreshCLGeoms()
 //add the center lines to geometry Edges list
 void CosmeticExtension::addCenterLinesToGeom()
 {
-    //   Base::Console().message("CE::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl : lines) {
         TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
@@ -496,9 +472,6 @@ void CosmeticExtension::addCenterLinesToGeom()
 std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
                                                Base::Vector3d end)
 {
-//    Base::Console().message("CEx::addCenterLine(%s)\n",
-//                            DrawUtil::formatVector(start).c_str(),
-//                            DrawUtil::formatVector(end).c_str());
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(start, end);
     cLines.push_back(cl);
@@ -508,7 +481,6 @@ std::string CosmeticExtension::addCenterLine(Base::Vector3d start,
 
 std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
 {
-//    Base::Console().message("CEx::addCenterLine(cl: %X)\n", cl);
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     cLines.push_back(cl);
     CenterLines.setValues(cLines);
@@ -518,7 +490,6 @@ std::string CosmeticExtension::addCenterLine(TechDraw::CenterLine* cl)
 
 std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
 {
-//    Base::Console().message("CEx::addCenterLine(bg: %X)\n", bg);
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     TechDraw::CenterLine* cl = new TechDraw::CenterLine(bg);
     cLines.push_back(cl);
@@ -529,7 +500,6 @@ std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
 //get CL by unique id
 TechDraw::CenterLine* CosmeticExtension::getCenterLine(const std::string& tagString) const
 {
-//    Base::Console().message("CEx::getCenterLine(%s)\n", tagString.c_str());
     const std::vector<TechDraw::CenterLine*> cLines = CenterLines.getValues();
     for (auto& cl: cLines) {
         std::string clTag = cl->getTagAsString();
@@ -544,7 +514,6 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLine(const std::string& tagStr
 // used when selecting
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(const std::string& name) const
 {
-//    Base::Console().message("CEx::getCLBySelection(%s)\n", name.c_str());
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
     if (!dvp) {
@@ -561,7 +530,6 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(const std::str
 //overload for index only
 TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 {
-//    Base::Console().message("CEx::getCLBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
     return getCenterLineBySelection(edgeName.str());
@@ -569,13 +537,10 @@ TechDraw::CenterLine* CosmeticExtension::getCenterLineBySelection(int i) const
 
 void CosmeticExtension::removeCenterLine(const std::string& delTag)
 {
-    // Base::Console().message("DVP::removeCL(%s)\n", delTag.c_str());
     std::vector<CenterLine*> cLines = CenterLines.getValues();
     std::vector<CenterLine*> newLines;
     for (auto& cl: cLines) {
-        if (cl->getTagAsString() == delTag)  {
-            delete cl;
-        } else {
+        if (cl->getTagAsString() != delTag)  {
             newLines.push_back(cl);
         }
     }
@@ -602,7 +567,6 @@ void CosmeticExtension::clearGeomFormats()
 //only adds gf to gflist property.  does not add to display geometry until dvp repaints.
 std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
 {
-//    Base::Console().message("CEx::addGeomFormat(gf: %X)\n", gf);
     std::vector<GeomFormat*> formats = GeomFormats.getValues();
     TechDraw::GeomFormat* newGF = new TechDraw::GeomFormat(gf);
     formats.push_back(newGF);
@@ -614,7 +578,6 @@ std::string CosmeticExtension::addGeomFormat(TechDraw::GeomFormat* gf)
 //get GF by unique id
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(const std::string& tagString) const
 {
-//    Base::Console().message("CEx::getGeomFormat(%s)\n", tagString.c_str());
     const std::vector<TechDraw::GeomFormat*> formats = GeomFormats.getValues();
     for (auto& gf: formats) {
         std::string gfTag = gf->getTagAsString();
@@ -627,11 +590,10 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormat(const std::string& tagStr
     return nullptr;
 }
 
-// find the cosmetic edge corresponding to selection name (Edge5)
+// find the GeomFormat for a cosmetic edge corresponding to selection name (Edge5)
 // used when selecting
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(const std::string& name) const
 {
-//    Base::Console().message("CEx::getCEBySelection(%s)\n", name.c_str());
     App::DocumentObject* extObj = const_cast<App::DocumentObject*> (getExtendedObject());
     TechDraw::DrawViewPart* dvp = dynamic_cast<TechDraw::DrawViewPart*>(extObj);
     if (!dvp) {
@@ -652,7 +614,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(const std::str
 //overload for index only
 TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 {
-//    Base::Console().message("CEx::getCEBySelection(%d)\n", i);
     std::stringstream edgeName;
     edgeName << "Edge" << i;
     return getGeomFormatBySelection(edgeName.str());
@@ -660,7 +621,6 @@ TechDraw::GeomFormat* CosmeticExtension::getGeomFormatBySelection(int i) const
 
 void CosmeticExtension::removeGeomFormat(const std::string& delTag)
 {
-//    Base::Console().message("DVP::removeCE(%s)\n", delTag.c_str());
     std::vector<GeomFormat*> cFormats = GeomFormats.getValues();
     std::vector<GeomFormat*> newFormats;
     for (auto& gf: cFormats) {

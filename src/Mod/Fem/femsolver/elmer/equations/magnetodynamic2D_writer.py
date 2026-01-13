@@ -215,8 +215,24 @@ class MgDyn2Dwriter:
                                 potential = obj.AV_im_3.getValueAs("Wb/m")
                                 self.write.boundary(name, "Potential im", potential)
 
-                    if obj.ElectricInfinity:
+                    elif obj.BoundaryCondition == "Neumann":
+                        if obj.EnableMagnetic_1:
+                            b_1 = obj.Magnetic_re_1.getValueAs("Wb/m^2")
+                            self.write.boundary(name, "Magnetic Flux Density 1", b_1)
+                            if equation.IsHarmonic:
+                                b_1 = obj.Magnetic_im_1.getValueAs("Wb/m^2")
+                                self.write.boundary(name, "Magnetic Flux Density 1 im", b_1)
+
+                        if obj.EnableMagnetic_2:
+                            b_2 = obj.Magnetic_re_2.getValueAs("Wb/m^2")
+                            self.write.boundary(name, "Magnetic Flux Density 2", b_2)
+                            if equation.IsHarmonic:
+                                b_2 = obj.Magnetic_im_2.getValueAs("Wb/m^2")
+                                self.write.boundary(name, "Magnetic Flux Density 2 im", b_2)
+
+                    if obj.FarField:
                         self.write.boundary(name, "Infinity BC", True)
+
                 self.write.handled(obj)
 
     def handleMagnetodynamic2DEquation(self, bodies, equation):

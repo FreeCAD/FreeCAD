@@ -1112,6 +1112,7 @@ class ViewProviderBuildingPart:
     def onDelete(self, vobj, subelements):
 
         if self.clip:
+            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
             sg.removeChild(self.clip)
             self.clip = None
         for o in Draft.get_group_contents(vobj.Object.Group, walls=True):

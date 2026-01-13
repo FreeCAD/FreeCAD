@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BSD-3-Clause
+
 #ifndef SMALLCHANGE_SWITCHBOARD_H
 #define SMALLCHANGE_SWITCHBOARD_H
 
