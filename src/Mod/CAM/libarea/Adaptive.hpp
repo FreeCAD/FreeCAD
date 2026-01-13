@@ -26,6 +26,7 @@
 #include <vector>
 #include <list>
 #include <time.h>
+#include <fstream>
 
 #pragma once
 
@@ -200,6 +201,8 @@ private:
     void AddPathToProgress(TPaths& progressPaths, const Path pth, MotionType mt = MotionType::mtCutting);
     void ApplyStockToLeave(Paths& inputPaths);
 
+    std::ofstream* fout;
+
 private:
     // Derivation for MIN_STEP_CLIPPPER (MSC for short in this derivation):
     // Diagram:
@@ -245,6 +248,7 @@ private:
     //
     // Historically we have used MSC = 16. It might be convenient that MSC is
     // many-times divisible by 2, so I have chosen 16*3 (>38) for its new value.
+
     const double MIN_STEP_CLIPPER = 16.0 * 3;
     const int MAX_ITERATIONS = 10;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
