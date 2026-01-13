@@ -270,10 +270,9 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/Density.yml
     Resources/Models/Mechanical/Hardness.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
+    Resources/Models/Mechanical/IsotropicLinearElasticArrays.yml
     Resources/Models/Mechanical/LinearElastic.yml
-    Resources/Models/Mechanical/MetalIsotropicLinearElasticArrays.yml
-    Resources/Models/Mechanical/MetalLinearElasticTemperatureArrays.yml
-    Resources/Models/Mechanical/MetalToughnessTemperatureArrays.yml
+    Resources/Models/Mechanical/LinearElasticArrays.yml
     Resources/Models/Mechanical/MooneyRivlin.yml
     Resources/Models/Mechanical/NeoHooke.yml
     Resources/Models/Mechanical/OgdenN1.yml
@@ -288,6 +287,7 @@ SET(MaterialModel_Files
     Resources/Models/Mechanical/ReducedPolynomialN2.yml
     Resources/Models/Mechanical/ReducedPolynomialN3.yml
     Resources/Models/Mechanical/Toughness.yml
+    Resources/Models/Mechanical/ToughnessArrays.yml
     Resources/Models/Mechanical/Yeoh.yml
     Resources/Models/Patterns/PAT.yml
     "Resources/Models/Patterns/Pattern File.yml"

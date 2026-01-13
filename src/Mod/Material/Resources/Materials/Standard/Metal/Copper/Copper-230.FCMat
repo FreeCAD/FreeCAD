@@ -59,3 +59,19 @@ Models:
     UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
     ImpactCharpy: "130 J"
     NotchTensileStrength: "372 MPa"
+  IsotropicLinearElasticArrays:
+    UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+    ElasticProperties:
+      - [["295 K", "", "", "45.2 GPa", "103 GPa"],
+         ["195 K", "", "", "46.7 GPa", "109 GPa"],
+         ["76 K",  "", "", "48.7 GPa", "121 GPa"],
+         ["20 K",  "", "", "49.6 GPa", "125 GPa"],
+         ["4 K",   "", "", "",         "125 GPa"]]
+  ToughnessArrays:
+    UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+    PlasticTriaxialProperties:
+      - [["295 K", "130 J", "372 MPa"],
+         ["195 K", "111 J", "403 MPa"],
+         ["76 K",  "106 J", "491 MPa"],
+         ["20 K",  "103 J", "496 MPa"],
+         ["4 K",   "",      "516 MPa"]]

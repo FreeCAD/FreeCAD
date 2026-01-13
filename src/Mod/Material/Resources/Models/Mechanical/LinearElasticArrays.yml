@@ -22,12 +22,12 @@
 # ***************************************************************************
 
 Model:
-  Name: 'MetalIsotropicLinearElasticArrays'
-  UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+  Name: 'LinearElasticArrays'
+  UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
   URL: ''
-  Description: ''
+  Description: "Temperature arrays for Metal Linear Properties"
   DOI: ''
-  IsotropicLinearElasticProperties:
+  PlasticUniaxialProperties:
     Type: '2DArray'
     Columns:
       Temperature:
@@ -35,28 +35,49 @@ Model:
         Units: 'C'
         URL: ''
         Description: "Temperature"
-      BulkModulus:
-        DisplayName: "Bulk Modulus"
-        Type: 'Quantity'
-        Units: 'kPa'
-        URL: ''
-        Description: "Bulk modulus in [FreeCAD Pressure unit]"
-      PoissonRatio:
-        DisplayName: "Poisson Ratio"
+      UltimateStrain:
+        DisplayName: "Ultimate Strain"
         Type: 'Float'
         Units: ''
-        URL: ''
-        Description: "Poisson's ratio [unitless]"
-      ShearModulus:
-        DisplayName: "Shear Modulus"
+        URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+        Description: >
+          Maximum deformation a material can endure before it fails or fractures.
+          ΔL/L as percent value [unitless].
+      UltimateTensileStrength:
+        DisplayName: "Ultimate Tensile Strength"
         Type: 'Quantity'
         Units: 'kPa'
-        URL: ''
-        Description: "Shear modulus in [FreeCAD Pressure unit]"
-      YoungsModulus:
-        DisplayName: "Young's Modulus"
+        URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
+        Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
+      YieldStrain:
+        DisplayName: "Yield Strain"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Yield_(engineering)'
+        Description: >
+          Elastic strain approximate limit before bending/stretching becomes permanent.
+          ΔL/L as percent value [unitless].
+      YieldStrength:
+        DisplayName: "Yield Strength"
         Type: 'Quantity'
         Units: 'kPa'
-        URL: ''
-        Description: "Young's modulus (or E-Module) in [FreeCAD Pressure unit]"
-
+        URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
+        Description: "Yield strength in [FreeCAD Pressure unit]"
+      Elongation:
+        DisplayName: "Elongation"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Elongation'
+        Description: >
+          Measure of ductility and formability. Increase in length a material
+          undergoes when stretched to its breaking point during a tensile test.
+          ΔL/L as percent value [unitless].
+      ReductionOfArea:
+        DisplayName: "Reduction Of Area (RA)"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+        Description: >
+          Measure of ductility by calculating the decrease in cross-sectional area
+          at the fracture point during a tensile test.
+          ΔArea/Area as percent value [unitless].
