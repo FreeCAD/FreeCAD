@@ -22,7 +22,9 @@
 
 import FreeCAD
 
+import Part
 import Path
+import Path.Base.Generator.tapping as tapping
 import CAMTests.PathTestUtils as PathTestUtils
 from importlib import reload
 from Path.Post.scripts import linuxcnc_legacy_post as postprocessor
@@ -418,3 +420,101 @@ M2
             "G1 X0.3937 Y0.7874 Z1.1811 A-440.0000 B-450.0000 C-460.0000 ",
             "--no-header --inches --no-show-editor",
         )
+
+    def test_thread_tapping(self):
+        """Test thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=True,
+            pitch=None,
+            spindle_speed=None,
+        )
+
+        self.docobj.Path = Path.Path(path)
+        postables = [self.docobj]
+
+        args = "--no-header --no-comments --no-show-editor"
+        gcode = postprocessor.export(postables, "-", args)
+        lines = gcode.splitlines()
+        self.assertEqual(lines[2], "G84 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+
+    def test_thread_tapping_links(self):
+        """Test thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=False,
+            pitch=None,
+            spindle_speed=None,
+        )
+
+        self.docobj.Path = Path.Path(path)
+        postables = [self.docobj]
+
+        args = "--no-header --no-comments --no-show-editor"
+        gcode = postprocessor.export(postables, "-", args)
+        lines = gcode.splitlines()
+        self.assertEqual(lines[2], "G74 F100.000 X0.000 Y0.000 Z0.000 R10.000 ")
+
+    def test_thread_rigid_tapping(self):
+        """Test rigid thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=True,
+            pitch=None,
+            spindle_speed=None,
+        )
+
+        self.docobj.Path = Path.Path(path)
+        postables = [self.docobj]
+
+        args = "--no-header --no-comments --no-show-editor --rigid-tap"
+        gcode = postprocessor.export(postables, "-", args)
+        lines = gcode.splitlines()
+        self.assertEqual(lines[2], "G33.1 K100.000 Z0.000 ")
+        self.assertEqual(lines[3], "M4")
+        self.assertEqual(lines[4], "G33.1 K100.000 Z10.000")
+        self.assertEqual(lines[5], "M3")
+
+    def test_thread_rigid_tapping_links(self):
+        """Test rigid thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=False,
+            pitch=None,
+            spindle_speed=None,
+        )
+
+        self.docobj.Path = Path.Path(path)
+        postables = [self.docobj]
+
+        args = "--no-header --no-comments --no-show-editor --rigid-tap"
+        gcode = postprocessor.export(postables, "-", args)
+        lines = gcode.splitlines()
+        self.assertEqual(lines[2], "G33.1 K100.000 Z0.000 ")
+        self.assertEqual(lines[3], "M3")
+        self.assertEqual(lines[4], "G33.1 K100.000 Z10.000")
+        self.assertEqual(lines[5], "M4")
