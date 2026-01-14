@@ -4,10 +4,10 @@
  * @brief The part of FreeCAD that works without GUI (console or server mode)
  *
  * @details It contains the App namespace and defines core concepts such as
- * @ref DocumentGroup "Document", @ref DocumentObjectGroup "Document Object",
- * @ref PropertyFramework "Property Framework", @ref ExpressionFramework
- * "Expression Framework", and the @ref ExtensionFramework "Extension
- * Framework".
+ * @ref ApplicationGroup "Application", @ref DocumentGroup "Document", @ref
+ * DocumentObjectGroup "DocumentObject", @ref PropertyFramework "Property
+ * Framework", @ref ExpressionFramework "Expression Framework", and the @ref
+ * ExtensionFramework "Extension Framework".
  *
  * The largest difference between the functionality in @ref BASE "Base"
  * compared to %App is that %App introduces the notion of properties, both used
@@ -17,38 +17,301 @@
  */
 
 /**
- * @defgroup DocumentGroup Document
+ * @defgroup ApplicationGroup Application
  * @ingroup APP
- * @brief The class that represents a FreeCAD document
+ * @brief The class that represents the running FreeCAD application.
  *
- * This (besides the App::Application class) is the most important class in FreeCAD.
- * It contains all the data of the opened, saved, or newly created FreeCAD Document.
- * The App::Document manages the Undo and Redo mechanism and the linking of documents.
+ * The App::Application class is a singleton class that represents the running
+ * FreeCAD application.  It can be obtained by App::GetApplication().  It
+ * manages the opened documents and provides various forms of functionality
+ * that are briefly discussed below.
  *
- * Note: the documents are not free objects. They are completely handled by the
- * App::Application. Only the Application can Open or destroy a document.
+ * @section SecApplicationInitialization Initialization and Configuration
  *
- * \section Exception Exception handling
- * As the document is the main data structure of FreeCAD we have to take a close
- * look at how Exceptions affect the integrity of the App::Document.
+ * On application start, the FreeCAD type system is initialized and the command
+ * line arguments are processed, possible opening FreeCAD files or executing
+ * FreeCAD macros.  The internal configuration that contains various paths is
+ * set up and after that the `user.cfg` and `system.cfg` file are parsed and
+ * made available by @ref App::Application::GetUserParameter()
+ * "GetUserParameter()" and @ref App::Application::GetSystemParameter()
+ * "GetSystemParameter()".
  *
- * \section UndoRedo Undo Redo an Transactions
- * Undo Redo handling is one of the major mechanism of a document in terms of
- * user friendliness and speed (no one will wait for Undo too long).
+ * FreeCAD obtains various resources from different paths that can be accessed
+ * by means of functions such as @ref App::Application::GetHomePath()
+ * "GetHomePath" or the more generic function @ref
+ * App::Application::directories "directories()" that provides an @ref
+ * App::ApplicationDirectories "ApplicationDirectories" class.
  *
- * \section Dependency Graph and dependency handling
- * The FreeCAD document handles the dependencies of its DocumentObjects with
- * an adjacency list. This gives the opportunity to calculate the shortest
- * recompute path. Also, it enables more complicated dependencies beyond trees.
+ * @section SecApplicationDocuments Document management
  *
- * @see App::Application
- * @see App::DocumentObject
+ * An important role is managing FreeCAD documents.  The application class
+ * allows opening and closing documents, creating unique and valid names and
+ * labels for the files, and setting or opening a file as the active file.
+ *
+ * Moreover, there is support for special files such as temporary files that
+ * may or may not be hidden in the tree or partially loaded files where not all
+ * objects are loaded.
+ *
+ * FreeCAD has a wide range of file formats that it can import and export.  It
+ * is possible to install a file type filter together with a module name that
+ * then becomes responsible for importing or exporting the file types of the
+ * filter.  An example of a filter is @c "STEP with colors (*.step *.STEP *.stp
+ * *.STP)" and the file types that will be associated with this filter are
+ * represented by the extensions and will be @c "step" and @c "stp" (matching
+ * is case-insensitive).
+ *
+ * @section SecApplicationTransactions Application-wide transactions
+ *
+ * In @ref SecUndoRedo "Documents" we explain more about the transaction
+ * system.  Although transactions are mainly a feature of documents and
+ * document objects, there is also applicaton-wide functionality that allows
+ * creating transactions in multiple documents sharing the same transaction ID.
+ *
+ * @section SecApplicationLinks Links between document objects
+ *
+ * Although links occur between document objects and are as such more a topic
+ * of @ref GroupDocumentObject "DocumentObjects", App::Application provides
+ * functions to check for cyclic dependencies and obtaining links to a document
+ * object.
+ *
+ * @section SecApplicationSignals Signals
+ *
+ * The application class has various signals that can be connected to.  There
+ * are various categories of signals:
+ * - on the level of the application, such as with new or deleted documents or
+ *   transactions,
+ * - on the level of documents, such as with changed properties of documents or
+ *   document objects, or with newly added objects,
+ * - on the level of objects, such as newly added properties,
+ * - on the level of extensions, such as newly added extensions.
+ *
+ * Many of the signals are also available on the document level and typically
+ * the application class has slots that connect to these document signals when
+ * a document is opened.
  */
 
 /**
- * @defgroup DocumentObjectGroup Document Object
+ * @defgroup DocumentGroup Document
  * @ingroup APP
- * @brief %Base class of all objects handled in the Document.
+ * @brief The class that represents a FreeCAD document.
+ *
+ * This (besides the App::Application class) is the most important class in
+ * FreeCAD.  It contains all the data of the opened, saved, or newly created
+ * FreeCAD %Document.  The App::Document class manages the undo and redo
+ * mechanism and linking of documents.
+ *
+ * Note: Documents are not freestanding objects. They are completely handled by the
+ * App::Application class. Only the application can open or destroy a document.
+ *
+ * @section SecDocumentProperties Documents as property containers
+ *
+ * The main role of a document is being a container of @ref DocumentObjectGroup
+ * "DocumentObjects".  Both a @ref DocumentObjectGroup "DocumentObject" and a
+ * @ref App::Document "Document" are @ref PropertyFramework
+ * "PropertyContainers" and can hold properties.
+ *
+ * However, there is a crucial difference between the properties in a document
+ * and in a document object.  The properties in a document cannot be the target
+ * of expressions and they do not take part in the dependency check mechanism.
+ * This means that if a document object references a property of a document and
+ * the document property is changed, the document object that references the
+ * document property will not be marked to be recomputed.  As such, the
+ * properties in a document should be regarded as simple properties for
+ * file-related information.
+ *
+ * @section SecObjectManagement Object management
+ *
+ * As mentioned above, a document is a container of document objects.  Document
+ * objects can only exist inside a document and the document provides
+ * functionality to create, remove, and access document objects.  For example,
+ * it is possible to get objects of a specific type or with a specific
+ * extension.
+ *
+ * The document also manages the names and labels document objects, ensuring
+ * that names are unique and that labels are unique if configured to have
+ * unique labels.
+ *
+ * @section DependencyGraph Dependencies between document objects
+ *
+ * Objects can link to other objects in the same document or in other documents
+ * and as such dependencies between document objects come into existence.  The
+ * document is responsible for recomputing document objects if some property of
+ * a document object changes.  The dependencies between document objects
+ * determine in which order the objects must be recomputed.
+ *
+ * To compute the objects in the right order, the document computes a
+ * dependency graph based on the information contained in the OutLists and
+ * InLists of the document objects.  For more information on OutLists and
+ * InLists, see @ref SecDocumentObjectRecompute "Document Objects".  Given the
+ * dependency graph, the document computes the list of objects in topological
+ * order (not to be confused with topological naming) which means that the
+ * objects without dependencies come first and then the objects that depend on
+ * these objects, etc.
+ *
+ * The document will check for each object in the list whether the object is
+ * "touched", which means that it is marked to be recomputed.  If so, the
+ * object is recomputed and the objects in the InList of that object are
+ * touched as well.  Because of the topological order, these objects will come
+ * in a later iteration.
+ *
+ * This mechanism allows FreeCAD to recompute only the objects that need to be
+ * recomputed and in only one pass over the list of objects.  However, it is
+ * important that the dependency graph does not contain cycles and is a
+ * "Directed Acyclic Graph" or DAG.  As such, cyclic dependencies are not
+ * allowed in FreeCAD.
+ *
+ * @section SecUndoRedo Undo Redo and Transactions
+ *
+ * Another important responsbility of documents is to manage undo and redo
+ * actions.  The information to support undo and redo is captured in
+ * transactions.  It is important to understand that transactions are a feature
+ * of document objects and not of documents.  This means that a change of a
+ * property inside a document (as opposed to inside a document object) is not
+ * captured by the transaction system (similar to the fact that document
+ * properties do not support expressions).
+ *
+ * The transaction system is quite complex and acts on various levels.
+ * Although the transactions themselves only capture changes regarding document
+ * objects, the transactions are managed in the document.  Although the
+ * transactions are managed inside a document, it is possible to support
+ * transactions that affect multiple documents.  This is managed by the GUI and
+ * if a change affects multiple documents, then all documents will store
+ * transactions that change its document and they will all have the same
+ * transaction ID.
+ *
+ * The mechanisms for undo and redo are part of the @ref APP "App" level, but
+ * the GUI defines the transactions (where to open a transaction, where to
+ * commit or abort) and it initiates the undo and redo actions.
+ *
+ * The transaction system makes use of classes with very similar names which
+ * can be confusing.  Here is a short overview:
+ *
+ * - A @ref App::TransactionalObject "TransactionalObject" is a base class that
+ *   provides the functionality to support transactions.  It is inherited by
+ *   @ref App::DocumentObject "DocumentObject".
+ * - A @ref App::TransactionObject "TransactionObject" is a class that
+ *   represents a single action and can express adding a new object, removing
+ *   an object or changing an object.  Subclasses of the transaction object are
+ *   @ref App::TransactionDocumentObject "TransactionDocumentObject" and
+ *   @ref Gui::TransactionViewProvider "Gui::TransactionViewProvider".
+ * - A @ref App::Transaction "Transaction" captures a single undo or redo
+ *   action and consists of multiple @ref App::TransactionObject
+ *   "TransactionObjects" associated with their @ref App::TransactionalObject
+ *   "TransactionalObject", often a @ref App::DocumentObject "DocumentObject".
+ */
+
+/**
+ * @defgroup DocumentObjectGroup DocumentObject
+ * @ingroup APP
+ * @brief %Base class of all objects handled in the @ref App::Document "Document".
+ *
+ * A DocumentObject is the base class of all objects that can be contained in a
+ * FreeCAD @ref App::Document "Document".  Document objects can represent any
+ * object that can be created in a FreeCAD Document, such as features:
+ * Part::Feature, Mesh::Feature, Sketcher::SketchObject, but also other objects
+ * such as App::Link, App::DocumentObjectGroup, App::VarSet, or
+ * SpreadSheet::Sheet that do not necessary represent geometry.
+ *
+ * Document objects provide the functionality to handle properties (it extends
+ * @ref App::PropertyContainer "PropertyContainer"), transactions (it extends
+ * @ref App::TransactionalObject "TransactionalObject") and extensions (it
+ * extends @ref App::ExtensionContainer "ExtensionContainer"), and expressions.
+ * Expressions are managed by the property @ref
+ * App::DocumentObject::ExpressionEngine "ExpressionEngine", which is a special
+ * type of a link property that contains expressions that may link to other
+ * document objects.
+ *
+ * @section SecDocumentObjectRecompute Recomputing Document Objects
+ *
+ * Objects can be recomputed, which means that the properties of the object are
+ * recomputed.  Since properties may depend on other document objects, for
+ * example because of the @ref App::DocumentObject::ExpressionEngine
+ * "ExpressionEngine" property, these document objects have to be computed
+ * first.  Managing the order of recomputation is managed by the @ref
+ * App::Document "Document" which calls the @ref
+ * App::DocumentObject::recompute() "recompute()" on the document object.  To
+ * signal that a document object needs to be recomputed, the document object
+ * can be touched (see @ref App::DocumentObject::touch() "touch()" and @ref
+ * App::DocumentObject::isTouched() "isTouched()").
+ *
+ * As part of recomputation, the document object can also be executed or
+ * "invoked", (see @ref App::DocumentObject::execute() "execute()") which
+ * results in recomputing the output properties of the object.
+ *
+ * Although recomputation is mostly orchestrated by the @ref App::Document
+ * "Document", document objects play an important role in capturing the
+ * dependencies between document objects in terms of OutLists and InLists.
+ *
+ * Dependencies between document objects come into existence because of links
+ * and if a document object `A` links to another document object `B`, then `B`
+ * is in the OutList of `A` and `A` is in the InList of `B`.  The InList for an
+ * object `Obj` represents the document objects that are dependent on it.  The
+ * outlist of an object `Obj` represent the dependencies of it.  So, to
+ * recompute `Obj`, first the objects in the outlist need to be recomputed.
+ * Vice versa, if a property of an object is changed, the InList indicates
+ * which other objects depend on it and need to be recomputed.
+ *
+ * So, as mentioned above, links define dependencies between document objects
+ * These dependencies are recorded by means of setting the value of a @ref
+ * App::PropertyLink "PropertyLink" (and similar properties) in a document
+ * object `Obj` to a document object `Value`.  Within @ref
+ * App::PropertyLink::setValue() "PropertyLink::setValue()" (and similar
+ * methods for other link properties), the (internal) methods _addBackLink() or
+ * _removeBackLink() will be called on `Value` with as argument the container
+ * of the property link `Obj`, indicating that `Obj` depends on `Value`.  With
+ * this methodology, each document object will build up its own InList that can
+ * be used during recomputation to query which other document objects need to
+ * be computed.
+ *
+ * The OutList and InList can be accessed by the methods @ref
+ * App::DocumentObject::getOutList() "getOutList()" and @ref
+ * App::DocumentObject::getInList() "getInList()".
+ *
+ * @section SecDocumentObjectProperties Properties
+ *
+ * The document object introduces three properties:
+ *
+ * - @ref App::DocumentObject::Label "Label" which is a string that identifies
+ *   the object in the document and is used to display the object in the GUI.
+ * - @ref App::DocumentObject::Label2 "Label2" which is a string that contains
+ *   additional information about the object and is used for the description of
+ *   the object.
+ * - @ref App::DocumentObject::ExpressionEngine "ExpressionEngine" which
+ *   contains a mapping from @ref App::ObjectIdentifier "ObjectIdentifier" to
+ *   @ref App::Expression "Expression".  The object identifier defines the
+ *   properties that store the result of the expression.
+ * - @ref App::DocumentObject::Visibility "Visibility" which is a boolean
+ *   that indicates whether the object is visible in App namespace.
+ *
+ * @section SecDocumentObjectSignals Signals
+ *
+ * A document object has three signals that can be connected to:
+ *
+ * - @ref App::DocumentObject::signalBeforeChange "signalBeforeChange" which is
+ *   emitted before a property of the document object is changed.  This signal
+ *   can be used to prepare for changes to the document object.
+ * - @ref App::DocumentObject::signalChanged "signalChanged" which is emitted
+ *   after a property of the document object has changed.
+ * - @ref App::DocumentObject::signalEarlyChanged "signalEarlyChanged" which
+ *   is also emitted after a property has changed but emitted right before
+ *   "signalChanged".
+ *
+ * Note that at the @ref App::Document "Document" level, there are also similar
+ * signals.
+ *
+ * @section SecDocumentObjectSeparation Separation App/Gui
+ *
+ * In FreeCAD there is a strict separation between the App and Gui parts.  A
+ * @ref App::DocumentObject "DocumentObject" typically has a Gui::ViewProvider
+ * class associated with it.  The method @ref
+ * App::DocumentObject::getViewProviderName() "getViewProviderName()" defines
+ * what the type of the class of the view provider is, allowing the Gui to
+ * retrieve the type and construct a view provider.
+ *
+ * Another intresting aspect of the separation is that the property @ref
+ * App::DocumentObject::Visibility "Visibility" is defined both in
+ * App::DocumentObject and in @ref Gui::ViewProviderDocumentObject::Visibility
+ * "Gui::ViewProviderDocumentObject".
  */
 
 /**
@@ -209,7 +472,7 @@
 /**
  * @defgroup ExtensionFramework Extension framework
  * @ingroup APP
- * @brief The extension system provides a way to extend the functionality of Document Objects.
+ * @brief The extension system provides a way to extend the functionality of @ref DocumentObjectGroup "DocumentObjects".
  *
  * The concept of extensions provides a way to extend the functionality of
  * objects in FreeCAD despite Python's limitations with multiple inheritance

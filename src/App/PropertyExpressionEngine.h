@@ -100,7 +100,6 @@ public:
     /**
      * @brief The ExpressionInfo struct encapsulates an expression.
      */
-
     struct ExpressionInfo
     {
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
