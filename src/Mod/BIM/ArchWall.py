@@ -732,11 +732,10 @@ class _Wall(ArchComponent.Component):
         # Check if there is base, and if width and height is provided or not
         # Provide users message below to check the setting of the Wall object
         if base.isNull() and (self.noWidths or self.noHeight):
-            FreeCAD.Console.PrintMessage(translate("Arch", "Wall object.Label "), obj.Label + "\n")
-            FreeCAD.Console.PrintMessage(
+            FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    "- Cannot create or update Wall as its length, height or width is zero, and there is no solid in the Additions",
+                    f"Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions"
                 )
                 + "\n"
             )
