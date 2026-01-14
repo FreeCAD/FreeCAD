@@ -123,7 +123,9 @@ void ViewProviderHole::updateData(const App::Property* prop)
             return;
         }
         App::DocumentObject* parentDO = pcHole->getParents()[0].first;
-        auto* vpBody = Gui::Application::Instance->getViewProvider<PartDesignGui::ViewProviderBody*>(parentDO);
+        auto* vpBody = Gui::Application::Instance->getViewProvider<PartDesignGui::ViewProviderBody*>(
+            parentDO
+        );
         if (vpBody) {
             vpBody->updateThreadTextureForHole(pcHole);
         }
