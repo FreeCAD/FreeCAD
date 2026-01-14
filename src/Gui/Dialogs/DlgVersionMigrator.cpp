@@ -238,6 +238,20 @@ public:
                 {App::Application::directories()->getUserAppDataDir(),
                  App::Application::directories()->getUserConfigPath()}
             );
+
+            // In addition to migrating the actual files, there is a parameter that might be
+            // recording userMacroDir() which must be updated if it stores the old default
+            auto macroDir = App::GetApplication()
+                                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                                ->GetASCII("MacroPath", App::Application::getUserMacroDir().c_str());
+            std::filesystem::path chosenPath(macroDir);
+            std::filesystem::path userMacroDir(App::Application::getUserMacroDir());
+            if (chosenPath == userMacroDir) {
+                App::GetApplication()
+                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Macro")
+                    ->RemoveASCII("MacroPath");
+            }
+
             Q_EMIT(complete());
         }
         catch (const Base::Exception& e) {
