@@ -1341,12 +1341,20 @@ class AreaCalculator:
         for prop in ["VerticalArea", "HorizontalArea", "PerimeterLength"]:
             setattr(self.obj, prop, 0)
 
-    def isFaceVertical(self, face):
+    def isFaceVertical(self, face, face_index=None):
         """Determine if a face is vertical.
 
         A face is considered vertical if:
         - Its normal vector forms an angle close to 90 degrees with the Z-axis.
         - The projected face has an area of zero.
+
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
 
         Notes
         -----
@@ -1359,6 +1367,8 @@ class AreaCalculator:
         import Part
         import DraftGeomUtils
         import TechDraw
+
+        face_name = f" Face{face_index}" if face_index is not None else ""
 
         if face.Surface.TypeId == "Part::GeomCylinder":
             angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
@@ -1380,7 +1390,7 @@ class AreaCalculator:
                     projectedArea = Part.Face(wires).Area
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
-                    translate("Arch", f"Could not project face from {self.obj.Label}\n")
+                    translate("Arch", f"Could not project face{face_name} from {self.obj.Label}\n")
                 )
                 return False
 
@@ -1391,7 +1401,7 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
                     " is vertical: normalAt() failed\n",
                 )
             )
@@ -1429,8 +1439,8 @@ class AreaCalculator:
         horizontalAreaFaces = []
 
         # Compute vertical area and collect faces to be projected for the horizontal area
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
             else:
                 horizontalAreaFaces.append(face)
