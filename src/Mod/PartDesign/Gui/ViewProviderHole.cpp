@@ -123,8 +123,7 @@ void ViewProviderHole::updateData(const App::Property* prop)
             return;
         }
         App::DocumentObject* parentDO = pcHole->getParents()[0].first;
-        Gui::ViewProvider* parentVp = Gui::Application::Instance->getViewProvider(parentDO);
-        auto* vpBody = dynamic_cast<PartDesignGui::ViewProviderBody*>(parentVp);
+        auto* vpBody = Gui::Application::Instance->getViewProvider<PartDesignGui::ViewProviderBody*>(parentDO);
         if (vpBody) {
             vpBody->updateThreadTextureForHole(pcHole);
         }
@@ -285,17 +284,8 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
         gp_Vec(holeNormalAxis) * -pcHole->ThreadDepth.getValue()
     );
 
-    SbVec3f endPlanePoint(
-        static_cast<float>(endPlanePnt.X()),
-        static_cast<float>(endPlanePnt.Y()),
-        static_cast<float>(endPlanePnt.Z())
-    );
-
-    SbVec3f endPlaneNormal(
-        static_cast<float>(holeNormalAxis.X()),
-        static_cast<float>(holeNormalAxis.Y()),
-        static_cast<float>(holeNormalAxis.Z())
-    );
+    SbVec3f endPlanePoint = Base::convertTo<SbVec3f>(endPlanePnt);
+    SbVec3f endPlaneNormal = Base::convertTo<SbVec3f>(holeNormalAxis);
 
     // Update the end thread clipper plane
     m_endThreadClipper->plane.setValue(SbPlane(endPlaneNormal, endPlanePoint));
@@ -314,7 +304,7 @@ std::optional<gp_Dir> ViewProviderHole::getHoleNormal(const PartDesign::Hole* pc
         return std::nullopt;
     }
 
-    return gp_Dir(normal.x, normal.y, normal.z);
+    return Base::convertTo<gp_Dir>(normal);
 }
 
 std::optional<gp_Pnt> ViewProviderHole::getHoleOrigin(const PartDesign::Hole* pcHole) const
@@ -323,13 +313,14 @@ std::optional<gp_Pnt> ViewProviderHole::getHoleOrigin(const PartDesign::Hole* pc
         return std::nullopt;
     }
 
-    auto* sketch = dynamic_cast<Part::Part2DObject*>(pcHole->Profile.getValue());
+    auto* sketch = freecad_cast<Part::Part2DObject*>(pcHole->Profile.getValue());
+
     if (!sketch) {
         return std::nullopt;
     }
 
     const Base::Vector3d& pos = sketch->Placement.getValue().getPosition();
-    return gp_Pnt(pos.x, pos.y, pos.z);
+    return Base::convertTo<gp_Pnt>(pos);
 }
 
 std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Hole* pcHole) const
