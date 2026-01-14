@@ -123,7 +123,7 @@ void ViewProviderHole::updateData(const App::Property* prop)
             return;
         }
         App::DocumentObject* parentDO = pcHole->getParents()[0].first;
-        auto* vpBody = Gui::Application::Instance->getViewProvider<PartDesignGui::ViewProviderBody*>(
+        auto* vpBody = Gui::Application::Instance->getViewProvider<PartDesignGui::ViewProviderBody>(
             parentDO
         );
         if (vpBody) {
@@ -286,8 +286,17 @@ void ViewProviderHole::updateThreadClipper(const PartDesign::Hole* pcHole)
         gp_Vec(holeNormalAxis) * -pcHole->ThreadDepth.getValue()
     );
 
-    SbVec3f endPlanePoint = Base::convertTo<SbVec3f>(endPlanePnt);
-    SbVec3f endPlaneNormal = Base::convertTo<SbVec3f>(holeNormalAxis);
+    SbVec3f endPlanePoint(
+        static_cast<float>(endPlanePnt.X()),
+        static_cast<float>(endPlanePnt.Y()),
+        static_cast<float>(endPlanePnt.Z())
+    );
+
+    SbVec3f endPlaneNormal(
+        static_cast<float>(holeNormalAxis.X()),
+        static_cast<float>(holeNormalAxis.Y()),
+        static_cast<float>(holeNormalAxis.Z())
+    );
 
     // Update the end thread clipper plane
     m_endThreadClipper->plane.setValue(SbPlane(endPlaneNormal, endPlanePoint));

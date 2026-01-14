@@ -30,6 +30,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+#include <fastsignals/signal.h>
 
 class SoGroup;
 class SoSeparator;
@@ -116,9 +117,9 @@ private:
     std::map<const PartDesign::Hole*, SoSwitch*> m_threadOverlays;
     void clearThreadTextures();
     void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
-    boost::signals2::scoped_connection m_RecomputedConn;
+    fastsignals::scoped_connection m_RecomputedConn;
     void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
-    boost::signals2::scoped_connection m_ChangedConn;
+    fastsignals::scoped_connection m_ChangedConn;
     bool isHoleThreadVisible(const PartDesign::Hole* hole) const;
     void refreshAllHoleThreads();
     // End of Cosmetical thread
