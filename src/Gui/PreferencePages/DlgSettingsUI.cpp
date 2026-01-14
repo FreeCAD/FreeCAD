@@ -87,6 +87,9 @@ void DlgSettingsUI::saveSettings()
     ui->showTaskWatcherCheckBox->onSave();
 
     // Others
+    if (property("FramelessWindow").toBool() != ui->framelessWindowCheckBox->isChecked()) {
+        requireRestart();
+    }
     ui->framelessWindowCheckBox->onSave();
 }
 
@@ -120,6 +123,7 @@ void DlgSettingsUI::loadSettings()
 
     // Others
     ui->framelessWindowCheckBox->onRestore();
+    setProperty("FramelessWindow", ui->framelessWindowCheckBox->isChecked());
 
     loadStyleSheet();
 }
