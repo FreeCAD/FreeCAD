@@ -27,6 +27,7 @@
 
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFInt32.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedFaceSet.h>
 #include <memory>
 #include <vector>
@@ -97,6 +98,12 @@ public:
     }
 
     SoMFInt32 partIndex;
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    // These fields do not participate in the normal selection/highlight pipeline unless set.
+    SoSFInt32 highlightPartIndex;
+    SoMFInt32 selectionPartIndex;
+    SoSFColor highlightColor;
+    SoSFColor selectionColor;
 
 protected:
     ~SoBrepFaceSet() override;
