@@ -31,6 +31,7 @@
 #include <QColor>
 #include <QRegularExpression>
 #include <QString>
+#include <format>
 #include <ranges>
 #include <utility>
 #include <variant>
@@ -88,7 +89,7 @@ void Numeric::ensureEqualUnits(const Numeric& rhs) const
     if (unit != rhs.unit) {
         THROWM(
             Base::RuntimeError,
-            fmt::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
+            std::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
         );
     }
 }
@@ -97,12 +98,12 @@ std::string Value::toString() const
 {
     if (std::holds_alternative<Numeric>(*this)) {
         auto [value, unit] = std::get<Numeric>(*this);
-        return fmt::format("{}{}", value, unit);
+        return std::format("{}{}", value, unit);
     }
 
     if (std::holds_alternative<Base::Color>(*this)) {
         auto color = std::get<Base::Color>(*this);
-        return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
+        return std::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
     }
 
     return std::get<std::string>(*this);
@@ -173,7 +174,7 @@ std::optional<Parameter> BuiltInParameterSource::get(const std::string& name) co
 
         return Parameter {
             .name = name,
-            .value = fmt::format("#{:0>6x}", 0x00FFFFFF & (color >> 8)),  // NOLINT(*-magic-numbers)
+            .value = std::format("#{:0>6x}", 0x00FFFFFF & (color >> 8)),  // NOLINT(*-magic-numbers)
         };
     }
 

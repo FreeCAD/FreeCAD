@@ -76,7 +76,6 @@ target_include_directories(
 set(FreeCADApp_LIBS
     FreeCADBase
     ${Boost_LIBRARIES}
-    fmt::fmt
 )
 
 if(BUILD_TRACY_FRAME_PROFILER)

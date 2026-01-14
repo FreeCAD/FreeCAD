@@ -52,13 +52,6 @@ jobs:
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
-#  Ubuntu:
-#    needs: [Prepare]
-#    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
-#    uses: ./.github/workflows/sub_buildUbuntu.yml
-#    with:
-#      artifactBasename: Ubuntu-${{ github.run_id }}
-
   Windows:
     needs: [Prepare]
     if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
