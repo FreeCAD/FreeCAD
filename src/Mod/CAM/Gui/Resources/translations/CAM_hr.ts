@@ -6683,7 +6683,7 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="592"/>
       <source>Drag Knife</source>
-      <translation type="unfinished">Drag Knife</translation>
+      <translation>Vučni nož</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="596"/>
@@ -6759,12 +6759,12 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="775"/>
       <source>Ramp Entry</source>
-      <translation type="unfinished">Ramp Entry</translation>
+      <translation>Ulaz na rampu</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="779"/>
       <source>Creates a ramp entry dress-up object from a selected toolpath</source>
-      <translation type="unfinished">Creates a ramp entry dress-up object from a selected toolpath</translation>
+      <translation>Stvara objekt pripreme rampnog ulaza iz odabrane staze obrade</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="793"/>
@@ -6821,7 +6821,7 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="350"/>
       <source>Corrects Z depth using a probe map</source>
-      <translation type="unfinished">Corrects Z depth using a probe map</translation>
+      <translation>Ispravlja Z dubinu pomoću mape sonde</translation>
     </message>
   </context>
   <context>
@@ -6940,57 +6940,57 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="124"/>
       <source>Warning: Incompatible Unit Schema</source>
-      <translation type="unfinished">Warning: Incompatible Unit Schema</translation>
+      <translation>Upozorenje: Nekompatibilna shema jedinice</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="138"/>
       <source>&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Ovaj dokument koristi nepravilnu shemu jedinica koja može rezultirati opasnim situacijama i oštećenjem stroja!&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="149"/>
       <source>Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</source>
-      <translation type="unfinished">Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</translation>
+      <translation>Trenutna shema jedinice &amp;apos{}&amp;apos izražava brzinu u vrijednostima &lt;i&gt;ppo sekundi&lt;/i&gt;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="161"/>
       <source>Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</source>
-      <translation type="unfinished">Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</translation>
+      <translation>Molimo odaberite shemu jedinica koja izražava brzine pomicanja &lt;i&gt;po minuti&lt;/i&gt; umjesto toga:</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="166"/>
       <source>Recommended Unit Schemas</source>
-      <translation type="unfinished">Recommended Unit Schemas</translation>
+      <translation>Preporučene sheme jedinica</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="190"/>
       <source>Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</source>
-      <translation type="unfinished">Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</translation>
+      <translation>Zadržavanje trenutne sheme jedinice može rezultirati opasnim greškama G-koda. Za detalje pogledajte &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki stranicu.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="198"/>
       <source>Change Unit Schema</source>
-      <translation type="unfinished">Change Unit Schema</translation>
+      <translation>Promijenite shemu jedinice</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="202"/>
       <source>Keep Current Schema</source>
-      <translation type="unfinished">Keep Current Schema</translation>
+      <translation>Zadrži aktualnu shemu</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="205"/>
       <source>Don&apos;t Show Again</source>
-      <translation type="unfinished">Don&apos;t Show Again</translation>
+      <translation>Nemoj pokazati ponovo</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
       <source>Unit Schema Changed</source>
-      <translation type="unfinished">Unit Schema Changed</translation>
+      <translation>Shema jedinica promijenjena</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="235"/>
       <source>Unit schema successfully changed to &apos;{}&apos;.</source>
-      <translation type="unfinished">Unit schema successfully changed to &apos;{}&apos;.</translation>
+      <translation>Shema jedinice uspješno promijenjena u &apos;{}&apos;.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="243"/>
@@ -7000,7 +7000,7 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="244"/>
       <source>Failed to change unit schema: {}</source>
-      <translation type="unfinished">Failed to change unit schema: {}</translation>
+      <translation>Nije uspjela promjena sheme jedinice: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="249"/>
@@ -7010,7 +7010,7 @@ Odaberite jednu ili više okomitih strana za pretraživanje strana petlje koje t
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="250"/>
       <source>Please select a unit schema.</source>
-      <translation type="unfinished">Please select a unit schema.</translation>
+      <translation>Molimo odaberite shemu jedinica.</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="348"/>
@@ -7705,17 +7705,17 @@ Razmotrite specificiranje Materijala obrade</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/ballend.py" line="47"/>
       <source>{diameter} {flutes}-flute ballend, {cutting_edge_height} cutting edge</source>
-      <translation type="unfinished">{diameter} {flutes}-flute ballend, {cutting_edge_height} cutting edge</translation>
+      <translation>{diameter} {flutes}-kuglasti žlijeb, {cutting_edge_height} rub rezanja</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/chamfer.py" line="47"/>
       <source>{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute</source>
-      <translation type="unfinished">{diameter} {cutting_edge_angle} chamfer bit, {flutes}-flute</translation>
+      <translation>{diameter} {cutting_edge_angle} glodalo fasete, {flutes}-žljeb</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/custom.py" line="41"/>
       <source>Unknown custom toolbit type</source>
-      <translation type="unfinished">Unknown custom toolbit type</translation>
+      <translation>Nepoznata vrsta prilagođenog alatnog nastavka</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/dovetail.py" line="47"/>
@@ -7730,27 +7730,27 @@ Razmotrite specificiranje Materijala obrade</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/endmill.py" line="47"/>
       <source>{diameter} {flutes}-flute endmill, {cutting_edge_height} cutting edge</source>
-      <translation type="unfinished">{diameter} {flutes}-flute endmill, {cutting_edge_height} cutting edge</translation>
+      <translation>{diameter} {flutes}-završno glodalo žlijeba, {cutting_edge_height} rub rezanja</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/probe.py" line="48"/>
       <source>{diameter} probe, {length} length, {shaft_diameter} shaft</source>
-      <translation type="unfinished">{diameter} probe, {length} length, {shaft_diameter} shaft</translation>
+      <translation>{diameter} sonda, {length} dužina, {shaft_diameter} vratilo</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/reamer.py" line="44"/>
       <source>{diameter} reamer, {cutting_edge_height} cutting edge</source>
-      <translation type="unfinished">{diameter} reamer, {cutting_edge_height} cutting edge</translation>
+      <translation>{diameter} razvrtač, {cutting_edge_height} rub rezanja</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/slittingsaw.py" line="47"/>
       <source>{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute</source>
-      <translation type="unfinished">{diameter} slitting saw, {blade_thickness} blade, {flutes}-flute</translation>
+      <translation>{diameter} pila za rezanje, {blade_thickness} sječivo, {flutes}-žljeb</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/threadmill.py" line="47"/>
       <source>{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</source>
-      <translation type="unfinished">{diameter} thread mill, {flutes}-flute, {cutting_angle} cutting angle</translation>
+      <translation>{diameter} glodalo navoja {flutes}-žljebovi, {cutting_angle} rub rezanja</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/vbit.py" line="45"/>
@@ -7927,22 +7927,22 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="431"/>
       <source>Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</source>
-      <translation type="unfinished">Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</translation>
+      <translation>Jeste li sigurni da želite izbrisati odabrane alate? Ova radnja nije poništiva. Alati će biti uklonjeni s diska i iz svih biblioteka koje ih sadrže.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="219"/>
       <source>Selected faces should be vertical</source>
-      <translation type="unfinished">Selected faces should be vertical</translation>
+      <translation>Odabrane površine trebaju biti okomite</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
-      <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
+      <translation>{diameter} {pitch} {rotation} upuštanje navoja, {flutes}-žljebovi, {cutting_edge_length} rub rezanja</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="555"/>
       <source>Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</source>
-      <translation type="unfinished">Adaptive operation couldn&apos;t determine the boundary wire. Did you select base geometry?</translation>
+      <translation>Adaptivni rad nije mogao odrediti žicu ograničenja. Jeste li odabrali osnovnu geometriju?</translation>
     </message>
   </context>
   <context>
@@ -8565,7 +8565,7 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="484"/>
       <source>Creates an array from selected toolpaths</source>
-      <translation type="unfinished">Creates an array from selected toolpaths</translation>
+      <translation>Stvara jednu matricu iz odabrane staze obrade</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="517"/>
@@ -8807,7 +8807,7 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="379"/>
       <source>Error Saving Library</source>
-      <translation type="unfinished">Error Saving Library</translation>
+      <translation>Pogreška prilikom spremanja biblioteke</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
@@ -8817,7 +8817,7 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="88"/>
       <source>Open Library Editor</source>
-      <translation type="unfinished">Open Library Editor</translation>
+      <translation>Otvorite uređivač biblioteke</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="89"/>
@@ -8832,12 +8832,12 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="174"/>
       <source>No Job Found</source>
-      <translation type="unfinished">No Job Found</translation>
+      <translation>Posao nije pronađen</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="175"/>
       <source>Please create a Job first.</source>
-      <translation type="unfinished">Please create a Job first.</translation>
+      <translation>Molimo prvo stvorite posao.</translation>
     </message>
   </context>
   <context>
@@ -9332,7 +9332,7 @@ Ovim se neće izbrisati alati koji se u njoj nalaze.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="69"/>
       <source>Slitting Saw</source>
-      <translation type="unfinished">Slitting Saw</translation>
+      <translation>Pila za rezanje</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="37"/>

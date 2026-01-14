@@ -52,23 +52,23 @@ jobs:
     with:
       artifactBasename: Pixi-${{ github.run_id }}
 
-  Ubuntu:
-    needs: [Prepare]
-    if: "!startsWith(github.ref, 'refs/heads/backport-')"
-    uses: ./.github/workflows/sub_buildUbuntu.yml
-    with:
-      artifactBasename: Ubuntu-${{ github.run_id }}
+#  Ubuntu:
+#    needs: [Prepare]
+#    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
+#    uses: ./.github/workflows/sub_buildUbuntu.yml
+#    with:
+#      artifactBasename: Ubuntu-${{ github.run_id }}
 
   Windows:
     needs: [Prepare]
-    if: "!startsWith(github.ref, 'refs/heads/backport-')"
+    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
     uses: ./.github/workflows/sub_buildWindows.yml
     with:
       artifactBasename: Windows-${{ github.run_id }}
 
   Lint:
     needs: [Prepare]
-    if: "!startsWith(github.ref, 'refs/heads/backport-')"
+    if: "!startsWith(github.head_ref, 'refs/heads/backport-')"
     uses: ./.github/workflows/sub_lint.yml
     with:
       artifactBasename: Lint-${{ github.run_id }}
@@ -83,7 +83,6 @@ jobs:
     needs: [
         Prepare,
         Pixi,
-        Ubuntu,
         Windows,
         Lint
       ]

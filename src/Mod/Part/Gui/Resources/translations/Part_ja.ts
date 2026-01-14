@@ -6022,12 +6022,12 @@ Continue?</source>
       <translation>共通集合</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>コンパウンドの内容を削除しますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>コンパウンド '%1' には %2 の子オブジェクトが含まれています。同様に削除しますか？</translation>
     </message>

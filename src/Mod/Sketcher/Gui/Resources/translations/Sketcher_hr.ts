@@ -3910,9 +3910,9 @@ To se radi analizom geometrije i ograničenja skice.</translation>
     <message numerus="yes">
       <location filename="../../ViewProviderSketch.cpp" line="3677"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n Stupanj slobode</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Stupnjeva slobode</numerusform>
         <numerusform>%n Stupnjevi slobode</numerusform>
       </translation>
     </message>
@@ -4608,7 +4608,7 @@ Razmak mreže se mijenja ako postane manji od specifične veličine piksela.</tr
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4763,7 +4763,7 @@ Razmak mreže se mijenja ako postane manji od specifične veličine piksela.</tr
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="156"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
@@ -4869,7 +4869,7 @@ Razmak mreže se mijenja ako postane manji od specifične veličine piksela.</tr
       <translation>Nevažeći faktor skaliranja. Faktor skaliranja mora biti pozitivan broj.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
       <source>Failed to scale</source>
       <translation>Neuspjelo skaliranje</translation>
     </message>
@@ -5415,7 +5415,7 @@ Umjesto toga, primjenjuju se jednaka ograničenja između izvornih objekata i nj
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="611"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
       <source>Keep original geometries (U)</source>
       <translation>Zadrži originalne geometrije (U)</translation>
     </message>
@@ -7802,17 +7802,17 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="176"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
       <source>%1 pick reference point</source>
       <translation>%1 odaberi referentnu točku</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 set scale factor</source>
       <translation>%1 postavi faktor skaliranja</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="244"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
       <source>Scale Parameters</source>
       <translation>Parametri skaliranja</translation>
     </message>
