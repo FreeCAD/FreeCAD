@@ -731,7 +731,7 @@ class _Wall(ArchComponent.Component):
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions"
+                    f"Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions",
                 )
                 + "\n"
             )
