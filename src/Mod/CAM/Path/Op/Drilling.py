@@ -213,7 +213,7 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
         # We should be at clearance height.
 
         mode = "G99" if obj.KeepToolDown else "G98"
-        
+
         # Validate that SafeHeight doesn't exceed ClearanceHeight
         safe_height = obj.SafeHeight.Value
         if safe_height > obj.ClearanceHeight.Value:
@@ -282,23 +282,19 @@ class ObjectDrilling(PathCircularHoleBase.ObjectOp):
                 # For G99 mode, tool is at StartDepth (R-plane) after previous hole
                 # Check if direct move at retract plane would collide with model
                 current_pos = machinestate.getPosition()
-                target_at_retract_plane = FreeCAD.Vector(
-                    startPoint.x, startPoint.y, current_pos.z
-                )
-                
+                target_at_retract_plane = FreeCAD.Vector(startPoint.x, startPoint.y, current_pos.z)
+
                 # Check collision at the retract plane (current Z height)
                 collision_detected = linking.check_collision(
                     start_position=current_pos,
                     target_position=target_at_retract_plane,
                     solids=solids,
                 )
-                
+
                 if collision_detected:
                     # Cannot traverse at retract plane - need to break cycle group
                     # Retract to safe height, traverse, then plunge to safe height for new cycle
-                    target_at_safe_height = FreeCAD.Vector(
-                        startPoint.x, startPoint.y, safe_height
-                    )
+                    target_at_safe_height = FreeCAD.Vector(startPoint.x, startPoint.y, safe_height)
                     linking_moves = linking.get_linking_moves(
                         start_position=current_pos,
                         target_position=target_at_safe_height,

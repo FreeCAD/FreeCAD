@@ -128,7 +128,8 @@ void PathSegmentVisitor::g38(int id, const Base::Vector3d& last, const Base::Vec
 }
 
 PathSegmentWalker::PathSegmentWalker(const Toolpath& tp_)
-    : tp(tp_), retract_mode(98)  // Default to G98 (retract to initial Z)
+    : tp(tp_)
+    , retract_mode(98)  // Default to G98 (retract to initial Z)
 {}
 
 
