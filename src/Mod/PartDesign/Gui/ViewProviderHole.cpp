@@ -332,7 +332,7 @@ std::vector<TopoDS_Face> ViewProviderHole::collectBoreFaces(const PartDesign::Ho
         return boreFaces;
     }
 
-    TopoDS_Shape bodyShape = getLastShownShape(pcHole);
+    TopoDS_Shape bodyShape = getCurrentlyVisibleShape(pcHole);
     if (bodyShape.IsNull()) {
         return boreFaces;
     }
@@ -409,7 +409,7 @@ App::Material ViewProviderHole::getGlobalMaterial()
     return App::Material::getDefaultAppearance();
 }
 
-TopoDS_Shape ViewProviderHole::getLastShownShape(const PartDesign::Hole* pcHole) const
+TopoDS_Shape ViewProviderHole::getCurrentlyVisibleShape(const PartDesign::Hole* pcHole) const
 {
     auto* body = PartDesign::Body::findBodyOf(pcHole);
     if (!body) {

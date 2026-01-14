@@ -84,7 +84,7 @@ private:
     std::optional<gp_Dir> getHoleNormal(const PartDesign::Hole* pcHole) const;
     std::optional<gp_Pnt> getHoleOrigin(const PartDesign::Hole* pcHole) const;
     App::Material getGlobalMaterial();
-    TopoDS_Shape getLastShownShape(const PartDesign::Hole* pcHole) const;
+    TopoDS_Shape getCurrentlyVisibleShape(const PartDesign::Hole* pcHole) const;
     void updateThreadClipper(const PartDesign::Hole* pcHole);
     void updateThreadDirection(const PartDesign::Hole* pcHole);
     void applyThreadPhaseOffset(const PartDesign::Hole* pcHole);
