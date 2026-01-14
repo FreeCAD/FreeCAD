@@ -40,8 +40,6 @@ using namespace App;
 namespace fs = std::filesystem;
 namespace ba = boost::algorithm;
 
-bool directoryIsWritable(const fs::path& dir);
-
 void BackupPolicy::setPolicy(const Policy p)
 {
     policy = p;
@@ -97,7 +95,7 @@ Base::FileInfo getBackupDir( Base::FileInfo project_file )
         }
     }
 
-    if( !directoryIsWritable(backup_dir_path) )
+    if( !Base::directoryIsWritable(backup_dir_path) )
     {
         Base::Console().warning("Backup directory is not writable: %s",
                                 backup_dir.filePath().c_str());

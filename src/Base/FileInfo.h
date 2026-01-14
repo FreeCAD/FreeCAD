@@ -36,6 +36,8 @@
 
 namespace Base
 {
+BaseExport bool directoryIsWritable(const std::filesystem::path& dir);
+
 class TimeInfo;
 
 /// When reading and writing a character stream, the incoming data can be dumped into the stream

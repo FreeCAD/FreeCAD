@@ -305,7 +305,7 @@ bool FileInfo::isReadable() const
     return (perms & fs::perms::owner_read) == fs::perms::owner_read;
 }
 
-bool directoryIsWritable(const fs::path& dir)
+bool Base::directoryIsWritable(const fs::path& dir)
 {
     try {
         if (!fs::exists(dir) || !fs::is_directory(dir)) {
