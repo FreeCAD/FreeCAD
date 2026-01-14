@@ -332,7 +332,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                  || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
                  || (name == "G89")) {
             // drill,tap,bore
-            
+
             // Check for RetractMode annotation (G98 or G99)
             if (cmd.hasAnnotation("RetractMode")) {
                 std::string mode = cmd.getAnnotationString("RetractMode");
@@ -343,7 +343,7 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                     retract_mode = 98;
                 }
             }
-            
+
             double r = 0;
             if (cmd.has("R")) {
                 r = cmd.getValue("R");
