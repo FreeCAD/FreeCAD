@@ -305,6 +305,23 @@ bool ShortcutManager::eventFilter(QObject* o, QEvent* ev)
         case QEvent::KeyPress:
             lastFocus = nullptr;
             break;
+        case QEvent::ShortcutOverride: {
+            auto kev = static_cast<QKeyEvent*>(ev);
+            if (!kev) {
+                break;
+            }
+            // don't process application shortcuts if we are editing a text widget
+            if (auto* focus = QApplication::focusWidget()) {
+                auto* maybeProxy = focus->focusProxy();
+                auto* focusOrProxy = maybeProxy ? maybeProxy : focus;
+
+                if (focusOrProxy->inherits("QLineEdit")) {
+                    ev->accept();
+                    return true;
+                }
+            }
+            break;
+        }
         case QEvent::Shortcut:
             if (timeout > 0) {
                 auto sev = static_cast<QShortcutEvent*>(ev);

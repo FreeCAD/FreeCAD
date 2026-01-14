@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                    *
  *                                                                         *
@@ -76,6 +78,8 @@ using DrawSketchHandlerArcSlotBase = DrawSketchControllableHandler<DSHArcSlotCon
 
 class DrawSketchHandlerArcSlot: public DrawSketchHandlerArcSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArcSlot)
+
     friend DSHArcSlotController;
     friend DSHArcSlotControllerBase;
 

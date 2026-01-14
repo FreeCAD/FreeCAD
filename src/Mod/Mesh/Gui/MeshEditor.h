@@ -161,7 +161,7 @@ private Q_SLOTS:
 
 private:
     using TBoundary = std::vector<Mesh::PointIndex>;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
 
     static void fileHoleCallback(void* ud, SoEventCallback* n);
     void createPolygons();

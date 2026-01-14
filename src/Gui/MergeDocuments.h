@@ -27,7 +27,7 @@
 #include <Base/Persistence.h>
 #include <map>
 #include <vector>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 namespace zipios
 {
@@ -62,7 +62,7 @@ private:
     Gui::Document* document;
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectExport;
     Connection connectImport;
 };

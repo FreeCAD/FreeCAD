@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -27,9 +29,11 @@
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
+#include <App/PropertyGeo.h>
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
 #include <Base/SmartPtrPy.h>
+#include <Base/Placement.h>
 
 #include <bitset>
 #include <unordered_map>
@@ -125,11 +129,11 @@ public:
 
     // clang-format off
     /// signal before changing a property of this object
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalBeforeChange;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalBeforeChange;
     /// signal on changed  property of this object
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalChanged;
     /// signal on changed property of this object before document scoped signalChangedObject
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
     // clang-format on
 
     /// returns the type name of the ViewProvider
@@ -707,6 +711,17 @@ public:
     static const std::string& hiddenMarker();
     /// Check if the subname reference ends with hidden marker.
     static const char* hasHiddenMarker(const char* subname);
+
+    /* Find the placement of a target object as seen from this.
+    If no targetObj given, the last object found in the subname is used as target.
+    */
+    virtual Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr);
+
+    /* Returns the Placement property value if any.*/
+    virtual Base::Placement getPlacement() const;
+
+    /* Returns the Placement property to use if any*/
+    virtual App::PropertyPlacement* getPlacementProperty() const;
 
 protected:
     /// recompute only this object

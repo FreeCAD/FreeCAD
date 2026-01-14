@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -1034,8 +1036,9 @@ public:
         Gui::Selection().rmvSelectionGate();
     }
 
-    void mouseMove(SnapManager::SnapHandle snapHandle) override
-    {}
+    void mouseMove(SnapManager::SnapHandle /*snapHandle*/) override
+    {
+    }
 
     bool pressButton(Base::Vector2d /*onSketchPos*/) override
     {
@@ -1948,9 +1951,7 @@ public:
 
             if (selAllowed) {
                 // If mouse is released on something allowed, select it
-                Gui::Selection().addSelection(Obj->getDocument()->getName(),
-                    Obj->getNameInDocument(),
-                    ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
+                sketchgui->addSelection2(ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
                 sketchgui->draw(false, false); // Redraw
             }
             else {
@@ -1967,9 +1968,7 @@ public:
                 restartCommand(QT_TRANSLATE_NOOP("Command", "Dimension"));
             }
 
-            Gui::Selection().rmvSelection(Obj->getDocument()->getName(),
-                Obj->getNameInDocument(),
-                ss.str().c_str());
+            sketchgui->rmvSelection(ss.str().c_str());
             sketchgui->draw(false, false); // Redraw
         }
 

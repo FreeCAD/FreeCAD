@@ -79,9 +79,23 @@ def get_linking_moves(
         wire = make_linking_wire(start_position, target_position, height)
         if is_wire_collision_free(wire, collision_model):
             cmds = Path.fromShape(wire).Commands
-            for cmd in cmds:
-                cmd.Name = "G0"
-            return cmds
+            # Ensure all commands have complete XYZ coordinates
+            # Path.fromShape() may omit coordinates that don't change
+            current_pos = start_position
+            complete_cmds = []
+            for i, cmd in enumerate(cmds):
+                params = dict(cmd.Parameters)
+                # Fill in missing coordinates from current position
+                x = params.get("X", current_pos.x)
+                y = params.get("Y", current_pos.y)
+                # For the last command (plunge to target), use target.z if Z is missing
+                if "Z" not in params and i == len(cmds) - 1:
+                    z = target_position.z
+                else:
+                    z = params.get("Z", current_pos.z)
+                complete_cmds.append(Path.Command("G0", {"X": x, "Y": y, "Z": z}))
+                current_pos = Vector(x, y, z)
+            return complete_cmds
 
     raise RuntimeError("No collision-free path found between start and target positions")
 

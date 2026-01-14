@@ -48,7 +48,7 @@
         </dc:creator>
         <dc:source>http://jimmac.musichall.cz</dc:source>
         <dc:date>2016-10-28</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

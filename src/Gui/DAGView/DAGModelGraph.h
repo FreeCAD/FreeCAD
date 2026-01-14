@@ -36,7 +36,7 @@
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/ordered_index.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include "DAGRectItem.h"
 
@@ -85,7 +85,7 @@ struct VertexProperty
     std::shared_ptr<QGraphicsPixmapItem> stateIcon;    //!< visible Icon
     std::shared_ptr<QGraphicsPixmapItem> icon;         //!< icon
     std::shared_ptr<QGraphicsTextItem> text;           //!< text
-    boost::signals2::connection connChangeIcon;
+    fastsignals::connection connChangeIcon;
     int row = 0;            //!< row for this entry.
     ColumnMask column = 0;  //!< column number containing the point.
     int topoSortIndex = 0;

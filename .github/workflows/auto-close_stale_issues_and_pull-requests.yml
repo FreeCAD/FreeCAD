@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           egress-policy: audit
 
@@ -30,14 +30,14 @@ jobs:
         uses: actions/stale@5f858e3efba33a5ca4407a664cc011ad407f2008 # v10.1.0
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-          days-before-issue-stale: 60
+          days-before-issue-stale: 90
           days-before-issue-close: 14
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          operations-per-run: 100  # max num of ops per run
+          operations-per-run: 200  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close'
+          exempt-issue-labels: 'Status: Confirmed,Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
@@ -87,10 +87,10 @@ jobs:
           days-before-issue-close: 60
           days-before-pr-stale: -1
           days-before-pr-close: -1
-          operations-per-run: 50  # max num of ops per run
+          operations-per-run: 100  # max num of ops per run
           stale-issue-label: 'Status: Stale'
           close-issue-label: 'Status: Auto-closing'
-          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close'
+          exempt-issue-labels: 'Priority: High,Priority: Critical,Blocker,Type: Feature,no-auto-close,3rd party: OCC'
           remove-stale-when-updated: true
           ascending: true
           stale-issue-message: |
