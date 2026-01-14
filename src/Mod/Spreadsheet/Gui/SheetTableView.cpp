@@ -809,7 +809,7 @@ void SheetTableView::pasteClipboard()
         GetApplication().getActiveDocument()->recompute();
     }
     catch (Base::Exception& e) {
-        committer.close(true);
+        committer.close(App::TransactionCloseMode::Abort);
         e.reportException();
         QMessageBox::critical(
             Gui::getMainWindow(),

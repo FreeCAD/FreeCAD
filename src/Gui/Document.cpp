@@ -761,7 +761,7 @@ void Document::_resetEdit()
         // resetEdit() above calls into Application->unsetEditDocument() which
         // will prevent recursive calling.
 
-        App::GetApplication().closeActiveTransaction(false, getDocument()->getBookedTransactionID());
+        App::GetApplication().commitTransaction(getDocument()->getBookedTransactionID());
     }
     d->_editViewProviderParent = nullptr;
     d->_editingViewer = nullptr;
@@ -1612,7 +1612,7 @@ bool Document::save()
             for (auto doc : docs) {
                 // Changed 'mustExecute' status may be triggered by saving external document
                 if (!dmap[doc] && doc->mustExecute()) {
-                    App::AutoTransaction trans(doc->openTransaction("Recompute"));
+                    App::AutoTransaction trans(doc, "Recompute");
                     Command::doCommand(
                         Command::Doc,
                         "App.getDocument(\"%s\").recompute()",
@@ -1755,7 +1755,7 @@ void Document::saveAll()
         try {
             // Changed 'mustExecute' status may be triggered by saving external document
             if (!dmap[doc] && doc->mustExecute()) {
-                App::AutoTransaction trans(doc->openTransaction("Recompute"));
+                App::AutoTransaction trans(doc, "Recompute");
                 Command::doCommand(Command::Doc, "App.getDocument('%s').recompute()", doc->getName());
             }
             Command::doCommand(Command::Doc, "App.getDocument('%s').save()", doc->getName());
@@ -2786,7 +2786,7 @@ Gui::MDIView* Document::getEditingViewOfViewProvider(Gui::ViewProvider* vp) cons
  */
 int Document::openCommand(const char* sName)
 {
-    return getDocument()->openTransaction(sName);
+    return getDocument()->openTransaction(App::TransactionName {.name = sName, .temporary = false});
 }
 
 void Document::commitCommand()

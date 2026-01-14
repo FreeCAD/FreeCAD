@@ -25,8 +25,8 @@
 #include <QColorDialog>
 #include <sstream>
 
-
 #include <App/ElementNamingUtils.h>
+#include <App/Transactions.h>
 #include <App/Document.h>
 
 #include "TaskElementColors.h"
@@ -81,6 +81,7 @@ public:
         if (auto editDoc = Application::Instance->editDocument([this, &vp](Gui::Document* editDoc) {
                 return editDoc->getInEdit(&vpParent, &editSub) == vp;
             })) {
+
             auto obj = vpParent->getObject();
             this->editDoc = obj->getDocument()->getName();
             this->editObj = obj->getNameInDocument();
@@ -197,7 +198,7 @@ public:
             std::string sub = qPrintable(item->data(Qt::UserRole + 1).value<QString>());
             info.emplace(sub, Base::Color::fromValue<QColor>(col));
         }
-        if (tid == 0) {
+        if (tid == App::NullTransaction) {
             tid = vpDoc->openCommand(QT_TRANSLATE_NOOP("Command", "Set colors"));
         }
         vp->setElementColors(info);

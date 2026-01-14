@@ -182,8 +182,7 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
     bool addedDialog = taskView->showDialog(dlg, attachTo);
 
     // make sure that the combo view is shown
-    auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
-    if (dw) {
+    if (auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget())) {
         aboutToShowDialog(dw);
         dw->setVisible(true);
         dw->toggleViewAction()->setVisible(true);
@@ -294,12 +293,15 @@ bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
             attachedTo = Application::Instance->activeDocument()->getDocument();
         }
         else {
-            // qWarning() << "ControlSingleton::isAllowedAlterDocument: nullptr document";
             return true;
         }
     }
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
-    return dlg ? dlg->isAllowedAlterDocument() : true;
+
+    if (dlg) {
+        return dlg->isAllowedAlterDocument();
+    }
+    return true;
 }
 
 bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
@@ -309,12 +311,15 @@ bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
             attachedTo = Application::Instance->activeDocument()->getDocument();
         }
         else {
-            // qWarning() << "ControlSingleton::isAllowedAlterView: nullptr document";
             return true;
         }
     }
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
-    return dlg ? dlg->isAllowedAlterView() : true;
+
+    if (dlg) {
+        return dlg->isAllowedAlterView();
+    }
+    return true;
 }
 
 bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
@@ -324,12 +329,15 @@ bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
             attachedTo = Application::Instance->activeDocument()->getDocument();
         }
         else {
-            // qWarning() << "ControlSingleton::isAllowedAlterSelection: nullptr document";
             return true;
         }
     }
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
-    return dlg ? dlg->isAllowedAlterSelection() : true;
+
+    if (dlg) {
+        return dlg->isAllowedAlterSelection();
+    }
+    return true;
 }
 
 // -------------------------------------------

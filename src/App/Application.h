@@ -41,6 +41,7 @@
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
+#include "TransactionDefs.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -84,13 +85,6 @@ struct DocumentInitFlags {
     bool createView {true};
     bool temporary {false};
 };
-
-struct TransactionDescription {
-    Document* initiator { nullptr };
-    std::string name { "" };
-    bool tmp { false };
-};
-
 
 /** The Application
  *  The root of the whole application
@@ -211,13 +205,13 @@ public:
      * transactions will share the same ID, and will be undo/redo together.
      */
 
-     int setActiveTransaction(const char *name, bool persist=false);
+     int setActiveTransaction(TransactionName name);
 
     /// Return the current global transaction name and ID if such a global transaction is
     /// setup (uncommon)
-    const char *getActiveTransaction(int *tid=nullptr) const;
+    std::string getActiveTransaction(int *tid=nullptr) const;
 
-    int openGlobalTransaction(const char *name);
+    int openGlobalTransaction(TransactionName name);
     int getGlobalTransaction() const;
 
     bool transactionIsActive(int tid) const;
@@ -226,7 +220,7 @@ public:
     Document* transactionInitiator(int tid) const;
     std::optional<TransactionDescription> transactionDescription(int tid) const;
     void setTransactionDescription(int tid, const TransactionDescription& desc);
-    void setTransactionName(int tid, const std::string& name, bool tmp = false);
+    void setTransactionName(int tid, const TransactionName& name);
 
     /** Commit/abort current active transactions
      *
@@ -238,7 +232,7 @@ public:
      * aborted
      * returns true if it succeeded in closing the transaction
      */
-    bool closeActiveTransaction(bool abort=false, int id=0);
+    bool closeActiveTransaction(TransactionCloseMode mode = TransactionCloseMode::Commit, int id=0);
 
     /// Internally call closeActiveTransaction(), but it makes the call site clearer
     bool commitTransaction(int tid);
@@ -704,9 +698,7 @@ private:
     friend class AutoTransaction;
 
     std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
-    // std::string _activeTransactionName;
-    // int _activeTransactionID{0};
-    // int _activeTransactionGuard{0};
+    
     int currentlyClosingID {0};
 
     // This is the transaction ID for a global transaction
@@ -715,8 +707,6 @@ private:
     int _globalTransactionID { 0 };
     bool _globalTransactionTmpName {false};
     std::string _globalTransactionName;
-
-    // bool _activeTransactionTmpName{false};
 
     Base::ProgressIndicator _progressIndicator;
 

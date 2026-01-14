@@ -27,6 +27,9 @@
 
 #include <cstddef>
 #include <FCGlobal.h>
+#include <string>
+
+#include "TransactionDefs.h"
 
 namespace App
 {
@@ -53,8 +56,9 @@ public:
      * 
      * No action is done in the constructor
      */
-    AutoTransaction(int tid);
-
+    explicit AutoTransaction(int tid);
+    AutoTransaction(Document* doc, const std::string& name);
+    
     /** Destructor
      * 
      * This destructor attempts to commit the transaction it manages
@@ -67,7 +71,7 @@ public:
      * This function can be used to explicitly close (i.e. commit / abort) the
      * transaction,
      */
-    void close(bool abort = false);
+    void close(TransactionCloseMode mode = TransactionCloseMode::Commit);
 
 private:
     int tid { 0 };

@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Selection/Selection.h>
@@ -84,7 +85,7 @@ void TaskDressUpParameters::setupTransaction()
     }
 
     int tid = DressUpView->getObject()->getDocument()->getBookedTransactionID();
-    if (tid != 0 && tid == transactionID) {
+    if (tid != App::NullTransaction && tid == transactionID) {
         return;
     }
 

@@ -494,7 +494,10 @@ static void linkConvert(bool unlink)
             }
             auto doc = parent->getDocument();
 
-            tid = doc->openTransaction(transactionName, false, tid);
+            tid = doc->openTransaction(
+                App::TransactionName {.name = transactionName, .temporary = false},
+                tid
+            );
 
             App::DocumentObject* replaceObj;
             if (unlink) {

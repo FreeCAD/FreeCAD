@@ -172,8 +172,7 @@ bool TaskSmoothing::accept()
     bool hasSelection = false;
     for (auto it : meshes) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
-        tid = mesh->getDocument()
-                  ->openTransaction(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"), false, tid);
+        tid = mesh->getDocument()->openTransaction(QT_TRANSLATE_NOOP("Command", "Mesh Smoothing"), tid);
 
         std::vector<Mesh::FacetIndex> selection;
         if (widget->smoothSelection()) {

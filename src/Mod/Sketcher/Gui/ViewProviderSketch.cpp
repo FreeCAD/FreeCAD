@@ -3793,7 +3793,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
         preselection.reset();
         selection.reset();
 
-        App::AutoTransaction trans(getDocument()->openCommand("Sketch recompute"));
+        App::AutoTransaction trans(getDocument()->getDocument(), "Sketch recompute");
         try {
             // and update the sketch
             // getSketchObject()->getDocument()->recompute();

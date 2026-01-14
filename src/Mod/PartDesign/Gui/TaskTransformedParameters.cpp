@@ -28,6 +28,7 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <App/Origin.h>
 #include <Base/Console.h>
 #include <Gui/Document.h>
@@ -272,7 +273,7 @@ void TaskTransformedParameters::setupTransaction()
     }
 
     int tid = obj->getDocument()->getBookedTransactionID();
-    if (tid != 0) {
+    if (tid != App::NullTransaction) {
         return;
     }
 

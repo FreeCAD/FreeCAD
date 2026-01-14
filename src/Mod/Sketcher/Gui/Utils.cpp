@@ -27,6 +27,7 @@
 #include <QRegularExpression>
 
 #include <App/Application.h>
+#include <App/Transactions.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
 #include <Gui/CommandT.h>
@@ -166,7 +167,7 @@ void SketcherGui::tryAutoRecomputeIfNotSolve(Sketcher::SketchObject* obj)
 
 void SketcherGui::closeAndRecompute(int& tid, bool abort, Sketcher::SketchObject* Obj)
 {
-    if (tid == 0) {
+    if (tid == App::NullTransaction) {
         tryAutoRecompute(Obj);
     }
     if (abort) {

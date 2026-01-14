@@ -1042,11 +1042,6 @@ void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)
     pDoc->signalResetEdit.connect(std::bind(&Gui::Application::slotResetEdit, this, sp::_1));
     // NOLINTEND
 
-    const std::map<std::string, std::string>& config = App::Application::Config();
-    auto st = config.find("StartWorkbench");
-    const char* start = (st != config.end() ? st->second.c_str() : "<none>");
-    pDoc->setWorkbench(start);
-
     signalNewDocument(*pDoc, isMainDoc);
     if (isMainDoc) {
         pDoc->createView(View3DInventor::getClassTypeId());
@@ -1508,7 +1503,7 @@ Gui::Document* Application::editDocument() const
 }
 Gui::Document* Application::editDocument(const std::function<bool(Gui::Document*)>& eval)
 {
-    auto found = std::ranges::find_if(d->editDocuments.begin(), d->editDocuments.end(), eval);
+    auto found = std::ranges::find_if(d->editDocuments, eval);
 
     return found == d->editDocuments.end() ? nullptr : *found;
 }
@@ -1518,20 +1513,15 @@ std::vector<Gui::Document*> Application::editDocuments() const
 }
 bool Application::isInEdit(Gui::Document* pcDocument) const
 {
-    return std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument)
-        != d->editDocuments.end();
+    return std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end();
 }
 void Application::unsetEditDocument(Gui::Document* pcDocument)
 {
-    auto rem = std::remove(d->editDocuments.begin(), d->editDocuments.end(), pcDocument);
-    bool found = rem != d->editDocuments.end();
-    if (!found) {
+    if (std::erase(d->editDocuments, pcDocument) == 0) {
         return;
     }
 
-    d->editDocuments.erase(rem, d->editDocuments.end());
     pcDocument->_resetEdit();
-
     updateActions();
 }
 void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>& eval)
@@ -1545,8 +1535,7 @@ void Application::unsetEditDocumentIf(const std::function<bool(Gui::Document*)>&
 Gui::MDIView* Application::editViewOfNode(SoNode* node) const
 {
     for (auto editDoc : d->editDocuments) {
-        Gui::MDIView* view = editDoc->getViewOfNode(node);
-        if (view) {
+        if (Gui::MDIView* view = editDoc->getViewOfNode(node)) {
             return view;
         }
     }
@@ -1558,8 +1547,7 @@ void Application::setEditDocument(Gui::Document* pcDocument)
     if (pcDocument == nullptr) {
         return;
     }
-    if (std::ranges::find(d->editDocuments.begin(), d->editDocuments.end(), pcDocument)
-        != d->editDocuments.end()) {
+    if (std::ranges::find(d->editDocuments, pcDocument) != d->editDocuments.end()) {
         return;
     }
     d->editDocuments.push_back(pcDocument);

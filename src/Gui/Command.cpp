@@ -36,6 +36,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Transactions.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -44,6 +45,7 @@
 
 #include "Command.h"
 #include "Action.h"
+#include "App/Application.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
@@ -494,7 +496,7 @@ void Command::_invoke(int id, bool disablelog)
         }
         // here we assume that the overriden activated() function
         // commited, aborted or gave the transaction id to a dialog
-        currentTransactionID = 0;  // Get ready for next invoke
+        currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
         throw;
@@ -540,9 +542,10 @@ void Command::testActive()
 
     if (!(eType & ForEdit)) {  // special case for commands which are only in some edit modes active
 
-        if ((!Gui::Control().isAllowedAlterDocument(getDocument()) && eType & AlterDoc)
-            || (!Gui::Control().isAllowedAlterView(getDocument()) && eType & Alter3DView)
-            || (!Gui::Control().isAllowedAlterSelection(getDocument()) && eType & AlterSelection)) {
+        App::Document* doc = getDocument();
+        if ((!Gui::Control().isAllowedAlterDocument(doc) && eType & AlterDoc)
+            || (!Gui::Control().isAllowedAlterView(doc) && eType & Alter3DView)
+            || (!Gui::Control().isAllowedAlterSelection(doc) && eType & AlterSelection)) {
             _pcAction->setEnabled(false);
             return;
         }
@@ -671,45 +674,53 @@ QString Command::translatedGroupName() const
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-int Command::openCommand(std::string name, bool tmpName)
+int Command::openCommand(App::TransactionName name)
 {
-    currentTransactionID = openActiveDocumentCommand(name, tmpName);
+    currentTransactionID = openActiveDocumentCommand(name);
     return currentTransactionID;
 }
-int Command::openActiveDocumentCommand(std::string name, bool tmpName, int tid)
+int Command::openCommand(std::string name)
 {
-    if (name.empty()) {
-        name = "Command";
-    }
+    return openCommand(App::TransactionName {.name = name, .temporary = false});
+}
+int Command::openActiveDocumentCommand(App::TransactionName name, int tid)
+{
     if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
-        return guidoc->getDocument()->setActiveTransaction(name, tmpName, tid);
+        return guidoc->getDocument()->setActiveTransaction(name, tid);
     }
     return 0;
 }
+int Command::openActiveDocumentCommand(std::string name, int tid)
+{
+    return openActiveDocumentCommand(App::TransactionName {.name = name, .temporary = false}, tid);
+}
 void Command::rename(const std::string& name)
 {
-    App::GetApplication().setTransactionName(currentTransactionID, name, false);
+    App::GetApplication().setTransactionName(
+        currentTransactionID,
+        App::TransactionName {.name = name, .temporary = false}
+    );
 }
 
 void Command::commitCommand()
 {
     commitCommand(currentTransactionID);
-    currentTransactionID = 0;
+    currentTransactionID = App::NullTransaction;
 }
 void Command::commitCommand(int tid)
 {
-    if (tid != 0) {
+    if (tid != App::NullTransaction) {
         App::GetApplication().commitTransaction(tid);
     }
 }
 void Command::abortCommand()
 {
     abortCommand(currentTransactionID);
-    currentTransactionID = 0;
+    currentTransactionID = App::NullTransaction;
 }
 void Command::abortCommand(int tid)
 {
-    if (tid != 0) {
+    if (tid != App::NullTransaction) {
         App::GetApplication().abortTransaction(tid);
     }
 }
@@ -719,11 +730,11 @@ int Command::transactionID() const
 }
 void Command::resetTransactionID()
 {
-    currentTransactionID = 0;
+    currentTransactionID = App::NullTransaction;
 }
 bool Command::hasPendingCommand()
 {
-    return !!App::GetApplication().getActiveTransaction();
+    return App::GetApplication().getActiveDocument()->getBookedTransactionID() != 0;
 }
 
 bool Command::_blockCmd = false;

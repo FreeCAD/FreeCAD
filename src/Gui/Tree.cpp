@@ -1353,7 +1353,7 @@ void TreeWidget::onCreateGroup()
     if (this->contextItem->type() == DocumentType) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
-        App::AutoTransaction trans(doc->openTransaction("Create group"));
+        App::AutoTransaction trans(doc, "Create group");
         QString cmd = QStringLiteral(
                           "App.getDocument(\"%1\").addObject"
                           "(\"App::DocumentObjectGroup\",\"Group\").Label=\"%2\""
@@ -1365,7 +1365,7 @@ void TreeWidget::onCreateGroup()
         auto objitem = static_cast<DocumentObjectItem*>(this->contextItem);
         App::DocumentObject* obj = objitem->object()->getObject();
         App::Document* doc = obj->getDocument();
-        App::AutoTransaction trans(doc->openTransaction("Create group"));
+        App::AutoTransaction trans(doc, "Create group");
         QString cmd = QStringLiteral(
                           "App.getDocument(\"%1\").getObject(\"%2\")"
                           ".newObject(\"App::DocumentObjectGroup\",\"Group\").Label=\"%3\""
@@ -2426,8 +2426,7 @@ bool TreeWidget::dropInDocument(
         auto parentItem = item->getParentItem();
 
         tid = obj->getDocument()->openTransaction(
-            transName.c_str(),
-            false,
+            transName,
             tid
         );  // If the same document already has this transaction opened, it is ignored
         if (parentItem) {

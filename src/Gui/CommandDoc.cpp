@@ -1448,9 +1448,9 @@ void StdCmdDelete::activated(int iMsg)
     try {
         std::set<App::Document*> docs;
         std::vector<App::TransactionLocker> tlocks;
-        auto manage_doc_command = [&tid, &tlocks](App::Document* doc) {
+        auto manageDocCommand = [&tid, &tlocks](App::Document* doc) {
             // The tid will not be updated if non-zero
-            tid = doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), false, tid);
+            tid = doc->openTransaction(QT_TRANSLATE_NOOP("Command", "Delete"), tid);
             tlocks.emplace_back(doc);
         };
 
@@ -1462,7 +1462,7 @@ void StdCmdDelete::activated(int iMsg)
         // Ensure that the document from which we send the command
         // can undo it (e.g delete a subobject of an assembly
         // from the assembly file)
-        manage_doc_command(getActiveGuiDocument()->getDocument());
+        manageDocCommand(getActiveGuiDocument()->getDocument());
 
         Gui::getMainWindow()->setUpdatesEnabled(false);
 
@@ -1477,7 +1477,7 @@ void StdCmdDelete::activated(int iMsg)
                     if (sel.getObject() == vpedit->getObject()) {
                         if (!sel.getSubNames().empty()) {
                             deletedSelectionOfEditDocument = true;
-                            manage_doc_command(editDoc->getDocument());
+                            manageDocCommand(editDoc->getDocument());
                             vpedit->onDelete(sel.getSubNames());
                             docs.insert(editDoc->getDocument());
                         }
@@ -1562,7 +1562,7 @@ void StdCmdDelete::activated(int iMsg)
                     auto obj = sel.getObject();
                     Gui::ViewProvider* vp = Application::Instance->getViewProvider(obj);
                     if (vp) {
-                        manage_doc_command(obj->getDocument());
+                        manageDocCommand(obj->getDocument());
                         // ask the ViewProvider if it wants to do some clean up
                         if (vp->onDelete(sel.getSubNames())) {
                             docs.insert(obj->getDocument());
@@ -2154,14 +2154,10 @@ protected:
             return;
         }
 
-        int tid = 0;
+        int tid = App::NullTransaction;
         try {
             for (auto& v : exprs) {
-                tid = v.first->openTransaction(
-                    QT_TRANSLATE_NOOP("Command", "Paste expressions"),
-                    false,
-                    tid
-                );
+                tid = v.first->openTransaction(QT_TRANSLATE_NOOP("Command", "Paste expressions"), tid);
                 for (auto& v2 : v.second) {
                     auto& expressions = v2.second;
                     auto old = v2.first->getExpressions();

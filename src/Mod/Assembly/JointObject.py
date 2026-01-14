@@ -1176,7 +1176,7 @@ class ViewProviderJoint:
         return None
 
     def doubleClicked(self, vobj):
-        App.closeActiveTransaction(True)  # Close the auto-transaction
+        App.ActiveDocument.abortTransaction()  # Close the auto-transaction
 
         task = Gui.Control.activeTaskDialog()
         if task:
@@ -1626,7 +1626,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
         Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
-        App.closeActiveTransaction(True)
+        App.ActiveDocument.abortTransaction()
 
     def deactivate(self):
         global activeTask

@@ -498,9 +498,7 @@ QSize TaskView::minimumSizeHint() const
 
 void TaskView::slotActiveDocument(const App::Document& doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [&doc](const TaskInfo& info) {
-        return info.Document == &doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     if (foundTaskInfo != taskInfos.end()) {
         setShownTaskInfo((foundTaskInfo - taskInfos.begin()));
     }
@@ -518,20 +516,14 @@ void TaskView::slotActiveDocument(const App::Document& doc)
 void TaskView::slotInEdit(const Gui::ViewProviderDocumentObject& vp)
 {
     App::Document* doc = vp.getDocument()->getDocument();
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
-
-    if (foundTaskInfo == taskInfos.end()) {
+    if (std::ranges::find(taskInfos, doc, &TaskInfo::Document) == taskInfos.end()) {
         updateWatcher();
     }
 }
 
 void TaskView::slotDeletedDocument(const App::Document& doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [&doc](const TaskInfo& info) {
-        return info.Document == &doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end();
     if (hasDialog && foundTaskInfo->ActiveDialog->isAutoCloseOnDeletedDocument()) {
         foundTaskInfo->ActiveDialog->autoClosedOnDeletedDocument();
@@ -546,7 +538,7 @@ void TaskView::slotDeletedDocument(const App::Document& doc)
 
 void TaskView::slotViewClosed(const Gui::MDIView* view)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [view](const TaskInfo& info) {
+    auto foundTaskInfo = std::ranges::find_if(taskInfos, [view](const TaskInfo& info) {
         return info.ActiveDialog->getAssociatedView() == view;
     });
     bool hasDialog = foundTaskInfo != taskInfos.end();
@@ -564,13 +556,16 @@ void TaskView::slotViewClosed(const Gui::MDIView* view)
 
 void TaskView::transactionChangeOnDocument(const App::Document& doc, bool undo)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [&doc](const TaskInfo& info) {
-        return info.Document == &doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, &doc, &TaskInfo::Document);
     bool hasDialog = foundTaskInfo != taskInfos.end();
 
     if (hasDialog) {
-        undo ? foundTaskInfo->ActiveDialog->onUndo() : foundTaskInfo->ActiveDialog->onRedo();
+        if (undo) {
+            foundTaskInfo->ActiveDialog->onUndo();
+        }
+        else {
+            foundTaskInfo->ActiveDialog->onRedo();
+        }
 
         if (foundTaskInfo->ActiveDialog->isAutoCloseOnTransactionChange()) {
             foundTaskInfo->ActiveDialog->autoClosedOnTransactionChange();
@@ -616,9 +611,7 @@ void TaskView::OnChange(
 
 bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [&doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     // if trying to open the same dialog twice nothing needs to be done
     if (foundTaskInfo != taskInfos.end() && foundTaskInfo->ActiveDialog == dlg) {
         return false;
@@ -691,9 +684,7 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
 
 void TaskView::removeDialog(App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [&doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo != taskInfos.end()) {
         removeDialog(foundTaskInfo);
     }
@@ -909,9 +900,7 @@ std::optional<TaskInfo> TaskView::currentTaskInfo() const
 }
 TaskDialog* TaskView::dialog(App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     return foundTaskInfo == taskInfos.end() ? nullptr : foundTaskInfo->ActiveDialog;
 }
 void TaskView::setShownTaskInfo(int index)
@@ -973,10 +962,7 @@ void TaskView::removeTaskWatcher()
 
 void TaskView::accept(App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
-
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
         Base::Console().warning("ActiveDialog was null in call to TaskView::accept()\n");
         return;
@@ -994,9 +980,7 @@ void TaskView::accept(App::Document* doc)
 
 void TaskView::reject(App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo == taskInfos.end()) {  // Protect against segfaults due to out-of-order deletions
         Base::Console().warning("ActiveDialog was null in call to TaskView::reject()\n");
         return;
@@ -1014,9 +998,7 @@ void TaskView::reject(App::Document* doc)
 
 void TaskView::helpRequested(App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo != taskInfos.end()) {
         foundTaskInfo->ActiveDialog->helpRequested();
     }
@@ -1024,9 +1006,7 @@ void TaskView::helpRequested(App::Document* doc)
 
 void TaskView::clicked(QAbstractButton* button, App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (foundTaskInfo != taskInfos.end()) {
         int id = foundTaskInfo->ActiveCtrl->buttonBox->standardButton(button);
         foundTaskInfo->ActiveDialog->clicked(id);
@@ -1052,9 +1032,7 @@ void TaskView::restoreActionStyle()
 
 void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (!panel || foundTaskInfo == taskInfos.end()
         || foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;
@@ -1069,9 +1047,7 @@ void TaskView::addContextualPanel(QWidget* panel, App::Document* doc)
 
 void TaskView::removeContextualPanel(QWidget* panel, App::Document* doc)
 {
-    auto foundTaskInfo = std::find_if(taskInfos.begin(), taskInfos.end(), [doc](const TaskInfo& info) {
-        return info.Document == doc;
-    });
+    auto foundTaskInfo = std::ranges::find(taskInfos, doc, &TaskInfo::Document);
     if (!panel || foundTaskInfo == taskInfos.end()
         || !foundTaskInfo->taskPanel->contextualPanels.contains(panel)) {
         return;

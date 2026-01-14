@@ -3019,8 +3019,7 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
 
                     // Open transaction on all touched documents if there is more than one
                     for (const auto& sel : sels) {
-                        tid = sel->getDocument()
-                                  ->openTransaction("Setup configurable object", false, tid);
+                        tid = sel->getDocument()->openTransaction("Setup configurable object", tid);
                     }
 
                     for (const auto& exclude : excludes) {

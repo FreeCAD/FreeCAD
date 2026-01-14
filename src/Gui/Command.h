@@ -474,8 +474,10 @@ public:
     /** @name Helper methods for the Undo/Redo and Update handling */
     //@{
     /// Open a new Undo transaction on the active document
-    int openCommand(std::string name = "", bool tmpName = false);
-    static int openActiveDocumentCommand(std::string name = "", bool tmpName = false, int tid = 0);
+    int openCommand(App::TransactionName name);
+    int openCommand(std::string name);
+    static int openActiveDocumentCommand(App::TransactionName name, int tid = App::NullTransaction);
+    static int openActiveDocumentCommand(std::string name, int tid = App::NullTransaction);
 
     void rename(const std::string& name);
 

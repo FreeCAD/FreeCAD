@@ -885,10 +885,10 @@ void TaskDlgProjGroup::open()
 {
     if (!widget->getCreateMode())  {    //this is an edit session, start a transaction
         if (dynamic_cast<TechDraw::DrawProjGroup*>(view)) {
-            App::GetApplication().setActiveTransaction("Edit Projection Group", true);
+            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Projection Group", .temporary=true});
         }
         else {
-            App::GetApplication().setActiveTransaction("Edit Part View", true);
+            App::GetApplication().setActiveTransaction(App::TransactionName{.name="Edit Part View", .temporary=true});
         }
     }
 }

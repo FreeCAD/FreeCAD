@@ -358,11 +358,6 @@ void PropertyEditor::openEditor(const QModelIndex& index)
         return;
     }
 
-    auto& app = App::GetApplication();
-    if (app.getActiveTransaction()) {
-        FC_LOG("editor already transacting " << app.getActiveTransaction());
-        return;
-    }
     auto item = static_cast<PropertyItem*>(editingIndex.internalPointer());
     auto items = item->getPropertyData();
     for (auto propItem = item->parent(); items.empty() && propItem; propItem = propItem->parent()) {
@@ -408,7 +403,7 @@ void PropertyEditor::openEditor(const QModelIndex& index)
         str << "...";
     }
     transactionID = obj->getDocument()->openTransaction(str.str().c_str());
-    FC_LOG("editor transaction " << app.getActiveTransaction());
+    FC_LOG("editor transaction " << App::GetApplication().getActiveTransaction(&transactionID));
 }
 
 void PropertyEditor::onItemActivated(const QModelIndex& index)

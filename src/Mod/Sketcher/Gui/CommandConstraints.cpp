@@ -4088,7 +4088,7 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
                 return;
             }
 
-            openCommand();
+            commitCommand();
             tryAutoRecompute(Obj);
         } break;
         default:
