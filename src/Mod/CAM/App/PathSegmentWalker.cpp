@@ -128,7 +128,7 @@ void PathSegmentVisitor::g38(int id, const Base::Vector3d& last, const Base::Vec
 }
 
 PathSegmentWalker::PathSegmentWalker(const Toolpath& tp_)
-    : tp(tp_)
+    : tp(tp_), retract_mode(98)  // Default to G98 (retract to initial Z)
 {}
 
 
@@ -152,7 +152,6 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
 
     bool absolute = true;
     bool absolutecenter = false;
-    int retract_mode = 98;  // Default to G98 (retract to initial Z)
 
     // for mapping the coordinates to XY plane
     double Base::Vector3d::* pz = &Base::Vector3d::z;
