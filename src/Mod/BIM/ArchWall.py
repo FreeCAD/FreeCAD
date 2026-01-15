@@ -1829,7 +1829,7 @@ if FreeCAD.GuiUp:
 
         def getStandardButtons(self):
             # Necessary to map the Esc key to the reject() method
-            return int(QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel)
+            return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
         def accept(self):
             self.obj.Length = self.length.text()
