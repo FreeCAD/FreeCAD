@@ -9277,17 +9277,14 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 }
             }
 
-            if (resolvedObj->isDerivedFrom<Part::Datum>()) {
-                auto* datum = static_cast<const Part::Datum*>(resolvedObj);
+            if (auto* datum = freecad_cast<const Part::Datum*>(resolvedObj)) {
                 refSubShape = datum->getShape();
             }
-            else if (Obj->isDerivedFrom<Part::Feature>()) {
-                auto* refObj = static_cast<const Part::Feature*>(Obj);
+            else if (auto* refObj = freecad_cast<const Part::Feature*>(resolvedObj)) {
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            else if (resolvedObj->isDerivedFrom<App::Plane>()) {
-                auto* pl = static_cast<const App::Plane*>(resolvedObj);
+            else if (auto* pl = freecad_cast<const App::Plane*>(resolvedObj)) {
                 Base::Vector3d base = pl->getBasePoint();
                 Base::Vector3d normal = pl->getDirection();
                 gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
@@ -9299,8 +9296,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
                 refSubShape = f;
             }
-            else if (resolvedObj->isDerivedFrom<Part::DatumLine>()) {
-                auto* line = static_cast<const Part::DatumLine*>(resolvedObj);
+            else if (auto* line = freecad_cast<const Part::DatumLine*>(resolvedObj)) {
                 Base::Placement plm = line->Placement.getValue();
                 Base::Vector3d base = plm.getPosition();
                 Base::Vector3d dir = line->getDirection();
@@ -9314,8 +9310,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
                 refSubShape = e;
             }
-            else if (resolvedObj->isDerivedFrom<Part::DatumPoint>()) {
-                auto* point = static_cast<const Part::DatumPoint*>(resolvedObj);
+            else if (auto* point = freecad_cast<const Part::DatumPoint*>(resolvedObj)) {
                 Base::Placement plm = point->Placement.getValue();
                 Base::Vector3d base = plm.getPosition();
                 gp_Pnt p(base.x, base.y, base.z);
@@ -9328,8 +9323,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
                 refSubShape = v;
             }
-            else if (resolvedObj->isDerivedFrom<App::Line>()) {
-                auto* line = static_cast<const App::Line*>(resolvedObj);
+            else if (auto* line = freecad_cast<const App::Line*>(resolvedObj)) {
                 Base::Vector3d base = line->getBasePoint();
                 Base::Vector3d dir = line->getDirection();
                 gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
@@ -9342,8 +9336,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
                 refSubShape = e;
             }
-            else if (resolvedObj->isDerivedFrom<App::Point>()) {
-                auto* point = static_cast<const App::Point*>(resolvedObj);
+            else if (auto* point = freecad_cast<const App::Point*>(resolvedObj)) {
                 Base::Vector3d base = point->getBasePoint();
                 gp_Pnt p(base.x, base.y, base.z);
                 BRepBuilderAPI_MakeVertex eBuilder(p);
