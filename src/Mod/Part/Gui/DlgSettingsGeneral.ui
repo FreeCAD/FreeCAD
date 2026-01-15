@@ -80,7 +80,7 @@
          <string>Automatically refine model after applying operations</string>
         </property>
         <property name="toolTip">
-         <string>Automatically runs a refinement pass after Part Design features (like Pad or Pocket) to remove unnecessary lines and clean up geometry.</string>
+         <string>Automatically runs a refinement pass after creating Part Design features to remove removable lines and clean up the geometry</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -105,7 +105,7 @@
          <string>Allow multiple solids in Part Design bodies by default</string>
         </property>
         <property name="toolTip">
-         <string>Sets new Bodies to allow multiple disconnected solids (compounds). If unchecked, a Body is strictly limited to a single contiguous solid.</string>
+         <string>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -191,7 +191,7 @@
            </sizepolicy>
           </property>
           <property name="toolTip">
-           <string>Specifies which sketch elements (Points, Circles, or Arcs) the Hole tool should automatically detect and use as hole centers.</string>
+           <string>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</string>
           </property>
           <property name="currentIndex">
            <number>1</number>
@@ -273,7 +273,7 @@
          <string>Show final result by default when editing features</string>
         </property>
         <property name="toolTip">
-         <string>Displays the fully computed model in the 3D view while editing a feature, allowing you to see the final context rather than just the isolated feature.</string>
+         <string>Displays the fully computed model in the 3D view while editing a feature, allowing you to see the final context rather than just the isolated feature</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFinal</cstring>
@@ -295,7 +295,7 @@
          <string>Show transparent preview overlay by default when editing features</string>
         </property>
         <property name="toolTip">
-         <string>Overlays a semi-transparent ghost of the result while editing parameters to visualize changes before they are applied.</string>
+         <string>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -320,7 +320,7 @@
          <string>Highlight the profile used to create features</string>
         </property>
         <property name="toolTip">
-         <string>Visually highlights the source sketch or geometry used to generate the feature currently being edited.</string>
+         <string>Visually highlights the source sketch or geometry used to generate the feature currently being edited</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -370,7 +370,7 @@
          <string>Show interactive draggers when editing features</string>
         </property>
         <property name="toolTip">
-         <string>Enables on-screen handles (draggers) in the 3D view, allowing you to modify dimensions and parameters interactively via the mouse.</string>
+         <string>Enables on-screen handles (draggers) in the 3D view, allowing to modify dimensions and parameters of the feature being edited interactively via dragging the mouse</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -395,7 +395,7 @@
          <string>Disable recompute while dragging</string>
         </property>
         <property name="toolTip">
-         <string>Prevents the model from recalculating while you drag on-screen handles. The shape updates only when you release the mouse button.</string>
+         <string>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DelayedGizmoUpdate</cstring>
