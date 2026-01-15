@@ -1279,8 +1279,6 @@ class DirModScanner:
         if not base.exists():
             if warning:
                 Wrn(warning)
-            else:
-                Wrn(f"No modules found in {base!s}")
             return
 
         if warning:
