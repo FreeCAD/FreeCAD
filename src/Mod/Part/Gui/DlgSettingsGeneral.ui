@@ -55,7 +55,7 @@
          <string>Automatically refine model after boolean operation</string>
         </property>
         <property name="toolTip">
-         <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces.</string>
+         <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</string>
         </property>
         <property name="checked">
          <bool>true</bool>
