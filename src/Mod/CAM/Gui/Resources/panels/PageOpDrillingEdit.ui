@@ -153,23 +153,6 @@
        </property>
       </widget>
      </item>
-     <item row="4" column="4">
-      <widget class="QLabel" name="retractLabel">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Retract</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="6">
-      <widget class="Gui::QuantitySpinBox" name="peckRetractHeight">
-       <property name="enabled">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
      <item row="2" column="1">
       <widget class="QCheckBox" name="chipBreakEnabled">
        <property name="text">

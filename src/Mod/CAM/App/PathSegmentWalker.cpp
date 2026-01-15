@@ -129,6 +129,7 @@ void PathSegmentVisitor::g38(int id, const Base::Vector3d& last, const Base::Vec
 
 PathSegmentWalker::PathSegmentWalker(const Toolpath& tp_)
     : tp(tp_)
+    , retract_mode(98)  // Default to G98 (retract to initial Z)
 {}
 
 
@@ -331,6 +332,18 @@ void PathSegmentWalker::walk(PathSegmentVisitor& cb, const Base::Vector3d& start
                  || (name == "G83") || (name == "G84") || (name == "G85") || (name == "G86")
                  || (name == "G89")) {
             // drill,tap,bore
+
+            // Check for RetractMode annotation (G98 or G99)
+            if (cmd.hasAnnotation("RetractMode")) {
+                std::string mode = cmd.getAnnotationString("RetractMode");
+                if (mode == "G99") {
+                    retract_mode = 99;
+                }
+                else if (mode == "G98") {
+                    retract_mode = 98;
+                }
+            }
+
             double r = 0;
             if (cmd.has("R")) {
                 r = cmd.getValue("R");

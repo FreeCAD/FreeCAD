@@ -295,6 +295,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/PostList.py
     Path/Post/Processor.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
