@@ -5412,12 +5412,12 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
         // eliminate non zeros above pivot
         assert(R(i, i) != 0);
         for (int row = 0; row < i; row++) {
-            if (R(row, i) != 0) {
+            if (fabs(R(row, i)) > 1e-10) {
                 double coef = R(row, i) / R(i, i);
                 R.block(row, i + 1, 1, R.cols() - i - 1) -= coef
                     * R.block(i, i + 1, 1, R.cols() - i - 1);
-                R(row, i) = 0;
             }
+            R(row, i) = 0;
         }
     }
 }
