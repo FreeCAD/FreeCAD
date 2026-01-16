@@ -445,6 +445,11 @@ public:
     {
         return true;
     }
+    /** Tell if the tree item should be auto collapsed*/
+    bool isAutoCollapseOnDeactivation() const
+    {
+        return autoCollapseOnDeactivation;
+    }
 
     /** @name Signals of the view provider */
     //@{
