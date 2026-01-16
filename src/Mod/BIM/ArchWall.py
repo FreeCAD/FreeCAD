@@ -1762,7 +1762,7 @@ if FreeCAD.GuiUp:
         def __init__(self, obj):
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
-            FreeCAD.ActiveDocument.openTransaction("Edit Wall")
+            FreeCAD.ActiveDocument.openTransaction(f"Edit Wall: {obj.Label}")
             if hasattr(self.obj, "Proxy"):
                 self.obj.Proxy.InTransaction = True
             self.wallWidget = QtGui.QWidget()
