@@ -57,6 +57,11 @@ void BackupPolicy::setDateFormat(const std::string& fmt)
 {
     saveBackupDateFormat = fmt;
 }
+void BackupPolicy::setBackupDirectory(const std::string& backup_dir)
+{
+    backupDirectory = backup_dir;
+    ba::trim(backupDirectory);
+}
 void BackupPolicy::apply(const std::string& sourcename, const std::string& targetname)
 {
     switch (policy) {
@@ -69,23 +74,17 @@ void BackupPolicy::apply(const std::string& sourcename, const std::string& targe
     }
 }
 
-namespace {
-Base::FileInfo getBackupDir( Base::FileInfo project_file )
+Base::FileInfo BackupPolicy::getBackupDir( Base::FileInfo project_file ) const
 {
     Base::FileInfo project_dir(project_file.dirPath());
-    std::string backup_dir_str =
-        GetApplication()
-        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-        ->GetASCII("BackupDirectory", "FCBak");
-    ba::trim(backup_dir_str);
 
-    if(backup_dir_str.size() == 0 )
+    if(backupDirectory.size() == 0 )
         return project_dir;
 
-    fs::path backup_dir_path(backup_dir_str);
+    fs::path backup_dir_path(backupDirectory);
     fs::path project_dir_path(project_file.dirPath());
     if(backup_dir_path.is_relative())
-        backup_dir_path = project_dir_path.append(backup_dir_str);
+        backup_dir_path = project_dir_path.append(backupDirectory);
 
     Base::FileInfo backup_dir(backup_dir_path.string());
     if( !fs::exists(backup_dir_path) )
@@ -107,7 +106,6 @@ Base::FileInfo getBackupDir( Base::FileInfo project_file )
     }
 
     return backup_dir;
-}
 }
 
 void BackupPolicy::applyStandard(const std::string& sourcename, const std::string& targetname) const
