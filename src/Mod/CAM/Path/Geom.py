@@ -89,6 +89,7 @@ CmdMoveCCW = ["G3", "G03"]
 CmdMoveDrill = ["G73", "G81", "G82", "G83", "G85"]
 CmdMoveArc = CmdMoveCW + CmdMoveCCW
 CmdMove = CmdMoveStraight + CmdMoveArc + CmdMoveDrill
+CmdMoveMill = CmdMoveStraight + CmdMoveArc
 CmdMoveAll = CmdMove + CmdMoveRapid
 
 
