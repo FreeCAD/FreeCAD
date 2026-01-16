@@ -630,7 +630,7 @@ ViewProviderSketch::ViewProviderSketch()
 
     ParameterGrp::handle hGrp =
         App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
-    int psize = hGrp->GetInt("DefaultShapePointSize", 4);
+    auto psize = hGrp->GetInt("DefaultShapePointSize", 4L);
 
     PointSize.setValue(psize);
 
