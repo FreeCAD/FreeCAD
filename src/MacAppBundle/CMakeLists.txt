@@ -150,19 +150,13 @@ if(HOMEBREW_PREFIX)
   endforeach(PTH_FILE)
 endif()
 
-if(FREECAD_QT_MAJOR_VERSION STREQUAL "6")
-    set(QT_PLUGINS_DIR "${Qt6Core_DIR}/../../../plugins")
-    # Fallback for Homebrew Qt6 layout
-    if(NOT EXISTS "${QT_PLUGINS_DIR}")
-        set(QT_PLUGINS_DIR "/opt/homebrew/share/qt/plugins")
-    endif()
-    set(QT_ASSISTANT_PATH "${Qt6Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant")
-    set(QT_PLUGIN_SUBDIRS "platforms;imageformats;styles;iconengines")
-else()
-    set(QT_PLUGINS_DIR "${Qt5Core_DIR}/../../../plugins")
-    set(QT_ASSISTANT_PATH "${Qt5Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant")
-    set(QT_PLUGIN_SUBDIRS "platforms;imageformats;styles;iconengines")
+set(QT_PLUGINS_DIR "${Qt6Core_DIR}/../../../plugins")
+# Fallback for Homebrew Qt6 layout
+if(NOT EXISTS "${QT_PLUGINS_DIR}")
+    set(QT_PLUGINS_DIR "/opt/homebrew/share/qt/plugins")
 endif()
+set(QT_ASSISTANT_PATH "${Qt6Core_DIR}/../../../libexec/Assistant.app/Contents/MacOS/Assistant")
+set(QT_PLUGIN_SUBDIRS "platforms;imageformats;styles;iconengines")
 
 
 execute_process(COMMAND "xcode-select" "--print-path"
