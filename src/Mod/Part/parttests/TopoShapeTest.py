@@ -611,23 +611,27 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         """Test that mirror() produces identical results regardless of how the
         shape is positioned - via direct coordinates or via Placement.
         Regression test for GitHub issue #20834.
+
+        The bug was: when a shape has a non-identity Location (Placement),
+        the mirror result was incorrect because the placement was being
+        double-applied in makeElementMirror().
         """
-        # Create two identical boxes at the same location using different methods:
-        # Method 1: Direct coordinates (no explicit Placement)
-        box_direct = Part.makeBox(10, 20, 30, App.Vector(0, 30, 0), App.Vector(0, 1, 1))
+        # Create two identical boxes at the same visual location using different methods:
+        # Method 1: Box geometry positioned directly at (0, 30, 0), identity Placement
+        box_direct = Part.makeBox(10, 20, 30, App.Vector(0, 30, 0))
 
-        # Method 2: Using explicit Placement
+        # Method 2: Box geometry at origin, then moved via Placement
         box_placed = Part.makeBox(10, 20, 30)
-        box_placed.Placement = App.Placement(
-            App.Vector(0, 30, 0), App.Rotation(App.Vector(0, 1, 1), 45)
-        )
+        box_placed.Placement = App.Placement(App.Vector(0, 30, 0), App.Rotation())
 
-        # Verify both boxes start at the same location
+        # Verify both boxes appear at the same location
         self.assertAlmostEqual(box_direct.BoundBox.XMin, box_placed.BoundBox.XMin, places=5)
         self.assertAlmostEqual(box_direct.BoundBox.YMin, box_placed.BoundBox.YMin, places=5)
         self.assertAlmostEqual(box_direct.BoundBox.ZMin, box_placed.BoundBox.ZMin, places=5)
 
-        # Mirror both in the XZ plane (normal = Y axis)
+        # Mirror both across the XZ plane (Y=0)
+        # A point (x, y, z) mirrors to (x, -y, z)
+        # So box at Y=30..50 should mirror to Y=-50..-30
         mirror_direct = box_direct.mirror(App.Vector(), App.Vector(0, 1, 0))
         mirror_placed = box_placed.mirror(App.Vector(), App.Vector(0, 1, 0))
 
@@ -668,6 +672,10 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
             places=5,
             msg="Mirror with Placement produced different ZMax",
         )
+
+        # Verify the expected mirror result: Y=30..50 mirrors to Y=-50..-30
+        self.assertAlmostEqual(mirror_direct.BoundBox.YMin, -50.0, places=5)
+        self.assertAlmostEqual(mirror_direct.BoundBox.YMax, -30.0, places=5)
 
     def testTopoShapeScale(self):
         # Act
