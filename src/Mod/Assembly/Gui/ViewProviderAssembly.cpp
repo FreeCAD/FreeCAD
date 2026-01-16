@@ -148,6 +148,7 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
 bool ViewProviderAssembly::doubleClicked()
 {
     if (isInEditMode()) {
+        autoCollapseOnDeactivation = true;
         getDocument()->resetEdit();
     }
     else {
@@ -276,6 +277,7 @@ bool ViewProviderAssembly::setEdit(int mode)
     if (mode == ViewProvider::Default) {
         // Ask that this edit mode be restored. For example if it is quit to edit a sketch.
         getDocument()->setEditRestore(true);
+        autoCollapseOnDeactivation = false;
 
         // Set the part as 'Activated' ie bold in the tree.
         Gui::Command::doCommand(
