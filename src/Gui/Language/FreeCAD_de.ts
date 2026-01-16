@@ -141,7 +141,7 @@
       <translation>Array-Elemente umschalten</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Bild bearbeiten</translation>
@@ -3355,7 +3355,7 @@ Diese Funktion kann die Neuberechnungszeit leicht erhöhen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation>Miniaturansicht beim Speichern zur Projektdatei hinzufügen</translation>
+      <translation>Beim Speichern eine Miniaturansicht zur Projektdatei hinzufügen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
@@ -3430,7 +3430,7 @@ Then only referenced objects and their dependencies will be loaded
 when a linked document is auto-opened together with the main document.
 A partially loaded document cannot be edited. Double click the document
 icon in the tree view to fully reload it.</source>
-      <translation>Partielles Laden von externen verknüpften Dokumenten aktivieren.
+      <translation>Teilweises Laden von externen verknüpften Dokumenten aktivieren.
 Dann werden nur referenzierte Objekte und ihre Abhängigkeiten geladen,
 wenn ein verknüpftes Dokument automatisch zusammen mit dem Hauptdokument geöffnet wird.
 Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklick auf das Dokumenten-Symbol in der Baumansicht, um es vollständig neu zu laden.</translation>
@@ -3438,7 +3438,7 @@ Ein teilweise geladenes Dokument kann nicht bearbeitet werden. Doppelklick auf d
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Deaktiviere partielles Laden von externen verknüpften Objekten</translation>
+      <translation>Teilweises Laden von extern verknüpften Objekten deaktivieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="619"/>
@@ -4011,11 +4011,11 @@ Turntable: the part will be rotated around the Z-axis (with constrained axes).
 Free Turntable: the part will be rotated around the Z-axis.
          </source>
       <translation>Rotationsbahn-Stil.
-Abgerundeter Arcball: Durch Bewegen der Maus in den Ecken des Bildschirms wird das Teil nur gerollt.
+Abgerundeter Bogenball: Durch Bewegen der Maus in den Ecken des Bildschirms wird das Teil nur gerollt.
 Trackball: Durch horizontales Bewegen der Maus wird das Teil um die Y-Achse gedreht.
-Trackball Classic: Durch Bewegen der Maus wird das Teil gedreht, wobei eine Präzession möglich ist.
-Drehteller: Das Teil wird um die Z-Achse gedreht (mit eingeschränkten Achsen).
-Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
+Trackball klassisch: Durch Bewegen der Maus wird das Teil gedreht, wobei eine Präzession möglich ist.
+Drehscheibe: Das Teil wird um die Z-Achse gedreht (mit eingeschränkten Achsen).
+Freie Drehscheibe: Das Teil wird um die Z-Achse gedreht.
          </translation>
     </message>
     <message>
@@ -4036,7 +4036,7 @@ Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="503"/>
       <source>Trackball Classic</source>
-      <translation>Steuerkugel klassisch</translation>
+      <translation>Trackball klassisch</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="508"/>
@@ -4046,7 +4046,7 @@ Freier Drehteller: Das Teil wird um die Z-Achse gedreht.
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="516"/>
       <source>Rotation mode</source>
-      <translation>Art der Drehung</translation>
+      <translation>Rotationsmodus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="535"/>
@@ -6582,7 +6582,7 @@ ODER ALT-Taste + rechte Maustaste drücken ODER Bild auf/Bild ab auf der Tastatu
       <location filename="../propertyeditor/PropertyEditor.cpp" line="991"/>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1171"/>
       <source>Edit Property Tooltip</source>
-      <translation>Eigenschaftstooltip bearbeiten</translation>
+      <translation>Tooltipp der Eigenschaft bearbeiten</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="1008"/>
@@ -7968,12 +7968,12 @@ Weitere Einzelheiten finden sich im Ausgabefenster.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Dieses System verwendet OpenGL %1.%2. FreeCAD erfordert OpenGL 2.0 oder höher. Dafür den Grafiktreiber und/oder die Grafikkarte entsprechend aktualisieren.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Ungültige OpenGL-Version</translation>
     </message>
@@ -8601,12 +8601,12 @@ Choose 'Abort' to abort</source>
       <translation>Kann Systembrowser nicht starten.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2562"/>
       <source>Out of memory</source>
       <translation>Nicht genügend Speicher</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2563"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Nicht genügend Speicher verfügbar, um die Daten darstellen zu können.</translation>
     </message>
@@ -11661,7 +11661,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="438"/>
       <source>Ambient light</source>
-      <translation>Ambient light</translation>
+      <translation>Umgebungslicht</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="145"/>

@@ -136,7 +136,7 @@
       <location filename="../../AttacherTexts.cpp" line="728"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Der Punkt kann duch Bearbeitung der Platzierungs-Eigenschaften verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Punkt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="736"/>
@@ -271,7 +271,7 @@
       <location filename="../../AttacherTexts.cpp" line="538"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten von der Placement-Eigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="546"/>
@@ -1714,12 +1714,12 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Convert to Solid</source>
-      <translation>In Festkörper konvertieren</translation>
+      <translation>In Festkörper umwandeln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
       <source>Converts the selected shell or compound to a solid</source>
-      <translation>Konvertiert die ausgewählte Hülle oder Verbund in einen Festkörper</translation>
+      <translation>Wandelt die ausgewählte Hülle oder den ausgewählten Verbund in einen Festkörper um</translation>
     </message>
   </context>
   <context>
@@ -6041,12 +6041,12 @@ Fortfahren?</translation>
       <translation>Schnittpunkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Verbund-Inhalt löschen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Der Verbund '%1' hat %2 Unterobjekte. Sollen diese ebenfalls gelöscht werden?</translation>
     </message>

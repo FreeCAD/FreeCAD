@@ -30,7 +30,7 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection/Selection.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 
 class QComboBox;
@@ -156,27 +156,30 @@ public:
     void restoreComboboxPref(int comboboxindex);
 
     template<typename F>
-    boost::signals2::connection registerParameterTabOrEnterPressed(F&& fn)
+    fastsignals::advanced_connection registerParameterTabOrEnterPressed(F&& fn)
     {
-        return signalParameterTabOrEnterPressed.connect(std::forward<F>(fn));
+        return signalParameterTabOrEnterPressed.connect(
+            std::forward<F>(fn),
+            fastsignals::advanced_tag()
+        );
     }
 
     template<typename F>
-    boost::signals2::connection registerParameterValueChanged(F&& fn)
+    fastsignals::advanced_connection registerParameterValueChanged(F&& fn)
     {
-        return signalParameterValueChanged.connect(std::forward<F>(fn));
+        return signalParameterValueChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
     template<typename F>
-    boost::signals2::connection registerCheckboxCheckedChanged(F&& fn)
+    fastsignals::advanced_connection registerCheckboxCheckedChanged(F&& fn)
     {
-        return signalCheckboxCheckedChanged.connect(std::forward<F>(fn));
+        return signalCheckboxCheckedChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
     template<typename F>
-    boost::signals2::connection registerComboboxSelectionChanged(F&& fn)
+    fastsignals::advanced_connection registerComboboxSelectionChanged(F&& fn)
     {
-        return signalComboboxSelectionChanged.connect(std::forward<F>(fn));
+        return signalComboboxSelectionChanged.connect(std::forward<F>(fn), fastsignals::advanced_tag());
     }
 
 
@@ -218,10 +221,10 @@ private:
 private:
     std::unique_ptr<Ui_SketcherToolDefaultWidget> ui;
 
-    boost::signals2::signal<void(int parameterindex)> signalParameterTabOrEnterPressed;
-    boost::signals2::signal<void(int parameterindex, double value)> signalParameterValueChanged;
-    boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
-    boost::signals2::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;
+    fastsignals::signal<void(int parameterindex)> signalParameterTabOrEnterPressed;
+    fastsignals::signal<void(int parameterindex, double value)> signalParameterValueChanged;
+    fastsignals::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
+    fastsignals::signal<void(int comboindex, int value)> signalComboboxSelectionChanged;
 
     /// lock to block QT slots
     bool blockParameterSlots;

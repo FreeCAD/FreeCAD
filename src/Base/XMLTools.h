@@ -34,21 +34,12 @@
 
 #include <FCGlobal.h>
 
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-# define XERCES_CPP_NAMESPACE_QUALIFIER
 namespace XERCES_CPP_NAMESPACE
 {
 class DOMNode;
 class DOMElement;
 class DOMDocument;
 }  // namespace XERCES_CPP_NAMESPACE
-#else
-XERCES_CPP_NAMESPACE_BEGIN
-class DOMNode;
-class DOMElement;
-class DOMDocument;
-XERCES_CPP_NAMESPACE_END
-#endif
 
 // Helper class
 class BaseExport XMLTools
@@ -107,12 +98,12 @@ inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
 }
 
 inline StrX::StrX(const XMLCh* const toTranscode)
-    : fLocalForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+    : fLocalForm(XERCES_CPP_NAMESPACE::XMLString::transcode(toTranscode))
 {}
 
 inline StrX::~StrX()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fLocalForm);
+    XERCES_CPP_NAMESPACE::XMLString::release(&fLocalForm);
 }
 
 
@@ -171,7 +162,7 @@ class XStr
 public:
     ///  Constructors and Destructor
     explicit XStr(const char* const toTranscode);
-    explicit XStr(const char* const toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr);
+    explicit XStr(const char* const toTranscode, XERCES_CPP_NAMESPACE::MemoryManager* memMgr);
     ~XStr();
 
 
@@ -182,22 +173,22 @@ public:
 private:
     /// This is the Unicode XMLCh format of the string.
     XMLCh* fUnicodeForm;
-    XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr;
+    XERCES_CPP_NAMESPACE::MemoryManager* memMgr;
 };
 
 
 inline XStr::XStr(const char* const toTranscode)
-    : XStr(toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager)
+    : XStr(toTranscode, XERCES_CPP_NAMESPACE::XMLPlatformUtils::fgMemoryManager)
 {}
 
 inline XStr::XStr(const char* const toTranscode, XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* memMgr)
-    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode, memMgr))
+    : fUnicodeForm(XERCES_CPP_NAMESPACE::XMLString::transcode(toTranscode, memMgr))
     , memMgr(memMgr)
 {}
 
 inline XStr::~XStr()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm, memMgr);
+    XERCES_CPP_NAMESPACE::XMLString::release(&fUnicodeForm, memMgr);
 }
 
 // Uses the compiler to create a cache of transcoded string literals so that each subsequent call

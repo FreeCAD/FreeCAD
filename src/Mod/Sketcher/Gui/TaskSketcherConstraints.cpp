@@ -982,7 +982,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     //NOLINTBEGIN
     Gui::Application* app = Gui::Application::Instance;
     changedSketchView = app->signalChangedObject.connect(
-        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2));
+        std::bind(&TaskSketcherConstraints::onChangedSketchView, this, sp::_1, sp::_2), fastsignals::advanced_tag());
     //NOLINTEND
 
     updateList();
@@ -1708,6 +1708,7 @@ void TaskSketcherConstraints::slotConstraintsChanged()
     assert(sketchView);
 
     constraintMap.clear();
+    selectionBuffer.clear();
 
     // Build up ListView with the constraints
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();

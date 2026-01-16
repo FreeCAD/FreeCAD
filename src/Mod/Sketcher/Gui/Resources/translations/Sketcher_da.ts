@@ -88,7 +88,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
       <source>Converts the selected geometry to B-splines</source>
-      <translation>Konverterer den valgte geometri til B-splines</translation>
+      <translation>Konverterer den valgte geometri til en splines</translation>
     </message>
   </context>
   <context>
@@ -109,12 +109,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="269"/>
       <source>Decrease B-Spline Degree</source>
-      <translation>Formindsk B-splinens orden</translation>
+      <translation>Formindsk splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="270"/>
       <source>Decreases the degree of the B-spline</source>
-      <translation>Formindsker ordenen af de polynomier der danner B-splinen</translation>
+      <translation>Formindsker ordenen af de polynomier der danner splinen</translation>
     </message>
   </context>
   <context>
@@ -127,7 +127,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="549"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Formindsker multipliciteten af det valgte knudepunkt for en B-spline</translation>
+      <translation>Formindsker multipliciteten af det valgte knudepunkt for en spline</translation>
     </message>
   </context>
   <context>
@@ -135,12 +135,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="192"/>
       <source>Increase B-Spline Degree</source>
-      <translation>Forøg B-splinens orden</translation>
+      <translation>Forøg splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="193"/>
       <source>Increases the degree of the B-spline</source>
-      <translation>Forøger ordenen af de polynomier der danner B-splinen</translation>
+      <translation>Forøger ordenen af de polynomier der danner splinen</translation>
     </message>
   </context>
   <context>
@@ -153,7 +153,7 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="392"/>
       <source>Increases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Forøger multipliciteten af den valgte knude for en B-spline</translation>
+      <translation>Forøger multipliciteten af den valgte knude for en spline</translation>
     </message>
   </context>
   <context>
@@ -765,12 +765,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="218"/>
       <source>Increase B-spline degree</source>
-      <translation>Forøg B-splinens orden</translation>
+      <translation>Forøg splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="297"/>
       <source>Decrease B-spline degree</source>
-      <translation>Formindsk B-splinens orden</translation>
+      <translation>Formindsk splinens orden</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="429"/>
@@ -835,7 +835,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="170"/>
       <source>Toggle constraints to the other virtual space</source>
-      <translation>Flyt relationer til det andet virtuelle rum</translation>
+      <translation>Flyt relationer til det modsatte virtuelle rum</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1537"/>
@@ -944,7 +944,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../DrawSketchHandlerBSpline.h" line="618"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="765"/>
       <source>Add Sketch B-Spline</source>
-      <translation type="unfinished">Add Sketch B-Spline</translation>
+      <translation>Tilføj en spline</translation>
     </message>
   </context>
   <context>
@@ -966,23 +966,23 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../../App/SketchObject.cpp" line="6734"/>
       <location filename="../../../App/SketchObject.cpp" line="6912"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
-      <translation>B-splines geometri-index (GeoID) er uden for grænseværdierne.</translation>
+      <translation>Splines geometri-index (GeoID) er uden for grænseværdierne.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6751"/>
       <location filename="../../../App/SketchObject.cpp" line="6928"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
-      <translation>Geometriindekset (GeoID) er ikke en B-spline.</translation>
+      <translation>Geometriindekset (GeoID) er ikke en spline.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6763"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
-      <translation type="unfinished">The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</translation>
+      <translation>Knudeindeks er uden for grænseværdierne. Bemærk, at i overensstemmelse med OCC-notationen, har første knudepunkt indeks 1 og ikke 0.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6779"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
-      <translation>Multipliciteten kan ikke forøges til mere end graden af B-splinen.</translation>
+      <translation>Multipliciteten kan ikke forøges til mere end graden af splinen.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6790"/>
@@ -1002,12 +1002,12 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6941"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
-      <translation>Knuders multiplicitet kan ikke være højere end graden af B-splinen.</translation>
+      <translation>Knuders multiplicitet kan ikke være højere end graden af splinen.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6951"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
-      <translation>Knudepunkter kan ikke indsættes uden for B-splinens parameterområdet.</translation>
+      <translation>Knudepunkter kan ikke indsættes uden for splinens parameterområdet.</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.cpp" line="330"/>
@@ -1303,7 +1303,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="180"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation>Kan ikke tilføje relationer mellem fastlåste geometrier. Fastlåste geometrier inkluderer ekstern geometri, blokeret geometri og særlige punkter såsom knudepunkter for en B-spline.</translation>
+      <translation>Kan ikke tilføje relationer mellem fastlåste geometrier. Fastlåste geometrier inkluderer ekstern geometri, blokeret geometri og særlige punkter såsom knudepunkter for en spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="754"/>
@@ -1398,13 +1398,13 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7468"/>
       <source>Only tangent-via-point is supported with a B-spline.</source>
-      <translation>Kun tangent-til-punkt understøttes med en B-spline.</translation>
+      <translation>Kun tangent-til-punkt understøttes med en spline.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7953"/>
       <location filename="../../CommandConstraints.cpp" line="8629"/>
       <source>Select either only one or more B-spline poles or only one or more arcs or circles from the sketch, but not mixed.</source>
-      <translation>Vælg enten en eller flere B-spline poler eller en eller flere cirkler eller cirkelbuer fra skitsen, men ikke en blanding.</translation>
+      <translation>Vælg enten en eller flere spline poler eller en eller flere cirkler eller cirkelbuer fra skitsen, men ikke en blanding.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10118"/>
@@ -1495,7 +1495,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="9376"/>
       <location filename="../../CommandConstraints.cpp" line="10197"/>
       <source>Select an edge that is not a B-spline weight.</source>
-      <translation type="unfinished">Select an edge that is not a B-spline weight.</translation>
+      <translation>Vælg en linje, som ikke er en spline-vægtning.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4298"/>
@@ -1642,7 +1642,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../CommandConstraints.cpp" line="7223"/>
       <location filename="../../CommandConstraints.cpp" line="7261"/>
       <source>Tangent constraint at B-spline knot is only supported with lines!</source>
-      <translation>Tangentel relation til B-spline-knudepunkter understøttes kun med linjer!</translation>
+      <translation>Tangentel relation til spline-knudepunkter understøttes kun med linjer!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="228"/>
@@ -1694,7 +1694,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="4276"/>
       <source>B-spline knot to endpoint tangency was applied instead.</source>
-      <translation>Relationen 'B-spline knudepunkt til endepunkt' blev anvendt i stedet.</translation>
+      <translation>Relationen 'spline knudepunkt til endepunkt' blev anvendt i stedet.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6261"/>
@@ -1764,7 +1764,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="9590"/>
       <source>Equality for B-spline edge currently unsupported.</source>
-      <translation>Ens-med relationer for B-splines understøttes ikke for øjeblikket.</translation>
+      <translation>Ens-med relationer for splines understøttes ikke for øjeblikket.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2818"/>
@@ -1862,7 +1862,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../CommandSketcherBSpline.cpp" line="243"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="328"/>
       <source>At least one of the selected objects was not a B-spline and was ignored.</source>
-      <translation>Mindst et af de valgte objekter var ikke en B-spline og blev ignoreret.</translation>
+      <translation>Mindst et af de valgte objekter var ikke en spline og blev ignoreret.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="422"/>
@@ -1873,12 +1873,12 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1001"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation>Intet valgt. Vælg en B-spline.</translation>
+      <translation>Intet valgt. Vælg en spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1022"/>
       <source>Select a B-spline to insert a knot (not a knot on it). If the curve is not a B-spline, convert it into one first.</source>
-      <translation>Vælg en B-spline for at indsætte et knudepunkt (ikke et knudepunkt på B-splinen). Hvis kurven ikke er en B-spline, så konverter den til først til en B-spline.</translation>
+      <translation>Vælg en spline for at indsætte et knudepunkt (ikke et knudepunkt på splinen). Hvis kurven ikke er en spline, så konverter den til først til en spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1080"/>
@@ -2248,7 +2248,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../EditDatumDialog.cpp" line="149"/>
       <source>Insert Weight</source>
-      <translation>Indsæt vægt</translation>
+      <translation>Indsæt vægtning</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="156"/>
@@ -2368,7 +2368,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="352"/>
       <source>B-spline</source>
-      <translation>B-spline</translation>
+      <translation>Spline</translation>
     </message>
   </context>
   <context>
@@ -3059,7 +3059,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="157"/>
       <source>%N = %V</source>
-      <translation type="unfinished">%N = %V</translation>
+      <translation>%N = %V</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="180"/>
@@ -3567,7 +3567,7 @@ Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
       <location filename="../../TaskSketcherElements.cpp" line="2105"/>
       <location filename="../../TaskSketcherElements.cpp" line="2106"/>
       <source>B-spline</source>
-      <translation>B-spline</translation>
+      <translation>Spline</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="1999"/>
@@ -3913,7 +3913,7 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
       <location filename="../../CommandSketcherBSpline.cpp" line="779"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="785"/>
       <source>Decreases the multiplicity of the selected knot of a B-spline</source>
-      <translation>Formindsker multipliciteten af det valgte knudepunkt for en B-spline</translation>
+      <translation>Formindsker multipliciteten af det valgte knudepunkt for en spline</translation>
     </message>
   </context>
   <context>
@@ -4416,7 +4416,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>B-Spline Tools</source>
-      <translation>B-Spline-værktøjer</translation>
+      <translation>Spline-værktøjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
@@ -4594,7 +4594,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="147"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4638,7 +4638,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2393"/>
       <source>Selection has no valid geometries. B-splines and points are not supported yet.</source>
-      <translation>Ingen gyldige geometrier valgt. B-splines og punkter understøttes ikke endnu.</translation>
+      <translation>Ingen gyldige geometrier valgt. Splines og punkter understøttes ikke endnu.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="140"/>
@@ -4703,7 +4703,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="386"/>
       <source>Error creating B-spline</source>
-      <translation>Fejl ved oprettelse af B-spline</translation>
+      <translation>Fejl ved oprettelse af Spline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="671"/>
@@ -4713,7 +4713,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
       <source>Error adding B-spline pole/knot</source>
-      <translation>Fejl ved tilføjelse af B-spline pol eller -knude</translation>
+      <translation>Fejl ved tilføjelse af spline-pol eller -knude</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCarbonCopy.h" line="201"/>
@@ -4749,7 +4749,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="295"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="156"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
@@ -4855,7 +4855,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Ugyldig skaleringsfaktor. Skaleringsfaktoren skal være et positivt tal.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
       <source>Failed to scale</source>
       <translation>Kunne ikke skalere</translation>
     </message>
@@ -5402,7 +5402,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="611"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
       <source>Keep original geometries (U)</source>
       <translation>Behold originale geometrier (E)</translation>
     </message>
@@ -5542,7 +5542,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
       <source>Create a periodic B-spline.</source>
-      <translation>Opret en periodisk B-spline.</translation>
+      <translation>Opret en periodisk Spline.</translation>
     </message>
   </context>
   <context>
@@ -5681,7 +5681,7 @@ Dette vil rydde 'AttachmentSupport' egenskaben.</translation>
     <message>
       <location filename="../../Command.cpp" line="1174"/>
       <source>Toggles the visibility of the grid in the active sketch</source>
-      <translation>Slår gittervisning til/fra i den aktive skitse</translation>
+      <translation>Slår visning af gitterlinjer til/fra i den aktive skitse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1177"/>
@@ -5744,12 +5744,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../Command.cpp" line="1423"/>
       <source>Snap angle</source>
-      <translation type="unfinished">Snap angle</translation>
+      <translation>Fastgør til vinkel</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1425"/>
       <source>Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</source>
-      <translation type="unfinished">Angular step for tools that use 'Snap at angle'. Hold Ctrl to enable 'Snap at angle'. The angle starts from the positive X axis of the sketch.</translation>
+      <translation>Vinkeltrin for værktøjer, der bruger 'fastgør til vinkel'. Hold Ctrl for at aktivere 'fastgør til vinkel'. Vinklen måles fra skitsens positive X-akse.</translation>
     </message>
   </context>
   <context>
@@ -5762,7 +5762,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../Command.cpp" line="1513"/>
       <source>Toggles snapping</source>
-      <translation>Slår fastgørelse til gitter, objekter og vinkler, til og fra</translation>
+      <translation>Slår fastgørelse til gitterlinjer, objekter og vinkler, til/fra</translation>
     </message>
   </context>
   <context>
@@ -6154,7 +6154,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandConstraints.cpp" line="10506"/>
       <source>Toggles the state of the selected constraints</source>
-      <translation type="unfinished">Toggles the state of the selected constraints</translation>
+      <translation>Skifter tilstanden for de markerede relationer</translation>
     </message>
   </context>
   <context>
@@ -6552,12 +6552,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1294"/>
       <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <translation>Spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1295"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation>Opretter en B-spline, defineret ved kontrolpunkter</translation>
+      <translation>Opretter en spline, defineret ved kontrolpunkter</translation>
     </message>
   </context>
   <context>
@@ -6565,12 +6565,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1366"/>
       <source>B-Spline</source>
-      <translation>B-Spline</translation>
+      <translation>Spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1367"/>
       <source>Creates a B-spline curve defined by control points</source>
-      <translation>Opretter en B-spline, defineret ved kontrolpunkter</translation>
+      <translation>Opretter en spline, defineret ved kontrolpunkter</translation>
     </message>
   </context>
   <context>
@@ -6578,12 +6578,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1406"/>
       <source>Periodic B-Spline</source>
-      <translation>Periodisk B-Spline</translation>
+      <translation>Periodisk spline</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1407"/>
       <source>Creates a periodic B-spline curve defined by control points</source>
-      <translation>Opret en periodisk B-spline, defineret ved kontrolpunkter</translation>
+      <translation>Opreter en periodisk spline, defineret ved kontrolpunkter</translation>
     </message>
   </context>
   <context>
@@ -6591,12 +6591,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1445"/>
       <source>B-Spline From Knots</source>
-      <translation>B-Spline fra knudepunkter</translation>
+      <translation>Spline fra knudepunkter</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1446"/>
       <source>Creates a B-spline from knots, i.e. from interpolation</source>
-      <translation>Opretter en B-spline ud fra knudepunkter, dvs. ved brug af interpolation</translation>
+      <translation>Opretter en spline ud fra knudepunkter, dvs. ved brug af interpolation</translation>
     </message>
   </context>
   <context>
@@ -6609,7 +6609,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1483"/>
       <source>Creates a periodic B-spline defined by knots using interpolation</source>
-      <translation>Opretter en periodisk B-spline, defineret ved knudepunkter, ved brug af interpolation</translation>
+      <translation>Opretter en periodisk pline, defineret ved knudepunkter, ved brug af interpolation</translation>
     </message>
   </context>
   <context>
@@ -6786,12 +6786,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="65"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Slå B-Splines orden til/fra</translation>
+      <translation>Slå spline orden til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="66"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Viser/skjuler ordenen af alle B-splines</translation>
+      <translation>Viser/skjuler ordenen af alle splines</translation>
     </message>
   </context>
   <context>
@@ -6799,7 +6799,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="94"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Slå kontrolpolygoner for splines til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="95"/>
@@ -6812,12 +6812,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Slå spline krumning til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="124"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Viser/skjuler krumningsvisningen for alle B-splines</translation>
+      <translation>Viser/skjuler krumningsvisningen for alle splines</translation>
     </message>
   </context>
   <context>
@@ -6825,12 +6825,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="152"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation>Slå multiplicitet for B-spline knudepunkter til/fra</translation>
+      <translation>Slå multiplicitet for spline knudepunkter til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="153"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Viser/skjuler multipliciteten af knudepunkter for alle B-splines</translation>
+      <translation>Viser/skjuler multipliciteten af knudepunkter for alle splines</translation>
     </message>
   </context>
   <context>
@@ -6838,7 +6838,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="181"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation>Vis/skjul vægtning af B-spline kontrolpunkter</translation>
+      <translation>Vis/skjul vægtning af spline kontrolpunkter</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="182"/>
@@ -6851,37 +6851,37 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="210"/>
       <source>Toggle B-Spline Information Layer</source>
-      <translation type="unfinished">Toggle B-Spline Information Layer</translation>
+      <translation>Vis/skjul spline information</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="211"/>
       <source>Toggles the visibility of the information layer for all B-splines</source>
-      <translation>Viser/skjuler informationslaget for alle B-splines</translation>
+      <translation>Viser/skjuler informationslaget for alle splines</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="293"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Slå B-Splines orden til/fra</translation>
+      <translation>Slå splines orden til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation type="unfinished">Toggle B-Spline Control Polygon</translation>
+      <translation>Slå kontrolpolygoner for splines til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="328"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation type="unfinished">Toggle B-Spline Curvature Comb</translation>
+      <translation>Slå spline krumning til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="347"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation>Slå multiplicitet for B-spline knudepunkter til/fra</translation>
+      <translation>Slå multiplicitet for spline-knudepunkter til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="367"/>
       <source>Toggle B-Spline Control Point Weight</source>
-      <translation>Vis/skjul vægtning af B-spline kontrolpunkter</translation>
+      <translation>Vis/skjul vægtning af spline-kontrolpunkter</translation>
     </message>
   </context>
   <context>
@@ -6890,7 +6890,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../CommandSketcherOverlay.cpp" line="296"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="302"/>
       <source>Toggles the visibility of the degree for all B-splines</source>
-      <translation>Viser/skjuler ordenen af alle B-splines</translation>
+      <translation>Viser/skjuler ordenen af alle splines</translation>
     </message>
   </context>
   <context>
@@ -6899,7 +6899,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../CommandSketcherOverlay.cpp" line="315"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="321"/>
       <source>Toggles the visibility of the control polygons for all B-splines</source>
-      <translation>Viser/skjuler kontrolpolygoner for alle B-splines</translation>
+      <translation>Viser/skjuler kontrolpolygoner for alle splines</translation>
     </message>
   </context>
   <context>
@@ -6908,7 +6908,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../CommandSketcherOverlay.cpp" line="334"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="340"/>
       <source>Toggles the visibility of the curvature comb for all B-splines</source>
-      <translation>Viser/skjuler krumningsvisningen for alle B-splines</translation>
+      <translation>Viser/skjuler krumningsvisningen for alle splines</translation>
     </message>
   </context>
   <context>
@@ -6917,7 +6917,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../CommandSketcherOverlay.cpp" line="353"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="359"/>
       <source>Toggles the visibility of the knot multiplicity for all B-splines</source>
-      <translation>Viser/skjuler multipliciteten af knudepunkter for alle B-splines</translation>
+      <translation>Viser/skjuler multipliciteten af knudepunkter for alle splines</translation>
     </message>
   </context>
   <context>
@@ -6926,7 +6926,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../CommandSketcherOverlay.cpp" line="373"/>
       <location filename="../../CommandSketcherOverlay.cpp" line="379"/>
       <source>Toggles the visibility of the control point weight for all B-splines</source>
-      <translation>Viser/skjuler vægtningen af kontrolpunkter for alle B-splines</translation>
+      <translation>Viser/skjuler vægtningen af kontrolpunkter for alle splines</translation>
     </message>
   </context>
   <context>
@@ -7004,7 +7004,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="429"/>
       <source>Selects the local origin point of the sketch</source>
-      <translation type="unfinished">Selects the local origin point of the sketch</translation>
+      <translation>Vælger det lokale origo for skitsen</translation>
     </message>
   </context>
   <context>
@@ -7147,7 +7147,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2077"/>
       <source>Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</source>
-      <translation type="unfinished">Deletes all geometry and their constraints in the current sketch, with the exception of external geometry</translation>
+      <translation>Sletter al geometri og alle relationer i den aktuelle skitse, med undtagelse af ekstern geometri</translation>
     </message>
   </context>
   <context>
@@ -7406,7 +7406,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../DrawSketchHandlerBSpline.h" line="439"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="457"/>
       <source>%1 finish B-spline</source>
-      <translation>%1 afslut B-spline</translation>
+      <translation>%1 afslut spline</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="449"/>
@@ -7427,7 +7427,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="506"/>
       <source>B-Spline Parameters</source>
-      <translation>B-spline parametre</translation>
+      <translation>Spline parametre</translation>
     </message>
   </context>
   <context>
@@ -7789,17 +7789,17 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="176"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
       <source>%1 pick reference point</source>
       <translation>%1 vælg reference point</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="181"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
       <source>%1 set scale factor</source>
       <translation>%1 indstil skaleringsfaktor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="244"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
       <source>Scale Parameters</source>
       <translation>Parametre for skalering</translation>
     </message>

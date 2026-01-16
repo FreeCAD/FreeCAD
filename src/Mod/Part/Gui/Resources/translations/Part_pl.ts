@@ -6066,12 +6066,12 @@ Czy chcesz je również usunąć?</translation>
       <translation>Przecięcie</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Czy usunąć elementy złożenia?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Złożenie "%1" zawiera %2 obiektów podrzędnych. 
 Czy chcesz je również usunąć?</translation>

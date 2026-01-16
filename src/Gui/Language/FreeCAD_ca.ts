@@ -141,7 +141,7 @@
       <translation>Commuta els elements de la matriu</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Edita la imatge</translation>
@@ -7954,12 +7954,12 @@ Comproveu la vista d'informes per a veure més detalls.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Aquest sistema està executant OpenGL %1.%2. FreeCAD requereix OpenGL 2.0 o superior. Actualitzeu el controlador de gràfics i/o la targeta segons calgui.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Versió d'OpenGL invàlida</translation>
     </message>
@@ -8586,12 +8586,12 @@ Trieu «Interromp» per a interrompre</translation>
       <translation>No es pot obrir el navegador del sistema.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2562"/>
       <source>Out of memory</source>
       <translation>No hi ha prou memòria.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2563"/>
       <source>Not enough memory available to display the data.</source>
       <translation>No hi ha prou memòria disponible per a mostrar les dades.</translation>
     </message>
