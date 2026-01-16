@@ -619,8 +619,7 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
         # Method 2: Using explicit Placement
         box_placed = Part.makeBox(10, 20, 30)
         box_placed.Placement = App.Placement(
-            App.Vector(0, 30, 0),
-            App.Rotation(App.Vector(0, 1, 1), 45)
+            App.Vector(0, 30, 0), App.Rotation(App.Vector(0, 1, 1), 45)
         )
 
         # Verify both boxes start at the same location
@@ -634,28 +633,40 @@ class TopoShapeTest(unittest.TestCase, TopoShapeAssertions):
 
         # The mirrored shapes should have identical bounding boxes
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.XMin, mirror_placed.BoundBox.XMin, places=5,
-            msg="Mirror with Placement produced different XMin"
+            mirror_direct.BoundBox.XMin,
+            mirror_placed.BoundBox.XMin,
+            places=5,
+            msg="Mirror with Placement produced different XMin",
         )
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.YMin, mirror_placed.BoundBox.YMin, places=5,
-            msg="Mirror with Placement produced different YMin"
+            mirror_direct.BoundBox.YMin,
+            mirror_placed.BoundBox.YMin,
+            places=5,
+            msg="Mirror with Placement produced different YMin",
         )
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.ZMin, mirror_placed.BoundBox.ZMin, places=5,
-            msg="Mirror with Placement produced different ZMin"
+            mirror_direct.BoundBox.ZMin,
+            mirror_placed.BoundBox.ZMin,
+            places=5,
+            msg="Mirror with Placement produced different ZMin",
         )
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.XMax, mirror_placed.BoundBox.XMax, places=5,
-            msg="Mirror with Placement produced different XMax"
+            mirror_direct.BoundBox.XMax,
+            mirror_placed.BoundBox.XMax,
+            places=5,
+            msg="Mirror with Placement produced different XMax",
         )
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.YMax, mirror_placed.BoundBox.YMax, places=5,
-            msg="Mirror with Placement produced different YMax"
+            mirror_direct.BoundBox.YMax,
+            mirror_placed.BoundBox.YMax,
+            places=5,
+            msg="Mirror with Placement produced different YMax",
         )
         self.assertAlmostEqual(
-            mirror_direct.BoundBox.ZMax, mirror_placed.BoundBox.ZMax, places=5,
-            msg="Mirror with Placement produced different ZMax"
+            mirror_direct.BoundBox.ZMax,
+            mirror_placed.BoundBox.ZMax,
+            places=5,
+            msg="Mirror with Placement produced different ZMax",
         )
 
     def testTopoShapeScale(self):
