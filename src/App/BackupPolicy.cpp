@@ -34,6 +34,7 @@
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
+#include "Application.h"
 #include "BackupPolicy.h"
 
 using namespace App;
@@ -72,7 +73,10 @@ namespace {
 Base::FileInfo getBackupDir( Base::FileInfo project_file )
 {
     Base::FileInfo project_dir(project_file.dirPath());
-    std::string backup_dir_str("FCBak");
+    std::string backup_dir_str =
+        GetApplication()
+        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+        ->GetASCII("BackupDirectory", "FCBak");
     ba::trim(backup_dir_str);
 
     if(backup_dir_str.size() == 0 )
