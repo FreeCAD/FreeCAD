@@ -2035,7 +2035,6 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if mode != 0:
             return None
         taskd = WallTaskPanel(vobj.Object)
-        taskd.obj = self.Object
         taskd.update()
         FreeCADGui.Control.showDialog(taskd)
         return True
