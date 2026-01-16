@@ -712,6 +712,7 @@ protected:
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
     ViewProviderPy* pyViewObject {nullptr};
+    bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled
