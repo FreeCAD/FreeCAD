@@ -300,9 +300,9 @@ bool ViewProviderAssembly::setEdit(int mode)
         }
 
         auto* assembly = getObject<AssemblyObject>();
-        connectSolverUpdate = assembly->signalSolverUpdate.connect(
-            boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
-        );
+        connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
+            UpdateSolverInformation();
+        });
 
         return true;
     }
@@ -502,6 +502,28 @@ bool ViewProviderAssembly::tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInv
                         * Base::Placement(Base::Vector3d(), zRotation);
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * jcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
+                }
+                else if (dragMode == DragMode::Ball) {
+                    Base::Vector3d center = jcsGlobalPlc.getPosition();
+                    // Vectors from joint center to initial click and current drag position
+                    Base::Vector3d u = initialPosition - center;
+                    Base::Vector3d v = newPos - center;
+
+                    // Ensure vectors are valid to prevent singularities
+                    if (u.Length() > Precision::Confusion() && v.Length() > Precision::Confusion()) {
+                        // Calculate rotation that moves vector u to v
+                        Base::Rotation rot;
+                        rot.setValue(u, v);
+
+                        // Apply this rotation to the global joint placement (around the joint center)
+                        Base::Placement rotatedGlobalJcsPlc = jcsGlobalPlc;
+                        rotatedGlobalJcsPlc.setRotation(rot * jcsGlobalPlc.getRotation());
+
+                        // Calculate the initial offset of the part relative to the joint
+                        // and apply the new global joint placement to find the new part placement.
+                        Base::Placement jcsPlcRelativeToPart = plc.inverse() * jcsGlobalPlc;
+                        plc = rotatedGlobalJcsPlc * jcsPlcRelativeToPart.inverse();
+                    }
                 }
                 else if (dragMode == DragMode::TranslationOnAxis) {
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
@@ -839,24 +861,27 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     auto addPartsToMove = [&](const std::vector<Assembly::ObjRef>& refs) {
         for (auto& partRef : refs) {
-            if (!partRef.obj) {
+            auto obj = partRef.obj;
+            auto ref = partRef.ref;
+            if (!obj || !ref) {
                 continue;
             }
-            auto* pPlc = dynamic_cast<App::PropertyPlacement*>(
-                partRef.obj->getPropertyByName("Placement")
-            );
-            if (pPlc) {
-                App::DocumentObject* selRoot = partRef.ref->getValue();
-                if (!selRoot) {
-                    continue;
-                }
-                std::vector<std::string> subs = partRef.ref->getSubValues();
-                if (subs.empty()) {
-                    continue;
-                }
 
-                docsToMove.emplace_back(partRef.obj, pPlc->getValue(), selRoot, subs[0]);
+            auto pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
+            if (!pPlc) {
+                continue;
             }
+
+            App::DocumentObject* selRoot = ref->getValue();
+            if (!selRoot) {
+                continue;
+            }
+            std::vector<std::string> subs = ref->getSubValues();
+            if (subs.empty()) {
+                continue;
+            }
+
+            docsToMove.emplace_back(obj, pPlc->getValue(), selRoot, subs[0]);
         }
     };
 
@@ -942,7 +967,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::TranslationOnAxisAndRotationOnePlane;
         }
         else if (jointType == JointType::Ball) {
-            // return DragMode::Ball;
+            return DragMode::Ball;
         }
         else if (jointType == JointType::Distance) {
             //  depends on the type of distance. For example plane-plane:

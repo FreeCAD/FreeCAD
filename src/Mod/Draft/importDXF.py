@@ -1984,10 +1984,16 @@ def addText(text, attrib=False):
         The DXF object of type `'text'` or `'mtext'`.
 
     attrib : bool, optional
-        It defaults to `False`. If `True` it determines
-        the layer name from the DXF code 8, the text value from code 1,
-        the position from codes 10, 20, 30, the height from code 40,
-        the rotation from code 50, and assigns the name `'Attribute'`.
+        It defaults to `False`.
+        If `True` it determines from the DXF:
+        - the text value - code 1,
+        - the text colour - code 6,
+        - the text font - code 7,
+        - the layer name - code 8,
+        - the position (X, Y, Z) - codes 10, 20, 30,
+        - the text height - from code 40,
+        - the rotation angle - from code 50,
+        and assigns the name `'Attribute'`.
         Otherwise, it assumes these values from `text`
         and sets the name to `'Text'`.
 
@@ -2640,7 +2646,11 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         for point in points:
             x = vec(rawValue(point, 10))
             y = vec(rawValue(point, 20))
-            z = vec(rawValue(point, 30))
+            # For DXF file without Z values.
+            if rawValue(point, 30):
+                z = vec(rawValue(point, 30))
+            else:
+                z = 0
             lay = rawValue(point, 8)
             if dxfImportLayouts or (not rawValue(point, 67)):
                 if dxfMakeBlocks:

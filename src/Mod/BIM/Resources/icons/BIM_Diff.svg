@@ -490,7 +490,7 @@
         </dc:creator>
         <dc:title>Arch_Building_Tree</dc:title>
         <dc:date>2011-12-06</dc:date>
-        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:relation>http://www.freecad.org/wiki/index.php?title=Artwork</dc:relation>
         <dc:publisher>
           <cc:Agent>
             <dc:title>FreeCAD</dc:title>

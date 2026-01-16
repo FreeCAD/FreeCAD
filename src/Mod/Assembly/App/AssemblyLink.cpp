@@ -323,7 +323,7 @@ void AssemblyLink::synchronizeComponents()
                             = srcLink->ElementList.getValues();
                         const std::vector<App::DocumentObject*> newElements
                             = link2->ElementList.getValues();
-                        for (int i = 0; i < srcElements.size(); ++i) {
+                        for (size_t i = 0; i < srcElements.size(); ++i) {
                             objLinkMap[srcElements[i]] = newElements[i];
                         }
                         break;
@@ -373,7 +373,7 @@ void AssemblyLink::synchronizeComponents()
                 newLink->ElementCount.setValue(srcLink->ElementCount.getValue());
                 const std::vector<App::DocumentObject*> srcElements = srcLink->ElementList.getValues();
                 const std::vector<App::DocumentObject*> newElements = newLink->ElementList.getValues();
-                for (int i = 0; i < srcElements.size(); ++i) {
+                for (size_t i = 0; i < srcElements.size(); ++i) {
                     auto* newObj = newElements[i];
                     auto* srcObj = srcElements[i];
                     if (newObj && srcObj) {

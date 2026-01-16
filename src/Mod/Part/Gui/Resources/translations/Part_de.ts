@@ -136,7 +136,7 @@
       <location filename="../../AttacherTexts.cpp" line="728"/>
       <source>Attachment is disabled. Point can be moved by editing Placement property.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Der Punkt kann duch Bearbeitung der Platzierungseigenschaften verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Punkt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="736"/>
@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="737"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation>Punkt ist auf Position der Objektplatzierung gesetzt. Dies funktioniert für Objekte mit Platzierungen oder Ellipsen/Parabeln/Hyperbeln.</translation>
+      <translation>Punkt ist auf Position der Objektpositionierung gesetzt. Dies funktioniert für Objekte mit Positionierung oder Ellipse-/Parabel-/Hyperbelkanten.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="746"/>
@@ -202,7 +202,7 @@
       <location filename="../../AttacherTexts.cpp" line="784"/>
       <source>Center of mass</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>Massenmittelpunkt</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="785"/>
@@ -271,7 +271,7 @@
       <location filename="../../AttacherTexts.cpp" line="538"/>
       <source>Attachment is disabled. Line can be moved by editing Placement property.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten von der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Zeile kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="546"/>
@@ -516,7 +516,7 @@
       <location filename="../../AttacherTexts.cpp" line="297"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>AttachmentPlane mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="306"/>
@@ -725,7 +725,7 @@
       <location filename="../../AttacherTexts.cpp" line="55"/>
       <source>Attachment is disabled. Object can be moved by editing Placement property.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Platzierungseigenschaft verschoben werden.</translation>
+      <translation>Befestigen ist deaktiviert. Objekt kann durch Bearbeiten der Placement-Eigenschaft verschoben werden.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="64"/>
@@ -749,7 +749,7 @@
       <location filename="../../AttacherTexts.cpp" line="75"/>
       <source>Placement is made equal to Placement of linked object.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation>Die Platzierung erfolgt gleich zu der Platzierung des verknüpften Objekts.</translation>
+      <translation>Die Positionierung erfolgt gleich zu der Positionierung des verknüpften Objekts.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="83"/>
@@ -1701,7 +1701,7 @@
     <message>
       <location filename="../../Command.cpp" line="1507"/>
       <source>Creates a face from the selected wires (e.g. from a sketch)</source>
-      <translation>Erstellt eine Fläche aus einem Kantenzug (z.B. aus einer Skizze)</translation>
+      <translation>Erstellt eine Fläche aus einem Kantenzug (z. B. aus einer Skizze)</translation>
     </message>
   </context>
   <context>
@@ -1714,12 +1714,12 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Convert to Solid</source>
-      <translation>In Festkörper konvertieren</translation>
+      <translation>In Festkörper umwandeln</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
       <source>Converts the selected shell or compound to a solid</source>
-      <translation>Konvertiert die ausgewählte Hülle oder Verbund in einen Festkörper</translation>
+      <translation>Wandelt die ausgewählte Hülle oder den ausgewählten Verbund in einen Festkörper um</translation>
     </message>
   </context>
   <context>
@@ -1822,12 +1822,12 @@
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Primitive</source>
-      <translation>Grundkörper</translation>
+      <translation>Grundelemente</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Creates solid geometric primitives parametrically</source>
-      <translation>Erstellt parametrische solide geometrische Grundformen</translation>
+      <translation>Erstellt parametrische solide geometrische Grundelemente</translation>
     </message>
   </context>
   <context>
@@ -1864,12 +1864,12 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="386"/>
       <source>Refine Shape</source>
-      <translation>Form verfeinern</translation>
+      <translation>Form aufbereiten</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Creates a refined copy of the selected shapes</source>
-      <translation>Erstellt eine verfeinerte Kopie der ausgewählten Formen</translation>
+      <translation>Erstellt eine aufbereitete Kopie der ausgewählten Formen</translation>
     </message>
   </context>
   <context>
@@ -2028,7 +2028,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../Command.cpp" line="1775"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1776"/>
@@ -2099,7 +2099,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation>Erstellt eine nicht-parametrische Kopie mit transformierter Platzierung der ausgewählten Formen</translation>
+      <translation>Erstellt eine nicht-parametrische Kopie mit transformierter Positionierung der ausgewählten Formen</translation>
     </message>
   </context>
   <context>
@@ -2264,7 +2264,7 @@ der Projektion.</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="423"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="1603"/>
@@ -2641,7 +2641,7 @@ in der Eigenschaft Placement zu behalten.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="110"/>
       <source>Export single object placement</source>
-      <translation>Einzelne Objektplatzierung exportieren</translation>
+      <translation>Einzelne Objektpositionierung exportieren</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="91"/>
@@ -3488,7 +3488,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
       <location filename="../../DlgPrimitives.ui" line="168"/>
       <location filename="../../DlgPrimitives.cpp" line="1875"/>
       <source>Regular polygon</source>
-      <translation>Regelmäßiges Polygon</translation>
+      <translation>Regelmäßiges Vieleck</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
@@ -3623,7 +3623,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
       <source>Growth</source>
-      <translation>Wachstum</translation>
+      <translation>Aufweitung</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
@@ -3694,7 +3694,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1810"/>
       <source>Right-handed</source>
-      <translation>Rechtsdrehened</translation>
+      <translation>Rechtsdrehend</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1815"/>
@@ -3843,7 +3843,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation>Drehen-Achse</translation>
+      <translation>Drehachse</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
@@ -4048,7 +4048,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="58"/>
       <source>Automatically refine model after applying operations</source>
-      <translation>Modell nach Anwendung von Operationen automatisch verfeinern</translation>
+      <translation>Modell nach Anwendung von Operationen automatisch aufbereiten</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="99"/>
@@ -4814,7 +4814,7 @@ nur die beschnittenen Objeke sichtbar</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="526"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
   </context>
   <context>
@@ -5470,7 +5470,7 @@ Einzelne Überprüfungen boolescher Verknüpfungen:</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="14"/>
       <source>Sweep</source>
-      <translation>Sweep</translation>
+      <translation>Austragung</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="23"/>
@@ -5574,7 +5574,7 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
       <location filename="../../AppPartGui.cpp" line="249"/>
       <location filename="../../AppPartGui.cpp" line="250"/>
       <source>Import-Export</source>
-      <translation>Import / Export</translation>
+      <translation>Import/Export</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="333"/>
@@ -5980,7 +5980,7 @@ Fortfahren?</translation>
       <translation>Befestigungs-Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation>Aussehen per Fläche</translation>
     </message>
@@ -6041,12 +6041,12 @@ Fortfahren?</translation>
       <translation>Schnittpunkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Verbund-Inhalt löschen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Der Verbund '%1' hat %2 Unterobjekte. Sollen diese ebenfalls gelöscht werden?</translation>
     </message>
@@ -6314,67 +6314,67 @@ für die Kollisions- oder Entfernungsfilterung.</translation>
       <translation>Befestigung von {} bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="450"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Ignoriert. Objekt kann nicht an sich selbst angeheftet werden!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="458"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation>{} hängt vom Objekt ab, das befestigt werden soll, es kann nicht zum Befestigen verwendet werden</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="610"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
       <translation>{} ({} hinzufügen)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="614"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
       <translation>{} (weitere Bezugselemente hinzufügen)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="650"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
       <translation>Referenz-Kombinationen:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="665"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
       <translation>Bezugselement{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="672"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
       <translation>Auswählen…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="701"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
       <translation>Fehler beim Auflösen der Verknüpfungen. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="712"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
       <translation>Nicht befestigt</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="715"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
       <translation>Angehängt mit Modus {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="725"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
       <translation>Fehler: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="731"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Befestigungsversatz (in lokalen Koordinaten):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Befestigungsversatz (Inaktiv - nicht gebunden):</translation>
     </message>
@@ -6469,7 +6469,7 @@ für die Kollisions- oder Entfernungsfilterung.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="131"/>
       <source>Center of mass</source>
-      <translation>Massenmittelpunkt</translation>
+      <translation>Schwerpunkt</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
@@ -6626,7 +6626,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="312"/>
       <source>Makes separate plane face from every wire independently. No support for holes; wires can be on different planes.</source>
-      <translation>Erzeugt unabhängig aus jedem Kantenzug separate Ebenen-Flächen. Keine Unterstützung für Löcher; Kantenzüge können auf verschiedenen Ebenen sein.</translation>
+      <translation>Erstellt für jeden Kantenzug unabhängig voneinander eine separate Ebene. Keine Unterstützung für Löcher; Kantenzüge können sich auf verschiedenen Ebenen befinden.</translation>
     </message>
   </context>
   <context>
@@ -6930,7 +6930,7 @@ oder mit den Formen innerhalb einer Verbindung durch.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="443"/>
       <source>Slice to Compound</source>
-      <translation>Schneiden zu Verbund</translation>
+      <translation>Zu Verbund schneiden</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
@@ -6943,12 +6943,12 @@ oder mit den Formen innerhalb einer Verbindung durch.
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="482"/>
       <source>Slice Apart</source>
-      <translation>Wegschneiden</translation>
+      <translation>Auseinanderschneiden</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation>Schneidet das ausgewählte Objekt anhand anderer Objekte und teilt es auf, wobei für jede Schicht ein Verbund-Filter erstellt wird</translation>
+      <translation>Schneidet das ausgewählte Objekt anhand anderer Objekte und teilt es auf, wobei für jede Schicht ein Verbundfilter erstellt wird</translation>
     </message>
   </context>
   <context>

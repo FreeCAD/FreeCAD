@@ -26,7 +26,7 @@ import numpy
 
 __title__ = "Tapping Path Generator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Generates the Tapping toolpath for a single spotshape"
 __contributors__ = "luvtofish (Dan Henderson)"
 

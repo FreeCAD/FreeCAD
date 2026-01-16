@@ -645,6 +645,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockSetDragger = False
         self.blockDraggerMove = True
         self.currentStep = None
+        self.radialExplosion = False
 
     def accept(self):
         self.deactivate()
@@ -787,7 +788,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockSetDragger = False
         self.setDragger()
 
-        self.createExplodedStepObject(1)  # 1 = type_index of "Radial"
+        self.radialExplosion = True
 
     def onAlignTo(self):
         self.alignMode = "Custom"
@@ -846,7 +847,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.viewObj = Gui.doCommandEval("viewObj")
         Gui.doCommandGui("CommandCreateView.ViewProviderExplodedView(viewObj.ViewObject)")
 
-    def createExplodedStepObject(self, moveType_index=0):
+    def createExplodedStepObject(self):
+        moveType_index = 0
+        if self.radialExplosion:
+            self.radialExplosion = False
+            moveType_index = 1  # 1 = type_index of "Radial"
+
         commands = (
             f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
             'currentStep = assembly.newObject("App::FeaturePython", "Move")\n'

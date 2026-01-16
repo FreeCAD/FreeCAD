@@ -87,7 +87,8 @@ class Adaptive2d
 public:
     Adaptive2d();
     double toolDiameter = 5;
-    double helixRampDiameter = 0;
+    double helixRampTargetDiameter = 0;
+    double helixRampMinDiameter = 0;
     double stepOverFactor = 0.2;
     double tolerance = 0.1;
     double stockToLeave = 0;
@@ -118,7 +119,8 @@ private:
     double stepOverScaled = 1;
     long toolRadiusScaled = 10;
     long finishPassOffsetScaled = 0;
-    long helixRampRadiusScaled = 0;
+    long helixRampMaxRadiusScaled = 0;
+    long helixRampMinRadiusScaled = 0;
     double referenceCutArea = 0;
     double optimalCutAreaPD = 0;
     bool stopProcessing = false;
@@ -136,7 +138,8 @@ private:
         ClearedArea& cleared /*output*/,
         IntPoint& entryPoint /*output*/,
         IntPoint& toolPos,
-        DoublePoint& toolDir
+        DoublePoint& toolDir,
+        long& helixRadiusScaled
     );
     bool FindEntryPointOutside(
         TPaths& progressPaths,

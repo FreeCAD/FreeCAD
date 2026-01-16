@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -640,13 +642,16 @@ public:
         PointPos PosId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     void getDirectlyCoincidentPoints(
         int VertexId,
         std::vector<int>& GeoIdList,
         std::vector<PointPos>& PosIdList
-    );
+    ) const;
     bool arePointsCoincident(int GeoId1, PointPos PosId1, int GeoId2, PointPos PosId2);
+
+    // Returns true if the sketch has 1 or more block constraint
+    bool hasBlockConstraint() const;
 
     /// returns a list of indices of all constraints involving given GeoId
     void getConstraintIndices(int GeoId, std::vector<int>& constraintList);
@@ -966,8 +971,8 @@ public:
     std::vector<Base::Vector3d> getOpenVertices() const;
 
     // Signaled when solver has done update
-    boost::signals2::signal<void()> signalSolverUpdate;
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalSolverUpdate;
+    fastsignals::signal<void()> signalElementsChanged;
 
     Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
 
@@ -978,6 +983,12 @@ public:  // geometry extension functionalities for single element sketch object 
     int setGeometryId(int GeoId, long id);
     int setGeometryIds(std::vector<std::pair<int, long>> GeoIdsToIds);
     int getGeometryId(int GeoId, long& id) const;
+
+    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
+    /// If `oldGeoIds` is bigger, deletes the remaining.
+    /// If `newGeos` is bigger, adds the remaining geometries at the end.
+    /// NOTE: Does NOT move any constraints
+    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
 
 protected:
     // Only the first flag is toggled, the rest of the flags is set or cleared following the first
@@ -991,12 +1002,6 @@ protected:
     /// get called by the container when a property has changed
     void onChanged(const App::Property* /*prop*/) override;
 
-    /// Replaces geometries at `oldGeoIds` with `newGeos`, lower Ids first.
-    /// If `oldGeoIds` is bigger, deletes the remaining.
-    /// If `newGeos` is bigger, adds the remaining geometries at the end.
-    /// NOTE: Does NOT move any constraints
-    void replaceGeometries(std::vector<int> oldGeoIds, std::vector<Part::Geometry*>& newGeos);
-
     /// Helper functions for `deleteUnusedInternalGeometry` by cases
     /// two foci for ellipses and arcs of ellipses and hyperbolas
     int deleteUnusedInternalGeometryWhenTwoFoci(int GeoId, bool delgeoid = false);
@@ -1004,6 +1009,14 @@ protected:
     int deleteUnusedInternalGeometryWhenOneFocus(int GeoId, bool delgeoid = false);
     /// b-splines need their own treatment
     int deleteUnusedInternalGeometryWhenBSpline(int GeoId, bool delgeoid = false);
+
+    void onGeometryChanged();
+    void onConstraintsChanged();
+    void onExternalGeoChanged();
+    void onExternalGeometryChanged();
+    void onPlacementChanged();
+    void onExpressionEngineChanged();
+    void onAttachmentSupportChanged();
 
     void onDocumentRestored() override;
     void restoreFinished() override;
@@ -1148,8 +1161,8 @@ private:
     std::vector<int> lastPartiallyRedundant;
     std::vector<int> lastMalformedConstraints;
 
-    boost::signals2::scoped_connection constraintsRenamedConn;
-    boost::signals2::scoped_connection constraintsRemovedConn;
+    fastsignals::scoped_connection constraintsRenamedConn;
+    fastsignals::scoped_connection constraintsRemovedConn;
 
     bool AutoLockTangencyAndPerpty(Constraint* cstr, bool bForce = false, bool bLock = true);
 

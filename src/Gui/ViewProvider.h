@@ -28,7 +28,7 @@
 #include <string>
 #include <vector>
 #include <QIcon>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/intrusive_ptr.hpp>
 
 #include <App/Material.h>
@@ -449,13 +449,13 @@ public:
     /** @name Signals of the view provider */
     //@{
     /// signal on icon change
-    boost::signals2::signal<void()> signalChangeIcon;
+    fastsignals::signal<void()> signalChangeIcon;
     /// signal on tooltip change
-    boost::signals2::signal<void(const QString&)> signalChangeToolTip;
+    fastsignals::signal<void(const QString&)> signalChangeToolTip;
     /// signal on status tip change
-    boost::signals2::signal<void(const QString&)> signalChangeStatusTip;
+    fastsignals::signal<void(const QString&)> signalChangeStatusTip;
     /// signal on highlight change
-    boost::signals2::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
+    fastsignals::signal<void(bool, Gui::HighlightMode)> signalChangeHighlight;
     //@}
 
     /** update the content of the ViewProvider
