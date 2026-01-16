@@ -313,6 +313,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         cmd.Align = "Center"
         cmd.Width = 200.0
         cmd.Height = 1500.0
+        cmd.MultiMat = None
 
         # Use a mock tracker to isolate logic tests from the 3D view environment
         cmd.tracker = MockTracker()
@@ -358,6 +359,7 @@ class TestArchWallGui(TestArchBaseGui.TestArchBaseGui):
         cmd.Align = "Left"
         cmd.Width = 200.0
         cmd.Height = 1500.0
+        cmd.MultiMat = None
         cmd.tracker = MockTracker()
         cmd.existing = []
 

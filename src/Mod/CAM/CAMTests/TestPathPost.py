@@ -30,6 +30,7 @@ import Path
 import Path.Post.Command as PathCommand
 import Path.Post.Processor as PathPost
 import Path.Post.Utils as PostUtils
+import Path.Post.UtilsExport as PostUtilsExport
 import Path.Main.Job as PathJob
 import Path.Tool.Controller as PathToolController
 import difflib
@@ -503,6 +504,232 @@ class TestPathPostUtils(unittest.TestCase):
         # self.assertTrue(len(results.Commands) == 117)
         self.assertTrue(len([c for c in results.Commands if c.Name in ["G2", "G3"]]) == 0)
 
+    def test020(self):
+        """Test Termination of Canned Cycles"""
+        # Test basic cycle termination when parameters change
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -1.0, "R": 0.2, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                Path.Command("G0", {"Z": 1.0}),
+                cmd1,
+                cmd2,  # Different Z depth
+                Path.Command("G1", {"X": 3.0, "Y": 3.0}),
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G0", {"Z": 1.0}),
+                Path.Command("G98"),  # Retract mode for first cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to parameter change
+                Path.Command("G98"),  # Retract mode for second cycle
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -1.0, "R": 0.2, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+                Path.Command("G1", {"X": 3.0, "Y": 3.0}),
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test030_canned_cycle_termination_with_non_cycle_commands(self):
+        """Test cycle termination when non-cycle commands are encountered"""
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G82", {"X": 3.0, "Y": 3.0, "Z": -1.0, "R": 0.2, "P": 1.0, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                cmd1,
+                Path.Command("G0", {"X": 2.0, "Y": 2.0}),  # Non-cycle command
+                cmd2,
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G98"),  # Retract mode for first cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate before non-cycle command
+                Path.Command("G0", {"X": 2.0, "Y": 2.0}),
+                Path.Command("G98"),  # Retract mode for second cycle
+                Path.Command("G82", {"X": 3.0, "Y": 3.0, "Z": -1.0, "R": 0.2, "P": 1.0, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test040_canned_cycle_modal_same_parameters(self):
+        """Test modal cycles with same parameters don't get terminated"""
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+        cmd3 = Path.Command("G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd3.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                cmd1,
+                cmd2,  # Modal - same parameters
+                cmd3,  # Modal - same parameters
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G98"),  # Retract mode at start of cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command(
+                    "G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # No termination - same params
+                Path.Command(
+                    "G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0}
+                ),  # No termination - same params
+                Path.Command("G80"),  # Final termination
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test050_canned_cycle_feed_rate_change(self):
+        """Test cycle termination when feed rate changes"""
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 20.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                cmd1,
+                cmd2,  # Different feed rate
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G98"),  # Retract mode for first cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to feed rate change
+                Path.Command("G98"),  # Retract mode for second cycle
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 20.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test060_canned_cycle_retract_plane_change(self):
+        """Test cycle termination when retract plane changes"""
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.2, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                cmd1,
+                cmd2,  # Different R plane
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G98"),  # Retract mode for first cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to R plane change
+                Path.Command("G98"),  # Retract mode for second cycle
+                Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.2, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test070_canned_cycle_mixed_cycle_types(self):
+        """Test termination between different cycle types"""
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+        cmd2 = Path.Command("G82", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "P": 1.0, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        test_path = Path.Path(
+            [
+                cmd1,
+                cmd2,  # Different cycle type
+            ]
+        )
+
+        expected_path = Path.Path(
+            [
+                Path.Command("G98"),  # Retract mode for first cycle
+                Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0}),
+                Path.Command("G80"),  # Terminate due to different cycle type (different parameters)
+                Path.Command("G98"),  # Retract mode for second cycle
+                Path.Command("G82", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "P": 1.0, "F": 10.0}),
+                Path.Command("G80"),  # Final termination
+            ]
+        )
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+        self.assertEqual(len(result.Commands), len(expected_path.Commands))
+        for i, (res, exp) in enumerate(zip(result.Commands, expected_path.Commands)):
+            self.assertEqual(res.Name, exp.Name, f"Command {i}: name mismatch")
+            self.assertEqual(res.Parameters, exp.Parameters, f"Command {i}: parameters mismatch")
+
+    def test080_canned_cycle_retract_mode_change(self):
+        """Test cycle termination and retract mode insertion when RetractMode annotation changes"""
+        # Create commands with RetractMode annotations
+        cmd1 = Path.Command("G81", {"X": 1.0, "Y": 1.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd1.Annotations = {"RetractMode": "G98"}
+
+        cmd2 = Path.Command("G81", {"X": 2.0, "Y": 2.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd2.Annotations = {"RetractMode": "G98"}
+
+        cmd3 = Path.Command("G81", {"X": 3.0, "Y": 3.0, "Z": -0.5, "R": 0.1, "F": 10.0})
+        cmd3.Annotations = {"RetractMode": "G99"}  # Mode change
+
+        test_path = Path.Path([cmd1, cmd2, cmd3])
+
+        result = PostUtils.cannedCycleTerminator(test_path)
+
+        # Expected: G98, G81, G81 (modal), G80 (terminate), G99, G81, G80 (final)
+        self.assertEqual(result.Commands[0].Name, "G98")
+        self.assertEqual(result.Commands[1].Name, "G81")
+        self.assertEqual(result.Commands[2].Name, "G81")
+        self.assertEqual(result.Commands[3].Name, "G80")  # Terminate due to mode change
+        self.assertEqual(result.Commands[4].Name, "G99")  # New retract mode
+        self.assertEqual(result.Commands[5].Name, "G81")
+        self.assertEqual(result.Commands[6].Name, "G80")  # Final termination
+        self.assertEqual(len(result.Commands), 7)
+
 
 class TestBuildPostList(unittest.TestCase):
     """
@@ -522,6 +749,110 @@ class TestBuildPostList(unittest.TestCase):
     the list of objects is all postable elements to be written to that file
 
     """
+
+    # Set to True to enable verbose debug output for test validation
+    debug = False
+
+    @classmethod
+    def _format_postables(cls, postables, title="Postables"):
+        """Format postables for readable debug output, following dumper_post.py pattern."""
+        output = []
+        output.append("=" * 80)
+        output.append(title)
+        output.append("=" * 80)
+        output.append("")
+
+        for idx, postable in enumerate(postables, 1):
+            group_key = postable[0]
+            objects = postable[1]
+
+            # Format the group key display
+            if group_key == "":
+                display_key = "(empty string)"
+            elif group_key == "allitems":
+                display_key = '"allitems" (combined output)'
+            else:
+                display_key = f'"{group_key}"'
+
+            output.append(f"[{idx}] Group: {display_key}")
+            output.append(f"    Objects: {len(objects)}")
+            output.append("")
+
+            for obj_idx, obj in enumerate(objects, 1):
+                obj_label = getattr(obj, "Label", str(type(obj).__name__))
+                output.append(f"    [{obj_idx}] {obj_label}")
+
+                # Determine object type/role
+                obj_type = type(obj).__name__
+                if obj_type == "_FixtureSetupObject":
+                    output.append(f"        Type: Fixture Setup")
+                    if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
+                        fixture_cmd = obj.Path.Commands[0]
+                        output.append(f"        Fixture: {fixture_cmd.Name}")
+                elif obj_type == "_CommandObject":
+                    output.append(f"        Type: Command Object")
+                    if hasattr(obj, "Path") and obj.Path and len(obj.Path.Commands) > 0:
+                        cmd = obj.Path.Commands[0]
+                        params = " ".join(
+                            f"{k}:{v}"
+                            for k, v in zip(
+                                cmd.Parameters.keys() if hasattr(cmd.Parameters, "keys") else [],
+                                (
+                                    cmd.Parameters.values()
+                                    if hasattr(cmd.Parameters, "values")
+                                    else cmd.Parameters
+                                ),
+                            )
+                        )
+                        output.append(f"        Command: {cmd.Name} {params}")
+                elif hasattr(obj, "TypeId"):
+                    # Check if it's a tool controller
+                    if hasattr(obj, "Proxy") and hasattr(obj.Proxy, "__class__"):
+                        proxy_name = obj.Proxy.__class__.__name__
+                        if "ToolController" in proxy_name:
+                            output.append(f"        Type: Tool Controller")
+                            if hasattr(obj, "ToolNumber"):
+                                output.append(f"        Tool Number: {obj.ToolNumber}")
+                            if hasattr(obj, "Path") and obj.Path and obj.Path.Commands:
+                                for cmd in obj.Path.Commands:
+                                    if cmd.Name == "M6":
+                                        params = " ".join(
+                                            f"{k}:{v}"
+                                            for k, v in zip(
+                                                (
+                                                    cmd.Parameters.keys()
+                                                    if hasattr(cmd.Parameters, "keys")
+                                                    else []
+                                                ),
+                                                (
+                                                    cmd.Parameters.values()
+                                                    if hasattr(cmd.Parameters, "values")
+                                                    else cmd.Parameters
+                                                ),
+                                            )
+                                        )
+                                        output.append(f"        M6 Command: {cmd.Name} {params}")
+                        else:
+                            output.append(f"        Type: Operation")
+                            if hasattr(obj, "ToolController") and obj.ToolController:
+                                tc = obj.ToolController
+                                output.append(
+                                    f"        ToolController: {tc.Label} (T{tc.ToolNumber})"
+                                )
+                    else:
+                        output.append(f"        Type: {obj.TypeId}")
+                else:
+                    output.append(f"        Type: {obj_type}")
+
+            output.append("")
+
+        output.append("=" * 80)
+        output.append(f"Total Groups: {len(postables)}")
+        total_objects = sum(len(p[1]) for p in postables)
+        output.append(f"Total Objects: {total_objects}")
+        output.append("=" * 80)
+
+        return "\n".join(output)
 
     @classmethod
     def setUpClass(cls):
@@ -559,6 +890,10 @@ class TestBuildPostList(unittest.TestCase):
         tc2.ToolNumber = 2
         tc2.Label = 'TC: 7/16" two flute'  # Same label as first tool controller
         cls.job.Proxy.addToolController(tc2)
+
+        # Recompute tool controllers to populate their Path.Commands with M6 commands
+        cls.job.Tools.Group[0].recompute()
+        cls.job.Tools.Group[1].recompute()
 
         # Create mock operations to match original file structure
         # Original had 3 operations: outsideprofile, DrillAllHoles, Comment
@@ -638,8 +973,8 @@ class TestBuildPostList(unittest.TestCase):
         postlist = self.pp._buildPostList()
         firstoutputitem = postlist[0]
         firstoplist = firstoutputitem[1]
-        print(f"DEBUG test030: postlist length={len(firstoplist)}, expected=14")
-        print(f"DEBUG test030: firstoplist={[str(item) for item in firstoplist]}")
+        if self.debug:
+            print(self._format_postables(postlist, "test030: No splitting, order by Operation"))
         self.assertEqual(len(firstoplist), 14)
 
     def test040(self):
@@ -652,13 +987,12 @@ class TestBuildPostList(unittest.TestCase):
         postlist = self.pp._buildPostList()
 
         firstoutputitem = postlist[0]
-        print(f"DEBUG test040: firstoutputitem[0]={firstoutputitem[0]}, expected='5'")
-        print(f"DEBUG test040: tool numbers={[tc.ToolNumber for tc in self.job.Tools.Group]}")
+        if self.debug:
+            print(self._format_postables(postlist, "test040: Split by tool, order by Tool"))
         self.assertTrue(firstoutputitem[0] == str(5))
 
         # check length of output
         firstoplist = firstoutputitem[1]
-        print(f"DEBUG test040: postlist length={len(firstoplist)}, expected=5")
         self.assertEqual(len(firstoplist), 5)
 
     def test050(self):
@@ -684,3 +1018,142 @@ class TestBuildPostList(unittest.TestCase):
         firstoplist = firstoutputitem[1]
         self.assertEqual(len(firstoplist), 6)
         self.assertTrue(firstoutputitem[0] == "G54")
+
+    def test070(self):
+        self.job.SplitOutput = True
+        self.job.PostProcessorOutputFile = "%T.nc"
+        self.job.OrderOutputBy = "Tool"
+        postables = self.pp._buildPostList(early_tool_prep=True)
+        _, sublist = postables[0]
+
+        if self.debug:
+            print(self._format_postables(postables, "test070: Early tool prep, split by tool"))
+
+        # Extract all commands from the postables
+        commands = []
+        if self.debug:
+            print("\n=== Extracting commands from postables ===")
+        for item in sublist:
+            if self.debug:
+                item_type = type(item).__name__
+                has_path = hasattr(item, "Path")
+                path_exists = item.Path if has_path else None
+                has_commands = path_exists and item.Path.Commands if path_exists else False
+                print(
+                    f"Item: {getattr(item, 'Label', item_type)}, Type: {item_type}, HasPath: {has_path}, PathExists: {path_exists is not None}, HasCommands: {bool(has_commands)}"
+                )
+                if has_commands:
+                    print(f"  Commands: {[cmd.Name for cmd in item.Path.Commands]}")
+            if hasattr(item, "Path") and item.Path and item.Path.Commands:
+                commands.extend(item.Path.Commands)
+
+        if self.debug:
+            print(f"\nTotal commands extracted: {len(commands)}")
+            print("=" * 40)
+
+        # Should have M6 command with tool parameter
+        m6_commands = [cmd for cmd in commands if cmd.Name == "M6"]
+        self.assertTrue(len(m6_commands) > 0, "Should have M6 command")
+
+        # First M6 should have T parameter for tool 5
+        first_m6 = m6_commands[0]
+        self.assertTrue("T" in first_m6.Parameters, "First M6 should have T parameter")
+        self.assertEqual(first_m6.Parameters["T"], 5.0, "First M6 should be for tool 5")
+
+        # Should have T2 prep command (early prep for next tool)
+        t2_commands = [cmd for cmd in commands if cmd.Name == "T2"]
+        self.assertTrue(len(t2_commands) > 0, "Should have T2 early prep command")
+
+        # T2 prep should come after first M6
+        first_m6_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "M6"), None)
+        t2_index = next((i for i, cmd in enumerate(commands) if cmd.Name == "T2"), None)
+        self.assertIsNotNone(first_m6_index, "M6 should exist")
+        self.assertIsNotNone(t2_index, "T2 should exist")
+        self.assertLess(first_m6_index, t2_index, "M6 should come before T2 prep")
+
+    def test080(self):
+        self.job.SplitOutput = False
+        self.job.OrderOutputBy = "Tool"
+
+        postables = self.pp._buildPostList(early_tool_prep=True)
+        _, sublist = postables[0]
+
+        if self.debug:
+            print(self._format_postables(postables, "test080: Early tool prep, combined output"))
+
+        # Extract all commands from the postables
+        commands = []
+        if self.debug:
+            print("\n=== Extracting commands from postables ===")
+        for item in sublist:
+            if self.debug:
+                item_type = type(item).__name__
+                has_path = hasattr(item, "Path")
+                path_exists = item.Path if has_path else None
+                has_commands = path_exists and item.Path.Commands if path_exists else False
+                print(
+                    f"Item: {getattr(item, 'Label', item_type)}, Type: {item_type}, HasPath: {has_path}, PathExists: {path_exists is not None}, HasCommands: {bool(has_commands)}"
+                )
+                if has_commands:
+                    print(f"  Commands: {[cmd.Name for cmd in item.Path.Commands]}")
+            if hasattr(item, "Path") and item.Path and item.Path.Commands:
+                commands.extend(item.Path.Commands)
+
+        if self.debug:
+            print(f"\nTotal commands extracted: {len(commands)}")
+
+        # Expected command sequence with early_tool_prep=True:
+        # M6 T5     <- change to tool 5 (standard format)
+        # T2        <- prep next tool immediately (early prep)
+        # (ops with T5...)
+        # M6 T2     <- change to tool 2 (was prepped early)
+        # (ops with T2...)
+
+        if self.debug:
+            print("\n=== Command Sequence ===")
+            for i, cmd in enumerate(commands):
+                params = " ".join(
+                    f"{k}:{v}"
+                    for k, v in zip(
+                        cmd.Parameters.keys() if hasattr(cmd.Parameters, "keys") else [],
+                        (
+                            cmd.Parameters.values()
+                            if hasattr(cmd.Parameters, "values")
+                            else cmd.Parameters
+                        ),
+                    )
+                )
+                print(f"{i:3d}: {cmd.Name} {params}")
+            print("=" * 40)
+
+        # Find M6 and T2 commands
+        m6_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "M6"]
+        t2_commands = [(i, cmd) for i, cmd in enumerate(commands) if cmd.Name == "T2"]
+
+        self.assertTrue(len(m6_commands) >= 2, "Should have at least 2 M6 commands")
+        self.assertTrue(len(t2_commands) >= 1, "Should have at least 1 T2 early prep command")
+
+        first_m6_idx, first_m6_cmd = m6_commands[0]
+        second_m6_idx, second_m6_cmd = m6_commands[1] if len(m6_commands) >= 2 else (None, None)
+        first_t2_idx = t2_commands[0][0]
+
+        # First M6 should have T parameter for tool 5
+        self.assertTrue("T" in first_m6_cmd.Parameters, "First M6 should have T parameter")
+        self.assertEqual(first_m6_cmd.Parameters["T"], 5.0, "First M6 should be for tool 5")
+
+        # Second M6 should have T parameter for tool 2
+        if second_m6_cmd is not None:
+            self.assertTrue("T" in second_m6_cmd.Parameters, "Second M6 should have T parameter")
+            self.assertEqual(second_m6_cmd.Parameters["T"], 2.0, "Second M6 should be for tool 2")
+
+        # T2 (early prep) should come shortly after first M6 (within a few commands)
+        self.assertLess(first_m6_idx, first_t2_idx, "T2 prep should come after first M6")
+        self.assertLess(
+            first_t2_idx - first_m6_idx, 5, "T2 prep should be within a few commands of first M6"
+        )
+
+        # T2 early prep should come before second M6
+        if second_m6_idx is not None:
+            self.assertLess(
+                first_t2_idx, second_m6_idx, "T2 early prep should come before second M6"
+            )
