@@ -2232,6 +2232,13 @@ def debaseWall(wall):
 
     doc = wall.Document
 
+    # Check if we are already inside a transaction. We need to check two flags:
+    # 1. doc.HasPendingTransaction: Returns True if a transaction is open AND data has been modified.
+    #    This handles cases where debaseWall is called from a script/macro that has already made changes.
+    # 2. wall.Proxy.InTransaction: A custom flag set by BIM/Arch UI Task Panels.
+    #    The native openTransaction() is lazy; it only creates a transaction object when data changes.
+    #    Task Panels set this flag immediately to signal an active editing session even if no data
+    #    has changed yet, preventing debaseWall from committing prematurely and breaking the Cancel button.
     is_in_transaction = doc.HasPendingTransaction
     if hasattr(wall, "Proxy") and getattr(wall.Proxy, "InTransaction", False):
         is_in_transaction = True
