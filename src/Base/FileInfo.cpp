@@ -470,17 +470,28 @@ bool FileInfo::deleteFile() const
 
 bool FileInfo::renameFile(const char* NewName)
 {
+    bool ok = true;
     try {
         fs::path old_path = stringToPath(FileName);
         fs::path new_path = stringToPath(NewName);
         fs::rename(old_path, new_path);
         FileName = NewName;
-        return true;
     }
     catch (const fs::filesystem_error& e) {
-        std::clog << "Error in renameFile: " << e.what() << '\n';
-        return false;
+        // If moving the file to a different filesystem:
+        if(e.code() == std::errc::cross_device_link)
+        {
+            ok = copyTo(NewName);
+            if(ok)
+                ok = deleteFile();
+        }
+        else
+        {
+            std::clog << "Error in renameFile: " << e.what() << '\n';
+            ok = false;
+        }
     }
+    return ok;
 }
 
 bool FileInfo::copyTo(const char* NewName) const
