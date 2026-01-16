@@ -26,6 +26,7 @@ SET(Arch_SRCS
     ArchSite.py
     ArchStructure.py
     ArchCommands.py
+    ArchCovering.py
     ArchSectionPlane.py
     ArchWindow.py
     ArchWindowPresets.py
@@ -122,6 +123,7 @@ SET(bimcommands_SRCS
     bimcommands/BimCompound.py
     bimcommands/BimConvert.py
     bimcommands/BimCopy.py
+    bimcommands/BimCovering.py
     bimcommands/BimCurtainwall.py
     bimcommands/BimCutPlane.py
     bimcommands/BimCut.py
