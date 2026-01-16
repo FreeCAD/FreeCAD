@@ -479,14 +479,13 @@ bool FileInfo::renameFile(const char* NewName)
     }
     catch (const fs::filesystem_error& e) {
         // If moving the file to a different filesystem:
-        if(e.code() == std::errc::cross_device_link)
-        {
+        if (e.code() == std::errc::cross_device_link) {
             ok = copyTo(NewName);
-            if(ok)
+            if (ok) {
                 ok = deleteFile();
+            }
         }
-        else
-        {
+        else {
             std::clog << "Error in renameFile: " << e.what() << '\n';
             ok = false;
         }
