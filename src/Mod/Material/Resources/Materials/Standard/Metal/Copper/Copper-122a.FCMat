@@ -14,7 +14,8 @@ General:
     - "Phosphorus"
   Description: >
     Copper-122, Phosphorus Deoxidized (DHP), High Residual Phosphorus, Annealed.
-    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%. IACS=85%.
+    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%
+    Ag,Bi,Sb,Mn,As,Ni=(trace). IACS=85%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -33,13 +34,14 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
-    Elongation: "45"
-    ReductionOfArea: "76"
     ShearModulus: "44.5 GPa"
     UltimateStrain: "39.7"
     UltimateTensileStrength: "216 MPa"
     YieldStrain: "0.32"
     YieldStrength: "46.2 MPa"
+    Elongation: "45"
+    FractureStrength: "155 MPa"
+    ReductionOfArea: "76"
     YoungsModulus: "104 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -66,6 +68,14 @@ Models:
          ["76 K",  "", "", "49.6 GPa", "112 GPa"],
          ["20 K",  "", "", "51.3 GPa", "112 GPa"],
          ["4 K",   "", "", "",         "113 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "39.7", "216 MPa", "0.32", "46.2 MPa", "45.0", "155 MPa", "76.0"],
+         ["195 K", "45.2", "264 MPa", "0.22", "45.5 MPa", "56.0", "146 MPa", "87.0"],
+         ["76 K",  "50.8", "349 MPa", "0.22", "51 MPa",   "62.0", "153 MPa", "84.0"],
+         ["20 K",  "56.2", "440 MPa", "0.43", "58 MPa",   "68.0", "266 MPa", "83.0"],
+         ["4 K",   "57",   "416 MPa", "0.43", "54 MPa",   "65.0", "306 MPa", "81.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:

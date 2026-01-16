@@ -12,10 +12,12 @@ General:
     - "Brasses"
     - "Annealed"
     - "Admiralty Arsenical"
+    - "Admiralty Brass"
     - "CuZn28Sn1"
+    - "CuZn28Sn1As"
   Description: >
     Copper-443, CuZn28Sn1, Admiralty Arsenical, Annealed 575°C 1hr.
-    Cu≥70% Zn=27.56% Sn=0.97% Pb=0.04% Fe=0.03% As=0.041%. IACS=25%.
+    Cu≥70% Zn=27.56% Sn=0.97% As=0.041% Pb=0.04% Fe=0.03%. IACS=25%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -34,13 +36,14 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8530 kg/m^3"
-    Elongation: "86"
-    ReductionOfArea: "81"
     ShearModulus: "41.0 GPa"
     UltimateStrain: "82"
     UltimateTensileStrength: "309 MPa"
     YieldStrain: "0.87"
     YieldStrength: "73.1 MPa"
+    Elongation: "86"
+    FractureStrength: "214 MPa"
+    ReductionOfArea: "81"
     YoungsModulus: "101 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -67,6 +70,14 @@ Models:
          ["76 K",  "", "", "44.7 GPa", "107 GPa"],
          ["20 K",  "", "", "45.2 GPa", "110 GPa"],
          ["4 K",   "", "", "",         "112 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "82",   "309 MPa", "0.87", "73.1 MPa", "86.0", "214 MPa", "81.0"],
+         ["195 K", "86",   "342 MPa", "0.54", "86.9 MPa", "91.0", "237 MPa", "79.0"],
+         ["76 K",  "89",   "445 MPa", "0.76", "129 MPa",  "98.0", "404 MPa", "73.0"],
+         ["20 K",  "92.6", "530 MPa", "1.2",  "143 MPa",  "99.0", "505 MPa", "68.0"],
+         ["4 K",   "84.7", "542 MPa", "0.65", "145 MPa",  "92.0", "521 MPa", "72.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:

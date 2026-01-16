@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 Model:
-  Name: 'LinearElasticArrays'
+  Name: 'Linear Elastic Arrays'
   UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
   URL: ''
   Description: "Temperature arrays for Metal Linear Properties"
@@ -72,6 +72,14 @@ Model:
           Measure of ductility and formability. Increase in length a material
           undergoes when stretched to its breaking point during a tensile test.
           ΔL/L as percent value [unitless].
+      FractureStrength:
+        DisplayName: "Fracture Strength"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: >
+          Actual fracture stress point where the final break occurs. This is often
+          lower than the UTS in the stress-strain curve [FreeCAD Pressure unit].
       ReductionOfArea:
         DisplayName: "Reduction Of Area (RA)"
         Type: 'Float'

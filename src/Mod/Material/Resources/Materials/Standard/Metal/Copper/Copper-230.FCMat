@@ -15,7 +15,7 @@ General:
     - "Cu85Zn15"
   Description: >
     Copper-230, Red Brass 85%, CuZn15, Annealed 573°C 3hr.
-    Cu=90% Zn=10% Pb=0.005% Fe=0.01%. IACS=37%.
+    Cu≥84.6% Zn=15.33% Fe=0.02%, Ag,Mg=(trace). IACS=37%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -34,13 +34,14 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8750 kg/m^3"
-    Elongation: "48"
-    ReductionOfArea: "74"
     ShearModulus: "45.2 GPa"
     UltimateStrain: "40.4"
     UltimateTensileStrength: "279 MPa"
     YieldStrain: "0.43"
     YieldStrength: "89.6 MPa"
+    Elongation: "48"
+    FractureStrength: "211 MPa"
+    ReductionOfArea: "74"
     YoungsModulus: "103 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -67,6 +68,14 @@ Models:
          ["76 K",  "", "", "48.7 GPa", "121 GPa"],
          ["20 K",  "", "", "49.6 GPa", "125 GPa"],
          ["4 K",   "", "", "",         "125 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "40.4", "279 MPa", "0.43", "89.6 MPa", "48.0", "211 MPa", "74.0"],
+         ["195 K", "58.7", "321 MPa", "0.43", "97 MPa",   "63.0", "234 MPa", "79.0"],
+         ["76 K",  "77.9", "427 MPa", "0.86", "113 MPa",  "83.0", "315 MPa", "77.0"],
+         ["20 K",  "76",   "546 MPa", "0.75", "144 MPa",  "80.0", "428 MPa", "75.0"],
+         ["4 K",   "78.6", "490 MPa", "0.97", "126 MPa",  "82.0", "447 MPa", "71.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:

@@ -15,7 +15,7 @@ General:
     - "CuSn5"
   Description: >
     Copper-510, CuSn5, Phosphor Bronze 5%, Spring cold drawn 85%.
-    Cu≥60% Sn=4.85% Pb=0.02% Fe=0.02% Zn=0.05% P=0.18%. IACS=15%.
+    Cu≥90% Sn=4.85% Pb=0.02% Fe=0.02% Zn=0.05% P=0.18%. IACS=15%.
     Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
     with permission and credit to the 'Copper Development Association' (CDA).
     For your own production accuracy, please use values provided by the
@@ -34,12 +34,13 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8860 kg/m^3"
-    Elongation: "18"
-    ReductionOfArea: "78"
     UltimateStrain: "3.6"
     UltimateTensileStrength: "534 MPa"
     YieldStrain: "0.86"
     YieldStrength: "496 MPa"
+    Elongation: "18"
+    FractureStrength: "296 MPa"
+    ReductionOfArea: "78"
     YoungsModulus: "108 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -66,6 +67,14 @@ Models:
          ["76 K",  "", "", "", "115 GPa"],
          ["20 K",  "", "", "", "114 GPa"],
          ["4 K",   "", "", "", "113 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "3.6",  "534 MPa", "0.86", "496 MPa",   "18.0", "296 MPa", "78.0"],
+         ["195 K", "3.2",  "590 MPa", "0.92", "542 MPa",   "20.0", "427 MPa", "78.0"],
+         ["76 K",  "24.9", "725 MPa", "1.1",  "615 MPa",   "34.0", "533 MPa", "67.0"],
+         ["20 K",  "30.6", "903 MPa", "0.78", "722.6 MPa", "39.0", "847 MPa", "62.0"],
+         ["4 K",   "29.7", "803 MPa", "0.91", "692.2 MPa", "34.0", "753 MPa", "58.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:

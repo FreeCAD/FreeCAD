@@ -59,6 +59,14 @@ Model:
       Measure of ductility and formability. Increase in length a material
       undergoes when stretched to its breaking point during a tensile test.
       ΔL/L as percent value [unitless].
+  FractureStrength:
+    DisplayName: "Fracture Strength"
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: ''
+    Description: >
+      Actual fracture stress point where the final break occurs. This is often
+      lower than the UTS in the stress-strain curve [FreeCAD Pressure unit].
   FractureToughness:
     DisplayName: "Fracture Toughness"
     Type: 'Float'

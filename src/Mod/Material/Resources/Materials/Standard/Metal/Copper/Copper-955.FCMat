@@ -35,13 +35,14 @@ Models:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     CompressiveStrength: "414 MPa"
     Density: "7530 kg/m^3"
-    Elongation: "11"
     PoissonRatio: "0.32"
-    ReductionOfArea: "9"
     UltimateStrain: "10.6"
     UltimateTensileStrength: "697.7 MPa"
     YieldStrain: "0.31"
     YieldStrength: "303 MPa"
+    Elongation: "11"
+    FractureStrength: "704 MPa"
+    ReductionOfArea: "9"
     YoungsModulus: "116 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -69,6 +70,14 @@ Models:
          ["76 K",  "", "",     "", "128 GPa"],
          ["20 K",  "", "",     "", "128 GPa"],
          ["4 K",   "", "",     "", "128 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "10.6", "697.7 MPa", "0.31", "303 MPa", "11.0", "704 MPa", "9.0"],
+         ["195 K", "8.47", "721 MPa",   "0.35", "330 MPa", "9.0",  "709 MPa", "9.0"],
+         ["76 K",  "6.06", "807 MPa",   "0.38", "379 MPa", "6.0",  "804 MPa", "7.0"],
+         ["20 K",  "5.74", "873 MPa",   "0.44", "425 MPa", "6.0",  "863 MPa", "2.0"],
+         ["4 K",   "6.08", "900 MPa",   "0.42", "414 MPa", "6.0",  "888 MPa", "5.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:

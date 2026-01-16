@@ -10,6 +10,7 @@ General:
   Tags:
     - "C70600"
     - "Annealed"
+    - "Copper nickel"
     - "Cupro nickel"
   Description: >
     Copper-706, 90-10, Cu90Ni10, Copper Nickel 10%, Annealed 677°C 40min.
@@ -32,12 +33,13 @@ Models:
   LinearElastic:
     UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
     Density: "8940 kg/m^3"
-    Elongation: "37"
-    ReductionOfArea: "79"
     UltimateStrain: "28.4"
     UltimateTensileStrength: "342 MPa"
     YieldStrain: "1.1"
     YieldStrength: "148 MPa"
+    Elongation: "37"
+    FractureStrength: "211 MPa"
+    ReductionOfArea: "79"
     YoungsModulus: "122 GPa"
   Thermal:
     UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
@@ -64,6 +66,14 @@ Models:
          ["76 K",  "", "", "", "134 GPa"],
          ["20 K",  "", "", "", ""],
          ["4 K",   "", "", "", "141 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "28.4", "342 MPa", "1.1",  "148 MPa", "37.0", "211 MPa", "79.0"],
+         ["195 K", "33",   "377 MPa", "1.35", "170 MPa", "42.0", "228 MPa", "77.0"],
+         ["76 K",  "38.5", "496 MPa", "0.71", "171 MPa", "50.0", "367 MPa", "77.0"],
+         ["20 K",  "41.5", "569 MPa", "1.1",  "208 MPa", "50.0", "500 MPa", "73.0"],
+         ["4 K",   "47",   "556 MPa", "0.77", "172 MPa", "53.0", "471 MPa", "73.0"]]
   ToughnessArrays:
     UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
     PlasticTriaxialProperties:
