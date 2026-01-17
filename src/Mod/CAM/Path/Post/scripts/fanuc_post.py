@@ -1,5 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
+"""
+
+CAM post processor for CNC machines with a Fanuc controller.
+
+"""
+
 # ***************************************************************************
 # *   Copyright (c) 2014 sliptonic <shopinthewoods@gmail.com>               *
 # *   Copyright (c) 2021 shadowbane1000 <tyler@colberts.us>                 *
@@ -33,7 +39,7 @@ import shlex
 import os.path
 import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
-import PathScripts.PathUtils as PathUtils
+from PathScripts import PathUtils
 from builtins import open as pyopen
 
 TOOLTIP = """
@@ -79,7 +85,8 @@ parser.add_argument(
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="'
+    help="set commands to be issued after the last command, "
+    + 'default="'
     + DEFAULT_POSTAMBLE.replace("\n", "\\n")
     + '"',
 )
@@ -150,8 +157,17 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """G28 G91 Z0
 """
 
+# The settings shared between methods
+PREAMBLE = None
+POSTAMBLE = None
+
 
 def processArguments(argstring):
+    """
+    Apply default values and command line arguments before
+    processing commands.
+
+    """
     global OUTPUT_HEADER
     global OUTPUT_COMMENTS
     global OUTPUT_LINE_NUMBERS
