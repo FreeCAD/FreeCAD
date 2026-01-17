@@ -1251,6 +1251,7 @@ void DrawViewSection::setupObject()
 
 void DrawViewSection::Restore(Base::XMLReader &reader)
 {
+    m_sawIgnoreSectionLineFudgeFactor = false;
     m_sawSectionLineStretch = false;
 
     DrawViewPart::Restore(reader);
