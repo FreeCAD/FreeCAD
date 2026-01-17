@@ -159,7 +159,6 @@ GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)
         // Prevent from extracting children of nested groups fixed issue:#26743
         // As groups manage their own local coordinate systems and children.
         if (object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
-
             if (!hasObject(object)) {
                 grp.push_back(object);
                 ret.push_back(object);
