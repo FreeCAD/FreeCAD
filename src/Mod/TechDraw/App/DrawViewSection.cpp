@@ -241,10 +241,26 @@ DrawViewSection::DrawViewSection()
                       "Rotation of hatch pattern in degrees anti-clockwise");
     ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), fgroup, App::Prop_None, "Hatch pattern offset");
 
+    // Default value was 1.0 before IgnoreSectionLineFudgeFactor was added
     ADD_PROPERTY_TYPE(SectionLineStretch, (1.5), agroup, App::Prop_None,
                       "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
     SectionLineStretch.setConstraints(&stretchRange);
 
+    // In QGIViewPart::drawSectionLine a fudge factor was previously unconditionally
+    // applied to the length of section lines. When SectionLineStretch was
+    // initially added, this fudge factor was still applied. Now we do not apply
+    // the fudge factor by default.
+    //
+    // But we need a way to keep the legacy behavior for section lines that were created
+    // before SectionLineStretch was added, or section lines that were created
+    // after SectionLineStretch was added but before we started ignoring the fudge factor
+    // (because the effective SectionLineStretch with the fudge factor is longer than
+    // the default setting).
+    //
+    // This hidden property is 'true' by default for all newly created section views,
+    // but when Restore'ing saved properties we will check whether the property was
+    // seen. If not (i.e. it is a section view created before the change) we set this
+    // property to 'false' so the legacy behavior will be used
     ADD_PROPERTY_TYPE(IgnoreSectionLineFudgeFactor,
                       (true),
                       agroup,
