@@ -1811,7 +1811,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return output
 
-
     # Experimental waterline functions
     def experimentalWaterlineOp(self, JOB, obj, mdlIdx, subShp=None):
         """_waterlineOp(JOB, obj, mdlIdx, subShp=None) ...
@@ -1911,7 +1910,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                     clearArea = area.cut(trimFace)
                     # Check if the resulting shape is valid and has actual geometry
                     if not clearArea or clearArea.BoundBox.DiagonalLength < 1e-6:
-                        Path.Log.debug("Depth {}: Clear area vanished (below pocket). skipping.".format(csHght))
+                        Path.Log.debug(
+                            "Depth {}: Clear area vanished (below pocket). skipping.".format(csHght)
+                        )
                         cont = False
                 except:
                     # If the math fails (FloatingPointError) or the area is Null
@@ -1955,7 +1956,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return commands
 
-
     def getOuterHull(self, shape):
         """Returns a version of the shape with all internal cavities removed."""
         Path.Log.debug("getOuterHull")
@@ -1968,7 +1968,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             return shape
         except:
             return shape
-
 
     def getCutAreas(self, shape, depthparams, bbFace, trimFace, borderFace):
         """getCutAreas with robust origin-independent epsilon."""
@@ -1990,11 +1989,11 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # Reject steps strictly above the model top
             if csHght > (modelTop + 0.001):
-                continue                
+                continue
             # Determine the Slice Height (Model Footprint)
             if csHght < modelBottom:
                 # Step is below the model.
-                sliceHght = modelBottom + 0.001 # This must always be positive
+                sliceHght = modelBottom + 0.001  # This must always be positive
                 Path.Log.debug("Step {} below model. Sampling at: {}".format(csHght, sliceHght))
             else:
                 # Step is within model. Use calculated epsilon.
@@ -2042,13 +2041,12 @@ class ObjectWaterline(PathOp.ObjectOp):
                 # Translate to the ACTUAL target tool depth
                 cutArea.translate(FreeCAD.Vector(0.0, 0.0, csHght))
 
-                if cutArea.Area > 1e-9: # Filter out floating point artifacts
+                if cutArea.Area > 1e-9:  # Filter out floating point artifacts
                     CUTAREAS.append(cutArea)
                     isFirst = False
                     self.showDebugObject(cutArea, "CutArea_Z_{}".format(round(csHght, 3)))
 
         return CUTAREAS if len(CUTAREAS) > 0 else False
-
 
     def categorizeFloorSteps(self, shape, depthparams):
         """
@@ -2061,7 +2059,11 @@ class ObjectWaterline(PathOp.ObjectOp):
         is_top_down = startZ > finalZ
 
         # Get all accessible, fused floor geometry grouped by height
-        fused_geometry = self.getFusedFloorGeometry(shape, startZ, finalZ,)
+        fused_geometry = self.getFusedFloorGeometry(
+            shape,
+            startZ,
+            finalZ,
+        )
 
         # Reconcile with standard depthparams
         final_depth_logic = []
@@ -2093,7 +2095,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         final_depth_logic.sort(key=lambda x: x[0], reverse=is_top_down)
         return final_depth_logic
 
-
     def getFusedFloorGeometry(self, shape, startZ, finalZ, tolerance=0.001):
         """Identifies, tests, and fuses upward-facing horizontal faces."""
 
@@ -2118,7 +2119,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 z = face.Vertexes[0].Z
                 extrude_h = (abs_top - z) + 5.0
                 test_face = face.copy()
-                test_face.translate(FreeCAD.Vector(0, 0, 0.01)) # Nudge above floor
+                test_face.translate(FreeCAD.Vector(0, 0, 0.01))  # Nudge above floor
                 projection = test_face.extrude(FreeCAD.Vector(0, 0, extrude_h))
 
                 # If the intersection with the model is empty, path is clear
@@ -2135,7 +2136,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 continue
 
             # Check orientation and normal
-            if _isUpwardFacing(face) and _isInRange(face, z_min, z_max, abs_top, abs_bottom, tolerance):
+            if _isUpwardFacing(face) and _isInRange(
+                face, z_min, z_max, abs_top, abs_bottom, tolerance
+            ):
                 if _isAccessibleFromTop(face, shape, abs_top):
                     z = round(face.Vertexes[0].Z, 4)
 
@@ -2159,7 +2162,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             fused[z] = res
         return fused
 
-
     def getGeometricOffset(self, Faces):
         """Geometric Offset (Tool Compensation). Returns None if it fails."""
         Path.Log.debug("getGeometricOffset()")
@@ -2169,15 +2171,18 @@ class ObjectWaterline(PathOp.ObjectOp):
             wires = []
 
             for item in slice_result:
-                if not item: continue
-                if item.ShapeType == 'Wire' and item.isClosed():
+                if not item:
+                    continue
+                if item.ShapeType == "Wire" and item.isClosed():
                     wires.append(item)
 
             return Part.makeFace(wires) if wires else None
 
         def _fallbackOffset(face):
             """Robust but slower fallback using Path Area utilities."""
-            msg = translate("PathWaterline", "Fast Geometric Offset failed. Falling back to slow offset. ")
+            msg = translate(
+                "PathWaterline", "Fast Geometric Offset failed. Falling back to slow offset. "
+            )
             msg += translate("PathWaterline", "Examine the generated path for any errors!")
             FreeCAD.Console.PrintWarning(msg + "\n")
             return PathUtils.getOffsetArea(face, self.radius, self.wpc)
@@ -2188,10 +2193,10 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Analyze Geometry
             bb = face.BoundBox
             dz = bb.ZMax - bb.ZMin
-            is_nearly_flat = dz < 0.01 
+            is_nearly_flat = dz < 0.01
             is_single_wire = len(face.Wires) == 1
             # Normalize to Z=0 for math consistency
-            newFace = face.copy()           
+            newFace = face.copy()
             newFace.translate(FreeCAD.Vector(0, 0, -bb.ZMin))
 
             offsetResult = None
@@ -2214,15 +2219,17 @@ class ObjectWaterline(PathOp.ObjectOp):
                         continue
 
                     # We slice exactly in the middle of the dynamic volume
-                    slice_z = (extrude_val / 2.0)
+                    slice_z = extrude_val / 2.0
                     slice_result = offsetSolid.slice(FreeCAD.Vector(0, 0, 1), slice_z)
 
                     offsetResult = _reconstructFaceFromSlice(slice_result)
 
             except Exception as e:
                 # Fall Back to Slow 2D Offset
-                Path.Log.debug("Primary offset failed: {}. Falling back to getOffsetArea".format(str(e)))
-  
+                Path.Log.debug(
+                    "Primary offset failed: {}. Falling back to getOffsetArea".format(str(e))
+                )
+
             if not offsetResult:
                 offsetResult = _fallbackOffset(newFace)
 
@@ -2235,7 +2242,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                 continue
 
         return newFaces if len(newFaces) > 0 else None
-
 
     def wiresToWaterlinePath(self, obj, ofstPlnrShp, csHght):
         Path.Log.debug("wiresToWaterlinePath()")
@@ -2250,7 +2256,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         start = 0
         for w in range(start, len(ofstPlnrShp.Wires)):
             wire = ofstPlnrShp.Wires[w]
-            if not wire.isClosed(): # filter
+            if not wire.isClosed():  # filter
                 continue
             V = wire.Vertexes
             if obj.CutMode == "Climb":
@@ -2263,13 +2269,14 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # This ensures the tool is directly above the entry point before plunging,
             # preventing diagonal moves through the material.
-            commands.append(Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid}))
+            commands.append(
+                Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
+            )
             (cmds, endVect) = self.wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
         return commands
-
 
     def makeCutPatternLayerPaths(self, JOB, obj, clrAreaShp, csHght, cutPattern):
         Path.Log.debug("makeCutPatternLayerPaths()")
@@ -2310,33 +2317,29 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return commands
 
-
     def makeOffsetLayerPaths(self, obj, clrAreaShp, csHght):
-            Path.Log.debug("makeOffsetLayerPaths() - Fragment Filter Version")
-            cmds = list()
-            shape = clrAreaShp
-            minLength = self.radius
+        Path.Log.debug("makeOffsetLayerPaths() - Fragment Filter Version")
+        cmds = list()
+        shape = clrAreaShp
+        minLength = self.radius
 
-            offset = -self.cutOut
-            tol = 0.005
-            while True:
-                offsetArea = PathUtils.getOffsetArea(
-                    shape, offset, plane=self.wpc, tolerance=tol
-                )
-                if not offsetArea:
-                    # Area fully consumed
-                    break
-                # process each wire within face
-                for wire in offsetArea.Faces:
-                    # Catch 'tiny straight lines' and 'micro-loops'
-                    if wire.Length < minLength:
-                        continue
-                    cmds.extend(self.wiresToWaterlinePath(obj, wire, csHght))
+        offset = -self.cutOut
+        tol = 0.005
+        while True:
+            offsetArea = PathUtils.getOffsetArea(shape, offset, plane=self.wpc, tolerance=tol)
+            if not offsetArea:
+                # Area fully consumed
+                break
+            # process each wire within face
+            for wire in offsetArea.Faces:
+                # Catch 'tiny straight lines' and 'micro-loops'
+                if wire.Length < minLength:
+                    continue
+                cmds.extend(self.wiresToWaterlinePath(obj, wire, csHght))
 
-                offset -= self.cutOut
+            offset -= self.cutOut
 
-            return cmds
-
+        return cmds
 
     def clearGeomToPaths(self, JOB, obj, safePDC, stpOVRS, cutPattern):
         Path.Log.debug("clearGeomToPaths()")
@@ -2421,7 +2424,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return GCODE
 
-
     def getSolidAreasFromPlanarFaces(self, csFaces):
         Path.Log.debug("getSolidAreasFromPlanarFaces()")
         holds = list()
@@ -2491,15 +2493,14 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return False
 
-
     def getModelCrossSection(self, shape, csHght):
         # Slice the shell (returns wires)
         wires = shape.slice(FreeCAD.Vector(0, 0, 1), csHght)
-        toolArea = math.pi * (self.radius ** 2)
+        toolArea = math.pi * (self.radius**2)
 
         FCS = []
         for w in wires:
-            # The slice of a shell gives wires. 
+            # The slice of a shell gives wires.
             # We turn them into Faces here to perform 2D boolean logic.
             if w.isClosed():
                 try:
@@ -2514,7 +2515,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                     pass
 
         return FCS
-
 
     def idInternalFeature(self, csFaces, fIds, pIds, li, low):
 
