@@ -3,12 +3,14 @@ import argparse
 import os
 import re
 import sys
+import logging
 from utils import (
     add_common_arguments,
     init_environment,
     write_file,
     append_file,
     emit_problem_matchers,
+    expand_files,
 )
 
 
@@ -53,7 +55,7 @@ def main():
     init_environment(args)
 
     all_matches = []
-    for file_path in args.files.split():
+    for file_path in expand_files(args.files):
         logging.debug(f"Checking file: {file_path}")
         matches = check_qt_connections(file_path)
         all_matches.extend(matches)

@@ -4,13 +4,18 @@ import sys
 import os
 import re
 import logging
+import shutil
+from pathlib import Path
 
+from defaults import DEFAULT_CLAZY_QT6_CHECKS
 from utils import (
     run_command,
     init_environment,
     write_file,
     append_file,
     emit_problem_matchers,
+    add_common_arguments,
+    expand_files,
 )
 
 
@@ -56,48 +61,67 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run Clazy checks for QT6 on provided C++ files and append a Markdown report."
     )
-    parser.add_argument(
-        "--files",
-        required=True,
-        help="A space-separated list (or glob-expanded string) of C++ files to check.",
-    )
+    add_common_arguments(parser)
     parser.add_argument(
         "--clazy-qt6-checks",
-        required=True,
-        help="Comma-separated list of clazy QT6 checks to run.",
+        default="",
+        help="Comma-separated list of clazy QT6 checks to run (default: repo defaults).",
     )
     parser.add_argument(
-        "--log-dir", required=True, help="Directory where the log file will be written."
+        "--build-dir",
+        default="build",
+        help="CMake build directory containing compile_commands.json (default: build).",
     )
     parser.add_argument(
-        "--report-file",
-        required=True,
-        help="Path to the Markdown report file to append results.",
+        "--export-fixes",
+        default="clazyQT6.yaml",
+        help="Path to write clazy QT6 fixes YAML (default: clazyQT6.yaml).",
     )
-    parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
     args = parser.parse_args()
 
     # Initialize logging and required directories using a shared utility.
     init_environment(args)
 
-    build_dir = "build"
-    fix_file = "clazyQT6.yaml"
+    if shutil.which("clazy-standalone") is None:
+        logging.error("clazy-standalone not found in PATH")
+        sys.exit(127)
+
+    clazy_checks = (args.clazy_qt6_checks or "").strip() or DEFAULT_CLAZY_QT6_CHECKS
+
+    build_dir = Path(args.build_dir)
+    if not build_dir.is_absolute():
+        build_dir = (Path.cwd() / build_dir).resolve()
+    if not build_dir.is_dir():
+        logging.error("build dir does not exist: %s", build_dir)
+        sys.exit(2)
+    compile_commands = build_dir / "compile_commands.json"
+    if not compile_commands.is_file():
+        logging.error("missing compile_commands.json: %s", compile_commands)
+        logging.error("Configure your build with CMAKE_EXPORT_COMPILE_COMMANDS=ON")
+        sys.exit(2)
+
+    files = expand_files(args.files)
+    if not files:
+        sys.exit(0)
 
     # Build the clazy command as a list.
     cmd = [
         "clazy-standalone",
-        f"--export-fixes={fix_file}",
-        f"-checks={args.clazy_qt6_checks}",
+        f"--export-fixes={args.export_fixes}",
+        f"-checks={clazy_checks}",
         "-p",
-        build_dir,
-    ] + args.files.split()
+        str(compile_commands),
+    ] + files
 
-    stdout, stderr, _ = run_command(cmd)
+    stdout, stderr, rc = run_command(cmd)
     output = stdout + stderr
 
     log_file = os.path.join(args.log_dir, "clazyQT6.log")
     write_file(log_file, output)
     emit_problem_matchers(log_file, "clang.json", "clang")
+    if rc != 0:
+        logging.error("clazy-standalone failed (exit=%s)", rc)
+        sys.exit(rc)
 
     error_pattern = r"^.+:\d+:\d+: error: .+$"
     warning_pattern = r"^.+:\d+:\d+: warning: .+$"

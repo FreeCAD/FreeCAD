@@ -1,11 +1,14 @@
 import argparse
-import glob
 import os
+import sys
 from utils import (
     add_common_arguments,
     init_environment,
     write_file,
+    append_file,
     emit_problem_matchers,
+    in_github_actions,
+    expand_files,
 )
 
 
@@ -104,22 +107,32 @@ def main():
     args = parser.parse_args()
     init_environment(args)
 
-    file_list = glob.glob(args.files, recursive=True)
-    file_list = [f for f in file_list if os.path.isfile(f)]
+    file_list = expand_files(args.files)
 
     report_sections = []
+    any_issues = False
 
     # Check non-Unix line endings.
     if args.lineendings_check:
         le_issues = check_line_endings(file_list)
-        for file, detail in le_issues.items():
-            print(f"::warning file={file},title={file}::{detail}")
+        if le_issues:
+            any_issues = True
+            le_output = "\n".join(f"{file}: {detail}" for file, detail in le_issues.items())
+            le_log_file = os.path.join(args.log_dir, "lineendings.log")
+            write_file(le_log_file, le_output)
+            emit_problem_matchers(
+                le_log_file, "grepMatcherWarning.json", "grepMatcher-warning"
+            )
+        if in_github_actions():
+            for file, detail in le_issues.items():
+                print(f"::warning file={file},title={file}::{detail}")
         report_sections.append(format_report("Non-Unix Line Endings", le_issues))
 
     # Check trailing whitespace.
     if args.whitespace_check:
         ws_issues = check_trailing_whitespace(file_list)
         if ws_issues:
+            any_issues = True
             ws_output_lines = []
             for file, details in ws_issues.items():
                 if isinstance(details, list):
@@ -140,6 +153,7 @@ def main():
     if args.tabs_check:
         tab_issues = check_tabs(file_list)
         if tab_issues:
+            any_issues = True
             tab_output_lines = []
             for file, details in tab_issues.items():
                 if isinstance(details, list):
@@ -157,8 +171,9 @@ def main():
         report_sections.append(format_report("Tab Usage", tab_issues))
 
     report_content = "\n".join(report_sections)
-    write_file(args.report_file, report_content)
-    print("Lint report generated at:", args.report_file)
+    append_file(args.report_file, report_content)
+    # Report location is handled by the caller (e.g. devstack lint).
+    sys.exit(1 if any_issues else 0)
 
 
 if __name__ == "__main__":

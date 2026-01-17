@@ -11,6 +11,8 @@ from utils import (
     write_file,
     append_file,
     emit_problem_matchers,
+    ensure_tool,
+    expand_files,
 )
 
 
@@ -22,10 +24,10 @@ def get_enabled_checks(log_dir: str) -> str:
     return enabled_log_path
 
 
-def run_pylint(files: str, disable: str, log_dir: str) -> str:
+def run_pylint(files: list[str], disable: str, log_dir: str) -> str:
     """Run pylint on the provided files and log the output."""
     pylint_log_path = os.path.join(log_dir, "pylint.log")
-    cmd = ["pylint", f"--disable={disable}"] + files.split()
+    cmd = ["pylint", f"--disable={disable}"] + files
     stdout, stderr, _ = run_command(cmd, check=False)
     combined_output = stdout + "\n" + stderr
     write_file(pylint_log_path, combined_output)
@@ -133,11 +135,14 @@ def main():
     args = parser.parse_args()
     init_environment(args)
 
-    logging.info("Installing pylint (if needed)...")
-    run_command(["pip", "install", "-q", "pylint"], check=True)
+    ensure_tool("pylint", package="pylint", prefer_pipx=False, check_args=["--version"])
+
+    files = expand_files(args.files)
+    if not files:
+        sys.exit(0)
 
     enabled_checks_log = get_enabled_checks(args.log_dir)
-    pylint_log = run_pylint(args.files, args.disable, args.log_dir)
+    pylint_log = run_pylint(files, args.disable, args.log_dir)
 
     emit_problem_matchers(pylint_log, "pylintError.json", "pylint-error")
     emit_problem_matchers(pylint_log, "pylintWarning.json", "pylint-warning")

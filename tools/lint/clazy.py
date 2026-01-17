@@ -4,13 +4,18 @@ import sys
 import os
 import re
 import logging
+import shutil
+from pathlib import Path
 
+from defaults import DEFAULT_CLAZY_CHECKS
 from utils import (
     run_command,
     init_environment,
     write_file,
     append_file,
     emit_problem_matchers,
+    add_common_arguments,
+    expand_files,
 )
 
 
@@ -54,45 +59,62 @@ def main():
     parser = argparse.ArgumentParser(
         description="Run Clazy on provided C++ files and append a Markdown report."
     )
-    parser.add_argument(
-        "--files",
-        required=True,
-        help="A space-separated list (or glob-expanded string) of C++ files to check.",
-    )
+    add_common_arguments(parser)
     parser.add_argument(
         "--clazy-checks",
-        required=True,
-        help="Comma-separated list of clazy checks to run.",
+        default="",
+        help="Comma-separated list of clazy checks to run (default: repo defaults).",
     )
     parser.add_argument(
-        "--log-dir", required=True, help="Directory where the log file will be written."
+        "--build-dir",
+        default="build",
+        help="CMake build directory containing compile_commands.json (default: build).",
     )
     parser.add_argument(
-        "--report-file",
-        required=True,
-        help="Path to the Markdown report file to append results.",
+        "--export-fixes",
+        default="clazy.yaml",
+        help="Path to write clazy fixes YAML (default: clazy.yaml).",
     )
-    parser.add_argument("--verbose", action="store_true", help="Enable verbose output.")
     args = parser.parse_args()
     init_environment(args)
 
-    build_compile_commands = "build/compile_commands.json"
-    fix_file = "clazy.yaml"
+    if shutil.which("clazy-standalone") is None:
+        logging.error("clazy-standalone not found in PATH")
+        sys.exit(127)
+
+    clazy_checks = (args.clazy_checks or "").strip() or DEFAULT_CLAZY_CHECKS
+
+    build_dir = Path(args.build_dir)
+    if not build_dir.is_absolute():
+        build_dir = (Path.cwd() / build_dir).resolve()
+    if not build_dir.is_dir():
+        logging.error("build dir does not exist: %s", build_dir)
+        sys.exit(2)
+    compile_commands = build_dir / "compile_commands.json"
+    if not compile_commands.is_file():
+        logging.error("missing compile_commands.json: %s", compile_commands)
+        logging.error("Configure your build with CMAKE_EXPORT_COMPILE_COMMANDS=ON")
+        sys.exit(2)
 
     output = ""
-    file_list = args.files.split()
+    tool_failed = False
+    file_list = expand_files(args.files)
+    if not file_list:
+        sys.exit(0)
 
     for file in file_list:
         cmd = [
             "clazy-standalone",
-            f"--export-fixes={fix_file}",
-            f"-checks={args.clazy_checks}",
+            f"--export-fixes={args.export_fixes}",
+            f"-checks={clazy_checks}",
             "-p",
-            build_compile_commands,
+            str(compile_commands),
             file,
         ]
-        stdout, stderr, _ = run_command(cmd)
+        stdout, stderr, rc = run_command(cmd)
         output += stdout + "\n" + stderr + "\n"
+        if rc != 0:
+            tool_failed = True
 
     log_file = os.path.join(args.log_dir, "clazy.log")
     write_file(log_file, output)
@@ -112,6 +134,8 @@ def main():
     report = generate_markdown_report(output, errors_count, warnings_count, notes_count)
     append_file(args.report_file, report + "\n")
 
+    if tool_failed:
+        sys.exit(2)
     sys.exit(0 if errors_count == 0 else 1)
 
 

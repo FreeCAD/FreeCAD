@@ -12,6 +12,8 @@ from utils import (
     emit_problem_matchers,
     write_file,
     add_common_arguments,
+    ensure_tool,
+    expand_files,
 )
 
 DEFAULT_LINE_LENGTH_LIMIT = 100
@@ -27,13 +29,13 @@ def parse_black_output(output: str) -> Tuple[int, int]:
     black_reformats = 0
     black_fails = 0
 
-    # Look for a pattern like: "X files would be reformatted"
-    reformats_matches = re.findall(r"(\d+)(?=\s+fil.+ would be reformatted)", output)
+    # Look for a pattern like: "X files would be reformatted" or "X files reformatted"
+    reformats_matches = re.findall(r"(\d+)(?=\s+fil.+(?:would be )?reformatted)", output)
     if reformats_matches:
         black_reformats = int(reformats_matches[0])
 
-    # Look for a pattern like: "Y files would fail to reformat"
-    fails_matches = re.findall(r"(\d+)(?=\s+fil.+ would fail to reformat)", output)
+    # Look for a pattern like: "Y files would fail to reformat" or "Y files failed to reformat"
+    fails_matches = re.findall(r"(\d+)(?=\s+fil.+(?:would )?(?:fail|failed) to reformat)", output)
     if fails_matches:
         black_fails = int(fails_matches[0])
 
@@ -67,18 +69,28 @@ def main():
         description="Run Black in check mode on Python files and append a Markdown report."
     )
     add_common_arguments(parser)
+    parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply formatting changes (default: check only).",
+    )
     args = parser.parse_args()
     init_environment(args)
 
-    logging.info("Installing black (if needed)...")
-    run_command(["pipx", "install", "-q", "black"], check=True)
+    ensure_tool("black", package="black", prefer_pipx=False, check_args=["--version"])
+
+    files = expand_files(args.files)
+    if not files:
+        sys.exit(0)
 
     cmd = [
         "black",
         "--line-length",
         str(DEFAULT_LINE_LENGTH_LIMIT),
-        "--check",
-    ] + args.files.split()
+    ]
+    if not args.apply:
+        cmd.append("--check")
+    cmd += files
     stdout, stderr, exit_code = run_command(cmd, check=False)
     output = stdout + "\n" + stderr
 
