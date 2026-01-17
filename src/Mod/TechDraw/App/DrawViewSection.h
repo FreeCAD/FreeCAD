@@ -219,6 +219,7 @@ protected:
     static App::PropertyFloatConstraint::Constraints stretchRange;
 
 private:
+    bool m_sawSectionLineStretch;
     bool m_sawIgnoreSectionLineFudgeFactor;
 };
 

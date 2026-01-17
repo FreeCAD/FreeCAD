@@ -1251,8 +1251,19 @@ void DrawViewSection::setupObject()
 
 void DrawViewSection::Restore(Base::XMLReader &reader)
 {
+    m_sawSectionLineStretch = false;
+
     DrawViewPart::Restore(reader);
+
+    if (!m_sawSectionLineStretch) {
+        // default value is 1.5 for new instances, but restored instances
+        // need to have default value of 1.0
+        SectionLineStretch.setValue(1.0);
+    }
+
     if (!m_sawIgnoreSectionLineFudgeFactor) {
+        // default value is 'true' for new instances, but restored instances
+        // need to have default value of 'false'
         IgnoreSectionLineFudgeFactor.setValue(false);
     }
 }
@@ -1284,6 +1295,10 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
             Direction.setValue(tmpValue);
         }
         return;
+    }
+
+    if (prop == &SectionLineStretch) {
+        m_sawSectionLineStretch = true;
     }
 
     if (prop == &IgnoreSectionLineFudgeFactor) {
