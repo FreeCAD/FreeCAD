@@ -33,11 +33,18 @@ from ..models.library import Library
 SHAPEMAP = {
     "ballend": "Ballnose",
     "endmill": "Cylindrical",
+    "taperedballnose": "Ballnose",
     "v-bit": "Conical",
     "vbit": "Conical",
     "chamfer": "Snubnose",
 }
-SHAPEMAP_REVERSE = dict((v, k) for k, v in SHAPEMAP.items())
+
+SHAPEMAP_REVERSE = {
+    "Ballnose": "ballend",  # Default to ballend when deserializing Ballnose
+    "Cylindrical": "endmill",
+    "Conical": "v-bit",
+    "Snubnose": "chamfer",
+}
 
 tooltemplate = {
     "units": "metric",
