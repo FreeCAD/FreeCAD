@@ -241,9 +241,15 @@ DrawViewSection::DrawViewSection()
                       "Rotation of hatch pattern in degrees anti-clockwise");
     ADD_PROPERTY_TYPE(HatchOffset, (0.0, 0.0, 0.0), fgroup, App::Prop_None, "Hatch pattern offset");
 
-    ADD_PROPERTY_TYPE(SectionLineStretch, (1.0), agroup, App::Prop_None,
+    ADD_PROPERTY_TYPE(SectionLineStretch, (1.5), agroup, App::Prop_None,
                       "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
     SectionLineStretch.setConstraints(&stretchRange);
+
+    ADD_PROPERTY_TYPE(IgnoreSectionLineFudgeFactor,
+                      (true),
+                      agroup,
+                      App::Prop_None,
+                      "Ignore the legacy 'fudge factor' when rendering the section line.");
 
     getParameters();
 
@@ -259,6 +265,9 @@ DrawViewSection::DrawViewSection()
     Direction.setStatus(App::Property::ReadOnly, true);
     Direction.setValue(SectionNormal.getValue());
 
+    // Do not allow direct modification of flag for section line fudge factor
+    IgnoreSectionLineFudgeFactor.setStatus(App::Property::ReadOnly, true);
+    IgnoreSectionLineFudgeFactor.setStatus(App::Property::Hidden, true);
 }
 
 DrawViewSection::~DrawViewSection()
@@ -1224,6 +1233,14 @@ void DrawViewSection::setupObject()
     DrawViewPart::setupObject();
 }
 
+void DrawViewSection::Restore(Base::XMLReader &reader)
+{
+    DrawViewPart::Restore(reader);
+    if (!m_sawIgnoreSectionLineFudgeFactor) {
+        IgnoreSectionLineFudgeFactor.setValue(false);
+    }
+}
+
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
     DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
@@ -1251,6 +1268,10 @@ void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const c
             Direction.setValue(tmpValue);
         }
         return;
+    }
+
+    if (prop == &IgnoreSectionLineFudgeFactor) {
+        m_sawIgnoreSectionLineFudgeFactor = true;
     }
 
     DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);

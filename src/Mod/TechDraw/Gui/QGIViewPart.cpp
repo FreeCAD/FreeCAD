@@ -721,8 +721,11 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setSectionColor(color.asValue<QColor>());
         sectionLine->setPathMode(false);
 
-        //make the section line a little longer
-        double fudge = 2.0 * Preferences::dimFontSizeMM();
+        //(legacy behavior) make the section line a little longer
+        double fudge = 0.0;
+        if (!viewSection->IgnoreSectionLineFudgeFactor.getValue()) {
+            fudge = 2.0 * Preferences::dimFontSizeMM();
+        }
         Base::Vector3d lineDir = l2 - l1;
         lineDir.Normalize();
         sectionLine->setEnds(l1 - lineDir * Rez::guiX(fudge), l2 + lineDir * Rez::guiX(fudge));

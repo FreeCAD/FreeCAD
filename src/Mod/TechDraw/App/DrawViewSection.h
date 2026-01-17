@@ -108,6 +108,7 @@ public:
     App::PropertyBool UsePreviousCut;   // new v022
 
     App::PropertyFloatConstraint SectionLineStretch;  // new v022
+    App::PropertyBool IgnoreSectionLineFudgeFactor;  // new v??
 //NOLINTEND
 
     bool isReallyInBox(const Base::Vector3d& vec, const Base::BoundBox3d& bb) const;
@@ -121,6 +122,7 @@ public:
     }
     void unsetupObject() override;
     short mustExecute() const override;
+    void Restore(Base::XMLReader &reader) override;
     void handleChangedPropertyType(
         Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
 
@@ -216,6 +218,8 @@ protected:
 
     static App::PropertyFloatConstraint::Constraints stretchRange;
 
+private:
+    bool m_sawIgnoreSectionLineFudgeFactor;
 };
 
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
