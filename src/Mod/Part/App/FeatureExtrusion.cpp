@@ -277,7 +277,7 @@ ExtrusionParameters Extrusion::computeFinalParameters()
     return result;
 }
 
-Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLink& shapeLink)
+Base::Vector3d Extrusion::calculateShapeNormal(const App::PropertyLinkSub& shapeLink)
 {
     App::DocumentObject* docobj = nullptr;
     Base::Matrix4D mat;
@@ -399,11 +399,38 @@ App::DocumentObjectExecReturn* Extrusion::execute()
         ExtrusionParameters params = computeFinalParameters();
         TopoShape result(0, getDocument()->getStringHasher());
 
-        extrudeShape(
-            result,
-            Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform),
-            params
-        );
+        // Get the shape to extrude, considering sub-element selection
+        TopoShape sourceShape;
+        const auto& subs = Base.getSubValues();
+        if (subs.empty()) {
+            // No sub-elements specified - use entire shape (backward compatible)
+            sourceShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+        }
+        else {
+            // Sub-elements specified - extract and combine them
+            std::vector<TopoShape> shapes;
+            for (const auto& sub : subs) {
+                auto subshape = Feature::getTopoShape(
+                    link,
+                    ShapeOption::NeedSubElement | ShapeOption::ResolveLink | ShapeOption::Transform,
+                    sub.c_str()
+                );
+                if (subshape.isNull()) {
+                    return new App::DocumentObjectExecReturn(
+                        (std::string("Sub-shape not found: ") + sub).c_str()
+                    );
+                }
+                shapes.push_back(subshape);
+            }
+            if (shapes.size() == 1) {
+                sourceShape = shapes[0];
+            }
+            else {
+                sourceShape.makeElementCompound(shapes);
+            }
+        }
+
+        extrudeShape(result, sourceShape, params);
         this->Shape.setValue(result);
         return App::DocumentObject::StdReturn;
     }

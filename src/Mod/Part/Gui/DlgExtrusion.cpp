@@ -353,7 +353,7 @@ void DlgExtrusion::fetchDir()
             dir_has_valid_magnitude = fetched;
         }
         else if (this->getDirMode() == Part::Extrusion::dmNormal) {
-            App::PropertyLink lnk;
+            App::PropertyLinkSub lnk;
             lnk.setValue(&this->getShapeToExtrude());
             dir = Part::Extrusion::calculateShapeNormal(lnk);
             fetched = true;
@@ -756,7 +756,7 @@ bool DlgExtrusion::validate()
     if (this->getDirMode() == Part::Extrusion::dmNormal) {
         errmsg.clear();
         try {
-            App::PropertyLink lnk;
+            App::PropertyLinkSub lnk;
             lnk.setValue(&this->getShapeToExtrude());  // simplified - check only for the first shape.
             Part::Extrusion::calculateShapeNormal(lnk);
         }

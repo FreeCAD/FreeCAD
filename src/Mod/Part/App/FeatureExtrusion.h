@@ -45,7 +45,7 @@ class PartExport Extrusion: public Part::Feature
 public:
     Extrusion();
 
-    App::PropertyLink Base;
+    App::PropertyLinkSub Base;
     App::PropertyVector Dir;
     App::PropertyEnumeration DirMode;
     App::PropertyLinkSub DirLink;
@@ -107,7 +107,7 @@ public:
      */
     ExtrusionParameters computeFinalParameters();
 
-    static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
+    static Base::Vector3d calculateShapeNormal(const App::PropertyLinkSub& shapeLink);
     void onDocumentRestored() override;
     void Restore(Base::XMLReader& reader) override;
 
