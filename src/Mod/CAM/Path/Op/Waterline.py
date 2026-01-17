@@ -1099,58 +1099,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return final
 
-    def getExperimentalWaterlinePaths(self, PNTSET, csHght, cutPattern):
-        """getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
-        Switching function for calling the appropriate path-geometry to OCL points conversion function
-        for the various cut patterns."""
-        Path.Log.debug("getExperimentalWaterlinePaths()")
-        SCANS = list()
-
-        # PNTSET is list, by stepover.
-        if cutPattern in ["Line", "Spiral", "ZigZag"]:
-            stpOvr = list()
-            for STEP in PNTSET:
-                for SEG in STEP:
-                    if SEG == "BRK":
-                        stpOvr.append(SEG)
-                    else:
-                        (A, B) = SEG  # format is ((p1, p2), (p3, p4))
-                        P1 = FreeCAD.Vector(A[0], A[1], csHght)
-                        P2 = FreeCAD.Vector(B[0], B[1], csHght)
-                        stpOvr.append((P1, P2))
-                SCANS.append(stpOvr)
-                stpOvr = list()
-        elif cutPattern in ["Circular", "CircularZigZag"]:
-            # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
-            for so in range(0, len(PNTSET)):
-                stpOvr = list()
-                erFlg = False
-                (aTyp, dirFlg, ARCS) = PNTSET[so]
-
-                if dirFlg == 1:  # 1
-                    cMode = True  # Climb mode
-                else:
-                    cMode = False
-
-                for a in range(0, len(ARCS)):
-                    Arc = ARCS[a]
-                    if Arc == "BRK":
-                        stpOvr.append("BRK")
-                    else:
-                        (sp, ep, cp) = Arc
-                        S = FreeCAD.Vector(sp[0], sp[1], csHght)
-                        E = FreeCAD.Vector(ep[0], ep[1], csHght)
-                        C = FreeCAD.Vector(cp[0], cp[1], csHght)
-                        scan = (S, E, C, cMode)
-                        if scan is False:
-                            erFlg = True
-                        else:
-                            stpOvr.append(scan)
-                if erFlg is False:
-                    SCANS.append(stpOvr)
-
-        return SCANS
-
     # Main planar scan functions
     def _stepTransitionCmds(self, obj, cutPattern, lstPnt, first, minSTH, tolrnc):
         cmds = list()
@@ -1243,7 +1191,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             depthparams = [obj.FinalDepth.Value]
         else:
             depthparams = [dp for dp in self.depthParams]
-        lenDP = len(depthparams)
 
         # Scan the piece to depth at smplInt
         if obj.Algorithm == "OCL Adaptive":
@@ -1823,6 +1770,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         adj = obj.BoundaryAdjustment.Value - radius
         cutPattern = obj.CutPattern
         self.endVector = None
+        bbFace = None
 
         # Create a copy of the base shape
         shape = base.Shape.copy()
@@ -2281,6 +2229,7 @@ class ObjectWaterline(PathOp.ObjectOp):
     def makeCutPatternLayerPaths(self, JOB, obj, clrAreaShp, csHght, cutPattern):
         Path.Log.debug("makeCutPatternLayerPaths()")
         commands = []
+        pntSet = None
 
         clrAreaShp.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - clrAreaShp.BoundBox.ZMin))
 
@@ -2316,6 +2265,59 @@ class ObjectWaterline(PathOp.ObjectOp):
             commands.extend(cmds)
 
         return commands
+
+    def getExperimentalWaterlinePaths(self, PNTSET, csHght, cutPattern):
+        """getExperimentalWaterlinePaths(PNTSET, csHght, cutPattern)...
+        Switching function for calling the appropriate path-geometry to OCL points conversion function
+        for the various cut patterns."""
+        Path.Log.debug("getExperimentalWaterlinePaths()")
+        SCANS = list()
+
+        # PNTSET is list, by stepover.
+        if cutPattern in ["Line", "Spiral", "ZigZag"]:
+            stpOvr = list()
+            for STEP in PNTSET:
+                for SEG in STEP:
+                    if SEG == "BRK":
+                        stpOvr.append(SEG)
+                    else:
+                        (A, B) = SEG  # format is ((p1, p2), (p3, p4))
+                        P1 = FreeCAD.Vector(A[0], A[1], csHght)
+                        P2 = FreeCAD.Vector(B[0], B[1], csHght)
+                        stpOvr.append((P1, P2))
+                SCANS.append(stpOvr)
+                stpOvr = list()
+        elif cutPattern in ["Circular", "CircularZigZag"]:
+            # Each stepover is a list containing arc/loop descriptions, (sp, ep, cp)
+            for so in range(0, len(PNTSET)):
+                stpOvr = list()
+                erFlg = False
+                (aTyp, dirFlg, ARCS) = PNTSET[so]
+
+                if dirFlg == 1:  # 1
+                    cMode = True  # Climb mode
+                else:
+                    cMode = False
+
+                for a in range(0, len(ARCS)):
+                    Arc = ARCS[a]
+                    if Arc == "BRK":
+                        stpOvr.append("BRK")
+                    else:
+                        (sp, ep, cp) = Arc
+                        S = FreeCAD.Vector(sp[0], sp[1], csHght)
+                        E = FreeCAD.Vector(ep[0], ep[1], csHght)
+                        C = FreeCAD.Vector(cp[0], cp[1], csHght)
+                        scan = (S, E, C, cMode)
+                        if scan is False:
+                            erFlg = True
+                        else:
+                            stpOvr.append(scan)
+                if erFlg is False:
+                    SCANS.append(stpOvr)
+
+        return SCANS
+
 
     def makeOffsetLayerPaths(self, obj, clrAreaShp, csHght):
         Path.Log.debug("makeOffsetLayerPaths() - Fragment Filter Version")
