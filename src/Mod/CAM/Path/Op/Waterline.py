@@ -2318,7 +2318,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return SCANS
 
-
     def makeOffsetLayerPaths(self, obj, clrAreaShp, csHght):
         Path.Log.debug("makeOffsetLayerPaths() - Fragment Filter Version")
         cmds = list()
