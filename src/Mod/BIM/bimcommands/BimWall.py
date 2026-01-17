@@ -273,15 +273,13 @@ class Arch_Wall:
         elif self.baseline_mode == WallBaselineMode.SKETCH:
             import ArchSketchObject
 
-
             # TODO 2026.1.18 Testing
             # Check ArchSketchLock and makeArchSketch() here
-            useArchSketch = (hasattr(ArchSketchObject, "makeArchSketch") and 
-                             (not hasattr(FreeCAD, 'ArchSketchLock') or
-                              FreeCAD.ArchSketchLock)
-                            )
+            useArchSketch = hasattr(ArchSketchObject, "makeArchSketch") and (
+                not hasattr(FreeCAD, "ArchSketchLock") or FreeCAD.ArchSketchLock
+            )
 
-            #if not hasattr(ArchSketchObject, "makeArchSketch"):
+            # if not hasattr(ArchSketchObject, "makeArchSketch"):
             if not useArchSketch:
                 # Regular path without SketchArch add-on installed. Execute creation command with a
                 # suggested name. FreeCAD will ensure uniqueness.
@@ -298,13 +296,13 @@ class Arch_Wall:
                 FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
                 print(" Testing 2026.1.18")
 
-            #user_label = translate("BimWall", "Wall Trace")
+            # user_label = translate("BimWall", "Wall Trace")
 
             # Apply placement and geometry using the correctly identified object name.
             FreeCADGui.doCommand(f"base.Placement = {placement_str}")
 
             ## Set the user-facing, translated label.
-            #FreeCADGui.doCommand(f"base.Label = {repr(user_label)}")
+            # FreeCADGui.doCommand(f"base.Label = {repr(user_label)}")
 
             FreeCADGui.doCommand(f"base.addGeometry(trace)")
 
