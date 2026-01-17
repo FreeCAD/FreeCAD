@@ -211,6 +211,7 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/reamer.py
     Path/Tool/toolbit/models/slittingsaw.py
     Path/Tool/toolbit/models/tap.py
+    Path/Tool/toolbit/models/taperedballnose.py
     Path/Tool/toolbit/models/threadmill.py
     Path/Tool/toolbit/models/vbit.py
 )
@@ -284,6 +285,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/reamer.py
     Path/Tool/shape/models/slittingsaw.py
     Path/Tool/shape/models/tap.py
+    Path/Tool/shape/models/taperedballnose.py
     Path/Tool/shape/models/threadmill.py
     Path/Tool/shape/models/vbit.py
 )
@@ -487,6 +489,8 @@ SET(Tools_Shape_SRCS
     Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
     Tools/Shape/tap.svg
+    Tools/Shape/taperedballnose.fcstd
+    Tools/Shape/taperedballnose.svg
     Tools/Shape/thread-mill.fcstd
     Tools/Shape/thread-mill.svg
     Tools/Shape/v-bit.fcstd
