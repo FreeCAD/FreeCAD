@@ -2600,7 +2600,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     batchSelection.reserve(geomlist.size());
 
     auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
-        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        std::string finalName = sketchObject->convertSubName(suffix);
         batchSelection.push_back(finalName);
     };
 
@@ -2840,7 +2840,7 @@ bool ViewProviderSketch::selectAll()
     );
 
     auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
-        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        std::string finalName = sketchObject->convertSubName(suffix);
         batchSelection.push_back(finalName);
     };
 
