@@ -1921,12 +1921,27 @@ class ObjectWaterline(PathOp.ObjectOp):
         """getCutAreas with robust origin-independent epsilon."""
         Path.Log.debug("getCutAreas()")
 
+        def _determineSliceHght(csHght, modelBottom, modelTop, epsilon):
+            """Determine the Slice Height (Model Footprint)."""
+            sliceHght = None
+            if csHght < modelBottom:
+                # Step is below the model.
+                sliceHght = modelBottom + 0.001  # This must always be positive
+                Path.Log.debug("Step {} below model. Sampling at: {}".format(csHght, sliceHght))
+            else:
+                # Step is within model. Use calculated epsilon.
+                sliceHght = csHght + epsilon
+                # Clamping to ensure slice plane stays within geometry
+                sliceHght = max(modelBottom + 1e-6, min(sliceHght, modelTop - 1e-6))
+            return sliceHght
+
         CUTAREAS = list()
         allPrevComp = Part.makeCompound([])
         isFirst = True
+        lenDP = len(depthparams)
 
         # Constants for direction
-        z_dir = -1.0 if (len(depthparams) > 1 and depthparams[0] > depthparams[-1]) else -1.0
+        z_dir = -1.0 if (lenDP > 1 and depthparams[0] > depthparams[-1]) else -1.0
         epsilon = z_dir * -0.001
         modelBottom, modelTop = shape.BoundBox.ZMin, shape.BoundBox.ZMax
 
@@ -1939,15 +1954,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             if csHght > (modelTop + 0.001):
                 continue
             # Determine the Slice Height (Model Footprint)
-            if csHght < modelBottom:
-                # Step is below the model.
-                sliceHght = modelBottom + 0.001  # This must always be positive
-                Path.Log.debug("Step {} below model. Sampling at: {}".format(csHght, sliceHght))
-            else:
-                # Step is within model. Use calculated epsilon.
-                sliceHght = csHght + epsilon
-                # Clamping to ensure slice plane stays within geometry
-                sliceHght = max(modelBottom + 1e-6, min(sliceHght, modelTop - 1e-6))
+            sliceHght = _determineSliceHght(csHght, modelBottom, modelTop, epsilon)
 
             # Process the cross-section
             csFaces = self.getModelCrossSection(shape, sliceHght)
@@ -1978,7 +1985,6 @@ class ObjectWaterline(PathOp.ObjectOp):
                     cutArea = borderFace.cut(compAdjFaces)
                 else:
                     if status == "Extra":
-                        floor_geo.translate(FreeCAD.Vector(0, 0, -compAdjFaces.BoundBox.ZMin))
                         cutArea = floor_geo.cut(compAdjFaces)
                     else:
                         preCutArea = borderFace.cut(compAdjFaces)
@@ -2141,17 +2147,16 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Analyze Geometry
             bb = face.BoundBox
             dz = bb.ZMax - bb.ZMin
-            is_nearly_flat = dz < 0.01
-            is_single_wire = len(face.Wires) == 1
+
             # Normalize to Z=0 for math consistency
             newFace = face.copy()
-            newFace.translate(FreeCAD.Vector(0, 0, -bb.ZMin))
+            newFace.translate(FreeCAD.Vector(0, 0, -newFace.BoundBox.ZMin))
 
             offsetResult = None
 
             try:
-                # Fast 2D Offset (Planar Faces Only)
-                if is_single_wire and is_nearly_flat:
+                # Fast 2D Offset (Planar Faces Only - Single Wire)
+                if len(newFace.Wires) == 1 and dz < 0.01:
                     offsetResult = newFace.makeOffset2D(self.radius, 0, False)
 
                 # Fast 3D Offset
