@@ -38,7 +38,7 @@ The entrypoint is:
 - Build (uses CMake presets):
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug -j8
+./tools/devstack/devstack.sh build --preset debug
 ```
 
 - Create a new worktree for a feature branch and bootstrap `.devstack/`:
@@ -141,25 +141,25 @@ Sync the latest script/config into all existing worktrees:
 Build the current worktree using CMake presets:
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug -j8
+./tools/devstack/devstack.sh build --preset debug
 ```
 
 Reduced “core” build (FreeCAD adapter):
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug --core -j8
+./tools/devstack/devstack.sh build --preset debug --core
 ```
 
 Prefer clang+mold when available:
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug --toolchain auto -j8
+./tools/devstack/devstack.sh build --preset debug --toolchain auto
 ```
 
 Clean and rebuild:
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug --clean -j8
+./tools/devstack/devstack.sh build --preset debug --clean
 ```
 
 ### Lint
@@ -277,7 +277,11 @@ Env-file precedence (first match wins):
 Disable env loading:
 
 ```bash
-./tools/devstack/devstack.sh build --preset debug --no-env-file -j8
+./tools/devstack/devstack.sh build --preset debug --no-env-file
+
+Parallelism:
+- Default is auto (DEVSTACK_JOBS, distcc slots, or local CPU count).
+- Override with `-j N` or set `DEVSTACK_JOBS=N`.
 ```
 
 ### Distributed builds (distcc + ccache)

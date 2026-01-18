@@ -294,13 +294,13 @@ def cmd_wt_feature(args: argparse.Namespace) -> None:
             args.preset,
             "--adapter",
             getattr(args, "adapter", os.environ.get("DEVSTACK_ADAPTER", "auto")),
-            "--jobs",
-            str(args.jobs),
             "--toolchain",
             args.toolchain,
             "--build-mode",
             args.build_mode,
         ]
+        if args.jobs is not None:
+            build_args += ["--jobs", str(args.jobs)]
         if args.core:
             build_args.append("--core")
         if args.clang_mold:
@@ -384,13 +384,13 @@ def cmd_wt_add(args: argparse.Namespace) -> None:
             args.preset,
             "--adapter",
             getattr(args, "adapter", os.environ.get("DEVSTACK_ADAPTER", "auto")),
-            "--jobs",
-            str(args.jobs),
             "--toolchain",
             args.toolchain,
             "--build-mode",
             args.build_mode,
         ]
+        if args.jobs is not None:
+            build_args += ["--jobs", str(args.jobs)]
         if args.core:
             build_args.append("--core")
         if args.clang_mold:

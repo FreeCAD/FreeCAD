@@ -14,6 +14,7 @@ from tools.devstack.core.cmake_presets import (
 )
 from tools.devstack.core.env import load_env_from_sh
 from tools.devstack.core.git import git, repo_root
+from tools.devstack.core.jobs import resolve_jobs
 from tools.devstack.core.proc import die, have_cmd, note, run
 
 
@@ -41,7 +42,7 @@ def cmd_build(args: argparse.Namespace) -> None:
 
     preset = args.preset
     build_dir = args.build_dir or ""
-    jobs = args.jobs
+    jobs_arg = args.jobs
     target = args.target or ""
     toolchain = args.toolchain
     submodules = args.submodules
@@ -144,6 +145,13 @@ def cmd_build(args: argparse.Namespace) -> None:
                 )
             )
 
+    try:
+        jobs, jobs_source = resolve_jobs(jobs_arg, env, distcc_enabled=distcc)
+    except ValueError as exc:
+        die(str(exc))
+    if jobs_source != "cli":
+        note(f"build: jobs={jobs} (auto from {jobs_source})")
+
     use_ccache_launcher = bool(use_ccache_launcher_requested or (distcc and distcc_mode == "ccache"))
     compiler_launcher = "distcc" if (distcc and distcc_mode == "direct") else ("ccache" if use_ccache_launcher else "")
 
@@ -240,4 +248,3 @@ def cmd_build(args: argparse.Namespace) -> None:
         if target:
             cmd += ["--target", target]
         run(cmd, cwd=root, env=env)
-

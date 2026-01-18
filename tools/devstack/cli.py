@@ -154,7 +154,7 @@ def build_parser() -> argparse.ArgumentParser:
     wti.add_argument("--no-distcc", action="store_true")
     wti.add_argument("--distcc-hosts")
     wti.add_argument("--distcc-verbose", action="store_true")
-    wti.add_argument("--jobs", "-j", type=int, default=8)
+    wti.add_argument("--jobs", "-j", type=int, default=None, help="Build jobs (-j). Default: auto.")
     wti.add_argument("--target")
     wti.add_argument("--clean", action="store_true")
 
@@ -182,7 +182,7 @@ def build_parser() -> argparse.ArgumentParser:
     wta.add_argument("--no-distcc", action="store_true")
     wta.add_argument("--distcc-hosts")
     wta.add_argument("--distcc-verbose", action="store_true")
-    wta.add_argument("--jobs", "-j", type=int, default=8)
+    wta.add_argument("--jobs", "-j", type=int, default=None, help="Build jobs (-j). Default: auto.")
     wta.add_argument("--target")
     wta.add_argument("--clean", action="store_true")
 
@@ -214,7 +214,7 @@ def build_parser() -> argparse.ArgumentParser:
     b.add_argument("--preset", default="debug")
     b.add_argument("--adapter", default=os.environ.get("DEVSTACK_ADAPTER", "auto"))
     b.add_argument("--build-dir")
-    b.add_argument("--jobs", "-j", type=int, default=8)
+    b.add_argument("--jobs", "-j", type=int, default=None, help="Build jobs (-j). Default: auto.")
     b.add_argument("--target")
     b.add_argument("--build-mode", default="full")
     b.add_argument("--core", action="store_true")

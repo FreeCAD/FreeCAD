@@ -2,14 +2,18 @@
 
 ## Build workflow (use `tools/devstack`)
 
-Prefer the repo-local devstack wrapper for configuring/building FreeCAD, and default to `-j8`:
+Prefer the repo-local devstack wrapper for configuring/building FreeCAD (jobs default to auto):
 
 - Sanity check devstack itself: `./tools/devstack/devstack.sh self-check --tests`
 - Environment summary: `./tools/devstack/devstack.sh doctor`
-- Configure+build: `./tools/devstack/devstack.sh build --preset debug -j8`
-- Build only: `./tools/devstack/devstack.sh build --preset debug -j8 --build-only`
-- Configure only: `./tools/devstack/devstack.sh build --preset debug -j8 --configure-only`
-- Reduced build (GUI + Material + Part only): `./tools/devstack/devstack.sh build --preset debug --core -j8`
+- Configure+build: `./tools/devstack/devstack.sh build --preset debug`
+- Build only: `./tools/devstack/devstack.sh build --preset debug --build-only`
+- Configure only: `./tools/devstack/devstack.sh build --preset debug --configure-only`
+- Reduced build (GUI + Material + Part only): `./tools/devstack/devstack.sh build --preset debug --core`
+
+Parallelism:
+- Default is auto (DEVSTACK_JOBS, distcc slots, or local CPU count).
+- Override with `-j N` or set `DEVSTACK_JOBS=N`.
 
 ## Lint and fix (use `tools/devstack`)
 
