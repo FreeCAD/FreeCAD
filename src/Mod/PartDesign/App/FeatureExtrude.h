@@ -99,7 +99,7 @@ protected:
      * by removing the farthest face from the sketchshape in the direction
      * if farthest is nearest (circular) then return the initial shape
      */
-    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir);
 
     /**
      * Disables settings that are not valid for the current method
