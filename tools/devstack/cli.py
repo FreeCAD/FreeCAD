@@ -106,9 +106,19 @@ def build_parser() -> argparse.ArgumentParser:
     ghs = cmd("gh-sync", "Create/update PRs via gh (supports --only N).", category="GitHub")
     ghs.add_argument("--apply", action="store_true", help="Apply changes (default is dry-run).")
     ghs.add_argument("--only", type=int, help="Only create/edit the PR for layer N (1-based).")
+    ghs.add_argument(
+        "--draft",
+        action="store_true",
+        help="Create new PRs as drafts (default: off; can also be enabled via DEVSTACK_GH_DRAFT=1).",
+    )
     pl = cmd("pr-layer", "Update + push + gh-sync for a single PR layer.", category="GitHub")
     pl.add_argument("layer", type=int, help="Layer number (1-based).")
     pl.add_argument("--apply", action="store_true", help="Actually create/edit the PR (default is dry-run).")
+    pl.add_argument(
+        "--draft",
+        action="store_true",
+        help="Create new PRs as drafts (same as passing --draft to gh-sync).",
+    )
 
     cmd("capture", "Capture current cut-point SHAs into .devstack/stack.conf.", category="Stack")
     cmd(

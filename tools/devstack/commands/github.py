@@ -51,7 +51,7 @@ def cmd_pr_layer(args: argparse.Namespace) -> None:
     layer = int(args.layer)
     cmd_update(argparse.Namespace())
     cmd_push(argparse.Namespace(only=layer))
-    cmd_gh_sync(argparse.Namespace(apply=bool(args.apply), only=layer))
+    cmd_gh_sync(argparse.Namespace(apply=bool(args.apply), only=layer, draft=bool(getattr(args, "draft", False))))
 
 
 def gh_check() -> None:
@@ -183,6 +183,11 @@ def cmd_gh_sync(args: argparse.Namespace) -> None:
     if not apply:
         note("dry-run; pass --apply to create/edit PRs")
 
+    def env_truthy(key: str) -> bool:
+        return os.environ.get(key, "").strip().lower() in ("1", "true", "yes", "on")
+
+    draft = bool(getattr(args, "draft", False) or env_truthy("DEVSTACK_GH_DRAFT"))
+
     repo = gh_default_repo(root)
     repo_args = ["--repo", repo] if repo else []
 
@@ -217,6 +222,8 @@ def cmd_gh_sync(args: argparse.Namespace) -> None:
             cmd = ["gh", "pr", "edit", pr_number, *repo_args, "--base", base, "--title", title]
         else:
             cmd = ["gh", "pr", "create", *repo_args, "--head", head_ref, "--base", base, "--title", title]
+            if draft:
+                cmd.append("--draft")
 
         if body_file.is_file():
             gh_body_file = body_file_for_gh(root, entry, body_file)
@@ -256,4 +263,3 @@ def cmd_gh_sync(args: argparse.Namespace) -> None:
         else:
             print(" ".join(shlex_quote(x) for x in cmd))
         base = entry.branch
-

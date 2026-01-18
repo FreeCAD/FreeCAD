@@ -361,6 +361,19 @@ Publish just a single layer (serial workflow, wait for merge):
 ./tools/devstack/devstack.sh pr-layer 1 --apply
 ```
 
+Create PRs as drafts:
+
+```bash
+./tools/devstack/devstack.sh gh-sync --apply --draft
+./tools/devstack/devstack.sh pr-layer 1 --apply --draft
+```
+
+Or set an env default:
+
+```bash
+export DEVSTACK_GH_DRAFT=1
+```
+
 ## Adapter Selection
 
 Adapters provide repo-specific behavior (e.g. FreeCAD build modes/presets). Adapters are discovered automatically by scanning `tools/devstack/adapters/*.py`.

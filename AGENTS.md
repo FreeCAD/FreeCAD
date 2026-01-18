@@ -52,6 +52,7 @@ The tool lives under `tools/devstack/`, and per-worktree stack state lives under
 
 Notes:
 - Commands that are dry-run by default and require `--apply`: `gh-sync`, `body-prune`, `layer-import` (and `pr-layer` when used).
+- To create new PRs as drafts, pass `--draft` to `gh-sync` / `pr-layer` (or set `DEVSTACK_GH_DRAFT=1`).
 - Destructive-ish flags:
   - `wt-layer --force` deletes the target layer branch (refuses if checked out in a worktree).
   - `push` updates remote `pr/...` branches with `--force-with-lease`.
