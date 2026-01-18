@@ -193,8 +193,19 @@ QStringList DlgMacroExecuteImp::filterFiles(const QString& folder)
     QString fileFilter = ui->LineEditFind->text();         // used to search by filename
     QString searchText = ui->LineEditFindInFiles->text();  // used to search in file content
 
+    QStringList dirsUnfiltered = dir.entryList(QDir::AllDirs|QDir::NoDotAndDotDot);
+    QStringList dirsWithMain;
+    QString fileMain = "main.FCMacro";
+    for (auto dirName : dirsUnfiltered) {
+        QString dirPath = dir.filePath(dirName);
+        QDir dirMacro(dirPath, fileMain);
+        if (!dirMacro.entryList().isEmpty()) {
+            dirsWithMain.append(dirName);
+        }
+    }
+
     if (fileFilter.isEmpty() && searchText.isEmpty()) {  // skip filtering if no filters
-        return unfiltered;
+        return unfiltered + dirsWithMain;
     }
     QStringList filteredByFileName;
     if (fileFilter.isEmpty()) {
