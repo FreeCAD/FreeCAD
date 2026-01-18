@@ -187,8 +187,8 @@ public:
                     // Use original (non-resolved) selection if available.
                     // This is important for Link Arrays where msg may have resolved
                     // "Array" + "2.Face6" to "Extrude" + "Face6", losing the array element path.
-                    // For mapped element names (TNP), convert to simple names using oldElementName()
-                    // which transforms "2.;#14:...Face6" back to "2.Face6".
+                    // For mapped element names (TNP), convert to simple names using
+                    // oldElementName() which transforms "2.;#14:...Face6" back to "2.Face6".
                     const char* objName = msg.pObjectName;
                     std::string subElemStr(msg.pSubName);
                     if (msg.pOriginalMsg) {
