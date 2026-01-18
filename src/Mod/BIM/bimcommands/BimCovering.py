@@ -92,7 +92,7 @@ class BIM_Covering:
         import ArchCovering
 
         self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self)
-        FreeCADGui.Control.showDialog(self.task)
+        FreeCADGui.Control.showDialog(self.task_panel)
 
     def finish(self):
         """

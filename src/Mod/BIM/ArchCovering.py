@@ -392,7 +392,7 @@ if FreeCAD.GuiUp:
             if mode != self.EDIT_MODE_STANDARD:
                 return None
 
-            return False  # TODO: set to True when implementing covering edit task panel
+            return True
 
         def unsetEdit(self, vobj, mode=0):
             """
@@ -524,3 +524,303 @@ if FreeCAD.GuiUp:
             """
             # Let the parent class handle its properties first.
             super().ViewProviderComponent.onChanged(self, vobj, prop)
+
+    class ArchCoveringTaskPanel:
+        def __init__(self, command=None, obj=None):
+            self.command = command
+            self.obj_to_edit = obj
+            self.selected_obj = None
+            self.selected_sub = None
+
+            # Setup event callback for picking (works for both create and edit)
+            # TODO: investigate ArchComponent.SelectionTaskPanel and
+            # ArchComponent.ArchSelectionObserver
+            self.view = FreeCADGui.ActiveDocument.ActiveView
+            self.callback = self.view.addEventCallback("SoEvent", self.action)
+
+            # Build the task panel UI
+
+            # Task Box 1: Geometry
+            self.geo_widget = QtGui.QWidget()
+            self.geo_widget.setWindowTitle(translate("Arch", "Geometry"))
+            self.geo_layout = QtGui.QVBoxLayout(self.geo_widget)
+
+            self._setupTopControls()
+            self._setupGeometryStack()
+
+            # Task Box 2: Visuals
+            self.vis_widget = QtGui.QWidget()
+            self.vis_widget.setWindowTitle(translate("Arch", "Visuals"))
+            self._setupVisualUI()
+
+            self.form = [self.geo_widget, self.vis_widget]
+
+            # Populat UI values
+
+            # Store the thickness to restore it when switching modes
+            # TODO: use params
+            self.stored_thickness = "10mm"
+
+            # If editing, pre-fill selection
+            if self.obj_to_edit:
+                if self.obj_to_edit.Base:
+                    val = self.obj_to_edit.Base
+                    if isinstance(val, tuple):
+                        self.selected_obj = val[0]
+                        self.selected_sub = val[1][0] if val[1] else None
+                    else:
+                        self.selected_obj = val
+
+            # If editing, populate UI
+            if self.obj_to_edit:
+                self._loadExistingData()
+
+        def _setupTopControls(self):
+            top_form = QtGui.QFormLayout()
+
+            # Selection
+            h_sel = QtGui.QHBoxLayout()
+            self.le_selection = QtGui.QLineEdit()
+            self.le_selection.setPlaceholderText(translate("Arch", "No selection"))
+            self.le_selection.setEnabled(False)
+            self.le_selection.setToolTip(translate("Arch", "The selected object or face"))
+
+            self.btn_selection = QtGui.QPushButton(translate("Arch", "Pick"))
+            self.btn_selection.setCheckable(True)
+            self.btn_selection.setToolTip(translate("Arch", "Enable picking in the 3D view"))
+
+            if self.selected_obj:
+                if self.selected_sub:
+                    self.le_selection.setText(f"{self.selected_obj.Label}.{self.selected_sub}")
+                else:
+                    self.le_selection.setText(f"{self.selected_obj.Label}")
+
+            h_sel.addWidget(self.le_selection)
+            h_sel.addWidget(self.btn_selection)
+            top_form.addRow(translate("Arch", "Selection:"), h_sel)
+
+            # Mode
+            self.combo_mode = QtGui.QComboBox()
+            self.combo_mode.addItems(
+                [
+                    translate("Arch", "Solid Tiles"),
+                    translate("Arch", "Parametric Pattern"),
+                    translate("Arch", "Hatch Pattern"),
+                ]
+            )
+            self.combo_mode.setToolTip(translate("Arch", "The type of finish to create"))
+            self.combo_mode.currentIndexChanged.connect(self.onModeChanged)
+            top_form.addRow(translate("Arch", "Mode:"), self.combo_mode)
+
+            self.geo_layout.addLayout(top_form)
+
+        def _setupGeometryStack(self):
+            self.geo_stack = QtGui.QStackedWidget()
+
+            self._setupTilesPage()
+            self._setupHatchPage()
+
+            self.geo_layout.addWidget(self.geo_stack)
+
+        def _setupTilesPage(self):
+            self.page_tiles = QtGui.QWidget()
+            form = QtGui.QFormLayout()
+
+            self.sb_length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_length.setText("300mm")
+            self.sb_length.setToolTip(translate("Arch", "The length of the tiles"))
+            form.addRow(translate("Arch", "Length:"), self.sb_length)
+
+            self.sb_width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_width.setText("300mm")
+            self.sb_width.setToolTip(translate("Arch", "The width of the tiles"))
+            form.addRow(translate("Arch", "Width:"), self.sb_width)
+
+            self.sb_thick = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_thick.setText("10mm")
+            self.sb_thick.setToolTip(translate("Arch", "The thickness of the tiles"))
+            self.lbl_thick = QtGui.QLabel(translate("Arch", "Thickness:"))
+            form.addRow(self.lbl_thick, self.sb_thick)
+
+            self.sb_joint = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_joint.setText("5mm")
+            self.sb_joint.setToolTip(translate("Arch", "The width of the joints between tiles"))
+            form.addRow(translate("Arch", "Joint:"), self.sb_joint)
+
+            self.combo_align = QtGui.QComboBox()
+            self.combo_align.addItems(
+                ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"]
+            )
+            self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
+            form.addRow(translate("Arch", "Alignment:"), self.combo_align)
+
+            self.sb_rot = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_rot.setText("0deg")
+            self.sb_rot.setProperty("unit", "Angle")
+            self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
+            form.addRow(translate("Arch", "Rotation:"), self.sb_rot)
+
+            self.page_tiles.setLayout(form)
+            self.geo_stack.addWidget(self.page_tiles)
+
+        def _setupHatchPage(self):
+            self.page_hatch = QtGui.QWidget()
+            form = QtGui.QFormLayout()
+
+            self.le_pat = QtGui.QLineEdit()
+            self.le_pat.setToolTip(translate("Arch", "The PAT file to use for hatching"))
+
+            btn_browse_pat = QtGui.QPushButton("...")
+            btn_browse_pat.clicked.connect(self.browsePattern)
+            h_pat = QtGui.QHBoxLayout()
+            h_pat.addWidget(self.le_pat)
+            h_pat.addWidget(btn_browse_pat)
+            form.addRow(translate("Arch", "Pattern File:"), h_pat)
+
+            self.sb_rot_hatch = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_rot_hatch.setText("0deg")
+            self.sb_rot_hatch.setProperty("unit", "Angle")
+            self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
+            form.addRow(translate("Arch", "Rotation:"), self.sb_rot_hatch)
+
+            self.page_hatch.setLayout(form)
+            self.geo_stack.addWidget(self.page_hatch)
+
+        def _setupVisualUI(self):
+            visual_form = QtGui.QFormLayout(self.vis_widget)
+            self.le_tex_image = QtGui.QLineEdit()
+            self.le_tex_image.setToolTip(translate("Arch", "An image file to map onto each tile"))
+            btn_browse = QtGui.QPushButton("...")
+            btn_browse.clicked.connect(self.browseTexture)
+
+            h_tex = QtGui.QHBoxLayout()
+            h_tex.addWidget(self.le_tex_image)
+            h_tex.addWidget(btn_browse)
+            visual_form.addRow(translate("Arch", "Texture Image:"), h_tex)
+
+        def _loadExistingData(self):
+            mode = self.obj_to_edit.FinishMode
+            self.combo_mode.setCurrentText(mode)
+            self.onModeChanged(self.combo_mode.currentIndex())
+
+            self.sb_length.setText(self.obj_to_edit.TileLength.UserString)
+            self.sb_width.setText(self.obj_to_edit.TileWidth.UserString)
+            self.sb_thick.setText(self.obj_to_edit.TileThickness.UserString)
+            self.sb_joint.setText(self.obj_to_edit.JointWidth.UserString)
+            self.combo_align.setCurrentText(self.obj_to_edit.TileAlignment)
+            self.sb_rot.setText(self.obj_to_edit.Rotation.UserString)
+
+            self.le_pat.setText(self.obj_to_edit.PatternFile)
+            self.sb_rot_hatch.setText(self.obj_to_edit.Rotation.UserString)
+
+            if hasattr(self.obj_to_edit.ViewObject, "TextureImage"):
+                self.le_tex_image.setText(self.obj_to_edit.ViewObject.TextureImage)
+
+        def browseTexture(self):
+            fn = QtGui.QFileDialog.getOpenFileName(
+                self.vis_widget,
+                translate("Arch", "Select Texture"),
+                "",
+                "Images (*.png *.jpg *.jpeg *.bmp)",
+            )[0]
+            if fn:
+                self.le_tex_image.setText(fn)
+
+        def browsePattern(self):
+            fn = QtGui.QFileDialog.getOpenFileName(
+                self.form, translate("Arch", "Select Pattern"), "", "Pattern files (*.pat)"
+            )[0]
+            if fn:
+                self.le_pat.setText(fn)
+
+        def onModeChanged(self, index):
+            if index == 2:  # Hatch
+                self.geo_stack.setCurrentIndex(1)
+                self.vis_widget.setEnabled(False)
+            else:  # Tiles (Solid or Parametric)
+                self.geo_stack.setCurrentIndex(0)
+                self.vis_widget.setEnabled(index == 0)  # Only enable visual for Solid Tiles
+                if index == 0:  # Solid Tiles
+                    self.sb_thick.setEnabled(True)
+                    self.sb_thick.setText(self.stored_thickness)
+                else:  # Parametric Pattern
+                    if self.sb_thick.isEnabled():
+                        self.stored_thickness = self.sb_thick.text()
+                    self.sb_thick.setEnabled(False)
+                    self.sb_thick.setText("0mm")
+
+        def action(self, arg):
+            pass  # Picking logic to be implemented
+
+        def getStandardButtons(self):
+            return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+
+        def accept(self):
+            try:
+                # If creating new object
+                if not self.obj_to_edit:
+                    if not self.selected_obj:
+                        return
+
+                    FreeCAD.ActiveDocument.openTransaction("Create Covering")
+
+                    # Create Object
+                    import Arch
+
+                    # Set Base
+                    if self.selected_sub:
+                        base_obj = (self.selected_obj, [self.selected_sub])
+                    else:
+                        base_obj = self.selected_obj
+
+                    obj = Arch.makeCovering(base_obj)
+                else:
+                    # If editing
+                    obj = self.obj_to_edit
+                    FreeCAD.ActiveDocument.openTransaction("Edit Covering")
+
+                    if self.selected_obj and self.selected_obj != obj.Base:
+                        if self.selected_sub:
+                            obj.Base = (self.selected_obj, [self.selected_sub])
+                        else:
+                            obj.Base = self.selected_obj
+
+                # Set properties (common for create/edit)
+                mode = self.combo_mode.currentText()
+                obj.FinishMode = mode
+
+                if mode != "Hatch Pattern":
+                    obj.TileLength = self.sb_length.text()
+                    obj.TileWidth = self.sb_width.text()
+                    obj.JointWidth = self.sb_joint.text()
+                    obj.TileAlignment = self.combo_align.currentText()
+                    obj.Rotation = self.sb_rot.text()
+
+                    if mode == "Solid Tiles":
+                        obj.TileThickness = self.sb_thick.text()
+                else:
+                    obj.PatternFile = self.le_pat.text()
+                    obj.Rotation = self.sb_rot_hatch.text()
+
+                # Set view properties
+                if hasattr(obj.ViewObject, "TextureImage"):
+                    obj.ViewObject.TextureImage = self.le_tex_image.text()
+
+                FreeCAD.ActiveDocument.commitTransaction()
+                FreeCAD.ActiveDocument.recompute()
+
+            finally:
+                self._cleanup_and_close()
+
+        def _cleanup_and_close(self):
+            # Ensure callback is always removed
+            self.view.removeEventCallback("SoEvent", self.callback)
+            if self.command:
+                # Reject triggered by the creation command
+                self.command.finish()
+            else:
+                # Reject triggered by editing
+                FreeCADGui.Control.closeDialog()
+
+        def reject(self):
+            self._cleanup_and_close()
