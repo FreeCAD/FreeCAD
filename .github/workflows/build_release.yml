@@ -46,7 +46,7 @@ jobs:
 
       - name: Trigger notes updater workflow (only for weekly)
         if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
         with:
