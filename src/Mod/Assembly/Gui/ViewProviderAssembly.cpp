@@ -1638,7 +1638,8 @@ void ViewProviderAssembly::UpdateSolverInformation()
         /*signalSetUp(QStringLiteral("conflicting_constraints"),
                     tr("Over-constrained:") + QLatin1String(" "),
                     QStringLiteral("#conflicting"),
-                    QStringLiteral("(%1)").arg(objListHelper(assembly, assembly->getLastConflicting())));*/
+                    QStringLiteral("(%1)").arg(objListHelper(assembly,
+           assembly->getLastConflicting())));*/
         // So for now we report like follows:
         signalSetUp(
             QStringLiteral("conflicting_constraints"),
@@ -1660,14 +1661,16 @@ void ViewProviderAssembly::UpdateSolverInformation()
         signalSetUp(QStringLiteral("redundant_constraints"),
                     tr("Redundant joints:") + QLatin1String(" "),
                     QStringLiteral("#redundant"),
-                    QStringLiteral("(%1)").arg(objListHelper(assembly, assembly->getLastRedundant())));
+                    QStringLiteral("(%1)").arg(objListHelper(assembly,
+    assembly->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(
             QStringLiteral("partially_redundant_constraints"),
             tr("Partially redundant:") + QLatin1String(" "),
             QStringLiteral("#partiallyredundant"),
-            QStringLiteral("(%1)").arg(objListHelper(assembly, assembly->getLastPartiallyRedundant())));
+            QStringLiteral("(%1)").arg(objListHelper(assembly,
+    assembly->getLastPartiallyRedundant())));
     }*/
     else if (assembly->getLastSolverStatus() != 0) {
         signalSetUp(
