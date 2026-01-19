@@ -4456,7 +4456,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
@@ -4904,7 +4904,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="543"/>
       <source>A fatal error occurred when making the pipe</source>
-      <translation>Une erreur s'est produite lors de la création du balayage</translation>
+      <translation>Une erreur s'est produite lors de la création du balayage.</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="672"/>

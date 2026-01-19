@@ -7384,7 +7384,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="40"/>
       <source>Grid</source>
-      <translation>Κάναβος</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostLineplot.ui" line="84"/>

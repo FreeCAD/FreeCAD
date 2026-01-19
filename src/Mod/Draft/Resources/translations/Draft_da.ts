@@ -7925,7 +7925,7 @@ beyond the dimension line</translation>
       <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <location filename="../../draftviewproviders/view_base.py" line="502"/>
       <source>Transform</source>
-      <translation>Transformér</translation>
+      <translation>Transformer</translation>
     </message>
   </context>
   <context>
