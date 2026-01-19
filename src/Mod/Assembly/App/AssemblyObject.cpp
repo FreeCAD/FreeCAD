@@ -257,7 +257,7 @@ void AssemblyObject::updateSolveStatus()
             // Check if this joint is already in the list to avoid duplicates
             if (std::find(lastRedundantJoints.begin(), lastRedundantJoints.end(), docObj)
                 == lastRedundantJoints.end()) {
-                lastRedundantJoints.push_back(docObj);
+                lastRedundantJoints.push_back(docObj->getNameInDocument());
             }
         }
     });
