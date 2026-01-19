@@ -281,6 +281,7 @@ public Q_SLOTS:
     void showMessage(const QString& message, int timeout = 0);
     void setRightSideMessage(const QString& message);
     bool isRightSideMessageVisible() const;
+    bool isShowFullFilePathVisible() const;
 
     // Set main window title
     void setWindowTitle(const QString& string);
