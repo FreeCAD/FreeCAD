@@ -4466,7 +4466,7 @@ under 90: mindre hålradie i botten
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
@@ -4475,9 +4475,9 @@ under 90: mindre hålradie i botten
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4502,12 +4502,12 @@ under 90: mindre hålradie i botten
       <translation>Det går inte att skapa en ficka med en total längd på noll.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Ingen extruderingsgeometri genererades.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Den resulterande smälta extruderingen är noll.</translation>
     </message>
@@ -4515,7 +4515,7 @@ under 90: mindre hålradie i botten
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>Den resulterande formen är inte en solid</translation>
     </message>
@@ -4840,7 +4840,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna för att 
       <translation>Loft: Misslyckades med att skapa skal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Det gick inte att skapa en yta från en skiss.
@@ -5080,7 +5080,7 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <translation>Referensaxeln är ogiltig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Fusion med basfunktion misslyckades</translation>
     </message>
@@ -5095,17 +5095,17 @@ Korsande skissentiteter eller flera ytor i en skiss är inte tillåtna.</transla
       <translation>Inga original kopplade till den transformerade funktionen.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Kan inte omvandla ogiltig stödform</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Formen på den additiva/subtraktiva funktionen är tom</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Endast additiva och subtraktiva funktioner kan omvandlas</translation>
     </message>

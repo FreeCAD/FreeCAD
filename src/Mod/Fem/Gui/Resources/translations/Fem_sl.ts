@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="1280"/>
       <source>Nodes Set</source>
-      <translation type="unfinished">Nodes Set</translation>
+      <translation>Nabor vozlišč</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
@@ -3563,7 +3563,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/PostLineplotFieldAppEdit.ui" line="86"/>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="61"/>
       <source>Frames</source>
-      <translation>Okvirji (meje), Sličice (film), ogrodja</translation>
+      <translation>Okvirji</translation>
     </message>
     <message>
       <location filename="../ui/PostHistogramFieldAppEdit.ui" line="68"/>
@@ -5485,7 +5485,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>Urejevalnik snovi</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="569"/>
@@ -5671,7 +5671,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="301"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="305"/>
       <source>Run</source>
-      <translation>Zaženi (postopek), </translation>
+      <translation>Zaženi</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="303"/>
