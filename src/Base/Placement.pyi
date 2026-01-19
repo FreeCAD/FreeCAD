@@ -15,14 +15,12 @@ from typing import Sequence, overload
     NumberProtocol=True,
     RichCompare=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
             PlacementPy(const Placement & pla, PyTypeObject *T = &Type)
             :PyObjectBase(new Placement(pla),T){}
             Placement value() const
             { return *(getPlacementPtr()); }
-        """
-)
+        """)
 class Placement(PyObjectBase):
     """
     Base.Placement class.

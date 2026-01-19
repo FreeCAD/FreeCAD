@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create offsets of different shapes."""
+
 ## @package offset
 # \ingroup draftfunctions
 # \brief Provides functions to create offsets of different shapes.

@@ -23,7 +23,6 @@
 
 import FreeCAD, Part
 
-
 __title__ = "JoinFeatures module (legacy)"
 __author__ = "DeepSOIC"
 __url__ = "https://www.freecad.org"

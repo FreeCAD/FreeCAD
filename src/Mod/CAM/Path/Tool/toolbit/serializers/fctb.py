@@ -28,7 +28,6 @@ from ...assets import Asset, AssetUri, AssetSerializer
 from ...shape import ToolBitShape
 from ..models.base import ToolBit
 
-
 if False:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())

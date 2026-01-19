@@ -29,6 +29,7 @@
 This class is used by Gui Commands to set up some properties
 of the DraftToolBar, the Snapper, and the working plane.
 """
+
 ## @package gui_base_original
 # \ingroup draftguitools
 # \brief Provides the base classes for most old Draft Gui Commands.

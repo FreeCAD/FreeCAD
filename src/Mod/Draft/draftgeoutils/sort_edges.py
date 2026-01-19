@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to sort lists of edges."""
+
 ## @package sort_edges
 # \ingroup draftgeoutils
 # \brief Provides various functions to sort lists of edges.

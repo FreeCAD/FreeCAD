@@ -26,7 +26,6 @@
 
 import FreeCAD
 
-
 params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/NativeIFC")
 
 

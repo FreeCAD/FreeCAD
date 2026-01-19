@@ -180,7 +180,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                     allSubsFaceType = False
 
                 if allSubsFaceType is True and obj.HandleMultipleFeatures == "Collectively":
-                    (fzmin, fzmax) = self.getMinMaxOfFaces(Faces)
+                    fzmin, fzmax = self.getMinMaxOfFaces(Faces)
                     if obj.FinalDepth.Value < fzmin:
                         Path.Log.warning(
                             translate(
@@ -291,13 +291,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Faces.append(face)
 
         # identify max and min face heights for top loop
-        (zmin, zmax) = self.getMinMaxOfFaces(Faces)
+        zmin, zmax = self.getMinMaxOfFaces(Faces)
 
         # Order faces around common center of mass
         subObjTups = self.orderFacesAroundCenterOfMass(subObjTups)
         # find connected edges and map to edge names of base
-        (connectedEdges, touching) = self.findSharedEdges(subObjTups)
-        (low, high) = self.identifyUnconnectedEdges(subObjTups, touching)
+        connectedEdges, touching = self.findSharedEdges(subObjTups)
+        low, high = self.identifyUnconnectedEdges(subObjTups, touching)
 
         if len(high) > 0 and obj.AdaptivePocketStart is True:
             # attempt planar face with top edges of pocket
@@ -307,7 +307,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             for sub, face, ei in high:
                 allEdges.append(face.Edges[ei])
 
-            (hzmin, hzmax) = self.getMinMaxOfFaces(allEdges)
+            hzmin, hzmax = self.getMinMaxOfFaces(allEdges)
 
             try:
                 highFaceShape = Part.Face(Part.Wire(Part.__sortEdges__(allEdges)))
@@ -553,7 +553,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         zmax = newList[0][1].BoundBox.ZMax
         idx = 0
         for i in range(0, len(newList)):
-            (sub, face) = newList[i]
+            sub, face = newList[i]
             fIdx = getFaceIdx(sub)
             # face = FreeCAD.ActiveDocument.getObject(bsNm).Shape.Faces[fIdx]
             if face.BoundBox.ZMax > zmax:
@@ -593,12 +593,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             # Checkout  first sub for analysis
             checkedOut1 = checkoutList.pop()
             searchedList.append(checkedOut1)
-            (sub1, face1) = subObjTups[checkedOut1]
+            sub1, face1 = subObjTups[checkedOut1]
 
             # Compare checked out sub to others for shared
             for co in range(0, len(checkoutList)):
                 # Checkout  second sub for analysis
-                (sub2, face2) = subObjTups[co]
+                sub2, face2 = subObjTups[co]
 
                 # analyze two subs for common faces
                 for ei1 in range(0, len(face1.Edges)):
@@ -663,7 +663,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             elif len(holding) > 2:
                 # attempt to break edges into two groups of connected edges.
                 # determine which group has higher center of mass, and assign as high, the other as low
-                (lw, hgh) = self.groupConnectedEdges(holding)
+                lw, hgh = self.groupConnectedEdges(holding)
                 low.extend(lw)
                 high.extend(hgh)
             # Eif
@@ -749,12 +749,12 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             save = False
 
             h2 = holds.pop()
-            (sub2, face2, ei2) = holding[h2]
+            sub2, face2, ei2 = holding[h2]
 
             # Cycle through attachments for connection to existing
             for g, t in attachments:
                 h1 = grps[g][t]
-                (sub1, face1, ei1) = holding[h1]
+                sub1, face1, ei1 = holding[h1]
 
                 edg1 = face1.Edges[ei1]
                 edg2 = face2.Edges[ei2]
@@ -814,13 +814,13 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         if len(grps[0]) > 0:
             for g in grps[0]:
                 grp0.append(holding[g])
-                (sub, face, ei) = holding[g]
+                sub, face, ei = holding[g]
                 com0 = com0.add(face.Edges[ei].CenterOfMass)
             com0z = com0.z / len(grps[0])
         if len(grps[1]) > 0:
             for g in grps[1]:
                 grp1.append(holding[g])
-                (sub, face, ei) = holding[g]
+                sub, face, ei = holding[g]
                 com1 = com1.add(face.Edges[ei].CenterOfMass)
             com1z = com1.z / len(grps[1])
 

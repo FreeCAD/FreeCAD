@@ -33,7 +33,6 @@ import Path.Tool.Controller as PathToolController
 import json
 import time
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 

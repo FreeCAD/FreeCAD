@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Clone object."""
+
 ## @package view_clone
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Clone object.

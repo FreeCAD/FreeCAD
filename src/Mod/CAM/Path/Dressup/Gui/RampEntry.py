@@ -29,7 +29,6 @@ import Path
 import Path.Dressup.Utils as PathDressup
 import math
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 

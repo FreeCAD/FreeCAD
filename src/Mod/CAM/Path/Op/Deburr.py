@@ -215,7 +215,7 @@ class ObjectDeburr(PathEngraveBase.ObjectOp):
         if not hasattr(self, "printInfo"):
             self.printInfo = True
         try:
-            (depth, offset, extraOffset, suppressInfo) = toolDepthAndOffset(
+            depth, offset, extraOffset, suppressInfo = toolDepthAndOffset(
                 obj.Width.Value, obj.ExtraDepth.Value, self.tool, self.printInfo
             )
             self.printInfo = not suppressInfo

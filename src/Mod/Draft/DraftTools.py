@@ -29,6 +29,7 @@ that is, those actions that can be called from menus and buttons.
 This module must be imported only when the graphical user interface
 is available, for example, during the workbench definition in `IntiGui.py`.
 """
+
 ## @package DraftTools
 #  \ingroup DRAFT
 #  \brief Provide GUI commands of the Draft workbench.

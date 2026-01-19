@@ -28,6 +28,7 @@
 
 This includes linear dimensions, radial dimensions, and angular dimensions.
 """
+
 ## @package make_dimension
 # \ingroup draftmake
 # \brief Provides functions to create Linear or AngularDimension objects.

@@ -26,6 +26,7 @@
 
 Currently unused.
 """
+
 ## @package view_polararray
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the polar Array object.

@@ -32,7 +32,6 @@ import Path.Main.Stock as PathStock
 import json
 import os
 
-
 translate = FreeCAD.Qt.translate
 
 if False:

@@ -35,7 +35,6 @@ import shlex
 import re
 from builtins import open as pyopen
 
-
 TOOLTIP = """
 Generate g-code from a Path that is compatible with the grbl controller.
 import grbl_legacy_post

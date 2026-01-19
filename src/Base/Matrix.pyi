@@ -22,14 +22,12 @@ class ScaleType(IntEnum):
     NumberProtocol=True,
     RichCompare=True,
 )
-@class_declarations(
-    """public:
+@class_declarations("""public:
       MatrixPy(const Matrix4D & mat, PyTypeObject *T = &Type)
       :PyObjectBase(new Matrix4D(mat),T){}
       Matrix4D value() const
       { return *(getMatrixPtr()); }
-    """
-)
+    """)
 class Matrix(PyObjectBase):
     """
     Base.Matrix class.

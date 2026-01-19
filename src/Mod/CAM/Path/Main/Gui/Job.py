@@ -1331,7 +1331,7 @@ class TaskPanel:
                     Draft.rotate(sel.Object, angle, sel.Object.Shape.BoundBox.Center, axis)
 
     def alignSetOrigin(self):
-        (obj, by) = self.alignMoveToOrigin()
+        obj, by = self.alignMoveToOrigin()
 
         for base in self.obj.Model.Group:
             if base != obj:

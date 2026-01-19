@@ -7,7 +7,6 @@
 import os, sys
 import MakeAppTools
 
-
 if len(sys.argv) != 2:
     sys.stdout.write("Please enter a name for your application.\n")
     sys.exit()

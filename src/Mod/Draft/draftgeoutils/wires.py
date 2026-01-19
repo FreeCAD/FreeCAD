@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with wires."""
+
 ## @package wires
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with wires.
