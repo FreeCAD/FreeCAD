@@ -12,12 +12,14 @@ wallpapers, etc. applied to other construction elements, but can also be indepen
 solid 3D tiles, parametric 2D patterns, and hatch patterns.
 """
 
+import os
 import FreeCAD
 import Part
+import ArchComponent
 from draftutils import params
 
 if FreeCAD.GuiUp:
-    from PySide import QtCore, QtGui
+    from PySide import QtGui
     import FreeCADGui
 
     QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
@@ -29,9 +31,6 @@ else:
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
-
-
-import ArchComponent
 
 
 class _Covering(ArchComponent.Component):
@@ -64,6 +63,13 @@ class _Covering(ArchComponent.Component):
         super().__init__(obj)
         self.Type = "Covering"
         self.setProperties(obj)
+
+        # Apply defaults from params immediately upon creation
+        # This allows the UI to simply bind to these properties and show the correct default values
+        obj.TileLength = params.get_param_arch("CoveringLength", 300.0)
+        obj.TileWidth = params.get_param_arch("CoveringWidth", 300.0)
+        obj.TileThickness = params.get_param_arch("CoveringThickness", 10.0)
+        obj.JointWidth = params.get_param_arch("CoveringJoint", 5.0)
 
     def setProperties(self, obj):
         """
@@ -146,7 +152,6 @@ class _Covering(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The length of the tiles"),
                 locked=True,
             )
-            obj.TileLength = "300mm"
         if not "TileWidth" in properties_list:
             obj.addProperty(
                 "App::PropertyLength",
@@ -155,7 +160,6 @@ class _Covering(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The width of the tiles"),
                 locked=True,
             )
-            obj.TileWidth = "300mm"
         if not "TileThickness" in properties_list:
             obj.addProperty(
                 "App::PropertyLength",
@@ -164,7 +168,6 @@ class _Covering(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The thickness of the tiles (Solid mode only)"),
                 locked=True,
             )
-            obj.TileThickness = "10mm"
         if not "JointWidth" in properties_list:
             obj.addProperty(
                 "App::PropertyLength",
@@ -173,7 +176,6 @@ class _Covering(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The width of the joints between tiles"),
                 locked=True,
             )
-            obj.JointWidth = "5mm"
         if not "TileOffset" in properties_list:
             obj.addProperty(
                 "App::PropertyVector",
@@ -262,7 +264,6 @@ class _Covering(ArchComponent.Component):
         self.Type = "Covering"
 
     def onDocumentRestored(self, obj):
-
         super().onDocumentRestored(obj)
         self.setProperties(obj)
 
@@ -614,12 +615,13 @@ if FreeCAD.GuiUp:
             The base C++ ViewProvider object to be initialized.
         """
 
+        EDIT_MODE_STANDARD = 0
+
         def __init__(self, vobj):
             super().__init__(vobj)
             self.setProperties(vobj)
             self.texture = None
             self.texcoords = None
-            self.EDIT_MODE_STANDARD = 0
 
         def setProperties(self, vobj):
             """
@@ -718,10 +720,8 @@ if FreeCAD.GuiUp:
             task_control = FreeCADGui.Control
             task_panel = task_control.activeDialog()
 
-            # Prevent re-entrant calls which can happen during object creation
+            # Prevent re-entrant calls
             if task_panel and isinstance(task_panel, ArchCoveringTaskPanel):
-                # TODO: check this, remove print statement
-                print("Reentrant call to setEdit detected; ignoring.")
                 return True
 
             task_control.showDialog(ArchCoveringTaskPanel(obj=vobj.Object))
@@ -864,9 +864,11 @@ if FreeCAD.GuiUp:
             super().onChanged(vobj, prop)
 
     class ArchCoveringTaskPanel:
-        def __init__(self, command=None, obj=None):
+        def __init__(self, command=None, obj=None, selection=None):
             self.command = command
             self.obj_to_edit = obj
+
+            # Initialize selection variables before the UI setup
             self.selected_obj = None
             self.selected_sub = None
 
@@ -875,6 +877,25 @@ if FreeCAD.GuiUp:
             # ArchComponent.ArchSelectionObserver
             self.view = FreeCADGui.ActiveDocument.ActiveView
             self.callback = self.view.addEventCallback("SoEvent", self.action)
+
+            # Pre-fill selection based on obj properties
+            if self.obj_to_edit:
+                # Edition mode: get selection from object
+                if self.obj_to_edit.Base:
+                    val = self.obj_to_edit.Base
+                    if isinstance(val, tuple):
+                        self.selected_obj = val[0]
+                        self.selected_sub = val[1][0] if val[1] else None
+                    else:
+                        self.selected_obj = val
+            else:
+                # Creation mode: get selection from command snapshot
+                if selection:
+                    if isinstance(selection, tuple):
+                        self.selected_obj = selection[0]
+                        self.selected_sub = selection[1][0] if selection[1] else None
+                    else:
+                        self.selected_obj = selection
 
             # Build the task panel UI
 
@@ -893,29 +914,15 @@ if FreeCAD.GuiUp:
 
             self.form = [self.geo_widget, self.vis_widget]
 
-            # Populat UI values
-
-            # Store the thickness to restore it when switching modes
-            self.stored_thickness = FreeCAD.Units.Quantity(
-                params.get_param_arch("CoveringThickness"), FreeCAD.Units.Length
-            ).UserString
-            self.stored_thickness = params.get_param_arch("CoveringThickness")
-            if self.stored_thickness is None:
-                self.stored_thickness = 10.0
-
-            # If editing, pre-fill selection
+            # Handle defaults and initial state
             if self.obj_to_edit:
-                if self.obj_to_edit.Base:
-                    val = self.obj_to_edit.Base
-                    if isinstance(val, tuple):
-                        self.selected_obj = val[0]
-                        self.selected_sub = val[1][0] if val[1] else None
-                    else:
-                        self.selected_obj = val
-
-            # If editing, populate UI
-            if self.obj_to_edit:
+                self.stored_thickness = self.obj_to_edit.TileThickness.Value
                 self._loadExistingData()
+                if not FreeCAD.ActiveDocument.HasPendingTransaction:
+                    FreeCAD.ActiveDocument.openTransaction("Edit Covering")
+            else:
+                self.stored_thickness = params.get_param_arch("CoveringThickness")
+                # Note: widget defaults are loaded in _setupTilesPage
 
         def _setupTopControls(self):
             top_form = QtGui.QFormLayout()
@@ -936,7 +943,6 @@ if FreeCAD.GuiUp:
                     self.le_selection.setText(f"{self.selected_obj.Label}.{self.selected_sub}")
                 else:
                     self.le_selection.setText(f"{self.selected_obj.Label}")
-
             h_sel.addWidget(self.le_selection)
             h_sel.addWidget(self.btn_selection)
             top_form.addRow(translate("Arch", "Selection:"), h_sel)
@@ -969,24 +975,34 @@ if FreeCAD.GuiUp:
             form = QtGui.QFormLayout()
             ui = FreeCADGui.UiLoader()
 
-            self.sb_length = ui.createWidget("Gui::InputField")
-            self.sb_length.setText("300mm")
+            # Helper for binding properties to a quantity spinbox with default
+            def setup_spinbox(prop_name, param_name):
+                sb = ui.createWidget("Gui::QuantitySpinBox")
+                unit_str = FreeCAD.Units.Quantity(0, FreeCAD.Units.Length).getUserPreferred()[2]
+                # TODO: cleaner alternative, but we net to get the correct obj
+                # unit_str = self.obj_to_edit.PropertyGet(prop_name).getUserPreferred()[2]
+                sb.setProperty("unit", unit_str)
+                if self.obj_to_edit:
+                    FreeCADGui.ExpressionBinding(sb).bind(self.obj_to_edit, prop_name)
+                    sb.setProperty("rawValue", getattr(self.obj_to_edit, prop_name).Value)
+                else:
+                    sb.setProperty("rawValue", params.get_param_arch(param_name))
+                return sb
+
+            self.sb_length = setup_spinbox("TileLength", "CoveringLength")
             self.sb_length.setToolTip(translate("Arch", "The length of the tiles"))
             form.addRow(translate("Arch", "Length:"), self.sb_length)
 
-            self.sb_width = ui.createWidget("Gui::InputField")
-            self.sb_width.setText("300mm")
+            self.sb_width = setup_spinbox("TileWidth", "CoveringWidth")
             self.sb_width.setToolTip(translate("Arch", "The width of the tiles"))
             form.addRow(translate("Arch", "Width:"), self.sb_width)
 
-            self.sb_thick = ui.createWidget("Gui::InputField")
-            self.sb_thick.setText("10mm")
+            self.sb_thick = setup_spinbox("TileThickness", "CoveringThickness")
             self.sb_thick.setToolTip(translate("Arch", "The thickness of the tiles"))
             self.lbl_thick = QtGui.QLabel(translate("Arch", "Thickness:"))
             form.addRow(self.lbl_thick, self.sb_thick)
 
-            self.sb_joint = ui.createWidget("Gui::InputField")
-            self.sb_joint.setText("5mm")
+            self.sb_joint = setup_spinbox("JointWidth", "CoveringJoint")
             self.sb_joint.setToolTip(translate("Arch", "The width of the joints between tiles"))
             form.addRow(translate("Arch", "Joint:"), self.sb_joint)
 
@@ -997,9 +1013,13 @@ if FreeCAD.GuiUp:
             self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
             form.addRow(translate("Arch", "Alignment:"), self.combo_align)
 
-            self.sb_rot = ui.createWidget("Gui::InputField")
-            self.sb_rot.setText("0deg")
-            self.sb_rot.setProperty("unit", "Angle")
+            self.sb_rot = ui.createWidget("Gui::QuantitySpinBox")
+            self.sb_rot.setProperty("unit", "deg")
+            if self.obj_to_edit:
+                FreeCADGui.ExpressionBinding(self.sb_rot).bind(self.obj_to_edit, "Rotation")
+                self.sb_rot.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
+            else:
+                self.sb_rot.setProperty("rawValue", 0.0)
             self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot)
 
@@ -1021,9 +1041,13 @@ if FreeCAD.GuiUp:
             h_pat.addWidget(btn_browse_pat)
             form.addRow(translate("Arch", "Pattern File:"), h_pat)
 
-            self.sb_rot_hatch = ui.createWidget("Gui::InputField")
-            self.sb_rot_hatch.setText("0deg")
-            self.sb_rot_hatch.setProperty("unit", "Angle")
+            self.sb_rot_hatch = ui.createWidget("Gui::QuantitySpinBox")
+            self.sb_rot_hatch.setProperty("unit", "deg")
+            if self.obj_to_edit:
+                FreeCADGui.ExpressionBinding(self.sb_rot_hatch).bind(self.obj_to_edit, "Rotation")
+                self.sb_rot_hatch.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
+            else:
+                self.sb_rot_hatch.setProperty("rawValue", 0.0)
             self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot_hatch)
 
@@ -1047,15 +1071,10 @@ if FreeCAD.GuiUp:
             self.combo_mode.setCurrentText(mode)
             self.onModeChanged(self.combo_mode.currentIndex())
 
-            self.sb_length.setText(self.obj_to_edit.TileLength.UserString)
-            self.sb_width.setText(self.obj_to_edit.TileWidth.UserString)
-            self.sb_thick.setText(self.obj_to_edit.TileThickness.UserString)
-            self.sb_joint.setText(self.obj_to_edit.JointWidth.UserString)
+            # Numerical values are auto-loaded by ExpressionBinding
             self.combo_align.setCurrentText(self.obj_to_edit.TileAlignment)
-            self.sb_rot.setText(self.obj_to_edit.Rotation.UserString)
 
             self.le_pat.setText(self.obj_to_edit.PatternFile)
-            self.sb_rot_hatch.setText(self.obj_to_edit.Rotation.UserString)
 
             if hasattr(self.obj_to_edit.ViewObject, "TextureImage"):
                 self.le_tex_image.setText(self.obj_to_edit.ViewObject.TextureImage)
@@ -1072,7 +1091,7 @@ if FreeCAD.GuiUp:
 
         def browsePattern(self):
             fn = QtGui.QFileDialog.getOpenFileName(
-                self.form, translate("Arch", "Select Pattern"), "", "Pattern files (*.pat)"
+                self.geo_widget, translate("Arch", "Select Pattern"), "", "Pattern files (*.pat)"
             )[0]
             if fn:
                 self.le_pat.setText(fn)
@@ -1081,17 +1100,25 @@ if FreeCAD.GuiUp:
             if index == 2:  # Hatch
                 self.geo_stack.setCurrentIndex(1)
                 self.vis_widget.setEnabled(False)
-            else:  # Tiles (Solid or Parametric)
+            else:  # Tiles (solid or parametric)
                 self.geo_stack.setCurrentIndex(0)
-                self.vis_widget.setEnabled(index == 0)  # Only enable visual for Solid Tiles
-                if index == 0:  # Solid Tiles
+                self.vis_widget.setEnabled(index == 0)  # Only enable visual for solid tiles
+                if index == 0:  # Solid tiles
                     self.sb_thick.setEnabled(True)
-                    self.sb_thick.setText(self.stored_thickness)
-                else:  # Parametric Pattern
+                    self.sb_thick.setProperty("rawValue", self.stored_thickness)
+                    if self.obj_to_edit:
+                        self.obj_to_edit.TileThickness = self.stored_thickness
+                else:  # Parametric pattern
                     if self.sb_thick.isEnabled():
-                        self.stored_thickness = self.sb_thick.text()
+                        self.stored_thickness = self.sb_thick.value()
+                        params.set_param_arch("CoveringThickness", self.stored_thickness)
                     self.sb_thick.setEnabled(False)
-                    self.sb_thick.setText("0mm")
+                    self.sb_thick.setProperty("rawValue", 0.0)
+                    if self.obj_to_edit:
+                        self.obj_to_edit.TileThickness = 0.0
+
+            if self.obj_to_edit:
+                self.obj_to_edit.FinishMode = self.combo_mode.currentText()
 
         def isPicking(self):
             return self.btn_selection.isChecked()
@@ -1147,12 +1174,22 @@ if FreeCAD.GuiUp:
             self.selected_sub = sub
             self.le_selection.setText(f"{obj.Label}.{sub}")
             self.setPicking(False)
+            self.updateBase()
 
         def setSelectedObject(self, obj):
             self.selected_obj = obj
             self.selected_sub = None
             self.le_selection.setText(f"{obj.Label}")
             self.setPicking(False)
+            self.updateBase()
+
+        def updateBase(self):
+            # Update the Base property of the live object
+            if self.obj_to_edit:
+                if self.selected_sub:
+                    self.obj_to_edit.Base = (self.selected_obj, [self.selected_sub])
+                else:
+                    self.obj_to_edit.Base = self.selected_obj
 
         def getStandardButtons(self):
             return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
@@ -1160,69 +1197,62 @@ if FreeCAD.GuiUp:
         def _cleanup_and_close(self):
             # Ensure callback is always removed
             self.view.removeEventCallback("SoEvent", self.callback)
-            if self.command:
-                # Reject triggered by the creation command
-                self.command.finish()
-            else:
-                # Reject triggered by editing
-                FreeCADGui.Control.closeDialog()
+            FreeCADGui.Control.closeDialog()
 
         def accept(self):
             try:
-                # If creating new object
                 if not self.obj_to_edit:
-                    if not self.selected_obj:
-                        return
-
-                    FreeCAD.ActiveDocument.openTransaction("Create Covering")
-
-                    # Create Object
+                    # Creation mode
                     import Arch
 
-                    # Set Base
-                    if self.selected_sub:
-                        base_obj = (self.selected_obj, [self.selected_sub])
+                    base = (
+                        (self.selected_obj, [self.selected_sub])
+                        if self.selected_sub
+                        else self.selected_obj
+                    )
+                    obj = Arch.makeCovering(base)
+                    obj.FinishMode = self.combo_mode.currentText()
+                    if obj.FinishMode != "Hatch Pattern":
+                        obj.TileLength = self.sb_length.property("rawValue")
+                        obj.TileWidth = self.sb_width.property("rawValue")
+                        obj.JointWidth = self.sb_joint.property("rawValue")
+                        obj.TileAlignment = self.combo_align.currentText()
+                        obj.Rotation = self.sb_rot.property("rawValue")
+                        if obj.FinishMode == "Solid Tiles":
+                            obj.TileThickness = self.sb_thick.property("rawValue")
                     else:
-                        base_obj = self.selected_obj
-
-                    obj = Arch.makeCovering(base_obj)
+                        obj.PatternFile = self.le_pat.text()
+                        obj.Rotation = self.sb_rot_hatch.property("rawValue")
                 else:
-                    # If editing
+                    # Edition mode
                     obj = self.obj_to_edit
-                    FreeCAD.ActiveDocument.openTransaction("Edit Covering")
-
-                    if self.selected_obj and self.selected_obj != obj.Base:
-                        if self.selected_sub:
-                            obj.Base = (self.selected_obj, [self.selected_sub])
-                        else:
-                            obj.Base = self.selected_obj
-
-                # Set properties (common for create/edit)
-                mode = self.combo_mode.currentText()
-                obj.FinishMode = mode
-
-                if mode != "Hatch Pattern":
-                    obj.TileLength = self.sb_length.text()
-                    obj.TileWidth = self.sb_width.text()
-                    obj.JointWidth = self.sb_joint.text()
                     obj.TileAlignment = self.combo_align.currentText()
-                    obj.Rotation = self.sb_rot.text()
+                    if obj.FinishMode == "Hatch Pattern":
+                        obj.PatternFile = self.le_pat.text()
 
-                    if mode == "Solid Tiles":
-                        obj.TileThickness = self.sb_thick.text()
-                else:
-                    obj.PatternFile = self.le_pat.text()
-                    obj.Rotation = self.sb_rot_hatch.text()
-
-                # Set view properties
+                # Common visual setup
                 if hasattr(obj.ViewObject, "TextureImage"):
                     obj.ViewObject.TextureImage = self.le_tex_image.text()
 
-                FreeCAD.ActiveDocument.commitTransaction()
+                # Persist user preferences
+                if obj.FinishMode != "Hatch Pattern":
+                    params.set_param_arch("CoveringLength", obj.TileLength.Value)
+                    params.set_param_arch("CoveringWidth", obj.TileWidth.Value)
+                    params.set_param_arch("CoveringJoint", obj.JointWidth.Value)
+                    if obj.FinishMode == "Solid Tiles":
+                        params.set_param_arch("CoveringThickness", obj.TileThickness.Value)
+
+                if FreeCAD.ActiveDocument.HasPendingTransaction:
+                    FreeCAD.ActiveDocument.commitTransaction()
+
                 FreeCAD.ActiveDocument.recompute()
 
             finally:
                 self._cleanup_and_close()
 
         def reject(self):
+            if self.obj_to_edit:
+                FreeCADGui.ActiveDocument.resetEdit()
+                if FreeCAD.ActiveDocument.HasPendingTransaction:
+                    FreeCAD.ActiveDocument.abortTransaction()
             self._cleanup_and_close()

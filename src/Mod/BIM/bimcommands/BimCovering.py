@@ -85,25 +85,23 @@ class BIM_Covering:
         Captures references to the active document and viewer, instantiates the Task Panel logic,
         and registers the panel with the FreeCAD Task Manager to begin the user interaction.
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.view = FreeCADGui.ActiveDocument.ActiveView
-
-        # Show task panel
-        import ArchCovering
-
-        self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self)
-        FreeCADGui.Control.showDialog(self.task_panel)
-
         # Check for pre-selection and fill in the task panel with it, if the user has already
         # selected something before executing the command
         sel = FreeCADGui.Selection.getSelectionEx()
+        base_obj = None
         if len(sel) == 1:
-            obj = sel[0].Object
             if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
-                self.task_panel.setSelectedFace(obj, sel[0].SubElementNames[0])
+                base_obj = (sel[0].Object, [sel[0].SubElementNames[0]])
             else:
-                self.task_panel.setSelectedObject(obj)
-        else:
+                base_obj = sel[0].Object
+
+        # Launch the task panel
+        import ArchCovering
+
+        self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self, selection=base_obj)
+        FreeCADGui.Control.showDialog(self.task_panel)
+
+        if not base_obj:
             # Auto-enable picking if nothing selected
             self.task_panel.setPicking(True)
 
