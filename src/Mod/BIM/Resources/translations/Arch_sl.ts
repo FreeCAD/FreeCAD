@@ -26,7 +26,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="48"/>
       <source>Copy existing…</source>
-      <translation>Kopiraj obstoječe …</translation>
+      <translation>Kopiraj obstoječe…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="58"/>
@@ -36,7 +36,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="65"/>
       <source>The name/label of this material</source>
-      <translation>Ime/oznaka materiala</translation>
+      <translation>Ime/oznaka snovi</translation>
     </message>
     <message>
       <location filename="../ui/ArchMaterial.ui" line="94"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../ui/ArchMaterial.ui" line="268"/>
       <source>Parent</source>
-      <translation>Nadrejenik</translation>
+      <translation>Nadrejeni</translation>
     </message>
   </context>
   <context>
@@ -119,7 +119,7 @@
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="28"/>
       <source>Name of the currently connected BIM Server. Settings can be adjusted in BIM preferences.</source>
-      <translation type="unfinished">Name of the currently connected BIM Server. Settings can be adjusted in BIM preferences.</translation>
+      <translation>Ime trenutno povezanega strežnika BIM. Nastavitve lahko prilagodite v nastavitvah BIM.</translation>
     </message>
     <message>
       <location filename="../ui/BimServerTaskPanel.ui" line="38"/>
@@ -219,7 +219,7 @@
 Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DO NOT have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied
 
 When dealing with native IFC objects, you can use FreeCAD properties name, ex: 'Class:IfcWall' or any other IFC attribute (ex. 'IsTypedBy:#455'). If the 'Objects' column has been set to an IFC project or document, all the IFC entities of that project will be considered.</source>
-      <translation>Možnosten, s podpičjem (;) ločen seznam lastnostnih:vrednostnih sit. Predpnite imenu lastnosti !, če želite obrniti učinek sita (izvzeti predmete, ki ustrezajo situ). Predmeti, katerih lastnost vsebuje vrednost, bodo izbrani. 
+      <translation>Možen, s podpičjem (;) ločen seznam lastnostnih:vrednostnih sit. Predpnite imenu lastnosti !, če želite obrniti učinek sita (izvzeti predmete, ki ustrezajo situ). Predmeti, katerih lastnost vsebuje vrednost, bodo izbrani. 
 
 Primeri veljavnih sit (nikjer ni razlikovanja velikih in malih črk): Ime:Stena - zaznani bodo le predmeti z besedo "stena" v (zalednem) imenu; Opis:Okn - zaznani bodo le predmeti, ki imajo v opisu "okn"; !Oznaka:Okn - zaznani bodo le predmeti, ki v oznaki NIMAJO "okn"; IfcType:Wall - zaznani bodo le predmeti ki spada v Ifc vrsto "Wall" (stena); !Značka:Stena - zaznani bodo le predmeti, ki NIMAJO značke "Stena". Če to polje pustite prazno, se ne preseja
 
@@ -259,13 +259,9 @@ to count the objects, or property names like 'Length' or
 When used with native IFC objects, this can be used to
 retrieve any attribute or custom properties of the elements
 retrieved.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count'
-to count the objects, or property names like 'Length' or
-'Shape.Volume' to retrieve a certain property.
+      <translation>Lastnost, ki jo je potrebno pridobiti iz vsakega predmeta. Lahko je "štetje" za štetje predmetov ali imena lastnosti, kot je "dolžina" ali "oblika zvoka" za pridobitev določene lastnosti.
 
-When used with native IFC objects, this can be used to
-retrieve any attribute or custom properties of the elements
-retrieved.</translation>
+Pri uporabi z izvornimi predmeti IFC je to mogoče uporabiti za pridobitev katerega koli atributa ali lastnosti po meri pridobljenih elementov.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="14"/>
@@ -280,7 +276,7 @@ retrieved.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="85"/>
       <source>Optional unit for the result, e.g. m³, m^3, or m3</source>
-      <translation>Izbirna enota izpisa, npr. m³, m^3, or m3</translation>
+      <translation>Izbirna enota izpisa, na primer. m³, m^3, ali m3</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="93"/>
@@ -296,18 +292,13 @@ in FreeCAD or not.
 
 Use the name of the IFC project to get all the IFC entities
 of that project, no matter if they are expanded or not.</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of object names
-(internal names, not labels), to be considered by this operation.
-If the list contains groups, children will be added.
+      <translation>Izbirni seznam imen objektov, ločen s podpičjem (;). Pri tej operaciji moramo upoštevati notranja imena, ne oznake. Če seznam vsebuje skupine, bodo dodani otroci.
 
-Leave blank to use all objects from the document.
+Pustite prazno, če želite uporabiti vse predmete iz dokumenta.
 
-If the document is an IFC project, all IFC entities of the
-document will be used, no matter if they are expanded
-in FreeCAD or not.
+Če je dokument projekt IFC, bodo vse entitete IFC dokumenta uporabljene, ne glede na to, ali so razširjene v FreeCAD-u ali ne.
 
-Use the name of the IFC project to get all the IFC entities
-of that project, no matter if they are expanded or not.</translation>
+Uporabite ime dokumenta IFC, da dobite vse entitete IFC tega projekta, ne glede na to, ali so razširjeni ali ne.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="126"/>
@@ -322,7 +313,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="136"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation>Če je to omogočeno, bodo dodatne vrstice popolnjene z vsakim obravnavanim predmetom. Sicer pa le seštevki.</translation>
+      <translation>Če je to omogočeno, bodo dodatne vrstice dopolnjene z vsakim obravnavanim predmetom. Sicer pa le seštevki.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="139"/>
@@ -377,7 +368,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="226"/>
       <source>Exports results to a CSV or Markdown file. For CSV export in LibreOffice: maintain a live link by right-clicking the Sheets tab bar → New Sheet → From File → Link. In LibreOffice v6.x and later: use Sheet → Insert Sheet… → From File → Browse…</source>
-      <translation type="unfinished">Exports results to a CSV or Markdown file. For CSV export in LibreOffice: maintain a live link by right-clicking the Sheets tab bar → New Sheet → From File → Link. In LibreOffice v6.x and later: use Sheet → Insert Sheet… → From File → Browse…</translation>
+      <translation>Izvozi rezultate v datoteko CSV ali Markdown. Za izvoz CSV v LibreOffice: vzdržujte povezavo v živo tako, da z desno miškino tipko kliknete vrstico z zavihki Preglednice → Nov list → Iz datoteke → Povezava. V LibreOffice v6.x in novejših: uporabite List → Vstavi list… → Iz datoteke → Prebrskaj…</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="229"/>
@@ -387,7 +378,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="14"/>
       <source>BimServer Login</source>
-      <translation>BIMserver prijava</translation>
+      <translation>BimServer prijava</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="22"/>
@@ -397,7 +388,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="36"/>
       <source>Login (email)</source>
-      <translation>Prijava (epošta)</translation>
+      <translation>Prijava (elektronski naslov)</translation>
     </message>
     <message>
       <location filename="../ui/DialogBimServerLogin.ui" line="50"/>
@@ -465,7 +456,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="150"/>
       <source>List of IFC properties for the selected objects. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation>Seznam IFC lastnosti izbranih predmetov. Za urejanje dvoklinite, za prerazporejanje povlecite-spustite.</translation>
+      <translation>Seznam IFC lastnosti izbranih predmetov. Za urejanje dvakrat kliknite, za prerazporejanje povlecite in spustite.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcProperties.ui" line="170"/>
@@ -486,12 +477,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="22"/>
       <source>IFC UUID</source>
-      <translation>IFC obča edinstvena oznaka (UUID)</translation>
+      <translation>IFC UUID</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="38"/>
       <source>List of IFC properties for this object. Double-click to edit. Drag and drop to reorganize.</source>
-      <translation>Seznam IFC lastnosti tega predmeta. Dvokliknite za urejanje, povlecite-spustite za prerazporejanje.</translation>
+      <translation>Seznam IFC lastnosti tega predmeta. Dvakrat kliknite za urejanje, povlecite in spustite za prerazporejanje.</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="76"/>
@@ -501,7 +492,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcPropertiesRedux.ui" line="83"/>
       <source>Force export of full FreeCAD parametric data</source>
-      <translation>Vsili izvoz FreeCADovih popolnih določilovnih podatkov</translation>
+      <translation>Vsili izvoz FreeCADovih popolnih določilnih podatkov</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="39"/>
@@ -550,28 +541,28 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="20"/>
       <source>Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</source>
-      <translation type="unfinished">Convert this document to an IFC document? Selecting 'Yes' will enable automatic creation of IFC objects. Selecting 'No' will allow a mix of IFC and non-IFC elements within the file.</translation>
+      <translation>Želite ta dokument pretvoriti v dokument IFC? Če izberete »Da«, boste omogočili samodejno ustvarjanje predmetov IFC. Če izberete »Ne«, bo v datoteki dovoljena mešanica elementov IFC in elementov, ki niso IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation type="unfinished">Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</translation>
+      <translation>Doda privzeto zgradbo strukture, ki jo sestavljajo IfcSite, IfcBuilding in IfcBuildingStorey. Strukturo lahko kasneje dodate tudi ročno.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
       <source>Also create a default structure</source>
-      <translation type="unfinished">Also create a default structure</translation>
+      <translation>Ustvarite tudi privzeto strukturo</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="40"/>
       <source>Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</source>
-      <translation type="unfinished">Prevents further prompts when creating new FreeCAD documents. New documents will not be converted to IFC automatically, but conversion remains possible later via Utils → Create IFC Project.</translation>
+      <translation>Prepreči nadaljnje pozive pri ustvarjanju novih dokumentov FreeCAD. Novi dokumenti ne bodo samodejno pretvorjeni v IFC, vendar je pretvorba še vedno možna pozneje prek Pripomočki → Ustvari IFC Projekt.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="43"/>
       <location filename="../ui/dialogCreateProject.ui" line="30"/>
       <source>Do not ask again</source>
-      <translation type="unfinished">Do not ask again</translation>
+      <translation>Ne sprašuj več</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="14"/>
@@ -581,7 +572,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogIfcElements.ui" line="20"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;This dialog lets you change the IFC type and material associated with any BIM object in this document. Double-click the IFC type to change, or use the drop-down menu below the list.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;S tem pogovornim oknom je mogoče spremeniti IFC vrste in snovi povezane s katerimkoli BIM predmetom tega dokumenta. Dvokliknite na IFC vrsto, ki jo želite spremeniti, ali uporabite spustni meni pod seznamom.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;S tem pogovornim oknom je mogoče spremeniti IFC vrste in snovi povezane s katerimkoli BIM predmetom tega dokumenta. Dvojni klik na IFC vrsto, ki jo želite spremeniti, ali uporabite spustni meni pod seznamom.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../ui/dialogIfcQuantities.ui" line="14"/>
@@ -606,132 +597,132 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogImport.ui" line="22"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Kako bo datoteka IFC prvotno uvožena: samo en objekt, samo struktura projekta ali vsi posamezni objekti.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="26"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Samo koreninski predmet (privzeto)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="31"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struktura projekta (ravni)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="36"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Vsi individualni IFC predmeti</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="44"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Začetni uvoz</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="14"/>
       <source>IFC Import Options</source>
-      <translation type="unfinished">IFC Import Options</translation>
+      <translation>Možnosti uvoza IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="55"/>
       <source>Locked (IFC objects only)</source>
-      <translation type="unfinished">Locked (IFC objects only)</translation>
+      <translation>Zaklenjeno (samo predmeti IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="60"/>
       <source>Unlocked (non-IFC objects permitted)</source>
-      <translation type="unfinished">Unlocked (non-IFC objects permitted)</translation>
+      <translation>Odklenjeno (dovoljeni predmeti, ki niso IFC)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="68"/>
       <source>Lock document</source>
-      <translation type="unfinished">Lock document</translation>
+      <translation>Zakleni dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="75"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Vrsta zastopanja</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="82"/>
       <source>The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</source>
-      <translation type="unfinished">The type of object created at import. Mesh is faster, but Shapes are more precise. You can convert between the two anytime by right-clicking the object tree</translation>
+      <translation>Vrsta predmeta, ustvarjenega pri uvozu. Mreža je hitrejša, vendar so oblike bolj natančne. Med njima lahko kadar koli pretvarjate tako, da z desno miškino tipko kliknete drevo predmetov</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="89"/>
       <source>Load the shape (slower)</source>
-      <translation type="unfinished">Load the shape (slower)</translation>
+      <translation>Nalaganje oblike (počasneje)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="94"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Naloži samo 3D predstavitev, brez oblike (privzeto)</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="99"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Brez 3D predstavitve</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="119"/>
       <source>Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</source>
-      <translation type="unfinished">Preloads IFC types that are connected to the objects. It is also possible to leave this setting disabled and double click later on the object to load the types.</translation>
+      <translation>Vnaprej naloži vrste IFC, ki so povezane s predmeti. To nastavitev lahko tudi pustite onemogočeno in pozneje dvakrat kliknite predmet, da naložite vrste.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="139"/>
       <source>Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</source>
-      <translation type="unfinished">Preload all materials of the file. It is advised to leave this unchecked and load materials later, only when needed</translation>
+      <translation>Vnaprej naložite vse materiale datoteke. Priporočljivo je, da to možnost pustite nepotrjeno in materiale naložite pozneje, samo ko je to potrebno</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="159"/>
       <source>If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</source>
-      <translation type="unfinished">If this is unchecked, these settings will be applied automatically next time. This can be changed later under menu Edit -&gt; Preferences -&gt; BIM -&gt; Native IFC</translation>
+      <translation>Če to ni potrjeno, bodo te nastavitve naslednjič uporabljene samodejno. To lahko pozneje spremenite v meniju Urejanje -&gt; Nastavitve -&gt; BIM -&gt; Izvorni IFC</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="109"/>
       <source>If this is checked, the workbench specified in Start preferences will be loaded after import</source>
-      <translation type="unfinished">If this is checked, the workbench specified in Start preferences will be loaded after import</translation>
+      <translation>Če je to označeno, se delovna miza, določena v začetnih nastavitvah, naloži po uvozu</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="51"/>
       <source>Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</source>
-      <translation type="unfinished">Defines how IFC data is stored in the FreeCAD document. 'Single IFC document' treats the FreeCAD document itself as the IFC document, with all created content belonging to it. 'Use IFC document object' creates a separate object representing the IFC document, allowing both IFC and non-IFC content to coexist.</translation>
+      <translation>Določa, kako so podatki IFC shranjeni v dokumentu FreeCAD. 'Enotni dokument IFC' obravnava sam dokument FreeCAD kot dokument IFC, z vso ustvarjeno vsebino, ki mu pripada. 'Uporabi objekt dokumenta IFC' ustvari ločen objekt, ki predstavlja dokument IFC, kar omogoča soobstoj vsebine IFC in vsebine, ki ni IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="112"/>
       <source>Switch workbench after import</source>
-      <translation type="unfinished">Switch workbench after import</translation>
+      <translation>Zamenjaj delovno okolje po uvozu</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="122"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Prednapetostne vrste</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="129"/>
       <source>Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</source>
-      <translation type="unfinished">Preload property sets of all objects. It is advised to leave this unchecked and load property sets later, only when needed</translation>
+      <translation>Vnaprej naloži nize lastnosti vseh predmetov. Priporočljivo je, da to možnost pustite nepotrjeno in naložite nize lastnosti pozneje, samo ko je to potrebno</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="132"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Vnaprej naložite nize lastnosti</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="142"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Vnaprej naložite snovi</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="149"/>
       <source>Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</source>
-      <translation type="unfinished">Preload all layers of the file. It is advised to leave this unchecked and load layers later, only when needed</translation>
+      <translation>Vnaprej naložite vse plasti datoteke. Priporočljivo je, da to možnost pustite nepotrjeno in naložite sloje pozneje, samo ko je to potrebno</translation>
     </message>
     <message>
       <location filename="../ui/dialogImport.ui" line="152"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Vnaprej naložite plasti</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="29"/>
@@ -753,12 +744,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation type="unfinished">Layers Manager</translation>
+      <translation>Upravitelj plasti</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="60"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Preklopi vrednost</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="67"/>
@@ -793,12 +784,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="14"/>
       <source>Nudge</source>
-      <translation>Dregljaj</translation>
+      <translation>Dregni</translation>
     </message>
     <message>
       <location filename="../ui/dialogNudgeValue.ui" line="20"/>
       <source>New nudge value</source>
-      <translation type="unfinished">New nudge value</translation>
+      <translation>Nova spodbudna vrednost</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="14"/>
@@ -823,7 +814,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="206"/>
       <source> E</source>
-      <translation> V</translation>
+      <translation> E</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="222"/>
@@ -843,7 +834,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogAddPSet.ui" line="14"/>
       <source>Add standard IFC PSet</source>
-      <translation type="unfinished">Add standard IFC PSet</translation>
+      <translation>Dodaj standardni IFC PSet</translation>
     </message>
     <message>
       <location filename="../ui/dialogAddProperty.ui" line="87"/>
@@ -856,77 +847,77 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="38"/>
       <source>Fill this dialog with preset values</source>
-      <translation type="unfinished">Fill this dialog with preset values</translation>
+      <translation>Izpolni ta dialog s prednastavitvenimi vrednostmi</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="42"/>
       <source>Use preset</source>
-      <translation type="unfinished">Use preset</translation>
+      <translation>Uporabi prednastavitev</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="56"/>
       <source>The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</source>
-      <translation type="unfinished">The settings below can be saved as a preset. Presets are stored as .txt files in the local FreeCAD user folder</translation>
+      <translation>Spodnje nastavitve lahko shranite kot prednastavitev. Prednastavitve so shranjene kot .txt dokumenti v lokalni uporabniški mapi FreeCAD</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="59"/>
       <source>Save Preset</source>
-      <translation type="unfinished">Save Preset</translation>
+      <translation>Shrani prednastavitev</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="87"/>
       <source>Creates a new BIM project</source>
-      <translation type="unfinished">Creates a new BIM project</translation>
+      <translation>Ustvari nov BIM projekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="90"/>
       <source>Create a New BIM Project</source>
-      <translation type="unfinished">Create a New BIM Project</translation>
+      <translation>Ustvari nov BIM Projekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="102"/>
       <source>A new BIM project will be created, either as a new FreeCAD document or as a Native IFC project</source>
-      <translation type="unfinished">A new BIM project will be created, either as a new FreeCAD document or as a Native IFC project</translation>
+      <translation>Nov BIM projekt bo ustvarjen, bodisi kot nov FreeCAD dokument ali kot izvorni IFC projekt</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="114"/>
       <source>This will create a new FreeCAD document for the construction of a BIM model, but initially with no specific IFC structure. This is the most flexible option when starting working on a BIM project. This project can be converted to IFC anytime later.</source>
-      <translation type="unfinished">This will create a new FreeCAD document for the construction of a BIM model, but initially with no specific IFC structure. This is the most flexible option when starting working on a BIM project. This project can be converted to IFC anytime later.</translation>
+      <translation>To bo ustvarilo nov FreeCAD dokument za konstrukcijo BIM modela, vendar na začetku brez posebne IFC strukture. To je najbolj prilagodljiva možnost ob začetku dela na BIM projektu. Ta projekt je mogoče kadarkoli pretvoriti v IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="117"/>
       <source>Create a new document without IFC support</source>
-      <translation type="unfinished">Create a new document without IFC support</translation>
+      <translation>Ustvari nov dokument brez IFC podpore</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="127"/>
       <source>This will create an IFC project. All the BIM objects added to the IFC project will immediately become IFC objects. This is less flexible, but helps to strictly adhere to the IFC standard.</source>
-      <translation type="unfinished">This will create an IFC project. All the BIM objects added to the IFC project will immediately become IFC objects. This is less flexible, but helps to strictly adhere to the IFC standard.</translation>
+      <translation>To bo ustvarilo nov IFC projekt. Vsi objekti BIM, dodani projektu IFC, bodo takoj postali objekti IFC. To je manj prilagodljivo, vendar pomaga pri strogem upoštevanju standarda IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="130"/>
       <source>Create a native IFC project in the current document</source>
-      <translation type="unfinished">Create a native IFC project in the current document</translation>
+      <translation>Ustvari domači IFC projekt v trenutnem dokumentu</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="140"/>
       <source>The new IFC project will be created as a new FreeCAD document. In that mode, the IFC project is the FreeCAD document, anything created in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</source>
-      <translation type="unfinished">The new IFC project will be created as a new FreeCAD document. In that mode, the IFC project is the FreeCAD document, anything created in that document becomes part of the IFC project. This is extremely restrictive as no non-IFC object can be added to the document.</translation>
+      <translation>Novi IFC projekt bo ustvarjen kot novi FreeCAD dokument. V tem načinu je IFC projekt FreeCAD dokument, vse, kar je ustvarjeno v tem dokumentu, postane del projekta IFC. To je zelo restriktivno, saj v dokument ni mogoče dodati nobenega predmeta, ki ni IFC.</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="143"/>
       <source>Create a locked native IFC project as a new document</source>
-      <translation type="unfinished">Create a locked native IFC project as a new document</translation>
+      <translation>Ustvari zaklenjen domači IFC projekt kot nov dokument</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="161"/>
       <source>A name for this BIM or IFC project</source>
-      <translation type="unfinished">A name for this BIM or IFC project</translation>
+      <translation>Ime tega BIM ali IFC projekta</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="176"/>
       <source>Create a new site</source>
-      <translation type="unfinished">Create a new site</translation>
+      <translation>Ustvari novo lokacijo</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="191"/>
@@ -956,7 +947,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="266"/>
       <source>Longitude</source>
-      <translation>Zemljep. dolžina</translation>
+      <translation>Zemljepisna dolžina</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="273"/>
@@ -976,7 +967,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="297"/>
       <source>Latitude</source>
-      <translation>Zemljep. širina</translation>
+      <translation>Zemljepisna širina</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="304"/>
@@ -986,12 +977,12 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="307"/>
       <source> N</source>
-      <translation> S</translation>
+      <translation> N</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="328"/>
       <source>Creates a new building</source>
-      <translation type="unfinished">Creates a new building</translation>
+      <translation>Ustvari novo zgradbo</translation>
     </message>
     <message>
       <location filename="../ui/dialogProjectManager.ui" line="331"/>
@@ -1562,7 +1553,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="29"/>
       <source>Edit definition</source>
-      <translation>Uredi opredelbo</translation>
+      <translation>Uredi opredelitev</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="14"/>
@@ -1572,7 +1563,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="21"/>
       <source>Copy existing…</source>
-      <translation>Kopiraj obstoječe …</translation>
+      <translation>Kopiraj obstoječe…</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="49"/>
@@ -1603,7 +1594,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="89"/>
       <source>Del</source>
-      <translation>Zbr</translation>
+      <translation>Zbriši</translation>
     </message>
     <message>
       <location filename="../ui/ArchMultiMaterial.ui" line="96"/>
@@ -1633,7 +1624,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="76"/>
       <source>Nesting parameters</source>
-      <translation>Določilke vdevanja</translation>
+      <translation>Določila vdevanja</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="82"/>
@@ -1683,7 +1674,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/ArchNest.ui" line="154"/>
       <source>pass %p</source>
-      <translation>opravljeno %p</translation>
+      <translation>Opravljeno %p</translation>
     </message>
     <message>
       <location filename="../ui/ArchNest.ui" line="163"/>
@@ -2298,32 +2289,32 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="28"/>
       <source>Initial import</source>
-      <translation type="unfinished">Initial import</translation>
+      <translation>Začetni uvoz</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="35"/>
       <source>How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</source>
-      <translation type="unfinished">How the IFC file will initially be imported: Only one object, only project structure, or all individual objects.</translation>
+      <translation>Kako bo datoteka IFC prvotno uvožena: samo en objekt, samo struktura projekta ali vsi posamezni objekti.</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="45"/>
       <source>Only root object (default)</source>
-      <translation type="unfinished">Only root object (default)</translation>
+      <translation>Samo koreninski predmet (privzeto)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="50"/>
       <source>Project structure (levels)</source>
-      <translation type="unfinished">Project structure (levels)</translation>
+      <translation>Struktura projekta (ravni)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="55"/>
       <source>All individual IFC objects</source>
-      <translation type="unfinished">All individual IFC objects</translation>
+      <translation>Vsi individualni IFC predmeti</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="63"/>
       <source>Representation type</source>
-      <translation type="unfinished">Representation type</translation>
+      <translation>Vrsta zastopanja</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="83"/>
@@ -2333,7 +2324,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="88"/>
       <source>Load 3D representation only, no shape (default)</source>
-      <translation type="unfinished">Load 3D representation only, no shape (default)</translation>
+      <translation>Naloži samo 3D predstavitev, brez oblike (privzeto)</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="14"/>
@@ -2348,7 +2339,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="93"/>
       <source>No 3D representation</source>
-      <translation type="unfinished">No 3D representation</translation>
+      <translation>Brez 3D predstavitve</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="103"/>
@@ -2368,7 +2359,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="122"/>
       <source>Preload property sets</source>
-      <translation type="unfinished">Preload property sets</translation>
+      <translation>Vnaprej naložite nize lastnosti</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="135"/>
@@ -2378,7 +2369,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="138"/>
       <source>Preload types</source>
-      <translation type="unfinished">Preload types</translation>
+      <translation>Prednapetostne vrste</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="151"/>
@@ -2388,7 +2379,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="154"/>
       <source>Preload materials</source>
-      <translation type="unfinished">Preload materials</translation>
+      <translation>Vnaprej naložite snovi</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="167"/>
@@ -2398,7 +2389,7 @@ p, li { white-space: pre-wrap; }
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="170"/>
       <source>Preload layers</source>
-      <translation type="unfinished">Preload layers</translation>
+      <translation>Vnaprej naložite plasti</translation>
     </message>
     <message>
       <location filename="../ui/preferencesNativeIFC.ui" line="183"/>
@@ -3829,7 +3820,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="442"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Prednastavljeno</translation>
@@ -4104,7 +4095,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1080"/>
       <source>Run</source>
-      <translation>Zaženi (postopek), </translation>
+      <translation>Zaženi</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1083"/>
@@ -4134,12 +4125,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>IdRel</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="563"/>
+      <location filename="../../ArchWindowPresets.py" line="554"/>
       <source>Door</source>
       <translation>Vrata</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="566"/>
+      <location filename="../../ArchWindowPresets.py" line="557"/>
       <source>Opening</source>
       <translation>Odprtina</translation>
     </message>
@@ -4387,90 +4378,90 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Nobenega okna ni mogoče najti. Ni mogoče nadaljevati.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="391"/>
+      <location filename="../../bimcommands/BimWindow.py" line="380"/>
       <source>Window options</source>
       <translation>Možnosti okna</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="395"/>
+      <location filename="../../bimcommands/BimWindow.py" line="384"/>
       <source>Auto include in host object</source>
       <translation>Samodejno vključi v gostiteljski predmet</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="404"/>
+      <location filename="../../bimcommands/BimWindow.py" line="393"/>
       <source>Sill height</source>
       <translation>Višina okenske police</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1168"/>
-      <location filename="../../ArchWindow.py" line="1771"/>
+      <location filename="../../ArchWindow.py" line="1078"/>
+      <location filename="../../ArchWindow.py" line="1681"/>
       <source>Invert Opening Direction</source>
       <translation type="unfinished">Invert Opening Direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1179"/>
-      <location filename="../../ArchWindow.py" line="1774"/>
+      <location filename="../../ArchWindow.py" line="1089"/>
+      <location filename="../../ArchWindow.py" line="1684"/>
       <source>Invert Hinge Position</source>
       <translation type="unfinished">Invert Hinge Position</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1241"/>
+      <location filename="../../ArchWindow.py" line="1151"/>
       <source>This window has no defined opening</source>
       <translation>To okno nima določenega odpiranja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1531"/>
-      <location filename="../../ArchWindow.py" line="1582"/>
+      <location filename="../../ArchWindow.py" line="1441"/>
+      <location filename="../../ArchWindow.py" line="1492"/>
       <source>Get selected edge</source>
       <translation>Dobi izbrani rob</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1684"/>
+      <location filename="../../ArchWindow.py" line="1594"/>
       <source>Unable to create component</source>
       <translation>Sestavine ni mogoče ustvariti</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1722"/>
+      <location filename="../../ArchWindow.py" line="1632"/>
       <source>Window elements</source>
       <translation>Deli oken</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1723"/>
+      <location filename="../../ArchWindow.py" line="1633"/>
       <source>Hole wire</source>
       <translation>Črtovje preboja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1730"/>
+      <location filename="../../ArchWindow.py" line="1640"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Številka črtovja, ki določa preboj v gostuječem predmetu. Pri vrednosti nič bo samodejno upoštevano največje črtovje</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
+      <location filename="../../ArchWindow.py" line="1641"/>
       <source>Pick Selected</source>
       <translation type="unfinished">Pick Selected</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchWindow.py" line="1647"/>
       <source>Create/Update Component</source>
       <translation type="unfinished">Create/Update Component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1651"/>
       <source>Create new Component</source>
       <translation type="unfinished">Create new Component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1745"/>
+      <location filename="../../ArchWindow.py" line="1655"/>
       <source>Frame depth</source>
       <translation type="unfinished">Frame depth</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1756"/>
+      <location filename="../../ArchWindow.py" line="1666"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the window's Frame property value will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1764"/>
+      <location filename="../../ArchWindow.py" line="1674"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the window's Offset property value will be added to the value entered here</translation>
     </message>
@@ -4478,7 +4469,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchSectionPlane.py" line="1739"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
       <location filename="../../ArchComponent.py" line="2350"/>
-      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchWindow.py" line="1642"/>
       <location filename="../../ArchAxis.py" line="955"/>
       <location filename="../../ArchSpace.py" line="944"/>
       <source>Remove</source>
@@ -4487,7 +4478,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="339"/>
       <location filename="../../ArchComponent.py" line="2351"/>
-      <location filename="../../ArchWindow.py" line="1733"/>
+      <location filename="../../ArchWindow.py" line="1643"/>
       <location filename="../../ArchAxis.py" line="956"/>
       <location filename="../../ArchSpace.py" line="938"/>
       <source>Add</source>
@@ -4502,7 +4493,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchAxisSystem.py" line="222"/>
       <location filename="../../ArchComponent.py" line="1881"/>
       <location filename="../../ArchSchedule.py" line="766"/>
-      <location filename="../../ArchWindow.py" line="1734"/>
+      <location filename="../../ArchWindow.py" line="1644"/>
       <location filename="../../ArchAxis.py" line="788"/>
       <location filename="../../ArchMaterial.py" line="470"/>
       <location filename="../../ArchMaterial.py" line="797"/>
@@ -4510,24 +4501,24 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1648"/>
       <source>Base 2D object</source>
       <translation>Izhodiščni 2D predmet</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
-      <location filename="../../ArchWindow.py" line="1744"/>
+      <location filename="../../ArchWindow.py" line="1649"/>
+      <location filename="../../ArchWindow.py" line="1654"/>
       <source>Wires</source>
       <translation>Črtovja</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2358"/>
-      <location filename="../../ArchWindow.py" line="1740"/>
+      <location filename="../../ArchWindow.py" line="1650"/>
       <source>Components</source>
       <translation>Sestavine</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchWindow.py" line="1652"/>
       <location filename="../../ArchMaterial.py" line="879"/>
       <location filename="../../ArchMaterial.py" line="905"/>
       <source>Name</source>
@@ -4535,7 +4526,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="2426"/>
-      <location filename="../../ArchWindow.py" line="1743"/>
+      <location filename="../../ArchWindow.py" line="1653"/>
       <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
@@ -4551,38 +4542,38 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../ArchWindow.py" line="1746"/>
+      <location filename="../../ArchWindow.py" line="1656"/>
       <location filename="../../bimcommands/BimWall.py" line="371"/>
       <source>Offset</source>
       <translation>Odmik</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1657"/>
       <source>Hinge</source>
       <translation>Tečaj</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1748"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Opening mode</source>
       <translation>Način odpiranja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1749"/>
+      <location filename="../../ArchWindow.py" line="1659"/>
       <source>+ Frame property</source>
       <translation type="unfinished">+ Frame property</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1757"/>
+      <location filename="../../ArchWindow.py" line="1667"/>
       <source>+ Offset property</source>
       <translation type="unfinished">+ Offset property</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1765"/>
+      <location filename="../../ArchWindow.py" line="1675"/>
       <source>Get Selected Edge</source>
       <translation type="unfinished">Get Selected Edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1768"/>
+      <location filename="../../ArchWindow.py" line="1678"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Pritisnite da povrnete izbrani rob</translation>
     </message>
@@ -5490,7 +5481,7 @@ Ustvarjanje etaže prekinjeno.</translation>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1732"/>
       <source>Scope</source>
-      <translation type="unfinished">Scope</translation>
+      <translation>Obseg</translation>
     </message>
     <message>
       <location filename="../../ArchSectionPlane.py" line="1735"/>
@@ -6829,11 +6820,6 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation>Višina tega okna</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="332"/>
-      <source>The height of this window's sill</source>
-      <translation type="unfinished">The height of this window's sill</translation>
-    </message>
-    <message>
       <location filename="../../ArchWindow.py" line="199"/>
       <source>The normal direction of this window</source>
       <translation>Običajna smer tega okna</translation>
@@ -6894,7 +6880,7 @@ Ustvarjanj stavbe prekinjeno.</translation>
       <translation>Prikazovanje oznak odprtin v pogledu, če so te razpoložljive</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1470"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Število črtovij, ki določajo preboj. Če je 0, se vrednost samodejno izračuna</translation>
     </message>
@@ -9932,7 +9918,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
-      <translation type="unfinished">Save Preset</translation>
+      <translation>Shrani prednastavitev</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimProjectManager.py" line="447"/>

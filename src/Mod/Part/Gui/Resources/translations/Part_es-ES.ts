@@ -1061,7 +1061,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="14"/>
       <source>Block Definition</source>
-      <translation type="unfinished">Block Definition</translation>
+      <translation>Definición de bloque</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
@@ -1570,7 +1570,7 @@
     <message>
       <location filename="../../Command.cpp" line="1141"/>
       <source>Export CAD File</source>
-      <translation type="unfinished">Export CAD File</translation>
+      <translation>Exportar archivo CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -1593,7 +1593,7 @@
     <message>
       <location filename="../../Command.cpp" line="1450"/>
       <source>Extrudes the selected sketch or profile</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile</translation>
+      <translation>Extruye el croquis o perfil seleccionado</translation>
     </message>
   </context>
   <context>
@@ -1642,7 +1642,7 @@
     <message>
       <location filename="../../Command.cpp" line="1067"/>
       <source>Import CAD File</source>
-      <translation type="unfinished">Import CAD File</translation>
+      <translation>Importar archivo CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1069"/>
@@ -1714,7 +1714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Convert to Solid</source>
-      <translation type="unfinished">Convert to Solid</translation>
+      <translation>Convertir a sólido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
@@ -1750,7 +1750,7 @@
     <message>
       <location filename="../../Command.cpp" line="1804"/>
       <source>3D Offset</source>
-      <translation type="unfinished">3D Offset</translation>
+      <translation>Desplazamiento 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
@@ -3346,7 +3346,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Buscar archivo</translation>
     </message>
   </context>
   <context>
@@ -3377,7 +3377,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Buscar archivo</translation>
     </message>
   </context>
   <context>
@@ -3565,7 +3565,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Radio 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
@@ -3750,17 +3750,17 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Proyectar en superficie</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select Projection Surface</source>
-      <translation type="unfinished">Select Projection Surface</translation>
+      <translation>Seleccionar superficie de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
       <source>Add Face</source>
-      <translation type="unfinished">Add Face</translation>
+      <translation>Añadir cara</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
@@ -3775,7 +3775,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show edges</source>
-      <translation type="unfinished">Show edges</translation>
+      <translation>Mostrar aristas</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -3795,7 +3795,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get Current Camera Direction</source>
-      <translation type="unfinished">Get Current Camera Direction</translation>
+      <translation>Obtener la dirección actual de la cámara</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -3815,7 +3815,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
       <source>Projection object</source>
-      <translation type="unfinished">Projection object</translation>
+      <translation>Objeto de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
@@ -3825,7 +3825,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
-      <translation type="unfinished">Cannot create a projection object</translation>
+      <translation>No se puede crear un objeto de proyección</translation>
     </message>
   </context>
   <context>
@@ -3843,7 +3843,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation type="unfinished">Revolution Axis</translation>
+      <translation>Eje de revolución</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
@@ -3864,7 +3864,7 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgRevolution.ui" line="146"/>
       <location filename="../../DlgRevolution.ui" line="187"/>
       <source>Sets this as axis</source>
-      <translation type="unfinished">Sets this as axis</translation>
+      <translation>Establece esto como eje</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
@@ -5863,7 +5863,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>No result</source>
-      <translation type="unfinished">No result</translation>
+      <translation>Sin resultado</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="150"/>

@@ -1404,7 +1404,7 @@
     <message>
       <location filename="../../Command.cpp" line="1937"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1938"/>
@@ -4546,7 +4546,7 @@ the sketch plane's normal vector will be used</translation>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -5342,7 +5342,7 @@ Individual boolean operation checks:</translation>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -7165,7 +7165,7 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../PatternParametersWidget.ui" line="81"/>
       <location filename="../../PatternParametersWidget.ui" line="103"/>
       <source>Spacing</source>
-      <translation>Spacing</translation>
+      <translation>Μέγεθος Τετραγώνων</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="89"/>

@@ -682,78 +682,78 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Sammanfoga skisser</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="130"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="132"/>
       <source>Add sketch line</source>
       <translation>Lägg till skisslinje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="502"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
       <source>Add sketch box</source>
       <translation>Lägg till skissruta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="281"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="283"/>
       <source>Add sketch arc</source>
       <translation>Lägg till skissbåge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="210"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="212"/>
       <source>Add sketch circle</source>
       <translation>Lägg till skisscirkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="209"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="211"/>
       <source>Add sketch ellipse</source>
       <translation>Lägg till skissellips</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="313"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="315"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Lägg till skissbåge av ellips</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="318"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="320"/>
       <source>Add sketch arc of hyperbola</source>
       <translation>Lägg till skissbåge för hyperbel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="237"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="239"/>
       <source>Add sketch arc of Parabola</source>
       <translation>Lägg till skissbåge för parabel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="95"/>
       <source>Add sketch point</source>
       <translation>Lägg till skisspunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="208"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="266"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="210"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="268"/>
       <source>Create fillet</source>
       <translation>Skapa avrundning</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="179"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="181"/>
       <source>Trim edge</source>
       <translation>Trimma kant</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="290"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="292"/>
       <source>Extend edge</source>
       <translation>Förläng kant</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="157"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="159"/>
       <source>Split edge</source>
       <translation>Delad kant</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="178"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
       <source>Add external geometry</source>
       <translation>Lägg till extern geometri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="175"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="177"/>
       <source>Add slot</source>
       <translation>Lägg till slot</translation>
     </message>
@@ -838,93 +838,93 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Växla begränsningar till det andra virtuella utrymmet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1537"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1560"/>
       <location filename="../../CommandSketcherVirtualSpace.cpp" line="180"/>
       <source>Update constraint's virtual space</source>
       <translation>Uppdatera begränsningens virtuella utrymme</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="706"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
       <source>Swap constraint names</source>
       <translation>Byt namn på begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1212"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1214"/>
       <source>Rename sketch constraint</source>
       <translation>Byt namn på skissbegränsning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Point</source>
       <translation>Dragpunkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Curve</source>
       <translation>Dragkurva</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1814"/>
       <source>Drag geometries</source>
       <translation>Draggeometrier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1145"/>
       <source>Drag Constraint</source>
       <translation>Dragbegränsning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1366"/>
       <source>Modify sketch constraints</source>
       <translation>Ändra skissbegränsningar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="179"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="181"/>
       <source>Create a carbon copy</source>
       <translation>Skapa en karbonkopia</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="421"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="423"/>
       <source>Offset</source>
       <translation>Förskjutning</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="107"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="109"/>
       <source>Add polygon</source>
       <translation>Lägg till polygon</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="202"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="204"/>
       <source>Add sketch arc slot</source>
       <translation>Lägg till skiss bågspår</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="145"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="147"/>
       <source>Rotate geometries</source>
       <translation>Rotera geometrier</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="127"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="129"/>
       <source>Scale geometries</source>
       <translation>Geometrier i skala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="118"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="120"/>
       <source>Translate geometries</source>
       <translation>Translatera geometrier</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="134"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="136"/>
       <source>Symmetry geometries</source>
       <translation>Symmetriska geometrier</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="458"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="460"/>
       <source>Add line to sketch polyline</source>
       <translation>Lägg till linje till skissens polylinje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="490"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="492"/>
       <source>Add arc to sketch polyline</source>
       <translation>Lägg till båge till skissens polylinje</translation>
     </message>
@@ -940,9 +940,9 @@ ogiltiga begränsningar och degenererad geometri</translation>
       <translation>Lägg till automatiska begränsningar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="95"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="618"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="765"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="97"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="620"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="767"/>
       <source>Add Sketch B-Spline</source>
       <translation>Lägg till skiss B-Spline</translation>
     </message>
@@ -958,54 +958,54 @@ ogiltiga begränsningar och degenererad geometri</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6742"/>
+      <location filename="../../../App/SketchObject.cpp" line="6757"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Du begär ingen förändring av knutmultipliciteten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6734"/>
-      <location filename="../../../App/SketchObject.cpp" line="6912"/>
+      <location filename="../../../App/SketchObject.cpp" line="6749"/>
+      <location filename="../../../App/SketchObject.cpp" line="6927"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Geometriindex (GeoID) för B-spline är utanför gränserna.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6751"/>
-      <location filename="../../../App/SketchObject.cpp" line="6928"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Geometriindexet (GeoId) som tillhandahålls är inte en B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6778"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Knutindexet är utanför gränserna. Observera att i enlighet med OCC-notationen har den första knuten index 1 och inte noll.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6779"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multipliciteten kan inte ökas utöver graden för B-splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6790"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multipliciteten kan inte minskas bortom noll.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6806"/>
+      <location filename="../../../App/SketchObject.cpp" line="6821"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kan inte minska multipliciteten inom den maximala toleransen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6919"/>
+      <location filename="../../../App/SketchObject.cpp" line="6934"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knuten kan inte ha nollmultiplicitet.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6941"/>
+      <location filename="../../../App/SketchObject.cpp" line="6956"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Knutmultipliciteten kan inte vara högre än graden på B-splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6951"/>
+      <location filename="../../../App/SketchObject.cpp" line="6966"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Knuten kan inte sättas in utanför parameterområdet för B-spline.</translation>
     </message>
@@ -1967,14 +1967,14 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
       <translation>Borttagning av axeluppriktning kräver minst ett utvalt icke-externt geometriskt element</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="631"/>
-      <location filename="../../TaskSketcherElements.cpp" line="681"/>
+      <location filename="../../TaskSketcherElements.cpp" line="633"/>
+      <location filename="../../TaskSketcherElements.cpp" line="683"/>
       <source>Unsupported visual layer operation</source>
       <translation>Operation för visuellt lager som inte stöds</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="632"/>
-      <location filename="../../TaskSketcherElements.cpp" line="682"/>
+      <location filename="../../TaskSketcherElements.cpp" line="634"/>
+      <location filename="../../TaskSketcherElements.cpp" line="684"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
       <translation>Det finns för närvarande inget stöd för att flytta extern geometri till ett annat visuellt lager. Extern geometri kommer att utelämnas</translation>
     </message>
@@ -2025,132 +2025,132 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
   <context>
     <name>SketcherGui::ConstraintFilterList</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="108"/>
+      <location filename="../../TaskSketcherConstraints.h" line="109"/>
       <source>All</source>
       <translation>Alla</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="109"/>
+      <location filename="../../TaskSketcherConstraints.h" line="110"/>
       <source>Geometric</source>
       <translation>Geometrisk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="110"/>
+      <location filename="../../TaskSketcherConstraints.h" line="111"/>
       <source>Coincident</source>
       <translation>Tillfälligt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="111"/>
+      <location filename="../../TaskSketcherConstraints.h" line="112"/>
       <source>Point on Object</source>
       <translation>Punkt på objekt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="112"/>
+      <location filename="../../TaskSketcherConstraints.h" line="113"/>
       <source>Vertical</source>
       <translation>Vertikal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="113"/>
+      <location filename="../../TaskSketcherConstraints.h" line="114"/>
       <source>Horizontal</source>
       <translation>Horisontell</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="114"/>
+      <location filename="../../TaskSketcherConstraints.h" line="115"/>
       <source>Parallel</source>
       <translation>Parallell</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="115"/>
+      <location filename="../../TaskSketcherConstraints.h" line="116"/>
       <source>Perpendicular</source>
       <translation>Vinkelrät</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="116"/>
+      <location filename="../../TaskSketcherConstraints.h" line="117"/>
       <source>Tangent</source>
       <translation>Tangens</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="117"/>
+      <location filename="../../TaskSketcherConstraints.h" line="118"/>
       <source>Equality</source>
       <translation>Jämlikhet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="118"/>
+      <location filename="../../TaskSketcherConstraints.h" line="119"/>
       <source>Symmetric</source>
       <translation>Symmetrisk</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="119"/>
+      <location filename="../../TaskSketcherConstraints.h" line="120"/>
       <source>Block</source>
       <translation>Blockera</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="120"/>
+      <location filename="../../TaskSketcherConstraints.h" line="121"/>
       <source>Internal Alignment</source>
       <translation>Intern justering</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="121"/>
+      <location filename="../../TaskSketcherConstraints.h" line="122"/>
       <source>Datums</source>
       <translation>Referenspunkter</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="122"/>
+      <location filename="../../TaskSketcherConstraints.h" line="123"/>
       <source>Horizontal Distance</source>
       <translation>Horisontellt avstånd</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="123"/>
+      <location filename="../../TaskSketcherConstraints.h" line="124"/>
       <source>Vertical Distance</source>
       <translation>Vertikalt avstånd</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="124"/>
+      <location filename="../../TaskSketcherConstraints.h" line="125"/>
       <source>Distance</source>
       <translation>Avstånd</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="125"/>
+      <location filename="../../TaskSketcherConstraints.h" line="126"/>
       <source>Radius</source>
       <translation>Radie</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="126"/>
+      <location filename="../../TaskSketcherConstraints.h" line="127"/>
       <source>Weight</source>
       <translation>Vikt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="127"/>
+      <location filename="../../TaskSketcherConstraints.h" line="128"/>
       <source>Diameter</source>
       <translation>Diameter</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="128"/>
+      <location filename="../../TaskSketcherConstraints.h" line="129"/>
       <source>Angle</source>
       <translation>Vinkel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="129"/>
+      <location filename="../../TaskSketcherConstraints.h" line="130"/>
       <source>Snell's Law</source>
       <translation>Snells lag</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="130"/>
+      <location filename="../../TaskSketcherConstraints.h" line="131"/>
       <source>Named</source>
       <translation>med namnet</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="131"/>
+      <location filename="../../TaskSketcherConstraints.h" line="132"/>
       <source>Reference</source>
       <translation>Referens</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="132"/>
+      <location filename="../../TaskSketcherConstraints.h" line="133"/>
       <source>Selected constraints</source>
       <translation>Valda begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.h" line="133"/>
+      <location filename="../../TaskSketcherConstraints.h" line="134"/>
       <source>Associated constraints</source>
       <translation>Associerade begränsningar</translation>
     </message>
@@ -2158,67 +2158,67 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
   <context>
     <name>SketcherGui::ConstraintView</name>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="64"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="66"/>
       <source>Select Elements</source>
       <translation>Välj element</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="561"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="563"/>
       <source>Change Value</source>
       <translation>Förändring värde</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="566"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="568"/>
       <source>Toggle Driving/Reference</source>
       <translation>Växla körning/referens</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
       <source>Deactivate</source>
       <translation>Inaktivera</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="570"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="572"/>
       <source>Activate</source>
       <translation>Aktivera</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="574"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
       <source>Show Constraints</source>
       <translation>Visa begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="576"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="578"/>
       <source>Hide Constraints</source>
       <translation>Dölj begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="593"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="595"/>
       <source>Center Sketch</source>
       <translation>Centrumskiss</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="601"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="603"/>
       <source>Swap Constraint Names</source>
       <translation>Byt namn på begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="586"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="588"/>
       <source>Rename</source>
       <translation>Byt namn</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="596"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="598"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="696"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="698"/>
       <source>Unnamed constraint</source>
       <translation>Icke namngiven begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="697"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="699"/>
       <source>Only the names of named constraints can be swapped.</source>
       <translation>Endast namnen på namngivna constraints kan bytas ut.</translation>
     </message>
@@ -2301,72 +2301,72 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
   <context>
     <name>SketcherGui::ElementFilterList</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="339"/>
+      <location filename="../../TaskSketcherElements.cpp" line="341"/>
       <source>Normal</source>
       <translation>Normal</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="340"/>
+      <location filename="../../TaskSketcherElements.cpp" line="342"/>
       <source>Construction</source>
       <translation>Byggprodukter</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="341"/>
+      <location filename="../../TaskSketcherElements.cpp" line="343"/>
       <source>Internal</source>
       <translation>Intern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="342"/>
+      <location filename="../../TaskSketcherElements.cpp" line="344"/>
       <source>External</source>
       <translation>Extern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="343"/>
+      <location filename="../../TaskSketcherElements.cpp" line="345"/>
       <source>All types</source>
       <translation>Alla typer</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="344"/>
+      <location filename="../../TaskSketcherElements.cpp" line="346"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="345"/>
+      <location filename="../../TaskSketcherElements.cpp" line="347"/>
       <source>Line</source>
       <translation>Rad</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="346"/>
+      <location filename="../../TaskSketcherElements.cpp" line="348"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="347"/>
+      <location filename="../../TaskSketcherElements.cpp" line="349"/>
       <source>Ellipse</source>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="348"/>
+      <location filename="../../TaskSketcherElements.cpp" line="350"/>
       <source>Arc of circle</source>
       <translation>Cirkelbåge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="349"/>
+      <location filename="../../TaskSketcherElements.cpp" line="351"/>
       <source>Arc of ellipse</source>
       <translation>Ellipsens båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="350"/>
+      <location filename="../../TaskSketcherElements.cpp" line="352"/>
       <source>Arc of hyperbola</source>
       <translation>Hyperbelns båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="351"/>
+      <location filename="../../TaskSketcherElements.cpp" line="353"/>
       <source>Arc of parabola</source>
       <translation>Parabelns båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="352"/>
+      <location filename="../../TaskSketcherElements.cpp" line="354"/>
       <source>B-spline</source>
       <translation>B-spline</translation>
     </message>
@@ -2374,142 +2374,142 @@ Godkända kombinationer: två kurvor; en ändpunkt och en kurva; två ändpunkte
   <context>
     <name>SketcherGui::ElementView</name>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="67"/>
+      <location filename="../../TaskSketcherElements.cpp" line="69"/>
       <source>Vertical Constraint</source>
       <translation>Vertikal begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="69"/>
+      <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Horizontal Constraint</source>
       <translation>Horisontell begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="71"/>
+      <location filename="../../TaskSketcherElements.cpp" line="73"/>
       <source>Parallel Constraint</source>
       <translation>Parallell begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="73"/>
+      <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Perpendicular Constraint</source>
       <translation>Vinkelrät begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="75"/>
+      <location filename="../../TaskSketcherElements.cpp" line="77"/>
       <source>Tangent Constraint</source>
       <translation>Tangentbegränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="81"/>
+      <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Block Constraint</source>
       <translation>Blockbegränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="77"/>
+      <location filename="../../TaskSketcherElements.cpp" line="79"/>
       <source>Equal Constraint</source>
       <translation>Lika begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="63"/>
+      <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Coincident Constraint</source>
       <translation>Sammanfallande begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="65"/>
+      <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Point-On-Object Constraint</source>
       <translation>Begränsning av punkt-på-objekt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="79"/>
+      <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Symmetric Constraint</source>
       <translation>Symmetrisk begränsning</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="83"/>
+      <location filename="../../TaskSketcherElements.cpp" line="85"/>
       <source>Lock Position</source>
       <translation>Låsposition</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="85"/>
+      <location filename="../../TaskSketcherElements.cpp" line="87"/>
       <source>Horizontal Dimension</source>
       <translation>Horisontell dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="87"/>
+      <location filename="../../TaskSketcherElements.cpp" line="89"/>
       <source>Vertical Dimension</source>
       <translation>Vertikal dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="91"/>
+      <location filename="../../TaskSketcherElements.cpp" line="93"/>
       <source>Radius Dimension</source>
       <translation>Radie Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="93"/>
+      <location filename="../../TaskSketcherElements.cpp" line="95"/>
       <source>Diameter Dimension</source>
       <translation>Diameterdimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="89"/>
+      <location filename="../../TaskSketcherElements.cpp" line="91"/>
       <source>Distance Dimension</source>
       <translation>Avstånd Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="95"/>
+      <location filename="../../TaskSketcherElements.cpp" line="97"/>
       <source>Radius/Diameter Dimension</source>
       <translation>Radie/Diameter Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="97"/>
+      <location filename="../../TaskSketcherElements.cpp" line="99"/>
       <source>Angle Dimension</source>
       <translation>Vinkel Dimension</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="99"/>
+      <location filename="../../TaskSketcherElements.cpp" line="101"/>
       <source>Toggle Construction Geometry</source>
       <translation>Växla konstruktionsgeometri</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="101"/>
+      <location filename="../../TaskSketcherElements.cpp" line="103"/>
       <source>Select Constraints</source>
       <translation>Välj begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="105"/>
       <source>Select Origin</source>
       <translation>Välj ursprung</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="105"/>
+      <location filename="../../TaskSketcherElements.cpp" line="107"/>
       <source>Select Horizontal Axis</source>
       <translation>Välj horisontell axel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="107"/>
+      <location filename="../../TaskSketcherElements.cpp" line="109"/>
       <source>Select Vertical Axis</source>
       <translation>Välj vertikal axel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="836"/>
+      <location filename="../../TaskSketcherElements.cpp" line="838"/>
       <source>Layer</source>
       <translation>Lager</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="846"/>
+      <location filename="../../TaskSketcherElements.cpp" line="848"/>
       <source>Layer 0</source>
       <translation>Lager 0</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="847"/>
+      <location filename="../../TaskSketcherElements.cpp" line="849"/>
       <source>Layer 1</source>
       <translation>Lager 1</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="848"/>
+      <location filename="../../TaskSketcherElements.cpp" line="850"/>
       <source>Hidden</source>
       <translation>Dold</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="853"/>
+      <location filename="../../TaskSketcherElements.cpp" line="855"/>
       <source>Delete</source>
       <translation>Ta bort</translation>
     </message>
@@ -3384,48 +3384,48 @@ Inga begränsningar som länkar till ändpunkterna hittades dock.</translation>
       <translation>Inställningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="821"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="823"/>
       <source>Constraints</source>
       <translation>Begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="848"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
       <source>Auto constraints</source>
       <translation>Auto begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="849"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
       <source>Auto remove redundant constraints</source>
       <translation>Automatisk borttagning av överflödiga begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="850"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
       <source>Display only filtered constraints</source>
       <translation>Visa endast filtrerade begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="851"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="853"/>
       <source>Extended information (in widget)</source>
       <translation>Utökad information (i widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="852"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="854"/>
       <source>Hide internal alignment (in widget)</source>
       <translation>Dölj intern justering (i widget)</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1549"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1572"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1601"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1549"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1572"/>
       <source>Impossible to update visibility tracking:</source>
       <translation>Omöjligt att uppdatera synlighetsspårning:</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1578"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1601"/>
       <source>Impossible to update visibility:</source>
       <translation>Omöjligt att uppdatera synlighet:</translation>
     </message>
@@ -3453,132 +3453,132 @@ Inga begränsningar som länkar till ändpunkterna hittades dock.</translation>
       <translation>Inställningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1939"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1946"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1953"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1960"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1967"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1981"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1988"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1995"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2001"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1914"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1921"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1928"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1935"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1956"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1963"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1976"/>
       <source>Construction</source>
       <translation>Byggprodukter</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1260"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1262"/>
       <source>Elements</source>
       <translation>Element</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1937"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1942"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2078"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1912"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1917"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2055"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2056"/>
       <source>Point</source>
       <translation>Punkt</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1975"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1982"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1989"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1996"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2002"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1915"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1922"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1929"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1936"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1943"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1950"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1957"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1964"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1971"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
       <source>Internal</source>
       <translation>Intern</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1944"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1949"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2081"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2082"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1919"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1924"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2058"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2059"/>
       <source>Line</source>
       <translation>Rad</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1951"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1956"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2085"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1926"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1931"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2061"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2062"/>
       <source>Arc</source>
       <translation>Båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1958"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1963"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2087"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2088"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1933"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1938"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2064"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2065"/>
       <source>Circle</source>
       <translation>Cirkel</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1965"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1970"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2090"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2091"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1940"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1945"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2067"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2068"/>
       <source>Ellipse</source>
       <translation>Ellips</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1972"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2094"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1947"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2071"/>
       <source>Elliptical Arc</source>
       <translation>Elliptisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1977"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2095"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1952"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2072"/>
       <source>Elliptical arc</source>
       <translation>Elliptisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1979"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2098"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1954"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2075"/>
       <source>Hyperbolic Arc</source>
       <translation>Hyperbolisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1984"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2099"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1959"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2076"/>
       <source>Hyperbolic arc</source>
       <translation>Hyperbolisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1986"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2102"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1961"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2079"/>
       <source>Parabolic Arc</source>
       <translation>Parabolisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1991"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2103"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1966"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2080"/>
       <source>Parabolic arc</source>
       <translation>Parabolisk båge</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1993"/>
-      <location filename="../../TaskSketcherElements.cpp" line="1998"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2105"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2106"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1968"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1973"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2082"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2083"/>
       <source>B-spline</source>
       <translation>B-spline</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="1999"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2004"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2107"/>
-      <location filename="../../TaskSketcherElements.cpp" line="2108"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1974"/>
+      <location filename="../../TaskSketcherElements.cpp" line="1979"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2084"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2085"/>
       <source>Other</source>
       <translation>Annat</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherElements.cpp" line="2148"/>
+      <location filename="../../TaskSketcherElements.cpp" line="2127"/>
       <source>Extended information</source>
       <translation>Utökad information</translation>
     </message>
@@ -3789,112 +3789,112 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>A dialog is already open in the task panel</source>
       <translation>En dialogruta är redan öppen i uppgiftspanelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skissen är ogiltig och kan inte redigeras.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3588"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Följande begränsning är delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Följande begränsningar är delvis överflödiga:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3371"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
       <source>Edit Sketch</source>
       <translation>Redigera skiss</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3389"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>Close this dialog?</source>
       <translation>Stäng den här dialogen?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3408"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>Invalid Sketch</source>
       <translation>Ogiltig skiss</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>Open the sketch validation tool?</source>
       <translation>Öppna verktyget för skissvalidering?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3556"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Remove the following constraint:</source>
       <translation>Ta bort följande begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3557"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3575"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Ta bort minst en av följande begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3563"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3581"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Ta bort följande överflödiga begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3564"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3582"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Ta bort följande överflödiga begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3595"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Ta bort följande felaktiga begränsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Ta bort följande felaktiga begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3637"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3655"/>
       <source>Empty sketch</source>
       <translation>Tom skiss</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3642"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3660"/>
       <source>Over-constrained:</source>
       <translation>Överbelastad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3648"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3666"/>
       <source>Malformed constraints:</source>
       <translation>Missbildade begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3674"/>
       <source>Redundant constraints:</source>
       <translation>Redundanta begränsningar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3680"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3687"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3675"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3693"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3677"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3695"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -3902,7 +3902,7 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3681"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3699"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -3973,12 +3973,12 @@ Detta görs genom att skissens geometrier och begränsningar analyseras.</transl
   <context>
     <name>Sketcher_CreateCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="414"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="416"/>
       <source>Center</source>
       <translation>Centrera</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="415"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="417"/>
       <source>3 rim points</source>
       <translation>3 fälgpunkter</translation>
     </message>
@@ -4101,19 +4101,19 @@ Lossa den från stödet?</translation>
     <name>TaskSketcherSolverAdvanced</name>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="47"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="393"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="474"/>
       <source>BFGS</source>
       <translation>BFGS</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="52"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="398"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="479"/>
       <source>LevenbergMarquardt</source>
       <translation>LevenbergMarquardt</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="57"/>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="403"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="484"/>
       <source>DogLeg</source>
       <translation>DogLeg</translation>
     </message>
@@ -4165,7 +4165,7 @@ to determine whether a solution converges or not</source>
 för att avgöra om en lösning konvergerar eller inte</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="379"/>
       <source>Algorithm used for the rank revealing QR decomposition</source>
       <translation>Algoritm som används för QR-dekomponering med avslöjande av rang</translation>
     </message>
@@ -4219,12 +4219,34 @@ BFGS-lösaren använder Broyden-Fletcher-Goldfarb-Shanno-algoritmen.</translatio
       <translation>Konvergens</translation>
     </message>
     <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="317"/>
+      <source>Automatically select the QR algorithm based on number of dofs</source>
+      <translation type="unfinished">Automatically select the QR algorithm based on number of dofs</translation>
+    </message>
+    <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
+      <source>Automatic QR algorithm</source>
+      <translation>Automatisk QR-algoritm</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
+      <source>Maximum number of parameters before switching to sparse QR algorithm</source>
+      <translation type="unfinished">Maximum number of parameters before switching to sparse QR algorithm</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="343"/>
+      <source>Auto QR threshold</source>
+      <translation type="unfinished">Auto QR threshold</translation>
+    </message>
+    <message>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="382"/>
       <source>QR algorithm</source>
       <translation>QR-algoritm</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="308"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="389"/>
       <source>During diagnosing the QR rank of matrix is calculated.
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
@@ -4233,137 +4255,137 @@ Eigen Dense QR är en tät matris-QR med full pivotering; vanligtvis långsammar
 Eigen Sparse QR-algoritmen är optimerad för glesa matriser; vanligtvis snabbare</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="323"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="404"/>
       <source>Eigen Dense QR</source>
       <translation>Egen tät QR</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="328"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="409"/>
       <source>Eigen Sparse QR</source>
       <translation>Eigen gles QR</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="421"/>
       <source>Pivot threshold</source>
       <translation>Pivot tröskelvärde</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="347"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="428"/>
       <source>During a QR, values under the pivot threshold are treated as zero</source>
       <translation>Under en QR behandlas värden under pivot-tröskeln som noll</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="431"/>
       <source>1E-13</source>
       <translation>1E-13</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="370"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
       <source>Solving algorithm used to detect redundant constraints</source>
       <translation>Lösningsalgoritm som används för att upptäcka överflödiga begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="373"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
       <source>Redundant solver</source>
       <translation>Redundant lösare</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="415"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="496"/>
       <source>Maximum number of iterations of the solver used to detect redundant constraints</source>
       <translation>Maximalt antal iterationer av lösaren som används för att upptäcka överflödiga begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="418"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="499"/>
       <source>Maximum redundant solver iterations</source>
       <translation>Maximalt antal iterationer med redundant solver</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="451"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="532"/>
       <source>Multiplies the maximum iterations value for the redundant algorithm by the sketch size</source>
       <translation>Multiplicerar värdet för maximala iterationer för den redundanta algoritmen med skissstorleken</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="454"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="535"/>
       <source>Redundant sketch size multiplier</source>
       <translation>Multiplikator för redundant skissstorlek</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="592"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="673"/>
       <source>Console debug mode</source>
       <translation>Felsökningsläge för konsol</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="622"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="703"/>
       <source>Iteration level</source>
       <translation>Iterationsnivå</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="380"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
       <source>Solver used to determine whether a group is redundant or conflicting</source>
       <translation>Lösare som används för att avgöra om en grupp är överflödig eller motstridig</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="425"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="506"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
       <translation>Samma som "Maximala iterationer", men för redundanta lösningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="542"/>
       <source>Same as 'Sketch size multiplier', but for redundant solving</source>
       <translation>Samma sak som "Sketch size multiplier", men för redundanta lösningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="484"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="565"/>
       <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
       <translation>Felgräns under vilken konvergens uppnås för lösning av redundanta begränsningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="487"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="568"/>
       <source>Redundant convergence</source>
       <translation>Redundant konvergens</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="494"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="575"/>
       <source>Same as 'Convergence', but for redundant solving</source>
       <translation>Samma som "Convergence", men för redundanta lösningar</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="497"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="578"/>
       <source>1E-10</source>
       <translation>1E-10</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="589"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="670"/>
       <source>Degree of verbosity of the debug output to the console</source>
       <translation>Graden av ordrikhet i felsökningsutmatningen till konsolen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="599"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="680"/>
       <source>Verbosity of console output</source>
       <translation>Ordalydelsen i konsolutmatningen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="612"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="693"/>
       <source>None</source>
       <translation>Ingen</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="617"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="698"/>
       <source>Minimum</source>
       <translation>Minimum</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="634"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="715"/>
       <source>Solve</source>
       <translation>Lös</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="641"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="722"/>
       <source>Resets all solver values to their default values</source>
       <translation>Återställer alla solver-värden till standardvärdena</translation>
     </message>
     <message>
-      <location filename="../../TaskSketcherSolverAdvanced.ui" line="644"/>
+      <location filename="../../TaskSketcherSolverAdvanced.ui" line="725"/>
       <source>Restore Defaults</source>
       <translation>Återställ standardinställningar</translation>
     </message>
@@ -4371,7 +4393,7 @@ Eigen Sparse QR-algoritmen är optimerad för glesa matriser; vanligtvis snabbar
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3620"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
       <source>and %1 more</source>
       <translation>och %1 mer</translation>
     </message>
@@ -4576,52 +4598,52 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Skissen har delvis redundanta begränsningar!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10204"/>
+      <location filename="../../../App/SketchObject.cpp" line="10219"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Okontrollerad ändring av geometriegenskap resulterar i ogiltiga begränsningsindex</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10235"/>
+      <location filename="../../../App/SketchObject.cpp" line="10250"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Omhändertagen ändring av Constraint Property resulterar i ogiltiga constraint-index</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10858"/>
+      <location filename="../../../App/SketchObject.cpp" line="10873"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Paraboler migrerades. Migrerade filer öppnas inte i tidigare versioner av FreeCAD!!!
 </translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="211"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="148"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="144"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
       <location filename="../../CommandSketcherTools.cpp" line="2307"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="385"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="670"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="747"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="151"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="131"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="171"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="193"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="206"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="171"/>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="261"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="511"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="139"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="341"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="474"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="508"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="228"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="186"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="200"/>
-      <location filename="../../DrawSketchHandlerPoint.h" line="107"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="266"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="346"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="338"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="219"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="387"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="672"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="749"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="153"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="141"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="343"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="476"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="510"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="230"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="188"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="202"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="268"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="348"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="340"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <source>Error</source>
       <translation>Fel</translation>
     </message>
@@ -4676,126 +4698,126 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Ogiltig begränsning</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="509"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="511"/>
       <source>Failed to add arc</source>
       <translation>Misslyckades med att lägga till båge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="339"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="341"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Misslyckades med att lägga till båge av ellips</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="267"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="269"/>
       <source>Cannot create arc of hyperbola from invalid angles, try again!</source>
       <translation>Det går inte att skapa en hyperbelbåge från ogiltiga vinklar, försök igen!</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="347"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="349"/>
       <source>Cannot create arc of hyperbola</source>
       <translation>Det går inte att skapa en hyperbelbåge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="262"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="264"/>
       <source>Cannot create arc of parabola</source>
       <translation>Det går inte att skapa en båge av en parabel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="386"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="388"/>
       <source>Error creating B-spline</source>
       <translation>Fel vid skapande av B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="671"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="673"/>
       <source>Error deleting last pole/knot</source>
       <translation>Fel vid borttagning av sista stolpen/knuten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="748"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="750"/>
       <source>Error adding B-spline pole/knot</source>
       <translation>Fel vid tillägg av B-spline pol/knut</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="201"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="203"/>
       <source>Failed to add carbon copy</source>
       <translation>Misslyckades med att lägga till karbonkopia</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="220"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="222"/>
       <source>Failed to add circle</source>
       <translation>Misslyckades med att lägga till cirkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="342"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="344"/>
       <source>Failed to extend edge</source>
       <translation>Misslyckades med att förlänga kanten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="207"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
       <source>Failed to add external geometry</source>
       <translation>Misslyckades med att lägga till extern geometri</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="229"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="231"/>
       <source>Failed to create fillet</source>
       <translation>Misslyckades med att skapa filé</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="140"/>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="475"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="142"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="477"/>
       <source>Failed to add line</source>
       <translation>Misslyckades med att lägga till rad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="295"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="218"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="157"/>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="151"/>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="158"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="138"/>
-      <location filename="../../DrawSketchHandlerRotate.h" line="178"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="518"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="146"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="235"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="193"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="226"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="297"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="220"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="153"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="180"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="520"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="148"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="237"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="195"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="228"/>
       <source>Tool execution aborted</source>
       <translation>Verktygsexekvering avbruten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="108"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="110"/>
       <source>Failed to add point</source>
       <translation>Misslyckades med att lägga till punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="132"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <source>Failed to add polygon</source>
       <translation>Misslyckades med att lägga till polygon</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="512"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="514"/>
       <source>Failed to add box</source>
       <translation>Misslyckades med att lägga till box</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="187"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="189"/>
       <source>Failed to add slot</source>
       <translation>Misslyckades med att lägga till slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="172"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="174"/>
       <source>Failed to add edge</source>
       <translation>Misslyckades med att lägga till kant</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="194"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="196"/>
       <source>Failed to trim edge</source>
       <translation>Misslyckades med att trimma kanten</translation>
     </message>
     <message>
       <location filename="../../EditDatumDialog.cpp" line="62"/>
       <location filename="../../EditDatumDialog.cpp" line="294"/>
-      <location filename="../../TaskSketcherConstraints.cpp" line="1222"/>
+      <location filename="../../TaskSketcherConstraints.cpp" line="1224"/>
       <source>Value Error</source>
       <translation>Värdefel</translation>
     </message>
@@ -4815,57 +4837,57 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
       <translation>Oväntad redundans/konflikterande begränsning. Kontrollera begränsningarna och autokoncentrationerna för denna operation.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="415"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="417"/>
       <source>Offset Error</source>
       <translation>Förskjutningsfel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="416"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="418"/>
       <source>Offset could not be created.</source>
       <translation>Förskjutning kunde inte skapas.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1211"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1213"/>
       <source>Invalid Value</source>
       <translation>Ogiltigt värde</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1212"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1214"/>
       <source>Offset value can't be 0.</source>
       <translation>Offset-värdet kan inte vara 0.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="212"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="214"/>
       <source>Failed to add arc slot</source>
       <translation>Misslyckades med att lägga till arc slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="229"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="231"/>
       <source>Failed to add ellipse</source>
       <translation>Misslyckades med att lägga till ellips</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="172"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="174"/>
       <source>Failed to rotate</source>
       <translation>Lyckades inte rotera</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="119"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="121"/>
       <source>Invalid scale factor. Scale factor must be a positive number.</source>
       <translation>Ogiltig skalfaktor. Skalfaktorn måste vara ett positivt tal.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="149"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <source>Failed to scale</source>
       <translation>Misslyckades med att skala</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="145"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="147"/>
       <source>Failed to translate</source>
       <translation>Misslyckades med att translatera</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="152"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="154"/>
       <source>Failed to create symmetry</source>
       <translation>Misslyckades med att skapa symmetri</translation>
     </message>
@@ -5013,17 +5035,17 @@ Rutnätets avstånd ändras om det blir mindre än den angivna pixelstorleken.</
   <context>
     <name>TaskSketcherTool_c1_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1183"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1185"/>
       <source>Delete original geometries (U)</source>
       <translation>Ta bort originalgeometrier (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="473"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="475"/>
       <source>Apply equal constraints</source>
       <translation>Tillämpa lika begränsningar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="478"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="480"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Om detta alternativ väljs utesluts dimensionella begränsningar från operationen.
@@ -5033,7 +5055,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c2_offset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1187"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1189"/>
       <source>Add offset constraint (J)</source>
       <translation>Lägg till offsetbegränsning (J)</translation>
     </message>
@@ -5041,32 +5063,32 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2071"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2073"/>
       <source>Corner, width, height</source>
       <translation>Hörn, bredd, höjd</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2072"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2074"/>
       <source>Center, width, height</source>
       <translation>Centrum, bredd, höjd</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2073"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2075"/>
       <source>3 corners</source>
       <translation>3 hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2074"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2076"/>
       <source>Center, 2 corners</source>
       <translation>Mitt, 2 hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2080"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2082"/>
       <source>Rounded corners (U)</source>
       <translation>Rundade hörn (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2084"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2086"/>
       <source>Create a rectangle with rounded corners.</source>
       <translation>Skapa en rektangel med rundade hörn.</translation>
     </message>
@@ -5074,12 +5096,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c2_rectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2093"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2095"/>
       <source>Frame (J)</source>
       <translation>Ram (J)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="2097"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="2099"/>
       <source>Create two rectangles with a constant offset.</source>
       <translation>Skapa två rektanglar med en konstant förskjutning.</translation>
     </message>
@@ -5380,7 +5402,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_p4_rotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="502"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="504"/>
       <source>Copies (+'U'/ -'J')</source>
       <translation>Kopior (+'U'/ -'J')</translation>
     </message>
@@ -5388,12 +5410,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>ToolWidgetManager_p4</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="326"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="328"/>
       <source>Sides (+'U'/ -'J')</source>
       <translation>Sidor (+'U'/ -'J')</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="984"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="986"/>
       <source>Degree (+'U'/ -'J')</source>
       <translation>Grad (+'U'/ -'J')</translation>
     </message>
@@ -5401,7 +5423,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="650"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="652"/>
       <source>Keep original geometries (U)</source>
       <translation>Behåll originalgeometrierna (U)</translation>
     </message>
@@ -5422,7 +5444,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_p3_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="560"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="562"/>
       <source>Copies (+'U'/-'J')</source>
       <translation>Kopior (+'U'/-'J')</translation>
     </message>
@@ -5430,7 +5452,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_p5_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="564"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="566"/>
       <source>Rows (+'R'/-'F')</source>
       <translation>Rader (+'R'/-'F')</translation>
     </message>
@@ -5438,12 +5460,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>Sketcher_CreateArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="534"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="536"/>
       <source>Center</source>
       <translation>Centrera</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="535"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="537"/>
       <source>3 rim points</source>
       <translation>3 fälgpunkter</translation>
     </message>
@@ -5451,12 +5473,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>Sketcher_CreateArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="609"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="611"/>
       <source>Arc ends</source>
       <translation>Bågen slutar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="610"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="612"/>
       <source>Flat ends</source>
       <translation>Platta ändar</translation>
     </message>
@@ -5464,12 +5486,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>Sketcher_CreateEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="497"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="499"/>
       <source>Center</source>
       <translation>Centrera</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="498"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="500"/>
       <source>Axis endpoints</source>
       <translation>Axelns ändpunkter</translation>
     </message>
@@ -5477,12 +5499,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_fillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="470"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="472"/>
       <source>Preserve corner (U)</source>
       <translation>Bevara hörnet (U)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="474"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="476"/>
       <source>Preserves intersection point and most constraints</source>
       <translation>Bevarar skärningspunkten och de flesta begränsningarna</translation>
     </message>
@@ -5490,17 +5512,17 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>Sketcher_CreateLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="351"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="353"/>
       <source>Point, length, angle</source>
       <translation>Punkt, längd, vinkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="352"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="354"/>
       <source>Point, width, height</source>
       <translation>Punkt, bredd, höjd</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="353"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="355"/>
       <source>2 points</source>
       <translation>2 punkter</translation>
     </message>
@@ -5508,12 +5530,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>Sketcher_CreateOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1165"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1167"/>
       <source>Arc</source>
       <translation>Båge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="1166"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="1168"/>
       <source>Intersection</source>
       <translation>Korsningar</translation>
     </message>
@@ -5521,7 +5543,7 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="277"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="279"/>
       <source>Delete original geometries (U)</source>
       <translation>Ta bort originalgeometrier (U)</translation>
     </message>
@@ -5529,17 +5551,17 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_bspline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="930"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="932"/>
       <source>Press F to undo last point.</source>
       <translation>Tryck på F för att ångra den sista punkten.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="941"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="943"/>
       <source>Periodic (R)</source>
       <translation>Periodisk (R)</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="945"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="947"/>
       <source>Create a periodic B-spline.</source>
       <translation>Skapa en periodisk B-spline.</translation>
     </message>
@@ -5565,12 +5587,12 @@ Istället tillämpas lika stora begränsningar mellan originalobjekten och deras
   <context>
     <name>TaskSketcherTool_c1_translate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="524"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="526"/>
       <source>Apply equal constraints</source>
       <translation>Tillämpa lika begränsningar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="528"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="530"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
       <translation>Om detta alternativ väljs utesluts dimensionella begränsningar från operationen.
@@ -7230,42 +7252,42 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerArc</name>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="96"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="98"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="105"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="107"/>
       <source>%1 pick arc center</source>
       <translation>%1 välj bågcentrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="111"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="113"/>
       <source>%1 pick arc start point</source>
       <translation>%1 välj bågens startpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="117"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="119"/>
       <source>%1 pick arc end point</source>
       <translation>%1 välj bågens slutpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="125"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="127"/>
       <source>%1 pick first arc point</source>
       <translation>%1 välj första bågpunkten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="131"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="133"/>
       <source>%1 pick second arc point</source>
       <translation>%1 välj andra bågpunkten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="137"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="139"/>
       <source>%1 pick third arc point</source>
       <translation>%1 välj tredje bågpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="397"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="399"/>
       <source>Arc Parameters</source>
       <translation>Bågparametrar</translation>
     </message>
@@ -7273,22 +7295,22 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="435"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="437"/>
       <source>%1 pick ellipse center</source>
       <translation>%1 välj ellipscentrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="440"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="442"/>
       <source>%1 pick axis point</source>
       <translation>%1 välj axelpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="445"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="447"/>
       <source>%1 pick arc start point</source>
       <translation>%1 välj bågens startpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="450"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
       <source>%1 pick arc end point</source>
       <translation>%1 välj bågens slutpunkt</translation>
     </message>
@@ -7296,22 +7318,22 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfHyperbola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="434"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="436"/>
       <source>%1 pick center point</source>
       <translation>%1 välj mittpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="439"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="441"/>
       <source>%1 pick axis point</source>
       <translation>%1 välj axelpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="444"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="446"/>
       <source>%1 pick arc start point</source>
       <translation>%1 välj bågens startpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="449"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="451"/>
       <source>%1 pick arc end point</source>
       <translation>%1 välj bågens slutpunkt</translation>
     </message>
@@ -7319,22 +7341,22 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfParabola</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="356"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="358"/>
       <source>%1 pick focus point</source>
       <translation>%1 välj fokuspunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="361"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="363"/>
       <source>%1 pick axis point</source>
       <translation>%1 välj axelpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="366"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="368"/>
       <source>%1 pick starting point</source>
       <translation>%1 välj startpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="371"/>
+      <location filename="../../DrawSketchHandlerArcOfParabola.h" line="373"/>
       <source>%1 pick end point</source>
       <translation>%1 välj slutpunkt</translation>
     </message>
@@ -7342,32 +7364,32 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerArcSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="100"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="102"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="107"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="109"/>
       <source>%1 pick slot center</source>
       <translation>%1 välj slot center</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="113"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="115"/>
       <source>%1 pick slot radius</source>
       <translation>%1 Välj radie för slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="119"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="121"/>
       <source>%1 pick slot angle</source>
       <translation>%1 pick slot vinkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="125"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="127"/>
       <source>%1 pick slot width</source>
       <translation>%1 pick slot bredd</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="303"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="305"/>
       <source>Arc Slot Parameters</source>
       <translation type="unfinished">Arc Slot Parameters</translation>
     </message>
@@ -7375,56 +7397,56 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="421"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="423"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="430"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
       <source>%1 pick first control point</source>
       <translation>%1 välj första kontrollpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="432"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="441"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="434"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
       <source>%1 + degree</source>
       <translation>%1 + grad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="433"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="442"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="435"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="444"/>
       <source>%1 - degree</source>
       <translation>%1 - grad</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="438"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>
       <source>%1 pick next control point</source>
       <translation>%1 välj nästa kontrollpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="439"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="457"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="441"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="459"/>
       <source>%1 finish B-spline</source>
       <translation>%1 avsluta B-spline</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="449"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="451"/>
       <source>%1 pick first knot</source>
       <translation>%1 välj första knuten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="451"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="459"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="453"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="461"/>
       <source>%1 toggle periodic</source>
       <translation>%1 växla periodisk</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="456"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="458"/>
       <source>%1 pick next knot</source>
       <translation>%1 välj nästa knut</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="506"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="508"/>
       <source>B-Spline Parameters</source>
       <translation>Parametrar för B-spline</translation>
     </message>
@@ -7432,7 +7454,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerCarbonCopy</name>
     <message>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="241"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="243"/>
       <source>%1 pick sketch to copy</source>
       <comment>Sketcher CarbonCopy: hint</comment>
       <translation>%1 välj skiss att kopiera</translation>
@@ -7441,37 +7463,37 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerCircle</name>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="86"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="88"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="95"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="97"/>
       <source>%1 pick circle center</source>
       <translation>%1 välj cirkelcentrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="101"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="103"/>
       <source>%1 pick rim point</source>
       <translation>%1 välj fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="109"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="111"/>
       <source>%1 pick first rim point</source>
       <translation>%1 välj första fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="115"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="117"/>
       <source>%1 pick second rim point</source>
       <translation>%1 välj andra fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="121"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="123"/>
       <source>%1 pick third rim point</source>
       <translation>%1 välj tredje fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerCircle.h" line="325"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="327"/>
       <source>Circle Parameters</source>
       <translation>Parametrar för cirkel</translation>
     </message>
@@ -7479,42 +7501,42 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="92"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="94"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="101"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="103"/>
       <source>%1 pick ellipse center</source>
       <translation>%1 välj ellipscentrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="107"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="109"/>
       <source>%1 pick axis endpoint</source>
       <translation>%1 välj axelns slutpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="113"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="115"/>
       <source>%1 pick minor axis endpoint</source>
       <translation>%1 välj slutpunkt för mindre axel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="121"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="123"/>
       <source>%1 pick first rim point</source>
       <translation>%1 välj första fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="127"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="129"/>
       <source>%1 pick second rim point</source>
       <translation>%1 välj andra fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="133"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="135"/>
       <source>%1 pick third rim point</source>
       <translation>%1 välj tredje fälgpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="339"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="341"/>
       <source>Ellipse Parameters</source>
       <translation>Parametrar för ellips</translation>
     </message>
@@ -7522,13 +7544,13 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerExtend</name>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="391"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="393"/>
       <source>%1 pick edge to extend</source>
       <comment>Sketcher Extend: hint</comment>
       <translation>%1 välj kant för att förlänga</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExtend.h" line="396"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="398"/>
       <source>%1 set extension length</source>
       <comment>Sketcher Extend: hint</comment>
       <translation>%1 set förlängningslängd</translation>
@@ -7537,7 +7559,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="256"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 välj extern geometri</translation>
@@ -7546,42 +7568,42 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerFillet</name>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="287"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="289"/>
       <source>CAD Kernel Error</source>
       <translation>CAD Kärnfel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="295"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="297"/>
       <source>Value Error</source>
       <translation>Värde Fel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="356"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="358"/>
       <source>Fillet/Chamfer Parameters</source>
       <translation>Parametrar för avfasning/fasning</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="426"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="428"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="428"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="430"/>
       <source>%1 toggle preserve corner</source>
       <translation>%1 växla bevara hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="437"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="439"/>
       <source>%1 pick first edge or point</source>
       <translation>%1 välj första kant eller punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="442"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="444"/>
       <source>%1 pick second edge</source>
       <translation>%1 välj andra kanten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerFillet.h" line="444"/>
+      <location filename="../../DrawSketchHandlerFillet.h" line="446"/>
       <source>%1 create fillet</source>
       <translation>%1 coxfilé</translation>
     </message>
@@ -7589,26 +7611,26 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerLine</name>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="221"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="223"/>
       <source>Line Parameters</source>
       <translation>Linjeparametrar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="279"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="281"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="288"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="302"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="316"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="290"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="304"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="318"/>
       <source>%1 pick first point</source>
       <translation>%1 välj första punkten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLine.h" line="294"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="308"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="322"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="296"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="310"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="324"/>
       <source>%1 pick second point</source>
       <translation>%1 välj andra punkten</translation>
     </message>
@@ -7616,22 +7638,22 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerLineSet</name>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="800"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="802"/>
       <source>%1 pick first point</source>
       <translation>%1 välj första punkten</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="805"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="807"/>
       <source>%1 pick next point</source>
       <translation>%1 välj nästa punkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="806"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="808"/>
       <source>%1 finish</source>
       <translation>%1 avsluta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerLineSet.h" line="807"/>
+      <location filename="../../DrawSketchHandlerLineSet.h" line="809"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
@@ -7639,12 +7661,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerOffset</name>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="187"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="189"/>
       <source>Offset Parameters</source>
       <translation>Förskjutningsparametrar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerOffset.h" line="205"/>
+      <location filename="../../DrawSketchHandlerOffset.h" line="207"/>
       <source>%1 set offset direction and distance</source>
       <comment>Sketcher Offset: hint</comment>
       <translation>%1 set offset riktning och avstånd</translation>
@@ -7653,7 +7675,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerPoint</name>
     <message>
-      <location filename="../../DrawSketchHandlerPoint.h" line="71"/>
+      <location filename="../../DrawSketchHandlerPoint.h" line="73"/>
       <source>%1 place a point</source>
       <comment>Sketcher Point: hint</comment>
       <translation>%1 placera en punkt</translation>
@@ -7662,28 +7684,28 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerPolygon</name>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="202"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="204"/>
       <source>Polygon Parameters</source>
       <translation>Polygonparametrar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="273"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="275"/>
       <source>%1 pick polygon center</source>
       <translation>%1 välj polygoncentrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="274"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="276"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="283"/>
       <source>%1/%2 increase / decrease number of sides</source>
       <translation>%1/%2 ökning/minskning av antalet sidor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="279"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="281"/>
       <source>%1 pick rotation and size</source>
       <translation>%1 Välj rotation och storlek</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="280"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="282"/>
       <source>%1 confirm</source>
       <translation>%1 bekräfta</translation>
     </message>
@@ -7691,70 +7713,70 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerRectangle</name>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="121"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="123"/>
       <source>%1 switch mode</source>
       <translation>%1 shäxläge</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="123"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="125"/>
       <source>%1 toggle rounded corners</source>
       <translation>%1 växla rundade hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="126"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="128"/>
       <source>%1 toggle frame</source>
       <translation>%1 växla ram</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="135"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="203"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="245"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="205"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="247"/>
       <source>%1 pick first corner</source>
       <translation>%1 välj första hörnet</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="143"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="145"/>
       <source>%1 pick opposite corner</source>
       <translation>%1 välj motsatt hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="151"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="185"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="227"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="261"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="153"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="187"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="229"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="263"/>
       <source>%1 set corner radius or frame thickness</source>
       <translation>%1 soch hörnradie eller ramtjocklek</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="159"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="193"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="161"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="195"/>
       <source>%1 set frame thickness</source>
       <translation>%1 set ram tjocklek</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="169"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="237"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="239"/>
       <source>%1 pick center</source>
       <translation>%1 välj centrum</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="177"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
       <source>%1 pick corner</source>
       <translation>%1 välj hörn</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="211"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="253"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="255"/>
       <source>%1 pick second corner</source>
       <translation>%1 välj andra hörnet</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="219"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="221"/>
       <source>%1 pick third corner</source>
       <translation>%1 välj tredje hörnet</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="792"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="794"/>
       <source>Rectangle Parameters</source>
       <translation>Rektangelparametrar</translation>
     </message>
@@ -7762,25 +7784,25 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerRotate</name>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="97"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="99"/>
       <source>%1 pick center point</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 välj mittpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="102"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="104"/>
       <source>%1 set start angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 set startvinkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="107"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="109"/>
       <source>%1 set rotation angle</source>
       <comment>Sketcher Rotate: hint</comment>
       <translation>%1 set rotationsvinkel</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerRotate.h" line="219"/>
+      <location filename="../../DrawSketchHandlerRotate.h" line="221"/>
       <source>Rotate Parameters</source>
       <translation>Roteringsparametrar</translation>
     </message>
@@ -7788,17 +7810,17 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="177"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="179"/>
       <source>%1 pick reference point</source>
       <translation>%1 välj referenspunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="182"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="184"/>
       <source>%1 set scale factor</source>
       <translation>%1 set skalfaktor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="245"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="247"/>
       <source>Scale Parameters</source>
       <translation>Parametrar för skala</translation>
     </message>
@@ -7806,17 +7828,17 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerSlot</name>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="93"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="95"/>
       <source>%1 pick slot start point</source>
       <translation>%1 Välj startpunkt för slot</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="98"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="100"/>
       <source>%1 pick slot end point</source>
       <translation>%1 pick slot slutpunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSlot.h" line="103"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="105"/>
       <source>%1 pick slot width</source>
       <translation>%1 pick slot bredd</translation>
     </message>
@@ -7824,7 +7846,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerSplitting</name>
     <message>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="210"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="212"/>
       <source>%1 pick location on edge to split</source>
       <comment>Sketcher Splitting: hint</comment>
       <translation>%1 välj plats på kanten för att dela</translation>
@@ -7833,12 +7855,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerSymmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="199"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="201"/>
       <source>Symmetry Parameters</source>
       <translation>Symmetriparametrar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="229"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="231"/>
       <source>%1 pick axis, edge, or point</source>
       <comment>Sketcher Symmetry: hint</comment>
       <translation>%1 välj axel, kant eller punkt</translation>
@@ -7847,24 +7869,24 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerTranslate</name>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="192"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="194"/>
       <source>Translate Parameters</source>
       <translation>Translateringsparametrar</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="455"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="457"/>
       <source>%1 pick reference point</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 välj referenspunkt</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="457"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="459"/>
       <source>%1 set translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 inställd translationsvektor</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerTranslate.h" line="460"/>
+      <location filename="../../DrawSketchHandlerTranslate.h" line="462"/>
       <source>%1 set second translation vector</source>
       <comment>Sketcher Translate: hint</comment>
       <translation>%1 inställd andra translationsvektor</translation>
@@ -7873,7 +7895,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>SketcherGui::DrawSketchHandlerTrimming</name>
     <message>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="223"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="225"/>
       <source>%1 pick edge to trim</source>
       <comment>Sketcher Trimming: hint</comment>
       <translation>%1 välj kant för att trimma</translation>
@@ -7890,12 +7912,12 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>Sketcher_CreateBSpline</name>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="934"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="936"/>
       <source>From control points</source>
       <translation>Från kontrollpunkter</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="935"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="937"/>
       <source>From knots</source>
       <translation>Från knopar</translation>
     </message>
@@ -7903,7 +7925,7 @@ Punkter måste ställas in närmare en gridlinje än en femtedel av gridavstånd
   <context>
     <name>TaskSketcherTool_c2_symmetry</name>
     <message>
-      <location filename="../../DrawSketchHandlerSymmetry.h" line="281"/>
+      <location filename="../../DrawSketchHandlerSymmetry.h" line="283"/>
       <source>Create symmetry constraints (J)</source>
       <translation>Skapa symmetribegränsningar (J)</translation>
     </message>
