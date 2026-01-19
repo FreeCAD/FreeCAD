@@ -119,7 +119,7 @@
     <message>
       <location filename="../../Command.cpp" line="597"/>
       <source>Poisson…</source>
-      <translation type="unfinished">Poisson…</translation>
+      <translation>Poisson…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="598"/>

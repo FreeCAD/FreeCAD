@@ -148,7 +148,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
       <source>Point size</source>
-      <translation>Tamaño de Punto(s)</translation>
+      <translation>Tamaño de punto</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="382"/>
       <source>Point color</source>
-      <translation>Color de Punto(s)</translation>
+      <translation>Color del punto</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="389"/>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="14"/>
       <source>Form</source>
-      <translation>Formulario</translation>
+      <translation>Forma</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="35"/>
@@ -221,12 +221,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Shape/Type</translation>
+      <translation>Sub.Forma/Tipo</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forma.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -236,12 +236,12 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="107"/>
       <source>Tab 1</source>
-      <translation>Tab 1</translation>
+      <translation>Pestaña 1</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="112"/>
       <source>Tab 2</source>
-      <translation>Tab 2</translation>
+      <translation>Pestaña 2</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="202"/>
@@ -279,7 +279,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="14"/>
       <source>Form</source>
-      <translation>Formulario</translation>
+      <translation>Forma</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="35"/>
@@ -304,12 +304,12 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Shape/Type</translation>
+      <translation>Sub.Forma/Tipo</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forma.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>

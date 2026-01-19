@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation>Angle Dimension</translation>
+      <translation>Διάσταση Γωνίας</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1505"/>
       <source>Diameter Dimension</source>
-      <translation>Diameter Dimension</translation>
+      <translation>Διάσταση Διαμέτρου</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
@@ -1805,7 +1805,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1457"/>
       <source>Radius Dimension</source>
-      <translation>Radius Dimension</translation>
+      <translation>Διάσταση Ακτίνας</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1458"/>
@@ -4871,7 +4871,7 @@ when hatching a face with a PAT pattern</translation>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="20"/>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="26"/>
       <source>Annotation</source>
-      <translation>Σχολιασμός</translation>
+      <translation>Περιγραφή</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="43"/>
@@ -5583,7 +5583,7 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="566"/>
       <source>Dimension tool diameter/radius mode</source>
-      <translation>Dimension tool diameter/radius mode</translation>
+      <translation>Λειτουργία εργαλείου διαστάσεων Διαμέτρου/Ακτίνας</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensions.ui" line="573"/>
@@ -5604,17 +5604,17 @@ This affects only the toolbar; all tools remain available via the menu and short
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="161"/>
       <source>Single tool</source>
-      <translation>Single tool</translation>
+      <translation>Ενιαίο εργαλείο</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="162"/>
       <source>Separated tools</source>
-      <translation>Separated tools</translation>
+      <translation>Ξεχωριστά εργαλεία</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="163"/>
       <source>Both</source>
-      <translation>Both</translation>
+      <translation>Και τα δύο</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawDimensionsImp.cpp" line="181"/>
@@ -5906,7 +5906,7 @@ can override the global &apos;Update with 3D&apos; parameter</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
       <source>Grid</source>
-      <translation>Κάναβος</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="772"/>
@@ -6461,7 +6461,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCenterLine.ui" line="261"/>
       <source>Rotate</source>
-      <translation>Περιστρέψτε</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../TaskCenterLine.ui" line="274"/>
@@ -6659,7 +6659,7 @@ Do you want to continue?</source>
       <location filename="../../TaskComplexSection.ui" line="187"/>
       <location filename="../../TaskComplexSection.ui" line="194"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../TaskComplexSection.ui" line="199"/>
@@ -9194,7 +9194,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="64"/>
       <source>Annotation</source>
-      <translation>Σχολιασμός</translation>
+      <translation>Περιγραφή</translation>
     </message>
   </context>
   <context>
@@ -9339,7 +9339,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="218"/>
       <source>Arc of circle</source>
-      <translation>Arc of circle</translation>
+      <translation>Τόξο κύκλου</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="191"/>
@@ -9506,27 +9506,33 @@ there is an open task dialog.</translation>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation type="unfinished">No vertex selected</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation type="unfinished">Select at least </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation type="unfinished"> vertexes</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Δεν έχει επιλεχθεί καμία ακμή</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation type="unfinished"> edges</translation>
     </message>
@@ -9841,7 +9847,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Dimension tools</source>
-      <translation>Dimension tools</translation>
+      <translation>Εργαλεία Διαστάσεων</translation>
     </message>
   </context>
   <context>
@@ -9991,12 +9997,12 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation type="unfinished">Axonometric Length Dimension</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation type="unfinished">Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</translation>
     </message>
