@@ -672,7 +672,7 @@ class ObjectDressup:
 
             z = z and round(z, 8)
 
-            if cmd.Name in ["G1", "G2", "G3", "G01", "G02", "G03"]:
+            if cmd.Name in Path.Geom.CmdMoveMill:
                 if lastZ != z:
                     if Path.Geom.isRoughly(x, lastX) and Path.Geom.isRoughly(y, lastY):
                         params["F"] = vertFeed
