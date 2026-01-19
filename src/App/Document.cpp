@@ -2187,6 +2187,12 @@ bool Document::isAutoCreated() const {
     return autoCreated;
 }
 
+bool Document::isReadOnlyFile() const {
+    std::string filename = FileName.getValue();
+    Base::FileInfo documentFileInfo(filename);  
+    return documentFileInfo.exists() && !documentFileInfo.isWritable();
+}
+
 const char* Document::getProgramVersion() const
 {
     return d->programVersion.c_str();

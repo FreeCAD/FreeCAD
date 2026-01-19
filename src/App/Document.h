@@ -428,6 +428,8 @@ public:
     void setAutoCreated(bool);
     /// check whether the document is autoCreated.
     bool isAutoCreated() const;
+    /// check whether the document is read-only (loaded from a read-only file)
+    bool isReadOnlyFile() const;
     /** Recompute touched features and return the number of recalculated features
      *
      * @param objs: specify a sub set of objects to recompute. If empty, then

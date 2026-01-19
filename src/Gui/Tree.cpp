@@ -3201,7 +3201,7 @@ void TreeWidget::slotNewDocument(const Gui::Document& Doc, bool isMainDoc)
     if (isMainDoc) {
         this->expandItem(item);
     }
-    item->setIcon(0, *documentPixmap);
+    item->setBaseIcon(0, *documentPixmap);
     item->setText(0, QString::fromUtf8(Doc.getDocument()->Label.getValue()));
     DocumentMap[&Doc] = item;
 }
@@ -3510,7 +3510,7 @@ void TreeWidget::onUpdateStatus()
         }
 
         if (doc->testStatus(App::Document::PartialDoc)) {
-            docItem->setIcon(0, *documentPartialPixmap);
+            docItem->setBaseIcon(0, *documentPartialPixmap);
         }
         else if (docItem->_ExpandInfo) {
             for (auto& entry : *docItem->_ExpandInfo) {
@@ -5363,6 +5363,14 @@ void DocumentItem::testStatus()
     for (const auto& v : ObjectMap) {
         v.second->testStatus();
     }
+
+    auto tree = getTree();
+    setBaseIcon(
+        0,
+        document()->getDocument()->testStatus(App::Document::PartialDoc)
+            ? *(tree->documentPartialPixmap)
+            : *(tree->documentPixmap)
+    );
 }
 
 void DocumentItem::setData(int column, int role, const QVariant& value)
@@ -5973,6 +5981,38 @@ void DocumentItem::updateSelection()
     getTree()->blockSelection(lock);
 }
 
+void DocumentItem::setBaseIcon(int column, const QIcon& base)
+{
+    QIcon overlayedIcon = base;
+    // if document is read-only, add an icon overlay
+    if (document()->getDocument()->isReadOnlyFile()) {
+        static QPixmap px(Gui::BitmapFactory().pixmapFromSvg("forbidden", QSize(10, 10)));
+        overlayedIcon = Gui::BitmapFactoryInst::mergePixmap(
+            overlayedIcon,
+            px,
+            Gui::BitmapFactoryInst::BottomRight
+        );
+
+        // if a read-only file has been modified, add a warning overlay
+        if (document()->isModified()) {
+            static QPixmap warnpx(Gui::BitmapFactory().pixmapFromSvg("Warning", QSize(10, 10)));
+            overlayedIcon = Gui::BitmapFactoryInst::mergePixmap(
+                overlayedIcon,
+                warnpx,
+                Gui::BitmapFactoryInst::TopRight
+            );
+            setToolTip(0, "Document is loaded from a read-only file. Changes have been made but cannot be saved.");
+        }
+        else {
+            setToolTip(0, "Document is loaded from a read-only file. Changes cannot be saved.");
+        }
+    }
+    else {
+        setToolTip(0, "");
+    }
+    setIcon(column, overlayedIcon);
+}
+
 // ----------------------------------------------------------------------------
 
 static int countItems;
@@ -6264,12 +6304,26 @@ void DocumentObjectItem::testStatus(bool resetStatus, QIcon& icon1, QIcon& icon2
 
         if (currentStatus & Status::External) {
             static QPixmap pxExternal;
+            static QPixmap pxReadOnly;
             constexpr int px = 12;
             if (pxExternal.isNull()) {
                 pxExternal = Gui::BitmapFactory().pixmapFromSvg("LinkOverlay", QSize(px, px));
             }
-            pxOff = BitmapFactory().merge(pxOff, pxExternal, BitmapFactoryInst::BottomRight);
-            pxOn = BitmapFactory().merge(pxOn, pxExternal, BitmapFactoryInst::BottomRight);
+            if (pxReadOnly.isNull()) {
+                pxReadOnly = Gui::BitmapFactory().pixmapFromSvg("LinkOverlayReadOnly", QSize(px, px));
+            }
+            bool externalReadOnly = getOwnerDocument()->document()->getDocument()->isReadOnlyFile()
+                || (linked && linked->getDocument()->isReadOnlyFile());
+            pxOff = BitmapFactory().merge(
+                pxOff,
+                externalReadOnly ? pxReadOnly : pxExternal,
+                BitmapFactoryInst::BottomRight
+            );
+            pxOn = BitmapFactory().merge(
+                pxOn,
+                externalReadOnly ? pxReadOnly : pxExternal,
+                BitmapFactoryInst::BottomRight
+            );
         }
 
         if (currentStatus & Status::Freezed) {
