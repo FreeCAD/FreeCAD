@@ -1034,6 +1034,11 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
     );
     features.insert(features.end(), datums.begin(), datums.end());
 
+    std::vector<App::DocumentObject*> lcs = getSelection().getObjectsOfType(
+        App::LocalCoordinateSystem::getClassTypeId()
+    );
+    features.insert(features.end(), lcs.begin(), lcs.end());
+
     if (features.empty()) {
         return;
     }
