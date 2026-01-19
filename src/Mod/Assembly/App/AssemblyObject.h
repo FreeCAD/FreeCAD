@@ -241,19 +241,19 @@ public:
     {
         return lastSolverStatus;
     }
-    inline const std::vector<App::DocumentObject*>& getLastConflicting() const
+    inline const std::vector<std::string>& getLastConflicting() const
     {
         return lastConflictingJoints;
     }
-    inline const std::vector<App::DocumentObject*>& getLastRedundant() const
+    inline const std::vector<std::string>& getLastRedundant() const
     {
         return lastRedundantJoints;
     }
-    inline const std::vector<App::DocumentObject*>& getLastPartiallyRedundant() const
+    inline const std::vector<std::string>& getLastPartiallyRedundant() const
     {
         return lastPartialRedundantJoints;
     }
-    inline const std::vector<App::DocumentObject*>& getLastMalformed() const
+    inline const std::vector<std::string>& getLastMalformed() const
     {
         return lastMalformedJoints;
     }
@@ -278,10 +278,10 @@ private:
     bool lastHasMalformedConstraints;
     int lastSolverStatus;
 
-    std::vector<App::DocumentObject*> lastRedundantJoints;
-    std::vector<App::DocumentObject*> lastConflictingJoints;
-    std::vector<App::DocumentObject*> lastPartialRedundantJoints;
-    std::vector<App::DocumentObject*> lastMalformedJoints;
+    std::vector<std::string> lastRedundantJoints;
+    std::vector<std::string> lastConflictingJoints;
+    std::vector<std::string> lastPartialRedundantJoints;
+    std::vector<std::string> lastMalformedJoints;
 };
 
 }  // namespace Assembly
