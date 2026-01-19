@@ -202,9 +202,11 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
         if (checkBox) {
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
             if (parentEditor && parentEditor->activeEditor == checkBox) {
-                checkBox->toggle();
-                // Delay valueChanged to ensure proper recomputation
-                QTimer::singleShot(0, this, [this]() { valueChanged(); });
+                if (this->pressed) {
+                    checkBox->toggle();
+                    // Delay valueChanged to ensure proper recomputation
+                    QTimer::singleShot(0, this, [this]() { valueChanged(); });
+                }
             }
         }
     }
