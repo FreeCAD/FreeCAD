@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 """Slice and dice 3DS files.
 
 Provides for reading, writing, and manipulating 3DS files.  It's
