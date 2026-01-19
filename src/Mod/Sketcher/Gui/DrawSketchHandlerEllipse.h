@@ -393,7 +393,7 @@ private:
         auto lprojy = projy.Length();  // Py = b sin t
 
         if (lprojx > firstRadius) {
-            secondRadius = 0.0;
+            secondRadius = lprojy;
         }
         else {
             double t = std::acos(lprojx / firstRadius);
