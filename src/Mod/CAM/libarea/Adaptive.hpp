@@ -115,7 +115,6 @@ private:
     std::list<AdaptiveOutput> results;
     Paths inputPaths;
     Paths stockInputPaths;
-    int polyTreeNestingLimit = 0;
     long scaleFactor = 100;
     double stepOverScaled = 1;
     long toolRadiusScaled = 10;
@@ -131,7 +130,12 @@ private:
     std::function<bool(TPaths)>* progressCallback = NULL;
     Path toolGeometry;  // tool geometry at coord 0,0, should not be modified
 
-    void ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths, Paths initialClearedPaths);
+    void ProcessPolyNode(
+        Paths boundPaths,
+        Paths toolBoundPaths,
+        Paths finishingPaths,
+        Paths initialClearedPaths
+    );
     bool FindEntryPoint(
         TPaths& progressPaths,
         const Paths& toolBoundPaths,
