@@ -32,7 +32,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 from itertools import permutations
 from numpy import random
 import math
-import re
 import copy
 import time
 
@@ -193,47 +192,44 @@ class Compound:
         firstG123 = -1  #                  Number first G1|G2|G3 command
         lastG123 = -1  #                   Number last G1|G2|G3 command
 
-        for counter, command in enumerate(pathObj.Commands):
+        for counter, cmd in enumerate(pathObj.Commands):
 
             # Mark movements G0 X0 Y0
             if self.obj.RemoveG0X0Y0:
-                if re.search(r"^G0?[0]$", command.Name, re.IGNORECASE) and (
-                    command.x,
-                    command.y,
-                ) == (0, 0):
+                if cmd.Name in Path.Geom.CmdMoveRapid and cmd.x == 0 and cmd.y == 0:
                     g0x0y0.append(counter)
 
             # Storage for G0 which greater than limit Z
-            if re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
+            if cmd.Name in Path.Geom.CmdMoveMill:
                 if firstG123 == -1:
                     firstG123 = counter
                 lastG123 = counter
             if (
-                re.search(r"^G0?[0]$", command.Name, re.IGNORECASE)
-                and command.z
-                and command.z > self.obj.LimitRetractHeight.Value
+                cmd.Name in Path.Geom.CmdMoveRapid
+                and cmd.z
+                and cmd.z > self.obj.LimitRetractHeight.Value
             ):
                 g0LimitZ.append(counter)
 
             # Mark retract with movements less than Threshold
             if self.obj.RetractThreshold:
 
-                if isFullyDefined and re.search(r"^G0?[0]$", command.Name, re.IGNORECASE):
+                if isFullyDefined and cmd.Name in Path.Geom.CmdMoveRapid:
                     # Temporary storage for G0, which will be cleaned when meeting with G1|G2|G3
                     tempG0.append(counter)
 
-                if isFullyDefined and re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
-                    # Get position from any movement command
-                    positionNext.x = command.x if command.x else positionPrev.x
-                    positionNext.y = command.y if command.y else positionPrev.y
-                    positionNext.z = command.z if command.z else positionPrev.z
+                if isFullyDefined and cmd.Name in Path.Geom.CmdMoveAll:
+                    # Get position from any move command
+                    positionNext.x = cmd.x if cmd.x else positionPrev.x
+                    positionNext.y = cmd.y if cmd.y else positionPrev.y
+                    positionNext.z = cmd.z if cmd.z else positionPrev.z
 
-                if isFullyDefined and re.search(r"^G0?[123]$", command.Name, re.IGNORECASE):
-                    lastF = command.f if command.f else lastF
-                    # Get position from mill command
-                    G123Next.x = command.x if command.x else positionPrev.x
-                    G123Next.y = command.y if command.y else positionPrev.y
-                    G123Next.z = command.z if command.z else positionPrev.z
+                if isFullyDefined and cmd.Name in Path.Geom.CmdMoveMill:
+                    lastF = cmd.f if cmd.f else lastF
+                    # Get position from mill cmd
+                    G123Next.x = cmd.x if cmd.x else positionPrev.x
+                    G123Next.y = cmd.y if cmd.y else positionPrev.y
+                    G123Next.z = cmd.z if cmd.z else positionPrev.z
                     # Distance between mill commands (do not take into account Z)
                     p1 = copy.copy(G123Prev)
                     p2 = copy.copy(positionNext)
@@ -247,12 +243,12 @@ class Compound:
                         newCommands.append([counter, newCmd])
                     tempG0.clear()
 
-                if not isFullyDefined and re.search(r"^G0?[0123]$", command.Name, re.IGNORECASE):
+                if not isFullyDefined and cmd.Name in Path.Geom.CmdMoveAll:
                     # After start program, X, Y and Z is not defined
                     # Define position from the few first commands
-                    startX = command.x if command.x else startX
-                    startY = command.y if command.y else startY
-                    startZ = command.z if command.z else startZ
+                    startX = cmd.x if cmd.x else startX
+                    startY = cmd.y if cmd.y else startY
+                    startZ = cmd.z if cmd.z else startZ
                     if startX and startY and startZ:
                         isFullyDefined = True
                         positionNext.x = startX
@@ -304,22 +300,22 @@ class Compound:
         travelOrig = 0
         el = {"startIndex": None, "endIndex": None, "startPoint": None, "endPoint": None}
         for i, cmd in enumerate(pathObj.Commands):
-            if re.search(r"^G0?[0123]$", cmd.Name, re.IGNORECASE):
+            if cmd.Name in Path.Geom.CmdMoveAll:
                 # Get position from any movement
                 endPoint.x = cmd.x if cmd.x else startPoint.x
                 endPoint.y = cmd.y if cmd.y else startPoint.y
                 endPoint.z = cmd.z if cmd.z else startPoint.z
 
-            if el["startIndex"] is None and re.search(r"^G0?[0]$", cmd.Name, re.IGNORECASE):
+            if el["startIndex"] is None and cmd.Name in Path.Geom.CmdMoveRapid:
                 el["startIndex"] = i
 
-            if el["startPoint"] is None and re.search(r"^G0?[123]$", cmd.Name, re.IGNORECASE):
+            if el["startPoint"] is None and cmd.Name in Path.Geom.CmdMoveMill:
                 el["startPoint"] = copy.copy(startPoint)
 
             if (
                 el["startIndex"] is not None
                 and el["startPoint"] is not None
-                and re.search(r"^G0?[0]$", cmd.Name, re.IGNORECASE)
+                and cmd.Name in Path.Geom.CmdMoveRapid
             ):
                 el["endIndex"] = i
                 el["endPoint"] = copy.copy(endPoint)
