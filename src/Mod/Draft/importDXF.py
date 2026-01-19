@@ -4360,7 +4360,7 @@ def readPreferences():
             dxfCreateDraft = False
 
     # The legacy importer still uses these global variables, so we read them all.
-    dxfDiscretizeCurves = hGrp.GetBool("DiscretizeEllipses", True)
+    dxfDiscretizeCurves = hGrp.GetBool("DiscretizeEllipses", False)
     dxfStarBlocks = hGrp.GetBool("dxfstarblocks", False)
     dxfJoin = hGrp.GetBool("joingeometry", False)
     dxfRenderPolylineWidth = hGrp.GetBool("renderPolylineWidth", False)
