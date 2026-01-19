@@ -59,11 +59,9 @@ class _Covering(ArchComponent.Component):
     """
 
     def __init__(self, obj):
-        super().__init__(self, obj)
+        super().__init__(obj)
         self.Type = "Covering"
         self.setProperties(obj)
-        obj.IfcType = "Covering"
-        obj.IfcPredefinedType = "FLOORING"
 
     def setProperties(self, obj):
         """
@@ -206,6 +204,35 @@ class _Covering(ArchComponent.Component):
             )
             obj.setEditorMode("CountPartialTiles", 1)
 
+        # Pattern properties
+        # These are here and not in the view object because while conceptually they modify
+        # the visual appearance, they most importantly affect the geometry (shape) of the object.
+        if not "PatternFile" in properties_list:
+            obj.addProperty(
+                "App::PropertyFile",
+                "PatternFile",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "The PAT file to use for hatching"),
+                locked=True,
+            )
+        if not "PatternName" in properties_list:
+            obj.addProperty(
+                "App::PropertyString",
+                "PatternName",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "The name of the pattern in the PAT file"),
+                locked=True,
+            )
+        if not "PatternScale" in properties_list:
+            obj.addProperty(
+                "App::PropertyFloat",
+                "PatternScale",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "The scale of the hatch pattern"),
+                locked=True,
+            )
+            obj.PatternScale = 1.0
+
         # IFC
         # Neither of the ancestors currently define this property, so define it and populate it
         # specifically for coverings
@@ -268,7 +295,7 @@ if FreeCAD.GuiUp:
         """
 
         def __init__(self, vobj):
-            super().__init__(self, vobj)
+            super().__init__(vobj)
             self.setProperties(vobj)
             self.texture = None
             self.texcoords = None
@@ -313,33 +340,6 @@ if FreeCAD.GuiUp:
                     locked=True,
                 )
                 vobj.TextureScale = FreeCAD.Vector(1, 1, 0)
-
-            # Pattern properties
-            if not "PatternFile" in properties_list:
-                vobj.addProperty(
-                    "App::PropertyFile",
-                    "PatternFile",
-                    "Pattern",
-                    QT_TRANSLATE_NOOP("App::Property", "The PAT file to use for hatching"),
-                    locked=True,
-                )
-            if not "PatternName" in properties_list:
-                vobj.addProperty(
-                    "App::PropertyString",
-                    "PatternName",
-                    "Pattern",
-                    QT_TRANSLATE_NOOP("App::Property", "The name of the pattern in the PAT file"),
-                    locked=True,
-                )
-            if not "PatternScale" in properties_list:
-                vobj.addProperty(
-                    "App::PropertyFloat",
-                    "PatternScale",
-                    "Pattern",
-                    QT_TRANSLATE_NOOP("App::Property", "The scale of the hatch pattern"),
-                    locked=True,
-                )
-                vobj.PatternScale = 1.0
 
         def getIcon(self):
             """
@@ -392,6 +392,17 @@ if FreeCAD.GuiUp:
             if mode != self.EDIT_MODE_STANDARD:
                 return None
 
+            task_control = FreeCADGui.Control
+            task_panel = task_control.activeDialog()
+
+            # Prevent re-entrant calls which can happen during object creation
+            if task_panel and isinstance(task_panel, ArchCoveringTaskPanel):
+                # TODO: check this, remove print statement
+                print("Reentrant call to setEdit detected; ignoring.")
+                return True
+
+            task_control.showDialog(ArchCoveringTaskPanel(obj=vobj.Object))
+
             return True
 
         def unsetEdit(self, vobj, mode=0):
@@ -418,6 +429,10 @@ if FreeCAD.GuiUp:
             # Only handle the edit mode with a custom Task Panel.
             if mode != self.EDIT_MODE_STANDARD:
                 return None
+
+            task_control = FreeCADGui.Control
+
+            task_control.closeDialog()
 
             return True
 
@@ -470,7 +485,7 @@ if FreeCAD.GuiUp:
             modifications (like texture mapping) are applied.
             """
             # Let the parent class build the default scene graph first.
-            super().ViewProviderComponent.attach(self, vobj)
+            super().attach(vobj)
             self.Object = vobj.Object
 
         def updateData(self, obj, prop):
@@ -498,7 +513,7 @@ if FreeCAD.GuiUp:
             # Skip it if the Base is a tuple (linked sub-element), as the parent class does not
             # support them.
             if not (prop == "Shape" and isinstance(obj.Base, tuple)):
-                super().ViewProviderComponent.updateData(self, obj, prop)
+                super().updateData(obj, prop)
 
         def onChanged(self, vobj, prop):
             """
@@ -523,7 +538,7 @@ if FreeCAD.GuiUp:
             updates.
             """
             # Let the parent class handle its properties first.
-            super().ViewProviderComponent.onChanged(self, vobj, prop)
+            super().onChanged(vobj, prop)
 
     class ArchCoveringTaskPanel:
         def __init__(self, command=None, obj=None):
@@ -625,24 +640,25 @@ if FreeCAD.GuiUp:
         def _setupTilesPage(self):
             self.page_tiles = QtGui.QWidget()
             form = QtGui.QFormLayout()
+            ui = FreeCADGui.UiLoader()
 
-            self.sb_length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_length = ui.createWidget("Gui::InputField")
             self.sb_length.setText("300mm")
             self.sb_length.setToolTip(translate("Arch", "The length of the tiles"))
             form.addRow(translate("Arch", "Length:"), self.sb_length)
 
-            self.sb_width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_width = ui.createWidget("Gui::InputField")
             self.sb_width.setText("300mm")
             self.sb_width.setToolTip(translate("Arch", "The width of the tiles"))
             form.addRow(translate("Arch", "Width:"), self.sb_width)
 
-            self.sb_thick = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_thick = ui.createWidget("Gui::InputField")
             self.sb_thick.setText("10mm")
             self.sb_thick.setToolTip(translate("Arch", "The thickness of the tiles"))
             self.lbl_thick = QtGui.QLabel(translate("Arch", "Thickness:"))
             form.addRow(self.lbl_thick, self.sb_thick)
 
-            self.sb_joint = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_joint = ui.createWidget("Gui::InputField")
             self.sb_joint.setText("5mm")
             self.sb_joint.setToolTip(translate("Arch", "The width of the joints between tiles"))
             form.addRow(translate("Arch", "Joint:"), self.sb_joint)
@@ -654,7 +670,7 @@ if FreeCAD.GuiUp:
             self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
             form.addRow(translate("Arch", "Alignment:"), self.combo_align)
 
-            self.sb_rot = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_rot = ui.createWidget("Gui::InputField")
             self.sb_rot.setText("0deg")
             self.sb_rot.setProperty("unit", "Angle")
             self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
@@ -666,6 +682,7 @@ if FreeCAD.GuiUp:
         def _setupHatchPage(self):
             self.page_hatch = QtGui.QWidget()
             form = QtGui.QFormLayout()
+            ui = FreeCADGui.UiLoader()
 
             self.le_pat = QtGui.QLineEdit()
             self.le_pat.setToolTip(translate("Arch", "The PAT file to use for hatching"))
@@ -677,7 +694,7 @@ if FreeCAD.GuiUp:
             h_pat.addWidget(btn_browse_pat)
             form.addRow(translate("Arch", "Pattern File:"), h_pat)
 
-            self.sb_rot_hatch = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.sb_rot_hatch = ui.createWidget("Gui::InputField")
             self.sb_rot_hatch.setText("0deg")
             self.sb_rot_hatch.setProperty("unit", "Angle")
             self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
@@ -749,11 +766,79 @@ if FreeCAD.GuiUp:
                     self.sb_thick.setEnabled(False)
                     self.sb_thick.setText("0mm")
 
+        def isPicking(self):
+            return self.btn_selection.isChecked()
+
+        def setPicking(self, state):
+            self.btn_selection.setChecked(state)
+
         def action(self, arg):
-            pass  # Picking logic to be implemented
+            try:
+                if arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN":
+                    # Check if picking is enabled in the task panel
+                    if not self.isPicking():
+                        return
+
+                    pos = arg["Position"]
+                    # Use standard View API to get object under cursor (returns list of dicts)
+                    # We explicitly cast to int to avoid TypeErrors with some bindings
+                    p_info = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(
+                        (int(pos[0]), int(pos[1]))
+                    )
+
+                    if p_info:
+                        # p_info[0] is the top-most object
+                        picked = p_info[0]
+                        obj_name = picked.get("Object")
+                        sub_name = picked.get("Component")
+
+                        obj = FreeCAD.ActiveDocument.getObject(obj_name)
+
+                        if obj:
+                            # Check if the sub_name string contains "Face"
+                            if sub_name and "Face" in sub_name:
+                                self.setSelectedFace(obj, sub_name)
+                            else:
+                                self.setSelectedObject(obj)
+            except Exception:
+                import traceback
+
+                traceback.print_exc()
+
+        def onGetSelection(self):
+            sel = FreeCADGui.Selection.getSelectionEx()
+            if len(sel) > 0:
+                # Take the first selected object
+                obj = sel[0].Object
+                if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
+                    self.setSelectedFace(obj, sel[0].SubElementNames[0])
+                else:
+                    self.setSelectedObject(obj)
+
+        def setSelectedFace(self, obj, sub):
+            self.selected_obj = obj
+            self.selected_sub = sub
+            self.le_selection.setText(f"{obj.Label}.{sub}")
+            self.setPicking(False)
+
+        def setSelectedObject(self, obj):
+            self.selected_obj = obj
+            self.selected_sub = None
+            self.le_selection.setText(f"{obj.Label}")
+            self.setPicking(False)
 
         def getStandardButtons(self):
             return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
+
+        def _cleanup_and_close(self):
+            # Ensure callback is always removed
+            self.view.removeEventCallback("SoEvent", self.callback)
+            if self.command:
+                # Reject triggered by the creation command
+                self.command.finish()
+            else:
+                # Reject triggered by editing
+                FreeCADGui.Control.closeDialog()
 
         def accept(self):
             try:
@@ -811,16 +896,6 @@ if FreeCAD.GuiUp:
 
             finally:
                 self._cleanup_and_close()
-
-        def _cleanup_and_close(self):
-            # Ensure callback is always removed
-            self.view.removeEventCallback("SoEvent", self.callback)
-            if self.command:
-                # Reject triggered by the creation command
-                self.command.finish()
-            else:
-                # Reject triggered by editing
-                FreeCADGui.Control.closeDialog()
 
         def reject(self):
             self._cleanup_and_close()

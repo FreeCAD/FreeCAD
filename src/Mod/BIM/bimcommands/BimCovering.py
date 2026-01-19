@@ -88,11 +88,24 @@ class BIM_Covering:
         self.doc = FreeCAD.ActiveDocument
         self.view = FreeCADGui.ActiveDocument.ActiveView
 
-        # Show Task Panel
+        # Show task panel
         import ArchCovering
 
         self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self)
         FreeCADGui.Control.showDialog(self.task_panel)
+
+        # Check for pre-selection and fill in the task panel with it, if the user has already
+        # selected something before executing the command
+        sel = FreeCADGui.Selection.getSelectionEx()
+        if len(sel) == 1:
+            obj = sel[0].Object
+            if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
+                self.task_panel.setSelectedFace(obj, sel[0].SubElementNames[0])
+            else:
+                self.task_panel.setSelectedObject(obj)
+        else:
+            # Auto-enable picking if nothing selected
+            self.task_panel.setPicking(True)
 
     def finish(self):
         """

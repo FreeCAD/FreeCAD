@@ -2452,15 +2452,17 @@ def makeCovering(baseobj=None, name=None):
     """
     covering = _initializeArchObject(
         "Part::FeaturePython",
-        baseClassName="Covering",
+        baseClassName="_Covering",
         internalName="Covering",
         defaultLabel=name if name else translate("Arch", "Covering"),
         moduleName="ArchCovering",
-        viewProviderName="ViewProviderCovering",
+        viewProviderName="_ViewProviderCovering",
     )
 
     # Initialize all relevant properties
     if baseobj:
         covering.Base = baseobj
+    covering.IfcType = "Covering"
+    covering.IfcPredefinedType = "FLOORING"
 
     return covering
