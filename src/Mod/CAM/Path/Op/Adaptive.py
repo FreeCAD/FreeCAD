@@ -121,12 +121,12 @@ def discretize(edge, flipDirection=False):
 
 
 def GenerateGCode(op, obj, adaptiveResults):
-    if not adaptiveResults or not adaptiveResults[0]["AdaptivePaths"]:
-        return
 
     # minLiftDistance = op.tool.Diameter
     helixRadius = 0
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         p1 = region["HelixCenterPoint"]
         p2 = region["StartPoint"]
         helixRadius = max(math.dist(p1[:2], p2[:2]), helixRadius)
@@ -157,6 +157,8 @@ def GenerateGCode(op, obj, adaptiveResults):
     lz = obj.StartDepth.Value
 
     for region in adaptiveResults:
+        if not region["AdaptivePaths"]:
+            continue
         passStartDepth = region.get("TopDepth", obj.StartDepth.Value)
 
         depthParams = PathUtils.depth_params(
@@ -601,16 +603,15 @@ def Execute(op, obj):
             # TODO expand bbox for pofile mode
             for ca in PathOpUtil.getClearedAreas(op, bbox):
                 shape = ca.toTopoShape()
-                outputArea = []
-                for edge in shape.Edges:
-                    assert edge.Curve.TypeId == "Part::GeomLine"
-                    v = edge.Vertexes[0].Point
-                    outputArea.append([v.x, v.y])
-                clearedArea.append(outputArea)
+                for wire in shape.Wires:
+                    outputWire = []
+                    for edge in wire.Edges:
+                        assert edge.Curve.TypeId == "Part::GeomLine"
+                        v = edge.Vertexes[0].Point
+                        outputWire.append([v.x, v.y])
+                    clearedArea.append(outputWire)
 
         # put here all properties that influence calculation of adaptive base paths,
-
-        op.clearedArea = clearedArea
 
         import random
 

@@ -1299,7 +1299,6 @@ public:
                     state.passes++;
                     if (state.passes >= maxPases) {
                         Perf_NextEngagePoint.Stop();
-                        cout << "Engage failed\n\n";
                         (*parent->fout) << "Done, none found.\n";
                         return false;  // nothing more to cut
                     }
@@ -1311,12 +1310,9 @@ public:
             (*parent->fout) << "Testint point:"
                             << " cpt=(" << cpt.X << "," << cpt.Y << ")"
                             << " area=" << area << "\n";
-            cout << "Try engage (" << cpt.X << ", " << cpt.Y << "): Area " << area << " (min "
-                 << minCutArea << " max " << maxCutArea << ")" << endl;
             if (area > minCutArea && area < maxCutArea && area > prevArea) {
                 Perf_NextEngagePoint.Stop();
                 (*parent->fout) << "Done, accepted point.\n";
-                cout << "Engage succeeded!\n\n";
                 return true;
             }
             prevArea = area;
@@ -2913,10 +2909,10 @@ void Adaptive2d::ProcessPolyNode(
         Paths engagePaths;
         clipof.Clear();
         clipof.AddPaths(initialClearedPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, toolRadiusScaled + engageBuffer);
+        clipof.Execute(engagePaths, -(toolRadiusScaled + engageBuffer));
         clipof.Clear();
         clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, -engagementProtrusion - engageBuffer);
+        clipof.Execute(engagePaths, engagementProtrusion + engageBuffer);
 
         clip.Clear();
         clip.AddPaths(engagePaths, PolyType::ptSubject, true);
@@ -2929,7 +2925,7 @@ void Adaptive2d::ProcessPolyNode(
         }
     }
 
-    // Add outside of stock to cleared area
+    // Add outside of stock to cleared area TODO FIXME Is this already done before this function, though?
     if (!forceInsideOut) {
         // Produce the stock boundary as a hole in a large shape
         // The large shape should be big enough that its exterior boundary is not
@@ -2982,8 +2978,7 @@ void Adaptive2d::ProcessPolyNode(
         ClosedPathsFromPolyTree(result, closedPaths);
 
         for (auto& path : openPaths) {
-            cout << "GOT HERE open!" << path << endl;
-            Path outAndBack;
+            Path outAndBack;  // TODO FIXME this is stupid; modify engagement to take open paths
             for (const auto p : path) {
                 outAndBack.push_back(p);
             }
@@ -2994,10 +2989,8 @@ void Adaptive2d::ProcessPolyNode(
             engageBounds.push_back(outAndBack);
         }
         for (const auto& path : closedPaths) {
-            cout << "GOT HERE closed!" << endl;
             engageBounds.push_back(path);
         }
-        fout << "Helix entry " << entryPoint << "\n";
     }
 
     // Attempt first engagement
@@ -3024,6 +3017,7 @@ void Adaptive2d::ProcessPolyNode(
     }
     else {
         // Engagement failed; instead helix down
+        fout << "Helix entry " << entryPoint << "\n";
         cout << "No enage, helixing down\n";
         if (!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir, helixRadiusScaled)) {
             Perf_ProcessPolyNode.Stop();
