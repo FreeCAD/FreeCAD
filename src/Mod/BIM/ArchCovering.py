@@ -13,6 +13,8 @@ solid 3D tiles, parametric 2D patterns, and hatch patterns.
 """
 
 import FreeCAD
+import Part
+from draftutils import params
 
 if FreeCAD.GuiUp:
     from PySide import QtCore, QtGui
@@ -255,6 +257,285 @@ class _Covering(ArchComponent.Component):
                 "NOTDEFINED",
             ]
 
+    def loads(self, state):
+        # Override the parent's type to set a specific type for Covering
+        self.Type = "Covering"
+
+    def onDocumentRestored(self, obj):
+
+        super().onDocumentRestored(obj)
+        self.setProperties(obj)
+
+    def get_base_face(self, obj):
+        """Extracts the base face from the linked object/subobject"""
+        if not obj.Base:
+            return None
+
+        val = obj.Base
+        if isinstance(val, tuple):
+            linked_obj = val[0]
+            sub_elements = val[1]
+        else:
+            linked_obj = val
+            sub_elements = []
+
+        face = None
+
+        if len(sub_elements) > 0:
+            # Sub-element linked (e.g. Face6)
+            try:
+                sub_shape = linked_obj.getSubObject(sub_elements[0])
+                if sub_shape.ShapeType == "Face":
+                    face = sub_shape
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    "ArchCovering: Unable to retrieve subobject: {}\n".format(e)
+                )
+
+        if not face and hasattr(linked_obj, "Shape"):
+            # Whole object linked
+            if linked_obj.Shape.ShapeType == "Face":
+                face = linked_obj.Shape
+            elif linked_obj.Shape.Solids:
+                # If solid, find the "Top" face based on Normal
+                faces = linked_obj.Shape.Faces
+                faces.sort(key=lambda f: f.CenterOfMass.z, reverse=True)
+                if faces:
+                    face = faces[0]
+            # Support for closed Wires (e.g. Draft Circle/Rectangle with MakeFace=False)
+            elif linked_obj.Shape.ShapeType in ["Wire", "Edge"] and linked_obj.Shape.isClosed():
+                try:
+                    face = Part.Face(Part.Wire(linked_obj.Shape.Edges))
+                except Part.OCCError as e:
+                    FreeCAD.Console.PrintWarning(
+                        "ArchCovering: Unable to create face from wire: {}\n".format(e)
+                    )
+
+        if face:
+            # Ensure we are working with a copy in global coordinates
+            return face
+
+        return None
+
+    def _get_grid_basis(self, base_face):
+        # Determine Grid Basis (u, v directions from face) using Generic Surface API
+        u_p, v_p = base_face.Surface.parameter(base_face.BoundBox.Center)
+        u_vec, v_vec = base_face.Surface.tangent(u_p, v_p)
+        u_vec.normalize()
+
+        # Calculate normal and re-orthogonalize V vector
+        normal = u_vec.cross(v_vec)
+        normal.normalize()
+        v_vec = normal.cross(u_vec)
+        v_vec.normalize()
+
+        center_point = base_face.Surface.value(u_p, v_p)
+        return u_vec, v_vec, normal, center_point
+
+    def _get_grid_origin(self, obj, base_face, u_vec, v_vec, center_point):
+        # Find extents - Initialize with first vertex
+        v0 = base_face.Vertexes[0].Point
+        vec0 = v0.sub(center_point)
+
+        min_u = max_u = vec0.dot(u_vec)
+        min_v = max_v = vec0.dot(v_vec)
+
+        # Project remaining vertices
+        for v in base_face.Vertexes[1:]:
+            vec_to_vert = v.Point.sub(center_point)
+            proj_u = vec_to_vert.dot(u_vec)
+            proj_v = vec_to_vert.dot(v_vec)
+
+            if proj_u < min_u:
+                min_u = proj_u
+            if proj_u > max_u:
+                max_u = proj_u
+            if proj_v < min_v:
+                min_v = proj_v
+            if proj_v > max_v:
+                max_v = proj_v
+
+        # Determine the Grid Origin based on Alignment
+        align = obj.TileAlignment
+        origin_offset = FreeCAD.Vector(0, 0, 0)
+
+        if align == "Center":
+            mid_u = (min_u + max_u) / 2
+            mid_v = (min_v + max_v) / 2
+            origin_offset = u_vec.multiply(mid_u).add(v_vec.multiply(mid_v))
+        elif align == "BottomLeft":
+            origin_offset = u_vec.multiply(min_u).add(v_vec.multiply(min_v))
+        elif align == "BottomRight":
+            origin_offset = u_vec.multiply(max_u).add(v_vec.multiply(min_v))
+        elif align == "TopLeft":
+            origin_offset = u_vec.multiply(min_u).add(v_vec.multiply(max_v))
+        elif align == "TopRight":
+            origin_offset = u_vec.multiply(max_u).add(v_vec.multiply(max_v))
+
+        return center_point.add(origin_offset)
+
+    def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
+        # Step size
+        step_x = t_len + j_len
+        step_y = t_wid + j_wid
+
+        if step_x == 0 or step_y == 0:
+            return [], []
+
+        # Estimate count
+        diag = bbox.DiagonalLength
+        count_x = int(diag / step_x) + 4
+        count_y = int(diag / step_y) + 4
+
+        # Determine Z offset for cutters
+        if obj.FinishMode == "Solid Tiles":
+            z_gen_offset = (obj.TileThickness.Value - cut_thick) / 2
+        else:
+            z_gen_offset = -cut_thick / 2
+
+        cutters_h = []
+        cutters_v = []
+
+        # Offsets
+        off_x = obj.TileOffset.x
+        off_y = obj.TileOffset.y
+
+        # Generate Horizontal Strips (Rows)
+        full_len_x = 2 * count_x * step_x
+        start_x = -count_x * step_x
+
+        for j in range(-count_y, count_y):
+            row_y_offset = off_y if (j % 2 != 0) else 0
+            local_y = j * step_y + t_wid + row_y_offset
+            jh_box = Part.makeBox(
+                full_len_x, j_wid, cut_thick, FreeCAD.Vector(start_x, local_y, z_gen_offset)
+            )
+            cutters_h.append(jh_box)
+
+        # Generate Vertical Strips (Cols)
+        is_stack_bond = obj.TileOffset.Length < 1e-5
+
+        if is_stack_bond:
+            full_len_y = 2 * count_y * step_y
+            start_y = -count_y * step_y
+            for i in range(-count_x, count_x):
+                local_x = i * step_x + t_len
+                jv_box = Part.makeBox(
+                    j_len, full_len_y, cut_thick, FreeCAD.Vector(local_x, start_y, z_gen_offset)
+                )
+                cutters_v.append(jv_box)
+        else:
+            for j in range(-count_y, count_y):
+                row_off_x = off_x if (j % 2 != 0) else 0
+                row_off_y = off_y if (j % 2 != 0) else 0
+                row_y = j * step_y + row_off_y
+                for i in range(-count_x, count_x):
+                    local_x = i * step_x + t_len + row_off_x
+                    jv_box = Part.makeBox(
+                        j_len, step_y, cut_thick, FreeCAD.Vector(local_x, row_y, z_gen_offset)
+                    )
+                    cutters_v.append(jv_box)
+
+        return cutters_h, cutters_v
+
+    def _perform_cut(self, obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec):
+
+        # Prepare transformation
+        tr = FreeCAD.Placement()
+        tr.Base = origin
+        rot_mat = FreeCAD.Matrix(
+            u_vec.x,
+            v_vec.x,
+            normal.x,
+            0,
+            u_vec.y,
+            v_vec.y,
+            normal.y,
+            0,
+            u_vec.z,
+            v_vec.z,
+            normal.z,
+            0,
+            0,
+            0,
+            0,
+            1,
+        )
+        face_rot = FreeCAD.Placement(rot_mat).Rotation
+        tile_rot = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.Rotation.Value)
+        tr.Rotation = face_rot.multiply(tile_rot)
+
+        result_shape = None
+        t_len = obj.TileLength.Value
+        t_wid = obj.TileWidth.Value
+
+        if obj.FinishMode == "Solid Tiles":
+            # Extrude Base Face
+            tile_layer = base_face.extrude(normal.multiply(obj.TileThickness.Value))
+
+            # Cut
+            if cutters_h:
+                comp_h = Part.Compound(cutters_h)
+                comp_h.Placement = tr
+                tile_layer = tile_layer.cut(comp_h)
+
+            if cutters_v:
+                comp_v = Part.Compound(cutters_v)
+                comp_v.Placement = tr
+                result_shape = tile_layer.cut(comp_v)
+            else:
+                result_shape = tile_layer
+
+            # Count
+            full_vol = t_len * t_wid * obj.TileThickness.Value
+            full_cnt = 0
+            part_cnt = 0
+            for sol in result_shape.Solids:
+                if abs(sol.Volume - full_vol) < 0.001:
+                    full_cnt += 1
+                else:
+                    part_cnt += 1
+            obj.CountFullTiles = full_cnt
+            obj.CountPartialTiles = part_cnt
+
+        elif obj.FinishMode == "Parametric Pattern":
+            # 2D Cut
+            temp_face = base_face
+
+            if cutters_h:
+                comp_h = Part.Compound(cutters_h)
+                comp_h.Placement = tr
+                temp_face = temp_face.cut(comp_h)
+
+            if cutters_v:
+                comp_v = Part.Compound(cutters_v)
+                comp_v.Placement = tr
+                result_shape = temp_face.cut(comp_v)
+            else:
+                result_shape = temp_face
+
+            # Count
+            full_area = t_len * t_wid
+            full_cnt = 0
+            part_cnt = 0
+            for f in result_shape.Faces:
+                if abs(f.Area - full_area) < 0.001:
+                    full_cnt += 1
+                else:
+                    part_cnt += 1
+            obj.CountFullTiles = full_cnt
+            obj.CountPartialTiles = part_cnt
+
+            # Convert Faces to Wires for lightweight representation
+            if result_shape:
+                wires = []
+                for f in result_shape.Faces:
+                    wires.extend(f.Wires)
+                if wires:
+                    result_shape = Part.Compound(wires)
+
+        return result_shape
+
     def execute(self, obj):
         """
         Calculates the geometry and updates the shape of the object.
@@ -272,9 +553,48 @@ class _Covering(ArchComponent.Component):
         if self.clone(obj):
             return
 
-    def loads(self, state):
-        # Override the parent's type to set a specific type for Covering
-        self.Type = "Covering"
+        base_face = self.get_base_face(obj)
+        if not base_face:
+            return
+
+        if obj.FinishMode == "Hatch Pattern":
+            from draftutils import hatch
+
+            if obj.PatternFile:
+                # Use unified Rotation property for Hatch rotation
+                pat = hatch.hatch(
+                    base_face,
+                    obj.PatternFile,
+                    obj.PatternName,
+                    scale=obj.PatternScale,
+                    rotation=obj.Rotation,
+                )
+                if pat:
+                    obj.Shape = Part.Compound([base_face, pat])
+            return
+
+        u_vec, v_vec, normal, center_point = self._get_grid_basis(base_face)
+        origin = self._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
+
+        # Dimensions
+        t_len = obj.TileLength.Value
+        t_wid = obj.TileWidth.Value
+        j_len = obj.JointWidth.Value
+        j_wid = obj.JointWidth.Value
+
+        # Cut thickness
+        cut_thick = obj.TileThickness.Value * 1.1 if obj.FinishMode == "Solid Tiles" else 1.0
+
+        cutters_h, cutters_v = self._build_cutters(
+            obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
+        )
+
+        if not cutters_h and not cutters_v:
+            return
+
+        obj.Shape = self._perform_cut(
+            obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
+        )
 
 
 if FreeCAD.GuiUp:
@@ -340,6 +660,9 @@ if FreeCAD.GuiUp:
                     locked=True,
                 )
                 vobj.TextureScale = FreeCAD.Vector(1, 1, 0)
+
+        def onDocumentRestored(self, vobj):
+            self.setProperties(vobj)
 
         def getIcon(self):
             """
@@ -573,8 +896,12 @@ if FreeCAD.GuiUp:
             # Populat UI values
 
             # Store the thickness to restore it when switching modes
-            # TODO: use params
-            self.stored_thickness = "10mm"
+            self.stored_thickness = FreeCAD.Units.Quantity(
+                params.get_param_arch("CoveringThickness"), FreeCAD.Units.Length
+            ).UserString
+            self.stored_thickness = params.get_param_arch("CoveringThickness")
+            if self.stored_thickness is None:
+                self.stored_thickness = 10.0
 
             # If editing, pre-fill selection
             if self.obj_to_edit:
