@@ -1147,7 +1147,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation>Color de Punto(s)</translation>
+      <translation>Color del punto</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
@@ -2169,7 +2169,7 @@ Este valor es la longitud máxima del segmento.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="92"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Permitir que FreeCAD descargue y actualize automáticamente las librerías DXF</translation>
+      <translation>Permitir a FreeCAD descargar y actualizar automáticamente las bibliotecas DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="279"/>
@@ -2258,7 +2258,7 @@ un archivo DXF.</translation>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation>Si está marcado, FreeCAD puede descargar y actualizar las librerías de Python
+      <translation>Si está marcado, FreeCAD puede descargar y actualizar las bibliotecas de Python
 requeridas por el importador de legado. Esto también se puede hacer manualmente instalando
 el complemento "dxf_library" desde el Administrador de complementos.</translation>
     </message>
@@ -2329,7 +2329,7 @@ shape. Best for importing and viewing very large files with maximum performance.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
       <source>Fused Part shapes (lowest fidelity, fastest)</source>
-      <translation type="unfinished">Fused Part shapes (lowest fidelity, fastest)</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="224"/>
@@ -4638,7 +4638,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="211"/>
       <source>Zero scale factor not allowed</source>
-      <translation type="unfinished">Zero scale factor not allowed</translation>
+      <translation>No se permite un factor de escala de cero</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="224"/>
@@ -4747,12 +4747,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone objects without a shape, aborting</source>
-      <translation type="unfinished">Cannot clone objects without a shape, aborting</translation>
+      <translation>No se puede clonar objetos sin una forma, abortando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="102"/>
       <source>Cannot clone objects without a shape, skipping them</source>
-      <translation type="unfinished">Cannot clone objects without a shape, skipping them</translation>
+      <translation>No se puede clonar objetos sin una forma, ignorándolos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="75"/>
@@ -4813,7 +4813,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="175"/>
       <source>Number of elements must be at least 2</source>
-      <translation type="unfinished">Number of elements must be at least 2</translation>
+      <translation>El número de elementos debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
@@ -4866,12 +4866,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
       <source>Number of elements must be at least 1</source>
-      <translation type="unfinished">Number of elements must be at least 1</translation>
+      <translation>El número de elementos debe ser al menos 1</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
-      <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
+      <translation>En el modo lineal, se debe seleccionar al menos 1 eje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
@@ -4987,7 +4987,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>El número de capas debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
@@ -4999,7 +4999,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
       <source>Tangential distance cannot be 0</source>
-      <translation type="unfinished">Tangential distance cannot be 0</translation>
+      <translation>La distancia tangencial no puede ser 0</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="211"/>
@@ -6215,7 +6215,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
-      <translation>La descarga de las librerías DXF falló.
+      <translation>La descarga de las bibliotecas DXF falló.
 Por favor instale el complemento de la biblioteca de DXF manualmente
 desde el menú Herramientas → Administrador de complementos</translation>
     </message>
@@ -7948,7 +7948,7 @@ más allá de la línea de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="81"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Estilos de anotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="85"/>
@@ -8607,12 +8607,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Apply Current Style</translation>
+      <translation>Aplicar estilo actual</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="53"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation type="unfinished">Applies the current style to the selected objects and groups</translation>
+      <translation>Aplica el estilo actual a los objetos y grupos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -8620,12 +8620,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
-      <translation type="unfinished">Highlight Subelements</translation>
+      <translation>Resaltar subelementos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
-      <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
+      <translation>Resalta los subelementos de los objetos seleccionados, para poder moverlos, rotarlos y escalarlos</translation>
     </message>
   </context>
   <context>

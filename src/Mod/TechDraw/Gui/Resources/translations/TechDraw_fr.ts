@@ -11,7 +11,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Centerline Between 2 Lines</source>
-      <translation>Ajouter une ligne centrale entre 2 lignes</translation>
+      <translation>Ligne centrale entre 2 lignes</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="792"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Centerline Between 2 Points</source>
-      <translation>Ajouter une ligne centrale entre 2 points</translation>
+      <translation>Ligne centrale entre 2 points</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="867"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Cosmetic Line Through 2 Points</source>
-      <translation>Ajouter une ligne cosmétique par 2 points</translation>
+      <translation>Ligne cosmétique par 2 points</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="980"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Centerline Faces</source>
-      <translation>Ajouter une ligne centrale à des faces</translation>
+      <translation>Ligne centrale à des  faces</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Remove Cosmetic Object</source>
-      <translation>Supprimer l'objet cosmétique</translation>
+      <translation>Supprimer un objet cosmétique</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1131"/>
       <source>Removes the selected cosmetic object from the page</source>
-      <translation>Supprimer l'objet cosmétique</translation>
+      <translation>Supprime l'objet cosmétique sélectionné de la page.</translation>
     </message>
   </context>
   <context>
@@ -1034,12 +1034,12 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation>Ajoute des lignes centrales à un motif circulaire de trois ou plusieurs cercles sélectionnés.</translation>
+      <translation>Ajoute des axes de centrage à un motif circulaire de trois ou plusieurs cercles sélectionnés.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation>Ajoute des lignes centrales à un motif circulaire de cercles sélectionnés.</translation>
+      <translation>Ajoute des axes de centrage à un motif circulaire de cercles sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1492,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="795"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation>Intersection de lignes</translation>
+      <translation>Intersections cosmétiques de lignes</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
@@ -1538,7 +1538,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Centerline Between 2 Faces</source>
-      <translation>Ajouter une ligne centrale à des faces</translation>
+      <translation>Ligne centrale entre 2 faces</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="681"/>
@@ -1820,7 +1820,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Ajoute des sommets cosmétiques aux points des quadrants des cercles sélectionnés.</translation>
+      <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -1874,7 +1874,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="150"/>
       <source>Inserts a rich text annotation in the current page</source>
-      <translation>Insère une annotation de texte riche dans la feuille courante.</translation>
+      <translation>Insère une annotation de texte enrichi dans la feuille courante.</translation>
     </message>
   </context>
   <context>
@@ -4431,7 +4431,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="169"/>
       <source>Crop image</source>
-      <translation>Redimensionner l'image</translation>
+      <translation>Recadrer une image</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="136"/>
@@ -8793,7 +8793,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Centerlines/Threading</source>
-      <translation>Lignes centrales/filetages</translation>
+      <translation>Taraudages/filetages/cosmétiques</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -9529,27 +9529,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Aucun sommet sélectionné</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Sélectionner au moins </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> sommets</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Aucune arête sélectionnée</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> arêtes</translation>
     </message>
@@ -10014,12 +10020,12 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
-      <translation>Cote axonométrique</translation>
+      <translation>Insérer une cote axonométrique</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Crée une cote de longueur dans une vue axonométrique, en utilisant les arêtes ou les paires de sommets sélectionnées pour définir la direction et la mesure.</translation>
     </message>
@@ -10029,7 +10035,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="60"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation>Intersection de lignes</translation>
+      <translation>Intersections cosmétiques de lignes</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="63"/>
@@ -10074,7 +10080,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Ajoute des sommets cosmétiques aux points des quadrants des cercles sélectionnés.</translation>
+      <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
   </context>
   <context>

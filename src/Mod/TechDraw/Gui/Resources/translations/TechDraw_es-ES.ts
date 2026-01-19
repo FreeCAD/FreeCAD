@@ -3468,7 +3468,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1551"/>
       <source>Choose an SVG file to open</source>
-      <translation>Seleccionar un archivo SVG para abrir</translation>
+      <translation>Seleccione un archivo SVG para abrir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -3744,7 +3744,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="307"/>
       <source>No page found</source>
-      <translation>No se ha encontrado una página de dibujo</translation>
+      <translation>No se encontró una página</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="308"/>
@@ -6221,7 +6221,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../MDIViewPage.cpp" line="394"/>
       <source>Different orientation</source>
-      <translation>Orientación diferente de la hoja</translation>
+      <translation>Orientación diferente</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="395"/>
@@ -8193,7 +8193,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="69"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Actualmente no hay vista activa para completar la operación</translation>
+      <translation>Actualmente no hay una vista activa para completar la operación</translation>
     </message>
   </context>
   <context>
@@ -9503,27 +9503,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Ningún vértice seleccionado</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Selecciona al menos </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> vértices</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Ninguna arista seleccionada</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> aristas</translation>
     </message>
@@ -9989,12 +9995,12 @@ hay un diálogo de tareas abierto.</translation>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation type="unfinished">Axonometric Length Dimension</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation type="unfinished">Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</translation>
     </message>

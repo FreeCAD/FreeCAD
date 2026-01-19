@@ -4608,7 +4608,7 @@ Dieses Verzeichnis wird für die Symbolauswahl verwendet.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
       <source>Switch workbench on click</source>
-      <translation>Arbeitsbereich bei Klick wechseln</translation>
+      <translation>Arbeitsbereich mit Klick wechseln</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="59"/>
@@ -4633,7 +4633,7 @@ Dieses Verzeichnis wird für die Symbolauswahl verwendet.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
       <source>Use new face finder algorithm</source>
-      <translation>Den neuen Flächenfinder-Algorithmus verwenden</translation>
+      <translation>Neuen Flächenfinder-Algorithmus verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
@@ -4824,17 +4824,17 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
       <source>Alt</source>
-      <translation>Alt - Taste</translation>
+      <translation>Alt-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Umschalttaste (Shift) zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Umschalttaste zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
       <source>Shift</source>
-      <translation>Shift - Taste</translation>
+      <translation>Umschalttaste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
@@ -4844,17 +4844,17 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
       <source>Meta</source>
-      <translation>Meta</translation>
+      <translation>Meta-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Strg-Taste (Ctrl) zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Strg-Taste zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
       <source>Control</source>
-      <translation>Steuerung</translation>
+      <translation>Strg-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="590"/>
@@ -5089,7 +5089,7 @@ bei Verwendung von Zeichnungen als 1:1 Schnittvorlage.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="550"/>
       <source>Center line style</source>
-      <translation>Mittellinien-Stil</translation>
+      <translation>Linienart für Mittellinien</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="631"/>
@@ -5853,7 +5853,7 @@ die globale Einstellung &apos;Mit 3D aktualisieren&apos; überschreiben kann</tr
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="838"/>
       <source>Use 3D camera direction</source>
-      <translation>Verwende die 3D-Kamerarichtung</translation>
+      <translation>3D-Kamerarichtung verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="856"/>
@@ -5918,7 +5918,7 @@ die globale Einstellung &apos;Mit 3D aktualisieren&apos; überschreiben kann</tr
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="816"/>
       <source>View Defaults</source>
-      <translation>Ansicht Standards</translation>
+      <translation>Standardwerte für Ansicht</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="859"/>
@@ -5994,7 +5994,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation>Harte Linien anzeigen</translation>
+      <translation>Körperkanten anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
@@ -6004,7 +6004,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Shows smooth lines</source>
-      <translation>Zeigt glatte Linien</translation>
+      <translation>Tangentiale Flächenränder anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
@@ -6056,7 +6056,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="233"/>
       <source>Show smooth lines</source>
-      <translation>Tangentiale Linien anzeigen</translation>
+      <translation>Tangentiale Flächenränder anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="260"/>
@@ -6156,7 +6156,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
       <source>Template edit mark</source>
-      <translation>Markierung für editierbare Vorlagentexte</translation>
+      <translation>Markierung für bearbeitbare Vorlagentexte</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
@@ -9500,27 +9500,33 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Kein Punkt ausgewählt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Wähle mindestens </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> Punkt(e)</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Keine Kante ausgewählt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> Kante(n)</translation>
     </message>
@@ -9986,12 +9992,12 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation>Axonometrisches Längenmaß</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Erstellt ein Längenmaß in einer axonometrischer Ansicht und verwendet ausgewählte Kanten oder Knotenpaare zum Festlegen von Richtung und Messung</translation>
     </message>
