@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 3.3.0 - (in progress)
+## [3.3.0](https://github.com/asmaloney/libE57Format/releases/tag/v3.3.0) - 2025-10-24
 
 ### Added
 
@@ -14,9 +14,19 @@ All notable changes to this project will be documented in this file. The format 
 
 ### Fixed
 
-- {cmake} Added missing include for GNUInstallDirs ([#315](https://github.com/asmaloney/libE57Format/pull/315)) (Thanks Adrian!)
+- Fix clang 17 warnings about `@throw` documentation. ([#327](https://github.com/asmaloney/libE57Format/pull/327))
+
+- Fix MSVC C++17 deprecation of `codecvt_utf8_utf16`; replaced with `MultiByteToWideChar` if compiling with C++ &gt;= 17. ([#326](https://github.com/asmaloney/libE57Format/pull/326)) (Thanks Christophe!)
+
+- {ci} Fix some CI warnings and update actions. ([#328](https://github.com/asmaloney/libE57Format/pull/328))
+
+- {ci} Fix GitHub CI for Windows. ([#325](https://github.com/asmaloney/libE57Format/pull/325)) (Thanks Christophe!)
+
+- {cmake} Add missing include for GNUInstallDirs ([#315](https://github.com/asmaloney/libE57Format/pull/315)) (Thanks Adrian!)
 
   If you built without testing on, the cmake files were not installed to the correct location.
+
+- {standard conformance} Don't try to fill in intensity limits when using the simple API. They are for the limits that the sensor can produce, not the limits of the data (8.4.19).
 
 ## [3.2.0](https://github.com/asmaloney/libE57Format/releases/tag/v3.2.0) - 2024-06-27
 
