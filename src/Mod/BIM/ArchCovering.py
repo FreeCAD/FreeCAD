@@ -1450,12 +1450,22 @@ if FreeCAD.GuiUp:
             # Process into internal list structure
             new_list = []
             for s in sel:
+                obj = s.Object
+                # PartDesign Normalization
+                for parent in obj.InList:
+                    if parent.isDerivedFrom("PartDesign::Body"):
+                        # Check if obj is part of the Body's geometry definition
+                        # Group contains features (Pad, Pocket), BaseFeature contains the root
+                        if (obj in parent.Group) or (getattr(parent, "BaseFeature", None) == obj):
+                            obj = parent
+                            break
+
                 if s.SubElementNames:
                     for sub in s.SubElementNames:
                         if "Face" in sub:
-                            new_list.append((s.Object, [sub]))
+                            new_list.append((obj, [sub]))
                 else:
-                    new_list.append(s.Object)
+                    new_list.append(obj)
 
             self.selection_list = new_list
 

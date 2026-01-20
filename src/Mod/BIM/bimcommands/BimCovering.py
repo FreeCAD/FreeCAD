@@ -82,7 +82,7 @@ class BIM_Covering:
         """
         Initializes the Covering tool session.
 
-        Captures references to the active document and viewer, instantiates the Task Panel logic,
+        Captures selection, instantiates the Task Panel logic,
         and registers the panel with the FreeCAD Task Manager to begin the user interaction.
         """
         # Check for pre-selection and fill in the task panel with it, if the user has already
@@ -91,16 +91,27 @@ class BIM_Covering:
         selection_list = []
         if sel:
             for s in sel:
+                obj = s.Object
+                # PartDesign Normalization:
+                # If an internal feature is selected, link to the Body instead.
+                for parent in obj.InList:
+                    if parent.isDerivedFrom("PartDesign::Body"):
+                        # Check if obj is part of the Body's geometry definition
+                        # Group contains features (Pad, Pocket), BaseFeature contains the root
+                        if (obj in parent.Group) or (getattr(parent, "BaseFeature", None) == obj):
+                            obj = parent
+                            break
+
                 if s.SubElementNames:
                     # Iterate through all selected sub-elements (faces) This ensures that selecting
                     # Face1 AND Face2 of the same object results in two distinct targets for the
                     # batch operation.
                     for sub in s.SubElementNames:
                         if "Face" in sub:
-                            selection_list.append((s.Object, [sub]))
+                            selection_list.append((obj, [sub]))
                 else:
                     # Whole object selected
-                    selection_list.append(s.Object)
+                    selection_list.append(obj)
 
         # Launch the task panel
         import ArchCovering
