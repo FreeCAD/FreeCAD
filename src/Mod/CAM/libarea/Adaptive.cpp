@@ -1864,36 +1864,38 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     // Handle different clearing modes (inside/outside, clearing/profiling) and invoke the core
     // adaptive algorithm
-    // 0) If outer clearing or outer profile: Reverse all paths
-    // 0.5) If going outside the stock is allowed, inputPaths = union(inputPaths, regionOutsideStock)
-    // 1) Compute toolBoundsFinished = offset(input paths, -(toolRadius + finishingThickness)) TODO
-    // apply stock to leave here, not earlier
-    // 2a) If clearing: toolBoundsUnfinished = empty
-    // 2b) If profiling:
+    // 1) If outer clearing or outer profile: Reverse all paths
+    // 2) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
+    // clearedArea
+    // 3) Compute toolBoundsFinished = offset(input paths, -(toolRadius + finishingThickness))
+    // TODO apply stock to leave here, not earlier
+    // 4a) If clearing: toolBoundsUnfinished = empty
+    // 4b) If profiling:
     // toolBoundsUnfinished = reverse(offset(toolBoundsFinished, -profileThickness))
-    // 3) toolBounds = toolBoundsFinished + toolBoundsUnfinished
-    // 4) Loop over connected components using nesting level. Only draw top-level polygons from
+    // 5) toolBounds = toolBoundsFinished + toolBoundsUnfinished
+    // 6) Loop over connected components using nesting level. Only draw top-level polygons from
     // toolBoundsFinished (holes can come from anywhere)
-    // 5) finishingPass = offset(any located parts from the TBF category, finishingThickness)
-    // 6) Compute bounds = offset(finishingPass + any non-finished boundaries, toolRadius)
-    // 7) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
+    // 7) finishingPass = offset(any located parts from the TBF category, finishingThickness)
+    // 8) Compute bounds = offset(finishingPass + any non-finished boundaries, toolRadius)
+    // 9) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
+    // ---
 
-    // 0) If outer clearing or outer profile: Reverse all paths
+    // 1) If outer clearing or outer profile: Reverse all paths
     if (opType == OperationType::otClearingOutside || opType == OperationType::otProfilingOutside) {
         ReversePaths(inputPaths);
     }
 
-    // 0.5) If going outside the stock is allowed, inputPaths = union(inputPaths, regionOutsideStock)
-    clipof.Clear();
-    clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-    clipof.Execute(inputPaths, 4);  // TODO explain this, also deduplicate from elsewhere
+    // 2) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
+    // clearedArea
     if (!forceInsideOut) {
+        // shrink the stock boundary to ensure overlap with input paths that hit the boundary
         Paths stockRev;
-        for (auto path : stockInputPaths) {
-            stockRev.push_back(path);
-        }
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(stockRev, -1);
         ReversePaths(stockRev);
 
+        // input paths
         Paths outsideOfStock;
         double overshootDistance = 4 * toolRadiusScaled
             + stockToLeave
@@ -1907,16 +1909,27 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, inputPaths);
+
+        // cleared area
+        clipof.Clear();
+        clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
+        clipof.Execute(outsideOfStock, 100 * toolRadiusScaled);
+
+        clip.Clear();
+        clip.AddPaths(initialClearedPaths, PolyType::ptSubject, true);
+        clip.AddPaths(stockRev, PolyType::ptClip, true);
+        clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctUnion, initialClearedPaths);
     }
 
-    // 1) Compute toolBoundsFinished = offset(input paths, -(toolRadius + finishingThickness))
+    // 3) Compute toolBoundsFinished = offset(input paths, -(toolRadius + finishingThickness))
     Paths toolBoundsFinished;
     clipof.Clear();
     clipof.AddPaths(inputPaths, JoinType::jtRound, EndType::etClosedPolygon);
     clipof.Execute(toolBoundsFinished, -(toolRadiusScaled + finishPassOffsetScaled));
 
-    // 2a) If clearing: toolBoundsUnfinished = empty
-    // 2b) If profiling: toolBoundsUnfinished = reverse(offset(toolBoundsFinished, -profileThickness))
+    // 4a) If clearing: toolBoundsUnfinished = empty
+    // 4b) If profiling: toolBoundsUnfinished = reverse(offset(toolBoundsFinished, -profileThickness))
     Paths toolBoundsUnfinished;
     if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
         clipof.Clear();
@@ -1926,7 +1939,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         ReversePaths(toolBoundsUnfinished);
     }
 
-    // 3) toolBounds = toolBoundsFinished + toolBoundsUnfinished
+    // 5) toolBounds = toolBoundsFinished + toolBoundsUnfinished
     Paths toolBounds;
     for (auto path : toolBoundsFinished) {
         toolBounds.push_back(path);
@@ -1935,7 +1948,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         toolBounds.push_back(path);
     }
 
-    // 4) Loop over connected components using nesting level. Only draw top-level polygons from
+    // 6) Loop over connected components using nesting level. Only draw top-level polygons from
     // toolBoundsFinished (holes can come from anywhere)
     for (const auto& current : toolBoundsFinished) {
         int nesting = getPathNestingLevel(current, toolBounds);  // counts itself and the number of
@@ -1962,20 +1975,63 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
-            // 5) finishingPass = offset(any located parts from the TBF category, finishingThickness)
+            // 7) finishingPass = offset(any located parts from the TBF category, finishingThickness)
             Paths finishingPass;
             clipof.Clear();
             clipof.AddPaths(currentTBF, JoinType::jtRound, EndType::etClosedPolygon);
             clipof.Execute(finishingPass, finishPassOffsetScaled);
 
-            // 6) Compute bounds = offset(finishingPass + any non-finished boundaries, toolRadius)
+            // 8) Compute bounds = offset(finishingPass + any non-finished boundaries, toolRadius)
             Paths boundPath;
             clipof.Clear();
             clipof.AddPaths(finishingPass, JoinType::jtRound, EndType::etClosedPolygon);
             clipof.AddPaths(currentTBU, JoinType::jtRound, EndType::etClosedPolygon);
-            clipof.Execute(boundPath, toolRadiusScaled);
+            // 3 = number of offsets in computing boundPaths > max error in boundary
+            // Subtracting 3 ensures that rounding in boundPath is guaranteed to shrink it
+            // This is important for successfully filtering out boundPaths that should be fully
+            // covered by initialClearPaths
+            clipof.Execute(boundPath, toolRadiusScaled - 3);
 
-            // 7) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
+            // Skip path generation if bounds are fully cleared
+            {
+                Paths boundsToClear;
+                clip.Clear();
+                clip.AddPaths(boundPath, PolyType::ptSubject, true);
+                clip.AddPaths(initialClearedPaths, PolyType::ptClip, true);
+                clip.Execute(ClipType::ctDifference, boundsToClear);
+                if (!boundsToClear.size()) {
+                    continue;
+                }
+            }
+
+            // Skip finishing passes that are already fully cleared
+            {
+                Paths actualFinishingPass;
+                for (Path fp : finishingPass) {
+                    Paths fpClearedPlus, fpClearedMinus;
+                    clipof.Clear();
+                    clipof.AddPath(fp, JoinType::jtRound, EndType::etClosedPolygon);
+                    // 3 = number of offsets in computing fpCleared > max error in boundary
+                    // Subtracting 3 ensures that rounding in fpCleared is guaranteed to
+                    // shrink it. This is important for successfully filtering out fpCleared
+                    // that should be fully covered by initialClearPaths
+                    clipof.Execute(fpClearedPlus, toolRadiusScaled - 3);
+                    clipof.Execute(fpClearedMinus, -(toolRadiusScaled - 3));
+
+                    Paths difference;
+                    clip.Clear();
+                    clip.AddPaths(fpClearedPlus, PolyType::ptSubject, true);
+                    clip.AddPaths(fpClearedMinus, PolyType::ptSubject, true);
+                    clip.AddPaths(initialClearedPaths, PolyType::ptClip, true);
+                    clip.Execute(ClipType::ctDifference, difference);
+                    if (difference.size() > 0) {
+                        actualFinishingPass.push_back(fp);
+                    }
+                }
+                finishingPass = actualFinishingPass;
+            }
+
+            // 9) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
             ProcessPolyNode(boundPath, toolBounds, finishingPass, initialClearedPaths);
         }
     }
@@ -2903,76 +2959,27 @@ void Adaptive2d::ProcessPolyNode(
         cout << "Engagement protrusion: " << engagementProtrusion << endl;
     }
 
-    // Initialize engagement points from previously cleared paths
-    long engageBuffer = stepOverScaled;  // TODO document this, make a careful decision
-    {
+    // Helper function for adding potential engagement points
+    const long engageBuffer = stepOverScaled;  // TODO document this, make a careful decision
+    auto addToEngage = [&](Paths& paths, bool flip) {
         Paths engagePaths;
-        clipof.Clear();
-        clipof.AddPaths(initialClearedPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, -(toolRadiusScaled + engageBuffer));
+        clipof.AddPaths(paths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(engagePaths, -(flip ? -1 : 1) * (toolRadiusScaled + engageBuffer));
         clipof.Clear();
         clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, engagementProtrusion + engageBuffer);
-
-        clip.Clear();
-        clip.AddPaths(engagePaths, PolyType::ptSubject, true);
-        clip.AddPaths(noGo, PolyType::ptClip, true);
-        clip.Execute(ClipType::ctDifference, engagePaths);
-
-        CleanPolygons(engagePaths);
-        for (const auto& p : engagePaths) {
-            engageBounds.push_back(p);
-        }
-    }
-
-    // Add outside of stock to cleared area TODO FIXME Is this already done before this function, though?
-    if (!forceInsideOut) {
-        // Produce the stock boundary as a hole in a large shape
-        // The large shape should be big enough that its exterior boundary is not
-        // close enough to slow down cut area computation (not merely large enough to
-        // fit the tool)
-
-        Paths outerBoundary;
-        clipof.Clear();
-        clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-        clipof.Execute(outerBoundary, 1000 * toolRadiusScaled);
-
-        Paths clearedPaths;
-        clip.Clear();
-        clip.AddPaths(outerBoundary, PolyType::ptSubject, true);
-        clip.AddPaths(stockInputPaths, PolyType::ptClip, true);
-        clip.Execute(ClipType::ctDifference, clearedPaths);
-        CleanPolygons(clearedPaths);
-        SimplifyPolygons(clearedPaths);
-        cleared.AddClearedPaths(clearedPaths);
-    }
-
-    // Add engagement points from outside of stock
-    if (!forceInsideOut) {
-        Paths engagePaths;
-        clipof.Clear();
-        cout << "Stock input paths" << endl;
-        for (auto path : stockInputPaths) {
-            cout << "[" << endl;
-            for (auto p : path) {
-                cout << "\t(" << p.X << ", " << p.Y << ")" << endl;
-            }
-            cout << "]" << endl;
-        }
-        clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, toolRadiusScaled + engageBuffer);
-        clipof.Clear();
-        clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(engagePaths, -engagementProtrusion - engageBuffer);
+        clipof.Execute(engagePaths, (flip ? -1 : 1) * (engagementProtrusion + engageBuffer));
 
         clip.Clear();
         // Take the difference of the open path and the noGo region:
         // we're not looking to difference areas, we want the border minus the area
         PolyTree result;
-        clip.AddPaths(engagePaths, PolyType::ptSubject, false);  // TODO make this edit for cleared
-                                                                 // paths too
-        clip.AddPaths(noGo, PolyType::ptClip, true);
-        clip.Execute(ClipType::ctDifference, result);
+        for (auto& ep : engagePaths) {
+            // actually close the path, before telling clipper to treat it as open
+            ep.push_back(ep[0]);
+        }
+        clip.AddPaths(engagePaths, PolyType::ptSubject, false);
+        clip.AddPaths(toolBoundPaths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctIntersection, result);
         Paths openPaths, closedPaths;
         OpenPathsFromPolyTree(result, openPaths);
         ClosedPathsFromPolyTree(result, closedPaths);
@@ -2991,6 +2998,14 @@ void Adaptive2d::ProcessPolyNode(
         for (const auto& path : closedPaths) {
             engageBounds.push_back(path);
         }
+    };
+
+    // Initialize engagement points from previously cleared paths
+    addToEngage(initialClearedPaths, false);
+
+    // Add engagement points from outside of stock
+    if (!forceInsideOut) {
+        addToEngage(stockInputPaths, true);
     }
 
     // Attempt first engagement
@@ -3039,6 +3054,7 @@ void Adaptive2d::ProcessPolyNode(
 
     IntPoint newToolPos;
     DoublePoint newToolDir;
+    DoublePoint lastExpandToolDir = toolDir;
 
     CheckReportProgress(progressPaths, true);
 
@@ -3060,8 +3076,6 @@ void Adaptive2d::ProcessPolyNode(
     long total_output_points = 0;
     long over_cut_count = 0;
     long bad_engage_count = 0;
-    double prevDistFromStart = 0;
-    bool prevDistTrend = false;
 
     double perf_total_len = 0;
 #ifdef DEV_MODE
@@ -3370,17 +3384,14 @@ void Adaptive2d::ProcessPolyNode(
                 break;
             }
 
-            // update cleared paths when trend of distance from start point changes sign (starts to
-            // get closer, or start to get farther)
-            double distFromStart = sqrt(DistanceSqrd(toolPos, startPoint));
-            bool distanceTrend = distFromStart > prevDistFromStart ? true : false;
-
-            if (distanceTrend != prevDistTrend) {
+            // if the path has changed direction by more than 45 degrees (such that we consider
+            // continuations (>45)+45>90 degrees from the original direction) then we need to
+            // update cleared paths
+            if (lastExpandToolDir.X * newToolDir.X + lastExpandToolDir.Y * newToolDir.Y
+                < cos(std::numbers::pi / 4)) {
                 cleared.ExpandCleared(toClearPath);
                 toClearPath.clear();
             }
-            prevDistTrend = distanceTrend;
-            prevDistFromStart = distFromStart;
 
             if (area > 0) {  // cut is ok - record it
                 fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y << ")\n";
@@ -3522,6 +3533,7 @@ void Adaptive2d::ProcessPolyNode(
         }
         toolPos = engage.getCurrentPoint();
         toolDir = engage.getCurrentDir();
+        lastExpandToolDir = toolDir;
     }
 
     //**********************************
