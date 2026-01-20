@@ -73,12 +73,12 @@ body:
   - type: textarea
     id: dev_version
     attributes:
-      label: Development version About Info (in Safe Mode)
+      label: Development version 'About FreeCAD' info (in Safe Mode) 🢘 DO NOT SKIP THIS STEP!!!
       description: Download the latest weekly [development release](https://github.com/FreeCAD/FreeCAD/releases) and try reproducing the issue in safe mode (Help → Restart in Safe Mode). Use the [About FreeCAD](https://wiki.freecad.org/About) dialog to copy your full version information and paste it here.
       placeholder: |
         1. Download the latest weekly development version (link above).
-        2. Make sure to run in Safe Mode (Help -> Restart in Safe Mode) to exclude interference from 3rd party addons.
-        3. If the issue is still reproducible, open the About FreeCAD dialog and copy the full version info here.
+        2. Make sure to run in Safe Mode (Help 🠆 Restart in Safe Mode) to exclude interference from 3rd party addons.
+        3. If the issue is still reproducible, open the Help 🠆 About FreeCAD dialog and copy the full version info here.
       render: shell
     validations:
       required: true
@@ -86,7 +86,7 @@ body:
   - type: textarea
     id: good_version
     attributes:
-      label: Last known good version (optional)
+      label: Last known good version (optional yet very helpful for bug triage)
       description: If this is a regression, paste the [About FreeCAD](https://wiki.freecad.org/About) info from the last known working version.
       placeholder: If the problem did not exist in a previous version, paste the About FreeCAD info from that version here.
       render: shell
