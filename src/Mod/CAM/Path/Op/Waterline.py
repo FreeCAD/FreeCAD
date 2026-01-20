@@ -564,6 +564,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("CutPattern", C)
         obj.setEditorMode("SampleInterval", G)
         obj.setEditorMode("MinSampleInterval", D)
+        obj.setEditorMode("OptimizeLinearPaths", D)
         obj.setEditorMode("LinearDeflection", expMode)
         obj.setEditorMode("AngularDeflection", expMode)
 
@@ -1226,6 +1227,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         bb = self.boundBoxes[mdlIdx]
         stl = self.modelSTLs[mdlIdx]
         depOfst = obj.DepthOffset.Value
+        optimizeLinear = obj.OptimizeLinearPaths
 
         # Prepare global holdpoint and layerEndPnt containers
         if self.holdPoint is None:
@@ -1284,6 +1286,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Generate G-Code
             layTime = time.time()
             for loop in scanLines:
+                if optimizeLinear:
+                    loop = PathUtils.simplify3dLine(loop, tolerance=self.geoTlrnc)
                 # We pass '0.0' as layDep because Adaptive loops have their own Z embedded
                 cmds = self._loopToGcode(obj, 0.0, loop)
                 commands.extend(cmds)
