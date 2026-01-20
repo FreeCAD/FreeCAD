@@ -1102,9 +1102,8 @@ if FreeCAD.GuiUp:
             else:
                 self.selection_list = selection if selection else []
 
-            # Setup event callback for picking (works for both create and edit)
-            self.view = FreeCADGui.ActiveDocument.ActiveView
-            self.callback = self.view.addEventCallback("SoEvent", self.action)
+            # Register as Selection Observer
+            FreeCADGui.Selection.addObserver(self)
 
             # Pre-fill selection based on obj properties or passed selection
             if self.obj_to_edit:
@@ -1422,59 +1421,58 @@ if FreeCAD.GuiUp:
 
         def setPicking(self, state):
             self.btn_selection.setChecked(state)
+            if state:
+                # Sync immediately when enabled
+                self._onSelectionChanged()
 
-        def action(self, arg):
-            try:
-                if arg["Type"] == "SoMouseButtonEvent" and arg["State"] == "DOWN":
-                    # Check if picking is enabled in the task panel
-                    if not self.isPicking():
-                        return
+        # --- Selection Observer methods ---
+        def addSelection(self, doc, obj, sub, pos):
+            self._onSelectionChanged()
 
-                    pos = arg["Position"]
-                    # Use standard View API to get object under cursor (returns list of dicts)
-                    # We explicitly cast to int to avoid TypeErrors with some bindings
-                    p_info = FreeCADGui.ActiveDocument.ActiveView.getObjectsInfo(
-                        (int(pos[0]), int(pos[1]))
-                    )
+        def removeSelection(self, doc, obj, sub):
+            self._onSelectionChanged()
 
-                    if p_info:
-                        # p_info[0] is the top-most object
-                        picked = p_info[0]
-                        obj_name = picked.get("Object")
-                        sub_name = picked.get("Component")
+        def setSelection(self, doc):
+            self._onSelectionChanged()
 
-                        obj = FreeCAD.ActiveDocument.getObject(obj_name)
-                        if not obj:
-                            return
+        def clearSelection(self, doc):
+            self._onSelectionChanged()
 
-                        is_face = sub_name and "Face" in sub_name
+        def _onSelectionChanged(self):
+            """Syncs internal state with FreeCAD selection."""
+            # Gate: Only update if Picking is enabled
+            if not self.isPicking():
+                return
 
-                        if self.obj_to_edit:
-                            # Edit mode: replace single selection, terminate picking
-                            self.selected_obj = obj
-                            self.selected_sub = sub_name if is_face else None
-                            self.setPicking(False)
-                            self._updateSelectionUI()
+            # Get Standard Selection
+            sel = FreeCADGui.Selection.getSelectionEx()
 
-                            # Instantly update Base property for live feedback
-                            val = (obj, [sub_name]) if is_face else obj
-                            self.obj_to_edit.Base = val
-                        else:
-                            # Create mode: accumulate/Toggle selection, keep picking active
-                            target = (obj, [sub_name]) if is_face else obj
+            # Process into internal list structure
+            new_list = []
+            for s in sel:
+                if s.SubElementNames:
+                    for sub in s.SubElementNames:
+                        if "Face" in sub:
+                            new_list.append((s.Object, [sub]))
+                else:
+                    new_list.append(s.Object)
 
-                            # Toggle behavior: if already in list, remove it
-                            if target in self.selection_list:
-                                self.selection_list.remove(target)
-                            else:
-                                self.selection_list.append(target)
+            self.selection_list = new_list
 
-                            self._updateSelectionUI()
+            # Handle edit mode
+            if self.obj_to_edit and self.selection_list:
+                last_item = self.selection_list[-1]
+                if isinstance(last_item, tuple):
+                    self.selected_obj = last_item[0]
+                    self.selected_sub = last_item[1][0]
+                    self.obj_to_edit.Base = (self.selected_obj, [self.selected_sub])
+                else:
+                    self.selected_obj = last_item
+                    self.selected_sub = None
+                    self.obj_to_edit.Base = self.selected_obj
 
-            except Exception:
-                import traceback
-
-                traceback.print_exc()
+            # Update UI label
+            self._updateSelectionUI()
 
         def updateBase(self):
             # Update the Base property of the live object
@@ -1488,8 +1486,8 @@ if FreeCAD.GuiUp:
             return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
         def _cleanup_and_close(self):
-            # Ensure callback is always removed
-            self.view.removeEventCallback("SoEvent", self.callback)
+            # Ensure observer is always removed
+            FreeCADGui.Selection.removeObserver(self)
             FreeCADGui.Control.closeDialog()
 
         def accept(self):
@@ -1563,18 +1561,25 @@ if FreeCAD.GuiUp:
 
                 # Continue logic
                 if not self.obj_to_edit and self.chk_continue.isChecked():
+                    # Clear selection
                     self.selection_list = []
                     self.selected_obj = None
                     self.selected_sub = None
-                    self.le_selection.setText(translate("Arch", "No selection"))
+
+                    # This triggers _onSelectionChanged -> updates internal list -> updates UI
+                    FreeCADGui.Selection.clearSelection()
+                    self._updateSelectionUI()
                     self.setPicking(True)
-                    return
+                    return False
 
             except Exception as e:
+                import traceback
+
+                traceback.print_exc()
                 FreeCAD.Console.PrintError(f"Error creating covering: {e}\n")
 
-            finally:
-                self._cleanup_and_close()
+            self._cleanup_and_close()
+            return True
 
         def reject(self):
             if self.obj_to_edit:
