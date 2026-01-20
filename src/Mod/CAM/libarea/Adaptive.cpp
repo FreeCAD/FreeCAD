@@ -1183,7 +1183,6 @@ public:
         size_t currentPathIndex = 0;
         size_t currentSegmentIndex = 0;
         double segmentPos = 0;
-        double totalDistance = 0;
         double currentPathLength = 0;
         int passes = 0;
 
@@ -1201,17 +1200,20 @@ public:
         state.currentPathIndex = 0;
         state.currentSegmentIndex = 0;
         state.segmentPos = 0;
-        state.totalDistance = 0;
         calculateCurrentPathLength();
     }
 
     void SetPaths(const Paths& paths)
     {
-        toolBoundPaths = paths;
+        toolBoundPaths = {};
+        for (const Path& p : paths) {
+            if (p.size() > 1) {
+                toolBoundPaths.push_back(p);
+            }
+        }
         state.currentPathIndex = 0;
         state.currentSegmentIndex = 0;
         state.segmentPos = 0;
-        state.totalDistance = 0;
         state.passes = 0;
         calculateCurrentPathLength();
     }
@@ -1243,6 +1245,7 @@ public:
         // 	toChain.erase(toChain.begin());
         // }
         while (PopPathWithClosestPoint(toChain, current, result)) {
+            result.push_back(result[0]);
             toolBoundPaths.push_back(result);
             if (!result.empty()) {
                 current = result.back();
@@ -1255,7 +1258,6 @@ public:
         size_t minPathIndex = state.currentPathIndex;
         size_t minSegmentIndex = state.currentSegmentIndex;
         double minSegmentPos = state.segmentPos;
-        state.totalDistance = 0;
         for (;;) {
             while (moveForward(step)) {
                 double distSqrd = DistanceSqrd(pt, getCurrentPoint());
@@ -1322,11 +1324,12 @@ public:
     IntPoint getCurrentPoint()
     {
         const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p1 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p2 = &pth->at(state.currentSegmentIndex + 1);
         double segLength = sqrt(DistanceSqrd(*p1, *p2));
+        if (segLength == 0) {
+            return *p1;
+        }
         return IntPoint(
             long(p1->X + state.segmentPos * double(p2->X - p1->X) / segLength),
             long(p1->Y + state.segmentPos * double(p2->Y - p1->Y) / segLength)
@@ -1336,11 +1339,12 @@ public:
     DoublePoint getCurrentDir()
     {
         const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p1 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p2 = &pth->at(state.currentSegmentIndex + 1);
         double segLength = sqrt(DistanceSqrd(*p1, *p2));
+        if (segLength == 0) {
+            return DoublePoint(1, 0);
+        }
         return DoublePoint(double(p2->X - p1->X) / segLength, double(p2->Y - p1->Y) / segLength);
     }
 
@@ -1350,19 +1354,19 @@ public:
         if (distance < NTOL) {
             throw std::invalid_argument("distance must be positive");
         }
-        state.totalDistance += distance;
         double segmentLength = currentSegmentLength();
         while (state.segmentPos + distance > segmentLength) {
             state.currentSegmentIndex++;
-            if (state.currentSegmentIndex >= pth->size()) {
+            if (state.currentSegmentIndex >= pth->size() - 1) {
                 state.currentSegmentIndex = 0;
+                return false;
             }
             distance = distance - (segmentLength - state.segmentPos);
             state.segmentPos = 0;
             segmentLength = currentSegmentLength();
         }
         state.segmentPos += distance;
-        return state.totalDistance <= 1.2 * state.currentPathLength;
+        return true;
     }
 
     bool nextPath()
@@ -1370,7 +1374,6 @@ public:
         state.currentPathIndex++;
         state.currentSegmentIndex = 0;
         state.segmentPos = 0;
-        state.totalDistance = 0;
         if (state.currentPathIndex >= toolBoundPaths.size()) {
             state.currentPathIndex = 0;
             calculateCurrentPathLength();
@@ -1389,9 +1392,9 @@ private:
         const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
         size_t size = pth->size();
         state.currentPathLength = 0;
-        for (size_t i = 0; i < size; i++) {
-            const IntPoint* p1 = &pth->at(i > 0 ? i - 1 : size - 1);
-            const IntPoint* p2 = &pth->at(i);
+        for (size_t i = 0; i < size - 1; i++) {
+            const IntPoint* p1 = &pth->at(i);
+            const IntPoint* p2 = &pth->at(i + 1);
             state.currentPathLength += sqrt(DistanceSqrd(*p1, *p2));
         }
     }
@@ -1399,10 +1402,8 @@ private:
     double currentSegmentLength()
     {
         const Path* pth = &toolBoundPaths.at(state.currentPathIndex);
-        const IntPoint* p1 = &pth->at(
-            state.currentSegmentIndex > 0 ? state.currentSegmentIndex - 1 : pth->size() - 1
-        );
-        const IntPoint* p2 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p1 = &pth->at(state.currentSegmentIndex);
+        const IntPoint* p2 = &pth->at(state.currentSegmentIndex + 1);
         return sqrt(DistanceSqrd(*p1, *p2));
     }
 };
@@ -1885,6 +1886,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         ReversePaths(inputPaths);
     }
 
+    ofstream fout("adaptive_debug.txt");
+    this->fout = &fout;
     // 2) If going outside the stock is allowed, add regionOutsideStock to both inputPaths and
     // clearedArea
     if (!forceInsideOut) {
@@ -1892,8 +1895,32 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         Paths stockRev;
         clipof.Clear();
         clipof.AddPaths(stockInputPaths, JoinType::jtRound, EndType::etClosedPolygon);
-        clipof.Execute(stockRev, -1);
+        clipof.Execute(stockRev, -2);
         ReversePaths(stockRev);
+        fout << "Stock input paths" << endl;
+        for (Path& path : stockInputPaths) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
+        }
+        fout << "Stock rev" << endl;
+        for (Path& path : stockRev) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
+        }
+        fout << "Input paths" << endl;
+        for (Path& path : inputPaths) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
+        }
 
         // input paths
         Paths outsideOfStock;
@@ -1904,11 +1931,29 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
         clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
         clipof.Execute(outsideOfStock, overshootDistance);
 
+        fout << "outsideOfStock" << endl;
+        for (Path& path : outsideOfStock) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
+        }
+
         clip.Clear();
         clip.AddPaths(inputPaths, PolyType::ptSubject, true);
         clip.AddPaths(stockRev, PolyType::ptClip, true);
         clip.AddPaths(outsideOfStock, PolyType::ptClip, true);
         clip.Execute(ClipType::ctUnion, inputPaths);
+
+        fout << "Unioned input paths" << endl;
+        for (Path& path : inputPaths) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
+        }
 
         // cleared area
         clipof.Clear();
@@ -2868,9 +2913,7 @@ void Adaptive2d::ProcessPolyNode(
     Paths initialClearedPaths
 )
 {
-    ofstream fout("adaptive_debug.txt");
-    this->fout = &fout;
-    // nostream fout("adaptive_debug.txt");
+    ofstream& fout = *this->fout;
     fout << "\n" << "\n" << "----------------------" << "\n";
     fout << "Start ProcessPolyNode" << "\n";
     Perf_ProcessPolyNode.Start();
@@ -2899,7 +2942,41 @@ void Adaptive2d::ProcessPolyNode(
     DoublePoint toolDir;
     bool plungeEntry = false;
     bool firstEngagePoint = true;
-    Paths engageBounds = toolBoundPaths;
+    Paths engageBounds = {};
+
+    const auto addEngageBounds = [&](Paths openPaths) {
+        // Intersect with the tool bounds
+        PolyTree result;
+        clip.Clear();
+        clip.AddPaths(openPaths, PolyType::ptSubject, false);
+        clip.AddPaths(toolBoundPaths, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctIntersection, result);
+        OpenPathsFromPolyTree(result, openPaths);
+
+        // Also subtract the cleared tool locations
+        Paths clearedLocations;
+        clipof.Clear();
+        clipof.AddPaths(initialClearedPaths, JoinType::jtRound, EndType::etClosedPolygon);
+        clipof.Execute(clearedLocations, -(toolRadiusScaled - 2));
+
+        clip.Clear();
+        clip.AddPaths(openPaths, PolyType::ptSubject, false);
+        clip.AddPaths(clearedLocations, PolyType::ptClip, true);
+        clip.Execute(ClipType::ctDifference, result);
+        OpenPathsFromPolyTree(result, openPaths);
+
+
+        for (auto& path : openPaths) {
+            engageBounds.push_back(path);
+        }
+    };
+
+    for (Path& tbp : toolBoundPaths) {
+        // close the path, and add to engageBounds
+        Path copy = tbp;
+        copy.push_back(copy[0]);
+        addEngageBounds({copy});
+    }
 
     // Initialize cleared area from previously cleared paths
     ClearedArea cleared(toolRadiusScaled);
@@ -2963,42 +3040,29 @@ void Adaptive2d::ProcessPolyNode(
     const long engageBuffer = stepOverScaled;  // TODO document this, make a careful decision
     auto addToEngage = [&](Paths& paths, bool flip) {
         Paths engagePaths;
+        clipof.Clear();
         clipof.AddPaths(paths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(engagePaths, -(flip ? -1 : 1) * (toolRadiusScaled + engageBuffer));
         clipof.Clear();
         clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(engagePaths, (flip ? -1 : 1) * (engagementProtrusion + engageBuffer));
 
-        clip.Clear();
-        // Take the difference of the open path and the noGo region:
-        // we're not looking to difference areas, we want the border minus the area
-        PolyTree result;
+        // reverse output paths that bound holes
+        for (Path& p : engagePaths) {
+            if (getPathNestingLevel(p, engagePaths) % 2 == 0) {
+                ReversePath(p);
+            }
+        }
+
+        // Convert to an open path representation of a closed path, then add it
         for (auto& ep : engagePaths) {
-            // actually close the path, before telling clipper to treat it as open
+            // close the path, before telling clipper to treat it as open
             ep.push_back(ep[0]);
         }
-        clip.AddPaths(engagePaths, PolyType::ptSubject, false);
-        clip.AddPaths(toolBoundPaths, PolyType::ptClip, true);
-        clip.Execute(ClipType::ctIntersection, result);
-        Paths openPaths, closedPaths;
-        OpenPathsFromPolyTree(result, openPaths);
-        ClosedPathsFromPolyTree(result, closedPaths);
-
-        for (auto& path : openPaths) {
-            Path outAndBack;  // TODO FIXME this is stupid; modify engagement to take open paths
-            for (const auto p : path) {
-                outAndBack.push_back(p);
-            }
-            ReversePath(path);
-            for (const auto p : path) {
-                outAndBack.push_back(p);
-            }
-            engageBounds.push_back(outAndBack);
-        }
-        for (const auto& path : closedPaths) {
-            engageBounds.push_back(path);
-        }
+        addEngageBounds(engagePaths);
     };
+    // FIXME TODO HELP I just realized when PopClosest whatever rotates the open paths in
+    // nextEngage, I always close the path, but that is incorrect. Yuck :P
 
     // Initialize engagement points from previously cleared paths
     addToEngage(initialClearedPaths, false);
@@ -3009,6 +3073,15 @@ void Adaptive2d::ProcessPolyNode(
     }
 
     // Attempt first engagement
+    fout << "-------EP-----" << endl;
+    for (auto& ep : engageBounds) {
+        fout << "[";
+        for (auto& p : ep) {
+            fout << "(" << p.X << "," << p.Y << ")_";
+        }
+        fout << "]" << endl;
+    }
+    fout << "-------end-----" << endl;
     EngagePoint engage(engageBounds);  // engage point stepping instance
 
     // This constant is chosen so that when cutting a small strip (i.e. when
@@ -3518,6 +3591,10 @@ void Adaptive2d::ProcessPolyNode(
                 clipof.Execute(remaining, toolRadiusScaled - 0.5 * stepOverScaled);
 
                 ReversePaths(remaining);
+                for (Path& p : remaining) {
+                    // close the path before adding to engage
+                    p.push_back(p[0]);
+                }
                 engage.SetPaths(remaining);
                 engage.moveToClosestPoint(newToolPos, stepScaled + 1);
                 if (!engage.nextEngagePoint(
