@@ -401,4 +401,3 @@ void PropertyItemDelegate::setModelData(
 }
 
 #include "moc_PropertyItemDelegate.cpp"
-
