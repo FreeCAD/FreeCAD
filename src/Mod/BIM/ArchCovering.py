@@ -654,6 +654,9 @@ if FreeCAD.GuiUp:
         """
 
         EDIT_MODE_STANDARD = 0
+        # Static cache to store loaded images (path -> SbImage)
+        # This prevents reloading the same file from disk for every object.
+        _texture_cache = {}
 
         def __init__(self, vobj):
             super().__init__(vobj)
@@ -1055,7 +1058,15 @@ if FreeCAD.GuiUp:
 
             # Create and insert nodes
             texture_node = coin.SoTexture2()
-            img = gui_utils.load_texture(vobj.TextureImage)
+
+            # Load texture from cache or disk
+            file_path = vobj.TextureImage
+            img = _ViewProviderCovering._texture_cache.get(file_path)
+            if img is None:
+                img = gui_utils.load_texture(file_path)
+                if img:
+                    _ViewProviderCovering._texture_cache[file_path] = img
+
             if img:
                 texture_node.image = img
             else:
