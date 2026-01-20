@@ -1134,6 +1134,7 @@ if FreeCAD.GuiUp:
 
             self._setupTopControls()
             self._setupGeometryStack()
+            self._setupBottomControls()
 
             # Task Box 2: Visuals
             self.vis_widget = QtGui.QWidget()
@@ -1221,22 +1222,7 @@ if FreeCAD.GuiUp:
 
             h_sel.addWidget(self.le_selection)
             h_sel.addWidget(self.btn_selection)
-            top_form.addRow(translate("Arch", "Selection:"), h_sel)
-
-            # Continue mode
-            self.chk_continue = QtGui.QCheckBox(translate("Arch", "Continue creating"))
-            self.chk_continue.setToolTip(
-                translate(
-                    "Arch",
-                    "If checked, the dialog stays open after creating the covering, "
-                    "allowing to pick another face",
-                )
-            )
-            if self.obj_to_edit:
-                self.chk_continue.hide()
-            else:
-                self.chk_continue.setChecked(False)
-            top_form.addRow("", self.chk_continue)
+            top_form.addRow(translate("Arch", "Base:"), h_sel)
 
             # Mode
             self.combo_mode = QtGui.QComboBox()
@@ -1263,6 +1249,27 @@ if FreeCAD.GuiUp:
             self._setupHatchPage()
 
             self.geo_layout.addWidget(self.geo_stack)
+
+        def _setupBottomControls(self):
+            # Continue Mode
+            self.chk_continue = QtGui.QCheckBox(translate("Arch", "Continue"))
+            self.chk_continue.setToolTip(
+                translate(
+                    "Arch",
+                    "If checked, the dialog stays open after creating the covering, "
+                    "allowing to pick another face",
+                )
+            )
+            self.chk_continue.setShortcut(QtGui.QKeySequence("N"))
+
+            if self.obj_to_edit:
+                self.chk_continue.hide()
+            else:
+                self.chk_continue.show()
+                self.chk_continue.setChecked(False)
+
+            # Add to the main layout below the stack
+            self.geo_layout.addWidget(self.chk_continue)
 
         def _setupTilesPage(self):
             self.page_tiles = QtGui.QWidget()
@@ -1317,6 +1324,7 @@ if FreeCAD.GuiUp:
             else:
                 self.sb_rot.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
             self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
+            self.sb_rot.lineEdit().returnPressed.connect(self.accept)
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot)
 
             self.page_tiles.setLayout(form)
@@ -1345,6 +1353,7 @@ if FreeCAD.GuiUp:
             else:
                 self.sb_rot_hatch.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
             self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
+            self.sb_rot.lineEdit().returnPressed.connect(self.accept)
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot_hatch)
 
             self.page_hatch.setLayout(form)
@@ -1399,17 +1408,23 @@ if FreeCAD.GuiUp:
             else:  # Tiles (solid or parametric)
                 self.geo_stack.setCurrentIndex(0)
                 self.vis_widget.setEnabled(index == 0)  # Only enable visual for solid tiles
-                if index == 0:  # Solid tiles
+
+                if index == 0:  # Solid tiles mode
                     self.sb_thick.setEnabled(True)
+                    # Restore stored thickness
                     self.sb_thick.setProperty("rawValue", self.stored_thickness)
                     if self.obj_to_edit:
                         self.obj_to_edit.TileThickness = self.stored_thickness
-                else:  # Parametric pattern
+
+                else:  # Parametric pattern mode
+                    # Save current thickness before zeroing
                     if self.sb_thick.isEnabled():
-                        self.stored_thickness = self.sb_thick.value()
-                        params.set_param_arch("CoveringThickness", self.stored_thickness)
+                        self.stored_thickness = self.sb_thick.property("rawValue")
+
+                    # Disable and zero
                     self.sb_thick.setEnabled(False)
                     self.sb_thick.setProperty("rawValue", 0.0)
+
                     if self.obj_to_edit:
                         self.obj_to_edit.TileThickness = 0.0
 
