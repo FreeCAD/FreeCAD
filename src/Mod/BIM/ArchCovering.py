@@ -810,6 +810,8 @@ if FreeCAD.GuiUp:
             # Let the parent class build the default scene graph first.
             super().attach(vobj)
             self.Object = vobj.Object
+            # Apply the texture logic to the graph that the parent created.
+            self.updateTexture(self.Object)
 
         def updateData(self, obj, prop):
             """
@@ -838,6 +840,10 @@ if FreeCAD.GuiUp:
             if not (prop == "Shape" and isinstance(obj.Base, tuple)):
                 super().updateData(obj, prop)
 
+            # Apply the texture modifications once the scene graph is rebuilt and stable.
+            if prop in ["Shape", "TextureImage", "TextureScale", "Rotation"]:
+                self.updateTexture(obj)
+
         def onChanged(self, vobj, prop):
             """
             Reacts to changes in the ViewProvider's View properties.
@@ -862,6 +868,163 @@ if FreeCAD.GuiUp:
             """
             # Let the parent class handle its properties first.
             super().onChanged(vobj, prop)
+
+            # Apply the texture logic after the parent is done.
+            if prop in ["TextureImage", "TextureScale"]:
+                self.updateTexture(vobj.Object)
+
+        def updateTexture(self, obj):
+            """Configures and applies the texture to the object's scene graph.
+
+            This method injects Coin3D nodes into the 'FlatRoot' container to map a texture onto the
+            covering, with one texture image per tile.
+
+            Implementation details:
+              - Target node: The method targets the 'FlatRoot' SoSeparator, which is reused by
+                FreeCAD to render face geometry in both "Flat Lines" and "Shaded" display modes.
+              - Rendering contexts: The rendering context for 'FlatRoot' differs between display
+                modes, requiring separate logic:
+                - "Flat Lines": Renders as part of a composite view alongside other nodes (e.g.,
+                  NormalRoot). This context requires texture coordinates to be transformed into the
+                  object's Local Space.
+                - "Shaded": Renders 'FlatRoot' in isolation. This context requires texture
+                  coordinates to be in Global Space.
+              - Material Override: For "Shaded" mode, the texture's blend model is set to REPLACE to
+                override the mode's default SoMaterial, which would otherwise wash out the texture.
+
+            Texture mapping:
+              - A SoTextureCoordinatePlane node defines the texture projection.
+              - The mapping period is (TileLength + JointWidth) to ensure the texture repeats in
+                sync with the tile grid, preventing drift.
+              - A SoTexture2Transform node aligns the texture's origin with the calculated grid
+                origin to respect the TileAlignment property.
+            """
+            vobj = obj.ViewObject
+            if not vobj or not vobj.RootNode:
+                return
+
+            # Lazy Initialization (safe restore from file)
+            if not hasattr(self, "texture"):
+                self.texture = None
+
+            import pivy.coin as coin
+            from draftutils import gui_utils
+
+            # Find the single, correct target node: 'FlatRoot'
+            switch = gui_utils.find_coin_node(vobj.RootNode, coin.SoSwitch)
+            if not switch:
+                return
+
+            target_node = None
+            for i in range(switch.getNumChildren()):
+                child = switch.getChild(i)
+                if child.getName().getString() == "FlatRoot":
+                    target_node = child
+                    break
+
+            if not target_node:
+                return
+
+            # Clean up existing texture nodes from FlatRoot
+            for i in range(target_node.getNumChildren() - 1, -1, -1):
+                child = target_node.getChild(i)
+                if isinstance(
+                    child,
+                    (coin.SoTexture2, coin.SoTextureCoordinatePlane, coin.SoTexture2Transform),
+                ):
+                    target_node.removeChild(i)
+
+            self.texture = None
+
+            # Load texture
+            if not vobj.TextureImage or not os.path.exists(vobj.TextureImage):
+                return
+
+            # Geometry calculation (in Global Space, done once)
+            base_face = obj.Proxy.get_base_face(obj)
+            if not base_face:
+                return
+
+            u_vec, v_vec, normal, center_point = obj.Proxy._get_grid_basis(base_face)
+            origin = obj.Proxy._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
+
+            # Apply different logic based on the active DisplayMode, respecting the different
+            # rendering contexts.
+            if vobj.DisplayMode == "Flat Lines":
+                # "Flat Lines" mode requires a Global-to-Local transform.
+                inv_pl = obj.Placement.inverse()
+                calc_u = inv_pl.Rotation.multVec(u_vec)
+                calc_v = inv_pl.Rotation.multVec(v_vec)
+                calc_norm = inv_pl.Rotation.multVec(normal)
+                calc_origin = inv_pl.multVec(origin)
+            elif vobj.DisplayMode == "Shaded":
+                # "Shaded" mode requires Global coordinates (no transform).
+                calc_u = u_vec
+                calc_v = v_vec
+                calc_norm = normal
+                calc_origin = origin
+            else:
+                # For any other mode, do nothing.
+                return
+
+            # Common math logic (applied to the transformed vectors)
+            if calc_u.Length < Part.Precision.approximation():
+                calc_u = FreeCAD.Vector(1, 0, 0)
+            else:
+                calc_u.normalize()
+
+            if calc_v.Length < Part.Precision.approximation():
+                calc_v = FreeCAD.Vector(0, 1, 0)
+            else:
+                calc_v.normalize()
+
+            if calc_norm.Length > Part.Precision.approximation():
+                calc_norm.normalize()
+
+            if hasattr(obj, "Rotation") and obj.Rotation.Value != 0:
+                rot = FreeCAD.Rotation(calc_norm, obj.Rotation.Value)
+                calc_u = rot.multVec(calc_u)
+                calc_v = rot.multVec(calc_v)
+
+            scale_u = vobj.TextureScale.x if vobj.TextureScale.x != 0 else 1.0
+            scale_v = vobj.TextureScale.y if vobj.TextureScale.y != 0 else 1.0
+
+            period_u = (obj.TileLength.Value + obj.JointWidth.Value) * scale_u
+            period_v = (obj.TileWidth.Value + obj.JointWidth.Value) * scale_v
+
+            if period_u == 0:
+                period_u = 1000.0
+            if period_v == 0:
+                period_v = 1000.0
+
+            dir_u = calc_u.multiply(1.0 / period_u)
+            dir_v = calc_v.multiply(1.0 / period_v)
+
+            s_offset = calc_origin.dot(dir_u)
+            t_offset = calc_origin.dot(dir_v)
+
+            # Create and insert nodes
+            texture_node = coin.SoTexture2()
+            img = gui_utils.load_texture(vobj.TextureImage)
+            if img:
+                texture_node.image = img
+            else:
+                texture_node.filename = vobj.TextureImage
+
+            # Use REPLACE for Shaded mode to override the default material
+            if vobj.DisplayMode == "Shaded":
+                texture_node.model = coin.SoTexture2.REPLACE
+
+            texcoords = coin.SoTextureCoordinatePlane()
+            texcoords.directionS.setValue(coin.SbVec3f(dir_u.x, dir_u.y, dir_u.z))
+            texcoords.directionT.setValue(coin.SbVec3f(dir_v.x, dir_v.y, dir_v.z))
+
+            textrans = coin.SoTexture2Transform()
+            textrans.translation.setValue(-s_offset, -t_offset)
+
+            target_node.insertChild(texture_node, 0)
+            target_node.insertChild(texcoords, 0)
+            target_node.insertChild(textrans, 0)
 
     class ArchCoveringTaskPanel:
         def __init__(self, command=None, obj=None, selection=None):
