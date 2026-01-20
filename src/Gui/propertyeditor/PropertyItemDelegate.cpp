@@ -182,9 +182,13 @@ bool PropertyItemDelegate::editorEvent(
         // ignore double click, as it could cause editor lock with checkboxes
         // due to the editor being close immediately after toggling the checkbox
         // which is currently done on first click
+        this->pressed = true;
         return true;
     }
-    this->pressed = event->type() == QEvent::MouseButtonPress;
+    bool mouseButton = event->type() == QEvent::MouseButtonPress;
+    if (mouseButton) {
+        this->pressed = true;
+    }
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
@@ -209,6 +213,7 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
                 }
             }
         }
+        this->pressed = false;
     }
     else if (ev->type() == QEvent::FocusOut) {
         if (auto button = qobject_cast<Gui::ColorButton*>(o)) {
@@ -304,7 +309,6 @@ QWidget* PropertyItemDelegate::createEditor(
         // enter)
         editor->setFocus();
     }
-    this->pressed = false;
 
     if (editor) {
         const auto widgets = editor->findChildren<QWidget*>();
@@ -374,3 +378,4 @@ void PropertyItemDelegate::setModelData(
 }
 
 #include "moc_PropertyItemDelegate.cpp"
+
