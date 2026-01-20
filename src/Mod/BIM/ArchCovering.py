@@ -1153,6 +1153,56 @@ if FreeCAD.GuiUp:
                 self.stored_thickness = params.get_param_arch("CoveringThickness")
                 # Note: widget defaults are loaded in _setupTilesPage
 
+        def _updateSelectionUI(self):
+            """Updates the selection text and tooltip based on current selection state."""
+            if self.obj_to_edit:
+                # Edit mode (single target)
+                if self.selected_sub:
+                    text = f"{self.selected_obj.Label}.{self.selected_sub}"
+                else:
+                    text = self.selected_obj.Label
+                self.le_selection.setText(text)
+                self.le_selection.setToolTip(text)
+                return
+
+            # Creation mode (batch target list)
+            if not self.selection_list:
+                self.le_selection.setText(translate("Arch", "No selection"))
+                self.le_selection.setToolTip(translate("Arch", "The selected object or face"))
+                return
+
+            # Analyze list to determine appropriate label
+            unique_objects = set()
+            total_faces = 0
+            tooltip_items = []
+
+            for item in self.selection_list:
+                if isinstance(item, tuple):
+                    obj, sub = item
+                    unique_objects.add(obj.Name)
+                    total_faces += len(sub)
+                    tooltip_items.append(f"{obj.Label}.{sub[0]}")
+                else:
+                    unique_objects.add(item.Name)
+                    tooltip_items.append(item.Label)
+
+            # Smart labeling
+            if len(unique_objects) == 1 and total_faces > 0:
+                # Single object, multiple faces (e.g. "Wall (3 faces)")
+                obj_label = self.selection_list[0][0].Label
+                self.le_selection.setText(translate("Arch", f"{obj_label} ({total_faces} faces)"))
+            elif len(self.selection_list) == 1:
+                # Single item, single object (e.g. "Wall.Face1")
+                self.le_selection.setText(tooltip_items[0])
+            else:
+                # Multiple distinct objects (e.g. "5 objects selected")
+                self.le_selection.setText(
+                    translate("Arch", f"{len(self.selection_list)} objects selected")
+                )
+
+            # Show specific elements in the tooltip
+            self.le_selection.setToolTip(", ".join(tooltip_items))
+
         def _setupTopControls(self):
             top_form = QtGui.QFormLayout()
 
@@ -1167,15 +1217,8 @@ if FreeCAD.GuiUp:
             self.btn_selection.setCheckable(True)
             self.btn_selection.setToolTip(translate("Arch", "Enable picking in the 3D view"))
 
-            if self.selected_obj:
-                if self.selected_sub:
-                    self.le_selection.setText(f"{self.selected_obj.Label}.{self.selected_sub}")
-                else:
-                    self.le_selection.setText(f"{self.selected_obj.Label}")
-            elif len(self.selection_list) > 1:
-                self.le_selection.setText(
-                    translate("Arch", "{} objects selected").format(len(self.selection_list))
-                )
+            # Use the smart label helper to populate initial state
+            self._updateSelectionUI()
 
             h_sel.addWidget(self.le_selection)
             h_sel.addWidget(self.btn_selection)
@@ -1401,44 +1444,37 @@ if FreeCAD.GuiUp:
                         sub_name = picked.get("Component")
 
                         obj = FreeCAD.ActiveDocument.getObject(obj_name)
+                        if not obj:
+                            return
 
-                        if obj:
-                            # Check if the sub_name string contains "Face"
-                            if sub_name and "Face" in sub_name:
-                                self.setSelectedFace(obj, sub_name)
+                        is_face = sub_name and "Face" in sub_name
+
+                        if self.obj_to_edit:
+                            # Edit mode: replace single selection, terminate picking
+                            self.selected_obj = obj
+                            self.selected_sub = sub_name if is_face else None
+                            self.setPicking(False)
+                            self._updateSelectionUI()
+
+                            # Instantly update Base property for live feedback
+                            val = (obj, [sub_name]) if is_face else obj
+                            self.obj_to_edit.Base = val
+                        else:
+                            # Create mode: accumulate/Toggle selection, keep picking active
+                            target = (obj, [sub_name]) if is_face else obj
+
+                            # Toggle behavior: if already in list, remove it
+                            if target in self.selection_list:
+                                self.selection_list.remove(target)
                             else:
-                                self.setSelectedObject(obj)
+                                self.selection_list.append(target)
+
+                            self._updateSelectionUI()
+
             except Exception:
                 import traceback
 
                 traceback.print_exc()
-
-        def onGetSelection(self):
-            sel = FreeCADGui.Selection.getSelectionEx()
-            if len(sel) > 0:
-                # Picking manually replaces any initial batch selection
-                self.selection_list = []
-
-                # Take the first selected object
-                obj = sel[0].Object
-                if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
-                    self.setSelectedFace(obj, sel[0].SubElementNames[0])
-                else:
-                    self.setSelectedObject(obj)
-
-        def setSelectedFace(self, obj, sub):
-            self.selected_obj = obj
-            self.selected_sub = sub
-            self.le_selection.setText(f"{obj.Label}.{sub}")
-            self.setPicking(False)
-            self.updateBase()
-
-        def setSelectedObject(self, obj):
-            self.selected_obj = obj
-            self.selected_sub = None
-            self.le_selection.setText(f"{obj.Label}")
-            self.setPicking(False)
-            self.updateBase()
 
         def updateBase(self):
             # Update the Base property of the live object
