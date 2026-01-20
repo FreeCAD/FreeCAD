@@ -3584,14 +3584,18 @@ void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& 
         firstMod = false;
         str << "Installed mods: \n";
     }
-    str << "  * " << (mod.isDir() ? QDir(modPath).dirName() : mod.fileName());
+    QString addonName = mod.isDir() ? QDir(modPath).dirName() : mod.fileName();
+    QString versionString;
     try {
         auto metadataFile =
             std::filesystem::path(mod.absoluteFilePath().toStdString()) / "package.xml";
         if (std::filesystem::exists(metadataFile)) {
             App::Metadata metadata(metadataFile);
+            if (!metadata.name().empty()) {
+                addonName = QString::fromStdString(metadata.name());
+            }
             if (metadata.version() != App::Meta::Version()) {
-                str << QLatin1String(" ") + QString::fromStdString(metadata.version().str());
+                versionString = QString::fromStdString(" " + metadata.version().str());
             }
         }
     }
@@ -3600,6 +3604,7 @@ void Application::addModuleInfo(QTextStream& str, const QString& modPath, bool& 
                                                                   QChar::fromLatin1(' '));
         str << " (Malformed metadata: " << what << ")";
     }
+    str << "  * " << addonName << versionString;
     QFileInfo disablingFile(mod.absoluteFilePath(), QStringLiteral("ADDON_DISABLED"));
     if (disablingFile.exists()) {
         str << " (Disabled)";
