@@ -98,10 +98,13 @@ class _Covering(ArchComponent.Component):
 
         # Apply defaults from params immediately upon creation
         # This allows the UI to simply bind to these properties and show the correct default values
-        obj.TileLength = params.get_param_arch("CoveringLength", 300.0)
-        obj.TileWidth = params.get_param_arch("CoveringWidth", 300.0)
-        obj.TileThickness = params.get_param_arch("CoveringThickness", 10.0)
-        obj.JointWidth = params.get_param_arch("CoveringJoint", 5.0)
+        obj.TileLength = params.get_param_arch("CoveringLength")
+        obj.TileWidth = params.get_param_arch("CoveringWidth")
+        obj.TileThickness = params.get_param_arch("CoveringThickness")
+        obj.JointWidth = params.get_param_arch("CoveringJoint")
+        obj.Rotation = params.get_param_arch("CoveringRotation")
+        obj.TileAlignment = params.get_param_arch("CoveringAlignment")
+        obj.FinishMode = params.get_param_arch("CoveringFinishMode")
 
     def setProperties(self, obj):
         """
