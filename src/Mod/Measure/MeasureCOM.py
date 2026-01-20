@@ -148,6 +148,13 @@ class MeasureCOM(MeasureBasePython):
 
             com = shape.CenterOfMass
 
+        if f"{com.x:.2f}".startswith("-0.00"): 
+            com.x = 0.0
+        if f"{com.y:.2f}".startswith("-0.00"): 
+            com.y = 0.0
+        if f"{com.z:.2f}".startswith("-0.00"): 
+            com.z = 0.0
+
         obj.Result = com
         placement = Placement()
         placement.Base = com
