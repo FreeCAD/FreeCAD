@@ -476,6 +476,7 @@ class _Covering(ArchComponent.Component):
 
         return cutters_h, cutters_v
 
+    @profile_it
     def _perform_cut(self, obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec):
 
         # Prepare transformation
@@ -850,6 +851,7 @@ if FreeCAD.GuiUp:
             # Apply the texture logic to the graph that the parent created.
             self.updateTexture(self.Object)
 
+        @profile_it
         def updateData(self, obj, prop):
             """
             Reacts to changes in the object's Data properties.
@@ -910,6 +912,7 @@ if FreeCAD.GuiUp:
             if prop in ["TextureImage", "TextureScale"]:
                 self.updateTexture(vobj.Object)
 
+        @profile_it
         def updateTexture(self, obj):
             """Configures and applies the texture to the object's scene graph.
 
