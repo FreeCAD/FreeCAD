@@ -13,6 +13,7 @@ solid 3D tiles, parametric 2D patterns, and hatch patterns.
 """
 
 import os
+import time
 import FreeCAD
 import Part
 import ArchComponent
@@ -31,6 +32,37 @@ else:
 
     def QT_TRANSLATE_NOOP(ctxt, txt):
         return txt
+
+
+def profile_it(func):
+    """Simple performance counter decorator."""
+
+    def wrapper(*args, **kwargs):
+        # Capture start time
+        t0 = time.perf_counter()
+
+        # Run the actual function
+        result = func(*args, **kwargs)
+
+        # Calculate duration
+        dt = time.perf_counter() - t0
+
+        # Try to identify the object Label for context
+        label = "Unknown"
+        try:
+            # In Arch, args[1] is almost always the 'obj' (App::FeaturePython)
+            if len(args) > 1 and hasattr(args[1], "Label"):
+                label = args[1].Label
+        except Exception:
+            pass
+
+        # Log if it took longer than 1ms (reduces noise)
+        if dt > 0.001:
+            FreeCAD.Console.PrintLog(f"[PERF] {label} -> {func.__name__}: {dt:.4f}s\n")
+
+        return result
+
+    return wrapper
 
 
 class _Covering(ArchComponent.Component):
