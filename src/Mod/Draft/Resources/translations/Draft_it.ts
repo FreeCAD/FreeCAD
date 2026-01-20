@@ -2064,7 +2064,7 @@ Un'unità nel file SVG sarà interpretata come un millimetro.</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="101"/>
       <source>Add wires for invalid faces</source>
-      <translation type="unfinished">Add wires for invalid faces</translation>
+      <translation>Aggiungi fili per facce non valide</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="47"/>
@@ -2075,8 +2075,7 @@ Un'unità nel file SVG sarà interpretata come un millimetro.</translation>
       <location filename="../ui/preferences-svg.ui" line="97"/>
       <source>If face generation results in a degenerated face,
 a raw wire from the original shape is added</source>
-      <translation type="unfinished">If face generation results in a degenerated face,
-a raw wire from the original shape is added</translation>
+      <translation>Se la generazione della faccia risulta in una faccia degenerata, verrà aggiunto un filo grezzo dalla forma originale</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="117"/>
@@ -7956,7 +7955,7 @@ beyond the dimension line</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="518"/>
       <source>Arc From 3 Points</source>
-      <translation type="unfinished">Arc From 3 Points</translation>
+      <translation>Arco per 3 punti</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="521"/>

@@ -789,7 +789,6 @@ bool ViewProviderAssembly::getSelectedObjectsWithinAssembly(bool addPreselection
             if (!alreadyIn) {
                 auto* pPlc = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"));
                 if (!ctrlPressed && !moveOnlyPreselected) {
-                    Gui::Selection().clearSelection();
                     docsToMove.clear();
                 }
 
