@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" width="40" height="48" viewBox="0 0 40 48" fill="none" version="1.1">
+  <title>FreeCAD-symbol</title>
+  <metadata>
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:title>FreeCAD-symbol</dc:title>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Sebastian Tabares Amaya (sytabaresa), Max Wilfinger (maxwxyz)</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>The FreeCAD project association AISBL (FPA)</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:date>2024-06-01</dc:date>
+        <dc:description>A white letter F on a background that is split diagonally in half, blue on the bottom with a shape of a gear and red on the top.</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <path style="fill:#418fde;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:square;stroke-dasharray:none" d="m 40,8 -8,8 H 16 v 6 h 8 v 8 h -8 v 10 l -8,8 h 8.1 c 0.6,0 1.1,-0.4 1.3,-1 l 1.5,-4.5 c 0.1,-0.4 0.5,-0.8 0.9,-0.9 l 1.1,-0.4 c 0.4,-0.1 0.9,-0.1 1.3,0.2 l 3.8,2.8 c 0.5,0.4 1.2,0.4 1.7,0 l 3.4,-2.5 c 0.5,-0.4 0.7,-1 0.5,-1.6 l -1.5,-4.5 c -0.1,-0.4 -0.1,-0.9 0.2,-1.3 l 0.7,-1 c 0.3,-0.4 0.7,-0.6 1.1,-0.6 l 4.7,0 c 0.6,0 1.1,-0.4 1.3,-1 l 1.3,-4 c 0.2,-0.6 0,-1.2 -0.5,-1.6 L 35.1,23.7 c -0.4,-0.3 -0.6,-0.7 -0.6,-1.1 V 21.4 c 0,-0.5 0.2,-0.9 0.6,-1.1 l 4.4,-3.2 C 39.8,16.9 40,16.4 40,16 Z" />
+  <path style="display:inline;fill:#ff585d;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:square;stroke-dasharray:none" d="m 32,0 -8,8 h 8 v 8 L 40,8 V 0 Z M 8,32 0,40 v 8 h 8 l 8,-8 H 8 Z" />
+  <path style="fill:#cb333b;fill-rule:evenodd;stroke-width:0;stroke-linecap:square;stroke:none;stroke-dasharray:none" d="M 8,0 0,8 V 40 L 8,32 V 8 H 24 L 32,0 Z" />
+  <path style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0;stroke-linecap:square;stroke-dasharray:none" d="m 8,40 h 8 V 30 h 8 V 22 H 16 V 16 H 32 V 8 H 8 Z" />
+</svg>
