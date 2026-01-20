@@ -88,20 +88,27 @@ class BIM_Covering:
         # Check for pre-selection and fill in the task panel with it, if the user has already
         # selected something before executing the command
         sel = FreeCADGui.Selection.getSelectionEx()
-        base_obj = None
-        if len(sel) == 1:
-            if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
-                base_obj = (sel[0].Object, [sel[0].SubElementNames[0]])
-            else:
-                base_obj = sel[0].Object
+        selection_list = []
+        if sel:
+            for s in sel:
+                if s.SubElementNames:
+                    # Iterate through all selected sub-elements (faces) This ensures that selecting
+                    # Face1 AND Face2 of the same object results in two distinct targets for the
+                    # batch operation.
+                    for sub in s.SubElementNames:
+                        if "Face" in sub:
+                            selection_list.append((s.Object, [sub]))
+                else:
+                    # Whole object selected
+                    selection_list.append(s.Object)
 
         # Launch the task panel
         import ArchCovering
 
-        self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self, selection=base_obj)
+        self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self, selection=selection_list)
         FreeCADGui.Control.showDialog(self.task_panel)
 
-        if not base_obj:
+        if not selection_list:
             # Auto-enable picking if nothing selected
             self.task_panel.setPicking(True)
 

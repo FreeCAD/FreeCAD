@@ -1096,13 +1096,17 @@ if FreeCAD.GuiUp:
             self.selected_obj = None
             self.selected_sub = None
 
+            # Handle selection list or single object
+            if selection and not isinstance(selection, list):
+                self.selection_list = [selection]
+            else:
+                self.selection_list = selection if selection else []
+
             # Setup event callback for picking (works for both create and edit)
-            # TODO: investigate ArchComponent.SelectionTaskPanel and
-            # ArchComponent.ArchSelectionObserver
             self.view = FreeCADGui.ActiveDocument.ActiveView
             self.callback = self.view.addEventCallback("SoEvent", self.action)
 
-            # Pre-fill selection based on obj properties
+            # Pre-fill selection based on obj properties or passed selection
             if self.obj_to_edit:
                 # Edition mode: get selection from object
                 if self.obj_to_edit.Base:
@@ -1112,14 +1116,15 @@ if FreeCAD.GuiUp:
                         self.selected_sub = val[1][0] if val[1] else None
                     else:
                         self.selected_obj = val
-            else:
-                # Creation mode: get selection from command snapshot
-                if selection:
-                    if isinstance(selection, tuple):
-                        self.selected_obj = selection[0]
-                        self.selected_sub = selection[1][0] if selection[1] else None
+            elif self.selection_list:
+                # Creation mode: setup display for first item if only one
+                if len(self.selection_list) == 1:
+                    item = self.selection_list[0]
+                    if isinstance(item, tuple):
+                        self.selected_obj = item[0]
+                        self.selected_sub = item[1][0] if item[1] else None
                     else:
-                        self.selected_obj = selection
+                        self.selected_obj = item
 
             # Build the task panel UI
 
@@ -1167,9 +1172,29 @@ if FreeCAD.GuiUp:
                     self.le_selection.setText(f"{self.selected_obj.Label}.{self.selected_sub}")
                 else:
                     self.le_selection.setText(f"{self.selected_obj.Label}")
+            elif len(self.selection_list) > 1:
+                self.le_selection.setText(
+                    translate("Arch", "{} objects selected").format(len(self.selection_list))
+                )
+
             h_sel.addWidget(self.le_selection)
             h_sel.addWidget(self.btn_selection)
             top_form.addRow(translate("Arch", "Selection:"), h_sel)
+
+            # Continue mode
+            self.chk_continue = QtGui.QCheckBox(translate("Arch", "Continue creating"))
+            self.chk_continue.setToolTip(
+                translate(
+                    "Arch",
+                    "If checked, the dialog stays open after creating the covering, "
+                    "allowing to pick another face",
+                )
+            )
+            if self.obj_to_edit:
+                self.chk_continue.hide()
+            else:
+                self.chk_continue.setChecked(False)
+            top_form.addRow("", self.chk_continue)
 
             # Mode
             self.combo_mode = QtGui.QComboBox()
@@ -1391,6 +1416,9 @@ if FreeCAD.GuiUp:
         def onGetSelection(self):
             sel = FreeCADGui.Selection.getSelectionEx()
             if len(sel) > 0:
+                # Picking manually replaces any initial batch selection
+                self.selection_list = []
+
                 # Take the first selected object
                 obj = sel[0].Object
                 if sel[0].SubElementNames and "Face" in sel[0].SubElementNames[0]:
@@ -1434,34 +1462,49 @@ if FreeCAD.GuiUp:
                     # Creation mode
                     import Arch
 
-                    base = (
-                        (self.selected_obj, [self.selected_sub])
-                        if self.selected_sub
-                        else self.selected_obj
-                    )
-                    obj = Arch.makeCovering(base)
-                    obj.FinishMode = self.combo_mode.currentText()
-                    if obj.FinishMode != "Hatch Pattern":
-                        obj.TileLength = self.sb_length.property("rawValue")
-                        obj.TileWidth = self.sb_width.property("rawValue")
-                        obj.JointWidth = self.sb_joint.property("rawValue")
-                        obj.TileAlignment = self.combo_align.currentText()
-                        obj.Rotation = self.sb_rot.property("rawValue")
-                        if obj.FinishMode == "Solid Tiles":
-                            obj.TileThickness = self.sb_thick.property("rawValue")
-                    else:
-                        obj.PatternFile = self.le_pat.text()
-                        obj.Rotation = self.sb_rot_hatch.property("rawValue")
-                else:
-                    # Edition mode
-                    obj = self.obj_to_edit
-                    obj.TileAlignment = self.combo_align.currentText()
-                    if obj.FinishMode == "Hatch Pattern":
-                        obj.PatternFile = self.le_pat.text()
+                    targets = self.selection_list
+                    if not targets and self.selected_obj:
+                        # Fallback to single picked item
+                        targets = (
+                            [(self.selected_obj, [self.selected_sub])]
+                            if self.selected_sub
+                            else [self.selected_obj]
+                        )
 
-                # Common visual setup
-                if hasattr(obj.ViewObject, "TextureImage"):
-                    obj.ViewObject.TextureImage = self.le_tex_image.text()
+                    if targets:
+                        FreeCAD.ActiveDocument.openTransaction("Create Coverings")
+                        for base in targets:
+                            obj = Arch.makeCovering(base)
+
+                            # Manually apply UI properties (widgets are not bound in create mode)
+                            obj.FinishMode = self.combo_mode.currentText()
+                            obj.TileAlignment = self.combo_align.currentText()
+
+                            if obj.FinishMode == "Hatch Pattern":
+                                obj.PatternFile = self.le_pat.text()
+                                obj.Rotation = self.sb_rot_hatch.property("rawValue")
+                            else:
+                                obj.TileLength = self.sb_length.property("rawValue")
+                                obj.TileWidth = self.sb_width.property("rawValue")
+                                obj.JointWidth = self.sb_joint.property("rawValue")
+                                obj.Rotation = self.sb_rot.property("rawValue")
+                                if obj.FinishMode == "Solid Tiles":
+                                    obj.TileThickness = self.sb_thick.property("rawValue")
+
+                            # Common visual setup
+                            if hasattr(obj.ViewObject, "TextureImage"):
+                                obj.ViewObject.TextureImage = self.le_tex_image.text()
+
+                        FreeCAD.ActiveDocument.commitTransaction()
+                        FreeCAD.ActiveDocument.recompute()
+                else:
+                    # Edition mode (properties updated via binding)
+                    obj = self.obj_to_edit
+                    # Visuals must be set manually
+                    if hasattr(obj.ViewObject, "TextureImage"):
+                        obj.ViewObject.TextureImage = self.le_tex_image.text()
+
+                    FreeCAD.ActiveDocument.recompute()
 
                 # Persist user preferences
                 params.set_param_arch("CoveringFinishMode", self.combo_mode.currentText())
@@ -1473,17 +1516,26 @@ if FreeCAD.GuiUp:
                     rot_val = self.sb_rot.property("rawValue")
                 params.set_param_arch("CoveringRotation", rot_val)
 
-                if obj.FinishMode != "Hatch Pattern":
-                    params.set_param_arch("CoveringLength", obj.TileLength.Value)
-                    params.set_param_arch("CoveringWidth", obj.TileWidth.Value)
-                    params.set_param_arch("CoveringJoint", obj.JointWidth.Value)
-                    if obj.FinishMode == "Solid Tiles":
-                        params.set_param_arch("CoveringThickness", obj.TileThickness.Value)
+                if self.combo_mode.currentText() != "Hatch Pattern":
+                    params.set_param_arch("CoveringLength", self.sb_length.property("rawValue"))
+                    params.set_param_arch("CoveringWidth", self.sb_width.property("rawValue"))
+                    params.set_param_arch("CoveringJoint", self.sb_joint.property("rawValue"))
+                    if self.combo_mode.currentText() == "Solid Tiles":
+                        params.set_param_arch(
+                            "CoveringThickness", self.sb_thick.property("rawValue")
+                        )
 
-                if FreeCAD.ActiveDocument.HasPendingTransaction:
-                    FreeCAD.ActiveDocument.commitTransaction()
+                # Continue logic
+                if not self.obj_to_edit and self.chk_continue.isChecked():
+                    self.selection_list = []
+                    self.selected_obj = None
+                    self.selected_sub = None
+                    self.le_selection.setText(translate("Arch", "No selection"))
+                    self.setPicking(True)
+                    return
 
-                FreeCAD.ActiveDocument.recompute()
+            except Exception as e:
+                FreeCAD.Console.PrintError(f"Error creating covering: {e}\n")
 
             finally:
                 self._cleanup_and_close()
