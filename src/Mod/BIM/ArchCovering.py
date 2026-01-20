@@ -266,6 +266,11 @@ class _Covering(ArchComponent.Component):
     def onDocumentRestored(self, obj):
         super().onDocumentRestored(obj)
         self.setProperties(obj)
+        # For future-proofing new property migrations
+        if FreeCAD.GuiUp and hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy"):
+            # Ensure view provider properties are up to date
+            if hasattr(obj.ViewObject.Proxy, "setProperties"):
+                obj.ViewObject.Proxy.setProperties(obj.ViewObject)
 
     def get_base_face(self, obj):
         """Extracts the base face from the linked object/subobject"""
@@ -906,6 +911,16 @@ if FreeCAD.GuiUp:
             # Lazy Initialization (safe restore from file)
             if not hasattr(self, "texture"):
                 self.texture = None
+
+            # If we are loading the file and "Shape" loaded before "TextureImage", vobj.TextureImage
+            # will raise AttributeError. We simply return. The loader will call updateData again
+            # when it reaches "TextureImage".
+            if not hasattr(vobj, "TextureImage") or not hasattr(vobj, "TextureScale"):
+                return
+
+            # Also check for value validity if needed
+            if not vobj.TextureImage:
+                return
 
             import pivy.coin as coin
             from draftutils import gui_utils
