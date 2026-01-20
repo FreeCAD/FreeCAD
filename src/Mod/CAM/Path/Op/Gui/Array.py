@@ -474,7 +474,7 @@ class ViewProviderArray:
         return []
 
     def onDelete(self, vobj, args):
-        return None
+        return True
 
     def getIcon(self):
         if self.obj.Active:
