@@ -98,8 +98,7 @@ static float getRadius(TopoDS_Shape& edge)
         gp_Circ circle = adapt.Circle();
         return circle.Radius();
     }
-    if (edge.ShapeType() == TopAbs_FACE)
-    {
+    if (edge.ShapeType() == TopAbs_FACE) {
         BRepAdaptor_Surface adapt(TopoDS::Face(edge));
         if (adapt.GetType() != GeomAbs_Cylinder) {
             return 0.0;
@@ -346,7 +345,8 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
     Base::Placement placement;  // curve center + orientation
-    Base::Vector3d centerPoint;;
+    Base::Vector3d centerPoint;
+    ;
 
     TopoDS_Shape shape = getLocatedShape(subject);
 
@@ -363,7 +363,7 @@ MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
     TopoDS_Edge edge;
     TopoDS_Face face;
     gp_Pnt center;
-    
+
     if (sType == TopAbs_EDGE) {
         BRepGProp::LinearProperties(shape, gprops);
         edge = TopoDS::Edge(shape);
