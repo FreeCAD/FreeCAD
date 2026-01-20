@@ -27,6 +27,7 @@
 #include <QModelIndex>
 #include <QPainter>
 #include <QTimer>
+#include <QKeyEvent>
 
 #include <Base/Tools.h>
 
@@ -194,7 +195,29 @@ bool PropertyItemDelegate::editorEvent(
 
 bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
 {
-    if (ev->type() == QEvent::FocusIn) {
+    if (ev->type() == QEvent::KeyPress) {
+        auto* checkBox = qobject_cast<QCheckBox*>(o);
+        if (checkBox) {
+            auto* keyEvent = static_cast<QKeyEvent*>(ev);
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
+                || keyEvent->key() == Qt::Key_Space) {
+
+                checkBox->toggle();
+
+                // Manually commit the data WITHOUT closing the editor.
+                // This keeps the focus on the checkbox so subsequent 'Enter'
+                // presses will toggle it again immediately.
+                if (propertyEditor) {
+                    // We must set 'changed' to true so setModelData updates the model,
+                    // then revert it back (handled by FlagToggler).
+                    Base::FlagToggler<> flag(changed);
+                    Q_EMIT commitData(propertyEditor);
+                }
+                return true;
+            }
+        }
+    }
+    else if (ev->type() == QEvent::FocusIn) {
         auto* comboBox = qobject_cast<QComboBox*>(o);
         if (comboBox) {
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
@@ -378,3 +401,4 @@ void PropertyItemDelegate::setModelData(
 }
 
 #include "moc_PropertyItemDelegate.cpp"
+
