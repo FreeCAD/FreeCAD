@@ -1120,6 +1120,9 @@ if FreeCAD.GuiUp:
                 ]
             )
             self.combo_mode.setToolTip(translate("Arch", "The type of finish to create"))
+            if not self.obj_to_edit:
+                # Load default finish mode from preferences in create mode
+                self.combo_mode.setCurrentText(params.get_param_arch("CoveringFinishMode"))
             self.combo_mode.currentIndexChanged.connect(self.onModeChanged)
             top_form.addRow(translate("Arch", "Mode:"), self.combo_mode)
 
@@ -1174,6 +1177,8 @@ if FreeCAD.GuiUp:
                 ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"]
             )
             self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
+            if not self.obj_to_edit:
+                self.combo_align.setCurrentText(params.get_param_arch("CoveringAlignment"))
             form.addRow(translate("Arch", "Alignment:"), self.combo_align)
 
             self.sb_rot = ui.createWidget("Gui::QuantitySpinBox")
@@ -1182,7 +1187,7 @@ if FreeCAD.GuiUp:
                 FreeCADGui.ExpressionBinding(self.sb_rot).bind(self.obj_to_edit, "Rotation")
                 self.sb_rot.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
             else:
-                self.sb_rot.setProperty("rawValue", 0.0)
+                self.sb_rot.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
             self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot)
 
@@ -1210,7 +1215,7 @@ if FreeCAD.GuiUp:
                 FreeCADGui.ExpressionBinding(self.sb_rot_hatch).bind(self.obj_to_edit, "Rotation")
                 self.sb_rot_hatch.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
             else:
-                self.sb_rot_hatch.setProperty("rawValue", 0.0)
+                self.sb_rot_hatch.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
             self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot_hatch)
 
@@ -1398,6 +1403,15 @@ if FreeCAD.GuiUp:
                     obj.ViewObject.TextureImage = self.le_tex_image.text()
 
                 # Persist user preferences
+                params.set_param_arch("CoveringFinishMode", self.combo_mode.currentText())
+                params.set_param_arch("CoveringAlignment", self.combo_align.currentText())
+
+                if self.combo_mode.currentIndex() == 2:  # Hatch Pattern
+                    rot_val = self.sb_rot_hatch.property("rawValue")
+                else:
+                    rot_val = self.sb_rot.property("rawValue")
+                params.set_param_arch("CoveringRotation", rot_val)
+
                 if obj.FinishMode != "Hatch Pattern":
                     params.set_param_arch("CoveringLength", obj.TileLength.Value)
                     params.set_param_arch("CoveringWidth", obj.TileWidth.Value)
