@@ -443,6 +443,10 @@ class PathArray:
             pl = FreeCAD.Placement()
             pl.rotate(self.polarCentre, FreeCAD.Vector(0, 0, 1), ang)
 
+            # add jitter to placement
+            pos = self.calculateJitter(FreeCAD.Vector())
+            pl.move(pos)
+
             for b in self.base:
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
