@@ -1208,7 +1208,10 @@ if FreeCAD.GuiUp:
                     base_link = self.obj_to_edit.Base
                     if base_link:
                         if isinstance(base_link, tuple):
-                            text = f"{base_link[0].Label}.{base_link[1][0]}"
+                            if base_link[1]:
+                                text = f"{base_link[0].Label}.{base_link[1][0]}"
+                            else:
+                                text = base_link[0].Label
                         else:
                             text = base_link.Label
                     else:
@@ -1239,22 +1242,24 @@ if FreeCAD.GuiUp:
                     unique_objects.add(item.Name)
                     tooltip_items.append(item.Label)
 
-            # Smart labeling
-            if len(unique_objects) == 1 and total_faces > 0:
-                # Single object, multiple faces (e.g. "Wall (3 faces)")
-                # Check if the first item is a tuple or a single object
+            count = len(self.selection_list)
+
+            if count == 1:
+                # Explicitly display label for single selection (Whole or Face)
+                # This prevents "1 objects selected"
+                self.le_selection.setText(tooltip_items[0])
+
+            elif len(unique_objects) == 1 and total_faces > 0:
+                # Multiple faces on the same object (e.g. Wall (3 faces))
                 first_item = self.selection_list[0]
                 obj_label = (
                     first_item[0].Label if isinstance(first_item, tuple) else first_item.Label
                 )
                 self.le_selection.setText(translate("Arch", f"{obj_label} ({total_faces} faces)"))
-                # Single item, single object (e.g. "Wall.Face1")
-                self.le_selection.setText(tooltip_items[0])
+
             else:
-                # Multiple distinct objects (e.g. "5 objects selected")
-                self.le_selection.setText(
-                    translate("Arch", f"{len(self.selection_list)} objects selected")
-                )
+                # Multiple distinct objects or complex mixed selection
+                self.le_selection.setText(translate("Arch", f"{count} objects selected"))
 
             # Show specific elements in the tooltip
             self.le_selection.setToolTip(", ".join(tooltip_items))
@@ -1528,9 +1533,14 @@ if FreeCAD.GuiUp:
                 else:
                     new_list.append(obj)
 
+            # If we are editing, we can only assign one base. If the user selects multiple,
+            # we keep only the most recent one to match the behavior of the assignment logic below.
+            if self.obj_to_edit and new_list:
+                new_list = [new_list[-1]]
+
             self.selection_list = new_list
 
-            # Handle edit mode
+            # Handle edit mode assignment
             if self.obj_to_edit and self.selection_list:
                 last_item = self.selection_list[-1]
                 if isinstance(last_item, tuple):
