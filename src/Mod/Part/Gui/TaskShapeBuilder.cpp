@@ -262,10 +262,7 @@ void ShapeBuilderWidget::createEdgeFromVertex()
               "%3"  // auto-grouping
               "del _\n"
     )
-              .arg(elements[0], 
-                   elements[1], 
-                   PartGui::getAutoGroupCommandStr(false)
-              );
+              .arg(elements[0], elements[1], PartGui::getAutoGroupCommandStr(false));
 
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Edge"));
@@ -309,9 +306,7 @@ void ShapeBuilderWidget::createWireFromEdge()
               "%2"  // auto-grouping
               "del _\n"
     )
-              .arg(list, 
-                   PartGui::getAutoGroupCommandStr(false)
-               );
+              .arg(list, PartGui::getAutoGroupCommandStr(false));
     try {
         Gui::Application::Instance->activeDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Wire"));
         Gui::Command::runCommand(Gui::Command::App, cmd.toLatin1());
@@ -356,9 +351,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
     else {
         cmd = QStringLiteral(
@@ -368,9 +361,7 @@ void ShapeBuilderWidget::createFaceFromVertex()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
 
     try {
@@ -416,9 +407,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
     else {
         cmd = QStringLiteral(
@@ -428,9 +417,7 @@ void ShapeBuilderWidget::createFaceFromEdge()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
 
     try {
@@ -482,13 +469,12 @@ void ShapeBuilderWidget::createShellFromFace()
         cmd = QStringLiteral(
                   "_=Part.Shell(%1)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create shell')\n"
-                  "obj = App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
+                  "obj = "
+                  "App.ActiveDocument.addObject('Part::Feature','Shell').Shape=_.removeSplitter()\n"
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
     else {
         cmd = QStringLiteral(
@@ -498,9 +484,7 @@ void ShapeBuilderWidget::createShellFromFace()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(list,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(list, PartGui::getAutoGroupCommandStr(false));
     }
 
     try {
@@ -543,13 +527,12 @@ void ShapeBuilderWidget::createSolidFromShell()
                   "shell')\n"
                   "_=Part.Solid(shell)\n"
                   "if _.isNull(): raise RuntimeError('Failed to create solid')\n"
-                  "obj = App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
+                  "obj = "
+                  "App.ActiveDocument.addObject('Part::Feature','Solid').Shape=_.removeSplitter()\n"
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(line,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(line, PartGui::getAutoGroupCommandStr(false));
     }
     else {
         cmd = QStringLiteral(
@@ -562,9 +545,7 @@ void ShapeBuilderWidget::createSolidFromShell()
                   "%2"  // auto-grouping
                   "del _\n"
         )
-                  .arg(line,
-                       PartGui::getAutoGroupCommandStr(false)
-                   );
+                  .arg(line, PartGui::getAutoGroupCommandStr(false));
     }
 
     try {
