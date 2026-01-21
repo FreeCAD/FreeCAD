@@ -192,12 +192,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Clearing pattern to use"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "MinTravel",
-            "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
-        )
-        obj.addProperty(
             "App::PropertyLength",
             "RetractThreshold",
             "Pocket",
@@ -373,20 +367,9 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         """areaOpAreaParams(obj, isHole) ... return dictionary with pocket's path parameters"""
         params = {}
 
-        CutMode = ["Conventional", "Climb"]
+        CutMode = ("Conventional", "Climb")
         params["orientation"] = CutMode.index(obj.CutMode)
 
-        # if MinTravel is turned on, set path sorting to 3DSort
-        # 3DSort shouldn't be used without a valid start point. Can cause
-        # tool crash without it.
-        #
-        # ml: experimental feature, turning off for now (see https://forum.freecad.org/viewtopic.php?f=15&t=24422&start=30#p192458)
-        # realthunder: I've fixed it with a new sorting algorithm, which I
-        # tested fine, but of course need more test. Please let know if there is
-        # any problem
-        #
-        if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
-            params["sort_mode"] = 3
         return params
 
 
@@ -398,5 +381,4 @@ def SetupProperties():
     setup.append("Angle")
     setup.append("ClearingPattern")
     setup.append("StartAt")
-    setup.append("MinTravel")
     return setup
