@@ -48,7 +48,115 @@
 /**
  * @defgroup DocumentObjectGroup Document Object
  * @ingroup APP
- * @brief %Base class of all objects handled in the Document.
+ * @brief %Base class of all objects handled in the @ref App::Document "Document".
+ *
+ * A DocumentObject is the base class of all objects that can be contained in a
+ * FreeCAD @ref App::Document "Document".  Document objects can represent any
+ * object that can be created in a FreeCAD Document, such as features:
+ * Part::Feature, Mesh::Feature, Sketcher::SketchObject, but also other objects
+ * such as App::Link, App::DocumentObjectGroup, App::VarSet, or
+ * SpreadSheet::Sheet that do not necessary represent geometry.
+ *
+ * Document objects provide the functionality to handle properties (it extends
+ * @ref App::PropertyContainer "PropertyContainer"), transactions (it extends
+ * @ref App::TransactionalObject "TransactionalObject") and extensions (it
+ * extends @ref App::ExtensionContainer "ExtensionContainer"), and expressions.
+ * Expressions are managed by the property @ref
+ * App::DocumentObject::ExpressionEngine "ExpressionEngine", which is a special
+ * type of a link property that contains expressions that may link to other
+ * document objects.
+ *
+ * @section SecDocumentObjectRecompute Recomputing Document Objects
+ *
+ * Objects can be recomputed, which means that the properties of the object are
+ * recomputed.  Since properties may depend on other document objects, for
+ * example because of the @ref App::DocumentObject::ExpressionEngine
+ * "ExpressionEngine" property, these document objects have to be computed
+ * first.  Managing the order of recomputation is managed by the @ref
+ * App::Document "Document" which calls the @ref
+ * App::DocumentObject::recompute() "recompute()" on the document object.  To
+ * signal that a document object needs to be recomputed, the document object
+ * can be touched (see @ref App::DocumentObject::touch() "touch()" and @ref
+ * App::DocumentObject::isTouched() "isTouched()").
+ *
+ * As part of recomputation, the document object can also be executed or
+ * "invoked", (see @ref App::DocumentObject::execute() "execute()") which
+ * results in recomputing the output properties of the object.
+ *
+ * Although recomputation is mostly orchestrated by the @ref App::Document
+ * "Document", document objects play an important role in capturing the
+ * dependencies between document objects in terms of OutLists and InLists.
+ *
+ * Dependencies between document objects come into existence because of links
+ * and if a document object `A` links to another document object `B`, then `B`
+ * is in the OutList of `A` and `A` is in the InList of `B`.  The InList for an
+ * object `Obj` represents the document objects that are dependent on it.  The
+ * outlist of an object `Obj` represent the dependencies of it.  So, to
+ * recompute `Obj`, first the objects in the outlist need to be recomputed.
+ * Vice versa, if a property of an object is changed, the InList indicates
+ * which other objects depend on it and need to be recomputed.
+ *
+ * So, as mentioned above, links define dependencies between document objects
+ * These dependencies are recorded by means of setting the value of a @ref
+ * App::PropertyLink "PropertyLink" (and similar properties) in a document
+ * object `Obj` to a document object `Value`.  Within @ref
+ * App::PropertyLink::setValue() "PropertyLink::setValue()" (and similar
+ * methods for other link properties), the (internal) methods _addBackLink() or
+ * _removeBackLink() will be called on `Value` with as argument the container
+ * of the property link `Obj`, indicating that `Obj` depends on `Value`.  With
+ * this methodology, each document object will build up its own InList that can
+ * be used during recomputation to query which other document objects need to
+ * be computed.
+ *
+ * The OutList and InList can be accessed by the methods @ref
+ * App::DocumentObject::getOutList() "getOutList()" and @ref
+ * App::DocumentObject::getInList() "getInList()".
+ *
+ * @section SecDocumentObjectProperties Properties
+ *
+ * The document object introduces three properties:
+ *
+ * - @ref App::DocumentObject::Label "Label" which is a string that identifies
+ *   the object in the document and is used to display the object in the GUI.
+ * - @ref App::DocumentObject::Label2 "Label2" which is a string that contains
+ *   additional information about the object and is used for the description of
+ *   the object.
+ * - @ref App::DocumentObject::ExpressionEngine "ExpressionEngine" which
+ *   contains a mapping from @ref App::ObjectIdentifier "ObjectIdentifier" to
+ *   @ref App::Expression "Expression".  The object identifier defines the
+ *   properties that store the result of the expression.
+ * - @ref App::DocumentObject::Visibility "Visibility" which is a boolean
+ *   that indicates whether the object is visible in App namespace.
+ *
+ * @section SecDocumentObjectSignals Signals
+ *
+ * A document object has three signals that can be connected to:
+ *
+ * - @ref App::DocumentObject::signalBeforeChange "signalBeforeChange" which is
+ *   emitted before a property of the document object is changed.  This signal
+ *   can be used to prepare for changes to the document object.
+ * - @ref App::DocumentObject::signalChanged "signalChanged" which is emitted
+ *   after a property of the document object has changed.
+ * - @ref App::DocumentObject::signalEarlyChanged "signalEarlyChanged" which
+ *   is also emitted after a property has changed but emitted right before
+ *   "signalChanged".
+ *
+ * Note that at the @ref App::Document "Document" level, there are also similar
+ * signals.
+ *
+ * @section SecDocumentObjectSeparation Separation App/Gui
+ *
+ * In FreeCAD there is a strict separation between the App and Gui parts.  A
+ * @ref App::DocumentObject "DocumentObject" typically has a Gui::ViewProvider
+ * class associated with it.  The method @ref
+ * App::DocumentObject::getViewProviderName() "getViewProviderName()" defines
+ * what the type of the class of the view provider is, allowing the Gui to
+ * retrieve the type and construct a view provider.
+ *
+ * Another intresting aspect of the separation is that the property @ref
+ * App::DocumentObject::Visibility "Visibility" is defined both in
+ * App::DocumentObject and in @ref Gui::ViewProviderDocumentObject::Visibility
+ * "Gui::ViewProviderDocumentObject".
  */
 
 /**
