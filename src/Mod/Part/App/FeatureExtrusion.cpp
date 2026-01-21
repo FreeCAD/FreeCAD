@@ -404,7 +404,8 @@ App::DocumentObjectExecReturn* Extrusion::execute()
         const auto& subs = Base.getSubValues();
         if (subs.empty()) {
             // No sub-elements specified - use entire shape (backward compatible)
-            sourceShape = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
+            sourceShape
+                = Feature::getTopoShape(link, ShapeOption::ResolveLink | ShapeOption::Transform);
         }
         else {
             // Sub-elements specified - extract and combine them
