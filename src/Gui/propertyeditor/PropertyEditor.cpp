@@ -953,10 +953,11 @@ void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& 
     }
 }
 
-template <typename T>
+template<typename T>
 static std::map<T, std::set<App::ObjectIdentifier>> groupBy(
-        const std::set<App::ObjectIdentifier>& ids,
-        const std::function<T(const App::ObjectIdentifier&)>& getKey)
+    const std::set<App::ObjectIdentifier>& ids,
+    const std::function<T(const App::ObjectIdentifier&)>& getKey
+)
 {
     std::map<T, std::set<App::ObjectIdentifier>> map;
     for (const auto& id : ids) {
@@ -973,33 +974,37 @@ static inline std::string indent(int level)
     return std::string(2 * level, ' ');
 }
 
-void PropertyEditor::reportPropUsesObj(int level,
-                                       const App::DocumentObject* obj,
-                                       const std::set<App::ObjectIdentifier>& ids) const
+void PropertyEditor::reportPropUsesObj(
+    int level,
+    const App::DocumentObject* obj,
+    const std::set<App::ObjectIdentifier>& ids
+) const
 {
     Base::Console().message(indent(level).c_str());
     Base::Console().message(tr("object %1 (%2):\n")
-                            .arg(QString::fromUtf8(obj->getNameInDocument()))
-                            .arg(QString::fromUtf8(obj->Label.getValue()))
-                            .toUtf8()
-                            .constData());
+                                .arg(QString::fromUtf8(obj->getNameInDocument()))
+                                .arg(QString::fromUtf8(obj->Label.getValue()))
+                                .toUtf8()
+                                .constData());
 
     for (const auto& id : ids) {
         Base::Console().message(indent(level + 1).c_str());
-        Base::Console().message(tr("property %1\n")
-                                .arg(QString::fromStdString(id.toString()))
-                                .toUtf8()
-                                .constData());
+        Base::Console().message(
+            tr("property %1\n").arg(QString::fromStdString(id.toString())).toUtf8().constData()
+        );
     }
 }
 
-void PropertyEditor::reportPropUsesDoc(int level,
-                                       const App::Document* doc,
-                                       const std::set<App::ObjectIdentifier>& ids) const
+void PropertyEditor::reportPropUsesDoc(
+    int level,
+    const App::Document* doc,
+    const std::set<App::ObjectIdentifier>& ids
+) const
 {
     Base::Console().message(indent(level).c_str());
-    Base::Console().message(tr("document %1:\n")
-                            .arg(QString::fromUtf8(doc->getName())).toUtf8().constData());
+    Base::Console().message(
+        tr("document %1:\n").arg(QString::fromUtf8(doc->getName())).toUtf8().constData()
+    );
 
     auto objToIds = groupBy<App::DocumentObject*>(ids, [](const App::ObjectIdentifier& id) {
         return id.getDocumentObject();
@@ -1018,14 +1023,13 @@ void PropertyEditor::reportPropUses(App::Property* prop) const
         return;
     }
 
-    Base::Console().message(
-            tr("Property %1 in object %2 (%3) in document %4 is referenced by:\n")
-            .arg(QString::fromUtf8(prop->getName()))
-            .arg(QString::fromUtf8(obj->getNameInDocument()))
-            .arg(QString::fromUtf8(obj->Label.getValue()))
-            .arg(QString::fromUtf8(obj->getDocument()->getName()))
-            .toUtf8()
-            .constData());
+    Base::Console().message(tr("Property %1 in object %2 (%3) in document %4 is referenced by:\n")
+                                .arg(QString::fromUtf8(prop->getName()))
+                                .arg(QString::fromUtf8(obj->getNameInDocument()))
+                                .arg(QString::fromUtf8(obj->Label.getValue()))
+                                .arg(QString::fromUtf8(obj->getDocument()->getName()))
+                                .toUtf8()
+                                .constData());
 
     auto docToIds = groupBy<App::Document*>(uses, [](const App::ObjectIdentifier& id) {
         return id.getDocument();
