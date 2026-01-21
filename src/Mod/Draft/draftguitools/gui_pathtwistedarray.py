@@ -27,6 +27,7 @@
 The copies will be created along a path, like a polyline, B-spline,
 or Bezier curve.
 """
+
 ## @package gui_pathtwistedarray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create PathTwistedArray objects.

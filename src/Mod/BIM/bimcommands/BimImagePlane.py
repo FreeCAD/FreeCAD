@@ -51,7 +51,7 @@ class BIM_ImagePlane:
         self.tracker = DraftTrackers.rectangleTracker()
         self.basepoint = None
         self.opposite = None
-        (filename, _filter) = QtGui.QFileDialog.getOpenFileName(
+        filename, _filter = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
             translate("BIM", "Select Image"),
             None,

@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to return the SVG representation of text elements."""
+
 ## @package svgtext
 # \ingroup draftfunctions
 # \brief Provides functions to return the SVG representation of text elements.

@@ -26,7 +26,6 @@
 
 import FreeCAD, os, unittest, FreeCADGui
 
-
 # ---------------------------------------------------------------------------
 # define the functions to test the FreeCAD base code
 # ---------------------------------------------------------------------------

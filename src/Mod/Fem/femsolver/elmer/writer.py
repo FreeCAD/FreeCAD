@@ -57,7 +57,6 @@ from .equations import magnetodynamic_writer as MgDyn_writer
 from .equations import magnetodynamic2D_writer as MgDyn2D_writer
 from .equations import staticcurrent_writer as SC_writer
 
-
 _STARTINFO_NAME = "ELMERSOLVER_STARTINFO"
 _SIF_NAME = "case.sif"
 _ELMERGRID_IFORMAT = "8"

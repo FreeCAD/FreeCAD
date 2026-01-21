@@ -36,7 +36,6 @@ from femtest.app import support_utils as testtools
 from femtest.app.support_utils import fcc_print
 from femtest.app.test_object import create_all_fem_objects_doc
 
-
 """
 FIXME TODO HACK
 Important note!

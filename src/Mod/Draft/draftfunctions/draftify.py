@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to transform sketches into Draft objects."""
+
 ## @package draftify
 # \ingroup draftfunctions
 # \brief Provides functions to transform sketches into Draft objects.

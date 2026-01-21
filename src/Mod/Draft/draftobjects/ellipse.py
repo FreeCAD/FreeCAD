@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Ellipse object."""
+
 ## @package ellipse
 # \ingroup draftobjects
 # \brief Provides the object code for the Ellipse object.

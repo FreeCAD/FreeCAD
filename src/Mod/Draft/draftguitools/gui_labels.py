@@ -30,6 +30,7 @@ Labels are similar to text annotations but include a leader line
 and an arrow in order to point to an object and indicate some of its
 properties.
 """
+
 ## @package gui_labels
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Label objects.

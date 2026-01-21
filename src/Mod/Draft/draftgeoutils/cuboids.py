@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with cubic shapes (parallelepipeds)."""
+
 ## @package cuboids
 # \ingroup draftgeoutils
 # \brief Provides various functions for cubic shapes (parallelepipeds).

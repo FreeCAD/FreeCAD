@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create BSpline objects."""
+
 ## @package make_bspline
 # \ingroup draftmake
 # \brief Provides functions to create BSpline objects.

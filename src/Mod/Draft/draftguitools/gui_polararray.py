@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create polar Array objects."""
+
 ## @package gui_polararray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create polar Array objects.

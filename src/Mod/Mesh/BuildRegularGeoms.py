@@ -14,7 +14,6 @@ Sample code for creating a mesh:
         m.addFacets(facets)
 """
 
-
 import math
 
 

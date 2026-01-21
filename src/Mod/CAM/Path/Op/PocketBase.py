@@ -29,7 +29,6 @@ import Path.Op.Base as PathOp
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
 __title__ = "Base CAM Pocket Operation"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

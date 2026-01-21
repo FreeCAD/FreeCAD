@@ -31,6 +31,7 @@ useful curves for many applications.
 
 See https://en.wikipedia.org/wiki/B%C3%A9zier_curve
 """
+
 ## @package gui_beziers
 # \ingroup draftguitools
 # \brief Provides GUI tools to create BezCurve objects.

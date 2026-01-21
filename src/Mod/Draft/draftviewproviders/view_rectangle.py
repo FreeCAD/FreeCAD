@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Rectangle object."""
+
 ## @package view_rectangle
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Rectangle object.

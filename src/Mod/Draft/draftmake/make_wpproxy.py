@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create WorkingPlaneProxy objects."""
+
 ## @package make_wpproxy
 # \ingroup draftmake
 # \brief Provides functions to create WorkingPlaneProxy objects.

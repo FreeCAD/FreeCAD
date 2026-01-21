@@ -61,6 +61,7 @@ the logic in `execute` would have to be changed to account for multiple
 objects. Therefore, the first solution is simpler, that is, using
 a single property of type `App::PropertyLinkSub`.
 """
+
 ## @package patharray
 # \ingroup draftobjects
 # \brief Provides the object code for the PathArray object.

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Facebinder objects."""
+
 ## @package make_facebinder
 # \ingroup draftmake
 # \brief Provides functions to create Facebinder objects.

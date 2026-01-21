@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create an extrusion object from a profile."""
+
 ## @package extrude
 # \ingroup draftfunctions
 # \brief Provides functions to create an extrusion object from a profile.

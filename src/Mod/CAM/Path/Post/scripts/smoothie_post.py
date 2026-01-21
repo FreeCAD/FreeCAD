@@ -107,9 +107,7 @@ class Smoothie(PostProcessor):
         # Any commands in this value will be output as the last commands
         # in the G-code file.
         #
-        values[
-            "POSTAMBLE"
-        ] = """M05
+        values["POSTAMBLE"] = """M05
 G17 G90
 M2"""
         values["POSTPROCESSOR_FILE_NAME"] = __name__

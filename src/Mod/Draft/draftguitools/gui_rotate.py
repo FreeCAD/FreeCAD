@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to rotate objects in the 3D space."""
+
 ## @package gui_rotate
 # \ingroup draftguitools
 # \brief Provides GUI tools to rotate objects in the 3D space.

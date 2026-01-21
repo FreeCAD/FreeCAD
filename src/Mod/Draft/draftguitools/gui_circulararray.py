@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create circular Array objects."""
+
 ## @package gui_circulararray
 # \ingroup draftguitools
 # \brief Provides GUI tools to create circular Array objects.

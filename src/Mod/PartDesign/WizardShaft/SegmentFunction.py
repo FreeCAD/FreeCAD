@@ -399,7 +399,7 @@ class TranslationFunction:
         for xval in sorted(xvals):
             if xval in divs:
                 i = self.intfunc.index(xval)
-                (begin, length) = self.intfunc.interval(xval)
+                begin, length = self.intfunc.interval(xval)
                 I_i = self.intfunc.value(xval)
                 C_i0 = self.boundaries[2 * i]
                 C_i1 = self.boundaries[2 * i + 1]

@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Fillet object."""
+
 ## @package fillet
 # \ingroup draftobjects
 # \brief Provides the object code for the Fillet object.

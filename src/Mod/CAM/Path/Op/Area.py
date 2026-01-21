@@ -27,7 +27,6 @@ import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 
@@ -133,7 +132,7 @@ class ObjectOp(PathOp.ObjectOp):
             obj.setEditorMode(prop, 2)
 
         if hasattr(obj, "Side") and prop == "Base" and len(obj.Base) == 1:
-            (base, subNames) = obj.Base[0]
+            base, subNames = obj.Base[0]
             bb = base.Shape.BoundBox  # parent boundbox
 
             if "Face" in subNames[0]:
@@ -310,7 +309,7 @@ class ObjectOp(PathOp.ObjectOp):
         obj.PathParams = str({key: value for key, value in pathParams.items() if key != "shapes"})
         Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
-        (pp, end_vector) = Path.fromShapes(**pathParams)
+        pp, end_vector = Path.fromShapes(**pathParams)
         Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
         # Keep track of this segment's end only if it has movement (otherwise end_vector is 0,0,0 and the next segment will unnecessarily start there)
@@ -375,7 +374,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
                 Path.Log.debug("Path with params: {}".format(obj.PathParams))
 
-                (pp, end_vector) = Path.fromShapes(**pathParams)
+                pp, end_vector = Path.fromShapes(**pathParams)
                 paths.extend(pp.Commands)
                 Path.Log.debug("pp: {}, end vector: {}".format(pp, end_vector))
 
@@ -412,7 +411,7 @@ class ObjectOp(PathOp.ObjectOp):
         shapes = []
         for shp in self.areaOpShapes(obj):
             if len(shp) == 2:
-                (fc, iH) = shp
+                fc, iH = shp
                 #     fc, iH,  sub or description
                 tup = fc, iH, "otherOp"
                 shapes.append(tup)
@@ -447,9 +446,9 @@ class ObjectOp(PathOp.ObjectOp):
 
             try:
                 if profileEdgesIsOpen:
-                    (pp, sim) = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
+                    pp, sim = self._buildProfileOpenEdges(obj, shape, isHole, start, getsim)
                 else:
-                    (pp, sim) = self._buildPathArea(obj, shape, isHole, start, getsim)
+                    pp, sim = self._buildPathArea(obj, shape, isHole, start, getsim)
             except Exception as e:
                 FreeCAD.Console.PrintError(e)
                 FreeCAD.Console.PrintError(

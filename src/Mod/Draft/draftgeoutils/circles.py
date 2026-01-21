@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with circles."""
+
 ## @package circles
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with circles.

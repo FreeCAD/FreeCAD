@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Label objects."""
+
 ## @package make_label
 # \ingroup draftmake
 # \brief Provides functions to create Label objects.

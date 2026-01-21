@@ -23,6 +23,7 @@
 # ***************************************************************************
 
 """Helper functions that are used by IFC importer and exporter."""
+
 import math
 
 import FreeCAD

@@ -39,7 +39,6 @@ from PySide import QtCore
 
 import FreeCAD
 
-
 # Registry to handle visualization commands
 # #########################################
 

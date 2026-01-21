@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Shape2DView objects."""
+
 ## @package make_shape2dview
 # \ingroup draftmake
 # \brief Provides functions to create Shape2DView objects.

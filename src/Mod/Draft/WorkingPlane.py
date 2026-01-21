@@ -29,6 +29,7 @@ The working plane is mostly intended to be used in the Draft Workbench
 to draw 2D objects in various orientations, not only in the standard XY,
 YZ, and XZ planes.
 """
+
 ## @package WorkingPlane
 #  \ingroup DRAFT
 #  \brief This module handles the Working Plane and grid of the Draft module.

@@ -44,7 +44,6 @@ from femmesh import meshsetsgetter
 from femtools import femutils
 from femtools import membertools
 
-
 _inputFileName = None
 
 

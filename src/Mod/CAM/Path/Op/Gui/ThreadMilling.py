@@ -36,7 +36,6 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 from PySide import QtCore, QtGui
 
-
 __title__ = "CAM Thread Milling Operation UI."
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

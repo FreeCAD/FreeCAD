@@ -428,10 +428,8 @@ def GeneratePackageIcon(
         return
     absolute_filename = Path(subdirectory) / Path(relative_filename)
     if hasattr(wb_handle, "Icon") and wb_handle.Icon:
-        Log(
-            f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
-            in class {workbench_metadata.Classname}"
-        )
+        Log(f"Init:      Packaged workbench {workbench_metadata.Name} specified icon\
+            in class {workbench_metadata.Classname}")
         Log(" ... replacing with icon from package.xml data.\n")
     wb_handle.__dict__["Icon"] = str(absolute_filename.resolve())
 

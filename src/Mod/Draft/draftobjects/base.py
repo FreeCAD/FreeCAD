@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the base Draft object."""
+
 ## @package base
 # \ingroup draftobjects
 # \brief Provides the object code for the base Draft object.

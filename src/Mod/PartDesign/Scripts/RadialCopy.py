@@ -4,6 +4,7 @@
 """
 An example for a high-level custom feature object to make a so called "radial copy".
 """
+
 __author__ = "Werner Mayer <wmayer@users.sourceforge.net>"
 
 import FreeCAD, FreeCADGui, Part, math

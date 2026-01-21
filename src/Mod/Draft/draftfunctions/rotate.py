@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to rotate shapes around a center and axis."""
+
 ## @package rotate
 # \ingroup draftfunctions
 # \brief Provides functions to rotate shapes around a center and axis.

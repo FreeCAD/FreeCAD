@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Polygon object."""
+
 ## @package polygon
 # \ingroup draftobjects
 # \brief Provides the object code for the Polygon object.

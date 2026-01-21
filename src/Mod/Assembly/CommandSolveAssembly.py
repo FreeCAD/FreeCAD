@@ -33,7 +33,6 @@ if App.GuiUp:
 import UtilsAssembly
 import Assembly_rc
 
-
 __title__ = "Assembly Command to Solve Assembly"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"

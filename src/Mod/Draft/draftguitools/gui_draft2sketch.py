@@ -31,6 +31,7 @@ Many Draft objects will be converted to a single non-constrained Sketch.
 However, a single sketch with disconnected traces will be converted
 into several individual Draft objects.
 """
+
 ## @package gui_draft2sketch
 # \ingroup draftguitools
 # \brief Provides GUI tools to convert Draft objects to Sketches and back.

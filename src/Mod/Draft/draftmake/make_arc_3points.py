@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Arc objects by using 3 points."""
+
 ## @package make_arc_3points
 # \ingroup draftmake
 # \brief Provides functions to create Arc objects by using 3 points.

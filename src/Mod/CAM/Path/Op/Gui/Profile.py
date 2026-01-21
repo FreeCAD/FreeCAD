@@ -29,7 +29,6 @@ import Path.Op.Profile as PathProfile
 import PathGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
-
 __title__ = "CAM Profile Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

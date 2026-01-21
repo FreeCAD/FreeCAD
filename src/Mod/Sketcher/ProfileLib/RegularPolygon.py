@@ -24,7 +24,6 @@
 
 import FreeCAD, FreeCADGui, Sketcher, Part, math
 
-
 __title__ = "Regular polygon profile lib"
 __author__ = "Johan Kristensen"
 __url__ = "https://www.freecad.org"

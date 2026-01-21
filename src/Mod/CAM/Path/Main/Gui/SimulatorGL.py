@@ -24,7 +24,6 @@
 Command and task window handler for the OpenGL based CAM simulator
 """
 
-
 import math
 import os
 import FreeCAD
@@ -35,7 +34,6 @@ from PathScripts import PathUtils
 import CAMSimulator
 
 from FreeCAD import Vector, Placement, Rotation
-
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader

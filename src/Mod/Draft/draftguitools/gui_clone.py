@@ -37,6 +37,7 @@ In many cases using `App::Link` makes more sense, as this object is
 more memory efficient as it reuses the same internal `Shape`
 instead of creating a copy of it.
 """
+
 ## @package gui_clone
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Clone objects.

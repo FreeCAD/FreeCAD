@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides various functions to work with offsets."""
+
 ## @package offsets
 # \ingroup draftgeoutils
 # \brief Provides various functions to work with offsets.

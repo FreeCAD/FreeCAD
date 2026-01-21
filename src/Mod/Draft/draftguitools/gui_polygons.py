@@ -28,6 +28,7 @@
 
 Minimum number of sides is three (equilateral triangles).
 """
+
 ## @package gui_polygons
 # \ingroup draftguitools
 # \brief Provides GUI tools to create regular Polygon objects.
@@ -191,7 +192,7 @@ class Polygon(gui_base_original.Creator):
                 if self.step == 0:  # choose center
                     if (not self.node) and (not self.support):
                         gui_tool_utils.getSupport(arg)
-                        (self.point, ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
+                        self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
                     if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                         snapped = self.view.getObjectInfo((arg["Position"][0], arg["Position"][1]))
                         if snapped:

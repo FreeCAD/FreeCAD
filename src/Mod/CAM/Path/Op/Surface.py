@@ -904,7 +904,7 @@ class ObjectSurface(PathOp.ObjectOp):
         # Process selected faces, if available
         if pPM:
             self.cancelOperation = False
-            (FACES, VOIDS) = pPM
+            FACES, VOIDS = pPM
             self.modelSTLs = PSF.modelSTLs
             self.profileShapes = PSF.profileShapes
 
@@ -1238,7 +1238,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         ofst = []
                     else:
                         # D format is ((p1, p2), (p3, p4))
-                        (A, B) = I
+                        A, B = I
                         ofst.extend(self._planarDropCutScan(pdc, A, B))
                 if len(ofst) > 0:
                     stpOvr.append(ofst)
@@ -1260,7 +1260,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         stpOvr.append(LN)
                     else:
                         # D format is ((p1, p2), (p3, p4))
-                        (A, B) = LN
+                        A, B = LN
                         stpOvr.append(self._planarDropCutScan(pdc, A, B))
                 SCANS.append(stpOvr)
                 stpOvr = []
@@ -1273,7 +1273,7 @@ class ObjectSurface(PathOp.ObjectOp):
             for so in range(0, len(PNTSET)):
                 stpOvr = []
                 erFlg = False
-                (aTyp, dirFlg, ARCS) = PNTSET[so]
+                aTyp, dirFlg, ARCS = PNTSET[so]
 
                 if dirFlg == 1:  # 1
                     cMode = True
@@ -1299,8 +1299,8 @@ class ObjectSurface(PathOp.ObjectOp):
         return SCANS
 
     def _planarDropCutScan(self, pdc, A, B):
-        (x1, y1) = A
-        (x2, y2) = B
+        x1, y1 = A
+        x2, y2 = B
         path = ocl.Path()  # create an empty path object
         p1 = ocl.Point(x1, y1, 0)  # start-point of line
         p2 = ocl.Point(x2, y2, 0)  # end-point of line
@@ -1314,7 +1314,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
     def _planarCircularDropCutScan(self, pdc, Arc, cMode):
         path = ocl.Path()  # create an empty path object
-        (sp, ep, cp) = Arc
+        sp, ep, cp = Arc
 
         # process list of segment tuples (vect, vect)
         p1 = ocl.Point(sp[0], sp[1], 0)  # start point of arc
@@ -1395,7 +1395,7 @@ class ObjectSurface(PathOp.ObjectOp):
                         and obj.CircularUseG2G3 is True
                         and lenPrt > 2
                     ):
-                        (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
+                        rtnVal, gcode = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
                         if rtnVal:
                             cmds.extend(gcode)
                         else:
@@ -1478,7 +1478,7 @@ class ObjectSurface(PathOp.ObjectOp):
                             LMAX.append(prt)
                             brkFlg = False
                     else:
-                        (PTS, lMax) = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
+                        PTS, lMax = self._planarMultipassPreProcess(obj, prt, prevDepth, lyrDep)
                         if len(PTS) > 0:
                             ADJPRTS.append(PTS)
                             soHasPnts = True
@@ -1541,7 +1541,7 @@ class ObjectSurface(PathOp.ObjectOp):
                                 and obj.CircularUseG2G3 is True
                                 and lenPrt > 2
                             ):
-                                (rtnVal, gcode) = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
+                                rtnVal, gcode = self._arcsToG2G3(prt, lenPrt, odd, gDIR, tolrnc)
                                 if rtnVal is True:
                                     segCmds = gcode
                                 else:
@@ -1761,7 +1761,7 @@ class ObjectSurface(PathOp.ObjectOp):
                 # Try to keep cutting for short distances.
                 if xyDistanceSqrd <= maxXYDistanceSqrd:
                     # Try to keep cutting, following the model shape
-                    (transLine, minZ, maxZ) = self._getTransitionLine(safePDC, p1, p2, obj)
+                    transLine, minZ, maxZ = self._getTransitionLine(safePDC, p1, p2, obj)
                     # For now, only optimize moderate deviations in Z direction, and
                     # no dropping below the min of p1 and p2, primarily for multi
                     # layer path safety.

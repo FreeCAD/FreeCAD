@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create two-point Wire objects."""
+
 ## @package make_line
 # \ingroup draftmake
 # \brief Provides functions to create two-point Wire objects.

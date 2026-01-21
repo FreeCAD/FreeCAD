@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the WorkingPlaneProxy object."""
+
 ## @package wpproxy
 # \ingroup draftobjects
 # \brief Provides the object code for the WorkingPlaneProxy object.

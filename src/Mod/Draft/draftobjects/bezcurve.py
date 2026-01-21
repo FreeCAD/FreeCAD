@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the BezCurve object."""
+
 ## @package bezcurve
 # \ingroup draftobjects
 # \brief Provides the object code for the BezCurve object.

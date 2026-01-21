@@ -25,6 +25,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to create Layer objects."""
+
 ## @package gui_layers
 # \ingroup draftguitools
 # \brief Provides GUI tools to create Layer objects.

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Wire (Polyline) object."""
+
 ## @package wire
 # \ingroup draftobjects
 # \brief Provides the object code for the Wire (Polyline) object.
