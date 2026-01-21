@@ -96,10 +96,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return form
 
-    def updateMinTravel(self, obj, setModel=True):
-        if setModel and obj.MinTravel != self.form.minTravel.isChecked():
-            obj.MinTravel = self.form.minTravel.isChecked()
-
     def updateAngle(self, obj, setModel=True):
         if obj.ClearingPattern == "Offset":
             self.form.angle.setEnabled(False)
@@ -133,8 +129,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             if obj.UseOutline != self.form.useOutline.isChecked():
                 obj.UseOutline = self.form.useOutline.isChecked()
 
-        self.updateMinTravel(obj)
-
         if FeatureFacing & self.pocketFeatures():
             print(obj.BoundaryShape)
             print(self.form.boundaryShape.currentText())
@@ -158,9 +152,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
         self.updateAngle(obj, False)
 
-        self.form.minTravel.setChecked(obj.MinTravel)
-        self.updateMinTravel(obj, False)
-
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.setupToolController(obj, self.form.toolController)
@@ -183,7 +174,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
-        signals.append(self.form.minTravel.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
 
         if FeatureFacing & self.pocketFeatures():
