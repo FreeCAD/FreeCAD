@@ -1091,13 +1091,57 @@ if FreeCAD.GuiUp:
             target_node.insertChild(textrans, 0)
 
     class ArchCoveringTaskPanel:
+        """
+        A Task Panel for creating and editing Arch Covering objects.
+
+        This class manages user input and property states during the object creation lifecycle.
+
+        Parameters
+        ----------
+        command : object, optional
+            The FreeCAD command instance that invoked this panel.
+        obj : App.DocumentObject, optional
+            The existing Covering object to edit. If None, the panel operates in creation mode.
+        selection : list, optional
+            A list of pre-selected objects or sub-elements to apply the covering to.
+
+        Notes
+        -----
+        In creation mode (`obj` is None), this class creates a temporary, hidden
+        `App::FeaturePython` object (the "phantom") within the active document. This phantom object
+        serves as a proxy data container. It allows the UI widgets to bind to actual FreeCAD
+        properties, enabling native features like:
+
+        *   Unit conversion and display.
+        *   The Expression Engine (f(x) support).
+        *   Default value management via user parameters.
+
+        Data flow and binding:
+
+        1.  **Initialization:** UI widgets (`QuantitySpinBox`, etc.) are initialized. If in creation
+            mode, they bind to the phantom's properties. If in edit mode, they bind to the real
+            object's properties.
+        2.  **Synchronization:** while `ExpressionBinding` handles the visual indication of
+            expressions, value propagation is explicitly managed. The `_sync_ui_to_target()` method
+            pulls "rawValue" data from widgets and updates the target object (phantom or real)
+            before any logic uses it.
+        3.  **Transfer:**
+            *   *Creation:* When the user accepts the dialog, the properties are read from the fully
+                configured phantom object and copied (via `_transfer_props`) to the newly
+                instantiated real Covering objects.
+            *   *Edition:* The UI writes directly to the existing object (via sync), so no transfer
+                step is required.
+        """
+
         def __init__(self, command=None, obj=None, selection=None):
             self.command = command
             self.obj_to_edit = obj
-
-            # Initialize selection variables before the UI setup
+            self.phantom = None
+            self.target_obj = None
             self.selected_obj = None
             self.selected_sub = None
+            # Keep references to ExpressionBinding objects to prevent garbage collection
+            self.bindings = []
 
             # Handle selection list or single object
             if selection and not isinstance(selection, list):
@@ -1105,28 +1149,21 @@ if FreeCAD.GuiUp:
             else:
                 self.selection_list = selection if selection else []
 
-            # Register as Selection Observer
-            FreeCADGui.Selection.addObserver(self)
-
-            # Pre-fill selection based on obj properties or passed selection
+            # Determine if we are in edit mode or creation mode
             if self.obj_to_edit:
-                # Edition mode: get selection from object
-                if self.obj_to_edit.Base:
-                    val = self.obj_to_edit.Base
-                    if isinstance(val, tuple):
-                        self.selected_obj = val[0]
-                        self.selected_sub = val[1][0] if val[1] else None
-                    else:
-                        self.selected_obj = val
-            elif self.selection_list:
-                # Creation mode: setup display for first item if only one
-                if len(self.selection_list) == 1:
-                    item = self.selection_list[0]
-                    if isinstance(item, tuple):
-                        self.selected_obj = item[0]
-                        self.selected_sub = item[1][0] if item[1] else None
-                    else:
-                        self.selected_obj = item
+                self.target_obj = self.obj_to_edit
+            else:
+                # Create a lightweight phantom object to hold properties for the UI
+                self.phantom = FreeCAD.ActiveDocument.addObject(
+                    "App::FeaturePython", "CoveringSettings"
+                )
+                _Covering(self.phantom)
+                if self.phantom.ViewObject:
+                    self.phantom.ViewObject.hide()
+                self.target_obj = self.phantom
+
+            # Register selection observer
+            FreeCADGui.Selection.addObserver(self)
 
             # Build the task panel UI
 
@@ -1159,11 +1196,24 @@ if FreeCAD.GuiUp:
         def _updateSelectionUI(self):
             """Updates the selection text and tooltip based on current selection state."""
             if self.obj_to_edit:
-                # Edit mode (single target)
-                if self.selected_sub:
-                    text = f"{self.selected_obj.Label}.{self.selected_sub}"
+                # Edit mode: Use interactive selection if available, otherwise fall back to
+                # object property
+                if self.selected_obj:
+                    if self.selected_sub:
+                        text = f"{self.selected_obj.Label}.{self.selected_sub}"
+                    else:
+                        text = self.selected_obj.Label
                 else:
-                    text = self.selected_obj.Label
+                    # Initial load: read from the actual object's Base link
+                    base_link = self.obj_to_edit.Base
+                    if base_link:
+                        if isinstance(base_link, tuple):
+                            text = f"{base_link[0].Label}.{base_link[1][0]}"
+                        else:
+                            text = base_link.Label
+                    else:
+                        text = translate("Arch", "No selection")
+
                 self.le_selection.setText(text)
                 self.le_selection.setToolTip(text)
                 return
@@ -1192,9 +1242,12 @@ if FreeCAD.GuiUp:
             # Smart labeling
             if len(unique_objects) == 1 and total_faces > 0:
                 # Single object, multiple faces (e.g. "Wall (3 faces)")
-                obj_label = self.selection_list[0][0].Label
+                # Check if the first item is a tuple or a single object
+                first_item = self.selection_list[0]
+                obj_label = (
+                    first_item[0].Label if isinstance(first_item, tuple) else first_item.Label
+                )
                 self.le_selection.setText(translate("Arch", f"{obj_label} ({total_faces} faces)"))
-            elif len(self.selection_list) == 1:
                 # Single item, single object (e.g. "Wall.Face1")
                 self.le_selection.setText(tooltip_items[0])
             else:
@@ -1237,9 +1290,7 @@ if FreeCAD.GuiUp:
                 ]
             )
             self.combo_mode.setToolTip(translate("Arch", "The type of finish to create"))
-            if not self.obj_to_edit:
-                # Load default finish mode from preferences in create mode
-                self.combo_mode.setCurrentText(params.get_param_arch("CoveringFinishMode"))
+            self.combo_mode.setCurrentText(self.target_obj.FinishMode)
             self.combo_mode.currentIndexChanged.connect(self.onModeChanged)
             top_form.addRow(translate("Arch", "Mode:"), self.combo_mode)
 
@@ -1274,40 +1325,44 @@ if FreeCAD.GuiUp:
             # Add to the main layout below the stack
             self.geo_layout.addWidget(self.chk_continue)
 
+        # Helper for binding properties to a quantity spinbox with default
+        def _setup_bound_spinbox(self, prop_name, tooltip):
+            sb = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
+            prop = getattr(self.target_obj, prop_name)
+            sb.setProperty("unit", prop.getUserPreferred()[2])
+            sb.setToolTip(translate("Arch", tooltip))
+
+            # This enables the f(x) icon, but we don't rely on it for value syncing anymore
+            FreeCADGui.ExpressionBinding(sb).bind(self.target_obj, prop_name)
+
+            sb.setProperty("rawValue", prop.Value)
+            return sb
+
         def _setupTilesPage(self):
             self.page_tiles = QtGui.QWidget()
             form = QtGui.QFormLayout()
-            ui = FreeCADGui.UiLoader()
 
-            # Helper for binding properties to a quantity spinbox with default
-            def setup_spinbox(prop_name, param_name):
-                sb = ui.createWidget("Gui::QuantitySpinBox")
-                unit_str = FreeCAD.Units.Quantity(0, FreeCAD.Units.Length).getUserPreferred()[2]
-                # TODO: cleaner alternative, but we net to get the correct obj
-                # unit_str = self.obj_to_edit.PropertyGet(prop_name).getUserPreferred()[2]
-                sb.setProperty("unit", unit_str)
-                if self.obj_to_edit:
-                    FreeCADGui.ExpressionBinding(sb).bind(self.obj_to_edit, prop_name)
-                    sb.setProperty("rawValue", getattr(self.obj_to_edit, prop_name).Value)
-                else:
-                    sb.setProperty("rawValue", params.get_param_arch(param_name))
-                return sb
-
-            self.sb_length = setup_spinbox("TileLength", "CoveringLength")
-            self.sb_length.setToolTip(translate("Arch", "The length of the tiles"))
+            self.sb_length = self._setup_bound_spinbox(
+                "TileLength", translate("Arch", "The length of the tiles")
+            )
             form.addRow(translate("Arch", "Length:"), self.sb_length)
 
-            self.sb_width = setup_spinbox("TileWidth", "CoveringWidth")
-            self.sb_width.setToolTip(translate("Arch", "The width of the tiles"))
+            self.sb_width = self._setup_bound_spinbox(
+                "TileWidth", translate("Arch", "The width of the tiles")
+            )
             form.addRow(translate("Arch", "Width:"), self.sb_width)
 
-            self.sb_thick = setup_spinbox("TileThickness", "CoveringThickness")
-            self.sb_thick.setToolTip(translate("Arch", "The thickness of the tiles"))
+            self.sb_thick = self._setup_bound_spinbox(
+                "TileThickness", translate("Arch", "The thickness of the tiles")
+            )
+            # Specify label so that we can refer to it later when switching thickness value and
+            # status when changing finish modes
             self.lbl_thick = QtGui.QLabel(translate("Arch", "Thickness:"))
             form.addRow(self.lbl_thick, self.sb_thick)
 
-            self.sb_joint = setup_spinbox("JointWidth", "CoveringJoint")
-            self.sb_joint.setToolTip(translate("Arch", "The width of the joints between tiles"))
+            self.sb_joint = self._setup_bound_spinbox(
+                "JointWidth", translate("Arch", "The width of the joints between tiles")
+            )
             form.addRow(translate("Arch", "Joint:"), self.sb_joint)
 
             self.combo_align = QtGui.QComboBox()
@@ -1315,18 +1370,12 @@ if FreeCAD.GuiUp:
                 ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"]
             )
             self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
-            if not self.obj_to_edit:
-                self.combo_align.setCurrentText(params.get_param_arch("CoveringAlignment"))
+            self.combo_align.setCurrentText(self.target_obj.TileAlignment)
             form.addRow(translate("Arch", "Alignment:"), self.combo_align)
 
-            self.sb_rot = ui.createWidget("Gui::QuantitySpinBox")
-            self.sb_rot.setProperty("unit", "deg")
-            if self.obj_to_edit:
-                FreeCADGui.ExpressionBinding(self.sb_rot).bind(self.obj_to_edit, "Rotation")
-                self.sb_rot.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
-            else:
-                self.sb_rot.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
-            self.sb_rot.setToolTip(translate("Arch", "Rotation of the finish"))
+            self.sb_rot = self._setup_bound_spinbox(
+                "Rotation", translate("Arch", "Rotation of the finish")
+            )
             self.sb_rot.lineEdit().returnPressed.connect(self.accept)
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot)
 
@@ -1336,7 +1385,6 @@ if FreeCAD.GuiUp:
         def _setupHatchPage(self):
             self.page_hatch = QtGui.QWidget()
             form = QtGui.QFormLayout()
-            ui = FreeCADGui.UiLoader()
 
             self.le_pat = QtGui.QLineEdit()
             self.le_pat.setToolTip(translate("Arch", "The PAT file to use for hatching"))
@@ -1348,15 +1396,10 @@ if FreeCAD.GuiUp:
             h_pat.addWidget(btn_browse_pat)
             form.addRow(translate("Arch", "Pattern File:"), h_pat)
 
-            self.sb_rot_hatch = ui.createWidget("Gui::QuantitySpinBox")
-            self.sb_rot_hatch.setProperty("unit", "deg")
-            if self.obj_to_edit:
-                FreeCADGui.ExpressionBinding(self.sb_rot_hatch).bind(self.obj_to_edit, "Rotation")
-                self.sb_rot_hatch.setProperty("rawValue", self.obj_to_edit.Rotation.Value)
-            else:
-                self.sb_rot_hatch.setProperty("rawValue", params.get_param_arch("CoveringRotation"))
-            self.sb_rot_hatch.setToolTip(translate("Arch", "The rotation of the hatch pattern"))
-            self.sb_rot.lineEdit().returnPressed.connect(self.accept)
+            self.sb_rot_hatch = self._setup_bound_spinbox(
+                "Rotation", translate("Arch", "Rotation of the hatch pattern")
+            )
+            self.sb_rot_hatch.lineEdit().returnPressed.connect(self.accept)
             form.addRow(translate("Arch", "Rotation:"), self.sb_rot_hatch)
 
             self.page_hatch.setLayout(form)
@@ -1514,19 +1557,137 @@ if FreeCAD.GuiUp:
             return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
         def _cleanup_and_close(self):
-            # Ensure observer is always removed
+            """Removes temporary objects and observers, then closes the task panel."""
+            if self.phantom:
+                # Get the document associated with the phantom object
+                doc = getattr(self.phantom, "Document", None)
+                if doc and doc.getObject(self.phantom.Name):
+                    # Only attempt removal if the object is still present in the document
+                    doc.removeObject(self.phantom.Name)
+                self.phantom = None
+
+            # Standard cleanup for listeners and UI
             FreeCADGui.Selection.removeObserver(self)
             FreeCADGui.Control.closeDialog()
 
+        def _transfer_props(self, source, target, props):
+            """Copies values and expressions from the source object to the target."""
+            for prop in props:
+                # Set the static value first
+                setattr(target, prop, getattr(source, prop))
+
+                # Check for and transfer expressions
+                # Expressions are stored in the ExpressionEngine property as [(path, expr), ...]
+                if hasattr(source, "ExpressionEngine"):
+                    for path, expr in source.ExpressionEngine:
+                        if path == prop:
+                            target.setExpression(prop, expr)
+                            break
+
+        def _save_user_preferences(self):
+            """
+            Save the current settings to the user parameter storage.
+
+            This ensures that the next time the tool is used, it defaults to the last-used values.
+            """
+            params.set_param_arch("CoveringFinishMode", self.target_obj.FinishMode)
+            params.set_param_arch("CoveringAlignment", self.target_obj.TileAlignment)
+            params.set_param_arch("CoveringRotation", self.target_obj.Rotation.Value)
+
+            if self.target_obj.FinishMode != "Hatch Pattern":
+                params.set_param_arch("CoveringLength", self.target_obj.TileLength.Value)
+                params.set_param_arch("CoveringWidth", self.target_obj.TileWidth.Value)
+                params.set_param_arch("CoveringJoint", self.target_obj.JointWidth.Value)
+                if self.target_obj.FinishMode == "Solid Tiles":
+                    params.set_param_arch("CoveringThickness", self.target_obj.TileThickness.Value)
+
+        def _sync_ui_to_target(self):
+            """
+            Manually transfers values from all UI widgets to the target object.
+
+            This ensures that the target object (whether Phantom or Real) reflects
+            the state of the dialog before any logic uses it.
+            """
+            obj = self.target_obj
+
+            # Sync numeric properties directly from the widget property. Use "rawValue" to get the
+            # float value, ignoring unit strings
+            obj.TileLength = self.sb_length.property("rawValue")
+            obj.TileWidth = self.sb_width.property("rawValue")
+
+            # Handle conditional properties
+            if self.sb_thick.isEnabled():
+                obj.TileThickness = self.sb_thick.property("rawValue")
+
+            obj.JointWidth = self.sb_joint.property("rawValue")
+
+            # Handle rotation based on active mode
+            if self.combo_mode.currentText() == "Hatch Pattern":
+                obj.Rotation = self.sb_rot_hatch.property("rawValue")
+            else:
+                obj.Rotation = self.sb_rot.property("rawValue")
+
+            # Sync enum properties
+            obj.FinishMode = self.combo_mode.currentText()
+            obj.TileAlignment = self.combo_align.currentText()
+
+            # Sync file paths
+            if obj.FinishMode == "Hatch Pattern":
+                obj.PatternFile = self.le_pat.text()
+
         def accept(self):
+            """
+            Process the dialog input and modify or create the Covering object.
+
+            This method handles data synchronization from UI widgets to the underlying FreeCAD
+            objects, manages the undo/redo transaction, and handles the 'continue' workflow for
+            batch creation.
+
+            Returns
+            -------
+            bool
+                Always returns True to signal the dialog to close (unless 'continue'
+                is checked).
+
+            Notes
+            -----
+            1. Transaction management is manual here. This method opens a transaction explicitly.
+               Any early `return` statement added within the `try` block must ensure the transaction
+               is committed or aborted first, otherwise it will block the undo stack.
+            2. This method is connected to a Qt signal. Uncaught exceptions are frequently
+               suppressed by the Python/Qt bridge. We use `traceback.print_exc()` to ensure the full
+               stack trace appears in FreeCAD's Report View for notification purposes.
+            """
             try:
+                # Open a transaction. FreeCAD handles nesting automatically.
+                # If a transaction is already open, this increases the stack depth.
+                FreeCAD.ActiveDocument.openTransaction("Modify Covering")
+
+                # Sync all values from UI widgets (bound and unbound) to the target object
+                self._sync_ui_to_target()
+
+                # Define list of properties to transfer from phantom to real object.
+                # This ensures we copy only the configuration specific to the chosen mode
+                props_to_transfer = ["Rotation", "FinishMode", "TileAlignment"]
+                if self.combo_mode.currentText() == "Hatch Pattern":
+                    props_to_transfer.extend(["PatternFile", "PatternName", "PatternScale"])
+                else:
+                    props_to_transfer.extend(
+                        ["TileLength", "TileWidth", "JointWidth", "TileOffset"]
+                    )
+                    if self.combo_mode.currentText() == "Solid Tiles":
+                        props_to_transfer.append("TileThickness")
+
+                # Prepare visual properties
+                tex_image = self.le_tex_image.text()
+
                 if not self.obj_to_edit:
                     # Creation mode
                     import Arch
 
+                    # Determine targets from selection
                     targets = self.selection_list
                     if not targets and self.selected_obj:
-                        # Fallback to single picked item
                         targets = (
                             [(self.selected_obj, [self.selected_sub])]
                             if self.selected_sub
@@ -1534,77 +1695,51 @@ if FreeCAD.GuiUp:
                         )
 
                     if targets:
-                        FreeCAD.ActiveDocument.openTransaction("Create Coverings")
                         for base in targets:
-                            obj = Arch.makeCovering(base)
+                            # Create new object
+                            new_obj = Arch.makeCovering(base)
 
-                            # Manually apply UI properties (widgets are not bound in create mode)
-                            obj.FinishMode = self.combo_mode.currentText()
-                            obj.TileAlignment = self.combo_align.currentText()
+                            # Copy properties from the synchronized phantom object
+                            self._transfer_props(self.target_obj, new_obj, props_to_transfer)
 
-                            if obj.FinishMode == "Hatch Pattern":
-                                obj.PatternFile = self.le_pat.text()
-                                obj.Rotation = self.sb_rot_hatch.property("rawValue")
-                            else:
-                                obj.TileLength = self.sb_length.property("rawValue")
-                                obj.TileWidth = self.sb_width.property("rawValue")
-                                obj.JointWidth = self.sb_joint.property("rawValue")
-                                obj.Rotation = self.sb_rot.property("rawValue")
-                                if obj.FinishMode == "Solid Tiles":
-                                    obj.TileThickness = self.sb_thick.property("rawValue")
-
-                            # Common visual setup
-                            if hasattr(obj.ViewObject, "TextureImage"):
-                                obj.ViewObject.TextureImage = self.le_tex_image.text()
-
-                        FreeCAD.ActiveDocument.commitTransaction()
-                        FreeCAD.ActiveDocument.recompute()
+                            # Apply texture to view object
+                            if hasattr(new_obj.ViewObject, "TextureImage"):
+                                new_obj.ViewObject.TextureImage = tex_image
                 else:
-                    # Edition mode (properties updated via binding)
-                    obj = self.obj_to_edit
-                    # Visuals must be set manually
-                    if hasattr(obj.ViewObject, "TextureImage"):
-                        obj.ViewObject.TextureImage = self.le_tex_image.text()
+                    # Edition mode
+                    # The properties on self.target_obj (which is self.obj_to_edit) are already
+                    # updated by _sync_ui_to_target call above.
 
-                    FreeCAD.ActiveDocument.recompute()
+                    # Apply texture to view object
+                    if hasattr(self.target_obj.ViewObject, "TextureImage"):
+                        self.target_obj.ViewObject.TextureImage = tex_image
 
-                # Persist user preferences
-                params.set_param_arch("CoveringFinishMode", self.combo_mode.currentText())
-                params.set_param_arch("CoveringAlignment", self.combo_align.currentText())
+                # Recompute the document inside the transaction to catch geometry errors
+                FreeCAD.ActiveDocument.recompute()
 
-                if self.combo_mode.currentIndex() == 2:  # Hatch Pattern
-                    rot_val = self.sb_rot_hatch.property("rawValue")
-                else:
-                    rot_val = self.sb_rot.property("rawValue")
-                params.set_param_arch("CoveringRotation", rot_val)
+                # Save user preferences for next run
+                self._save_user_preferences()
 
-                if self.combo_mode.currentText() != "Hatch Pattern":
-                    params.set_param_arch("CoveringLength", self.sb_length.property("rawValue"))
-                    params.set_param_arch("CoveringWidth", self.sb_width.property("rawValue"))
-                    params.set_param_arch("CoveringJoint", self.sb_joint.property("rawValue"))
-                    if self.combo_mode.currentText() == "Solid Tiles":
-                        params.set_param_arch(
-                            "CoveringThickness", self.sb_thick.property("rawValue")
-                        )
+                # Commit the transaction successfully
+                FreeCAD.ActiveDocument.commitTransaction()
 
-                # Continue logic
+                # Handle the 'continue' workflow
                 if not self.obj_to_edit and self.chk_continue.isChecked():
-                    # Clear selection
+                    FreeCADGui.Selection.clearSelection()
                     self.selection_list = []
                     self.selected_obj = None
                     self.selected_sub = None
-
-                    # This triggers _onSelectionChanged -> updates internal list -> updates UI
-                    FreeCADGui.Selection.clearSelection()
                     self._updateSelectionUI()
                     self.setPicking(True)
                     return False
 
             except Exception as e:
+                # Ensure transaction is closed on failure to prevent corruption
+                FreeCAD.ActiveDocument.abortTransaction()
                 import traceback
 
                 traceback.print_exc()
-                FreeCAD.Console.PrintError(f"Error creating covering: {e}\n")
+                FreeCAD.Console.PrintError(f"Error updating covering: {e}\n")
 
             self._cleanup_and_close()
             return True
