@@ -396,6 +396,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/MillFace.py
     Path/Op/Gui/MillFacing.py
     Path/Op/Gui/PathShapeTC.py
+    Path/Op/Gui/PathCompoundTC.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
     Path/Op/Gui/PocketShape.py
