@@ -26,6 +26,7 @@ import FreeCAD
 import Path
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
+from Path.Base.Generator.ramp_entry_helix import HelixRamp
 
 from Path.Geom import isRoughly
 
@@ -376,7 +377,13 @@ class ObjectOp(PathOp.ObjectOp):
             sec = area.makeSections(mode=0, project=False, heights=heights)[-1].getShape()
             simobj = sec.extrude(FreeCAD.Vector(0, 0, baseobject.BoundBox.ZMax))
 
-        return pp, simobj
+        if getattr(obj, "HelixRamp", False):
+            commands = HelixRamp(
+                pp.Commands, tc=obj.ToolController, ignoreAbove=obj.StartDepth.Value
+            ).generate()
+            return Path.Path(commands), simobj
+        else:
+            return pp, simobj
 
     def _buildProfileOpenEdges(self, obj, edgeList, isHole, start, getsim):
         """_buildPathArea(obj, edgeList, isHole, start, getsim) ... internal function."""
