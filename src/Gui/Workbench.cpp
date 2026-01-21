@@ -864,6 +864,16 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewGroup" << "Std_AlignToSelection"
           << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions" << "Std_Measure";
 
+    // Structure
+    auto structure = new ToolBarItem(root);
+    structure->setCommand("Structure");
+    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
+
+    // Help
+    auto help = new ToolBarItem(root);
+    help->setCommand("Help");
+    *help << "Std_WhatsThis";
+
     // Individual views
     auto individualViews = new ToolBarItem(root, ToolBarItem::DefaultVisibility::Hidden);
     individualViews->setCommand("Individual Views");
@@ -874,16 +884,6 @@ ToolBarItem* StdWorkbench::setupToolBars() const
                      << "Std_ViewRear"
                      << "Std_ViewBottom"
                      << "Std_ViewLeft";
-
-    // Structure
-    auto structure = new ToolBarItem(root);
-    structure->setCommand("Structure");
-    *structure << "Std_Part" << "Std_Group" << "Std_LinkActions" << "Std_VarSet";
-
-    // Help
-    auto help = new ToolBarItem(root);
-    help->setCommand("Help");
-    *help << "Std_WhatsThis";
 
     return root;
 }
