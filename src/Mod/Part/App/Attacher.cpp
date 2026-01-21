@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c)  2025 Walter Steffè  <walter.steffe.it@gmail.com>       *
+ *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -1127,7 +1127,6 @@ std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const
     }
     return objs;
 }
-
 
 Base::Placement AttachEngine::calculateAttachedPlacement(
     const Base::Placement& origPlacement,
