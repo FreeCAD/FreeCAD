@@ -492,6 +492,14 @@ public:
         double* second,
         bool driving = true
     );
+    /**
+     *   add a point on a segment line constraint
+     */
+    int addPointOnSegmentConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
+    /**
+     *   add a point on an arc range constraint
+     */
+    int addPointOnArcRangeConstraint(int geoId1, PointPos pos1, int geoId2, bool driving = true);
     //@}
 
     /// Internal Alignment constraints
