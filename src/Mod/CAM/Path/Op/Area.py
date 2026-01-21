@@ -131,11 +131,12 @@ class ObjectOp(PathOp.ObjectOp):
         changes.
         Do not overwrite, overwrite areaOpOnChanged(obj, prop) instead."""
         # Path.Log.track(obj.Label, prop)
-        if prop in ["AreaParams", "PathParams", "removalshape"]:
+        if prop in ("AreaParams", "PathParams", "removalshape"):
             obj.setEditorMode(prop, 2)
 
+        # Offer side while creating new operation
         if (
-            getattr(self, "init", None)
+            getattr(self, "init", False)
             and hasattr(obj, "Side")
             and prop == "FinalDepth"
             and len(obj.Base) == 1
@@ -185,9 +186,10 @@ class ObjectOp(PathOp.ObjectOp):
 
     def opOnDocumentRestored(self, obj):
         Path.Log.track()
-        for prop in ["AreaParams", "PathParams", "removalshape"]:
+        for prop in ("AreaParams", "PathParams", "removalshape"):
             if hasattr(obj, prop):
                 obj.setEditorMode(prop, 2)
+
         if not hasattr(obj, "SplitArcs"):
             obj.addProperty(
                 "App::PropertyBool",
@@ -363,9 +365,9 @@ class ObjectOp(PathOp.ObjectOp):
             # Pocket operation: split area and get order "main" -> 'Offset'
             areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # "main" area
             areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Offset' area
-            if getattr(obj, "StartAt", None) == "Edge":
-                # reverse order 'Offset' -> "main"
-                areaParamsList.reverse()
+            # if getattr(obj, "StartAt", None) == "Edge":
+            #     # reverse order 'Offset' -> "main"
+            #     areaParamsList.reverse()
         elif obj.Proxy.__module__ == "Path.Op.Profile":
             # Profile operation: split area for multiple passes
             areaParams = self.areaOpAreaParams(obj, isHole)
@@ -379,28 +381,35 @@ class ObjectOp(PathOp.ObjectOp):
         cmds = []
         sims = []
         for index, areaParams in enumerate(areaParamsList):
-            allowOneStepDown = False
-            if (
-                obj.Proxy.__module__ == "Path.Op.Profile"
-                and getattr(obj, "OffsetFinish", None)
-                and getattr(obj, "NumPasses", 1) > 1
-                and index == len(areaParamsList) - 1
-                and obj.StartAt != "Edge"
-            ):
-                allowOneStepDown = True
+
+            """
+            Notes:
+            Finish pass mill last, no metter value 'StartAt'
+            For 'StartAt' 'Center' in Pocket op need to set sort_mode = 0 to get correct order
+            """
+
+            oneStepDown = False
+            if obj.Proxy.__module__ == "Path.Op.Profile":
+                if (
+                    getattr(obj, "OffsetFinish", None)
+                    and getattr(obj, "NumPasses", 1) > 1
+                    and index == len(areaParamsList) - 1
+                    and getattr(obj, "FinishOneStepDown", False)
+                ):
+                    oneStepDown = True
 
             isPocketFinishPass = False
-            isPocketOffsetCenter = False
+            sortMode_0 = False
             if obj.Proxy.__module__ == "Path.Op.PocketShape":
                 if "JoinType" in areaParams:
                     isPocketFinishPass = True
-                    if getattr(obj, "StartAt", None) == "Center":
-                        allowOneStepDown = True
+                    if getattr(obj, "FinishOneStepDown", False):
+                        oneStepDown = True
                 elif (
                     getattr(obj, "ClearingPattern", None) == "Offset"
                     and getattr(obj, "StartAt", None) == "Center"
                 ):
-                    isPocketOffsetCenter = True
+                    sortMode_0 = True
 
             area = Path.Area()
             area.setPlane(PathUtils.makeWorkplane(baseobject))
@@ -467,7 +476,7 @@ class ObjectOp(PathOp.ObjectOp):
                 # invert orientation for finish Offset pass in Pocket operation
                 pathParams["orientation"] = not pathParams["orientation"]
 
-            if getattr(obj, "FinishOneStepDown", False) and allowOneStepDown:
+            if oneStepDown:
                 pathParams["shapes"] = shapelist[-1]
             else:
                 pathParams["shapes"] = shapelist
@@ -482,7 +491,7 @@ class ObjectOp(PathOp.ObjectOp):
             # and prevents path optimization on some controllers
             pathParams["preamble"] = False
 
-            if isPocketOffsetCenter:
+            if sortMode_0:
                 pathParams["sort_mode"] = 0
             elif isPocketFinishPass:
                 pathParams["sort_mode"] = 3
