@@ -581,6 +581,10 @@ public:
         return Mode;
     }
 
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
+
     // create right click context menu based on selection in the 3D view
     void generateContextMenu();
 
@@ -855,10 +859,6 @@ private:
         OffsetMode offset = NoOffset
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
-
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
-    //@}
 
     /** @name signals*/
     //@{
