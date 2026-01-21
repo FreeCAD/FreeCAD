@@ -1162,15 +1162,18 @@ if FreeCAD.GuiUp:
                     self.phantom.ViewObject.hide()
                 self.target_obj = self.phantom
 
-            # Register selection observer
-            FreeCADGui.Selection.addObserver(self)
-
             # Build the task panel UI
 
             # Task Box 1: Geometry
             self.geo_widget = QtGui.QWidget()
             self.geo_widget.setWindowTitle(translate("Arch", "Geometry"))
             self.geo_layout = QtGui.QVBoxLayout(self.geo_widget)
+
+            # Register selection observer
+            FreeCADGui.Selection.addObserver(self)
+
+            # Ensure observer is removed when the UI is destroyed (e.g. forced close)
+            self.geo_widget.destroyed.connect(self._unregister_observer)
 
             self._setupTopControls()
             self._setupGeometryStack()
@@ -1566,6 +1569,14 @@ if FreeCAD.GuiUp:
         def getStandardButtons(self):
             return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
+        def _unregister_observer(self, val=None):
+            """Safely remove self from selection observers."""
+            try:
+                FreeCADGui.Selection.removeObserver(self)
+            except Exception:
+                # Observer might already be removed, ignore
+                pass
+
         def _cleanup_and_close(self):
             """Removes temporary objects and observers, then closes the task panel."""
             if self.phantom:
@@ -1577,7 +1588,7 @@ if FreeCAD.GuiUp:
                 self.phantom = None
 
             # Standard cleanup for listeners and UI
-            FreeCADGui.Selection.removeObserver(self)
+            self._unregister_observer()
             FreeCADGui.Control.closeDialog()
 
         def _transfer_props(self, source, target, props):
@@ -1750,6 +1761,9 @@ if FreeCAD.GuiUp:
 
                 traceback.print_exc()
                 FreeCAD.Console.PrintError(f"Error updating covering: {e}\n")
+
+            if self.obj_to_edit:
+                FreeCADGui.ActiveDocument.resetEdit()
 
             self._cleanup_and_close()
             return True
