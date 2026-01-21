@@ -105,13 +105,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         print("areaOpOnChanged PocketBase", prop)
 
         if not obj.Document.Restoring:
-            if prop in ("StartAt", "FinishOffset"):
-                finishOneStepDownMode = 0 if obj.StartAt == "Center" and obj.FinishOffset else 2
+            if prop == "FinishOffset":
+                finishOneStepDownMode = 0 if obj.FinishOffset else 2
                 obj.setEditorMode("FinishOneStepDown", finishOneStepDownMode)
 
-        if prop == "ClearingPattern":
-            angleMode = 0 if obj.ClearingPattern != "Offset" else 2
-            obj.setEditorMode("Angle", angleMode)
+            if prop == "ClearingPattern":
+                startAtMode = 0 if obj.ClearingPattern == "Offset" else 2
+                obj.setEditorMode("StartAt", startAtMode)
+                angleMode = 0 if obj.ClearingPattern != "Offset" else 2
+                obj.setEditorMode("Angle", angleMode)
 
         if getattr(self, "job", None):
             useRestMode = 0 if self.job.Operations.Group.index(obj) else 2
@@ -259,7 +261,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             "ZigZag": 1,
             "Offset": 2,
             "Spiral": 3,
-            "ZigZagOffset": 3,  # 4,
+            "ZigZagOffset": 1,  # 4,
             "Line": 5,
             "Grid": 6,
             "Triangle": 7,
@@ -350,8 +352,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
-        if obj.ClearingPattern == "ZigZagOffset":
-            obj.ClearingPattern = "ZigZag"
         if hasattr(obj, "RestMachiningRegions"):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
