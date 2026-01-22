@@ -67,79 +67,119 @@ PropertyVector::~PropertyVector() = default;
 
 void PropertyVector::setValue(const Base::Vector3d& vec)
 {
-    aboutToSetValue();
-    _cVec = vec;
-    hasSetValue();
+    using FuncType = void (PropertyVector::*)(const Base::Vector3d &);
+    setWithContext<PropertyVector, FuncType>(
+        this,
+        &PropertyVector::setValue,
+        [this, &vec]() {
+            aboutToSetValue();
+            _cVec = vec;
+            hasSetValue();
+        },
+        vec
+    );
 }
+
 
 void PropertyVector::setValue(double x, double y, double z)
 {
-    aboutToSetValue();
-    _cVec.Set(x, y, z);
-    hasSetValue();
+    using FuncType = void (PropertyVector::*)(double, double, double);
+    setWithContext<PropertyVector, FuncType>(
+        this,
+        &PropertyVector::setValue,
+        [this, x, y, z]() {
+            aboutToSetValue();
+            _cVec.Set(x, y, z);
+            hasSetValue();
+        },
+        x, y, z
+    );
 }
+
 
 const Base::Vector3d& PropertyVector::getValue() const
 {
-    return _cVec;
+    return getWithContext<PropertyVector, const Base::Vector3d &>(
+        this,
+        &PropertyVector::getValue,
+        [this]() -> const Base::Vector3d & {
+            return _cVec;
+        }
+    );
 }
+
 
 PyObject* PropertyVector::getPyObject()
 {
-    return new Base::VectorPy(_cVec);
+    return getWithContext<PropertyVector, PyObject *>(
+        this,
+        &PropertyVector::getPyObject,
+        [this]() -> PyObject * {
+            return new Base::VectorPy(_cVec);
+        }
+    );
 }
+
 
 void PropertyVector::setPyObject(PyObject* value)
 {
-    if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
-        Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(value);
-        Base::Vector3d* val = pcObject->getVectorPtr();
-        setValue(*val);
-    }
-    else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
-        PyObject* item {};
-        Base::Vector3d cVec;
-        // x
-        item = PyTuple_GetItem(value, 0);
-        if (PyFloat_Check(item)) {
-            cVec.x = PyFloat_AsDouble(item);
-        }
-        else if (PyLong_Check(item)) {
-            cVec.x = (double)PyLong_AsLong(item);
-        }
-        else {
-            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
-        }
-        // y
-        item = PyTuple_GetItem(value, 1);
-        if (PyFloat_Check(item)) {
-            cVec.y = PyFloat_AsDouble(item);
-        }
-        else if (PyLong_Check(item)) {
-            cVec.y = (double)PyLong_AsLong(item);
-        }
-        else {
-            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
-        }
-        // z
-        item = PyTuple_GetItem(value, 2);
-        if (PyFloat_Check(item)) {
-            cVec.z = PyFloat_AsDouble(item);
-        }
-        else if (PyLong_Check(item)) {
-            cVec.z = (double)PyLong_AsLong(item);
-        }
-        else {
-            throw Base::TypeError("Not allowed type used in tuple (float expected)...");
-        }
-        setValue(cVec);
-    }
-    else {
-        std::string error = std::string("type must be 'Vector' or tuple of three floats, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    setWithContext<PropertyVector>(
+        this,
+        &PropertyVector::setPyObject,
+        [this, value]() {
+            if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
+                Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(value);
+                Base::Vector3d* val = pcObject->getVectorPtr();
+                setValue(*val);
+            }
+            else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
+                PyObject* item {};
+                Base::Vector3d cVec;
+                // x
+                item = PyTuple_GetItem(value, 0);
+                if (PyFloat_Check(item)) {
+                    cVec.x = PyFloat_AsDouble(item);
+                }
+                else if (PyLong_Check(item)) {
+                    cVec.x = (double)PyLong_AsLong(item);
+                }
+                else {
+                    throw Base::TypeError("Not allowed type used in tuple (float expected)...");
+                }
+                // y
+                item = PyTuple_GetItem(value, 1);
+                if (PyFloat_Check(item)) {
+                    cVec.y = PyFloat_AsDouble(item);
+                }
+                else if (PyLong_Check(item)) {
+                    cVec.y = (double)PyLong_AsLong(item);
+                }
+                else {
+                    throw Base::TypeError("Not allowed type used in tuple (float expected)...");
+                }
+                // z
+                item = PyTuple_GetItem(value, 2);
+                if (PyFloat_Check(item)) {
+                    cVec.z = PyFloat_AsDouble(item);
+                }
+                else if (PyLong_Check(item)) {
+                    cVec.z = (double)PyLong_AsLong(item);
+                }
+                else {
+                    throw Base::TypeError("Not allowed type used in tuple (float expected)...");
+                }
+                setValue(cVec);
+            }
+            else {
+                std::string error = std::string("type must be 'Vector' or tuple of three floats, not ");
+                error += value->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+        },
+        value
+    );
 }
+
 
 void PropertyVector::Save(Base::Writer& writer) const
 {
@@ -168,17 +208,32 @@ void PropertyVector::Restore(Base::XMLReader& reader)
 
 Property* PropertyVector::Copy() const
 {
-    PropertyVector* p = new PropertyVector();
-    p->_cVec = _cVec;
-    return p;
+    return getWithContext<PropertyVector, Property *>(
+        this,
+        &PropertyVector::Copy,
+        [this]() -> Property * {
+            PropertyVector* p = new PropertyVector();
+            p->_cVec = _cVec;
+            return p;
+        }
+    );
 }
+
 
 void PropertyVector::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
-    hasSetValue();
+    setWithContext<PropertyVector>(
+        this,
+        &PropertyVector::Paste,
+        [this, &from]() {
+            aboutToSetValue();
+            _cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
+            hasSetValue();
+        },
+        from
+    );
 }
+
 
 void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 {
@@ -192,39 +247,55 @@ void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 
 const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) const
 {
-    Base::Unit unit = getUnit();
-    if (unit != Unit::One) {
-        std::string p = path.getSubPathStr();
-        if (p == ".x" || p == ".y" || p == ".z") {
-            // Convert double to quantity
-            return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), unit);
-        }
-    }
-    return Property::getPathValue(path);
+    return getWithContext<PropertyVector, const boost::any>(
+        this,
+        &PropertyVector::getPathValue,
+        [this, &path]() -> const boost::any {
+            Base::Unit unit = getUnit();
+            if (unit != Unit::One) {
+                std::string p = path.getSubPathStr();
+                if (p == ".x" || p == ".y" || p == ".z") {
+                    // Convert double to quantity
+                    return Base::Quantity(boost::any_cast<double>(Property::getPathValue(path)), unit);
+                }
+            }
+            return Property::getPathValue(path);
+        },
+        path
+    );
 }
+
 
 bool PropertyVector::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
 {
-    Base::Unit unit = getUnit();
-    if (unit == Unit::One) {
-        return false;
-    }
-
-    std::string p = path.getSubPathStr();
-    if (p == ".x") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().x, unit)));
-    }
-    else if (p == ".y") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().y, unit)));
-    }
-    else if (p == ".z") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().z, unit)));
-    }
-    else {
-        return false;
-    }
-    return true;
+    return getWithContext<PropertyVector, bool>(
+        this,
+        &PropertyVector::getPyPathValue,
+        [this, &path, &res]() -> bool {
+            Base::Unit unit = getUnit();
+            if (unit == Unit::One) {
+                return false;
+            }
+        
+            std::string p = path.getSubPathStr();
+            if (p == ".x") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().x, unit)));
+            }
+            else if (p == ".y") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().y, unit)));
+            }
+            else if (p == ".z") {
+                res = Py::asObject(new QuantityPy(new Quantity(getValue().z, unit)));
+            }
+            else {
+                return false;
+            }
+            return true;
+        },
+        path, res
+    );
 }
+
 
 
 //**************************************************************************

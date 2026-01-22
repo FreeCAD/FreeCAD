@@ -83,34 +83,64 @@ PropertyInteger::~PropertyInteger() = default;
 
 void PropertyInteger::setValue(long lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    setWithContext<PropertyInteger>(
+        this,
+        &PropertyInteger::setValue,
+        [this, lValue]() {
+            aboutToSetValue();
+            _lValue = lValue;
+            hasSetValue();
+        },
+        lValue
+    );
 }
+
 
 long PropertyInteger::getValue() const
 {
-    return _lValue;
+    return getWithContext<PropertyInteger, long>(
+        this,
+        &PropertyInteger::getValue,
+        [this]() -> long {
+            return _lValue;
+        }
+    );
 }
+
 
 PyObject* PropertyInteger::getPyObject()
 {
-    return Py_BuildValue("l", _lValue);
+    return getWithContext<PropertyInteger, PyObject *>(
+        this,
+        &PropertyInteger::getPyObject,
+        [this]() -> PyObject * {
+            return Py_BuildValue("l", _lValue);
+        }
+    );
 }
+
 
 void PropertyInteger::setPyObject(PyObject* value)
 {
-    if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _lValue = PyLong_AsLong(value);
-        hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be int, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    setWithContext<PropertyInteger>(
+        this,
+        &PropertyInteger::setPyObject,
+        [this, value]() {
+            if (PyLong_Check(value)) {
+                aboutToSetValue();
+                _lValue = PyLong_AsLong(value);
+                hasSetValue();
+            }
+            else {
+                std::string error = std::string("type must be int, not ");
+                error += value->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+        },
+        value
+    );
 }
+
 
 void PropertyInteger::Save(Base::Writer& writer) const
 {
@@ -127,17 +157,32 @@ void PropertyInteger::Restore(Base::XMLReader& reader)
 
 Property* PropertyInteger::Copy() const
 {
-    PropertyInteger* p = new PropertyInteger();
-    p->_lValue = _lValue;
-    return p;
+    return getWithContext<PropertyInteger, Property *>(
+        this,
+        &PropertyInteger::Copy,
+        [this]() -> Property * {
+            PropertyInteger* p = new PropertyInteger();
+            p->_lValue = _lValue;
+            return p;
+        }
+    );
 }
+
 
 void PropertyInteger::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
-    hasSetValue();
+    setWithContext<PropertyInteger>(
+        this,
+        &PropertyInteger::Paste,
+        [this, &from]() {
+            aboutToSetValue();
+            _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
+            hasSetValue();
+        },
+        from
+    );
 }
+
 
 void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
@@ -1021,39 +1066,69 @@ PropertyFloat::~PropertyFloat() = default;
 
 void PropertyFloat::setValue(double lValue)
 {
-    aboutToSetValue();
-    _dValue = lValue;
-    hasSetValue();
+    setWithContext<PropertyFloat>(
+        this,
+        &PropertyFloat::setValue,
+        [this, lValue]() {
+            aboutToSetValue();
+            _dValue = lValue;
+            hasSetValue();
+        },
+        lValue
+    );
 }
+
 
 double PropertyFloat::getValue() const
 {
-    return _dValue;
+    return getWithContext<PropertyFloat, double>(
+        this,
+        &PropertyFloat::getValue,
+        [this]() -> double {
+            return _dValue;
+        }
+    );
 }
+
 
 PyObject* PropertyFloat::getPyObject()
 {
-    return Py_BuildValue("d", _dValue);
+    return getWithContext<PropertyFloat, PyObject *>(
+        this,
+        &PropertyFloat::getPyObject,
+        [this]() -> PyObject * {
+            return Py_BuildValue("d", _dValue);
+        }
+    );
 }
+
 
 void PropertyFloat::setPyObject(PyObject* value)
 {
-    if (PyFloat_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyFloat_AsDouble(value);
-        hasSetValue();
-    }
-    else if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyLong_AsLong(value);
-        hasSetValue();
-    }
-    else {
-        std::string error = std::string("type must be float or int, not ");
-        error += value->ob_type->tp_name;
-        throw Base::TypeError(error);
-    }
+    setWithContext<PropertyFloat>(
+        this,
+        &PropertyFloat::setPyObject,
+        [this, value]() {
+            if (PyFloat_Check(value)) {
+                aboutToSetValue();
+                _dValue = PyFloat_AsDouble(value);
+                hasSetValue();
+            }
+            else if (PyLong_Check(value)) {
+                aboutToSetValue();
+                _dValue = PyLong_AsLong(value);
+                hasSetValue();
+            }
+            else {
+                std::string error = std::string("type must be float or int, not ");
+                error += value->ob_type->tp_name;
+                throw Base::TypeError(error);
+            }
+        },
+        value
+    );
 }
+
 
 void PropertyFloat::Save(Base::Writer& writer) const
 {
@@ -1070,17 +1145,32 @@ void PropertyFloat::Restore(Base::XMLReader& reader)
 
 Property* PropertyFloat::Copy() const
 {
-    PropertyFloat* p = new PropertyFloat();
-    p->_dValue = _dValue;
-    return p;
+    return getWithContext<PropertyFloat, Property *>(
+        this,
+        &PropertyFloat::Copy,
+        [this]() -> Property * {
+            PropertyFloat* p = new PropertyFloat();
+            p->_dValue = _dValue;
+            return p;
+        }
+    );
 }
+
 
 void PropertyFloat::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
-    hasSetValue();
+    setWithContext<PropertyFloat>(
+        this,
+        &PropertyFloat::Paste,
+        [this, &from]() {
+            aboutToSetValue();
+            _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
+            hasSetValue();
+        },
+        from
+    );
 }
+
 
 void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
@@ -1111,9 +1201,17 @@ void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any&
 
 const boost::any PropertyFloat::getPathValue(const ObjectIdentifier& path) const
 {
-    verifyPath(path);
-    return _dValue;
+    return getWithContext<PropertyFloat, const boost::any>(
+        this,
+        &PropertyFloat::getPathValue,
+        [this, &path]() -> const boost::any {
+            verifyPath(path);
+            return _dValue;
+        },
+        path
+    );
 }
+
 
 //**************************************************************************
 //**************************************************************************
