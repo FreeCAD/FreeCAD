@@ -536,9 +536,8 @@ private:
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
                 }
-                else if (cstr->Type == Angle
-                         && firstIndex != GeoEnum::GeoUndef && secondIndex == GeoEnum::GeoUndef
-                         && thirdIndex == GeoEnum::GeoUndef) {
+                else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
+                         && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
                     newConstr->First = firstIndex;
                 }
                 else if ((cstr->Type == Radius || cstr->Type == Diameter)
