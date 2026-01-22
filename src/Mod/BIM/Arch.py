@@ -2205,7 +2205,7 @@ def is_debasable(wall):
     return True
 
 
-def debaseWall(wall):
+def debaseWall(wall, manage_transaction=True):
     """
     Converts a line-based Arch Wall to be parametrically driven by its own
     properties (Length, Width, Height) and Placement, removing its dependency
@@ -2218,6 +2218,9 @@ def debaseWall(wall):
     ----------
     wall : FreeCAD.DocumentObject
         The Arch Wall object to debase.
+    manage_transaction : bool
+        If True (default), this function creates its own transaction.
+        If False, it assumes the caller manages the transaction.
 
     Returns
     -------
@@ -2232,20 +2235,7 @@ def debaseWall(wall):
 
     doc = wall.Document
 
-    # Check if we are already inside a transaction. We need to check two flags:
-    # 1. doc.HasPendingTransaction: Returns True if a transaction is open AND data has been modified.
-    #    This handles cases where debaseWall is called from a script/macro that has already made changes.
-    # 2. wall.Proxy.InTransaction: A custom flag set by BIM/Arch UI Task Panels.
-    #    The native openTransaction() is lazy; it only creates a transaction object when data changes.
-    #    Task Panels set this flag immediately to signal an active editing session even if no data
-    #    has changed yet, preventing debaseWall from committing prematurely and breaking the Cancel button.
-    is_in_transaction = doc.HasPendingTransaction
-    if hasattr(wall, "Proxy") and getattr(wall.Proxy, "InTransaction", False):
-        is_in_transaction = True
-
-    start_transaction = not is_in_transaction
-
-    if start_transaction:
+    if manage_transaction:
         doc.openTransaction(f"Debase Wall: {wall.Label}")
 
     try:
@@ -2311,12 +2301,12 @@ def debaseWall(wall):
         doc.recompute()
 
     except Exception as e:
-        if start_transaction:
+        if manage_transaction:
             doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
 
-    if start_transaction:
+    if manage_transaction:
         doc.commitTransaction()
 
     return True

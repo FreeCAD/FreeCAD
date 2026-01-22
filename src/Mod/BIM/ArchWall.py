@@ -1593,7 +1593,7 @@ class _Wall(ArchComponent.Component):
         obj.Placement.Base = new_midpoint
         obj.Placement.Rotation = new_rotation
 
-    def handleComponentRemoval(self, obj, subobject):
+    def handleComponentRemoval(self, obj, subobject, manage_transaction=True):
         """
         Overrides the default component removal to implement smart debasing
         when the Base object is being removed.
@@ -1605,7 +1605,9 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj, "Base") and obj.Base == subobject:
             if Arch.is_debasable(obj):
                 # This is a valid, single-line wall. Perform a clean debase.
-                Arch.debaseWall(obj)
+                # Pass manage_transaction=False because the TaskPanel already has an open
+                # transaction context.
+                Arch.debaseWall(obj, manage_transaction=manage_transaction)
             else:
                 # This is a complex wall. Behavior depends on GUI availability.
                 if FreeCAD.GuiUp:
@@ -1630,7 +1632,9 @@ class _Wall(ArchComponent.Component):
                     msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
                     if msg_box.exec_() == QtGui.QMessageBox.Yes:
                         # User confirmed, perform the standard removal
-                        super(_Wall, self).handleComponentRemoval(obj, subobject)
+                        super(_Wall, self).handleComponentRemoval(
+                            obj, subobject, manage_transaction=manage_transaction
+                        )
                 else:
                     # --- Headless Path: Do not perform the destructive action. Print a warning. ---
                     FreeCAD.Console.PrintWarning(
@@ -1640,7 +1644,9 @@ class _Wall(ArchComponent.Component):
         else:
             # If it's not the base (e.g., an Addition), use the default behavior
             # from the parent Component class.
-            super(_Wall, self).handleComponentRemoval(obj, subobject)
+            super(_Wall, self).handleComponentRemoval(
+                obj, subobject, manage_transaction=manage_transaction
+            )
 
     def get_width(self, obj, widths=True):
         """Returns a width and a list of widths for this wall.
@@ -1787,9 +1793,6 @@ if FreeCAD.GuiUp:
         def __init__(self, obj):
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
-            FreeCAD.ActiveDocument.openTransaction(f"Edit Wall: {obj.Label}")
-            if hasattr(self.obj, "Proxy"):
-                self.obj.Proxy.InTransaction = True
             self.wallWidget = QtGui.QWidget()
             self.wallWidget.setWindowTitle(
                 QtGui.QApplication.translate("Arch", "Wall options", None)
@@ -1852,25 +1855,11 @@ if FreeCAD.GuiUp:
                 self.obj.Align = "Center"
             self.obj.recompute()
 
-        def getStandardButtons(self):
-            # Necessary to map the Esc key to the reject() method
-            return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
-
         def accept(self):
             self.obj.Length = self.length.text()
             self.obj.Width = self.width.text()
             self.obj.Height = self.height.text()
-            FreeCAD.ActiveDocument.commitTransaction()
-            if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "InTransaction"):
-                del self.obj.Proxy.InTransaction
-            return ArchComponent.ComponentTaskPanel.accept(self)
-
-        def reject(self):
-            FreeCAD.ActiveDocument.abortTransaction()
-            if hasattr(self.obj, "Proxy") and hasattr(self.obj.Proxy, "InTransaction"):
-                del self.obj.Proxy.InTransaction
-            FreeCADGui.ActiveDocument.resetEdit()
-            return True
+            return super().accept()
 
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):

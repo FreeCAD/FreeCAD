@@ -834,7 +834,7 @@ class Component(ArchIFC.IfcProduct):
                     if o:
                         o.ViewObject.hide()
 
-    def handleComponentRemoval(self, obj, subobject):
+    def handleComponentRemoval(self, obj, subobject, manage_transaction=True):
         """
         Default handler for when a component is removed via the Task Panel.
         Subclasses can override this to provide special behavior.
@@ -2176,6 +2176,9 @@ class ComponentTaskPanel:
         )
         self.update()
 
+        self.doc = FreeCAD.ActiveDocument
+        self.doc.openTransaction("BIM Component Edit")
+
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
         the selection while it is open.
@@ -2201,9 +2204,9 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        """Add the standard ok button."""
+        """Add the standard Ok/Cancel buttons."""
 
-        return QtGui.QDialogButtonBox.Ok
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
         """This method is run as the callback when the user selects an item in the tree.
@@ -2335,7 +2338,9 @@ class ComponentTaskPanel:
         # Call the polymorphic handler on the object's proxy.
         # This is generic and works for any Arch object.
         if hasattr(self.obj.Proxy, "handleComponentRemoval"):
-            self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
+            self.obj.Proxy.handleComponentRemoval(
+                self.obj, element_to_remove, manage_transaction=False
+            )
         else:
             # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
@@ -2347,8 +2352,16 @@ class ComponentTaskPanel:
 
         Recomputes the document, and leave edit mode.
         """
+        if self.doc.HasPendingTransaction:
+            self.doc.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        if self.doc.HasPendingTransaction:
+            self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
