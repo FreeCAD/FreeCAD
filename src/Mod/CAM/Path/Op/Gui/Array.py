@@ -21,6 +21,7 @@
 # *                                                                         *
 # ***************************************************************************
 
+import DraftVecUtils
 import FreeCAD
 import FreeCADGui
 import Path
@@ -30,6 +31,7 @@ import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
 
 import random
+import math
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -130,6 +132,33 @@ class ObjectArray:
                 "Make copies in X direction before Y in Linear 2D pattern",
             ),
         )
+        obj.addProperty(
+            "App::PropertyLinkSubListGlobal",
+            "PointsSource",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Define the offsets and angle of rotation for repeats from selected shapes"
+                "\n\nIf selected object in tree view (without sub-elements):"
+                "\n- shape contain only vertexes: create repeats for each vertex"
+                "\n- shape contain edges: create only one repeat (useful for imported nesting shapes)",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyLinkSubGlobal",
+            "PointsOrigin",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Define the base offsets and angle of rotation from selected shape",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "PointsSorting",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+        )
 
         # Random properties group
         obj.addProperty(
@@ -158,7 +187,8 @@ class ObjectArray:
         )
 
         obj.Active = True
-        obj.Type = ["Linear1D", "Linear2D", "Polar"]
+        obj.Type = ("Linear1D", "Linear2D", "Points", "Polar")
+        obj.PointsSorting = ("Automatic", "Manual")
         obj.Copies = (0, 0, 99999, 1)
         obj.CopiesX = (0, 0, 99999, 1)
         obj.CopiesY = (0, 0, 99999, 1)
@@ -181,12 +211,19 @@ class ObjectArray:
 
         if obj.Type == "Linear1D":
             angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
+            pointsMode = 2
             copiesMode = offsetMode = 0
         elif obj.Type == "Linear2D":
             angleMode = copiesMode = centreMode = 2
+            pointsMode = 2
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
-        else:  # Polar
+        elif obj.Type == "Points":
+            angleMode = centreMode = copiesMode = offsetMode = 2
+            copiesXMode = copiesYMode = swapDirectionMode = 2
+            pointsMode = 0
+        elif obj.Type == "Polar":
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
+            pointsMode = 2
             angleMode = copiesMode = centreMode = 0
 
         obj.setEditorMode("Angle", angleMode)
@@ -196,6 +233,10 @@ class ObjectArray:
         obj.setEditorMode("CopiesY", copiesYMode)
         obj.setEditorMode("Offset", offsetMode)
         obj.setEditorMode("SwapDirection", swapDirectionMode)
+
+        obj.setEditorMode("PointsOrigin", pointsMode)
+        obj.setEditorMode("PointsSource", pointsMode)
+        obj.setEditorMode("PointsSorting", pointsMode)
 
         jitterMode = 0 if obj.UseJitter else 2
         obj.setEditorMode("JitterMagnitude", jitterMode)
@@ -247,6 +288,34 @@ class ObjectArray:
             )
             obj.CycleTime = self.getCycleTimeEstimate(obj)
 
+        if not hasattr(obj, "PointsSource"):
+            obj.addProperty(
+                "App::PropertyLinkSubListGlobal",
+                "PointsSource",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "The sources of points for array"),
+            )
+            type = obj.Type
+            obj.Type = ("Linear1D", "Linear2D", "Polar", "Points")
+            obj.Type = type
+
+        if not hasattr(obj, "PointsOrigin"):
+            obj.addProperty(
+                "App::PropertyLinkSubGlobal",
+                "PointsOrigin",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "The origin for points"),
+            )
+
+        if not hasattr(obj, "PointsSorting"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "PointsSorting",
+                "Pattern",
+                QT_TRANSLATE_NOOP("App::Property", "Sorting mode"),
+            )
+            obj.PointsSorting = ("Automatic", "Manual")
+
         self.setEditorModes(obj)
 
     def execute(self, obj):
@@ -286,6 +355,9 @@ class ObjectArray:
             jitterMagnitude,
             jitterAngle,
             self.getPathCenter(obj),
+            obj.PointsSource,
+            obj.PointsOrigin,
+            obj.PointsSorting,
         )
 
         obj.Path = pa.getPath()
@@ -349,6 +421,9 @@ class PathArray:
         jitterMagnitude,
         jitterAngle,
         jitterCentre,
+        pointsSource,
+        pointsOrigin,
+        pointsSorting,
     ):
         self.base = base
         self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
@@ -362,6 +437,9 @@ class PathArray:
         self.jitterMagnitude = jitterMagnitude
         self.jitterAngle = jitterAngle
         self.jitterCentre = jitterCentre
+        self.pointsSource = pointsSource
+        self.pointsOrigin = pointsOrigin
+        self.pointsSorting = pointsSorting
 
     def getPath(self):
         """getPath() ... Call this method on an instance of the class to generate and return
@@ -369,15 +447,17 @@ class PathArray:
 
         commands = []
 
-        if self.arrayType == "Polar":
-            self.getPolarArray(commands)
+        if self.arrayType == "Linear1D":
+            self.getLinear1DArray(commands)
         elif self.arrayType == "Linear2D":
             if self.swapDirection:
                 self.getLinear2DXYArray(commands)
             else:
                 self.getLinear2DYXArray(commands)
-        else:
-            self.getLinear1DArray(commands)
+        elif self.arrayType == "Points":
+            self.getPointsArray(commands)
+        elif self.arrayType == "Polar":
+            self.getPolarArray(commands)
 
         return Path.Path(commands)
 
@@ -395,6 +475,30 @@ class PathArray:
             alpha = random.uniform(-self.jitterAngle, self.jitterAngle)
 
         return pos, alpha
+
+    def getStartPoint(self, cmds):
+        """First tool position in first base operation"""
+        x = y = z = None
+        for cmd in cmds:
+            x = cmd.x if x is None and cmd.x is not None else x
+            y = cmd.y if y is None and cmd.y is not None else y
+            z = cmd.z if z is None and cmd.z is not None else z
+            if x is not None and y is not None and z is not None:
+                return FreeCAD.Vector(x, y, z)
+
+        return FreeCAD.Vector()
+
+    def getEndPoint(self, cmds):
+        """Last tool position in last base operation"""
+        x = y = z = None
+        for cmd in reversed(cmds):
+            x = cmd.x if x is None and cmd.x is not None else x
+            y = cmd.y if y is None and cmd.y is not None else y
+            z = cmd.z if z is None and cmd.z is not None else z
+            if x is not None and y is not None and z is not None:
+                return FreeCAD.Vector(x, y, z)
+
+        return FreeCAD.Vector()
 
     def getLinear1DArray(self, commands):
         """Array type Linear1D"""
@@ -490,6 +594,165 @@ class PathArray:
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
                 commands.extend(path.Commands)
+
+    def getPointsArray(self, commands):
+        """Array type Points"""
+        originPoint = FreeCAD.Vector()
+        originAngle = 0
+        self.checkDistance = None
+
+        # get offsets and angle from base shape
+        if self.pointsOrigin:
+            (originObj, originSubNames) = self.pointsOrigin
+            if not originSubNames:
+                # no sub elements selected
+                if originObj.Shape.Edges:
+                    # object contain edges
+                    originPoint = originObj.Shape.Edges[0].Vertexes[0].Point
+                    originAngle = self.getEdgeAngle(originObj.Shape.Edges[0])
+                else:
+                    # object contain only vertexes
+                    originPoint = originObj.Shape.Vertexes[0].Point
+            else:
+                # sub element selected
+                originSub = originObj.Shape.getElement(originSubNames[0])
+                originPoint = originSub.Vertexes[0].Point
+                if originSub.ShapeType == "Edge":
+                    originAngle = self.getEdgeAngle(originSub)
+                elif originSub.ShapeType == "Face":
+                    originPoint = originSub.CenterOfGravity
+                    originAngle = self.getFaceAngle(originSub, originPoint, origin=True)
+
+        # get points from selected shapes
+        points = []
+        for source in self.pointsSource:
+            (sourceObj, sourceSubNames) = source
+            if not sourceSubNames or sourceSubNames == ("",):
+                # no sub elements selected
+                if sourceObj.Shape.Edges:
+                    # shape contain edges
+                    # use whole shape as one repeat
+                    point = sourceObj.Shape.Edges[0].Vertexes[0].Point
+                    sourceAngle = self.getEdgeAngle(sourceObj.Shape.Edges[0])
+                    points.append({"point": point, "angle": sourceAngle})
+                else:
+                    # object contain only vertexes
+                    # use each point as repeat
+                    points.extend(
+                        [{"point": v.Point, "angle": 0} for v in sourceObj.Shape.Vertexes]
+                    )
+            else:
+                # sub elements selected
+                for sourceSubName in sourceSubNames:
+                    sourceSub = sourceObj.Shape.getElement(sourceSubName)
+                    sourcePoint = sourceSub.Vertexes[0].Point
+                    sourceAngle = 0
+                    if sourceSub.ShapeType == "Edge":
+                        sourceAngle = self.getEdgeAngle(sourceSub)
+                    elif sourceSub.ShapeType == "Face":
+                        sourcePoint = sourceSub.CenterOfGravity
+                        sourceAngle = self.getFaceAngle(sourceSub, sourcePoint)
+                    points.append({"point": sourcePoint, "angle": sourceAngle})
+
+        # Apply origin offset to each point
+        if originPoint != FreeCAD.Vector() or originAngle:
+            for pos in points:
+                pos["point"] -= originPoint
+                pos["angle"] -= originAngle
+
+        # remove points which similar with origin
+        points = [p for p in points if p["point"] != FreeCAD.Vector() or p["angle"]]
+
+        # get sorted positions for array
+        if self.pointsSorting == "Automatic":
+            basePathStartPoint = self.getStartPoint(self.base[0].Path.Commands)
+            basePathEndPoint = self.getEndPoint(self.base[-1].Path.Commands)
+            dirStart = basePathStartPoint - originPoint
+            dirEnd = basePathEndPoint - originPoint
+            routes = []
+            for i, pos in enumerate(points):
+                origin = originPoint + pos["point"]
+                dirStartOffset = DraftVecUtils.rotate(
+                    dirStart, math.radians(pos["angle"]), FreeCAD.Vector(0, 0, 1)
+                )
+                dirEndOffset = DraftVecUtils.rotate(
+                    dirEnd, math.radians(pos["angle"]), FreeCAD.Vector(0, 0, 1)
+                )
+                routes.append(
+                    {
+                        "startX": origin.x + dirStartOffset.x,
+                        "startY": origin.y + dirStartOffset.y,
+                        "endX": origin.x + dirEndOffset.x,
+                        "endY": origin.y + dirEndOffset.y,
+                        "point": pos["point"],
+                        "a": pos["angle"],
+                    }
+                )
+            routes = PathUtils.sort_tunnels_tsp(routes, routeStartPoint=basePathEndPoint)
+            if routes:
+                points = [{"point": pos["point"], "angle": pos["a"]} for pos in routes]
+
+        for pos in points:
+            # apply jitter
+            point, alpha = self.calculateJitter(pos["point"])
+
+            for b in self.base:
+                pl = FreeCAD.Placement()
+                pl.move(point)
+                pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
+                pl.rotate(originPoint, FreeCAD.Vector(0, 0, 1), pos["angle"])
+                path = PathUtils.getPathWithPlacement(b)
+                path = PathUtils.applyPlacementToPath(pl, path)
+                commands.extend(path.Commands)
+
+    def getPointsAngle(self, p1, p2=FreeCAD.Vector()):
+        """return angle between vector (direction) and Y-axis"""
+        direction = p1 - p2
+        if Path.Geom.pointsCoincide(direction, FreeCAD.Vector()):
+            return 0
+        angle = math.degrees(direction.getAngle(FreeCAD.Vector(0, 1, 0)))
+        if direction.x > 0:
+            angle = -angle
+
+        return angle
+
+    def getEdgeAngle(self, edge):
+        """return angle between edge direction and Y-axis
+        Edge direction defines from end points"""
+        p1 = edge.Vertexes[-1].Point
+        p2 = edge.Vertexes[0].Point
+
+        return self.getPointsAngle(p1, p2)
+
+    def getFaceAngle(self, face, centerPoint, origin=False):
+        """return angle between face direction and Y-axis
+        Face direction defines from center point and farthest point from UV nodes"""
+        maxDist = 0
+        farthestPoints = []
+        # use UV nodes to find farthest point
+        face.tessellate(0.1)
+        candidates = [face.valueAt(uv[0], uv[1]) for uv in face.getUVNodes()]
+        for p in candidates:
+            dist = centerPoint.distanceToPoint(p)
+            if Path.Geom.isRoughly(dist, maxDist):
+                farthestPoints.append(p)
+            elif dist > maxDist:
+                farthestPoints = [p]
+                maxDist = dist
+
+        # check extra distance while processing source face
+        if not origin and len(farthestPoints) > 1 and self.checkDistance:
+            for i in range(len(farthestPoints) - 1):
+                d = farthestPoints[i].distanceToPoint(farthestPoints[i + 1])
+                if Path.Geom.isRoughly(d, self.checkDistance):
+                    return self.getPointsAngle(centerPoint, farthestPoints[i])
+
+        # defined several farthest points while processing origin face
+        if origin and len(farthestPoints) > 1:
+            # get distance between first and second farthest points
+            self.checkDistance = farthestPoints[0].distanceToPoint(farthestPoints[1])
+
+        return self.getPointsAngle(centerPoint, farthestPoints[0])
 
 
 class ViewProviderArray:
