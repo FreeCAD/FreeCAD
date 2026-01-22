@@ -494,6 +494,14 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
 
+    // initialize the Command Palette action to register its global shortcut
+    if (auto cmd = Application::Instance->commandManager().getCommandByName("Std_CommandPalette")) {
+        cmd->initAction();
+        if (auto action = cmd->getAction()) {
+            addAction(action->action());
+        }
+    }
+
     statusBar()->showMessage(tr("Ready"), 2001);
 }
 
