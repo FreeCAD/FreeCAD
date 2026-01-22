@@ -176,3 +176,4 @@ requirements:
     - if: linux
       then:
         - libspnav
+        - qt6-wayland
