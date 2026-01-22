@@ -62,23 +62,32 @@ public:
 
     /** Sets the property
      */
+    PROPERTY_SETTER
     void setValue(long);
 
     /** This method returns a string representation of the property
      */
+    PROPERTY_GETTER
     long getValue() const;
+
     const char* getEditorName() const override
     {
         return "Gui::PropertyEditor::PropertyIntegerItem";
     }
 
+    PROPERTY_GETTER
     PyObject* getPyObject() override;
+
+    PROPERTY_SETTER
     void setPyObject(PyObject* py) override;
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
 
+    PROPERTY_GETTER
     Property* Copy() const override;
+
+    PROPERTY_SETTER
     void Paste(const Property& from) override;
 
     unsigned int getMemSize() const override
@@ -86,12 +95,24 @@ public:
         return sizeof(long);
     }
 
+    // expressed in terms of other property getters/setters
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
-    const boost::any getPathValue(const App::ObjectIdentifier& /*path*/) const override
-    {
-        return _lValue;
-    }
 
+    PROPERTY_GETTER
+    const boost::any getPathValue(const App::ObjectIdentifier& path) const override
+    {
+                return getWithContext<PropertyInteger, const boost::any>(
+                    this,
+                    &PropertyInteger::getPathValue,
+                    [this]() -> const boost::any {
+                        return _lValue;
+                    },
+                    path
+                );
+            }
+
+
+    // expressed in terms of other property getters/setters
     bool isSame(const Property& other) const override
     {
         if (&other == this) {
@@ -557,7 +578,10 @@ public:
     ~PropertyFloat() override;
 
 
+    PROPERTY_SETTER
     void setValue(double lValue);
+
+    PROPERTY_GETTER
     double getValue() const;
 
     const char* getEditorName() const override
@@ -565,13 +589,17 @@ public:
         return "Gui::PropertyEditor::PropertyFloatItem";
     }
 
+    PROPERTY_GETTER
     PyObject* getPyObject() override;
+    PROPERTY_SETTER
     void setPyObject(PyObject* py) override;
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
 
+    PROPERTY_GETTER
     Property* Copy() const override;
+    PROPERTY_SETTER
     void Paste(const Property& from) override;
 
     unsigned int getMemSize() const override
@@ -579,7 +607,10 @@ public:
         return sizeof(double);
     }
 
+    // Expressed in terms of other property setters
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
+
+    PROPERTY_GETTER
     const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
 
     bool isSame(const Property& other) const override
