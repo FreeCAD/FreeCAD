@@ -420,7 +420,7 @@ class _Covering(ArchComponent.Component):
         step_x = t_len + j_len
         step_y = t_wid + j_wid
 
-        if step_x == 0 or step_y == 0:
+        if step_x <= 0 or step_y <= 0:
             return [], []
 
         # Estimate count
@@ -442,40 +442,44 @@ class _Covering(ArchComponent.Component):
         off_y = obj.TileOffset.y
 
         # Generate Horizontal Strips (Rows)
-        full_len_x = 2 * count_x * step_x
-        start_x = -count_x * step_x
+        # OpenCascade requires dimensions > 0 for solids
+        if j_wid > Part.Precision.confusion():
+            full_len_x = 2 * count_x * step_x
+            start_x = -count_x * step_x
 
-        for j in range(-count_y, count_y):
-            row_y_offset = off_y if (j % 2 != 0) else 0
-            local_y = j * step_y + t_wid + row_y_offset
-            jh_box = Part.makeBox(
-                full_len_x, j_wid, cut_thick, FreeCAD.Vector(start_x, local_y, z_gen_offset)
-            )
-            cutters_h.append(jh_box)
+            for j in range(-count_y, count_y):
+                row_y_offset = off_y if (j % 2 != 0) else 0
+                local_y = j * step_y + t_wid + row_y_offset
+                jh_box = Part.makeBox(
+                    full_len_x, j_wid, cut_thick, FreeCAD.Vector(start_x, local_y, z_gen_offset)
+                )
+                cutters_h.append(jh_box)
 
         # Generate Vertical Strips (Cols)
-        is_stack_bond = obj.TileOffset.Length < 1e-5
+        # OpenCascade requires dimensions > 0 for solids
+        if j_len > Part.Precision.confusion():
+            is_stack_bond = obj.TileOffset.Length < 1e-5
 
-        if is_stack_bond:
-            full_len_y = 2 * count_y * step_y
-            start_y = -count_y * step_y
-            for i in range(-count_x, count_x):
-                local_x = i * step_x + t_len
-                jv_box = Part.makeBox(
-                    j_len, full_len_y, cut_thick, FreeCAD.Vector(local_x, start_y, z_gen_offset)
-                )
-                cutters_v.append(jv_box)
-        else:
-            for j in range(-count_y, count_y):
-                row_off_x = off_x if (j % 2 != 0) else 0
-                row_off_y = off_y if (j % 2 != 0) else 0
-                row_y = j * step_y + row_off_y
+            if is_stack_bond:
+                full_len_y = 2 * count_y * step_y
+                start_y = -count_y * step_y
                 for i in range(-count_x, count_x):
-                    local_x = i * step_x + t_len + row_off_x
+                    local_x = i * step_x + t_len
                     jv_box = Part.makeBox(
-                        j_len, step_y, cut_thick, FreeCAD.Vector(local_x, row_y, z_gen_offset)
+                        j_len, full_len_y, cut_thick, FreeCAD.Vector(local_x, start_y, z_gen_offset)
                     )
                     cutters_v.append(jv_box)
+            else:
+                for j in range(-count_y, count_y):
+                    row_off_x = off_x if (j % 2 != 0) else 0
+                    row_off_y = off_y if (j % 2 != 0) else 0
+                    row_y = j * step_y + row_off_y
+                    for i in range(-count_x, count_x):
+                        local_x = i * step_x + t_len + row_off_x
+                        jv_box = Part.makeBox(
+                            j_len, step_y, cut_thick, FreeCAD.Vector(local_x, row_y, z_gen_offset)
+                        )
+                        cutters_v.append(jv_box)
 
         return cutters_h, cutters_v
 
@@ -609,7 +613,7 @@ class _Covering(ArchComponent.Component):
                     obj.PatternFile,
                     obj.PatternName,
                     scale=obj.PatternScale,
-                    rotation=obj.Rotation,
+                    rotation=obj.Rotation.Value,
                 )
                 if pat:
                     obj.Shape = Part.Compound([base_face, pat])
@@ -630,9 +634,6 @@ class _Covering(ArchComponent.Component):
         cutters_h, cutters_v = self._build_cutters(
             obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
         )
-
-        if not cutters_h and not cutters_v:
-            return
 
         obj.Shape = self._perform_cut(
             obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
