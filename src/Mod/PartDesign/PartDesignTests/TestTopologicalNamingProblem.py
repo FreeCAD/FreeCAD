@@ -569,7 +569,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         #  Pad -> Extrusion -> makes compounds and does booleans, thus the resulting newName element maps
         #  See if we can turn those off, or try them on the other types?
 
-    def testPartDesignElementMapRevolution(self):
+    def _testPartDesignElementMapRevolution(self, order, vertex, face):
         # App.KeepTestDoc = True    # Uncomment this if you want to keep the test document to examine
         self.Doc.UseHasher = False
         # Arrange
@@ -596,6 +596,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         revolution.Profile = sketch2
         revolution.Angle = 180
         revolution.Refine = True
+        revolution.FuseOrder = order
         body.addObject(revolution)
         volume = (math.pi * 3 * 3 - math.pi * 2 * 2) * 2 / 2
         padVolume = 3 * 3 * 2  # 50.26548245743668
@@ -611,8 +612,8 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.assertEqual(
             self.countFacesEdgesVertexes(revolution.Shape.ElementReverseMap), (9, 21, 14)
         )
-        self.assertEqual(revolution.Shape.ElementReverseMap["Vertex9"][1].count(";"), 3)
-        self.assertEqual(revolution.Shape.ElementReverseMap["Face9"].count(";"), 19)
+        self.assertEqual(revolution.Shape.ElementReverseMap[vertex][1].count(";"), 3)
+        self.assertEqual(revolution.Shape.ElementReverseMap[face].count(";"), 19)
 
         ### This test has been removed because FeatureRevolution generates improper element maps when the user select the
         #   UpToFace mode. That behavior seems to be the fault of OpenCASCADE itself, and we need to rewrite that section
@@ -641,6 +642,12 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         # # output elements)
         # self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face8"), 3)
         # self.assertEqual( revolution.Shape.ElementReverseMap["Face8"].count("Face10"), 3)
+
+    def testPartDesignElementMapRevolutionFuseFeatureFirst(self):
+        self._testPartDesignElementMapRevolution("FeatureFirst", "Vertex9", "Face9")
+
+    def testPartDesignElementMapRevolutionWithDefaultFuseOrder(self):
+        self._testPartDesignElementMapRevolution("BaseFirst", "Vertex8", "Face8")
 
     def testPartDesignBinderRevolution(self):
         doc = self.Doc
@@ -1217,7 +1224,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad001.Type = 0
         pad001.UpToFace = None
         pad001.Reversed = 0
-        pad001.Midplane = 0
+        pad001.SideType = "One side"
         pad001.Offset = 0
         doc.recompute()
         doc.getObject("Pad").Visibility = False
@@ -1329,7 +1336,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         pad001.Type = 0
         pad001.UpToFace = None
         pad001.Reversed = 0
-        pad001.Midplane = 0
+        pad001.SideType = "One side"
         pad001.Offset = 0
         doc.recompute()
         doc.getObject("Pad").Visibility = False
@@ -1435,7 +1442,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.recompute()
         doc.Sketch.Visibility = False
@@ -1484,7 +1491,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.getObject("Pad001").Type = 0
         doc.getObject("Pad001").UpToFace = None
         doc.getObject("Pad001").Reversed = 0
-        doc.getObject("Pad001").Midplane = 0
+        doc.getObject("Pad001").SideType = "One side"
         doc.getObject("Pad001").Offset = 0
         doc.recompute()
         doc.getObject("ShapeBinder").Visibility = False
@@ -1611,7 +1618,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.recompute()
         doc.Sketch.Visibility = False
@@ -1659,7 +1666,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad001.Type = 0
         doc.Pad001.UpToFace = None
         doc.Pad001.Reversed = 0
-        doc.Pad001.Midplane = 0
+        doc.Pad001.SideType = "One side"
         doc.Pad001.Offset = 0
         doc.recompute()
         doc.getObject("Binder").Visibility = False
@@ -2079,7 +2086,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.recompute()
         doc.Sketch.Visibility = False
@@ -2128,7 +2135,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad001.Type = 0
         doc.Pad001.UpToFace = None
         doc.Pad001.Reversed = 0
-        doc.Pad001.Midplane = 0
+        doc.Pad001.SideType = "One side"
         doc.Pad001.Offset = 0
         doc.recompute()
         doc.Pad.Visibility = False
@@ -2182,7 +2189,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.recompute()
         doc.Sketch.Visibility = False
@@ -2232,7 +2239,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad001.Type = 0
         doc.Pad001.UpToFace = None
         doc.Pad001.Reversed = 0
-        doc.Pad001.Midplane = 0
+        doc.Pad001.SideType = "One side"
         doc.Pad001.Offset = 0
         doc.recompute()
         doc.Pad.Visibility = False
@@ -2294,7 +2301,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.Pad.Refine = True
         doc.recompute()
@@ -2344,7 +2351,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad001.Type = 0
         doc.Pad001.UpToFace = None
         doc.Pad001.Reversed = 0
-        doc.Pad001.Midplane = 0
+        doc.Pad001.SideType = "One side"
         doc.Pad001.Offset = 0
         doc.recompute()
         doc.Pad.Visibility = False
@@ -2598,7 +2605,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         doc.Pad.Type = 0
         doc.Pad.UpToFace = None
         doc.Pad.Reversed = 0
-        doc.Pad.Midplane = 0
+        doc.Pad.SideType = "One side"
         doc.Pad.Offset = 0
         doc.BaseFeature.Visibility = False
         doc.Sketch.Visibility = False
@@ -2789,7 +2796,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Pad.Type = 0
         self.Pad.UpToFace = None
         self.Pad.Reversed = 0
-        self.Pad.Midplane = 0
+        self.Pad.SideType = "One side"
         self.Pad.Offset = 0
         self.Doc.recompute()
 
@@ -2869,7 +2876,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Pad1.Type = 0
         self.Pad1.UpToFace = None
         self.Pad1.Reversed = 0
-        self.Pad1.Midplane = 0
+        self.Pad1.SideType = "One side"
         self.Pad1.Offset = 0
         self.Doc.recompute()
 
@@ -2986,7 +2993,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Pad001.Type = 2
         self.Pad001.UpToFace = None
         self.Pad001.Reversed = 0
-        self.Pad001.Midplane = 0
+        self.Pad001.SideType = "One side"
         self.Pad001.Offset = 0
         self.Doc.recompute()
         self.Sketch002 = self.Body.newObject("Sketcher::SketchObject", "Sketch002")
@@ -3063,7 +3070,7 @@ class TestTopologicalNamingProblem(unittest.TestCase):
         self.Pad002.Type = 0
         self.Pad002.UpToFace = None
         self.Pad002.Reversed = 0
-        self.Pad002.Midplane = 0
+        self.Pad002.SideType = "One side"
         self.Pad002.Offset = 0
         self.Doc.recompute()
 

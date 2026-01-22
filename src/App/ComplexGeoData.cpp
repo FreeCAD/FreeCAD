@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
@@ -199,12 +200,12 @@ const std::string& ComplexGeoData::elementMapPrefix()
 
 std::string ComplexGeoData::getElementMapVersion() const
 {
-    return "4";
+    return "5";
 }
 
 bool ComplexGeoData::checkElementMapVersion(const char* ver) const
 {
-    return !boost::equals(ver, "3") && !boost::equals(ver, "4") && !boost::starts_with(ver, "3.");
+    return !boost::ends_with(ver, "5");
 }
 
 size_t ComplexGeoData::getElementMapSize(bool flush) const

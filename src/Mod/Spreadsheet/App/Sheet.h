@@ -110,6 +110,7 @@ public:
     void splitCell(App::CellAddress address);
 
     Cell* getCell(App::CellAddress address);
+    const Cell* getCell(App::CellAddress address) const;
 
     Cell* getNewCell(App::CellAddress address);
 
@@ -231,15 +232,15 @@ public:
 
     // Signals
 
-    boost::signals2::signal<void(App::CellAddress)> cellUpdated;
+    fastsignals::signal<void(App::CellAddress)> cellUpdated;
 
-    boost::signals2::signal<void(App::Range)> rangeUpdated;
+    fastsignals::signal<void(App::Range)> rangeUpdated;
 
-    boost::signals2::signal<void(App::CellAddress)> cellSpanChanged;
+    fastsignals::signal<void(App::CellAddress)> cellSpanChanged;
 
-    boost::signals2::signal<void(int, int)> columnWidthChanged;
+    fastsignals::signal<void(int, int)> columnWidthChanged;
 
-    boost::signals2::signal<void(int, int)> rowHeightChanged;
+    fastsignals::signal<void(int, int)> rowHeightChanged;
 
     void renameObjectIdentifiers(
         const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths

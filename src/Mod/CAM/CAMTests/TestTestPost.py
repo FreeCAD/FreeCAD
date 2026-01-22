@@ -202,12 +202,14 @@ G54
 
     def test00125(self) -> None:
         """Test chipbreaking amount."""
+        cmd = Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5")
+        cmd.Annotations = {"RetractMode": "G99"}
         test_path = [
             Path.Command("G0 X1 Y2"),
             Path.Command("G0 Z8"),
             Path.Command("G90"),
             Path.Command("G99"),
-            Path.Command("G73 X1 Y2 Z0 F123 Q1.5 R5"),
+            cmd,
             Path.Command("G80"),
             Path.Command("G90"),
         ]

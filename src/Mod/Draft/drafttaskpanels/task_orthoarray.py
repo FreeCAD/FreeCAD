@@ -45,6 +45,13 @@ from draftutils.translate import translate
 bool(Draft_rc.__name__)
 
 
+def _quantity(st):
+    # workaround for improper handling of plus sign
+    # in Building US unit system
+    # https://github.com/FreeCAD/FreeCAD/issues/11345
+    return U.Quantity(st.replace("+", "--")).Value
+
+
 class TaskPanelOrthoArray:
     """TaskPanel code for the OrthoArray command.
 
@@ -321,23 +328,18 @@ class TaskPanelOrthoArray:
         v_x_x_str = self.form.input_X_x.text()
         v_x_y_str = self.form.input_X_y.text()
         v_x_z_str = self.form.input_X_z.text()
-        v_x = App.Vector(
-            U.Quantity(v_x_x_str).Value, U.Quantity(v_x_y_str).Value, U.Quantity(v_x_z_str).Value
-        )
+        v_x = App.Vector(_quantity(v_x_x_str), _quantity(v_x_y_str), _quantity(v_x_z_str))
 
         v_y_x_str = self.form.input_Y_x.text()
         v_y_y_str = self.form.input_Y_y.text()
         v_y_z_str = self.form.input_Y_z.text()
-        v_y = App.Vector(
-            U.Quantity(v_y_x_str).Value, U.Quantity(v_y_y_str).Value, U.Quantity(v_y_z_str).Value
-        )
+        v_y = App.Vector(_quantity(v_y_x_str), _quantity(v_y_y_str), _quantity(v_y_z_str))
 
         v_z_x_str = self.form.input_Z_x.text()
         v_z_y_str = self.form.input_Z_y.text()
         v_z_z_str = self.form.input_Z_z.text()
-        v_z = App.Vector(
-            U.Quantity(v_z_x_str).Value, U.Quantity(v_z_y_str).Value, U.Quantity(v_z_z_str).Value
-        )
+        v_z = App.Vector(_quantity(v_z_x_str), _quantity(v_z_y_str), _quantity(v_z_z_str))
+
         return v_x, v_y, v_z
 
     def reset_v(self, interval):

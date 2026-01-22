@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -113,6 +115,8 @@ using DrawSketchHandlerOffsetBase = DrawSketchControllableHandler<DSHOffsetContr
 
 class DrawSketchHandlerOffset: public DrawSketchHandlerOffsetBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerOffset)
+
     friend DSHOffsetController;
     friend DSHOffsetControllerBase;
 
@@ -270,7 +274,7 @@ private:
         }
 
         // Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-        //  http://www.freecadweb.org/tracker/view.php?id=2699
+        //  http://www.freecad.org/tracker/view.php?id=2699
         offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         return offsetShape;
     }

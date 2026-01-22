@@ -793,7 +793,7 @@ class ToolBit(Asset, ABC):
 
         # 3. Ensure Units property exists and is set
         if not hasattr(self.obj, "Units"):
-            print("Adding Units property")
+            Path.Log.debug("Adding Units property")
             self.obj.addProperty(
                 "App::PropertyEnumeration",
                 "Units",

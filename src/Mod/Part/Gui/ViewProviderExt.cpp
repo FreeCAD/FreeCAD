@@ -24,6 +24,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -1095,6 +1096,13 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.InParallel = Standard_True;
     meshParams.AllowQualityDecrease = Standard_True;
 
+    // Clear triangulation and PCurves from geometry which can slow down the process
+#if OCC_VERSION_HEX < 0x070600
+    BRepTools::Clean(shape);
+#else
+    BRepTools::Clean(shape, Standard_True);
+#endif
+
     BRepMesh_IncrementalMesh(shape, meshParams);
 
     // We must reset the location here because the transformation data
@@ -1459,6 +1467,12 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    TopoDS_Shape shape = getRenderedShape().getShape();
+
+    if (lastRenderedShape.IsPartner(shape)) {
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -1475,10 +1489,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     try {
-        TopoDS_Shape cShape = getRenderedShape().getShape();
-
         setupCoinGeometry(
-            cShape,
+            shape,
             coords,
             faceset,
             norm,
@@ -1488,6 +1500,8 @@ void ViewProviderPartExt::updateVisual()
             AngularDeflection.getValue(),
             NormalsFromUV
         );
+
+        lastRenderedShape = shape;
 
         VisualTouched = false;
     }

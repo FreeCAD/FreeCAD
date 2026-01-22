@@ -564,11 +564,10 @@ class ObjectSlot(PathOp.ObjectOp):
         cmds = self._makeOperation(obj)
         if cmds:
             self.commandlist.extend(cmds)
-
-        # Final move to clearance height
-        self.commandlist.append(
-            Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-        )
+        else:
+            # clear Path if can not create slot
+            self.commandlist.clear()
+            return False
 
         # Hide debug visuals
         if self.showDebugObjects and FreeCAD.GuiUp:

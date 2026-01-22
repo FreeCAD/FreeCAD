@@ -620,6 +620,9 @@ class ifc_vp_buildingpart(ifc_vp_object, ArchBuildingPart.ViewProviderBuildingPa
     def __init__(self, vobj):
         ArchBuildingPart.ViewProviderBuildingPart.__init__(self, vobj)
 
+    def attach(self, vobj):
+        ArchBuildingPart.ViewProviderBuildingPart.attach(self, vobj)
+
 
 def overlay(icon1, icon2):
     """Overlays icon2 onto icon1"""

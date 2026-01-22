@@ -39,7 +39,7 @@ html = """<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR
 <html><head><meta name="qrichtext" content="1" /><style type="text/css">
 p, li { white-space: pre-wrap; }</style></head><body>inserthere</body></html>"""
 
-URL = "https://www.freecadweb.org/wiki/BIM_ingame_tutorial"
+URL = "https://www.freecad.org/wiki/BIM_ingame_tutorial"
 TESTINTERVAL = 1000  # interval between tests
 
 
@@ -176,7 +176,7 @@ class BIM_Tutorial:
                         if not os.path.exists(storename):
                             if path.startswith("/images"):
                                 # relative path
-                                fullpath = "https://www.freecadweb.org/wiki" + path
+                                fullpath = "https://www.freecad.org/wiki" + path
                             else:
                                 fullpath = path
                             u = urlopen(fullpath)

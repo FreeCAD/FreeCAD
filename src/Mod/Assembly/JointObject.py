@@ -1969,16 +1969,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             row = index.row()
             if row < len(self.refs):
                 ref = self.refs[row]
-
-                ref_id = id(ref)
-                if hasattr(self, "_original_tnp_map") and ref_id in self._original_tnp_map:
-                    # use original TNP string for newly added references
-                    removal_string = self._original_tnp_map[ref_id]
-                else:
-                    # use processed element name for reloaded references
-                    removal_string = ref[1][0]
-
-                Gui.Selection.removeSelection(ref[0], removal_string)
+                sub = UtilsAssembly.addTipNameToSub(ref)
+                Gui.Selection.removeSelection(ref[0], sub)
             else:
                 print(f"Row {row} is out of bounds for refs (length: {len(self.refs)})")
 
@@ -2037,7 +2029,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
-        original_sub_name = sub_name
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
         # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
@@ -2074,12 +2065,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         # add the vertex name to the reference
         ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
-
-        # store the original TNP string for deletion purposes
-        if hasattr(self, "_original_tnp_map"):
-            self._original_tnp_map[id(ref)] = original_sub_name
-        else:
-            self._original_tnp_map = {id(ref): original_sub_name}
 
         self.refs.append(ref)
         self.updateJoint()

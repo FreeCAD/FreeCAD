@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Poravnaj sadržaj ćelija prema dnu</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
+      <translation>Usklađuje sadržaj ćelija prema vodoravnom središtu</translation>
     </message>
   </context>
   <context>
