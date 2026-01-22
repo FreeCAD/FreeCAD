@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTGROUP_H
-#define APP_DOCUMENTOBJECTGROUP_H
+#pragma once
 
 #include "DocumentObject.h"
 #include "FeaturePython.h"
@@ -57,6 +56,3 @@ using DocumentObjectGroupPython = App::FeaturePythonT<DocumentObjectGroup>;
 
 
 }  // namespace App
-
-
-#endif  // APP_DOCUMENTOBJECTGROUP_H

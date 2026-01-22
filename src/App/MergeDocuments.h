@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_MERGEDOCUMENTS_H
-#define APP_MERGEDOCUMENTS_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <fastsignals/signal.h>
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_MERGEDOCUMENTS_H

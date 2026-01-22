@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_INVENTOROBJECT_H
-#define APP_INVENTOROBJECT_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "PropertyStandard.h"
@@ -59,6 +58,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_INVENTOROBJECT_H

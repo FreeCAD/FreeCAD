@@ -23,8 +23,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef DATA_ELEMENTMAP_H
-#define DATA_ELEMENTMAP_H
+#pragma once
 
 #include "FCGlobal.h"
 
@@ -326,5 +325,3 @@ public:
 
 
 }  // namespace Data
-
-#endif  // DATA_ELEMENTMAP_H

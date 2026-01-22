@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef RANGE_H
-#define RANGE_H
+#pragma once
 
 #include <string>
 #include <Base/Bitmask.h>
@@ -266,5 +265,3 @@ private:
 }  // namespace App
 
 ENABLE_BITMASK_OPERATORS(App::CellAddress::Cell)
-
-#endif  // RANGE_H

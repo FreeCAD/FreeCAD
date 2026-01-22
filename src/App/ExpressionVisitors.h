@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
-#define RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H
+#pragma once
 
 #include "Expression.h"
 
@@ -146,5 +145,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // RENAMEOBJECTIDENTIFIEREXPRESSIONVISITOR_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_Part_H
-#define APP_Part_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "OriginGroupExtension.h"
@@ -106,6 +105,3 @@ public:
 // using PartPython = App::FeaturePythonT<Part>;
 
 }  // namespace App
-
-
-#endif  // APP_Part_H

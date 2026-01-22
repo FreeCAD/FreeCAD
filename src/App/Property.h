@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTY_H
-#define APP_PROPERTY_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Persistence.h>
@@ -1134,5 +1133,3 @@ protected:
 };
 
 }  // namespace App
-
-#endif  // APP_PROPERTY_H

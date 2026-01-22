@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_SERVICES_H
-#define APP_SERVICES_H
+#pragma once
 
 #include "DocumentObject.h"
 
@@ -72,6 +71,3 @@ public:
 };
 
 }
-
-
-#endif // APP_SERVICES_H

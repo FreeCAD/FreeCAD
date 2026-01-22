@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_LINK_H
-#define APP_LINK_H
+#pragma once
 
 #include <unordered_set>
 #include <Base/Parameter.h>
@@ -829,5 +828,3 @@ public:
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-
-#endif  // APP_LINK_H

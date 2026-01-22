@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_DOCUMENTOBJECT_H_
-#define SRC_APP_DOCUMENTOBJECT_H_
+#pragma once
 
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
@@ -821,5 +820,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // SRC_APP_DOCUMENTOBJECT_H_
