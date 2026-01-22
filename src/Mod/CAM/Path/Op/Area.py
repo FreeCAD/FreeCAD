@@ -347,6 +347,7 @@ class ObjectOp(PathOp.ObjectOp):
 
     def getEndVector(self, cmds):
         # get index of command from which continue path to skip retract
+        endVector = FreeCAD.Vector()
         lastX = lastY = lastZ = None
         for cmd in reversed(cmds):
             if cmd.Name in Path.Geom.CmdMoveMill:
@@ -354,22 +355,21 @@ class ObjectOp(PathOp.ObjectOp):
                 lastY = cmd.y if cmd.y is not None and lastY is None else lastY
                 lastZ = cmd.z if cmd.z is not None and lastZ is None else lastZ
                 if lastX is not None and lastY is not None and lastZ is not None:
-                    return FreeCAD.Vector(lastX, lastY, lastZ)
+                    endVector = FreeCAD.Vector(lastX, lastY, lastZ)
+
+        return endVector
 
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
 
         areaParamsList = []
-        if obj.Proxy.__module__ == "Path.Op.PocketShape" and obj.FinishOffset:
-            # Pocket operation: split area and get order "main" -> 'Offset'
-            areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # "main" area
-            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Offset' area
-            # if getattr(obj, "StartAt", None) == "Edge":
-            #     # reverse order 'Offset' -> "main"
-            #     areaParamsList.reverse()
+        if "Path.Op.Pocket" in obj.Proxy.__module__ and obj.FinishOffset:
+            # Pocket operation: split area and get order 'Clearing' path -> 'Finish' pass
+            areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # 'Clearing' path
+            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Finish' pass
         elif obj.Proxy.__module__ == "Path.Op.Profile":
-            # Profile operation: split area for multiple passes
+            # Profile operation: create independent area for each offset
             areaParams = self.areaOpAreaParams(obj, isHole)
             offsets = areaParams["Offset"]
             for offset in offsets:
@@ -381,10 +381,9 @@ class ObjectOp(PathOp.ObjectOp):
         cmds = []
         sims = []
         for index, areaParams in enumerate(areaParamsList):
-
             """
             Notes:
-            Finish pass mill last, no metter value 'StartAt'
+            'Finish' pass mill last, no metter value 'StartAt'
             For 'StartAt' 'Center' in Pocket op need to set sort_mode = 0 to get correct order
             """
 
@@ -400,15 +399,15 @@ class ObjectOp(PathOp.ObjectOp):
 
             isPocketFinishPass = False
             sortMode_0 = False
-            if obj.Proxy.__module__ == "Path.Op.PocketShape":
-                if "JoinType" in areaParams:
+            if "Path.Op.Pocket" in obj.Proxy.__module__:
+                if "JoinType" in areaParams:  # Pocket finish pass
                     isPocketFinishPass = True
                     if getattr(obj, "FinishOneStepDown", False):
                         oneStepDown = True
                 elif (
                     getattr(obj, "ClearingPattern", None) == "Offset"
                     and getattr(obj, "StartAt", None) == "Center"
-                ):
+                ):  # Pocket clearing path
                     sortMode_0 = True
 
             area = Path.Area()
@@ -467,7 +466,13 @@ class ObjectOp(PathOp.ObjectOp):
                         restSections.append(restSection)
                 sections = restSections
 
-            shapelist = [sec.getShape() for sec in sections]
+            shapelist = []
+            for sec in sections:
+                shape = sec.getShape()
+                if shape.Wires:
+                    # skip empty shape
+                    shapelist.append(shape)
+
             Path.Log.debug("shapelist = %s" % shapelist)
 
             pathParams = self.areaOpPathParams(obj, isHole)

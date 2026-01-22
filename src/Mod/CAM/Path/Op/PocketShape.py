@@ -165,6 +165,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."),
             )
 
+        if not hasattr(obj, "FinishOneStepDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishOneStepDown",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Finish pass will processing with one step down at final depth.",
+                ),
+            )
+
         FeatureExtensions.initialize_properties(obj)
 
     def areaOpOnDocumentRestored(self, obj):

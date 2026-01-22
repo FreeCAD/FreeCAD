@@ -106,18 +106,17 @@ class ObjectPocket(PathAreaOp.ObjectOp):
 
         if not obj.Document.Restoring:
             if prop == "FinishOffset":
-                finishOneStepDownMode = 0 if obj.FinishOffset else 2
-                obj.setEditorMode("FinishOneStepDown", finishOneStepDownMode)
+                finishPassMode = 0 if obj.FinishOffset else 2
+                if hasattr(obj, "FinishOneStepDown"):
+                    obj.setEditorMode("FinishOneStepDown", finishPassMode)
+                if hasattr(obj, "FinishRampHelix"):
+                    obj.setEditorMode("FinishRampHelix", finishPassMode)
 
             if prop == "ClearingPattern":
                 startAtMode = 0 if obj.ClearingPattern == "Offset" else 2
                 obj.setEditorMode("StartAt", startAtMode)
                 angleMode = 0 if obj.ClearingPattern != "Offset" else 2
                 obj.setEditorMode("Angle", angleMode)
-
-        if getattr(self, "job", None):
-            useRestMode = 0 if self.job.Operations.Group.index(obj) else 2
-            obj.setEditorMode("UseRestMachining", useRestMode)
 
     def opExecute(self, obj):
         print("opExecute PocketBase")
@@ -218,15 +217,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "Skips machining regions that have already been cleared by previous operations.",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "FinishOneStepDown",
-            "Pocket",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Finish pass will processing with one step down at final depth.",
             ),
         )
 
@@ -337,16 +327,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 obj.setExpression("FinishOffset", "OpToolDiameter * 0.25")
             else:
                 obj.FinishOffset = 0.01
-        if not hasattr(obj, "FinishOneStepDown"):
-            obj.addProperty(
-                "App::PropertyBool",
-                "FinishOneStepDown",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Finish Offset pass will processing with one step down at final depth.",
-                ),
-            )
+
         if hasattr(obj, "ZigZagAngle"):
             obj.renameProperty("ZigZagAngle", "Angle")
         if hasattr(obj, "OffsetPattern"):
