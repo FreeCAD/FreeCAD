@@ -950,7 +950,7 @@
       <location filename="../../AttacherTexts.cpp" line="490"/>
       <source>Align O-X-Y</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>O-Z-Y轴对齐</translation>
+      <translation>O-X-Y轴对齐</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="250"/>

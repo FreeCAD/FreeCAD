@@ -381,32 +381,32 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="14"/>
       <source>Library Manager</source>
-      <translation>Administrador de Librería</translation>
+      <translation>Administrador de bibliotecas</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="27"/>
       <source>Adds a new library</source>
-      <translation type="unfinished">Adds a new library</translation>
+      <translation>Añade una nueva biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="38"/>
       <source>Removes the library</source>
-      <translation type="unfinished">Removes the library</translation>
+      <translation>Elimina la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="49"/>
       <source>Renames the library</source>
-      <translation type="unfinished">Renames the library</translation>
+      <translation>Renombra la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="60"/>
       <source>Imports a library</source>
-      <translation type="unfinished">Imports a library</translation>
+      <translation>Importa una biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="71"/>
       <source>Exports the library</source>
-      <translation type="unfinished">Exports the library</translation>
+      <translation>Exporta la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="111"/>
@@ -6854,47 +6854,47 @@ Abortando la creación de la op</translation>
       <translation>Todos los archivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1399"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
       <source>Unsupported stock object %s</source>
       <translation>Tipo de objeto stock no soportado %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1415"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1417"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Tipo de stock no soportado %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1506"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1508"/>
       <source>Model Selection</source>
       <translation>Selección de modelo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
       <translation>Advertencia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1662"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>Please add one.</source>
       <translation>Por favor agregue uno.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
       <translation>Aceptar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Add</source>
       <translation>Añadir</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1676"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
       <source>This job has no base model.</source>
       <translation>Este trabajo no tiene un modelo base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
       <source>This job has no tool.</source>
       <translation>Este trabajo no tiene herramienta.</translation>
     </message>
@@ -7793,12 +7793,12 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="386"/>
       <source>New Library</source>
-      <translation type="unfinished">New Library</translation>
+      <translation>Nueva biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="406"/>
       <source>Confirm Library Removal</source>
-      <translation type="unfinished">Confirm Library Removal</translation>
+      <translation>Confirmar eliminación de biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="411"/>
@@ -8771,7 +8771,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="379"/>
       <source>Error Saving Library</source>
-      <translation type="unfinished">Error Saving Library</translation>
+      <translation>Error al guardar la biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
@@ -9187,6 +9187,7 @@ This will not delete the toolbits contained within it.</translation>
       <translation type="unfinished">Cutting edge angle</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
@@ -9349,7 +9350,7 @@ This will not delete the toolbits contained within it.</translation>
       <translation>Radio de corte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation type="unfinished">Radius Mill</translation>
     </message>
@@ -9453,7 +9454,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="14"/>
       <source>Library Property Editor</source>
-      <translation type="unfinished">Library Property Editor</translation>
+      <translation>Editor de propiedades de la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="34"/>
@@ -9474,7 +9475,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="80"/>
       <source>Library Properties - {current_name or self.library.label}</source>
-      <translation type="unfinished">Library Properties - {current_name or self.library.label}</translation>
+      <translation>Propiedades de la biblioteca - {current_name or self.library.label}</translation>
     </message>
   </context>
   <context>

@@ -2300,7 +2300,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="532"/>
       <source>Annotation</source>
-      <translation>Σχολιασμός</translation>
+      <translation>Περιγραφή</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>

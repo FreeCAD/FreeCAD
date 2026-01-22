@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>Editor de Estilos de Anotación</translation>
+      <translation>Editor de estilos de anotación</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -37,17 +37,17 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation/>
+      <translation>Administrador de capas</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
       <source>Select All</source>
-      <translation>Seleccionar Todo</translation>
+      <translation>Seleccionar todo</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle Visibility</source>
-      <translation/>
+      <translation>Alternar visibilidad</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -67,12 +67,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="120"/>
       <source>Import styles from json file</source>
-      <translation>Importar estilos de archivo json</translation>
+      <translation>Importar estilos de archivo JSON</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="130"/>
       <source>Export styles to json file</source>
-      <translation>Exportar estilos a archivo json</translation>
+      <translation>Exportar estilos a archivo JSON</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="214"/>
@@ -127,7 +127,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="625"/>
       <source>Extension line length</source>
-      <translation/>
+      <translation>Longitud de línea de extensión</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="642"/>
@@ -144,7 +144,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="263"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="273"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation/>
+      <translation>El espacio entre líneas para textos y etiquetas de varias líneas (relativo al tamaño de la fuente)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="280"/>
@@ -171,17 +171,17 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
       <source>Style Name</source>
-      <translation/>
+      <translation>Nombre del estilo</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation/>
+      <translation>El nombre del estilo. Los nombres de estilo existentes pueden ser editados.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
       <source>Add new…</source>
-      <translation/>
+      <translation>Añadir nueva…</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="173"/>
@@ -192,12 +192,12 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="352"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="374"/>
       <source>The type of the starting arrows or markers to use for dimensions and labels</source>
-      <translation/>
+      <translation>El tipo de las flechas de inicio o marcadores a usar para cotas y etiquetas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Start arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
@@ -209,34 +209,34 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation/>
+      <translation>El tamaño de las flechas o marcadores de inicio en unidades del sistema</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
       <source>Start arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="453"/>
       <source>The type of the ending arrows or markers to use for dimensions and labels</source>
-      <translation/>
+      <translation>El tipo de las flechas o marcadores finales a usar para cotas y etiquetas</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>End arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>The size of the ending arrows or markers in system units</source>
-      <translation/>
+      <translation>El tamaño de las flechas o marcadores finales en unidades del sistema</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
       <source>End arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="596"/>
       <source>Dimension Details</source>
-      <translation/>
+      <translation>Detalles de cota</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="662"/>
@@ -289,12 +289,12 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="208"/>
       <source>Texts</source>
-      <translation/>
+      <translation>Textos</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="266"/>
       <source>Line spacing factor</source>
-      <translation/>
+      <translation>Factor de espaciado de línea</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
@@ -1144,7 +1144,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation>Color de Punto(s)</translation>
+      <translation>Color del punto</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
@@ -1170,7 +1170,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="587"/>
       <source>Extension line length</source>
-      <translation/>
+      <translation>Longitud de línea de extensión</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="607"/>
@@ -1206,12 +1206,12 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
       <source>Texts</source>
-      <translation/>
+      <translation>Textos</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="358"/>
       <source>Line spacing factor</source>
-      <translation/>
+      <translation>Factor de espaciado de línea</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="298"/>
@@ -1223,7 +1223,7 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Start arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1258,17 +1258,17 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Start arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>End arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
       <source>End arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
@@ -1313,7 +1313,7 @@ widget de escala de anotación. Si la escala es 1:100 el multiplicador es 100.</
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="365"/>
       <source>The line spacing for multi-line texts and labels (relative to the font size)</source>
-      <translation/>
+      <translation>El espacio entre líneas para textos y etiquetas de varias líneas (relativo al tamaño de la fuente)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="291"/>
@@ -1754,7 +1754,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
@@ -1770,7 +1770,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha inicial</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
@@ -1780,7 +1780,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="354"/>
       <source>End arrow type</source>
-      <translation/>
+      <translation>Tipo de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="367"/>
@@ -1790,7 +1790,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>End arrow size</source>
-      <translation/>
+      <translation>Tamaño de flecha final</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="417"/>
@@ -1805,7 +1805,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="589"/>
       <source>Dimension Details</source>
-      <translation/>
+      <translation>Detalles de cota</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="669"/>
@@ -1826,7 +1826,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="72"/>
       <source>Texts</source>
-      <translation/>
+      <translation>Textos</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="124"/>
@@ -1836,7 +1836,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="149"/>
       <source>Line spacing factor</source>
-      <translation/>
+      <translation>Factor de espaciado de línea</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="156"/>
@@ -1896,7 +1896,7 @@ in the Draft Scale Widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="237"/>
       <source>The default line width</source>
-      <translation>El ancho de línea por defecto</translation>
+      <translation>El espesor de línea por defecto</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="240"/>
@@ -1989,7 +1989,7 @@ o cm, deje en blanco para usar la unidad actual definida en FreeCAD.</translatio
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="637"/>
       <source>Extension line length</source>
-      <translation/>
+      <translation>Longitud de línea de extensión</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="644"/>
@@ -2255,7 +2255,7 @@ un archivo DXF.</translation>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation>Si está marcado, FreeCAD puede descargar y actualizar las librerías de Python
+      <translation>Si está marcado, FreeCAD puede descargar y actualizar las bibliotecas de Python
 requeridas por el importador de legado. Esto también se puede hacer manualmente instalando
 el complemento "dxf_library" desde el Administrador de complementos.</translation>
     </message>
@@ -2326,7 +2326,7 @@ shape. Best for importing and viewing very large files with maximum performance.
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
       <source>Fused Part shapes (lowest fidelity, fastest)</source>
-      <translation type="unfinished">Fused Part shapes (lowest fidelity, fastest)</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="224"/>
@@ -4636,7 +4636,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="211"/>
       <source>Zero scale factor not allowed</source>
-      <translation type="unfinished">Zero scale factor not allowed</translation>
+      <translation>No se permite un factor de escala de cero</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="224"/>
@@ -4745,12 +4745,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone objects without a shape, aborting</source>
-      <translation type="unfinished">Cannot clone objects without a shape, aborting</translation>
+      <translation>No se puede clonar objetos sin una forma, abortando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="102"/>
       <source>Cannot clone objects without a shape, skipping them</source>
-      <translation type="unfinished">Cannot clone objects without a shape, skipping them</translation>
+      <translation>No se puede clonar objetos sin una forma, ignorándolos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="75"/>
@@ -4811,7 +4811,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="175"/>
       <source>Number of elements must be at least 2</source>
-      <translation type="unfinished">Number of elements must be at least 2</translation>
+      <translation>El número de elementos debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
@@ -4864,12 +4864,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
       <source>Number of elements must be at least 1</source>
-      <translation type="unfinished">Number of elements must be at least 1</translation>
+      <translation>El número de elementos debe ser al menos 1</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
-      <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
+      <translation>En el modo lineal, se debe seleccionar al menos 1 eje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
@@ -4985,7 +4985,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>El número de capas debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
@@ -4997,7 +4997,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
       <source>Tangential distance cannot be 0</source>
-      <translation type="unfinished">Tangential distance cannot be 0</translation>
+      <translation>La distancia tangencial no puede ser 0</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="211"/>
@@ -6213,7 +6213,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
-      <translation>La descarga de las librerías DXF falló.
+      <translation>La descarga de las bibliotecas DXF falló.
 Por favor instale el complemento de la biblioteca de DXF manualmente
 desde el menú Herramientas → Administrador de complementos</translation>
     </message>
@@ -7946,7 +7946,7 @@ más allá de la línea de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="81"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Estilos de anotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="85"/>
@@ -8605,12 +8605,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Apply Current Style</translation>
+      <translation>Aplicar estilo actual</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="53"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation type="unfinished">Applies the current style to the selected objects and groups</translation>
+      <translation>Aplica el estilo actual a los objetos y grupos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -8618,12 +8618,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
-      <translation type="unfinished">Highlight Subelements</translation>
+      <translation>Resaltar subelementos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
-      <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
+      <translation>Resalta los subelementos de los objetos seleccionados, para poder moverlos, rotarlos y escalarlos</translation>
     </message>
   </context>
   <context>

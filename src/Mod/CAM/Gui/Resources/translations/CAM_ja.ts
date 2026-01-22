@@ -351,7 +351,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/PropertyCreate.ui" line="65"/>
       <source>val1,val2,val3,...</source>
-      <translation type="unfinished">val1,val2,val3,...</translation>
+      <translation>価1、価2、価3、……</translation>
     </message>
     <message>
       <location filename="../panels/PropertyCreate.ui" line="72"/>
@@ -1083,12 +1083,12 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="296"/>
       <source>Round joint</source>
-      <translation type="unfinished">Round joint</translation>
+      <translation>丸めジョイント</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDeburrEdit.ui" line="315"/>
       <source>Miter joint</source>
-      <translation type="unfinished">Miter joint</translation>
+      <translation>留め継ぎジョイント</translation>
     </message>
     <message>
       <location filename="../panels/ToolEditor.ui" line="77"/>
@@ -1764,7 +1764,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="392"/>
       <source>Start to end</source>
-      <translation type="unfinished">Start to end</translation>
+      <translation>最初～最後</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="298"/>
@@ -1850,12 +1850,12 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="126"/>
       <source>Profile edges</source>
-      <translation type="unfinished">Profile edges</translation>
+      <translation>エッジをプロファイル</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="133"/>
       <source>Profile the edges of the selection</source>
-      <translation type="unfinished">Profile the edges of the selection</translation>
+      <translation>選択したエッジをプロファイル</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="140"/>
@@ -2916,7 +2916,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="37"/>
       <source>Axis mapping</source>
-      <translation type="unfinished">Axis mapping</translation>
+      <translation>軸マッピング</translation>
     </message>
     <message>
       <location filename="../panels/AxisMapEdit.ui" line="44"/>
@@ -4126,12 +4126,12 @@ Default: 3 mm</source>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="64"/>
       <source>Solid object to be used to limit the generated Path.</source>
-      <translation type="unfinished">Solid object to be used to limit the generated Path.</translation>
+      <translation>生成パスを制限するために使用するソリッドオブジェクト</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="74"/>
       <source>Determines if Boundary describes an inclusion or exclusion mask.</source>
-      <translation type="unfinished">Determines if Boundary describes an inclusion or exclusion mask.</translation>
+      <translation>境界が包含マスク、除外マスクのどちらを記述するかを決定します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="84"/>
@@ -4263,7 +4263,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="95"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="421"/>
       <source>Set distance which will attempts to avoid unnecessary retractions</source>
-      <translation type="unfinished">Set distance which will attempts to avoid unnecessary retractions</translation>
+      <translation>不要な引き上げを回避するための距離を設定</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="101"/>
@@ -5065,7 +5065,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="131"/>
       <location filename="../../../Path/Op/Profile.py" line="107"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
-      <translation type="unfinished">The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</translation>
+      <translation>ツールパスが部品の周りを移動する時の方向: 時計回り (CW) または 反時計回り (CCW)</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="125"/>
@@ -5075,7 +5075,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="133"/>
       <source>Maximum distance before a miter joint is truncated</source>
-      <translation type="unfinished">Maximum distance before a miter joint is truncated</translation>
+      <translation>留め継ぎジョイントが切断されるまでの最大距離</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="148"/>
@@ -5095,7 +5095,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="166"/>
       <source>Side of edge that tool should cut</source>
-      <translation type="unfinished">Side of edge that tool should cut</translation>
+      <translation>ツールが切断するエッジ両端</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="174"/>
@@ -5111,7 +5111,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Profile.py" line="192"/>
       <location filename="../../../Path/Op/Profile.py" line="337"/>
       <source>If doing multiple passes, the extra offset of each additional pass</source>
-      <translation type="unfinished">If doing multiple passes, the extra offset of each additional pass</translation>
+      <translation>複数のパスを実行する場合は、それぞれの追加パスの追加オフセット</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="327"/>
@@ -5356,7 +5356,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="394"/>
       <location filename="../../../Path/Op/Waterline.py" line="429"/>
       <source>Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</source>
-      <translation type="unfinished">Collinear and co-radial artifact gaps that are smaller than this threshold are closed in the path.</translation>
+      <translation>この閾値よりも小さい、同一線・同一円の誤差不一致は、パス内で閉じられます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="403"/>
@@ -5377,7 +5377,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="342"/>
       <source>Defines which standard thread was chosen</source>
-      <translation type="unfinished">Defines which standard thread was chosen</translation>
+      <translation>どのねじ山規格を選択するかを定義</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="348"/>
@@ -5402,17 +5402,17 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="378"/>
       <source>Override to control how loose or tight the threads are milled</source>
-      <translation type="unfinished">Override to control how loose or tight the threads are milled</translation>
+      <translation>ねじ山のフライス加工の緩み締め具合の制御を上書き</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="384"/>
       <source>Set how many passes are used to cut the thread</source>
-      <translation type="unfinished">Set how many passes are used to cut the thread</translation>
+      <translation>ねじ山を切削するために使用するパスの数を設定</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="390"/>
       <source>Direction of thread cutting operation</source>
-      <translation type="unfinished">Direction of thread cutting operation</translation>
+      <translation>ねじ切り工程の方向</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="399"/>
@@ -5765,7 +5765,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="187"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>留め継ぎ</translation>
     </message>
   </context>
   <context>
@@ -5815,7 +5815,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="220"/>
       <source>Miter</source>
-      <translation type="unfinished">Miter</translation>
+      <translation>留め継ぎ</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="443"/>
@@ -6854,47 +6854,47 @@ Aborting op creation</translation>
       <translation>全てのファイル (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1399"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
       <source>Unsupported stock object %s</source>
       <translation>サポートされていないストックオブジェクト %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1415"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1417"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>サポートされていないストックタイプ %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1506"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1508"/>
       <source>Model Selection</source>
       <translation>モデル選択</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1662"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>Please add one.</source>
       <translation>1つ追加してください。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Add</source>
       <translation>追加</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1676"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
       <source>This job has no base model.</source>
       <translation>このジョブにはベースモデルがありません。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
       <source>This job has no tool.</source>
       <translation>このジョブにはツールがありません。</translation>
     </message>
@@ -6911,7 +6911,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="124"/>
       <source>Warning: Incompatible Unit Schema</source>
-      <translation type="unfinished">Warning: Incompatible Unit Schema</translation>
+      <translation>警告: 互換性のない単位スキーマ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="138"/>
@@ -6956,12 +6956,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
       <source>Unit Schema Changed</source>
-      <translation type="unfinished">Unit Schema Changed</translation>
+      <translation>単位スキーマが変更されました</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="235"/>
       <source>Unit schema successfully changed to &apos;{}&apos;.</source>
-      <translation type="unfinished">Unit schema successfully changed to &apos;{}&apos;.</translation>
+      <translation>単位スキーマを &apos;{}&apos; に変更しました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="243"/>
@@ -6971,17 +6971,17 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="244"/>
       <source>Failed to change unit schema: {}</source>
-      <translation type="unfinished">Failed to change unit schema: {}</translation>
+      <translation>単位スキーマの変更に失敗しました: {}</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="249"/>
       <source>No Selection</source>
-      <translation type="unfinished">No Selection</translation>
+      <translation>選択されていません</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="250"/>
       <source>Please select a unit schema.</source>
-      <translation type="unfinished">Please select a unit schema.</translation>
+      <translation>単位スキーマを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="348"/>
@@ -7021,7 +7021,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="60"/>
       <source>Creates a CAM job</source>
-      <translation type="unfinished">Creates a CAM job</translation>
+      <translation>CAMジョブを作成</translation>
     </message>
   </context>
   <context>
@@ -7034,7 +7034,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="155"/>
       <source>Creates a fixture offset</source>
-      <translation type="unfinished">Creates a fixture offset</translation>
+      <translation>治具オフセットを作成</translation>
     </message>
   </context>
   <context>
@@ -7049,18 +7049,18 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="256"/>
       <source>Inspect Toolpath</source>
-      <translation type="unfinished">Inspect Toolpath</translation>
+      <translation>ツールパスを検査</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="260"/>
       <source>Inspects the contents of a toolpath object</source>
-      <translation type="unfinished">Inspects the contents of a toolpath object</translation>
+      <translation>ツールパスオブジェクトの内容を検査</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="275"/>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="280"/>
       <source>Select exactly one path object</source>
-      <translation type="unfinished">Select exactly one path object</translation>
+      <translation>パスオブジェクトを1つだけ選択</translation>
     </message>
   </context>
   <context>
@@ -7073,7 +7073,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="106"/>
       <source>Exports the CAM job as a template to be used for other jobs</source>
-      <translation type="unfinished">Exports the CAM job as a template to be used for other jobs</translation>
+      <translation>CAMジョブを他のジョブで使用するテンプレートとしてエクスポート</translation>
     </message>
   </context>
   <context>
@@ -7179,12 +7179,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="80"/>
       <source>Inspection Notes</source>
-      <translation type="unfinished">Inspection Notes</translation>
+      <translation>検査ノート</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="105"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="74"/>
@@ -7194,17 +7194,17 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="99"/>
       <source>Spindle Speed</source>
-      <translation type="unfinished">Spindle Speed</translation>
+      <translation>回転速度</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="98"/>
       <source>Tool Shape</source>
-      <translation type="unfinished">Tool Shape</translation>
+      <translation>ツール形状</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="73"/>
       <source>Tool Diameter</source>
-      <translation type="unfinished">Tool Diameter</translation>
+      <translation>ツールの直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="79"/>
@@ -7496,12 +7496,12 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="467"/>
       <source>New tool controller…</source>
-      <translation type="unfinished">New tool controller…</translation>
+      <translation>新しいツールコントローラー…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="512"/>
       <source>This tool controller is used by {0} other operations.</source>
-      <translation type="unfinished">This tool controller is used by {0} other operations.</translation>
+      <translation>このツールコントローラーは {0} の他の工程で使用されています。</translation>
     </message>
   </context>
   <context>
@@ -7855,12 +7855,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="622"/>
       <source>Please select a toolbit to export.</source>
-      <translation type="unfinished">Please select a toolbit to export.</translation>
+      <translation>エクスポートするツールビットを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="631"/>
       <source>Please select only one toolbit to export.</source>
-      <translation type="unfinished">Please select only one toolbit to export.</translation>
+      <translation>エクスポートするツールビットを1つだけ選択してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/bullnose.py" line="50"/>
@@ -7875,32 +7875,32 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="279"/>
       <source>Missing Toolbit</source>
-      <translation type="unfinished">Missing Toolbit</translation>
+      <translation>ツールビットがありません</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="283"/>
       <source>This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.</source>
-      <translation type="unfinished">This toolbit is missing from your local store. It may be a placeholder for a toolbit that was not found during library import.</translation>
+      <translation>このツールビットはローカル保存領域に存在しません。ライブラリのインポート中に見つからなかったツールビットの予約名の可能性があります。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="290"/>
       <source>Failed to load toolbit: {e}</source>
-      <translation type="unfinished">Failed to load toolbit: {e}</translation>
+      <translation>ツールビットの読み込みに失敗しました: {e}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="427"/>
       <source>Confirm Deletion</source>
-      <translation type="unfinished">Confirm Deletion</translation>
+      <translation>本当に削除</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="431"/>
       <source>Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</source>
-      <translation type="unfinished">Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</translation>
+      <translation>選択したツールビットを削除してもよろしいですか？　この操作は元に戻せません。 ツールビットはディスクとそれらを含むすべてのライブラリから削除されます。</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="219"/>
       <source>Selected faces should be vertical</source>
-      <translation type="unfinished">Selected faces should be vertical</translation>
+      <translation>選択面は垂直である必要があります</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
@@ -8657,7 +8657,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="85"/>
       <location filename="../../../Path/Op/Gui/SimpleCopy.py" line="90"/>
       <source>Select exactly one toolpath object</source>
-      <translation type="unfinished">Select exactly one toolpath object</translation>
+      <translation>ツールパスオブジェクトを1つだけ選択</translation>
     </message>
   </context>
   <context>
@@ -8732,12 +8732,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="144"/>
       <source>Tool Controller</source>
-      <translation type="unfinished">Tool Controller</translation>
+      <translation>ツールコントローラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/Controller.py" line="147"/>
       <source>Adds a new tool controller to the active job</source>
-      <translation type="unfinished">Adds a new tool controller to the active job</translation>
+      <translation>アクティブなジョブに新しいツールコントローラーを追加</translation>
     </message>
   </context>
   <context>
@@ -8750,7 +8750,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="85"/>
       <source>Saves an existing toolbit object to a file</source>
-      <translation type="unfinished">Saves an existing toolbit object to a file</translation>
+      <translation>既存のツールビットオブジェクトをファイルに保存</translation>
     </message>
   </context>
   <context>
@@ -8763,7 +8763,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/cmd.py" line="128"/>
       <source>Loads an existing toolbit object from a file</source>
-      <translation type="unfinished">Loads an existing toolbit object from a file</translation>
+      <translation>既存のツールビットオブジェクトをファイルから読み込み</translation>
     </message>
   </context>
   <context>
@@ -8771,7 +8771,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="379"/>
       <source>Error Saving Library</source>
-      <translation type="unfinished">Error Saving Library</translation>
+      <translation>ライブラリの保存エラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
@@ -8986,12 +8986,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../PathCommands.py" line="169"/>
       <source>Toggle Operation</source>
-      <translation type="unfinished">Toggle Operation</translation>
+      <translation>工程の切り替え</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="173"/>
       <source>Toggles the active state of the operation</source>
-      <translation type="unfinished">Toggles the active state of the operation</translation>
+      <translation>工程のアクティブ状態を切り替え</translation>
     </message>
   </context>
   <context>
@@ -9075,7 +9075,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="100"/>
       <source>Select Asset Directory</source>
-      <translation type="unfinished">Select Asset Directory</translation>
+      <translation>アセットディレクトリを選択</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="119"/>
@@ -9085,7 +9085,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/assets/ui/preferences.py" line="120"/>
       <source>The selected asset path is not writable.</source>
-      <translation type="unfinished">The selected asset path is not writable.</translation>
+      <translation>選択したアセットのパスには書き込みできません。</translation>
     </message>
   </context>
   <context>
@@ -9093,12 +9093,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="79"/>
       <source>Toolbit Library Manager</source>
-      <translation type="unfinished">Toolbit Library Manager</translation>
+      <translation>ツールビット・ライブラリ・マネージャー</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/cmd.py" line="82"/>
       <source>Opens an editor to manage toolbit libraries</source>
-      <translation type="unfinished">Opens an editor to manage toolbit libraries</translation>
+      <translation>ツールビットライブラリーを管理するためにエディターを開く</translation>
     </message>
   </context>
   <context>
@@ -9187,6 +9187,7 @@ This will not delete the toolbits contained within it.</translation>
       <translation>切込み角</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
@@ -9229,13 +9230,13 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="61"/>
       <source>Neck diameter</source>
-      <translation type="unfinished">Neck diameter</translation>
+      <translation>ネックの直径</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="65"/>
       <source>Neck length</source>
-      <translation type="unfinished">Neck length</translation>
+      <translation>ネックの長さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="77"/>
@@ -9349,7 +9350,7 @@ This will not delete the toolbits contained within it.</translation>
       <translation type="unfinished">Cutting radius</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation type="unfinished">Radius Mill</translation>
     </message>

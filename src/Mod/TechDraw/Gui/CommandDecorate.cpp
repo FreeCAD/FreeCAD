@@ -120,12 +120,9 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
 
 bool CmdTechDrawToggleFrame::isActive()
 {
-    if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
-        return false;
-    }
-
-    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
-    return mvp != nullptr;
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual);
 }
 
 //===========================================================================

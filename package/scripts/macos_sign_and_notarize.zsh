@@ -96,6 +96,13 @@ function run_codesign {
     /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements entitlements.plist "$1"
 }
 
+function run_codesign_extension {
+    local target="$1"
+    local entitlements_file="$2"
+    echo "Signing extension $target with entitlements $entitlements_file"
+    /usr/bin/codesign --options runtime -f -s ${SIGNING_KEY_ID} --timestamp --entitlements "$entitlements_file" "$target"
+}
+
 IFS=$'\n'
 dylibs=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.dylib"))
 shared_objects=($(/usr/bin/find "${CONTAINING_FOLDER}/${APP_NAME}" -name "*.so"))
@@ -108,12 +115,41 @@ signed_files=("${dylibs[@]}" "${shared_objects[@]}" "${bundles[@]}" "${executabl
 # This list of files is generated from:
 # file `find . -type f -perm +111 -print` | grep "Mach-O 64-bit executable" | sed 's/:.*//g'
 for exe in ${signed_files}; do
-    run_codesign "${exe}"
+    # Skip .appex executables as they will be signed separately with their bundles
+    if [[ "$exe" != */Contents/PlugIns/*.appex/* ]]; then
+        run_codesign "${exe}"
+    fi
 done
 
 # Two additional files that must be signed that aren't caught by the above searches:
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+
+# Sign new Swift QuickLook extensions (macOS 15.0+) with their specific entitlements
+# These must be signed before the app itself to avoid overriding the extension signatures
+if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns" ]; then
+    # Find the entitlements files relative to script location
+    # Script is in package/scripts/, entitlements are in src/MacAppBundle/QuickLook/modern/
+    SCRIPT_DIR="${0:A:h}"  # zsh equivalent of dirname with full path resolution
+    PREVIEW_ENTITLEMENTS="${SCRIPT_DIR}/../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements"
+    THUMBNAIL_ENTITLEMENTS="${SCRIPT_DIR}/../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements"
+
+    # Sign individual executables within .appex bundles first
+    if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex/Contents/MacOS/FreeCADThumbnailExtension" ]; then
+        run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex/Contents/MacOS/FreeCADThumbnailExtension"
+    fi
+    if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex/Contents/MacOS/FreeCADPreviewExtension" ]; then
+        run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex/Contents/MacOS/FreeCADPreviewExtension"
+    fi
+
+    # Then sign the .appex bundles themselves with extension-specific entitlements
+    if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex" ] && [ -f "$THUMBNAIL_ENTITLEMENTS" ]; then
+        run_codesign_extension "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADThumbnailExtension.appex" "$THUMBNAIL_ENTITLEMENTS"
+    fi
+    if [ -d "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex" ] && [ -f "$PREVIEW_ENTITLEMENTS" ]; then
+        run_codesign_extension "${CONTAINING_FOLDER}/${APP_NAME}/Contents/PlugIns/FreeCADPreviewExtension.appex" "$PREVIEW_ENTITLEMENTS"
+    fi
+fi
 
 # Finally, sign the app itself (must be done last)
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}"
