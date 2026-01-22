@@ -1,5 +1,4 @@
-#ifndef QUARTER_BASIC_H
-#define QUARTER_BASIC_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -73,5 +72,3 @@
 #ifndef QUARTER_DLL_API
 # define QUARTER_DLL_API
 #endif // !QUARTER_DLL_API
-
-#endif // !QUARTER_BASIC_H

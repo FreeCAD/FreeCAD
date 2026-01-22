@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOAUTOZOOMTRANSLATION_H
-#define GUI_SOAUTOZOOMTRANSLATION_H
+#pragma once
 
 #include <Inventor/fields/SoSFFloat.h>
 #include <Inventor/nodes/SoTransformation.h>
@@ -60,4 +59,3 @@ private:
 };
 
 }  // namespace Gui
-#endif  // GUI_SOAUTOZOOMTRANSLATION_H

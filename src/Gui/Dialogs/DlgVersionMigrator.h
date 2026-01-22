@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_DIALOG_VERSIONMIGRATOR_H
-#define GUI_DIALOG_VERSIONMIGRATOR_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <cstdint>
@@ -68,5 +67,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_VERSIONMIGRATOR_H

@@ -1,5 +1,4 @@
-#ifndef QUARTER_INPUTDEVICE_H
-#define QUARTER_INPUTDEVICE_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -66,5 +65,3 @@ protected:
 };
 
 }}} // namespace
-
-#endif // QUARTER_INPUTDEVICE_H

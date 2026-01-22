@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MENUMANAGER_H
-#define GUI_MENUMANAGER_H
+#pragma once
 
 #include <string>
 #include <QList>
@@ -105,6 +104,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_MENUMANAGER_H

@@ -20,8 +20,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCHSELECTOR_H
-#define GUI_WORKBENCHSELECTOR_H
+#pragma once
 
 #include <QComboBox>
 #include <QTabBar>
@@ -207,5 +206,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_WORKBENCHSELECTOR_H

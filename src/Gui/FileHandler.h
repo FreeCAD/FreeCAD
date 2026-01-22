@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_FILE_HANDLER_H
-#define GUI_FILE_HANDLER_H
+#pragma once
 
 #include <QString>
 #include <string>
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_FILE_HANDLER_H

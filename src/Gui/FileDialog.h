@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_FILEDIALOG_H
-#define GUI_FILEDIALOG_H
+#pragma once
 
 #include <QCompleter>
 #include <QFileDialog>
@@ -315,5 +314,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_FILEDIALOG_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderMaterialObject_H
-#define GUI_ViewProviderMaterialObject_H
+#pragma once
 
 
 #include "ViewProviderDocumentObject.h"
@@ -55,5 +54,3 @@ public:
 using ViewProviderMaterialObjectPython = ViewProviderFeaturePythonT<ViewProviderMaterialObject>;
 
 }  // namespace Gui
-
-#endif  // GUI_ViewProviderMaterialObject_H

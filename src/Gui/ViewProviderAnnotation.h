@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERANNOTATION_H
-#define GUI_VIEWPROVIDERANNOTATION_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 #include <App/PropertyUnits.h>
@@ -127,6 +126,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDERANNOTATION_H

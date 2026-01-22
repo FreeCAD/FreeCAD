@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOQTOFFSCREENRENDERERPY_H
-#define GUI_SOQTOFFSCREENRENDERERPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOQTOFFSCREENRENDERERPY_H

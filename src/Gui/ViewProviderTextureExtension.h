@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERTEXTUREEXT_H
-#define GUI_VIEWPROVIDERTEXTUREEXT_H
+#pragma once
 
 #include <Gui/ViewProviderExtensionPython.h>
 
@@ -94,6 +93,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDERTEXTUREEXT_H

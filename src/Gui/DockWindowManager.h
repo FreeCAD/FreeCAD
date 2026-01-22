@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWINDOWMANAGER_H
-#define GUI_DOCKWINDOWMANAGER_H
+#pragma once
 
 #include <QObject>
 #include <Base/Bitmask.h>
@@ -141,5 +140,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DockWindowOption)
-
-#endif  // GUI_DOCKWINDOWMANAGER_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_PYTHONTRACING_H
-#define GUI_PYTHONTRACING_H
+#pragma once
 
 #include <QObject>
 #include <Python.h>
@@ -150,5 +149,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONTRACING_H

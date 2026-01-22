@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
-#define GUI_DIALOG_DlgEditFileIncludePropertyExternal_H
+#pragma once
 
 #include "Dialogs/DlgRunExternal.h"
 #include <App/PropertyFile.h>
@@ -58,5 +57,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DlgEditFileIncludePropertyExternal_H

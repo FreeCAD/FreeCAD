@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONBOX_H
-#define ACTIONBOX_H
+#pragma once
 
 #include "actionlabel.h"
 
@@ -156,5 +155,3 @@ protected:
     ActionLabel *headerLabel;      ///< Label for the header.
 };
 } // namespace
-
-#endif // ACTIONBOX_H

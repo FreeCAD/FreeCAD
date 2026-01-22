@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WIDGETFACTORY_H
-#define GUI_WIDGETFACTORY_H
+#pragma once
 
 #include <vector>
 
@@ -403,5 +402,3 @@ private:
 }  // namespace Dialog
 
 }  // namespace Gui
-
-#endif  // GUI_WIDGETFACTORY_H

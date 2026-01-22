@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_PYTHONWRAPPER_H
-#define GUI_PYTHONWRAPPER_H
+#pragma once
 
 #include "qglobal.h"
 #include <Base/PyObjectBase.h>
@@ -88,5 +87,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONWRAPPER_H

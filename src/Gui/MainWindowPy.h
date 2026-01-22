@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MAINWINDOWPY_H
-#define GUI_MAINWINDOWPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MAINWINDOWPY_H

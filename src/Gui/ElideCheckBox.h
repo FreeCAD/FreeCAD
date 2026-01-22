@@ -23,8 +23,7 @@
 
 // This custom widget adds the missing ellipsize functionality in QT5
 
-#ifndef ELIDECHECKBOX_H
-#define ELIDECHECKBOX_H
+#pragma once
 
 #include <QCheckBox>
 #include <QPainter>
@@ -51,5 +50,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // ELIDECHECKBOX_H

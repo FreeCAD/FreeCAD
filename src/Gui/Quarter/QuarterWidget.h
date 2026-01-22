@@ -1,5 +1,4 @@
-#ifndef QUARTER_QUARTERWIDGET_H
-#define QUARTER_QUARTERWIDGET_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -212,5 +211,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_QUARTERWIDGET_H

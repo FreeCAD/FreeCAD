@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DSETTINGS_H
-#define GUI_VIEW3DSETTINGS_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <QApplication>
@@ -76,5 +75,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DSETTINGS_H

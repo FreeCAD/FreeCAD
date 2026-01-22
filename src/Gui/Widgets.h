@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WIDGETS_H
-#define GUI_WIDGETS_H
+#pragma once
 
 #include <memory>
 #include <FCGlobal.h>
@@ -656,5 +655,3 @@ private:
 void adjustDialogPosition(QDialog* dialog);
 
 }  // namespace Gui
-
-#endif  // GUI_WIDGETS_H

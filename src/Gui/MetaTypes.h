@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_METATYPES_H
-#define GUI_METATYPES_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Base/Matrix.h>
@@ -43,5 +42,3 @@ Q_DECLARE_METATYPE(QList<Base::Quantity>)
 Q_DECLARE_METATYPE(App::SubObjectT)
 Q_DECLARE_METATYPE(QList<App::SubObjectT>)
 // NOLINTEND
-
-#endif  // GUI_METATYPES_H

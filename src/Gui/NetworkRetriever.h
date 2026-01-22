@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_NETWORKRETRIEVER_H
-#define GUI_NETWORKRETRIEVER_H
+#pragma once
 
 #include <QProcess>
 
@@ -102,5 +101,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_NETWORKRETRIEVER_H

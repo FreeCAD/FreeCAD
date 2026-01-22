@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUIABSTRACTNATIVEEVENT_H
-#define GUIABSTRACTNATIVEEVENT_H
+#pragma once
 
 #include <QObject>
 #include <vector>
@@ -50,6 +49,3 @@ protected:
     static std::vector<int> motionDataArray;
 };
 }  // namespace Gui
-
-
-#endif  // GUIABSTRACTNATIVEEVENT_H

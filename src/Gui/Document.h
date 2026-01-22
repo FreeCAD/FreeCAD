@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCUMENT_H
-#define GUI_DOCUMENT_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -369,6 +368,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_DOCUMENT_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_H
-#define GUI_VIEWPROVIDER_H
+#pragma once
 
 #include <bitset>
 #include <map>
@@ -729,5 +728,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_H

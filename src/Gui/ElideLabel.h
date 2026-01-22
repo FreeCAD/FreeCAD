@@ -23,8 +23,7 @@
 
 // This custom widget adds the missing ellipsize functionality in QT5
 
-#ifndef ELIDELABEL_H
-#define ELIDELABEL_H
+#pragma once
 
 #include <QLabel>
 #include <QPainter>
@@ -50,5 +49,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // ELIDELABEL_H

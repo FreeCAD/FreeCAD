@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGUNDOREDO_H
-#define GUI_DIALOG_DLGUNDOREDO_H
+#pragma once
 
 #include <QMenu>
 
@@ -67,5 +66,3 @@ protected Q_SLOTS:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGUNDOREDO_H

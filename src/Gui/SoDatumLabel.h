@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SODATUMLABEL_H
-#define GUI_SODATUMLABEL_H
+#pragma once
 
 #include <Inventor/SbBox3f.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -237,6 +236,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SODATUMLABEL_H

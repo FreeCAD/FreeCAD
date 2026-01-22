@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_OVERLAY_PARAMS_H
-#define GUI_OVERLAY_PARAMS_H
+#pragma once
 
 /*[[[cog
 import OverlayParams
@@ -409,5 +408,3 @@ public:
 };  // class OverlayParams
 }  // namespace Gui
 //[[[end]]]
-
-#endif  // GUI_OVERLAY_PARAMS_H

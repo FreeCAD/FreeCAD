@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SELECTION_H
-#define GUI_SELECTION_H
+#pragma once
 
 #include <deque>
 #include <list>
@@ -904,5 +903,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SELECTION_H

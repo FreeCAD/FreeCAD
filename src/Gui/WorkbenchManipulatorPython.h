@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_WORKBENCHMANIPULATOR_PYTHON_H
-#define GUI_WORKBENCHMANIPULATOR_PYTHON_H
+#pragma once
 
 #include <Gui/WorkbenchManipulator.h>
 #include <CXX/Objects.hxx>
@@ -87,6 +86,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_WORKBENCHMANIPULATOR_PYTHON_H

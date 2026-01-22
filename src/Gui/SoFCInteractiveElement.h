@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCINTERACTIVEELEMENT_H
-#define GUI_SOFCINTERACTIVEELEMENT_H
+#pragma once
 
 #include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoHandleEventAction.h>
@@ -158,5 +157,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOFCINTERACTIVEELEMENT_H

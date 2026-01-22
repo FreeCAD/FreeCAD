@@ -29,8 +29,7 @@
 **
 **************************************************************************/
 
-#ifndef CHECKABLEMESSAGEBOX_H
-#define CHECKABLEMESSAGEBOX_H
+#pragma once
 
 #include <QDialog>
 #include <QDialogButtonBox>
@@ -150,5 +149,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // CHECKABLEMESSAGEBOX_H

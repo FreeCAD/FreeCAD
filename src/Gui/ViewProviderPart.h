@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+#pragma once
 
 #include "ViewProviderGeometryObject.h"
 #include "ViewProviderOriginGroup.h"
@@ -67,5 +66,3 @@ protected:
 using ViewProviderPartPython = ViewProviderFeaturePythonT<ViewProviderPart>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_ViewProviderPart_H

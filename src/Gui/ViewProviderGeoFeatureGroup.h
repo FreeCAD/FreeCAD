@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
-#define GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H
+#pragma once
 
 
 #include "ViewProviderDocumentObject.h"
@@ -48,5 +47,3 @@ public:
 using ViewProviderGeoFeatureGroupPython = ViewProviderFeaturePythonT<ViewProviderGeoFeatureGroup>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_ViewProviderGeoFeatureGroup_H

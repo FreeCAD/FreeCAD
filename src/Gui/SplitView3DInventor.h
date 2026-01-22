@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SPLITVIEW3DINVENTOR_H
-#define GUI_SPLITVIEW3DINVENTOR_H
+#pragma once
 
 #include "MDIView.h"
 #include "MDIViewPy.h"
@@ -129,5 +128,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SPLITVIEW3DINVENTOR_H

@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKGROUP_P_H
-#define TASKGROUP_P_H
+#pragma once
 
 #include "actionlabel.h"
 #include "actionpanelscheme.h"
@@ -50,5 +49,3 @@ protected:
 
 
 }
-
-#endif // TASKGROUP_P_H

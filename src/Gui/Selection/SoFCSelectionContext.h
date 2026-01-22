@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_SOFCSELECTIONCONTEXT_H
-#define GUI_SOFCSELECTIONCONTEXT_H
+#pragma once
 
 #include <limits>
 #include <map>
@@ -155,4 +154,3 @@ protected:
 };
 
 }  // namespace Gui
-#endif  // GUI_SOFCSELECTIONCONTEXT_H

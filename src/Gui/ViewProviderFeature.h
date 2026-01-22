@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_FEATURE_H
-#define GUI_VIEWPROVIDER_FEATURE_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 
@@ -53,5 +52,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_FEATURE_H

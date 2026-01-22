@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_PROPERTYVIEW_H
-#define GUI_DOCKWND_PROPERTYVIEW_H
+#pragma once
 
 #include "DockWindow.h"
 #include "Selection.h"
@@ -134,5 +133,3 @@ public:
 
 }  // namespace DockWnd
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_PROPERTYVIEW_H

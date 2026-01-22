@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_COMBOVIEW_H
-#define GUI_DOCKWND_COMBOVIEW_H
+#pragma once
 
 #include "DockWindow.h"
 
@@ -92,5 +91,3 @@ private:
 
 }  // namespace DockWnd
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_SELECTIONVIEW_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_EDITABLEDATUMLABEL_H
-#define GUI_EDITABLEDATUMLABEL_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -133,6 +132,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_EDITABLEDATUMLABEL_H
