@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_PROGRESSINDICATORPY_H
-#define BASE_PROGRESSINDICATORPY_H
+#pragma once
 
 #include <memory>
 #include <CXX/Extensions.hxx>
@@ -58,5 +57,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_PROGRESSINDICATORPY_H

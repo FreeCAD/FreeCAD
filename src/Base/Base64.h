@@ -30,8 +30,7 @@ NOTICE: The source code here has been altered from the original to use a provide
 rather than returning a new string for each call.
 These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 */
-#ifndef BASE_BASE64_H
-#define BASE_BASE64_H
+#pragma once
 
 #include <array>
 #include <string>
@@ -161,5 +160,3 @@ inline std::string base64_decode(std::string const& str)
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,
 // cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers,
 // readability-magic-numbers)
-
-#endif

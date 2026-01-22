@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_DUAL_QUATERNION_H
-#define FREECAD_BASE_DUAL_QUATERNION_H
+#pragma once
 
 #include "DualNumber.h"
 #include <FCGlobal.h>
@@ -149,5 +148,3 @@ BaseExport DualQuat operator*(DualNumber a, DualQuat b);
 
 }  // namespace Base
 // NOLINTEND(readability-identifier-length)
-
-#endif

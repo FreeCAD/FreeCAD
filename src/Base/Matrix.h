@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_MATRIX_H
-#define BASE_MATRIX_H
+#pragma once
 
 #include <array>
 #include <cmath>
@@ -445,6 +444,3 @@ inline void Matrix4D::setDiagonal(const Vector3d& vec)
 }
 
 }  // namespace Base
-
-
-#endif  // BASE_MATRIX_H

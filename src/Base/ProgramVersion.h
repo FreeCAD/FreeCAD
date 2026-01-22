@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef BASE_PROGRAM_VERSION_H
-#define BASE_PROGRAM_VERSION_H
+#pragma once
 
 #include <algorithm>
 #include <cstdint>
@@ -80,5 +79,3 @@ inline Version getVersion(std::string_view str)
 }
 
 }  // namespace Base
-
-#endif  // BASE_PROGRAM_VERSION_H

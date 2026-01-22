@@ -2,8 +2,7 @@
 
 // clang-format off
 // NOLINTBEGIN
-#ifndef __STACKWALKER_H__
-#define __STACKWALKER_H__
+#pragma once
 
 #if defined(_MSC_VER)
 
@@ -276,6 +275,5 @@ protected:
 
 # endif  // defined(_MSC_VER)
 
-#endif  // __STACKWALKER_H__
 // NOLINTEND
 // clang-format on

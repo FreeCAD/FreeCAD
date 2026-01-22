@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_UUID_H
-#define BASE_UUID_H
+#pragma once
 
 // Std. configurations
 
@@ -70,5 +69,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_UUID_H

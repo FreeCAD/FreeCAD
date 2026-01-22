@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BINDINGMANAGER_H
-#define BASE_BINDINGMANAGER_H
+#pragma once
 
 #include <memory>
 #include <FCGlobal.h>
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_BINDINGMANAGER_H

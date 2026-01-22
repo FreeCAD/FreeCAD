@@ -22,8 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef BASE_PYTHONTYPEEXT_H
-#define BASE_PYTHONTYPEEXT_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_PYTHONTYPEEXT_H

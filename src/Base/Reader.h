@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_BASE_READER_H_
-#define SRC_BASE_READER_H_
+#pragma once
 
 #include <bitset>
 #include <map>
@@ -418,6 +417,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // SRC_BASE_READER_H_

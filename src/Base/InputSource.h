@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_IINPUTSOURCE_H
-#define BASE_IINPUTSOURCE_H
+#pragma once
 
 #include <iosfwd>
 #include <memory>
@@ -108,5 +107,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_IINPUTSOURCE_H

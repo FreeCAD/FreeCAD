@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_AXIS_H
-#define BASE_AXIS_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_AXIS_H

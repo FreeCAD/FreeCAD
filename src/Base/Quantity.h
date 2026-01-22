@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_Quantity_H
-#define BASE_Quantity_H
+#pragma once
 
 #include "Unit.h"
 #include <string>
@@ -350,5 +349,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_Quantity_H

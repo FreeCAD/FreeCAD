@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_PLACEMENT_H
-#define BASE_PLACEMENT_H
+#pragma once
 
 #include <string>
 
@@ -120,6 +119,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // BASE_PLACEMENT_H

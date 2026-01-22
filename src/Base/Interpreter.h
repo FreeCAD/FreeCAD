@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_INTERPRETER_H
-#define BASE_INTERPRETER_H
+#pragma once
 
 #if defined(_POSIX_C_SOURCE)
 # undef _POSIX_C_SOURCE
@@ -387,5 +386,3 @@ inline InterpreterSingleton& Interpreter()
 }
 
 }  // namespace Base
-
-#endif  // BASE_INTERPRETER_H

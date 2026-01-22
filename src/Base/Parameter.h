@@ -31,8 +31,7 @@
  * 3rd party Xerces-C++ XML parser is used to parse and write the XML.
  */
 
-#ifndef BASE_PARAMETER_H
-#define BASE_PARAMETER_H
+#pragma once
 
 // Python stuff
 using PyObject = struct _object;
@@ -629,6 +628,3 @@ public:
 /** python wrapper function
  */
 BaseExport PyObject* GetPyObject(const Base::Reference<ParameterGrp>& hcParamGrp);
-
-
-#endif  // BASE_PARAMETER_H

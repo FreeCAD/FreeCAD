@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_CONSOLE_H
-#define BASE_CONSOLE_H
+#pragma once
 
 // Std. configurations
 #include <array>
@@ -1231,5 +1230,3 @@ void Base::ConsoleSingleton::notify(const std::string& notifiername, const std::
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
-
-#endif  // BASE_CONSOLE_H

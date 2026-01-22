@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TRANSLATE_H
-#define BASE_TRANSLATE_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <QTranslator>
@@ -62,5 +61,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_TRANSLATE_H

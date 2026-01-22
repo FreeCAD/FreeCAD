@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FACTORY_H
-#define BASE_FACTORY_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -139,6 +138,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif
