@@ -26,6 +26,7 @@
 #include <QMessageBox>
 #include <QTimer>
 #include <QMenu>
+#include <QString>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -295,14 +296,16 @@ bool ViewProviderAssembly::setEdit(int mode)
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
             // Waiting for the solver to support reporting information.
-            // taskSolver = new TaskAssemblyMessages(this);
-            // taskView->addContextualPanel(taskSolver);
+            taskSolver = new TaskAssemblyMessages(this);
+            taskView->addContextualPanel(taskSolver);
         }
 
         auto* assembly = getObject<AssemblyObject>();
         connectSolverUpdate = assembly->signalSolverUpdate.connect([this] {
             UpdateSolverInformation();
         });
+
+        assembly->solve();
 
         return true;
     }
@@ -337,7 +340,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
             // Waiting for the solver to support reporting information.
-            // taskView->removeContextualPanel(taskSolver);
+            taskView->removeContextualPanel(taskSolver);
         }
 
         connectSolverUpdate.disconnect();
@@ -1577,26 +1580,40 @@ Base::Vector3d ViewProviderAssembly::getCenterOfBoundingBox(const std::vector<Mo
     return center;
 }
 
-inline QString intListHelper(const std::vector<int>& ints)
+inline QString objListHelper(const AssemblyObject* assembly, const std::vector<std::string>& names)
 {
+    if (!assembly) {
+        return QString();
+    }
+    App::Document* doc = assembly->getDocument();
+
+    std::vector<App::DocumentObject*> joints;
+    for (const auto& name : names) {
+        if (auto* obj = doc->getObject(name.c_str())) {
+            joints.push_back(obj);
+        }
+    }
+
     QString results;
-    if (ints.size() < 8) {  // The 8 is a bit heuristic... more than that and we shift formats
-        for (const auto i : ints) {
-            if (results.isEmpty()) {
-                results.append(QStringLiteral("%1").arg(i));
+    if (joints.size() < 3) {  // The 3 is a bit heuristic... more than that and we shift formats
+        for (const auto joint : joints) {
+            if (!results.isEmpty()) {
+                results.append(QStringLiteral(", "));
             }
-            else {
-                results.append(QStringLiteral(", %1").arg(i));
-            }
+            results.append(
+                QStringLiteral("%1").arg(QString::fromLatin1(joint->Label.getStrValue().c_str()))
+            );
         }
     }
     else {
-        const int numToShow = 3;
-        int more = ints.size() - numToShow;
+        const int numToShow = 2;
+        int more = joints.size() - numToShow;
         for (int i = 0; i < numToShow; ++i) {
-            results.append(QStringLiteral("%1, ").arg(ints[i]));
+            results.append(QStringLiteral("%1, ").arg(
+                QString::fromLatin1(joints[i]->Label.getStrValue().c_str())
+            ));
         }
-        results.append(ViewProviderAssembly::tr("ViewProviderAssembly", "and %1 more").arg(more));
+        results.append(ViewProviderAssembly::tr("and %1 more").arg(more));
     }
     return results;
 }
@@ -1615,12 +1632,19 @@ void ViewProviderAssembly::UpdateSolverInformation()
     if (assembly->isEmpty()) {
         signalSetUp(QStringLiteral("empty"), tr("Empty Assembly"), QString(), QString());
     }
-    else if (dofs < 0 || hasConflicts) {  // over-constrained
+    else if (dofs < 0 || /*hasConflicts*/ hasRedundancies) {  // over-constrained
+        // Currently the solver does not distinguish between conflicts and redundancies.
+        /*signalSetUp(QStringLiteral("conflicting_constraints"),
+                    tr("Over-constrained:") + QLatin1String(" "),
+                    QStringLiteral("#conflicting"),
+                    QStringLiteral("(%1)").arg(objListHelper(assembly,
+           assembly->getLastConflicting())));*/
+        // So for now we report like follows:
         signalSetUp(
             QStringLiteral("conflicting_constraints"),
             tr("Over-constrained:") + QLatin1String(" "),
             QStringLiteral("#conflicting"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastConflicting()))
+            QStringLiteral("(%1)").arg(objListHelper(assembly, assembly->getLastRedundant()))
         );
     }
     else if (hasMalformed) {  // malformed joints
@@ -1628,25 +1652,25 @@ void ViewProviderAssembly::UpdateSolverInformation()
             QStringLiteral("malformed_constraints"),
             tr("Malformed joints:") + QLatin1String(" "),
             QStringLiteral("#malformed"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastMalformedConstraints()))
+            QStringLiteral("(%1)").arg(objListHelper(assembly, assembly->getLastMalformed()))
         );
     }
-    else if (hasRedundancies) {
-        signalSetUp(
-            QStringLiteral("redundant_constraints"),
-            tr("Redundant joints:") + QLatin1String(" "),
-            QStringLiteral("#redundant"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastRedundant()))
-        );
+    // Currently the solver does not distinguish between conflicts and redundancies.
+    /* else if (hasRedundancies) {
+        signalSetUp(QStringLiteral("redundant_constraints"),
+                    tr("Redundant joints:") + QLatin1String(" "),
+                    QStringLiteral("#redundant"),
+                    QStringLiteral("(%1)").arg(objListHelper(assembly,
+    assembly->getLastRedundant())));
     }
     else if (hasPartiallyRedundant) {
         signalSetUp(
             QStringLiteral("partially_redundant_constraints"),
             tr("Partially redundant:") + QLatin1String(" "),
             QStringLiteral("#partiallyredundant"),
-            QStringLiteral("(%1)").arg(intListHelper(assembly->getLastPartiallyRedundant()))
-        );
-    }
+            QStringLiteral("(%1)").arg(objListHelper(assembly,
+    assembly->getLastPartiallyRedundant())));
+    }*/
     else if (assembly->getLastSolverStatus() != 0) {
         signalSetUp(
             QStringLiteral("solver_failed"),
