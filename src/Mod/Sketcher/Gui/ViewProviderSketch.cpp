@@ -1634,7 +1634,14 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             // 2 cases : either the edge was added or a point of it.
             // If its a point then we replace it by the edge.
             // If it's the edge it's replaced by itself so it's ok.
-            drag.Dragged[0].Pos = Sketcher::PointPos::none;
+
+            // for arcs preserve mid point drags for rigid movement
+            const Part::Geometry* geo = getSketchObject()->getGeometry(geoIdi);
+            bool isArcMidDrag = (pos == Sketcher::PointPos::mid) && isArcOfCircle(*geo);
+
+            if (!isArcMidDrag) {
+                drag.Dragged[0].Pos = Sketcher::PointPos::none;
+            }
         }
         else {
             // For group dragging, we skip the internal geos.
@@ -1753,7 +1760,9 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
             }
         }
 
-        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()) {
+        if (geo->is<Part::GeomLineSegment>() || geo->is<Part::GeomBSplineCurve>()
+            || isEllipse(*geo) || isArcOfEllipse(*geo)
+            || isArcOfHyperbola(*geo) || isArcOfParabola(*geo)) {
             setRelative();
         }
 
