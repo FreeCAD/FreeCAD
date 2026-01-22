@@ -6018,7 +6018,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="239"/>
       <source>base object</source>
-      <translation type="unfinished">base object</translation>
+      <translation>basisobjekt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="242"/>

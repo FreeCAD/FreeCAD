@@ -470,6 +470,7 @@ void QGIViewPart::drawAllVertexes()
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
+    ViewProviderPage* vpPage = vp->getViewProviderPage();
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -485,7 +486,8 @@ void QGIViewPart::drawAllVertexes()
             cmItem->setZValue(ZVALUE::VERTEX);
             bool showMark =
                 ( (!isExporting() && vp->ArcCenterMarks.getValue()) ||
-                  (isExporting() && Preferences::printCenterMarks()) );
+                  (isExporting() && Preferences::printCenterMarks()) ||
+                  (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
             cmItem->setVisible(showMark);
         } else {
             //regular Vertex
@@ -498,7 +500,8 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected());
+                item->setVisible(m_isHovered || isSelected() ||
+                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
             }
         }
     }
@@ -1350,6 +1353,13 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 
     if (isSelected()) {
         // if the view is selected, we should leave things alone.
+        return;
+    }
+
+    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
+    ViewProviderPage* vpPage = vp->getViewProviderPage();
+    if (vpPage->getFrameState() &&
+        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
         return;
     }
 

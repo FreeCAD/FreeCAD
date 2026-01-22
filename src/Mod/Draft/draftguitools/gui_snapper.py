@@ -351,7 +351,7 @@ class Snapper:
 
     def cycleSnapObject(self):
         """Increase the index of the snap object by one."""
-        self.snapObjectIndex = self.snapObjectIndex + 1
+        self.snapObjectIndex += 1
 
     def snapToObject(self, lastpoint, active, constrain, eline, point):
         """Snap to an object."""
@@ -373,6 +373,8 @@ class Snapper:
             or Draft.getType(obj) in UNSNAPPABLES
             or not getattr(obj.ViewObject, "Selectable", True)
         ):
+            # increase snapObjectIndex to find other objects under the cursor:
+            self.snapObjectIndex += 1
             return None
 
         snaps = []
