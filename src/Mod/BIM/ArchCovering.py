@@ -600,11 +600,11 @@ class _Covering(ArchComponent.Component):
             return
 
         if obj.FinishMode == "Hatch Pattern":
-            from draftutils import hatch
+            from draftobjects.hatch import Hatch
 
             if obj.PatternFile:
                 # Use unified Rotation property for Hatch rotation
-                pat = hatch.hatch(
+                pat = Hatch.hatch(
                     base_face,
                     obj.PatternFile,
                     obj.PatternName,
