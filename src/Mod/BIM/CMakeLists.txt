@@ -227,6 +227,8 @@ SET(bimtests_SRCS
     bimtests/TestArchBase.py
     bimtests/TestArchBaseGui.py
     bimtests/TestArchComponent.py
+    bimtests/TestArchCovering.py
+    bimtests/TestArchCoveringGui.py
     bimtests/TestArchBuildingPart.py
     bimtests/TestArchRoof.py
     bimtests/TestArchSpace.py
