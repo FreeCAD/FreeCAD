@@ -99,8 +99,6 @@ class ToolBitPropertiesWidget(QtGui.QWidget):
         properties_layout.setStretchFactor(self._property_editor, 1)
 
         main_layout.addWidget(properties_group_box)
-
-        # Add stretch before shape widget to push it towards the bottom
         main_layout.addStretch(1)
 
         # Layout for centering the shape widget (created later)
@@ -276,18 +274,36 @@ class ToolBitEditor(QtGui.QWidget):
         )
         self._tab_closed = False
 
-        # Get first tab from the form, add the shape widget at the top.
+        # Get first tab from the form, add the shape widget to the right.
         tool_tab_layout = self.form.toolTabLayout
-        widget = ShapeWidget(toolbit._tool_bit_shape)
-        tool_tab_layout.addWidget(widget)
 
-        # Add tool properties editor to the same tab.
+        # Create a horizontal layout for the tab content
+        tab_content_layout = QtGui.QHBoxLayout()
+
+        # Add tool properties editor to the left with stretch
         self._props = ToolBitPropertiesWidget(toolbit, tool_no, self, icon=icon)
         self._last_units_value = self._get_units_value(self._props)
         self._props.toolBitChanged.connect(self._on_toolbit_changed)
         self._props.toolBitChanged.connect(self._update)
         self._props.toolNoChanged.connect(self._on_tool_no_changed)
-        tool_tab_layout.addWidget(self._props)
+
+        # Wrap properties in a scroll area for vertical scrolling
+        scroll_area = QtGui.QScrollArea()
+        scroll_area.setWidget(self._props)
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        scroll_area.setMinimumHeight(550)  # Set minimum height for the scroll area
+        scroll_area.setMaximumHeight(600)  # Set maximum height to prevent excessive growth
+
+        tab_content_layout.addWidget(scroll_area, 1)
+
+        # Add shape widget to the right without stretch
+        widget = ShapeWidget(toolbit._tool_bit_shape)
+        tab_content_layout.addWidget(widget, 0)
+
+        # Add the horizontal layout to the tab layout
+        tool_tab_layout.addLayout(tab_content_layout)
 
         self.form.tabWidget.setCurrentIndex(0)
         self.form.tabWidget.currentChanged.connect(self._on_tab_switched)
@@ -350,19 +366,27 @@ class ToolBitEditor(QtGui.QWidget):
         are in sync with the current toolbit's units, and user changes are preserved
         because the ToolBit object is always up to date.
         """
-        # Remove the current property editor widget
+        # Get the horizontal layout and scroll area
         tool_tab_layout = self.form.toolTabLayout
-        tool_tab_layout.removeWidget(self._props)
+        tab_content_layout = tool_tab_layout.itemAt(0).layout()  # Get the QHBoxLayout
+        scroll_area = tab_content_layout.itemAt(0).widget()  # Get the scroll area
+
+        # Remove the current property editor widget from scroll area
+        scroll_area.takeWidget()
         self._props.deleteLater()
+
         # Restore the original schema
         FreeCAD.Units.setSchema(self._original_schema)
+
         # Recreate the property editor with the current toolbit
         self._props = ToolBitPropertiesWidget(self.toolbit, self.tool_no, self, icon=False)
         self._last_units_value = self._get_units_value(self._props)
         self._props.toolBitChanged.connect(self._on_toolbit_changed)
         self._props.toolBitChanged.connect(self._update)
         self._props.toolNoChanged.connect(self._on_tool_no_changed)
-        tool_tab_layout.addWidget(self._props)
+
+        # Set the new widget in the scroll area
+        scroll_area.setWidget(self._props)
         self.form.tabWidget.setCurrentIndex(0)
 
     def _restore_original_schema(self):

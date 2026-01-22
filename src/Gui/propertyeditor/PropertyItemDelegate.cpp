@@ -27,6 +27,7 @@
 #include <QModelIndex>
 #include <QPainter>
 #include <QTimer>
+#include <QKeyEvent>
 
 #include <Base/Tools.h>
 
@@ -182,15 +183,41 @@ bool PropertyItemDelegate::editorEvent(
         // ignore double click, as it could cause editor lock with checkboxes
         // due to the editor being close immediately after toggling the checkbox
         // which is currently done on first click
+        this->pressed = true;
         return true;
     }
-    this->pressed = event->type() == QEvent::MouseButtonPress;
+    bool mouseButton = event->type() == QEvent::MouseButtonPress;
+    if (mouseButton) {
+        this->pressed = true;
+    }
     return QItemDelegate::editorEvent(event, model, option, index);
 }
 
 bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
 {
-    if (ev->type() == QEvent::FocusIn) {
+    if (ev->type() == QEvent::KeyPress) {
+        auto* checkBox = qobject_cast<QCheckBox*>(o);
+        if (checkBox) {
+            auto* keyEvent = static_cast<QKeyEvent*>(ev);
+            if (keyEvent->key() == Qt::Key_Return || keyEvent->key() == Qt::Key_Enter
+                || keyEvent->key() == Qt::Key_Space) {
+
+                checkBox->toggle();
+
+                // Manually commit the data WITHOUT closing the editor.
+                // This keeps the focus on the checkbox so subsequent 'Enter'
+                // presses will toggle it again immediately.
+                if (propertyEditor) {
+                    // We must set 'changed' to true so setModelData updates the model,
+                    // then revert it back (handled by FlagToggler).
+                    Base::FlagToggler<> flag(changed);
+                    Q_EMIT commitData(propertyEditor);
+                }
+                return true;
+            }
+        }
+    }
+    else if (ev->type() == QEvent::FocusIn) {
         auto* comboBox = qobject_cast<QComboBox*>(o);
         if (comboBox) {
             auto parentEditor = qobject_cast<PropertyEditor*>(this->parent());
@@ -209,6 +236,7 @@ bool PropertyItemDelegate::eventFilter(QObject* o, QEvent* ev)
                 }
             }
         }
+        this->pressed = false;
     }
     else if (ev->type() == QEvent::FocusOut) {
         if (auto button = qobject_cast<Gui::ColorButton*>(o)) {
@@ -304,7 +332,6 @@ QWidget* PropertyItemDelegate::createEditor(
         // enter)
         editor->setFocus();
     }
-    this->pressed = false;
 
     if (editor) {
         const auto widgets = editor->findChildren<QWidget*>();
