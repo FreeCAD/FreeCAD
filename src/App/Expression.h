@@ -129,7 +129,7 @@ public:
 
     virtual bool isTouched() const { return false; }
 
-    Expression * eval() const;
+    ExpressionPtr eval() const;
 
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
     void toString(std::ostream &os, bool persistent=false, bool checkPriority=false, int indent=0) const;
