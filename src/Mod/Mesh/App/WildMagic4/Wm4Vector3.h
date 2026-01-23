@@ -16,8 +16,7 @@
 //
 // Version: 4.0.2 (2006/07/25)
 
-#ifndef WM4VECTOR3_H
-#define WM4VECTOR3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Math.h"
@@ -146,5 +145,3 @@ typedef Vector3<float> Vector3f;
 typedef Vector3<double> Vector3d;
 
 }
-
-#endif

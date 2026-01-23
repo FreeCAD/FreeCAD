@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_ITERATOR_H
-#define MESH_ITERATOR_H
+#pragma once
 
 
 #include <Base/Matrix.h>
@@ -624,6 +623,3 @@ inline MeshPointIterator& MeshPointIterator::operator=(MeshPointIterator&& rpI)
 
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_ITERATOR_H

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELAUNAY_H
-#define WM4DELAUNAY_H
+#pragma once
 
 // The base class for Delaunay algorithms stores the number of mesh components
 // and the connectivity information for the mesh.
@@ -167,5 +166,3 @@ typedef Delaunay<float> Delaunayf;
 typedef Delaunay<double> Delaunayd;
 
 }
-
-#endif

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_INFO_H
-#define MESH_INFO_H
+#pragma once
 
 #include "MeshKernel.h"
 
@@ -94,5 +93,3 @@ public:
 
 
 }  // namespace MeshCore
-
-#endif

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TTUPLE_H
-#define WM4TTUPLE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -68,5 +67,3 @@ private:
 }
 
 #include "Wm4TTuple.inl"
-
-#endif

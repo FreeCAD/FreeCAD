@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4RVECTOR2_H
-#define WM4RVECTOR2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4TRVector.h"
@@ -111,6 +110,3 @@ protected:
 }
 
 #include "Wm4RVector2.inl"
-
-
-#endif

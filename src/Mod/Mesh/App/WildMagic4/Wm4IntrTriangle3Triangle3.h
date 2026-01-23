@@ -16,8 +16,7 @@
 //
 // Version: 4.0.1 (2006/07/25)
 
-#ifndef WM4INTRTRIANGLE3TRIANGLE3_H
-#define WM4INTRTRIANGLE3TRIANGLE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Intersector.h"
@@ -142,5 +141,3 @@ typedef IntrTriangle3Triangle3<float> IntrTriangle3Triangle3f;
 typedef IntrTriangle3Triangle3<double> IntrTriangle3Triangle3d;
 
 }
-
-#endif

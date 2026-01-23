@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_EXPORTER_H
-#define MESH_EXPORTER_H
+#pragma once
 
 #include <map>
 #include <ostream>
@@ -273,5 +272,3 @@ private:
 };  // class ExporterAMF
 
 }  // namespace Mesh
-
-#endif  // MESH_EXPORTER_H

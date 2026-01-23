@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_REMESHGMSH_H
-#define MESHGUI_REMESHGMSH_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -144,5 +143,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_REMESHGMSH_H

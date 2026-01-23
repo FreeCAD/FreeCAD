@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATUREMESHEXPORT_H
-#define MESH_FEATUREMESHEXPORT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -63,5 +62,3 @@ public:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_FEATUREMESHEXPORT_H

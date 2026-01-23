@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef MESH_GLOBAL_H
-# define MESH_GLOBAL_H
+#pragma once
 
 
 // Mesh
@@ -45,5 +44,3 @@
 #   define MeshGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // MESH_GLOBAL_H

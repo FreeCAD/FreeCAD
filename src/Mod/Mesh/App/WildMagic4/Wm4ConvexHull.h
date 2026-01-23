@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4CONVEXHULL_H
-#define WM4CONVEXHULL_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -98,5 +97,3 @@ typedef ConvexHull<float> ConvexHullf;
 typedef ConvexHull<double> ConvexHulld;
 
 }
-
-#endif

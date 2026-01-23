@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SEGMENT_H
-#define MESH_SEGMENT_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -134,6 +133,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_SEGMENT_H

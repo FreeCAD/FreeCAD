@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_DLG_EVALUATE_MESH_IMP_H
-#define MESHGUI_DLG_EVALUATE_MESH_IMP_H
+#pragma once
 
 #include <map>
 
@@ -174,5 +173,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLG_EVALUATE_MESH_IMP_H

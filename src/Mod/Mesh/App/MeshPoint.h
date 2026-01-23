@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_MESHPOINT_H
-#define MESH_MESHPOINT_H
+#pragma once
 
 #include <limits>
 
@@ -71,6 +70,3 @@ public:
 };
 
 }  // namespace Mesh
-
-
-#endif  // MESH_MESHPOINT_H

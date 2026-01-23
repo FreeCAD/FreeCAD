@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MAPPER2_H
-#define WM4MAPPER2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector2.h"
@@ -100,5 +99,3 @@ namespace Wm4
 typedef Mapper2<float> Mapper2f;
 typedef Mapper2<double> Mapper2d;
 }
-
-#endif

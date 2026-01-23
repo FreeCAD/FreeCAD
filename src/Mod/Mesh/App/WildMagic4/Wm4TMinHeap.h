@@ -16,8 +16,7 @@
 //
 // Version: 4.0.2 (2006/10/15)
 
-#ifndef WM4TMINHEAP_H
-#define WM4TMINHEAP_H
+#pragma once
 
 #include "Wm4System.h"
 
@@ -95,5 +94,3 @@ private:
 }
 
 #include "Wm4TMinHeap.inl"
-
-#endif

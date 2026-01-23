@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4BOX3_H
-#define WM4BOX3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -58,5 +57,3 @@ namespace Wm4
 typedef Box3<float> Box3f;
 typedef Box3<double> Box3d;
 }
-
-#endif

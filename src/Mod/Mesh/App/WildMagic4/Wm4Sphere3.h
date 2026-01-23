@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4SPHERE3_H
-#define WM4SPHERE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -53,5 +52,3 @@ typedef Sphere3<float> Sphere3f;
 typedef Sphere3<double> Sphere3d;
 
 }
-
-#endif

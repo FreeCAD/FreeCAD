@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_SETOPERATIONS_H
-#define MESH_SETOPERATIONS_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -252,5 +251,3 @@ private:
 
 
 }  // namespace MeshCore
-
-#endif  // MESH_SETOPERATIONS_H

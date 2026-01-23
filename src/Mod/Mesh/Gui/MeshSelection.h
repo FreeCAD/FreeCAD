@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_MESHSELECTION_H
-#define MESHGUI_MESHSELECTION_H
+#pragma once
 
 #include <vector>
 #include <QWidget>
@@ -110,5 +109,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_MESHSELECTION_H

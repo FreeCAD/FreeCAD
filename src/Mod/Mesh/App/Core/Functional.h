@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FUNCTIONAL_H
-#define MESH_FUNCTIONAL_H
+#pragma once
 
 #include <algorithm>
 #include <future>
@@ -63,6 +62,3 @@ static void parallel_sort(Iter begin, Iter end, Pred comp, int threads)
 }
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_FUNCTIONAL_H

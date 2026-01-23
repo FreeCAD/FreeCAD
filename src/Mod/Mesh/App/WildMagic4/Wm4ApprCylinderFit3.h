@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4APPRCYLINDERFIT3_H
-#define WM4APPRCYLINDERFIT3_H
+#pragma once
 
 // Least-squares fit of a finite cylinder to (x,y,z) data.  The cylinder has
 // center C, unit-length axis direction U, radius r, and height h.  The end
@@ -80,5 +79,3 @@ typedef CylinderFit3<float> CylinderFit3f;
 typedef CylinderFit3<double> CylinderFit3d;
 
 }
-
-#endif

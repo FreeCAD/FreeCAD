@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4LINEARSYSTEM_H
-#define WM4LINEARSYSTEM_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4BandedMatrix.h"
@@ -145,5 +144,3 @@ typedef LinearSystem<float> LinearSystemf;
 typedef LinearSystem<double> LinearSystemd;
 
 }
-
-#endif
