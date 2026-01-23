@@ -312,12 +312,14 @@ bool ViewProviderAssembly::setEdit(int mode)
             UpdateSolverInformation();
         });
 
-        connectActivatedVP = getDocument()->signalActivatedVP.connect(std::bind(
-            &ViewProviderAssembly::slotActivatedVP,
-            this,
-            std::placeholders::_1,
-            std::placeholders::_2
-        ));
+        connectActivatedVP = getDocument()->signalActivatedVP.connect(
+            std::bind(
+                &ViewProviderAssembly::slotActivatedVP,
+                this,
+                std::placeholders::_1,
+                std::placeholders::_2
+            )
+        );
 
         assembly->solve();
 
