@@ -348,7 +348,7 @@ void TaskRichAnno::onViewPositionChanged(const QPointF& scenePos)
 
 void TaskRichAnno::updateTask()
 {
-//    blockUpdate = false;
+//    blockUpdate = true;
 }
 
 void TaskRichAnno::changeEvent(QEvent *event)
