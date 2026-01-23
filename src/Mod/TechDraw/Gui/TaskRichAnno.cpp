@@ -538,8 +538,7 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
         // children.
         QGIRichAnno* clickedAnno = nullptr;
         while (item) {
-            clickedAnno = dynamic_cast<QGIRichAnno*>(item);
-            if (clickedAnno) {
+            if (dynamic_cast<QGIRichAnno*>(item)) {
                 break;  // Found an annotation
             }
             item = item->parentItem();  // Check the parent
