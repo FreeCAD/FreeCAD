@@ -143,7 +143,7 @@ def autogroup(obj):
                     active_group.Group += [obj]
             return
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
