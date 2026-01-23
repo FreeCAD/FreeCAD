@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef Cloud_WORKBENCH_H
-#define Cloud_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -44,6 +43,3 @@ protected:
 };
 
 }  // namespace CloudGui
-
-
-#endif  // Cloud_WORKBENCH_H

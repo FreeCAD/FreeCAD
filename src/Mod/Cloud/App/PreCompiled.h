@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef CLOUD_APP_PRECOMPILED_H
-#define CLOUD_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -47,5 +46,3 @@
 
 // Xerces
 #include <xercesc/util/XercesDefs.hpp>
-
-#endif
