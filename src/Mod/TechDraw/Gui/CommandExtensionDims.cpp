@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 # include <QApplication>
+# include <QLineEdit>
 # include <QMessageBox>
 # include <cmath>
 # include <sstream>
@@ -51,7 +52,6 @@
 # include <Mod/TechDraw/App/Preferences.h>
 # include <Mod/TechDraw/App/LineGroup.h>
 
-#include "DlgTemplateField.h"
 #include "DrawGuiUtil.h"
 #include "TaskCustomizeFormat.h"
 #include "TaskSelectLineAttributes.h"
@@ -111,17 +111,32 @@ void execInsertPrefixChar(Gui::Command* cmd, const std::string& prefixFormat) {
     }
 
     std::string prefixText(prefixFormat);
-    if (prefixFormat.find("%s") != std::string::npos) {
-        DlgTemplateField ui(Gui::getMainWindow());
-        ui.setFieldName(QObject::tr("Repeat count").toStdString());
-        ui.setFieldContent("1");
-        if (ui.exec() != QDialog::Accepted) {
+    if (prefixFormat.find("%s") == 0) {
+        QDialog dialog(Gui::getMainWindow());
+        dialog.setWindowTitle(QObject::tr("Prefix Text"));
+
+        QLineEdit edit(&dialog);
+        edit.setAlignment(Qt::AlignRight);
+        QLabel label(QString::fromStdString(prefixFormat.c_str() + 2), &dialog);
+
+        auto hlayout = new QHBoxLayout();
+        hlayout->addWidget(&edit);
+        hlayout->addWidget(&label);
+
+        QDialogButtonBox box(&dialog);
+        box.setStandardButtons(QDialogButtonBox::Ok);
+
+        QVBoxLayout vlayout;
+        vlayout.addLayout(hlayout);
+        vlayout.addWidget(&box);
+        dialog.setLayout(&vlayout);
+
+        QObject::connect(&box, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+        if (dialog.exec() != QDialog::Accepted) {
             return;
         }
 
-        QString numberFromDialog = ui.getFieldContent();
-        QString qPrefixText = QStringLiteral("%1× ").arg(numberFromDialog);
-        prefixText = qPrefixText.toStdString();
+        prefixText = QString::asprintf(prefixFormat.c_str(), edit.text().toStdString().c_str()).toStdString();
     }
     size_t prefixSize = prefixText.capacity();
 

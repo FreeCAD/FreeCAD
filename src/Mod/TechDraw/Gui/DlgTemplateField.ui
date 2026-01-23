@@ -32,7 +32,15 @@
      <item row="0" column="1">
       <widget class="QLabel" name="lblName">
        <property name="text">
-        <string>TextLabel</string>
+        <string>Name</string>
+       </property>
+       <property name="font">
+        <font>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="textInteractionFlags">
+        <enum>Qt::TextSelectableByMouse</enum>
        </property>
       </widget>
      </item>
@@ -44,10 +52,38 @@
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QLineEdit" name="leInput"/>
+      <widget class="TechDrawGui::LineEditFrame" name="leFrame">
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+       <layout class="QHBoxLayout" name="editLayout">
+        <property name="leftMargin">
+         <number>1</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="Gui::ExpLineEdit" name="leInput">
+          <property name="frame">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QCheckBox" name="cbAutofill">
+      <widget class="QPushButton" name="btnAutofill">
        <property name="toolTip">
         <string>Reapplies auto-fill to this field</string>
        </property>
@@ -58,14 +94,11 @@
      </item>
      <item row="2" column="1">
       <widget class="QLineEdit" name="leAutofill">
-       <property name="enabled">
-        <bool>false</bool>
+       <property name="readOnly">
+        <bool>true</bool>
        </property>
        <property name="toolTip">
         <string>The autofill replacement value</string>
-       </property>
-       <property name="readOnly">
-        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -86,6 +119,18 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::ExpLineEdit</class>
+   <extends>QLineEdit</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>TechDrawGui::LineEditFrame</class>
+   <extends>QLineEdit</extends>
+   <header>Mod/TechDraw/Gui/DlgTemplateField.h</header>
+  </customwidget>
+ </customwidgets>
  <layoutdefault spacing="6" margin="9"/>
  <resources/>
  <connections>
