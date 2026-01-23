@@ -142,3 +142,21 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # Ensure it doesn't crash on recompute even if the file is missing
         # It should just print a warning
         self.document.recompute()
+
+    def test_division_by_zero_guard(self):
+        """Test that zero tile size does not crash the recompute."""
+        self.printTestMessage("division by zero guard...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+
+        # Force increments to zero
+        covering.TileLength = 0.0
+        covering.TileWidth = 0.0
+        covering.JointWidth = 0.0
+
+        # This triggers execute() -> _build_cutters()
+        # Without the guard, this raises ZeroDivisionError
+        self.document.recompute()
+
+        # If it didn't crash, the shape should simply be empty (null)
+        self.assertTrue(covering.Shape.isNull())

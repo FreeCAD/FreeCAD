@@ -416,17 +416,30 @@ class _Covering(ArchComponent.Component):
         return center_point.add(origin_offset)
 
     def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
+        # Anything smaller than this is considered effectively zero to prevent numerical instability
+        # in the geometry calculations or division-by-zero errors in Python.
+        MIN_DIMENSION = 0.1
+        TOO_MANY_TILES = 10000
+
         # Step size
         step_x = t_len + j_len
         step_y = t_wid + j_wid
 
-        if step_x <= 0 or step_y <= 0:
-            return [], []
+        # Prevent division by zero or extremely small values
+        if step_x < MIN_DIMENSION or step_y < MIN_DIMENSION:
+            return None, None
 
         # Estimate count
         diag = bbox.DiagonalLength
         count_x = int(diag / step_x) + 4
         count_y = int(diag / step_y) + 4
+
+        # Prevent memory exhaustion by too many tiles
+        if (count_x * count_y) > TOO_MANY_TILES:
+            FreeCAD.Console.PrintWarning(
+                translate("Arch", "Covering: Tile count too high. Aborting.") + "\n"
+            )
+            return None, None
 
         # Determine Z offset for cutters
         if obj.FinishMode == "Solid Tiles":
@@ -443,7 +456,7 @@ class _Covering(ArchComponent.Component):
 
         # Generate Horizontal Strips (Rows)
         # OpenCascade requires dimensions > 0 for solids
-        if j_wid > Part.Precision.confusion():
+        if j_wid > MIN_DIMENSION:
             full_len_x = 2 * count_x * step_x
             start_x = -count_x * step_x
 
@@ -457,7 +470,7 @@ class _Covering(ArchComponent.Component):
 
         # Generate Vertical Strips (Cols)
         # OpenCascade requires dimensions > 0 for solids
-        if j_len > Part.Precision.confusion():
+        if j_len > MIN_DIMENSION:
             is_stack_bond = obj.TileOffset.Length < 1e-5
 
             if is_stack_bond:
@@ -485,6 +498,12 @@ class _Covering(ArchComponent.Component):
 
     @profile_it
     def _perform_cut(self, obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec):
+
+        # If the cutter builder returned None, some of the parameters (e.g. tile size or joint
+        # width) were invalid.
+        # Return an empty Part.Shape() and allow the document to continue recomputing other objects.
+        if cutters_h is None or cutters_v is None:
+            return Part.Shape()
 
         # Prepare transformation
         tr = FreeCAD.Placement()
