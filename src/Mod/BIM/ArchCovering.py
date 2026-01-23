@@ -353,7 +353,13 @@ class _Covering(ArchComponent.Component):
                     )
 
         if face:
-            # Ensure we are working with a copy in global coordinates
+            # findPlane() returns a Plane object for flat faces, or None for curved ones.
+            if face.findPlane() is None:
+                FreeCAD.Console.PrintWarning(
+                    translate("Arch", "Covering: Only planar surfaces are currently supported.")
+                    + "\n"
+                )
+                return None
             return face
 
         return None

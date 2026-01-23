@@ -160,3 +160,19 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # If it didn't crash, the shape should simply be empty (null)
         self.assertTrue(covering.Shape.isNull())
+
+    def test_planar_enforcement(self):
+        """Verify that coverings are only created on planar surfaces."""
+        self.printTestMessage("planar enforcement check...")
+
+        # Create a sphere (non-planar surface)
+        sphere = self.document.addObject("Part::Sphere", "Sphere")
+        self.document.recompute()
+
+        covering = Arch.makeCovering((sphere, ["Face1"]))
+        self.document.recompute()
+
+        # The execute logic should detect the non-planar face and return a null shape
+        self.assertTrue(
+            covering.Shape.isNull(), "Covering was incorrectly generated on a non-planar face."
+        )
