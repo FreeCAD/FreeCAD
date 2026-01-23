@@ -58,7 +58,7 @@ public:
 
     App::PropertyPlacement Placement;
 
-    // boost::signals2::signal<void (const MeasureBase*)> signalGuiInit;
+    // fastsignals::signal<void (const MeasureBase*)> signalGuiInit;
 
     // return PyObject as MeasureBasePy
     PyObject* getPyObject() override;
@@ -74,7 +74,6 @@ public:
     {
         return {};
     }
-    virtual Base::Placement getPlacement();
 
     // Return the objects that are measured
     virtual std::vector<App::DocumentObject*> getSubject() const;

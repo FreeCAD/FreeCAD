@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>750</width>
-    <height>800</height>
+    <width>775</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,24 +15,9 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QScrollArea" name="scrollArea">
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents_6">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>980</width>
-        <height>849</height>
-       </rect>
-      </property>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
-        <layout class="QVBoxLayout" name="vBox">
-         <item>
-          <widget class="QTabWidget" name="tabWidget">
+    <layout class="QVBoxLayout" name="vBox">
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -41,14 +26,14 @@
            </property>
            <property name="sizeIncrement">
             <size>
-             <width>650</width>
-             <height>850</height>
+             <width>775</width>
+             <height>600</height>
             </size>
            </property>
            <property name="baseSize">
             <size>
-             <width>650</width>
-             <height>850</height>
+             <width>775</width>
+             <height>600</height>
             </size>
            </property>
            <property name="currentIndex">
@@ -170,10 +155,6 @@
           </widget>
          </item>
         </layout>
-       </item>
-      </layout>
-     </widget>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">

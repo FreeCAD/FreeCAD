@@ -150,6 +150,8 @@ AssemblyExport double getEdgeRadius(const App::DocumentObject* obj, const std::s
 AssemblyExport DistanceType getDistanceType(App::DocumentObject* joint);
 AssemblyExport JointGroup* getJointGroup(const App::Part* part);
 
+AssemblyExport std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* assembly);
+
 // getters to get from properties
 AssemblyExport void setJointActivated(const App::DocumentObject* joint, bool val);
 AssemblyExport bool getJointActivated(const App::DocumentObject* joint);

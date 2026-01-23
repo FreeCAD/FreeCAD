@@ -1692,7 +1692,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Creates a new page with the default template</source>
-      <translation>Направи нови унапред задани празни цртеж</translation>
+      <translation>Употреби унапред подешени шаблон празног цртежа</translation>
     </message>
   </context>
   <context>
@@ -1710,7 +1710,7 @@ Left clicking on empty space will validate the current dimension. Right clicking
     <message>
       <location filename="../../Command.cpp" line="169"/>
       <source>Creates a new page from a custom template</source>
-      <translation>Изабери и направи нови празни цртеж</translation>
+      <translation>Изабери и употреби шаблон празног цртежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
@@ -2181,7 +2181,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Направи скраћени поглед</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Сачувај цртеж у DXF формату</translation>
@@ -4218,7 +4218,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Грешка параметра</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Име документа:</translation>
     </message>
@@ -5687,7 +5687,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="495"/>
       <source>Default template file for new pages</source>
-      <translation>Подразумевани шаблон празног цртежа за нове цртеже</translation>
+      <translation>Датотека унапред подешеног шаблона празног цртежа</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="476"/>
@@ -5811,7 +5811,7 @@ can override the global &apos;Update with 3D&apos; parameter</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="615"/>
       <source>Default template</source>
-      <translation>Унапред задана шара шрафуре</translation>
+      <translation>Унапред подешени празни цртеж</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
@@ -9499,27 +9499,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Није изабрано теме</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Изабери бар </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> темена</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Нема одабраних ивица</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> ивице</translation>
     </message>
@@ -9984,12 +9990,12 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation>Аксонометријска дужинска кота</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Направи дужинску коту на аксонометријском погледу, користећи изабране ивице или парове темена за одређивање правца и дужине</translation>
     </message>

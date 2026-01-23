@@ -23,7 +23,7 @@
 #ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
-#include "ViewProviderDragger.h"
+#include "ViewProviderGeometryObject.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderFeaturePython.h"
 

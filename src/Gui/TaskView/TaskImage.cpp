@@ -106,9 +106,9 @@ void TaskImage::connectSignals()
     connect(ui->sliderTransparency, qOverload<int>(&QSlider::valueChanged),
         this, &TaskImage::changeTransparency);
 
-    connect(ui->spinBoxWidth, qOverload<double>(&QuantitySpinBox::valueChanged),
+    connect(ui->spinBoxWidth, &QuantitySpinBox::editingFinished,
         this, &TaskImage::changeWidth);
-    connect(ui->spinBoxHeight, qOverload<double>(&QuantitySpinBox::valueChanged),
+    connect(ui->spinBoxHeight, &QuantitySpinBox::editingFinished,
         this, &TaskImage::changeHeight);
     connect(ui->pushButtonScale, &QPushButton::clicked,
         this, &TaskImage::onInteractiveScale);
@@ -150,25 +150,29 @@ void TaskImage::changeTransparency(int val)
     }
 }
 
-void TaskImage::changeWidth(double val)
+void TaskImage::changeWidth()
 {
     if (!feature.expired()) {
+        double val = ui->spinBoxWidth->value().getValue();
         feature->XSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
-            QSignalBlocker block(ui->spinBoxWidth);
+            feature->YSize.setValue(val / aspectRatio);
+            QSignalBlocker block(ui->spinBoxHeight);
             ui->spinBoxHeight->setValue(val / aspectRatio);
         }
     }
 }
 
-void TaskImage::changeHeight(double val)
+void TaskImage::changeHeight()
 {
     if (!feature.expired()) {
+        double val = ui->spinBoxHeight->value().getValue();
         feature->YSize.setValue(val);
 
         if (ui->checkBoxRatio->isChecked()) {
-            QSignalBlocker block(ui->spinBoxHeight);
+            feature->XSize.setValue(val * aspectRatio);
+            QSignalBlocker block(ui->spinBoxWidth);
             ui->spinBoxWidth->setValue(val * aspectRatio);
         }
     }

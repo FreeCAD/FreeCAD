@@ -466,7 +466,7 @@ def _get_param_dictionary():
     # fmt: off
     param_dict["Mod/Draft"] = {
         "AnnotationStyleEditorHeight": ("int",       450),
-        "AnnotationStyleEditorWidth":  ("int",       450),
+        "AnnotationStyleEditorWidth":  ("int",       600),
         "CenterPlaneOnView":           ("bool",      False),
         "ChainedMode":                 ("bool",      False),
         "CopyMode":                    ("bool",      False),
@@ -625,6 +625,7 @@ def _get_param_dictionary():
     # Note: incomplete!
     param_dict["Mod/BIM"] = {
         "BIMSketchPlacementOnly":      ("bool",      False),
+        "WallBaseline":                ("int",       0),
     }
 
     # For the Mod/Mesh parameters we do not check the preferences:

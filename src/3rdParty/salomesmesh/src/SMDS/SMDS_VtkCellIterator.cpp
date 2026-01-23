@@ -182,9 +182,10 @@ SMDS_VtkCellIteratorPolyH::SMDS_VtkCellIteratorPolyH(SMDS_Mesh* mesh, int vtkCel
   case SMDSEntity_Polyhedra:
   {
     //MESSAGE("SMDS_VtkCellIterator Polyhedra");
-    vtkIdType nFaces = 0;
-    vtkIdTypePtr ptIds = 0;
-    grid->GetFaceStream(_cellId, nFaces, ptIds);
+    vtkNew<vtkIdList> faceStream;
+    grid->GetFaceStream( vtkCellId, faceStream);
+    vtkIdType nFaces = faceStream->GetId(0);
+    vtkIdType *ptIds = faceStream->GetPointer(1);
     int id = 0;
     _nbNodesInFaces = 0;
     for (int i = 0; i < nFaces; i++)

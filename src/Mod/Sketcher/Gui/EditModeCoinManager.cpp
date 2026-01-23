@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -121,11 +123,9 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
         {"DimensionalStringFormat",
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
-        {"ViewScalingFactor",
-         [this](const std::string& param) { Client.updateElementSizeParameters(); }},
-        {"MarkerSize", [this](const std::string& param) { Client.updateElementSizeParameters(); }},
-        {"EditSketcherFontSize",
-         [this](const std::string& param) { Client.updateElementSizeParameters(); }},
+        {"ViewScalingFactor", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"MarkerSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
+        {"EditSketcherFontSize", [this](const std::string&) { Client.updateElementSizeParameters(); }},
         {"EdgeWidth",
          [this, &drawingParameters = Client.drawingParameters](const std::string& param) {
              updateWidth(drawingParameters.CurveWidth, param, 2);

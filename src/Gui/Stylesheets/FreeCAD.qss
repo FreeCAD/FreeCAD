@@ -911,16 +911,15 @@ QToolBar::handle:vertical:hover {
 }
 
 QToolBar::separator:horizontal {
-  width: 2px;
-  padding: 3px 5px;
-  image: url(qss:@IconsLocationFolderName/hsepartoolbar-darkgray.svg);
+  width: 1px;
+  margin: 5px;
+  background-color: @GeneralBorderColor;
 }
 
 QToolBar::separator:vertical {
-  height: 2px;
-  width: 5px;
-  padding: 3px 3px;
-  image: url(qss:@IconsLocationFolderName/vsepartoolbar-darkgray.svg);
+  height: 1px;
+  margin: 5px;
+  background-color: @GeneralBorderColor;
 }
 
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working

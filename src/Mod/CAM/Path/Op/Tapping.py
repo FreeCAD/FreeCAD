@@ -37,7 +37,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Tapping Operation"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "https://www.freecadweb.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Path Tapping operation."
 __contributors__ = "luvtofish (Dan Henderson)"
 

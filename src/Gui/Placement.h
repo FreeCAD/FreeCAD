@@ -95,7 +95,7 @@ private Q_SLOTS:
     void openTransaction();
 
 private:
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     std::string propertyName;  // the name of the placement property
     std::set<std::string> documents;
     /** If false apply the placement directly to the transform nodes,

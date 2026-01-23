@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>在插入新零件之前，必须先保存装配文档。</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -903,60 +903,60 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>您想要移动对象并删除关联的配合吗？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
       <source>Move part</source>
       <translation>移动零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation/>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
       <source>Empty Assembly</source>
       <translation>空装配体</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
       <source>Over-constrained:</source>
       <translation>过度约束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
       <source>Malformed joints:</source>
       <translation>错误配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>Redundant joints:</source>
       <translation>冗余配合：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Partially redundant:</source>
       <translation>部分冗余：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
       <source>Solver failed to converge</source>
       <translation>求解器未能收敛</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
       <source>Under-constrained:</source>
       <translation>约束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Fully constrained</source>
       <translation>完全约束</translation>
     </message>

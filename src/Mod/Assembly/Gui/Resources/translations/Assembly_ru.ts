@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>Перед вставкой новой детали документ сборки должен быть сохранен.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -900,53 +900,53 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Вы хотите переместить объект и удалить связанные соединения?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1030"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
       <source>Move part</source>
       <translation>Переместить деталь</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1575"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Поставщик Вида для Сборки</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1592"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
       <source>Empty Assembly</source>
       <translation>Пустая сборка</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
       <source>Over-constrained:</source>
       <translation>Конфликтующие ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1605"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
       <source>Malformed joints:</source>
       <translation>Неверные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>Redundant joints:</source>
       <translation>Избыточные сопряжения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1621"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
       <source>Partially redundant:</source>
       <translation>Частично избыточны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1629"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
       <source>Solver failed to converge</source>
       <translation>Решатель не смог свести решение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1637"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
       <source>Under-constrained:</source>
       <translation>Недостаточно ограничен:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1639"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Степень свободы</numerusform>
@@ -956,7 +956,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Fully constrained</source>
       <translation>Полностью ограничен</translation>
     </message>
@@ -1267,7 +1267,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../../../CommandCreateAssembly.py" line="101"/>
       <location filename="../../../CommandCreateAssembly.py" line="135"/>
       <source>Activate Assembly</source>
-      <translation>Активная Сборка</translation>
+      <translation>Активировать сборку</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="106"/>

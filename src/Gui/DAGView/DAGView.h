@@ -26,7 +26,7 @@
 
 #include <memory>
 #include <QGraphicsView>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <Gui/DockWindow.h>
 #include <Gui/Document.h>
@@ -58,8 +58,8 @@ private:
 
     using ModelMap = std::map<const Gui::Document*, std::shared_ptr<Model>>;
     ModelMap modelMap;
-    boost::signals2::scoped_connection conActive;
-    boost::signals2::scoped_connection conDelete;
+    fastsignals::scoped_connection conActive;
+    fastsignals::scoped_connection conDelete;
 };
 
 //! @brief dock window for DAG viewer

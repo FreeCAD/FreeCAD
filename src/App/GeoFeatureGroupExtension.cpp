@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2014 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
@@ -151,6 +153,16 @@ GeoFeatureGroupExtension::addObjects(std::vector<App::DocumentObject*> objects)
     for (auto object : objects) {
 
         if (!allowObject(object)) {
+            continue;
+        }
+
+        // Prevent from extracting children of nested groups fixed issue:#26743
+        // As groups manage their own local coordinate systems and children.
+        if (object->hasExtension(App::GeoFeatureGroupExtension::getExtensionClassTypeId())) {
+            if (!hasObject(object)) {
+                grp.push_back(object);
+                ret.push_back(object);
+            }
             continue;
         }
 

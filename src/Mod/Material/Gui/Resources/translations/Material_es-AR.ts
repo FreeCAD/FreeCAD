@@ -29,7 +29,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Inspects the material properties of the selected object</source>
-      <translation>Inspecciona las propiedades de material del objeto seleccionado</translation>
+      <translation>Inspecciona las propiedades del material del objeto seleccionado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="176"/>
@@ -42,12 +42,12 @@
     <message>
       <location filename="../../Array2D.ui" line="14"/>
       <source>2D Array</source>
-      <translation>Lista 2D</translation>
+      <translation>Matriz 2D</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="79"/>
       <source>Delete Row</source>
-      <translation>Borrar Fila</translation>
+      <translation>Eliminar fila</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="138"/>
@@ -60,13 +60,13 @@
     <message>
       <location filename="../../Array3D.ui" line="14"/>
       <source>3D Array</source>
-      <translation>Lista 3D</translation>
+      <translation>Matriz 3D</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="77"/>
       <location filename="../../Array3D.cpp" line="81"/>
       <source>Delete Row</source>
-      <translation>Borrar Fila</translation>
+      <translation>Eliminar fila</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="231"/>
@@ -78,18 +78,18 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation>Confirmar Borrar</translation>
+      <translation>Confirmar eliminación</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation>¿Borrar la fila?</translation>
+      <translation>¿Eliminar la fila?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>Borrar esto también eliminará todos los contenidos 2D.</translation>
+      <translation>Al eliminar esto también se eliminará todo el contenido en 2D.</translation>
     </message>
   </context>
   <context>
@@ -108,12 +108,12 @@
   <context>
     <name>MatGui::BaseDelegate</name>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="439"/>
+      <location filename="../../BaseDelegate.cpp" line="430"/>
       <source>False</source>
       <translation>Falso</translation>
     </message>
     <message>
-      <location filename="../../BaseDelegate.cpp" line="440"/>
+      <location filename="../../BaseDelegate.cpp" line="431"/>
       <source>True</source>
       <translation>Verdadero</translation>
     </message>
@@ -123,17 +123,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="14"/>
       <source>Display Properties</source>
-      <translation>Mostrar Propiedades</translation>
+      <translation>Propiedades de visualización</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="20"/>
       <source>Viewing Mode</source>
-      <translation>Modo de Inspección</translation>
+      <translation>Modo de visualización</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="55"/>
       <source>Document window</source>
-      <translation>Ventana del documento</translation>
+      <translation>Ventana de documento</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="87"/>
@@ -143,17 +143,17 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="106"/>
       <source>Display</source>
-      <translation>Mostrar</translation>
+      <translation>Visualización</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="144"/>
       <source>Point size</source>
-      <translation>Tamaño del punto</translation>
+      <translation>Tamaño de punto</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="199"/>
       <source>Line width</source>
-      <translation>Espesor de Línea</translation>
+      <translation>Espesor de línea</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
@@ -216,17 +216,17 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation>Etiqueta / nombre interno</translation>
+      <translation>Etiqueta/nombre interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Shape/Type</translation>
+      <translation>Sub.Forma/Tipo</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forma.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="100"/>
@@ -299,17 +299,17 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="64"/>
       <source>Label / internal name</source>
-      <translation>Etiqueta / nombre interno</translation>
+      <translation>Etiqueta/nombre interno</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Sub.Shape/Type</translation>
+      <translation>Sub.Forma/Tipo</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
       <source>Shape.TypeID / TypeID</source>
-      <translation>Shape.TypeID/TypeID</translation>
+      <translation>Forma.TypeID/TypeID</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="94"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="128"/>
       <source>Copy to Clipboard</source>
-      <translation>Copiar al Portapapeles</translation>
+      <translation>Copiar al portapapeles</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="151"/>
@@ -380,7 +380,7 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation>Ubicación de biblioteca: </translation>
+      <translation>Directorio de la biblioteca: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
@@ -645,12 +645,12 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
   <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="475"/>
+      <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>False</source>
       <translation>Falso</translation>
     </message>
     <message>
-      <location filename="../../MaterialDelegate.cpp" line="476"/>
+      <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>True</source>
       <translation>Verdadero</translation>
     </message>
@@ -752,19 +752,19 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
   <context>
     <name>MatGui::MaterialTreeWidget</name>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="140"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="139"/>
       <source>Launch Editor</source>
       <translation>Abrir editor</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="534"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="533"/>
       <source>Favorites</source>
       <translation>Favoritos</translation>
     </message>
     <message>
-      <location filename="../../MaterialTreeWidget.cpp" line="313"/>
-      <location filename="../../MaterialTreeWidget.cpp" line="541"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="312"/>
+      <location filename="../../MaterialTreeWidget.cpp" line="540"/>
       <source>Recent</source>
       <translation>Recientes</translation>
     </message>
@@ -894,24 +894,24 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="754"/>
       <location filename="../../MaterialsEditor.cpp" line="786"/>
-      <location filename="../../MaterialsEditor.cpp" line="1088"/>
-      <location filename="../../MaterialsEditor.cpp" line="1150"/>
+      <location filename="../../MaterialsEditor.cpp" line="1086"/>
+      <location filename="../../MaterialsEditor.cpp" line="1148"/>
       <source>Property</source>
       <translation>Propiedad</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="755"/>
       <location filename="../../MaterialsEditor.cpp" line="787"/>
-      <location filename="../../MaterialsEditor.cpp" line="1089"/>
-      <location filename="../../MaterialsEditor.cpp" line="1151"/>
+      <location filename="../../MaterialsEditor.cpp" line="1087"/>
+      <location filename="../../MaterialsEditor.cpp" line="1149"/>
       <source>Value</source>
       <translation>Valor</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="756"/>
       <location filename="../../MaterialsEditor.cpp" line="788"/>
-      <location filename="../../MaterialsEditor.cpp" line="1090"/>
-      <location filename="../../MaterialsEditor.cpp" line="1152"/>
+      <location filename="../../MaterialsEditor.cpp" line="1088"/>
+      <location filename="../../MaterialsEditor.cpp" line="1150"/>
       <source>Type</source>
       <translation>Tipo</translation>
     </message>
@@ -926,22 +926,22 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <translation>Reciente</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1153"/>
+      <location filename="../../MaterialsEditor.cpp" line="1151"/>
       <source>Units</source>
       <translation>Unidades</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1320"/>
+      <location filename="../../MaterialsEditor.cpp" line="1318"/>
       <source>Context Menu</source>
       <translation>Menú contextual</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1322"/>
+      <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
       <translation>Heredar de</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1326"/>
+      <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
       <translation>Heredar nuevo material</translation>
     </message>
@@ -1051,7 +1051,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation>Abre la URL del producto de este material en un navegador externo</translation>
+      <translation>Abre la URL de producto de este material en un navegador externo</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -1096,7 +1096,7 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="77"/>
       <source>Saves this material as a card</source>
-      <translation>Guarda este material como tarjeta</translation>
+      <translation>Guarda este material como una tarjeta</translation>
     </message>
   </context>
   <context>
@@ -1148,17 +1148,17 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <translation>Guarda el material antes de usarlo.</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1347"/>
+      <location filename="../../MaterialsEditor.cpp" line="1345"/>
       <source>Unsaved Material</source>
       <translation>Material sin guardar</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1348"/>
+      <location filename="../../MaterialsEditor.cpp" line="1346"/>
       <source>Save changes to the material before closing?</source>
       <translation>¿Guardar cambios en el material antes de cerrar?</translation>
     </message>
     <message>
-      <location filename="../../MaterialsEditor.cpp" line="1349"/>
+      <location filename="../../MaterialsEditor.cpp" line="1347"/>
       <source>Otherwise, all changes will be lost.</source>
       <translation>De lo contrario, todos los cambios se perderán.</translation>
     </message>
@@ -1167,13 +1167,13 @@ Si no está marcado, serán ordenadas por su nombre.</translation>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
-      <translation>Confirmar Borrar</translation>
+      <translation>Confirmar eliminación</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation>¿Borrar la fila?</translation>
+      <translation>¿Eliminar la fila?</translation>
     </message>
   </context>
   <context>

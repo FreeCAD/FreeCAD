@@ -315,22 +315,38 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="Gui::PrefCheckBox" name="checkBox_WallSketches">
-        <property name="text">
-         <string>Use sketches for walls</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>WallSketches</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Arch</cstring>
-        </property>
-       </widget>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_WallBaseline">
+      <property name="text">
+       <string>Wall baseline</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="Gui::PrefComboBox" name="comboBox_WallBaseline">
+      <property name="prefEntry" stdset="0">
+       <cstring>WallBaseline</cstring>
+      </property>
+      <property name="prefPath" stdset="0">
+       <cstring>Mod/BIM</cstring>
+      </property>
+      <item>
+       <property name="text">
+        <string>No baseline</string>
+       </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Draft line</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Sketch</string>
+       </property>
+      </item>
+     </widget>
+    </item>
       <item row="4" column="0">
        <widget class="QLabel" name="label_StairsLength">
         <property name="text">

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 #include <unordered_map>
 #ifndef FC_DEBUG
 #include <random>
@@ -1192,7 +1194,11 @@ void ElementMap::addChildElements(long masterTag, const std::vector<MappedChildE
 
         // do child mapping only if the child element count >= 5
         const int threshold {5};
-        if ((child.count >= threshold && child.tag != 0) || !child.elementMap) {
+
+        // skip encoding only when masterTag=0, child.tag=0, and count is exactly at threshold
+        bool skipEncoding = (masterTag == 0 && child.tag == 0 && child.count == threshold && child.elementMap);
+
+        if ((child.count >= threshold && !skipEncoding) || !child.elementMap) {
             encodeElementName(child.indexedName[0],
                               tmp,
                               ss,

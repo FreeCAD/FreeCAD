@@ -387,7 +387,7 @@ public:
         const TopoShape& shapeToLookIn
     );
     /// Unlike \ref getTypeAndIndex() this function only handles the supported
-    /// element types.
+    /// element types. It works only if Name is just an element name (with or without TNP hash).
     static std::pair<std::string, unsigned long> getElementTypeAndIndex(const char* Name);
     /** Sub type list
      *  List of different subelement types

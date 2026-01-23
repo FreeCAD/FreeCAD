@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -127,11 +129,11 @@ public:
 
     // clang-format off
     /// signal before changing a property of this object
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalBeforeChange;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalBeforeChange;
     /// signal on changed  property of this object
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalChanged;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalChanged;
     /// signal on changed property of this object before document scoped signalChangedObject
-    boost::signals2::signal<void(const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
+    fastsignals::signal<void(const App::DocumentObject&, const App::Property&)> signalEarlyChanged;
     // clang-format on
 
     /// returns the type name of the ViewProvider

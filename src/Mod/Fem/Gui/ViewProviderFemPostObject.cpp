@@ -75,11 +75,7 @@
 using namespace FemGui;
 namespace sp = std::placeholders;
 
-#ifdef VTK_CELL_ARRAY_V2
 using vtkIdTypePtr = const vtkIdType*;
-#else
-using vtkIdTypePtr = vtkIdType*;
-#endif
 
 // ----------------------------------------------------------------------------
 
@@ -139,7 +135,7 @@ public:
 
 private:
     std::set<ViewProviderFemPostObject*> views;
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectSelection;
 };
 

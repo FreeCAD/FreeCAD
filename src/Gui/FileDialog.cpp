@@ -30,6 +30,7 @@
 #include <QGridLayout>
 #include <QGroupBox>
 #include <QLineEdit>
+#include <QMenuBar>
 #include <QPushButton>
 #include <QRadioButton>
 #include <QRegularExpression>
@@ -49,6 +50,45 @@
 
 
 using namespace Gui;
+
+// An raii-helper struct to disable actions while dialogs are open
+// At least on macos, shortcuts for enabled actions will still trigger while dialogs are open
+struct ActionDisabler
+{
+    ActionDisabler()
+    {
+        auto mainWin = Gui::getMainWindow();
+        if (!mainWin) {
+            return;
+        }
+        QMenuBar* menuBar = mainWin->menuBar();
+        if (!menuBar) {
+            return;
+        }
+        auto actions = menuBar->actions();
+        actionsToReenable.reserve(actions.size());
+        for (auto action : actions) {
+            if (action->isEnabled()) {
+                action->setEnabled(false);
+                actionsToReenable.push_back(action);
+            }
+        }
+    }
+
+    ~ActionDisabler()
+    {
+        for (auto action : actionsToReenable) {
+            if (action) {
+                action->setEnabled(true);
+            }
+        }
+    }
+
+    FC_DISABLE_COPY(ActionDisabler)
+
+    std::vector<QAction*> actionsToReenable {};
+};
+
 
 bool DialogOptions::dontUseNativeFileDialog()
 {
@@ -195,6 +235,8 @@ QString FileDialog::getSaveFileName(
     Options options
 )
 {
+    ActionDisabler actionDisabler {};
+
     QString dirName = dir;
     bool hasFilename = false;
     if (dirName.isEmpty()) {
@@ -238,6 +280,7 @@ QString FileDialog::getSaveFileName(
     if (windowTitle.isEmpty()) {
         windowTitle = FileDialog::tr("Save As");
     }
+
 
     // NOTE: We must not change the specified file name afterwards as we may return the name of an
     // already existing file. Hence we must extract the first matching suffix from the filter list
@@ -298,6 +341,7 @@ QString FileDialog::getExistingDirectory(
     Options options
 )
 {
+    ActionDisabler actionDisabler {};
     QString path = QFileDialog::getExistingDirectory(parent, caption, dir, options);
     // valid path was selected
     if (!path.isEmpty()) {
@@ -321,6 +365,7 @@ QString FileDialog::getOpenFileName(
     Options options
 )
 {
+    ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
@@ -385,6 +430,7 @@ QStringList FileDialog::getOpenFileNames(
     Options options
 )
 {
+    ActionDisabler actionDisabler {};
     QString dirName = dir;
     if (dirName.isEmpty()) {
         dirName = getWorkingDirectory();
@@ -799,6 +845,7 @@ void FileChooser::setFileName(const QString& fn)
  */
 void FileChooser::chooseFile()
 {
+    ActionDisabler actionDisabler {};
     QString prechosenDirectory = lineEdit->text();
     if (prechosenDirectory.isEmpty()) {
         prechosenDirectory = FileDialog::getWorkingDirectory();

@@ -314,12 +314,12 @@
     <message>
       <location filename="../../Command.cpp" line="1221"/>
       <source>Node Set by Polygon</source>
-      <translation type="unfinished">Node Set by Polygon</translation>
+      <translation>Nœud défini par un Polygone</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1222"/>
       <source>Creates a node set by polygon selection</source>
-      <translation type="unfinished">Creates a node set by polygon selection</translation>
+      <translation>Crée un nœud défini par la sélection du polygone</translation>
     </message>
   </context>
   <context>
@@ -716,7 +716,7 @@
     <message>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="269"/>
       <source>Edit Mirror</source>
-      <translation>Modifier la mise en miroir</translation>
+      <translation>Éditer la symétrie</translation>
     </message>
   </context>
   <context>
@@ -1347,8 +1347,7 @@ with the last used dialog settings</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle
-lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
+      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -1866,7 +1865,7 @@ et que vous avez le message d'erreur indiquant que "MAXKOI" doit être augmenté
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>Utiliser une seule référence pour la contrainte de roulement</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
@@ -4172,7 +4171,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Pavé droit</translation>
+      <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4187,12 +4186,12 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="96"/>
       <source>Angle-Search</source>
-      <translation type="unfinished">Angle-Search</translation>
+      <translation>Recherche d'angle</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="111"/>
       <source>Stop angle</source>
-      <translation type="unfinished">Stop angle</translation>
+      <translation>Angle d'arrêt</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="102"/>
@@ -4959,7 +4958,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="236"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="263"/>
@@ -5020,7 +5019,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="42"/>
@@ -6989,7 +6988,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../../TaskPostBranch.ui" line="37"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="50"/>
@@ -7264,7 +7263,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
       <source>Mode</source>
-      <translation>Structure des documents</translation>
+      <translation>Mode</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="282"/>
@@ -8061,22 +8060,24 @@ visualisation des données de sommets.</translation>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="405"/>
       <source>No or wrong CalculiX binary ccx</source>
-      <translation type="unfinished">No or wrong CalculiX binary ccx</translation>
+      <translation>Il n'y a pas de fichier binaire ccx de CalculiX ou le fichier est incorrect.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="439"/>
       <source>FEM: wrong ccx binary</source>
-      <translation type="unfinished">FEM: wrong ccx binary</translation>
+      <translation>FEM : le binaire ccx est incorrect.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="452"/>
       <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
-      <translation type="unfinished">FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</translation>
+      <translation>FEM : le binaire ccx « {} » de CalculiX est introuvable. Définir le chemin d'accès au binaire ccx de CalculiX dans l'onglet CalculiX des
+préférences de l'atelier FEM.</translation>
     </message>
     <message>
       <location filename="../../../femtools/ccxtools.py" line="464"/>
       <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
-      <translation type="unfinished">FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</translation>
+      <translation>FEM : ccx « {} » de CalculiX donnant « {} » ne contient pas la phrase attendue « {} ». Il y a des problèmes lors de l'exécution du binaire ccx.
+Vérifier si ccx fonctionne de manière autonome sans FreeCAD.</translation>
     </message>
   </context>
   <context>

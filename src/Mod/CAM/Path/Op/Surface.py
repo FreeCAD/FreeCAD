@@ -2195,8 +2195,9 @@ class ObjectSurface(PathOp.ObjectOp):
                     rSTG = self._rotationalScanToGcode(obj, rng, rNum, prevDepth, layDep, advances)
                     commands.extend(rSTG)
                     if arc != 360.0:
-                        clrZ = self.layerEndzMax + self.SafeHeightOffset
-                        commands.append(Path.Command("G0", {"Z": clrZ, "F": self.vertRapid}))
+                        commands.append(
+                            Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid})
+                        )
                     rNum += 1
                 # Eol
 
@@ -2314,18 +2315,14 @@ class ObjectSurface(PathOp.ObjectOp):
         # Create first point
         pnt = CLP[0]
 
+        #  Always retract to full clearHeight before any A/B axis rotation
+        output.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
+
         # Rotate to correct index location
         if obj.RotationAxis == "X":
             output.append(Path.Command("G0", {"A": idxAng, "F": self.axialFeed}))
         else:
             output.append(Path.Command("G0", {"B": idxAng, "F": self.axialFeed}))
-
-        if li > 0:
-            if pnt.z > self.layerEndPnt.z:
-                clrZ = pnt.z + 2.0
-                output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
-        else:
-            output.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
 
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
@@ -2424,12 +2421,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Adjust feed rate based on radius/circumference of cutter.
         # Original feed rate based on travel at circumference.
-        if rN > 0:
-            if pnt.z >= self.layerEndzMax - FLOAT_EPSILON:
-                clrZ = pnt.z + 5.0
-                output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
-        else:
-            output.append(Path.Command("G1", {"Z": self.clearHeight, "F": self.vertRapid}))
+        output.append(Path.Command("G1", {"Z": self.clearHeight, "F": self.vertRapid}))
 
         output.append(Path.Command("G0", {axisOfRot: ang, "F": self.axialFeed}))
         output.append(Path.Command("G1", {"X": pnt.x, "Y": pnt.y, "F": self.axialFeed}))
