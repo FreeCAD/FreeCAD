@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_JointGroup_H
-#define ASSEMBLY_JointGroup_H
+#pragma once
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -55,6 +54,3 @@ public:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_JointGroup_H

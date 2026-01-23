@@ -23,8 +23,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef ASSEMBLY_GLOBAL_H
-# define ASSEMBLY_GLOBAL_H
+#pragma once
 
 
 // Assembly
@@ -44,5 +43,3 @@
 #   define AssemblyGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // ASSEMBLY_GLOBAL_H

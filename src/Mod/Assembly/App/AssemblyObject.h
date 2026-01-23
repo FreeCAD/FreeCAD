@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyObject_H
-#define ASSEMBLY_AssemblyObject_H
+#pragma once
 
 #include <boost/signals2.hpp>
 
@@ -285,6 +284,3 @@ private:
 };
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyObject_H
