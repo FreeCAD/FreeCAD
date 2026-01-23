@@ -348,7 +348,6 @@ void TaskRichAnno::onViewPositionChanged(const QPointF& scenePos)
 
 void TaskRichAnno::updateTask()
 {
-//    blockUpdate = true; // Original comment, m_inProgressLock serves a similar purpose
 //    blockUpdate = false;
 }
 
