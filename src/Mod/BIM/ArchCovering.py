@@ -542,70 +542,79 @@ class _Covering(ArchComponent.Component):
         t_len = obj.TileLength.Value
         t_wid = obj.TileWidth.Value
 
-        if obj.FinishMode == "Solid Tiles":
-            # Extrude Base Face
-            tile_layer = base_face.extrude(normal.multiply(obj.TileThickness.Value))
+        try:
+            if obj.FinishMode == "Solid Tiles":
+                # Extrude Base Face
+                tile_layer = base_face.extrude(normal.multiply(obj.TileThickness.Value))
 
-            # Cut
-            if cutters_h:
-                comp_h = Part.Compound(cutters_h)
-                comp_h.Placement = tr
-                tile_layer = tile_layer.cut(comp_h)
+                # Cut
+                if cutters_h:
+                    comp_h = Part.Compound(cutters_h)
+                    comp_h.Placement = tr
+                    tile_layer = tile_layer.cut(comp_h)
 
-            if cutters_v:
-                comp_v = Part.Compound(cutters_v)
-                comp_v.Placement = tr
-                result_shape = tile_layer.cut(comp_v)
-            else:
-                result_shape = tile_layer
-
-            # Count
-            full_vol = t_len * t_wid * obj.TileThickness.Value
-            full_cnt = 0
-            part_cnt = 0
-            for sol in result_shape.Solids:
-                if abs(sol.Volume - full_vol) < 0.001:
-                    full_cnt += 1
+                if cutters_v:
+                    comp_v = Part.Compound(cutters_v)
+                    comp_v.Placement = tr
+                    result_shape = tile_layer.cut(comp_v)
                 else:
-                    part_cnt += 1
-            obj.CountFullTiles = full_cnt
-            obj.CountPartialTiles = part_cnt
+                    result_shape = tile_layer
 
-        elif obj.FinishMode == "Parametric Pattern":
-            # 2D Cut
-            temp_face = base_face
+                # Count
+                full_vol = t_len * t_wid * obj.TileThickness.Value
+                full_cnt = 0
+                part_cnt = 0
+                for sol in result_shape.Solids:
+                    if abs(sol.Volume - full_vol) < 0.001:
+                        full_cnt += 1
+                    else:
+                        part_cnt += 1
+                obj.CountFullTiles = full_cnt
+                obj.CountPartialTiles = part_cnt
 
-            if cutters_h:
-                comp_h = Part.Compound(cutters_h)
-                comp_h.Placement = tr
-                temp_face = temp_face.cut(comp_h)
+            elif obj.FinishMode == "Parametric Pattern":
+                # 2D Cut
+                temp_face = base_face
 
-            if cutters_v:
-                comp_v = Part.Compound(cutters_v)
-                comp_v.Placement = tr
-                result_shape = temp_face.cut(comp_v)
-            else:
-                result_shape = temp_face
+                if cutters_h:
+                    comp_h = Part.Compound(cutters_h)
+                    comp_h.Placement = tr
+                    temp_face = temp_face.cut(comp_h)
 
-            # Count
-            full_area = t_len * t_wid
-            full_cnt = 0
-            part_cnt = 0
-            for f in result_shape.Faces:
-                if abs(f.Area - full_area) < 0.001:
-                    full_cnt += 1
+                if cutters_v:
+                    comp_v = Part.Compound(cutters_v)
+                    comp_v.Placement = tr
+                    result_shape = temp_face.cut(comp_v)
                 else:
-                    part_cnt += 1
-            obj.CountFullTiles = full_cnt
-            obj.CountPartialTiles = part_cnt
+                    result_shape = temp_face
 
-            # Convert Faces to Wires for lightweight representation
-            if result_shape:
-                wires = []
+                # Count
+                full_area = t_len * t_wid
+                full_cnt = 0
+                part_cnt = 0
                 for f in result_shape.Faces:
-                    wires.extend(f.Wires)
-                if wires:
-                    result_shape = Part.Compound(wires)
+                    if abs(f.Area - full_area) < 0.001:
+                        full_cnt += 1
+                    else:
+                        part_cnt += 1
+                obj.CountFullTiles = full_cnt
+                obj.CountPartialTiles = part_cnt
+
+                # Convert Faces to Wires for lightweight representation
+                if result_shape:
+                    wires = []
+                    for f in result_shape.Faces:
+                        wires.extend(f.Wires)
+                    if wires:
+                        result_shape = Part.Compound(wires)
+
+        except Part.OCCError as e:
+            # Catch OpenCascade kernel errors to prevent crashing the document recompute chain.
+            FreeCAD.Console.PrintWarning(
+                translate("Arch", "Covering: OpenCascade error during boolean operations on")
+                + f" {obj.Label}: {str(e)}\n"
+            )
+            return Part.Shape()
 
         return result_shape
 
