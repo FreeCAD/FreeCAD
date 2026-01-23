@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef IMPORT_GLOBAL_H
-# define IMPORT_GLOBAL_H
+#pragma once
 
 
 // Import
@@ -45,5 +44,3 @@
 #   define ImportGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // IMPORT_GLOBAL_H

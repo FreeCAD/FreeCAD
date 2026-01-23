@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_APP_PRECOMPILED_H
-#define IMPORT_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -44,5 +43,3 @@
 // OpenCasCade =====================================================================================
 // Base
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif

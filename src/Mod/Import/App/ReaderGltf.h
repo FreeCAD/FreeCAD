@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef IMPORT_READER_GLTF_H
-#define IMPORT_READER_GLTF_H
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
@@ -53,5 +52,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_READER_GLTF_H
