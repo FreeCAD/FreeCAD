@@ -88,7 +88,7 @@
     <message>
       <location filename="../../../InitGui.py" line="109"/>
       <source>Assembly</source>
-      <translation type="unfinished">Assembly</translation>
+      <translation>Συναρμολόγηση</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="110"/>
@@ -1054,7 +1054,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Στήλες</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
@@ -1077,7 +1077,8 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateBom.py" line="69"/>
       <source>Bill of Materials</source>
-      <translation type="unfinished">Bill of Materials</translation>
+      <translation>Λίστα Υλικών (BOM)
+</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="76"/>

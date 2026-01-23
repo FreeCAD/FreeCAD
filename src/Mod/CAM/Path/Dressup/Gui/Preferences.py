@@ -36,15 +36,14 @@ def RegisterDressup(dressup):
 
 class DressupPreferencesPage:
     def __init__(self, parent=None):
-        self.form = QtGui.QToolBox()
+        self.form = QtGui.QWidget()
         self.form.setWindowTitle(translate("CAM_PreferencesPathDressup", "Dressups"))
+
+        layout = QtGui.QVBoxLayout(self.form)
         pages = []
         for dressup in _dressups:
             page = dressup.preferencesPage()
-            if hasattr(page, "icon") and page.icon:
-                self.form.addItem(page.form, page.icon, page.label)
-            else:
-                self.form.addItem(page.form, page.label)
+            layout.addWidget(page.form)
             pages.append(page)
         self.pages = pages
 

@@ -40,6 +40,7 @@
 #include <QMimeData>
 #include <QOpenGLWidget>
 #include <QPainter>
+#include <QProcess>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QScreen>
@@ -321,7 +322,7 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler>> urlHandler;
     std::string hiddenDockWindows;
-    boost::signals2::scoped_connection connParam;
+    fastsignals::advanced_scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
     QTime _showNormal;
@@ -367,7 +368,8 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
                 OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadPause);
                 d->restoreStateTimer.start(100);
             }
-        }
+        },
+        fastsignals::advanced_tag()
     );
 
     d->hGrp = App::GetApplication().GetParameterGroupByPath(
@@ -1792,7 +1794,66 @@ void MainWindow::delayedStartup()
         );
         safeModePopup.exec();
     }
+
+#ifdef Q_OS_MAC
+    // Register QuickLook extensions on first launch
+    registerQuickLookExtensions();
+#endif
 }
+
+#ifdef Q_OS_MAC
+void MainWindow::registerQuickLookExtensions()
+{
+    // Only check once per session
+    static bool quickLookChecked = false;
+    if (quickLookChecked) {
+        return;
+    }
+    quickLookChecked = true;
+
+    // Get the path to FreeCAD.app/Contents/PlugIns
+    QString appPath = QApplication::applicationDirPath();
+    QString plugInsPath = appPath + "/../PlugIns";
+
+    QString thumbnailExt = plugInsPath + "/FreeCADThumbnailExtension.appex";
+    QString previewExt = plugInsPath + "/FreeCADPreviewExtension.appex";
+
+    // Check if extensions exist before attempting registration
+    if (!QFileInfo::exists(thumbnailExt) || !QFileInfo::exists(previewExt)) {
+        return;
+    }
+
+    // Check if extensions are already registered with pluginkit
+    QProcess checkProcess;
+    checkProcess.start("pluginkit", QStringList() << "-m");
+    checkProcess.waitForFinished();
+    QString registeredPlugins = QString::fromUtf8(checkProcess.readAllStandardOutput());
+
+    const QString thumbnailId = QStringLiteral("org.freecad.FreeCAD.quicklook.thumbnail");
+    const QString previewId = QStringLiteral("org.freecad.FreeCAD.quicklook.preview");
+
+    bool thumbnailRegistered = registeredPlugins.contains(thumbnailId);
+    bool previewRegistered = registeredPlugins.contains(previewId);
+
+    if (thumbnailRegistered && previewRegistered) {
+        Base::Console().log("QuickLook extensions already registered\n");
+        return;
+    }
+
+    // Register and activate only the extensions that are not yet registered
+    if (!thumbnailRegistered) {
+        QProcess::execute("pluginkit", QStringList() << "-a" << thumbnailExt);
+        QProcess::execute("pluginkit", QStringList() << "-e" << "use" << "-i" << thumbnailId);
+    }
+
+    if (!previewRegistered) {
+        QProcess::execute("pluginkit", QStringList() << "-a" << previewExt);
+        QProcess::execute("pluginkit", QStringList() << "-e" << "use" << "-i" << previewId);
+    }
+
+    Base::Console().log("QuickLook extensions registered successfully\n");
+}
+#endif
 
 void MainWindow::appendRecentFile(const QString& filename)
 {

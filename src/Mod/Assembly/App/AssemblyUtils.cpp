@@ -756,5 +756,67 @@ void syncPlacements(App::DocumentObject* src, App::DocumentObject* to)
         }
     }
 }
+namespace
+{
+// Helper function to perform the recursive traversal. Kept in an anonymous
+// namespace as it's an implementation detail of getAssemblyComponents.
+void collectComponentsRecursively(
+    const std::vector<App::DocumentObject*>& objects,
+    std::vector<App::DocumentObject*>& results
+)
+{
+    for (auto* obj : objects) {
+        if (!obj) {
+            continue;
+        }
+
+        if (auto* asmLink = freecad_cast<Assembly::AssemblyLink*>(obj)) {
+            // If the sub-assembly is rigid, treat it as a single movable part.
+            // If it's flexible, we need to check its individual components.
+            if (asmLink->isRigid()) {
+                results.push_back(asmLink);
+            }
+            else {
+                collectComponentsRecursively(asmLink->Group.getValues(), results);
+            }
+            continue;
+        }
+        else if (obj->isLinkGroup()) {
+            auto* linkGroup = static_cast<App::Link*>(obj);
+            for (auto* elt : linkGroup->ElementList.getValues()) {
+                results.push_back(elt);
+            }
+            continue;
+        }
+        else if (auto* group = freecad_cast<App::DocumentObjectGroup*>(obj)) {
+            collectComponentsRecursively(group->Group.getValues(), results);
+            continue;
+        }
+        else if (auto* link = freecad_cast<App::Link*>(obj)) {
+            obj = link->getLinkedObject();
+            if (obj->isDerivedFrom<App::GeoFeature>()
+                && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+                results.push_back(link);
+            }
+        }
+
+        else if (obj->isDerivedFrom<App::GeoFeature>()
+                 && !obj->isDerivedFrom<App::LocalCoordinateSystem>()) {
+            results.push_back(obj);
+        }
+    }
+}
+}  // namespace
+
+std::vector<App::DocumentObject*> getAssemblyComponents(const AssemblyObject* assembly)
+{
+    if (!assembly) {
+        return {};
+    }
+
+    std::vector<App::DocumentObject*> components;
+    collectComponentsRecursively(assembly->Group.getValues(), components);
+    return components;
+}
 
 }  // namespace Assembly

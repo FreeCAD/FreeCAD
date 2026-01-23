@@ -280,7 +280,7 @@ public:
         return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
     }
 
-    bool hasElementMap()
+    bool hasElementMap() const
     {
         return _elementMap != nullptr;
     }
