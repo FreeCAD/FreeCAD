@@ -29,6 +29,7 @@
 
 #include "../../SketcherGlobal.h"
 #include "SubSystem.h"
+#include "Substitution.h"
 
 
 #define EIGEN_VERSION \
@@ -109,9 +110,8 @@ class SketcherExport System
     // This is the main class. It holds all constraints and information
     // about partitioning into subsystems and solution strategies
 private:
-    VEC_pD plist;        // list of the unknown parameters
-    VEC_pD pdrivenlist;  // list of parameters of driven constraints
-    MAP_pD_I pIndex;
+    VEC_pD unknowns;   // list of the unknown parameters
+    VEC_pD variables;  // list of parameters of driven constraints
 
     VEC_pD pDependentParameters;  // list of dependent parameters by the system
 
@@ -120,8 +120,6 @@ private:
     std::vector<std::vector<double*>> pDependentParametersGroups;
 
     std::vector<Constraint*> clist;
-    std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
-    std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
 
     std::vector<SubSystem*> subSystems, subSystemsAux;
     void clearSubSystems();
@@ -133,7 +131,7 @@ private:
     std::vector<VEC_pD> plists;  // partitioned plist except equality constraints
     // partitioned clist except equality constraints
     std::vector<std::vector<Constraint*>> clists;
-    std::vector<MAP_pD_pD> reductionmaps;  // for simplification of equality constraints
+    Substitution substitution;
 
     int dofs;
     std::set<Constraint*> redundant;
@@ -475,10 +473,10 @@ public:
         bool driving = true
     );
 
-    int addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId, bool driving = true);
-    int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId, bool driving = true);
+    int addConstraintC2CDistance(Circle& c1, Circle& c2, double* dist, int tagId = 0, bool driving = true);
+    int addConstraintC2LDistance(Circle& c, Line& l, double* dist, int tagId = 0, bool driving = true);
     int addConstraintP2CDistance(Point& p, Circle& c, double* distance, int tagId = 0, bool driving = true);
-    int addConstraintArcLength(Arc& a, double* dist, int tagId, bool driving = true);
+    int addConstraintArcLength(Arc& a, double* dist, int tagId = 0, bool driving = true);
 
     // internal alignment constraints
     int addConstraintInternalAlignmentPoint2Ellipse(
@@ -581,8 +579,8 @@ public:
 
     void rescaleConstraint(int id, double coeff);
 
-    void declareUnknowns(VEC_pD& params);
-    void declareDrivenParams(VEC_pD& params);
+    void declareUnknowns(VEC_pD& unknowns);
+    void declareDrivenParams(VEC_pD& variables);
     void initSolution(Algorithm alg = DogLeg);
 
     int solve(bool isFine = true, Algorithm alg = DogLeg, bool isRedundantsolving = false);
