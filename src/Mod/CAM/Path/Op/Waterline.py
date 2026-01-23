@@ -1856,6 +1856,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                 try:
                     # Attempt the cut
                     clearArea = area.cut(trimFace)
+                    if hasattr(clearArea, "removeSplitter"):
+                        clearArea.removeSplitter()
                     # Check if the resulting shape is valid and has actual geometry
                     if not clearArea or clearArea.BoundBox.DiagonalLength < 1e-6:
                         Path.Log.debug(
@@ -2189,6 +2191,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             if offsetResult:
                 # Final Snap to Z=0
                 offsetResult.translate(FreeCAD.Vector(0, 0, -offsetResult.BoundBox.ZMin))
+                if hasattr(offsetResult, "removeSplitter"):
+                    offsetResult.removeSplitter()
                 newFaces.append(offsetResult)
             else:
                 FreeCAD.Console.PrintError("Geometric Offset Logic failed: {} Step Skipped.\n")
@@ -2211,6 +2215,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             wire = ofstPlnrShp.Wires[w]
             if not wire.isClosed():  # filter
                 continue
+            # Additional healing to prevent BRepMesh errors (rear but)
+            wire.fix(1e-7, 1e-7, 1e-3)
             V = wire.Vertexes
             if obj.CutMode == "Climb":
                 lv = len(V) - 1
