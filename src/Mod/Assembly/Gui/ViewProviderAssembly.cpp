@@ -281,7 +281,6 @@ bool ViewProviderAssembly::setEdit(int mode)
 {
     if (mode == ViewProvider::Default) {
         // Ask that this edit mode be restored. For example if it is quit to edit a sketch.
-        Base::Console().warning("setEdit\n");
         getDocument()->setEditRestore(true);
         autoCollapseOnDeactivation = false;
 
@@ -312,7 +311,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             UpdateSolverInformation();
         });
 
-        connectActivatedVP = getDocument()->signalActivatedVP.connect(
+        connectActivatedVP = getDocument()->signalActivatedViewProvider.connect(
             std::bind(
                 &ViewProviderAssembly::slotActivatedVP,
                 this,
