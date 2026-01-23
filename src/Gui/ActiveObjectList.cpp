@@ -73,7 +73,7 @@ void ActiveObjectList::setHighlight(const ObjectInfo& info, HighlightMode mode, 
         return;
     }
 
-    if (TreeParams::getTreeActiveAutoExpand()) {
+    if (TreeParams::getTreeActiveAutoExpand() && (enable || vp->isAutoCollapseOnDeactivation())) {
         vp->getDocument()->signalExpandObject(
             *vp,
             enable ? TreeItemMode::ExpandPath : TreeItemMode::CollapseItem,
