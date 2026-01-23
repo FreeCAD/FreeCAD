@@ -129,7 +129,7 @@ void QGIRichAnno::updateView(bool update)
 
     // Convert the word processing font size spec (in typographic points) to scene units for
     // the screen or pdf rendering
-    constexpr double mmPerPoint {0.353};  // 25.4 mm/in / 72 points/inch
+    constexpr double mmPerPoint {25.4 / 72};  //  mm/in / points/inch
     m_textScaleFactor = Rez::getRezFactor() * mmPerPoint;  // scene units per point: 3.53
     m_text->setScale(m_textScaleFactor);
 
