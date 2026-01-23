@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef DRAFT_GLOBAL_H
-# define DRAFT_GLOBAL_H
+#pragma once
 
 
 // Draft
@@ -36,5 +35,3 @@
 #   define DraftUtilsExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // DRAFT_GLOBAL_H
