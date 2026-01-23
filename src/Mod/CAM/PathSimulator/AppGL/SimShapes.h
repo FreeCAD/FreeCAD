@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __sim_shapes_h__
-#define __sim_shapes_h__
+#pragma once
 #include "OpenGlWrapper.h"
 #include "linmath.h"
 
@@ -135,4 +134,3 @@ protected:
 };
 
 }  // namespace MillSim
-#endif

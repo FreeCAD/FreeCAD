@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __openglwrapper_h__
-#define __openglwrapper_h__
+#pragma once
 
 #include "DlgCAMSimulator.h"
 extern QOpenGLContext* gOpenGlContext;
@@ -90,5 +89,3 @@ extern QOpenGLContext* gOpenGlContext;
 #define glLineWidth gSimWindow->glLineWidth
 #define glGetShaderiv gSimWindow->glGetShaderiv
 #define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
-
-#endif  // !__openglwrapper_h__

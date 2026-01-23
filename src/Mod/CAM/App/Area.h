@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_AREA_H
-#define PATH_AREA_H
+#pragma once
 
 #include <chrono>
 #include <list>
@@ -446,5 +445,3 @@ public:
 };
 
 }  // namespace Path
-
-#endif  // PATH_AREA_H

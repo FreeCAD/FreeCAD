@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeatureCompound_H
-#define PATH_FeatureCompound_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 
@@ -63,6 +62,3 @@ public:
 using FeatureCompoundPython = App::FeaturePythonT<FeatureCompound>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeatureCompound_H

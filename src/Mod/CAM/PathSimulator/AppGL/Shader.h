@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __shader_h__
-#define __shader_h__
+#pragma once
 
 #include "OpenGlWrapper.h"
 #include "linmath.h"
@@ -114,4 +113,3 @@ extern const char* FragShader3DLine;
 
 
 }  // namespace MillSim
-#endif  // !__shader_h__

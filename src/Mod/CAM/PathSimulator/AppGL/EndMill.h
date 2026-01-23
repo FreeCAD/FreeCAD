@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __end_mill_h__
-#define __end_mill_h__
+#pragma once
 
 #include "SimShapes.h"
 #include <vector>
@@ -57,5 +56,3 @@ protected:
     void MirrorPointBuffer();
 };
 }  // namespace MillSim
-
-#endif

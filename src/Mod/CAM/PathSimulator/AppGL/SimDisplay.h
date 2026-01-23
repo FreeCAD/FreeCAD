@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __simdisplay_h__
-#define __simdisplay_h__
+#pragma once
 
 #include "GlUtils.h"
 #include "Shader.h"
@@ -147,4 +146,3 @@ protected:
 };
 
 }  // namespace MillSim
-#endif  // !__simdisplay_h__

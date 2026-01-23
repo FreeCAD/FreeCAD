@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef PATH_GLOBAL_H
-# define PATH_GLOBAL_H
+#pragma once
 
 
 // Path
@@ -63,5 +62,3 @@
 #   define CAMSimulatorExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // PATH_GLOBAL_H

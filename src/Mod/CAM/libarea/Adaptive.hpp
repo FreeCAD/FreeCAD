@@ -27,8 +27,7 @@
 #include <list>
 #include <time.h>
 
-#ifndef ADAPTIVE_HPP
-# define ADAPTIVE_HPP
+#pragma once
 
 # ifndef __DBL_MAX__
 #  define __DBL_MAX__ 1.7976931348623158e+308
@@ -267,4 +266,3 @@ private:
     const clock_t PROGRESS_TICKS = CLOCKS_PER_SEC / 10;  // progress report interval
 };
 }  // namespace AdaptivePath
-#endif

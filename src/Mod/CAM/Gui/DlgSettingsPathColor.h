@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
-#define PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace PathGui
-
-#endif  // PATHGUI_DIALOG_DLGSETTINGSPATHCOLOR_H
