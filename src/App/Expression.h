@@ -332,7 +332,7 @@ public:
      *
      * @return The evaluated expression.
      */
-    Expression* eval() const;
+    ExpressionPtr eval() const;
 
     /**
      * @brief Convert the expression to a string.

@@ -48,9 +48,9 @@ namespace App
 struct AppExport Expression::Component
 {
     ObjectIdentifier::Component comp;
-    Expression* e1;
-    Expression* e2;
-    Expression* e3;
+    ExpressionPtr e1;
+    ExpressionPtr e2;
+    ExpressionPtr e3;
 
     explicit Component(const std::string& n);
     Component(Expression* e1, Expression* e2, Expression* e3, bool isRange = false);

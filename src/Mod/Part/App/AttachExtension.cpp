@@ -621,8 +621,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
                 unitSafeExprStr += " - " + std::to_string(-angle);
             }
 
-            if (const App::Expression* simple = expr->eval()) {
-                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple)) {
+            if (App::ExpressionPtr simple = expr->eval(); simple) {
+                if (auto ue = dynamic_cast<const App::UnitExpression*>(simple.get())) {
                     const auto& q = ue->getQuantity();
                     if (q.getUnit() == Base::Unit::Angle) {
                         unitSafeExprStr += " deg";

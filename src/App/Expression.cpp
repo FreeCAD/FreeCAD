@@ -636,25 +636,31 @@ bool isAnyEqual(const App::any &v1, const App::any &v2) {
     return !!res;
 }
 
-Expression* expressionFromPy(const DocumentObject *owner, const Py::Object &value) {
+ExpressionPtr expressionFromPy(const DocumentObject* owner, const Py::Object& value)
+{
     if (value.isNone())
-        return new PyObjectExpression(owner);
+        return std::make_unique<PyObjectExpression>(owner);
     if(value.isString()) {
-        return new StringExpression(owner,value.as_string());
+        return std::make_unique<StringExpression>(owner, value.as_string());
     } else if (PyObject_TypeCheck(value.ptr(),&QuantityPy::Type)) {
-        return new NumberExpression(owner,
-                *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr());
+        return std::make_unique<NumberExpression>(
+            owner,
+            *static_cast<QuantityPy*>(value.ptr())->getQuantityPtr()
+        );
     } else if (value.isBoolean()) {
-        if(value.isTrue())
-            return new ConstantExpression(owner,"True",Quantity(1.0));
-        else
-            return new ConstantExpression(owner,"False",Quantity(0.0));
+        if (value.isTrue()) {
+            return std::make_unique<ConstantExpression>(owner, "True", Quantity(1.0));
+        }
+        else {
+            return std::make_unique<ConstantExpression>(owner, "False", Quantity(0.0));
+        }
     } else {
         Quantity q;
-        if(pyToQuantity(q,value))
-            return new NumberExpression(owner,q);
+        if (pyToQuantity(q, value)) {
+            return std::make_unique<NumberExpression>(owner, q);
+        }
     }
-    return new PyObjectExpression(owner,value.ptr());
+    return std::make_unique<PyObjectExpression>(owner, value.ptr());
 }
 
 } // namespace App
@@ -686,12 +692,7 @@ Expression::Component::Component(const Component &other)
     ,e3(other.e3?other.e3->copy():nullptr)
 {}
 
-Expression::Component::~Component()
-{
-    delete e1;
-    delete e2;
-    delete e3;
-}
+Expression::Component::~Component() = default;
 
 Expression::Component* Expression::Component::copy() const {
     return new Component(*this);
@@ -1135,9 +1136,10 @@ void Expression::visit(ExpressionVisitor &v) {
     v.visit(*this);
 }
 
-Expression* Expression::eval() const {
+ExpressionPtr Expression::eval() const
+{
     Base::PyGILStateLocker lock;
-    return expressionFromPy(owner,getPyValue());
+    return expressionFromPy(owner, getPyValue());
 }
 
 bool Expression::isSame(const Expression &other, bool checkComment) const {
@@ -1445,7 +1447,7 @@ Expression *OperatorExpression::simplify() const
     if (freecad_cast<NumberExpression*>(v1) && freecad_cast<NumberExpression*>(v2)) {
         delete v1;
         delete v2;
-        return eval();
+        return eval().release();
     }
     else
         return new OperatorExpression(owner, v1, op, v2);
@@ -2605,7 +2607,7 @@ Expression *FunctionExpression::simplify() const
         for (auto it : simplifiedArgs)
             delete it;
 
-        return eval();
+        return eval().release();
     }
     else
         return new FunctionExpression(owner, f, std::string(fname),
@@ -2824,16 +2826,16 @@ void VariableExpression::addComponent(Component *c) {
         }
         long l1=0,l2=0,l3=1;
         if(c->e3) {
-            auto n3 = freecad_cast<NumberExpression*>(c->e3);
+            auto n3 = freecad_cast<NumberExpression*>(c->e3.get());
             if(!n3 || !essentiallyEqual(n3->getValue(),(double)l3))
                 break;
         }
         if(c->e1) {
-            auto n1 = freecad_cast<NumberExpression*>(c->e1);
+            auto n1 = freecad_cast<NumberExpression*>(c->e1.get());
             if(!n1) {
                 if(c->e2 || c->e3)
                     break;
-                auto s = freecad_cast<StringExpression*>(c->e1);
+                auto s = freecad_cast<StringExpression*>(c->e1.get());
                 if(!s)
                     break;
                 var << ObjectIdentifier::MapComponent(
@@ -2850,7 +2852,7 @@ void VariableExpression::addComponent(Component *c) {
                 return;
             }
         }
-        auto n2 = freecad_cast<NumberExpression*>(c->e2);
+        auto n2 = freecad_cast<NumberExpression*>(c->e2.get());
         if(n2 && essentiallyInteger(n2->getValue(),l2)) {
             var << ObjectIdentifier::RangeComponent(l1,l2,l3);
             return;
