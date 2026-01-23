@@ -5,8 +5,10 @@
 # This file is part of the FreeCAD Arch workbench.
 # You can find the full license text in the LICENSE file in the root directory.
 
+import Arch
 import Draft
 import ArchCovering
+import FreeCADGui as Gui
 from bimtests import TestArchBaseGui
 
 
@@ -163,4 +165,25 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         # Verify the object is gone from the document
         self.assertIsNone(
             self.document.getObject(phantom_name), "Phantom object was not cleaned up."
+        )
+
+    def test_self_dependency_filter(self):
+        """Verify that a covering cannot be assigned as its own base."""
+        self.printTestMessage("self-dependency filter...")
+        covering = Arch.makeCovering(self.box)
+        self.document.recompute()
+
+        # Open in Edit Mode
+        self.panel = ArchCovering.ArchCoveringTaskPanel(obj=covering)
+        self.panel.setPicking(True)
+
+        # Simulate selecting the covering itself
+        # This calls _onSelectionChanged internally via the observer
+        Gui.Selection.clearSelection()
+        Gui.Selection.addSelection(covering)
+        self.pump_gui_events()
+
+        # Assert: The internal selection tracker should still be None or the original
+        self.assertNotEqual(
+            self.panel.selected_obj, covering, "The panel allowed selecting itself as a base."
         )

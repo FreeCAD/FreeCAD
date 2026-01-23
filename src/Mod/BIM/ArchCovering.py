@@ -1546,6 +1546,11 @@ if FreeCAD.GuiUp:
             new_list = []
             for s in sel:
                 obj = s.Object
+
+                # If the user picks the covering itself, ignore it to avoid circular references.
+                if obj == self.phantom or obj == self.obj_to_edit:
+                    continue
+
                 # PartDesign Normalization
                 for parent in obj.InList:
                     if parent.isDerivedFrom("PartDesign::Body"):
