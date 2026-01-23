@@ -686,7 +686,6 @@ void QGIRichAnno::onContentsChanged()
 
 QVariant QGIRichAnno::itemChange(GraphicsItemChange change, const QVariant& value)
 {
-
     if (change == QGraphicsItem::ItemScenePositionHasChanged
         && scene()) {
         Q_EMIT positionChanged(scenePos());
