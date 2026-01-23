@@ -243,7 +243,7 @@ void EditDatumDialog::typeChanged(bool checked)
         }
     }
     else {
-        ui_ins_datum->label->setText(tr("Diameter:"));
+        ui_ins_datum->label->setText(tr("Diameter"));
         if (dlg) {
             dlg->setWindowTitle(tr("Insert Diameter"));
         }
