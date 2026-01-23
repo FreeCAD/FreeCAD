@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef MEASURE_GLOBAL_H
-# define MEASURE_GLOBAL_H
+#pragma once
 
 
 // Measure
@@ -45,5 +44,3 @@
 #   define MeasureGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // MEASURE_GLOBAL_H

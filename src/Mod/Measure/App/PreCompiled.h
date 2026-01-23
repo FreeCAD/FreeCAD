@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MEASUREGUI_PRECOMPILED_H
-#define MEASUREGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -42,6 +41,3 @@
 
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-
-#endif  // MEASUREGUI_PRECOMPILED_H

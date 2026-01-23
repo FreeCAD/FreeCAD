@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDERMEASUREANGLE_H
-#define GUI_VIEWPROVIDERMEASUREANGLE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -69,6 +68,3 @@ private:
 
 
 }  // namespace MeasureGui
-
-
-#endif  // GUI_VIEWPROVIDERMEASUREANGLE_H

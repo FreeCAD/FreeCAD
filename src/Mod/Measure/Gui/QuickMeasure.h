@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MEASUREGUI_QUICKMEASURE_H
-#define MEASUREGUI_QUICKMEASURE_H
+#pragma once
 
 #include <QObject>
 
@@ -69,5 +68,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASUREGUI_QUICKMEASURE_H

@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASUREAPP_MEASUREDISTANCE_H
-#define MEASUREAPP_MEASUREDISTANCE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -166,6 +165,3 @@ private:
 
 
 }  // namespace Measure
-
-
-#endif  // MEASUREAPP_MEASUREDISTANCE_H

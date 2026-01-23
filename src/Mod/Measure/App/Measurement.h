@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MEASURE_MEASUREMENT_H
-#define MEASURE_MEASUREMENT_H
+#pragma once
 
 #include <gp_Pnt.hxx>
 #include <TopAbs_ShapeEnum.hxx>
@@ -146,6 +145,3 @@ private:
 
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASUREMENT_H
