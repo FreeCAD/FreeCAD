@@ -75,10 +75,9 @@ class _Covering(ArchComponent.Component):
     """
     A parametric object representing an architectural surface finish.
 
-    This class manages the generation of surface treatments such as tiles,
-    panels, flooring, or hatch patterns. Coverings are typically linked to a
-    specific face of a base object and remain parametric, updating
-    automatically if the underlying geometry changes.
+    This class manages the generation of surface treatments such as tiles, panels, flooring, or
+    hatch patterns. Coverings are typically linked to a specific face of a base object and remain
+    parametric, updating automatically if the underlying geometry changes.
 
     Parameters
     ----------
@@ -87,23 +86,32 @@ class _Covering(ArchComponent.Component):
 
     Notes
     -----
-    While the standard FreeCAD `TypeId` attribute identifies the underlying
-    C++ class, the `Type` attribute is used by the Arch module to distinguish
-    functional object types that share the same C++ implementation.
+    While the standard FreeCAD `TypeId` attribute identifies the underlying C++ class, the `Type`
+    attribute is used by the Arch module to distinguish functional object types that share the same
+    C++ implementation.
 
-    Example
-    -------
+    Examples
+    --------
     >>> print(obj.TypeId, "->", obj.Proxy.Type)
     Part::FeaturePython -> Covering
+    >>> import Draft; Draft.get_type(obj)
+    'Covering'
     """
 
     def __init__(self, obj):
         super().__init__(obj)
+
+        # Override the parent's object type to set a specific one for Covering
         self.Type = "Covering"
+
+        # Apply the property schema
         self.setProperties(obj)
 
-        # Apply defaults from params immediately upon creation
-        # This allows the UI to simply bind to these properties and show the correct default values
+        # Initialize properties with user preferences (params) upon object creation (but not on
+        # document restore).
+        # The properties mapped to parameters here are generally the ones that are editable in the
+        # object's Task Panel. Since the UI binds to these properties, the Task Panel will
+        # automatically display these values as the defaults without extra UI logic.
         obj.TileLength = params.get_param_arch("CoveringLength")
         obj.TileWidth = params.get_param_arch("CoveringWidth")
         obj.TileThickness = params.get_param_arch("CoveringThickness")
@@ -114,35 +122,19 @@ class _Covering(ArchComponent.Component):
 
     def setProperties(self, obj):
         """
-        Defines and initializes the properties of the Covering object.
-
-        This method is a Python-side helper that manages the object's parametric structure. It is
-        responsible for creating new properties unique to this class and performing
-        version-migration or type-overrides on inherited properties.
-
-        Parameters
-        ----------
-        obj : Part::FeaturePython
-            The base C++ object to which the properties are added.
-
-        Notes
-        -----
-        This method is not a C++ callback; it must be invoked manually during initialization
-        (`__init__`) and document restoration (`onDocumentRestored`).
+        Overrides the parent method to define properties specific to the Covering object, including
+        tiling and pattern schema, and ensures 'Base' supports sub-element face targeting.
         """
-        # The parent class (ArchComponent) defines 'Base' as a whole-object link. Coverings require
-        # a sub-element link (LinkSub) to target specific faces. Since FreeCAD property types are
-        # immutable once created, we must detect and replace the generic version to support
-        # face-level finish applications.
-        if "Base" in obj.PropertiesList:
-            if obj.getTypeIdOfProperty("Base") != "App::PropertyLinkSub":
-                obj.setPropertyStatus("Base", "-LockDynamic")
-                obj.removeProperty("Base")
-
-        properties_list = obj.PropertiesList
-
-        # Core Properties
-        if not "Base" in obj.PropertiesList:
+        # Override parent properties to ensure 'Base' is LinkSub (parent defines it as Link).
+        # Covering objects use sub-element links (LinkSub) because they need to target specific
+        # faces.
+        if (
+            "Base" in obj.PropertiesList
+            and obj.getTypeIdOfProperty("Base") != "App::PropertyLinkSub"
+        ):
+            obj.setPropertyStatus("Base", "-LockDynamic")
+            obj.removeProperty("Base")
+        if "Base" not in obj.PropertiesList:
             obj.addProperty(
                 "App::PropertyLinkSub",
                 "Base",
@@ -152,166 +144,116 @@ class _Covering(ArchComponent.Component):
                 ),
                 locked=True,
             )
-        if not "FinishMode" in properties_list:
-            obj.addProperty(
+
+        # Apply the parent's property schema.
+        super().setProperties(obj)
+
+        # Snapshot properties once
+        properties_list = obj.PropertiesList
+
+        # Apply the local property schema
+        # (Type, Name, Group, Tooltip, InitialValue)
+        properties = [
+            (
                 "App::PropertyEnumeration",
                 "FinishMode",
                 "Covering",
-                QT_TRANSLATE_NOOP("App::Property", "The type of finish to create"),
-                locked=True,
-            )
-            obj.FinishMode = ["Solid Tiles", "Parametric Pattern", "Hatch Pattern"]
-
-        # Alignment and rotation
-        if not "TileAlignment" in properties_list:
-            obj.addProperty(
+                "The type of finish to create",
+                ["Solid Tiles", "Parametric Pattern", "Hatch Pattern"],
+            ),
+            (
                 "App::PropertyEnumeration",
                 "TileAlignment",
                 "Covering",
-                QT_TRANSLATE_NOOP("App::Property", "The alignment of the tile grid"),
-                locked=True,
-            )
-            obj.TileAlignment = ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"]
-
-        if not "Rotation" in properties_list:
-            obj.addProperty(
-                "App::PropertyAngle",
-                "Rotation",
-                "Covering",
-                QT_TRANSLATE_NOOP(
-                    "App::Property", "Rotation of the finish (tiles, pattern, texture)"
-                ),
-                locked=True,
-            )
-
-        # Tile properties
-        if not "TileLength" in properties_list:
-            obj.addProperty(
-                "App::PropertyLength",
-                "TileLength",
-                "Tiles",
-                QT_TRANSLATE_NOOP("App::Property", "The length of the tiles"),
-                locked=True,
-            )
-        if not "TileWidth" in properties_list:
-            obj.addProperty(
-                "App::PropertyLength",
-                "TileWidth",
-                "Tiles",
-                QT_TRANSLATE_NOOP("App::Property", "The width of the tiles"),
-                locked=True,
-            )
-        if not "TileThickness" in properties_list:
-            obj.addProperty(
-                "App::PropertyLength",
-                "TileThickness",
-                "Tiles",
-                QT_TRANSLATE_NOOP("App::Property", "The thickness of the tiles (Solid mode only)"),
-                locked=True,
-            )
-        if not "JointWidth" in properties_list:
-            obj.addProperty(
-                "App::PropertyLength",
-                "JointWidth",
-                "Tiles",
-                QT_TRANSLATE_NOOP("App::Property", "The width of the joints between tiles"),
-                locked=True,
-            )
-        if not "TileOffset" in properties_list:
-            obj.addProperty(
-                "App::PropertyVector",
-                "TileOffset",
-                "Tiles",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "The offset of alternating rows/columns (e.g. for running bond)",
-                ),
-                locked=True,
-            )
-
-        # Quantity calculation
-        if not "CountFullTiles" in properties_list:
-            obj.addProperty(
-                "App::PropertyInteger",
-                "CountFullTiles",
-                "Stats",
-                QT_TRANSLATE_NOOP("App::Property", "The number of full tiles"),
-                locked=True,
-            )
-            obj.setEditorMode("CountFullTiles", 1)
-        if not "CountPartialTiles" in properties_list:
-            obj.addProperty(
+                "The alignment of the tile grid",
+                ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"],
+            ),
+            ("App::PropertyAngle", "Rotation", "Covering", "Rotation of the finish", 0),
+            ("App::PropertyLength", "TileLength", "Tiles", "The length of the tiles", 0),
+            ("App::PropertyLength", "TileWidth", "Tiles", "The width of the tiles", 0),
+            ("App::PropertyLength", "TileThickness", "Tiles", "The thickness of the tiles", 0),
+            ("App::PropertyLength", "JointWidth", "Tiles", "The width of the joints", 0),
+            ("App::PropertyVector", "TileOffset", "Tiles", "The offset of alternating rows", None),
+            ("App::PropertyInteger", "CountFullTiles", "Stats", "The number of full tiles", 0),
+            (
                 "App::PropertyInteger",
                 "CountPartialTiles",
                 "Stats",
-                QT_TRANSLATE_NOOP("App::Property", "The number of cut/partial tiles"),
-                locked=True,
-            )
-            obj.setEditorMode("CountPartialTiles", 1)
-
-        # Pattern properties
-        # These are here and not in the view object because while conceptually they modify
-        # the visual appearance, they most importantly affect the geometry (shape) of the object.
-        if not "PatternFile" in properties_list:
-            obj.addProperty(
+                "The number of cut/partial tiles",
+                0,
+            ),
+            (
                 "App::PropertyFile",
                 "PatternFile",
                 "Pattern",
-                QT_TRANSLATE_NOOP("App::Property", "The PAT file to use for hatching"),
-                locked=True,
-            )
-        if not "PatternName" in properties_list:
-            obj.addProperty(
+                "The PAT file to use for hatching",
+                None,
+            ),
+            (
                 "App::PropertyString",
                 "PatternName",
                 "Pattern",
-                QT_TRANSLATE_NOOP("App::Property", "The name of the pattern in the PAT file"),
-                locked=True,
-            )
-        if not "PatternScale" in properties_list:
-            obj.addProperty(
+                "The name of the pattern in the PAT file",
+                "",
+            ),
+            (
                 "App::PropertyFloat",
                 "PatternScale",
                 "Pattern",
-                QT_TRANSLATE_NOOP("App::Property", "The scale of the hatch pattern"),
-                locked=True,
-            )
-            obj.PatternScale = 1.0
-
-        # IFC
-        # Neither of the ancestors currently define this property, so define it and populate it
-        # specifically for coverings
-        if not "IfcPredefinedType" in properties_list:
-            obj.addProperty(
+                "The scale of the hatch pattern",
+                1.0,
+            ),
+            (
                 "App::PropertyEnumeration",
                 "IfcPredefinedType",
                 "IFC",
-                QT_TRANSLATE_NOOP("App::Property", "The specific type of covering"),
-                locked=True,
-            )
-            obj.IfcPredefinedType = [
-                "FLOORING",
-                "CLADDING",
-                "ROOFING",
-                "MOLDING",
-                "SKIRTINGBOARD",
-                "CEILING",
-                "WRAPPING",
-                "NOTDEFINED",
-            ]
+                "The specific type of covering",
+                [
+                    "FLOORING",
+                    "CLADDING",
+                    "ROOFING",
+                    "MOLDING",
+                    "SKIRTINGBOARD",
+                    "CEILING",
+                    "WRAPPING",
+                    "NOTDEFINED",
+                ],
+            ),
+        ]
+
+        for prop_type, name, group, tooltip, default in properties:
+            if name not in properties_list:
+                obj.addProperty(
+                    prop_type, name, group, QT_TRANSLATE_NOOP("App::Property", tooltip), locked=True
+                )
+
+                # Apply defined default values
+                if default is not None:
+                    setattr(obj, name, default)
+
+        # Property status configuration (Read-Only fields)
+        obj.setEditorMode("CountFullTiles", 1)
+        obj.setEditorMode("CountPartialTiles", 1)
 
     def loads(self, state):
-        # Override the parent's type to set a specific type for Covering
+        """
+        Overrides the parent callback used by FreeCAD's persistence engine to restore the
+        Python proxy instance and reset non-persistent internal attributes like 'Type'.
+        """
         self.Type = "Covering"
 
     def onDocumentRestored(self, obj):
+        """
+        Overrides the parent callback triggered after the document is fully restored. Used to
+        ensure property schema consistency and perform backward compatibility migrations.
+        """
         super().onDocumentRestored(obj)
         self.setProperties(obj)
-        # For future-proofing new property migrations
-        if FreeCAD.GuiUp and hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "Proxy"):
-            # Ensure view provider properties are up to date
-            if hasattr(obj.ViewObject.Proxy, "setProperties"):
-                obj.ViewObject.Proxy.setProperties(obj.ViewObject)
+        # Ensure the ViewProvider schema is also updated
+        vobj = getattr(obj, "ViewObject", None)
+        vproxy = getattr(vobj, "Proxy", None)
+        if hasattr(vproxy, "setProperties"):
+            vproxy.setProperties(vobj)
 
     def get_base_face(self, obj):
         """Extracts the base face from the linked object/subobject"""
