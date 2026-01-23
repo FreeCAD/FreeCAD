@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALS_H
-#define MATERIAL_MATERIALS_H
+#pragma once
 
 #include <memory>
 
@@ -501,5 +500,3 @@ using MaterialTreeNode = FolderTreeNode<Material>;
 
 Q_DECLARE_METATYPE(Materials::Material*)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::Material>)
-
-#endif  // MATERIAL_MATERIALS_H

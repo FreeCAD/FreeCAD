@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_LISTEDIT_H
-#define MATGUI_LISTEDIT_H
+#pragma once
 
 #include <memory>
 
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_LISTEDIT_H

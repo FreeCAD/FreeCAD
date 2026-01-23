@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_TRIM_H
-#define MATERIAL_TRIM_H
+#pragma once
 
 #include <algorithm>
 #include <string>
@@ -79,5 +78,3 @@ static inline std::string trim_copy(std::string s)
 }
 
 }  // namespace Materials
-
-#endif  // MATERIAL_TRIM_H

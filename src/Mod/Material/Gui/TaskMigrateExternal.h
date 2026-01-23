@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_TASKMIGRATEEXTERNAL_H
-#define MATGUI_TASKMIGRATEEXTERNAL_H
+#pragma once
 
 #include <memory>
 
@@ -76,5 +75,3 @@ private:
 };
 
 } // namespace MatGui
-
-#endif  // MATGUI_TASKMIGRATEEXTERNAL_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
-#define MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -134,5 +133,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_DIALOG_DLGDISPLAYPROPERTIES_IMP_H

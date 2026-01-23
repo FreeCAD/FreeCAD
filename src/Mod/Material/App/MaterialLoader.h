@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALLOADER_H
-#define MATERIAL_MATERIALLOADER_H
+#pragma once
 
 #include <memory>
 
@@ -147,5 +146,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MATERIALLOADER_H
