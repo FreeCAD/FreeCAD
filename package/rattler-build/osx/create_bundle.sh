@@ -62,9 +62,13 @@ sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 
-# copy the plugin into its final location
-cp -a ${conda_env}/Library ${conda_env}/..
-rm -rf ${conda_env}/Library
+# move plugins into their final location
+mv ${conda_env}/Library ${conda_env}/..
+
+# move App Extensions (PlugIns) to the correct location for macOS registration
+if [ -d "${conda_env}/PlugIns" ]; then
+    mv ${conda_env}/PlugIns ${conda_env}/..
+fi
 
 if [[ "${SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg

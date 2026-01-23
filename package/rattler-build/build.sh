@@ -8,7 +8,9 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     # add hacks for osx here!
     echo "adding hacks for osx"
 
-    # install space-mouse
+    # Install 3DConnexion (SpaceMouse) driver
+    # Note: For local builds, comment out the following lines if you encounter issues
+    # installing the driver or don't need SpaceMouse support
     /usr/bin/curl -o /tmp/3dFW.dmg -L 'https://download.3dconnexion.com/drivers/mac/10-7-0_B564CC6A-6E81-42b0-82EC-418EA823B81A/3DxWareMac_v10-7-0_r3411.dmg'
     hdiutil attach -readonly /tmp/3dFW.dmg
     sudo installer -package /Volumes/3Dconnexion\ Software/Install\ 3Dconnexion\ software.pkg -target /
@@ -17,6 +19,9 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     CMAKE_PLATFORM_FLAGS+=(-D3DCONNEXIONCLIENT_FRAMEWORK:FILEPATH="/Library/Frameworks/3DconnexionClient.framework")
 
     CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
+
+    # Set deployment target for modern QuickLook App Extensions (macOS 15+)
+    CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_DEPLOYMENT_TARGET=15.0)
 fi
 
 unset CMAKE_GENERATOR
@@ -24,6 +29,7 @@ unset CMAKE_GENERATOR_PLATFORM
 
 cmake \
     ${CMAKE_ARGS} \
+    ${CMAKE_PLATFORM_FLAGS[@]} \
     --preset ${CMAKE_PRESET} \
     -D CMAKE_IGNORE_PREFIX_PATH="/opt/homebrew;/usr/local/homebrew" \
     -D CMAKE_INCLUDE_PATH:FILEPATH="$PREFIX/include" \
