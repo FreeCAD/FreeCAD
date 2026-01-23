@@ -2322,6 +2322,7 @@ class ComponentTaskPanel:
                     mod = a
             for o in FreeCADGui.Selection.getSelection():
                 addToComponent(self.obj, o, mod)
+            self.obj.recompute()
         self.update()
 
     def removeElement(self):
@@ -2345,6 +2346,7 @@ class ComponentTaskPanel:
             # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
 
+        self.obj.recompute()
         self.update()
 
     def accept(self):
