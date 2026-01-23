@@ -312,6 +312,7 @@ private:
     Handle(Geom_BezierCurve) myCurve;
 };
 
+using GeomBSplineCurvePtr = std::shared_ptr<GeomBSplineCurve>;
 class PartExport GeomBSplineCurve: public GeomBoundedCurve
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
@@ -378,6 +379,7 @@ public:
     void setPeriodic() const;
     bool isRational() const;
     bool join(const Handle(Geom_BoundedCurve) &);
+    std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> split(double u, double tol) const;
     void makeC1Continuous(double, double);
     std::list<Geometry*> toBiArcs(double tolerance) const;
 
