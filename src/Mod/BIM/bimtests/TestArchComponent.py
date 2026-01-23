@@ -519,8 +519,8 @@ class TestArchComponent(TestArchBase.TestArchBase):
         # The created cylinders are very tall to also check for potential
         # 'crazy edge' issues related to the use of TechDraw code. Edges
         # longer than ca. 10m are considered 'crazy'.
-        angle = 30      # in degrees
-        radius = 100    # in mm
+        angle = 30  # in degrees
+        radius = 100  # in mm
         height = 50000  # in mm
 
         # To calculate to horizontal area, the shape can be reduces to a
