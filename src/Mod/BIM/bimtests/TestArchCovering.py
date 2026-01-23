@@ -205,3 +205,50 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # Should be null because the wire isn't closed
         self.assertTrue(covering.Shape.isNull())
+
+    def test_z_fighting_offset(self):
+        """Verify that 2D patterns are slightly offset to prevent Z-fighting."""
+        self.printTestMessage("z-fighting offset...")
+        base = (self.box, ["Face6"])  # Face6 is at Z=1000
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Parametric Pattern"
+        self.document.recompute()
+
+        # Check the Z position of the resulting wires
+        # It should be 1000 + our microscopic offset
+        z_pos = covering.Shape.BoundBox.ZMin
+        self.assertGreater(z_pos, 1000.0)
+        self.assertLess(z_pos, 1000.1)  # Ensure it's still "micro"
+
+    def test_parametric_pattern_correctness(self):
+        """Verify geometry and count for Parametric Pattern mode."""
+        self.printTestMessage("parametric pattern correctness...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Parametric Pattern"
+
+        # Use dimensions that create a predictable 2x2 grid
+        covering.TileLength = 400.0
+        covering.TileWidth = 400.0
+        covering.JointWidth = 100.0
+        covering.TileAlignment = "BottomLeft"
+
+        self.document.recompute()
+
+        # Assert shape validity
+        self.assertFalse(covering.Shape.isNull())
+        self.assertEqual(covering.Shape.ShapeType, "Compound")
+
+        #  Assert correct number of wires
+        # A 2x2 grid should produce exactly 4 closed wires.
+        self.assertEqual(len(covering.Shape.Wires), 4, "Should produce exactly 4 tile wires.")
+
+        #  Assert geometric content
+        # Verify that the final shape is not the same as the base face.
+        # This confirms that the cutting and offsetting operations were successful.
+        base_face = self.box.getSubObject("Face6")
+        self.assertNotEqual(
+            covering.Shape.hashCode(),
+            base_face.hashCode(),
+            "Final shape should be different from the base face.",
+        )

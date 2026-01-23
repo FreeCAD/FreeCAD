@@ -547,7 +547,16 @@ class _Covering(ArchComponent.Component):
         tile_rot = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.Rotation.Value)
         tr.Rotation = face_rot.multiply(tile_rot)
 
-        result_shape = None
+        # Fallback for zero-joint width where no cutters were generated.
+        if not cutters_h and not cutters_v:
+            if obj.FinishMode == "Solid Tiles":
+                return base_face.extrude(normal.multiply(obj.TileThickness.Value))
+            else:
+                # For 2D modes, apply a micro-offset to prevent z-fighting
+                offset_matrix = FreeCAD.Matrix()
+                offset_matrix.move(normal.normalize().multiply(0.05))
+                return base_face.transformGeometry(offset_matrix)
+
         t_len = obj.TileLength.Value
         t_wid = obj.TileWidth.Value
 
@@ -581,23 +590,23 @@ class _Covering(ArchComponent.Component):
                 obj.CountFullTiles = full_cnt
                 obj.CountPartialTiles = part_cnt
 
+                return result_shape
+
             elif obj.FinishMode == "Parametric Pattern":
-                # 2D Cut
-                temp_face = base_face
+                # Perform the cuts on the 2D base face
+                result_shape = base_face
 
                 if cutters_h:
                     comp_h = Part.Compound(cutters_h)
                     comp_h.Placement = tr
-                    temp_face = temp_face.cut(comp_h)
+                    result_shape = result_shape.cut(comp_h)
 
                 if cutters_v:
                     comp_v = Part.Compound(cutters_v)
                     comp_v.Placement = tr
-                    result_shape = temp_face.cut(comp_v)
-                else:
-                    result_shape = temp_face
+                    result_shape = result_shape.cut(comp_v)
 
-                # Count
+                # Count the resulting faces
                 full_area = t_len * t_wid
                 full_cnt = 0
                 part_cnt = 0
@@ -610,12 +619,21 @@ class _Covering(ArchComponent.Component):
                 obj.CountPartialTiles = part_cnt
 
                 # Convert Faces to Wires for lightweight representation
-                if result_shape:
-                    wires = []
-                    for f in result_shape.Faces:
-                        wires.extend(f.Wires)
-                    if wires:
-                        result_shape = Part.Compound(wires)
+                wires = []
+                for f in result_shape.Faces:
+                    wires.extend(f.Wires)
+
+                if not wires:
+                    return Part.Shape()
+
+                final_pattern = Part.Compound(wires)
+
+                # Apply a micro offset (0.05mm) along the normal. This prevents "Z-fighting" (visual
+                # flickering) in the 3D viewer by ensuring the pattern sits slightly above the base
+                # face.
+                offset_matrix = FreeCAD.Matrix()
+                offset_matrix.move(normal.normalize().multiply(0.05))
+                return final_pattern.transformGeometry(offset_matrix)
 
         except Part.OCCError as e:
             # Catch OpenCascade kernel errors to prevent crashing the document recompute chain.
@@ -625,7 +643,7 @@ class _Covering(ArchComponent.Component):
             )
             return Part.Shape()
 
-        return result_shape
+        return Part.Shape()
 
     def execute(self, obj):
         """
