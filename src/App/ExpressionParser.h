@@ -542,7 +542,7 @@ public:
     void setPyValue(PyObject* pyobj, bool owned = false);
     Expression* simplify() const override
     {
-        return copy();
+        return copy().release();
     }
 
 protected:
