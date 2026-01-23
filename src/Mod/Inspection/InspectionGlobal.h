@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef INSPECTION_GLOBAL_H
-# define INSPECTION_GLOBAL_H
+#pragma once
 
 
 // Inspection
@@ -45,5 +44,3 @@
 #   define InspectionGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // INSPECTION_GLOBAL_H
