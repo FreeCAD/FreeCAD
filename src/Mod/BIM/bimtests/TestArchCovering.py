@@ -252,3 +252,49 @@ class TestArchCovering(TestArchBase.TestArchBase):
             base_face.hashCode(),
             "Final shape should be different from the base face.",
         )
+
+    def test_smart_face_detection(self):
+        """Test the smart face detection heuristics."""
+        self.printTestMessage("smart face detection...")
+
+        # 1. Slab Case
+        slab = Arch.makeStructure(length=1000, width=1000, height=200)
+        self.document.recompute()
+
+        # Create a temp covering to access the proxy logic
+        covering = Arch.makeCovering()
+
+        # View looking DOWN (0,0,-1) at the top face
+        # We expect the Top Face (Normal +Z) because it opposes the view vector
+        face = covering.Proxy.get_best_face(slab, view_direction=App.Vector(0, 0, -1))
+
+        face_obj = slab.Shape.getElement(face)
+        self.assertAlmostEqual(face_obj.normalAt(0, 0).z, 1.0)
+
+        # 2. Wall Case
+        wall = Arch.makeWall(length=2000, width=200, height=3000)
+        self.document.recompute()
+
+        # View looking "IN" at the front face (Y=1 view vector)
+        # We expect the face with Normal Y=-1 (opposing view)
+        face_name = covering.Proxy.get_best_face(wall, view_direction=App.Vector(0, 1, 0))
+        face_obj_wall = wall.Shape.getElement(face_name)
+
+        self.assertLess(face_obj_wall.normalAt(0, 0).y, -0.9)
+
+    def test_smart_face_detection_planar_filter(self):
+        """Test that get_best_face ignores non-planar faces."""
+        # Create a Cylinder
+        cyl = self.document.addObject("Part::Cylinder", "Cylinder")
+        cyl.Radius = 2
+        cyl.Height = 10
+        self.document.recompute()
+
+        covering = Arch.makeCovering()
+
+        # View from side (looking at the curved face)
+        face = covering.Proxy.get_best_face(cyl, view_direction=App.Vector(1, 0, 0))
+
+        # Should be Top or Bottom (planar), NOT Side (curved), despite Side being larger
+        face_obj = cyl.Shape.getElement(face)
+        self.assertIsNotNone(face_obj.findPlane(), "Selected face must be planar")

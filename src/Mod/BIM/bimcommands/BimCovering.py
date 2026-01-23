@@ -102,15 +102,16 @@ class BIM_Covering:
                             obj = parent
                             break
 
+                face_found_in_subelements = False
                 if s.SubElementNames:
-                    # Iterate through all selected sub-elements (faces) This ensures that selecting
-                    # Face1 AND Face2 of the same object results in two distinct targets for the
-                    # batch operation.
                     for sub in s.SubElementNames:
                         if "Face" in sub:
                             selection_list.append((obj, [sub]))
-                else:
-                    # Whole object selected
+                            face_found_in_subelements = True
+
+                # Fallback to whole object if no faces were explicitly selected, which handles
+                # whole-object selections and invalid sub-element selections (e.g., edges).
+                if not face_found_in_subelements:
                     selection_list.append(obj)
 
         # Launch the task panel

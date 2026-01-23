@@ -318,6 +318,44 @@ class _Covering(ArchComponent.Component):
             obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
         )
 
+    def get_best_face(self, obj, view_direction=None):
+        """
+        Returns the name of the best candidate face (e.g. 'Face1') for a covering.
+        Heuristics:
+        1. Filter for faces with the largest area (within 5% tolerance).
+        2. Preference for face opposing the view direction (Camera facing).
+        """
+        if not hasattr(obj, "Shape") or not obj.Shape.Faces:
+            return None
+
+        # 1. Gather Face Data: (Name, FaceObj, Area)
+        faces_data = []
+        for i, f in enumerate(obj.Shape.Faces):
+            # Check for planarity
+            if f.findPlane() is None:
+                continue
+            faces_data.append((f"Face{i+1}", f, f.Area))
+
+        # 2. Filter by Area (Keep faces within 95% of max area)
+        if not faces_data:
+            return None
+
+        faces_data.sort(key=lambda x: x[2], reverse=True)
+        max_area = faces_data[0][2]
+        candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
+
+        if not candidates:
+            return None
+
+        # 3. Heuristic: View Direction (Camera facing)
+        if view_direction:
+            # Dot product: Lower value means vectors are opposing (face looks at camera)
+            candidates.sort(key=lambda x: x[1].normalAt(0, 0).dot(view_direction))
+            return candidates[0][0]
+
+        # Default: Return the first large face found
+        return candidates[0][0]
+
     def get_base_face(self, obj):
         """
         Resolves the 'Base' link to identify and return the target planar face for the covering.
@@ -353,11 +391,10 @@ class _Covering(ArchComponent.Component):
             if linked_obj.Shape.ShapeType == "Face":
                 face = linked_obj.Shape
             elif linked_obj.Shape.Solids:
-                # If solid, find the "Top" face based on Normal
-                faces = linked_obj.Shape.Faces
-                faces.sort(key=lambda f: f.CenterOfMass.z, reverse=True)
-                if faces:
-                    face = faces[0]
+                # Use smart detection to find the best face (e.g. largest)
+                best_face_name = self.get_best_face(linked_obj)
+                if best_face_name:
+                    face = linked_obj.getSubObject(best_face_name)
             # Support for closed Wires (e.g. Draft Circle/Rectangle with MakeFace=False)
             elif linked_obj.Shape.ShapeType in ["Wire", "Edge"]:
                 if linked_obj.Shape.isClosed():
@@ -1178,6 +1215,24 @@ if FreeCAD.GuiUp:
                     self.phantom.ViewObject.hide()
                 self.target_obj = self.phantom
 
+            # Smart Face Detection for pre-selection
+            resolved_selection = []
+            view_dir = self._get_view_direction()
+
+            for item in self.selection_list:
+                if not isinstance(item, tuple):
+                    # Access via Proxy of the target object (phantom or real)
+                    # This ensures we use the logic defined in _Covering
+                    face = self.target_obj.Proxy.get_best_face(item, view_dir)
+                    if face:
+                        resolved_selection.append((item, [face]))
+                    else:
+                        resolved_selection.append(item)
+                else:
+                    resolved_selection.append(item)
+
+            self.selection_list = resolved_selection
+
             # Build the task panel UI
 
             # Task Box 1: Geometry
@@ -1327,6 +1382,14 @@ if FreeCAD.GuiUp:
             self._setupHatchPage()
 
             self.geo_layout.addWidget(self.geo_stack)
+
+        def _get_view_direction(self):
+            """Safely retrieve the view direction if the GUI is active."""
+            if FreeCAD.GuiUp and FreeCADGui.ActiveDocument:
+                view = FreeCADGui.ActiveDocument.ActiveView
+                if hasattr(view, "getViewDirection"):
+                    return view.getViewDirection()
+            return None
 
         def _setupBottomControls(self):
             # Continue Mode
@@ -1555,7 +1618,14 @@ if FreeCAD.GuiUp:
                         if "Face" in sub:
                             new_list.append((obj, [sub]))
                 else:
-                    new_list.append(obj)
+                    # Smart detection for whole object clicks
+                    view_dir = self._get_view_direction()
+                    best_face = self.target_obj.Proxy.get_best_face(obj, view_dir)
+
+                    if best_face:
+                        new_list.append((obj, [best_face]))
+                    else:
+                        new_list.append(obj)
 
             # If we are editing, we can only assign one base. If the user selects multiple,
             # we keep only the most recent one to match the behavior of the assignment logic below.
