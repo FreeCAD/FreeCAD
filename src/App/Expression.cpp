@@ -1238,9 +1238,9 @@ void UnitExpression::setUnit(const Quantity &_quantity)
   * as it cannot be simplified any more.
   */
 
-Expression *UnitExpression::simplify() const
+ExpressionPtr UnitExpression::simplify() const
 {
-    return new NumberExpression(owner, quantity);
+    return std::make_unique<NumberExpression>(owner, quantity);
 }
 
 /**
@@ -1287,9 +1287,9 @@ NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity 
   * be simplified any more.
   */
 
-Expression *NumberExpression::simplify() const
+ExpressionPtr NumberExpression::simplify() const
 {
-    return copy().release();
+    return copy();
 }
 
 /**
@@ -1488,19 +1488,17 @@ Py::Object OperatorExpression::_getPyValue() const {
   * @returns Simplified expression.
   */
 
-Expression *OperatorExpression::simplify() const
+ExpressionPtr OperatorExpression::simplify() const
 {
-    Expression * v1 = left->simplify();
-    Expression * v2 = right->simplify();
+    ExpressionPtr v1 = left->simplify();
+    ExpressionPtr v2 = right->simplify();
 
     // Both arguments reduced to numerics? Then evaluate and return answer
-    if (freecad_cast<NumberExpression*>(v1) && freecad_cast<NumberExpression*>(v2)) {
-        delete v1;
-        delete v2;
-        return eval().release();
+    if (freecad_cast<NumberExpression*>(v1.get()) && freecad_cast<NumberExpression*>(v2.get())) {
+        return eval();
     }
     else
-        return new OperatorExpression(owner, v1, op, v2);
+        return std::make_unique<OperatorExpression>(owner, v1.release(), op, v2.release());
 }
 
 /**
@@ -2666,18 +2664,19 @@ Py::Object FunctionExpression::_getPyValue() const {
   * @returns A simplified expression.
   */
 
-Expression *FunctionExpression::simplify() const
+ExpressionPtr FunctionExpression::simplify() const
 {
     size_t numerics = 0;
     std::vector<Expression*> simplifiedArgs;
 
     // Try to simplify each argument to function
     for (auto it : args) {
-        Expression * v = it->simplify();
+        ExpressionPtr v = it->simplify();
 
-        if (freecad_cast<NumberExpression*>(v))
+        if (freecad_cast<NumberExpression*>(v.get())) {
             ++numerics;
-        simplifiedArgs.push_back(v);
+        }
+        simplifiedArgs.push_back(v.release());
     }
 
     if (numerics == args.size()) {
@@ -2687,11 +2686,15 @@ Expression *FunctionExpression::simplify() const
         for (auto it : simplifiedArgs)
             delete it;
 
-        return eval().release();
+        return eval();
     }
     else
-        return new FunctionExpression(owner, f, std::string(fname),
-                                      std::move(simplifiedArgs));
+        return std::make_unique<FunctionExpression>(
+            owner,
+            f,
+            std::string(fname),
+            std::move(simplifiedArgs)
+        );
 }
 
 /**
@@ -2995,9 +2998,9 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
   * @returns A copy of the expression.
   */
 
-Expression *VariableExpression::simplify() const
+ExpressionPtr VariableExpression::simplify() const
 {
-    return copy().release();
+    return copy();
 }
 
 /**
@@ -3208,9 +3211,9 @@ StringExpression::~StringExpression() {
   * Simplify the expression. For strings, this is a simple copy of the object.
   */
 
-Expression *StringExpression::simplify() const
+ExpressionPtr StringExpression::simplify() const
 {
-    return copy().release();
+    return copy();
 }
 
 void StringExpression::_toString(std::ostream &ss, bool,int) const
@@ -3260,18 +3263,26 @@ Py::Object ConditionalExpression::_getPyValue() const {
         return falseExpr->getPyValue();
 }
 
-Expression *ConditionalExpression::simplify() const
+ExpressionPtr ConditionalExpression::simplify() const
 {
-    std::unique_ptr<Expression> e(condition->simplify());
+    ExpressionPtr e = condition->simplify();
     NumberExpression * v = freecad_cast<NumberExpression*>(e.get());
 
-    if (!v)
-        return new ConditionalExpression(owner, condition->simplify(), trueExpr->simplify(), falseExpr->simplify());
+    if (!v) {
+        return std::make_unique<ConditionalExpression>(
+            owner,
+            condition->simplify().release(),
+            trueExpr->simplify().release(),
+            falseExpr->simplify().release()
+        );
+    }
     else {
-        if (fabs(v->getValue()) >= Base::Precision::Confusion())
+        if (fabs(v->getValue()) >= Base::Precision::Confusion()) {
             return trueExpr->simplify();
-        else
+        }
+        else {
             return falseExpr->simplify();
+        }
     }
 }
 
@@ -3399,9 +3410,9 @@ Expression *RangeExpression::_copy() const
     return new RangeExpression(owner, begin, end);
 }
 
-Expression *RangeExpression::simplify() const
+ExpressionPtr RangeExpression::simplify() const
 {
-    return copy().release();
+    return copy();
 }
 
 void RangeExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const
@@ -3829,7 +3840,7 @@ std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
         throw ParserError("Unknown error in expression");
 
     // Simplify expression
-    Expression * simplified = ScanResult->simplify();
+    ExpressionPtr simplified = ScanResult->simplify();
 
     if (!unitExpression) {
         auto* fraction = freecad_cast<OperatorExpression*>(ScanResult.get());
@@ -3845,19 +3856,14 @@ std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
     }
     ScanResult.reset();
 
-    if (unitExpression) {
-        NumberExpression * num = freecad_cast<NumberExpression*>(simplified);
-
-        if (num) {
-           simplified = new UnitExpression(num->getOwner(), num->getQuantity());
-            delete num;
-        }
-        return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified));
-    }
-    else {
-        delete simplified;
+    if (!unitExpression) {
         throw Expression::Exception("Expression is not a unit.");
     }
+
+    if (auto num = freecad_cast<NumberExpression*>(simplified.get()); num) {
+        return std::make_unique<UnitExpression>(num->getOwner(), num->getQuantity());
+    }
+    return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified.release()));
 }
 
 namespace {

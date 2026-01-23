@@ -85,7 +85,7 @@ public:
 
     ~UnitExpression() override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     void setUnit(const Base::Quantity& _quantity);
 
@@ -141,7 +141,7 @@ public:
     explicit NumberExpression(const App::DocumentObject* _owner = nullptr,
                               const Base::Quantity& quantity = Base::Quantity());
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     void negate();
 
@@ -215,7 +215,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     int priority() const override;
 
@@ -268,7 +268,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     int priority() const override;
 
@@ -397,7 +397,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     static Py::Object
     evaluate(const Expression* owner, int type, const std::vector<Expression*>& args);
@@ -459,7 +459,7 @@ public:
 
     bool isTouched() const override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     std::string name() const
     {
@@ -521,9 +521,9 @@ public:
 
     void setPyValue(Py::Object pyobj);
     void setPyValue(PyObject* pyobj, bool owned = false);
-    Expression* simplify() const override
+    ExpressionPtr simplify() const override
     {
-        return copy().release();
+        return copy();
     }
 
 protected:
@@ -549,7 +549,7 @@ public:
                               const std::string& _text = std::string());
     ~StringExpression() override;
 
-    Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     virtual std::string getText() const
     {
@@ -583,7 +583,7 @@ public:
 
     bool isTouched() const override;
 
-    App::Expression* simplify() const override;
+    ExpressionPtr simplify() const override;
 
     Range getRange() const;
 
