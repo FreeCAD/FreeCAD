@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHPARTGUI_WORKBENCH_H
-#define MESHPARTGUI_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -48,6 +47,3 @@ protected:
 };
 
 }  // namespace MeshPartGui
-
-
-#endif  // MESHPARTGUI_WORKBENCH_H

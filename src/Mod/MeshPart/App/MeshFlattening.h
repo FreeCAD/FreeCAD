@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHFLATTENING
-#define MESHFLATTENING
+#pragma once
 
 // idea:
 // - unwrap any meshed shells and output a 2d face (meshing is done externally)
@@ -79,5 +78,3 @@ public:
 
 };
 // clang-format on
-
-#endif  // MESHFLATTENING
