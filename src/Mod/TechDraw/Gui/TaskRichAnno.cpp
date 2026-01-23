@@ -571,10 +571,6 @@ void TaskRichAnno::enterPlacementMode()
     ui->gbFrame->setEnabled(false);
     ui->dsbMaxWidth->setEnabled(false);
     setFocus();  // Set focus to the panel to capture key presses
-
-    //Gui::Application::Instance->showStatusMessage(
-    //    tr("Click on the page to place the annotation, or start typing to place at the center."),
-    //    5000);
 }
 
 void TaskRichAnno::createAndSetupAnnotation(const QPointF* scenePos)
