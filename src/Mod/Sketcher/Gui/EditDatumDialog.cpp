@@ -237,7 +237,7 @@ void EditDatumDialog::typeChanged(bool checked)
         dlg = dlg->parentWidget();
     }
     if (ui_ins_datum->rbRadius->isChecked()) {
-        ui_ins_datum->label->setText(tr("Radius:"));
+        ui_ins_datum->label->setText(tr("Radius"));
         if (dlg) {
             dlg->setWindowTitle(tr("Insert Radius"));
         }
