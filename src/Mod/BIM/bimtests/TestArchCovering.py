@@ -192,3 +192,16 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # The result should be a safe fallback (e.g. only the base face)
         self.assertFalse(covering.Shape.isNull())
+
+    def test_open_wire_guard(self):
+        """Verify that open wires are rejected as base objects."""
+        self.printTestMessage("open wire guard...")
+        # Create an open Draft Line
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(500, 0, 0))
+        self.document.recompute()
+
+        covering = Arch.makeCovering(line)
+        self.document.recompute()
+
+        # Should be null because the wire isn't closed
+        self.assertTrue(covering.Shape.isNull())

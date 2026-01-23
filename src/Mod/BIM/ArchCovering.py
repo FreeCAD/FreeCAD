@@ -350,12 +350,21 @@ class _Covering(ArchComponent.Component):
                 if faces:
                     face = faces[0]
             # Support for closed Wires (e.g. Draft Circle/Rectangle with MakeFace=False)
-            elif linked_obj.Shape.ShapeType in ["Wire", "Edge"] and linked_obj.Shape.isClosed():
-                try:
-                    face = Part.Face(Part.Wire(linked_obj.Shape.Edges))
-                except Part.OCCError as e:
+            elif linked_obj.Shape.ShapeType in ["Wire", "Edge"]:
+                if linked_obj.Shape.isClosed():
+                    try:
+                        face = Part.Face(Part.Wire(linked_obj.Shape.Edges))
+                    except Part.OCCError as e:
+                        FreeCAD.Console.PrintWarning(
+                            "ArchCovering: Unable to create face from wire: {}\n".format(e)
+                        )
+                else:
                     FreeCAD.Console.PrintWarning(
-                        "ArchCovering: Unable to create face from wire: {}\n".format(e)
+                        translate(
+                            "Arch",
+                            "Covering: The base wire is not closed. A closed loop is required to create a surface finish.",
+                        )
+                        + "\n"
                     )
 
         if face:
