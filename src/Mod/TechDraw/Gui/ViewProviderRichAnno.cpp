@@ -225,8 +225,7 @@ bool ViewProviderRichAnno::onDelete(const std::vector<std::string>& subs)
     Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
     if (dlg) {
         // Check if the active dialog is our RichAnno dialog
-        auto* richAnnoDlg = dynamic_cast<TaskDlgRichAnno*>(dlg);
-        if (richAnnoDlg) {
+        if (auto* richAnnoDlg = dynamic_cast<TaskDlgRichAnno*>(dlg)) {
             // Check if the dialog is for THIS specific view provider
             if (richAnnoDlg->isFor(this)) {
                 Gui::Control().closeDialog();  // Close the dialog gracefully
