@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef U16_HEADER
-#define U16_HEADER
+#pragma once
 
 #include "Context.h"
 #include <istream>
@@ -56,6 +55,3 @@ struct U16
 
     uint16_t _U16;
 };
-
-
-#endif
