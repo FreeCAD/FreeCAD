@@ -44,7 +44,7 @@ public:
 private:
     void onLabelStatusLinkClicked(const QString&) override;
 
-    void updateToolTip(const QString& link);
+    void updateToolTip(const QString& link) override;
 
 protected:
     ViewProviderAssembly* vp;

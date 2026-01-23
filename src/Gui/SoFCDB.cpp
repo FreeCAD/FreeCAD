@@ -42,6 +42,7 @@
 
 
 #include <Base/FileInfo.h>
+#include <Base/Persistence.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 #include <zipios++/gzipoutputstream.h>
@@ -497,6 +498,7 @@ bool Gui::SoFCDB::writeToX3D(SoNode* node, bool exportViewpoints, std::string& b
     return true;
 }
 
+
 void Gui::SoFCDB::writeX3DFields(
     SoNode* node,
     std::map<SoNode*, std::string>& nodeMap,
@@ -522,7 +524,8 @@ void Gui::SoFCDB::writeX3DFields(
         }
 
         nodeMap[node] = str.str();
-        out << " DEF=\"" << str.str() << "\"";
+        std::string escapedName = Base::Persistence::encodeAttribute(str.str());
+        out << " DEF=\"" << escapedName << "\"";
     }
 
     const SoFieldData* fielddata = node->getFieldData();
@@ -545,9 +548,14 @@ void Gui::SoFCDB::writeX3DFields(
                         ba = ba.simplified();
                     }
 
+                    // escape XML special characters in attribute value
+                    std::string escapedValue = Base::Persistence::encodeAttribute(
+                        std::string(ba.data())
+                    );
+
                     out << '\n'
                         << Base::blanks(spaces + 2) << fielddata->getFieldName(i).getString()
-                        << "=\"" << ba.data() << "\" ";
+                        << "=\"" << escapedValue << "\" ";
                 }
                 else {
                     numFieldNodes++;
@@ -606,19 +614,19 @@ void Gui::SoFCDB::writeX3DChild(
         // remove the VRML prefix from the type name
         std::string sftype(node->getTypeId().getName().getString());
         sftype = sftype.substr(4);
-        out << Base::blanks(spaces) << "<" << sftype << " USE=\"" << mapIt->second << "\" />\n";
+        std::string escapedRef = Base::Persistence::encodeAttribute(mapIt->second);
+        out << Base::blanks(spaces) << "<" << sftype << " USE=\"" << escapedRef << "\" />\n";
     }
 }
 
 void Gui::SoFCDB::writeX3D(SoVRMLGroup* node, bool exportViewpoints, std::ostream& out)
 {
     out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
-           "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-    out << "<X3D profile=\"Immersive\" version=\"3.2\" "
+    out << "<!DOCTYPE X3D PUBLIC \"ISO//Web3D//DTD X3D 3.3//EN\" "
+           "\"http://www.web3d.org/specifications/x3d-3.3.dtd\">\n";
+    out << "<X3D profile=\"Immersive\" version=\"3.3\" "
            "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema-instance\" "
-           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.2.xsd\" "
-           "width=\"1280px\"  height=\"1024px\">\n";
+           "xsd:noNamespaceSchemaLocation=\"http://www.web3d.org/specifications/x3d-3.3.xsd\">\n";
     out << "  <head>\n"
            "    <meta name=\"generator\" content=\"FreeCAD\"/>\n"
            "    <meta name=\"author\" content=\"\"/>\n"
@@ -685,19 +693,22 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
     x3d = x3d.erase(0, pos + 1);
 
     std::stringstream out;
-    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-        << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
+    out << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    out << "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" "
            "\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-    out << "<html xmlns='http://www.w3.org/1999/xhtml'>\n"
+    out << "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n"
         << "  <head>\n"
-        << "    <script type='text/javascript' src='http://www.x3dom.org/download/x3dom.js'> "
-           "</script>\n"
-        << "    <link rel='stylesheet' type='text/css' "
-           "href='http://www.x3dom.org/download/x3dom.css'></link>\n"
-        << "  </head>\n";
+        << "    <meta charset=\"utf-8\"/>\n"
+        << "    <title>FreeCAD X3DOM Export</title>\n"
+        << "    <script src=\"http://www.x3dom.org/download/x3dom.js\"> </script>\n"
+        << "    <link rel=\"stylesheet\" type=\"text/css\" "
+           "href=\"http://www.x3dom.org/download/x3dom.css\"/>\n"
+        << "  </head>\n"
+        << "  <body>\n"
+        << "    <div>\n";
 
     auto onclick = [&out](const char* text) {
-        out << "  <button onclick=\"document.getElementById('" << text
+        out << "      <button onclick=\"document.getElementById('" << text
             << "').setAttribute('set_bind','true');\">" << text << "</button>\n";
     };
 
@@ -709,9 +720,10 @@ bool Gui::SoFCDB::writeToX3DOM(SoNode* node, std::string& buffer)
     onclick("Top");
     onclick("Bottom");
 
-    out << x3d;
+    out << "    </div>\n" << x3d;
 
-    out << "</html>\n";
+    out << "  </body>\n"
+        << "</html>\n";
 
     buffer = out.str();
 

@@ -347,6 +347,7 @@ class LibraryBrowserWidget(ToolBitBrowserWidget):
         # If the editor was closed with "OK", save the changes
         self._asset_manager.add(toolbit)
         Path.Log.info(f"Toolbit {toolbit.get_id()} saved.")
+        editor._restore_original_schema()
 
         # Also save the library because the tool number may have changed.
         if self.current_library and tool_no != editor.tool_no:

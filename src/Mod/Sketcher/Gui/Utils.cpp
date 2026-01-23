@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -355,7 +357,7 @@ bool SketcherGui::isBsplineKnotOrEndPoint(
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
-    if (geo->is<Part::GeomBSplineCurve>()
+    if (geo && geo->is<Part::GeomBSplineCurve>()
         && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
     }
@@ -504,7 +506,7 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        return (vp != nullptr);
+        return (vp != nullptr && vp->isInEditMode());
     }
     return false;
 }

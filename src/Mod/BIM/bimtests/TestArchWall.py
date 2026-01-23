@@ -118,23 +118,358 @@ class TestArchWall(TestArchBase.TestArchBase):
 
     def test_remove_base_from_wall_without_host(self):
         """
-        Tests that removing a wall's base using removeComponents(host=None)
-        does not crash and successfully unlinks the base.
-        This is the non-regression test for the 'list' has no attribute 'Base' bug.
-        https://github.com/FreeCAD/FreeCAD/issues/24532
+        Tests that removing a debasable wall's base using removeComponents
+        successfully unlinks the base.
         """
         self.printTestMessage("Testing removal of a wall's base component...")
 
         # 1. Arrange: Create a wall with a base
         line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        # Ensure the base object's shape is computed, making the wall debasable.
+        line.recompute()
         wall = Arch.makeWall(line)
+        self.document.recompute()  # Ensure wall is fully formed
         self.assertIsNotNone(wall.Base, "Pre-condition failed: Wall should have a base.")
+        self.assertTrue(
+            Arch.is_debasable(wall), "Pre-condition failed: The test wall is not debasable."
+        )
 
-        # 2. Act: Call removeComponents on the base, simulating the failing workflow
-        # Before the fix, this will raise an AttributeError.
-        # After the fix, it should complete without error.
+        # 2. Act: Call removeComponents on the base.
+        # This will trigger the is_debasable -> True -> debaseWall() path.
         Arch.removeComponents([wall.Base])
         self.document.recompute()
 
-        # 3. Assert: The base should now be None
+        # 3. Assert: The base should now be None because debaseWall was successful.
         self.assertIsNone(wall.Base, "The wall's Base property was not cleared after removal.")
+
+    def test_is_debasable_with_valid_line_base(self):
+        """Tests that a wall based on a single Draft.Line is debasable."""
+        self.printTestMessage("Checking is_debasable with Draft.Line...")
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(1000, 0, 0))
+        line.recompute()
+        wall = Arch.makeWall(line)
+        self.document.recompute()
+        self.assertTrue(Arch.is_debasable(wall), "Wall on Draft.Line should be debasable.")
+
+    def test_is_debasable_with_valid_sketch_base(self):
+        """Tests that a wall based on a Sketch with a single line is debasable."""
+        self.printTestMessage("Checking is_debasable with single-line Sketch...")
+        sketch = self.document.addObject("Sketcher::SketchObject", "SingleLineSketch")
+        sketch.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(1000, 0, 0)))
+        self.document.recompute()
+        wall = Arch.makeWall(sketch)
+        self.assertTrue(Arch.is_debasable(wall), "Wall on single-line Sketch should be debasable.")
+
+    def test_is_debasable_with_multi_edge_base(self):
+        """Tests that a wall based on a multi-segment wire is not debasable."""
+        self.printTestMessage("Checking is_debasable with multi-segment Wire...")
+        wire = Draft.makeWire(
+            [App.Vector(0, 0, 0), App.Vector(1000, 0, 0), App.Vector(1000, 1000, 0)]
+        )
+        wall = Arch.makeWall(wire)
+        self.assertFalse(
+            Arch.is_debasable(wall), "Wall on multi-segment wire should not be debasable."
+        )
+
+    def test_is_debasable_with_curved_base(self):
+        """Tests that a wall based on an arc is not debasable."""
+        self.printTestMessage("Checking is_debasable with curved base...")
+        arc = Draft.make_circle(radius=500, startangle=0, endangle=90)
+        self.document.recompute()
+        wall = Arch.makeWall(arc)
+        self.document.recompute()
+        self.assertFalse(Arch.is_debasable(wall), "Wall on curved base should not be debasable.")
+
+    def test_is_debasable_with_no_base(self):
+        """Tests that a baseless wall is not debasable."""
+        self.printTestMessage("Checking is_debasable with no base...")
+        wall = Arch.makeWall(length=1000)
+        self.assertFalse(Arch.is_debasable(wall), "Baseless wall should not be debasable.")
+
+    def test_debase_wall_preserves_global_position(self):
+        """
+        Tests that debaseWall correctly transfers the base's placement to the
+        wall, preserving its global position and dimensions.
+        """
+        self.printTestMessage("Checking debaseWall preserves global position...")
+
+        # 1. Arrange: Create a rotated and translated line, and a wall from it.
+        pl = App.Placement(App.Vector(1000, 500, 200), App.Rotation(App.Vector(0, 0, 1), 45))
+        line = Draft.makeLine(App.Vector(0, 0, 0), App.Vector(2000, 0, 0))
+        line.Placement = pl
+        line.recompute()  # Use object-level recompute
+
+        wall = Arch.makeWall(line, width=200, height=1500, align="Left")
+        self.document.recompute()
+
+        # Store the wall's original state
+        original_bb = wall.Shape.BoundBox
+        original_volume = wall.Shape.Volume
+        original_length = wall.Length.Value
+
+        # 2. Act: Debase the wall
+        success = Arch.debaseWall(wall)
+        self.document.recompute()
+
+        # 3. Assert
+        self.assertTrue(success, "debaseWall should return True for a valid wall.")
+        self.assertIsNone(wall.Base, "Wall's Base should be None after debasing.")
+
+        # Core assertions for preserving geometry and placement
+        self.assertAlmostEqual(
+            original_volume,
+            wall.Shape.Volume,
+            delta=1e-6,
+            msg="Wall volume should not change after debasing.",
+        )
+
+        # Compare individual properties of the BoundBox with a tolerance
+        final_bb = wall.Shape.BoundBox
+        self.assertAlmostEqual(
+            original_bb.XMin, final_bb.XMin, delta=1e-6, msg="Bounding box XMin does not match."
+        )
+        self.assertAlmostEqual(
+            original_bb.XMax, final_bb.XMax, delta=1e-6, msg="Bounding box XMax does not match."
+        )
+        self.assertAlmostEqual(
+            original_bb.YMin, final_bb.YMin, delta=1e-6, msg="Bounding box YMin does not match."
+        )
+        self.assertAlmostEqual(
+            original_bb.YMax, final_bb.YMax, delta=1e-6, msg="Bounding box YMax does not match."
+        )
+        self.assertAlmostEqual(
+            original_bb.ZMin, final_bb.ZMin, delta=1e-6, msg="Bounding box ZMin does not match."
+        )
+        self.assertAlmostEqual(
+            original_bb.ZMax, final_bb.ZMax, delta=1e-6, msg="Bounding box ZMax does not match."
+        )
+
+        # Check parametric integrity
+        self.assertAlmostEqual(
+            wall.Length.Value,
+            original_length,
+            delta=1e-6,
+            msg="Wall's Length property should be preserved.",
+        )
+
+        # Verify it remains parametric by changing a property
+        wall.Height = 2000
+        self.document.recompute()
+        self.assertNotAlmostEqual(
+            original_volume,
+            wall.Shape.Volume,
+            delta=1e-6,
+            msg="Wall should remain parametric and its volume should change with height.",
+        )
+
+    def test_makeWall_baseless_alignment(self):
+        """
+        Tests that Arch.makeWall correctly creates a baseless wall with the
+        specified alignment.
+        """
+        self.printTestMessage("Checking baseless wall alignment from makeWall...")
+
+        # Define the test cases: (Alignment Mode, Expected final Y-center)
+        test_cases = [
+            ("Center", 0.0),
+            ("Left", -100.0),
+            ("Right", 100.0),
+        ]
+
+        for align_mode, expected_y_center in test_cases:
+            with self.subTest(alignment=align_mode):
+                # 1. Arrange & Act: Create a baseless wall using the API call.
+                wall = Arch.makeWall(length=2000, width=200, height=1500, align=align_mode)
+                self.document.recompute()
+
+                # 2. Assert Geometry: Verify the shape is valid.
+                self.assertFalse(
+                    wall.Shape.isNull(), msg=f"[{align_mode}] Shape should not be null."
+                )
+                expected_volume = 2000 * 200 * 1500
+                self.assertAlmostEqual(
+                    wall.Shape.Volume,
+                    expected_volume,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Wall volume is incorrect.",
+                )
+
+                # 3. Assert Placement and Alignment.
+                # The wall's Placement should be at the origin.
+                self.assertTrue(
+                    wall.Placement.Base.isEqual(App.Vector(0, 0, 0), 1e-6),
+                    msg=f"[{align_mode}] Default placement Base should be at the origin.",
+                )
+                self.assertAlmostEqual(
+                    wall.Placement.Rotation.Angle,
+                    0.0,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Default placement Rotation should be zero.",
+                )
+
+                # The shape's center should be offset according to the alignment.
+                shape_center = wall.Shape.BoundBox.Center
+                expected_center = App.Vector(0, expected_y_center, 750)
+
+                self.assertTrue(
+                    shape_center.isEqual(expected_center, 1e-5),
+                    msg=f"For '{align_mode}' align, wall center {shape_center} does not match expected {expected_center}",
+                )
+
+    def test_baseless_wall_stretch_api(self):
+        """
+        Tests the proxy methods for graphically editing baseless walls:
+        calc_endpoints() and set_from_endpoints().
+        """
+        self.printTestMessage("Checking baseless wall stretch API...")
+
+        # 1. Arrange: Create a baseless wall and then set its placement.
+        initial_placement = App.Placement(
+            App.Vector(1000, 1000, 0), App.Rotation(App.Vector(0, 0, 1), 45)
+        )
+        # Create wall first, then set its placement.
+        wall = Arch.makeWall(length=2000)
+        wall.Placement = initial_placement
+        self.document.recompute()
+
+        # 2. Test calc_endpoints()
+        endpoints = wall.Proxy.calc_endpoints(wall)
+        self.assertEqual(len(endpoints), 2, "calc_endpoints should return two points.")
+
+        # Verify the calculated endpoints against manual calculation
+        half_len_vec_x = App.Vector(1000, 0, 0)
+        rotated_half_vec = initial_placement.Rotation.multVec(half_len_vec_x)
+        expected_p1 = initial_placement.Base - rotated_half_vec
+        expected_p2 = initial_placement.Base + rotated_half_vec
+
+        self.assertTrue(endpoints[0].isEqual(expected_p1, 1e-6), "Start point is incorrect.")
+        self.assertTrue(endpoints[1].isEqual(expected_p2, 1e-6), "End point is incorrect.")
+
+        # 3. Test set_from_endpoints()
+        new_p1 = App.Vector(0, 0, 0)
+        new_p2 = App.Vector(4000, 0, 0)
+        wall.Proxy.set_from_endpoints(wall, [new_p1, new_p2])
+        self.document.recompute()
+
+        # Assert that the wall's properties have been updated correctly
+        self.assertAlmostEqual(
+            wall.Length.Value, 4000.0, delta=1e-6, msg="Length was not updated correctly."
+        )
+
+        expected_center = App.Vector(2000, 0, 0)
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_center, 1e-6),
+            "Placement.Base (center) was not updated correctly.",
+        )
+
+        # Check rotation (should now be zero as the new points are on the X-axis)
+        self.assertAlmostEqual(
+            wall.Placement.Rotation.Angle,
+            0.0,
+            delta=1e-6,
+            msg="Placement.Rotation was not updated correctly.",
+        )
+
+    def test_wall_makeblocks(self):
+        """Test the 'MakeBlocks' feature of Arch Wall.
+        This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982, and
+        a basic, functional test for the MakeBlocks code path.
+        """
+        operation = "Checking Arch Wall MakeBlocks functional correctness..."
+        self.printTestMessage(operation)
+
+        # Block parameters
+        L, H, W = 1000.0, 600.0, 200.0
+        BL, BH = 400.0, 200.0  # Block Length and Height
+        O1, O2 = 0.0, 200.0  # Row offsets
+
+        # Create base line
+        p1 = App.Vector(0, 0, 0)
+        p2 = App.Vector(L, 0, 0)
+        line = Draft.makeLine(p1, p2)
+        self.document.recompute()
+
+        # Create wall based on line and block parameters
+        wall = Arch.makeWall(line, width=W, height=H)
+        wall.BlockLength = BL
+        wall.BlockHeight = BH
+        wall.Joint = 0  # For test and volume calculation simplicity
+        wall.OffsetFirst = O1
+        wall.OffsetSecond = O2
+
+        def calc_row(row_start):
+            """
+            Simulates the 1D block-segmentation logic for a single horizontal course.
+
+            This helper replicates the "sawing" algorithm found in _Wall.execute:
+            1. It places the first vertical joint at 'row_start'.
+            2. It advances the cutting position by 'BlockLength' (BL).
+            3. It measures the resulting segments between joints.
+            4. It classifies segments equal to 'BL' as 'Entire' and any
+               remainder (at the start or end of the row) as 'Broken'.
+
+            Args:
+                row_start (float): The distance from the start of the wall to the first vertical
+                                   joint.
+
+            Returns:
+                tuple (int, int): A pair of integers (entire_count, broken_count)
+                                  predicted for this specific row.
+            """
+            row_entire, row_broken = 0, 0
+            current_pos = row_start
+            last_pos = 0.0
+
+            # Mimic the logic in ArchWall:
+            # while offset < (Length - Joint): create cut at offset
+            # Perform the cuts and record the resulting segments
+            segments = []
+            while current_pos < L:
+                if current_pos > 0:
+                    segments.append(current_pos - last_pos)
+                    last_pos = current_pos
+                current_pos += BL
+            if last_pos < L:
+                segments.append(L - last_pos)
+
+            # Classify segments
+            for seg_len in segments:
+                if abs(seg_len - BL) < 0.1:  # Threshold for "Entire"
+                    row_entire += 1
+                else:
+                    row_broken += 1
+            return row_entire, row_broken
+
+        # Calculate expectations based on total courses (rows)
+        num_rows = int(H // BH)
+        expected_entire = 0
+        expected_broken = 0
+
+        # Effectively "lay the bricks" in a running bond pattern: alternate offsets per even/odd row
+        for r in range(num_rows):
+            ent, brk = calc_row(O1 if r % 2 == 0 else O2)
+            expected_entire += ent
+            expected_broken += brk
+
+        # Enable the feature, triggering the #26982 bug via the code path in _Wall.execute()
+        wall.MakeBlocks = True
+        self.document.recompute()
+
+        # Regression check: did we crash?
+        self.assertFalse(wall.Shape.isNull(), "Wall shape should not be null")
+
+        # Functional check: compare dynamic calculation to property values
+        self.assertEqual(
+            wall.CountEntire,
+            expected_entire,
+            f"Mismatch in Entire blocks. Expected {expected_entire}, got {wall.CountEntire}",
+        )
+        self.assertEqual(
+            wall.CountBroken,
+            expected_broken,
+            f"Mismatch in Broken blocks. Expected {expected_broken}, got {wall.CountBroken}",
+        )
+
+        # Integrity check: volume correctness
+        expected_vol = L * W * H
+        self.assertAlmostEqual(wall.Shape.Volume, expected_vol, places=3)

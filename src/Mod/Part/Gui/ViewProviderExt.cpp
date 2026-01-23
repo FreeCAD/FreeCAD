@@ -24,6 +24,7 @@
 
 #include <Bnd_Box.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_MakeVertex.hxx>
 #include <BRepExtrema_DistShapeShape.hxx>
@@ -604,10 +605,12 @@ std::string ViewProviderPartExt::getElement(const SoDetail* detail) const
 
 SoDetail* ViewProviderPartExt::getDetail(const char* subelement) const
 {
+    // 1. Try standard string parsing (FaceN, EdgeN...)
     auto type = Part::TopoShape::getElementTypeAndIndex(subelement);
     std::string element = type.first;
     int index = type.second;
 
+    // 2. Create the Coin3D Detail
     if (element == "Face") {
         SoFaceDetail* detail = new SoFaceDetail();
         detail->setPartIndex(index - 1);
@@ -1093,6 +1096,13 @@ void ViewProviderPartExt::setupCoinGeometry(
     meshParams.InParallel = Standard_True;
     meshParams.AllowQualityDecrease = Standard_True;
 
+    // Clear triangulation and PCurves from geometry which can slow down the process
+#if OCC_VERSION_HEX < 0x070600
+    BRepTools::Clean(shape);
+#else
+    BRepTools::Clean(shape, Standard_True);
+#endif
+
     BRepMesh_IncrementalMesh(shape, meshParams);
 
     // We must reset the location here because the transformation data
@@ -1457,6 +1467,12 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    TopoDS_Shape shape = getRenderedShape().getShape();
+
+    if (lastRenderedShape.IsPartner(shape)) {
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -1473,10 +1489,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     try {
-        TopoDS_Shape cShape = getRenderedShape().getShape();
-
         setupCoinGeometry(
-            cShape,
+            shape,
             coords,
             faceset,
             norm,
@@ -1486,6 +1500,8 @@ void ViewProviderPartExt::updateVisual()
             AngularDeflection.getValue(),
             NormalsFromUV
         );
+
+        lastRenderedShape = shape;
 
         VisualTouched = false;
     }

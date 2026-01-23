@@ -47,10 +47,10 @@ TaskFemConstraintRigidBody::TaskFemConstraintRigidBody(
     QWidget* parent
 )
     : TaskFemConstraintOnBoundary(ConstraintView, parent, "FEM_ConstraintRigidBody")
+    , ui(new Ui_TaskFemConstraintRigidBody())
 {  // Note change "RigidBody" in line above to new constraint name
     constexpr float floatMax = std::numeric_limits<float>::max();
     proxy = new QWidget(this);
-    ui = new Ui_TaskFemConstraintRigidBody();
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
@@ -440,9 +440,9 @@ void TaskFemConstraintRigidBody::onReferenceDeleted()
 
 void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->RotationalModeX.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->RotationalModeX.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->spb_rot_axis_x->setEnabled(false);
@@ -459,9 +459,9 @@ void TaskFemConstraintRigidBody::onRotModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->RotationalModeY.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->RotationalModeY.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->spb_rot_axis_y->setEnabled(false);
@@ -478,9 +478,9 @@ void TaskFemConstraintRigidBody::onRotModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->RotationalModeZ.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->RotationalModeZ.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->spb_rot_axis_z->setEnabled(false);
@@ -498,9 +498,9 @@ void TaskFemConstraintRigidBody::onRotModeZChanged(int item)
 
 void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->TranslationalModeX.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->TranslationalModeX.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->qsb_disp_x->setEnabled(false);
@@ -517,9 +517,9 @@ void TaskFemConstraintRigidBody::onTransModeXChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->TranslationalModeY.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->TranslationalModeY.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->qsb_disp_y->setEnabled(false);
@@ -536,9 +536,9 @@ void TaskFemConstraintRigidBody::onTransModeYChanged(int item)
 }
 void TaskFemConstraintRigidBody::onTransModeZChanged(int item)
 {
-    const char* val = ConstraintView->getObject<Fem::ConstraintRigidBody>()
-                          ->TranslationalModeZ.getEnumVector()[item]
-                          .c_str();
+    const auto modes
+        = ConstraintView->getObject<Fem::ConstraintRigidBody>()->TranslationalModeZ.getEnumVector();
+    const char* val = modes[item].c_str();
 
     if (strcmp(val, "Free") == 0) {
         ui->qsb_disp_z->setEnabled(false);

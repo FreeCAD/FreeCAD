@@ -17,7 +17,7 @@
       <location filename="../../dlgPreferencesHelp.ui" line="29"/>
       <source>Fetches the documentation from pages rendered on GitHub.
 This is currently not available.</source>
-      <translation>Holtdie Dokumentation von Seiten, die auf GitHub gerendert werden. Diese Option ist derzeit nicht verfügbar.</translation>
+      <translation>Holt die Dokumentation von Seiten, die auf GitHub gerendert werden. Diese Option ist derzeit nicht verfügbar.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="46"/>

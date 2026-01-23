@@ -1,4 +1,8 @@
-from Base.Metadata import export, constmethod
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.Persistence import Persistence
 from Base.Vector import Vector
 from typing import Final, Tuple
@@ -56,10 +60,10 @@ class Sketch(Persistence):
         ...
 
     def moveGeometry(
-        self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False
+        self, GeoIndex: int, PointPos: Vector, Vector: Vector, relative: bool = False, /
     ) -> None:
         """
-        moveGeometry(GeoIndex,PointPos,Vector,[relative]) - move a given point (or curve)
+        Move a given point (or curve).
         to another location.
         It moves the specified point (or curve) to the given location by adding some
         temporary weak constraints and solve the sketch.

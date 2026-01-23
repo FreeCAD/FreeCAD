@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>               *
@@ -279,7 +280,7 @@ public:
         return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
     }
 
-    bool hasElementMap()
+    bool hasElementMap() const
     {
         return _elementMap != nullptr;
     }

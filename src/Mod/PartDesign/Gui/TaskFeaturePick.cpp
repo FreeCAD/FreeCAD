@@ -92,7 +92,7 @@ TaskFeaturePick::TaskFeaturePick(
     bool singleFeatureSelect,
     QWidget* parent
 )
-    : TaskBox(Gui::BitmapFactory().pixmap("edit-select-all"), tr("Select attachment"), true, parent)
+    : TaskBox(Gui::BitmapFactory().pixmap("edit-select-all"), tr("Select Attachment"), true, parent)
     , ui(new Ui_TaskFeaturePick)
     , doSelection(false)
 {

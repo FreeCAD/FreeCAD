@@ -245,6 +245,15 @@ def removeComponents(objectsList, host=None):
         for o in objectsList:
             if o.InList:
                 h = o.InList[0]
+
+                is_base_removal = hasattr(h, "Base") and h.Base == o
+                has_handler = hasattr(h, "Proxy") and hasattr(h.Proxy, "handleComponentRemoval")
+
+                if is_base_removal and has_handler:
+                    # Dispatch to the object's own smart removal logic and skip the old code path.
+                    h.Proxy.handleComponentRemoval(h, o)
+                    continue
+
                 tp = Draft.getType(h)
                 if tp in ["Floor", "Building", "Site", "BuildingPart"]:
                     c = h.Group
@@ -478,9 +487,9 @@ def getCutVolume(cutplane, shapes, clip=False, depth=None):
     if not isinstance(shapes, list):
         shapes = [shapes]
     # building boundbox
-    bb = shapes[0].BoundBox
+    bb = shapes[0].optimalBoundingBox()
     for sh in shapes[1:]:
-        bb.add(sh.BoundBox)
+        bb.add(sh.optimalBoundingBox())
     bb.enlarge(1)
     # building cutplane space
     um = vm = wm = 0

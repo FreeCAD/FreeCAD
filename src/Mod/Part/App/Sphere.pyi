@@ -1,5 +1,8 @@
-from Base.Metadata import export, constmethod
-from Base.BaseClass import BaseClass
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export
 from Base.Vector import Vector
 from Base.Axis import Axis as AxisPy
 from GeometrySurface import GeometrySurface

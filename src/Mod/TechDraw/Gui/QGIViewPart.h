@@ -115,6 +115,7 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    void addToGroupWithoutUpdate(QGraphicsItem* item);
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
@@ -125,6 +126,10 @@ public:
 
     virtual double getLineWidth();
     virtual double getVertexSize();
+
+    bool hideCenterMarks() const;
+
+
 
 protected:
     bool sceneEventFilter(QGraphicsItem *watched, QEvent *event) override;
@@ -142,14 +147,13 @@ protected:
     void removePrimitives();
     void removeDecorations();
     bool prefFaceEdges();
-    bool prefPrintCenters();
     Base::Color prefBreaklineColor();
 
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
-    bool showCenterMarks();
-    bool showVertices();
+    bool showCenterMarks() const;
+    bool showVertices() const;
 
 private:
     QList<QGraphicsItem*> deleteItems;

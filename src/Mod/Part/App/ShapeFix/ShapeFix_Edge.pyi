@@ -1,6 +1,9 @@
-from Base.Metadata import export, constmethod, class_declarations
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
+from Base.Metadata import export, class_declarations
 from Base.PyObjectBase import PyObjectBase
-from typing import Final
 
 @export(
     PythonName="Part.ShapeFix.Edge",

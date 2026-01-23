@@ -20,7 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost/core/ignore_unused.hpp>
 #include <QAction>
 #include <QApplication>
@@ -525,6 +525,13 @@ QString MDIView::buildWindowTitle() const
     }
 
     return windowTitle;
+}
+
+void MDIView::setWindowTitle(const QString& title)
+{
+    QString newerTitle {title};
+    newerTitle.replace(QLatin1Char('&'), QStringLiteral("&&"));
+    QMainWindow::setWindowTitle(newerTitle);
 }
 
 #include "moc_MDIView.cpp"

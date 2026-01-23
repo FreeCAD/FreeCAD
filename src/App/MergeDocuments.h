@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -25,7 +27,7 @@
 #define APP_MERGEDOCUMENTS_H
 
 #include <Base/Persistence.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 namespace zipios
 {
@@ -70,7 +72,7 @@ private:
     App::Document* appdoc {nullptr};
     std::vector<App::DocumentObject*> objects;
     std::map<std::string, std::string> nameMap;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectExport;
     Connection connectImport;
 };

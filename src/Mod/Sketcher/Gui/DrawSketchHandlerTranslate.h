@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -67,6 +69,8 @@ using DrawSketchHandlerTranslateBase = DrawSketchControllableHandler<DSHTranslat
 
 class DrawSketchHandlerTranslate: public DrawSketchHandlerTranslateBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTranslate)
+
     friend DSHTranslateController;
     friend DSHTranslateControllerBase;
 

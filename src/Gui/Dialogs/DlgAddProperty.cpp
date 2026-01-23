@@ -36,6 +36,7 @@
 #include <App/PropertyUnits.h>
 #include <App/PropertyFile.h>
 #include <App/PropertyGeo.h>
+#include <App/PropertyPythonObject.h>
 #include <Base/Tools.h>
 
 #include "Dialogs/DlgAddProperty.h"
@@ -275,25 +276,42 @@ void DlgAddProperty::initializeGroup()
     );
 }
 
-std::vector<Base::Type> DlgAddProperty::getSupportedTypes()
+DlgAddProperty::SupportedTypes DlgAddProperty::getSupportedTypes()
 {
-    std::vector<Base::Type> supportedTypes;
+    std::vector<Base::Type> commonTypes = {
+        App::PropertyLength::getClassTypeId(),
+        App::PropertyAngle::getClassTypeId(),
+        App::PropertyFloat::getClassTypeId(),
+        App::PropertyInteger::getClassTypeId(),
+        App::PropertyBool::getClassTypeId(),
+        App::PropertyString::getClassTypeId(),
+        App::PropertyEnumeration::getClassTypeId(),
+    };
+
+    std::vector<Base::Type> otherTypes;
     std::vector<Base::Type> allTypes;
     Base::Type::getAllDerivedFrom(Base::Type::fromName("App::Property"), allTypes);
 
-    std::ranges::copy_if(allTypes, std::back_inserter(supportedTypes), [&](const Base::Type& type) {
-        return type.canInstantiate() && isTypeWithEditor(type);
+    const auto isCommonType = [&commonTypes](const Base::Type& type) {
+        return std::ranges::find(commonTypes, type) != commonTypes.end();
+    };
+
+    std::ranges::copy_if(allTypes, std::back_inserter(otherTypes), [&](const Base::Type& type) {
+        return type.canInstantiate() && !isExcluded(type) && !isCommonType(type);
     });
 
-    std::ranges::sort(supportedTypes, [](Base::Type a, Base::Type b) {
+    std::ranges::sort(otherTypes, [](Base::Type a, Base::Type b) {
         return strcmp(a.getName(), b.getName()) < 0;
     });
 
-    return supportedTypes;
+    return {.commonTypes = std::move(commonTypes), .otherTypes = std::move(otherTypes)};
 }
 
 void DlgAddProperty::initializeTypes()
 {
+    auto* model = new TypeItemModel(this);
+    ui->comboBoxType->setModel(model);
+
     auto paramGroup = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/PropertyView"
     );
@@ -304,14 +322,27 @@ void DlgAddProperty::initializeTypes()
         lastType = App::PropertyLength::getClassTypeId();
     }
 
-    std::vector<Base::Type> types = getSupportedTypes();
+    const auto [commonTypes, otherTypes] = getSupportedTypes();
 
-    for (const auto& type : types) {
-        ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
-        if (type == lastType) {
-            ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count() - 1);
+    const auto addTypes = [this, &lastType](const std::vector<Base::Type>& types) {
+        for (const auto& type : types) {
+            ui->comboBoxType->addItem(QString::fromLatin1(type.getName()));
+            if (type == lastType) {
+                ui->comboBoxType->setCurrentIndex(ui->comboBoxType->count() - 1);
+            }
         }
-    }
+    };
+
+
+    const auto addSeparator = [this]() {
+        ui->comboBoxType->addItem(QStringLiteral("──────────────────────"));
+        const int idx = ui->comboBoxType->count() - 1;
+        ui->comboBoxType->setItemData(idx, true, TypeItemModel::SeparatorRole);
+    };
+
+    addTypes(commonTypes);
+    addSeparator();
+    addTypes(otherTypes);
 
     completerType.setModel(ui->comboBoxType->model());
     completerType.setCaseSensitivity(Qt::CaseInsensitive);
@@ -362,11 +393,7 @@ void DlgAddProperty::addNormalEditor(PropertyItem* propertyItem)
 
 void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 {
-    if (isSubLinkPropertyItem()) {
-        // Since sublinks need the 3D view to select an object and the dialog
-        // is modal, we do not provide an editor for sublinks.  It is possible
-        // to create a property of this type though and the property can be set
-        // in the property view later which does give access to the 3D view.
+    if (!isTypeWithEditor(propertyItem)) {
         return;
     }
 
@@ -395,13 +422,49 @@ void DlgAddProperty::addEditor(PropertyItem* propertyItem)
 
     setWidgetForLabel("labelValue", editor.get(), layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, editor.get());
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
     QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     removeSelectionEditor();
 }
 
-bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
+bool DlgAddProperty::isExcluded(const Base::Type& type) const
+{
+    // These properties are excluded because you cannot give them a value in
+    // the property view.
+    static const std::initializer_list<Base::Type> excludedTypes = {
+        App::PropertyBoolList::getClassTypeId(),
+        App::PropertyColorList::getClassTypeId(),
+        App::PropertyExpressionEngine::getClassTypeId(),
+        App::PropertyIntegerSet::getClassTypeId(),
+        App::PropertyMap::getClassTypeId(),
+        App::PropertyMaterial::getClassTypeId(),
+        App::PropertyPlacementList::getClassTypeId(),
+        App::PropertyPythonObject::getClassTypeId(),
+        App::PropertyUUID::getClassTypeId()
+    };
+
+    std::string_view name(type.getName());
+    return !name.starts_with("App::Property")
+        || std::ranges::find(excludedTypes, type) != excludedTypes.end();
+}
+
+bool DlgAddProperty::isTypeWithEditor(PropertyItem* propertyItem) const
+{
+    if (propertyItem == nullptr) {
+        return false;
+    }
+
+    App::Property* prop = propertyItem->getFirstProperty();
+    if (prop == nullptr) {
+        return false;
+    }
+
+    const Base::Type type = prop->getTypeId();
+    return isTypeWithEditor(type);
+}
+
+bool DlgAddProperty::isTypeWithEditor(const Base::Type& type) const
 {
     static const std::initializer_list<Base::Type> subTypesWithEditor = {
         // These types and their subtypes have editors.
@@ -414,19 +477,22 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
 
     static const std::initializer_list<Base::Type> typesWithEditor = {
         // These types have editors but not necessarily their subtypes.
+
+        // Although sublink properties have editors, they need the 3D view to
+        // select an object.  Because the dialog is modal, it is not possible
+        // to make use of the 3D view, hence we do not provide an editor for
+        // sublinks and their lists.  It is possible to create a property of
+        // this type though and the property can be set in the property view
+        // later which does give access to the 3D view.
         App::PropertyEnumeration::getClassTypeId(),
         App::PropertyFile::getClassTypeId(),
         App::PropertyFloatList::getClassTypeId(),
         App::PropertyFont::getClassTypeId(),
         App::PropertyIntegerList::getClassTypeId(),
         App::PropertyLink::getClassTypeId(),
-        App::PropertyLinkSub::getClassTypeId(),
         App::PropertyLinkList::getClassTypeId(),
-        App::PropertyLinkSubList::getClassTypeId(),
         App::PropertyXLink::getClassTypeId(),
-        App::PropertyXLinkSub::getClassTypeId(),
         App::PropertyXLinkList::getClassTypeId(),
-        App::PropertyXLinkSubList::getClassTypeId(),
         App::PropertyMaterialList::getClassTypeId(),
         App::PropertyPath::getClassTypeId(),
         App::PropertyString::getClassTypeId(),
@@ -442,7 +508,7 @@ bool DlgAddProperty::isTypeWithEditor(const Base::Type& type)
         || std::ranges::any_of(subTypesWithEditor, isDerivedFromType);
 }
 
-bool DlgAddProperty::isTypeWithEditor(const std::string& type)
+bool DlgAddProperty::isTypeWithEditor(const std::string& type) const
 {
     Base::Type propType
         = Base::Type::getTypeIfDerivedFrom(type.c_str(), App::Property::getClassTypeId(), true);
@@ -458,7 +524,7 @@ static PropertyItem* createPropertyItem(App::Property* prop)
     return PropertyItemFactory::instance().createPropertyItem(editor);
 }
 
-void DlgAddProperty::createEditorForType(const Base::Type& type)
+void DlgAddProperty::createSupportDataForType(const Base::Type& type)
 {
     // Temporarily create a property for two reasons:
     // - to acquire the editor name from the instance, and
@@ -496,10 +562,9 @@ void DlgAddProperty::initializeValue()
         return;
     }
 
-    if (isTypeWithEditor(propType)) {
-        createEditorForType(propType);
-    }
-    else {
+    createSupportDataForType(propType);
+    if (!isTypeWithEditor(propType)) {
+        // remove the editor from a previous add
         removeEditor();
     }
 }
@@ -512,8 +577,8 @@ void DlgAddProperty::setTitle()
 void DlgAddProperty::setAddEnabled(bool enabled)
 {
     QPushButton* addButton = ui->buttonBox->button(QDialogButtonBox::Ok);
-    QPushButton* cancelButton = ui->buttonBox->button(QDialogButtonBox::Cancel);
-    cancelButton->setDefault(!enabled);
+    QPushButton* closeButton = ui->buttonBox->button(QDialogButtonBox::Close);
+    closeButton->setDefault(!enabled);
     addButton->setDefault(enabled);
     addButton->setEnabled(enabled);
 }
@@ -537,10 +602,12 @@ void DlgAddProperty::initializeWidgets(ViewProviderVarSet* viewProvider)
     addButton->setText(tr("Add"));
     setAddEnabled(false);
 
-    ui->lineEditName->setFocus();
+    comboBoxGroup.setFocus();
 
-    QWidget::setTabOrder(ui->lineEditName, &comboBoxGroup);
     QWidget::setTabOrder(&comboBoxGroup, ui->comboBoxType);
+    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditName);
+    QWidget::setTabOrder(ui->lineEditName, editor.get());
+    QWidget::setTabOrder(editor.get(), ui->lineEditToolTip);
 
     adjustSize();
 }
@@ -632,7 +699,7 @@ void DlgAddProperty::removeEditor()
     placeholder->setMinimumHeight(comboBoxGroup.height());
     setWidgetForLabel("labelValue", placeholder, layout());
 
-    QWidget::setTabOrder(ui->comboBoxType, ui->lineEditToolTip);
+    QWidget::setTabOrder(ui->lineEditName, ui->lineEditToolTip);
     editor = nullptr;
 }
 
@@ -640,20 +707,6 @@ bool DlgAddProperty::isEnumPropertyItem() const
 {
     return ui->comboBoxType->currentText()
         == QString::fromLatin1(App::PropertyEnumeration::getClassTypeId().getName());
-}
-
-bool DlgAddProperty::isSubLinkPropertyItem() const
-{
-    const QString type = ui->comboBoxType->currentText();
-    static const std::array<const char*, 4> sublinkTypes = {
-        App::PropertyLinkSub::getClassTypeId().getName(),
-        App::PropertyLinkSubList::getClassTypeId().getName(),
-        App::PropertyXLinkSub::getClassTypeId().getName(),
-        App::PropertyXLinkSubList::getClassTypeId().getName()
-    };
-    return std::ranges::any_of(sublinkTypes, [&type](const char* subLinkType) {
-        return type == QString::fromLatin1(subLinkType);
-    });
 }
 
 QVariant DlgAddProperty::getEditorData() const
