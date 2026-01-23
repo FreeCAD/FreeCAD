@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSolverObject_H
-#define Fem_FemSolverObject_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/PropertyFile.h>
@@ -61,6 +60,3 @@ public:
 using FemSolverObjectPython = App::FeaturePythonT<FemSolverObject>;
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemSolverObject_H

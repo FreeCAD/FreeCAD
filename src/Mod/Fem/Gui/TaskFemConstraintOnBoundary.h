@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
-#define GUI_TASKVIEW_TaskFemConstraintOnBoundary_H
+#pragma once
 
 #include <QObject>
 
@@ -76,5 +75,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintOnBoundary_H

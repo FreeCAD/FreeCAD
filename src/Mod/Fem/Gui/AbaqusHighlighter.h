@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_ABAQUSHIGHLIGHTER_H
-#define FEMGUI_ABAQUSHIGHLIGHTER_H
+#pragma once
 
 #include <Gui/SyntaxHighlighter.h>
 
@@ -44,5 +43,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_ABAQUSHIGHLIGHTER_H

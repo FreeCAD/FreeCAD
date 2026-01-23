@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskDriver_H
-#define FEMGUI_TaskDriver_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -70,5 +69,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_TaskDriver_H

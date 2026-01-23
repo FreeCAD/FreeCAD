@@ -27,8 +27,7 @@
  * vtkSMPThreadLocalObject
  */
 
-#ifndef vtkSMPTools_h
-# define vtkSMPTools_h
+#pragma once
 
 # include "vtkCommonCoreModule.h"  // For export macro
 # include "vtkObject.h"
@@ -606,5 +605,4 @@ public:
     }
 };
 
-#endif
 // VTK-HeaderTest-Exclude: vtkSMPTools.h

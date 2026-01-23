@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskFemConstraintSpring_H
-#define GUI_TASKVIEW_TaskFemConstraintSpring_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -74,5 +73,3 @@ public:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskFemConstraintSpring_H

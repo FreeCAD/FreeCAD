@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
-#define FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H
+#pragma once
 
 #include "ViewProviderFemPostObject.h"
 #include <Gui/ViewProviderGroupExtension.h>
@@ -60,6 +59,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTBRANCHFILTER_H

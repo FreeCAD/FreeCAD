@@ -22,8 +22,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef FEM_GLOBAL_H
-# define FEM_GLOBAL_H
+#pragma once
 
 
 // Fem
@@ -43,5 +42,3 @@
 #   define FemGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // FEM_GLOBAL_H

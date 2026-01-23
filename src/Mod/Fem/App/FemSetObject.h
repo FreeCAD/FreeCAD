@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef Fem_FemSetObject_H
-#define Fem_FemSetObject_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -51,6 +50,3 @@ public:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemSetObject_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_TOOLS_H
-#define FEM_TOOLS_H
+#pragma once
 
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
@@ -109,6 +108,3 @@ public:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_TOOLS_H

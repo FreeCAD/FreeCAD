@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
-#define FEM_VIEWPROVIDERFEMPOSTFUNCTION_H
+#pragma once
 
 #include <Inventor/SbBox3f.h>
 #include <QWidget>
@@ -355,6 +354,3 @@ SoGroup* postSphere();
 }  // namespace ShapeNodes
 
 }  // namespace FemGui
-
-
-#endif  // FEM_VIEWPROVIDERFEMPOSTFUNCTION_H

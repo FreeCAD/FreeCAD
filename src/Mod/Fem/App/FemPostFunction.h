@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemPostFunction_H
-#define Fem_FemPostFunction_H
+#pragma once
 
 #include <vtkBoundingBox.h>
 #include <vtkBox.h>
@@ -205,6 +204,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemPostFunction_H

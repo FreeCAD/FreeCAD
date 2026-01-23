@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERFEMCONSTRAINTCONTACT_H
-#define GUI_VIEWPROVIDERFEMCONSTRAINTCONTACT_H
+#pragma once
 
 #include "ViewProviderFemConstraint.h"
 
@@ -44,5 +43,3 @@ protected:
     bool setEdit(int ModNum) override;
 };
 }  // namespace FemGui
-
-#endif  // GUI_VIEWPROVIDERFEMCONSTRAINTContact_H
