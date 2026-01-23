@@ -134,7 +134,7 @@ public:
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
     void toString(std::ostream &os, bool persistent=false, bool checkPriority=false, int indent=0) const;
 
-    static Expression * parse(const App::DocumentObject * owner, const std::string& buffer);
+    static ExpressionPtr parse(const App::DocumentObject* owner, const std::string& buffer);
 
     Expression * copy() const;
 
