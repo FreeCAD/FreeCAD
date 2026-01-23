@@ -255,8 +255,75 @@ class _Covering(ArchComponent.Component):
         if hasattr(vproxy, "setProperties"):
             vproxy.setProperties(vobj)
 
+    def execute(self, obj):
+        """
+        Calculates the geometry and updates the shape of the object.
+
+        This is a standard FreeCAD C++ callback triggered during a document recompute. It translates
+        the numerical and textual properties of the object into a geometric representation (solids,
+        faces, or wires) assigned to the `Shape` attribute.
+
+        Parameters
+        ----------
+        obj : Part::FeaturePython
+            The base C++ object whose shape is updated.
+
+        """
+        if self.clone(obj):
+            return
+
+        base_face = self.get_base_face(obj)
+        if not base_face:
+            return
+
+        if obj.FinishMode == "Hatch Pattern":
+            from draftobjects.hatch import Hatch
+
+            # Always assign the base face first. This ensures the Covering has geometry even if the
+            # pattern file is missing or invalid.
+            obj.Shape = base_face
+
+            # Force a minimum scale to prevent math errors or infinite loops in the hatching engine.
+            safe_scale = max(MIN_DIMENSION, obj.PatternScale)
+
+            if obj.PatternFile:
+                pat = Hatch.hatch(
+                    base_face,
+                    obj.PatternFile,
+                    obj.PatternName,
+                    scale=safe_scale,
+                    rotation=obj.Rotation.Value,
+                )
+                if pat:
+                    obj.Shape = Part.Compound([base_face, pat])
+            return
+
+        u_vec, v_vec, normal, center_point = self._get_grid_basis(base_face)
+        origin = self._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
+
+        # Dimensions
+        t_len = obj.TileLength.Value
+        t_wid = obj.TileWidth.Value
+        j_len = obj.JointWidth.Value
+        j_wid = obj.JointWidth.Value
+
+        # Cut thickness
+        cut_thick = obj.TileThickness.Value * 1.1 if obj.FinishMode == "Solid Tiles" else 1.0
+
+        cutters_h, cutters_v = self._build_cutters(
+            obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
+        )
+
+        obj.Shape = self._perform_cut(
+            obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
+        )
+
     def get_base_face(self, obj):
-        """Extracts the base face from the linked object/subobject"""
+        """
+        Resolves the 'Base' link to identify and return the target planar face for the covering.
+        Handles sub-element selection, solid top-face detection, and closed-wire conversion.
+        Returns a Part.Face or None if a valid planar surface cannot be determined.
+        """
         if not obj.Base:
             return None
 
@@ -586,69 +653,6 @@ class _Covering(ArchComponent.Component):
             return Part.Shape()
 
         return Part.Shape()
-
-    def execute(self, obj):
-        """
-        Calculates the geometry and updates the shape of the object.
-
-        This is a standard FreeCAD C++ callback triggered during a document recompute. It translates
-        the numerical and textual properties of the object into a geometric representation (solids,
-        faces, or wires) assigned to the `Shape` attribute.
-
-        Parameters
-        ----------
-        obj : Part::FeaturePython
-            The base C++ object whose shape is updated.
-
-        """
-        if self.clone(obj):
-            return
-
-        base_face = self.get_base_face(obj)
-        if not base_face:
-            return
-
-        if obj.FinishMode == "Hatch Pattern":
-            from draftobjects.hatch import Hatch
-
-            # Always assign the base face first. This ensures the Covering has geometry even if the
-            # pattern file is missing or invalid.
-            obj.Shape = base_face
-
-            # Force a minimum scale to prevent math errors or infinite loops in the hatching engine.
-            safe_scale = max(MIN_DIMENSION, obj.PatternScale)
-
-            if obj.PatternFile:
-                pat = Hatch.hatch(
-                    base_face,
-                    obj.PatternFile,
-                    obj.PatternName,
-                    scale=safe_scale,
-                    rotation=obj.Rotation.Value,
-                )
-                if pat:
-                    obj.Shape = Part.Compound([base_face, pat])
-            return
-
-        u_vec, v_vec, normal, center_point = self._get_grid_basis(base_face)
-        origin = self._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
-
-        # Dimensions
-        t_len = obj.TileLength.Value
-        t_wid = obj.TileWidth.Value
-        j_len = obj.JointWidth.Value
-        j_wid = obj.JointWidth.Value
-
-        # Cut thickness
-        cut_thick = obj.TileThickness.Value * 1.1 if obj.FinishMode == "Solid Tiles" else 1.0
-
-        cutters_h, cutters_v = self._build_cutters(
-            obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
-        )
-
-        obj.Shape = self._perform_cut(
-            obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
-        )
 
 
 if FreeCAD.GuiUp:
