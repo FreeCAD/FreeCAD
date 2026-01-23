@@ -1774,29 +1774,37 @@ bool ButtonGroup::exclusive() const
 
 // --------------------------------------------------------------------
 
-class PropertyMapEditor::PropertyMapEditorItemDelegate : public QStyledItemDelegate {
+class PropertyMapEditor::PropertyMapEditorItemDelegate: public QStyledItemDelegate
+{
 
 public:
-    explicit PropertyMapEditorItemDelegate(QWidget* parent) : QStyledItemDelegate(parent) { }
+    explicit PropertyMapEditorItemDelegate(QWidget* parent)
+        : QStyledItemDelegate(parent)
+    {}
 
-    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override {
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
         QSize size = QStyledItemDelegate::sizeHint(option, index);
         size += QSize(0, 5);
         return size;
     }
 
-    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index ) const override {
+    void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
+    {
         painter->save();
 
-        if (index.column() == 1 && (option.state&QStyle::State_Selected)) {
+        if (index.column() == 1 && (option.state & QStyle::State_Selected)) {
             auto lineEdit = qobject_cast<QWidget*>(parent())->findChild<Gui::ExpLineEdit*>();
             if (lineEdit && lineEdit->isVisible()) {
                 painter->fillRect(option.rect, option.palette.color(QPalette::Normal, QPalette::Base));
             }
         }
 
-        QColor color = static_cast<QRgb>(QApplication::style()->
-            styleHint(QStyle::SH_Table_GridLineColor, &option, qobject_cast<QWidget*>(parent())));
+        QColor color = static_cast<QRgb>(QApplication::style()->styleHint(
+            QStyle::SH_Table_GridLineColor,
+            &option,
+            qobject_cast<QWidget*>(parent())
+        ));
         painter->setPen(QPen(color));
         painter->drawRect(option.rect);
 
@@ -1822,8 +1830,12 @@ public:
         QStyledItemDelegate::paint(painter, plainOption, index);
     }
 
-    virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option,
-                                  const QModelIndex& index) const override {
+    virtual QWidget* createEditor(
+        QWidget* parent,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const override
+    {
         if (index.column() == 1) {
             auto lineEdit = new ExpLineEdit(parent);
             lineEdit->setFrame(false);
@@ -1845,7 +1857,8 @@ public:
 };
 
 PropertyMapEditor::PropertyMapEditor(QWidget* parent)
-    : QTreeWidget(parent), delegate(new PropertyMapEditorItemDelegate(this))
+    : QTreeWidget(parent)
+    , delegate(new PropertyMapEditorItemDelegate(this))
 {
     setColumnCount(2);
     setHeaderLabels(QStringList() << tr("Key") << tr("Value"));
@@ -1888,7 +1901,7 @@ void PropertyMapEditor::setMap(const QVariantMap& data)
 
     QList<QTreeWidgetItem*> items;
     for (QString k : keys) {
-        QTreeWidgetItem *item = new QTreeWidgetItem();
+        QTreeWidgetItem* item = new QTreeWidgetItem();
         item->setText(0, k);
         item->setText(1, data[k].toString());
         item->setFlags(item->flags() | Qt::ItemIsEditable);
@@ -1901,9 +1914,11 @@ void PropertyMapEditor::setMap(const QVariantMap& data)
 App::ObjectIdentifier PropertyMapEditor::getMapItemPath(const QString& key) const
 {
     App::ObjectIdentifier result = getPath();
-    result.addComponent(ObjectIdentifier::Component::MapComponent(ObjectIdentifier::String(key.toStdString(), true)));
+    result.addComponent(
+        ObjectIdentifier::Component::MapComponent(ObjectIdentifier::String(key.toStdString(), true))
+    );
 
-   return result;
+    return result;
 }
 
 void PropertyMapEditor::resizeEvent(QResizeEvent* e)

@@ -4871,7 +4871,7 @@ PropertyLinkListItem::PropertyLinkListItem() = default;
 
 // --------------------------------------------------------------------
 
-static const char *PropertyMapDataProperty = "data";
+static const char* PropertyMapDataProperty = "data";
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyMapItem)
 
@@ -4880,7 +4880,7 @@ PropertyMapItem::PropertyMapItem() = default;
 QWidget* PropertyMapItem::
     createEditor(QWidget* parent, const std::function<void()>& method, FrameOption /*frameOption*/) const
 {
-    QWidget *editor = new QWidget(parent);
+    QWidget* editor = new QWidget(parent);
 
     auto layout = new QHBoxLayout(editor);
     layout->setContentsMargins(0, 0, 0, 0);
@@ -4891,8 +4891,14 @@ QWidget* PropertyMapItem::
     label->setAutoFillBackground(true);
 
     QPalette palette = label->palette();
-    palette.setColor(QPalette::Base, QApplication::palette().color(QPalette::Active, QPalette::Highlight));
-    palette.setColor(QPalette::Text, QApplication::palette().color(QPalette::Active, QPalette::HighlightedText));
+    palette.setColor(
+        QPalette::Base,
+        QApplication::palette().color(QPalette::Active, QPalette::Highlight)
+    );
+    palette.setColor(
+        QPalette::Text,
+        QApplication::palette().color(QPalette::Active, QPalette::HighlightedText)
+    );
     label->setPalette(palette);
     layout->addWidget(label);
 
@@ -4905,7 +4911,7 @@ QWidget* PropertyMapItem::
         dialog.setWindowTitle(tr("Map"));
 
         QFontMetrics metrics(dialog.font(), &dialog);
-        dialog.resize(metrics.horizontalAdvance(QStringLiteral("W"))*36, metrics.height()*15);
+        dialog.resize(metrics.horizontalAdvance(QStringLiteral("W")) * 36, metrics.height() * 15);
 
         QDialogButtonBox box(&dialog);
         box.setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
@@ -4985,14 +4991,15 @@ QString PropertyMapItem::toString(const QVariant& prop) const
 QVariant PropertyMapItem::value(const App::Property* prop) const
 {
     assert(prop && prop->isDerivedFrom<App::PropertyMap>());
-    const std::map<std::string, std::string>& values = static_cast<const App::PropertyMap*>(prop)->getValues();
+    const std::map<std::string, std::string>& values
+        = static_cast<const App::PropertyMap*>(prop)->getValues();
 
     QVariantMap map;
-    for (const auto &it : values) {
+    for (const auto& it : values) {
         map[QString::fromStdString(it.first)] = QString::fromStdString(it.second);
     }
 
-    return { map };
+    return {map};
 }
 
 void PropertyMapItem::setValue(const QVariant& value)
