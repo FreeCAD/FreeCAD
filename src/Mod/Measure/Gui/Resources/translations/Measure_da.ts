@@ -225,6 +225,11 @@
       <translation>Indstillinger</translation>
     </message>
     <message>
+      <location filename="../../TaskMeasure.cpp" line="134"/>
+      <source>Auto</source>
+      <translation>Auto</translation>
+    </message>
+    <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
       <translation>Tilstand:</translation>
@@ -256,6 +261,49 @@
       <location filename="../../TaskMeasure.cpp" line="196"/>
       <source>Save</source>
       <translation>Gem</translation>
+    </message>
+  </context>
+  <context>
+    <name>TaskMeasure</name>
+    <message>
+      <location filename="../../../InitGui.py" line="46"/>
+      <source>Center of mass</source>
+      <translation>Massemidtpunkt</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="115"/>
+      <source>Distance</source>
+      <translation>Afstand</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="123"/>
+      <source>Distance Free</source>
+      <translation>Fri afstand</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="131"/>
+      <source>Angle</source>
+      <translation>Vinkel</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="139"/>
+      <source>Length</source>
+      <translation>Længde</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="147"/>
+      <source>Position</source>
+      <translation>Position</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="155"/>
+      <source>Area</source>
+      <translation>Areal</translation>
+    </message>
+    <message>
+      <location filename="../../../App/AppMeasure.cpp" line="163"/>
+      <source>Radius</source>
+      <translation>Radius</translation>
     </message>
   </context>
 </TS>

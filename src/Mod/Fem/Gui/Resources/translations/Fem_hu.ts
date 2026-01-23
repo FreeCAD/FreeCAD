@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="593"/>
       <source>Force Load</source>
-      <translation>Betöltés kényszerítése</translation>
+      <translation>Erőterhelés</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="594"/>
@@ -506,12 +506,12 @@
     <message>
       <location filename="../../Command.cpp" line="2387"/>
       <source>Stress Linearization Plot</source>
-      <translation>Feszültséglineárisítási diagram</translation>
+      <translation>Feszültség linearizálási grafikon</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2388"/>
       <source>Defines a stress linearization plot</source>
-      <translation>Meghatározza a feszültséglineárisítási diagramot</translation>
+      <translation>Meghatároz egy feszültség linearizálási grafikont</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2427"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../../Command.cpp" line="2505"/>
       <source>Warps the geometry along a vector field by a certain factor</source>
-      <translation>Térhajlítja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
+      <translation>Deformálja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
     </message>
   </context>
   <context>
@@ -731,7 +731,7 @@
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="23"/>
       <source>Mesh groups detected. Choose values for the different groups.</source>
-      <translation>A rendszer háló csoportokat észlelt. Vlassza ki a különböző csoportok értékeit.</translation>
+      <translation>A rendszer háló csoportokat észlelt. Válassza ki a különböző csoportok értékeit.</translation>
     </message>
     <message>
       <location filename="../ui/MeshGroupXDMFExport.ui" line="62"/>
@@ -916,7 +916,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="695"/>
       <source>Thermo-Mechanical Defaults</source>
-      <translation>Alapértelmezett termo mechanikai értékek</translation>
+      <translation>Alap hőmérséklet műszaki beállítások</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="731"/>
@@ -1094,12 +1094,12 @@ Ez csak akkor hatásos, ha a 'Csak folyamat' bekapcsolt</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="44"/>
       <source>ElmerSolver path</source>
-      <translation>ElmerMegoldó útvonal</translation>
+      <translation>Elmer megoldó útvonal</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="75"/>
       <source>Leave blank to use default ElmerSolver binary file</source>
-      <translation>Hagyja üresen az alapértelmezett ElmerMegoldó bináris érték használatához</translation>
+      <translation>Hagyja üresen az alapértelmezett Elmer megoldó bináris érték használatához</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="94"/>
@@ -1427,6 +1427,41 @@ elemzési konténer hozzáadásakor</translation>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="90"/>
       <source>Executable '%1' not found</source>
       <translation>'%1' futtatható fájl nem található</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="97"/>
+      <source>Silent</source>
+      <translation>Csendes</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
+      <source>Errors</source>
+      <translation>Hibaüzenetek</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
+      <source>Warnings</source>
+      <translation>Riasztások</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="100"/>
+      <source>Direct</source>
+      <translation>Közvetlen</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="101"/>
+      <source>Information</source>
+      <translation>Információ</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="102"/>
+      <source>Status</source>
+      <translation>Állapot</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemGmshImp.cpp" line="103"/>
+      <source>Debug</source>
+      <translation>Hibakeresés</translation>
     </message>
   </context>
   <context>
@@ -2454,7 +2489,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
       <source>Select geometry of type: </source>
-      <translation>Válassza ki a következő típusok geometriáját </translation>
+      <translation>Válassza ki a következő típusok geometriáját:</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="104"/>
@@ -2580,7 +2615,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="424"/>
       <source>Only transformable faces can be selected! Apply a displacement boundary condition or a force load to a face first then apply local coordinate system to the face.</source>
-      <translation>Csak az átalakítható felületek választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelést egy felületre, majd alkalmazza a helyi koordinátarendszert a felületre.</translation>
+      <translation>Csak az átalakítható felületek választhatók ki! Először alkalmazzon elmozdulási határfeltételt vagy erőterhelést egy felületre, majd alkalmazza a helyi koordináta rendszert a felületre.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="341"/>
@@ -2745,7 +2780,7 @@ egy iteratív megoldó használata esetén a "MAXKOI" paraméter
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation>Referenci hőmérséklet a hőtáguláshoz</translation>
+      <translation>Referencia hőmérséklet a hőtáguláshoz</translation>
     </message>
   </context>
   <context>
@@ -3369,7 +3404,7 @@ Megjegyzés: nincs hatása, ha egy testet választottak</translation>
       <source>Imaginary part is only used for equations
 with harmonic/oscillating driving current</source>
       <translation>A képzetes rész csak harmonikus/rezgő hajtóerővel rendelkező 
-egyenletek esetén hsználatos</translation>
+egyenletek esetén használatos</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
@@ -3506,7 +3541,7 @@ egyenletek esetén hsználatos</translation>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
       <source>Maximum element size</source>
-      <translation>Maximale Elementgröße</translation>
+      <translation>Maximális elemméret</translation>
     </message>
     <message>
       <location filename="../ui/PostLineplotIndexAppEdit.ui" line="14"/>
@@ -4046,7 +4081,7 @@ A lehetséges változókat lásd az alábbi leírási mezőben.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
       <source>Write .inp File</source>
-      <translation>.Inp fájl írása</translation>
+      <translation>.inp fájl írása</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="120"/>
@@ -6931,7 +6966,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../../TaskPostCalculator.ui" line="62"/>
       <source>Scalars</source>
-      <translation>Skálárok</translation>
+      <translation>Skalárok</translation>
     </message>
     <message>
       <location filename="../../TaskPostCalculator.ui" line="72"/>
@@ -6985,7 +7020,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../../TaskPostBranch.ui" line="73"/>
       <location filename="../../TaskPostBranch.ui" line="90"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Selects the how the output of the branch is determined:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Passthrough:&lt;/span&gt; The branches output is the same as its input, no matter what the branch child filter do.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Append:&lt;/span&gt; The branches output is a collection of all child filter: it appends child outputs together and offers this as branch output.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Válaszd ki, hogyan kerül meghatározásra a változat eredménye:&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;- Átadás: &lt;/span&gt;A változatok eredménye megegyezik a forrásával, függetlenül attól, mit csinálnak a változat alpont szűrők.&lt;/p&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Összeadás: &lt;/span&gt;A változat eredménye az összes alponti szűrő gyűjteménye: összeadja az alpont eredményeit, és azt kínálja a változat eredményeként.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../../TaskPostBranch.ui" line="77"/>
@@ -7105,7 +7140,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="37"/>
       <location filename="../ui/TaskPostLineplot.ui" line="37"/>
       <source>The form of the glyph</source>
-      <translation>Glyph formája</translation>
+      <translation>A szimbólum formája</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="25"/>
@@ -7150,7 +7185,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostLineplot.ui" line="81"/>
       <location filename="../ui/TaskPostLineplot.ui" line="97"/>
       <source>Which vector field is used to orient the glyphs</source>
-      <translation>Vektormező, amelyet a glyp-ek irányítására használnak</translation>
+      <translation>Vektormező, amelyet a szimbólumok irányítására használnak</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="78"/>
@@ -7168,13 +7203,13 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="111"/>
       <source>Sca&amp;le</source>
-      <translation>Mérlegen vagy skálán elhelyezni</translation>
+      <translation>Ská&amp;la</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="126"/>
       <location filename="../ui/TaskPostGlyph.ui" line="144"/>
       <source>Which data field is used to scale the glyphs</source>
-      <translation>Glypf méretezésére használt mező</translation>
+      <translation>Szimbólum méretezésére használt mező</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="129"/>
@@ -7187,7 +7222,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="176"/>
       <location filename="../ui/TaskPostLineplot.ui" line="155"/>
       <source>A constant multiplier the glyphs are scaled with</source>
-      <translation>Glyp-eket méretező szorzótényező állandó</translation>
+      <translation>Szimbólumokat méretező szorzótényező állandó</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="161"/>
@@ -7204,7 +7239,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostHistogram.ui" line="166"/>
       <location filename="../ui/TaskPostLineplot.ui" line="145"/>
       <source>If the scale data is a vector this property decides if the glyph is scaled by vector magnitude or by the individual components</source>
-      <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a glyph-et a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
+      <translation>Ha a méretarány adat egy vektor, ez a tulajdonság meghatározza, hogy a szimbólumokat a vektor nagysága vagy az egyes összetevők alapján méretezik-e</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="230"/>
@@ -7230,7 +7265,7 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/TaskPostGlyph.ui" line="263"/>
       <location filename="../ui/TaskPostGlyph.ui" line="349"/>
       <source>Which vertices are used as glyph locations</source>
-      <translation>Csúcsok glyph helyekként használva</translation>
+      <translation>Csúcsok szimbólum helyekként használva</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostGlyph.ui" line="266"/>
@@ -8024,6 +8059,42 @@ Hagyja üresen az alapértelmezett Python futtatható fájl használatához</tra
       <location filename="../ui/SolverElmer.ui" line="129"/>
       <source>Solver Version</source>
       <translation>Megoldó verzió</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemToolsCcx</name>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="405"/>
+      <source>No or wrong CalculiX binary ccx</source>
+      <translation>Hiányzó vagy hibás CalculiX xszámítás bináris fájl</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="439"/>
+      <source>FEM: wrong ccx binary</source>
+      <translation>VEM: az xszámítás bináris érvénytelen</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="452"/>
+      <source>FEM: CalculiX binary ccx '{}' not found. Please set the CalculiX binary ccx path in FEM preferences tab CalculiX.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' bináris fájl nem található. Kérlek, állítsd be a CalculiX xszámítás bináris fájl elérési útját a VEM beállításoknál a CalculiX fülön.</translation>
+    </message>
+    <message>
+      <location filename="../../../femtools/ccxtools.py" line="464"/>
+      <source>FEM: CalculiX ccx '{}' output '{}' doesn't contain expected phrase '{}'. There are some problems when running the ccx binary. Check if ccx runs standalone without FreeCAD.</source>
+      <translation>VEM: A CalculiX xszámítás '{}' kimenete '{}' nem tartalmazza a várt kifejezést '{}'. Valami gond van a xszámítás futtatásakor. Nézd meg, hogy a xszámítás önállóan, FreeCAD nélkül le tud-e futni.</translation>
+    </message>
+  </context>
+  <context>
+    <name>FemGui::DlgSettingsFemInOutVtkImp</name>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>All</source>
+      <translation>Minden</translation>
+    </message>
+    <message>
+      <location filename="../../DlgSettingsFemInOutVtkImp.cpp" line="78"/>
+      <source>Highest</source>
+      <translation>Legmagasabb</translation>
     </message>
   </context>
 </TS>

@@ -278,7 +278,7 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0):
+def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
     """cmdsForEdge(edge, flip=False) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
@@ -347,7 +347,7 @@ def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0):
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            points = edge.discretize(Deflection=0.01)
+            points = edge.discretize(Deflection=tol)
             if flip:
                 points = points[::-1]
 

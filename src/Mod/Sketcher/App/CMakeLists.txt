@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 add_library(Sketcher SHARED)
 
 # Uncomment this code if you want to try Eigen's multithread

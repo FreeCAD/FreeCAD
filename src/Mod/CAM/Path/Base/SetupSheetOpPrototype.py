@@ -188,6 +188,7 @@ class OpPrototype(object):
         "App::PropertyFloatConstraint": Property,
         "App::PropertyFloatList": Property,
         "App::PropertyInteger": PropertyInteger,
+        "App::PropertyIntegerConstraint": PropertyInteger,
         "App::PropertyIntegerList": PropertyInteger,
         "App::PropertyLength": PropertyLength,
         "App::PropertyLink": Property,

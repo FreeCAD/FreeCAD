@@ -11,7 +11,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="791"/>
       <source>Centerline Between 2 Lines</source>
-      <translation>Ajouter une ligne centrale entre 2 lignes</translation>
+      <translation>Ligne centrale entre 2 lignes</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="792"/>
@@ -29,7 +29,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="866"/>
       <source>Centerline Between 2 Points</source>
-      <translation>Ajouter une ligne centrale entre 2 points</translation>
+      <translation>Ligne centrale entre 2 points</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="867"/>
@@ -47,7 +47,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="979"/>
       <source>Cosmetic Line Through 2 Points</source>
-      <translation>Ajouter une ligne cosmétique par 2 points</translation>
+      <translation>Ligne cosmétique par 2 points</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="980"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1696"/>
       <source>Angle Dimension</source>
-      <translation>Cote de l'angle</translation>
+      <translation>Insérer une cote angulaire</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1697"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Centerline Faces</source>
-      <translation>Ajouter une ligne centrale à des faces</translation>
+      <translation>Ligne centrale à des  faces</translation>
     </message>
   </context>
   <context>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Clip Group</source>
-      <translation>Groupe de rognage</translation>
+      <translation>Fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1340"/>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Add View To Clip Group</source>
-      <translation>Projeter une forme</translation>
+      <translation>Ajouter une vue à la fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Adds the selected view to a clip group</source>
-      <translation type="unfinished">Adds the selected view to a clip group</translation>
+      <translation>Ajoute la vue sélectionnée à une fenêtre de rognage</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Remove From Clip Group</source>
-      <translation type="unfinished">Remove From Clip Group</translation>
+      <translation>Supprimer une vue à la fenêtre de rognage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Removes a view based on the selected clip group</source>
-      <translation type="unfinished">Removes a view based on the selected clip group</translation>
+      <translation>Supprime une vue basée à la fenêtre de rognage.</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1130"/>
       <source>Remove Cosmetic Object</source>
-      <translation>Supprimer l'objet cosmétique</translation>
+      <translation>Supprimer un objet cosmétique</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1131"/>
       <source>Removes the selected cosmetic object from the page</source>
-      <translation>Supprimer l'objet cosmétique</translation>
+      <translation>Supprime l'objet cosmétique sélectionné de la page.</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1364"/>
       <source>Dimension</source>
-      <translation>Dimension</translation>
+      <translation>Insérer une cote</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1365"/>
@@ -472,7 +472,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1831"/>
       <source>Area Annotation</source>
-      <translation>Annotation de surface</translation>
+      <translation>Insérer une cote de surface</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1832"/>
@@ -1034,12 +1034,12 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="172"/>
       <source>Adds centerlines to a circular pattern of three or more selected circles</source>
-      <translation>Ajoute des lignes centrales à un motif circulaire de trois ou plusieurs cercles sélectionnés.</translation>
+      <translation>Ajoute des axes de centrage à un motif circulaire de trois ou plusieurs cercles sélectionnés.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="348"/>
       <source>Adds centerlines to a circular pattern of selected circles</source>
-      <translation>Ajoute des lignes centrales à un motif circulaire de cercles sélectionnés.</translation>
+      <translation>Ajoute des axes de centrage à un motif circulaire de cercles sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -1492,7 +1492,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="795"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation>Intersection de lignes</translation>
+      <translation>Intersections cosmétiques de lignes</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="797"/>
@@ -1538,7 +1538,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="680"/>
       <source>Centerline Between 2 Faces</source>
-      <translation>Ajouter une ligne centrale à des faces</translation>
+      <translation>Ligne centrale entre 2 faces</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="681"/>
@@ -1802,7 +1802,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../Command.cpp" line="1054"/>
       <source>Inserts multiple new linked views of the selected objects in the current page</source>
-      <translation>Insère plusieurs nouvelles vues liées aux objets sélectionnés dans la feuille actuelle.</translation>
+      <translation>Insère plusieurs nouvelles vues liées aux objets sélectionnés dans la feuille en cours.</translation>
     </message>
   </context>
   <context>
@@ -1820,7 +1820,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="489"/>
       <source>Adds cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Ajoute des sommets cosmétiques aux points des quadrants des cercles sélectionnés.</translation>
+      <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -1874,7 +1874,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="150"/>
       <source>Inserts a rich text annotation in the current page</source>
-      <translation>Insère une annotation de texte riche dans la feuille courante.</translation>
+      <translation>Insère une annotation de texte enrichi dans la feuille courante.</translation>
     </message>
   </context>
   <context>
@@ -2209,7 +2209,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Créer une vue interrompue</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Enregistrer la feuille au format DXF</translation>
@@ -2490,7 +2490,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Faire glisser une bulle</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Faire glisser la cote</translation>
     </message>
@@ -3233,7 +3233,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="630"/>
       <source>No break objects found in this selection</source>
-      <translation>Il n'y a pas d'objets à interrompre dans cette sélection.</translation>
+      <translation>Il n'y a pas d'objets cassés dans cette sélection.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="640"/>
@@ -3365,7 +3365,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Page contains a BIM view which will not be exported. Continue?</source>
-      <translation>La page contient une vue BIM qui ne sera pas exportée. Continuer ?</translation>
+      <translation>La page contient une vue BIM qui ne sera pas exportée. Faut-il continuer ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1411"/>
@@ -3504,7 +3504,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Tous les fichiers</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -4120,19 +4120,19 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Moins de trois cercles sélectionnés</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Cote manquante</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>La cote est introuvable. A-t-elle été supprimée ? Il n'est pas possible de continuer.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Sélectionner 2 sommets ou 1 arête</translation>
     </message>
@@ -4245,7 +4245,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <translation>Erreur de paramètre</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Nom du document :</translation>
     </message>
@@ -4401,7 +4401,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="93"/>
       <source>Crop to height</source>
-      <translation>Recadrer à une hauteur</translation>
+      <translation>Recadrer à la hauteur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="100"/>
@@ -4426,7 +4426,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="162"/>
       <source>Crop to width</source>
-      <translation>Recadrer à une largeur</translation>
+      <translation>Recadrer à la largeur</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="169"/>
@@ -4791,8 +4791,8 @@ Augmenter la limite si nécessaire.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="34"/>
       <source>If this box is checked, double-clicking on a page in the tree will automatically switch to TechDraw and the page will be made visible.</source>
-      <translation>Si cette option est cochée, double-cliquer sur une feuille dans l'arborescence
-fera passer automatiquement à l'atelier TechDraw et la feuille sera rendue visible.</translation>
+      <translation>Si cette option est cochée, double-cliquer sur une feuille dans l'arborescence fera passer automatiquement à l'atelier TechDraw et la feuille
+sera rendue visible.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="151"/>
@@ -5348,7 +5348,8 @@ extrémités plates ou carrées sont utiles pour utiliser les dessins comme guid
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="425"/>
       <source>Uses light text and lines on dark backgrounds and sets page color to a dark color. Transparent or light color faces are recommended with this option.</source>
-      <translation>Utilise un texte et des lignes clairs sur fond sombre et définit la couleur de la feuille sur une couleur sombre. Il est recommandé d'utiliser des polices transparentes ou de couleur claire avec cette option.</translation>
+      <translation>Utilise un texte et des lignes clairs sur fond sombre et définit la couleur de la feuille sur une couleur sombre. Il est recommandé d'utiliser des
+polices transparentes ou de couleur claire avec cette option.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="428"/>
@@ -5756,8 +5757,7 @@ pour les groupes de projection</translation>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="74"/>
       <source>Controls whether or not a page&apos;s &apos;Keep Updated&apos; property
 can override the global &apos;Update with 3D&apos; parameter</source>
-      <translation>Contrôle si l'option « Maintenir les feuilles à jour » des feuilles
-peut remplacer le paramètre global « Mettre à jour avec la 3D ».</translation>
+      <translation>Permet ou pas à la propriété « Keep Updated» des feuilles de supplanter le paramètre global « Mettre à jour avec la 3D ».</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="78"/>
@@ -7335,7 +7335,7 @@ par la valeur négative de la « Tolérance supérieure ».</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="28"/>
       <source>Format specifier</source>
-      <translation>Spécificateur de format</translation>
+      <translation>Spécificateur du format</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
@@ -7350,12 +7350,12 @@ par la valeur négative de la « Tolérance supérieure ».</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="129"/>
       <source>Overtolerance format specifier</source>
-      <translation>Spécificateur de format de la tolérance supérieure</translation>
+      <translation>Spécificateur du format de la tolérance supérieure</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="122"/>
       <source>Undertolerance format specifier</source>
-      <translation>Spécificateur de format de la tolérance inférieure</translation>
+      <translation>Spécificateur du format de la tolérance inférieure</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="52"/>
@@ -7446,7 +7446,7 @@ Utilise les angles par défaut si cette option n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="341"/>
       <source>Override angles</source>
-      <translation>Remplacer des angles</translation>
+      <translation>Remplacer les angles</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="348"/>
@@ -8793,7 +8793,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Centerlines/Threading</source>
-      <translation>Lignes centrales/filetages</translation>
+      <translation>Taraudages/filetages/cosmétiques</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -9472,17 +9472,17 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Remplir les champs du modèle</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Mettre à jour</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Tout mettre à jour</translation>
     </message>
@@ -9515,12 +9515,12 @@ there is an open task dialog.</source>
       <translation>Le groupe de vues ou de projections est manquant.</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Des champs correspondants du modèle sont manquants</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation>Remplissez les champs du modèle</translation>
     </message>
@@ -9529,27 +9529,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Aucun sommet sélectionné</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Sélectionner au moins </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> sommets</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Aucune arête sélectionnée</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> arêtes</translation>
     </message>
@@ -9877,7 +9883,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1790"/>
       <source>Area Annotation</source>
-      <translation>Annotation de surface</translation>
+      <translation>Insérer une cote de surface</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1791"/>
@@ -10014,12 +10020,12 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
-      <translation>Cote axonométrique</translation>
+      <translation>Insérer une cote axonométrique</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Crée une cote de longueur dans une vue axonométrique, en utilisant les arêtes ou les paires de sommets sélectionnées pour définir la direction et la mesure.</translation>
     </message>
@@ -10029,7 +10035,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="60"/>
       <source>Cosmetic Intersection Vertices</source>
-      <translation>Intersection de lignes</translation>
+      <translation>Intersections cosmétiques de lignes</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="63"/>
@@ -10074,7 +10080,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="285"/>
       <source>Inserts cosmetic vertices at the quadrant points of the selected circles</source>
-      <translation>Ajoute des sommets cosmétiques aux points des quadrants des cercles sélectionnés.</translation>
+      <translation>Ajoute des sommets cosmétiques aux quadrants des cercles sélectionnés.</translation>
     </message>
   </context>
   <context>

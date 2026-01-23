@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>Area Workplane</source>
-      <translation type="unfinished">Area Workplane</translation>
+      <translation>Area del piano di lavoro</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="148"/>
       <source>Selects a workplane for a feature area</source>
-      <translation type="unfinished">Selects a workplane for a feature area</translation>
+      <translation>Seleziona un piano di lavoro per un area di funzionalità</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Creates a compound from the selected toolpaths</source>
-      <translation type="unfinished">Creates a compound from the selected toolpaths</translation>
+      <translation>Crea un percorso composto dai tracciati selezionati</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="14"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Nuovo lavoro</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="23"/>
@@ -116,7 +116,7 @@
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="32"/>
       <source>Select a template for the job. Templates are creatable from an existing job&apos;s context menu. Template files use the `job_*.json` naming convention and are stored in the macro or path directory (path configurable in preferences).</source>
-      <translation type="unfinished">Select a template for the job. Templates are creatable from an existing job&apos;s context menu. Template files use the `job_*.json` naming convention and are stored in the macro or path directory (path configurable in preferences).</translation>
+      <translation>Seleziona un modello per il lavoro. I modelli si possono creare dal menù contestuale di un lavoro esistente. I modelli usano la convenzione dei nomi "job_*.json" e sono memorizzati nella directory delle macro o nel percorso (il percorso è configurabile nelle preferenze).</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobCreate.ui" line="42"/>
@@ -126,7 +126,7 @@
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="14"/>
       <source>Base Model Selection</source>
-      <translation type="unfinished">Base Model Selection</translation>
+      <translation>Selezione del modello base</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobModelSelect.ui" line="24"/>
@@ -166,12 +166,12 @@
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="20"/>
       <source>If enabled, include all post processing settings in the template</source>
-      <translation type="unfinished">If enabled, include all post processing settings in the template</translation>
+      <translation>Se abilitata include tutte le impostazioni di post elaborazione nel modello</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="38"/>
       <source>Hint about the current post processing configuration</source>
-      <translation type="unfinished">Hint about the current post processing configuration</translation>
+      <translation>Suggerimento sulla attuale configurazione di post elaborazione</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="48"/>
@@ -441,7 +441,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="90"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Note</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="107"/>
@@ -2316,7 +2316,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default width</source>
-      <translation type="unfinished">Default width</translation>
+      <translation>Larghezza predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2330,7 +2330,7 @@ If the width is set to 0 the dressup will try to guess a reasonable value based 
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default height</source>
-      <translation type="unfinished">Default height</translation>
+      <translation>Altezza predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="49"/>
@@ -2344,7 +2344,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="58"/>
       <source>Default angle</source>
-      <translation type="unfinished">Default angle</translation>
+      <translation>Angolo predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="65"/>
@@ -2354,7 +2354,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default radius</source>
-      <translation type="unfinished">Default radius</translation>
+      <translation>Raggio predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="112"/>
@@ -2388,7 +2388,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Start at vertex</source>
-      <translation type="unfinished">Start at vertex</translation>
+      <translation>Inizia dal vertice</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
@@ -2552,7 +2552,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="154"/>
       <source>Default path</source>
-      <translation type="unfinished">Default path</translation>
+      <translation>Percorso predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="207"/>
@@ -3479,7 +3479,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Ordina per</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1184"/>
@@ -4002,7 +4002,7 @@ Default: 3 mm</translation>
       <translation type="unfinished">Save Sanity Check Report</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="92"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a CAM Job</source>
       <translation>Scegli una Lavorazione CAM</translation>
     </message>
@@ -4461,7 +4461,7 @@ Può essere utile per operazioni multi profilo, ad esempio Tasca con motivo ZigZ
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="187"/>
-      <location filename="../../../Path/Op/Base.py" line="441"/>
+      <location filename="../../../Path/Op/Base.py" line="444"/>
       <location filename="../../../Path/Main/Job.py" line="487"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Stima del Tempo di Lavorazione</translation>
@@ -4748,7 +4748,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="260"/>
-      <location filename="../../../Path/Op/Base.py" line="449"/>
+      <location filename="../../../Path/Op/Base.py" line="452"/>
       <source>Incremental Step Down of Tool</source>
       <translation type="unfinished">Incremental Step Down of Tool</translation>
     </message>
@@ -4792,7 +4792,7 @@ Valori più grandi (più a destra) saranno calcolati più velocemente; valori pi
     </message>
     <message>
       <location filename="../../../CAMTests/TestRefactoredTestPost.py" line="665"/>
-      <location filename="../../../Path/Op/Base.py" line="421"/>
+      <location filename="../../../Path/Op/Base.py" line="424"/>
       <source>Coolant option for this operation</source>
       <translation type="unfinished">Coolant option for this operation</translation>
     </message>
@@ -6177,7 +6177,7 @@ Use property KeepToolDown to change this</translation>
       <translation>Rendere False, per escludere l'operazione dalla generazione del codice</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="192"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="191"/>
       <source>Edit</source>
       <translation>Modifica</translation>
     </message>
@@ -6244,14 +6244,14 @@ If it is necessary to set the FinalDepth manually please select a different oper
       <translation type="unfinished">Selects the start point</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1482"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1485"/>
       <source>No suitable tool controller found.
 Aborting op creation</source>
       <translation>Nessun controller di utensile adatto trovato.
 Interruzione creazione op</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Base.py" line="1486"/>
+      <location filename="../../../Path/Op/Gui/Base.py" line="1489"/>
       <source>No tool controller, aborting op creation</source>
       <translation>Nessun controller di utensile, interruzione della creazione dell'op</translation>
     </message>
@@ -6444,7 +6444,7 @@ Interruzione creazione op</translation>
       <translation>Arco</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1391"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
       <source>Lead In/Out</source>
       <translation type="unfinished">Lead In/Out</translation>
     </message>
@@ -6504,22 +6504,22 @@ Interruzione creazione op</translation>
       <translation>Controllore utensile non selezionato per l'operazione di base: %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1395"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1399"/>
       <source>Creates entry and exit motions for a selected path</source>
       <translation>Crea movimenti di entrata e d'uscita per un percorso selezionato</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1418"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1422"/>
       <source>Select one toolpath object</source>
       <translation type="unfinished">Select one toolpath object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1431"/>
       <source>Select a Profile object</source>
       <translation type="unfinished">Select a Profile object</translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1423"/>
+      <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="1427"/>
       <source>The selected object is not a toolpath</source>
       <translation>L'oggetto selezionato non è un percorso utensile</translation>
     </message>
@@ -6855,47 +6855,47 @@ Interruzione creazione op</translation>
       <translation>Tutti i File (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1399"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
       <source>Unsupported stock object %s</source>
       <translation>Tipo di oggetto grezzo non supportato %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1415"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1417"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Tipo di oggetto grezzo non supportato %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1506"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1508"/>
       <source>Model Selection</source>
       <translation>Selezione Modello</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
       <translation>Attenzione</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1662"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>Please add one.</source>
       <translation>Per favore, aggiungerne una.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Add</source>
       <translation>Aggiungi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1676"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
       <source>This job has no base model.</source>
       <translation>Questa lavorazione non ha un modello di base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
       <source>This job has no tool.</source>
       <translation>Questa lavorazione non ha utensili.</translation>
     </message>
@@ -7017,7 +7017,7 @@ Interruzione creazione op</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="58"/>
       <source>New Job</source>
-      <translation type="unfinished">New Job</translation>
+      <translation>Nuovo lavoro</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobCmd.py" line="60"/>
@@ -7475,17 +7475,17 @@ Interruzione creazione op</translation>
   <context>
     <name>CAM_Operation</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="359"/>
+      <location filename="../../../Path/Op/Base.py" line="362"/>
       <source>None</source>
       <translation>Nessuno</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="360"/>
+      <location filename="../../../Path/Op/Base.py" line="363"/>
       <source>Flood</source>
       <translation type="unfinished">Flood</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="361"/>
+      <location filename="../../../Path/Op/Base.py" line="364"/>
       <source>Mist</source>
       <translation>Mist</translation>
     </message>
@@ -7508,62 +7508,62 @@ Interruzione creazione op</translation>
   <context>
     <name>CAM</name>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="617"/>
+      <location filename="../../../Path/Op/Base.py" line="623"/>
       <source>No parent job found for operation.</source>
       <translation>Nessun lavoro genitore trovato per l'operazione.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="622"/>
+      <location filename="../../../Path/Op/Base.py" line="628"/>
       <source>Parent job %s doesn&apos;t have a base object</source>
       <translation>Il lavoro genitore %s fa&apos;t ha un oggetto base</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="764"/>
+      <location filename="../../../Path/Op/Base.py" line="770"/>
       <source>No Tool Controller is selected. We need a tool to build a Path.</source>
       <translation>Nessun Controller Utensile selezionato. Serve un utensile per costruire un Percorso.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="778"/>
+      <location filename="../../../Path/Op/Base.py" line="784"/>
       <source>No Tool found or diameter is zero. We need a tool to build a Path.</source>
       <translation>Non è stato trovato nessun Utensile, o il diametro è uguale a zero. Serve un utensile per costruire un Percorso.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="848"/>
+      <location filename="../../../Path/Op/Base.py" line="854"/>
       <source>No Tool Controller selected.</source>
       <translation>Nessun Controller utensile selezionato.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="851"/>
+      <location filename="../../../Path/Op/Base.py" line="857"/>
       <source>Tool Error</source>
       <translation>Errore utensile</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="863"/>
+      <location filename="../../../Path/Op/Base.py" line="869"/>
       <source>Tool Controller feedrates required to calculate the cycle time.</source>
       <translation>Per calcolare il tempo di ciclo è necessaria la velocità di avanzamento del Controller utensile.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="866"/>
+      <location filename="../../../Path/Op/Base.py" line="872"/>
       <source>Tool Feedrate Error</source>
       <translation type="unfinished">Tool Feedrate Error</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="872"/>
+      <location filename="../../../Path/Op/Base.py" line="878"/>
       <source>Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</source>
       <translation type="unfinished">Add Tool Controller Rapid Speeds on the SetupSheet for more accurate cycle times.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="881"/>
+      <location filename="../../../Path/Op/Base.py" line="887"/>
       <source>Cycletime Error</source>
       <translation>Errore nel tempo del ciclo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="823"/>
+      <location filename="../../../Path/Op/Base.py" line="829"/>
       <source>Base object %s.%s already in the list</source>
       <translation>L'oggetto di base %s.%s è già nell'elenco</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="833"/>
+      <location filename="../../../Path/Op/Base.py" line="839"/>
       <source>Base object %s.%s rejected by operation</source>
       <translation>L'oggetto di base %s.%s è rifiutato dall'operazione</translation>
     </message>
@@ -9188,6 +9188,7 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
       <translation type="unfinished">Cutting edge angle</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
@@ -9350,7 +9351,7 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
       <translation>Raggio di taglio</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation>Raggio fresatura</translation>
     </message>

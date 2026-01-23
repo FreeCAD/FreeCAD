@@ -2195,8 +2195,9 @@ class ObjectSurface(PathOp.ObjectOp):
                     rSTG = self._rotationalScanToGcode(obj, rng, rNum, prevDepth, layDep, advances)
                     commands.extend(rSTG)
                     if arc != 360.0:
-                        clrZ = self.layerEndzMax + self.SafeHeightOffset
-                        commands.append(Path.Command("G0", {"Z": clrZ, "F": self.vertRapid}))
+                        commands.append(
+                            Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid})
+                        )
                     rNum += 1
                 # Eol
 
@@ -2314,18 +2315,14 @@ class ObjectSurface(PathOp.ObjectOp):
         # Create first point
         pnt = CLP[0]
 
+        #  Always retract to full clearHeight before any A/B axis rotation
+        output.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
+
         # Rotate to correct index location
         if obj.RotationAxis == "X":
             output.append(Path.Command("G0", {"A": idxAng, "F": self.axialFeed}))
         else:
             output.append(Path.Command("G0", {"B": idxAng, "F": self.axialFeed}))
-
-        if li > 0:
-            if pnt.z > self.layerEndPnt.z:
-                clrZ = pnt.z + 2.0
-                output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
-        else:
-            output.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
 
         output.append(Path.Command("G0", {"X": pnt.x, "Y": pnt.y, "F": self.horizRapid}))
         output.append(Path.Command("G1", {"Z": pnt.z, "F": self.vertFeed}))
@@ -2424,12 +2421,7 @@ class ObjectSurface(PathOp.ObjectOp):
 
         # Adjust feed rate based on radius/circumference of cutter.
         # Original feed rate based on travel at circumference.
-        if rN > 0:
-            if pnt.z >= self.layerEndzMax - FLOAT_EPSILON:
-                clrZ = pnt.z + 5.0
-                output.append(Path.Command("G1", {"Z": clrZ, "F": self.vertRapid}))
-        else:
-            output.append(Path.Command("G1", {"Z": self.clearHeight, "F": self.vertRapid}))
+        output.append(Path.Command("G1", {"Z": self.clearHeight, "F": self.vertRapid}))
 
         output.append(Path.Command("G0", {axisOfRot: ang, "F": self.axialFeed}))
         output.append(Path.Command("G1", {"X": pnt.x, "Y": pnt.y, "F": self.axialFeed}))
@@ -2537,71 +2529,6 @@ class ObjectSurface(PathOp.ObjectOp):
             del self.radius
             del self.useTiltCutter
         return True
-
-    def setOclCutter(self, obj, safe=False):
-        """setOclCutter(obj) ... Translation function to convert FreeCAD tool definition to OCL formatted tool."""
-        # Set cutter details
-        #  https://www.freecad.org/api/dd/dfe/classPath_1_1Tool.html#details
-        diam_1 = float(obj.ToolController.Tool.Diameter)
-        lenOfst = (
-            obj.ToolController.Tool.LengthOffset
-            if hasattr(obj.ToolController.Tool, "LengthOffset")
-            else 0
-        )
-        FR = (
-            obj.ToolController.Tool.FlatRadius
-            if hasattr(obj.ToolController.Tool, "FlatRadius")
-            else 0
-        )
-        CEH = (
-            obj.ToolController.Tool.CuttingEdgeHeight
-            if hasattr(obj.ToolController.Tool, "CuttingEdgeHeight")
-            else 0
-        )
-        CEA = (
-            obj.ToolController.Tool.CuttingEdgeAngle
-            if hasattr(obj.ToolController.Tool, "CuttingEdgeAngle")
-            else 0
-        )
-
-        # Make safeCutter with 2 mm buffer around physical cutter
-        if safe is True:
-            diam_1 += 4.0
-            if FR != 0.0:
-                FR += 2.0
-
-        Path.Log.debug("ToolType: {}".format(obj.ToolController.Tool.ToolType))
-        if obj.ToolController.Tool.ToolType == "EndMill":
-            # Standard End Mill
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "BallEndMill" and FR == 0.0:
-            # Standard Ball End Mill
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            self.useTiltCutter = True
-            return ocl.BallCutter(diam_1, (diam_1 / 2 + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "BallEndMill" and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> BallCutter::BallCutter(diameter, length)
-            return ocl.BullCutter(diam_1, FR, (CEH + lenOfst))
-
-        elif obj.ToolController.Tool.ToolType == "Engraver" and FR > 0.0:
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-
-        elif obj.ToolController.Tool.ToolType == "ChamferMill":
-            # Bull Nose or Corner Radius cutter
-            # Reference: https://www.fine-tools.com/halbstabfraeser.html
-            # OCL -> ConeCutter::ConeCutter(diameter, angle, lengthOffset)
-            return ocl.ConeCutter(diam_1, (CEA / 2), lenOfst)
-        else:
-            # Default to standard end mill
-            Path.Log.warning("Defaulting cutter to standard end mill.")
-            return ocl.CylCutter(diam_1, (CEH + lenOfst))
 
     def _getTransitionLine(self, pdc, p1, p2, obj):
         """Use an OCL PathDropCutter to generate a safe transition path between

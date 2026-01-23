@@ -80,11 +80,11 @@ public:
     void addObjectChildrenToBom(std::vector<App::DocumentObject*> objs, size_t& row, std::string index);
     void saveCustomColumnData();
 
-    AssemblyObject* getAssembly();
+    AssemblyObject* getAssembly() const;
 
-    bool hasQuantityColumn();
-    int getColumnIndex(std::string name);
-    std::string getText(size_t row, size_t col);
+    bool hasQuantityColumn() const;
+    int getColumnIndex(std::string name) const;
+    std::string getText(size_t row, size_t col) const;
 
     App::PropertyStringList columnsNames;
     App::PropertyBool detailSubAssemblies;

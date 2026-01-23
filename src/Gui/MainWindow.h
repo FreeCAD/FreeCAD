@@ -314,6 +314,8 @@ protected:
     void changeEvent(QEvent* e) override;
 
 private:
+    bool checkFirstRun();
+    void moveToDefaultPosition(QRect rect, QPoint pos);
     void setupDockWindows();
     bool setupTaskView();
     bool setupSelectionView();
@@ -368,6 +370,12 @@ private Q_SLOTS:
      * \internal
      */
     void delayedStartup();
+#ifdef Q_OS_MAC
+    /**
+     * \internal
+     */
+    void registerQuickLookExtensions();
+#endif
     /**
      * \internal
      */

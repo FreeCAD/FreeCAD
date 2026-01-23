@@ -67,6 +67,7 @@ translate = FreeCAD.Qt.translate
 # simply importing the Arch module, as if they were part of this module.
 from ArchCommands import *
 from ArchWindowPresets import *
+from ArchSql import *
 
 # TODO: migrate this one
 # Currently makeStructure, makeStructuralSystem need migration
@@ -2213,7 +2214,15 @@ def debaseWall(wall):
     This operation preserves the wall's exact size and global position.
     It is only supported for walls based on a single, straight line.
 
-    Returns True on success, False otherwise.
+    Parameters
+    ----------
+    wall : FreeCAD.DocumentObject
+        The Arch Wall object to debase.
+
+    Returns
+    -------
+    bool
+        True on success, False otherwise.
     """
     import FreeCAD
 
@@ -2223,55 +2232,44 @@ def debaseWall(wall):
 
     doc = wall.Document
     doc.openTransaction(f"Debase Wall: {wall.Label}")
+
     try:
-        # Calculate the final state before making any changes
-        # A wall's final position and orientation are derived from its Base object and its own
-        # properties like Width and Align. To make the wall independent, this final state must be
-        # captured. A simple transfer of the Base object's Placement property is unreliable for two
-        # main reasons:
-        # - Ambiguity: A Draft.Line's direction is defined by its vertex coordinates, so a line at
-        #   45° can have a 0° rotation in its Placement.
-        # - Coordinate Systems: A universal method is needed to handle both Draft objects (defined
-        #   in global coordinates) and Sketch objects (defined in a local coordinate system).
-        #
-        # The solution is to use the wall.Proxy.basewires internal attribute. It is non-persistent
-        # and populated on the fly by calling getExtrusionData(). It contains the baseline edge
-        # already transformed into the document's global coordinate system. From the vertex
-        # positions of this globally-aware edge, the new wall's final Placement is calculated.
-        extrusion_data = wall.Proxy.getExtrusionData(wall)
-        if not extrusion_data or not hasattr(wall.Proxy, "basewires") or not wall.Proxy.basewires:
-            raise Exception("Could not retrieve extrusion data to calculate global placement.")
+        # --- Calculation of the final placement ---
+        base_obj = wall.Base
+        base_edge = base_obj.Shape.Edges[0]
 
-        # In addition to the baseline edge, getExtrusionData() also provides the extrusion vector,
-        # which is used to determine the wall's vertical orientation.
-        extrusion_vector = extrusion_data[1]
-        baseline_edge = wall.Proxy.basewires[0][0]
+        # Step 1: Get global coordinates of the baseline's endpoints.
+        # For Draft objects, Vertex coordinates are already in the global system. For Sketches,
+        # they are local, but ArchWall's internal logic transforms them. The most reliable
+        # way to get the final global baseline is to use the vertices of the base object's
+        # final shape, which are always in global coordinates for these object types.
+        p1_global = base_edge.Vertexes[0].Point
+        p2_global = base_edge.Vertexes[1].Point
 
-        # Now determine the wall's rotation inferred from its local axes:
-        # - The local X axis is along the baseline edge (length).
-        # - The local Z axis is along the extrusion vector (height).
-        # - The local Y axis is the cross product of X and Z (width, perpendicular to both the
-        # - above).
-        # Once the local axes are known, a FreeCAD.Rotation matrix can be constructed.
-        z_axis = extrusion_vector.normalize()
-        x_axis = (baseline_edge.lastVertex().Point - baseline_edge.firstVertex().Point).normalize()
-        y_axis = z_axis.cross(x_axis).normalize()
+        # Step 2: Determine the extrusion normal vector.
+        normal = wall.Normal
+        if normal.Length == 0:
+            normal = base_obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+            if normal.Length == 0:
+                normal = FreeCAD.Vector(0, 0, 1)
+
+        # Step 3: Calculate the final orientation from the geometric axes.
+        # - The local Z-axis is the extrusion direction (height).
+        # - The local X-axis is along the baseline (length).
+        # - The local Y-axis is perpendicular to both, pointing "Right" to remain
+        #   consistent with the wall's internal creation logic (X x Z = Y).
+        z_axis = normal.normalize()
+        x_axis = (p2_global - p1_global).normalize()
+        y_axis = x_axis.cross(z_axis).normalize()
         final_rotation = FreeCAD.Rotation(x_axis, y_axis, z_axis)
 
-        # This will be the debased wall's local coordinate system origin (0, 0, 0).
-        # The wall's Align property (Left, Center, Right) determines how the wall's
-        # Width offsets the final position from the centerline.
-        centerline_position = baseline_edge.CenterOfMass
-        align_offset_distance = 0
-        if wall.Align == "Left":
-            align_offset_distance = wall.Width.Value / 2.0
-        elif wall.Align == "Right":
-            align_offset_distance = -wall.Width.Value / 2.0
+        # Step 4: Calculate the final position (the wall's volumetric center).
+        # The new placement's Base must be the global coordinate of the final wall's center.
+        centerline_position = (p1_global + p2_global) * 0.5
 
-        # Convert the offset distance into a vector in the width direction (local Y axis).
-        align_offset_vector = y_axis * align_offset_distance
-        final_position = centerline_position - align_offset_vector
-
+        # The new placement's Base is the center of the baseline. The alignment is handled by the
+        # geometry generation itself, not by shifting the placement.
+        final_position = centerline_position
         final_placement = FreeCAD.Placement(final_position, final_rotation)
 
         # Store properties before unlinking
@@ -2384,3 +2382,53 @@ def _initializeArchObject(
         return None
 
     return obj
+
+
+def makeReport(name=None):
+    """
+    Creates a BIM Report object in the active document.
+
+    Parameters
+    ----------
+    name : str, optional
+        The name to assign to the created report object. Defaults to None.
+
+    Returns
+    -------
+    App::FeaturePython
+        The created report object.
+    """
+
+    # Use the helper to create the main object. Note that we pass the
+    # correct class and module names.
+    report_obj = _initializeArchObject(
+        objectType="App::FeaturePython",
+        baseClassName="_ArchReport",
+        internalName="ArchReport",
+        defaultLabel=name if name else translate("Arch", "Report"),
+        moduleName="ArchReport",
+        viewProviderName="ViewProviderReport",
+    )
+
+    # The helper returns None if there's no document, so we can exit early.
+    if not report_obj:
+        return None
+
+    # Initialize the Statements property
+    # Report object proxy needs its Statements list initialized before getSpreadSheet is called,
+    # as getSpreadSheet calls execute() which now relies on obj.Statements.
+    # Initialize with one default statement to provide a starting point for the user.
+    default_stmt = ReportStatement(description=translate("Arch", "New Statement"))
+    report_obj.Statements = [default_stmt.dumps()]
+
+    # Initialize a spreadsheet if the report requests one. The report is responsible for how the
+    # association is stored (we use a non-dependent ``ReportName`` on the sheet and persist the
+    # report's ``Target`` link when the report creates the sheet).
+    if hasattr(report_obj, "Proxy") and hasattr(report_obj.Proxy, "getSpreadSheet"):
+        _ = report_obj.Proxy.getSpreadSheet(report_obj, force=True)
+
+    if FreeCAD.GuiUp:
+        # Automatically open the task panel for the new report
+        FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
+
+    return report_obj

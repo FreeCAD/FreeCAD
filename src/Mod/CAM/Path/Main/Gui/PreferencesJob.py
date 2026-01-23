@@ -39,7 +39,7 @@ class JobPreferencesPage:
         import FreeCADGui
 
         self.form = FreeCADGui.PySideUic.loadUi(":preferences/PathJob.ui")
-        self.form.toolBox.setCurrentIndex(0)  # Take that qt designer!
+        self.form.tabWidget.setCurrentIndex(0)  # Take that qt designer!
 
         self.postProcessorDefaultTooltip = self.form.defaultPostProcessor.toolTip()
         self.postProcessorArgsDefaultTooltip = self.form.defaultPostProcessorArgs.toolTip()

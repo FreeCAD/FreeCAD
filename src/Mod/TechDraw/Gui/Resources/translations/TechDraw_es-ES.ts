@@ -2181,7 +2181,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Crear vista rota</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Guardar página como DXF</translation>
@@ -2462,7 +2462,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Arrastrar Globo</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Arrastrar Cota</translation>
     </message>
@@ -3468,7 +3468,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../Command.cpp" line="1551"/>
       <source>Choose an SVG file to open</source>
-      <translation>Seleccionar un archivo SVG para abrir</translation>
+      <translation>Seleccione un archivo SVG para abrir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="447"/>
@@ -3476,7 +3476,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Todos los Archivos</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -3744,7 +3744,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="307"/>
       <source>No page found</source>
-      <translation>No se ha encontrado una página de dibujo</translation>
+      <translation>No se encontró una página</translation>
     </message>
     <message>
       <location filename="../../DrawGuiUtil.cpp" line="308"/>
@@ -4093,19 +4093,19 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Menos de tres círculos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Cota faltante</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation type="unfinished">Dimension not found. Was it deleted? Cannot continue.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation type="unfinished">Select 2 vertices or 1 edge</translation>
     </message>
@@ -4218,7 +4218,7 @@ If no object is selected, a file browser opens to select an SVG or image file.</
       <translation>Error de parámetro</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Nombre del documento:</translation>
     </message>
@@ -6221,7 +6221,7 @@ Rápido, pero los resultados son una colección de líneas rectas cortas.</trans
     <message>
       <location filename="../../MDIViewPage.cpp" line="394"/>
       <source>Different orientation</source>
-      <translation>Orientación diferente de la hoja</translation>
+      <translation>Orientación diferente</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="395"/>
@@ -6926,7 +6926,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
       <source>Circular run-out</source>
-      <translation type="unfinished">Circular run-out</translation>
+      <translation>salir</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="146"/>
@@ -8193,7 +8193,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskProjection.cpp" line="69"/>
       <source>There is currently no active view to complete the operation</source>
-      <translation>Actualmente no hay vista activa para completar la operación</translation>
+      <translation>Actualmente no hay una vista activa para completar la operación</translation>
     </message>
   </context>
   <context>
@@ -9446,17 +9446,17 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation type="unfinished">Fill Template Fields In </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Actualizar</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Actualizar todo</translation>
     </message>
@@ -9489,12 +9489,12 @@ there is an open task dialog.</source>
       <translation type="unfinished">View or projection group missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Faltan los campos de plantilla correspondientes</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation type="unfinished">Fill template fields</translation>
     </message>
@@ -9503,27 +9503,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Ningún vértice seleccionado</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Selecciona al menos </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> vértices</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Ninguna arista seleccionada</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> aristas</translation>
     </message>
@@ -9989,12 +9995,12 @@ hay un diálogo de tareas abierto.</translation>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation type="unfinished">Axonometric Length Dimension</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation type="unfinished">Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</translation>
     </message>

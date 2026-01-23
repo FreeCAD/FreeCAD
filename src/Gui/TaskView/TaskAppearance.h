@@ -41,7 +41,7 @@ class ViewProvider;
 namespace TaskView
 {
 
-using TaskAppearance_Connection = boost::signals2::connection;
+using TaskAppearance_Connection = fastsignals::connection;
 class Ui_TaskAppearance;
 
 class TaskAppearance: public TaskBox, public Gui::SelectionSingleton::ObserverType

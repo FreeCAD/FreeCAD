@@ -251,7 +251,7 @@ public:
     std::string label2;
     std::string internalName;
 
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
 
     Connection connectIcon;
     Connection connectTool;
@@ -5451,7 +5451,7 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
         item->setCheckState(false);
     }
 
-    if ((selected && item->selected > 0) || (!selected && !item->selected)) {
+    if (!selected && !item->selected) {
         return;
     }
     if (item->selected != -1) {
@@ -5484,7 +5484,38 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
 #endif
 
     if (!selected) {
-        Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        // Handles deselection for same name object and subname
+        bool keep = false;
+        auto items = getTree()->selectedItems();
+        for (auto it : items) {
+            if (it->type() == TreeWidget::ObjectType) {
+                auto docitem = static_cast<DocumentObjectItem*>(it);
+                auto obj2 = docitem->object()->getObject();
+                if (!obj2 || !obj2->isAttachedToDocument()) {
+                    continue;
+                }
+
+                std::ostringstream str2;
+                App::DocumentObject* topParent2 = nullptr;
+                docitem->getSubName(str2, topParent2);
+
+                if (topParent2) {
+                    if (!obj2->redirectSubName(str2, topParent2, nullptr)) {
+                        str2 << obj2->getNameInDocument() << '.';
+                    }
+                    obj2 = topParent2;
+                }
+
+                if (obj2 == obj && str2.str() == subname) {
+                    keep = true;
+                    break;
+                }
+            }
+        }
+
+        if (!keep) {
+            Gui::Selection().rmvSelection(docname, objname, subname.c_str());
+        }
         return;
     }
 
@@ -5492,14 +5523,16 @@ void DocumentItem::updateItemSelection(DocumentObjectItem* item)
     selected = false;
     if (!item->mySubs.empty()) {
         for (auto& sub : item->mySubs) {
-            if (Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
+            if (Gui::Selection().isSelected(docname, objname, (subname + sub).c_str())
+                || Gui::Selection().addSelection(docname, objname, (subname + sub).c_str())) {
                 selected = true;
             }
         }
     }
     if (!selected) {
         item->mySubs.clear();
-        if (!Gui::Selection().addSelection(docname, objname, subname.c_str())) {
+        if (!Gui::Selection().isSelected(docname, objname, subname.c_str())
+            && !Gui::Selection().addSelection(docname, objname, subname.c_str())) {
             // Safely re-access the item
             DocumentObjectItem* item2 = findItem(vobj->getObject(), subname);
             if (item2) {
@@ -6539,37 +6572,20 @@ int DocumentObjectItem::getSubName(std::ostringstream& str, App::DocumentObject*
         int group = parent->isGroup();
         if (group == NotGroup) {
             if (ret != PartGroup) {
-                // check if the parent explicitly claims this child,
-                // if so, we should include the parent in the subname path
-                auto children = parent->object()->claimChildren();
-                bool parentClaimsThis = false;
-                for (auto child : children) {
-                    if (child == object()->getObject()) {
-                        parentClaimsThis = true;
-                        break;
-                    }
-                }
-
-                if (!parentClaimsThis) {
-                    // Handle this situation,
-                    //
-                    // LinkGroup
-                    //    |--PartExtrude
-                    //           |--Sketch
-                    //
-                    // This function traverse from top down, so, when seeing a
-                    // non-group object 'PartExtrude', its following children should
-                    // not be grouped, so must reset any previous parents here.
-                    topParent = nullptr;
-                    str.str("");  // reset the current subname
-                    return NotGroup;
-                }
-                // if parent claims this child, treat it like a PartGroup
-                group = PartGroup;
+                // Handle this situation,
+                //
+                // LinkGroup
+                //    |--PartExtrude
+                //           |--Sketch
+                //
+                // This function traverse from top down, so, when seeing a
+                // non-group object 'PartExtrude', its following children should
+                // not be grouped, so must reset any previous parents here.
+                topParent = nullptr;
+                str.str("");  // reset the current subname
+                return NotGroup;
             }
-            else {
-                group = PartGroup;
-            }
+            group = PartGroup;
         }
         ret = group;
     }

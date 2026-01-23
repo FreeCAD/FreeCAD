@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -26,9 +28,10 @@
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <memory>
 #include <set>
+#include <string>
 #include <FCGlobal.h>
 
 
@@ -370,6 +373,14 @@ public:
     explicit DocumentObjectWeakPtrT(App::DocumentObject*);
     ~DocumentObjectWeakPtrT();
 
+    // disable copy
+    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT &) = delete;
+    DocumentObjectWeakPtrT &operator=(const DocumentObjectWeakPtrT &) = delete;
+
+    // default move
+    DocumentObjectWeakPtrT(DocumentObjectWeakPtrT &&);
+    DocumentObjectWeakPtrT &operator=(DocumentObjectWeakPtrT &&);
+
     /*!
      * \brief reset
      * Releases the reference to the managed object. After the call *this manages no object.
@@ -414,11 +425,6 @@ public:
 
 private:
     App::DocumentObject* _get() const noexcept;
-
-public:
-    // disable
-    DocumentObjectWeakPtrT(const DocumentObjectWeakPtrT&) = delete;
-    DocumentObjectWeakPtrT& operator=(const DocumentObjectWeakPtrT&) = delete;
 
 private:
     class Private;
@@ -557,7 +563,7 @@ protected:
 
 private:
     App::Document* _document;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectApplicationCreatedDocument;
     Connection connectApplicationDeletedDocument;
     Connection connectApplicationActivateDocument;
@@ -611,6 +617,15 @@ private:
 };
 
 }  // namespace App
+
+template<>
+struct std::hash<App::DocumentObjectWeakPtrT>
+{
+    std::size_t operator()(const App::DocumentObjectWeakPtrT& ptr) const noexcept
+    {
+        return std::hash<App::DocumentObject*>{}(*ptr);
+    }
+};
 
 ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)
 

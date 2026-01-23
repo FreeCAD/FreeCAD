@@ -1061,7 +1061,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="14"/>
       <source>Block Definition</source>
-      <translation type="unfinished">Block Definition</translation>
+      <translation>Definición de bloque</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="20"/>
@@ -1570,7 +1570,7 @@
     <message>
       <location filename="../../Command.cpp" line="1141"/>
       <source>Export CAD File</source>
-      <translation type="unfinished">Export CAD File</translation>
+      <translation>Exportar archivo CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1143"/>
@@ -1593,7 +1593,7 @@
     <message>
       <location filename="../../Command.cpp" line="1450"/>
       <source>Extrudes the selected sketch or profile</source>
-      <translation type="unfinished">Extrudes the selected sketch or profile</translation>
+      <translation>Extruye el croquis o perfil seleccionado</translation>
     </message>
   </context>
   <context>
@@ -1642,7 +1642,7 @@
     <message>
       <location filename="../../Command.cpp" line="1067"/>
       <source>Import CAD File</source>
-      <translation type="unfinished">Import CAD File</translation>
+      <translation>Importar archivo CAD</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1069"/>
@@ -1714,7 +1714,7 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Convert to Solid</source>
-      <translation type="unfinished">Convert to Solid</translation>
+      <translation>Convertir a sólido</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
@@ -1750,7 +1750,7 @@
     <message>
       <location filename="../../Command.cpp" line="1804"/>
       <source>3D Offset</source>
-      <translation type="unfinished">3D Offset</translation>
+      <translation>Desplazamiento 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
@@ -3346,7 +3346,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPartImportIges.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Buscar archivo</translation>
     </message>
   </context>
   <context>
@@ -3377,7 +3377,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPartImportStep.ui" line="54"/>
       <source>Search File</source>
-      <translation type="unfinished">Search File</translation>
+      <translation>Buscar archivo</translation>
     </message>
   </context>
   <context>
@@ -3555,23 +3555,23 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgPrimitives.ui" line="1064"/>
       <location filename="../../DlgPrimitives.ui" line="1253"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Parámetro U</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Parámetros V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Radio 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
       <location filename="../../DlgPrimitives.ui" line="1273"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Parámetro V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
@@ -3583,32 +3583,32 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Circunradio</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1548"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Y min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1578"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1608"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1641"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
@@ -3618,7 +3618,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Sistema de coordenadas</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
@@ -3628,34 +3628,34 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Número de rotaciones</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1990"/>
       <location filename="../../DlgPrimitives.ui" line="2112"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Ángulo 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2007"/>
       <location filename="../../DlgPrimitives.ui" line="2129"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Ángulo 2</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2044"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Desde 3 puntos</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Radio mayor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Radio menor</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -3750,17 +3750,17 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Proyectar en superficie</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
       <source>Select Projection Surface</source>
-      <translation type="unfinished">Select Projection Surface</translation>
+      <translation>Seleccionar superficie de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="31"/>
       <source>Add Face</source>
-      <translation type="unfinished">Add Face</translation>
+      <translation>Añadir cara</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="38"/>
@@ -3775,7 +3775,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
       <source>Show edges</source>
-      <translation type="unfinished">Show edges</translation>
+      <translation>Mostrar aristas</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="92"/>
@@ -3795,7 +3795,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="147"/>
       <source>Get Current Camera Direction</source>
-      <translation type="unfinished">Get Current Camera Direction</translation>
+      <translation>Obtener la dirección actual de la cámara</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
@@ -3815,7 +3815,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="138"/>
       <source>Projection object</source>
-      <translation type="unfinished">Projection object</translation>
+      <translation>Objeto de proyección</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="167"/>
@@ -3825,7 +3825,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="173"/>
       <source>Cannot create a projection object</source>
-      <translation type="unfinished">Cannot create a projection object</translation>
+      <translation>No se puede crear un objeto de proyección</translation>
     </message>
   </context>
   <context>
@@ -3843,7 +3843,7 @@ Primero seleccione una o más aristas.</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="56"/>
       <source>Revolution Axis</source>
-      <translation type="unfinished">Revolution Axis</translation>
+      <translation>Eje de revolución</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="64"/>
@@ -3864,7 +3864,7 @@ Primero seleccione una o más aristas.</translation>
       <location filename="../../DlgRevolution.ui" line="146"/>
       <location filename="../../DlgRevolution.ui" line="187"/>
       <source>Sets this as axis</source>
-      <translation type="unfinished">Sets this as axis</translation>
+      <translation>Establece esto como eje</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="149"/>
@@ -5863,7 +5863,7 @@ Continue?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="147"/>
       <source>No result</source>
-      <translation type="unfinished">No result</translation>
+      <translation>Sin resultado</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="150"/>
@@ -5981,7 +5981,7 @@ Continue?</translation>
       <translation>Editor de adjuntos</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -6042,12 +6042,12 @@ Continue?</translation>
       <translation>Intersección</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation type="unfinished">Delete compound content?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation type="unfinished">The compound '%1' has %2 child objects. Do you want to delete them as well?</translation>
     </message>
@@ -6315,67 +6315,67 @@ for collision or distance filtering.</translation>
       <translation>Editar adjunto de {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="450"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation>Ignorado. ¡No se puede adjuntar objeto a sí mismo!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="458"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation>{} depende del objeto que se adjunte, no se puede usar para el adjunto</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="610"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
       <translation>{} (añadir {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="614"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
       <translation>{} (añadir más referencias)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="650"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
       <translation>Combinaciones de referencia:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="665"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
       <translation>Referencia{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="672"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
       <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="701"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
       <translation>Error al resolver enlaces. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="712"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
       <translation>No adjuntado</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="715"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
       <translation>Adjunto con el modo {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="725"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
       <translation>Error: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="731"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation>Desfase adjunto (en coordenadas locales):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Desfase de adjunto (inactivo - no adjunto):</translation>
     </message>

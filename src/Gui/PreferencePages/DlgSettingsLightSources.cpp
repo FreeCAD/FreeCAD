@@ -220,7 +220,7 @@ void DlgSettingsLightSources::configureViewer()
 {
     const SbVec3f defaultViewDirection {0.0f, 1.0f, 0.3f};
 
-    View3DSettings(hGrp, view).applySettings();
+    View3DSettings(hGrpView, view).applySettings();
 
     view->setRedirectToSceneGraph(true);
     view->setViewing(true);

@@ -53,6 +53,7 @@ Q_OBJECT  // NOLINT
     ~WorkbenchComboBox() override = default;
     WorkbenchComboBox(WorkbenchComboBox&& rhs) = delete;
     void showPopup() override;
+    void setVisible(bool visible) override;
 
     WorkbenchComboBox operator=(WorkbenchComboBox&& rhs) = delete;
 

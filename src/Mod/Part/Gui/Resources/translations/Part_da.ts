@@ -5986,7 +5986,7 @@ Continue?</translation>
       <translation type="unfinished">Attachment Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1000"/>
+      <location filename="../../ViewProviderExt.cpp" line="1003"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>
@@ -6018,7 +6018,7 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="239"/>
       <source>base object</source>
-      <translation type="unfinished">base object</translation>
+      <translation>basisobjekt</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="242"/>
@@ -6047,12 +6047,12 @@ Continue?</translation>
       <translation>Skæringspunkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation type="unfinished">Delete compound content?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation type="unfinished">The compound '%1' has %2 child objects. Do you want to delete them as well?</translation>
     </message>
@@ -6320,67 +6320,67 @@ for collision or distance filtering.</translation>
       <translation type="unfinished">Edit attachment of {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="450"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
       <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="458"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
       <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="610"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
       <translation type="unfinished">{} (add {})</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="614"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
       <translation type="unfinished">{} (add more references)</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="650"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
       <translation>Reference kombinationer:</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="665"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
       <translation type="unfinished">Reference{}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="672"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
       <translation type="unfinished">Selecting…</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="701"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
       <translation type="unfinished">Failed to resolve links. {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="712"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
       <source>Not attached</source>
       <translation>Ikke fundet</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="715"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
       <translation type="unfinished">Attached with mode {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="725"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
       <translation type="unfinished">Error: {}</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="731"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
       <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
     </message>
     <message>
-      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
+      <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
       <source>Attachment Offset (inactive - not attached):</source>
       <translation>Tilfør Justeringer (inaktive - ikke tilføjet):</translation>
     </message>
@@ -7059,12 +7059,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Begræns valg</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>Begrænser valget af geometrier</translation>
     </message>
   </context>
   <context>
@@ -7072,12 +7072,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="193"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Vælg punkter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="194"/>
       <source>Only allows the selection of vertices</source>
-      <translation type="unfinished">Only allows the selection of vertices</translation>
+      <translation>Tillader kun valg af punkter</translation>
     </message>
   </context>
   <context>
@@ -7085,12 +7085,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="218"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Vælg kanter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="219"/>
       <source>Only allows the selection of edges</source>
-      <translation type="unfinished">Only allows the selection of edges</translation>
+      <translation>Tillader kun valg af kanter</translation>
     </message>
   </context>
   <context>
@@ -7098,12 +7098,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="243"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Vælg flader</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="244"/>
       <source>Only allows the selection of faces</source>
-      <translation type="unfinished">Only allows the selection of faces</translation>
+      <translation>Tillader kun valg af flader</translation>
     </message>
   </context>
   <context>
@@ -7111,12 +7111,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="268"/>
       <source>No Selection Filters</source>
-      <translation type="unfinished">No Selection Filters</translation>
+      <translation>Vælg alt</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="269"/>
       <source>Clears all selection filters</source>
-      <translation type="unfinished">Clears all selection filters</translation>
+      <translation>Rydder alle begrænsninger på valg</translation>
     </message>
   </context>
   <context>

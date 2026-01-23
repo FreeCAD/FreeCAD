@@ -198,6 +198,7 @@ public:
     {
         return workShell;
     }
+    void fixOrientation(const TopoDS_Shell& shell);
     bool isModified()
     {
         return modifiedSignal;

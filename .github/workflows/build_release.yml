@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   upload_src:
@@ -16,7 +17,7 @@ jobs:
       build_tag: ${{ steps.get_tag.outputs.build_tag }}
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           egress-policy: audit
 
@@ -42,6 +43,30 @@ jobs:
           fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger notes updater workflow (only for weekly)
+        if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
+        uses: actions/github-script@v7
+        env:
+          WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // Reusable/dispatchable updater workflow file in .github/workflows/
+            const workflow_id = 'weekly-compare-link.yml';
+
+            // Use the default branch so the workflow file is available
+            const ref = (context.payload?.repository?.default_branch) || 'main';
+            const current_tag = process.env.WEEKLY_TAG || '';
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner, repo, workflow_id, ref,
+              inputs: { current_tag }
+            });
+
+            core.info(`Dispatched ${workflow_id} on ${ref} with current_tag='${current_tag}'.`)
 
       - name: Upload Source
         id: upload_source
@@ -79,7 +104,7 @@ jobs:
     environment: weekly-build
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@95d9a5deda9de15063e7595e9719c11c38c90ae2 # v2.13.2
+        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
         with:
           egress-policy: audit
 

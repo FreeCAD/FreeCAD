@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="200"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Placer un robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>Place un robot dans la scène</translation>
     </message>
   </context>
   <context>
@@ -245,12 +245,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="505"/>
       <source>Trajectory Compound</source>
-      <translation type="unfinished">Trajectory Compound</translation>
+      <translation>Trajectoire composée</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="506"/>
       <source>Groups and connects multiple trajectories into one</source>
-      <translation type="unfinished">Groups and connects multiple trajectories into one</translation>
+      <translation>Groupe et fusionne multiples trajectoires en une seule</translation>
     </message>
   </context>
   <context>

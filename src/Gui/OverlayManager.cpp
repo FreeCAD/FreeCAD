@@ -199,7 +199,7 @@ struct OverlayInfo
     Qt::DockWidgetArea dockArea;
     std::unordered_map<QDockWidget*, OverlayInfo*>& overlayMap;
     ParameterGrp::handle hGrp;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 
     OverlayInfo(
         QWidget* parent,
@@ -409,6 +409,7 @@ public:
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject&) {
             refresh();
         });
+        Application::Instance->signalActivateWorkbench.connect([this](const char*) { refresh(); });
 
         _actOverlay.setData(QStringLiteral("OBTN Overlay"));
         _actFloat.setData(QStringLiteral("OBTN Float"));
