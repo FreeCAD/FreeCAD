@@ -192,8 +192,8 @@ void QGIRichAnno::setTextItem()
     if (getExportingSvg()) {
         // Convert the word processing font size spec (in typographic points) to CSS pixels
         // for Svg rendering
-        constexpr double mmPerPoint {0.353};
-        constexpr double cssPxPerPoint {1.333333};  // CSS says 12 pt text is 16 px high
+        constexpr double mmPerPoint {25.4 / 72};
+        constexpr double cssPxPerPoint {16 / 12};  // CSS says 12 pt text is 16 px high
         m_text->setScale(cssPxPerPoint);
 
         // QSvgRenderer places the text's top edge flush with the item's origin.
