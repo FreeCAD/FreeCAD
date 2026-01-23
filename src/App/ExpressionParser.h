@@ -630,8 +630,8 @@ protected:
  */
 namespace ExpressionParser
 {
-AppExport Expression* parse(const App::DocumentObject* owner, const char* buffer);
-AppExport UnitExpression* parseUnit(const App::DocumentObject* owner, const char* buffer);
+AppExport ExpressionPtr parse(const App::DocumentObject* owner, const char* buffer);
+AppExport std::unique_ptr<UnitExpression> parseUnit(const App::DocumentObject* owner, const char* buffer);
 AppExport ObjectIdentifier parsePath(const App::DocumentObject* owner, const char* buffer);
 AppExport bool isTokenAnIndentifier(const std::string& str);
 AppExport bool isTokenAConstant(const std::string& str);

@@ -881,7 +881,7 @@ int Expression::priority() const {
     return 20;
 }
 
-Expression * Expression::parse(const DocumentObject *owner, const std::string &buffer)
+ExpressionPtr Expression::parse(const DocumentObject* owner, const std::string& buffer)
 {
     return ExpressionParser::parse(owner, buffer.c_str());
 }
@@ -3459,7 +3459,7 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
 }
 
 /// The resulting expression after a successful parsing.
-static Expression* ScanResult = nullptr;
+static ExpressionPtr ScanResult = ExpressionPtr {};
 
 /// The DocumentObject that will own the expression.
 static const App::DocumentObject* DocumentObject = nullptr;
@@ -3539,7 +3539,7 @@ static void initParser(const App::DocumentObject *owner)
 
     using namespace App::ExpressionParser;
 
-    ScanResult = nullptr;
+    ScanResult.reset();
     App::ExpressionParser::DocumentObject = owner;
     labels = std::stack<std::string>();
     column = 0;
@@ -3659,7 +3659,7 @@ std::vector<std::tuple<int, int, std::string> > tokenize(const std::string &str)
   *
   */
 
-Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, const char* buffer)
+ExpressionPtr App::ExpressionParser::parse(const App::DocumentObject* owner, const char* buffer)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
@@ -3678,16 +3678,17 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
         throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
     }
 
-    if (valueExpression) {
-        return ScanResult;
-    }
-    else {
-        delete ScanResult;
+    if (!valueExpression) {
+        ScanResult.reset();
         throw Expression::Exception("Expression can not evaluate to a value.");
     }
+    return std::exchange(ScanResult, nullptr);
 }
 
-UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, const char* buffer)
+std::unique_ptr<UnitExpression> ExpressionParser::parseUnit(
+    const App::DocumentObject* owner,
+    const char* buffer
+)
 {
     // parse from buffer
     ExpressionParser::YY_BUFFER_STATE my_string_buffer = ExpressionParser::ExpressionParser_scan_string (buffer);
@@ -3708,7 +3709,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
     Expression * simplified = ScanResult->simplify();
 
     if (!unitExpression) {
-        OperatorExpression * fraction = freecad_cast<OperatorExpression*>(ScanResult);
+        auto* fraction = freecad_cast<OperatorExpression*>(ScanResult.get());
 
         if (fraction && fraction->getOperator() == OperatorExpression::DIV) {
             NumberExpression * nom = freecad_cast<NumberExpression*>(fraction->getLeft());
@@ -3719,7 +3720,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
                 unitExpression = true;
         }
     }
-    delete ScanResult;
+    ScanResult.reset();
 
     if (unitExpression) {
         NumberExpression * num = freecad_cast<NumberExpression*>(simplified);
@@ -3728,7 +3729,7 @@ UnitExpression * ExpressionParser::parseUnit(const App::DocumentObject *owner, c
            simplified = new UnitExpression(num->getOwner(), num->getQuantity());
             delete num;
         }
-        return freecad_cast<UnitExpression*>(simplified);
+        return std::unique_ptr<UnitExpression>(freecad_cast<UnitExpression*>(simplified));
     }
     else {
         delete simplified;

@@ -363,7 +363,7 @@ public:
      *
      * @return The parsed expression.
      */
-    static Expression* parse(const App::DocumentObject * owner, const std::string& buffer);
+    static ExpressionPtr parse(const App::DocumentObject* owner, const std::string& buffer);
 
     /// Copy an expression.
     Expression * copy() const;
