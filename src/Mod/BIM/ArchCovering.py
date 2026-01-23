@@ -34,6 +34,12 @@ else:
         return txt
 
 
+# Anything smaller than this is considered effectively zero to prevent numerical instability
+# in the geometry calculations or division-by-zero errors in Python.
+MIN_DIMENSION = 0.1
+TOO_MANY_TILES = 10000
+
+
 def profile_it(func):
     """Simple performance counter decorator."""
 
@@ -422,10 +428,6 @@ class _Covering(ArchComponent.Component):
         return center_point.add(origin_offset)
 
     def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
-        # Anything smaller than this is considered effectively zero to prevent numerical instability
-        # in the geometry calculations or division-by-zero errors in Python.
-        MIN_DIMENSION = 0.1
-        TOO_MANY_TILES = 10000
 
         # Step size
         step_x = t_len + j_len
@@ -631,13 +633,19 @@ class _Covering(ArchComponent.Component):
         if obj.FinishMode == "Hatch Pattern":
             from draftobjects.hatch import Hatch
 
+            # Always assign the base face first. This ensures the Covering has geometry even if the
+            # pattern file is missing or invalid.
+            obj.Shape = base_face
+
+            # Force a minimum scale to prevent math errors or infinite loops in the hatching engine.
+            safe_scale = max(MIN_DIMENSION, obj.PatternScale)
+
             if obj.PatternFile:
-                # Use unified Rotation property for Hatch rotation
                 pat = Hatch.hatch(
                     base_face,
                     obj.PatternFile,
                     obj.PatternName,
-                    scale=obj.PatternScale,
+                    scale=safe_scale,
                     rotation=obj.Rotation.Value,
                 )
                 if pat:

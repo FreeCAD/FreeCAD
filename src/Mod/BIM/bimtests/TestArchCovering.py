@@ -176,3 +176,19 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.assertTrue(
             covering.Shape.isNull(), "Covering was incorrectly generated on a non-planar face."
         )
+
+    def test_hatch_zero_scale_guard(self):
+        """Verify that a zero hatch scale is handled safely."""
+        self.printTestMessage("hatch zero scale guard...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Hatch Pattern"
+
+        # Set a zero scale which usually triggers math errors
+        covering.PatternScale = 0.0
+
+        # This should not raise an exception
+        self.document.recompute()
+
+        # The result should be a safe fallback (e.g. only the base face)
+        self.assertFalse(covering.Shape.isNull())
