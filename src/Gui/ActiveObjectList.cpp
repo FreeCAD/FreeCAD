@@ -188,7 +188,7 @@ void Gui::ActiveObjectList::setObject(
 
     if (!obj) {
         if (_Doc) {
-            _Doc->signalActivatedVP(nullptr, name);
+            _Doc->signalActivatedViewProvider(nullptr, name);
         }
         return;
     }
@@ -208,7 +208,7 @@ void Gui::ActiveObjectList::setObject(
 
     auto vp = freecad_cast<ViewProviderDocumentObject*>(Application::Instance->getViewProvider(obj));
     if (vp) {
-        vp->getDocument()->signalActivatedVP(vp, name);
+        vp->getDocument()->signalActivatedViewProvider(vp, name);
     }
 }
 
