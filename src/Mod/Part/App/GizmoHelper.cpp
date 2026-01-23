@@ -249,7 +249,10 @@ Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
     return midPoint;
 }
 
-std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndFace(Part::TopoShape& face, gp_Pln& plane)
+std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndFace(
+    Part::TopoShape& face,
+    gp_Pln& plane
+)
 {
     TopoDS_Face TDSFace = TopoDS::Face(face.getShape());
     if (TDSFace.IsNull()) {
@@ -259,8 +262,8 @@ std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndF
     auto cog = getCentreOfMassFromFace(TDSFace);
     auto orientation = TDSFace.Orientation();
 
-    auto getPropsFromShapePlaneIntersection = [&cog] (auto&& shape, const gp_Pln& plane) -> std::optional<DraggerPlacementPropsWithNormals>
-    {
+    auto getPropsFromShapePlaneIntersection =
+        [&cog](auto&& shape, const gp_Pln& plane) -> std::optional<DraggerPlacementPropsWithNormals> {
         if (plane.Axis().IsNormal(shape.Axis(), Precision::Angular())) {
             return std::nullopt;
         }
@@ -269,19 +272,18 @@ std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndF
         IntAna_IntConicQuad intersector(line, plane, Precision::Confusion());
         if (intersector.IsDone() && intersector.NbPoints() > 0) {
             auto pos = Base::convertTo<Base::Vector3d>(intersector.Point(1));
-            return DraggerPlacementPropsWithNormals{
-                .placementProps = {
-                    .position = pos,
-                    .dir = cog - pos
-                },
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
                 .normalProps = std::nullopt
             };
         }
         return std::nullopt;
     };
 
-    auto getPropsFromPlanePlaneIntersection = [&cog, orientation] (const gp_Pln&& facePlane, const gp_Pln& plane) -> std::optional<DraggerPlacementPropsWithNormals>
-    {
+    auto getPropsFromPlanePlaneIntersection = [&cog, orientation](
+                                                  const gp_Pln&& facePlane,
+                                                  const gp_Pln& plane
+                                              ) -> std::optional<DraggerPlacementPropsWithNormals> {
         if (plane.Axis().IsParallel(facePlane.Axis(), Precision::Angular())) {
             return std::nullopt;
         }
@@ -297,15 +299,9 @@ std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndF
                 faceNormal *= -1;
             }
 
-            return DraggerPlacementPropsWithNormals{
-                .placementProps = {
-                    .position = pos,
-                    .dir = cog - pos
-                },
-                .normalProps = DraggerNormalProps{
-                    .normal = lineDir,
-                    .faceNormal = faceNormal
-                }
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
+                .normalProps = DraggerNormalProps {.normal = lineDir, .faceNormal = faceNormal}
             };
         }
         return std::nullopt;

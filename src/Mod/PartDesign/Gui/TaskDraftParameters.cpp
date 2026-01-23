@@ -338,7 +338,8 @@ void TaskDraftParameters::setGizmoPositions()
 
     auto [pullDirection, neutralPlane] = draft->getLastComputedProps();
 
-    std::optional<DraggerPlacementPropsWithNormals> props = getDraggerPlacementFromPlaneAndFace(faces[0], neutralPlane);
+    std::optional<DraggerPlacementPropsWithNormals> props
+        = getDraggerPlacementFromPlaneAndFace(faces[0], neutralPlane);
     if (!props) {
         return;
     }
@@ -349,7 +350,7 @@ void TaskDraftParameters::setGizmoPositions()
         auto lineDir = Base::convertTo<SbVec3f>(normalProps->normal);
         auto pp = Base::convertTo<SbVec3f>(pullDirection);
 
-        angleGizmo->setDraggerPlacement(pos, (dir.dot(pp) < 0)? -pp : pp);
+        angleGizmo->setDraggerPlacement(pos, (dir.dot(pp) < 0) ? -pp : pp);
 
         auto rotDir = Base::convertTo<SbVec3f>(normalProps->faceNormal).cross(pp);
         if (lineDir.dot(rotDir) < 0) {
@@ -360,7 +361,8 @@ void TaskDraftParameters::setGizmoPositions()
         }
         angleGizmo->getDraggerContainer()->setArcNormalDirection(lineDir);
         angleGizmo->automaticOrientation = false;
-    } else {
+    }
+    else {
         // The face is cone or cylinder
         angleGizmo->setDraggerPlacement(
             Base::convertTo<SbVec3f>(props->placementProps.position),

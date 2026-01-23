@@ -214,7 +214,7 @@ App::DocumentObjectExecReturn* Draft::execute()
                 if (!intersector.IsDone() || intersector.NbLines() < 1) {
                     continue;
                 }
-                const Handle(Geom_Curve)& icurve = intersector.Line(1);
+                const Handle(Geom_Curve) & icurve = intersector.Line(1);
                 if (!icurve->IsKind(STANDARD_TYPE(Geom_Line))) {
                     continue;
                 }
