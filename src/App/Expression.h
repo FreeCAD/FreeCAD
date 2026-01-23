@@ -487,7 +487,7 @@ public:
      *
      * @return The simplified expression.
      */
-    virtual Expression * simplify() const = 0;
+    virtual ExpressionPtr simplify() const = 0;
 
     /// Visit the expression with a visitor.
     void visit(ExpressionVisitor & v);
