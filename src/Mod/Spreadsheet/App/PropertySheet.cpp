@@ -2086,10 +2086,10 @@ PropertySheet::BindingType PropertySheet::getBinding(
                     }
                 }
                 if (pStart) {
-                    pStart->reset(expr->getArgs()[1]->copy());
+                    *pStart = expr->getArgs()[1]->copy();
                 }
                 if (pEnd) {
-                    pEnd->reset(expr->getArgs()[2]->copy());
+                    *pEnd = expr->getArgs()[2]->copy();
                 }
                 return href ? BindingHiddenRef : BindingNormal;
             }

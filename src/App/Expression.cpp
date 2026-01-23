@@ -1024,7 +1024,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
     ImportSubNamesExpressionVisitor v(subNameMap);
     auto res = copy();
     res->visit(v);
-    return ExpressionPtr(res);
+    return res;
 }
 
 class UpdateLabelExpressionVisitor : public ExpressionVisitor {
@@ -1056,7 +1056,7 @@ ExpressionPtr Expression::updateLabelReference(
             UpdateLabelExpressionVisitor v(obj,ref,newLabel);
             auto expr = copy();
             expr->visit(v);
-            return ExpressionPtr(expr);
+            return expr;
         }
     }
     return {};
@@ -1101,7 +1101,7 @@ ExpressionPtr Expression::replaceObject(const DocumentObject *parent,
     auto expr = copy();
     v.collect = false;
     expr->visit(v);
-    return ExpressionPtr(expr);
+    return expr;
 }
 
 App::any Expression::getValueAsAny() const {
@@ -1176,8 +1176,9 @@ void Expression::toString(std::ostream &ss, bool persistent, bool checkPriority,
         c->toString(ss,persistent);
 }
 
-Expression* Expression::copy() const {
-    auto expr = _copy();
+ExpressionPtr Expression::copy() const
+{
+    auto expr = std::unique_ptr<Expression>(_copy());
     copy_vector(expr->components,components);
     expr->comment = comment;
     return expr;
@@ -1288,7 +1289,7 @@ NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity 
 
 Expression *NumberExpression::simplify() const
 {
-    return copy();
+    return copy().release();
 }
 
 /**
@@ -1615,7 +1616,7 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 
 Expression *OperatorExpression::_copy() const
 {
-    return new OperatorExpression(owner, left->copy(), op, right->copy());
+    return new OperatorExpression(owner, left->copy().release(), op, right->copy().release());
 }
 
 /**
@@ -2861,7 +2862,7 @@ Expression *FunctionExpression::_copy() const
     std::vector<Expression*> a;
 
     while (i != args.end()) {
-        a.push_back((*i)->copy());
+        a.push_back((*i)->copy().release());
         ++i;
     }
     return new FunctionExpression(owner, f, std::string(fname), std::move(a));
@@ -2996,7 +2997,7 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
 
 Expression *VariableExpression::simplify() const
 {
-    return copy();
+    return copy().release();
 }
 
 /**
@@ -3209,7 +3210,7 @@ StringExpression::~StringExpression() {
 
 Expression *StringExpression::simplify() const
 {
-    return copy();
+    return copy().release();
 }
 
 void StringExpression::_toString(std::ostream &ss, bool,int) const
@@ -3297,7 +3298,12 @@ void ConditionalExpression::_toString(std::ostream &ss, bool persistent,int) con
 
 Expression *ConditionalExpression::_copy() const
 {
-    return new ConditionalExpression(owner, condition->copy(), trueExpr->copy(), falseExpr->copy());
+    return new ConditionalExpression(
+        owner,
+        condition->copy().release(),
+        trueExpr->copy().release(),
+        falseExpr->copy().release()
+    );
 }
 
 int ConditionalExpression::priority() const
@@ -3395,7 +3401,7 @@ Expression *RangeExpression::_copy() const
 
 Expression *RangeExpression::simplify() const
 {
-    return copy();
+    return copy().release();
 }
 
 void RangeExpression::_getIdentifiers(std::map<App::ObjectIdentifier,bool> &deps) const

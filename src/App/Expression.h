@@ -136,7 +136,7 @@ public:
 
     static ExpressionPtr parse(const App::DocumentObject* owner, const std::string& buffer);
 
-    Expression * copy() const;
+    ExpressionPtr copy() const;
 
     virtual int priority() const;
 
