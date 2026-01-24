@@ -413,6 +413,24 @@ class ObjectWaterline(PathOp.ObjectOp):
             ),
             (
                 "App::PropertyBool",
+                "FastGeometricOffset",
+                "Clearing Options",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Use the Fast 2D Offset algorithm for Tool compensation. If False, skips directly to the more stable 3D Offset algorithm (useful for some models).",
+                ),
+            ),
+            (
+                "App::PropertyBool",
+                "IgnoreHoles",
+                "Clearing Options",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If true, internal features (holes) are ignored, and the tool will machine over them.",
+                ),
+            ),
+            (
+                "App::PropertyBool",
                 "OptimizeLinearPaths",
                 "Optimization",
                 QT_TRANSLATE_NOOP(
@@ -497,6 +515,8 @@ class ObjectWaterline(PathOp.ObjectOp):
             "GapThreshold": 0.005,
             "AngularDeflection": 0.25,
             "LinearDeflection": 0.0001,
+            "FastGeometricOffset": True,
+            "IgnoreHoles": False,
             # For debugging
             "ShowTempObjects": False,
         }
@@ -529,6 +549,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("OptimizeStepOverTransitions", hide)
         obj.setEditorMode("GapThreshold", hide)
         obj.setEditorMode("GapSizes", hide)
+        obj.setEditorMode("FastGeometricOffset", hide)
+        obj.setEditorMode("IgnoreHoles", hide)
 
         if obj.Algorithm == "OCL Dropcutter":
             pass
@@ -557,13 +579,14 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("PatternCenterAt", hide)
         obj.setEditorMode("PatternCenterCustom", hide)
         obj.setEditorMode("CutPatternReversed", A)
-
-        obj.setEditorMode("ClearLastLayer", C)
         obj.setEditorMode("StepOver", B)
         obj.setEditorMode("IgnoreOuterAbove", B)
+        obj.setEditorMode("ClearLastLayer", C)
         obj.setEditorMode("CutPattern", C)
-        obj.setEditorMode("SampleInterval", G)
+        obj.setEditorMode("FastGeometricOffset", C)
+        obj.setEditorMode("IgnoreHoles", C)
         obj.setEditorMode("MinSampleInterval", D)
+        obj.setEditorMode("SampleInterval", G)
         obj.setEditorMode("LinearDeflection", expMode)
         obj.setEditorMode("AngularDeflection", expMode)
 
@@ -1771,6 +1794,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         cutPattern = obj.CutPattern
         self.endVector = None
         bbFace = None
+        self.fastOffset = obj.FastGeometricOffset
+        self.ignoreHoles = obj.IgnoreHoles
 
         # Create a copy of the base shape
         shape = base.Shape.copy()
@@ -2137,11 +2162,11 @@ class ObjectWaterline(PathOp.ObjectOp):
         def _fallbackOffset(face):
             """Robust but slower fallback using Path Area utilities."""
             msg = translate(
-                "PathWaterline", "Fast Geometric Offset failed. Falling back to slow offset. "
+                "PathWaterline", "Fast 2D/3D Geometric Offset failed. Falling back to slow offset. "
             )
             msg += translate("PathWaterline", "Examine the generated path for any errors!")
             FreeCAD.Console.PrintWarning(msg + "\n")
-            return PathUtils.getOffsetArea(face, self.radius, self.wpc)
+            return PathUtils.getOffsetArea(face, self.radius, tolerance=0.01)
 
         tol = self.geoTlrnc if self.geoTlrnc > 0 else 0.01
         newFaces = []
@@ -2155,14 +2180,34 @@ class ObjectWaterline(PathOp.ObjectOp):
             newFace.translate(FreeCAD.Vector(0, 0, -newFace.BoundBox.ZMin))
 
             offsetResult = None
+  
+            if self.fastOffset and len(newFace.Wires) == 1 and dz < 0.01:
+                try:
+                    # Fast 2D Offset (Planar Faces Only - Single Wire)
+                    start_time = time.time()
+                    
+                    # Execute the 2D offset
+                    tempResult = newFace.makeOffset2D(self.radius, 0, False)
+                    
+                    duration = time.time() - start_time
+                    
+                    if duration <= 0.03:
+                        offsetResult = tempResult
+                    else:
+                        # Calculation took too long; reject even if successful
+                        warn_msg = translate("PathWaterline", "Geometric Offset: The Fast 2D Geometric Offset engine took longer than expected. \n")
+                        warn_msg += translate("PathWaterline", "Result rejected for stability and passed to the 3D Offset engine. \n")
+                        warn_msg += translate("PathWaterline", "Consider disabling the Fast Geometric Offset engine for this specific model. ")
+                        FreeCAD.Console.PrintWarning(warn_msg + "\n")
+                        offsetResult = None
+                except Exception as e:
+                    Path.Log.debug(
+                        "Fast 2D Offset failed: {}. Falling back to Fast 3D Offset".format(str(e))
+                    )
 
-            try:
-                # Fast 2D Offset (Planar Faces Only - Single Wire)
-                if len(newFace.Wires) == 1 and dz < 0.01:
-                    offsetResult = newFace.makeOffset2D(self.radius, 0, False)
-
+            if not offsetResult:    
                 # Fast 3D Offset
-                else:
+                try:
                     # This ensures the vertical walls are much larger than any curved 3D Face.
                     extrude_val = (2.0 * dz) + 10.0
                     solid = newFace.extrude(FreeCAD.Vector(0, 0, extrude_val))
@@ -2179,11 +2224,11 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                     offsetResult = _reconstructFaceFromSlice(slice_result)
 
-            except Exception as e:
-                # Fall Back to Slow 2D Offset
-                Path.Log.debug(
-                    "Primary offset failed: {}. Falling back to getOffsetArea".format(str(e))
-                )
+                except Exception as e:
+                    #Fall Back to Slow getOffsetArea
+                    Path.Log.debug(
+                        "Primary Fast 2D/3D Offset failed: {}. Falling back to getOffsetArea".format(str(e))
+                    )
 
             if not offsetResult:
                 offsetResult = _fallbackOffset(newFace)
@@ -2487,10 +2532,11 @@ class ObjectWaterline(PathOp.ObjectOp):
                     # Compound region
                     cnt = len(pFc)
                     if cnt % 2.0 == 0.0:
-                        # even is donut cut
-                        inr = pFc[cnt - 1]
-                        otr = pFc[cnt - 2]
-                        holds[otr] = holds[otr].cut(csFaces[inr])
+                        if not self.ignoreHoles:
+                            # even is donut cut
+                            inr = pFc[cnt - 1]
+                            otr = pFc[cnt - 2]
+                            holds[otr] = holds[otr].cut(csFaces[inr])
                     else:
                         # odd is floating solid
                         holds[af] = csFaces[af]
