@@ -277,12 +277,17 @@ private:
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 
+    void highlightJointElements(App::DocumentObject* joint);
+    void clearJointElementHighlight();
+
     void applyIsolationRecursively(
         App::DocumentObject* current,
         std::set<App::DocumentObject*>& isolateSet,
         IsolateMode mode,
         std::set<App::DocumentObject*>& visited
     );
+
+    TaskAssemblyMessages* taskSolver;
 
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
