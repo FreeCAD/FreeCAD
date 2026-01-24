@@ -2180,24 +2180,33 @@ class ObjectWaterline(PathOp.ObjectOp):
             newFace.translate(FreeCAD.Vector(0, 0, -newFace.BoundBox.ZMin))
 
             offsetResult = None
-  
+
             if self.fastOffset and len(newFace.Wires) == 1 and dz < 0.01:
                 try:
                     # Fast 2D Offset (Planar Faces Only - Single Wire)
                     start_time = time.time()
-                    
+
                     # Execute the 2D offset
                     tempResult = newFace.makeOffset2D(self.radius, 0, False)
-                    
+
                     duration = time.time() - start_time
-                    
+
                     if duration <= 0.03:
                         offsetResult = tempResult
                     else:
                         # Calculation took too long; reject even if successful
-                        warn_msg = translate("PathWaterline", "Geometric Offset: The Fast 2D Geometric Offset engine took longer than expected. \n")
-                        warn_msg += translate("PathWaterline", "Result rejected for stability and passed to the 3D Offset engine. \n")
-                        warn_msg += translate("PathWaterline", "Consider disabling the Fast Geometric Offset engine for this specific model. ")
+                        warn_msg = translate(
+                            "PathWaterline",
+                            "Geometric Offset: The Fast 2D Geometric Offset engine took longer than expected. \n",
+                        )
+                        warn_msg += translate(
+                            "PathWaterline",
+                            "Result rejected for stability and passed to the 3D Offset engine. \n",
+                        )
+                        warn_msg += translate(
+                            "PathWaterline",
+                            "Consider disabling the Fast Geometric Offset engine for this specific model. ",
+                        )
                         FreeCAD.Console.PrintWarning(warn_msg + "\n")
                         offsetResult = None
                 except Exception as e:
@@ -2205,7 +2214,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         "Fast 2D Offset failed: {}. Falling back to Fast 3D Offset".format(str(e))
                     )
 
-            if not offsetResult:    
+            if not offsetResult:
                 # Fast 3D Offset
                 try:
                     # This ensures the vertical walls are much larger than any curved 3D Face.
@@ -2225,9 +2234,11 @@ class ObjectWaterline(PathOp.ObjectOp):
                     offsetResult = _reconstructFaceFromSlice(slice_result)
 
                 except Exception as e:
-                    #Fall Back to Slow getOffsetArea
+                    # Fall Back to Slow getOffsetArea
                     Path.Log.debug(
-                        "Primary Fast 2D/3D Offset failed: {}. Falling back to getOffsetArea".format(str(e))
+                        "Primary Fast 2D/3D Offset failed: {}. Falling back to getOffsetArea".format(
+                            str(e)
+                        )
                     )
 
             if not offsetResult:
