@@ -5088,7 +5088,7 @@ TopoShape& TopoShape::makeElementBSplineFace(
                     Handle(Geom_BSplineCurve) spline
                         = scc.ConvertToBSpline(c_geom, u1, u2, Precision::Confusion());
                     if (spline.IsNull()) {
-                        Standard_Failure::Raise(
+                        throw Standard_Failure(
                             "A curve was not a B-spline and could not be converted into one."
                         );
                     }
