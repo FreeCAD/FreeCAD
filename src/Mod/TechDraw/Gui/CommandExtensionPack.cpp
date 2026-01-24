@@ -225,6 +225,10 @@ void execCircleCenterLines(Gui::Command* cmd)
                 _setLineAttributes(horiz);
                 TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);
                 _setLineAttributes(vert);
+                // horiz & vert are centerlines, so they should use the default centerline
+                // number and not the number from line attributes
+                horiz->m_format.setLineNumber(Preferences::CenterLineStyle());
+                vert->m_format.setLineNumber(Preferences::CenterLineStyle());
             }
         }
     }
