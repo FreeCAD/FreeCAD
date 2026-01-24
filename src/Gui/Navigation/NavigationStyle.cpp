@@ -504,7 +504,7 @@ void NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 void NavigationStyle::lookAtPoint(const SbVec3f& position)
 {
     this->rotationCenterFound = false;
-    translateCamera(position - getFocalPoint());
+    translateCamera(position - viewer->getFocalPoint());
 }
 
 SoCamera* NavigationStyle::getCamera() const
@@ -524,7 +524,7 @@ std::shared_ptr<NavigationAnimation> NavigationStyle::setCameraOrientation(
 
     animator->stop();
 
-    const SbVec3f focalPoint = getFocalPoint();
+    const SbVec3f focalPoint = viewer->getFocalPoint();
     SbVec3f translation(0, 0, 0);
 
     if (moveToCenter) {
@@ -618,6 +618,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
 
     doScale(cam, scaleFactor);
 }
+
 void NavigationStyle::scale(float factor)
 {
     SoCamera* cam = viewer->getSoRenderManager()->getCamera();
@@ -626,9 +627,7 @@ void NavigationStyle::scale(float factor)
     }
 
     // Find the current center of the screen
-    SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    SbVec3f initCenter = cam->position.getValue() + cam->focalDistance.getValue() * direction;
+    SbVec3f initCenter = viewer->getFocalPoint();
 
     // Move the camera to the origin for scaling
     cam->position = cam->position.getValue() - initCenter;
@@ -702,7 +701,7 @@ void NavigationStyle::findBoundingSphere()
  */
 void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotation)
 {
-    reorientCamera(camera, rotation, getFocalPoint());
+    reorientCamera(camera, rotation, viewer->getFocalPoint());
 }
 
 /** Rotate the camera by the given amount, then reposition it so the rotation center stays in the
@@ -751,7 +750,7 @@ void NavigationStyle::reorientCamera(
 #else
         constexpr float orthographicFocalDistance = 1;
 #endif
-        camera->position = getFocalPoint() - orthographicFocalDistance * direction;
+        camera->position = viewer->getFocalPoint() - orthographicFocalDistance * direction;
         camera->focalDistance = orthographicFocalDistance;
     }
 
@@ -1004,7 +1003,7 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         // Change the position of the rotation center indicator after zooming at cursor
         // Rotation mode is WindowCenter
         if (!rotationCenterMode) {
-            viewer->changeRotationCenterPosition(getFocalPoint());
+            viewer->changeRotationCenterPosition(viewer->getFocalPoint());
 
 #if (COIN_MAJOR_VERSION * 100 + COIN_MINOR_VERSION * 10 + COIN_MICRO_VERSION < 403)
             findBoundingSphere();
@@ -1081,20 +1080,6 @@ void NavigationStyle::setRotationCenter(const SbVec3f& cnt)
         // center with a perspective camera
         camera->focalDistance.setValue(rotationCenterDepth);
     }
-}
-
-SbVec3f NavigationStyle::getFocalPoint() const
-{
-    SoCamera* cam = viewer->getSoRenderManager()->getCamera();
-    if (!cam) {
-        return {0, 0, 0};
-    }
-
-    // Find global coordinates of focal point.
-    SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    SbVec3f focal = cam->position.getValue() + cam->focalDistance.getValue() * direction;
-    return focal;
 }
 
 /** Uses the sphere sheet projector to map the mouse position onto
@@ -1296,7 +1281,7 @@ void NavigationStyle::saveCursorPosition(const SoEvent* const ev)
 
     // mode is WindowCenter
     if (!this->rotationCenterMode) {
-        setRotationCenter(getFocalPoint());
+        setRotationCenter(viewer->getFocalPoint());
     }
 
     // Option to get point on model (slow) or always on focal plane (fast)
