@@ -284,7 +284,8 @@ void DSHSymmetryController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate(
                 "TaskSketcherTool_c1_symmetry",
-                "Deletes the original geometry; this effectively performs a 'Move' operation."
+                "Deletes the original geometry. This effectively performs a 'Move' operation."
+
             )
         );
         toolWidget->setCheckboxLabel(
