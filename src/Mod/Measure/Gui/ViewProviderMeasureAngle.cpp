@@ -23,11 +23,15 @@
  **************************************************************************/
 
 
+#include <numbers>
 #include <sstream>
 #include <QApplication>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
@@ -202,35 +206,36 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
 
         gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
         extrema.Points(1, extremaPoint1, extremaPoint2);
-        if (extremaPoint1.Distance(extremaPoint2) < Precision::Confusion()) {
+
+        bool linesIntersect = extremaPoint1.Distance(extremaPoint2) < Precision::Confusion();
+
+        if (linesIntersect) {
             dimensionOriginPoint = extremaPoint1;
         }
         else {
-            // find halfway point in between extrema points for dimension origin.
-            gp_Vec vec1(extremaPoint1.XYZ());
-            gp_Vec vec2(extremaPoint2.XYZ());
-            gp_Vec connection(vec2 - vec1);
-            Standard_Real distance = connection.Magnitude();
-            connection.Normalize();
-            connection *= (distance / 2.0);
-            dimensionOriginPoint.SetXYZ((vec1 + connection).XYZ());
+            dimensionOriginPoint.SetXYZ(loc2.XYZ());
         }
 
-        gp_Vec thirdPoint(loc2);
+        gp_Vec thirdPoint;
         gp_Vec originVector(dimensionOriginPoint.XYZ());
-        gp_Vec extrema2Vector(extremaPoint2.XYZ());
-        radius = (loc1 - originVector).Magnitude();
-        double legOne = (extrema2Vector - originVector).Magnitude();
-        if (legOne > Precision::Confusion()) {
-            double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
-            gp_Vec projectionVector(vector2);
-            projectionVector.Normalize();
-            projectionVector *= legTwo;
-            thirdPoint = extrema2Vector + projectionVector;
-            gp_Vec hyp(thirdPoint - originVector);
-            hyp.Normalize();
-            gp_Vec otherSide(loc1 - originVector);
-            otherSide.Normalize();
+
+        if (linesIntersect) {
+            gp_Vec extrema2Vector(extremaPoint2.XYZ());
+            double radius = (loc1 - originVector).Magnitude();
+            double legOne = (extrema2Vector - originVector).Magnitude();
+            if (legOne > Precision::Confusion()) {
+                double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
+                gp_Vec projectionVector(vector2);
+                projectionVector.Normalize();
+                projectionVector *= legTwo;
+                thirdPoint = extrema2Vector + projectionVector;
+            }
+            else {
+                thirdPoint = originVector + vector2.Normalized();
+            }
+        }
+        else {
+            thirdPoint = originVector + vector2.Normalized();
         }
 
         gp_Vec xAxis = (loc1 - originVector).Normalized();
@@ -324,8 +329,103 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     lineSetSecondary->startIndex.setValue(0);
 
     pLineSeparatorSecondary->addChild(lineSetSecondary);
-}
 
+    // Arrow for arc
+    auto pArrowNode = new SoSeparator();
+
+    auto pLightModel = new SoLightModel();
+    pLightModel->model.setValue(SoLightModel::BASE_COLOR);
+    pArrowNode->addChild(pLightModel);
+
+    auto pMaterial = new SoMaterial();
+    pMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
+    pArrowNode->addChild(pMaterial);
+
+    // Create cone shape as Arrow
+    auto pCone = new SoCone();
+    pCone->bottomRadius.connectFrom(&fieldArrowRadius);
+    pCone->height.connectFrom(&fieldArrowHeight);
+    pArrowNode->addChild(pCone);
+
+    auto pLeftArrowSep = new SoSeparator();
+    auto pLeftArrowTrans = new SoTransform();
+    pLeftArrowSep->addChild(pLeftArrowTrans);
+    pLeftArrowSep->addChild(pArrowNode);
+    pLineSeparator->addChild(pLeftArrowSep);
+
+    auto pRightArrowSep = new SoSeparator();
+    auto pRightArrowTrans = new SoTransform();
+    pRightArrowSep->addChild(pRightArrowTrans);
+    pRightArrowSep->addChild(pArrowNode);
+    pLineSeparator->addChild(pRightArrowSep);
+
+    pLeftArrowTrans->rotation.setValue(SbRotation(SbVec3f(0, 0, 1), std::numbers::pi));
+
+    auto rightRotCalc = new SoComposeRotation();
+    rightRotCalc->axis.setValue(0, 0, 1);
+    rightRotCalc->angle.connectFrom(&fieldAngle);
+    pRightArrowTrans->rotation.connectFrom(&rightRotCalc->rotation);
+
+    // Consolidated arrow position calculator
+    auto arrowPosCalc = new SoCalculator();
+    arrowPosCalc->a.connectFrom(&calculatorRadius->oa);
+    arrowPosCalc->b.connectFrom(&fieldAngle);
+    arrowPosCalc->c.connectFrom(&fieldArrowHeight);
+    arrowPosCalc->expression.setValue(
+        "oA=vec3f(a, c*0.5, 0); oB=vec3f(a*cos(b)+c*0.5*sin(b), a*sin(b)-c*0.5*cos(b), 0)"
+    );
+    pLeftArrowTrans->translation.connectFrom(&arrowPosCalc->oA);
+    pRightArrowTrans->translation.connectFrom(&arrowPosCalc->oB);
+
+    // normal for faces
+    auto pNormalsSeparator = new SoSeparator();
+
+    auto pNormalsCoords = new SoCoordinate3();
+    auto pNormalsLines = new SoLineSet();
+
+    auto pNormalsStyle = new SoDrawStyle();
+    pNormalsStyle->style.setValue(SoDrawStyle::LINES);
+    pNormalsStyle->lineWidth.setValue(1.0f);
+    pNormalsStyle->linePattern.setValue(0xF0F0);
+
+    auto pNormalsColor = new SoBaseColor();
+    pNormalsColor->rgb.setValue(0, 0, 1);
+
+    // Arrowtip for normal lines
+    auto tipCalc = new SoCalculator();
+    tipCalc->a.connectFrom(&calculatorRadius->oa);
+    tipCalc->b.connectFrom(&fieldAngle);
+    tipCalc->expression.setValue("oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0)");
+
+    auto leftArrowGlobal = new SoTransformVec3f();
+    leftArrowGlobal->matrix.connectFrom(&fieldNormalMatrix);
+    leftArrowGlobal->vector.connectFrom(&tipCalc->oA);
+
+    auto rightArrowGlobal = new SoTransformVec3f();
+    rightArrowGlobal->matrix.connectFrom(&fieldNormalMatrix);
+    rightArrowGlobal->vector.connectFrom(&tipCalc->oB);
+
+    auto normalsConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    normalsConcat->input[0]->connectFrom(&fieldNormalPosition1);
+    normalsConcat->input[1]->connectFrom(&leftArrowGlobal->point);
+
+    normalsConcat->input[2]->connectFrom(&fieldNormalPosition2);
+    normalsConcat->input[3]->connectFrom(&rightArrowGlobal->point);
+
+    pNormalsCoords->point.connectFrom(normalsConcat->output);
+
+    pNormalsLines->numVertices.setNum(2);
+    pNormalsLines->numVertices.set1Value(0, 2);
+    pNormalsLines->numVertices.set1Value(1, 2);
+
+    pNormalsSeparator->addChild(pNormalsStyle);
+    pNormalsSeparator->addChild(pNormalsColor);
+    pNormalsSeparator->addChild(pNormalsCoords);
+    pNormalsSeparator->addChild(pNormalsLines);
+
+    pGlobalSeparator->addChild(pNormalsSeparator);
+}
 
 void ViewProviderMeasureAngle::redrawAnnotation()
 {
@@ -333,10 +433,24 @@ void ViewProviderMeasureAngle::redrawAnnotation()
     double angleDeg = obj->Angle.getValue();
     this->fieldAngle = Base::toRadians(angleDeg);
 
+    // update arrow sizes from preferences, (same arrow size for all)
+    ArrowHeight.setValue(static_cast<float>(Measure::Preferences::defaultArrowHeight()) * 0.5f);
+    ArrowRadius.setValue(static_cast<float>(Measure::Preferences::defaultArrowRadius()) * 0.5f);
+
+    auto loc1 = obj->location1();
+    auto loc2 = obj->location2();
+
+    // Set positions for normal line start points
+    fieldNormalPosition1.setValue(SbVec3f(loc1.X(), loc1.Y(), loc1.Z()));
+    fieldNormalPosition2.setValue(SbVec3f(loc2.X(), loc2.Y(), loc2.Z()));
+
     // Set matrix
     try {
         SbMatrix matrix = getMatrix();
         pcTransform->setMatrix(matrix);
+
+        // matrix for local to global space for arrow tip
+        fieldNormalMatrix.setValue(matrix);
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
