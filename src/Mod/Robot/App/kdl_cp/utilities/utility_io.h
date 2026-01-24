@@ -19,8 +19,7 @@
  *     functions and macro definitions related to file/stream I/O.
  */
 
-#ifndef KDL_UTILITY_IO_H_84822
-#define KDL_UTILITY_IO_H_84822
+#pragma once
 
 //#include <kdl/kdl-config.h>
 
@@ -76,6 +75,3 @@ void EatEnd( std::istream& is, int delim );
 
 
 }
-
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskEdge2TracParameter_H
-#define GUI_TASKVIEW_TaskEdge2TracParameter_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Robot/App/Edge2TracObject.h>
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

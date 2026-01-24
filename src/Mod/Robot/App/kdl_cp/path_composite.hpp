@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_PATHCOMPOSITE_H
-#define KDL_PATHCOMPOSITE_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -168,6 +167,3 @@ namespace KDL {
 
 
 }
-
-
-#endif

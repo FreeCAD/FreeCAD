@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOTGUI_TaskDlgTrajectoryCompound_H
-#define ROBOTGUI_TaskDlgTrajectoryCompound_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 
@@ -74,5 +73,3 @@ protected:
 
 
 }  // namespace RobotGui
-
-#endif  // ROBOTGUI_TASKDLGSIMULATE_H

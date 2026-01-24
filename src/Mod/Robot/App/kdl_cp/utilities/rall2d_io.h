@@ -17,8 +17,7 @@
  *      $Id: rall2d_io.h,v 1.1.1.1 2002/08/26 14:14:21 rmoreas Exp $
  *      $Name:  $
  ****************************************************************************/
-#ifndef Rall2d_IO_H
-#define Rall2d_IO_H
+#pragma once
 
 
 
@@ -36,5 +35,3 @@ std::ostream& operator << (std::ostream& os,const Rall2d<T,V,S>& r)
 
 
 }
-
-#endif

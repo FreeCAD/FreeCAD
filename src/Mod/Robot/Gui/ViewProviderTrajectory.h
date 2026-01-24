@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_ViewProviderTrajectory_H
-#define ROBOT_ViewProviderTrajectory_H
+#pragma once
 
 #include <Gui/Selection/SoFCSelection.h>
 #include <Gui/ViewProviderGeometryObject.h>
@@ -64,6 +63,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_VIEWPROVIDERROBOTOBJECT_H
