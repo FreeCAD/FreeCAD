@@ -317,3 +317,65 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # Verify the object recomputed successfully without error
         self.assertFalse(covering.Shape.isNull())
         self.assertGreater(len(covering.Shape.Solids), 0)
+
+    def test_quantities_hatch_mode_reset(self):
+        """Verify that quantities are reset to 0 in Hatch Pattern mode."""
+        self.printTestMessage("hatch mode quantity reset...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Hatch Pattern"
+        self.document.recompute()
+
+        self.assertEqual(covering.NetArea.Value, 0)
+        self.assertEqual(covering.TotalJointLength.Value, 0)
+        self.assertEqual(covering.CountFullTiles, 0)
+
+    def test_quantities_positive_waste(self):
+        """Verify calculation where GrossArea > NetArea (positive waste)."""
+        self.printTestMessage("quantities positive waste...")
+        # 1000x1000 face
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Solid Tiles"
+        # 300x300 tiles, 10mm joints -> 310mm step
+        # 1000 / 310 = 3.22 -> 4 tiles per row (16 total)
+        covering.TileLength = 300.0
+        covering.TileWidth = 300.0
+        covering.JointWidth = 10.0
+        covering.TileThickness = 10.0
+        covering.TileAlignment = "BottomLeft"
+        self.document.recompute()
+
+        # NetArea: 1,000,000
+        self.assertAlmostEqual(covering.NetArea.Value, 1000000.0, places=1)
+        # GrossArea: 16 tiles * 90,000 = 1,440,000
+        self.assertAlmostEqual(covering.GrossArea.Value, 1440000.0, places=1)
+        # Waste: 440,000
+        self.assertAlmostEqual(covering.WasteArea.Value, 440000.0, places=1)
+        # JointLength: 3 horiz + 3 vert lines * 1000 = 6000
+        self.assertAlmostEqual(covering.TotalJointLength.Value, 6000.0, places=1)
+
+    def test_quantities_clamped_waste(self):
+        """Verify that WasteArea is clamped to 0 when GrossArea < NetArea."""
+        self.printTestMessage("quantities clamped waste...")
+        # 1000x1000 face
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Solid Tiles"
+        # 400x400 tiles, 100mm joints -> 500mm step
+        # 1000 / 500 = 2 -> 2 tiles per row (perfect fit)
+        covering.TileLength = 400.0
+        covering.TileWidth = 400.0
+        covering.JointWidth = 100.0
+        covering.TileThickness = 10.0
+        covering.TileAlignment = "BottomLeft"
+        self.document.recompute()
+
+        # NetArea: 1,000,000
+        self.assertAlmostEqual(covering.NetArea.Value, 1000000.0, places=1)
+        # GrossArea: 4 tiles * 160,000 = 640,000
+        self.assertAlmostEqual(covering.GrossArea.Value, 640000.0, places=1)
+        # Waste: Clamped to 0
+        self.assertEqual(covering.WasteArea.Value, 0.0)
+        # JointLength: 2 horiz + 2 vert lines * 1000 = 4000
+        self.assertAlmostEqual(covering.TotalJointLength.Value, 4000.0, places=1)

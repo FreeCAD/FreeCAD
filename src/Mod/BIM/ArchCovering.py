@@ -174,11 +174,33 @@ class _Covering(ArchComponent.Component):
             ("App::PropertyLength", "TileThickness", "Tiles", "The thickness of the tiles", 0),
             ("App::PropertyLength", "JointWidth", "Tiles", "The width of the joints", 0),
             ("App::PropertyVector", "TileOffset", "Tiles", "The offset of alternating rows", None),
-            ("App::PropertyInteger", "CountFullTiles", "Stats", "The number of full tiles", 0),
+            ("App::PropertyArea", "NetArea", "Quantities", "The surface area of the base face", 0),
+            (
+                "App::PropertyArea",
+                "GrossArea",
+                "Quantities",
+                "Total area of material units consumed (Full + Partial)",
+                0,
+            ),
+            (
+                "App::PropertyArea",
+                "WasteArea",
+                "Quantities",
+                "The area of discarded material (Gross - Net)",
+                0,
+            ),
+            (
+                "App::PropertyLength",
+                "TotalJointLength",
+                "Quantities",
+                "The total linear length of all joints",
+                0,
+            ),
+            ("App::PropertyInteger", "CountFullTiles", "Quantities", "The number of full tiles", 0),
             (
                 "App::PropertyInteger",
                 "CountPartialTiles",
-                "Stats",
+                "Quantities",
                 "The number of cut/partial tiles",
                 0,
             ),
@@ -232,8 +254,18 @@ class _Covering(ArchComponent.Component):
                     setattr(obj, name, default)
 
         # Property status configuration (Read-Only fields)
+        obj.setEditorMode("NetArea", 1)
+        obj.setEditorMode("GrossArea", 1)
+        obj.setEditorMode("WasteArea", 1)
+        obj.setEditorMode("TotalJointLength", 1)
         obj.setEditorMode("CountFullTiles", 1)
         obj.setEditorMode("CountPartialTiles", 1)
+
+        # Cleanup deprecated Stats group if present
+        if "CountFullTiles" in properties_list:
+            if obj.getGroupOfProperty("CountFullTiles") == "Stats":
+                obj.setGroupOfProperty("CountFullTiles", "Quantities")
+                obj.setGroupOfProperty("CountPartialTiles", "Quantities")
 
     def loads(self, state):
         """
@@ -296,6 +328,8 @@ class _Covering(ArchComponent.Component):
                 )
                 if pat:
                     obj.Shape = Part.Compound([base_face, pat])
+
+            self.computeAreas(obj)
             return
 
         # Establish the local coordinate system and grid origin for the tiling pattern.
@@ -702,8 +736,15 @@ class _Covering(ArchComponent.Component):
         tile_rot = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.Rotation.Value)
         tr.Rotation = face_rot.multiply(tile_rot)
 
+        # Grout/Joint length calculation (centerlines)
+        joint_len = self._calculate_joint_length(obj, base_face, tr)
+
         # Fallback for zero-joint width where no cutters were generated.
         if not cutters_h and not cutters_v:
+            obj.NetArea = base_face.Area
+            obj.GrossArea = base_face.Area
+            obj.WasteArea = 0
+            obj.TotalJointLength = 0
             if obj.FinishMode == "Solid Tiles":
                 return base_face.extrude(normal * obj.TileThickness.Value)
             else:
@@ -715,6 +756,10 @@ class _Covering(ArchComponent.Component):
         t_len = obj.TileLength.Value
         t_wid = obj.TileWidth.Value
 
+        full_cnt = 0
+        part_cnt = 0
+        shape_to_return = Part.Shape()
+
         try:
             if obj.FinishMode == "Solid Tiles":
                 # Extrude Base Face
@@ -722,6 +767,7 @@ class _Covering(ArchComponent.Component):
                     tile_layer = base_face.extrude(normal * obj.TileThickness.Value)
                 except Part.OCCError as e:
                     FreeCAD.Console.PrintError(f"Covering: Caught OCCError in _perform_cut: {e}")
+                    tile_layer = Part.Shape()
 
                 # Cut
                 if cutters_h:
@@ -738,17 +784,14 @@ class _Covering(ArchComponent.Component):
 
                 # Count
                 full_vol = t_len * t_wid * obj.TileThickness.Value
-                full_cnt = 0
-                part_cnt = 0
-                for sol in result_shape.Solids:
-                    if abs(sol.Volume - full_vol) < 0.001:
-                        full_cnt += 1
-                    else:
-                        part_cnt += 1
-                obj.CountFullTiles = full_cnt
-                obj.CountPartialTiles = part_cnt
+                if result_shape.Solids:
+                    for sol in result_shape.Solids:
+                        if abs(sol.Volume - full_vol) < 0.001:
+                            full_cnt += 1
+                        else:
+                            part_cnt += 1
 
-                return result_shape
+                shape_to_return = result_shape
 
             elif obj.FinishMode == "Parametric Pattern":
                 # Perform the cuts on the 2D base face
@@ -766,32 +809,37 @@ class _Covering(ArchComponent.Component):
 
                 # Count the resulting faces
                 full_area = t_len * t_wid
-                full_cnt = 0
-                part_cnt = 0
-                for f in result_shape.Faces:
-                    if abs(f.Area - full_area) < 0.001:
-                        full_cnt += 1
-                    else:
-                        part_cnt += 1
-                obj.CountFullTiles = full_cnt
-                obj.CountPartialTiles = part_cnt
+                if result_shape.Faces:
+                    for f in result_shape.Faces:
+                        if abs(f.Area - full_area) < 0.001:
+                            full_cnt += 1
+                        else:
+                            part_cnt += 1
 
                 # Convert Faces to Wires for lightweight representation
                 wires = []
                 for f in result_shape.Faces:
                     wires.extend(f.Wires)
 
-                if not wires:
-                    return Part.Shape()
+                if wires:
+                    final_pattern = Part.Compound(wires)
+                    # Apply a micro offset (0.05mm) along the normal. This prevents "Z-fighting"
+                    # (visual flickering) in the 3D viewer by ensuring the pattern sits slightly
+                    # above the base face.
+                    offset_matrix = FreeCAD.Matrix()
+                    offset_matrix.move(normal.normalize() * 0.05)
+                    shape_to_return = final_pattern.transformGeometry(offset_matrix)
+                else:
+                    shape_to_return = Part.Shape()
 
-                final_pattern = Part.Compound(wires)
-
-                # Apply a micro offset (0.05mm) along the normal. This prevents "Z-fighting" (visual
-                # flickering) in the 3D viewer by ensuring the pattern sits slightly above the base
-                # face.
-                offset_matrix = FreeCAD.Matrix()
-                offset_matrix.move(normal.normalize() * 0.05)
-                return final_pattern.transformGeometry(offset_matrix)
+            # Sync quantities for both modes
+            q = self._calculate_quantities(base_face, full_cnt, part_cnt, t_len, t_wid)
+            obj.CountFullTiles = full_cnt
+            obj.CountPartialTiles = part_cnt
+            obj.NetArea = q["NetArea"]
+            obj.GrossArea = q["GrossArea"]
+            obj.WasteArea = q["WasteArea"]
+            obj.TotalJointLength = joint_len
 
         except Part.OCCError as e:
             # Catch OpenCascade kernel errors to prevent crashing the document recompute chain.
@@ -801,7 +849,95 @@ class _Covering(ArchComponent.Component):
             )
             return Part.Shape()
 
-        return Part.Shape()
+        return shape_to_return
+
+    def _calculate_quantities(self, base_face, count_full, count_partial, t_len, t_wid):
+        """Helper to calculate area quantities."""
+        net_area = base_face.Area
+        gross_area = (count_full + count_partial) * (t_len * t_wid)
+        # Waste area is clamped to zero as App::PropertyArea does not accept negative values.
+        waste_area = max(0.0, gross_area - net_area)
+        return {"NetArea": net_area, "GrossArea": gross_area, "WasteArea": waste_area}
+
+    def _calculate_joint_length(self, obj, base_face, tr):
+        """Calculates and updates the TotalJointLength property."""
+        if obj.JointWidth.Value <= MIN_DIMENSION:
+            obj.TotalJointLength = 0
+            return
+
+        t_len = obj.TileLength.Value
+        t_wid = obj.TileWidth.Value
+        j_wid = obj.JointWidth.Value
+        step_x = t_len + j_wid
+        step_y = t_wid + j_wid
+
+        diag = base_face.BoundBox.DiagonalLength
+        count_x = int(diag / step_x) + 4
+        count_y = int(diag / step_y) + 4
+        off_x = obj.TileOffset.x
+        off_y = obj.TileOffset.y
+
+        centerlines = []
+        full_len_x = 2 * count_x * step_x
+        start_x = -count_x * step_x
+        full_len_y = 2 * count_y * step_y
+        start_y = -count_y * step_y
+
+        # Horizontal joint centerlines
+        for j in range(-count_y, count_y):
+            row_y_offset = off_y if (j % 2 != 0) else 0
+            local_y = j * step_y + t_wid + row_y_offset + (j_wid / 2)
+            centerlines.append(
+                Part.makeLine(
+                    FreeCAD.Vector(start_x, local_y, 0),
+                    FreeCAD.Vector(start_x + full_len_x, local_y, 0),
+                )
+            )
+
+        # Vertical joint centerlines
+        if (
+            abs(off_x) < Part.Precision.approximation()
+            and abs(off_y) < Part.Precision.approximation()
+        ):
+            # Stack bond
+            for i in range(-count_x, count_x):
+                local_x = i * step_x + t_len + (j_wid / 2)
+                centerlines.append(
+                    Part.makeLine(
+                        FreeCAD.Vector(local_x, start_y, 0),
+                        FreeCAD.Vector(local_x, start_y + full_len_y, 0),
+                    )
+                )
+        else:
+            # Running bond: segmented lines per row
+            for j in range(-count_y, count_y):
+                row_off_x = off_x if (j % 2 != 0) else 0
+                row_off_y = off_y if (j % 2 != 0) else 0
+                row_y = j * step_y + row_off_y
+                for i in range(-count_x, count_x):
+                    local_x = i * step_x + t_len + row_off_x + (j_wid / 2)
+                    centerlines.append(
+                        Part.makeLine(
+                            FreeCAD.Vector(local_x, row_y, 0),
+                            FreeCAD.Vector(local_x, row_y + step_y, 0),
+                        )
+                    )
+
+        grid_compound = Part.Compound(centerlines)
+        grid_compound.Placement = tr
+        try:
+            clipped_joints = base_face.common(grid_compound)
+            return clipped_joints.Length
+        except Exception:
+            return 0.0
+
+    def computeAreas(self, obj):
+        """Overrides the default calculation with lightweight quantity updates."""
+        if obj.FinishMode == "Hatch Pattern":
+            for prop in ["NetArea", "GrossArea", "WasteArea", "TotalJointLength"]:
+                setattr(obj, prop, 0)
+            obj.CountFullTiles = 0
+            obj.CountPartialTiles = 0
 
 
 if FreeCAD.GuiUp:
