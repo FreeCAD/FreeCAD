@@ -34,12 +34,13 @@
 #include "SMESH_Comment.hxx"
 
 #include <ExprIntrp_GenExp.hxx>
-#include <Expr_Array1OfNamedUnknown.hxx>
 #include <Expr_NamedUnknown.hxx>
 #include <TColStd_Array1OfReal.hxx>
 #include <TCollection_AsciiString.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
+
+using Expr_Array1OfNamedUnknown = NCollection_Array1<occ::handle<Expr_NamedUnknown>>;
 
 #if (OCC_VERSION_MAJOR << 16 | OCC_VERSION_MINOR << 8 | OCC_VERSION_MAINTENANCE) > 0x060100
 #define NO_CAS_CATCH
