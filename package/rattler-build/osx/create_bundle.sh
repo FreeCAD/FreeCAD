@@ -78,6 +78,19 @@ if [[ "${SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
     ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
+    # Ad-hoc sign for local builds (required for QuickLook extensions to register)
+    if [ -d "FreeCAD.app/Contents/PlugIns" ]; then
+        echo "Ad-hoc signing App Extensions with entitlements..."
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements \
+            FreeCAD.app/Contents/PlugIns/FreeCADThumbnailExtension.appex
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements \
+            FreeCAD.app/Contents/PlugIns/FreeCADPreviewExtension.appex
+    fi
+    echo "Ad-hoc signing app bundle..."
+    codesign --force --sign - FreeCAD.app
+
     # create the dmg
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
 fi
