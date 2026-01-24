@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_GUI_PRECOMPILED_H
-#define SURFACE_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -47,5 +46,3 @@
 #include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Shape.hxx>
-
-#endif  // GUI_PRECOMPILED_H

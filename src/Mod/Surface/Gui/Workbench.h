@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef Surface_WORKBENCH_H
-#define Surface_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -45,6 +44,3 @@ protected:
 };
 
 }  // namespace SurfaceGui
-
-
-#endif  // Surface_WORKBENCH_H

@@ -23,8 +23,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef SURFACE_GLOBAL_H
-# define SURFACE_GLOBAL_H
+#pragma once
 
 
 // Surface
@@ -44,5 +43,3 @@
 #   define SurfaceGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // SURFACE_GLOBAL_H

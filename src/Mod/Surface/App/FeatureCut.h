@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_FEATURECUT_H
-#define SURFACE_FEATURECUT_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <Mod/Part/App/PartFeature.h>
@@ -52,5 +51,3 @@ public:
 };
 
 }  // Namespace Surface
-
-#endif

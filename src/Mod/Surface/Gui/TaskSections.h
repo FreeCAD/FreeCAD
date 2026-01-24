@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKSECTIONS_H
-#define SURFACEGUI_TASKSECTIONS_H
+#pragma once
 
 #include <memory>
 
@@ -143,5 +142,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKSECTIONS_H
