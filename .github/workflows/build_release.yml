@@ -38,7 +38,7 @@ jobs:
           if [ "${{ github.event_name }}" = "release" ]; then
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
-            export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
+            export BUILD_TAG=$(date "+%Y.%m.%d")
             gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
           fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
