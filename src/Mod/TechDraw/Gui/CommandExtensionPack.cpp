@@ -215,10 +215,11 @@ void execCircleCenterLines(Gui::Command* cmd)
                 double radius = cgen->radius / objFeat->getScale();
                 // right, left, top, bottom are formed from a canonical point (center)
                 // so they do not need to be changed to canonical form.
-                Base::Vector3d right(center.x + radius + 2.0, center.y, 0.0);
-                Base::Vector3d top(center.x, center.y + radius + 2.0, 0.0);
-                Base::Vector3d left(center.x - radius - 2.0, center.y, 0.0);
-                Base::Vector3d bottom(center.x, center.y - radius - 2.0, 0.0);
+                constexpr double lineOutsideCircle{2.0};
+                Base::Vector3d right(center.x + radius + lineOutsideCircle, center.y, 0.0);
+                Base::Vector3d top(center.x, center.y + radius + lineOutsideCircle, 0.0);
+                Base::Vector3d left(center.x - radius - lineOutsideCircle, center.y, 0.0);
+                Base::Vector3d bottom(center.x, center.y - radius - lineOutsideCircle, 0.0);
                 std::string line1tag = objFeat->addCosmeticEdge(right, left);
                 std::string line2tag = objFeat->addCosmeticEdge(top, bottom);
                 TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
@@ -232,7 +233,7 @@ void execCircleCenterLines(Gui::Command* cmd)
             }
         }
     }
-    cmd->getSelection().clearSelection();
+    Gui::Selection().clearCompleteSelection();
     objFeat->refreshCEGeoms();
     objFeat->requestPaint();
     Gui::Command::commitCommand();
