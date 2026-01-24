@@ -57,6 +57,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
 
 #include <limits>
 #include <vector>

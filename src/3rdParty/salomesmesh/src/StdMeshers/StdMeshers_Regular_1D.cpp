@@ -63,6 +63,7 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
+#include <TColStd_SequenceOfReal.hxx>
 
 #include <string>
 #include <limits>

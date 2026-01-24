@@ -50,7 +50,6 @@
 #include <TopExp.hxx>
 #include <TopExp_Explorer.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
-#include <TopTools_ListIteratorOfListOfShape.hxx>
 #include <TopTools_ListOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
@@ -1548,7 +1547,7 @@ bool SMESH_subMesh::ComputeStateEngine(int event)
         catch (Standard_Failure& ex) {
           if ( !_computeError ) _computeError = SMESH_ComputeError::New();
           _computeError->myName    = COMPERR_OCC_EXCEPTION;
-          _computeError->myComment += ex.DynamicType()->Name();
+          _computeError->myComment += ex.ExceptionType();
           if ( ex.GetMessageString() && strlen( ex.GetMessageString() )) {
             _computeError->myComment += ": ";
             _computeError->myComment += ex.GetMessageString();
