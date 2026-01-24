@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef TEST_APPLICATION_H
-#define TEST_APPLICATION_H
+#pragma once
 
 #include <App/Application.h>
 
@@ -19,5 +18,3 @@ static void initApplication()
 }
 
 }  // namespace tests
-
-#endif  // TEST_APPLICATION_H
