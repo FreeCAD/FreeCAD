@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CUSTOMWIDGETS_H
-#define GUI_CUSTOMWIDGETS_H
+#pragma once
 
 #include <QButtonGroup>
 #include <QCheckBox>
@@ -922,5 +921,3 @@ private:
     QByteArray m_sPrefGrp;
 };
 }  // namespace Gui
-
-#endif  // GUI_CUSTOMWIDGETS_H

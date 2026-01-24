@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef _TEMPLATE__GLOBAL_H
-# define _TEMPLATE__GLOBAL_H
+#pragma once
 
 
 // _TEMPLATE_
@@ -45,5 +44,3 @@
 #   define _TEMPLATE_GuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  //_TEMPLATE__GLOBAL_H
