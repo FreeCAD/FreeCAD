@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketcherTool_H
-#define GUI_TASKVIEW_TaskSketcherTool_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -77,5 +76,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TaskSketcherTool_H

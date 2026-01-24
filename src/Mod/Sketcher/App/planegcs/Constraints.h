@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_CONSTRAINTS_H
-#define PLANEGCS_CONSTRAINTS_H
+#pragma once
 
 #include "../../SketcherGlobal.h"
 #include "Geo.h"
@@ -1358,5 +1357,3 @@ public:
 };
 
 }  // namespace GCS
-
-#endif  // PLANEGCS_CONSTRAINTS_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_ViewProviderSketchCoinAttorney_H
-#define SKETCHERGUI_ViewProviderSketchCoinAttorney_H
+#pragma once
 
 #include <QFont>
 #include <vector>
@@ -294,6 +293,3 @@ inline void ViewProviderSketchCoinAttorney::executeOnSelectionPointSet(
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_ViewProviderSketchCoinAttorney_H

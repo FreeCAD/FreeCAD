@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GeoEnum_H
-#define SKETCHER_GeoEnum_H
+#pragma once
 
 #include <functional>
 
@@ -178,5 +177,3 @@ struct less<Sketcher::GeoElementId>
     }
 };
 }  // namespace std
-
-#endif  // SKETCHER_GeoEnum_H

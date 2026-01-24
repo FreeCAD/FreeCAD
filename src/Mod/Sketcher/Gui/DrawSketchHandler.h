@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandler_H
-#define SKETCHERGUI_DrawSketchHandler_H
+#pragma once
 
 #include <QPixmap>
 #include <QCoreApplication>
@@ -348,6 +347,3 @@ protected:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandler_H

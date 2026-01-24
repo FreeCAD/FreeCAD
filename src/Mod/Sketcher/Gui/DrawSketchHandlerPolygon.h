@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPolygon_H
-#define SKETCHERGUI_DrawSketchHandlerPolygon_H
+#pragma once
 
 #include <QApplication>
 
@@ -578,6 +577,3 @@ void DSHPolygonController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPolygon_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_SUBSYSTEM_H
-#define PLANEGCS_SUBSYSTEM_H
+#pragma once
 
 #undef min
 #undef max
@@ -96,5 +95,3 @@ public:
 double lineSearch(SubSystem* subsys, Eigen::VectorXd& xdir);
 
 }  // namespace GCS
-
-#endif  // PLANEGCS_SUBSYSTEM_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_APP_PRECOMPILED_H
-# define SKETCHER_APP_PRECOMPILED_H
+#pragma once
 
 # include <FCConfig.h>
 
@@ -110,5 +109,3 @@
 
 #elif defined(FC_OS_WIN32)
 # include <windows.h>
-
-#endif

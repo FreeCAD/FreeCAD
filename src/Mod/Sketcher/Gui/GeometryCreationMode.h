@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_GEOMETRYCREATIONMODE_H
-#define SKETCHERGUI_GEOMETRYCREATIONMODE_H
+#pragma once
 
 /***** Creation Mode ************/
 namespace SketcherGui
@@ -34,5 +33,3 @@ enum class GeometryCreationMode
     Construction = 1
 };
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_GEOMETRYCREATIONMODE_H

@@ -23,8 +23,7 @@
  *   SnapManager initially funded by the Open Toolchain Foundation         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SnapManager_H
-#define SKETCHERGUI_SnapManager_H
+#pragma once
 
 #include <App/Application.h>
 
@@ -155,6 +154,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_SnapManager_H

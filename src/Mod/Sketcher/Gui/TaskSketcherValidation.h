@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_TASKSKETCHERVALIDATION_H
-#define SKETCHERGUI_TASKSKETCHERVALIDATION_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -93,5 +92,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_TASKSKETCHERVALIDATION_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchMirrorDialog_H
-#define SKETCHERGUI_SketchMirrorDialog_H
+#pragma once
 
 #include <QDialog>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketchMirrorDialog_H

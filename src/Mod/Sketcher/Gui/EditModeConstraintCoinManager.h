@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeConstraintCoinManager_H
-#define SKETCHERGUI_EditModeConstraintCoinManager_H
+#pragma once
 
 #include <functional>
 #include <vector>
@@ -285,6 +284,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_EditModeConstraintCoinManager_H

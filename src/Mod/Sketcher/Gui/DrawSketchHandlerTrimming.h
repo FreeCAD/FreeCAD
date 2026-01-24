@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerTrimming_H
-#define SKETCHERGUI_DrawSketchHandlerTrimming_H
+#pragma once
 
 #include <QApplication>
 #include <Base/Tools.h>
@@ -231,5 +230,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerTrimming_H

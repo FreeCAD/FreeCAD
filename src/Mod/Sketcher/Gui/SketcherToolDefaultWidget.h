@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SketcherGui_SketcherToolDefaultWidget_H
-#define SketcherGui_SketcherToolDefaultWidget_H
+#pragma once
 
 #include <Base/Unit.h>
 #include <Gui/TaskView/TaskView.h>
@@ -237,5 +236,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-#endif  // SketcherGui_SketcherToolDefaultWidget_H

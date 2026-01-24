@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketcherTransformationExpressionHelper_H
-#define SKETCHERGUI_SketcherTransformationExpressionHelper_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -118,5 +117,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketcherTransformationExpressionHelper_H

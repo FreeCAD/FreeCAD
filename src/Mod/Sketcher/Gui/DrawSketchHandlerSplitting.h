@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSplitting_H
-#define SKETCHERGUI_DrawSketchHandlerSplitting_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -218,6 +217,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSplitting_H

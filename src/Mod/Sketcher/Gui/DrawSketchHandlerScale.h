@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerScale_H
-#define SKETCHERGUI_DrawSketchHandlerScale_H
+#pragma once
 
 #include <QApplication>
 
@@ -769,6 +768,3 @@ void DSHScaleController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerScale_H

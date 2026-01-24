@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef SKETCHER_GLOBAL_H
-# define SKETCHER_GLOBAL_H
+#pragma once
 
 
 // Sketcher
@@ -45,5 +44,3 @@
 #   define SketcherGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // SKETCHER_GLOBAL_H

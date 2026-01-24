@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHGEOMETRYEXTENSION_H
-#define SKETCHER_SKETCHGEOMETRYEXTENSION_H
+#pragma once
 
 #include <array>
 #include <atomic>
@@ -182,6 +181,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCHGEOMETRYEXTENSION_H

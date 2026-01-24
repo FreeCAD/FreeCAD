@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRectangle_H
-#define SKETCHERGUI_DrawSketchHandlerRectangle_H
+#pragma once
 
 #include <QApplication>
 
@@ -3157,6 +3156,3 @@ void DSHRectangleController::doConstructionMethodChanged()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRectangle_H

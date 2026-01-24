@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerFillet_H
-#define SKETCHERGUI_DrawSketchHandlerFillet_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Selection/SelectionFilter.h>
@@ -504,5 +503,3 @@ void DSHFilletController::adaptDrawingToCheckboxChange(int checkboxindex, bool v
 }
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_DrawSketchHandlerFillet_H

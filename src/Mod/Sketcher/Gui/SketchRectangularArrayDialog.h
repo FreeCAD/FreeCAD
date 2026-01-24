@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketchRectangularArrayDialog_H
-#define SKETCHERGUI_SketchRectangularArrayDialog_H
+#pragma once
 
 #include <QDialog>
 
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketchRectangularArrayDialog_H

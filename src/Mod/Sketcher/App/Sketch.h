@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCH_H
-#define SKETCHER_SKETCH_H
+#pragma once
 
 #include <Base/Persistence.h>
 #include <CXX/Objects.hxx>
@@ -844,6 +843,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCH_H

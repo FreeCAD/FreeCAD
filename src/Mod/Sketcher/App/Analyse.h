@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_ANALYSE_H
-#define SKETCHER_ANALYSE_H
+#pragma once
 
 #include <vector>
 
@@ -67,5 +66,3 @@ struct Constraint_Equal
 };
 
 }  // namespace Sketcher
-
-#endif  // SKETCHER_ANALYSE_H

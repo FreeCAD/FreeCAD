@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerCircle_H
-#define SKETCHERGUI_DrawSketchHandlerCircle_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -812,6 +811,3 @@ void DSHCircleController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerCircle_H

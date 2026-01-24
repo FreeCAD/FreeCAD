@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerEllipse_H
+#pragma once
 
 #include <cmath>
 
@@ -1047,6 +1046,3 @@ void DSHEllipseController::addConstraints()
     // No constraint possible for 3 rim ellipse.
 }
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerEllipse_H

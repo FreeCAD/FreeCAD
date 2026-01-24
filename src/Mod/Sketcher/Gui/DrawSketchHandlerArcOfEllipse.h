@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
+#pragma once
 
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
@@ -458,6 +457,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
