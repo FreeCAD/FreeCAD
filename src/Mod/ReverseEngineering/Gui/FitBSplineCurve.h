@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef REENGUI_FITBSPLINECURVE_H
-#define REENGUI_FITBSPLINECURVE_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -77,5 +76,3 @@ private:
 };
 
 }  // namespace ReenGui
-
-#endif  // REENGUI_FITBSPLINECURVE_H

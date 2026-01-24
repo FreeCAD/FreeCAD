@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef REENGUI_WORKBENCH_H
-#define REENGUI_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -49,6 +48,3 @@ protected:
 };
 
 }  // namespace ReverseEngineeringGui
-
-
-#endif  // REENGUI_WORKBENCH_H

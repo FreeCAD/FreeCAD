@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef REEN_GLOBAL_H
-# define REEN_GLOBAL_H
+#pragma once
 
 
 // Reen
@@ -45,5 +44,3 @@
 #   define ReenGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // REEN_GLOBAL_H
