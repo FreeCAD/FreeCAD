@@ -23,8 +23,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef LAUNCHER_GLOBAL_H
-# define LAUNCHER_GLOBAL_H
+#pragma once
 
 
 // Start
@@ -44,5 +43,3 @@
 #   define StartGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // LAUNCHER_GLOBAL_H
