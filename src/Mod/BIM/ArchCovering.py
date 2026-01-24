@@ -153,7 +153,7 @@ class _Covering(ArchComponent.Component):
 
         # Apply the local property schema
         # (Type, Name, Group, Tooltip, InitialValue)
-        properties = [
+        properties_schema = [
             (
                 "App::PropertyEnumeration",
                 "FinishMode",
@@ -221,7 +221,7 @@ class _Covering(ArchComponent.Component):
             ),
         ]
 
-        for prop_type, name, group, tooltip, default in properties:
+        for prop_type, name, group, tooltip, default in properties_schema:
             if name not in properties_list:
                 obj.addProperty(
                     prop_type, name, group, QT_TRANSLATE_NOOP("App::Property", tooltip), locked=True
