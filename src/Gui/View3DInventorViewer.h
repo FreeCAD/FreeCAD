@@ -456,7 +456,7 @@ public:
         int duration = -1,
         bool wait = false
     ) const;
-    
+
     /**
      * Zooms the viewport to the size of the bounding box.
      */

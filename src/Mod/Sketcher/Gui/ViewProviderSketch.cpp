@@ -3838,16 +3838,16 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
         editSubName.clear();
     else
         editSubName.resize(dot - editSubName.c_str() + 1);
-    
+
     const auto camera = viewer->getSoRenderManager()->getCamera();
     const auto sketchCenter = Base::convertTo<SbVec3f>(getBoundingBox().GetCenter());
     const auto sketchOrientation = Base::convertTo<SbRotation>(getEditingPlacement().getRotation());
-    
+
     SbVec3f newDirection;
     sketchOrientation.multVec(SbVec3f(0, 0, -1), newDirection);
-    
+
     const auto newPosition = sketchCenter - camera->focalDistance.getValue() * newDirection;
-    
+
     viewer->moveCameraTo(sketchOrientation, camera->position.getValue(), newPosition);
 
     viewer->setEditing(true);
