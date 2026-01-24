@@ -39,6 +39,7 @@
 #include <Geom_BezierCurve.hxx>
 #include <Geom_BSplineCurve.hxx>
 #include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
 #include <GProp_GProps.hxx>
 #include <ShapeAnalysis_Edge.hxx>
 #include <gp_Circ.hxx>
@@ -96,6 +97,14 @@ static float getRadius(TopoDS_Shape& edge)
         }
         gp_Circ circle = adapt.Circle();
         return circle.Radius();
+    }
+    if (edge.ShapeType() == TopAbs_FACE) {
+        BRepAdaptor_Surface adapt(TopoDS::Face(edge));
+        if (adapt.GetType() != GeomAbs_Cylinder) {
+            return 0.0;
+        }
+        gp_Cylinder cylinder = adapt.Cylinder();
+        return cylinder.Radius();
     }
     return 0.0;
 }
@@ -336,36 +345,63 @@ MeasureLengthInfoPtr MeasureLengthHandler(const App::SubObjectT& subject)
 MeasureRadiusInfoPtr MeasureRadiusHandler(const App::SubObjectT& subject)
 {
     Base::Placement placement;  // curve center + orientation
-    Base::Vector3d pointOnCurve;
+    Base::Vector3d centerPoint;
+    ;
 
     TopoDS_Shape shape = getLocatedShape(subject);
 
     if (shape.IsNull()) {
-        return std::make_shared<MeasureRadiusInfo>(false, 0.0, pointOnCurve, placement);
+        return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
     }
     TopAbs_ShapeEnum sType = shape.ShapeType();
 
-    if (sType != TopAbs_EDGE) {
-        return std::make_shared<MeasureRadiusInfo>(false, 0.0, pointOnCurve, placement);
+    if (sType != TopAbs_EDGE && sType != TopAbs_FACE) {
+        return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
     }
 
-    // Get Center of mass as the attachment point of the label
     GProp_GProps gprops;
-    BRepGProp::LinearProperties(shape, gprops);
+    TopoDS_Edge edge;
+    TopoDS_Face face;
+    gp_Pnt center;
+
+    if (sType == TopAbs_EDGE) {
+        BRepGProp::LinearProperties(shape, gprops);
+        edge = TopoDS::Edge(shape);
+        BRepAdaptor_Curve adapt(edge);
+        if (adapt.GetType() == GeomAbs_Circle) {
+            center = adapt.Circle().Location();
+        }
+    }
+    else if (sType == TopAbs_FACE) {
+        BRepGProp::SurfaceProperties(shape, gprops);
+        face = TopoDS::Face(shape);
+        TopExp_Explorer exp(face, TopAbs_EDGE);
+        if (exp.More()) {
+            edge = TopoDS::Edge(exp.Current());
+        }
+        if (edge.IsNull()) {
+            return std::make_shared<MeasureRadiusInfo>(false, 0.0, centerPoint, placement);
+        }
+
+        BRepAdaptor_Surface surf(face);
+        if (surf.GetType() == GeomAbs_Cylinder) {
+            center = surf.Cylinder().Location();
+        }
+    }
+    // Get Center of mass as the attachment point of the label
     auto origin = gprops.CentreOfMass();
 
-    TopoDS_Edge edge = TopoDS::Edge(shape);
-    gp_Pnt firstPoint = BRep_Tool::Pnt(TopExp::FirstVertex(edge));
-    pointOnCurve = Base::Vector3d(firstPoint.X(), firstPoint.Y(), firstPoint.Z());
+    centerPoint = Base::Vector3d(center.X(), center.Y(), center.Z());
+
     // a somewhat arbitrary radius from center -> point on curve
-    auto dir = (firstPoint.XYZ() - origin.XYZ()).Normalized();
+    auto dir = (center.XYZ() - origin.XYZ()).Normalized();
     Base::Vector3d elementDirection(dir.X(), dir.Y(), dir.Z());
     Base::Vector3d axisUp(0.0, 0.0, 1.0);
     Base::Rotation rot(axisUp, elementDirection);
 
     placement = Base::Placement(Base::Vector3d(origin.X(), origin.Y(), origin.Z()), rot);
 
-    return std::make_shared<MeasureRadiusInfo>(true, getRadius(shape), pointOnCurve, placement);
+    return std::make_shared<MeasureRadiusInfo>(true, getRadius(shape), centerPoint, placement);
 }
 
 
