@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOXGUI_OVERLAY_H
-#define SANDBOXGUI_OVERLAY_H
+#pragma once
 
 #include <Gui/MouseSelection.h>
 #include <QColor>
@@ -60,5 +59,3 @@ private:
 };
 
 } // SandboxGui
-
-#endif // SANDBOXGUI_OVERLAY_H

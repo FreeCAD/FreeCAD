@@ -24,8 +24,7 @@
 
 
 
-#ifndef SANDBOXGUI_TASKPANELVIEW_H
-#define SANDBOXGUI_TASKPANELVIEW_H
+#pragma once
 
 #include <QWidget>
 
@@ -63,5 +62,3 @@ private:
 };
 
 } // namespace SandboxGui
-
-#endif // SANDBOXGUI_TASKPANELVIEW_H

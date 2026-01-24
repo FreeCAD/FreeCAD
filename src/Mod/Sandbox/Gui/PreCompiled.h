@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_GUI_PRECOMPILED_H
-#define SANDBOX_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -56,5 +55,3 @@
 #include <qapplication.h>
 #include <qmainwindow.h>
 #include <qworkspace.h>
-
-#endif // GUI_PRECOMPILED_H
