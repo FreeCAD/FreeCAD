@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETTABLEVIEW_H
-#define SHEETTABLEVIEW_H
+#pragma once
 
 #include <QHeaderView>
 #include <QTableView>
@@ -130,5 +129,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SHEETTABLEVIEW_H

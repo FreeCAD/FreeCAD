@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETMODEL_H
-#define SHEETMODEL_H
+#pragma once
 
 #include <QAbstractTableModel>
 
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SHEETMODEL_H

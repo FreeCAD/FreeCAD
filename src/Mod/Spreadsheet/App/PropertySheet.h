@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYSHEET_H
-#define PROPERTYSHEET_H
+#pragma once
 
 #ifdef _MSC_VER
 # ifdef PropertySheet
@@ -360,4 +359,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-#endif  // PROPERTYSHEET_H

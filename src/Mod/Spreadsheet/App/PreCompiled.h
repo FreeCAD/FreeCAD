@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEET_APP_PRECOMPILED_H
-#define SPREADSHEET_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -47,5 +46,3 @@
 
 // Qt
 #include <QLocale>
-
-#endif  // SPREADSHEET_APP_PRECOMPILED_H

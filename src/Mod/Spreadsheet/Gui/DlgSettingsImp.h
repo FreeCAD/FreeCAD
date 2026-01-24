@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEETGUI_DLGSETTINGSIMP_H
-#define SPREADSHEETGUI_DLGSETTINGSIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -56,5 +55,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SPREADSHEETGUI_DLGSETTINGSIMP_H

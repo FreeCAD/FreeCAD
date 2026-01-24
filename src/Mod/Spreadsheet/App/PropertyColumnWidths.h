@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTYCOLUMNWIDTHS_H
-#define PROPERTYCOLUMNWIDTHS_H
+#pragma once
 
 #include <App/Property.h>
 #include <CXX/Objects.hxx>
@@ -97,5 +96,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // PROPERTYCOLUMNWIDTHS_H
