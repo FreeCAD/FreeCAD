@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderHole_H
-#define PARTGUI_ViewProviderHole_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -50,6 +49,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHole_H

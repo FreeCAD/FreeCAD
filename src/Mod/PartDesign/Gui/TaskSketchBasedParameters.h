@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskSketchBasedParameters_H
-#define GUI_TASKVIEW_TaskSketchBasedParameters_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include "ViewProvider.h"
@@ -99,5 +98,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskSketchBasedParameters_H

@@ -21,8 +21,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureScaled_H
-#define PARTDESIGN_FeatureScaled_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include "FeatureTransformed.h"
@@ -67,6 +66,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureScaled_H

@@ -21,8 +21,7 @@
  ******************************************************************************/
 
 
-#ifndef GUI_ReferenceSelection_H
-#define GUI_ReferenceSelection_H
+#pragma once
 
 #include <Gui/Selection/SelectionFilter.h>
 #include <Mod/PartDesign/Gui/EnumFlags.h>
@@ -126,5 +125,3 @@ std::string buildLinkSubListPythonStr(
     const std::vector<std::string>& subs
 );
 }  // namespace PartDesignGui
-
-#endif  // GUI_ReferenceSelection_H

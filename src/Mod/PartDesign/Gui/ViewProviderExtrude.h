@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderExtrude_H
-#define PARTGUI_ViewProviderExtrude_H
+#pragma once
 
 #include "ViewProviderSketchBased.h"
 
@@ -43,6 +42,3 @@ public:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderExtrude_H

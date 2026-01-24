@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_ViewProviderShapeBinder_H
-#define PARTGUI_ViewProviderShapeBinder_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Part/Gui/ViewProvider.h>
@@ -102,6 +101,3 @@ private:
 using ViewProviderSubShapeBinderPython = Gui::ViewProviderFeaturePythonT<ViewProviderSubShapeBinder>;
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderShapeBinder_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_SketchBased_H
-#define PARTDESIGN_SketchBased_H
+#pragma once
 
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
@@ -217,6 +216,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_SketchBased_H

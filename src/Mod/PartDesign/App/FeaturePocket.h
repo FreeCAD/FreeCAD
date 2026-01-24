@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pocket_H
-#define PARTDESIGN_Pocket_H
+#pragma once
 
 #include "FeatureExtrude.h"
 
@@ -62,6 +61,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Pocket_H

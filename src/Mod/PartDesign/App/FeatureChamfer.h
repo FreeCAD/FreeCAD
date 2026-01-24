@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURECHAMFER_H
-#define PARTDESIGN_FEATURECHAMFER_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -76,6 +75,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FEATURECHAMFER_H

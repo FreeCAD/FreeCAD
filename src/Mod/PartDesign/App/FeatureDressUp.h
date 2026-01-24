@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DressUp_H
-#define PARTDESIGN_DressUp_H
+#pragma once
 
 #include "FeatureAddSub.h"
 
@@ -72,6 +71,3 @@ protected:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DressUp_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Helix_H
-#define PARTDESIGN_Helix_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
@@ -132,6 +131,3 @@ public:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Helix_H

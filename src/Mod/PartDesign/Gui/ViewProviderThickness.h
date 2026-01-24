@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderThickness_H
-#define PARTGUI_ViewProviderThickness_H
+#pragma once
 
 #include "ViewProviderDressUp.h"
 
@@ -53,6 +52,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderThickness_H

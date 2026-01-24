@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Pad_H
-#define PARTDESIGN_Pad_H
+#pragma once
 
 #include "FeatureExtrude.h"
 
@@ -62,6 +61,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Pad_H

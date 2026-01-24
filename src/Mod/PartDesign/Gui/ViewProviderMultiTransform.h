@@ -21,8 +21,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMultiTransform_H
-#define PARTGUI_ViewProviderMultiTransform_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
@@ -54,6 +53,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderMultiTransform_H

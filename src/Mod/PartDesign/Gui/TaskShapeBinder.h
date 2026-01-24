@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDatumShapeBinder_H
-#define GUI_TASKVIEW_TaskDatumShapeBinder_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -118,5 +117,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

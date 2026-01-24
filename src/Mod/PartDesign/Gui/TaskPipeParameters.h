@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPipeParameters_H
-#define GUI_TASKVIEW_TaskPipeParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderPipe.h"
@@ -221,5 +220,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

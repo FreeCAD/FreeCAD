@@ -21,8 +21,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_Groove_H
-#define PARTDESIGN_Groove_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureSketchBased.h"
@@ -135,6 +134,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Groove_H

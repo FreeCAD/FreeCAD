@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderChamfer_H
-#define PARTGUI_ViewProviderChamfer_H
+#pragma once
 
 #include "ViewProviderDressUp.h"
 
@@ -54,6 +53,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderChamfer_H

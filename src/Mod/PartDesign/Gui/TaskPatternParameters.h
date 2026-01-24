@@ -20,8 +20,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPatternParameters_H
-#define GUI_TASKVIEW_TaskPatternParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderTransformed.h"
@@ -101,5 +100,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskPatternParameters_H

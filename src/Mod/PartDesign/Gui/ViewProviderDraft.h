@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDraft_H
-#define PARTGUI_ViewProviderDraft_H
+#pragma once
 
 #include "ViewProviderDressUp.h"
 
@@ -54,6 +53,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDraft_H
