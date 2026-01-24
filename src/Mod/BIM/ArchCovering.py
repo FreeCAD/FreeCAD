@@ -518,15 +518,15 @@ class _Covering(ArchComponent.Component):
         if align == "Center":
             mid_u = (min_u + max_u) / 2
             mid_v = (min_v + max_v) / 2
-            origin_offset = u_vec.multiply(mid_u).add(v_vec.multiply(mid_v))
+            origin_offset = (u_vec * mid_u) + (v_vec * mid_v)
         elif align == "BottomLeft":
-            origin_offset = u_vec.multiply(min_u).add(v_vec.multiply(min_v))
+            origin_offset = (u_vec * min_u) + (v_vec * min_v)
         elif align == "BottomRight":
-            origin_offset = u_vec.multiply(max_u).add(v_vec.multiply(min_v))
+            origin_offset = (u_vec * max_u) + (v_vec * min_v)
         elif align == "TopLeft":
-            origin_offset = u_vec.multiply(min_u).add(v_vec.multiply(max_v))
+            origin_offset = (u_vec * min_u) + (v_vec * max_v)
         elif align == "TopRight":
-            origin_offset = u_vec.multiply(max_u).add(v_vec.multiply(max_v))
+            origin_offset = (u_vec * max_u) + (v_vec * max_v)
 
         return center_point.add(origin_offset)
 
@@ -595,6 +595,16 @@ class _Covering(ArchComponent.Component):
         off_x = obj.TileOffset.x
         off_y = obj.TileOffset.y
 
+        # Mutual exclusivity guard: prioritize x over y
+        if (
+            abs(off_x) > Part.Precision.approximation()
+            and abs(off_y) > Part.Precision.approximation()
+        ):
+            FreeCAD.Console.PrintWarning(
+                translate("Arch", "Covering: TileOffset.x/y are exclusive. Ignoring y.") + "\n"
+            )
+            off_y = 0.0
+
         # Generate horizontal strips (rows). These will always be a set of long strips running the
         # full width of the face, with width the size of the joint
         # OpenCascade requires dimensions > 0 for solids
@@ -615,7 +625,10 @@ class _Covering(ArchComponent.Component):
         # direction. If a tile offset is specified, we're laying a running bond, and the vertical
         # cutters are generated as individual segments for each row to create the offset.
         if j_len > MIN_DIMENSION:
-            is_stack_bond = obj.TileOffset.Length < 1e-5
+            is_stack_bond = (
+                abs(off_x) < Part.Precision.approximation()
+                and abs(off_y) < Part.Precision.approximation()
+            )
 
             if is_stack_bond:
                 full_len_y = 2 * count_y * step_y
@@ -692,11 +705,11 @@ class _Covering(ArchComponent.Component):
         # Fallback for zero-joint width where no cutters were generated.
         if not cutters_h and not cutters_v:
             if obj.FinishMode == "Solid Tiles":
-                return base_face.extrude(normal.multiply(obj.TileThickness.Value))
+                return base_face.extrude(normal * obj.TileThickness.Value)
             else:
                 # For 2D modes, apply a micro-offset to prevent z-fighting
                 offset_matrix = FreeCAD.Matrix()
-                offset_matrix.move(normal.normalize().multiply(0.05))
+                offset_matrix.move(normal.normalize() * 0.05)
                 return base_face.transformGeometry(offset_matrix)
 
         t_len = obj.TileLength.Value
@@ -705,7 +718,10 @@ class _Covering(ArchComponent.Component):
         try:
             if obj.FinishMode == "Solid Tiles":
                 # Extrude Base Face
-                tile_layer = base_face.extrude(normal.multiply(obj.TileThickness.Value))
+                try:
+                    tile_layer = base_face.extrude(normal * obj.TileThickness.Value)
+                except Part.OCCError as e:
+                    FreeCAD.Console.PrintError(f"Covering: Caught OCCError in _perform_cut: {e}")
 
                 # Cut
                 if cutters_h:
@@ -774,7 +790,7 @@ class _Covering(ArchComponent.Component):
                 # flickering) in the 3D viewer by ensuring the pattern sits slightly above the base
                 # face.
                 offset_matrix = FreeCAD.Matrix()
-                offset_matrix.move(normal.normalize().multiply(0.05))
+                offset_matrix.move(normal.normalize() * 0.05)
                 return final_pattern.transformGeometry(offset_matrix)
 
         except Part.OCCError as e:

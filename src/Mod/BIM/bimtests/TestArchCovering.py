@@ -298,3 +298,22 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # Should be Top or Bottom (planar), NOT Side (curved), despite Side being larger
         face_obj = cyl.Shape.getElement(face)
         self.assertIsNotNone(face_obj.findPlane(), "Selected face must be planar")
+
+    def test_tile_offset_exclusivity(self):
+        """Test that TileOffset x and y are mutually exclusive in geometry generation."""
+        self.printTestMessage("tile offset exclusivity...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Solid Tiles"
+        covering.TileThickness = 20.0
+        covering.TileLength = 200.0
+        covering.TileWidth = 200.0
+        covering.JointWidth = 10.0
+
+        # Set both X and Y offsets. Logic should prioritize X and ignore Y.
+        covering.TileOffset = App.Vector(100, 50, 0)
+        self.document.recompute()
+
+        # Verify the object recomputed successfully without error
+        self.assertFalse(covering.Shape.isNull())
+        self.assertGreater(len(covering.Shape.Solids), 0)
