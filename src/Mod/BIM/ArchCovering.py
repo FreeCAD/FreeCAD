@@ -1205,7 +1205,9 @@ if FreeCAD.GuiUp:
             # Determine if we are in edit mode or creation mode
             if self.obj_to_edit:
                 self.target_obj = self.obj_to_edit
+                FreeCAD.ActiveDocument.openTransaction("Edit Covering")
             else:
+                FreeCAD.ActiveDocument.openTransaction("Create Covering")
                 # Create a lightweight phantom object to hold properties for the UI
                 self.phantom = FreeCAD.ActiveDocument.addObject(
                     "App::FeaturePython", "CoveringSettings"
@@ -1669,15 +1671,7 @@ if FreeCAD.GuiUp:
                 pass
 
         def _cleanup_and_close(self):
-            """Removes temporary objects and observers, then closes the task panel."""
-            if self.phantom:
-                # Get the document associated with the phantom object
-                doc = getattr(self.phantom, "Document", None)
-                if doc and doc.getObject(self.phantom.Name):
-                    # Only attempt removal if the object is still present in the document
-                    doc.removeObject(self.phantom.Name)
-                self.phantom = None
-
+            """Removes temporary oobservers, then closes the task panel."""
             # Standard cleanup for listeners and UI
             self._unregister_observer()
             FreeCADGui.Control.closeDialog()
@@ -1771,10 +1765,6 @@ if FreeCAD.GuiUp:
                stack trace appears in FreeCAD's Report View for notification purposes.
             """
             try:
-                # Open a transaction. FreeCAD handles nesting automatically.
-                # If a transaction is already open, this increases the stack depth.
-                FreeCAD.ActiveDocument.openTransaction("Modify Covering")
-
                 # Sync all values from UI widgets (bound and unbound) to the target object
                 self._sync_ui_to_target()
 
@@ -1832,9 +1822,6 @@ if FreeCAD.GuiUp:
                 # Save user preferences for next run
                 self._save_user_preferences()
 
-                # Commit the transaction successfully
-                FreeCAD.ActiveDocument.commitTransaction()
-
                 # Handle the 'continue' workflow
                 if not self.obj_to_edit and self.chk_continue.isChecked():
                     FreeCADGui.Selection.clearSelection()
@@ -1844,6 +1831,16 @@ if FreeCAD.GuiUp:
                     self._updateSelectionUI()
                     self.setPicking(True)
                     return False
+
+                # Remove phantom before commit to keep it out of permanent history
+                if self.phantom:
+                    doc = getattr(self.phantom, "Document", None)
+                    if doc and doc.getObject(self.phantom.Name):
+                        doc.removeObject(self.phantom.Name)
+                    self.phantom = None
+
+                # Commit the transaction successfully
+                FreeCAD.ActiveDocument.commitTransaction()
 
             except Exception as e:
                 # Ensure transaction is closed on failure to prevent corruption
@@ -1860,8 +1857,10 @@ if FreeCAD.GuiUp:
             return True
 
         def reject(self):
+            if FreeCAD.ActiveDocument.HasPendingTransaction:
+                FreeCAD.ActiveDocument.abortTransaction()
+
             if self.obj_to_edit:
                 FreeCADGui.ActiveDocument.resetEdit()
-                if FreeCAD.ActiveDocument.HasPendingTransaction:
-                    FreeCAD.ActiveDocument.abortTransaction()
+
             self._cleanup_and_close()
