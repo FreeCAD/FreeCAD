@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef WEB_GLOBAL_H
-# define WEB_GLOBAL_H
+#pragma once
 
 
 // Web
@@ -45,5 +44,3 @@
 #   define WebGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // WEB_GLOBAL_H
