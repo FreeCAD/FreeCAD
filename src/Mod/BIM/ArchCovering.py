@@ -298,22 +298,26 @@ class _Covering(ArchComponent.Component):
                     obj.Shape = Part.Compound([base_face, pat])
             return
 
+        # Establish the local coordinate system and grid origin for the tiling pattern.
         u_vec, v_vec, normal, center_point = self._get_grid_basis(base_face)
         origin = self._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
 
-        # Dimensions
+        # Cache dimensions
         t_len = obj.TileLength.Value
         t_wid = obj.TileWidth.Value
         j_len = obj.JointWidth.Value
         j_wid = obj.JointWidth.Value
 
-        # Cut thickness
+        # Determine cut thickness, increase thickness for solid tiles to avoid intersections between
+        # cutters and the tile geometry.
         cut_thick = obj.TileThickness.Value * 1.1 if obj.FinishMode == "Solid Tiles" else 1.0
 
+        # Create the cutter tools
         cutters_h, cutters_v = self._build_cutters(
             obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
         )
 
+        # Perform the cut operations and assign the resulting shape to the covering
         obj.Shape = self._perform_cut(
             obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
         )
@@ -426,12 +430,32 @@ class _Covering(ArchComponent.Component):
         return None
 
     def _get_grid_basis(self, base_face):
-        # Determine Grid Basis (u, v directions from face) using Generic Surface API
+        """
+        Computes the local coordinate system basis vectors for a face.
+
+        Calculates the tangent U and V directions at the face center, ensures orthogonality, and
+        determines the face normal and center point.
+
+        Parameters
+        ----------
+        base_face : Part.Face
+            The face to analyze.
+
+        Returns
+        -------
+        tuple
+            (u_vec, v_vec, normal, center_point) as FreeCAD.Vectors.
+        """
+        # Determine grid basis (U, V directions from face)
+        # Map 3D center to 2D parameters to establish a surface reference point.
         u_p, v_p = base_face.Surface.parameter(base_face.BoundBox.Center)
+        # Derive local surface axes; normalize U to serve as a consistent direction unit.
         u_vec, v_vec = base_face.Surface.tangent(u_p, v_p)
         u_vec.normalize()
 
-        # Calculate normal and re-orthogonalize V vector
+        # Calculate normal and re-orthogonalize V vector.
+        # Ensure the tiling grid is perfectly square by forcing V to be perpendicular to U and the
+        # surface normal.
         normal = u_vec.cross(v_vec)
         normal.normalize()
         v_vec = normal.cross(u_vec)
@@ -441,6 +465,30 @@ class _Covering(ArchComponent.Component):
         return u_vec, v_vec, normal, center_point
 
     def _get_grid_origin(self, obj, base_face, u_vec, v_vec, center_point):
+        """
+        Calculates the starting 3D point for the tiling grid.
+
+        Projects the face vertices onto the U and V basis vectors to find the face extents, then
+        determines the origin point based on the TileAlignment property.
+
+        Parameters
+        ----------
+        obj : App.FeaturePython
+            The covering object containing the alignment property.
+        base_face : Part.Face
+            The face defining the geometric boundaries.
+        u_vec : FreeCAD.Vector
+            The local horizontal direction of the grid.
+        v_vec : FreeCAD.Vector
+            The local vertical direction of the grid.
+        center_point : FreeCAD.Vector
+            The reference center point of the face.
+
+        Returns
+        -------
+        FreeCAD.Vector
+            The global 3D coordinate for the grid starting point.
+        """
         # Find extents - Initialize with first vertex
         v0 = base_face.Vertexes[0].Point
         vec0 = v0.sub(center_point)
@@ -483,7 +531,36 @@ class _Covering(ArchComponent.Component):
         return center_point.add(origin_offset)
 
     def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
+        """
+        Generates the grid of solids representing the joints between tiles.
 
+        These boxes are used as Boolean tools to subtract the gaps from the base face or volume.
+        The function estimates the required number of rows and columns based on the face
+        bounding box and incorporates pattern offsets for staggered bonds.
+
+        Parameters
+        ----------
+        obj : App::FeaturePython
+            The covering object containing pattern settings like TileOffset.
+        bbox : Base::BoundBox
+            The bounding box of the target face used to determine the grid extent.
+        t_len : float
+            The local length of a single tile.
+        t_wid : float
+            The local width of a single tile.
+        j_len : float
+            The width of the vertical joint gap.
+        j_wid : float
+            The width of the horizontal joint gap.
+        cut_thick : float
+            The thickness (z-height) of the generated joint solids.
+
+        Returns
+        -------
+        tuple
+            A pair of lists (cutters_h, cutters_v) containing Part.Box solids, or (None, None)
+            if dimensions are invalid or the calculated tile count exceeds safety limits.
+        """
         # Step size
         step_x = t_len + j_len
         step_y = t_wid + j_wid
@@ -492,7 +569,8 @@ class _Covering(ArchComponent.Component):
         if step_x < MIN_DIMENSION or step_y < MIN_DIMENSION:
             return None, None
 
-        # Estimate count
+        # Estimate count. Use the base face's diagonal to ensure full coverage, even if the tiling
+        # grid is rotated 45° (worst-case scenario) via the Rotation property.
         diag = bbox.DiagonalLength
         count_x = int(diag / step_x) + 4
         count_y = int(diag / step_y) + 4
@@ -517,7 +595,8 @@ class _Covering(ArchComponent.Component):
         off_x = obj.TileOffset.x
         off_y = obj.TileOffset.y
 
-        # Generate Horizontal Strips (Rows)
+        # Generate horizontal strips (rows). These will always be a set of long strips running the
+        # full width of the face, with width the size of the joint
         # OpenCascade requires dimensions > 0 for solids
         if j_wid > MIN_DIMENSION:
             full_len_x = 2 * count_x * step_x
@@ -531,8 +610,10 @@ class _Covering(ArchComponent.Component):
                 )
                 cutters_h.append(jh_box)
 
-        # Generate Vertical Strips (Cols)
-        # OpenCascade requires dimensions > 0 for solids
+        # Generate vertical strips (cols). If no tile offset is specified, we're laying a stack bond
+        # and the vertical strips are built similarly to horizontal strips, but in the vertical
+        # direction. If a tile offset is specified, we're laying a running bond, and the vertical
+        # cutters are generated as individual segments for each row to create the offset.
         if j_len > MIN_DIMENSION:
             is_stack_bond = obj.TileOffset.Length < 1e-5
 
@@ -561,7 +642,39 @@ class _Covering(ArchComponent.Component):
 
     @profile_it
     def _perform_cut(self, obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec):
+        """
+        Executes the Boolean operations to divide the base face into tiles.
 
+        This function transforms the pre-generated cutters to the correct grid orientation and
+        location, then performs sequential cuts to subtract the joint gaps. It handles both 3D solid
+        tiles and 2D parametric patterns. It also calculates and updates tile count statistics based
+        on geometry volume or area.
+
+        Parameters
+        ----------
+        obj : App::FeaturePython
+            The covering object containing user settings and where statistics are updated.
+        base_face : Part.Face
+            The primary planar surface to be tiled.
+        cutters_h : list of Part.Box
+            The horizontal joint solids generated by _build_cutters.
+        cutters_v : list of Part.Box
+            The vertical joint solids generated by _build_cutters.
+        normal : Base.Vector
+            The face normal vector used for extrusion and rotation calculation.
+        origin : Base.Vector
+            The 3D coordinate of the grid alignment point.
+        u_vec : Base.Vector
+            Local horizontal unit vector of the face.
+        v_vec : Base.Vector
+            Local vertical unit vector of the face.
+
+        Returns
+        -------
+        Part.Shape
+            A compound of solids (for Solid Tiles mode) or a compound of wires (for Parametric
+            Pattern mode).
+        """
         # If the cutter builder returned None, some of the parameters (e.g. tile size or joint
         # width) were invalid.
         # Return an empty Part.Shape() and allow the document to continue recomputing other objects.
