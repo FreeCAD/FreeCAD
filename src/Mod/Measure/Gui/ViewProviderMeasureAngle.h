@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <Inventor/fields/SoMFFloat.h>
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <QObject>
@@ -42,6 +43,11 @@ class SoTranslation;
 class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTransform;
+class SoSeparator;
+class SoCone;
+class SoLineSet;
+class SoBaseColor;
+class SoDrawStyle;
 // NOLINTEND
 
 namespace MeasureGui
@@ -68,6 +74,9 @@ protected:
 private:
     // Fields
     SoSFFloat fieldAngle;  // radians.
+    SoSFVec3f fieldNormalPosition1;
+    SoSFVec3f fieldNormalPosition2;
+    SoSFMatrix fieldNormalMatrix;  // local to global
 
     SbMatrix getMatrix();
 };
