@@ -288,9 +288,11 @@ public:
 
     // Store named object property list in cache for performance purposes,
     // to avoid building it again for each requested index
-    std::vector<std::pair<const char*, App::Property*>>& getCachedPropertyNamedList(DocumentObject* obj) const {
-        if (!this->namedPropsCache.contains(obj))
-        {
+    std::vector<std::pair<const char*, App::Property*>>& getCachedPropertyNamedList(
+        DocumentObject* obj
+    ) const
+    {
+        if (!this->namedPropsCache.contains(obj)) {
             this->namedPropsCache[obj];
             obj->getPropertyNamedList(this->namedPropsCache[obj]);
         }
