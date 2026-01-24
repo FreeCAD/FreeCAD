@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGEXTRUSION_H
-#define PARTGUI_DLGEXTRUSION_H
+#pragma once
 
 #include <QDialog>
 #include <string>
@@ -126,5 +125,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGEXTRUSION_H

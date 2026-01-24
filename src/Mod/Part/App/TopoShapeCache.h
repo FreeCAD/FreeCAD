@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_TOPOSHAPECACHE_H
-#define FREECAD_TOPOSHAPECACHE_H
+#pragma once
 
 #include <TopoDS.hxx>
 #include <TopoDS_Compound.hxx>
@@ -144,5 +143,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // FREECAD_TOPOSHAPECACHE_H

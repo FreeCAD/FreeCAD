@@ -24,8 +24,7 @@
 
 #include <FCGlobal.h>
 
-#ifndef PART_GLOBAL_H
-# define PART_GLOBAL_H
+#pragma once
 
 // Part
 # ifndef PartExport
@@ -48,5 +47,3 @@
 #   define PartGuiExport FREECAD_DECL_IMPORT
 #  endif
 # endif
-
-#endif  // PART_GLOBAL_H

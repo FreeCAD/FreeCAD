@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_TOPOSHAPE_H
-#define PART_TOPOSHAPE_H
+#pragma once
 
 #include <iosfwd>
 #include <list>
@@ -3051,5 +3050,3 @@ struct PartExport MapperHistory: TopoShape::Mapper
 };
 
 }  // namespace Part
-
-#endif  // PART_TOPOSHAPE_H

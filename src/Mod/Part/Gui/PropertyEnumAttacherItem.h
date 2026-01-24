@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_PropertyEnumAttacherItem_H
-#define PART_PropertyEnumAttacherItem_H
+#pragma once
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
@@ -63,5 +62,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-#endif  // PART_PropertyEnumAttacherItem_H

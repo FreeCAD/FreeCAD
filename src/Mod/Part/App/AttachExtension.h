@@ -26,8 +26,7 @@
  * them attachable.
  */
 
-#ifndef PARTATTACHABLEOBJECT_H
-#define PARTATTACHABLEOBJECT_H
+#pragma once
 
 #include <App/DocumentObjectExtension.h>
 #include <App/ExtensionPython.h>
@@ -173,5 +172,3 @@ private:
 using AttachExtensionPython = App::ExtensionPythonT<AttachExtension>;
 
 }  // namespace Part
-
-#endif  // PARTATTACHABLEOBJECT_H

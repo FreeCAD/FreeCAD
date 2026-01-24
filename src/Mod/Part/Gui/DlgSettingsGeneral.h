@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGSGENERAL_H
-#define PARTGUI_DLGSETTINGSGENERAL_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGSETTINGSGENERAL_H

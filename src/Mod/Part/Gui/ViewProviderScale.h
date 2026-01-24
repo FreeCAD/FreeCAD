@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERSCALE_H
-#define PARTGUI_VIEWPROVIDERSCALE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -49,6 +48,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERSCALE_H

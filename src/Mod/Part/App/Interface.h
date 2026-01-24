@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_INTERFACE_H
-#define PART_INTERFACE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 #include <Standard_CString.hxx>
@@ -80,5 +79,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif

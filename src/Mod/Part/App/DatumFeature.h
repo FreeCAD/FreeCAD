@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_DATUMFEATURE_H
-#define PART_DATUMFEATURE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -68,6 +67,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_DATUMFEATURE_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGREVOLUTION_H
-#define PARTGUI_DLGREVOLUTION_H
+#pragma once
 
 #include <Gui/InputVector.h>
 #include <Gui/Selection/Selection.h>
@@ -106,5 +105,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGREVOLUTION_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTCOMMON_H
-#define PART_FEATUREPARTCOMMON_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -74,5 +73,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTCOMMON_H

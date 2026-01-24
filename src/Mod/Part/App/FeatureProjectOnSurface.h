@@ -22,8 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PART_FEATUREPROJECTONSURFACE_H
-#define PART_FEATUREPROJECTONSURFACE_H
+#pragma once
 
 #include "PartFeature.h"
 #include <App/PropertyLinks.h>
@@ -100,6 +99,3 @@ private:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPROJECTONSURFACE_H

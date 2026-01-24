@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPPOINTSET_H
-#define PARTGUI_SOBREPPOINTSET_H
+#pragma once
 
 #include <Inventor/nodes/SoPointSet.h>
 #include <memory>
@@ -81,6 +80,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_SOBREPPOINTSET_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DlgPartImportStepImp_H
-#define DlgPartImportStepImp_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -49,5 +48,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // DlgPartImportStepImp_H

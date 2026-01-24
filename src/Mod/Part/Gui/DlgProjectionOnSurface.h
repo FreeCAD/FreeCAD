@@ -21,8 +21,7 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
-#ifndef PARTGUI_DLGPROJECTIONONSURFACE_H
-#define PARTGUI_DLGPROJECTIONONSURFACE_H
+#pragma once
 
 #include "gp_Dir.hxx"
 #include "TopoDS_Edge.hxx"
@@ -260,4 +259,3 @@ private:
 
 
 }  // namespace PartGui
-#endif  // PARTGUI_DLGPROJECTIONONSURFACE_H

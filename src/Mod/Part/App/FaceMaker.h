@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FACEMAKER_H
-#define PART_FACEMAKER_H
+#pragma once
 
 #include <BRepBuilderAPI_MakeShape.hxx>
 #include <Standard_Version.hxx>
@@ -177,4 +176,3 @@ protected:
 
 
 }  // namespace Part
-#endif  // PART_FACEMAKER_H

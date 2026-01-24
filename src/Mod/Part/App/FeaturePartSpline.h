@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTSPLINE_H
-#define PART_FEATUREPARTSPLINE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -47,6 +46,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPARTSPLINE_H
