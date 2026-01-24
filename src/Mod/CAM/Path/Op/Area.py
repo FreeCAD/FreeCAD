@@ -137,13 +137,11 @@ class ObjectOp(PathOp.ObjectOp):
             getattr(self, "init", False)
             and hasattr(obj, "Side")
             and prop == "FinalDepth"
-            and len(obj.Base) == 1
+            and obj.Base
         ):
             """Offer side only while creating new operation
-            if prop is 'Base', only 1 shape saved to 'obj.Base'
-            if prop is 'FinalDepth', all selected shapes saved to 'obj.Base'"""
+            prop 'FinalDepth' indicate that all selected shapes saved to 'obj.Base'"""
             self.init = False
-
             (base, subNames) = obj.Base[0]
 
             # find parent boundbox
@@ -153,28 +151,25 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 bbs = [base.Shape.BoundBox]
 
+            subBb = None
             if "Face" in subNames[0]:
                 faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
                 shape = Part.Compound(faces)
-                fbb = shape.BoundBox
-                for bb in bbs:
-                    if bb.isInside(fbb):
-                        if bb.XLength == fbb.XLength and bb.YLength == fbb.YLength:
-                            obj.Side = "Outside"
-                        else:
-                            obj.Side = "Inside"
-                        break
-
+                subBb = shape.BoundBox
             elif "Edge" in subNames[0]:
                 edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
                 wire = Part.Wire(Part.__sortEdges__(edges))
-                wbb = wire.BoundBox
+                if not wire.isClosed():
+                    # for open wire always offer Outside
+                    obj.Side = "Outside"
+                else:
+                    subBb = wire.BoundBox
+            if subBb:
                 for bb in bbs:
-                    if bb.isInside(wbb):
-                        if not wire.isClosed() or (
-                            bb.XLength == wbb.XLength and bb.YLength == wbb.YLength
+                    if bb.isInside(subBb):
+                        if Path.Geom.isRoughly(bb.XLength, subBb.XLength) and Path.Geom.isRoughly(
+                            bb.YLength, subBb.YLength
                         ):
-                            # for open wire always offer Outside
                             obj.Side = "Outside"
                         else:
                             obj.Side = "Inside"
