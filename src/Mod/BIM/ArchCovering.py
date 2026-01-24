@@ -684,25 +684,8 @@ class _Covering(ArchComponent.Component):
         # Prepare transformation
         tr = FreeCAD.Placement()
         tr.Base = origin
-        rot_mat = FreeCAD.Matrix(
-            u_vec.x,
-            v_vec.x,
-            normal.x,
-            0,
-            u_vec.y,
-            v_vec.y,
-            normal.y,
-            0,
-            u_vec.z,
-            v_vec.z,
-            normal.z,
-            0,
-            0,
-            0,
-            0,
-            1,
-        )
-        face_rot = FreeCAD.Placement(rot_mat).Rotation
+        # Assumes the vectors are already unit vectors and orthogonal
+        face_rot = FreeCAD.Rotation(u_vec, v_vec, normal)
         tile_rot = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.Rotation.Value)
         tr.Rotation = face_rot.multiply(tile_rot)
 
