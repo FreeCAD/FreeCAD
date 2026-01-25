@@ -579,7 +579,6 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "        if qgs_page:\n"
                 "            # Calculate page dimensions in mm (TechDraw's native unit)\n"
                 "            dpi = 300.0\n"
-                "            mm_to_points = Export3DPDF::MM_TO_POINTS\n"
                 "            page_width_mm = " + std::to_string(pageWidthPoints / Export3DPDF::MM_TO_POINTS) + "\n"
                 "            page_height_mm = " + std::to_string(pageHeightPoints / Export3DPDF::MM_TO_POINTS) + "\n"
                 "            \n"
