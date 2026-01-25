@@ -100,55 +100,58 @@ struct Export3DPDFExport TessellationData {
 
 /**
  * @brief 3D PDF Export functionality using PRC format
+ *
+ * This class uses in-memory buffers for PRC data to avoid intermediate files,
+ * improving performance and eliminating file path encoding issues.
  */
 class Export3DPDFExport Export3DPDFCore {
 public:
     /**
-     * @brief Convert tessellation data to PRC format and create 3D PDF
+     * @brief Create a 3D PDF from tessellation data (direct export)
      * @param tessellationData Vector of tessellation data for multiple objects
-     * @param outputPath Path where the 3D PDF should be saved (without extension)
+     * @param pdfPath Full path where the 3D PDF should be saved (including .pdf extension)
      * @param settings Export settings (page dimensions, background color, view settings)
      * @return true if successful, false otherwise
      */
-    static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData,
-                                         const std::string& outputPath,
-                                         const PDFExportSettings& settings = PDFExportSettings());
+    static bool exportToPDF(const std::vector<TessellationData>& tessellationData,
+                            const std::string& pdfPath,
+                            const PDFExportSettings& settings = PDFExportSettings());
 
     /**
-     * @brief Create a PRC file from tessellation data
-     * @param tessellationData Vector of tessellation data for multiple objects
-     * @param prcPath Path where the PRC file should be saved
-     * @return Path to created file on success, empty string on failure
-     */
-    static std::string createPRCFile(const std::vector<TessellationData>& tessellationData,
-                                     const std::string& prcPath);
-
-    /**
-     * @brief Create a 3D PDF from PRC file data
-     * @param prcPath Path to the PRC file
-     * @param pdfPath Path where the 3D PDF should be saved
-     * @param settings Export settings (page dimensions, background color, view settings)
-     * @return true if successful, false otherwise
-     */
-    static bool embedPRCInPDF(const std::string& prcPath,
-                              const std::string& pdfPath,
-                              const PDFExportSettings& settings = PDFExportSettings());
-
-    /**
-     * @brief Create hybrid 2D+3D PDF with complete TechDraw page and 3D content
+     * @brief Create hybrid 2D+3D PDF with TechDraw page background and 3D content
      * @param tessellationData Vector of tessellation data for 3D objects
-     * @param outputPath Path where the hybrid PDF should be saved (without extension)
+     * @param pdfPath Full path where the hybrid PDF should be saved (including .pdf extension)
      * @param backgroundImagePath Path to background image (rendered TechDraw page)
      * @param settings Export settings (page dimensions, background color, view settings)
      * @return true if successful, false otherwise
      */
-    static bool createHybrid3DPDF(const std::vector<TessellationData>& tessellationData,
-                                  const std::string& outputPath,
+    static bool exportToHybridPDF(const std::vector<TessellationData>& tessellationData,
+                                  const std::string& pdfPath,
                                   const std::string& backgroundImagePath,
                                   const PDFExportSettings& settings);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances
+
+    /**
+     * @brief Create PRC data in memory from tessellation data
+     * @param tessellationData Vector of tessellation data for multiple objects
+     * @return Vector containing PRC binary data, empty on failure
+     */
+    static std::vector<uint8_t> createPRCBuffer(const std::vector<TessellationData>& tessellationData);
+
+    /**
+     * @brief Create 3D PDF from PRC buffer data
+     * @param prcBuffer Buffer containing PRC data
+     * @param pdfPath Path where the PDF should be saved
+     * @param backgroundImagePath Optional path to background image (empty for no background)
+     * @param settings Export settings
+     * @return true if successful, false otherwise
+     */
+    static bool createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
+                                    const std::string& pdfPath,
+                                    const std::string& backgroundImagePath,
+                                    const PDFExportSettings& settings);
 };
 
 } // namespace Export3DPDF

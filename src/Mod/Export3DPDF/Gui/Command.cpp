@@ -34,9 +34,6 @@
 # include <sstream>
 #endif
 
-#include <boost/regex.hpp>
-#include <boost/algorithm/string/replace.hpp>
-
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -655,22 +652,27 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         settings.activeView.width = activeViewWidth;
         settings.activeView.height = activeViewHeight;
 
+        // Full PDF path (new API expects complete path with extension)
+        std::string pdfPath = outputPath + ".pdf";
+
         bool success = false;
 
         if (!backgroundImagePath.empty() && currentPage) {
-            success = Export3DPDF::Export3DPDFCore::createHybrid3DPDF(
-                tessData, outputPath, backgroundImagePath, settings);
+            // Hybrid export with TechDraw background
+            success = Export3DPDF::Export3DPDFCore::exportToHybridPDF(
+                tessData, pdfPath, backgroundImagePath, settings);
         } else {
-            success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(
-                tessData, outputPath, settings);
+            // Direct 3D PDF export
+            success = Export3DPDF::Export3DPDFCore::exportToPDF(
+                tessData, pdfPath, settings);
         }
 
-        if (success && !backgroundImagePath.empty()) {
-            std::remove(backgroundImagePath.c_str());
+        // Clean up background image if it was created
+        if (!backgroundImagePath.empty()) {
+            Base::FileInfo(backgroundImagePath).deleteFile();
         }
 
         // Provide user feedback
-        std::string pdfPath = outputPath + ".pdf";
         if (success) {
             Base::Console().message("3D PDF exported successfully: %s\n", pdfPath.c_str());
             QMessageBox::information(getMainWindow(),
