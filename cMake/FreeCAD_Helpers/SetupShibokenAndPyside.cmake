@@ -7,7 +7,7 @@ macro(SetupShibokenAndPyside)
     if(DEFINED MACPORTS_PREFIX)
         find_package(Shiboken REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
         find_package(PySide REQUIRED HINTS "${PYTHON_LIBRARY_DIR}/cmake")
-    endif(DEFINED MACPORTS_PREFIX)
+    endif()
 
     if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
         set(SHIBOKEN_MAJOR_VERSION 2)
@@ -21,16 +21,16 @@ macro(SetupShibokenAndPyside)
     # Shiboken2Config.cmake may explicitly set CMAKE_BUILD_TYPE to Release which causes
     # CMake to fail to create Makefiles for a debug build.
     # So as a workaround we save and restore the value after checking for Shiboken2.
-    set (SAVE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
+    set(SAVE_BUILD_TYPE ${CMAKE_BUILD_TYPE})
     find_package(Shiboken${SHIBOKEN_MAJOR_VERSION} QUIET)
-    set (CMAKE_BUILD_TYPE ${SAVE_BUILD_TYPE})
-    if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
+    set(CMAKE_BUILD_TYPE ${SAVE_BUILD_TYPE})
+    if(Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
         # Shiboken config file was found but it may use the wrong Python version
         # Try to get the matching config suffix and repeat finding the package
         set(SHIBOKEN_PATTERN .cpython-${Python3_VERSION_MAJOR}${Python3_VERSION_MINOR})
 
         file(GLOB SHIBOKEN_CONFIG "${Shiboken${SHIBOKEN_MAJOR_VERSION}_DIR}/Shiboken${SHIBOKEN_MAJOR_VERSION}Config${SHIBOKEN_PATTERN}*.cmake")
-        if (SHIBOKEN_CONFIG)
+        if(SHIBOKEN_CONFIG)
             get_filename_component(SHIBOKEN_CONFIG_SUFFIX ${SHIBOKEN_CONFIG} NAME)
             string(SUBSTRING ${SHIBOKEN_CONFIG_SUFFIX} 15 -1 SHIBOKEN_CONFIG_SUFFIX)
             string(REPLACE ".cmake" "" PYTHON_CONFIG_SUFFIX ${SHIBOKEN_CONFIG_SUFFIX})
@@ -47,11 +47,11 @@ macro(SetupShibokenAndPyside)
     # to dance to be compatible with the old (<5.12) and the new versions (>=5.12)
     if(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken)
         get_property(SHIBOKEN_INCLUDE_DIR TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-    endif(NOT SHIBOKEN_INCLUDE_DIR AND TARGET Shiboken${SHIBOKEN_MAJOR_VERSION}::libshiboken)
+    endif()
 
     if(NOT SHIBOKEN_INCLUDE_DIR)
         find_pip_package(Shiboken${SHIBOKEN_MAJOR_VERSION})
-        if (Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
+        if(Shiboken${SHIBOKEN_MAJOR_VERSION}_FOUND)
             set(SHIBOKEN_INCLUDE_DIR ${Shiboken${SHIBOKEN_MAJOR_VERSION}_INCLUDE_DIRS})
             set(SHIBOKEN_LIBRARY ${Shiboken${SHIBOKEN_MAJOR_VERSION}_LIBRARIES})
         endif()
@@ -63,11 +63,11 @@ macro(SetupShibokenAndPyside)
         # Our internal FindPySide6.cmake file already provides these for PySide6
         if(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
             get_property(PYSIDE_INCLUDE_DIR TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-        endif(NOT PYSIDE_INCLUDE_DIR AND TARGET PySide${PYSIDE_MAJOR_VERSION}::pyside${PYSIDE_MAJOR_VERSION})
+        endif()
 
         if(NOT PYSIDE_INCLUDE_DIR)
             find_pip_package(PySide${PYSIDE_MAJOR_VERSION})
-            if (PySide${PYSIDE_MAJOR_VERSION}_FOUND)
+            if(PySide${PYSIDE_MAJOR_VERSION}_FOUND)
                 set(PYSIDE_INCLUDE_DIR ${PySide${PYSIDE_MAJOR_VERSION}_INCLUDE_DIRS})
                 set(PYSIDE_LIBRARY ${PySide${PYSIDE_MAJOR_VERSION}_LIBRARIES})
             endif()
@@ -175,22 +175,22 @@ macro(SetupShibokenAndPyside)
         message(STATUS "PySide ${PySide_VERSION} Python module found at ${PRINT_OUTPUT}.\n")
     endif()
 
-endmacro(SetupShibokenAndPyside)
+endmacro()
 
 
-MACRO(PYSIDE_WRAP_RC outfiles)
-  if (NOT PYSIDE_RCC_EXECUTABLE)
+macro(PYSIDE_WRAP_RC outfiles)
+  if(NOT PYSIDE_RCC_EXECUTABLE)
     message(FATAL_ERROR "Qt rcc is required for generating ${ARGN}")
   endif()
-  FOREACH(it ${ARGN})
-    GET_FILENAME_COMPONENT(outfile ${it} NAME_WE)
-    GET_FILENAME_COMPONENT(infile ${it} ABSOLUTE)
-    SET(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
+  foreach(it ${ARGN})
+    get_filename_component(outfile ${it} NAME_WE)
+    get_filename_component(infile ${it} ABSOLUTE)
+    set(outfile "${CMAKE_CURRENT_BINARY_DIR}/${outfile}_rc.py")
     #ADD_CUSTOM_TARGET(${it} ALL
     #  DEPENDS ${outfile}
     #)
     if(WIN32 OR APPLE)
-        ADD_CUSTOM_COMMAND(OUTPUT ${outfile}
+        add_custom_command(OUTPUT ${outfile}
           COMMAND ${PYSIDE_RCC_EXECUTABLE} ${RCCOPTIONS} ${infile} -o ${outfile}
           MAIN_DEPENDENCY ${infile}
         )
@@ -198,7 +198,7 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         # Especially on Open Build Service we don't want changing date like
         # pyside-rcc generates in comments at beginning, which is why
         # we follow the tool command with in-place sed.
-        ADD_CUSTOM_COMMAND(OUTPUT "${outfile}"
+        add_custom_command(OUTPUT "${outfile}"
           COMMAND "${PYSIDE_RCC_EXECUTABLE}" ${RCCOPTIONS} "${infile}" ${PY_ATTRIBUTE} -o "${outfile}"
           # The line below sometimes catches unwanted lines too - but there is no date in the file
           # anymore with Qt5 RCC, so commenting it out for now...
@@ -207,5 +207,5 @@ MACRO(PYSIDE_WRAP_RC outfiles)
         )
     endif()
     list(APPEND ${outfiles} ${outfile})
-  ENDFOREACH(it)
-ENDMACRO (PYSIDE_WRAP_RC)
+  endforeach()
+endmacro()
