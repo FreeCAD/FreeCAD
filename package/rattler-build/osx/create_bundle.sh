@@ -92,8 +92,8 @@ else
     fi
     echo "Ad-hoc signing app bundle..."
     codesign --force --sign - FreeCAD.app/Contents/packages.txt
-    if [ -f "FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/QuicklookFCStd" ]; then
-        codesign --force --sign - FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/QuicklookFCStd
+    if [ -f "FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+        codesign --force --sign - FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd
     fi
     codesign --force --sign - FreeCAD.app
 
