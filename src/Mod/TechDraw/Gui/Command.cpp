@@ -699,7 +699,6 @@ CmdTechDrawActiveView::CmdTechDrawActiveView() : Command("TechDraw_ActiveView")
     sMenuText = QT_TR_NOOP("Active View");
     sToolTipText = "Inserts an image of the open 3D view in the current page.\n"
                "If multiple 3D views are open, a selection dialog will be shown.";
-    sToolTipText = sMenuText;
     sWhatsThis = "TechDraw_ActiveView";
     sStatusTip = sToolTipText;
     sPixmap = "actions/TechDraw_ActiveView";
@@ -974,7 +973,7 @@ void execComplexSection(Gui::Command* cmd)
 
     if (!baseView) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-            QObject::tr("No base view selected"));
+                            QObject::tr("No base view found in this selection"));
         return;
     }
 
