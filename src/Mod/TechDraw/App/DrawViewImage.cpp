@@ -133,7 +133,6 @@ template<> const char* TechDraw::DrawViewImagePython::getViewProviderName() cons
 {
     return "TechDrawGui::ViewProviderImage";
 }
-
 /// @endcond
 
 // explicit template instantiation

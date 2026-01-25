@@ -42,6 +42,7 @@
        </property>
        <property name="toolTip">
         <string>Crops captured image to this width</string>
+
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -126,6 +127,7 @@
        </property>
        <property name="toolTip">
         <string>Crops captured image to this height</string>
+        
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

@@ -26,6 +26,7 @@
 # include <QPushButton>
 
 #include <App/Document.h>
+#include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/PropertyStandard.h>
 #include <Base/Console.h>
@@ -57,7 +58,7 @@ using DU = DrawUtil;
 constexpr int SXGAWidth{1280};
 constexpr int SXGAHeight{1024};
 
-//ctor for creation
+// ctor for creation
 TaskActiveView::TaskActiveView(TechDraw::DrawPage* pageFeat)
     : ui(new Ui_TaskActiveView), m_pageFeat(pageFeat), m_imageFeat(nullptr), m_btnOK(nullptr),
       m_btnCancel(nullptr)

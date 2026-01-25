@@ -99,9 +99,9 @@ StdCmdPrint3dPdf::StdCmdPrint3dPdf()
 {
     sGroup        = "File";
     sMenuText     = QT_TR_NOOP("Export &3D PDF...");
-    sToolTipText  = QT_TR_NOOP("Export the document as 3D PDF");
+    sToolTipText  = QT_TR_NOOP("Exports the document as 3D PDF");
     sWhatsThis    = "Std_Print3dPdf";
-    sStatusTip    = QT_TR_NOOP("Export the document as 3D PDF");
+    sStatusTip    = sToolTipText;
     sPixmap       = "Std_PrintPdf";
     eType         = 0;
 }
