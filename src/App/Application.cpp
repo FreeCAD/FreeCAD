@@ -179,7 +179,7 @@ namespace fs = std::filesystem;
 
 namespace {
     // reduce code duplication for platform-specific case-insensitive str/compar
-    void bool caseInsensitiveCompare(const char* str1, const std::string& str2)
+    bool caseInsensitiveCompare(const char* str1, const std::string& str2)
     {
         if (!str1) {
             return str2.empty();
@@ -3789,4 +3789,5 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
         }
     }
 }
+
 
