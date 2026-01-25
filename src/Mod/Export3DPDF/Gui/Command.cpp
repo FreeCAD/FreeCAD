@@ -643,24 +643,29 @@ void StdCmdPrint3dPdf::activated(int iMsg)
 
     
     if (!tessData.empty()) {
+        // Build export settings struct
+        Export3DPDF::PDFExportSettings settings;
+        settings.page.widthPoints = pageWidthPoints;
+        settings.page.heightPoints = pageHeightPoints;
+        settings.background.r = backgroundR;
+        settings.background.g = backgroundG;
+        settings.background.b = backgroundB;
+        settings.activeView.x = activeViewX;
+        settings.activeView.y = activeViewY;
+        settings.activeView.scale = activeViewScale;
+        settings.activeView.width = activeViewWidth;
+        settings.activeView.height = activeViewHeight;
+
         bool success = false;
-        
+
         if (!backgroundImagePath.empty() && currentPage) {
             success = Export3DPDF::Export3DPDFCore::createHybrid3DPDF(
-                tessData, outputPath, backgroundImagePath,
-                pageWidthPoints, pageHeightPoints,
-                activeViewX, activeViewY, activeViewScale,
-                activeViewWidth, activeViewHeight,
-                backgroundR, backgroundG, backgroundB
-            );
+                tessData, outputPath, backgroundImagePath, settings);
         } else {
             success = Export3DPDF::Export3DPDFCore::convertTessellationToPRC(
-                tessData, outputPath, pageWidthPoints, pageHeightPoints,
-                backgroundR, backgroundG, backgroundB, activeViewX, activeViewY,
-                activeViewScale, activeViewWidth, activeViewHeight
-            );
+                tessData, outputPath, settings);
         }
-        
+
         if (success && !backgroundImagePath.empty()) {
             std::remove(backgroundImagePath.c_str());
         }

@@ -28,7 +28,9 @@ static void hpdfErrorHandler(HPDF_STATUS error_no, HPDF_STATUS detail_no, void* 
                          static_cast<int>(detail_no));
 }
 
-bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB, double activeViewX, double activeViewY, double activeViewScale, double activeViewWidth, double activeViewHeight)
+bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData,
+                                               const std::string& outputPath,
+                                               const PDFExportSettings& settings)
 {
     std::string prcPath = outputPath + ".prc";
     try {
@@ -38,7 +40,7 @@ bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationDat
         }
 
         std::string pdfPath = outputPath + ".pdf";
-        bool success = embedPRCInPDF(prcPath, pdfPath, pageWidthPoints, pageHeightPoints, backgroundR, backgroundG, backgroundB, activeViewX, activeViewY, activeViewScale, activeViewWidth, activeViewHeight);
+        bool success = embedPRCInPDF(prcPath, pdfPath, settings);
 
         std::remove(prcPath.c_str());
 
@@ -137,22 +139,24 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
     }
 }
 
-bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB, double activeViewX, double activeViewY, double activeViewScale, double activeViewWidth, double activeViewHeight)
+bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath,
+                                    const std::string& pdfPath,
+                                    const PDFExportSettings& settings)
 {
     try {
         std::ifstream prcFile(prcPath, std::ios::binary);
         if (!prcFile.is_open()) {
             return false;
         }
-        
+
         prcFile.seekg(0, std::ios::end);
         size_t prcSize = prcFile.tellg();
         prcFile.seekg(0, std::ios::beg);
-        
+
         std::vector<HPDF_BYTE> prcBuffer(prcSize);
         prcFile.read(reinterpret_cast<char*>(prcBuffer.data()), prcSize);
         prcFile.close();
-        
+
         HPDF_Doc pdf = HPDF_New(hpdfErrorHandler, nullptr);
         if (!pdf) {
             Base::Console().error("Failed to create PDF document\n");
@@ -161,70 +165,69 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
 
         HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
         HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD 3D Model");
-        
+
         HPDF_Page page = HPDF_AddPage(pdf);
-        HPDF_Page_SetWidth(page, pageWidthPoints);
-        HPDF_Page_SetHeight(page, pageHeightPoints);
-        
+        HPDF_Page_SetWidth(page, settings.page.widthPoints);
+        HPDF_Page_SetHeight(page, settings.page.heightPoints);
+
         HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcSize));
         if (!u3d) {
             HPDF_Free(pdf);
             return false;
         }
-        
-        double scaledViewWidth = activeViewWidth * activeViewScale;
-        double scaledViewHeight = activeViewHeight * activeViewScale;
+
+        // Calculate annotation rectangle from ActiveView settings
+        const auto& av = settings.activeView;
+        double scaledViewWidth = av.width * av.scale;
+        double scaledViewHeight = av.height * av.scale;
         double viewWidthPoints = scaledViewWidth * 2.834645669;
         double viewHeightPoints = scaledViewHeight * 2.834645669;
-        double viewXPoints = activeViewX * 2.834645669;
-        double viewYPoints = activeViewY * 2.834645669;
-        
+        double viewXPoints = av.x * 2.834645669;
+        double viewYPoints = av.y * 2.834645669;
+
         double halfWidthPoints = viewWidthPoints / 2.0;
         double halfHeightPoints = viewHeightPoints / 2.0;
-        
+
         double annotLeft = viewXPoints - halfWidthPoints;
         double annotRight = viewXPoints + halfWidthPoints;
-        
         double annotBottom = viewYPoints - halfHeightPoints;
         double annotTop = viewYPoints + halfHeightPoints;
-        
-        
-        
-        HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft), 
-                         static_cast<HPDF_REAL>(annotBottom), 
-                         static_cast<HPDF_REAL>(annotRight), 
-                         static_cast<HPDF_REAL>(annotTop)}; // left, bottom, right, top
+
+        HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft),
+                         static_cast<HPDF_REAL>(annotBottom),
+                         static_cast<HPDF_REAL>(annotRight),
+                         static_cast<HPDF_REAL>(annotTop)};
         HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
         if (!annot) {
             Base::Console().error("Failed to create 3D annotation\n");
             HPDF_Free(pdf);
             return false;
         }
-        
+
         HPDF_Dict view = HPDF_Page_Create3DView(page, u3d, annot, "Default");
         if (!view) {
             Base::Console().error("Failed to create 3D view\n");
             HPDF_Free(pdf);
             return false;
         }
-        
+
         HPDF_3DView_SetLighting(view, "CAD");
-        HPDF_3DView_SetBackgroundColor(view, backgroundR, backgroundG, backgroundB);
-        
-        HPDF_3DView_SetCamera(view, 
+        HPDF_3DView_SetBackgroundColor(view, settings.background.r, settings.background.g, settings.background.b);
+
+        HPDF_3DView_SetCamera(view,
             10.0, 10.0, 10.0,  // camera position
-            0.0, 0.0, 0.0,     // target position  
+            0.0, 0.0, 0.0,     // target position
             50.0,              // distance
             0.0);              // roll
-        
+
         HPDF_U3D_SetDefault3DView(u3d, "Default");
-        
+
         HPDF_STATUS result = HPDF_SaveToFile(pdf, pdfPath.c_str());
         if (result != HPDF_OK) {
             HPDF_Free(pdf);
             return false;
         }
-        
+
         HPDF_Free(pdf);
         return true;
     }
@@ -237,16 +240,7 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
 bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tessellationData,
                                         const std::string& outputPath,
                                         const std::string& backgroundImagePath,
-                                        double pageWidthPoints,
-                                        double pageHeightPoints,
-                                        double activeViewX,
-                                        double activeViewY,
-                                        double activeViewScale,
-                                        double activeViewWidth,
-                                        double activeViewHeight,
-                                        double backgroundR,
-                                        double backgroundG,
-                                        double backgroundB)
+                                        const PDFExportSettings& settings)
 {
     std::string prcPath = outputPath + ".prc";
     try {
@@ -282,8 +276,8 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD Hybrid 2D+3D Technical Drawing");
 
         HPDF_Page page = HPDF_AddPage(pdf);
-        HPDF_Page_SetWidth(page, pageWidthPoints);
-        HPDF_Page_SetHeight(page, pageHeightPoints);
+        HPDF_Page_SetWidth(page, settings.page.widthPoints);
+        HPDF_Page_SetHeight(page, settings.page.heightPoints);
 
         HPDF_Image backgroundImg = nullptr;
         if (!backgroundImagePath.empty()) {
@@ -296,7 +290,7 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
             }
 
             if (backgroundImg) {
-                HPDF_Page_DrawImage(page, backgroundImg, 0, 0, pageWidthPoints, pageHeightPoints);
+                HPDF_Page_DrawImage(page, backgroundImg, 0, 0, settings.page.widthPoints, settings.page.heightPoints);
             } else {
                 Base::Console().warning("Failed to load background image: %s\n", backgroundImagePath.c_str());
                 HPDF_ResetError(pdf);  // Clear error so we can continue with 3D content
@@ -311,12 +305,14 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
             return false;
         }
 
-        double scaledViewWidth = activeViewWidth * activeViewScale;
-        double scaledViewHeight = activeViewHeight * activeViewScale;
+        // Calculate annotation rectangle from ActiveView settings
+        const auto& av = settings.activeView;
+        double scaledViewWidth = av.width * av.scale;
+        double scaledViewHeight = av.height * av.scale;
         double viewWidthPoints = scaledViewWidth * 2.834645669;
         double viewHeightPoints = scaledViewHeight * 2.834645669;
-        double viewXPoints = activeViewX * 2.834645669;
-        double viewYPoints = activeViewY * 2.834645669;
+        double viewXPoints = av.x * 2.834645669;
+        double viewYPoints = av.y * 2.834645669;
 
         double halfWidthPoints = viewWidthPoints / 2.0;
         double halfHeightPoints = viewHeightPoints / 2.0;
@@ -325,7 +321,6 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         double annotRight = viewXPoints + halfWidthPoints;
         double annotBottom = viewYPoints - halfHeightPoints;
         double annotTop = viewYPoints + halfHeightPoints;
-
 
         HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft),
                          static_cast<HPDF_REAL>(annotBottom),
@@ -348,7 +343,7 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         }
 
         HPDF_3DView_SetLighting(view, "CAD");
-        HPDF_3DView_SetBackgroundColor(view, backgroundR, backgroundG, backgroundB);
+        HPDF_3DView_SetBackgroundColor(view, settings.background.r, settings.background.g, settings.background.b);
 
         HPDF_3DView_SetCamera(view,
             10.0, 10.0, 10.0,  // camera position

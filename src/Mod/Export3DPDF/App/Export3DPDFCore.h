@@ -8,6 +8,43 @@
 namespace Export3DPDF {
 
 /**
+ * @brief PDF page dimensions in points (1 point = 1/72 inch)
+ */
+struct Export3DPDFExport PDFPageSettings {
+    double widthPoints = 595.276;   // A4 width in points
+    double heightPoints = 841.89;   // A4 height in points
+};
+
+/**
+ * @brief RGB color for 3D view background (values 0.0-1.0)
+ */
+struct Export3DPDFExport BackgroundColor {
+    double r = 0.5;
+    double g = 0.5;
+    double b = 0.5;
+};
+
+/**
+ * @brief ActiveView positioning and scaling settings
+ */
+struct Export3DPDFExport ActiveViewSettings {
+    double x = 0.0;           // X position in mm
+    double y = 0.0;           // Y position in mm
+    double scale = 1.0;       // Scale factor
+    double width = 100.0;     // Width in mm
+    double height = 100.0;    // Height in mm
+};
+
+/**
+ * @brief Combined export settings for 3D PDF generation
+ */
+struct Export3DPDFExport PDFExportSettings {
+    PDFPageSettings page;
+    BackgroundColor background;
+    ActiveViewSettings activeView;
+};
+
+/**
  * @brief Structure to hold material properties for an object
  */
 struct Export3DPDFExport MaterialData {
@@ -44,89 +81,46 @@ public:
     /**
      * @brief Convert tessellation data to PRC format and create 3D PDF
      * @param tessellationData Vector of tessellation data for multiple objects
-     * @param outputPath Path where the 3D PDF should be saved
-     * @param pageWidthPoints Page width in points (default: A4 width)
-     * @param pageHeightPoints Page height in points (default: A4 height)
-     * @param backgroundR Background red component (0.0-1.0, default: gray)
-     * @param backgroundG Background green component (0.0-1.0, default: gray)
-     * @param backgroundB Background blue component (0.0-1.0, default: gray)
+     * @param outputPath Path where the 3D PDF should be saved (without extension)
+     * @param settings Export settings (page dimensions, background color, view settings)
      * @return true if successful, false otherwise
      */
-        static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, 
-                                        const std::string& outputPath,
-                                        double pageWidthPoints = 595.276,
-                                        double pageHeightPoints = 841.89,
-                                        double backgroundR = 0.5,
-                                        double backgroundG = 0.5,
-                                        double backgroundB = 0.5,
-                                        double activeViewX = 0.0,
-                                        double activeViewY = 0.0,
-                                        double activeViewScale = 1.0,
-                                        double activeViewWidth = 100.0,
-                                        double activeViewHeight = 100.0);
+    static bool convertTessellationToPRC(const std::vector<TessellationData>& tessellationData,
+                                         const std::string& outputPath,
+                                         const PDFExportSettings& settings = PDFExportSettings());
 
     /**
      * @brief Create a PRC file from tessellation data
      * @param tessellationData Vector of tessellation data for multiple objects
      * @param prcPath Path where the PRC file should be saved
-     * @return true if successful, false otherwise
+     * @return Path to created file on success, empty string on failure
      */
     static std::string createPRCFile(const std::vector<TessellationData>& tessellationData,
-                            const std::string& prcPath);
+                                     const std::string& prcPath);
 
     /**
      * @brief Create a 3D PDF from PRC file data
      * @param prcPath Path to the PRC file
      * @param pdfPath Path where the 3D PDF should be saved
-     * @param pageWidthPoints Page width in points (default: A4 width)
-     * @param pageHeightPoints Page height in points (default: A4 height)
-     * @param backgroundR Background red component (0.0-1.0, default: gray)
-     * @param backgroundG Background green component (0.0-1.0, default: gray)
-     * @param backgroundB Background blue component (0.0-1.0, default: gray)
+     * @param settings Export settings (page dimensions, background color, view settings)
      * @return true if successful, false otherwise
      */
-    static bool embedPRCInPDF(const std::string& prcPath, const std::string& pdfPath,
-                             double pageWidthPoints = 595.276,
-                             double pageHeightPoints = 841.89,
-                             double backgroundR = 0.5,
-                             double backgroundG = 0.5,
-                             double backgroundB = 0.5,
-                             double activeViewX = 0.0,
-                             double activeViewY = 0.0,
-                             double activeViewScale = 1.0,
-                             double activeViewWidth = 100.0,
-                             double activeViewHeight = 100.0);
+    static bool embedPRCInPDF(const std::string& prcPath,
+                              const std::string& pdfPath,
+                              const PDFExportSettings& settings = PDFExportSettings());
 
     /**
      * @brief Create hybrid 2D+3D PDF with complete TechDraw page and 3D content
      * @param tessellationData Vector of tessellation data for 3D objects
-     * @param outputPath Path where the hybrid PDF should be saved
+     * @param outputPath Path where the hybrid PDF should be saved (without extension)
      * @param backgroundImagePath Path to background image (rendered TechDraw page)
-     * @param pageWidthPoints Page width in points
-     * @param pageHeightPoints Page height in points
-     * @param activeViewX ActiveView X position in points
-     * @param activeViewY ActiveView Y position in points
-     * @param activeViewScale ActiveView scale factor
-     * @param activeViewWidth ActiveView width in mm
-     * @param activeViewHeight ActiveView height in mm
-     * @param backgroundR Background red component for 3D view (0.0-1.0)
-     * @param backgroundG Background green component for 3D view (0.0-1.0)
-     * @param backgroundB Background blue component for 3D view (0.0-1.0)
+     * @param settings Export settings (page dimensions, background color, view settings)
      * @return true if successful, false otherwise
      */
     static bool createHybrid3DPDF(const std::vector<TessellationData>& tessellationData,
-                                 const std::string& outputPath,
-                                 const std::string& backgroundImagePath,
-                                 double pageWidthPoints,
-                                 double pageHeightPoints,
-                                 double activeViewX,
-                                 double activeViewY,
-                                 double activeViewScale,
-                                 double activeViewWidth,
-                                 double activeViewHeight,
-                                 double backgroundR = 0.5,
-                                 double backgroundG = 0.5,
-                                 double backgroundB = 0.5);
+                                  const std::string& outputPath,
+                                  const std::string& backgroundImagePath,
+                                  const PDFExportSettings& settings);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances
