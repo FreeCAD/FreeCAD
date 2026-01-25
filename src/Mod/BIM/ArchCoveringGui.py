@@ -8,6 +8,7 @@
 import os
 import FreeCAD
 import Part
+import Arch
 
 
 def translate(context, sourceText, disambiguation=None, n=-1):
@@ -539,15 +540,11 @@ if FreeCAD.GuiUp:
                 FreeCAD.ActiveDocument.openTransaction("Edit Covering")
             else:
                 FreeCAD.ActiveDocument.openTransaction("Create Covering")
-                # Create a lightweight phantom object to hold properties for the UI
-                self.phantom = FreeCAD.ActiveDocument.addObject(
-                    "App::FeaturePython", "CoveringSettings"
-                )
-                import ArchCovering
 
-                ArchCovering._Covering(self.phantom)
-                if self.phantom.ViewObject:
-                    self.phantom.ViewObject.hide()
+                # Create a lightweight phantom object to hold properties for the UI
+                self.phantom = Arch.makeCovering(name="CoveringSettings")
+                self.phantom.ViewObject.hide()
+
                 self.target_obj = self.phantom
 
             # Smart Face Detection for pre-selection

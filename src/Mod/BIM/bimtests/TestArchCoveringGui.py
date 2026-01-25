@@ -51,8 +51,11 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         self.pump_gui_events()
 
         # Assert
-        new_obj = self.document.getObject("Covering")
-        self.assertIsNotNone(new_obj)
+        # Internal name may vary (e.g. Covering001) due to phantom creation.
+        # Find by type instead.
+        coverings = [o for o in self.document.Objects if Draft.get_type(o) == "Covering"]
+        self.assertEqual(len(coverings), 1, "Expected exactly one Covering object to be created")
+        new_obj = coverings[0]
 
         # Verify the expression by inspecting the ExpressionEngine
         found_expr = False
