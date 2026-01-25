@@ -298,7 +298,6 @@ class BIMWorkbench(Workbench):
             def GetCommands(self):
                 # default: Draft_ArrayTools (the main Array UI)
                 return (
-                    "Draft_ArrayTools",
                     "Draft_OrthoArray",
                     "Draft_PathArray",
                     "Draft_PolarArray",

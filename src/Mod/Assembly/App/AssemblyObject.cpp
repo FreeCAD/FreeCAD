@@ -137,10 +137,16 @@ App::DocumentObjectExecReturn* AssemblyObject::execute()
     return ret;
 }
 
+void AssemblyObject::onChanged(const App::Property* prop)
+{
+    if (prop == &Group) {
+        updateSolveStatus();
+    }
+    App::Part::onChanged(prop);
+}
+
 int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 {
-    lastDoF = numberOfComponents() * 6;
-
     ensureIdentityPlacements();
 
     mbdAssembly = makeMbdAssembly();
@@ -165,13 +171,18 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
     try {
         mbdAssembly->runPreDrag();
+        lastSolverStatus = 0;
     }
     catch (const std::exception& e) {
         FC_ERR("Solve failed: " << e.what());
+        lastSolverStatus = -1;
+        updateSolveStatus();
         return -1;
     }
     catch (...) {
         FC_ERR("Solve failed: unhandled exception");
+        lastSolverStatus = -1;
+        updateSolveStatus();
         return -1;
     }
 
@@ -179,9 +190,85 @@ int AssemblyObject::solve(bool enableRedo, bool updateJCS)
 
     redrawJointPlacements(joints);
 
-    signalSolverUpdate();
+    updateSolveStatus();
 
     return 0;
+}
+
+void AssemblyObject::updateSolveStatus()
+{
+    lastRedundantJoints.clear();
+    lastHasRedundancies = false;
+    //+1 because there's a grounded joint to origin
+    lastDoF = (1 + numberOfComponents()) * 6;
+
+    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+        solve();
+    }
+
+    if (!mbdAssembly || !mbdAssembly->mbdSystem) {
+        return;
+    }
+
+    // Helper lambda to clean up the joint name from the solver
+    auto cleanJointName = [](const std::string& rawName) -> std::string {
+        // rawName is like : /OndselAssembly/ground_moves#Joint001
+        size_t hashPos = rawName.find_last_of('#');
+        if (hashPos != std::string::npos) {
+            // Return the substring after the '#'
+            return rawName.substr(hashPos + 1);
+        }
+        return rawName;
+    };
+
+
+    // Iterate through all joints and motions in the MBD system
+    mbdAssembly->mbdSystem->jointsMotionsDo([&](std::shared_ptr<MbD::Joint> jm) {
+        if (!jm) {
+            return;
+        }
+        // Base::Console().warning("jm->name %s\n", jm->name);
+        bool isJointRedundant = false;
+
+        jm->constraintsDo([&](std::shared_ptr<MbD::Constraint> con) {
+            if (!con) {
+                return;
+            }
+
+            std::string spec = con->constraintSpec();
+            // A constraint is redundant if its spec starts with "Redundant"
+            if (spec.rfind("Redundant", 0) == 0) {
+                isJointRedundant = true;
+            }
+            // Base::Console().warning("    - %s\n", spec);
+            --lastDoF;
+        });
+
+        const std::string fullName = cleanJointName(jm->name);
+        App::DocumentObject* docObj = getDocument()->getObject(fullName.c_str());
+
+        // We only care about objects that are actual joints in the FreeCAD document.
+        // This effectively filters out the grounding joints, which are named after parts.
+        if (!docObj || !docObj->getPropertyByName("Reference1")) {
+            return;
+        }
+
+        if (isJointRedundant) {
+            // Check if this joint is already in the list to avoid duplicates
+            std::string objName = docObj->getNameInDocument();
+            if (std::find(lastRedundantJoints.begin(), lastRedundantJoints.end(), objName)
+                == lastRedundantJoints.end()) {
+                lastRedundantJoints.push_back(objName);
+            }
+        }
+    });
+
+    // Update the summary boolean flag
+    if (!lastRedundantJoints.empty()) {
+        lastHasRedundancies = true;
+    }
+
+    signalSolverUpdate();
 }
 
 int AssemblyObject::generateSimulation(App::DocumentObject* sim)
@@ -2018,46 +2105,7 @@ void AssemblyObject::ensureIdentityPlacements()
 
 int AssemblyObject::numberOfComponents() const
 {
-    int count = 0;
-    const std::vector<App::DocumentObject*> objects = Group.getValues();
-
-    for (auto* obj : objects) {
-        if (!obj) {
-            continue;
-        }
-
-        if (obj->isLinkGroup()) {
-            auto* link = static_cast<const App::Link*>(obj);
-            count += link->ElementCount.getValue();
-            continue;
-        }
-
-        if (obj->isDerivedFrom(Assembly::AssemblyLink::getClassTypeId())) {
-            auto* subAssembly = static_cast<const AssemblyLink*>(obj);
-            count += subAssembly->numberOfComponents();
-            continue;
-        }
-
-        // Resolve standard App::Links to their target object
-        if (obj->isDerivedFrom(App::Link::getClassTypeId())) {
-            obj = static_cast<const App::Link*>(obj)->getLinkedObject();
-            if (!obj) {
-                continue;
-            }
-        }
-
-        if (!obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            continue;
-        }
-
-        if (obj->isDerivedFrom(App::LocalCoordinateSystem::getClassTypeId())) {
-            continue;
-        }
-
-        count++;
-    }
-
-    return count;
+    return getAssemblyComponents(this).size();
 }
 
 bool AssemblyObject::isEmpty() const

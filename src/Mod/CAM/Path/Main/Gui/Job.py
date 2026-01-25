@@ -720,7 +720,7 @@ class StockFromExistingEdit(StockEdit):
 
                 # stockName has index suffix (since cloned), label has no index
                 # => ridgid string comparison fails
-                # Instead of ridgid string comparsion use partial (needle in haystack)
+                # Instead of ridgid string comparison use partial (needle in haystack)
                 # string comparison
                 # if label == stockName: # ridgid string comparison
                 if label in stockName:  # partial string comparison

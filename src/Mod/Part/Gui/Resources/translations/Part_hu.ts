@@ -6034,12 +6034,12 @@ Folytassa?</translation>
       <translation>Metszet</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Törli a egyesítés tartalmát?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Az "%1" egyesítésnek %2 rész objektuma van. Szeretnéd ezeket is törölni?</translation>
     </message>

@@ -404,7 +404,7 @@ def getSVG(
                 mv = pl.multVec(FreeCAD.Vector(0, 0, 1))
                 mv.multiply(source.ViewObject.CutMargin)
                 pl.move(mv)
-            wp.align_to_placement(pl)
+            wp.align_to_rotation(pl.Rotation)
             # wp.inverse()
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)

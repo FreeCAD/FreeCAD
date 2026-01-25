@@ -461,13 +461,13 @@ void RotationGizmo::draggingContinued()
 
 void RotationGizmo::orientAlongCamera(SoCamera* camera)
 {
-    if (linearGizmo == nullptr || automaticOrientation == false) {
+    if (!automaticOrientation) {
         return;
     }
 
     SbVec3f cameraDir {0, 0, 1};
     camera->orientation.getValue().multVec(cameraDir, cameraDir);
-    SbVec3f pointerDir = linearGizmo->getDraggerContainer()->getPointerDirection();
+    SbVec3f pointerDir = getDraggerContainer()->getPointerDirection();
 
     pointerDir.normalize();
     auto proj = cameraDir - cameraDir.dot(pointerDir) * pointerDir;

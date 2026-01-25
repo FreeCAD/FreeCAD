@@ -25,6 +25,7 @@
 #ifndef PART_EXTRUSIONHELPER_H
 #define PART_EXTRUSIONHELPER_H
 
+#include <cstdint>
 #include <list>
 #include <vector>
 #include <gp_Dir.hxx>
@@ -40,6 +41,15 @@ namespace Part
 class TopoShape;
 
 /**
+ * @brief Controls how taper is applied to inner wires (holes) during extrusion.
+ */
+enum class InnerWireTaper : std::uint8_t
+{
+    Inverted,
+    SameAsOuter,
+};
+
+/**
  * @brief The ExtrusionParameters struct is supposed to be filled with final
  * extrusion parameters, after resolving links, applying mode logic,
  * reversing, etc., and be passed to extrudeShape.
@@ -53,6 +63,7 @@ struct ExtrusionParameters
     double taperAngleFwd {0};  // in radians
     double taperAngleRev {0};
     std::string faceMakerClass;
+    InnerWireTaper innerWireTaper {InnerWireTaper::Inverted};
 };
 
 class PartExport ExtrusionHelper

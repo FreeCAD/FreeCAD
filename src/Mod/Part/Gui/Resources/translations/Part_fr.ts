@@ -2597,7 +2597,7 @@ Remarque : le placement est exprimé dans l'espace local de l'objet auquel il es
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="32"/>
       <source>Company</source>
-      <translation>Société</translation>
+      <translation>Entreprise</translation>
     </message>
     <message>
       <location filename="../../DlgExportHeaderStep.ui" line="42"/>
@@ -3181,7 +3181,7 @@ Check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="128"/>
       <source>Company</source>
-      <translation>Société</translation>
+      <translation>Entreprise</translation>
     </message>
     <message>
       <location filename="../../DlgImportExportIges.ui" line="138"/>
@@ -6075,12 +6075,12 @@ Voulez-vous continuer ?</translation>
       <translation>Intersection</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Supprimer le contenu composé ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>Le composant « %1 » comporte %2 objets enfants. Voulez-vous également les supprimer ?</translation>
     </message>

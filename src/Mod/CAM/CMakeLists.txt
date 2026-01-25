@@ -170,6 +170,10 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/Controller.py
 )
 
+SET(PathPythonMachineUi_SRCS
+    Path/Machine/ui/__init__.py
+)
+
 SET(PathPythonMachineUiEditor_SRCS
     Path/Machine/ui/editor/machine_editor.py
     Path/Machine/ui/editor/__init__.py
@@ -207,6 +211,7 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/reamer.py
     Path/Tool/toolbit/models/slittingsaw.py
     Path/Tool/toolbit/models/tap.py
+    Path/Tool/toolbit/models/taperedballnose.py
     Path/Tool/toolbit/models/threadmill.py
     Path/Tool/toolbit/models/vbit.py
 )
@@ -280,6 +285,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/reamer.py
     Path/Tool/shape/models/slittingsaw.py
     Path/Tool/shape/models/tap.py
+    Path/Tool/shape/models/taperedballnose.py
     Path/Tool/shape/models/threadmill.py
     Path/Tool/shape/models/vbit.py
 )
@@ -295,6 +301,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/PostList.py
     Path/Post/Processor.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
@@ -482,6 +489,8 @@ SET(Tools_Shape_SRCS
     Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
     Tools/Shape/tap.svg
+    Tools/Shape/taperedballnose.fcstd
+    Tools/Shape/taperedballnose.svg
     Tools/Shape/thread-mill.fcstd
     Tools/Shape/thread-mill.svg
     Tools/Shape/v-bit.fcstd
@@ -641,6 +650,7 @@ SET(all_files
     ${PathPythonToolsLibrarySerializers_SRCS}
     ${PathPythonToolsLibraryUi_SRCS}
     ${PathPythonMachineModels_SRCS}
+    ${PathPythonMachineUi_SRCS}
     ${PathPythonMachineUiEditor_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
@@ -912,13 +922,6 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathPythonToolsMachine_SRCS}
-    DESTINATION
-        Mod/CAM/Path/Tool/machine
-)
-
-INSTALL(
-    FILES
         ${PathPythonMachineModels_SRCS}
     DESTINATION
         Mod/CAM/Path/Machine/models
@@ -926,16 +929,16 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathPythonToolsMachineUiEditor_SRCS}
+        ${PathPythonMachineUi_SRCS}
     DESTINATION
-        Mod/CAM/Path/Machine/ui/editor
+        Mod/CAM/Path/Machine/ui
 )
 
 INSTALL(
     FILES
-        ${PathPythonToolsMachineModels_SRCS}
+        ${PathPythonMachineUiEditor_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/machine/models
+        Mod/CAM/Path/Machine/ui/editor
 )
 
 INSTALL(
