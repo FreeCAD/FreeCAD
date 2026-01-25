@@ -22,8 +22,7 @@
  ***************************************************************************/
 // a class to validate and correct dimension references
 
-#ifndef DIMAUTOCORRECT_H
-#define DIMAUTOCORRECT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -94,4 +93,3 @@ private:
 };
 
 }  // end namespace TechDraw
-#endif

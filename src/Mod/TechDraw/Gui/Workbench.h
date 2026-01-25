@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_WORKBENCH_H
-#define TECHDRAW_WORKBENCH_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -48,6 +47,3 @@ protected:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // TECHDRAW_WORKBENCH_H

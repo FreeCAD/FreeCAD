@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIHIGHLIGHT_H
-#define TECHDRAWGUI_QGIHIGHLIGHT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -88,5 +87,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGIHIGHLIGHT_H

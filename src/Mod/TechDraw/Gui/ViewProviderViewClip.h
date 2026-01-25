@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_VIEWPROVIDERCLIP_H
-#define DRAWINGGUI_VIEWPROVIDERCLIP_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -64,5 +63,3 @@ public:
     void dropObject(App::DocumentObject* docObj) override;
 };
 } // namespace TechDrawGui
-
-#endif // DRAWINGGUI_VIEWPROVIDERCLIP_H

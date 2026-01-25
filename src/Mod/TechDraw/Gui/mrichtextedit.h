@@ -26,8 +26,7 @@
  ********************************/
 
 
-#ifndef MRICHTEXTEDIT_H_
-#define MRICHTEXTEDIT_H_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -122,5 +121,3 @@ private:
     QString m_defFont;
 
 };
-
-#endif

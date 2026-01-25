@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TASKLINEDECOR_H
-#define GUI_TASKVIEW_TASKLINEDECOR_H
+#pragma once
 
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -164,5 +163,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef GUI_TASKVIEW_TASKLINEDECOR_H

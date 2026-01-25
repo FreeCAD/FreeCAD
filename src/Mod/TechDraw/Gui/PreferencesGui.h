@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PreferencesGui_h_
-#define PreferencesGui_h_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -104,4 +103,3 @@ static void setViewFrameMode(ViewFrameMode newMode);
 };
 
 } //end namespace TechDrawGui
-#endif

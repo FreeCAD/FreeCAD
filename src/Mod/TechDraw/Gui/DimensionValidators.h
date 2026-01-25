@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DIMENSIONVALIDATORS_H
-#define TECHDRAW_DIMENSIONVALIDATORS_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <Mod/TechDraw/App/DrawViewDimension.h>
@@ -106,5 +105,3 @@ DimensionGeometry lineOrientation(const Base::Vector3d& point0,
 
 
 }
-#endif //TECHDRAW_DIMENSIONVALIDATORS_H
-

@@ -23,8 +23,7 @@
 //QGMText.h
 //a movable, editable text item
 
-#ifndef TECHDRAWGUI_MOVABLETEXT_H
-#define TECHDRAWGUI_MOVABLETEXT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -82,5 +81,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_MOVABLETEXT_H

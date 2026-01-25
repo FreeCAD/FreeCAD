@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIBREAKLINE_H
-#define TECHDRAWGUI_QGIBREAKLINE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -90,6 +89,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGIBREAKLINE_H
-

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_CADNAVSTYLE_H
-#define TECHDRAW_CADNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -52,4 +51,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_CADNAVSTYLE_H

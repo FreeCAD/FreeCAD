@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawProjectSplit_h_
-#define DrawProjectSplit_h_
+#pragma once
 
 #include <TopoDS_Edge.hxx>
 #include <TopoDS_Vertex.hxx>
@@ -137,5 +136,3 @@ public:
 using DrawProjectSplitPython = App::FeaturePythonT<DrawProjectSplit>;
 
 } //namespace TechDraw
-
-#endif  // #ifndef DrawProjectSplit_h_

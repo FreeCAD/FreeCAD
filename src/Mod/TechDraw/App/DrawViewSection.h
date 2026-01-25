@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewSection_h_
-#define DrawViewSection_h_
+#pragma once
 
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Shape.hxx>
@@ -221,5 +220,3 @@ protected:
 using DrawViewSectionPython = App::FeaturePythonT<DrawViewSection>;
 
 }//namespace TechDraw
-
-#endif

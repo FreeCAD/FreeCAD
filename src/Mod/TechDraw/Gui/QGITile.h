@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGITILE_H
-#define TECHDRAWGUI_QGITILE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -120,5 +119,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGITILE_H

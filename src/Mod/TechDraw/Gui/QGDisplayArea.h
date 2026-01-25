@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGDISPLAYAREA_H
-#define DRAWINGGUI_QGDISPLAYAREA_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -60,6 +59,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGDISPLAYAREA_H
-

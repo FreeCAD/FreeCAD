@@ -22,8 +22,7 @@
 //this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#ifndef TECHDRAWGUI_TASKDIALOG
-#define TECHDRAWGUI_TASKDIALOG
+#pragma once
 
 #include <QWidget>
 
@@ -92,7 +91,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-
-
-#endif // TECHDRAWGUI_TASKDIALOG

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGIRICHANNO_H
-#define TECHDRAWGUI_QGIRICHANNO_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -98,5 +97,3 @@ protected:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGIRICHANNO_H

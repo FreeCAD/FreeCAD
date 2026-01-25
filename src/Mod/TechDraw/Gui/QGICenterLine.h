@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGICENTERLINE_H
-#define TECHDRAWGUI_QGICENTERLINE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -66,5 +65,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_QGICENTERLINE_H

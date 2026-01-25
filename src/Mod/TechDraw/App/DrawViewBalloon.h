@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawViewBalloon_h_
-#define TechDraw_DrawViewBalloon_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/PropertyLinks.h>
@@ -96,4 +95,3 @@ private:
 };
 
 }//namespace TechDraw
-#endif
