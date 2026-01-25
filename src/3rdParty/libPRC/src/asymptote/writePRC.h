@@ -25,7 +25,7 @@
 #include <vector>
 #include <deque>
 #include <list>
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__clang__)
 #include <ext/slist>
 #endif
 #include <map>
@@ -224,7 +224,7 @@ class PRCAttribute : public PRCAttributeEntry
   void addKey(const PRCSingleAttribute &key) { attribute_keys.push_back(key); }
   std::deque<PRCSingleAttribute> attribute_keys;
 };
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(__clang__)
 typedef __gnu_cxx::slist<PRCAttribute> PRCAttributeList;
 #else
 typedef std::list<PRCAttribute> PRCAttributeList;
