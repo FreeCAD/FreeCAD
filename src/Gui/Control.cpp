@@ -148,14 +148,10 @@ void ControlSingleton::showModelView()
 
 void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo)
 {
+    attachTo = docOrDefault(attachTo);
     if (!attachTo) {
-        if (Application::Instance->activeDocument()) {
-            attachTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            qWarning() << "ControlSingleton::showDialog: Cannot attach to nullptr document";
-            return;
-        }
+        qWarning() << "ControlSingleton::showDialog: Cannot attach to nullptr document";
+        return;
     }
 
     Gui::TaskView::TaskView* taskView = taskPanel();
@@ -200,13 +196,9 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document*
 
 Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attachedTo) const
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            return nullptr;
-        }
+        return nullptr;
     }
 
     Gui::TaskView::TaskView* taskView = taskPanel();
@@ -219,15 +211,12 @@ Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attache
 
 void ControlSingleton::accept(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            qWarning() << "ControlSingleton::accept: Cannot accept dialog of nullptr document";
-            return;
-        }
+        qWarning() << "ControlSingleton::accept: Cannot accept dialog of nullptr document";
+        return;
     }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
         taskView->accept(attachedTo);
@@ -237,15 +226,13 @@ void ControlSingleton::accept(App::Document* attachedTo)
 
 void ControlSingleton::reject(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            qWarning() << "ControlSingleton::reject: Cannot reject dialog of nullptr document";
-            return;
-        }
+        qWarning() << "ControlSingleton::reject: Cannot reject dialog of nullptr document";
+        return;
     }
+
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
         taskView->reject(attachedTo);
@@ -255,15 +242,12 @@ void ControlSingleton::reject(App::Document* attachedTo)
 
 void ControlSingleton::closeDialog(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            qWarning() << "ControlSingleton::closeDialog: Cannot close dialog of nullptr document";
-            return;
-        }
+        qWarning() << "ControlSingleton::closeDialog: Cannot close dialog of nullptr document";
+        return;
     }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
         taskView->removeDialog(attachedTo);
@@ -288,13 +272,9 @@ void ControlSingleton::closedDialog(App::Document* attachedTo)
 
 bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            return true;
-        }
+        return true;
     }
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
 
@@ -306,13 +286,9 @@ bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
 
 bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            return true;
-        }
+        return true;
     }
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
 
@@ -324,20 +300,25 @@ bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
 
 bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
 {
+    attachedTo = docOrDefault(attachedTo);
     if (!attachedTo) {
-        if (Application::Instance->activeDocument()) {
-            attachedTo = Application::Instance->activeDocument()->getDocument();
-        }
-        else {
-            return true;
-        }
+        return true;
     }
+
     Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
 
     if (dlg) {
         return dlg->isAllowedAlterSelection();
     }
     return true;
+}
+
+App::Document* ControlSingleton::docOrDefault(App::Document* attachedTo)
+{
+    if (!attachedTo && Application::Instance->activeDocument()) {
+        attachedTo = Application::Instance->activeDocument()->getDocument();
+    }
+    return attachedTo;
 }
 
 // -------------------------------------------

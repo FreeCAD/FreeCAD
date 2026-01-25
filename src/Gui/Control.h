@@ -128,6 +128,9 @@ private:
     void aboutToShowDialog(QDockWidget* widget);
     void aboutToHideDialog(QDockWidget* widget);
 
+    // Returns attachTo if not nullptr, otherwise return the active document
+    static App::Document* docOrDefault(App::Document* attachedTo);
+
     static ControlSingleton* _pcSingleton;
 };
 
