@@ -70,7 +70,7 @@ private:
 
     QVariantList columnLabels, rowLabels;
 
-    static constexpr int maxRowCount = 16384, maxColumnCount = 26 + 26 * 26;
+    static constexpr int maxRowCount = 1000, maxColumnCount = 4 * 26;
 };
 
 }  // namespace SpreadsheetGui
