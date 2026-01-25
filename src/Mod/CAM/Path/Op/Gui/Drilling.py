@@ -215,6 +215,7 @@ Command = PathOpGui.SetupOperation(
         "Creates a Drilling toolpath from the features of a base object",
     ),
     PathDrilling.SetupProperties,
+    commandClass=PathCircularHoleBaseGui.CircularHoleCommand,
 )
 
 FreeCAD.Console.PrintLog("Loading PathDrillingGui... done\n")
