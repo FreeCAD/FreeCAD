@@ -10,3 +10,6 @@ _addLibrary( asymptote FORCE_STATIC
     writePRC.cc
     writePRC.h
 )
+
+# Set Position Independent Code flag for static library to allow linking into shared libraries
+set_target_properties( asymptote PROPERTIES POSITION_INDEPENDENT_CODE ON )
