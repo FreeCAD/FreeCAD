@@ -48,9 +48,96 @@
 #include "../App/Export3DPDFCore.h"
 
 #include <Standard_Failure.hxx>
+#include <Bnd_Box.hxx>
+#include <BRepBndLib.hxx>
+#include <cmath>
+#include <algorithm>
+#include <set>
+
+#include <App/PropertyLinks.h>
 
 namespace Export3DPDFGui
 {
+
+// Helper function to calculate adaptive tessellation tolerance based on bounding box
+static double calculateTessellationTolerance(const Part::TopoShape& shape)
+{
+    Bnd_Box bounds;
+    BRepBndLib::Add(shape.getShape(), bounds);
+
+    if (bounds.IsVoid()) {
+        return 0.01;
+    }
+
+    double xMin, yMin, zMin, xMax, yMax, zMax;
+    bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
+
+    double diagonal = std::sqrt(
+        (xMax - xMin) * (xMax - xMin) +
+        (yMax - yMin) * (yMax - yMin) +
+        (zMax - zMin) * (zMax - zMin)
+    );
+
+    // Use 0.1% of diagonal as tolerance, clamped between 0.001 and 0.1
+    double tolerance = diagonal * 0.001;
+    return std::max(0.001, std::min(0.1, tolerance));
+}
+
+// Helper function to filter objects - avoid exporting intermediate PartDesign features
+// when their parent Body is also being exported (prevents overlapping geometry)
+static std::vector<App::DocumentObject*> filterExportObjects(const std::vector<App::DocumentObject*>& objects)
+{
+    std::vector<App::DocumentObject*> filtered;
+    std::set<App::DocumentObject*> bodiesToExport;
+
+    // First pass: identify all Bodies in the selection
+    for (const auto& obj : objects) {
+        if (obj && (obj->isDerivedFrom(Base::Type::fromName("PartDesign::Body")) ||
+                    obj->isDerivedFrom(Base::Type::fromName("Part::BodyBase")))) {
+            bodiesToExport.insert(obj);
+        }
+    }
+
+    // Second pass: filter out features that belong to a Body we're already exporting
+    for (const auto& obj : objects) {
+        if (!obj) continue;
+
+        // Check if this object is a feature inside a Body
+        App::DocumentObject* parentBody = nullptr;
+
+        // Check for _Body property (PartDesign features have this)
+        App::Property* bodyProp = obj->getPropertyByName("_Body");
+        if (bodyProp) {
+            auto* linkProp = dynamic_cast<App::PropertyLink*>(bodyProp);
+            if (linkProp) {
+                parentBody = linkProp->getValue();
+            }
+        }
+
+        // Also check InList for parent Body
+        if (!parentBody) {
+            for (auto* parent : obj->getInList()) {
+                if (parent && (parent->isDerivedFrom(Base::Type::fromName("PartDesign::Body")) ||
+                               parent->isDerivedFrom(Base::Type::fromName("Part::BodyBase")))) {
+                    parentBody = parent;
+                    break;
+                }
+            }
+        }
+
+        // If this object's parent Body is in our export set, skip this object
+        if (parentBody && bodiesToExport.find(parentBody) != bodiesToExport.end()) {
+            Base::Console().log("Skipping '%s' (parent Body '%s' is being exported)\n",
+                               obj->getNameInDocument(),
+                               parentBody->getNameInDocument());
+            continue;
+        }
+
+        filtered.push_back(obj);
+    }
+
+    return filtered;
+}
 
 class Module : public Py::ExtensionModule<Module>
 {
@@ -95,10 +182,17 @@ private:
             throw Py::RuntimeError("No valid objects to export");
         }
 
+        // Filter objects to avoid exporting overlapping geometry from PartDesign features
+        std::vector<App::DocumentObject*> filteredObjects = filterExportObjects(objects);
+
+        if (filteredObjects.empty()) {
+            throw Py::RuntimeError("No valid objects to export after filtering");
+        }
+
         // Tessellate objects
         std::vector<Export3DPDF::TessellationData> tessData;
 
-        for (const auto& obj : objects) {
+        for (const auto& obj : filteredObjects) {
             if (!obj) continue;
 
             try {
@@ -119,9 +213,12 @@ private:
                 Export3DPDF::TessellationData tessObj;
                 tessObj.name = obj->getNameInDocument();
 
+                // Calculate adaptive tolerance based on object size
+                double tolerance = calculateTessellationTolerance(topoShape);
+
                 std::vector<Base::Vector3d> points;
                 std::vector<Data::ComplexGeoData::Facet> facets;
-                topoShape.getFaces(points, facets, 0.1);
+                topoShape.getFaces(points, facets, tolerance);
 
                 if (points.empty() || facets.empty()) {
                     Base::Console().warning("Object '%s' produced empty tessellation, skipping\n",
