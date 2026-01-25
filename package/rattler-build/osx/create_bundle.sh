@@ -66,8 +66,10 @@ sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 
-# move plugins into their final location
-mv ${conda_env}/Library ${conda_env}/..
+# move plugins into their final location (Library only exists for macOS < 15.0 builds)
+if [ -d "${conda_env}/Library" ]; then
+    mv ${conda_env}/Library ${conda_env}/..
+fi
 
 # move App Extensions (PlugIns) to the correct location for macOS registration
 if [ -d "${conda_env}/PlugIns" ]; then
@@ -89,6 +91,10 @@ else
             FreeCAD.app/Contents/PlugIns/FreeCADPreviewExtension.appex
     fi
     echo "Ad-hoc signing app bundle..."
+    codesign --force --sign - FreeCAD.app/Contents/packages.txt
+    if [ -f "FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/QuicklookFCStd" ]; then
+        codesign --force --sign - FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/QuicklookFCStd
+    fi
     codesign --force --sign - FreeCAD.app
 
     # create the dmg
