@@ -5,6 +5,7 @@
 # include <iostream>
 # include <vector>
 # include <string>
+# include <memory>
 #endif
 
 #include <Base/Console.h>
@@ -52,22 +53,23 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
         
         for (const auto& objData : tessellationData) {
             if (!objData.vertices.empty() && !objData.triangles.empty()) {
-                
-                PRC3DTess* prc3DTess = new PRC3DTess();
-                
+
+                // Use unique_ptr for RAII - ensures cleanup on exception
+                std::unique_ptr<PRC3DTess> prc3DTess = std::make_unique<PRC3DTess>();
+
                 prc3DTess->has_faces = true;
                 prc3DTess->has_loops = false;
-                
+
                 prc3DTess->coordinates = objData.vertices;
-                
-                PRCTessFace* tessFace = new PRCTessFace();
+
+                std::unique_ptr<PRCTessFace> tessFace = std::make_unique<PRCTessFace>();
                 tessFace->used_entities_flag = PRC_FACETESSDATA_Triangle;
                 tessFace->start_triangulated = 0;
                 tessFace->sizes_triangulated.push_back(0);
                 tessFace->is_rgba = false;
                 tessFace->behaviour = PRC_GRAPHICS_Show;
                 tessFace->number_of_texture_coordinate_indexes = 0;
-                
+
                 uint32_t triangleCount = 0;
                 for (size_t i = 0; i < objData.triangles.size(); i += 3) {
                     prc3DTess->triangulated_index.push_back(static_cast<uint32_t>(objData.triangles[i] * 3));
@@ -75,12 +77,16 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
                     prc3DTess->triangulated_index.push_back(static_cast<uint32_t>(objData.triangles[i+2] * 3));
                     triangleCount++;
                 }
-                
+
                 tessFace->sizes_triangulated[0] = triangleCount;
-                
-                prc3DTess->addTessFace(tessFace);
-                
-                uint32_t tessIndex = prcFile.add3DTess(prc3DTess);
+
+                // Transfer ownership to prc3DTess (library takes ownership and nulls the pointer)
+                PRCTessFace* tessFaceRaw = tessFace.release();
+                prc3DTess->addTessFace(tessFaceRaw);
+
+                // Transfer ownership to prcFile (library takes ownership and nulls the pointer)
+                PRC3DTess* prc3DTessRaw = prc3DTess.release();
+                uint32_t tessIndex = prcFile.add3DTess(prc3DTessRaw);
                 
                 RGBAColour ambient(objData.material.ambientColor[0], 
                                  objData.material.ambientColor[1], 
