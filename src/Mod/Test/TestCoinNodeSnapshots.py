@@ -1086,10 +1086,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
 
     def test_coin_node_snapshots(self):
         """Render each configured node and compare against baseline images."""
-        if os.environ.get("CI", "").strip() and not sys.platform.startswith("linux"):
-            raise unittest.SkipTest(
-                "Coin node snapshot visual tests are only supported on Linux CI"
-            )
+        is_ci = bool(os.environ.get("CI", "").strip())
+        is_linux = sys.platform.startswith("linux")
+        smoke_mode = is_ci and not is_linux
 
         _, FreeCADGui, coin = _require_gui()
 
@@ -1167,7 +1166,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
         max_mismatch_pct = max(0.0, min(max_mismatch_pct, 100.0))
         max_mismatched_pixels = int((width * height) * (max_mismatch_pct / 100.0))
 
-        did_compare = False
+        did_render = False
         for type_name in node_types:
             with self.subTest(node=type_name):
                 root = _make_scene_for_node(coin, type_name)
@@ -1185,7 +1184,7 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     f"snapshot seems empty (all background): {actual_path}",
                 )
 
-                did_compare = True
+                did_render = True
                 baseline_path = baseline_dir / f"{type_name}.png"
 
                 if update_baseline:
@@ -1193,9 +1192,10 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     continue
 
                 if not baseline_path.exists():
+                    if smoke_mode:
+                        continue
                     self.fail(
-                        f"missing baseline: {baseline_path} "
-                        "(run with FC_VISUAL_UPDATE_BASELINE=1)"
+                        f"missing baseline: {baseline_path} (run with FC_VISUAL_UPDATE_BASELINE=1)"
                     )
 
                 expected_path = expected_dir / f"{type_name}.png"
@@ -1210,5 +1210,9 @@ class CoinNodeSnapshotTestCase(unittest.TestCase):
                     ignore_alpha=ignore_alpha,
                     max_mismatched_pixels=max_mismatched_pixels,
                 )
-                self.assertTrue(ok, msg)
-        self.assertTrue(did_compare, "No snapshot comparisons were performed")
+                if smoke_mode:
+                    if not ok:
+                        print(f"SMOKE mismatch for {type_name}: {msg}")
+                else:
+                    self.assertTrue(ok, msg)
+        self.assertTrue(did_render, "No snapshots were rendered")

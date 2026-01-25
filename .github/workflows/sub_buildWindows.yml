@@ -154,6 +154,13 @@ jobs:
         run: |
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
 
+      - name: Coin node snapshot visual tests (smoke)
+        timeout-minutes: 15
+        run: |
+          $env:FC_VISUAL_OUT_DIR = "C:/FC/visual/CoinNodeSnapshots"
+          mkdir $env:FC_VISUAL_OUT_DIR
+          . ${{ env.builddir }}\bin\FreeCAD -t TestCoinNodeSnapshots
+
       - name: Save Compiler Cache
         id: cache-save
         if: always()
@@ -169,3 +176,10 @@ jobs:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |
             ${{ env.logdir }}
+
+      - name: Upload Coin node snapshot artifacts (on failure)
+        if: failure()
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
+          path: C:/FC/visual/CoinNodeSnapshots

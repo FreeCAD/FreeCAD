@@ -188,8 +188,24 @@ jobs:
         logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
         reportFile: ${{env.reportdir}}${{ env.reportfilename }}
 
+    - name: Coin node snapshot visual tests on build dir (smoke)
+      if: runner.os != 'Linux' && inputs.testCoinNodeSnapshots
+      timeout-minutes: 15
+      uses: ./.github/workflows/actions/runPythonTests
+      with:
+        testDescription: "Coin node snapshot visual tests on build dir (smoke)"
+        testCommand: |
+          FREECAD="${{ env.builddir }}/bin/FreeCAD"
+          if [[ "${{ runner.os }}" == "Windows" ]]; then
+            FREECAD="${FREECAD}.exe"
+          fi
+          FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
+            pixi run "$FREECAD" -t TestCoinNodeSnapshots
+        logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+        reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
     - name: Upload Coin node snapshot artifacts (on failure)
-      if: failure() && runner.os == 'Linux' && inputs.testCoinNodeSnapshots
+      if: failure() && inputs.testCoinNodeSnapshots
       uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
       with:
         name: ${{ inputs.artifactBasename }}-${{ matrix.os }}-CoinNodeSnapshots
