@@ -54,6 +54,16 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Document.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/ViewProviderGeometryObject.h>
+#include <Gui/Selection/Selection.h>
+
+// Part module includes for direct tessellation
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/PropertyTopoShape.h>
+#include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/Gui/ViewProviderExt.h>
+#include <App/ComplexGeoData.h>
+#include <App/Material.h>
 
 namespace TechDraw {
     class DrawPage;
@@ -63,34 +73,16 @@ namespace TechDraw {
 namespace TechDrawGui {
     class ViewProviderImage;
 }
-#include <Gui/Selection/Selection.h>
 
 #include "Command.h"
 #include "../App/Export3DPDFCore.h"
 
+// OpenCASCADE exception handling
+#include <Standard_Failure.hxx>
+
 FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
-
-static void parseFreeCADColor(const std::string& colorStr, double* rgba) {
-    rgba[0] = 0.5; rgba[1] = 0.5; rgba[2] = 0.5; rgba[3] = 1.0;
-    
-    std::string cleanStr = colorStr;
-    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), '('), cleanStr.end());
-    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ')'), cleanStr.end());
-    cleanStr.erase(std::remove(cleanStr.begin(), cleanStr.end(), ' '), cleanStr.end());
-    
-    std::istringstream iss(cleanStr);
-    std::string token;
-    int index = 0;
-    while (std::getline(iss, token, ',') && index < 4) {
-        try {
-            rgba[index] = std::stod(token);
-        } catch (const std::exception&) {
-        }
-        index++;
-    }
-}
 
 
 
@@ -158,86 +150,31 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                     App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
                                     if (enableBool && enableBool->getValue()) {
                                         
-                                        try {
-
-                                            doCommand(Command::Doc,
-                                                "import FreeCAD as App\n"
-                                                "page_obj = App.getDocument('%s').getObject('%s')\n"
-                                                "if page_obj:\n"
-                                                "    try:\n"
-                                                "        width_mm = page_obj.PageWidth\n"
-                                                "        height_mm = page_obj.PageHeight\n"
-                                                "    except Exception as e:\n"
-                                                "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n"
-                                                "else:\n"
-                                                "    App.Console.PrintWarning('Page object not found\\n')\n",
-                                                pageObj->getDocument()->getName(), pageObj->getNameInDocument());
-                                            
-                                            QCoreApplication::processEvents();
-                                            QThread::msleep(50);
-                                            
-                                            std::string tempDimFile = "page_dimensions_" + std::string(pageObj->getNameInDocument()) + ".tmp";
-                                            doCommand(Command::Doc,
-                                                "import FreeCAD as App\n"
-                                                "page_obj = App.getDocument('%s').getObject('%s')\n"
-                                                "if page_obj:\n"
-                                                "    try:\n"
-                                                "        width_mm = page_obj.PageWidth\n"
-                                                "        height_mm = page_obj.PageHeight\n"
-                                                "        with open('%s', 'w') as f:\n"
-                                                "            f.write('WIDTH_MM\\n')\n"
-                                                "            f.write(str(width_mm) + '\\n')\n"
-                                                "            f.write('HEIGHT_MM\\n')\n"
-                                                "            f.write(str(height_mm) + '\\n')\n"
-                                                "            f.write('END\\n')\n"
-                                                "    except Exception as e:\n"
-                                                "        App.Console.PrintWarning('Failed to get page dimensions: {}\\n'.format(str(e)))\n",
-                                                pageObj->getDocument()->getName(), pageObj->getNameInDocument(), tempDimFile.c_str());
-                                            
-                                            QCoreApplication::processEvents();
-                                            QThread::msleep(100);
-                                            
-                                            double pageWidthMM = 297.0;
+                                        // Get page dimensions directly via C++ property access
+                                        // No Python, no temp files, no race conditions
+                                        {
+                                            double pageWidthMM = 297.0;  // Default A4
                                             double pageHeightMM = 210.0;
-                                            
-                                            std::ifstream dimFile(tempDimFile);
-                                            if (dimFile.is_open()) {
-                                                std::string line;
-                                                bool readingWidth = false;
-                                                bool readingHeight = false;
-                                                
-                                                while (std::getline(dimFile, line)) {
-                                                    if (line == "WIDTH_MM") {
-                                                        readingWidth = true;
-                                                        readingHeight = false;
-                                                    } else if (line == "HEIGHT_MM") {
-                                                        readingWidth = false;
-                                                        readingHeight = true;
-                                                    } else if (line == "END") {
-                                                        break;
-                                                    } else if (readingWidth) {
-                                                        try {
-                                                            pageWidthMM = std::stod(line);
-                                                        } catch (const std::exception& e) {
-                                                        }
-                                                        readingWidth = false;
-                                                    } else if (readingHeight) {
-                                                        try {
-                                                            pageHeightMM = std::stod(line);
-                                                        } catch (const std::exception& e) {
-                                                        }
-                                                        readingHeight = false;
-                                                    }
+
+                                            App::Property* widthProp = pageObj->getPropertyByName("PageWidth");
+                                            App::Property* heightProp = pageObj->getPropertyByName("PageHeight");
+
+                                            if (widthProp) {
+                                                auto* width = dynamic_cast<App::PropertyLength*>(widthProp);
+                                                if (width) {
+                                                    pageWidthMM = width->getValue();
                                                 }
-                                                dimFile.close();
-                                                
-                                                std::remove(tempDimFile.c_str());
                                             }
-                                            
+
+                                            if (heightProp) {
+                                                auto* height = dynamic_cast<App::PropertyLength*>(heightProp);
+                                                if (height) {
+                                                    pageHeightMM = height->getValue();
+                                                }
+                                            }
+
                                             pageWidthPoints = pageWidthMM * 2.834645669;
                                             pageHeightPoints = pageHeightMM * 2.834645669;
-                                            
-                                        } catch (const std::exception& e) {
                                         }
                                         
                                         try {
@@ -412,188 +349,124 @@ void StdCmdPrint3dPdf::activated(int iMsg)
     QFileInfo fileInfo(fileName);
     std::string outputPath = fileInfo.path().toStdString() + "/" + fileInfo.completeBaseName().toStdString();
     
+    // Tessellate objects using direct C++ API - no Python, no temp files
     std::vector<Export3DPDF::TessellationData> tessData;
     for (const auto& obj : selection) {
         if (!obj) continue;
-        
-        try {
-            App::Property* shapeProp = obj->getPropertyByName("Shape");
-            if (shapeProp) {
-                std::string docName = obj->getDocument()->getName();
-                std::string objName = obj->getNameInDocument();
-                
-                Export3DPDF::TessellationData tessObj;
-                tessObj.name = objName;
-                
-                try {
-                    App::Property* shapeProp = obj->getPropertyByName("Shape");
-                    if (shapeProp) {
-                        doCommand(Command::Doc, 
-                            "import FreeCAD as App\n"
-                            "obj = App.getDocument('%s').getObject('%s')\n"
-                            "if hasattr(obj, 'Shape') and obj.Shape:\n"
-                            "    mesh_data = obj.Shape.tessellate(0.1)\n"
-                            "    vertices = mesh_data[0]\n"
-                            "    triangles = mesh_data[1]\n"
-                            "else:\n"
-                            "    App.Console.PrintWarning('Object \\'{}\\': No valid Shape\\n'.format(obj.Name))",
-                            docName.c_str(), objName.c_str());
-                        
-                        std::string tempFileName = "tessellation_" + objName + ".tmp";
-                        doCommand(Command::Doc,
-                            "import FreeCAD as App\n"
-                            "import FreeCADGui as Gui\n"
-                            "try:\n"
-                            "    # Get object through GUI layer\n"
-                            "    gui_doc = Gui.getDocument('%s')\n"
-                            "    obj = gui_doc.getObject('%s')\n"
-                            "    app_obj = App.getDocument('%s').getObject('%s')\n"
-                            "    \n"
-                            "    if hasattr(app_obj, 'Shape') and app_obj.Shape:\n"
-                            "        # Extract tessellation data from App object\n"
-                            "        mesh_data = app_obj.Shape.tessellate(0.1)\n"
-                            "        vertices = mesh_data[0]\n"
-                            "        triangles = mesh_data[1]\n"
-                            "        \n"
-                            "        # Extract material properties from ShapeAppearance in GUI\n"
-                            "        material_props = {}\n"
-                            "        if obj and hasattr(obj, 'ShapeAppearance') and obj.ShapeAppearance:\n"
-                            "            try:\n"
-                            "                mat = obj.ShapeAppearance[0]\n"
-                            "                material_props['Name'] = getattr(mat, 'Name', 'Default')\n"
-                            "                material_props['AmbientColor'] = str(getattr(mat, 'AmbientColor', (0.333333, 0.333333, 0.333333, 1)))\n"
-                            "                material_props['DiffuseColor'] = str(getattr(mat, 'DiffuseColor', (0.678431, 0.709804, 0.741176, 1)))\n"
-                            "                material_props['EmissiveColor'] = str(getattr(mat, 'EmissiveColor', (0, 0, 0, 1)))\n"
-                            "                material_props['SpecularColor'] = str(getattr(mat, 'SpecularColor', (0.533333, 0.533333, 0.533333, 1)))\n"
-                            "                material_props['Shininess'] = str(getattr(mat, 'Shininess', 0.9))\n"
-                            "                material_props['Transparency'] = str(getattr(mat, 'Transparency', 0))\n"
-                            "            except Exception as e:\n"
-                            "                App.Console.PrintWarning('Failed to extract ShapeAppearance properties: {}\\n'.format(str(e)))\n"
-                            "                material_props = {'Name': 'Default'}\n"
-                            "        else:\n"
-                            "            App.Console.PrintMessage('No ShapeAppearance found, using default material\\n')\n"
-                            "            material_props = {'Name': 'Default'}\n"
-                            "        \n"
-                            "        # Write data to temp file\n"
-                            "        with open('%s', 'w') as f:\n"
-                            "            # Write material properties first\n"
-                            "            f.write('MATERIAL\\n')\n"
-                            "            for key, value in material_props.items():\n"
-                            "                f.write(f'{key}: {value}\\n')\n"
-                            "            \n"
-                            "            # Write tessellation data\n"
-                            "            f.write('VERTICES\\n')\n"
-                            "            for v in vertices:\n"
-                            "                f.write(f'{v[0]} {v[1]} {v[2]}\\n')\n"
-                            "            f.write('TRIANGLES\\n')\n"
-                            "            for t in triangles:\n"
-                            "                f.write(f'{t[0]} {t[1]} {t[2]}\\n')\n"
-                            "            f.write('END\\n')\n"
-                            "    else:\n"
-                            "        App.Console.PrintWarning('Object has no Shape property\\n')\n"
-                            "except Exception as e:\n"
-                            "    App.Console.PrintError('Error in tessellation extraction: {}\\n'.format(str(e)))\n"
-                            "    import traceback\n"
-                            "    App.Console.PrintError('Traceback: {}\\n'.format(traceback.format_exc()))",
-                            docName.c_str(), objName.c_str(), docName.c_str(), objName.c_str(), tempFileName.c_str());
-                        
-                        QCoreApplication::processEvents();
-                        QThread::msleep(100);
-                        
 
-                        std::ifstream tessFile(tempFileName);
-                        if (tessFile.is_open()) {
-                            std::string line;
-                            bool readingMaterial = false;
-                            bool readingVertices = false;
-                            bool readingTriangles = false;
-                            
-                            while (std::getline(tessFile, line)) {
-                                if (line == "MATERIAL") {
-                                    readingMaterial = true;
-                                    readingVertices = false;
-                                    readingTriangles = false;
-                                } else if (line == "VERTICES") {
-                                    readingMaterial = false;
-                                    readingVertices = true;
-                                    readingTriangles = false;
-                                } else if (line == "TRIANGLES") {
-                                    readingMaterial = false;
-                                    readingVertices = false;
-                                    readingTriangles = true;
-                                } else if (line == "END") {
-                                    break;
-                                } else if (readingMaterial) {
-                                    size_t colonPos = line.find(':');
-                                    if (colonPos != std::string::npos) {
-                                        std::string key = line.substr(0, colonPos);
-                                        std::string value = line.substr(colonPos + 2);
-                                        
-                                        if (key == "Name") {
-                                            tessObj.material.name = value;
-                                        } else if (key == "AmbientColor") {
-                                            parseFreeCADColor(value, tessObj.material.ambientColor);
-                                        } else if (key == "DiffuseColor") {
-                                            parseFreeCADColor(value, tessObj.material.diffuseColor);
-                                        } else if (key == "EmissiveColor") {
-                                            parseFreeCADColor(value, tessObj.material.emissiveColor);
-                                        } else if (key == "SpecularColor") {
-                                            parseFreeCADColor(value, tessObj.material.specularColor);
-                                        } else if (key == "Shininess") {
-                                            tessObj.material.shininess = std::stod(value);
-                                        } else if (key == "Transparency") {
-                                            tessObj.material.transparency = std::stod(value);
-                                        }
-                                    }
-                                } else if (readingVertices) {
-                                    std::istringstream iss(line);
-                                    double x, y, z;
-                                    if (iss >> x >> y >> z) {
-                                        tessObj.vertices.push_back(x);
-                                        tessObj.vertices.push_back(y);
-                                        tessObj.vertices.push_back(z);
-                                    }
-                                } else if (readingTriangles) {
-                                    std::istringstream iss(line);
-                                    int i1, i2, i3;
-                                    if (iss >> i1 >> i2 >> i3) {
-                                        tessObj.triangles.push_back(i1);
-                                        tessObj.triangles.push_back(i2);
-                                        tessObj.triangles.push_back(i3);
-                                    }
-                                }
+        try {
+            // Get Shape property using Part module's PropertyPartShape
+            auto* shapeProp = dynamic_cast<Part::PropertyPartShape*>(obj->getPropertyByName("Shape"));
+            if (!shapeProp) {
+                Base::Console().warning("Object '%s' has no Shape property, skipping\n", obj->getNameInDocument());
+                continue;
+            }
+
+            const Part::TopoShape& topoShape = shapeProp->getShape();
+            if (topoShape.isNull()) {
+                Base::Console().warning("Object '%s' has null shape, skipping\n", obj->getNameInDocument());
+                continue;
+            }
+
+            Export3DPDF::TessellationData tessObj;
+            tessObj.name = obj->getNameInDocument();
+
+            // Tessellate directly using C++ API
+            std::vector<Base::Vector3d> points;
+            std::vector<Data::ComplexGeoData::Facet> facets;
+            topoShape.getFaces(points, facets, 0.1);  // 0.1mm tolerance
+
+            if (points.empty() || facets.empty()) {
+                Base::Console().warning("Object '%s' produced empty tessellation, skipping\n", obj->getNameInDocument());
+                continue;
+            }
+
+            // Convert vertices to our format
+            tessObj.vertices.reserve(points.size() * 3);
+            for (const auto& pt : points) {
+                tessObj.vertices.push_back(pt.x);
+                tessObj.vertices.push_back(pt.y);
+                tessObj.vertices.push_back(pt.z);
+            }
+
+            // Convert triangles to our format
+            tessObj.triangles.reserve(facets.size() * 3);
+            for (const auto& f : facets) {
+                tessObj.triangles.push_back(static_cast<int>(f.I1));
+                tessObj.triangles.push_back(static_cast<int>(f.I2));
+                tessObj.triangles.push_back(static_cast<int>(f.I3));
+            }
+
+            // Get material properties from ViewProvider
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(obj->getDocument());
+            if (guiDoc) {
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+                if (vp) {
+                    // Try to cast to ViewProviderPartExt for full material access
+                    auto* partVP = dynamic_cast<PartGui::ViewProviderPartExt*>(vp);
+                    if (partVP) {
+                        const auto& materials = partVP->ShapeAppearance.getValues();
+                        if (!materials.empty()) {
+                            const App::Material& mat = materials[0];
+
+                            // Diffuse color
+                            tessObj.material.diffuseColor[0] = mat.diffuseColor.r;
+                            tessObj.material.diffuseColor[1] = mat.diffuseColor.g;
+                            tessObj.material.diffuseColor[2] = mat.diffuseColor.b;
+                            tessObj.material.diffuseColor[3] = 1.0 - mat.transparency;
+
+                            // Ambient color
+                            tessObj.material.ambientColor[0] = mat.ambientColor.r;
+                            tessObj.material.ambientColor[1] = mat.ambientColor.g;
+                            tessObj.material.ambientColor[2] = mat.ambientColor.b;
+                            tessObj.material.ambientColor[3] = 1.0;
+
+                            // Specular color
+                            tessObj.material.specularColor[0] = mat.specularColor.r;
+                            tessObj.material.specularColor[1] = mat.specularColor.g;
+                            tessObj.material.specularColor[2] = mat.specularColor.b;
+                            tessObj.material.specularColor[3] = 1.0;
+
+                            // Emissive color
+                            tessObj.material.emissiveColor[0] = mat.emissiveColor.r;
+                            tessObj.material.emissiveColor[1] = mat.emissiveColor.g;
+                            tessObj.material.emissiveColor[2] = mat.emissiveColor.b;
+                            tessObj.material.emissiveColor[3] = 1.0;
+
+                            tessObj.material.shininess = mat.shininess;
+                            tessObj.material.transparency = mat.transparency;
+                            tessObj.material.name = "Material";
+                        }
+                    } else {
+                        // Fallback: try ViewProviderGeometryObject for basic appearance
+                        auto* geoVP = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp);
+                        if (geoVP) {
+                            const auto& materials = geoVP->ShapeAppearance.getValues();
+                            if (!materials.empty()) {
+                                const App::Material& mat = materials[0];
+                                tessObj.material.diffuseColor[0] = mat.diffuseColor.r;
+                                tessObj.material.diffuseColor[1] = mat.diffuseColor.g;
+                                tessObj.material.diffuseColor[2] = mat.diffuseColor.b;
+                                tessObj.material.diffuseColor[3] = 1.0 - mat.transparency;
+                                tessObj.material.shininess = mat.shininess;
+                                tessObj.material.transparency = mat.transparency;
                             }
-                            tessFile.close();
-                            
-                            std::remove(tempFileName.c_str());
-                        } else {
-                            tessObj.vertices = {
-                                0.0, 0.0, 0.0,  1.0, 0.0, 0.0,  1.0, 1.0, 0.0,  0.0, 1.0, 0.0,
-                                0.0, 0.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0,  0.0, 1.0, 1.0
-                            };
-                            tessObj.triangles = {
-                                0, 1, 2,  0, 2, 3,  4, 7, 6,  4, 6, 5,
-                                0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
-                                0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
-                            };
                         }
                     }
-                } catch (const std::exception& e) {
-                    tessObj.vertices = {
-                        0.0, 0.0, 0.0,  1.0, 0.0, 0.0,  1.0, 1.0, 0.0,  0.0, 1.0, 0.0,
-                        0.0, 0.0, 1.0,  1.0, 0.0, 1.0,  1.0, 1.0, 1.0,  0.0, 1.0, 1.0
-                    };
-                    tessObj.triangles = {
-                        0, 1, 2,  0, 2, 3,  4, 7, 6,  4, 6, 5,
-                        0, 4, 5,  0, 5, 1,  2, 6, 7,  2, 7, 3,
-                        0, 3, 7,  0, 7, 4,  1, 5, 6,  1, 6, 2
-                    };
                 }
-                
-                tessData.push_back(tessObj);
-                
             }
+
+            tessData.push_back(tessObj);
+
+        } catch (const Standard_Failure& e) {
+            Base::Console().error("OpenCASCADE error processing '%s': %s\n",
+                obj->getNameInDocument(), e.GetMessageString());
         } catch (const Base::Exception& e) {
+            Base::Console().error("FreeCAD error processing '%s': %s\n",
+                obj->getNameInDocument(), e.what());
+        } catch (const std::exception& e) {
+            Base::Console().error("Error processing '%s': %s\n",
+                obj->getNameInDocument(), e.what());
         }
     }
     

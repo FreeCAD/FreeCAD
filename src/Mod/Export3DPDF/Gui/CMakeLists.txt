@@ -8,6 +8,8 @@ include_directories(
 set(Export3DPDFGui_LIBS
     FreeCADGui
     Export3DPDF
+    Part
+    PartGui
 )
 
 SET(Export3DPDFGui_SRCS
