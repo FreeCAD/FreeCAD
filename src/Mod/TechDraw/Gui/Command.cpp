@@ -973,7 +973,7 @@ void execComplexSection(Gui::Command* cmd)
 
     if (!baseView) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("No base view found in this selection"));
+                             QObject::tr("No base view selected"));
         return;
     }
 
@@ -1122,7 +1122,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
     }
     if (shapes.empty() && xShapes.empty()) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong selection"),
-                            QObject::tr("No shapes, groups, or links found in this selection."));
+                             QObject::tr("No shapes, groups, or links in this selection"));
         return;
     }
 
