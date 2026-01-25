@@ -9,6 +9,7 @@ import FreeCAD as App
 import Arch
 import Part
 import Draft
+from draftutils import params
 from bimtests import TestArchBase
 
 
@@ -22,7 +23,14 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.box.Length = 1000.0
         self.box.Width = 1000.0
         self.box.Height = 1000.0
+        # Isolate tests by saving and restoring the global parameter
+        self.original_joint_width = params.get_param_arch("CoveringJoint", ret_default=False)
         self.document.recompute()
+
+    def tearDown(self):
+        # Restore the global parameter to prevent test pollution
+        params.set_param_arch("CoveringJoint", self.original_joint_width)
+        super().tearDown()
 
     def test_makeCovering_creation(self):
         """Test basic object creation and property defaults."""

@@ -175,7 +175,7 @@ class _Covering(ArchComponent.Component):
             ("App::PropertyLength", "TileLength", "Tiles", "The length of the tiles", 0),
             ("App::PropertyLength", "TileWidth", "Tiles", "The width of the tiles", 0),
             ("App::PropertyLength", "TileThickness", "Tiles", "The thickness of the tiles", 0),
-            ("App::PropertyLength", "JointWidth", "Tiles", "The width of the joints", 0),
+            ("App::PropertyLength", "JointWidth", "Tiles", "The width of the joints", None),
             ("App::PropertyVector", "TileOffset", "Tiles", "The offset of alternating rows", None),
             (
                 "App::PropertyVector",

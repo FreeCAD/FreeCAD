@@ -9,6 +9,7 @@ import Arch
 import Draft
 import ArchCovering
 import FreeCADGui as Gui
+from draftutils import params
 from bimtests import TestArchBaseGui
 
 
@@ -20,8 +21,12 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         self.box = self.document.addObject("Part::Box", "BaseBox")
         self.document.recompute()
         self.panel = None
+        # Isolate tests by saving and restoring the global parameter
+        self.original_joint_width = params.get_param_arch("CoveringJoint", ret_default=False)
 
     def tearDown(self):
+        # Restore the global parameter to prevent test pollution
+        params.set_param_arch("CoveringJoint", self.original_joint_width)
         # Ensure any open task panel is closed and the phantom is removed
         if self.panel:
             self.panel.reject()
