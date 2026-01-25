@@ -164,6 +164,17 @@ void ConsoleSingleton::setConnectionMode(const ConnectionMode mode)
     connectionMode = mode;
 }
 
+void ConsoleSingleton::notify(
+    const LogStyle category,
+    const IntendedRecipient recipient,
+    const ContentType content,
+    const std::string& notifiername,
+    const std::string& msg
+)
+{
+    notifyPrivate(category, recipient, content, notifiername, msg);
+}
+
 //**************************************************************************
 // Observer stuff
 

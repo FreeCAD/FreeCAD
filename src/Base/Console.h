@@ -786,6 +786,15 @@ public:
     template<LogStyle, IntendedRecipient = IntendedRecipient::All, ContentType = ContentType::Untranslated>
     void notify(const std::string& notifiername, const std::string& msg);
 
+    // Runtime (non-template) notify helper.
+    void notify(
+        LogStyle category,
+        IntendedRecipient recipient,
+        ContentType content,
+        const std::string& notifiername,
+        const std::string& msg
+    );
+
     /// Attaches an Observer to FCConsole
     void attachObserver(ILogger* pcObserver);
     /// Detaches an Observer from FCConsole

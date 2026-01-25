@@ -7,6 +7,10 @@
 #include <QMetaObject>
 #include <QThread>
 
+#include <algorithm>
+#include <array>
+#include <utility>
+
 #include <Base/Console.h>
 #include <Base/ServiceProvider.h>
 
@@ -20,6 +24,28 @@ void deliverConsoleMessage(
     const std::string& notifiername,
     const std::string& msg
 );
+
+bool tryMapTypeToLogStyle(Base::ConsoleSingleton::FreeCAD_ConsoleMsgType type, Base::LogStyle& out)
+{
+    using MsgType = Base::ConsoleSingleton::FreeCAD_ConsoleMsgType;
+    using Entry = std::pair<MsgType, Base::LogStyle>;
+
+    static constexpr std::array<Entry, 6> map {
+        Entry {MsgType::MsgType_Txt, Base::LogStyle::Message},
+        Entry {MsgType::MsgType_Log, Base::LogStyle::Log},
+        Entry {MsgType::MsgType_Wrn, Base::LogStyle::Warning},
+        Entry {MsgType::MsgType_Err, Base::LogStyle::Error},
+        Entry {MsgType::MsgType_Critical, Base::LogStyle::Critical},
+        Entry {MsgType::MsgType_Notification, Base::LogStyle::Notification},
+    };
+
+    const auto it = std::find_if(map.begin(), map.end(), [type](const Entry& e) { return e.first == type; });
+    if (it == map.end()) {
+        return false;
+    }
+    out = it->second;
+    return true;
+}
 
 class QtConsoleBridge final : public Base::ConsoleSingleton::Bridge
 {
@@ -74,59 +100,6 @@ public:
     }
 };
 
-template<Base::LogStyle category, Base::IntendedRecipient recipientTag>
-void notifyConsoleMessageByContentForRecipient(
-    const Base::ContentType content,
-    const std::string& notifiername,
-    const std::string& msg
-)
-{
-    switch (content) {
-        case Base::ContentType::Untranslated:
-            Base::Console().notify<category, recipientTag, Base::ContentType::Untranslated>(notifiername, msg);
-            return;
-        case Base::ContentType::Translated:
-            Base::Console().notify<category, recipientTag, Base::ContentType::Translated>(notifiername, msg);
-            return;
-        case Base::ContentType::Untranslatable:
-            Base::Console().notify<category, recipientTag, Base::ContentType::Untranslatable>(notifiername, msg);
-            return;
-    }
-}
-
-template<Base::LogStyle category>
-void notifyConsoleMessage(
-    const Base::IntendedRecipient recipient,
-    const Base::ContentType content,
-    const std::string& notifiername,
-    const std::string& msg
-)
-{
-    switch (recipient) {
-        case Base::IntendedRecipient::All:
-            notifyConsoleMessageByContentForRecipient<category, Base::IntendedRecipient::All>(
-                content,
-                notifiername,
-                msg
-            );
-            return;
-        case Base::IntendedRecipient::User:
-            notifyConsoleMessageByContentForRecipient<category, Base::IntendedRecipient::User>(
-                content,
-                notifiername,
-                msg
-            );
-            return;
-        case Base::IntendedRecipient::Developer:
-            notifyConsoleMessageByContentForRecipient<category, Base::IntendedRecipient::Developer>(
-                content,
-                notifiername,
-                msg
-            );
-            return;
-    }
-}
-
 void deliverConsoleMessage(
     const Base::ConsoleSingleton::FreeCAD_ConsoleMsgType type,
     const Base::IntendedRecipient recipient,
@@ -135,28 +108,12 @@ void deliverConsoleMessage(
     const std::string& msg
 )
 {
-    switch (type) {
-        case Base::ConsoleSingleton::MsgType_Txt:
-            notifyConsoleMessage<Base::LogStyle::Message>(recipient, content, notifiername, msg);
-            return;
-        case Base::ConsoleSingleton::MsgType_Log:
-            notifyConsoleMessage<Base::LogStyle::Log>(recipient, content, notifiername, msg);
-            return;
-        case Base::ConsoleSingleton::MsgType_Wrn:
-            notifyConsoleMessage<Base::LogStyle::Warning>(recipient, content, notifiername, msg);
-            return;
-        case Base::ConsoleSingleton::MsgType_Err:
-            notifyConsoleMessage<Base::LogStyle::Error>(recipient, content, notifiername, msg);
-            return;
-        case Base::ConsoleSingleton::MsgType_Critical:
-            notifyConsoleMessage<Base::LogStyle::Critical>(recipient, content, notifiername, msg);
-            return;
-        case Base::ConsoleSingleton::MsgType_Notification:
-            notifyConsoleMessage<Base::LogStyle::Notification>(recipient, content, notifiername, msg);
-            return;
-        default:
-            return;
+    Base::LogStyle style {};
+    if (!tryMapTypeToLogStyle(type, style)) {
+        return;
     }
+
+    Base::Console().notify(style, recipient, content, notifiername, msg);
 }
 
 }  // namespace
