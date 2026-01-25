@@ -294,6 +294,21 @@ class _Covering(ArchComponent.Component):
         if hasattr(vproxy, "setProperties"):
             vproxy.setProperties(vobj)
 
+    def onChanged(self, obj, prop):
+        """Method called when a property is changed."""
+        ArchComponent.Component.onChanged(self, obj, prop)
+        if prop == "JointWidth":
+            if obj.JointWidth.Value < MIN_DIMENSION:
+                obj.JointWidth = MIN_DIMENSION
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        f"Covering: The joint width has been adjusted to {MIN_DIMENSION} mm. "
+                        "A minimum width is required to divide the finish into individual tiles.",
+                    )
+                    + "\n"
+                )
+
     def execute(self, obj):
         """
         Calculates the geometry and updates the shape of the object.
@@ -654,7 +669,7 @@ class _Covering(ArchComponent.Component):
         # Generate horizontal strips (rows). These will always be a set of long strips running the
         # full width of the face, with width the size of the joint
         # OpenCascade requires dimensions > 0 for solids
-        if j_wid > MIN_DIMENSION:
+        if j_wid >= MIN_DIMENSION:
             full_len_x = 2 * count_x * step_x
             start_x = -count_x * step_x
 
@@ -670,7 +685,7 @@ class _Covering(ArchComponent.Component):
         # and the vertical strips are built similarly to horizontal strips, but in the vertical
         # direction. If a tile offset is specified, we're laying a running bond, and the vertical
         # cutters are generated as individual segments for each row to create the offset.
-        if j_len > MIN_DIMENSION:
+        if j_len >= MIN_DIMENSION:
             is_stack_bond = (
                 abs(off_x) < Part.Precision.approximation()
                 and abs(off_y) < Part.Precision.approximation()
@@ -873,7 +888,7 @@ class _Covering(ArchComponent.Component):
 
     def _calculate_joint_length(self, obj, base_face, tr):
         """Calculates and updates the TotalJointLength property."""
-        if obj.JointWidth.Value <= MIN_DIMENSION:
+        if obj.JointWidth.Value < MIN_DIMENSION:
             obj.TotalJointLength = 0
             return
 
