@@ -181,6 +181,9 @@ namespace {
     // reduce code duplication for platform-specific case-insensitive str/compar
     static bool caseInsensitiveCompare(const char* str1, const std::string& str2)
     {
+        if (!str1) {
+            return str2.empty();
+        }
     #ifdef __GNUC__
         return strcasecmp(str1, str2.c_str()) == 0;
     #else
