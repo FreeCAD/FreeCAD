@@ -31,7 +31,7 @@
 
 #pragma once
 
-# include <array>
+#include <array>
 
 // 8 bit CET luts as {R,G,B,R,G,B,...}
 // see https://colorcet.com/gallery.html for more details

@@ -28,19 +28,19 @@
 
 
 // Mesh
-# ifndef MeshExport
-#  ifdef Mesh_EXPORTS
-#   define MeshExport FREECAD_DECL_EXPORT
-#  else
-#   define MeshExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef MeshExport
+# ifdef Mesh_EXPORTS
+#  define MeshExport FREECAD_DECL_EXPORT
+# else
+#  define MeshExport FREECAD_DECL_IMPORT
 # endif
+#endif
 
 // MeshGui
-# ifndef MeshGuiExport
-#  ifdef MeshGui_EXPORTS
-#   define MeshGuiExport FREECAD_DECL_EXPORT
-#  else
-#   define MeshGuiExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef MeshGuiExport
+# ifdef MeshGui_EXPORTS
+#  define MeshGuiExport FREECAD_DECL_EXPORT
+# else
+#  define MeshGuiExport FREECAD_DECL_IMPORT
 # endif
+#endif

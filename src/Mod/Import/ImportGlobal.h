@@ -28,19 +28,19 @@
 
 
 // Import
-# ifndef ImportExport
-#  ifdef Import_EXPORTS
-#   define ImportExport FREECAD_DECL_EXPORT
-#  else
-#   define ImportExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef ImportExport
+# ifdef Import_EXPORTS
+#  define ImportExport FREECAD_DECL_EXPORT
+# else
+#  define ImportExport FREECAD_DECL_IMPORT
 # endif
+#endif
 
 // ImportGui
-# ifndef ImportGuiExport
-#  ifdef ImportGui_EXPORTS
-#   define ImportGuiExport FREECAD_DECL_EXPORT
-#  else
-#   define ImportGuiExport FREECAD_DECL_IMPORT
-#  endif
+#ifndef ImportGuiExport
+# ifdef ImportGui_EXPORTS
+#  define ImportGuiExport FREECAD_DECL_EXPORT
+# else
+#  define ImportGuiExport FREECAD_DECL_IMPORT
 # endif
+#endif

@@ -18,9 +18,9 @@
 
 #pragma once
 
-# include "vtkFiltersGeneralModule.h"  // For export macro
-# include "vtkSmartPointer.h"
-# include "vtkUnstructuredGridAlgorithm.h"
+#include "vtkFiltersGeneralModule.h"  // For export macro
+#include "vtkSmartPointer.h"
+#include "vtkUnstructuredGridAlgorithm.h"
 
 /*VTK_ABI_NAMESPACE_BEGIN*/
 
