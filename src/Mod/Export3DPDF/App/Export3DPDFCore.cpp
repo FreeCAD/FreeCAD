@@ -20,6 +20,14 @@
 
 using namespace Export3DPDF;
 
+// Libharu error handler - logs errors to FreeCAD console
+static void hpdfErrorHandler(HPDF_STATUS error_no, HPDF_STATUS detail_no, void* /*user_data*/)
+{
+    Base::Console().error("libharu error: error_no=0x%04X, detail_no=%d\n",
+                         static_cast<unsigned int>(error_no),
+                         static_cast<int>(detail_no));
+}
+
 bool Export3DPDFCore::convertTessellationToPRC(const std::vector<TessellationData>& tessellationData, const std::string& outputPath, double pageWidthPoints, double pageHeightPoints, double backgroundR, double backgroundG, double backgroundB, double activeViewX, double activeViewY, double activeViewScale, double activeViewWidth, double activeViewHeight)
 {
     std::string prcPath = outputPath + ".prc";
@@ -145,11 +153,12 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         prcFile.read(reinterpret_cast<char*>(prcBuffer.data()), prcSize);
         prcFile.close();
         
-        HPDF_Doc pdf = HPDF_New(NULL, NULL);
+        HPDF_Doc pdf = HPDF_New(hpdfErrorHandler, nullptr);
         if (!pdf) {
+            Base::Console().error("Failed to create PDF document\n");
             return false;
         }
-        
+
         HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
         HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD 3D Model");
         
@@ -262,7 +271,7 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         prcFile.read(reinterpret_cast<char*>(prcBuffer.data()), prcSize);
         prcFile.close();
 
-        HPDF_Doc pdf = HPDF_New(NULL, NULL);
+        HPDF_Doc pdf = HPDF_New(hpdfErrorHandler, nullptr);
         if (!pdf) {
             Base::Console().error("Failed to create PDF document for hybrid export\n");
             std::remove(prcPath.c_str());
@@ -278,18 +287,19 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
 
         HPDF_Image backgroundImg = nullptr;
         if (!backgroundImagePath.empty()) {
-            try {
-                backgroundImg = HPDF_LoadPngImageFromFile(pdf, backgroundImagePath.c_str());
-            } catch (...) {
-                try {
-                    backgroundImg = HPDF_LoadJpegImageFromFile(pdf, backgroundImagePath.c_str());
-                } catch (...) {
-                    Base::Console().warning("Failed to load background image: %s\n", backgroundImagePath.c_str());
-                }
+            // Try PNG first, then JPEG - libharu is a C library so check return values (not exceptions)
+            backgroundImg = HPDF_LoadPngImageFromFile(pdf, backgroundImagePath.c_str());
+            if (!backgroundImg) {
+                // PNG failed, try JPEG
+                HPDF_ResetError(pdf);  // Clear the error state before trying JPEG
+                backgroundImg = HPDF_LoadJpegImageFromFile(pdf, backgroundImagePath.c_str());
             }
 
             if (backgroundImg) {
                 HPDF_Page_DrawImage(page, backgroundImg, 0, 0, pageWidthPoints, pageHeightPoints);
+            } else {
+                Base::Console().warning("Failed to load background image: %s\n", backgroundImagePath.c_str());
+                HPDF_ResetError(pdf);  // Clear error so we can continue with 3D content
             }
         }
 
