@@ -20,9 +20,11 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
 
     CXXFLAGS="${CXXFLAGS} -D_LIBCPP_DISABLE_AVAILABILITY"
 
-    # Use MACOS_DEPLOYMENT_TARGET from environment, default to 11.0 for backwards compat
-    # macOS 15+ enables modern QuickLook App Extensions (.appex)
-    # macOS 11+ only gets legacy QuickLook generator (.qlgenerator)
+    # Use MACOS_DEPLOYMENT_TARGET from environment, default to 11.0 for backwards compat.
+    # Note that CI sets this per target: 10.13 (Intel), 11.0 (ARM legacy), 15.0 (ARM modern)
+    # - macOS 10.13+ Intel: legacy QuickLook generator (.qlgenerator)
+    # - macOS 11-14 ARM: legacy QuickLook generator (.qlgenerator)
+    # - macOS 15+ ARM: modern QuickLook App Extensions (.appex)
     DEPLOY_TARGET="${MACOS_DEPLOYMENT_TARGET:-11.0}"
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_DEPLOYMENT_TARGET=${DEPLOY_TARGET})
 fi
