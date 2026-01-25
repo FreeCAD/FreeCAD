@@ -177,6 +177,18 @@ using namespace App;
 namespace sp = std::placeholders;
 namespace fs = std::filesystem;
 
+namespace {
+    // reduce code duplication for platform-specific case-insensitive str/compar
+    static bool caseInsensitiveCompare(const char* str1, const std::string& str2)
+    {
+    #ifdef __GNUC__
+        return strcasecmp(str1, str2.c_str()) == 0;
+    #else
+        return _stricmp(str1, str2.c_str()) == 0;
+    #endif
+    }
+}
+
 //==========================================================================
 // Application
 //==========================================================================
@@ -1353,11 +1365,7 @@ std::vector<std::string> Application::getImportModules(const char* Type) const
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (caseInsensitiveCompare(Type, jt))
                 modules.push_back(it.module);
         }
     }
@@ -1381,11 +1389,7 @@ std::vector<std::string> Application::getImportTypes(const char* Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mImportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (caseInsensitiveCompare(Module, it.module))
             types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
@@ -1411,11 +1415,7 @@ std::map<std::string, std::string> Application::getImportFilters(const char* Typ
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (caseInsensitiveCompare(Type, jt))
                 moduleFilter[it.filter] = it.module;
         }
     }
@@ -1478,11 +1478,7 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (caseInsensitiveCompare(Type, jt))
                 modules.push_back(it.module);
         }
     }
@@ -1506,11 +1502,7 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mExportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (caseInsensitiveCompare(Module, it.module))
             types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
@@ -1536,11 +1528,7 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (caseInsensitiveCompare(Type, jt))  
                 moduleFilter[it.filter] = it.module;
         }
     }
