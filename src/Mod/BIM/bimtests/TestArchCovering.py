@@ -379,3 +379,38 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.assertEqual(covering.WasteArea.Value, 0.0)
         # JointLength: 2 horiz + 2 vert lines * 1000 = 4000
         self.assertAlmostEqual(covering.TotalJointLength.Value, 4000.0, places=1)
+
+    def test_alignment_offset(self):
+        """Test that AlignmentOffset shifts the internal grid and ignores Z."""
+        self.printTestMessage("alignment offset...")
+        base = (self.box, ["Face6"])
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Solid Tiles"
+        covering.TileLength = 200.0
+        covering.TileWidth = 200.0
+        # Use a significant joint width to ensure tiling logic is executed
+        covering.JointWidth = 2.0
+        covering.TileThickness = 20.0
+        covering.TileAlignment = "Center"
+        self.document.recompute()
+
+        # Capture initial geometric fingerprint using vertex coordinates.
+        # Bounding box center is invariant, but vertex positions change when joints shift.
+        base_sum = sum(v.Point.x + v.Point.y for v in covering.Shape.Vertexes)
+
+        # Apply offset: X=100, Y=50
+        covering.AlignmentOffset = App.Vector(100, 50, 0)
+        self.document.recompute()
+
+        offset_sum = sum(v.Point.x + v.Point.y for v in covering.Shape.Vertexes)
+        self.assertNotAlmostEqual(base_sum, offset_sum, places=3)
+
+        # Apply large Z component (should be ignored)
+        covering.AlignmentOffset = App.Vector(100, 50, 5000)
+        self.document.recompute()
+
+        z_ignored_sum = sum(v.Point.x + v.Point.y for v in covering.Shape.Vertexes)
+        self.assertAlmostEqual(offset_sum, z_ignored_sum, places=3)
+
+        # Ensure tiles did not lift off the face (Face6 is at Z=1000)
+        self.assertAlmostEqual(covering.Shape.BoundBox.ZMin, 1000.0, places=3)

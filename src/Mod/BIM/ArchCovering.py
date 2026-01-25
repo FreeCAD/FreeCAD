@@ -174,6 +174,13 @@ class _Covering(ArchComponent.Component):
             ("App::PropertyLength", "TileThickness", "Tiles", "The thickness of the tiles", 0),
             ("App::PropertyLength", "JointWidth", "Tiles", "The width of the joints", 0),
             ("App::PropertyVector", "TileOffset", "Tiles", "The offset of alternating rows", None),
+            (
+                "App::PropertyVector",
+                "AlignmentOffset",
+                "Tiles",
+                "A manual offset to shift the grid origin (X=U, Y=V). The Z component is ignored",
+                None,
+            ),
             ("App::PropertyArea", "NetArea", "Quantities", "The surface area of the base face", 0),
             (
                 "App::PropertyArea",
@@ -561,6 +568,11 @@ class _Covering(ArchComponent.Component):
             origin_offset = (u_vec * min_u) + (v_vec * max_v)
         elif align == "TopRight":
             origin_offset = (u_vec * max_u) + (v_vec * max_v)
+
+        # Apply manual AlignmentOffset (X moves in U, Y moves in V, Z is ignored)
+        if hasattr(obj, "AlignmentOffset"):
+            align_shift = (u_vec * obj.AlignmentOffset.x) + (v_vec * obj.AlignmentOffset.y)
+            origin_offset = origin_offset.add(align_shift)
 
         return center_point.add(origin_offset)
 
