@@ -180,10 +180,10 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath,
         const auto& av = settings.activeView;
         double scaledViewWidth = av.width * av.scale;
         double scaledViewHeight = av.height * av.scale;
-        double viewWidthPoints = scaledViewWidth * 2.834645669;
-        double viewHeightPoints = scaledViewHeight * 2.834645669;
-        double viewXPoints = av.x * 2.834645669;
-        double viewYPoints = av.y * 2.834645669;
+        double viewWidthPoints = scaledViewWidth * MM_TO_POINTS;
+        double viewHeightPoints = scaledViewHeight * MM_TO_POINTS;
+        double viewXPoints = av.x * MM_TO_POINTS;
+        double viewYPoints = av.y * MM_TO_POINTS;
 
         double halfWidthPoints = viewWidthPoints / 2.0;
         double halfHeightPoints = viewHeightPoints / 2.0;
@@ -309,10 +309,10 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         const auto& av = settings.activeView;
         double scaledViewWidth = av.width * av.scale;
         double scaledViewHeight = av.height * av.scale;
-        double viewWidthPoints = scaledViewWidth * 2.834645669;
-        double viewHeightPoints = scaledViewHeight * 2.834645669;
-        double viewXPoints = av.x * 2.834645669;
-        double viewYPoints = av.y * 2.834645669;
+        double viewWidthPoints = scaledViewWidth * MM_TO_POINTS;
+        double viewHeightPoints = scaledViewHeight * MM_TO_POINTS;
+        double viewXPoints = av.x * MM_TO_POINTS;
+        double viewYPoints = av.y * MM_TO_POINTS;
 
         double halfWidthPoints = viewWidthPoints / 2.0;
         double halfHeightPoints = viewHeightPoints / 2.0;

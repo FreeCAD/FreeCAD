@@ -8,6 +8,13 @@
 namespace Export3DPDF {
 
 /**
+ * @brief Conversion factor from millimeters to PDF points
+ * 1 point = 1/72 inch, 1 inch = 25.4 mm
+ * So 1 mm = 72/25.4 = 2.834645669... points
+ */
+constexpr double MM_TO_POINTS = 72.0 / 25.4;  // ~2.834645669
+
+/**
  * @brief PDF page dimensions in points (1 point = 1/72 inch)
  */
 struct Export3DPDFExport PDFPageSettings {
