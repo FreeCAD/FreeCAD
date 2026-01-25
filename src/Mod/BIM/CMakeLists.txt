@@ -27,6 +27,7 @@ SET(Arch_SRCS
     ArchStructure.py
     ArchCommands.py
     ArchCovering.py
+    ArchCoveringGui.py
     ArchSectionPlane.py
     ArchWindow.py
     ArchWindowPresets.py

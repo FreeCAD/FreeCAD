@@ -115,9 +115,11 @@ class BIM_Covering:
                     selection_list.append(obj)
 
         # Launch the task panel
-        import ArchCovering
+        import ArchCoveringGui
 
-        self.task_panel = ArchCovering.ArchCoveringTaskPanel(command=self, selection=selection_list)
+        self.task_panel = ArchCoveringGui.ArchCoveringTaskPanel(
+            command=self, selection=selection_list
+        )
         FreeCADGui.Control.showDialog(self.task_panel)
 
         if not selection_list:

@@ -7,7 +7,7 @@
 
 import Arch
 import Draft
-import ArchCovering
+import ArchCoveringGui
 import FreeCADGui as Gui
 from draftutils import params
 from bimtests import TestArchBaseGui
@@ -37,7 +37,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         """Verify that expressions on the phantom object are transferred to real objects."""
         self.printTestMessage("expression transfer from phantom...")
         # Open panel in creation mode (no obj passed)
-        self.panel = ArchCovering.ArchCoveringTaskPanel()
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
 
         # Set an expression on the phantom property (simulating user entering f(x) in UI)
         expression = "100mm + 200mm"
@@ -70,7 +70,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
     def test_selection_ui_labels(self):
         """Test the smart labeling logic for the 'Base' field."""
         self.printTestMessage("selection UI labels...")
-        self.panel = ArchCovering.ArchCoveringTaskPanel()
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
         # TODO: this test needs to be reworked to be locale-independent
 
         # Scenario A: single face
@@ -96,7 +96,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
 
         # Provide a selection list with 3 targets
         selection = [(self.box, ["Face1"]), (self.box, ["Face2"]), (self.box, ["Face3"])]
-        self.panel = ArchCovering.ArchCoveringTaskPanel(selection=selection)
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel(selection=selection)
 
         # Manipulate the widget to ensure the binding and the underlying phantom object are updated
         # correctly.
@@ -120,7 +120,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
     def test_continue_mode_workflow(self):
         """Test the soft-reset behavior of Continue mode."""
         self.printTestMessage("continue mode workflow...")
-        self.panel = ArchCovering.ArchCoveringTaskPanel(selection=[(self.box, ["Face6"])])
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel(selection=[(self.box, ["Face6"])])
         self.panel.chk_continue.setChecked(True)
 
         # Accept first operation (should return False to keep dialog open)
@@ -138,7 +138,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
     def test_mode_switching_ux(self):
         """Verify that thickness is disabled when entering pattern modes."""
         self.printTestMessage("mode switching UX...")
-        self.panel = ArchCovering.ArchCoveringTaskPanel()
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
 
         # Initial state: Solid Tiles (index 0)
         self.panel.combo_mode.setCurrentIndex(0)
@@ -159,7 +159,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
     def test_cleanup_removes_phantom(self):
         """Ensure the phantom object is deleted on close/reject."""
         self.printTestMessage("phantom cleanup on reject...")
-        self.panel = ArchCovering.ArchCoveringTaskPanel()
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
         phantom_name = self.panel.phantom.Name
         self.assertIsNotNone(self.document.getObject(phantom_name))
 
@@ -179,7 +179,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         self.document.recompute()
 
         # Open in Edit Mode
-        self.panel = ArchCovering.ArchCoveringTaskPanel(obj=covering)
+        self.panel = ArchCoveringGui.ArchCoveringTaskPanel(obj=covering)
         self.panel.setPicking(True)
 
         # Simulate selecting the covering itself

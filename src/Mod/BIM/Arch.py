@@ -2371,6 +2371,12 @@ def _initializeArchObject(
         if FreeCAD.GuiUp:
             viewProvider = getattr(module, viewProviderName, None)
             if not viewProvider:
+                try:
+                    guiModule = importlib.import_module(moduleName + "Gui")
+                    viewProvider = getattr(guiModule, viewProviderName, None)
+                except ImportError:
+                    pass
+            if not viewProvider:
                 FreeCAD.Console.PrintWarning(
                     f"View provider '{viewProviderName}' not found in module '{moduleName}'.\n"
                 )
