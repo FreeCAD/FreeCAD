@@ -177,21 +177,6 @@ using namespace App;
 namespace sp = std::placeholders;
 namespace fs = std::filesystem;
 
-namespace {
-    // reduce code duplication for platform-specific case-insensitive str/compar
-    bool caseInsensitiveCompare(const char* str1, const std::string& str2)
-    {
-        if (!str1) {
-            return str2.empty();
-        }
-    #ifdef __GNUC__
-        return strcasecmp(str1, str2.c_str()) == 0;
-    #else
-        return _stricmp(str1, str2.c_str()) == 0;
-    #endif
-    }
-}
-
 //==========================================================================
 // Application
 //==========================================================================
@@ -1362,13 +1347,12 @@ void Application::changeImportModule(const char* Type, const char* OldModuleName
     }
 }
 
-std::vector<std::string> Application::getImportModules(const char* Type) const
+std::vector<std::string> Application::getImportModules(const std::string* Type) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (caseInsensitiveCompare(Type, jt))
                 modules.push_back(it.module);
         }
     }
@@ -1388,11 +1372,10 @@ std::vector<std::string> Application::getImportModules() const
     return modules;
 }
 
-std::vector<std::string> Application::getImportTypes(const char* Module) const
+std::vector<std::string> Application::getImportTypes(const std::string* Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mImportTypes) {
-        if (caseInsensitiveCompare(Module, it.module))
             types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
@@ -1412,13 +1395,12 @@ std::vector<std::string> Application::getImportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getImportFilters(const std::string* Type) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (caseInsensitiveCompare(Type, jt))
                 moduleFilter[it.filter] = it.module;
         }
     }
@@ -1436,7 +1418,7 @@ std::map<std::string, std::string> Application::getImportFilters() const
     return filter;
 }
 
-void Application::addExportType(const char* Type, const char* ModuleName)
+void Application::addExportType(const std::string* Type, const std::string* ModuleName)
 {
     FileTypeItem item;
     item.filter = Type;
@@ -1481,7 +1463,6 @@ std::vector<std::string> Application::getExportModules(const char* Type) const
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (caseInsensitiveCompare(Type, jt))
                 modules.push_back(it.module);
         }
     }
@@ -1505,7 +1486,6 @@ std::vector<std::string> Application::getExportTypes(const char* Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mExportTypes) {
-        if (caseInsensitiveCompare(Module, it.module))
             types.insert(types.end(), it.types.begin(), it.types.end());
     }
 
@@ -1531,7 +1511,6 @@ std::map<std::string, std::string> Application::getExportFilters(const char* Typ
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-            if (caseInsensitiveCompare(Type, jt))  
                 moduleFilter[it.filter] = it.module;
         }
     }
@@ -3789,5 +3768,6 @@ void Application::getVerboseAddOnsInfo(QTextStream& str, const std::map<std::str
         }
     }
 }
+
 
 
