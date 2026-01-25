@@ -11,20 +11,8 @@ neon_key_tmp="$(mktemp)"
 trap 'rm -f "$neon_key_tmp"' EXIT
 
 # Fetch the key without sudo so failures are clearer in CI logs
-if ! wget -qO "$neon_key_tmp" --timeout=30 --tries=3 "$neon_key_url"; then
-  echo "Failed to download KDE Neon signing key from: $neon_key_url" >&2
-  exit 1
-fi
-
-if ! gpg --batch --quiet --show-keys "$neon_key_tmp" >/dev/null; then
-  echo "Downloaded data from $neon_key_url is not a valid OpenPGP public key." >&2
-  echo "Downloaded file type: $(file -b "$neon_key_tmp" 2>/dev/null || echo unknown)" >&2
-  echo "First 200 bytes:" >&2
-  head -c 200 "$neon_key_tmp" | sed -e 's/[^[:print:]\t]/?/g' >&2
-  echo >&2
-  exit 1
-fi
-
+wget -qO "$neon_key_tmp" --timeout=30 --tries=3 "$neon_key_url"
+gpg --batch --quiet --show-keys "$neon_key_tmp" >/dev/null
 sudo gpg --dearmor -o "$neon_keyring_path" "$neon_key_tmp"
 
 echo "deb [signed-by=$neon_keyring_path] $neon_repo_url noble main" | sudo tee /etc/apt/sources.list.d/neon-qt.list
