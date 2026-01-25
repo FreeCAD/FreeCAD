@@ -38,6 +38,9 @@ else:
 # in the geometry calculations or division-by-zero errors in Python.
 MIN_DIMENSION = 0.1
 TOO_MANY_TILES = 10000
+# Minimum percentage of a tile's area/volume to be considered "full" for quantity take-off, to
+# account for minor clipping from forced joint widths.
+FULL_TILE_THRESHOLD_RATIO = 0.995
 
 
 def profile_it(func):
@@ -813,7 +816,7 @@ class _Covering(ArchComponent.Component):
                 full_vol = t_len * t_wid * obj.TileThickness.Value
                 if result_shape.Solids:
                     for sol in result_shape.Solids:
-                        if abs(sol.Volume - full_vol) < 0.001:
+                        if sol.Volume >= (full_vol * FULL_TILE_THRESHOLD_RATIO):
                             full_cnt += 1
                         else:
                             part_cnt += 1
@@ -838,7 +841,7 @@ class _Covering(ArchComponent.Component):
                 full_area = t_len * t_wid
                 if result_shape.Faces:
                     for f in result_shape.Faces:
-                        if abs(f.Area - full_area) < 0.001:
+                        if f.Area >= (full_area * FULL_TILE_THRESHOLD_RATIO):
                             full_cnt += 1
                         else:
                             part_cnt += 1

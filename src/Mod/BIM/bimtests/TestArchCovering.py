@@ -414,3 +414,44 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # Ensure tiles did not lift off the face (Face6 is at Z=1000)
         self.assertAlmostEqual(covering.Shape.BoundBox.ZMin, 1000.0, places=3)
+
+    def test_butt_joint_tile_classification(self):
+        """Verify that 'almost full' tiles are counted as full for butt joints."""
+        self.printTestMessage("butt joint tile classification...")
+        base = (self.box, ["Face6"])  # 1000x1000 face
+        covering = Arch.makeCovering(base)
+        covering.FinishMode = "Solid Tiles"
+        covering.TileLength = 200.0  # 1000 / 200 = 5 tiles
+        covering.TileWidth = 1000.0
+        covering.TileThickness = 10.0
+        covering.TileAlignment = "BottomLeft"
+
+        # Setting JointWidth to 0 triggers the clamping to MIN_DIMENSION
+        covering.JointWidth = 0.0
+        self.document.recompute()
+
+        # Despite tiny cuts from the 0.1mm joints, the forgiving tolerance
+        # should classify all tiles as full.
+        self.assertEqual(covering.CountFullTiles, 5)
+        self.assertEqual(covering.CountPartialTiles, 0)
+
+    def test_joint_width_clamping(self):
+        """Verify the proactive clamping of JointWidth in onChanged."""
+        self.printTestMessage("joint width clamping...")
+        covering = Arch.makeCovering()
+        MIN_DIMENSION = 0.1
+
+        # Scenario 1: Zero input
+        covering.JointWidth = 0.0
+        self.document.recompute()
+        self.assertAlmostEqual(covering.JointWidth.Value, MIN_DIMENSION, places=5)
+
+        # Scenario 2: Sub-threshold input
+        covering.JointWidth = 0.05
+        self.document.recompute()
+        self.assertAlmostEqual(covering.JointWidth.Value, MIN_DIMENSION, places=5)
+
+        # Scenario 3: Valid input (should not be changed)
+        covering.JointWidth = 1.0
+        self.document.recompute()
+        self.assertAlmostEqual(covering.JointWidth.Value, 1.0, places=5)
