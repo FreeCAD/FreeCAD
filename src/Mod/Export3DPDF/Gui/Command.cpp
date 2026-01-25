@@ -212,8 +212,9 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                                             }
                                             
                                         } catch (const std::exception& e) {
+                                            Base::Console().warning("Failed to get background properties: %s\n", e.what());
                                         }
-                                        
+
                                         App::Property* sourceProp = view->getPropertyByName("Source");
                                         App::Property* xsourceProp = view->getPropertyByName("XSource");
                                         
@@ -281,6 +282,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
 
                                             
                                         } catch (const std::exception& e) {
+                                            Base::Console().warning("Failed to get ActiveView properties: %s\n", e.what());
                                         }
                                     }
                                 }

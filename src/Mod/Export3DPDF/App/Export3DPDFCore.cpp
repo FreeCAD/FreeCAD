@@ -124,6 +124,7 @@ std::string Export3DPDFCore::createPRCFile(const std::vector<TessellationData>& 
         return prcPath;
     }
     catch (const std::exception& e) {
+        Base::Console().error("Failed to create PRC file: %s\n", e.what());
         return "";
     }
 }
@@ -219,6 +220,7 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath, const std::strin
         return true;
     }
     catch (const std::exception& e) {
+        Base::Console().error("Failed to embed PRC in PDF: %s\n", e.what());
         return false;
     }
 }
