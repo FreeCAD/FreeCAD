@@ -214,11 +214,12 @@ bool Export3DPDFCore::embedPRCInPDF(const std::string& prcPath,
         HPDF_3DView_SetLighting(view, "CAD");
         HPDF_3DView_SetBackgroundColor(view, settings.background.r, settings.background.g, settings.background.b);
 
+        const auto& cam = settings.camera;
         HPDF_3DView_SetCamera(view,
-            10.0, 10.0, 10.0,  // camera position
-            0.0, 0.0, 0.0,     // target position
-            50.0,              // distance
-            0.0);              // roll
+            cam.posX, cam.posY, cam.posZ,           // camera position
+            cam.targetX, cam.targetY, cam.targetZ,  // target position
+            cam.distance,                            // distance
+            cam.roll);                               // roll
 
         HPDF_U3D_SetDefault3DView(u3d, "Default");
 
@@ -345,11 +346,12 @@ bool Export3DPDFCore::createHybrid3DPDF(const std::vector<TessellationData>& tes
         HPDF_3DView_SetLighting(view, "CAD");
         HPDF_3DView_SetBackgroundColor(view, settings.background.r, settings.background.g, settings.background.b);
 
+        const auto& cam = settings.camera;
         HPDF_3DView_SetCamera(view,
-            10.0, 10.0, 10.0,  // camera position
-            0.0, 0.0, 0.0,     // target position
-            50.0,              // distance
-            0.0);              // roll
+            cam.posX, cam.posY, cam.posZ,           // camera position
+            cam.targetX, cam.targetY, cam.targetZ,  // target position
+            cam.distance,                            // distance
+            cam.roll);                               // roll
 
         HPDF_U3D_SetDefault3DView(u3d, "Default");
 

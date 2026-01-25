@@ -43,12 +43,30 @@ struct Export3DPDFExport ActiveViewSettings {
 };
 
 /**
+ * @brief 3D camera settings for the PDF view
+ */
+struct Export3DPDFExport CameraSettings {
+    // Camera position (where the camera is located)
+    double posX = 10.0;
+    double posY = 10.0;
+    double posZ = 10.0;
+    // Target position (where the camera looks at)
+    double targetX = 0.0;
+    double targetY = 0.0;
+    double targetZ = 0.0;
+    // View parameters
+    double distance = 50.0;   // Distance from target
+    double roll = 0.0;        // Camera roll angle
+};
+
+/**
  * @brief Combined export settings for 3D PDF generation
  */
 struct Export3DPDFExport PDFExportSettings {
     PDFPageSettings page;
     BackgroundColor background;
     ActiveViewSettings activeView;
+    CameraSettings camera;
 };
 
 /**

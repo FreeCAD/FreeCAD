@@ -669,6 +669,25 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         if (success && !backgroundImagePath.empty()) {
             std::remove(backgroundImagePath.c_str());
         }
+
+        // Provide user feedback
+        std::string pdfPath = outputPath + ".pdf";
+        if (success) {
+            Base::Console().message("3D PDF exported successfully: %s\n", pdfPath.c_str());
+            QMessageBox::information(getMainWindow(),
+                QCoreApplication::translate("StdCmdPrint3dPdf", "Export Successful"),
+                QCoreApplication::translate("StdCmdPrint3dPdf", "3D PDF exported successfully to:\n%1")
+                    .arg(QString::fromStdString(pdfPath)));
+        } else {
+            Base::Console().error("Failed to export 3D PDF: %s\n", pdfPath.c_str());
+            QMessageBox::critical(getMainWindow(),
+                QCoreApplication::translate("StdCmdPrint3dPdf", "Export Failed"),
+                QCoreApplication::translate("StdCmdPrint3dPdf", "Failed to export 3D PDF.\nCheck the console for details."));
+        }
+    } else {
+        QMessageBox::warning(getMainWindow(),
+            QCoreApplication::translate("StdCmdPrint3dPdf", "No Data"),
+            QCoreApplication::translate("StdCmdPrint3dPdf", "No valid geometry found to export."));
     }
 }
 
