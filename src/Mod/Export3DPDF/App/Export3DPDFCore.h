@@ -1,6 +1,7 @@
 #ifndef EXPORT3DPDFCORE_H
 #define EXPORT3DPDFCORE_H
 
+#include <cstdint>
 #include <vector>
 #include <string>
 #include "../Export3DPDFGlobal.h"
@@ -99,6 +100,16 @@ struct Export3DPDFExport TessellationData {
 };
 
 /**
+ * @brief Data for a single 3D region in the PDF (for multiple ActiveViews)
+ */
+struct Export3DPDFExport PDF3DRegion {
+    std::vector<TessellationData> tessellationData;  // Geometry for this region
+    ActiveViewSettings viewSettings;                  // Position and size
+    BackgroundColor background;                       // Background color for 3D view
+    CameraSettings camera;                            // Camera settings
+};
+
+/**
  * @brief 3D PDF Export functionality using PRC format
  *
  * This class uses in-memory buffers for PRC data to avoid intermediate files,
@@ -118,7 +129,7 @@ public:
                             const PDFExportSettings& settings = PDFExportSettings());
 
     /**
-     * @brief Create hybrid 2D+3D PDF with TechDraw page background and 3D content
+     * @brief Create hybrid 2D+3D PDF with TechDraw page background and single 3D region
      * @param tessellationData Vector of tessellation data for 3D objects
      * @param pdfPath Full path where the hybrid PDF should be saved (including .pdf extension)
      * @param backgroundImagePath Path to background image (rendered TechDraw page)
@@ -129,6 +140,19 @@ public:
                                   const std::string& pdfPath,
                                   const std::string& backgroundImagePath,
                                   const PDFExportSettings& settings);
+
+    /**
+     * @brief Create hybrid 2D+3D PDF with TechDraw page background and multiple 3D regions
+     * @param regions Vector of 3D regions, each with its own geometry, position and settings
+     * @param pdfPath Full path where the hybrid PDF should be saved (including .pdf extension)
+     * @param backgroundImagePath Path to background image (rendered TechDraw page)
+     * @param pageSettings Page dimensions
+     * @return true if successful, false otherwise
+     */
+    static bool exportToHybridPDFMultiRegion(const std::vector<PDF3DRegion>& regions,
+                                              const std::string& pdfPath,
+                                              const std::string& backgroundImagePath,
+                                              const PDFPageSettings& pageSettings);
 
 private:
     Export3DPDFCore() = default;  // Static class, no instances
@@ -141,17 +165,19 @@ private:
     static std::vector<uint8_t> createPRCBuffer(const std::vector<TessellationData>& tessellationData);
 
     /**
-     * @brief Create 3D PDF from PRC buffer data
-     * @param prcBuffer Buffer containing PRC data
+     * @brief Create 3D PDF from PRC buffer data (supports single or multiple 3D regions)
+     * @param prcBuffers Vector of PRC buffers (one per 3D region)
      * @param pdfPath Path where the PDF should be saved
      * @param backgroundImagePath Optional path to background image (empty for no background)
-     * @param settings Export settings
+     * @param regions Region settings (position, size, background, camera) for each annotation
+     * @param pageSettings Page dimensions
      * @return true if successful, false otherwise
      */
-    static bool createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
+    static bool createPDFFromBuffer(const std::vector<std::vector<uint8_t>>& prcBuffers,
                                     const std::string& pdfPath,
                                     const std::string& backgroundImagePath,
-                                    const PDFExportSettings& settings);
+                                    const std::vector<PDF3DRegion>& regions,
+                                    const PDFPageSettings& pageSettings);
 };
 
 } // namespace Export3DPDF

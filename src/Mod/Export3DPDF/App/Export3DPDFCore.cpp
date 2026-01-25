@@ -145,8 +145,15 @@ bool Export3DPDFCore::exportToPDF(const std::vector<TessellationData>& tessellat
         return false;
     }
 
-    // Create PDF directly from buffer (no background image for direct export)
-    return createPDFFromBuffer(prcBuffer, pdfPath, "", settings);
+    // Wrap single buffer/region in vectors for unified API
+    std::vector<std::vector<uint8_t>> prcBuffers = {std::move(prcBuffer)};
+    PDF3DRegion region;
+    region.viewSettings = settings.activeView;
+    region.background = settings.background;
+    region.camera = settings.camera;
+    std::vector<PDF3DRegion> regions = {std::move(region)};
+
+    return createPDFFromBuffer(prcBuffers, pdfPath, "", regions, settings.page);
 }
 
 bool Export3DPDFCore::exportToHybridPDF(const std::vector<TessellationData>& tessellationData,
@@ -161,8 +168,42 @@ bool Export3DPDFCore::exportToHybridPDF(const std::vector<TessellationData>& tes
         return false;
     }
 
-    // Create PDF with background image
-    return createPDFFromBuffer(prcBuffer, pdfPath, backgroundImagePath, settings);
+    // Wrap single buffer/region in vectors for unified API
+    std::vector<std::vector<uint8_t>> prcBuffers = {std::move(prcBuffer)};
+    PDF3DRegion region;
+    region.viewSettings = settings.activeView;
+    region.background = settings.background;
+    region.camera = settings.camera;
+    std::vector<PDF3DRegion> regions = {std::move(region)};
+
+    return createPDFFromBuffer(prcBuffers, pdfPath, backgroundImagePath, regions, settings.page);
+}
+
+bool Export3DPDFCore::exportToHybridPDFMultiRegion(const std::vector<PDF3DRegion>& regions,
+                                                    const std::string& pdfPath,
+                                                    const std::string& backgroundImagePath,
+                                                    const PDFPageSettings& pageSettings)
+{
+    if (regions.empty()) {
+        Base::Console().error("No 3D regions provided for multi-region export\n");
+        return false;
+    }
+
+    // Create PRC buffers for each region
+    std::vector<std::vector<uint8_t>> prcBuffers;
+    prcBuffers.reserve(regions.size());
+
+    for (size_t i = 0; i < regions.size(); ++i) {
+        std::vector<uint8_t> prcBuffer = createPRCBuffer(regions[i].tessellationData);
+        if (prcBuffer.empty()) {
+            Base::Console().error("Failed to create PRC data for region %zu\n", i);
+            return false;
+        }
+        prcBuffers.push_back(std::move(prcBuffer));
+    }
+
+    // Create PDF with 3D annotations
+    return createPDFFromBuffer(prcBuffers, pdfPath, backgroundImagePath, regions, pageSettings);
 }
 
 
@@ -254,11 +295,23 @@ std::vector<uint8_t> Export3DPDFCore::createPRCBuffer(const std::vector<Tessella
     }
 }
 
-bool Export3DPDFCore::createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
+bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>>& prcBuffers,
                                            const std::string& pdfPath,
                                            const std::string& backgroundImagePath,
-                                           const PDFExportSettings& settings)
+                                           const std::vector<PDF3DRegion>& regions,
+                                           const PDFPageSettings& pageSettings)
 {
+    if (prcBuffers.size() != regions.size()) {
+        Base::Console().error("Mismatch between PRC buffers (%zu) and regions (%zu)\n",
+                             prcBuffers.size(), regions.size());
+        return false;
+    }
+
+    if (prcBuffers.empty()) {
+        Base::Console().error("No PRC data provided for PDF creation\n");
+        return false;
+    }
+
     try {
         HPDF_Doc pdf = HPDF_New(hpdfErrorHandler, nullptr);
         if (!pdf) {
@@ -267,20 +320,17 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
         }
 
         // Set PDF metadata
-        if (backgroundImagePath.empty()) {
-            HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
-            HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD 3D Model");
-        } else {
-            HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
-            HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, "FreeCAD Hybrid 2D+3D Technical Drawing");
-        }
+        HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
+        HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, backgroundImagePath.empty()
+                         ? "FreeCAD 3D Model"
+                         : "FreeCAD Hybrid 2D+3D Technical Drawing");
 
         // Create page with specified dimensions
         HPDF_Page page = HPDF_AddPage(pdf);
-        HPDF_Page_SetWidth(page, settings.page.widthPoints);
-        HPDF_Page_SetHeight(page, settings.page.heightPoints);
+        HPDF_Page_SetWidth(page, pageSettings.widthPoints);
+        HPDF_Page_SetHeight(page, pageSettings.heightPoints);
 
-        // Add background image if provided (for hybrid PDF)
+        // Add background image if provided
         if (!backgroundImagePath.empty()) {
             std::vector<HPDF_BYTE> imageBuffer;
             if (readFileToBuffer(backgroundImagePath, imageBuffer)) {
@@ -295,7 +345,7 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
 
                 if (backgroundImg) {
                     HPDF_Page_DrawImage(page, backgroundImg, 0, 0,
-                                        settings.page.widthPoints, settings.page.heightPoints);
+                                        pageSettings.widthPoints, pageSettings.heightPoints);
                 } else {
                     Base::Console().warning("Failed to decode background image: %s\n", backgroundImagePath.c_str());
                     HPDF_ResetError(pdf);
@@ -305,64 +355,71 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
             }
         }
 
-        // Load PRC data as U3D
-        HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcBuffer.size()));
-        if (!u3d) {
-            Base::Console().error("Failed to load PRC data into PDF\n");
-            HPDF_Free(pdf);
-            return false;
+        // Create a 3D annotation for each region
+        for (size_t i = 0; i < regions.size(); ++i) {
+            const auto& prcBuffer = prcBuffers[i];
+            const auto& region = regions[i];
+            const auto& av = region.viewSettings;
+
+            // Load PRC data as U3D
+            HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcBuffer.size()));
+            if (!u3d) {
+                Base::Console().error("Failed to load PRC data for region %zu\n", i);
+                HPDF_Free(pdf);
+                return false;
+            }
+
+            // Calculate annotation rectangle from ActiveView settings
+            double scaledViewWidth = av.width * av.scale;
+            double scaledViewHeight = av.height * av.scale;
+            double viewWidthPoints = scaledViewWidth * MM_TO_POINTS;
+            double viewHeightPoints = scaledViewHeight * MM_TO_POINTS;
+            double viewXPoints = av.x * MM_TO_POINTS;
+            double viewYPoints = av.y * MM_TO_POINTS;
+
+            double halfWidthPoints = viewWidthPoints / 2.0;
+            double halfHeightPoints = viewHeightPoints / 2.0;
+
+            double annotLeft = viewXPoints - halfWidthPoints;
+            double annotRight = viewXPoints + halfWidthPoints;
+            double annotBottom = viewYPoints - halfHeightPoints;
+            double annotTop = viewYPoints + halfHeightPoints;
+
+            HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft),
+                             static_cast<HPDF_REAL>(annotBottom),
+                             static_cast<HPDF_REAL>(annotRight),
+                             static_cast<HPDF_REAL>(annotTop)};
+
+            // Create 3D annotation
+            HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
+            if (!annot) {
+                Base::Console().error("Failed to create 3D annotation for region %zu\n", i);
+                HPDF_Free(pdf);
+                return false;
+            }
+
+            // Create view name (use "Default" for single region, "View1", "View2" for multiple)
+            std::string viewName = (regions.size() == 1) ? "Default" : ("View" + std::to_string(i + 1));
+            HPDF_Dict view = HPDF_Page_Create3DView(page, u3d, annot, viewName.c_str());
+            if (!view) {
+                Base::Console().error("Failed to create 3D view for region %zu\n", i);
+                HPDF_Free(pdf);
+                return false;
+            }
+
+            // Configure view settings
+            HPDF_3DView_SetLighting(view, "CAD");
+            HPDF_3DView_SetBackgroundColor(view, region.background.r, region.background.g, region.background.b);
+
+            const auto& cam = region.camera;
+            HPDF_3DView_SetCamera(view,
+                cam.posX, cam.posY, cam.posZ,
+                cam.targetX, cam.targetY, cam.targetZ,
+                cam.distance,
+                cam.roll);
+
+            HPDF_U3D_SetDefault3DView(u3d, viewName.c_str());
         }
-
-        // Calculate annotation rectangle from ActiveView settings
-        const auto& av = settings.activeView;
-        double scaledViewWidth = av.width * av.scale;
-        double scaledViewHeight = av.height * av.scale;
-        double viewWidthPoints = scaledViewWidth * MM_TO_POINTS;
-        double viewHeightPoints = scaledViewHeight * MM_TO_POINTS;
-        double viewXPoints = av.x * MM_TO_POINTS;
-        double viewYPoints = av.y * MM_TO_POINTS;
-
-        double halfWidthPoints = viewWidthPoints / 2.0;
-        double halfHeightPoints = viewHeightPoints / 2.0;
-
-        double annotLeft = viewXPoints - halfWidthPoints;
-        double annotRight = viewXPoints + halfWidthPoints;
-        double annotBottom = viewYPoints - halfHeightPoints;
-        double annotTop = viewYPoints + halfHeightPoints;
-
-        HPDF_Rect rect = {static_cast<HPDF_REAL>(annotLeft),
-                         static_cast<HPDF_REAL>(annotBottom),
-                         static_cast<HPDF_REAL>(annotRight),
-                         static_cast<HPDF_REAL>(annotTop)};
-
-        // Create 3D annotation
-        HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
-        if (!annot) {
-            Base::Console().error("Failed to create 3D annotation\n");
-            HPDF_Free(pdf);
-            return false;
-        }
-
-        // Create 3D view
-        HPDF_Dict view = HPDF_Page_Create3DView(page, u3d, annot, "Default");
-        if (!view) {
-            Base::Console().error("Failed to create 3D view\n");
-            HPDF_Free(pdf);
-            return false;
-        }
-
-        // Configure view settings
-        HPDF_3DView_SetLighting(view, "CAD");
-        HPDF_3DView_SetBackgroundColor(view, settings.background.r, settings.background.g, settings.background.b);
-
-        const auto& cam = settings.camera;
-        HPDF_3DView_SetCamera(view,
-            cam.posX, cam.posY, cam.posZ,
-            cam.targetX, cam.targetY, cam.targetZ,
-            cam.distance,
-            cam.roll);
-
-        HPDF_U3D_SetDefault3DView(u3d, "Default");
 
         // Save PDF to file
         bool saveSuccess = savePdfToFile(pdf, pdfPath);
@@ -373,6 +430,9 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<uint8_t>& prcBuffer,
             return false;
         }
 
+        if (regions.size() > 1) {
+            Base::Console().message("Created 3D PDF with %zu interactive regions\n", regions.size());
+        }
         return true;
     }
     catch (const std::exception& e) {
