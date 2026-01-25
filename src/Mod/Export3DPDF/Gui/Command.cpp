@@ -84,7 +84,236 @@ FC_LOG_LEVEL_INIT("Command", false)
 
 using namespace Gui;
 
+// Helper struct to hold TechDraw page and ActiveView data
+struct TechDraw3DPDFExportData {
+    App::DocumentObject* page = nullptr;
+    App::DocumentObject* activeView = nullptr;
+    Gui::ViewProvider* activeViewVP = nullptr;
 
+    // Page dimensions
+    double pageWidthPoints = 800.0;
+    double pageHeightPoints = 800.0;
+
+    // Background settings
+    double backgroundR = 1.0;
+    double backgroundG = 1.0;
+    double backgroundB = 1.0;
+
+    // ActiveView properties
+    double activeViewX = 0.0;
+    double activeViewY = 0.0;
+    double activeViewScale = 1.0;
+    double activeViewWidth = 100.0;
+    double activeViewHeight = 100.0;
+
+    // Source objects for 3D export
+    std::vector<App::DocumentObject*> sourceObjects;
+
+    bool found() const { return page != nullptr && activeView != nullptr; }
+};
+
+// Helper function to find TechDraw page with ActiveView that has Enable3DPDFExport=true
+static TechDraw3DPDFExportData findTechDraw3DPDFExportData(App::Document* doc)
+{
+    TechDraw3DPDFExportData result;
+
+    if (!doc) {
+        return result;
+    }
+
+    std::vector<App::DocumentObject*> pages = doc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
+
+    for (auto* pageObj : pages) {
+        if (!pageObj || !pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
+            continue;
+        }
+
+        App::Property* viewsProp = pageObj->getPropertyByName("Views");
+        if (!viewsProp) {
+            continue;
+        }
+
+        App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
+        if (!viewsList) {
+            continue;
+        }
+
+        const std::vector<App::DocumentObject*>& views = viewsList->getValues();
+
+        for (auto* view : views) {
+            if (!view || !view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
+                continue;
+            }
+
+            std::string viewName = view->getNameInDocument();
+            if (viewName.find("ActiveView") == std::string::npos) {
+                continue;
+            }
+
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
+            if (!guiDoc) {
+                continue;
+            }
+
+            Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
+            if (!vp) {
+                continue;
+            }
+
+            App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
+            if (!enable3DProp) {
+                continue;
+            }
+
+            App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
+            if (!enableBool || !enableBool->getValue()) {
+                continue;
+            }
+
+            // Found a valid ActiveView with 3D PDF export enabled
+            result.page = pageObj;
+            result.activeView = view;
+            result.activeViewVP = vp;
+
+            // Extract page dimensions
+            {
+                double pageWidthMM = 297.0;  // Default A4
+                double pageHeightMM = 210.0;
+
+                App::Property* widthProp = pageObj->getPropertyByName("PageWidth");
+                App::Property* heightProp = pageObj->getPropertyByName("PageHeight");
+
+                if (widthProp) {
+                    auto* width = dynamic_cast<App::PropertyLength*>(widthProp);
+                    if (width) {
+                        pageWidthMM = width->getValue();
+                    }
+                }
+
+                if (heightProp) {
+                    auto* height = dynamic_cast<App::PropertyLength*>(heightProp);
+                    if (height) {
+                        pageHeightMM = height->getValue();
+                    }
+                }
+
+                result.pageWidthPoints = pageWidthMM * 2.834645669;
+                result.pageHeightPoints = pageHeightMM * 2.834645669;
+            }
+
+            // Extract background settings
+            try {
+                App::Property* noBackgroundProp = vp->getPropertyByName("NoBackground");
+                App::Property* solidBackgroundProp = vp->getPropertyByName("SolidBackground");
+                App::Property* backgroundColorProp = vp->getPropertyByName("BackgroundColor");
+
+                bool noBackground = false;
+                bool solidBackground = false;
+
+                if (noBackgroundProp) {
+                    App::PropertyBool* noBgBool = dynamic_cast<App::PropertyBool*>(noBackgroundProp);
+                    if (noBgBool) {
+                        noBackground = noBgBool->getValue();
+                    }
+                }
+
+                if (solidBackgroundProp) {
+                    App::PropertyBool* solidBgBool = dynamic_cast<App::PropertyBool*>(solidBackgroundProp);
+                    if (solidBgBool) {
+                        solidBackground = solidBgBool->getValue();
+                    }
+                }
+
+                if (noBackground) {
+                    result.backgroundR = 1.0;
+                    result.backgroundG = 1.0;
+                    result.backgroundB = 1.0;
+                } else if (solidBackground && backgroundColorProp) {
+                    App::PropertyColor* colorProp = dynamic_cast<App::PropertyColor*>(backgroundColorProp);
+                    if (colorProp) {
+                        Base::Color bgColor = colorProp->getValue();
+                        result.backgroundR = bgColor.r;
+                        result.backgroundG = bgColor.g;
+                        result.backgroundB = bgColor.b;
+                    }
+                }
+            } catch (const std::exception& e) {
+                Base::Console().warning("Failed to get background properties: %s\n", e.what());
+            }
+
+            // Extract source objects
+            App::Property* sourceProp = view->getPropertyByName("Source");
+            App::Property* xsourceProp = view->getPropertyByName("XSource");
+
+            if (sourceProp) {
+                App::PropertyLinkList* sourceList = dynamic_cast<App::PropertyLinkList*>(sourceProp);
+                if (sourceList) {
+                    const std::vector<App::DocumentObject*>& sources = sourceList->getValues();
+                    result.sourceObjects.insert(result.sourceObjects.end(), sources.begin(), sources.end());
+                }
+            }
+
+            if (xsourceProp) {
+                App::PropertyLinkList* xsourceList = dynamic_cast<App::PropertyLinkList*>(xsourceProp);
+                if (xsourceList) {
+                    const std::vector<App::DocumentObject*>& xsources = xsourceList->getValues();
+                    result.sourceObjects.insert(result.sourceObjects.end(), xsources.begin(), xsources.end());
+                }
+            }
+
+            // Extract ActiveView position/scale properties
+            try {
+                App::Property* xProp = view->getPropertyByName("X");
+                App::Property* yProp = view->getPropertyByName("Y");
+                App::Property* scaleProp = view->getPropertyByName("Scale");
+                App::Property* widthProp = view->getPropertyByName("Width");
+                App::Property* heightProp = view->getPropertyByName("Height");
+
+                if (xProp) {
+                    App::PropertyDistance* xDist = dynamic_cast<App::PropertyDistance*>(xProp);
+                    if (xDist) {
+                        result.activeViewX = xDist->getValue();
+                    }
+                }
+
+                if (yProp) {
+                    App::PropertyDistance* yDist = dynamic_cast<App::PropertyDistance*>(yProp);
+                    if (yDist) {
+                        result.activeViewY = yDist->getValue();
+                    }
+                }
+
+                if (scaleProp) {
+                    App::PropertyFloatConstraint* scaleFloat = dynamic_cast<App::PropertyFloatConstraint*>(scaleProp);
+                    if (scaleFloat) {
+                        result.activeViewScale = scaleFloat->getValue();
+                    }
+                }
+
+                if (widthProp) {
+                    App::PropertyFloat* widthFloat = dynamic_cast<App::PropertyFloat*>(widthProp);
+                    if (widthFloat) {
+                        result.activeViewWidth = widthFloat->getValue();
+                    }
+                }
+
+                if (heightProp) {
+                    App::PropertyFloat* heightFloat = dynamic_cast<App::PropertyFloat*>(heightProp);
+                    if (heightFloat) {
+                        result.activeViewHeight = heightFloat->getValue();
+                    }
+                }
+            } catch (const std::exception& e) {
+                Base::Console().warning("Failed to get ActiveView properties: %s\n", e.what());
+            }
+
+            // Found what we need, return
+            return result;
+        }
+    }
+
+    return result;
+}
 
 StdCmdPrint3dPdf::StdCmdPrint3dPdf()
   :Command("Std_Print3dPdf")
@@ -101,199 +330,38 @@ StdCmdPrint3dPdf::StdCmdPrint3dPdf()
 void StdCmdPrint3dPdf::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    
+
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     std::vector<App::DocumentObject*> selection;
+
+    // Default values
     double pageWidthPoints = 800.0;
     double pageHeightPoints = 800.0;
     double backgroundR = 1.0, backgroundG = 1.0, backgroundB = 1.0;
-    
     double activeViewX = pageWidthPoints / 5.0;
     double activeViewY = pageHeightPoints / 5.0;
     double activeViewScale = 2.0;
     double activeViewWidth = 100.0, activeViewHeight = 100.0;
-    if (activeDoc) {
-        std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
-        if (!pages.empty()) {
-            
-            for (auto* pageObj : pages) {
-                if (!pageObj || !pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
-                    continue;
-                }
-                
-                App::Property* viewsProp = pageObj->getPropertyByName("Views");
-                if (!viewsProp) {
-                    continue;
-                }
-                
-                App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
-                if (!viewsList) {
-                    continue;
-                }
-                
-                const std::vector<App::DocumentObject*>& views = viewsList->getValues();
-                
-                for (auto* view : views) {
-                    if (!view || !view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
-                        continue;
-                    }
-                    
-                    std::string viewLabel = view->getNameInDocument();
-                    if (viewLabel.find("ActiveView") != std::string::npos) {
-                        
-                        Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
-                        if (guiDoc) {
-                            Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
-                            if (vp) {
-                                App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
-                                if (enable3DProp) {
-                                    App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
-                                    if (enableBool && enableBool->getValue()) {
-                                        
-                                        // Get page dimensions directly via C++ property access
-                                        // No Python, no temp files, no race conditions
-                                        {
-                                            double pageWidthMM = 297.0;  // Default A4
-                                            double pageHeightMM = 210.0;
 
-                                            App::Property* widthProp = pageObj->getPropertyByName("PageWidth");
-                                            App::Property* heightProp = pageObj->getPropertyByName("PageHeight");
+    // Try to find TechDraw page with 3D PDF export enabled
+    TechDraw3DPDFExportData exportData = findTechDraw3DPDFExportData(activeDoc);
 
-                                            if (widthProp) {
-                                                auto* width = dynamic_cast<App::PropertyLength*>(widthProp);
-                                                if (width) {
-                                                    pageWidthMM = width->getValue();
-                                                }
-                                            }
-
-                                            if (heightProp) {
-                                                auto* height = dynamic_cast<App::PropertyLength*>(heightProp);
-                                                if (height) {
-                                                    pageHeightMM = height->getValue();
-                                                }
-                                            }
-
-                                            pageWidthPoints = pageWidthMM * 2.834645669;
-                                            pageHeightPoints = pageHeightMM * 2.834645669;
-                                        }
-                                        
-                                        try {
-                                            App::Property* noBackgroundProp = vp->getPropertyByName("NoBackground");
-                                            App::Property* solidBackgroundProp = vp->getPropertyByName("SolidBackground");
-                                            App::Property* backgroundColorProp = vp->getPropertyByName("BackgroundColor");
-                                            
-                                            bool noBackground = false;
-                                            bool solidBackground = false;
-                                            
-                                            if (noBackgroundProp) {
-                                                App::PropertyBool* noBgBool = dynamic_cast<App::PropertyBool*>(noBackgroundProp);
-                                                if (noBgBool) {
-                                                    noBackground = noBgBool->getValue();
-                                                }
-                                            }
-                                            
-                                            if (solidBackgroundProp) {
-                                                App::PropertyBool* solidBgBool = dynamic_cast<App::PropertyBool*>(solidBackgroundProp);
-                                                if (solidBgBool) {
-                                                    solidBackground = solidBgBool->getValue();
-                                                }
-                                            }
-                                            
-                                            if (noBackground) {
-                                                backgroundR = 1.0; backgroundG = 1.0; backgroundB = 1.0;
-                                            } else if (solidBackground && backgroundColorProp) {
-                                                App::PropertyColor* colorProp = dynamic_cast<App::PropertyColor*>(backgroundColorProp);
-                                                if (colorProp) {
-                                                    Base::Color bgColor = colorProp->getValue();
-                                                    backgroundR = bgColor.r;
-                                                    backgroundG = bgColor.g;
-                                                    backgroundB = bgColor.b;
-                                                }
-                                            }
-                                            
-                                        } catch (const std::exception& e) {
-                                            Base::Console().warning("Failed to get background properties: %s\n", e.what());
-                                        }
-
-                                        App::Property* sourceProp = view->getPropertyByName("Source");
-                                        App::Property* xsourceProp = view->getPropertyByName("XSource");
-                                        
-                                        
-                                        if (sourceProp) {
-                                            App::PropertyLinkList* sourceList = dynamic_cast<App::PropertyLinkList*>(sourceProp);
-                                            if (sourceList) {
-                                                const std::vector<App::DocumentObject*>& sources = sourceList->getValues();
-                                                selection.insert(selection.end(), sources.begin(), sources.end());
-                                            }
-                                        }
-                                        
-                                        if (xsourceProp) {
-                                            App::PropertyLinkList* xsourceList = dynamic_cast<App::PropertyLinkList*>(xsourceProp);
-                                            if (xsourceList) {
-                                                const std::vector<App::DocumentObject*>& xsources = xsourceList->getValues();
-                                                selection.insert(selection.end(), xsources.begin(), xsources.end());
-                                            }
-                                        }
-                                        
-
-                                        
-                                        try {
-                                            App::Property* xProp = view->getPropertyByName("X");
-                                            App::Property* yProp = view->getPropertyByName("Y");
-                                            App::Property* scaleProp = view->getPropertyByName("Scale");
-                                            App::Property* widthProp = view->getPropertyByName("Width");
-                                            App::Property* heightProp = view->getPropertyByName("Height");
-                                            
-                                            if (xProp) {
-                                                App::PropertyDistance* xDist = dynamic_cast<App::PropertyDistance*>(xProp);
-                                                if (xDist) {
-                                                    activeViewX = xDist->getValue();
-                                                }
-                                            }
-                                            
-                                            if (yProp) {
-                                                App::PropertyDistance* yDist = dynamic_cast<App::PropertyDistance*>(yProp);
-                                                if (yDist) {
-                                                    activeViewY = yDist->getValue();
-                                                }
-                                            }
-                                            
-                                            if (scaleProp) {
-                                                App::PropertyFloatConstraint* scaleFloat = dynamic_cast<App::PropertyFloatConstraint*>(scaleProp);
-                                                if (scaleFloat) {
-                                                    activeViewScale = scaleFloat->getValue();
-                                                }
-                                            }
-                                            
-                                            if (widthProp) {
-                                                App::PropertyFloat* widthFloat = dynamic_cast<App::PropertyFloat*>(widthProp);
-                                                if (widthFloat) {
-                                                    activeViewWidth = widthFloat->getValue();
-                                                }
-                                            }
-                                            
-                                            if (heightProp) {
-                                                App::PropertyFloat* heightFloat = dynamic_cast<App::PropertyFloat*>(heightProp);
-                                                if (heightFloat) {
-                                                    activeViewHeight = heightFloat->getValue();
-                                                }
-                                            }
-                                            
-
-                                            
-                                        } catch (const std::exception& e) {
-                                            Base::Console().warning("Failed to get ActiveView properties: %s\n", e.what());
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } else {
-            selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
-        }
+    if (exportData.found()) {
+        // Use data from TechDraw ActiveView
+        pageWidthPoints = exportData.pageWidthPoints;
+        pageHeightPoints = exportData.pageHeightPoints;
+        backgroundR = exportData.backgroundR;
+        backgroundG = exportData.backgroundG;
+        backgroundB = exportData.backgroundB;
+        activeViewX = exportData.activeViewX;
+        activeViewY = exportData.activeViewY;
+        activeViewScale = exportData.activeViewScale;
+        activeViewWidth = exportData.activeViewWidth;
+        activeViewHeight = exportData.activeViewHeight;
+        selection = exportData.sourceObjects;
+    } else if (activeDoc) {
+        // No TechDraw page with 3D PDF export, use current selection
+        selection = Gui::Selection().getObjectsOfType(App::DocumentObject::getClassTypeId());
     }
     
     
@@ -472,46 +540,10 @@ void StdCmdPrint3dPdf::activated(int iMsg)
         }
     }
     
-    App::DocumentObject* currentPage = nullptr;
+    // Use the page found earlier by the helper function
+    App::DocumentObject* currentPage = exportData.page;
     std::string backgroundImagePath;
-    if (activeDoc) {
-        std::vector<App::DocumentObject*> pages = activeDoc->getObjectsOfType(Base::Type::fromName("TechDraw::DrawPage"));
-        for (auto* pageObj : pages) {
-            if (pageObj && pageObj->isDerivedFrom(Base::Type::fromName("TechDraw::DrawPage"))) {
-                // Check if this page contains our ActiveView
-                App::Property* viewsProp = pageObj->getPropertyByName("Views");
-                if (viewsProp) {
-                    App::PropertyLinkList* viewsList = dynamic_cast<App::PropertyLinkList*>(viewsProp);
-                    if (viewsList) {
-                        const std::vector<App::DocumentObject*>& views = viewsList->getValues();
-                        for (auto* view : views) {
-                            if (view && view->isDerivedFrom(Base::Type::fromName("TechDraw::DrawViewImage"))) {
-                                std::string viewLabel = view->getNameInDocument();
-                                if (viewLabel.find("ActiveView") != std::string::npos) {
-                                    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(view->getDocument());
-                                    if (guiDoc) {
-                                        Gui::ViewProvider* vp = guiDoc->getViewProvider(view);
-                                        if (vp) {
-                                            App::Property* enable3DProp = vp->getPropertyByName("Enable3DPDFExport");
-                                            if (enable3DProp) {
-                                                App::PropertyBool* enableBool = dynamic_cast<App::PropertyBool*>(enable3DProp);
-                                                if (enableBool && enableBool->getValue()) {
-                                                    currentPage = pageObj;
-                                                    break;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        if (currentPage) break;
-                    }
-                }
-            }
-        }
-    }
-    
+
     if (currentPage) {
         backgroundImagePath = outputPath + "_background.png";
         
