@@ -33,6 +33,8 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
+#include <Build/Version.h>  // For FCCopyrightYear
+
 #include <cstdio>
 #include <map>
 #include <stdexcept>
@@ -52,9 +54,11 @@
 
 void PrintInitHelp();
 
-const char sBanner[]
-    = "(C) 2001-2025 FreeCAD contributors\n"
-      "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const auto sBanner = fmt::format(
+    "(C) 2001-{} FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
+    FCCopyrightYear
+);
 
 #if defined(_MSC_VER)
 void InitMiniDumpWriter(const std::string&);

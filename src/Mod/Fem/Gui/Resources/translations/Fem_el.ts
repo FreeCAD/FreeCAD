@@ -1433,7 +1433,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Σφάλματα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
@@ -4822,7 +4822,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="80"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Τύπος περιορισμού</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="90"/>

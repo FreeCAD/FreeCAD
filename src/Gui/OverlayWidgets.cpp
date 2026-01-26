@@ -1249,6 +1249,10 @@ bool OverlayTabWidget::checkAutoHide() const
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
     }
 
+    if (autoMode == AutoMode::TaskShow) {
+        return (!Control().taskPanel() || Control().taskPanel()->isEmpty());
+    }
+
     if (autoMode == AutoMode::EditHide && Application::Instance->editDocument()) {
         return true;
     }

@@ -1311,8 +1311,14 @@ class InitPipeline:
     """
 
     std_home = Path(App.getHomePath()).resolve()
-    std_lib = Path(App.getLibraryDir()).resolve()
     user_home = Path(App.getUserAppDataDir()).resolve()
+    try:
+        std_lib = Path(App.getLibraryDir()).resolve()
+    except OSError:
+        # The library path is not strictly required, so if the OS itself raises an error when trying
+        # to resolve it, just fall back to something reasonable. See #26864.
+        std_lib = std_home / "lib"
+        Log(f"Resolving library directory '{App.getLibraryDir()}' failed, using fallback '{std_lib}'")
     dir_mod_scanner = DirModScanner()
     ext_mod_scanner = ExtModScanner()
     search_paths = SearchPaths()

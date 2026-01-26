@@ -43,6 +43,10 @@ def activePartOrAssembly():
 
     if doc is None or doc.ActiveView is None:
         return None
+    activeAssembly = doc.ActiveView.getActiveObject("assembly")
+
+    if activeAssembly:
+        return activeAssembly
 
     return doc.ActiveView.getActiveObject("part")
 
@@ -128,7 +132,7 @@ def isLinkGroup(obj):
 
 
 def getObject(ref):
-    if len(ref) != 2:
+    if len(ref) != 2 or ref[0] is None:
         return None
     subs = ref[1]
     if len(subs) < 1:
@@ -139,7 +143,10 @@ def getObject(ref):
     # or           "LinkOrAssembly1.LinkOrPart1.LinkOrBody.pad.Edge16"
     # or           "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBody.Local_CS.X"
     # We want either LinkOrBody or LinkOrBox or Local_CS.
+    # Note since the ref now holds the moving part, sub_name can now be just the element name.
+    # In this case the obj we need is the reference obj
     names = sub_name.split(".")
+    names.insert(0, ref[0].Name)
 
     if len(names) < 2:
         return None
@@ -347,24 +354,6 @@ def getRootPath(obj, part):
     return None, ""
 
 
-# get the placement of Obj relative to its moving Part
-# Example : assembly.part1.part2.partn.body1 : placement of Obj relative to part1
-def getObjPlcRelativeToPart(assembly, ref):
-    # we need plc to be relative to the moving part
-    moving_part = getMovingPart(assembly, ref)
-    obj_global_plc = getGlobalPlacement(ref)
-    part_global_plc = getGlobalPlacement(ref, moving_part)
-
-    return part_global_plc.inverse() * obj_global_plc
-
-
-# Example : assembly.part1.part2.partn.body1 : jcsPlc is relative to body1
-# This function returns jcsPlc relative to part1
-def getJcsPlcRelativeToPart(assembly, jcsPlc, ref):
-    obj_relative_plc = getObjPlcRelativeToPart(assembly, ref)
-    return obj_relative_plc * jcsPlc
-
-
 # Return the jcs global placement
 def getJcsGlobalPlc(jcsPlc, ref):
     obj_global_plc = getGlobalPlacement(ref)
@@ -382,6 +371,15 @@ def getGlobalPlacement(ref, targetObj=None):
 
     rootObj = ref[0]
     subName = ref[1][0]
+    # ref[0] is no longer the root object. Now it's the moving part.
+    # So to get the correct global placement in case user transformed the assembly,
+    # or if he has nested the assembly, we need to adjust it.
+    # Example : Part / Assembly / Cylinder / Face1
+    # ref is [(Cylinder, 'Face1')]
+    parents = rootObj.Parents  # [(<Part object>, 'Assembly.Cylinder.')]
+    if parents is not None and len(parents) == 1 and len(parents[0]) == 2:
+        rootObj = parents[0][0]
+        subName = parents[0][1] + subName
 
     return rootObj.getPlacementOf(subName, targetObj)
 
@@ -398,7 +396,7 @@ def getElementName(full_name):
     # We want either Edge16.
     parts = full_name.split(".")
 
-    if len(parts) < 2:
+    if len(parts) < 1:
         # At minimum "Box.edge16". It shouldn't be shorter
         return ""
 
@@ -1214,59 +1212,79 @@ def getJointXYAngle(joint):
     return math.atan2(x_axis.y, x_axis.x)
 
 
-def getMovingPart(assembly, ref):
-    # ref can be :
-    # [assembly, ['box.edge1', 'box.vertex2']]
-    # [Part, ['Assembly.box.edge1', 'Assembly.box.vertex2']]
-    # [assembly, ['Body.Pad.edge1', 'Body.Pad.vertex2']]
-
-    if assembly is None or ref is None or len(ref) != 2:
+def getMovingPart(ref):
+    if ref is None or len(ref) != 2:
         return None
 
     obj = ref[0]
-    subs = ref[1]
 
-    if subs is None or len(subs) < 1:
-        return None
+    return obj
 
-    sub = ref[1][0]  # All subs should have the same object paths.
-    names = [obj.Name] + sub.split(".")
 
-    try:
-        index = names.index(assembly.Name)
-        # Get the sublist starting after the after the assembly (in case of Part1/Assembly/...)
-        names = names[index + 1 :]
-    except ValueError:
-        return None
+def getComponentReference(assembly, root_obj, sub_string):
+    """
+    Takes a full selection path (root + subnames) and normalizes it
+    to be rooted at the Assembly Component (Moving Part).
+
+    Returns: (ComponentObject, RelativeSubString) or (None, "")
+    """
+    if not assembly or not root_obj:
+        return None, ""
 
     doc = assembly.Document
 
-    if len(names) < 2:
-        App.Console.PrintError(
-            f"getMovingPart() in UtilsAssembly.py the object name {names} is too short. It should be at least similar to ['Box','edge16'], not shorter.\n"
-        )
-        return None
+    # 1. Reconstruct full path
+    # e.g. ['Part', 'Assembly', 'Cylinder', 'Face1']
+    names = [root_obj.Name] + sub_string.split(".")
 
-    for objName in names:
-        obj = doc.getObject(objName)
+    # 2. Find Assembly in path
+    try:
+        asm_idx = names.index(assembly.Name)
+    except ValueError:
+        return None, ""
 
+    # 3. Identify Component (first valid object after Assembly)
+    candidates = names[asm_idx + 1 :]
+    if not candidates:
+        return None, ""
+
+    component = None
+    comp_idx = -1
+
+    for i, obj_name in enumerate(candidates):
+        obj = doc.getObject(obj_name)
         if not obj:
             continue
 
-        if obj.TypeId == "App::DocumentObjectGroup":
-            continue  # we ignore groups.
-
-        # We ignore dynamic sub-assemblies.
-        if obj.isDerivedFrom("Assembly::AssemblyLink") and obj.Rigid == False:
+        # Skips (Groups / Flexible Links / LinkGroups / non-geofeature objects)
+        if obj.isDerivedFrom("App::DocumentObjectGroup"):
             continue
-
-        # If it is a LinkGroup then we skip it
+        if obj.isDerivedFrom("Assembly::AssemblyLink"):
+            if hasattr(obj, "Rigid") and not obj.Rigid:
+                continue
         if isLinkGroup(obj):
             continue
 
-        return obj
+        if isLink(obj):
+            linkedObj = obj.getLinkedObject()
+            if linkedObj and not linkedObj.isDerivedFrom("App::GeoFeature"):
+                continue
+        elif not obj.isDerivedFrom("App::GeoFeature"):
+            continue
 
-    return None
+        component = obj
+        comp_idx = asm_idx + 1 + i
+        break
+
+    if not component:
+        return None, ""
+
+    # 4. Construct new sub-string
+    # Everything after the component in the original names list
+    relative_parts = names[comp_idx + 1 :]
+    new_sub = ".".join(relative_parts)
+
+    return component, new_sub
 
 
 def truncateSubAtFirst(sub, target):
