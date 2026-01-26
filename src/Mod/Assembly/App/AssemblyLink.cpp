@@ -225,6 +225,81 @@ void AssemblyLink::onChanged(const App::Property* prop)
     App::Part::onChanged(prop);
 }
 
+void AssemblyLink::updateParentJoints()
+{
+    AssemblyObject* parent = getParentAssembly();
+    if (!parent) {
+        return;
+    }
+
+    bool rigid = Rigid.getValue();
+    // Iterate joints in the immediate parent assembly only (recursive=false)
+    for (auto* joint : parent->getJoints(false, false, false)) {
+        for (const char* refName : {"Reference1", "Reference2"}) {
+            auto* prop = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(refName));
+            if (!prop) {
+                continue;
+            }
+            App::DocumentObject* refObj = prop->getValue();
+            if (!refObj) {
+                continue;
+            }
+
+            if (rigid) {
+                // Flexible -> Rigid
+                // The joint currently points to a child (refObj) inside this AssemblyLink.
+                // We must repoint it to 'this' and prepend the child's name to the sub-elements.
+                if (hasObject(refObj)) {
+                    std::vector<std::string> subs = prop->getSubValues();
+                    std::vector<std::string> newSubs;
+                    std::string prefix = refObj->getNameInDocument();
+                    prefix += ".";
+                    for (const auto& s : subs) {
+                        newSubs.push_back(prefix + s);
+                    }
+                    prop->setValue(this);
+                    prop->setSubValues(std::move(newSubs));
+                }
+            }
+            else {
+                // Rigid -> Flexible
+                // The joint currently points to 'this'.
+                // We must extract the child's name from the sub-element, point to the child, and
+                // strip the prefix.
+                if (refObj == this) {
+                    std::vector<std::string> subs = prop->getSubValues();
+                    if (subs.empty()) {
+                        continue;
+                    }
+                    std::vector<std::string> parts = Base::Tools::splitSubName(subs[0]);
+                    if (parts.empty()) {
+                        continue;
+                    }
+                    std::string childName = parts[0];
+                    App::DocumentObject* child = getDocument()->getObject(childName.c_str());
+                    if (child && hasObject(child)) {
+                        std::vector<std::string> newSubs;
+                        size_t prefixLen = childName.length() + 1;  // "Name."
+                        for (const auto& s : subs) {
+                            if (s.length() >= prefixLen) {
+                                newSubs.push_back(s.substr(prefixLen));
+                            }
+                            else {
+                                newSubs.push_back(s);
+                            }
+                        }
+                        prop->setValue(child);
+                        prop->setSubValues(std::move(newSubs));
+                    }
+                }
+            }
+        }
+        if (joint->isTouched()) {
+            joint->recomputeFeature();
+        }
+    }
+}
+
 void AssemblyLink::updateContents()
 {
     synchronizeComponents();
