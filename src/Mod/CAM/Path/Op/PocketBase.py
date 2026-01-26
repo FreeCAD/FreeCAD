@@ -72,6 +72,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Offset"), "Offset"),
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
+                (translate("CAM_Pocket", "No clearing"), "No clearing"),
             ],  # Fill Pattern
         }
 
@@ -115,7 +116,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             if prop == "ClearingPattern":
                 startAtMode = 0 if obj.ClearingPattern == "Offset" else 2
                 obj.setEditorMode("StartAt", startAtMode)
-                angleMode = 0 if obj.ClearingPattern != "Offset" else 2
+                angleMode = 0 if obj.ClearingPattern not in ("Offset", "No clearing") else 2
                 obj.setEditorMode("Angle", angleMode)
 
     def opExecute(self, obj):

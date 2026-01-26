@@ -364,10 +364,12 @@ class ObjectOp(PathOp.ObjectOp):
         Path.Log.track()
 
         areaParamsList = []
-        if "Path.Op.Pocket" in obj.Proxy.__module__ and obj.FinishOffset:
+        if "Path.Op.Pocket" in obj.Proxy.__module__:
             # Pocket operation: split area and get order 'Clearing' path -> 'Finish' pass
-            areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # 'Clearing' path
-            areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Finish' pass
+            if obj.ClearingPattern != "No clearing":
+                areaParamsList.append(self.areaOpAreaParams(obj, isHole))  # 'Clearing' path
+            if getattr(obj, "FinishOffset", None):
+                areaParamsList.append(self.areaOpAreaParamsOffset(obj, isHole))  # 'Finish' pass
         elif obj.Proxy.__module__ == "Path.Op.Profile":
             # Profile operation: create independent area for each offset
             areaParams = self.areaOpAreaParams(obj, isHole)
