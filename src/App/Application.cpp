@@ -925,7 +925,7 @@ Document* Application::openDocumentPrivate(const char * FileName,
     if (!File.exists()) {
         std::stringstream str;
         str << "File '" << FileName << "' does not exist!";
-        throw Base::FileSystemError(str.str().c_str());
+        throw Base::FileSystemError(str.str());
     }
 
     // Before creating a new document we check whether the document is already open
@@ -2803,7 +2803,18 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
     std::list<std::string> processed;
     Base::Console().log("Init: Processing command line files\n");
     for (const auto & it : files) {
+
         Base::FileInfo file(it);
+        // Can we safely remove the isSymlink check and directly query the canonical
+        // path for every string? The reason for avoiding it currently is that
+        // getCannonicalPath will log an error if the file doesn't exist
+        if (file.isSymlink()) {
+            if (auto cannonicalPath = file.getCannonicalPath()) {
+                file = Base::FileInfo(*cannonicalPath);
+            } else {
+                Base::Console().error("Failed to process symlink file: %s\n", file.filePath());
+            }
+        }
 
         Base::Console().log("Init:     Processing file: %s\n",file.filePath().c_str());
 
