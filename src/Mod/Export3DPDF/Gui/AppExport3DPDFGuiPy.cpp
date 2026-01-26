@@ -233,16 +233,13 @@ private:
                     }
                 }
 
-                // Skip if no geometry could be extracted
+                // Skip if no geometry could be extracted (non-geometric objects like Groups, Dimensions, etc.)
                 if (!geometryExtracted) {
-                    Base::Console().warning("Object '%s' has no Shape or Mesh property, skipping\n",
-                                           obj->getNameInDocument());
                     continue;
                 }
 
+                // Skip 2D objects that produce no faces (Lines, Sketches, Wires, etc.)
                 if (points.empty() || facets.empty()) {
-                    Base::Console().warning("Object '%s' produced empty geometry, skipping\n",
-                                           obj->getNameInDocument());
                     continue;
                 }
 
