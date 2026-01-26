@@ -107,7 +107,6 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     // Guess some reasonable distance for placing the datum text
     Gui::Document* doc = cmd->getActiveGuiDocument();
-    float scaleFactor = 1.0;
     double labelPosition = 0.0;
     float labelPositionRandomness = 0.0;
 
@@ -131,13 +130,10 @@ void finishDatumConstraint(Gui::Command* cmd,
         && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
         SketcherGui::ViewProviderSketch* vp =
             static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        scaleFactor = vp->getScaleFactor();
 
         int firstConstraintIndex = lastConstraintIndex - numberofconstraints + 1;
 
         for (int i = lastConstraintIndex; i >= firstConstraintIndex; i--) {
-            ConStr[i]->LabelDistance = 2. * scaleFactor;
-
             if (lastConstraintType == Radius || lastConstraintType == Diameter) {
                 const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First);
 
