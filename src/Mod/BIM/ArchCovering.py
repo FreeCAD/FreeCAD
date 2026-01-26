@@ -16,27 +16,25 @@ import FreeCAD
 import Part
 import ArchComponent
 import Arch
+import ArchTessellation
 from draftutils import params
 
+MIN_DIMENSION = 0.1
+
+
+# Translation shims for headless and static analysis
+def translate(context, sourceText, disambiguation=None, n=-1):
+    return sourceText
+
+
+def QT_TRANSLATE_NOOP(context, sourceText):
+    return sourceText
+
+
 if FreeCAD.GuiUp:
+    # Runtime override using native FreeCAD.Qt abstraction
     translate = FreeCAD.Qt.translate
     QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
-else:
-
-    def translate(context, sourceText, disambiguation=None, n=-1):
-        return sourceText
-
-    def QT_TRANSLATE_NOOP(context, sourceText):
-        return sourceText
-
-
-# Anything smaller than this is considered effectively zero to prevent numerical instability
-# in the geometry calculations or division-by-zero errors in Python.
-MIN_DIMENSION = 0.1
-TOO_MANY_TILES = 10000
-# Minimum percentage of a tile's area/volume to be considered "full" for quantity take-off, to
-# account for minor clipping from forced joint widths.
-FULL_TILE_THRESHOLD_RATIO = 0.995
 
 
 class _Covering(ArchComponent.Component):
@@ -236,12 +234,6 @@ class _Covering(ArchComponent.Component):
         obj.setEditorMode("CountFullTiles", 1)
         obj.setEditorMode("CountPartialTiles", 1)
 
-        # Cleanup deprecated Stats group if present
-        if "CountFullTiles" in properties_list:
-            if obj.getGroupOfProperty("CountFullTiles") == "Stats":
-                obj.setGroupOfProperty("CountFullTiles", "Quantities")
-                obj.setGroupOfProperty("CountPartialTiles", "Quantities")
-
     def loads(self, state):
         """
         Overrides the parent callback used by FreeCAD's persistence engine to restore the
@@ -256,26 +248,10 @@ class _Covering(ArchComponent.Component):
         """
         super().onDocumentRestored(obj)
         self.setProperties(obj)
-        # Ensure the ViewProvider schema is also updated
-        vobj = getattr(obj, "ViewObject", None)
-        vproxy = getattr(vobj, "Proxy", None)
-        if hasattr(vproxy, "setProperties"):
-            vproxy.setProperties(vobj)
 
     def onChanged(self, obj, prop):
         """Method called when a property is changed."""
         ArchComponent.Component.onChanged(self, obj, prop)
-        if prop == "JointWidth":
-            if obj.JointWidth.Value < MIN_DIMENSION:
-                obj.JointWidth = MIN_DIMENSION
-                FreeCAD.Console.PrintWarning(
-                    translate(
-                        "Arch",
-                        f"Covering: The joint width has been adjusted to {MIN_DIMENSION} mm. "
-                        "A minimum width is required to divide the finish into individual tiles.",
-                    )
-                    + "\n"
-                )
 
     def execute(self, obj):
         """
@@ -289,441 +265,96 @@ class _Covering(ArchComponent.Component):
         ----------
         obj : Part::FeaturePython
             The base C++ object whose shape is updated.
-
         """
         if self.clone(obj):
             return
 
+        # Resolve target geometry upon which to apply the covering
         base_face = Arch.getFaceGeometry(obj.Base)
         if not base_face:
             return
 
-        if obj.FinishMode == "Hatch Pattern":
-            from draftobjects.hatch import Hatch
-
-            # Always assign the base face first. This ensures the Covering has geometry even if the
-            # pattern file is missing or invalid.
-            obj.Shape = base_face
-
-            # Force a minimum scale to prevent math errors or infinite loops in the hatching engine.
-            safe_scale = max(MIN_DIMENSION, obj.PatternScale)
-
-            if obj.PatternFile:
-                pat = Hatch.hatch(
-                    base_face,
-                    obj.PatternFile,
-                    obj.PatternName,
-                    scale=safe_scale,
-                    rotation=obj.Rotation.Value,
-                )
-                if pat:
-                    obj.Shape = Part.Compound([base_face, pat])
-
-            self.computeAreas(obj)
-            return
-
-        # Establish the local coordinate system and grid origin for the tiling pattern.
+        # Establish local coordinate system and grid alignment
         u_vec, v_vec, normal, center_point = Arch.getFaceUV(base_face)
-
         origin = Arch.getFaceGridOrigin(
             base_face,
             center_point,
             u_vec,
             v_vec,
             obj.TileAlignment,
-            getattr(obj, "AlignmentOffset", None),
+            obj.AlignmentOffset,
         )
 
-        # Cache dimensions
-        t_len = obj.TileLength.Value
-        t_wid = obj.TileWidth.Value
-        j_len = obj.JointWidth.Value
-        j_wid = obj.JointWidth.Value
+        # Instantiate the tessellator
+        # For parametric patterns, we want 2D geometry (wires/faces), not solids.
+        # We force thickness to 0.0 to instruct the tessellator to skip extrusion.
+        config = {
+            "TileLength": obj.TileLength.Value,
+            "TileWidth": obj.TileWidth.Value,
+            "JointWidth": obj.JointWidth.Value,
+            "TileOffset": obj.TileOffset,
+            "Rotation": obj.Rotation.Value,
+            "PatternFile": obj.PatternFile,
+            "PatternName": obj.PatternName,
+            "PatternScale": obj.PatternScale,
+            "TileThickness": (
+                0.0 if obj.FinishMode == "Parametric Pattern" else obj.TileThickness.Value
+            ),
+        }
+        tessellator = ArchTessellation.create_tessellator(obj.FinishMode, config)
 
-        # Determine cut thickness, increase thickness for solid tiles to avoid intersections between
-        # cutters and the tile geometry.
-        cut_thick = obj.TileThickness.Value * 1.1 if obj.FinishMode == "Solid Tiles" else 1.0
+        # Generate pattern cutters and metadata
+        res = tessellator.compute(base_face, origin, u_vec, v_vec, normal)
 
-        # Create the cutter tools
-        cutters_h, cutters_v = self._build_cutters(
-            obj, base_face.BoundBox, t_len, t_wid, j_len, j_wid, cut_thick
-        )
-
-        # Perform the cut operations and assign the resulting shape to the covering
-        obj.Shape = self._perform_cut(
-            obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
-        )
-
-    def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
-        """
-        Generates the grid of solids representing the joints between tiles.
-
-        These boxes are used as Boolean tools to subtract the gaps from the base face or volume.
-        The function estimates the required number of rows and columns based on the face
-        bounding box and incorporates pattern offsets for staggered bonds.
-
-        Parameters
-        ----------
-        obj : App::FeaturePython
-            The covering object containing pattern settings like TileOffset.
-        bbox : Base::BoundBox
-            The bounding box of the target face used to determine the grid extent.
-        t_len : float
-            The local length of a single tile.
-        t_wid : float
-            The local width of a single tile.
-        j_len : float
-            The width of the vertical joint gap.
-        j_wid : float
-            The width of the horizontal joint gap.
-        cut_thick : float
-            The thickness (z-height) of the generated joint solids.
-
-        Returns
-        -------
-        tuple
-            A pair of lists (cutters_h, cutters_v) containing Part.Box solids, or (None, None)
-            if dimensions are invalid or the calculated tile count exceeds safety limits.
-        """
-        # Step size
-        step_x = t_len + j_len
-        step_y = t_wid + j_wid
-
-        # Prevent division by zero or extremely small values
-        if step_x < MIN_DIMENSION or step_y < MIN_DIMENSION:
-            return None, None
-
-        # Estimate count. Use the base face's diagonal to ensure full coverage, even if the tiling
-        # grid is rotated 45° (worst-case scenario) via the Rotation property.
-        diag = bbox.DiagonalLength
-        count_x = int(diag / step_x) + 4
-        count_y = int(diag / step_y) + 4
-
-        # Prevent memory exhaustion by too many tiles
-        if (count_x * count_y) > TOO_MANY_TILES:
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", "Covering: Tile count too high. Aborting.") + "\n"
-            )
-            return None, None
-
-        # Determine Z offset for cutters
-        if obj.FinishMode == "Solid Tiles":
-            z_gen_offset = (obj.TileThickness.Value - cut_thick) / 2
-        else:
-            z_gen_offset = -cut_thick / 2
-
-        cutters_h = []
-        cutters_v = []
-
-        # Offsets
-        off_x = obj.TileOffset.x
-        off_y = obj.TileOffset.y
-
-        # Mutual exclusivity guard: prioritize x over y
-        if (
-            abs(off_x) > Part.Precision.approximation()
-            and abs(off_y) > Part.Precision.approximation()
-        ):
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", "Covering: TileOffset.x/y are exclusive. Ignoring y.") + "\n"
-            )
-            off_y = 0.0
-
-        # Generate horizontal strips (rows). These will always be a set of long strips running the
-        # full width of the face, with width the size of the joint
-        # OpenCascade requires dimensions > 0 for solids
-        if j_wid >= MIN_DIMENSION:
-            full_len_x = 2 * count_x * step_x
-            start_x = -count_x * step_x
-
-            for j in range(-count_y, count_y):
-                row_y_offset = off_y if (j % 2 != 0) else 0
-                local_y = j * step_y + t_wid + row_y_offset
-                jh_box = Part.makeBox(
-                    full_len_x, j_wid, cut_thick, FreeCAD.Vector(start_x, local_y, z_gen_offset)
-                )
-                cutters_h.append(jh_box)
-
-        # Generate vertical strips (cols). If no tile offset is specified, we're laying a stack bond
-        # and the vertical strips are built similarly to horizontal strips, but in the vertical
-        # direction. If a tile offset is specified, we're laying a running bond, and the vertical
-        # cutters are generated as individual segments for each row to create the offset.
-        if j_len >= MIN_DIMENSION:
-            is_stack_bond = (
-                abs(off_x) < Part.Precision.approximation()
-                and abs(off_y) < Part.Precision.approximation()
-            )
-
-            if is_stack_bond:
-                full_len_y = 2 * count_y * step_y
-                start_y = -count_y * step_y
-                for i in range(-count_x, count_x):
-                    local_x = i * step_x + t_len
-                    jv_box = Part.makeBox(
-                        j_len, full_len_y, cut_thick, FreeCAD.Vector(local_x, start_y, z_gen_offset)
+        match res.status:
+            case ArchTessellation.TessellationStatus.INVALID_DIMENSIONS:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        "The specified tile size is too "
+                        "small to be modeled. The covering shape has been reset.",
                     )
-                    cutters_v.append(jv_box)
-            else:
-                for j in range(-count_y, count_y):
-                    row_off_x = off_x if (j % 2 != 0) else 0
-                    row_off_y = off_y if (j % 2 != 0) else 0
-                    row_y = j * step_y + row_off_y
-                    for i in range(-count_x, count_x):
-                        local_x = i * step_x + t_len + row_off_x
-                        jv_box = Part.makeBox(
-                            j_len, step_y, cut_thick, FreeCAD.Vector(local_x, row_y, z_gen_offset)
-                        )
-                        cutters_v.append(jv_box)
-
-        return cutters_h, cutters_v
-
-    def _perform_cut(self, obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec):
-        """
-        Executes the Boolean operations to divide the base face into tiles.
-
-        This function transforms the pre-generated cutters to the correct grid orientation and
-        location, then performs sequential cuts to subtract the joint gaps. It handles both 3D solid
-        tiles and 2D parametric patterns. It also calculates and updates tile count statistics based
-        on geometry volume or area.
-
-        Parameters
-        ----------
-        obj : App::FeaturePython
-            The covering object containing user settings and where statistics are updated.
-        base_face : Part.Face
-            The primary planar surface to be tiled.
-        cutters_h : list of Part.Box
-            The horizontal joint solids generated by _build_cutters.
-        cutters_v : list of Part.Box
-            The vertical joint solids generated by _build_cutters.
-        normal : Base.Vector
-            The face normal vector used for extrusion and rotation calculation.
-        origin : Base.Vector
-            The 3D coordinate of the grid alignment point.
-        u_vec : Base.Vector
-            Local horizontal unit vector of the face.
-        v_vec : Base.Vector
-            Local vertical unit vector of the face.
-
-        Returns
-        -------
-        Part.Shape
-            A compound of solids (for Solid Tiles mode) or a compound of wires (for Parametric
-            Pattern mode).
-        """
-        # If the cutter builder returned None, some of the parameters (e.g. tile size or joint
-        # width) were invalid.
-        # Return an empty Part.Shape() and allow the document to continue recomputing other objects.
-        if cutters_h is None or cutters_v is None:
-            return Part.Shape()
-
-        # Prepare transformation
-        tr = FreeCAD.Placement()
-        tr.Base = origin
-        # Assumes the vectors are already unit vectors and orthogonal
-        face_rot = FreeCAD.Rotation(u_vec, v_vec, normal)
-        tile_rot = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), obj.Rotation.Value)
-        tr.Rotation = face_rot.multiply(tile_rot)
-
-        # Grout/Joint length calculation (centerlines)
-        joint_len = self._calculate_joint_length(obj, base_face, tr)
-
-        # Fallback for zero-joint width where no cutters were generated.
-        if not cutters_h and not cutters_v:
-            obj.NetArea = base_face.Area
-            obj.GrossArea = base_face.Area
-            obj.WasteArea = 0
-            obj.TotalJointLength = 0
-            if obj.FinishMode == "Solid Tiles":
-                return base_face.extrude(normal * obj.TileThickness.Value)
-            else:
-                # For 2D modes, apply a micro-offset to prevent z-fighting
-                offset_matrix = FreeCAD.Matrix()
-                offset_matrix.move(normal.normalize() * 0.05)
-                return base_face.transformGeometry(offset_matrix)
-
-        t_len = obj.TileLength.Value
-        t_wid = obj.TileWidth.Value
-
-        full_cnt = 0
-        part_cnt = 0
-        shape_to_return = Part.Shape()
-
-        try:
-            if obj.FinishMode == "Solid Tiles":
-                # Extrude Base Face
-                try:
-                    tile_layer = base_face.extrude(normal * obj.TileThickness.Value)
-                except Part.OCCError as e:
-                    FreeCAD.Console.PrintError(f"Covering: Caught OCCError in _perform_cut: {e}")
-                    tile_layer = Part.Shape()
-
-                # Cut
-                if cutters_h:
-                    comp_h = Part.Compound(cutters_h)
-                    comp_h.Placement = tr
-                    tile_layer = tile_layer.cut(comp_h)
-
-                if cutters_v:
-                    comp_v = Part.Compound(cutters_v)
-                    comp_v.Placement = tr
-                    result_shape = tile_layer.cut(comp_v)
-                else:
-                    result_shape = tile_layer
-
-                # Count
-                full_vol = t_len * t_wid * obj.TileThickness.Value
-                if result_shape.Solids:
-                    for sol in result_shape.Solids:
-                        if sol.Volume >= (full_vol * FULL_TILE_THRESHOLD_RATIO):
-                            full_cnt += 1
-                        else:
-                            part_cnt += 1
-
-                shape_to_return = result_shape
-
-            elif obj.FinishMode == "Parametric Pattern":
-                # Perform the cuts on the 2D base face
-                result_shape = base_face
-
-                if cutters_h:
-                    comp_h = Part.Compound(cutters_h)
-                    comp_h.Placement = tr
-                    result_shape = result_shape.cut(comp_h)
-
-                if cutters_v:
-                    comp_v = Part.Compound(cutters_v)
-                    comp_v.Placement = tr
-                    result_shape = result_shape.cut(comp_v)
-
-                # Count the resulting faces
-                full_area = t_len * t_wid
-                if result_shape.Faces:
-                    for f in result_shape.Faces:
-                        if f.Area >= (full_area * FULL_TILE_THRESHOLD_RATIO):
-                            full_cnt += 1
-                        else:
-                            part_cnt += 1
-
-                # Convert Faces to Wires for lightweight representation
-                wires = []
-                for f in result_shape.Faces:
-                    wires.extend(f.Wires)
-
-                if wires:
-                    final_pattern = Part.Compound(wires)
-                    # Apply a micro offset (0.05mm) along the normal. This prevents "Z-fighting"
-                    # (visual flickering) in the 3D viewer by ensuring the pattern sits slightly
-                    # above the base face.
-                    offset_matrix = FreeCAD.Matrix()
-                    offset_matrix.move(normal.normalize() * 0.05)
-                    shape_to_return = final_pattern.transformGeometry(offset_matrix)
-                else:
-                    shape_to_return = Part.Shape()
-
-            # Sync quantities for both modes
-            q = self._calculate_quantities(base_face, full_cnt, part_cnt, t_len, t_wid)
-            obj.CountFullTiles = full_cnt
-            obj.CountPartialTiles = part_cnt
-            obj.NetArea = q["NetArea"]
-            obj.GrossArea = q["GrossArea"]
-            obj.WasteArea = q["WasteArea"]
-            obj.TotalJointLength = joint_len
-
-        except Part.OCCError as e:
-            # Catch OpenCascade kernel errors to prevent crashing the document recompute chain.
-            FreeCAD.Console.PrintWarning(
-                translate("Arch", "Covering: OpenCascade error during boolean operations on")
-                + f" {obj.Label}: {str(e)}\n"
-            )
-            return Part.Shape()
-
-        return shape_to_return
-
-    def _calculate_quantities(self, base_face, count_full, count_partial, t_len, t_wid):
-        """Helper to calculate area quantities."""
-        net_area = base_face.Area
-        gross_area = (count_full + count_partial) * (t_len * t_wid)
-        # Waste area is clamped to zero as App::PropertyArea does not accept negative values.
-        waste_area = max(0.0, gross_area - net_area)
-        return {"NetArea": net_area, "GrossArea": gross_area, "WasteArea": waste_area}
-
-    def _calculate_joint_length(self, obj, base_face, tr):
-        """Calculates and updates the TotalJointLength property."""
-        if obj.JointWidth.Value < MIN_DIMENSION:
-            obj.TotalJointLength = 0
-            return
-
-        t_len = obj.TileLength.Value
-        t_wid = obj.TileWidth.Value
-        j_wid = obj.JointWidth.Value
-        step_x = t_len + j_wid
-        step_y = t_wid + j_wid
-
-        diag = base_face.BoundBox.DiagonalLength
-        count_x = int(diag / step_x) + 4
-        count_y = int(diag / step_y) + 4
-        off_x = obj.TileOffset.x
-        off_y = obj.TileOffset.y
-
-        centerlines = []
-        full_len_x = 2 * count_x * step_x
-        start_x = -count_x * step_x
-        full_len_y = 2 * count_y * step_y
-        start_y = -count_y * step_y
-
-        # Horizontal joint centerlines
-        for j in range(-count_y, count_y):
-            row_y_offset = off_y if (j % 2 != 0) else 0
-            local_y = j * step_y + t_wid + row_y_offset + (j_wid / 2)
-            centerlines.append(
-                Part.makeLine(
-                    FreeCAD.Vector(start_x, local_y, 0),
-                    FreeCAD.Vector(start_x + full_len_x, local_y, 0),
+                    + "\n"
                 )
-            )
-
-        # Vertical joint centerlines
-        if (
-            abs(off_x) < Part.Precision.approximation()
-            and abs(off_y) < Part.Precision.approximation()
-        ):
-            # Stack bond
-            for i in range(-count_x, count_x):
-                local_x = i * step_x + t_len + (j_wid / 2)
-                centerlines.append(
-                    Part.makeLine(
-                        FreeCAD.Vector(local_x, start_y, 0),
-                        FreeCAD.Vector(local_x, start_y + full_len_y, 0),
+                obj.Shape = Part.Shape()
+                return
+            case ArchTessellation.TessellationStatus.JOINT_TOO_SMALL:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        "The joint width is too small to "
+                        "model individual units. The covering will be shown as a continuous surface.",
                     )
+                    + "\n"
                 )
-        else:
-            # Running bond: segmented lines per row
-            for j in range(-count_y, count_y):
-                row_off_x = off_x if (j % 2 != 0) else 0
-                row_off_y = off_y if (j % 2 != 0) else 0
-                row_y = j * step_y + row_off_y
-                for i in range(-count_x, count_x):
-                    local_x = i * step_x + t_len + row_off_x + (j_wid / 2)
-                    centerlines.append(
-                        Part.makeLine(
-                            FreeCAD.Vector(local_x, row_y, 0),
-                            FreeCAD.Vector(local_x, row_y + step_y, 0),
-                        )
+            case ArchTessellation.TessellationStatus.COUNT_TOO_HIGH:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        "The number of tiles is too high "
+                        "for individual units to be modeled. The covering will be shown as a "
+                        "continuous surface for better performance.",
                     )
+                    + "\n"
+                )
+            case ArchTessellation.TessellationStatus.EXTREME_COUNT:
+                FreeCAD.Console.PrintWarning(
+                    translate(
+                        "Arch",
+                        "The number of tiles is extremely "
+                        "high. Layout lines are hidden to maintain 3D performance.",
+                    )
+                    + "\n"
+                )
+            case _:
+                pass
 
-        grid_compound = Part.Compound(centerlines)
-        grid_compound.Placement = tr
-        try:
-            clipped_joints = base_face.common(grid_compound)
-            return clipped_joints.Length
-        except Exception:
-            return 0.0
+        obj.Shape = res.geometry
 
-    def computeAreas(self, obj):
-        """Overrides the default calculation with lightweight quantity updates."""
-        if obj.FinishMode == "Hatch Pattern":
-            for prop in ["NetArea", "GrossArea", "WasteArea", "TotalJointLength"]:
-                setattr(obj, prop, 0)
-            obj.CountFullTiles = 0
-            obj.CountPartialTiles = 0
+        # Sync quantities
+        obj.CountFullTiles = res.quantities.count_full
+        obj.CountPartialTiles = res.quantities.count_partial
+        obj.NetArea = res.quantities.area_net
+        obj.GrossArea = res.quantities.area_gross
+        obj.WasteArea = res.quantities.waste_area
+        obj.TotalJointLength = res.quantities.length_joints

@@ -443,23 +443,68 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.assertEqual(covering.CountFullTiles, 5)
         self.assertEqual(covering.CountPartialTiles, 0)
 
-    def test_joint_width_clamping(self):
-        """Verify the proactive clamping of JointWidth in onChanged."""
-        self.printTestMessage("joint width clamping...")
-        covering = Arch.makeCovering()
-        MIN_DIMENSION = 0.1
-
-        # Scenario 1: Zero input
+    def test_butt_joint_analytical_mode(self):
+        """Verify that 0mm joint uses analytical mode with correct math counts."""
+        self.printTestMessage("butt joint analytical mode...")
+        base = (self.box, ["Face6"])  # 1000x1000
+        covering = Arch.makeCovering(base)
+        covering.TileLength = 200.0
+        covering.TileWidth = 200.0
         covering.JointWidth = 0.0
         self.document.recompute()
-        self.assertAlmostEqual(covering.JointWidth.Value, MIN_DIMENSION, places=5)
 
-        # Scenario 2: Sub-threshold input
-        covering.JointWidth = 0.05
-        self.document.recompute()
-        self.assertAlmostEqual(covering.JointWidth.Value, MIN_DIMENSION, places=5)
+        # Should be monolithic (1 solid)
+        self.assertEqual(len(covering.Shape.Solids), 1)
+        # Math count: 1,000,000 / 40,000 = 25
+        self.assertEqual(covering.CountFullTiles, 25)
+        self.assertEqual(covering.CountPartialTiles, 0)
 
-        # Scenario 3: Valid input (should not be changed)
-        covering.JointWidth = 1.0
+    def test_tile_size_junk_protection(self):
+        """Verify that tiny tiles (<1mm) trigger hard failure warning."""
+        self.printTestMessage("tile size junk protection...")
+        covering = Arch.makeCovering(self.box)
+        covering.TileLength = 0.5
         self.document.recompute()
-        self.assertAlmostEqual(covering.JointWidth.Value, 1.0, places=5)
+        self.assertTrue(covering.Shape.isNull())
+
+    def test_performance_guard_fallback(self):
+        """Verify fallback to analytical mode when tile count > 10,000."""
+        self.printTestMessage("performance guard fallback...")
+        # Create a large surface 20m x 20m
+        large_box = self.document.addObject("Part::Box", "LargeBox")
+        large_box.Length = 20000.0
+        large_box.Width = 20000.0
+        large_box.Height = 100.0
+        self.document.recompute()
+
+        covering = Arch.makeCovering((large_box, ["Face6"]))
+        # 100mm tiles on 20m face = 200x200 grid = 40,000 units (> 10k)
+        covering.TileLength = 100.0
+        covering.TileWidth = 100.0
+        # Use a safe joint width so we don't trigger the butt-joint logic
+        covering.JointWidth = 5.0
+        self.document.recompute()
+
+        # Should be monolithic due to guard (cutters suppressed)
+        self.assertEqual(len(covering.Shape.Solids), 1)
+        # Count should still be calculated
+        self.assertGreater(covering.CountFullTiles, 10000)
+
+    def test_visual_limit_suppression(self):
+        """Verify that layout lines are suppressed for extremely high counts."""
+        self.printTestMessage("visual limit suppression...")
+        # 100mm tiles on 40m face = 400x400 grid = 160,000 units (> 100k)
+        large_box = self.document.addObject("Part::Box", "XLargeBox")
+        large_box.Length = 40000.0
+        large_box.Width = 40000.0
+        large_box.Height = 100.0
+        self.document.recompute()
+
+        covering = Arch.makeCovering((large_box, ["Face6"]))
+        covering.TileLength = 100.0
+        covering.TileWidth = 100.0
+        self.document.recompute()
+
+        # Compound should only contain the solid, no edges for centerlines.
+        # A standard Box solid has 12 edges.
+        self.assertEqual(len(covering.Shape.Edges), 12)

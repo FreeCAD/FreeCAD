@@ -39,6 +39,7 @@ SET(Arch_SRCS
     ArchStairs.py
     ArchSpace.py
     ArchRebar.py
+    ArchTessellation.py
     ArchFrame.py
     ArchPanel.py
     ArchEquipment.py
