@@ -72,6 +72,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Offset"), "Offset"),
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
+                (translate("CAM_Pocket", "No clearing"), "No clearing"),
             ],  # Fill Pattern
         }
 
@@ -115,7 +116,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             if prop == "ClearingPattern":
                 startAtMode = 0 if obj.ClearingPattern == "Offset" else 2
                 obj.setEditorMode("StartAt", startAtMode)
-                angleMode = 0 if obj.ClearingPattern != "Offset" else 2
+                angleMode = 0 if obj.ClearingPattern not in ("Offset", "No clearing") else 2
                 obj.setEditorMode("Angle", angleMode)
 
     def opExecute(self, obj):
@@ -303,6 +304,7 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
             )
+
         if not hasattr(obj, "RetractThreshold"):
             obj.addProperty(
                 "App::PropertyLength",
@@ -313,20 +315,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Set distance which will attempts to avoid unnecessary retractions.",
                 ),
             )
-        if not hasattr(obj, "FinishOffset"):
-            obj.addProperty(
-                "App::PropertyLength",
-                "FinishOffset",
-                "Pocket",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Offset for finish pass.",
-                ),
-            )
-            if obj.ClearingPattern != "ZigZagOffset":
-                obj.setExpression("FinishOffset", "OpToolDiameter * 0.25")
-            else:
-                obj.FinishOffset = 0.01
 
         if hasattr(obj, "ZigZagAngle"):
             obj.renameProperty("ZigZagAngle", "Angle")
@@ -341,6 +329,16 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             if obj.KeepToolDown:
                 obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
             obj.removeProperty("KeepToolDown")
+
+        if not hasattr(obj, "FinishOffset"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "FinishOffset",
+                "Pocket",
+                QT_TRANSLATE_NOOP("App::Property", "Offset for finish pass."),
+            )
+            if obj.ClearingPattern == "ZigZagOffset":
+                obj.FinishOffset = 0.01
 
         Path.Log.track()
 
