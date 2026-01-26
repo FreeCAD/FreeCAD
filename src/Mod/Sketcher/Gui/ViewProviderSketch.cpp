@@ -2226,7 +2226,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             double arcAngle = (startangle + endangle) / 2.;
             Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
             Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
-            constr->LabelDistance = centerToToPos * arcDirection;
+            constr->LabelDistance = factor * centerToToPos * arcDirection;
             return;
         }
         else {
