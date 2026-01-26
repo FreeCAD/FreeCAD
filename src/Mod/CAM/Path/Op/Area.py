@@ -467,10 +467,9 @@ class ObjectOp(PathOp.ObjectOp):
                 and self.endVector is not None
                 and len(self.commandlist) > 1
             ):
-                self.endVector[2] = obj.ClearanceHeight.Value
-                self.commandlist.append(
-                    Path.Command("G0", {"Z": obj.ClearanceHeight.Value, "F": self.vertRapid})
-                )
+                z = getattr(obj, "ClearanceHeightOut", obj.ClearanceHeight).Value
+                self.endVector[2] = z
+                self.commandlist.append(Path.Command("G0", {"Z": z, "F": self.vertRapid}))
 
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
