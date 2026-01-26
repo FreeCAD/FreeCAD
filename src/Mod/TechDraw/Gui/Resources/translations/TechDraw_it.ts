@@ -354,7 +354,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1505"/>
       <source>Diameter Dimension</source>
-      <translation type="unfinished">Diameter Dimension</translation>
+      <translation>Quota diametrale</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1506"/>
@@ -9844,7 +9844,7 @@ c'è una finestra di dialogo azioni aperte.</translation>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Dimension tools</source>
-      <translation type="unfinished">Dimension tools</translation>
+      <translation>Strumenti di quotatura</translation>
     </message>
   </context>
   <context>

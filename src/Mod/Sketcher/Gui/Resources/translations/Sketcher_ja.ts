@@ -851,27 +851,27 @@ invalid constraints, and degenerate geometry</source>
       <translation>スケッチ拘束の名前を変更</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Point</source>
       <translation>点をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Curve</source>
       <translation>曲線をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1814"/>
       <source>Drag geometries</source>
       <translation>ジオメトリーをドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1145"/>
       <source>Drag Constraint</source>
       <translation>拘束をドラッグ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1366"/>
       <source>Modify sketch constraints</source>
       <translation>スケッチ拘束を変更</translation>
     </message>
@@ -955,54 +955,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6742"/>
+      <location filename="../../../App/SketchObject.cpp" line="6757"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6734"/>
-      <location filename="../../../App/SketchObject.cpp" line="6912"/>
+      <location filename="../../../App/SketchObject.cpp" line="6749"/>
+      <location filename="../../../App/SketchObject.cpp" line="6927"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Bスプラインのジオメトリー番号（GeoID）が範囲外です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6751"/>
-      <location filename="../../../App/SketchObject.cpp" line="6928"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>入力されたジオメトリー番号（GeoID）はBスプラインではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6778"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6779"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Bスプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6790"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6806"/>
+      <location filename="../../../App/SketchObject.cpp" line="6821"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6919"/>
+      <location filename="../../../App/SketchObject.cpp" line="6934"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>ノットがゼロ多重性を持つことはでいません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6941"/>
+      <location filename="../../../App/SketchObject.cpp" line="6956"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Bスプラインの次数を超えてノット多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6951"/>
+      <location filename="../../../App/SketchObject.cpp" line="6966"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Bスプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
     </message>
@@ -3785,119 +3785,119 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3405"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>A dialog is already open in the task panel</source>
       <translation>タスクパネルで既にダイアログが開かれています</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3427"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>スケッチが不正で、編集できません。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3588"/>
       <source>The following constraint is partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
       <source>The following constraints are partially redundant:</source>
       <translation>以下の拘束は一部が冗長です:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
       <source>Edit Sketch</source>
       <translation>スケッチを編集</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>Close this dialog?</source>
       <translation>このダイアログを閉じますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>Invalid Sketch</source>
       <translation>無効なスケッチ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3426"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>Open the sketch validation tool?</source>
       <translation>スケッチ検証ツールを開きますか？</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Remove the following constraint:</source>
       <translation>以下の拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3575"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>以下の拘束から少なくとも1つを削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3581"/>
       <source>Remove the following redundant constraint:</source>
       <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3582"/>
       <source>Remove the following redundant constraints:</source>
       <translation>以下の冗長な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3595"/>
       <source>Remove the following malformed constraint:</source>
       <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
       <source>Remove the following malformed constraints:</source>
       <translation>以下の不正な拘束を削除してください：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3655"/>
       <source>Empty sketch</source>
       <translation>スケッチが空です</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3660"/>
       <source>Over-constrained:</source>
       <translation>過剰拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3666"/>
       <source>Malformed constraints:</source>
       <translation>不正な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3670"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3674"/>
       <source>Redundant constraints:</source>
       <translation>冗長な拘束:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3676"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3680"/>
       <source>Partially redundant:</source>
       <translation>部分的に冗長:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3683"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3687"/>
       <source>Solver failed to converge</source>
       <translation>ソルバーの収束に失敗</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3689"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3693"/>
       <source>Under-constrained:</source>
       <translation>未拘束:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3691"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3695"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n 自由度</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3695"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3699"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -4385,7 +4385,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3634"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
       <source>and %1 more</source>
       <translation>%1 以上</translation>
     </message>
@@ -4590,17 +4590,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>スケッチに一部が冗長な拘束があります!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10204"/>
+      <location filename="../../../App/SketchObject.cpp" line="10219"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>ジオメトリープロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10235"/>
+      <location filename="../../../App/SketchObject.cpp" line="10250"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>拘束プロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10858"/>
+      <location filename="../../../App/SketchObject.cpp" line="10873"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>放物線がバージョン変換されました。変換されたファイルは以前のバージョンのFreeCADでは開けません!!

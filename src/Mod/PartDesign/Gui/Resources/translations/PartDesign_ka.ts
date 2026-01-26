@@ -4477,9 +4477,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4504,12 +4504,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>ნულოვანი სიგრძის მქონე ჯიბის შექმნა შეუძლებელია.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>გამოწნევის გეომეტრია არ შექმნილა.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>შედეგად მიღებული შეერთებული გამოწნევა ნულოვანია.</translation>
     </message>
@@ -4517,7 +4517,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>მიღებული მონახაზი მყარი სხეული არაა</translation>
     </message>
@@ -4842,7 +4842,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>ლოფტი: გარსის შექმნა ჩავარდა</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>ესკიზიდან ზედაპირის შექმნის შეცდომა.
@@ -5082,7 +5082,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>მიმართვის ღერძი არასწორია</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>საბაზისო თვისებასთან შერწყმის შეცდომა</translation>
     </message>
@@ -5097,17 +5097,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>გარდაქნილ თვისებაზე ორიგინალები მიბმული არაა.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>ფიგურის დაუშვებელი მოხაზულობის გარდაქმნა შეუძლებელია</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>დამატებადი/გამოკლებადი თვისების მოხაზულობა ცარიელია</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>შეიძლება მხოლოდ მიმატებადი და გამოკლებადი თვისებების გარდაქმნა</translation>
     </message>

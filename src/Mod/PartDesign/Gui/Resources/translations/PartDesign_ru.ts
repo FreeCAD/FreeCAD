@@ -4475,9 +4475,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Результат содержит несколько твёрдых тел: включите параметр "Разрешить составные объекты" в активном теле.</translation>
     </message>
@@ -4502,12 +4502,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>Невозможно выполнить вырезание с нулевой общей длиной.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Никакой геометрии выдавливания не было сгенерировано.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Результат операции выдавливания равен нулю (null).</translation>
     </message>
@@ -4515,7 +4515,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>Полученная форма не является твёрдотельной</translation>
     </message>
@@ -4842,7 +4842,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>Операция по сечениям: Не удалось создать оболочку</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Не удалось создать грань из эскиза.
@@ -5082,7 +5082,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Базовая ось недействительна</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Сбой слияния с базовым элементом</translation>
     </message>
@@ -5097,17 +5097,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>Нет оригиналов, связанных с преобразованным объектом.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Невозможно преобразовать недопустимую опорную форму</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Форма аддитивного/субтрактивного преобразования пустая</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Только аддитивные и субтрактивные операции/функции могут быть преобразованы</translation>
     </message>

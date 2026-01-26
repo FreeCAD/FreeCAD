@@ -2037,7 +2037,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Ανοχή/Διάκενο</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="120"/>
@@ -3756,7 +3756,7 @@ Default: OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="718"/>
       <source>Clearance</source>
-      <translation type="unfinished">Clearance</translation>
+      <translation>Ανοχή/Διάκενο</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="734"/>

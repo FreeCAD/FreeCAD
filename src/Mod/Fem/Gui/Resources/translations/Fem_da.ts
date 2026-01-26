@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="244"/>
       <source>Bearing Constraint</source>
-      <translation type="unfinished">Bearing Constraint</translation>
+      <translation>Leje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="245"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>Opretter et leje</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="593"/>
       <source>Force Load</source>
-      <translation type="unfinished">Force Load</translation>
+      <translation>Kraftpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="594"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Opretter en kraft som virker på en geometrisk enhed</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="891"/>
       <source>Pressure Load</source>
-      <translation type="unfinished">Pressure Load</translation>
+      <translation>Trykpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="892"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation type="unfinished">Creates a pressure load acting on a face</translation>
+      <translation>Opretter et tryk der virker på en flade</translation>
     </message>
   </context>
   <context>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="1319"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1320"/>
@@ -365,7 +365,7 @@
     <message>
       <location filename="../../Command.cpp" line="2760"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
   </context>
   <context>
@@ -442,12 +442,12 @@
     <message>
       <location filename="../../Command.cpp" line="2813"/>
       <source>Plane</source>
-      <translation type="unfinished">Plane</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2823"/>
       <source>Sphere</source>
-      <translation type="unfinished">Sphere</translation>
+      <translation>Kugle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2833"/>
@@ -523,7 +523,7 @@
       <location filename="../../Command.cpp" line="2426"/>
       <location filename="../../Command.cpp" line="2437"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
   </context>
   <context>
@@ -600,7 +600,7 @@
     <message>
       <location filename="../../Command.cpp" line="261"/>
       <source>Make bearing constraint</source>
-      <translation type="unfinished">Make bearing constraint</translation>
+      <translation>Opret leje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="309"/>
@@ -876,7 +876,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="240"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Foldning</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="278"/>
@@ -956,7 +956,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>Antal CPU'er der skal bruges</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
@@ -981,12 +981,12 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="396"/>
       <source>Non-linear geometry</source>
-      <translation type="unfinished">Non-linear geometry</translation>
+      <translation>Ikke-lineær geometri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="550"/>
       <source>Use non-linear geometry</source>
-      <translation type="unfinished">Use non-linear geometry</translation>
+      <translation>Brug ikke-lineær geometri</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="472"/>
@@ -1864,27 +1864,27 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintBearing.cpp" line="215"/>
       <location filename="../../TaskFemConstraintBearing.cpp" line="224"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
       <source>Use only a single reference for bearing constraint</source>
-      <translation type="unfinished">Use only a single reference for bearing constraint</translation>
+      <translation>Vælg kun en enkelt reference til definition af lejet</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Kun flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="186"/>
       <source>Only cylindrical faces can be picked</source>
-      <translation type="unfinished">Only cylindrical faces can be picked</translation>
+      <translation>Kun cylindriske flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="206"/>
       <source>Only planar faces can be picked</source>
-      <translation type="unfinished">Only planar faces can be picked</translation>
+      <translation>Kun plane flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="216"/>
@@ -1894,7 +1894,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.cpp" line="225"/>
       <source>Only faces and edges can be picked</source>
-      <translation type="unfinished">Only faces and edges can be picked</translation>
+      <translation>Kun flader og kanter kan vælges</translation>
     </message>
   </context>
   <context>
@@ -1926,7 +1926,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="435"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="444"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="131"/>
@@ -2026,7 +2026,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="322"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="332"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="237"/>
@@ -2071,7 +2071,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFixed.cpp" line="194"/>
       <location filename="../../TaskFemConstraintFixed.cpp" line="203"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="113"/>
@@ -2167,12 +2167,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Empty selection</source>
-      <translation type="unfinished">Empty selection</translation>
+      <translation>Intet valgt</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="655"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Vælg en kant eller en flade.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
@@ -2181,7 +2181,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="703"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="712"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="666"/>
@@ -2216,7 +2216,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="932"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="942"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="849"/>
@@ -2261,7 +2261,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="207"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="216"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="125"/>
@@ -2289,12 +2289,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation type="unfinished">Wrong selection</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="324"/>
       <source>Select an edge or a face.</source>
-      <translation type="unfinished">Select an edge or a face.</translation>
+      <translation>Vælg en kant eller en flade.</translation>
     </message>
   </context>
   <context>
@@ -2304,12 +2304,12 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintGear.cpp" line="165"/>
       <location filename="../../TaskFemConstraintGear.cpp" line="174"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="156"/>
       <source>Only planar faces can be picked</source>
-      <translation type="unfinished">Only planar faces can be picked</translation>
+      <translation>Kun plane flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
@@ -2319,7 +2319,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintGear.cpp" line="175"/>
       <source>Only faces and edges can be picked</source>
-      <translation type="unfinished">Only faces and edges can be picked</translation>
+      <translation>Kun flader og kanter kan vælges</translation>
     </message>
   </context>
   <context>
@@ -2332,7 +2332,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="156"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
@@ -2343,7 +2343,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="369"/>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="380"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
@@ -2392,7 +2392,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="237"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="131"/>
@@ -2420,12 +2420,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Kun flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="179"/>
       <source>Only planar faces can be picked</source>
-      <translation type="unfinished">Only planar faces can be picked</translation>
+      <translation>Kun plane flader kan vælges</translation>
     </message>
   </context>
   <context>
@@ -2438,7 +2438,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="75"/>
       <source>Edge, Face</source>
-      <translation type="unfinished">Edge, Face</translation>
+      <translation>Kant, flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
@@ -2448,7 +2448,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintPressure.cpp" line="194"/>
       <location filename="../../TaskFemConstraintPressure.cpp" line="203"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="128"/>
@@ -2483,7 +2483,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintPulley.cpp" line="98"/>
       <source>Torque [Nm]</source>
-      <translation type="unfinished">Torque [Nm]</translation>
+      <translation>Moment [Nm]</translation>
     </message>
   </context>
   <context>
@@ -2506,7 +2506,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintSpring.cpp" line="195"/>
       <location filename="../../TaskFemConstraintSpring.cpp" line="204"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="133"/>
@@ -2528,7 +2528,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.cpp" line="160"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Kun flader kan vælges</translation>
     </message>
   </context>
   <context>
@@ -2550,7 +2550,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="256"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="265"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
@@ -2590,7 +2590,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="458"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="467"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
@@ -2643,12 +2643,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="368"/>
       <source>Only faces can be picked</source>
-      <translation type="unfinished">Only faces can be picked</translation>
+      <translation>Kun flader kan vælges</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
       <source>Only cylindrical faces can be picked</source>
-      <translation type="unfinished">Only cylindrical faces can be picked</translation>
+      <translation>Kun cylindriske flader kan vælges</translation>
     </message>
   </context>
   <context>
@@ -2727,17 +2727,17 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Massefylde</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="91"/>
       <source>Mechanical Properties</source>
-      <translation type="unfinished">Mechanical Properties</translation>
+      <translation>Mekaniske Egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="102"/>
       <source>Young's modulus</source>
-      <translation type="unfinished">Young's modulus</translation>
+      <translation>E-modul</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
@@ -2767,7 +2767,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
       <source>Fluidic Properties</source>
-      <translation type="unfinished">Fluidic Properties</translation>
+      <translation>Fluid egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="201"/>
@@ -2777,7 +2777,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="252"/>
       <source>Thermal Properties</source>
-      <translation type="unfinished">Thermal Properties</translation>
+      <translation>Termiske egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="346"/>
@@ -3020,7 +3020,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/ConstraintSectionPrint.ui" line="34"/>
       <source>Variable</source>
-      <translation type="unfinished">Variable</translation>
+      <translation>Variabel</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="26"/>
@@ -3306,22 +3306,22 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="343"/>
       <source>T1 thickness</source>
-      <translation type="unfinished">T1 thickness</translation>
+      <translation>T1 tykkelse</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="375"/>
       <source>T2 thickness</source>
-      <translation type="unfinished">T2 thickness</translation>
+      <translation>T2 tykkelse</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="407"/>
       <source>T3 thickness</source>
-      <translation type="unfinished">T3 thickness</translation>
+      <translation>T3 tykkelse</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="439"/>
       <source>T4 thickness</source>
-      <translation type="unfinished">T4 thickness</translation>
+      <translation>T4 tykkelse</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
@@ -3381,7 +3381,7 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="29"/>
       <source>Heat Source</source>
-      <translation type="unfinished">Heat Source</translation>
+      <translation>Varmekilde</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="29"/>
@@ -3447,7 +3447,7 @@ with harmonic/oscillating driving current</translation>
       <location filename="../ui/ElectricChargeDensity.ui" line="55"/>
       <location filename="../ui/ElectricChargeDensity.ui" line="98"/>
       <source>Density</source>
-      <translation type="unfinished">Density</translation>
+      <translation>Massefylde</translation>
     </message>
     <message>
       <location filename="../ui/ElectricChargeDensity.ui" line="93"/>
@@ -3779,7 +3779,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="63"/>
       <source>von Mises Stress</source>
-      <translation type="unfinished">von Mises Stress</translation>
+      <translation>von Mises spænding</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="76"/>
@@ -3945,17 +3945,17 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="43"/>
       <source>displacement: x, y, z</source>
-      <translation type="unfinished">displacement: x, y, z</translation>
+      <translation>forskydninger: x, y, z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="65"/>
       <source>temperature: T</source>
-      <translation type="unfinished">temperature: T</translation>
+      <translation>temperatur: T</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="90"/>
       <source>stress: sxx, syy, szz, sxy, sxz, syz</source>
-      <translation type="unfinished">stress: sxx, syy, szz, sxy, sxz, syz</translation>
+      <translation>spændinger: sxx, syy, szz, sxy, sxz, syz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="118"/>
@@ -3965,7 +3965,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="128"/>
       <source>strain: exx, eyy, ezz, exy, exz, eyz</source>
-      <translation type="unfinished">strain: exx, eyy, ezz, exy, exz, eyz</translation>
+      <translation>tøjninger: exx, eyy, ezz, exy, exz, eyz</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="138"/>
@@ -3975,42 +3975,42 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="158"/>
       <source>von Mises stress: vM</source>
-      <translation type="unfinished">von Mises stress: vM</translation>
+      <translation>von Mises spænding: vM</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>maximum shear stress: MS</source>
-      <translation type="unfinished">maximum shear stress: MS</translation>
+      <translation>maksimal forskydningsspænding: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>maximum princ. stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">maximum princ. stress vector: s3x, s3y, s3z</translation>
+      <translation>max. hovedspændingsvektor: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>maximum principal stress: P1</source>
-      <translation type="unfinished">maximum principal stress: P1</translation>
+      <translation>største hovedspænding: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>medium princ. stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">medium princ. stress vector: s2x, s2y, s2z</translation>
+      <translation>mid. hovedspændingsvektor: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>medium principal stress: P2</source>
-      <translation type="unfinished">medium principal stress: P2</translation>
+      <translation>middel hovedspænding: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>minimum princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">minimum princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>min. hovedspændingsvektor: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>minimum principal stress: P3</source>
-      <translation type="unfinished">minimum principal stress: P3</translation>
+      <translation>mindste hovedspænding: P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="248"/>
@@ -4043,17 +4043,17 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="14"/>
       <source>Mechanical Analysis</source>
-      <translation type="unfinished">Mechanical Analysis</translation>
+      <translation>Mekanisk analyse</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="20"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Arbejdsmappe</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="55"/>
       <source>Analysis Type</source>
-      <translation type="unfinished">Analysis Type</translation>
+      <translation>Analysetype</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="67"/>
@@ -4078,7 +4078,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="98"/>
       <source>Buckling</source>
-      <translation type="unfinished">Buckling</translation>
+      <translation>Foldning</translation>
     </message>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="110"/>
@@ -4098,7 +4098,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/SolverCcxTools.ui" line="130"/>
       <source>Run CalculiX</source>
-      <translation type="unfinished">Run CalculiX</translation>
+      <translation>Kør CalculiX</translation>
     </message>
   </context>
   <context>
@@ -4155,12 +4155,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
-      <translation type="unfinished">Volume</translation>
+      <translation>Volumen</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="32"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="49"/>
@@ -4248,7 +4248,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="172"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
   </context>
   <context>
@@ -4271,12 +4271,12 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="80"/>
       <source>Center distance</source>
-      <translation type="unfinished">Center distance</translation>
+      <translation>Centerafstand</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="101"/>
       <source>Force</source>
-      <translation type="unfinished">Force</translation>
+      <translation>Kraft</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="122"/>
@@ -4316,7 +4316,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="219"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
   </context>
   <context>
@@ -4366,7 +4366,7 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="210"/>
       <source>Friction coefficient</source>
-      <translation type="unfinished">Friction coefficient</translation>
+      <translation>Friktionskoefficient</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="233"/>
@@ -4410,7 +4410,7 @@ for the Elmer solver</translation>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="156"/>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="189"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
@@ -4552,7 +4552,7 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="411"/>
       <source>Temperature [K]</source>
-      <translation type="unfinished">Temperature [K]</translation>
+      <translation>Temperatur [K]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
@@ -4579,7 +4579,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="357"/>
       <source>Length [m]</source>
-      <translation type="unfinished">Length [m]</translation>
+      <translation>Længde [m]</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="383"/>
@@ -4622,12 +4622,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="93"/>
       <source>Force</source>
-      <translation type="unfinished">Force</translation>
+      <translation>Kraft</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -4752,7 +4752,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="68"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Tryk</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="87"/>
@@ -4786,7 +4786,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="82"/>
       <location filename="../../TaskFemConstraintSpring.ui" line="105"/>
       <source>N/m</source>
-      <translation type="unfinished">N/m</translation>
+      <translation>N/m</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
@@ -4932,12 +4932,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="32"/>
       <source>Point 1</source>
-      <translation type="unfinished">Point 1</translation>
+      <translation>Punkt 1</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="48"/>
       <source>Point 2</source>
-      <translation type="unfinished">Point 2</translation>
+      <translation>Punkt 2</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="64"/>
@@ -4957,7 +4957,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="184"/>
       <source>Select Points</source>
-      <translation type="unfinished">Select Points</translation>
+      <translation>Vælg punkter</translation>
     </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="193"/>
@@ -5040,7 +5040,7 @@ normal vector of the face is used as direction</translation>
       <location filename="../../TaskPostDisplay.ui" line="47"/>
       <location filename="../../TaskPostDisplay.ui" line="98"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="52"/>
@@ -5095,7 +5095,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="47"/>
       <source>Surface</source>
-      <translation type="unfinished">Surface</translation>
+      <translation>Overflade</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="52"/>
@@ -5446,7 +5446,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="61"/>
       <source>New Analysis</source>
-      <translation type="unfinished">New Analysis</translation>
+      <translation>Ny analyse</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="65"/>
@@ -5646,7 +5646,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="219"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>Arbejdsmappe</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="223"/>
@@ -5797,7 +5797,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="354"/>
       <source>von Mises Stress</source>
-      <translation type="unfinished">von Mises Stress</translation>
+      <translation>von Mises spænding</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="366"/>
@@ -6266,7 +6266,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="1687"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1688"/>
@@ -6284,7 +6284,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../Command.cpp" line="2540"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2541"/>
@@ -6605,7 +6605,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="303"/>
       <source>Force</source>
-      <translation type="unfinished">Force</translation>
+      <translation>Kraft</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="394"/>
@@ -6666,7 +6666,7 @@ No matching module was found in the current Python path.</translation>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="384"/>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="394"/>
       <source>Selection error</source>
-      <translation type="unfinished">Selection error</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="302"/>
