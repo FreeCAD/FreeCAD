@@ -1802,16 +1802,19 @@ def getFaceGeometry(obj, subname=None):
             best_face_name = getFaceName(obj.Shape)
             if best_face_name:
                 face = obj.getSubObject(best_face_name)
-        elif obj.Shape.ShapeType in ["Wire", "Edge"]:
-            if obj.Shape.isClosed():
-                try:
-                    face = makeFace(obj.Shape.Wires)
-                except Exception as e:
-                    FreeCAD.Console.PrintWarning(
-                        f"ArchCommands: Unable to create face from wire: {e}\n"
-                    )
-            else:
-                FreeCAD.Console.PrintWarning(translate("Arch", "Wire is not closed.") + "\n")
+        elif obj.Shape.Wires:
+            # Attempt to create a face from any available wires if no face/solid exists
+            try:
+                # Filter for closed wires to ensure makeFace works correctly
+                closed_wires = [w for w in obj.Shape.Wires if w.isClosed()]
+                if closed_wires:
+                    face = makeFace(closed_wires)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("Arch", "No closed wires found.") + "\n")
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"ArchCommands: Unable to create face from wires: {e}\n"
+                )
 
     if face and face.findPlane() is None:
         FreeCAD.Console.PrintWarning(translate("Arch", "Face is not planar.") + "\n")

@@ -508,3 +508,88 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # Compound should only contain the solid, no edges for centerlines.
         # A standard Box solid has 12 edges.
         self.assertEqual(len(covering.Shape.Edges), 12)
+
+    def test_getFaceGeometry_with_sketch_hole(self):
+        """Verify that the face resolver correctly handles a sketch with a hole (using makeFace)."""
+        self.printTestMessage("getFaceGeometry with sketch hole...")
+        sketch = self.document.addObject("Sketcher::SketchObject", "HoleSketch")
+        # Create a 100x100 outer square
+        sketch.addGeometry(Part.LineSegment(App.Vector(0, 0, 0), App.Vector(100, 0, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(100, 0, 0), App.Vector(100, 100, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(100, 100, 0), App.Vector(0, 100, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(0, 100, 0), App.Vector(0, 0, 0)))
+        # Create a 50x50 inner square (the hole)
+        sketch.addGeometry(Part.LineSegment(App.Vector(25, 25, 0), App.Vector(75, 25, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(75, 25, 0), App.Vector(75, 75, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(75, 75, 0), App.Vector(25, 75, 0)))
+        sketch.addGeometry(Part.LineSegment(App.Vector(25, 75, 0), App.Vector(25, 25, 0)))
+        self.document.recompute()
+
+        # Resolve the geometry
+        face = Arch.getFaceGeometry(sketch)
+        self.assertIsNotNone(face)
+        # Expected area: 100*100 - 50*50 = 7500
+        self.assertAlmostEqual(face.Area, 7500.0, places=3)
+        self.assertEqual(len(face.Wires), 2, "Face should have one outer wire and one hole wire.")
+
+    def test_getFaceUV_singularity_hardening(self):
+        """Verify that the UV basis extractor handles zero-area faces gracefully."""
+        self.printTestMessage("getFaceUV singularity hardening...")
+        # Create an extremely narrow face to stress normalization
+        degenerate_face = Part.makePlane(100, 0.001)
+
+        # This should return a valid set of axes without raising a C++
+        # normalization exception.
+        try:
+            basis = Arch.getFaceUV(degenerate_face)
+            self.assertEqual(len(basis), 4)
+        except Exception as e:
+            self.fail(f"getFaceUV crashed on degenerate geometry: {e}")
+
+    def test_isolated_tessellator_math(self):
+        """Verify the RectangularTessellator algorithm without a DocumentObject."""
+        self.printTestMessage("isolated tessellator math...")
+        import ArchTessellation
+
+        # 1000x1000 substrate
+        substrate = Part.makePlane(1000, 1000)
+        u, v, n, c = Arch.getFaceUV(substrate)
+        origin = Arch.getFaceGridOrigin(substrate, c, u, v, alignment="BottomLeft")
+
+        # Scenario: 200x200 tiles, 50mm joint.
+        # Step is 250mm. 1000/250 = 4 tiles precisely per side. Total = 16.
+        tessellator = ArchTessellation.RectangularTessellator(
+            length=200, width=200, thickness=10, joint=50
+        )
+        result = tessellator.compute(substrate, origin, u, v, n)
+
+        self.assertEqual(result.status, ArchTessellation.TessellationStatus.OK)
+        self.assertEqual(result.quantities.count_full, 16)
+        self.assertEqual(result.quantities.count_partial, 0)
+        self.assertAlmostEqual(result.unit_area, 40000.0)
+        self.assertAlmostEqual(result.quantities.area_net, 1000000.0)
+
+    def test_tessellator_threshold_guards(self):
+        """Verify that the tessellator correctly returns status enums for boundary cases."""
+        self.printTestMessage("tessellator threshold guards...")
+        import ArchTessellation
+
+        substrate = Part.makePlane(100, 100)
+        u, v, n, c = Arch.getFaceUV(substrate)
+        origin = App.Vector(0, 0, 0)
+
+        # Case 1: Invalid Dimensions (< 1.0mm)
+        t1 = ArchTessellation.RectangularTessellator(0.5, 100, 0, 0)
+        res1 = t1.compute(substrate, origin, u, v, n)
+        self.assertEqual(res1.status, ArchTessellation.TessellationStatus.INVALID_DIMENSIONS)
+
+        # Case 2: Too many tiles (> 10,000)
+        # 1000mm face / 5mm step = 200 divisions. 200^2 = 40,000 tiles.
+        large_substrate = Part.makePlane(1000, 1000)
+        t2 = ArchTessellation.RectangularTessellator(4, 4, 0, 1)
+        res2 = t2.compute(large_substrate, origin, u, v, n)
+        self.assertEqual(res2.status, ArchTessellation.TessellationStatus.COUNT_TOO_HIGH)
+        # In high-count mode, the geometry should be a monolithic compound (solid + grid)
+        # but it should not have been physically discretized into 40,000 solids.
+        self.assertIsNotNone(res2.geometry)
+        self.assertGreater(res2.quantities.count_full, 10000)
