@@ -55,6 +55,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
         );
     }
     else {
+        spnav_client_name("FreeCAD");
         Base::Console().log("Connected to spacenav daemon\n");
         QSocketNotifier* SpacenavNotifier
             = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
