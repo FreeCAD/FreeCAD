@@ -561,7 +561,7 @@ public:
      *
      * @param[in] extension The file type extension.
      */
-    std::vector<std::string> getImportModules(const char* extension) const;
+    std::vector<std::string> getImportModules(const std::string& extension) const;
 
     /// Get a list of all import modules.
     std::vector<std::string> getImportModules() const;
@@ -572,7 +572,7 @@ public:
      * @param[in] Module The module name.
      * @return A list of file types (extensions) supported by the module.
      */
-    std::vector<std::string> getImportTypes(const char* Module) const;
+    std::vector<std::string> getImportTypes(const std::string& Module) const;
 
     /// Get a list of all import filetypes represented as extensions.
     std::vector<std::string> getImportTypes() const;
@@ -583,7 +583,7 @@ public:
      * @param[in] extension The file type represented by its extension.
      * @return A map of filter description to module name.
      */
-    std::map<std::string, std::string> getImportFilters(const char* extension) const;
+    std::map<std::string, std::string> getImportFilters(const std::string& extension) const;
 
     /// Get a mapping of all import filters to their modules.
     std::map<std::string, std::string> getImportFilters() const;
@@ -605,7 +605,7 @@ public:
      *
      * @copydetails getImportModules
      */
-    std::vector<std::string> getExportModules(const char* extension) const;
+    std::vector<std::string> getExportModules(const std::string& extension) const;
 
     /// Get a list of all export modules.
     std::vector<std::string> getExportModules() const;
@@ -613,9 +613,9 @@ public:
     /**
      * @brief Get a list of filetypes that are supported by a module for export.
      *
-     * @copydetails App::Application::getImportTypes(const char*) const
+     * @copydetails App::Application::getImportTypes(const std::string&) const
      */
-    std::vector<std::string> getExportTypes(const char* Module) const;
+    std::vector<std::string> getExportTypes(const std::string& Module) const;
 
     /// Get a list of all export filetypes.
     std::vector<std::string> getExportTypes() const;
@@ -623,9 +623,9 @@ public:
     /**
      * @brief Get the export filters with modules of a given filetype.
      *
-     * @copydetails App::Application::getImportFilters(const char*) const
+     * @copydetails App::Application::getImportFilters(const std::string&) const
      */
-    std::map<std::string, std::string> getExportFilters(const char* extension) const;
+    std::map<std::string, std::string> getExportFilters(const std::string& extension) const;
 
     /// Get a mapping of all export filters to their modules.
     std::map<std::string, std::string> getExportFilters() const;
