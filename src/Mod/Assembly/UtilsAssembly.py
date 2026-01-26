@@ -43,6 +43,10 @@ def activePartOrAssembly():
 
     if doc is None or doc.ActiveView is None:
         return None
+    activeAssembly = doc.ActiveView.getActiveObject("assembly")
+
+    if activeAssembly:
+        return activeAssembly
 
     return doc.ActiveView.getActiveObject("part")
 
