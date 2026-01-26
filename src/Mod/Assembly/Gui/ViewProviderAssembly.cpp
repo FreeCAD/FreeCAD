@@ -301,7 +301,7 @@ bool ViewProviderAssembly::setEdit(int mode)
         if (taskView) {
             // Waiting for the solver to support reporting information.
             taskSolver = new TaskAssemblyMessages(this);
-            taskView->addContextualPanel(taskSolver);
+            taskView->addContextualPanel(taskSolver, this->getObject()->getDocument());
         }
 
         auto* assembly = getObject<AssemblyObject>();
@@ -354,7 +354,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
             // Waiting for the solver to support reporting information.
-            taskView->removeContextualPanel(taskSolver);
+            taskView->removeContextualPanel(taskSolver, this->getObject()->getDocument());
         }
 
         connectSolverUpdate.disconnect();

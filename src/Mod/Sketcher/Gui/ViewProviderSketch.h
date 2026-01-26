@@ -862,10 +862,6 @@ private:
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
-    //@}
-
     void setupActiveAndInEdit();
     void unsetupActiveAndInEdit();
 
