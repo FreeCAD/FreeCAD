@@ -39,7 +39,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="9006"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Hold radius/diameter automatisk</translation>
+      <translation>Automatisk radius/diameter</translation>
     </message>
   </context>
   <context>
@@ -308,7 +308,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4099"/>
       <source>Add block constraint</source>
-      <translation>Tilføj blokeringsrelation</translation>
+      <translation>Tilføj låst relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4441"/>
@@ -431,7 +431,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="2383"/>
       <location filename="../../CommandConstraints.cpp" line="4050"/>
       <source>Add Block constraint</source>
-      <translation>Tilføj blokeringsrelation</translation>
+      <translation>Tilføj låst relation</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2398"/>
@@ -854,27 +854,27 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Omdøb skitserelation</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Point</source>
       <translation>Træk Punkt</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1809"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1813"/>
       <source>Drag Curve</source>
       <translation>Træk Kurve</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1810"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1814"/>
       <source>Drag geometries</source>
       <translation>Træk geometrier</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1141"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1145"/>
       <source>Drag Constraint</source>
       <translation>Træk relation</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1362"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1366"/>
       <source>Modify sketch constraints</source>
       <translation>Tilpas skitserelationer</translation>
     </message>
@@ -958,54 +958,54 @@ ugyldige relationer og fejlbehæftet geometri</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6742"/>
+      <location filename="../../../App/SketchObject.cpp" line="6757"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Du beder ikke om en ændring af knude-multipliciteten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6734"/>
-      <location filename="../../../App/SketchObject.cpp" line="6912"/>
+      <location filename="../../../App/SketchObject.cpp" line="6749"/>
+      <location filename="../../../App/SketchObject.cpp" line="6927"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Splines geometri-index (GeoID) er uden for grænseværdierne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6751"/>
-      <location filename="../../../App/SketchObject.cpp" line="6928"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Geometriindekset (GeoID) er ikke en spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6763"/>
+      <location filename="../../../App/SketchObject.cpp" line="6778"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Knudeindeks er uden for grænseværdierne. Bemærk, at i overensstemmelse med OCC-notationen, har første knudepunkt indeks 1 og ikke 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6779"/>
+      <location filename="../../../App/SketchObject.cpp" line="6794"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multipliciteten kan ikke forøges til mere end graden af splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6790"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multipliciteten kan ikke formindskes til mindre end nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6806"/>
+      <location filename="../../../App/SketchObject.cpp" line="6821"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kan ikke formindske multipliciteten inden for den maksimale tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6919"/>
+      <location filename="../../../App/SketchObject.cpp" line="6934"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knuden kan ikke have en multiplicitet på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6941"/>
+      <location filename="../../../App/SketchObject.cpp" line="6956"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Knuders multiplicitet kan ikke være højere end graden af splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6951"/>
+      <location filename="../../../App/SketchObject.cpp" line="6966"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Knudepunkter kan ikke indsættes uden for splinens parameterområdet.</translation>
     </message>
@@ -1277,7 +1277,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <location filename="../../CommandConstraints.cpp" line="10530"/>
       <location filename="../../CommandConstraints.cpp" line="10542"/>
       <source>Wrong selection</source>
-      <translation>Forkert valg</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../CommandAlterGeometry.cpp" line="164"/>
@@ -1662,24 +1662,24 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandConstraints.cpp" line="838"/>
       <source>Only the sketch and its support are allowed to be selected</source>
-      <translation type="unfinished">Only the sketch and its support are allowed to be selected</translation>
+      <translation>Kun skitsen og dens hjælpelinjer kan vælges</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="849"/>
       <source>Only the sketch and its support may be selected</source>
-      <translation type="unfinished">Only the sketch and its support may be selected</translation>
+      <translation>Kun skitsen og dens hjælpelinjer kan vælges</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="861"/>
       <source>Only the sketch and its support  may be selected</source>
-      <translation type="unfinished">Only the sketch and its support  may be selected</translation>
+      <translation>Kun skitsen og dens hjælpelinjer kan vælges</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3273"/>
       <location filename="../../CommandConstraints.cpp" line="4041"/>
       <location filename="../../CommandConstraints.cpp" line="4094"/>
       <source>The selected edge already has a block constraint!</source>
-      <translation>Den valgte linje har allerede en blokeringsrelation!</translation>
+      <translation>Den valgte linje er allerede låst!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3349"/>
@@ -1909,7 +1909,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="86"/>
       <source>Wrong Selection</source>
-      <translation>Forkert valg</translation>
+      <translation>Ugyldigt valg</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="87"/>
@@ -1976,7 +1976,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
       <location filename="../../TaskSketcherElements.cpp" line="634"/>
       <location filename="../../TaskSketcherElements.cpp" line="684"/>
       <source>It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</source>
-      <translation type="unfinished">It is currently unsupported to move external geometry to another visual layer. External geometry will be omitted</translation>
+      <translation>Flytning af ekstern geometri til et andet visuelt lag understøttes ikke for øjeblikket. Ekstern geometri vil blive udeladt</translation>
     </message>
   </context>
   <context>
@@ -2087,7 +2087,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="121"/>
       <source>Internal Alignment</source>
-      <translation type="unfinished">Internal Alignment</translation>
+      <translation>Interne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.h" line="122"/>
@@ -2401,7 +2401,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Block Constraint</source>
-      <translation>Blokeringsrelation</translation>
+      <translation>Låst</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
@@ -2613,7 +2613,7 @@ Mulige kombinationer: to kurver, et endepunkt og en kurve, to endepunkter, to ku
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="20"/>
       <source>Sketch Orientation</source>
-      <translation type="unfinished">Sketch Orientation</translation>
+      <translation>Skitseretning</translation>
     </message>
     <message>
       <location filename="../../SketchOrientationDialog.ui" line="26"/>
@@ -2740,7 +2740,7 @@ således at en ændring i det oprindelige element afspejles i kopierne</translat
     <message>
       <location filename="../../SketcherSettings.ui" line="45"/>
       <source>Dragging Performance</source>
-      <translation type="unfinished">Dragging Performance</translation>
+      <translation>Trækning af elementer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="51"/>
@@ -2752,7 +2752,7 @@ Du skal forlade og genindtræde i redigeringstilstand før funktionen træder i 
     <message>
       <location filename="../../SketcherSettings.ui" line="55"/>
       <source>Improve solving while dragging</source>
-      <translation type="unfinished">Improve solving while dragging</translation>
+      <translation>Forbedret visning under trækning</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="107"/>
@@ -2822,7 +2822,7 @@ Du skal forlade og genindtræde i redigeringstilstand før funktionen træder i 
     <message>
       <location filename="../../SketcherSettings.ui" line="243"/>
       <source>Generate internal faces</source>
-      <translation>Generér indvendige flader</translation>
+      <translation>Generer indvendige flader</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="265"/>
@@ -3039,7 +3039,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="37"/>
       <source>Pixel size used to render constraint symbols</source>
-      <translation type="unfinished">Pixel size used to render constraint symbols</translation>
+      <translation>Størrelse i pixels til visning af relationssymboler</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="78"/>
@@ -3084,7 +3084,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
       <source>Cursor coordinates will use the system decimals setting instead of the short form</source>
-      <translation type="unfinished">Cursor coordinates will use the system decimals setting instead of the short form</translation>
+      <translation>Markørkoordinater bliver vist med systemets decimalindstilling i stedet for visning i kort form</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
@@ -3109,7 +3109,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
       <source>Restores the camera position after closing the sketch</source>
-      <translation type="unfinished">Restores the camera position after closing the sketch</translation>
+      <translation>Gendanner kameraets position efter lukning af skitsen</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="443"/>
@@ -3411,7 +3411,7 @@ Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="854"/>
       <source>Hide internal alignment (in widget)</source>
-      <translation type="unfinished">Hide internal alignment (in widget)</translation>
+      <translation>Skjul interne konstruktionslinjer (i widget)</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1572"/>
@@ -3789,112 +3789,112 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3405"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3409"/>
       <source>A dialog is already open in the task panel</source>
       <translation type="unfinished">A dialog is already open in the task panel</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3427"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3431"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Skitsen er ugyldig og kan ikke redigeres.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3584"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3588"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Følgende relation er delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3585"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Følgende relationer er delvis overflødige:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3388"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3392"/>
       <source>Edit Sketch</source>
       <translation>Rediger skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3406"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3410"/>
       <source>Close this dialog?</source>
       <translation>Luk denne dialog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3425"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3429"/>
       <source>Invalid Sketch</source>
       <translation>Ugyldig Skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3426"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3430"/>
       <source>Open the sketch validation tool?</source>
       <translation>Åbn valideringsværktøjet?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3570"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3574"/>
       <source>Remove the following constraint:</source>
       <translation>Fjern følgende relation:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3571"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3575"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Fjern mindst en af følgende relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3577"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3581"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Fjern følgende overflødige begrænsning:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3578"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3582"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Fjern følgende overflødige begrænsninger:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3591"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3595"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Fjern følgende fejlbehæftede relation:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3592"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Fjern følgende fejlbehæftede relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3651"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3655"/>
       <source>Empty sketch</source>
       <translation>Tom skitse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3656"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3660"/>
       <source>Over-constrained:</source>
       <translation>For mange låse:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3662"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3666"/>
       <source>Malformed constraints:</source>
       <translation>Fejlbehæftede relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3670"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3674"/>
       <source>Redundant constraints:</source>
       <translation>Overflødige relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3676"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3680"/>
       <source>Partially redundant:</source>
       <translation>Delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3683"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3687"/>
       <source>Solver failed to converge</source>
       <translation>Løsningen konvergerer ikke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3689"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3693"/>
       <source>Under-constrained:</source>
       <translation>Ulåst:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3691"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3695"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n frihedsgrader</numerusform>
@@ -3902,7 +3902,7 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3695"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3699"/>
       <source>Fully constrained</source>
       <translation>Låst:</translation>
     </message>
@@ -4222,12 +4222,12 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="298"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="317"/>
       <source>Automatically select the QR algorithm based on number of dofs</source>
-      <translation type="unfinished">Automatically select the QR algorithm based on number of dofs</translation>
+      <translation>Vælg QR-algoritmen automatisk, baseret på antal DOF'er</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="301"/>
       <source>Automatic QR algorithm</source>
-      <translation type="unfinished">Automatic QR algorithm</translation>
+      <translation>Automatisk QR-algoritme</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
@@ -4243,7 +4243,7 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="382"/>
       <source>QR algorithm</source>
-      <translation type="unfinished">QR algorithm</translation>
+      <translation>QR algoritme</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="389"/>
@@ -4393,7 +4393,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3634"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3638"/>
       <source>and %1 more</source>
       <translation>og %1 mere</translation>
     </message>
@@ -4453,7 +4453,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Sketcher Edit Tools</source>
-      <translation>Skitse værktøjer</translation>
+      <translation>Skitseværktøjer</translation>
     </message>
   </context>
   <context>
@@ -4485,7 +4485,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="115"/>
       <source>Pixel size threshold</source>
-      <translation type="unfinished">Pixel size threshold</translation>
+      <translation>Mindste antal pixels mellem linjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="178"/>
@@ -4546,7 +4546,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <location filename="../../SketcherSettingsGrid.ui" line="198"/>
       <location filename="../../SketcherSettingsGrid.ui" line="336"/>
       <source>Line width</source>
-      <translation>Linjebredde</translation>
+      <translation>Stregtykkelse</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="208"/>
@@ -4598,17 +4598,17 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Skitsen indeholder delvist overflødige relationer!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10204"/>
+      <location filename="../../../App/SketchObject.cpp" line="10219"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af geometriske egenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10235"/>
+      <location filename="../../../App/SketchObject.cpp" line="10250"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af relationsegenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10858"/>
+      <location filename="../../../App/SketchObject.cpp" line="10873"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Der blev overført paraboler. De overførte filer kan ikke åbnes i tidligere versioner af FreeCAD!
@@ -5187,7 +5187,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="267"/>
       <source>Width of normal edges</source>
-      <translation>Linjetykkelse for normale linjer</translation>
+      <translation>Stregtykkelse for normale linjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="308"/>
@@ -5202,32 +5202,32 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="364"/>
       <source>Width of construction edges</source>
-      <translation>Linjetykkelse for konstruktionslinjer</translation>
+      <translation>Stregtykkelse for konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="392"/>
       <source>Internal alignment geometry</source>
-      <translation type="unfinished">Internal alignment geometry</translation>
+      <translation>Interne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="405"/>
       <source>Color of fully constrained internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of fully constrained internal alignment geometry in edit mode</translation>
+      <translation>Farve på låste interne konstruktionslinjer, i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="431"/>
       <source>Color of internal alignment geometry in edit mode</source>
-      <translation type="unfinished">Color of internal alignment geometry in edit mode</translation>
+      <translation>Farve på interne konstruktionslinjer, i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="451"/>
       <source>Line pattern of internal aligned edges</source>
-      <translation>Linetype for indvendige linjer</translation>
+      <translation>Linetype for interne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="461"/>
       <source>Width of internal aligned edges</source>
-      <translation type="unfinished">Width of internal aligned edges</translation>
+      <translation>Stregtykkelse for interne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="489"/>
@@ -5247,7 +5247,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="532"/>
       <source>Width of external construction edges</source>
-      <translation>Linjetykkelse for eksterne konstruktionslinjer</translation>
+      <translation>Stregtykkelse for eksterne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="560"/>
@@ -5267,7 +5267,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="603"/>
       <source>Width of external defining edges</source>
-      <translation>Linetykkelse for eksterne definerende linjer</translation>
+      <translation>Stregtykkelse for eksternt definerende linjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
@@ -5418,7 +5418,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="986"/>
       <source>Degree (+'U'/ -'J')</source>
-      <translation type="unfinished">Degree (+'U'/ -'J')</translation>
+      <translation>Orden (+'U'/ -'J')</translation>
     </message>
   </context>
   <context>
@@ -5924,7 +5924,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandConstraints.cpp" line="3959"/>
       <source>Block Constraint</source>
-      <translation>Blokeringsrelation</translation>
+      <translation>Låst</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3960"/>
@@ -6613,7 +6613,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1445"/>
       <source>B-Spline From Knots</source>
-      <translation>Spline fra knudepunkter</translation>
+      <translation>Spline ud fra knudepunkter</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1446"/>
@@ -6626,7 +6626,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1482"/>
       <source>Periodic B-Spline From Knots</source>
-      <translation>Periodisk B-spline fra knudepunkter</translation>
+      <translation>Periodisk spline ud fra knudepunkter</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1483"/>
@@ -6808,7 +6808,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="65"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Slå spline orden til/fra</translation>
+      <translation>Slå spline-orden til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="66"/>
@@ -6821,7 +6821,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="94"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Slå kontrolpolygoner for splines til/fra</translation>
+      <translation>Slå kontrolpolygoner til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="95"/>
@@ -6834,7 +6834,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="123"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Slå spline krumning til/fra</translation>
+      <translation>Slå krumning til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="124"/>
@@ -6847,7 +6847,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="152"/>
       <source>Toggle B-spline knot multiplicity</source>
-      <translation>Slå multiplicitet for spline knudepunkter til/fra</translation>
+      <translation>Slå multiplicitet for knudepunkter til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="153"/>
@@ -6883,22 +6883,22 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="293"/>
       <source>Toggle B-Spline Degree</source>
-      <translation>Slå splines orden til/fra</translation>
+      <translation>Slå spline-orden til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="309"/>
       <source>Toggle B-Spline Control Polygon</source>
-      <translation>Slå kontrolpolygoner for splines til/fra</translation>
+      <translation>Slå kontrolpolygoner til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="328"/>
       <source>Toggle B-Spline Curvature Comb</source>
-      <translation>Slå spline krumning til/fra</translation>
+      <translation>Slå krumning til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="347"/>
       <source>Toggle B-Spline Knot Multiplicity</source>
-      <translation>Slå multiplicitet for spline-knudepunkter til/fra</translation>
+      <translation>Slå multiplicitet for knudepunkter til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherOverlay.cpp" line="367"/>
@@ -7138,12 +7138,12 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="989"/>
       <source>Toggle Internal Geometry</source>
-      <translation>Slå visning af indvendig geometri til/fra</translation>
+      <translation>Slå visning af intern geometri til/fra</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="990"/>
       <source>Toggles the visibility of all internal geometry</source>
-      <translation>Viser/skjuler al indvendig geometri</translation>
+      <translation>Viser/skjuler al intern geometri</translation>
     </message>
   </context>
   <context>
@@ -7216,7 +7216,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2411"/>
       <source>Rotate / Polar Transform</source>
-      <translation>Roter / Polært mønster</translation>
+      <translation>Roter / polært mønster</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2412"/>
@@ -7411,13 +7411,13 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
       <location filename="../../DrawSketchHandlerBSpline.h" line="434"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="443"/>
       <source>%1 + degree</source>
-      <translation type="unfinished">%1 + degree</translation>
+      <translation>%1 + orden</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="435"/>
       <location filename="../../DrawSketchHandlerBSpline.h" line="444"/>
       <source>%1 - degree</source>
-      <translation type="unfinished">%1 - degree</translation>
+      <translation>%1 - orden</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerBSpline.h" line="440"/>

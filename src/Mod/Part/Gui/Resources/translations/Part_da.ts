@@ -2413,7 +2413,7 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="71"/>
@@ -3770,7 +3770,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="45"/>
       <source>Add Edge</source>
-      <translation>Tilføj Kant</translation>
+      <translation>Tilføj linje</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="76"/>
@@ -5363,7 +5363,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>For- og bagside</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -5565,20 +5565,20 @@ in the 3D view for the sweep path.</translation>
       <translation>Rediger %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation type="unfinished">Import-Export</translation>
     </message>
@@ -6445,7 +6445,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="89"/>
       <source>Volume</source>
-      <translation type="unfinished">Volume</translation>
+      <translation>Volumen</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="96"/>
@@ -6664,12 +6664,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation type="unfinished">Part Extrude facemaker</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation type="unfinished">Supports making faces with holes, does not support nesting.</translation>
     </message>

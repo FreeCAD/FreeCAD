@@ -8605,12 +8605,12 @@ Yalnızca etkin belgedeki işlemleri geri almak için 'Hayır'ı seçin.
       <translation>Sistem tarayıcı açılamıyor.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Yetersiz bellek</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Verileri görüntülemek için yetersiz bellek.</translation>
     </message>
@@ -9078,7 +9078,7 @@ her türlü değişiklik kaybolacaktır.
       <translation>İzin verilmiyor:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Seçime filtre tarafından izin verilmiyor</translation>
     </message>
@@ -14566,12 +14566,12 @@ Bu, kenetlenmiş panelin her zaman saydam kalmasını sağlar.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Evet</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Hayır</translation>
     </message>

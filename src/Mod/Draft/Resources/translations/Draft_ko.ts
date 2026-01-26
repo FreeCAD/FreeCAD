@@ -3304,12 +3304,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>현재 그리기 또는 편집 작업을 마칩니다.</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>대상체 수정</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3503,17 +3503,17 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>자동모둠:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>면</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>제거</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>추가하기</translation>
     </message>

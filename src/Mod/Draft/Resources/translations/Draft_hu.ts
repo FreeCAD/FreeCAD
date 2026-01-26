@@ -3299,12 +3299,12 @@ A jelölőnégyzet kiiktatása a munkasík koordináta rendszer használatához<
       <translation>Befejezi az aktuális rajz vagy szerkesztési műveletet</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>Objektum módosítása</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>Felületi csatlakozóelemek</translation>
     </message>
@@ -3498,17 +3498,17 @@ Nem elérhető, ha a 'Rész primitívek használata' beállítás engedélyezett
       <translation>Autocsoport:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>Felületek</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>Eltávolítás</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>Hozzáad</translation>
     </message>

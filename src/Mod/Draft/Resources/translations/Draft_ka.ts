@@ -3308,12 +3308,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>ხატვის ან ჩასწორების მიმდინარე ოპერაციის დასრულება</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>ობიექტების შეცვლა</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>წიბოზე ზედაპირების მიმაგრების ელემენტები</translation>
     </message>
@@ -3507,17 +3507,17 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>ავტოდაჯგუფება:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>ზედაპირები</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>წაშლა</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>დამატება</translation>
     </message>

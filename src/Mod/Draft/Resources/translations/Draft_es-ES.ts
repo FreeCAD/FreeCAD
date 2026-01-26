@@ -3300,12 +3300,12 @@ Desmarque para usar el sistema de coordenadas del plano de trabajo</translation>
       <translation>Termina la operación actual de dibujo o edición</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>Modificar objetos</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>Elementos de Facebinder</translation>
     </message>
@@ -3499,17 +3499,17 @@ No disponible si la preferencia "Usar parte primitiva" está habilitada</transla
       <translation>Autogrupo:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>Caras</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>Añadir</translation>
     </message>

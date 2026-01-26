@@ -1478,7 +1478,7 @@
     <message>
       <location filename="../../Command.cpp" line="1677"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Εγκάρσιες Τομές</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1678"/>
@@ -2383,12 +2383,12 @@ Note: The placement is expressed in local space of object being attached.</trans
     <message>
       <location filename="../../CrossSections.ui" line="14"/>
       <source>Cross Sections</source>
-      <translation type="unfinished">Cross Sections</translation>
+      <translation>Εγκάρσιες Τομές</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="20"/>
       <source>Guiding Plane</source>
-      <translation type="unfinished">Guiding Plane</translation>
+      <translation>Επίπεδο Οδηγός</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="26"/>
@@ -3555,23 +3555,23 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1064"/>
       <location filename="../../DlgPrimitives.ui" line="1253"/>
       <source>U parameter</source>
-      <translation type="unfinished">U parameter</translation>
+      <translation>Παράμετρος U</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="872"/>
       <source>V parameters</source>
-      <translation type="unfinished">V parameters</translation>
+      <translation>Παράμετροι V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1015"/>
       <source>Radius 3</source>
-      <translation type="unfinished">Radius 3</translation>
+      <translation>Ακτίνα 3</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1084"/>
       <location filename="../../DlgPrimitives.ui" line="1273"/>
       <source>V parameter</source>
-      <translation type="unfinished">V parameter</translation>
+      <translation>Παράμετρος V</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1376"/>
@@ -3583,32 +3583,32 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Ακτίνα Περιγεγραμμένου Κύκλου</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
       <source>X min/max</source>
-      <translation type="unfinished">X min/max</translation>
+      <translation>X min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1548"/>
       <source>Y min/max</source>
-      <translation type="unfinished">Y min/max</translation>
+      <translation>Υ min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1578"/>
       <source>Z min/max</source>
-      <translation type="unfinished">Z min/max</translation>
+      <translation>Z min/max</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1608"/>
       <source>X2 min/max</source>
-      <translation type="unfinished">X2 min/max</translation>
+      <translation>X2 ελάχιστο/μέγιστο</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1641"/>
       <source>Z2 min/max</source>
-      <translation type="unfinished">Z2 min/max</translation>
+      <translation>Z2 ελάχιστο/μέγιστο</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1725"/>
@@ -3618,7 +3618,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1802"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Σύστημα συντεταγμένων</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1874"/>
@@ -3628,34 +3628,34 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1894"/>
       <source>Number of rotations</source>
-      <translation type="unfinished">Number of rotations</translation>
+      <translation>Αριθμός στροφών</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1990"/>
       <location filename="../../DlgPrimitives.ui" line="2112"/>
       <source>Angle 1</source>
-      <translation type="unfinished">Angle 1</translation>
+      <translation>Γωνία 1</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2007"/>
       <location filename="../../DlgPrimitives.ui" line="2129"/>
       <source>Angle 2</source>
-      <translation type="unfinished">Angle 2</translation>
+      <translation>Γωνία 2</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2044"/>
       <source>From 3 Points</source>
-      <translation type="unfinished">From 3 Points</translation>
+      <translation>Από 3 Σημεία</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius</source>
-      <translation type="unfinished">Major radius</translation>
+      <translation>Μεγάλη ακτίνα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius</source>
-      <translation type="unfinished">Minor radius</translation>
+      <translation>Μικρή ακτίνα</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -5328,7 +5328,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="33"/>
       <source>Ruled surface</source>
-      <translation>Ευθειογενής επιφάνεια</translation>
+      <translation>Επιφάνεια με ευθείες</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="40"/>
@@ -5362,7 +5362,7 @@ Individual boolean operation checks:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Μπρος-Πίσω (Διπλή όψη)</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -5564,20 +5564,20 @@ in the 3D view for the sweep path.</translation>
       <translation>Επεξεργασία %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation type="unfinished">Part and Part Design workbench</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation type="unfinished">Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation>Εισαγωγή-Εξαγωγή</translation>
     </message>
@@ -5947,12 +5947,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="305"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Επεξεργασία Στρογγυλέματος</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Επεξεργασία Λοξότμησης</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -6086,7 +6086,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="39"/>
       <source>Boolean Tools</source>
-      <translation type="unfinished">Boolean Tools</translation>
+      <translation>Εργαλεία Boolean (Συνδυαστικές Λειτουργίες Ένωση/Αφαίρεση/Τομή)</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
@@ -6101,7 +6101,7 @@ Continue?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6663,12 +6663,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation>Αλγόριθμος δημιουργίας όψεων με τη χρήση Επέκτασης Εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Υποστηρίζει τη δημιουργία όψεων με οπές, δεν υποστηρίζει την ένθεση αντικειμένων.</translation>
     </message>
@@ -7139,7 +7139,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="29"/>
       <source>Direction 2</source>
-      <translation type="unfinished">Direction 2</translation>
+      <translation>Κατεύθυνση 2</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="36"/>

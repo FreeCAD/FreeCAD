@@ -4503,7 +4503,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     <message>
       <location filename="../../ArchSectionPlane.py" line="1739"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchComponent.py" line="2350"/>
+      <location filename="../../ArchComponent.py" line="2364"/>
       <location filename="../../ArchWindow.py" line="1642"/>
       <location filename="../../ArchAxis.py" line="955"/>
       <location filename="../../ArchSpace.py" line="944"/>
@@ -4512,7 +4512,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchComponent.py" line="2351"/>
+      <location filename="../../ArchComponent.py" line="2365"/>
       <location filename="../../ArchWindow.py" line="1643"/>
       <location filename="../../ArchAxis.py" line="956"/>
       <location filename="../../ArchSpace.py" line="938"/>
@@ -4526,7 +4526,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <location filename="../../ArchSite.py" line="1294"/>
       <location filename="../../ArchReference.py" line="706"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchComponent.py" line="1881"/>
+      <location filename="../../ArchComponent.py" line="1895"/>
       <location filename="../../ArchSchedule.py" line="766"/>
       <location filename="../../ArchWindow.py" line="1644"/>
       <location filename="../../ArchAxis.py" line="788"/>
@@ -4547,7 +4547,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Žice</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2358"/>
+      <location filename="../../ArchComponent.py" line="2372"/>
       <location filename="../../ArchWindow.py" line="1650"/>
       <source>Components</source>
       <translation>Komponente</translation>
@@ -4560,7 +4560,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Ime</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2426"/>
+      <location filename="../../ArchComponent.py" line="2440"/>
       <location filename="../../ArchWindow.py" line="1653"/>
       <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
@@ -4637,7 +4637,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
     <message>
       <location filename="../../Arch.py" line="104"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
-      <location filename="../../ArchComponent.py" line="2357"/>
+      <location filename="../../ArchComponent.py" line="2371"/>
       <location filename="../../ArchAxis.py" line="954"/>
       <source>Axes</source>
       <translation>Osi</translation>
@@ -5228,7 +5228,7 @@ Ako je Run = 0, tada se run izračunava tako da je visina jednaka relativnom pro
       <translation>Objekt nema IFC atribute koji se mogu postaviti</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2427"/>
+      <location filename="../../ArchComponent.py" line="2441"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
       <location filename="../../ArchCommands.py" line="1702"/>
@@ -5361,24 +5361,24 @@ Stvaranje etaže prekinuto.</translation>
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1489"/>
+      <location filename="../../ArchComponent.py" line="1498"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation>Pogreška pri izračunu površina za {self.obj.Label}: nije moguće projicirati ili napraviti lice s normalom {face.normalAt(0, 0)}. Vrijednosti površina bit će resetirane na 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2352"/>
+      <location filename="../../ArchComponent.py" line="2366"/>
       <source>Components of This Object</source>
       <translation>Komponenta ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2362"/>
+      <location filename="../../ArchComponent.py" line="2376"/>
       <source>Edit IFC Properties</source>
       <translation>Uredi IFC osobine</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2363"/>
+      <location filename="../../ArchComponent.py" line="2377"/>
       <source>Edit Standard Code</source>
       <translation>Uredi standardni kod</translation>
     </message>
@@ -5389,97 +5389,97 @@ Stvaranje etaže prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1300"/>
-      <location filename="../../ArchComponent.py" line="1888"/>
+      <location filename="../../ArchComponent.py" line="1902"/>
       <source>Toggle Subcomponents</source>
       <translation>Uključivanje/isključivanje pod komponente</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2018"/>
+      <location filename="../../ArchComponent.py" line="2032"/>
       <source>Closing Sketch edit</source>
       <translation>Zatvori uređivanje Skice</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2349"/>
+      <location filename="../../ArchComponent.py" line="2363"/>
       <location filename="../../ArchCommands.py" line="287"/>
       <source>Component</source>
       <translation>Komponenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2042"/>
+      <location filename="../../ArchComponent.py" line="2056"/>
       <source>Select a base object</source>
       <translation>Odaberite osnovni objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1469"/>
+      <location filename="../../ArchComponent.py" line="1478"/>
       <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
 </source>
       <translation>Računalna područja za {self.obj.Label}: nemogućnost projiciranja neplanarnih lica s rupama. Vrijednosti područja bit će resetirane na 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2353"/>
+      <location filename="../../ArchComponent.py" line="2367"/>
       <source>Base component</source>
       <translation>Osnovna Komponenta</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2354"/>
+      <location filename="../../ArchComponent.py" line="2368"/>
       <source>Additions</source>
       <translation>Sabiranje</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2355"/>
+      <location filename="../../ArchComponent.py" line="2369"/>
       <source>Subtractions</source>
       <translation>Oduzimanje</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2356"/>
+      <location filename="../../ArchComponent.py" line="2370"/>
       <source>Objects</source>
       <translation>Objekti</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2359"/>
+      <location filename="../../ArchComponent.py" line="2373"/>
       <source>Fixtures</source>
       <translation>Armatura</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2360"/>
+      <location filename="../../ArchComponent.py" line="2374"/>
       <source>Group</source>
       <translation>Grupa</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2361"/>
+      <location filename="../../ArchComponent.py" line="2375"/>
       <source>Hosts</source>
       <translation>Domaćini</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2425"/>
+      <location filename="../../ArchComponent.py" line="2439"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Svojstvo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2433"/>
+      <location filename="../../ArchComponent.py" line="2447"/>
       <source>Add property</source>
       <translation>Dodaj svojstvo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2437"/>
+      <location filename="../../ArchComponent.py" line="2451"/>
       <source>Add property set</source>
       <translation>Dodaj skup svojstava</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2438"/>
+      <location filename="../../ArchComponent.py" line="2452"/>
       <source>New...</source>
       <translation>Novo...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2589"/>
+      <location filename="../../ArchComponent.py" line="2603"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Novo svojstvo</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2626"/>
+      <location filename="../../ArchComponent.py" line="2640"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>Skup novih svojstava</translation>
@@ -7967,7 +7967,7 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Opcionalna Os ili sustav Osi na kojem će objekt biti dupliciran</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1541"/>
+      <location filename="../../ArchComponent.py" line="1555"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Koristite boju materijala kao boju oblika ovog objekta, ako je dostupna</translation>
     </message>
