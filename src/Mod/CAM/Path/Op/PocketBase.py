@@ -102,7 +102,22 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         Can safely be overwritten by subclass."""
         pass
 
+    def areaOpOnChanged(self, obj, prop):
+        print("areaOpOnChanged PocketBase", prop)
+
+        if hasattr(obj, "ExtraFinishOffset"):
+            extraFinishOffsetMode = 0 if obj.ClearingPattern == "ZigZagOffset" else 2
+            obj.setEditorMode("ExtraFinishOffset", extraFinishOffsetMode)
+
+        if hasattr(obj, "StartAt") and hasattr(obj, "FinishOneStepDown"):
+            finishOneStepDownMode = (
+                0 if obj.ClearingPattern == "ZigZagOffset" and obj.StartAt == "Center" else 2
+            )
+            obj.setEditorMode("FinishOneStepDown", finishOneStepDownMode)
+
     def opExecute(self, obj):
+        print("opExecute PocketBase")
+
         if len(obj.Base) == 0:
             return
         super().opExecute(obj)
@@ -140,6 +155,15 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             ),
         )
         obj.addProperty(
+            "App::PropertyDistance",
+            "ExtraFinishOffset",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
+            ),
+        )
+        obj.addProperty(
             "App::PropertyEnumeration",
             "StartAt",
             "Pocket",
@@ -172,10 +196,13 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             QT_TRANSLATE_NOOP("App::Property", "Use 3D Sorting of Path"),
         )
         obj.addProperty(
-            "App::PropertyBool",
-            "KeepToolDown",
+            "App::PropertyLength",
+            "RetractThreshold",
             "Pocket",
-            QT_TRANSLATE_NOOP("App::Property", "Attempts to avoid unnecessary retractions."),
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Set distance which will attempts to avoid unnecessary retractions.",
+            ),
         )
         obj.addProperty(
             "App::PropertyPercent",
@@ -195,15 +222,21 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyBool",
+            "FinishOneStepDown",
+            "Pocket",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "With clearing pattern ZigZagOffset and start at center,"
+                "\nFinish pass will processing with one step down at final depth.",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
 
         self.initPocketOp(obj)
-
-    def areaOpRetractTool(self, obj):
-        Path.Log.debug("retracting tool: %d" % (not obj.KeepToolDown))
-        return not obj.KeepToolDown
 
     def areaOpUseProjection(self, obj):
         """areaOpUseProjection(obj) ... return False"""
@@ -222,17 +255,22 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         params["PocketStepover"] = (self.radius * 2) * (float(obj.StepOver) / 100)
         extraOffset = obj.ExtraOffset.Value
         if self.pocketInvertExtraOffset():
-            extraOffset = 0 - extraOffset
-        params["PocketExtraOffset"] = extraOffset
+            extraOffset = -extraOffset
+        if obj.ClearingPattern == "ZigZagOffset":
+            params["PocketExtraOffset"] = extraOffset + obj.ExtraFinishOffset.Value
+        else:
+            params["PocketExtraOffset"] = extraOffset
         params["ToolRadius"] = self.radius
         params["PocketLastStepover"] = obj.PocketLastStepOver
 
         Pattern = {
             "ZigZag": 1,
             "Offset": 2,
+            "Spiral": 3,
             "ZigZagOffset": 4,
             "Line": 5,
             "Grid": 6,
+            "Triangle": 7,
         }
 
         params["PocketMode"] = Pattern.get(obj.ClearingPattern, 1)
@@ -240,6 +278,21 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         if obj.SplitArcs:
             params["Explode"] = True
             params["FitArcs"] = False
+
+        return params
+
+    def areaOpAreaParamsOffset(self, obj, isHole):
+        """areaOpAreaParamsOffset(obj, isHole) ... return dictionary with area parameters
+        for pattern ZigZagOffset
+        This AreaParams using for Offset after Pocket ZigZag"""
+        params = {}
+        params["Fill"] = 0
+        params["Coplanar"] = 0
+        params["SectionCount"] = -1
+        params["Offset"] = -(self.radius + obj.ExtraOffset.Value)
+        params["ExtraPass"] = 0
+        params["Stepover"] = 0
+        params["JoinType"] = 0
 
         return params
 
@@ -267,7 +320,38 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                     "Skips machining regions that have already been cleared by previous operations.",
                 ),
             )
-
+        if not hasattr(obj, "RetractThreshold"):
+            obj.addProperty(
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions.",
+                ),
+            )
+        if not hasattr(obj, "ExtraFinishOffset"):
+            obj.addProperty(
+                "App::PropertyDistance",
+                "ExtraFinishOffset",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Extra offset to apply to the ZigZag path with pattern ZigZagOffset.",
+                ),
+            )
+            obj.setExpression("ExtraFinishOffset", "OpToolDiameter * 0.25")
+        if not hasattr(obj, "FinishOneStepDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishOneStepDown",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "With clearing pattern ZigZagOffset and start at center,"
+                    "\nOffset path will processing with one step down at final depth.",
+                ),
+            )
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
@@ -275,6 +359,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
             obj.removeProperty("RestMachiningRegions")
         if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
             obj.removeProperty("RestMachiningRegionsNeedRecompute")
+        if hasattr(obj, "KeepToolDown"):
+            if obj.KeepToolDown:
+                obj.setExpression("RetractThreshold", "1 * OpToolDiameter")
+            obj.removeProperty("KeepToolDown")
 
         Path.Log.track()
 
@@ -296,7 +384,6 @@ class ObjectPocket(PathAreaOp.ObjectOp):
         #
         if obj.MinTravel and obj.UseStartPoint and obj.StartPoint is not None:
             params["sort_mode"] = 3
-            params["threshold"] = self.radius * 2
         return params
 
 
@@ -309,5 +396,4 @@ def SetupProperties():
     setup.append("ClearingPattern")
     setup.append("StartAt")
     setup.append("MinTravel")
-    setup.append("KeepToolDown")
     return setup
