@@ -219,22 +219,29 @@
       <item row="10" column="0">
        <widget class="QLabel" name="stepOver_label">
         <property name="text">
-         <string>Stepover</string>
+         <string>Step Over</string>
         </property>
        </widget>
       </item>
       <item row="10" column="1" colspan="2">
        <widget class="QSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
-
-A step over of 100% results in no overlap between two different cycles.</string>
+         <string>The sideways distance* the cutting tool moves between successive passes (*percentage of the tool's diameter).</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
         </property>
         <property name="minimum">
          <number>1</number>
         </property>
         <property name="maximum">
          <number>100</number>
+        </property>
+        <property name="singleStep">
+         <number>5</number>
+        </property>
+        <property name="value">
+         <number>50</number>
         </property>
        </widget>
       </item>

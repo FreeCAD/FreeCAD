@@ -152,7 +152,7 @@
       <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="stepOver">
         <property name="toolTip">
-         <string>Stepover percentage for tool passes</string>
+         <string>The sideways distance* the cutting tool moves between successive passes (*a percentage of the tool's diameter).</string>
         </property>
         <property name="suffix">
          <string>%</string>

@@ -57,7 +57,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.Side.currentIndexChanged)
         signals.append(self.form.OperationType.currentIndexChanged)
         signals.append(self.form.toolController.currentIndexChanged)
-        signals.append(self.form.stepOverPercent.valueChanged)
+        signals.append(self.form.stepOver.valueChanged)
         signals.append(self.form.Tolerance.valueChanged)
         signals.append(self.form.HelixAngle.valueChanged)
         signals.append(self.form.HelixMaxStepdown.valueChanged)
@@ -82,7 +82,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
     def setFields(self, obj):
         self.selectInComboBox(obj.Side, self.form.Side)
         self.selectInComboBox(obj.OperationType, self.form.OperationType)
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
         self.form.Tolerance.setValue(int(obj.Tolerance * 100))
 
         self.form.HelixAngle.setText(
@@ -125,8 +125,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if obj.OperationType != str(self.form.OperationType.currentData()):
             obj.OperationType = str(self.form.OperationType.currentData())
 
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
 
         if obj.HelixMaxDiameterPercent != self.form.HelixMaxDiameterPercent.value():
             obj.HelixMaxDiameterPercent = self.form.HelixMaxDiameterPercent.value()
