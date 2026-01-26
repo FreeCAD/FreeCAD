@@ -24,6 +24,7 @@
 
 name: Build Windows
 on:
+  workflow_dispatch:
   workflow_call:
     inputs:
       artifactBasename:
@@ -40,7 +41,7 @@ on:
 jobs:
   Build:
     runs-on: windows-latest
-    continue-on-error: ${{ inputs.allowedToFail }}
+    continue-on-error: ${{ inputs.allowedToFail || false }}
     env:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
       CCACHE_COMPRESS: true
