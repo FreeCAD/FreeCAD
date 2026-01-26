@@ -1381,6 +1381,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : group->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
     else if (auto* part = dynamic_cast<App::Part*>(current)) {
         // As App::Part currently don't have material override
@@ -1396,6 +1397,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : part->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
 
     auto* vp = Gui::Application::Instance->getViewProvider(current);
