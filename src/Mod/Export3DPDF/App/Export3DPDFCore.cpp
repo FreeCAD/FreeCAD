@@ -319,6 +319,9 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
             return false;
         }
 
+        // Enable compression for all streams (images, fonts, etc.)
+        HPDF_SetCompressionMode(pdf, HPDF_COMP_ALL);
+
         // Set PDF metadata
         HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
         HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, backgroundImagePath.empty()

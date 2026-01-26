@@ -664,7 +664,7 @@ void StdCmdPrint3dPdf::activated(int iMsg)
                 "    if page_obj:\n"
                 "        qgs_page = TechDrawGui.getSceneForPage(page_obj)\n"
                 "        if qgs_page:\n"
-                "            dpi = 300.0\n"
+                "            dpi = 150.0\n"
                 "            page_width_mm = " + std::to_string(pageWidthPoints / Export3DPDF::MM_TO_POINTS) + "\n"
                 "            page_height_mm = " + std::to_string(pageHeightPoints / Export3DPDF::MM_TO_POINTS) + "\n"
                 "            dpmm = dpi / 25.4\n"
