@@ -58,7 +58,6 @@ public:
     {}  // vector from p0 to p1
 
     static double tolerance;
-    static double arc_tolerance;
 
     const Point operator+(const Point& p) const
     {
