@@ -28,7 +28,6 @@ import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import Path.Base.Util as PathUtil
 from Path.Dressup.Utils import toolController
-from PySide import QtCore
 
 import random
 
@@ -41,99 +40,7 @@ translate = FreeCAD.Qt.translate
 
 class ObjectArray:
     def __init__(self, obj):
-        obj.addProperty(
-            "App::PropertyLinkList",
-            "Base",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
-        )
-        obj.addProperty(
-            "App::PropertyEnumeration",
-            "Type",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
-        )
-        obj.addProperty(
-            "App::PropertyVectorDistance",
-            "Offset",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The spacing between the array copies in linear pattern",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "CopiesX",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in X-direction in linear pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "CopiesY",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in Y-direction in linear pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyAngle",
-            "Angle",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "Copies",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property", "The number of copies in linear 1D and polar pattern"
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyVector",
-            "Centre",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
-        )
-        obj.addProperty(
-            "App::PropertyBool",
-            "SwapDirection",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "Make copies in X direction before Y in Linear 2D pattern",
-            ),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "JitterPercent",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Percent of copies to randomly offset"),
-        )
-        obj.addProperty(
-            "App::PropertyVectorDistance",
-            "JitterMagnitude",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
-        )
-        obj.addProperty(
-            "App::PropertyInteger",
-            "JitterSeed",
-            "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-        )
-        obj.addProperty(
-            "App::PropertyLink",
-            "ToolController",
-            "Path",
-            QT_TRANSLATE_NOOP(
-                "App::Property",
-                "The tool controller that will be used to calculate the toolpath",
-            ),
-        )
+        # Path properties group
         obj.addProperty(
             "App::PropertyBool",
             "Active",
@@ -141,15 +48,123 @@ class ObjectArray:
             QT_TRANSLATE_NOOP("PathOp", "Make False, to prevent operation from generating code"),
         )
         obj.addProperty(
+            "App::PropertyLinkList",
+            "Base",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "The toolpaths to array"),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "CycleTime",
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "Operations cycle time estimation"),
         )
+        obj.addProperty(
+            "App::PropertyLink",
+            "ToolController",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The tool controller that will be used to calculate the toolpath\nShould be identical for all base operations",
+            ),
+        )
 
-        obj.setEditorMode("CycleTime", 1)  # read-only
+        # Pattern properties group
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "Type",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Pattern method"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "Copies",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Linear1D and Polar pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "Offset",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The spacing between the array copies in linear pattern",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesX",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in X-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "CopiesY",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "The number of copies in Y-direction in linear pattern"
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "Angle",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "Total angle in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyVector",
+            "Centre",
+            "Pattern",
+            QT_TRANSLATE_NOOP("App::Property", "The centre of rotation in polar pattern"),
+        )
+        obj.addProperty(
+            "App::PropertyBool",
+            "SwapDirection",
+            "Pattern",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Make copies in X direction before Y in Linear 2D pattern",
+            ),
+        )
+
+        # Random properties group
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseJitter",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
+        )
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "JitterMagnitude",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Maximum random offset of copies"),
+        )
+        obj.addProperty(
+            "App::PropertyIntegerConstraint",
+            "JitterSeed",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
+        )
+        obj.addProperty(
+            "App::PropertyAngle",
+            "JitterAngle",
+            "Random",
+            QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
+        )
+
         obj.Active = True
         obj.Type = ["Linear1D", "Linear2D", "Polar"]
+        obj.Copies = (0, 0, 99999, 1)
+        obj.CopiesX = (0, 0, 99999, 1)
+        obj.CopiesY = (0, 0, 99999, 1)
+        obj.JitterSeed = (0, 0, 2147483647, 1)
+        obj.JitterMagnitude = FreeCAD.Vector(10, 10, 0)
+        obj.JitterAngle = 10
 
         self.setEditorModes(obj)
         obj.Proxy = self
@@ -161,30 +176,34 @@ class ObjectArray:
         return None
 
     def setEditorModes(self, obj):
+        obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("CycleTime", 1)  # read-only
+
         if obj.Type == "Linear1D":
             angleMode = centreMode = copiesXMode = copiesYMode = swapDirectionMode = 2
             copiesMode = offsetMode = 0
         elif obj.Type == "Linear2D":
             angleMode = copiesMode = centreMode = 2
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 0
-        elif obj.Type == "Polar":
-            angleMode = copiesMode = centreMode = 0
+        else:  # Polar
             copiesXMode = copiesYMode = offsetMode = swapDirectionMode = 2
+            angleMode = copiesMode = centreMode = 0
 
         obj.setEditorMode("Angle", angleMode)
-        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("Centre", centreMode)
+        obj.setEditorMode("Copies", copiesMode)
         obj.setEditorMode("CopiesX", copiesXMode)
         obj.setEditorMode("CopiesY", copiesYMode)
         obj.setEditorMode("Offset", offsetMode)
         obj.setEditorMode("SwapDirection", swapDirectionMode)
-        obj.setEditorMode("JitterPercent", 0)
-        obj.setEditorMode("JitterMagnitude", 0)
-        obj.setEditorMode("JitterSeed", 0)
-        obj.setEditorMode("ToolController", 2)
+
+        jitterMode = 0 if obj.UseJitter else 2
+        obj.setEditorMode("JitterMagnitude", jitterMode)
+        obj.setEditorMode("JitterSeed", jitterMode)
+        obj.setEditorMode("JitterAngle", jitterMode)
 
     def onChanged(self, obj, prop):
-        if prop == "Type":
+        if prop in ("Type", "UseJitter") and not obj.Document.Restoring:
             self.setEditorModes(obj)
 
         if prop == "Active" and obj.ViewObject:
@@ -192,26 +211,32 @@ class ObjectArray:
 
     def onDocumentRestored(self, obj):
         """onDocumentRestored(obj) ... Called automatically when document is restored."""
+        if not obj.ViewObject.Proxy:
+            Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)
 
-        if not hasattr(obj, "Active"):
+        if not hasattr(obj, "JitterAngle"):
+            obj.addProperty(
+                "App::PropertyAngle",
+                "JitterAngle",
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Max angle of rotation for jitter randomness"),
+            )
+        if not hasattr(obj, "UseJitter"):
             obj.addProperty(
                 "App::PropertyBool",
-                "Active",
-                "Path",
-                QT_TRANSLATE_NOOP(
-                    "PathOp", "Make False, to prevent operation from generating code"
-                ),
+                "UseJitter",
+                "Random",
+                QT_TRANSLATE_NOOP("App::Property", "Use randomly offset"),
             )
-            obj.Active = True
+            obj.setGroupOfProperty("JitterMagnitude", "Random")
+            obj.setGroupOfProperty("JitterSeed", "Random")
 
-        if not hasattr(obj, "JitterSeed"):
-            obj.addProperty(
-                "App::PropertyInteger",
-                "JitterSeed",
-                "Path",
-                QtCore.QT_TRANSLATE_NOOP("App::Property", "Seed value for jitter randomness"),
-            )
-            obj.JitterSeed = 0
+            obj.setGroupOfProperty("SwapDirection", "Pattern")
+            obj.setGroupOfProperty("CopiesX", "Pattern")
+            obj.setGroupOfProperty("CopiesY", "Pattern")
+            obj.setGroupOfProperty("Copies", "Pattern")
+            obj.setGroupOfProperty("Offset", "Pattern")
+            obj.setGroupOfProperty("Type", "Pattern")
 
         if not hasattr(obj, "CycleTime"):
             obj.addProperty(
@@ -239,8 +264,14 @@ class ObjectArray:
 
         obj.ToolController = toolController(base[0])
 
-        # use seed if specified, otherwise default to object name for consistency during recomputes
-        seed = obj.JitterSeed or obj.Name
+        # Prepare random function
+        if obj.UseJitter:
+            random.seed(obj.JitterSeed)
+            jitterMagnitude = obj.JitterMagnitude
+            jitterAngle = obj.JitterAngle
+        else:
+            jitterMagnitude = FreeCAD.Vector()
+            jitterAngle = 0
 
         pa = PathArray(
             obj.Base,
@@ -252,9 +283,9 @@ class ObjectArray:
             obj.Angle,
             obj.Centre,
             obj.SwapDirection,
-            obj.JitterMagnitude,
-            obj.JitterPercent,
-            seed,
+            jitterMagnitude,
+            jitterAngle,
+            self.getPathCenter(obj),
         )
 
         obj.Path = pa.getPath()
@@ -291,6 +322,13 @@ class ObjectArray:
 
         return True
 
+    # Get center point of all base operations
+    def getPathCenter(self, obj):
+        path = Path.Path()
+        for op in obj.Base:
+            path.addCommands(op.Path.Commands)
+        return path.BoundBox.Center
+
 
 class PathArray:
     """class PathArray ...
@@ -309,8 +347,8 @@ class PathArray:
         centre,
         swapDirection,
         jitterMagnitude,
-        jitterPercent,
-        seed,
+        jitterAngle,
+        jitterCentre,
     ):
         self.base = base
         self.arrayType = arrayType  # ['Linear1D', 'Linear2D', 'Polar']
@@ -322,15 +360,14 @@ class PathArray:
         self.polarCentre = centre
         self.swapDirection = swapDirection
         self.jitterMagnitude = jitterMagnitude
-        self.jitterPercent = jitterPercent
-        self.seed = seed
+        self.jitterAngle = jitterAngle
+        self.jitterCentre = jitterCentre
 
     def getPath(self):
         """getPath() ... Call this method on an instance of the class to generate and return
         path data for the requested path array."""
 
         commands = []
-        random.seed(self.seed)
 
         if self.arrayType == "Polar":
             self.getPolarArray(commands)
@@ -345,14 +382,19 @@ class PathArray:
         return Path.Path(commands)
 
     def calculateJitter(self, pos):
-        """Returns the position argument with a random vector shift applied."""
-        if self.jitterPercent == 0:
-            pass
-        elif random.randint(0, 100) < self.jitterPercent:
+        """calculateJitter(pos) ...
+        Returns the position argument with a random vector shift applied and random angle"""
+
+        if self.jitterMagnitude != FreeCAD.Vector():
             pos.x = pos.x + random.uniform(-self.jitterMagnitude.x, self.jitterMagnitude.x)
             pos.y = pos.y + random.uniform(-self.jitterMagnitude.y, self.jitterMagnitude.y)
             pos.z = pos.z + random.uniform(-self.jitterMagnitude.z, self.jitterMagnitude.z)
-        return pos
+
+        alpha = 0
+        if self.jitterAngle:
+            alpha = random.uniform(-self.jitterAngle, self.jitterAngle)
+
+        return pos, alpha
 
     def getLinear1DArray(self, commands):
         """Array type Linear1D"""
@@ -362,11 +404,12 @@ class PathArray:
                 self.offsetVector.y * (i + 1),
                 self.offsetVector.z * (i + 1),
             )
-            pos = self.calculateJitter(pos)
+            pos, alpha = self.calculateJitter(pos)
 
             for b in self.base:
                 pl = FreeCAD.Placement()
                 pl.move(pos)
+                pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                 path = PathUtils.getPathWithPlacement(b)
                 path = PathUtils.applyPlacementToPath(pl, path)
                 commands.extend(path.Commands)
@@ -387,13 +430,14 @@ class PathArray:
                         self.offsetVector.y * i,
                         self.offsetVector.z * i,
                     )
-                pos = self.calculateJitter(pos)
+                pos, alpha = self.calculateJitter(pos)
 
                 for b in self.base:
                     pl = FreeCAD.Placement()
                     # index 0,0 will be processed by the base Paths themselves
                     if i != 0 or j != 0:
                         pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
                         commands.extend(path.Commands)
@@ -414,13 +458,14 @@ class PathArray:
                         self.offsetVector.y * (self.copiesY - j),
                         self.offsetVector.z * i,
                     )
-                pos = self.calculateJitter(pos)
+                pos, alpha = self.calculateJitter(pos)
 
                 for b in self.base:
                     pl = FreeCAD.Placement()
                     # index 0,0 will be processed by the base Paths themselves
                     if i != 0 or j != 0:
                         pl.move(pos)
+                        pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
                         path = PathUtils.getPathWithPlacement(b)
                         path = PathUtils.applyPlacementToPath(pl, path)
                         commands.extend(path.Commands)
@@ -435,6 +480,11 @@ class PathArray:
             # prepare placement for polar pattern
             pl = FreeCAD.Placement()
             pl.rotate(self.polarCentre, FreeCAD.Vector(0, 0, 1), ang)
+
+            # add jitter to placement
+            pos, alpha = self.calculateJitter(FreeCAD.Vector())
+            pl.move(pos)
+            pl.rotate(self.jitterCentre, FreeCAD.Vector(0, 0, 1), alpha)
 
             for b in self.base:
                 path = PathUtils.getPathWithPlacement(b)
@@ -464,7 +514,7 @@ class ViewProviderArray:
         return []
 
     def onDelete(self, vobj, args):
-        return None
+        return True
 
     def getIcon(self):
         if self.obj.Active:
@@ -532,9 +582,7 @@ class CommandPathArray:
         )
         FreeCADGui.doCommand("obj.Base = %s" % baseString)
 
-        FreeCADGui.doCommand(
-            "obj.ViewObject.Proxy = Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)"
-        )
+        FreeCADGui.doCommand("Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)")
         FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
