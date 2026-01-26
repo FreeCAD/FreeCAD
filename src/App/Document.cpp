@@ -1860,6 +1860,10 @@ bool Document::saveToFile(const char* filename) const
         bool backup = GetApplication()
                           .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                           ->GetBool("CreateBackupFiles", true);
+        std::string backup_dir = GetApplication()
+            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+            ->GetASCII("BackupDirectory", "FCBak");
+
         if (!backup) {
             count_bak = -1;
         }
@@ -1882,6 +1886,7 @@ bool Document::saveToFile(const char* filename) const
             backupPolicy.setPolicy(BackupPolicy::Standard);
         }
         backupPolicy.setNumberOfFiles(count_bak);
+        backupPolicy.setBackupDirectory(backup_dir);
         backupPolicy.apply(fn, nativePath);
     }
 
