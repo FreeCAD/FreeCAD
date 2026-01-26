@@ -2271,7 +2271,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             wire = ofstPlnrShp.Wires[w]
             if not wire.isClosed():  # filter
                 continue
-            # Additional healing to prevent BRepMesh errors (rear but)
+            # Additional healing to prevent BRepMesh errors (rare but)
             wire.fix(1e-7, 1e-7, 1e-3)
             V = wire.Vertexes
             if obj.CutMode == "Climb":
