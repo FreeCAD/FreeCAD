@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -335,7 +335,7 @@ Egenskaben for dette objekt vil referere til egenskaben for variabelsættet.</tr
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>Gem i variabelsæt...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -511,7 +511,7 @@ Egenskaben for dette objekt vil referere til egenskaben for variabelsættet.</tr
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="51"/>
       <source>Press Shift and middle mouse button</source>
-      <translation>Shift og midterste museknap</translation>
+      <translation>Shift-tasten og midterste museknap</translation>
     </message>
     <message>
       <location filename="../Navigation/BlenderNavigationStyle.cpp" line="53"/>
@@ -539,14 +539,14 @@ Egenskaben for dette objekt vil referere til egenskaben for variabelsættet.</tr
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="53"/>
       <source>Press middle+left or middle+right mouse button</source>
-      <translation>Midterste og venstre eller højre museknap</translation>
+      <translation>Midterste og venstre, eller midterste og højre museknap</translation>
     </message>
     <message>
       <location filename="../Navigation/CADNavigationStyle.cpp" line="55"/>
       <source>Scroll mouse wheel or keep middle button depressed
 while doing a left or right click and move the mouse up or down</source>
-      <translation>Rul musehjulet, eller hold midterste knap nede samtidigt 
-med et venstre eller højre klik, og flyt musen op eller ned</translation>
+      <translation>Rul musehjulet, eller hold midterste museknap nede samtidigt 
+med højre eller venstre knap og flyt musen op eller ned</translation>
     </message>
   </context>
   <context>
@@ -924,7 +924,7 @@ med et venstre eller højre klik, og flyt musen op eller ned</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Tilføj egenskab</translation>
     </message>
@@ -954,37 +954,37 @@ med et venstre eller højre klik, og flyt musen op eller ned</translation>
       <translation>Navn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Tilføj</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Ugyldigt gruppenavn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Ugyldigt typenavn</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Ugyldigt egenskabsnavn '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>Egenskaben '%1' findes allerede</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>'%1' er en konstant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>'%1' er en enhed</translation>
     </message>
@@ -2801,7 +2801,7 @@ vil blive vist i det nederste venstre hjørne i åbne filer</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="337"/>
       <source>Eye to eye distance for stereo modes</source>
-      <translation>Øjenafstand for stereotilstande</translation>
+      <translation>Øjenafstand til brug for stereovisning</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="64"/>
@@ -2892,9 +2892,9 @@ men giver langsommere respons på sceneændringer.</translation>
       <source>Eye-to-eye distance used for stereo projections.
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
-      <translation>Øjeafstand brugt til stereo projektioner.
+      <translation>Øjeafstand som bruges ved stereovisning.
 Den angivne værdi er en faktor, der vil blive ganget med størrelsen 
-af afgrænsningsboksen for det 3D-objekt, der bliver vist.</translation>
+af afgrænsningsboksen for det viste 3D-objekt.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
@@ -3274,8 +3274,8 @@ foruden farvelinjen</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
-      <translation type="unfinished">Document save compression level
-(0 = none, 9 = highest, 7 = default)</translation>
+      <translation>Komprimeringsniveau for gemte dokumenter
+(0 = ingen, 9 = højest, 7 = standard)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="98"/>
@@ -4106,7 +4106,7 @@ Værdien er diameteren af kuglen der passer på skærmen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="787"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation>Aktiver roterende animationer, der bruges i nogle navigationsmåder efter træk med musen</translation>
+      <translation>Aktiver roterende animationer, der bruges i nogle navigationstyper efter træk med musen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="790"/>
@@ -4590,7 +4590,7 @@ En større værdi gør det lettere at vælge elementer, men kan forhindre valg a
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
       <source>Active container object</source>
-      <translation type="unfinished">Active container object</translation>
+      <translation>Aktivt beholderobjekt</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
@@ -5911,17 +5911,17 @@ Gem ændringerne?</translation>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="967"/>
       <source>Drag screen with two fingers OR press right mouse button.</source>
-      <translation>Træk skærmen med to fingre ELLER tryk på højre museknap.</translation>
+      <translation>Træk skærmbilledet med to fingre ELLER tryk på højre museknap.</translation>
     </message>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="969"/>
       <source>Drag screen with one finger OR press left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Træk skærmen med en finger ELLER tryk på venstre museknap. I Sketcher og andre redigeringstilstande, hold Alt-tasten nede samtidig.</translation>
+      <translation>Træk skærmbilledet med en finger ELLER tryk på venstre museknap. I Sketcher og andre redigeringstilstande, hold Alt-tasten nede samtidig.</translation>
     </message>
     <message>
       <location filename="../Navigation/GestureNavigationStyle.cpp" line="974"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR PgUp/PgDown on keyboard.</source>
-      <translation>Knib (sæt to fingre på skærmen og træk dem fra hinanden eller mod hinanden) ELLER rul med musehjulet ELLER brug PgUp/PgDown på tastaturet.</translation>
+      <translation>Knib (sæt to fingre på skærmen og træk dem mod hinanden eller fra hinanden) ELLER rul med musehjulet ELLER brug PgUp/PgDown-tasterne på tastaturet.</translation>
     </message>
   </context>
   <context>
@@ -6024,7 +6024,7 @@ Gem ændringerne?</translation>
     <message>
       <location filename="../Navigation/InventorNavigationStyle.cpp" line="50"/>
       <source>Press Ctrl and left mouse button</source>
-      <translation>Tryk på Ctrl og venstre museknap</translation>
+      <translation>Tryk på Ctrl-tasten og venstre museknap</translation>
     </message>
     <message>
       <location filename="../Navigation/InventorNavigationStyle.cpp" line="52"/>
@@ -6382,17 +6382,18 @@ Hvordan vil du fortsætte?</translation>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="96"/>
       <source>Drag screen with two fingers OR press Alt + middle mouse button.</source>
-      <translation>Træk skærmen med to fingre ELLER tryk på Alt + midterste museknap.</translation>
+      <translation>Træk skærmbilledet med to fingre ELLER tryk på Alt-tasten og midterste museknap.</translation>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="98"/>
       <source>Drag screen with one finger OR press Alt + left mouse button. In Sketcher and other edit modes, hold Alt in addition.</source>
-      <translation>Træk skærmen med en finger ELLER tryk på Alt + venstre museknap. I Sketcher og andre redigeringstilstande, hold ALT nede samtidigt.</translation>
+      <translation>Træk skærmbilledet med en finger, ELLER tryk på Alt-tasten og venstre museknap. 
+I Sketcher og andre redigeringstilstande, hold Alt-tasten nede samtidigt.</translation>
     </message>
     <message>
       <location filename="../Navigation/MayaGestureNavigationStyle.cpp" line="103"/>
       <source>Pinch (place two fingers on the screen and drag them apart from or towards each other) OR scroll mouse wheel OR press Alt + right mouse button OR PgUp/PgDown on keyboard.</source>
-      <translation>Knib (sæt to fingre på skærmen og træk dem fra hinanden eller mod hinanden) ELLER rul med musehjulet ELLER tryk på Alt + højre museknap ELLER brug PgUp/PgDown på tastaturet.</translation>
+      <translation>Knib (sæt to fingre på skærmen og træk dem mod hinanden eller fra hinanden) ELLER rul med musehjulet ELLER tryk på Alt-tasten og højre museknap ELLER brug PgUp/PgDown-tasterne på tastaturet.</translation>
     </message>
   </context>
   <context>
@@ -6423,7 +6424,7 @@ Hvordan vil du fortsætte?</translation>
     <message>
       <location filename="../Navigation/OpenCascadeNavigationStyle.cpp" line="55"/>
       <source>Press Ctrl and left mouse button</source>
-      <translation>Tryk på Ctrl og venstre museknap</translation>
+      <translation>Tryk på Ctrl-tasten og venstre museknap</translation>
     </message>
   </context>
   <context>
@@ -6446,7 +6447,7 @@ Hvordan vil du fortsætte?</translation>
     <message>
       <location filename="../Navigation/OpenSCADNavigationStyle.cpp" line="55"/>
       <source>Press middle mouse button or SHIFT and right mouse button</source>
-      <translation>Midterste museknap eller Shift og højre museknap</translation>
+      <translation>Midterste museknap, eller Shift-tasten og højre museknap</translation>
     </message>
   </context>
   <context>
@@ -6832,7 +6833,7 @@ Afslut uden at gemme?</translation>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="55"/>
       <source>Press Shift and middle mouse button</source>
-      <translation>Shift og midterste museknap</translation>
+      <translation>Shift-tasten og midterste museknap</translation>
     </message>
     <message>
       <location filename="../Navigation/RevitNavigationStyle.cpp" line="57"/>
@@ -7738,7 +7739,7 @@ Specify another directory?</source>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="86"/>
       <source>Grid snap in</source>
-      <translation type="unfinished">Grid snap in</translation>
+      <translation>Fastgør til gitter</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationPos.ui" line="97"/>
@@ -8000,7 +8001,7 @@ Se rapportvisningen for flere detaljer.</translation>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
       <source>Estimated size of data to copy: %1</source>
-      <translation type="unfinished">Estimated size of data to copy: %1</translation>
+      <translation>Anslået størrelse af data til kopiering: %1</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
@@ -8751,12 +8752,12 @@ Vælg 'Afbryd' for at afbryde</translation>
       <translation>Kunne ikke importere alle links</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Tilføj egenskab</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Kunne ikke tilføje egenskab til '%1': %2</translation>
     </message>
@@ -8764,7 +8765,7 @@ Vælg 'Afbryd' for at afbryde</translation>
       <location filename="../Tree.cpp" line="2638"/>
       <location filename="../Tree.cpp" line="3034"/>
       <source>Drag &amp; drop failed</source>
-      <translation>Træk &amp; slip mislykkedes</translation>
+      <translation>Flytning mislykkedes</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2999"/>
@@ -8887,7 +8888,7 @@ i den aktuelle kopi vil gå tabt.
       <location filename="../OverlayWidgets.cpp" line="2555"/>
       <location filename="../OverlayManager.cpp" line="1077"/>
       <source>Toggle floating window</source>
-      <translation>Slå flydende vindue til/fra</translation>
+      <translation>Slå flydende vinduer til/fra</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1078"/>
@@ -8987,7 +8988,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="476"/>
       <source>Activate on hover</source>
-      <translation>Aktivér ved svævning</translation>
+      <translation>Aktiver ved svævning</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="409"/>
@@ -9018,7 +9019,7 @@ i den aktuelle kopi vil gå tabt.
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="151"/>
       <source>Press Esc to hide hint</source>
-      <translation>Tryk Esc for at skjule forslag</translation>
+      <translation>Tryk Esc-tasten for at skjule forslag</translation>
     </message>
     <message>
       <location filename="../SoFCColorBar.cpp" line="358"/>
@@ -9384,7 +9385,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../CommandLink.cpp" line="621"/>
       <source>Unlinks the object by placing it directly in the container</source>
-      <translation type="unfinished">Unlinks the object by placing it directly in the container</translation>
+      <translation>Frakobler objektet ved at placere det direkte i beholderen</translation>
     </message>
   </context>
   <context>
@@ -9445,7 +9446,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../CommandStd.cpp" line="563"/>
       <source>Opens the help documentation</source>
-      <translation type="unfinished">Opens the help documentation</translation>
+      <translation>Åbner hjælpe- og dokumentation-siderne</translation>
     </message>
   </context>
   <context>
@@ -9868,7 +9869,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../CommandStd.cpp" line="316"/>
       <source>Opens the documentation for the selected command</source>
-      <translation type="unfinished">Opens the documentation for the selected command</translation>
+      <translation>Åbner dokumentationen for den valgte kommando</translation>
     </message>
   </context>
   <context>
@@ -10513,13 +10514,13 @@ Derudover kan pop-up meddelelser deaktiveres. I dette tilfælde kan meddelelseso
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="38"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can reorder workbenches by drag and drop or sort them by right-clicking on any workbench and select &lt;span style="  font-weight:600; font-style:italic;"&gt;Sort alphabetically&lt;/span&gt;. Additional workbenches can be installed through the addon manager.&lt;/p&gt;&lt;p&gt;
 Currently installed workbenches:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Du kan arrangere værktøjskasser ved at trække og slippe dem, og sortere dem ved at højreklikke på en værktøjskasse og vælge &lt;span style="  font-weight:600; font-style:italic;"&gt;Sorter alfabetisk&lt;/span&gt;. Yderligere værktøjskasser kan installeres via addon manager.&lt;/p&gt;&lt;p&gt;
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Du kan arrangere værktøjskasser ved at trække i dem, og sortere dem ved at højreklikke på en værktøjskasse og vælge &lt;span style="  font-weight:600; font-style:italic;"&gt;Sorter alfabetisk&lt;/span&gt;. Yderligere værktøjskasser kan installeres via addon manager.&lt;/p&gt;&lt;p&gt;
 Aktuelt installerede værktøjskasser:&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="55"/>
       <source>Selectors</source>
-      <translation type="unfinished">Selectors</translation>
+      <translation>Valg af værktøjskasse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="78"/>
@@ -10769,13 +10770,13 @@ når FreeCAD starter</translation>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="591"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="606"/>
       <source>ComboBox</source>
-      <translation>ComboBox</translation>
+      <translation>Udfold menu fra boks</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="592"/>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="607"/>
       <source>TabBar</source>
-      <translation type="unfinished">TabBar</translation>
+      <translation>Menulinje</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="598"/>
@@ -11306,12 +11307,12 @@ vise startskærmen under opstart.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="344"/>
       <source>Activate overlay handling of docked panels</source>
-      <translation type="unfinished">Activate overlay handling of docked panels</translation>
+      <translation>Aktiver håndtering af fastgjorte overlay paneler</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="347"/>
       <source>Activate overlay panels</source>
-      <translation type="unfinished">Activate overlay panels</translation>
+      <translation>Aktiver overlay paneler</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="366"/>
@@ -11713,7 +11714,7 @@ Hvis deaktiveret, så vis ved museklik.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="535"/>
       <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
-      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+      <translation>Overfører automatisk kommandoer fra musehjulet gennem gennemsigtige områder af et overlay-panel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="570"/>
@@ -11728,15 +11729,15 @@ tidligere er håndteret af en anden widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation>Hvis automatisk videregivelse af museklik er aktivt, så 
-definerer denne radius området for alfatests under musemarkøren.
-Automatisk videregivelse af museklik, er kun aktiveret, 
-hvis alle pixels i området er ugennemsigtige.</translation>
+      <translation>Hvis automatisk videregivelse af museklik er aktiveret, så 
+angiver denne radius størrelsen af det aktiverede område 
+under musemarkøren. Automatisk videregivelse af museklik, 
+er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="644"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation>Giv plads til navigationsterningen ved fastgjort overlay</translation>
+      <translation>Giv plads til navigationsterningen når den er fastgjort som overlay</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="676"/>
@@ -12141,7 +12142,7 @@ hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="490"/>
       <source>Automatically passes mouse wheel events through the transparent areas of an overlay panel</source>
-      <translation type="unfinished">Automatically passes mouse wheel events through the transparent areas of an overlay panel</translation>
+      <translation>Overfører automatisk kommandoer fra musehjulet gennem gennemsigtige områder af et overlay-panel</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="493"/>
@@ -12306,7 +12307,7 @@ hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="56"/>
       <source>Align dragger rotation with selected coordinate system</source>
-      <translation type="unfinished">Align dragger rotation with selected coordinate system</translation>
+      <translation>Ret trækningsrotationen ind efter det valgte koordinatsystem</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="94"/>
@@ -12370,17 +12371,17 @@ hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="336"/>
       <source>Align U/X</source>
-      <translation type="unfinished">Align U/X</translation>
+      <translation>Ret ind efter U/X</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="352"/>
       <source>Align V/Y</source>
-      <translation type="unfinished">Align V/Y</translation>
+      <translation>Ret ind efter V/Y</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="368"/>
       <source>Align W/Z</source>
-      <translation type="unfinished">Align W/Z</translation>
+      <translation>Ret ind efter W/Z</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="554"/>
@@ -12390,17 +12391,17 @@ hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="425"/>
       <source>Flip</source>
-      <translation type="unfinished">Flip</translation>
+      <translation>Vend</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="435"/>
       <source>Dragger</source>
-      <translation type="unfinished">Dragger</translation>
+      <translation>Trækker</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="465"/>
       <source>&lt;b&gt;Snapping&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Snapping&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Fastgørelse&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="544"/>
@@ -12762,7 +12763,7 @@ hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="86"/>
       <source>Angle snap</source>
-      <translation type="unfinished">Angle snap</translation>
+      <translation>Fastgør vinkel</translation>
     </message>
   </context>
   <context>
@@ -13502,7 +13503,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation type="unfinished">Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</translation>
+      <translation>Opretter en komponent, som er en generel beholder til at samling af objekter, så de fungerer som en enhed i 3D-visningen. Formålet med komponenter er, at arrangere objekter der har komponenttopografi som f.eks. basisgeometrier, PartDesign emer, og andre komponenter.</translation>
     </message>
   </context>
   <context>
@@ -13515,7 +13516,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="122"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation>Opretter en gruppe, som er en generel beholder der grupperer objekter i trævisningen, uanset deres datatype. Det er en simpel mappe til organisering af objekterne i en model.</translation>
+      <translation>Opretter en gruppe, som er en generel beholder til gruppering af objekter i trævisningen, uanset deres datatype. Det er en simpel mappe til organisering af objekterne i en model.</translation>
     </message>
   </context>
   <context>
@@ -13822,7 +13823,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2448"/>
       <source>Inventor Example #3</source>
-      <translation type="unfinished">Inventor Example #3</translation>
+      <translation>Inventor eksempel nr. 3</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2449"/>
@@ -14004,7 +14005,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3467"/>
       <source>Selection &amp;Back</source>
-      <translation type="unfinished">Selection &amp;Back</translation>
+      <translation>Gå tilbage</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3469"/>
@@ -14017,7 +14018,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3501"/>
       <source>Selection &amp;Forward</source>
-      <translation type="unfinished">Selection &amp;Forward</translation>
+      <translation>Gå frem</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3503"/>
@@ -14087,7 +14088,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3678"/>
       <source>Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</source>
-      <translation type="unfinished">Adjusts the placement on drag-and-drop of objects across coordinate systems (e.g. in part containers)</translation>
+      <translation>Justerer placeringen af flytbare objekter på tværs af koordinatsystemer (f.eks. i komponentbeholdere)</translation>
     </message>
   </context>
   <context>
@@ -14108,12 +14109,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3734"/>
       <source>Initiate &amp;Dragging</source>
-      <translation type="unfinished">Initiate &amp;Dragging</translation>
+      <translation>Start trækning</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3735"/>
       <source>Initiates dragging of the currently selected tree items</source>
-      <translation>Starter trækning af de aktuelt valgte træelementer</translation>
+      <translation>Begynder at trække de valgte træelementer</translation>
     </message>
   </context>
   <context>
@@ -14268,12 +14269,12 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4103"/>
       <source>Overlay Docked Panel</source>
-      <translation type="unfinished">Overlay Docked Panel</translation>
+      <translation>Fastgjort overlay panel</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4104"/>
       <source>Sets the docked panel in overlay mode</source>
-      <translation type="unfinished">Sets the docked panel in overlay mode</translation>
+      <translation>Indstiller det fastgjorte panel til overlay tilstand</translation>
     </message>
   </context>
   <context>

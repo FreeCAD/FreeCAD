@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="14"/>
       <source>Annotation Styles Editor</source>
-      <translation>注释样式编辑器</translation>
+      <translation>标注样式编辑器</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="79"/>
@@ -95,7 +95,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="332"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="342"/>
       <source>The width of the lines</source>
-      <translation>线的宽度</translation>
+      <translation>线条宽度</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="345"/>
@@ -209,7 +209,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation>起始箭头或标记的大小（系统单位）</translation>
+      <translation>以系统单位表示的起始箭头或标记的大小</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
@@ -231,7 +231,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>The size of the ending arrows or markers in system units</source>
-      <translation>结束箭头或标记的大小（系统单位）</translation>
+      <translation>以系统单位表示的结束箭头或标记的大小</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
@@ -476,7 +476,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。
 链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
@@ -637,7 +637,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。
 链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
@@ -733,7 +733,7 @@ This only works if "Link array" is off.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。  
+      <translation>如果勾选此项，生成的对象将是一个“链接阵列”，而不是常规阵列。
 链接阵列在创建多个副本时效率更高，但无法与其他对象进行融合。</translation>
     </message>
     <message>
@@ -839,7 +839,7 @@ Uncheck to use working plane coordinate system</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="53"/>
       <source>Side (YZ)</source>
-      <translation>侧面 (YZ)</translation>
+      <translation>侧 (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="60"/>
@@ -1430,7 +1430,7 @@ This setting modifies the Translate property.</source>
     <message>
       <location filename="../ui/dialogHatch.ui" line="27"/>
       <source>Pattern files (*.pat *.PAT)</source>
-      <translation>Pattern files (*.pat)图样文件</translation>
+      <translation>Pattern文件 (*.pat)</translation>
     </message>
   </context>
   <context>
@@ -1703,7 +1703,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="134"/>
       <source>Dashdot line definition</source>
-      <translation>点划线(Dashdot) 设定</translation>
+      <translation>点划线设定</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftvisual.ui" line="163"/>
@@ -3281,12 +3281,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>完成当前绘图或编辑操作</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>修改对象</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>面绑定器元素</translation>
     </message>
@@ -3480,17 +3480,17 @@ Not available if the 'Use Part Primitives' preference is enabled</source>
       <translation>自动组：</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>添加</translation>
     </message>
@@ -3879,13 +3879,13 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="96"/>
       <source>Pick start point</source>
-      <translation>选择起始点：</translation>
+      <translation>选择起始点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="168"/>
       <location filename="../../draftguitools/gui_move.py" line="237"/>
       <source>Pick end point</source>
-      <translation>选取端点</translation>
+      <translation>选取结束点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="123"/>
@@ -3940,7 +3940,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="307"/>
       <source>Pick aperture</source>
-      <translation>选择孔径：</translation>
+      <translation>选择孔径</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="76"/>
@@ -4589,7 +4589,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_rectangles.py" line="207"/>
       <location filename="../../draftguitools/gui_ellipses.py" line="209"/>
       <source>Pick opposite point</source>
-      <translation>选择相对点：</translation>
+      <translation>选择相对点</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rectangles.py" line="222"/>
@@ -4785,7 +4785,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="192"/>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="343"/>
       <source>Object:</source>
-      <translation>对象:</translation>
+      <translation>对象：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="92"/>
@@ -4874,7 +4874,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="410"/>
       <source>Interval X:</source>
-      <translation>间隔 X：</translation>
+      <translation>X间隔：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="412"/>
@@ -4884,7 +4884,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="415"/>
       <source>Interval Y:</source>
-      <translation>间隔 Y：</translation>
+      <translation>Y间隔：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="417"/>
@@ -4996,7 +4996,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="344"/>
       <source>Radial distance:</source>
-      <translation>径向距离:</translation>
+      <translation>径向距离：</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
@@ -5093,7 +5093,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftobjects/patharray.py" line="844"/>
       <source>AlignMode {} is not implemented</source>
-      <translation>AlignMode {} 未实现</translation>
+      <translation>对齐方式 {} 未实现</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_sketch.py" line="101"/>
@@ -5186,7 +5186,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_patharray.py" line="252"/>
       <location filename="../../draftmake/make_patharray.py" line="259"/>
       <source>Wrong input: must be a vector.</source>
-      <translation>错误输入：必须是一个向量。</translation>
+      <translation>输入错误：必须是一个向量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_patharray.py" line="216"/>
@@ -5201,7 +5201,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="88"/>
       <source>Wrong input: must be a number or vector.</source>
-      <translation>错误输入：必须是一个数字或向量。</translation>
+      <translation>输入错误：必须是一个数字或向量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="93"/>
@@ -5215,7 +5215,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_polararray.py" line="103"/>
       <location filename="../../draftmake/make_orthoarray.py" line="112"/>
       <source>Wrong input: must be an integer number.</source>
-      <translation>错误输入：必须是一个整数。</translation>
+      <translation>输入错误：必须是一个整数。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_orthoarray.py" line="116"/>
@@ -5229,7 +5229,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_pointarray.py" line="118"/>
       <location filename="../../draftmake/make_text.py" line="112"/>
       <source>Wrong input: must be a placement, a vector, or a rotation.</source>
-      <translation>错误输入：必须是放置、向量或旋转。</translation>
+      <translation>输入错误：必须是放置、向量或旋转。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="227"/>
@@ -5254,7 +5254,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_label.py" line="267"/>
       <source>Wrong input: label_type must be a string.</source>
-      <translation>错误输入：label_type 必须是字符串。</translation>
+      <translation>输入错误：label_type 必须是字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="274"/>
@@ -5288,7 +5288,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_label.py" line="390"/>
       <source>Wrong input: must be a list of two elements. For example, [object, 'Edge1'].</source>
-      <translation>错误的输入：必须是两个元素的列表。例如，[object, 'Edge1']。</translation>
+      <translation>输入错误：必须是两个元素的列表。例如，[object, 'Edge1']。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="101"/>
@@ -5298,7 +5298,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_pointarray.py" line="109"/>
       <source>Wrong input: object has the wrong type.</source>
-      <translation>错误输入：对象类型错误。</translation>
+      <translation>输入错误：对象类型错误。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="224"/>
@@ -5325,7 +5325,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="367"/>
       <location filename="../../draftmake/make_dimension.py" line="491"/>
       <source>Wrong input: object doesn't have a 'Shape' to measure.</source>
-      <translation>错误输入：对象没有要测量的“形状”。</translation>
+      <translation>输入错误：对象没有要测量的“形状”。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="375"/>
@@ -5336,7 +5336,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="381"/>
       <location filename="../../draftmake/make_dimension.py" line="505"/>
       <source>Wrong input: must be an integer.</source>
-      <translation>错误输入：必须是一个整型。</translation>
+      <translation>输入错误：必须是一个整型。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="386"/>
@@ -5347,7 +5347,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="390"/>
       <location filename="../../draftmake/make_dimension.py" line="410"/>
       <source>Wrong input: vertex not in object.</source>
-      <translation>错误输入：顶点不在对象中。</translation>
+      <translation>输入错误：顶点不在对象中。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="406"/>
@@ -5357,7 +5357,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="499"/>
       <source>Wrong input: object doesn't have at least one element in 'Edges' to use for measuring.</source>
-      <translation>错误输入：对象在“Edges”中至少没有一个元素可用于测量。</translation>
+      <translation>输入错误：对象在“Edges”中至少没有一个元素可用于测量。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="510"/>
@@ -5367,7 +5367,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="514"/>
       <source>Wrong input: index doesn't correspond to an edge in the object.</source>
-      <translation>错误输入：索引与对象中的边缘不对应。</translation>
+      <translation>输入错误：索引与对象中的边缘不对应。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_dimension.py" line="518"/>
@@ -5384,7 +5384,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftmake/make_dimension.py" line="616"/>
       <location filename="../../draftmake/make_dimension.py" line="622"/>
       <source>Wrong input: must be a list with two angles.</source>
-      <translation>错误输入：必须是一个包含两个角度的列表。</translation>
+      <translation>输入错误：必须是一个包含两个角度的列表。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_circulararray.py" line="144"/>
@@ -5399,7 +5399,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_layer.py" line="152"/>
       <source>Wrong input: it must be a string.</source>
-      <translation>错误输入：它必须是一个字符串。</translation>
+      <translation>输入错误：它必须是一个字符串。</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_layer.py" line="161"/>
@@ -5418,7 +5418,7 @@ The final angle will be the base angle plus this amount.</source>
     <message>
       <location filename="../../draftmake/make_layer.py" line="211"/>
       <source>Wrong input: must be a number between 0 and 100.</source>
-      <translation>错误输入：必须是 0 到 100 之间的数字。</translation>
+      <translation>输入错误：必须是 0 到 100 之间的数字。</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_clone.py" line="70"/>
