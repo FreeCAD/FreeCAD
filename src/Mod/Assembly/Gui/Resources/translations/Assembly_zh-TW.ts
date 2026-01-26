@@ -80,7 +80,7 @@
     <message>
       <location filename="../../../App/BomObject.cpp" line="311"/>
       <source>Not supported</source>
-      <translation type="unfinished">Not supported</translation>
+      <translation>不支持</translation>
     </message>
   </context>
   <context>
@@ -172,12 +172,12 @@
     <message>
       <location filename="../../../JointObject.py" line="757"/>
       <source>Broken link in: </source>
-      <translation type="unfinished">Broken link in: </translation>
+      <translation>錯誤的連結在： </translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1529"/>
       <source>Select 2 elements from 2 separate parts</source>
-      <translation type="unfinished">Select 2 elements from 2 separate parts</translation>
+      <translation>您需要自 2 個分離的零件選擇 2 個元件</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1702"/>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="167"/>
       <source>Do not Link</source>
-      <translation type="unfinished">Do not Link</translation>
+      <translation>不連結</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="488"/>
@@ -554,47 +554,47 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="315"/>
       <source>Enable the minimum length limit of the joint</source>
-      <translation type="unfinished">Enable the minimum length limit of the joint</translation>
+      <translation>啟用此配合的最小長度限制</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="328"/>
       <source>Enable the maximum length limit of the joint</source>
-      <translation type="unfinished">Enable the maximum length limit of the joint</translation>
+      <translation>啟用此配合的最大長度限制</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="341"/>
       <source>Enable the minimum angle limit of the joint</source>
-      <translation type="unfinished">Enable the minimum angle limit of the joint</translation>
+      <translation>啟用此配合的最小角度限制</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="354"/>
       <source>Enable the maximum angle limit of the joint</source>
-      <translation type="unfinished">Enable the maximum angle limit of the joint</translation>
+      <translation>啟用此配合的最大角度限制</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="384"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
-      <translation type="unfinished">This is the angle of the joint. It is used only by the Angle joint.</translation>
+      <translation>這是關節的接合點，它僅由角度接合點使用。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="420"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>這是兩個坐標系統之間長度的最小限制（沿其 Z 軸）</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="432"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the length between both coordinate systems (along their z-axis)</translation>
+      <translation>這是兩個坐標系統之間長度的最大限制（沿其 Z 軸）</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="444"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the minimum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>這是兩個坐標系統之間角度的最小限制（沿其 X 軸）</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="456"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
-      <translation type="unfinished">This is the maximum limit for the angle between both coordinate systems (between their x-axis)</translation>
+      <translation>這是兩個坐標系統之間角度的最大限制（沿其 X 軸）</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="257"/>
@@ -619,12 +619,12 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../JointObject.py" line="408"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
-      <translation type="unfinished">This is the second distance of the joint. It is used only by the gear joint to store the second radius.</translation>
+      <translation>這是配合的第二個距離。僅在齒輪配合中作為第二半徑。</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="509"/>
       <source>The {order} reference of the joint</source>
-      <translation type="unfinished">The {order} reference of the joint</translation>
+      <translation>配合的第 {order} 參考</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="1151"/>
@@ -640,7 +640,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateView.py" line="380"/>
       <source>This is the movement of the move. The end placement is the result of the start placement * this placement.</source>
-      <translation type="unfinished">This is the movement of the move. The end placement is the result of the start placement * this placement.</translation>
+      <translation>這是移動操作的位移部份，結束位置由起始位置與此位置相乘得到。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateView.py" line="389"/>
@@ -680,17 +680,17 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="311"/>
       <source>The joint that is moved by the motion</source>
-      <translation type="unfinished">The joint that is moved by the motion</translation>
+      <translation>被運動移位的關節</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="323"/>
       <source>This is the formula of the motion. For example '1.0*time'.</source>
-      <translation type="unfinished">This is the formula of the motion. For example '1.0*time'.</translation>
+      <translation>這是運動的公式。例如『1.0*time』。</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="332"/>
       <source>The type of the motion</source>
-      <translation type="unfinished">The type of the motion</translation>
+      <translation>運動類型</translation>
     </message>
   </context>
   <context>
@@ -728,7 +728,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="215"/>
       <source>Show advanced offsets</source>
-      <translation type="unfinished">Show advanced offsets</translation>
+      <translation>顯示高級偏移量</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="14"/>
@@ -900,60 +900,60 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>您要移動物件並刪除關聯的接頭嗎?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1051"/>
       <source>Move part</source>
       <translation>移動零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1596"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1618"/>
       <source>Over-constrained:</source>
       <translation>過度拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1626"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1634"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1642"/>
       <source>Partially redundant:</source>
       <translation>部份冗餘：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1650"/>
       <source>Solver failed to converge</source>
       <translation>求解器無法收斂</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1658"/>
       <source>Under-constrained:</source>
       <translation>拘束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1660"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1664"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -1471,12 +1471,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>插入組件</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="218"/>
+      <location filename="../../../CommandInsertLink.py" line="219"/>
       <source>Partially loaded</source>
       <translation type="unfinished">Partially loaded</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="572"/>
+      <location filename="../../../CommandInsertLink.py" line="573"/>
       <source>Fully load document</source>
       <translation type="unfinished">Fully load document</translation>
     </message>

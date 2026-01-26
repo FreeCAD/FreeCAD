@@ -1222,7 +1222,7 @@
     <message>
       <location filename="../../Command.cpp" line="2364"/>
       <source>Appearance per &amp;Face</source>
-      <translation>Aussehen &amp;flächenweise festlegen</translation>
+      <translation>Aussehen per Fläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2365"/>
@@ -2631,7 +2631,7 @@ in der Eigenschaft Placement zu behalten.</translation>
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP Export Settings</source>
-      <translation>STEP-Export-Einstellungen</translation>
+      <translation>STEP Export Einstellungen</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="126"/>
@@ -3962,7 +3962,7 @@ Wählen Sie zunächst eine oder mehrere Kantenentitäten aus.</translation>
     <message>
       <location filename="../../DlgRevolution.cpp" line="536"/>
       <source>Selecting… (line or arc)</source>
-      <translation>Auswählen ... (Linie oder Bogen)</translation>
+      <translation>Auswählen... (Linie oder Bogen)</translation>
     </message>
   </context>
   <context>
@@ -5559,20 +5559,20 @@ für die Spine-Kurve in der 3D-Ansicht auswählen.</translation>
       <translation>%1 bearbeiten</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation>Arbeitsbereich Part und Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation>Import/Export</translation>
     </message>
@@ -6658,12 +6658,12 @@ oder mit den Formen innerhalb einer Verbindung durch.
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation>Bauteil-Aufdicken-Flächenersteller</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Unterstützt das Erstellen ebener Flächen mit Löchern, unterstützt keine Verschachtelungen.</translation>
     </message>

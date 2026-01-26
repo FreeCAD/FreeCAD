@@ -2118,7 +2118,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="444"/>
       <source>Common</source>
-      <translation>Comune</translation>
+      <translation>Intersezione</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="544"/>
@@ -3583,7 +3583,7 @@ Check one or more edge entities first.</translation>
       <location filename="../../DlgPrimitives.ui" line="1399"/>
       <location filename="../../DlgPrimitives.ui" line="2441"/>
       <source>Circumradius</source>
-      <translation type="unfinished">Circumradius</translation>
+      <translation>Circonferenza</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="1518"/>
@@ -5359,7 +5359,7 @@ Controlli individuali delle operazioni booleane:</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="52"/>
       <source>Recto verso</source>
-      <translation type="unfinished">Recto verso</translation>
+      <translation>Entrambi i lati</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="60"/>
@@ -5561,20 +5561,20 @@ in the 3D view for the sweep path.</translation>
       <translation>Edita %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation>Ambiente di lavoro Part e Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation>Importa/Esporta</translation>
     </message>
@@ -5944,12 +5944,12 @@ Continue?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="305"/>
       <source>Edit Fillet</source>
-      <translation type="unfinished">Edit Fillet</translation>
+      <translation>Modifica raccordo</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation type="unfinished">Edit Chamfer</translation>
+      <translation>Modifica smusso</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -6660,12 +6660,12 @@ Overlapping volumes of the shapes will be removed.</translation>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation>Part estrudi facce</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Supporta la creazione di facce con fori, non supporta la nidificazione.</translation>
     </message>
@@ -6695,7 +6695,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="74"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Aspetto personalizzato</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
