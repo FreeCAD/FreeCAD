@@ -680,6 +680,8 @@ bool TaskView::showDialog(TaskDialog* dlg, App::Document* doc)
     Q_EMIT taskUpdate();
 
     OverlayManager::instance()->refresh();
+
+    return true;
 }
 
 void TaskView::removeDialog(App::Document* doc)
