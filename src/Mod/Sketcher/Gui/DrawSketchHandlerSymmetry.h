@@ -284,7 +284,7 @@ void DSHSymmetryController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate(
                 "TaskSketcherTool_c1_symmetry",
-                "Deletes the original geometry. This effectively performs a 'Move' operation."
+                "Removes the original geometry and keeps only the mirrored result."
 
             )
         );
