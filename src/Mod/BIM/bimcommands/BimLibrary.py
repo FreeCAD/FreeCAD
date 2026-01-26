@@ -178,8 +178,6 @@ class BIM_Library_TaskPanel:
         self.form.checkOnline.setChecked(PARAMS.GetBool("LibraryOnline", not offlinemode))
         self.form.checkFCStdOnly.toggled.connect(self.onCheckFCStdOnly)
         self.form.checkFCStdOnly.setChecked(PARAMS.GetBool("LibraryFCStdOnly", False))
-        self.form.checkWebSearch.toggled.connect(self.onCheckWebSearch)
-        self.form.checkWebSearch.setChecked(PARAMS.GetBool("LibraryWebSearch", False))
         self.form.check3DPreview.toggled.connect(self.onCheck3DPreview)
         self.form.check3DPreview.setChecked(PARAMS.GetBool("3DPreview", False))
 
@@ -529,13 +527,7 @@ class BIM_Library_TaskPanel:
 
         from PySide import QtGui
 
-        s = PARAMS.GetBool("LibraryWebSearch", False)
-        if s:
-            import WebGui
-
-            WebGui.openBrowser(url)
-        else:
-            QtGui.QDesktopServices.openUrl(url)
+        QtGui.QDesktopServices.openUrl(url)
 
     def needsFullSpace(self):
 
@@ -888,12 +880,6 @@ class BIM_Library_TaskPanel:
         PARAMS.SetBool("LibraryFCStdOnly", state)
         self.dirmodel.setNameFilters(self.getFilters())
         self.onCheckOnline(self.form.checkOnline.isChecked())
-
-    def onCheckWebSearch(self, state):
-        """if the web search checkbox is clicked"""
-
-        # save state
-        PARAMS.SetBool("LibraryWebSearch", state)
 
     def onCheck3DPreview(self, state):
         """if the 3D preview checkbox is clicked"""
