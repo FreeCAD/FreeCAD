@@ -382,12 +382,14 @@ if FreeCAD.GuiUp:
                 return
 
             # Geometry calculation (in Global Space, done once)
-            base_face = obj.Proxy.get_base_face(obj)
+            base_face = Arch.getFaceGeometry(obj.Base)
             if not base_face:
                 return
 
-            u_vec, v_vec, normal, center_point = obj.Proxy._get_grid_basis(base_face)
-            origin = obj.Proxy._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
+            u_vec, v_vec, normal, center_point = Arch.getFaceUV(base_face)
+            origin = Arch.getFaceGridOrigin(
+                base_face, center_point, u_vec, v_vec, obj.TileAlignment, obj.AlignmentOffset
+            )
 
             # Apply different logic based on the active DisplayMode, respecting the different
             # rendering contexts.
@@ -555,7 +557,7 @@ if FreeCAD.GuiUp:
                 if not isinstance(item, tuple):
                     # Access via Proxy of the target object (phantom or real)
                     # This ensures we use the logic defined in _Covering
-                    face = self.target_obj.Proxy.get_best_face(item, view_dir)
+                    face = Arch.getFaceName(item, view_dir)
                     if face:
                         resolved_selection.append((item, [face]))
                     else:
@@ -952,7 +954,7 @@ if FreeCAD.GuiUp:
                 else:
                     # Smart detection for whole object clicks
                     view_dir = self._get_view_direction()
-                    best_face = self.target_obj.Proxy.get_best_face(obj, view_dir)
+                    best_face = Arch.getFaceName(obj, view_dir)
 
                     if best_face:
                         new_list.append((obj, [best_face]))

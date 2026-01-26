@@ -274,7 +274,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # View looking DOWN (0,0,-1) at the top face
         # We expect the Top Face (Normal +Z) because it opposes the view vector
-        face = covering.Proxy.get_best_face(slab, view_direction=App.Vector(0, 0, -1))
+        face = Arch.getFaceName(slab, view_vector=App.Vector(0, 0, -1))
 
         face_obj = slab.Shape.getElement(face)
         self.assertAlmostEqual(face_obj.normalAt(0, 0).z, 1.0)
@@ -285,7 +285,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
 
         # View looking "IN" at the front face (Y=1 view vector)
         # We expect the face with Normal Y=-1 (opposing view)
-        face_name = covering.Proxy.get_best_face(wall, view_direction=App.Vector(0, 1, 0))
+        face_name = Arch.getFaceName(wall, view_vector=App.Vector(0, 1, 0))
         face_obj_wall = wall.Shape.getElement(face_name)
 
         self.assertLess(face_obj_wall.normalAt(0, 0).y, -0.9)
@@ -301,7 +301,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         covering = Arch.makeCovering()
 
         # View from side (looking at the curved face)
-        face = covering.Proxy.get_best_face(cyl, view_direction=App.Vector(1, 0, 0))
+        face = Arch.getFaceName(cyl, view_vector=App.Vector(1, 0, 0))
 
         # Should be Top or Bottom (planar), NOT Side (curved), despite Side being larger
         face_obj = cyl.Shape.getElement(face)

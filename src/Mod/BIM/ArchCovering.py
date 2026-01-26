@@ -15,6 +15,7 @@ solid 3D tiles, parametric 2D patterns, and hatch patterns.
 import FreeCAD
 import Part
 import ArchComponent
+import Arch
 from draftutils import params
 
 if FreeCAD.GuiUp:
@@ -293,7 +294,7 @@ class _Covering(ArchComponent.Component):
         if self.clone(obj):
             return
 
-        base_face = self.get_base_face(obj)
+        base_face = Arch.getFaceGeometry(obj.Base)
         if not base_face:
             return
 
@@ -322,8 +323,16 @@ class _Covering(ArchComponent.Component):
             return
 
         # Establish the local coordinate system and grid origin for the tiling pattern.
-        u_vec, v_vec, normal, center_point = self._get_grid_basis(base_face)
-        origin = self._get_grid_origin(obj, base_face, u_vec, v_vec, center_point)
+        u_vec, v_vec, normal, center_point = Arch.getFaceUV(base_face)
+
+        origin = Arch.getFaceGridOrigin(
+            base_face,
+            center_point,
+            u_vec,
+            v_vec,
+            obj.TileAlignment,
+            getattr(obj, "AlignmentOffset", None),
+        )
 
         # Cache dimensions
         t_len = obj.TileLength.Value
@@ -344,219 +353,6 @@ class _Covering(ArchComponent.Component):
         obj.Shape = self._perform_cut(
             obj, base_face, cutters_h, cutters_v, normal, origin, u_vec, v_vec
         )
-
-    def get_best_face(self, obj, view_direction=None):
-        """
-        Returns the name of the best candidate face (e.g. 'Face1') for a covering.
-        Heuristics:
-        1. Filter for faces with the largest area (within 5% tolerance).
-        2. Preference for face opposing the view direction (Camera facing).
-        """
-        if not hasattr(obj, "Shape") or not obj.Shape.Faces:
-            return None
-
-        # 1. Gather Face Data: (Name, FaceObj, Area)
-        faces_data = []
-        for i, f in enumerate(obj.Shape.Faces):
-            # Check for planarity
-            if f.findPlane() is None:
-                continue
-            faces_data.append((f"Face{i+1}", f, f.Area))
-
-        # 2. Filter by Area (Keep faces within 95% of max area)
-        if not faces_data:
-            return None
-
-        faces_data.sort(key=lambda x: x[2], reverse=True)
-        max_area = faces_data[0][2]
-        candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
-
-        if not candidates:
-            return None
-
-        # 3. Heuristic: View Direction (Camera facing)
-        if view_direction:
-            # Dot product: Lower value means vectors are opposing (face looks at camera)
-            candidates.sort(key=lambda x: x[1].normalAt(0, 0).dot(view_direction))
-            return candidates[0][0]
-
-        # Default: Return the first large face found
-        return candidates[0][0]
-
-    def get_base_face(self, obj):
-        """
-        Resolves the 'Base' link to identify and return the target planar face for the covering.
-        Handles sub-element selection, solid top-face detection, and closed-wire conversion.
-        Returns a Part.Face or None if a valid planar surface cannot be determined.
-        """
-        if not obj.Base:
-            return None
-
-        val = obj.Base
-        if isinstance(val, tuple):
-            linked_obj = val[0]
-            sub_elements = val[1]
-        else:
-            linked_obj = val
-            sub_elements = []
-
-        face = None
-
-        if len(sub_elements) > 0:
-            # Sub-element linked (e.g. Face6)
-            try:
-                sub_shape = linked_obj.getSubObject(sub_elements[0])
-                if sub_shape.ShapeType == "Face":
-                    face = sub_shape
-            except Exception as e:
-                FreeCAD.Console.PrintWarning(
-                    "ArchCovering: Unable to retrieve subobject: {}\n".format(e)
-                )
-
-        if not face and hasattr(linked_obj, "Shape"):
-            # Whole object linked
-            if linked_obj.Shape.ShapeType == "Face":
-                face = linked_obj.Shape
-            elif linked_obj.Shape.Solids:
-                # Use smart detection to find the best face (e.g. largest)
-                best_face_name = self.get_best_face(linked_obj)
-                if best_face_name:
-                    face = linked_obj.getSubObject(best_face_name)
-            # Support for closed Wires (e.g. Draft Circle/Rectangle with MakeFace=False)
-            elif linked_obj.Shape.ShapeType in ["Wire", "Edge"]:
-                if linked_obj.Shape.isClosed():
-                    try:
-                        face = Part.Face(Part.Wire(linked_obj.Shape.Edges))
-                    except Part.OCCError as e:
-                        FreeCAD.Console.PrintWarning(
-                            "ArchCovering: Unable to create face from wire: {}\n".format(e)
-                        )
-                else:
-                    FreeCAD.Console.PrintWarning(
-                        translate(
-                            "Arch",
-                            "Covering: The base wire is not closed. A closed loop is required to create a surface finish.",
-                        )
-                        + "\n"
-                    )
-
-        if face:
-            # findPlane() returns a Plane object for flat faces, or None for curved ones.
-            if face.findPlane() is None:
-                FreeCAD.Console.PrintWarning(
-                    translate("Arch", "Covering: Only planar surfaces are currently supported.")
-                    + "\n"
-                )
-                return None
-            return face
-
-        return None
-
-    def _get_grid_basis(self, base_face):
-        """
-        Computes the local coordinate system basis vectors for a face.
-
-        Calculates the tangent U and V directions at the face center, ensures orthogonality, and
-        determines the face normal and center point.
-
-        Parameters
-        ----------
-        base_face : Part.Face
-            The face to analyze.
-
-        Returns
-        -------
-        tuple
-            (u_vec, v_vec, normal, center_point) as FreeCAD.Vectors.
-        """
-        # Determine grid basis (U, V directions from face)
-        # Map 3D center to 2D parameters to establish a surface reference point.
-        u_p, v_p = base_face.Surface.parameter(base_face.BoundBox.Center)
-        # Derive local surface axes; normalize U to serve as a consistent direction unit.
-        u_vec, v_vec = base_face.Surface.tangent(u_p, v_p)
-        u_vec.normalize()
-
-        # Calculate normal and re-orthogonalize V vector.
-        # Ensure the tiling grid is perfectly square by forcing V to be perpendicular to U and the
-        # surface normal.
-        normal = u_vec.cross(v_vec)
-        normal.normalize()
-        v_vec = normal.cross(u_vec)
-        v_vec.normalize()
-
-        center_point = base_face.Surface.value(u_p, v_p)
-        return u_vec, v_vec, normal, center_point
-
-    def _get_grid_origin(self, obj, base_face, u_vec, v_vec, center_point):
-        """
-        Calculates the starting 3D point for the tiling grid.
-
-        Projects the face vertices onto the U and V basis vectors to find the face extents, then
-        determines the origin point based on the TileAlignment property.
-
-        Parameters
-        ----------
-        obj : App.FeaturePython
-            The covering object containing the alignment property.
-        base_face : Part.Face
-            The face defining the geometric boundaries.
-        u_vec : FreeCAD.Vector
-            The local horizontal direction of the grid.
-        v_vec : FreeCAD.Vector
-            The local vertical direction of the grid.
-        center_point : FreeCAD.Vector
-            The reference center point of the face.
-
-        Returns
-        -------
-        FreeCAD.Vector
-            The global 3D coordinate for the grid starting point.
-        """
-        # Find extents - Initialize with first vertex
-        v0 = base_face.Vertexes[0].Point
-        vec0 = v0.sub(center_point)
-
-        min_u = max_u = vec0.dot(u_vec)
-        min_v = max_v = vec0.dot(v_vec)
-
-        # Project remaining vertices
-        for v in base_face.Vertexes[1:]:
-            vec_to_vert = v.Point.sub(center_point)
-            proj_u = vec_to_vert.dot(u_vec)
-            proj_v = vec_to_vert.dot(v_vec)
-
-            if proj_u < min_u:
-                min_u = proj_u
-            if proj_u > max_u:
-                max_u = proj_u
-            if proj_v < min_v:
-                min_v = proj_v
-            if proj_v > max_v:
-                max_v = proj_v
-
-        # Determine the Grid Origin based on Alignment
-        align = obj.TileAlignment
-        origin_offset = FreeCAD.Vector(0, 0, 0)
-
-        if align == "Center":
-            mid_u = (min_u + max_u) / 2
-            mid_v = (min_v + max_v) / 2
-            origin_offset = (u_vec * mid_u) + (v_vec * mid_v)
-        elif align == "BottomLeft":
-            origin_offset = (u_vec * min_u) + (v_vec * min_v)
-        elif align == "BottomRight":
-            origin_offset = (u_vec * max_u) + (v_vec * min_v)
-        elif align == "TopLeft":
-            origin_offset = (u_vec * min_u) + (v_vec * max_v)
-        elif align == "TopRight":
-            origin_offset = (u_vec * max_u) + (v_vec * max_v)
-
-        # Apply manual AlignmentOffset (X moves in U, Y moves in V, Z is ignored)
-        if hasattr(obj, "AlignmentOffset"):
-            align_shift = (u_vec * obj.AlignmentOffset.x) + (v_vec * obj.AlignmentOffset.y)
-            origin_offset = origin_offset.add(align_shift)
-
-        return center_point.add(origin_offset)
 
     def _build_cutters(self, obj, bbox, t_len, t_wid, j_len, j_wid, cut_thick):
         """
