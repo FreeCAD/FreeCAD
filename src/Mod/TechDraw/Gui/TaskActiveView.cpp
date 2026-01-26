@@ -39,6 +39,7 @@
 #include <Gui/View3DInventor.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/TechDraw/App/DrawPage.h>
 #include <Mod/TechDraw/App/DrawViewImage.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
@@ -108,25 +109,27 @@ void TaskActiveView::blockButtons(bool b) { Q_UNUSED(b); }
 std::vector<App::DocumentObject*> getVisible3DObjects(App::Document* doc, Gui::Document* guiDoc)
 {
     std::vector<App::DocumentObject*> visibleObjects;
-    
+
     if (!doc || !guiDoc) {
         return visibleObjects;
     }
-    
+
     // Get all objects in the document
     auto allObjects = doc->getObjects();
-    
+
     for (auto* obj : allObjects) {
-        // Check if object has a Shape property (most 3D objects do)
+        // Check if object has a Shape property (Part objects) or Mesh property (Mesh objects)
         App::Property* shapeProp = obj->getPropertyByName("Shape");
-        if (!shapeProp) {
+        App::Property* meshProp = obj->getPropertyByName("Mesh");
+        if (!shapeProp && !meshProp) {
             continue;
         }
-        
-        // Check if it's a relevant 3D object type
-        if (obj->isDerivedFrom(Part::Feature::getClassTypeId()) || 
+
+        // Check if it's a relevant 3D object type (Part, Mesh, or GeoFeature)
+        if (obj->isDerivedFrom(Part::Feature::getClassTypeId()) ||
+            obj->isDerivedFrom(Mesh::Feature::getClassTypeId()) ||
             obj->isDerivedFrom(App::GeoFeature::getClassTypeId())) {
-            
+
             // Check if the object is visible in the 3D view
             Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
             if (vp && vp->isVisible()) {

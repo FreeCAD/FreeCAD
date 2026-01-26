@@ -60,6 +60,10 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
 #include <Mod/Part/App/TopoShape.h>
+
+#include <Mod/Mesh/App/Mesh.h>
+#include <Mod/Mesh/App/MeshProperties.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Part/Gui/ViewProviderExt.h>
 #include <App/ComplexGeoData.h>
 #include <App/Material.h>
@@ -433,7 +437,7 @@ static std::vector<App::DocumentObject*> filterExportObjects(const std::vector<A
     return filtered;
 }
 
-// Helper function to tessellate a list of objects
+// Helper function to process objects - extract geometry from Part shapes or Mesh objects
 static std::vector<Export3DPDF::TessellationData> tessellateObjects(const std::vector<App::DocumentObject*>& objects)
 {
     std::vector<Export3DPDF::TessellationData> tessData;
@@ -442,33 +446,51 @@ static std::vector<Export3DPDF::TessellationData> tessellateObjects(const std::v
         if (!obj) continue;
 
         try {
-            auto* shapeProp = dynamic_cast<Part::PropertyPartShape*>(obj->getPropertyByName("Shape"));
-            if (!shapeProp) {
-                Base::Console().warning("Object '%s' has no Shape property, skipping\n", obj->getNameInDocument());
-                continue;
-            }
-
-            const Part::TopoShape& topoShape = shapeProp->getShape();
-            if (topoShape.isNull()) {
-                Base::Console().warning("Object '%s' has null shape, skipping\n", obj->getNameInDocument());
-                continue;
-            }
-
             Export3DPDF::TessellationData tessObj;
             tessObj.name = obj->getNameInDocument();
 
-            // Calculate adaptive tolerance based on object size
-            double tolerance = calculateTessellationTolerance(topoShape);
-
             std::vector<Base::Vector3d> points;
             std::vector<Data::ComplexGeoData::Facet> facets;
-            topoShape.getFaces(points, facets, tolerance);
+            bool geometryExtracted = false;
 
-            if (points.empty() || facets.empty()) {
-                Base::Console().warning("Object '%s' produced empty tessellation, skipping\n", obj->getNameInDocument());
+            // Try Part::PropertyPartShape first
+            auto* shapeProp = dynamic_cast<Part::PropertyPartShape*>(obj->getPropertyByName("Shape"));
+            if (shapeProp) {
+                const Part::TopoShape& topoShape = shapeProp->getShape();
+                if (!topoShape.isNull()) {
+                    // Calculate adaptive tolerance based on object size
+                    double tolerance = calculateTessellationTolerance(topoShape);
+                    topoShape.getFaces(points, facets, tolerance);
+                    geometryExtracted = true;
+                }
+            }
+
+            // If no Part shape, try Mesh::PropertyMeshKernel
+            if (!geometryExtracted) {
+                auto* meshProp = dynamic_cast<Mesh::PropertyMeshKernel*>(obj->getPropertyByName("Mesh"));
+                if (meshProp) {
+                    const Mesh::MeshObject& meshObject = meshProp->getValue();
+                    if (meshObject.countFacets() > 0) {
+                        // Mesh is already tessellated, just extract data
+                        // Accuracy parameter is ignored for mesh objects
+                        meshObject.getFaces(points, facets, 0.0);
+                        geometryExtracted = true;
+                    }
+                }
+            }
+
+            // Skip if no geometry could be extracted
+            if (!geometryExtracted) {
+                Base::Console().warning("Object '%s' has no Shape or Mesh property, skipping\n", obj->getNameInDocument());
                 continue;
             }
 
+            if (points.empty() || facets.empty()) {
+                Base::Console().warning("Object '%s' produced empty geometry, skipping\n", obj->getNameInDocument());
+                continue;
+            }
+
+            // Convert points to flat vertex array
             tessObj.vertices.reserve(points.size() * 3);
             for (const auto& pt : points) {
                 tessObj.vertices.push_back(pt.x);
@@ -476,6 +498,7 @@ static std::vector<Export3DPDF::TessellationData> tessellateObjects(const std::v
                 tessObj.vertices.push_back(pt.z);
             }
 
+            // Convert facets to flat triangle index array
             tessObj.triangles.reserve(facets.size() * 3);
             for (const auto& f : facets) {
                 tessObj.triangles.push_back(static_cast<int>(f.I1));
@@ -514,6 +537,7 @@ static std::vector<Export3DPDF::TessellationData> tessellateObjects(const std::v
                             tessObj.material.name = "Material";
                         }
                     } else {
+                        // Fallback for other geometry view providers (including Mesh)
                         auto* geoVP = dynamic_cast<Gui::ViewProviderGeometryObject*>(vp);
                         if (geoVP) {
                             const auto& materials = geoVP->ShapeAppearance.getValues();

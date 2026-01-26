@@ -10,6 +10,7 @@ set(Export3DPDFGui_LIBS
     Export3DPDF
     Part
     PartGui
+    Mesh
 )
 
 SET(Export3DPDFGui_SRCS
