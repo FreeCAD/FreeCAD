@@ -245,7 +245,7 @@ void AssemblyLink::updateParentJoints()
                 continue;
             }
 
-            if (rigid) { // Flexible -> Rigid
+            if (rigid) {  // Flexible -> Rigid
                 if (hasObject(refObj)) {
                     // The joint currently points to a child (refObj) inside this AssemblyLink.
                     // We must repoint it to 'this' and prepend the child's name to the sub-elements.
@@ -263,8 +263,8 @@ void AssemblyLink::updateParentJoints()
             else {  // Rigid -> Flexible
                 if (refObj == this) {
                     // The joint currently points to 'this'.
-                    // We must extract the child's name from the sub-element, point to the child, and
-                    // strip the prefix.
+                    // We must extract the child's name from the sub-element, point to the child,
+                    // and strip the prefix.
                     std::vector<std::string> subs = prop->getSubValues();
                     if (subs.empty()) {
                         continue;
