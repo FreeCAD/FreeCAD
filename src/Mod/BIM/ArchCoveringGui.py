@@ -528,7 +528,8 @@ if FreeCAD.GuiUp:
         """
         A Task Panel for creating and editing Arch Covering objects.
 
-        This class manages user input and property states during the object creation lifecycle.
+        This class manages user input and property states using a session-based buffer (the
+        template) to ensure transactional stability and atomic undos.
 
         Parameters
         ----------
@@ -541,37 +542,34 @@ if FreeCAD.GuiUp:
 
         Notes
         -----
-        In creation mode (`obj` is None), this class creates a temporary, hidden
-        `App::FeaturePython` object (the "phantom") within the active document. This phantom object
-        serves as a proxy data container. It allows the UI widgets to bind to actual FreeCAD
-        properties, enabling native features like:
+        This class employs a "Buffered Proxy" pattern. Instead of binding UI widgets directly to the
+        final architectural objects, it binds exclusively to an internal, hidden _CoveringTemplate
+        (the template). This ensures:
 
-        *   Unit conversion and display.
-        *   The Expression Engine (f(x) support).
-        *   Default value management via user parameters.
+        *   Batch creation: A single set of UI settings can be applied to multiple faces.
+        *   Undo stability: Internal UI state changes do not pollute the document's undo history.
+        *   Atomic continue: Each object created in "Continue" mode is a separate undoable event.
 
         Data flow and binding:
 
-        1.  **Initialization:** UI widgets (`QuantitySpinBox`, etc.) are initialized. If in creation
-            mode, they bind to the phantom's properties. If in edit mode, they bind to the real
-            object's properties.
-        2.  **Synchronization:** while `ExpressionBinding` handles the visual indication of
-            expressions, value propagation is explicitly managed. The `_sync_ui_to_target()` method
-            pulls "rawValue" data from widgets and updates the target object (phantom or real)
-            before any logic uses it.
-        3.  **Transfer:**
-            *   *Creation:* When the user accepts the dialog, the properties are read from the fully
-                configured phantom object and copied (via `_transfer_props`) to the newly
-                instantiated real Covering objects.
-            *   *Edition:* The UI writes directly to the existing object (via sync), so no transfer
-                step is required.
+        1.  **Initialization:** the UI widgets bind exclusively to the template buffer. If in
+            Edit Mode, the template is initialized once with the values of the real object.
+        2.  **Synchronization:** when the user interacts with the UI, the _sync_ui_to_target()
+            method updates the properties of the template buffer.
+        3.  **Transfer (the flush):** When accept() is called:
+            *   A new, short-lived document transaction is opened.
+            *   In Creation: New objects are instantiated and settings are stamped from the
+                template master using template.apply_to(new_obj).
+            *   In Edition: The existing object is updated using template.apply_to(obj_to_edit).
+            *   The transaction is committed immediately.
+        4.  **Cleanup:** The template is destroyed only when the panel is closed, ensuring
+            it never appears in the document history or Tree View.
         """
 
         def __init__(self, command=None, obj=None, selection=None):
             self.command = command
             self.obj_to_edit = obj
-            self.phantom = None
-            self.target_obj = None
+            self.template = _CoveringTemplate()
             self.selected_obj = None
             self.selected_sub = None
             # Keep references to ExpressionBinding objects to prevent garbage collection
@@ -583,18 +581,12 @@ if FreeCAD.GuiUp:
             else:
                 self.selection_list = selection if selection else []
 
-            # Determine if we are in edit mode or creation mode
+            # Initialize state from existing object or defaults
             if self.obj_to_edit:
-                self.target_obj = self.obj_to_edit
-                FreeCAD.ActiveDocument.openTransaction("Edit Covering")
+                self.template.copy_from(self.obj_to_edit)
+                self.stored_thickness = self.obj_to_edit.TileThickness.Value
             else:
-                FreeCAD.ActiveDocument.openTransaction("Create Covering")
-
-                # Create a lightweight phantom object to hold properties for the UI
-                self.phantom = Arch.makeCovering(name="CoveringSettings")
-                self.phantom.ViewObject.hide()
-
-                self.target_obj = self.phantom
+                self.stored_thickness = params.get_param_arch("CoveringThickness")
 
             # Smart Face Detection for pre-selection
             resolved_selection = []
@@ -602,7 +594,7 @@ if FreeCAD.GuiUp:
 
             for item in self.selection_list:
                 if not isinstance(item, tuple):
-                    # Access via Proxy of the target object (phantom or real)
+                    # Access via Proxy of the target object (template buffer)
                     # This ensures we use the logic defined in _Covering
                     face = Arch.getFaceName(item, view_dir)
                     if face:
@@ -640,13 +632,10 @@ if FreeCAD.GuiUp:
 
             # Handle defaults and initial state
             if self.obj_to_edit:
-                self.stored_thickness = self.obj_to_edit.TileThickness.Value
                 self._loadExistingData()
-                if not FreeCAD.ActiveDocument.HasPendingTransaction:
-                    FreeCAD.ActiveDocument.openTransaction("Edit Covering")
             else:
-                self.stored_thickness = params.get_param_arch("CoveringThickness")
                 # Note: widget defaults are loaded in _setupTilesPage
+                pass
 
         def _updateSelectionUI(self):
             """Updates the selection text and tooltip based on current selection state."""
@@ -750,7 +739,7 @@ if FreeCAD.GuiUp:
                 ]
             )
             self.combo_mode.setToolTip(translate("Arch", "The type of finish to create"))
-            self.combo_mode.setCurrentText(self.target_obj.FinishMode)
+            self.combo_mode.setCurrentText(self.template.buffer.FinishMode)
             self.combo_mode.currentIndexChanged.connect(self.onModeChanged)
             top_form.addRow(translate("Arch", "Mode:"), self.combo_mode)
 
@@ -795,13 +784,14 @@ if FreeCAD.GuiUp:
 
         # Helper for binding properties to a quantity spinbox with default
         def _setup_bound_spinbox(self, prop_name, tooltip):
+            """Binds a quantity spinbox to the template buffer."""
             sb = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
-            prop = getattr(self.target_obj, prop_name)
+            prop = getattr(self.template.buffer, prop_name)
             sb.setProperty("unit", prop.getUserPreferred()[2])
             sb.setToolTip(translate("Arch", tooltip))
 
             # This enables the f(x) icon, but we don't rely on it for value syncing anymore
-            FreeCADGui.ExpressionBinding(sb).bind(self.target_obj, prop_name)
+            FreeCADGui.ExpressionBinding(sb).bind(self.template.buffer, prop_name)
 
             sb.setProperty("rawValue", prop.Value)
             return sb
@@ -838,7 +828,7 @@ if FreeCAD.GuiUp:
                 ["Center", "TopLeft", "TopRight", "BottomLeft", "BottomRight"]
             )
             self.combo_align.setToolTip(translate("Arch", "The alignment of the tile grid"))
-            self.combo_align.setCurrentText(self.target_obj.TileAlignment)
+            self.combo_align.setCurrentText(self.template.buffer.TileAlignment)
             form.addRow(translate("Arch", "Alignment:"), self.combo_align)
 
             self.sb_rot = self._setup_bound_spinbox(
@@ -886,14 +876,14 @@ if FreeCAD.GuiUp:
             visual_form.addRow(translate("Arch", "Texture Image:"), h_tex)
 
         def _loadExistingData(self):
-            mode = self.obj_to_edit.FinishMode
+            mode = self.template.buffer.FinishMode
             self.combo_mode.setCurrentText(mode)
             self.onModeChanged(self.combo_mode.currentIndex())
 
             # Numerical values are auto-loaded by ExpressionBinding
-            self.combo_align.setCurrentText(self.obj_to_edit.TileAlignment)
+            self.combo_align.setCurrentText(self.template.buffer.TileAlignment)
 
-            self.le_pat.setText(self.obj_to_edit.PatternFile)
+            self.le_pat.setText(self.template.buffer.PatternFile)
 
             if hasattr(self.obj_to_edit.ViewObject, "TextureImage"):
                 self.le_tex_image.setText(self.obj_to_edit.ViewObject.TextureImage)
@@ -927,8 +917,7 @@ if FreeCAD.GuiUp:
                     self.sb_thick.setEnabled(True)
                     # Restore stored thickness
                     self.sb_thick.setProperty("rawValue", self.stored_thickness)
-                    if self.obj_to_edit:
-                        self.obj_to_edit.TileThickness = self.stored_thickness
+                    self.template.buffer.TileThickness = self.stored_thickness
 
                 else:  # Parametric pattern mode
                     # Save current thickness before zeroing
@@ -938,12 +927,9 @@ if FreeCAD.GuiUp:
                     # Disable and zero
                     self.sb_thick.setEnabled(False)
                     self.sb_thick.setProperty("rawValue", 0.0)
+                    self.template.buffer.TileThickness = 0.0
 
-                    if self.obj_to_edit:
-                        self.obj_to_edit.TileThickness = 0.0
-
-            if self.obj_to_edit:
-                self.obj_to_edit.FinishMode = self.combo_mode.currentText()
+            self.template.buffer.FinishMode = self.combo_mode.currentText()
 
         def isPicking(self):
             return self.btn_selection.isChecked()
@@ -981,15 +967,13 @@ if FreeCAD.GuiUp:
             for s in sel:
                 obj = s.Object
 
-                # If the user picks the covering itself, ignore it to avoid circular references.
-                if obj == self.phantom or obj == self.obj_to_edit:
+                # If the user picks the template or the object being edited, ignore it.
+                if obj == self.template.buffer or obj == self.obj_to_edit:
                     continue
 
                 # PartDesign Normalization
                 for parent in obj.InList:
                     if parent.isDerivedFrom("PartDesign::Body"):
-                        # Check if obj is part of the Body's geometry definition
-                        # Group contains features (Pad, Pocket), BaseFeature contains the root
                         if (obj in parent.Group) or (getattr(parent, "BaseFeature", None) == obj):
                             obj = parent
                             break
@@ -1008,8 +992,6 @@ if FreeCAD.GuiUp:
                     else:
                         new_list.append(obj)
 
-            # If we are editing, we can only assign one base. If the user selects multiple,
-            # we keep only the most recent one to match the behavior of the assignment logic below.
             if self.obj_to_edit and new_list:
                 new_list = [new_list[-1]]
 
@@ -1049,12 +1031,6 @@ if FreeCAD.GuiUp:
                 # Observer might already be removed, ignore
                 pass
 
-        def _cleanup_and_close(self):
-            """Removes temporary oobservers, then closes the task panel."""
-            # Standard cleanup for listeners and UI
-            self._unregister_observer()
-            FreeCADGui.Control.closeDialog()
-
         def _transfer_props(self, source, target, props):
             """Copies values and expressions from the source object to the target."""
             for prop in props:
@@ -1075,25 +1051,27 @@ if FreeCAD.GuiUp:
 
             This ensures that the next time the tool is used, it defaults to the last-used values.
             """
-            params.set_param_arch("CoveringFinishMode", self.target_obj.FinishMode)
-            params.set_param_arch("CoveringAlignment", self.target_obj.TileAlignment)
-            params.set_param_arch("CoveringRotation", self.target_obj.Rotation.Value)
+            params.set_param_arch("CoveringFinishMode", self.template.buffer.FinishMode)
+            params.set_param_arch("CoveringAlignment", self.template.buffer.TileAlignment)
+            params.set_param_arch("CoveringRotation", self.template.buffer.Rotation.Value)
 
-            if self.target_obj.FinishMode != "Hatch Pattern":
-                params.set_param_arch("CoveringLength", self.target_obj.TileLength.Value)
-                params.set_param_arch("CoveringWidth", self.target_obj.TileWidth.Value)
-                params.set_param_arch("CoveringJoint", self.target_obj.JointWidth.Value)
-                if self.target_obj.FinishMode == "Solid Tiles":
-                    params.set_param_arch("CoveringThickness", self.target_obj.TileThickness.Value)
+            if self.template.buffer.FinishMode != "Hatch Pattern":
+                params.set_param_arch("CoveringLength", self.template.buffer.TileLength.Value)
+                params.set_param_arch("CoveringWidth", self.template.buffer.TileWidth.Value)
+                params.set_param_arch("CoveringJoint", self.template.buffer.JointWidth.Value)
+                if self.template.buffer.FinishMode == "Solid Tiles":
+                    params.set_param_arch(
+                        "CoveringThickness", self.template.buffer.TileThickness.Value
+                    )
 
         def _sync_ui_to_target(self):
             """
-            Manually transfers values from all UI widgets to the target object.
+            Manually transfers values from all UI widgets to the template buffer.
 
-            This ensures that the target object (whether Phantom or Real) reflects
-            the state of the dialog before any logic uses it.
+            This ensures that the template reflects the state of the dialog before any logic
+            uses it.
             """
-            obj = self.target_obj
+            obj = self.template.buffer
 
             # Sync numeric properties directly from the widget property. Use "rawValue" to get the
             # float value, ignoring unit strings
@@ -1144,32 +1122,11 @@ if FreeCAD.GuiUp:
                stack trace appears in FreeCAD's Report View for notification purposes.
             """
             try:
-                # Sync all values from UI widgets (bound and unbound) to the target object
+                # Sync all values from UI widgets (bound and unbound) to the template buffer
                 self._sync_ui_to_target()
 
-                # Define list of properties to transfer from phantom to real object.
-                # This ensures we copy only the configuration specific to the chosen mode
-                props_to_transfer = []
-                system_props = [
-                    "Shape",
-                    "Proxy",
-                    "Label",
-                    "Base",
-                    "ExpressionEngine",
-                    "Placement",
-                    "Visibility",
-                    "ViewObject",
-                ]
-
-                for prop in self.target_obj.PropertiesList:
-                    if prop in system_props:
-                        continue
-
-                    status = self.target_obj.getPropertyStatus(prop)
-                    if "ReadOnly" in status:
-                        continue
-
-                    props_to_transfer.append(prop)
+                # Open a new transaction for the document modification
+                FreeCAD.ActiveDocument.openTransaction("Covering")
 
                 # Prepare visual properties
                 tex_image = self.le_tex_image.text()
@@ -1192,20 +1149,19 @@ if FreeCAD.GuiUp:
                             # Create new object
                             new_obj = Arch.makeCovering(base)
 
-                            # Copy properties from the synchronized phantom object
-                            self._transfer_props(self.target_obj, new_obj, props_to_transfer)
+                            # Copy properties from the template buffer
+                            self.template.apply_to(new_obj)
 
                             # Apply texture to view object
                             if hasattr(new_obj.ViewObject, "TextureImage"):
                                 new_obj.ViewObject.TextureImage = tex_image
                 else:
                     # Edition mode
-                    # The properties on self.target_obj (which is self.obj_to_edit) are already
-                    # updated by _sync_ui_to_target call above.
+                    self.template.apply_to(self.obj_to_edit)
 
                     # Apply texture to view object
-                    if hasattr(self.target_obj.ViewObject, "TextureImage"):
-                        self.target_obj.ViewObject.TextureImage = tex_image
+                    if hasattr(self.obj_to_edit.ViewObject, "TextureImage"):
+                        self.obj_to_edit.ViewObject.TextureImage = tex_image
 
                 # Recompute the document inside the transaction to catch geometry errors
                 FreeCAD.ActiveDocument.recompute()
@@ -1215,6 +1171,8 @@ if FreeCAD.GuiUp:
 
                 # Handle the 'continue' workflow
                 if not self.obj_to_edit and self.chk_continue.isChecked():
+                    # Commit the transaction so the current object is atomic in the Undo stack
+                    FreeCAD.ActiveDocument.commitTransaction()
                     FreeCADGui.Selection.clearSelection()
                     self.selection_list = []
                     self.selected_obj = None
@@ -1222,11 +1180,6 @@ if FreeCAD.GuiUp:
                     self._updateSelectionUI()
                     self.setPicking(True)
                     return False
-
-                # Remove phantom before commit to keep it out of permanent history
-                if self.phantom:
-                    self.phantom.Document.removeObject(self.phantom.Name)
-                    self.phantom = None
 
                 # Commit the transaction successfully
                 FreeCAD.ActiveDocument.commitTransaction()
@@ -1239,17 +1192,87 @@ if FreeCAD.GuiUp:
                 traceback.print_exc()
                 FreeCAD.Console.PrintError(f"Error updating covering: {e}\n")
 
-            if self.obj_to_edit:
-                FreeCADGui.ActiveDocument.resetEdit()
-
             self._cleanup_and_close()
             return True
 
         def reject(self):
-            if FreeCAD.ActiveDocument.HasPendingTransaction:
-                FreeCAD.ActiveDocument.abortTransaction()
+            """Terminates the session and cleans up the template."""
+            self._cleanup_and_close()
 
+        def _cleanup_and_close(self):
+            """Removes temporary observers and the template buffer, then closes the task panel."""
+            self._unregister_observer()
+            if self.template:
+                self.template.destroy()
+                self.template = None
             if self.obj_to_edit:
                 FreeCADGui.ActiveDocument.resetEdit()
+            FreeCADGui.Control.closeDialog()
 
-            self._cleanup_and_close()
+
+class _CoveringTemplate:
+    """
+    Manages a hidden internal buffer for Arch Covering properties.
+
+    This class decouples the UI state from the document's undo history, providing a sandbox for
+    expressions and a master template for batch creation.
+    """
+
+    def __init__(self, name="CoveringTemplate"):
+        import Arch
+
+        # Create the internal buffer object
+        self.buffer = Arch.makeCovering(name=name)
+
+        # Ensure the buffer is truly invisible to the user
+        if self.buffer.ViewObject:
+            self.buffer.ViewObject.ShowInTree = False
+            self.buffer.ViewObject.hide()
+
+    def _get_transferable_props(self, obj):
+        """Returns a list of properties that can be safely copied."""
+        system_props = [
+            "Shape",
+            "Proxy",
+            "Label",
+            "Base",
+            "ExpressionEngine",
+            "Placement",
+            "Visibility",
+            "ViewObject",
+        ]
+        props = []
+        for prop in obj.PropertiesList:
+            if prop in system_props:
+                continue
+            if "ReadOnly" in obj.getPropertyStatus(prop):
+                continue
+            props.append(prop)
+        return props
+
+    def copy_from(self, source):
+        """Initializes the buffer with values and expressions from a source object."""
+        for prop in self._get_transferable_props(source):
+            setattr(self.buffer, prop, getattr(source, prop))
+            if hasattr(source, "ExpressionEngine"):
+                for path, expr in source.ExpressionEngine:
+                    if path == prop:
+                        self.buffer.setExpression(prop, expr)
+                        break
+
+    def apply_to(self, target):
+        """Transfers the buffer state (values and expressions) to a target object."""
+        for prop in self._get_transferable_props(self.buffer):
+            setattr(target, prop, getattr(self.buffer, prop))
+            if hasattr(self.buffer, "ExpressionEngine"):
+                for path, expr in self.buffer.ExpressionEngine:
+                    if path == prop:
+                        target.setExpression(prop, expr)
+                        break
+
+    def destroy(self):
+        """Safely removes the buffer from the document."""
+        doc = self.buffer.Document
+        if doc and doc.getObject(self.buffer.Name):
+            doc.removeObject(self.buffer.Name)
+        self.buffer = None

@@ -28,21 +28,21 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
     def tearDown(self):
         # Restore the global parameter to prevent test pollution
         params.set_param_arch("CoveringJoint", self.original_joint_width)
-        # Ensure any open task panel is closed and the phantom is removed
+        # Ensure any open task panel is closed and the template is removed
         if self.panel:
             self.panel.reject()
         self.pump_gui_events()
         super().tearDown()
 
-    def test_phantom_expression_transfer(self):
-        """Verify that expressions on the phantom object are transferred to real objects."""
-        self.printTestMessage("expression transfer from phantom...")
+    def test_template_expression_transfer(self):
+        """Verify that expressions on the template object are transferred to real objects."""
+        self.printTestMessage("expression transfer from template...")
         # Open panel in creation mode (no obj passed)
         self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
 
-        # Set an expression on the phantom property (simulating user entering f(x) in UI)
+        # Set an expression on the template property (simulating user entering f(x) in UI)
         expression = "100mm + 200mm"
-        self.panel.phantom.setExpression("TileLength", expression)
+        self.panel.template.buffer.setExpression("TileLength", expression)
 
         # Assign a target face
         self.panel.selection_list = [(self.box, ["Face6"])]
@@ -52,7 +52,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         self.pump_gui_events()
 
         # Assert
-        # Internal name may vary (e.g. Covering001) due to phantom creation.
+        # Internal name may vary (e.g. Covering001) due to template creation.
         # Find by type instead.
         coverings = [o for o in self.document.Objects if Draft.get_type(o) == "Covering"]
         self.assertEqual(len(coverings), 1, "Expected exactly one Covering object to be created")
@@ -102,17 +102,17 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         selection = [(self.box, ["Face1"]), (self.box, ["Face2"]), (self.box, ["Face3"])]
         self.panel = ArchCoveringGui.ArchCoveringTaskPanel(selection=selection)
 
-        # Manipulate the widget to ensure the binding and the underlying phantom object are updated
+        # Manipulate the widget to ensure the binding and the underlying template object are updated
         # correctly.
         target_width = 450.0
         self.panel.sb_width.setProperty("rawValue", target_width)
-        # Let the Qt event loop process the change and update the phantom via binding
+        # Let the Qt event loop process the change and update the template via binding
         self.pump_gui_events()
 
         self.panel.accept()
         self.pump_gui_events()
 
-        # Verify 3 new objects created + 1 (the initial box) - 1 (the phantom was deleted)
+        # Verify 3 new objects created + 1 (the initial box) - 1 (the template was deleted)
         self.assertEqual(len(self.document.Objects), initial_count + 3)
 
         # Safe filtering using Draft utility to avoid 'PrimitivePy' attribute errors
@@ -136,8 +136,8 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         self.assertEqual(self.panel.le_selection.text(), "No selection")
         self.assertTrue(self.panel.isPicking(), "Picking should be re-armed automatically.")
 
-        # Ensure phantom still exists for the next round
-        self.assertIsNotNone(self.document.getObject(self.panel.phantom.Name))
+        # Ensure template still exists for the next round
+        self.assertIsNotNone(self.document.getObject(self.panel.template.buffer.Name))
 
     def test_mode_switching_ux(self):
         """Verify that thickness is disabled when entering pattern modes."""
@@ -160,12 +160,12 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         # Should restore the previous default thickness
         self.assertGreater(self.panel.sb_thick.property("rawValue"), 0.0)
 
-    def test_cleanup_removes_phantom(self):
-        """Ensure the phantom object is deleted on close/reject."""
-        self.printTestMessage("phantom cleanup on reject...")
+    def test_cleanup_removes_template(self):
+        """Ensure the template object is deleted on close/reject."""
+        self.printTestMessage("template cleanup on reject...")
         self.panel = ArchCoveringGui.ArchCoveringTaskPanel()
-        phantom_name = self.panel.phantom.Name
-        self.assertIsNotNone(self.document.getObject(phantom_name))
+        template_name = self.panel.template.buffer.Name
+        self.assertIsNotNone(self.document.getObject(template_name))
 
         # Close the panel
         self.panel.reject()
@@ -173,7 +173,7 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
 
         # Verify the object is gone from the document
         self.assertIsNone(
-            self.document.getObject(phantom_name), "Phantom object was not cleaned up."
+            self.document.getObject(template_name), "Phantom object was not cleaned up."
         )
 
     def test_self_dependency_filter(self):
