@@ -496,9 +496,8 @@ private:
             }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-
-            for (size_t i = 0; i < vals.size(); ++i) {
-                auto cstr = vals[i];
+            size_t cstrIndex = 0;
+            for (auto cstr : vals) {
                 if (skipConstraint(cstr)) {
                     continue;
                 }
@@ -512,7 +511,7 @@ private:
                 if (firstIndex != GeoEnum::GeoUndef) {
                     listOfLabelsToScale.push_back(
                         LabelToScale {
-                            .constrId = static_cast<int>(i),
+                            .constrId = static_cast<int>(cstrIndex),
                             .position = cstr->LabelPosition,
                             .distance = cstr->LabelDistance
                         }
@@ -571,6 +570,7 @@ private:
                 }
 
                 ShapeConstraints.push_back(std::move(newConstr));
+                cstrIndex++;
             }
         }
     }
