@@ -2162,7 +2162,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         def _fallbackOffset(face):
             """Robust but slower fallback using Path Area utilities."""
             msg = translate(
-                "PathWaterline", "Fast 2D/3D Tool compensation failed. Falling back to slow Tool compensation. "
+                "PathWaterline",
+                "Fast 2D/3D Tool compensation failed. Falling back to slow Tool compensation. ",
             )
             msg += translate("PathWaterline", "Examine the generated path for any errors!")
             FreeCAD.Console.PrintWarning(msg + "\n")
@@ -2205,22 +2206,24 @@ class ObjectWaterline(PathOp.ObjectOp):
                         # Calculation took too long; reject even if successful
                         warn_msg = translate(
                             "PathWaterline",
-                            "The Fast 2D Tool compensation algorithm took longer than expected. \n"
+                            "The Fast 2D Tool compensation algorithm took longer than expected. \n",
                         )
                         warn_msg += translate(
                             "PathWaterline",
-                            "Result rejected for stability and passed to the 3D Tool compensation algorithm. \n"
+                            "Result rejected for stability and passed to the 3D Tool compensation algorithm. \n",
                         )
                         warn_msg += translate(
                             "PathWaterline",
-                            "Consider disabling the Fast Tool compensation algorithm for this specific model. "
+                            "Consider disabling the Fast Tool compensation algorithm for this specific model. ",
                         )
                         FreeCAD.Console.PrintWarning(warn_msg + "\n")
                         offsetResult = None
                 except Exception as e:
                     failed_twice = True
                     Path.Log.debug(
-                        "Fast 2D Tool compensation failed: {}. Falling back to 3D Tool compensation".format(str(e))
+                        "Fast 2D Tool compensation failed: {}. Falling back to 3D Tool compensation".format(
+                            str(e)
+                        )
                     )
 
             if not offsetResult:
@@ -2245,7 +2248,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                 except Exception as e:
                     # Fall Back to Slow getOffsetArea
                     Path.Log.debug(
-                        "Primary Fast 2D/3D Tool Compensation failed: {}. Falling back to getOffsetArea".format(str(e))
+                        "Primary Fast 2D/3D Tool Compensation failed: {}. Falling back to getOffsetArea".format(
+                            str(e)
+                        )
                     )
 
             if not offsetResult:
@@ -2545,7 +2550,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 pFc = cIds[af]
                 if pFc == -1:
                     # Simple, independent region
-                    holds[af] = csFaces[af] # place face in hold
+                    holds[af] = csFaces[af]  # place face in hold
                 else:
                     # Compound region
                     cnt = len(pFc)
@@ -2563,7 +2568,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             for af in range(0, lenCsF):
                 if holds[af]:
-                    useFaces.append(holds[af]) # save independent solid
+                    useFaces.append(holds[af])  # save independent solid
         # Eif
 
         if len(useFaces) > 0:
