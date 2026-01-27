@@ -36,6 +36,10 @@ on:
         default: false
         type: boolean
         required: false
+      testCoinNodeSnapshots:
+        default: true
+        type: boolean
+        required: false
       allowedToFail:
         default: false
         type: boolean
@@ -177,6 +181,26 @@ jobs:
           testCommand: xvfb-run python3 ./.github/scripts/run_gui_tests.py "${{ env.builddir }}"
           logFile: ${{ env.logdir }}TestGUIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Coin node snapshot visual tests on build dir
+        if: inputs.testCoinNodeSnapshots
+        timeout-minutes: 15
+        uses: ./.github/workflows/actions/runPythonTests
+        with:
+          testDescription: "Coin node snapshot visual tests on build dir"
+          testCommand: |
+            FC_VISUAL_OUT_DIR="/tmp/FreeCADTesting/CoinNodeSnapshots" \
+            xvfb-run -a -s "-screen 0 1024x768x24" \
+              "${{ env.builddir }}/bin/FreeCAD" -t TestCoinNodeSnapshots
+          logFile: ${{ env.logdir }}TestCoinNodeSnapshotsBuild.log
+          reportFile: ${{env.reportdir}}${{ env.reportfilename }}
+
+      - name: Upload Coin node snapshot artifacts (on failure)
+        if: failure() && inputs.testCoinNodeSnapshots
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        with:
+          name: ${{ inputs.artifactBasename }}-CoinNodeSnapshots
+          path: /tmp/FreeCADTesting/CoinNodeSnapshots
 
       - name: C++ tests
         timeout-minutes: 1

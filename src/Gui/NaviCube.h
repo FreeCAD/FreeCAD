@@ -28,6 +28,7 @@
 #include <FCGlobal.h>
 
 class SoEvent;
+class SoNode;
 
 namespace Gui
 {
@@ -48,7 +49,6 @@ public:
     };
     NaviCube(Gui::View3DInventorViewer* viewer);
     virtual ~NaviCube();
-    void drawNaviCube();
     void createContextMenu(const std::vector<std::string>& cmd);
     bool processSoEvent(const SoEvent* ev);
     void setCorner(Corner);
@@ -74,6 +74,7 @@ public:
     void setNaviCubeLabels(const std::vector<std::string>& labels);
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
     static int getNaviCubeSize();
+    SoNode* getCoinNode() const;
 
 private:
     NaviCubeImplementation* m_NaviCubeImplementation;
