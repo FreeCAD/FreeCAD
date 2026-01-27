@@ -1149,15 +1149,27 @@ if FreeCAD.GuiUp:
 
                 # Define list of properties to transfer from phantom to real object.
                 # This ensures we copy only the configuration specific to the chosen mode
-                props_to_transfer = ["Rotation", "FinishMode", "TileAlignment"]
-                if self.combo_mode.currentText() == "Hatch Pattern":
-                    props_to_transfer.extend(["PatternFile", "PatternName", "PatternScale"])
-                else:
-                    props_to_transfer.extend(
-                        ["TileLength", "TileWidth", "JointWidth", "TileOffset"]
-                    )
-                    if self.combo_mode.currentText() == "Solid Tiles":
-                        props_to_transfer.append("TileThickness")
+                props_to_transfer = []
+                system_props = [
+                    "Shape",
+                    "Proxy",
+                    "Label",
+                    "Base",
+                    "ExpressionEngine",
+                    "Placement",
+                    "Visibility",
+                    "ViewObject",
+                ]
+
+                for prop in self.target_obj.PropertiesList:
+                    if prop in system_props:
+                        continue
+
+                    status = self.target_obj.getPropertyStatus(prop)
+                    if "ReadOnly" in status:
+                        continue
+
+                    props_to_transfer.append(prop)
 
                 # Prepare visual properties
                 tex_image = self.le_tex_image.text()
@@ -1213,9 +1225,7 @@ if FreeCAD.GuiUp:
 
                 # Remove phantom before commit to keep it out of permanent history
                 if self.phantom:
-                    doc = getattr(self.phantom, "Document", None)
-                    if doc and doc.getObject(self.phantom.Name):
-                        doc.removeObject(self.phantom.Name)
+                    self.phantom.Document.removeObject(self.phantom.Name)
                     self.phantom = None
 
                 # Commit the transaction successfully
