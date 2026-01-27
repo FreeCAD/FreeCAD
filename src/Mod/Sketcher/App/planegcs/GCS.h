@@ -321,6 +321,7 @@ public:
         int tagId = 0,
         bool driving = true
     );
+    int addConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2, int tagId = 0, bool driving = true);
     int addConstraintL2LAngle(Line& l1, Line& l2, double* angle, int tagId = 0, bool driving = true);
     int addConstraintL2LAngle(
         Point& l1p1,

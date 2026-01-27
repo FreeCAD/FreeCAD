@@ -361,6 +361,8 @@ public:
     int addParallelConstraint(int geoId1, int geoId2);
     /// add a perpendicular constraint between two lines
     int addPerpendicularConstraint(int geoId1, int geoId2);
+    /// add a perpendicular constraint between two points and a line
+    int addPerpendicularConstraint(int geoId1, PointPos pos1, int geoId2, PointPos pos2, int geoId3);
     /// add a tangency constraint between two geometries
     int addTangentConstraint(int geoId1, int geoId2);
     int addTangentLineAtBSplineKnotConstraint(

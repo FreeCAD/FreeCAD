@@ -1199,6 +1199,20 @@ ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point
     ConstraintPerpendicular::rescale();
 }
 
+ConstraintPerpendicular::ConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2)
+{
+    pvec.push_back(l1p1.x);
+    pvec.push_back(l1p1.y);
+    pvec.push_back(l1p2.x);
+    pvec.push_back(l1p2.y);
+    pvec.push_back(l2.p1.x);
+    pvec.push_back(l2.p1.y);
+    pvec.push_back(l2.p2.x);
+    pvec.push_back(l2.p2.y);
+    origpvec = pvec;
+    ConstraintPerpendicular::rescale();
+}
+
 ConstraintType ConstraintPerpendicular::getTypeId()
 {
     return Perpendicular;
