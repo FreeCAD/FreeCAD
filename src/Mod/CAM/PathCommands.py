@@ -24,7 +24,6 @@
 import FreeCAD
 import Part
 import Path
-import traceback
 
 import Path.Dressup.Utils as PathDressup
 
@@ -32,7 +31,9 @@ from PathScripts.PathUtils import loopdetect
 from PathScripts.PathUtils import wiredetect
 from PathScripts.PathUtils import horizontalEdgeLoop
 from PathScripts.PathUtils import tangentEdgeLoop
+from PathScripts.PathUtils import horizontalCoplanarFaces
 from PathScripts.PathUtils import horizontalFaceLoop
+from PathScripts.PathUtils import innerEdgesFromFace
 from PathScripts.PathUtils import addToJob
 from PathScripts.PathUtils import findParentJob
 
@@ -64,7 +65,8 @@ class _CommandSelectLoop:
             "ToolTip": QT_TRANSLATE_NOOP(
                 "CAM_SelectLoop",
                 "Completes the selection of edges or faces that form a loop"
-                "\n\nSelect faces: searching loop faces which form the walls."
+                "\n\nSelect vertical faces: searching loop faces which form the walls."
+                "\n\nSelect horizontal face: searching inner edges of the face or coplanar faces."
                 "\n\nSelect one edge: searching loop edges in horizontal plane"
                 "\nor wire which contain selected edge."
                 "\n\nSelect two edges: searching loop edges in wires of the shape"
@@ -74,90 +76,70 @@ class _CommandSelectLoop:
         }
 
     def IsActive(self):
-        if bool(FreeCADGui.Selection.getSelection()) is False:
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if not selection:
             return False
-        try:
-            sel = FreeCADGui.Selection.getSelectionEx()[0]
-            if sel.Object == self.obj and sel.SubElementNames == self.sub:
-                return self.active
-            self.obj = sel.Object
-            self.sub = sel.SubElementNames
-            if sel.SubObjects:
-                # self.active = self.formsPartOfALoop(sel.Object, sel.SubObjects[0], sel.SubElementNames)
-                self.active = True
-            else:
-                self.active = False
-            return self.active
-        except Exception as exc:
-            Path.Log.error(exc)
-            traceback.print_exc(exc)
+
+        if not selection[0].SubObjects:
             return False
+
+        return True
 
     def Activated(self):
-        from PathScripts.PathUtils import horizontalEdgeLoop, horizontalFaceLoop
-
-        if not FreeCADGui.Selection.getSelectionEx():
+        selection = FreeCADGui.Selection.getSelectionEx()
+        if not selection:
             return
 
-        sel = FreeCADGui.Selection.getSelectionEx()[0]
+        sel = selection[0]
         if not sel.SubObjects:
             return
 
         obj = sel.Object
-        sub = sel.SubObjects
-        names = sel.SubElementNames
-        loop = None
+        subs = sel.SubObjects
+        subNames = sel.SubElementNames
+        edges = None
+        names = None
 
-        # Face selection
-        if "Face" in names[0]:
-            loop = horizontalFaceLoop(obj, sub[0], names)
-            if loop:
-                FreeCADGui.Selection.clearSelection()
-                FreeCADGui.Selection.addSelection(obj, loop)
-                return
+        if isinstance(subs[0], Part.Face):
+            # face(s) selected
+            if all(Path.Geom.isVertical(face) for face in subs):
+                names = horizontalFaceLoop(obj, subs, subNames)
+            elif Path.Geom.isHorizontal(subs[0]):
+                edges = innerEdgesFromFace(obj, subs[0])
+                if not edges:
+                    names = horizontalCoplanarFaces(obj, subs[0])
+                    if len(names) == 1:
+                        names = None
+                        edges = subs[0].Edges
 
-        elif "Edge" in names[0]:
-            if len(sub) == 1:
-                # One edge selected: searching horizontal edge loop
-                loop = horizontalEdgeLoop(obj, sub[0], verbose=True)
+        elif isinstance(subs[0], Part.Edge):
+            if len(subs) == 1:
+                # one edge selected: searching horizontal edge loop
+                edges = horizontalEdgeLoop(obj, subs[0])
 
-            elif len(sub) >= 2:
-                # Two edges selected: searching wire in shape which contain both edges
-                loop = loopdetect(obj, sub[0], sub[1])
+            elif len(subs) >= 2:
+                # two edges selected: searching wire in shape which contain both edges
+                edges = loopdetect(obj, subs[0], subs[1])
+                if not edges:
+                    # two edges selected: searching edges in tangency
+                    edges = tangentEdgeLoop(obj, subs[0])
 
-                if not loop:
-                    # Two edges selected: searching edges in tangency
-                    loop = tangentEdgeLoop(obj, sub[0])
+            if not edges:
+                # searching any wire with first selected edge
+                edges = wiredetect(obj, subs[0])
 
-            if not loop:
-                # Searching any wire with first selected edge
-                loop = wiredetect(obj, names[0])
-
-        if isinstance(loop, list) and len(loop) > 0 and isinstance(loop[0], Part.Edge):
-            # Select edges from list
+        if edges and not names:
+            # select found edges in 3d view
+            loopHash = [e.hashCode() for e in edges]
             objEdges = obj.Shape.Edges
+            names = [f"Edge{i + 1}" for i, e in enumerate(objEdges) if e.hashCode() in loopHash]
+
+        if names:
             FreeCADGui.Selection.clearSelection()
-            for el in loop:
-                for eo in objEdges:
-                    if eo.hashCode() == el.hashCode():
-                        FreeCADGui.Selection.addSelection(obj, f"Edge{objEdges.index(eo) + 1}")
+            FreeCADGui.Selection.addSelection(obj, names)
             return
 
         Path.Log.warning(translate("CAM_SelectLoop", "Closed loop detection failed."))
-
-    def formsPartOfALoop(self, obj, sub, names):
-        try:
-            if names[0][0:4] != "Edge":
-                if names[0][0:4] == "Face" and horizontalFaceLoop(obj, sub, names):
-                    return True
-                return False
-            if len(names) == 1 and horizontalEdgeLoop(obj, sub):
-                return True
-            if len(names) == 1 or names[1][0:4] != "Edge":
-                return False
-            return True
-        except Exception:
-            return False
 
 
 if FreeCAD.GuiUp:
