@@ -27,6 +27,7 @@ import math
 import Path.Base.Gui.Util as PathGuiUtil
 import PathScripts.PathUtils as PathUtils
 import Path.Dressup.Utils as PathDressup
+import Path.Post.Utils as PostUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 if False:
@@ -48,7 +49,6 @@ translate = FreeCAD.Qt.translate
 
 class ObjectDressup:
     def __init__(self, obj):
-        maplist = ["X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C"]
         obj.addProperty(
             "App::PropertyLink",
             "Base",
@@ -67,7 +67,13 @@ class ObjectDressup:
             "Path",
             QT_TRANSLATE_NOOP("App::Property", "The radius of the wrapped axis"),
         )
-        obj.AxisMap = maplist
+        obj.addProperty(
+            "App::PropertyBool",
+            "Invert",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Invert rotary axis direction"),
+        )
+        obj.AxisMap = ("X->A", "Y->A", "X->B", "Y->B", "X->C", "Y->C")
         obj.AxisMap = "Y->A"
         obj.Proxy = self
 
@@ -77,82 +83,68 @@ class ObjectDressup:
     def loads(self, state):
         return None
 
-    def _linear2angular(self, radius, length):
-        """returns an angular distance in degrees to achieve a linear move of a given length"""
-        circum = 2 * math.pi * float(radius)
-        return 360 * (float(length) / circum)
-
-    def _stripArcs(self, path, d):
-        """converts all G2/G3 commands into G1 commands"""
-        newcommandlist = []
-        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
-
-        for p in path:
-            if p.Name in Path.Geom.CmdMoveArc:
-                curVec = FreeCAD.Vector(currLocation["X"], currLocation["Y"], currLocation["Z"])
-                arcwire = Path.Geom.edgeForCmd(p, curVec)
-                pointlist = arcwire.discretize(Deflection=d)
-                for point in pointlist:
-                    newcommand = Path.Command("G1", {"X": point.x, "Y": point.y, "Z": point.z})
-                    newcommandlist.append(newcommand)
-                    currLocation.update(newcommand.Parameters)
-            else:
-                newcommandlist.append(p)
-                currLocation.update(p.Parameters)
-
-        return newcommandlist
-
-    def execute(self, obj):
-
-        inAxis = obj.AxisMap[0]
-        outAxis = obj.AxisMap[3]
-        d = 0.1
-
-        if obj.Base:
-            if obj.Base.isDerivedFrom("Path::Feature"):
-                if obj.Base.Path:
-                    if obj.Base.Path.Commands:
-                        pp = PathUtils.getPathWithPlacement(obj.Base).Commands
-                        if len([i for i in pp if i.Name in Path.Geom.CmdMoveArc]) == 0:
-                            pathlist = pp
-                        else:
-                            pathlist = self._stripArcs(pp, d)
-
-                        newcommandlist = []
-                        currLocation = {"X": 0, "Y": 0, "Z": 0, "F": 0}
-
-                        for c in pathlist:
-                            newparams = dict(c.Parameters)
-                            remapvar = newparams.pop(inAxis, None)
-                            if remapvar is not None:
-                                newparams[outAxis] = self._linear2angular(obj.Radius, remapvar)
-                                locdiff = dict(set(newparams.items()) - set(currLocation.items()))
-                                if (
-                                    len(locdiff) == 1 and outAxis in locdiff
-                                ):  # pure rotation.  Calculate rotational feed rate
-                                    if "F" in c.Parameters:
-                                        feed = c.Parameters["F"]
-                                    else:
-                                        feed = currLocation["F"]
-                                    newparams.update({"F": self._linear2angular(obj.Radius, feed)})
-                                newcommand = Path.Command(c.Name, newparams)
-                                newcommandlist.append(newcommand)
-                                currLocation.update(newparams)
-                            else:
-                                newcommandlist.append(c)
-                                currLocation.update(c.Parameters)
-
-                        path = Path.Path(newcommandlist)
-                        path.Center = self.center(obj)
-                        obj.Path = path
-
     def onChanged(self, obj, prop):
         if "Restore" not in obj.State and prop == "Radius":
             job = PathUtils.findParentJob(obj)
             if job:
                 job.Proxy.setCenterOfRotation(self.center(obj))
+
         if prop == "Path" and obj.ViewObject:
             obj.ViewObject.signalChangeIcon()
+
+    def onDocumentRestored(self, obj):
+        if not hasattr(obj, "Invert"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "Invert",
+                "Path",
+                QT_TRANSLATE_NOOP("App::Property", "Invert axis"),
+            )
+
+    def execute(self, obj):
+
+        inAxis = obj.AxisMap[0]
+        outAxis = obj.AxisMap[3]
+
+        if (
+            not obj.Base
+            or not obj.Base.isDerivedFrom("Path::Feature")
+            or not obj.Base.Path
+            or not obj.Base.Path.Commands
+        ):
+            obj.Path = Path.Path()
+            return
+
+        job = PathUtils.findParentJob(obj)
+        deflection = job.GeometryTolerance.Value
+        path = PathUtils.getPathWithPlacement(obj.Base)
+        path = PostUtils.splitArcs(path, deflection=deflection)
+
+        newcommandlist = []
+        lastPar = {"X": 0, "Y": 0, "Z": 0, "F": 0}
+
+        for cmd in path.Commands:
+            newparams = dict(cmd.Parameters)
+            remapvar = newparams.pop(inAxis, None)
+            if remapvar is not None:
+                if obj.Invert:
+                    remapvar = -remapvar
+                newparams[outAxis] = math.degrees(remapvar / obj.Radius.Value)
+                locdiff = dict(set(newparams.items()) - set(lastPar.items()))
+                if len(locdiff) == 1 and outAxis in locdiff:
+                    # calculate rotational feed rate
+                    feed = cmd.Parameters["F"] if "F" in cmd.Parameters else lastPar["F"]
+                    newparams.update({"F": math.degrees(feed / obj.Radius.Value)})
+                newcommand = Path.Command(cmd.Name, newparams)
+                newcommandlist.append(newcommand)
+                lastPar.update(newparams)
+            else:
+                newcommandlist.append(cmd)
+                lastPar.update(cmd.Parameters)
+
+        path = Path.Path(newcommandlist)
+        path.Center = self.center(obj)
+        obj.Path = path
 
     def center(self, obj):
         return FreeCAD.Vector(0, 0, 0 - obj.Radius.Value)
@@ -217,7 +209,6 @@ class ViewProviderDressup:
                         if g.Name == self.obj.Base.Name:
                             group.remove(g)
                     i.Group = group
-            # FreeCADGui.ActiveDocument.getObject(obj.Base.Name).Visibility = False
         return
 
     def unsetEdit(self, vobj, mode=0):
