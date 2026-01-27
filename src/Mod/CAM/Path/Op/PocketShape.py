@@ -165,6 +165,17 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 QT_TRANSLATE_NOOP("App::Property", "Uses the outline of the base geometry."),
             )
 
+        if not hasattr(obj, "FinishOneStepDown"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "FinishOneStepDown",
+                "Pocket",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Finish pass will processing with one step down at final depth.",
+                ),
+            )
+
         FeatureExtensions.initialize_properties(obj)
 
     def areaOpOnDocumentRestored(self, obj):
@@ -178,9 +189,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
         """areaOpSetDefaultValues(obj, job) ... set default values"""
         obj.ClearingPattern = "Offset"
         obj.StepOver = 50
-        obj.ZigZagAngle = 45
+        obj.Angle = 45
         obj.UseOutline = False
+        obj.setExpression("FinishOffset", "OpToolDiameter * 0.25")
         FeatureExtensions.set_default_property_values(obj, job)
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpShapes(self, obj):
         """areaOpShapes(obj) ... return shapes representing the solids to be removed."""
