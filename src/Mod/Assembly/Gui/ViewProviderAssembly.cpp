@@ -142,7 +142,7 @@ void ViewProviderAssembly::setupContextMenu(QMenu* menu, QObject* receiver, cons
 
     QAction* act = menu->addAction(QObject::tr("Active object"));
     act->setCheckable(true);
-    act->setChecked(isActivePart());
+    act->setChecked(isActivePart(ASSEMBLYKEY));
     func->trigger(act, [this]() { this->doubleClicked(); });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);  // NOLINT
@@ -152,6 +152,7 @@ bool ViewProviderAssembly::doubleClicked()
 {
     if (isInEditMode()) {
         autoCollapseOnDeactivation = true;
+        getDocument()->setEditRestore(false);
         getDocument()->resetEdit();
     }
     else {
@@ -289,7 +290,7 @@ bool ViewProviderAssembly::setEdit(int mode)
             "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', "
             "appDoc.getObject('%s'))",
             this->getObject()->getDocument()->getName(),
-            PARTKEY,
+            ASSEMBLYKEY,
             this->getObject()->getNameInDocument()
         );
 
@@ -308,6 +309,12 @@ bool ViewProviderAssembly::setEdit(int mode)
         connectSolverUpdate = assembly->signalSolverUpdate.connect(
             boost::bind(&ViewProviderAssembly::UpdateSolverInformation, this)
         );
+
+        connectActivatedVP = getDocument()->signalActivatedViewProvider.connect(
+            std::bind(&ViewProviderAssembly::slotActivatedVP, this)
+        );
+
+        assembly->solve();
 
         return true;
     }
@@ -331,13 +338,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
         }
 
         // Set the part as not 'Activated' ie not bold in the tree.
-        Gui::Command::doCommand(
-            Gui::Command::Gui,
-            "appDoc = App.getDocument('%s')\n"
-            "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
-            this->getObject()->getDocument()->getName(),
-            PARTKEY
-        );
+        if (isActivePart(ASSEMBLYKEY)) {
+            Gui::Command::doCommand(
+                Gui::Command::Gui,
+                "appDoc = App.getDocument('%s')\n"
+                "Gui.getDocument(appDoc).ActiveView.setActiveObject('%s', None)",
+                this->getObject()->getDocument()->getName(),
+                ASSEMBLYKEY
+            );
+        }
 
         Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
         if (taskView) {
@@ -346,10 +355,24 @@ void ViewProviderAssembly::unsetEdit(int mode)
         }
 
         connectSolverUpdate.disconnect();
+        connectActivatedVP.disconnect();
 
         return;
     }
     ViewProviderPart::unsetEdit(mode);
+}
+
+void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
+{
+    if (name && strcmp(name, ASSEMBLYKEY) == 0) {
+
+        // If the new active VP is NOT this assembly (meaning we lost activation or it was cleared)
+        if (vp != this && isInEditMode()) {
+            autoCollapseOnDeactivation = true;
+            getDocument()->setEditRestore(false);
+            getDocument()->resetEdit();
+        }
+    }
 }
 
 void ViewProviderAssembly::setDragger()
@@ -401,7 +424,7 @@ App::DocumentObject* ViewProviderAssembly::getActivePart() const
     if (!activeView) {
         return nullptr;
     }
-    return activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
+    return activeView->getActiveObject<App::DocumentObject*>(ASSEMBLYKEY);
 }
 
 bool ViewProviderAssembly::keyPressed(bool pressed, int key)
