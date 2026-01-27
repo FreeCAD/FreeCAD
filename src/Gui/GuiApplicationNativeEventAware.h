@@ -24,6 +24,7 @@
 #define GUIAPPLICATIONNATIVEEVENTAWARE_H
 
 #include <QApplication>
+
 #include <vector>
 
 
@@ -31,15 +32,18 @@ class QMainWindow;
 
 namespace Gui
 {
+
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
 class GuiNativeEvent;
 #endif  // Spacemice
+
 class GUIApplicationNativeEventAware: public QApplication
 {
     Q_OBJECT
 public:
     GUIApplicationNativeEventAware(int& argc, char* argv[]);
-    ~GUIApplicationNativeEventAware() override;
+    ~GUIApplicationNativeEventAware() override = default;
+
     void initSpaceball(QMainWindow* window);
     bool isSpaceballPresent() const
     {
@@ -53,14 +57,32 @@ public:
     void postMotionEvent(std::vector<int> motionDataArray);
     void postButtonEvent(int buttonNumber, int buttonPress);
 
+protected:
+    [[nodiscard]] bool isSpaceballAltPressed() const
+    {
+        return spaceballAltIsPressed;
+    }
+    [[nodiscard]] bool isSpaceballShiftPressed() const
+    {
+        return spacebackShiftIsPressed;
+    }
+    [[nodiscard]] bool isSpaceballCtrlPressed() const
+    {
+        return spaceballCtrlIsPressed;
+    }
+
 private:
     bool spaceballPresent;
+    bool spaceballAltIsPressed = false;
+    bool spacebackShiftIsPressed = false;
+    bool spaceballCtrlIsPressed = false;
     void importSettings(std::vector<int>& motionDataArray);
-    float convertPrefToSensitivity(int value);
+    float convertPrefToSensitivity(long value);
 #if defined(_USE_3DCONNEXION_SDK) || defined(SPNAV_FOUND)
     GuiNativeEvent* nativeEvent;
 #endif
 };  // end class GUIApplicationNativeEventAware
+
 }  // end namespace Gui
 
 #endif  // GUIAPPLICATIONNATIVEEVENTAWARE_H
