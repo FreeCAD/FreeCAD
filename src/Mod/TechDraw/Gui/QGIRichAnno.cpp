@@ -681,6 +681,7 @@ void QGIRichAnno::onContentsChanged()
         getFeature()->AnnoText.setValue(m_text->toHtml().toUtf8());
         // Emit signal for the task panel
         Q_EMIT textChanged();
+        drawBorder(); // Make sure view frame is updated.
     }
 }
 
