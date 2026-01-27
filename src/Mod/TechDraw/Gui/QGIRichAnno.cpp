@@ -74,8 +74,7 @@ QGIRichAnno::QGIRichAnno() :
     m_transactionOpen(false),
     m_dragStartMouseScenePos(),
     m_initialItemScenePos(),
-    m_initialTextWidthScene(0.0), 
-    m_frameWasHiddenOnHoverEnter(false),
+    m_initialTextWidthScene(0.0),
     m_isEditing(false),
     m_textScaleFactor(1.0),
     m_lastGoodWidthScene(0.0)
@@ -187,7 +186,7 @@ void QGIRichAnno::setTextItem()
 
     m_rect->setPen(rectPen());
     m_rect->setBrush(Qt::NoBrush);
-    m_rect->setVisible(annoFeat->ShowFrame.getValue() || m_isResizing);
+    m_rect->setVisible(annoFeat->ShowFrame.getValue());
 
     if (getExportingSvg()) {
         // Convert the word processing font size spec (in typographic points) to CSS pixels
@@ -301,53 +300,6 @@ QPen QGIRichAnno::rectPen() const
 QFont QGIRichAnno::prefFont()
 {
     return PreferencesGui::labelFontQFont();
-}
-
-void QGIRichAnno::hoverEnterEvent(QGraphicsSceneHoverEvent* event)
-{
-    TechDraw::DrawRichAnno* annoFeat = getFeature();
-    if (!annoFeat) {
-        QGIView::hoverEnterEvent(event);
-        return;
-    }
-
-    // Store original state and show frame if it's currently hidden
-    m_frameWasHiddenOnHoverEnter = !annoFeat->ShowFrame.getValue();
-    if (m_frameWasHiddenOnHoverEnter) {
-        if (m_rect && !m_isEditing) {
-            m_rect->show();
-            // Potentially update related UI elements or trigger a mini-repaint if needed,
-            // though m_rect->show() might be enough if it forces a repaint of itself.
-            // Forcing a repaint of the item might be safer:
-            update();  // This QGraphicsItem::update() schedules a repaint for the item's bounding
-                       // rect
-        }
-    }
-    QGIView::hoverEnterEvent(event);
-}
-
-void QGIRichAnno::hoverLeaveEvent(QGraphicsSceneHoverEvent* event)
-{
-    TechDraw::DrawRichAnno* annoFeat = getFeature();
-    if (!annoFeat || m_isResizing) {
-        QGIView::hoverLeaveEvent(event);
-        return;
-    }
-
-    // If the frame was originally hidden and we showed it on hover, hide it again
-    if (m_frameWasHiddenOnHoverEnter) {
-        if (m_rect) {
-            m_rect->hide();
-            update();  // Schedule a repaint
-        }
-        m_frameWasHiddenOnHoverEnter = false;
-    }
-
-    // Also, ensure the cursor is reset if the mouse leaves while it was a resize cursor
-    // This is important if the mouse leaves the item entirely while a resize handle was active.
-    setCursor(Qt::ArrowCursor);
-
-    QGIView::hoverLeaveEvent(event);
 }
 
 void QGIRichAnno::hoverMoveEvent(QGraphicsSceneHoverEvent* event)
@@ -584,13 +536,6 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
         m_isDraggingMidResize = false;
         m_currentResizeHandle = ResizeHandle::NoHandle;
         setCursor(Qt::ArrowCursor);
-    }
-
-    if (m_frameWasHiddenOnHoverEnter) {
-        if (m_rect) {
-            m_rect->hide();
-        }
-        m_frameWasHiddenOnHoverEnter = false;
     }
 
     auto vp = static_cast<ViewProviderRichAnno*>(getViewProvider(getViewObject()));
