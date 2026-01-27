@@ -62,36 +62,8 @@ ZoomableView::ZoomableView(Ui::Sheet* ui)
     setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-    stv->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    stv->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    QPointer<QScrollBar> dummySB_h {stv->horizontalScrollBar()},
-        dummySB_v {stv->verticalScrollBar()}, realSB_h {ui->realSB_h}, realSB_v {ui->realSB_v};
-
-    if (!dummySB_h || !dummySB_v || !realSB_h || !realSB_v) {
-        Base::Console().developerWarning("ZoomableView", "Failed to identify the scrollbars");
-        deleteLater();
-        return;
-    }
-
-    realSB_h->setRange(dummySB_h->minimum(), dummySB_h->maximum());
-    realSB_v->setRange(dummySB_v->minimum(), dummySB_v->maximum());
-
-    realSB_h->setPageStep(dummySB_h->pageStep());
-    realSB_v->setPageStep(dummySB_v->pageStep());
-
-
-    connect(realSB_h, &QAbstractSlider::valueChanged, dummySB_h, &QAbstractSlider::setValue);
-    connect(realSB_v, &QAbstractSlider::valueChanged, dummySB_v, &QAbstractSlider::setValue);
-
-    connect(dummySB_h, &QAbstractSlider::rangeChanged, realSB_h, &QAbstractSlider::setRange);
-    connect(dummySB_v, &QAbstractSlider::rangeChanged, realSB_v, &QAbstractSlider::setRange);
-
-    connect(dummySB_h, &QAbstractSlider::valueChanged, realSB_h, &QAbstractSlider::setSliderPosition);
-    connect(dummySB_v, &QAbstractSlider::valueChanged, realSB_v, &QAbstractSlider::setSliderPosition);
-
-    connect(dummySB_h, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
-    connect(dummySB_v, &QAbstractSlider::valueChanged, this, &ZoomableView::updateView);
+    stv->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    stv->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 
     connect(this, &ZoomableView::zoomLevelChanged, ui->zoomTB, [zoomTB = ui->zoomTB](int new_zoomLevel) {
         zoomTB->setText(QStringLiteral("%1%").arg(new_zoomLevel));
