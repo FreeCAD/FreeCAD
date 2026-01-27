@@ -593,3 +593,253 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # but it should not have been physically discretized into 40,000 solids.
         self.assertIsNotNone(res2.geometry)
         self.assertGreater(res2.quantities.count_full, 10000)
+
+    def test_getFaceGeometry_indirection_suite(self):
+        """Verify face resolution through various indirection types (Links, Clones, Binders)."""
+        self.printTestMessage("getFaceGeometry indirection suite...")
+        box = self.document.addObject("Part::Box", "SourceBox")
+        box.Length = box.Width = box.Height = 100.0
+        self.document.recompute()
+        expected_area = 10000.0
+
+        # 1. Draft Clone
+        clone = Draft.make_clone(box)
+        # 2. App::Link
+        link = self.document.addObject("App::Link", "AppLink")
+        link.LinkedObject = box
+        # 3. SubShapeBinder
+        binder = self.document.addObject("PartDesign::SubShapeBinder", "Binder")
+        binder.Support = (box, ["Face1"])
+        self.document.recompute()
+
+        test_cases = [
+            ("Draft Clone", clone),
+            ("App::Link", link),
+            ("LinkSub Tuple", (link, ["Face6"])),
+            ("SubShapeBinder", binder),
+        ]
+
+        for label, target in test_cases:
+            with self.subTest(indirection=label):
+                face = Arch.getFaceGeometry(target)
+                self.assertIsNotNone(face, f"Failed to resolve face through {label}")
+                self.assertIsInstance(face, Part.Face, f"Result through {label} is not a face")
+                self.assertAlmostEqual(
+                    face.Area,
+                    expected_area,
+                    places=3,
+                    msg=f"Incorrect area resolved through {label}",
+                )
+
+    def test_3d_orientation_robustness(self):
+        """Verify tiling accuracy on sloped/rotated 3D surfaces."""
+        self.printTestMessage("3D orientation robustness...")
+        # Create a face rotated 45 degrees around X
+        base_wire = Draft.make_rectangle(1000, 1000)
+        base_wire.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 45)
+        self.document.recompute()
+
+        covering = Arch.makeCovering(base_wire)
+        covering.TileLength, covering.TileWidth = 200.0, 200.0
+        covering.JointWidth, covering.TileThickness = 10.0, 20.0
+        self.document.recompute()
+
+        # Area and Volume calculations should be invariant to rotation
+        self.assertAlmostEqual(covering.NetArea.Value, 1000000.0, places=1)
+        self.assertFalse(covering.Shape.isNull())
+        # Bounding box should reflect the 45 degree tilt
+        self.assertAlmostEqual(
+            covering.Shape.BoundBox.ZLength, (1000 * 0.707) + (20 * 0.707), delta=5.0
+        )
+
+    def test_alignment_and_offset_grid(self):
+        """Verify that Running Bond offsets and grid alignments shift the geometry correctly."""
+        self.printTestMessage("alignment and offset grid...")
+        # 1. Pure Logic Test: Verify the locator utility directly
+        face = self.box.getSubObject("Face6")
+        u, v, n, c = Arch.getFaceUV(face)
+        origin_bl = Arch.getFaceGridOrigin(face, c, u, v, alignment="BottomLeft")
+        origin_c = Arch.getFaceGridOrigin(face, c, u, v, alignment="Center")
+        self.assertNotEqual(origin_bl, origin_c, "Grid origin must shift with alignment string.")
+
+        # 2. Integration Test: Verify the physical shift in the result
+        covering = Arch.makeCovering((self.box, ["Face6"]))
+        covering.TileLength, covering.TileWidth, covering.JointWidth = 200.0, 200.0, 10.0
+
+        covering.TileAlignment = "BottomLeft"
+        self.document.recompute()
+        com_bl = covering.Shape.Solids[0].CenterOfMass
+
+        covering.TileAlignment = "Center"
+        self.document.recompute()
+        com_c = covering.Shape.Solids[0].CenterOfMass
+
+        # Shift in joints changes material distribution, shifting the Center of Mass
+        self.assertNotAlmostEqual(
+            com_bl.x, com_c.x, places=3, msg="Center of Mass should shift when grid is re-aligned."
+        )
+
+    def test_quantity_takeoff_integrity(self):
+        """Verify consistency between geometric results and BIM quantities including PerimeterLength."""
+        self.printTestMessage("quantity take-off integrity...")
+
+        # Base is 1000x1000 Face (Face6 of 1000^3 box)
+        base = (self.box, ["Face6"])
+        perimeter_expected = 4000.0
+
+        test_cases = [
+            {
+                "msg": "Positive Waste Scenario",
+                # 300x300 tiles, 10mm joints. Step 310.
+                # 1000 / 310 = 3.22 -> 4 tiles/row. 16 total.
+                # 3 full tiles (930mm) + 1 partial (70mm) per row.
+                # Full: 3x3=9. Partial: 16-9=7.
+                # Gross = 16 * 90000 = 1,440,000.
+                # Net = 1,000,000. Waste = 440,000.
+                # Joints: 3 internal lines per direction. 3 * 1000 * 2 = 6000.
+                "TileLength": 300.0,
+                "TileWidth": 300.0,
+                "JointWidth": 10.0,
+                "TileAlignment": "BottomLeft",
+                "expected_joints": 6000.0,
+                "expected_perimeter": perimeter_expected,
+                "expected_gross": 1440000.0,
+                "expected_waste": 440000.0,
+                "expected_full": 9,
+                "expected_partial": 7,
+                "check_waste": True,
+            },
+            {
+                "msg": "Clamped Waste Scenario",
+                # 400x400 tiles, 100mm joints. Step 500.
+                # 1000 / 500 = 2 tiles/row. 4 total. Perfect fit.
+                # Gross = 4 * 160000 = 640,000.
+                # Net = 1,000,000. Waste = 0 (Clamped).
+                # Joints: 2 internal lines per direction (centers at 450, 950).
+                # 2 * 1000 * 2 = 4000.
+                "TileLength": 400.0,
+                "TileWidth": 400.0,
+                "JointWidth": 100.0,
+                "TileAlignment": "BottomLeft",
+                "expected_joints": 4000.0,
+                "expected_perimeter": perimeter_expected,
+                "expected_gross": 640000.0,
+                "expected_waste": 0.0,
+                "expected_full": 4,
+                "expected_partial": 0,
+                "check_waste": True,
+            },
+            {
+                "msg": "Butt Joint Geometric (Center Alignment)",
+                # 200x200 tiles, 0mm joint.
+                # Center alignment centers the grid lines.
+                # Lines at 0, +/-200, +/-400 relative to center (500).
+                # Locations: 100, 300, 500, 700, 900.
+                # 5 lines per direction inside 1000mm.
+                # 5 * 1000 * 2 = 10000.
+                "TileLength": 200.0,
+                "TileWidth": 200.0,
+                "JointWidth": 0.0,
+                "TileAlignment": "Center",
+                "expected_joints": 10000.0,
+                "expected_perimeter": perimeter_expected,
+                "expected_full": 25,
+                "expected_partial": 0,
+                "check_waste": False,
+            },
+        ]
+
+        for case in test_cases:
+            with self.subTest(msg=case["msg"]):
+                covering = Arch.makeCovering(base)
+                covering.FinishMode = "Solid Tiles"
+                covering.TileLength = case["TileLength"]
+                covering.TileWidth = case["TileWidth"]
+                covering.JointWidth = case["JointWidth"]
+                covering.TileThickness = 10.0
+                covering.TileAlignment = case["TileAlignment"]
+                self.document.recompute()
+
+                # 1. Joint and Perimeter Verification
+                self.assertAlmostEqual(
+                    covering.TotalJointLength.Value,
+                    case["expected_joints"],
+                    delta=1.0,
+                    msg=f"{case['msg']}: Joint length mismatch",
+                )
+                self.assertAlmostEqual(
+                    covering.PerimeterLength.Value,
+                    case["expected_perimeter"],
+                    delta=1.0,
+                    msg=f"{case['msg']}: Perimeter length mismatch",
+                )
+
+                # 2. Tile Counts
+                self.assertEqual(
+                    covering.CountFullTiles,
+                    case["expected_full"],
+                    msg=f"{case['msg']}: Full tile count mismatch",
+                )
+                self.assertEqual(
+                    covering.CountPartialTiles,
+                    case["expected_partial"],
+                    msg=f"{case['msg']}: Partial tile count mismatch",
+                )
+
+                # 3. Areas
+                if case["check_waste"]:
+                    self.assertAlmostEqual(
+                        covering.GrossArea.Value,
+                        case["expected_gross"],
+                        delta=1.0,
+                        msg=f"{case['msg']}: Gross area mismatch",
+                    )
+                    self.assertAlmostEqual(
+                        covering.WasteArea.Value,
+                        case["expected_waste"],
+                        delta=1.0,
+                        msg=f"{case['msg']}: Waste area mismatch",
+                    )
+
+        # Extreme Mode Case: Validates the analytical fallback logic
+        with self.subTest(msg="Extreme Mode Fallback (Mosaic)"):
+            large_box = self.document.addObject("Part::Box", "LargeBox")
+            large_box.Length = 20000.0
+            large_box.Width = 20000.0
+            large_box.Height = 100.0
+            self.document.recompute()
+
+            # Face Dimensions: 20m x 20m
+            face_area = 400000000.0
+            face_perimeter = 80000.0
+
+            covering = Arch.makeCovering((large_box, ["Face6"]))
+            covering.FinishMode = "Solid Tiles"
+            # 50x50 tiles, 0 joint -> 160,000 tiles (triggers >100k threshold)
+            tile_l = 50.0
+            tile_w = 50.0
+            covering.TileLength = tile_l
+            covering.TileWidth = tile_w
+            covering.JointWidth = 0.0
+            covering.TileAlignment = "BottomLeft"
+            self.document.recompute()
+
+            # Analytical Calculation:
+            # Grid Density Total = (Area / Step_U) + (Area / Step_V)
+            # Total = (400M / 50) + (400M / 50) = 8M + 8M = 16,000,000 mm
+            # Expected Internal Joint Length = Total - Perimeter
+            total_grid = (face_area / tile_l) + (face_area / tile_w)
+            expected_joints = total_grid - face_perimeter
+
+            self.assertAlmostEqual(
+                covering.TotalJointLength.Value,
+                expected_joints,
+                delta=1000.0,  # Float tolerance for large numbers
+                msg="Extreme mode joint length fallback failed",
+            )
+            self.assertAlmostEqual(
+                covering.PerimeterLength.Value,
+                face_perimeter,
+                delta=1.0,
+                msg="Extreme mode perimeter length failed",
+            )

@@ -52,6 +52,7 @@ class TessellationQuantities:
         area_gross=0.0,
         length_joints=0.0,
         waste_area=0.0,
+        length_perimeter=0.0,
     ):
         self.count_full = count_full
         self.count_partial = count_partial
@@ -59,6 +60,7 @@ class TessellationQuantities:
         self.area_gross = area_gross
         self.length_joints = length_joints
         self.waste_area = waste_area
+        self.length_perimeter = length_perimeter
 
 
 class TessellationResult:
@@ -140,27 +142,27 @@ class RectangularTessellator(Tessellator):
         )
 
         final_cl = None
+        h_edges, v_edges = [], []
         if total_count <= GRID_LIMIT:
-            cl_edges = []
             full_len_u, full_len_v = 2 * count_u * step_u, 2 * count_v * step_v
-            start_u, start_v = -count_u * step_u, -count_u * step_u
+            start_u, start_v = -count_u * step_u, -count_v * step_v
 
-            # Use continuous lines for quantity calculation
+            # Use continuous lines for quantity calculation, separated by orientation
             for j in range(-count_v, count_v):
                 lv = j * step_v + self.width + (self.joint / 2)
-                cl_edges.append(
+                h_edges.append(
                     Part.makeLine(
                         FreeCAD.Vector(start_u, lv, 0), FreeCAD.Vector(start_u + full_len_u, lv, 0)
                     )
                 )
             for i in range(-count_u, count_u):
                 lu = i * step_u + self.length + (self.joint / 2)
-                cl_edges.append(
+                v_edges.append(
                     Part.makeLine(
                         FreeCAD.Vector(lu, start_v, 0), FreeCAD.Vector(lu, start_v + full_len_v, 0)
                     )
                 )
-            final_cl = Part.Compound(cl_edges)
+            final_cl = Part.Compound(h_edges + v_edges)
             final_cl.Placement = tr
         else:
             status = TessellationStatus.EXTREME_COUNT
@@ -168,14 +170,38 @@ class RectangularTessellator(Tessellator):
         # Prepare quantities
         quantities = TessellationQuantities()
         quantities.area_net = substrate.Area
+        quantities.length_perimeter = substrate.Length
 
         # Calculate joint length via clipping centerlines
-        if final_cl:
+        if h_edges or v_edges:
             try:
-                clipped_joints = substrate.common(final_cl)
-                quantities.length_joints = clipped_joints.Length
+                # Use a hybrid approach to calculate joint length. Intersect horizontal and vertical
+                # joint compounds separately to avoid geometric kernel instability with sparse,
+                # non-parallel compounds.
+                total_length = 0
+                if h_edges:
+                    h_compound = Part.Compound(h_edges)
+                    h_compound.Placement = tr
+                    clipped_h = substrate.common(h_compound)
+                    total_length += clipped_h.Length
+                if v_edges:
+                    v_compound = Part.Compound(v_edges)
+                    v_compound.Placement = tr
+                    clipped_v = substrate.common(v_compound)
+                    total_length += clipped_v.Length
+                quantities.length_joints = total_length
             except Exception:
                 pass
+        elif status == TessellationStatus.EXTREME_COUNT:
+            # Analytical fallback for mosaic-like counts. The statistical estimation of grid length
+            # is based on density
+            # Total length approx (Area / Step_U) + (Area / Step_V)
+            # This statistical total includes the geometry of the "field". To approximate internal
+            # joints consistent with the geometric mode (which mostly excludes boundaries), we
+            # subtract the perimeter.
+            stat_total = (substrate.Area / step_u) + (substrate.Area / step_v)
+            # Clamp to 0 to avoid negative values on edge cases
+            quantities.length_joints = max(0.0, stat_total - quantities.length_perimeter)
 
         # Geometry generation
 
@@ -207,7 +233,7 @@ class RectangularTessellator(Tessellator):
 
         # Physical mode (Boolean cut)
         cutters_h, cutters_v = [], []
-        start_u, start_v = -count_u * step_u, -count_u * step_u
+        start_u, start_v = -count_u * step_u, -count_v * step_v
         full_len_u, full_len_v = 2 * count_u * step_u, 2 * count_v * step_v
         z_off = -0.5 if self.thickness == 0 else -0.05
         cut_thick = 1.0 if self.thickness == 0 else self.thickness * 1.1

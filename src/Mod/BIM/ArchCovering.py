@@ -169,6 +169,13 @@ class _Covering(ArchComponent.Component):
                 "The total linear length of all joints",
                 0,
             ),
+            (
+                "App::PropertyLength",
+                "PerimeterLength",
+                "Quantities",
+                "The length of the substrate perimeter",
+                0,
+            ),
             ("App::PropertyInteger", "CountFullTiles", "Quantities", "The number of full tiles", 0),
             (
                 "App::PropertyInteger",
@@ -231,6 +238,7 @@ class _Covering(ArchComponent.Component):
         obj.setEditorMode("GrossArea", 1)
         obj.setEditorMode("WasteArea", 1)
         obj.setEditorMode("TotalJointLength", 1)
+        obj.setEditorMode("PerimeterLength", 1)
         obj.setEditorMode("CountFullTiles", 1)
         obj.setEditorMode("CountPartialTiles", 1)
 
@@ -358,3 +366,4 @@ class _Covering(ArchComponent.Component):
         obj.GrossArea = res.quantities.area_gross
         obj.WasteArea = res.quantities.waste_area
         obj.TotalJointLength = res.quantities.length_joints
+        obj.PerimeterLength = res.quantities.length_perimeter
