@@ -25,6 +25,16 @@ using namespace Export3DPDF;
 
 namespace {
 
+// RAII wrapper for HPDF_Doc to prevent memory leaks
+struct HpdfDocDeleter {
+    void operator()(HPDF_Doc doc) const {
+        if (doc) {
+            HPDF_Free(doc);
+        }
+    }
+};
+using HpdfDocPtr = std::unique_ptr<std::remove_pointer_t<HPDF_Doc>, HpdfDocDeleter>;
+
 // Libharu error handler - logs errors to FreeCAD console
 void hpdfErrorHandler(HPDF_STATUS error_no, HPDF_STATUS detail_no, void* /*user_data*/)
 {
@@ -313,23 +323,24 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
     }
 
     try {
-        HPDF_Doc pdf = HPDF_New(hpdfErrorHandler, nullptr);
+        // Use RAII wrapper to ensure HPDF_Free is called on all exit paths
+        HpdfDocPtr pdf(HPDF_New(hpdfErrorHandler, nullptr));
         if (!pdf) {
             Base::Console().error("Failed to create PDF document\n");
             return false;
         }
 
         // Enable compression for all streams (images, fonts, etc.)
-        HPDF_SetCompressionMode(pdf, HPDF_COMP_ALL);
+        HPDF_SetCompressionMode(pdf.get(), HPDF_COMP_ALL);
 
         // Set PDF metadata
-        HPDF_SetInfoAttr(pdf, HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
-        HPDF_SetInfoAttr(pdf, HPDF_INFO_TITLE, backgroundImagePath.empty()
+        HPDF_SetInfoAttr(pdf.get(), HPDF_INFO_PRODUCER, "FreeCAD 3D PDF Export");
+        HPDF_SetInfoAttr(pdf.get(), HPDF_INFO_TITLE, backgroundImagePath.empty()
                          ? "FreeCAD 3D Model"
                          : "FreeCAD Hybrid 2D+3D Technical Drawing");
 
         // Create page with specified dimensions
-        HPDF_Page page = HPDF_AddPage(pdf);
+        HPDF_Page page = HPDF_AddPage(pdf.get());
         HPDF_Page_SetWidth(page, pageSettings.widthPoints);
         HPDF_Page_SetHeight(page, pageSettings.heightPoints);
 
@@ -338,11 +349,11 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
             std::vector<HPDF_BYTE> imageBuffer;
             if (readFileToBuffer(backgroundImagePath, imageBuffer)) {
                 // Try PNG first, then JPEG
-                HPDF_Image backgroundImg = HPDF_LoadPngImageFromMem(pdf, imageBuffer.data(),
+                HPDF_Image backgroundImg = HPDF_LoadPngImageFromMem(pdf.get(), imageBuffer.data(),
                                                                      static_cast<HPDF_UINT>(imageBuffer.size()));
                 if (!backgroundImg) {
-                    HPDF_ResetError(pdf);
-                    backgroundImg = HPDF_LoadJpegImageFromMem(pdf, imageBuffer.data(),
+                    HPDF_ResetError(pdf.get());
+                    backgroundImg = HPDF_LoadJpegImageFromMem(pdf.get(), imageBuffer.data(),
                                                                static_cast<HPDF_UINT>(imageBuffer.size()));
                 }
 
@@ -351,7 +362,7 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
                                         pageSettings.widthPoints, pageSettings.heightPoints);
                 } else {
                     Base::Console().warning("Failed to decode background image: %s\n", backgroundImagePath.c_str());
-                    HPDF_ResetError(pdf);
+                    HPDF_ResetError(pdf.get());
                 }
             } else {
                 Base::Console().warning("Failed to read background image: %s\n", backgroundImagePath.c_str());
@@ -365,11 +376,10 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
             const auto& av = region.viewSettings;
 
             // Load PRC data as U3D
-            HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf, prcBuffer.data(), static_cast<HPDF_UINT>(prcBuffer.size()));
+            HPDF_Image u3d = HPDF_LoadU3DFromMem(pdf.get(), prcBuffer.data(), static_cast<HPDF_UINT>(prcBuffer.size()));
             if (!u3d) {
                 Base::Console().error("Failed to load PRC data for region %zu\n", i);
-                HPDF_Free(pdf);
-                return false;
+                return false;  // RAII cleanup handles HPDF_Free
             }
 
             // Calculate annotation rectangle from ActiveView settings
@@ -397,8 +407,7 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
             HPDF_Annotation annot = HPDF_Page_Create3DAnnot(page, rect, HPDF_TRUE, HPDF_FALSE, u3d, NULL);
             if (!annot) {
                 Base::Console().error("Failed to create 3D annotation for region %zu\n", i);
-                HPDF_Free(pdf);
-                return false;
+                return false;  // RAII cleanup handles HPDF_Free
             }
 
             // Create view name (use "Default" for single region, "View1", "View2" for multiple)
@@ -406,8 +415,7 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
             HPDF_Dict view = HPDF_Page_Create3DView(page, u3d, annot, viewName.c_str());
             if (!view) {
                 Base::Console().error("Failed to create 3D view for region %zu\n", i);
-                HPDF_Free(pdf);
-                return false;
+                return false;  // RAII cleanup handles HPDF_Free
             }
 
             // Configure view settings
@@ -425,20 +433,19 @@ bool Export3DPDFCore::createPDFFromBuffer(const std::vector<std::vector<uint8_t>
         }
 
         // Save PDF to file
-        bool saveSuccess = savePdfToFile(pdf, pdfPath);
-        HPDF_Free(pdf);
-
-        if (!saveSuccess) {
+        if (!savePdfToFile(pdf.get(), pdfPath)) {
             Base::Console().error("Failed to save PDF file: %s\n", pdfPath.c_str());
-            return false;
+            return false;  // RAII cleanup handles HPDF_Free
         }
 
+        // RAII will call HPDF_Free when pdf goes out of scope
         if (regions.size() > 1) {
             Base::Console().message("Created 3D PDF with %zu interactive regions\n", regions.size());
         }
         return true;
     }
     catch (const std::exception& e) {
+        // RAII ensures HPDF_Free is called even on exception
         Base::Console().error("Error creating PDF: %s\n", e.what());
         return false;
     }
