@@ -135,6 +135,7 @@ public:
             if (deleteOriginal) {
                 deleteOriginalGeos();
             }
+            size_t initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
 
             commandAddShapeGeometryAndConstraints();
 
@@ -142,7 +143,7 @@ public:
                 reassignFacadeIds();
             }
 
-            scaleLabels();
+            scaleLabels(initialConstraintCount);
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -347,22 +348,24 @@ private:
             Base::Console().error("%s\n", e.what());
         }
     }
-    void scaleLabels()
+    void scaleLabels(size_t constraintIndexOffset)
     {
         SketchObject* sketch = sketchgui->getSketchObject();
 
         for (auto toScale : listOfLabelsToScale) {
-            sketch->setLabelDistance(toScale.constrId, toScale.distance * scaleFactor);
+            int constrId = toScale.constrId + constraintIndexOffset;
+
+            sketch->setLabelDistance(constrId, toScale.distance * scaleFactor);
 
             // Label position or radii and diameters represent an angle, so
             // they should not be scaled
-            Sketcher::ConstraintType type = sketch->Constraints[toScale.constrId]->Type;
+            Sketcher::ConstraintType type = sketch->Constraints[constrId]->Type;
             if (type == Sketcher::ConstraintType::Radius
                 || type == Sketcher::ConstraintType::Diameter) {
-                sketch->setLabelPosition(toScale.constrId, toScale.position);
+                sketch->setLabelPosition(constrId, toScale.position);
             }
             else {
-                sketch->setLabelPosition(toScale.constrId, toScale.position * scaleFactor);
+                sketch->setLabelPosition(constrId, toScale.position * scaleFactor);
             }
         }
     }
