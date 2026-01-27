@@ -377,86 +377,21 @@ if FreeCAD.GuiUp:
 
             self.texture = None
 
-            # Load texture
+            # Calculate Mapping
             if not vobj.TextureImage or not os.path.exists(vobj.TextureImage):
                 return
 
-            # Geometry calculation (in Global Space, done once)
-            base_face = Arch.getFaceGeometry(obj.Base)
-            if not base_face:
+            mapping = self._compute_texture_mapping(obj, vobj.DisplayMode)
+            if not mapping:
                 return
 
-            u_vec, v_vec, normal, center_point = Arch.getFaceUV(base_face)
-            origin = Arch.getFaceGridOrigin(
-                base_face, center_point, u_vec, v_vec, obj.TileAlignment, obj.AlignmentOffset
-            )
+            dir_u, dir_v, s_offset, t_offset = mapping
 
-            # Apply different logic based on the active DisplayMode, respecting the different
-            # rendering contexts.
-            if vobj.DisplayMode == "Flat Lines":
-                # "Flat Lines" mode requires a Global-to-Local transform.
-                inv_pl = obj.Placement.inverse()
-                calc_u = inv_pl.Rotation.multVec(u_vec)
-                calc_v = inv_pl.Rotation.multVec(v_vec)
-                calc_norm = inv_pl.Rotation.multVec(normal)
-                calc_origin = inv_pl.multVec(origin)
-            elif vobj.DisplayMode == "Shaded":
-                # "Shaded" mode requires Global coordinates (no transform).
-                calc_u = u_vec
-                calc_v = v_vec
-                calc_norm = normal
-                calc_origin = origin
-            else:
-                # For any other mode, do nothing.
-                return
-
-            # Common math logic (applied to the transformed vectors)
-            if calc_u.Length < Part.Precision.approximation():
-                calc_u = FreeCAD.Vector(1, 0, 0)
-            else:
-                calc_u.normalize()
-
-            if calc_v.Length < Part.Precision.approximation():
-                calc_v = FreeCAD.Vector(0, 1, 0)
-            else:
-                calc_v.normalize()
-
-            if calc_norm.Length > Part.Precision.approximation():
-                calc_norm.normalize()
-
-            if hasattr(obj, "Rotation") and obj.Rotation.Value != 0:
-                rot = FreeCAD.Rotation(calc_norm, obj.Rotation.Value)
-                calc_u = rot.multVec(calc_u)
-                calc_v = rot.multVec(calc_v)
-
-            scale_u = vobj.TextureScale.x if vobj.TextureScale.x != 0 else 1.0
-            scale_v = vobj.TextureScale.y if vobj.TextureScale.y != 0 else 1.0
-
-            period_u = (obj.TileLength.Value + obj.JointWidth.Value) * scale_u
-            period_v = (obj.TileWidth.Value + obj.JointWidth.Value) * scale_v
-
-            if period_u == 0:
-                period_u = 1000.0
-            if period_v == 0:
-                period_v = 1000.0
-
-            dir_u = calc_u.multiply(1.0 / period_u)
-            dir_v = calc_v.multiply(1.0 / period_v)
-
-            s_offset = calc_origin.dot(dir_u)
-            t_offset = calc_origin.dot(dir_v)
-
-            # Create and insert nodes
+            # Create Nodes
             texture_node = coin.SoTexture2()
 
-            # Load texture from cache or disk
-            file_path = vobj.TextureImage
-            img = _ViewProviderCovering._texture_cache.get(file_path)
-            if img is None:
-                img = gui_utils.load_texture(file_path)
-                if img:
-                    _ViewProviderCovering._texture_cache[file_path] = img
-
+            # Load Image
+            img = self._get_cached_image(vobj.TextureImage)
             if img:
                 texture_node.image = img
             else:
@@ -476,6 +411,118 @@ if FreeCAD.GuiUp:
             target_node.insertChild(texture_node, 0)
             target_node.insertChild(texcoords, 0)
             target_node.insertChild(textrans, 0)
+
+        def _get_cached_image(self, file_path):
+            """
+            Retrieves a texture image from the cache or loads it from disk.
+
+            Parameters
+            ----------
+            file_path : str
+                The file system path to the image.
+
+            Returns
+            -------
+            SoSFImage or None
+                The loaded Coin3D image object, or None if loading failed.
+            """
+            from draftutils import gui_utils
+
+            img = _ViewProviderCovering._texture_cache.get(file_path)
+            if img is None:
+                img = gui_utils.load_texture(file_path)
+                if img:
+                    _ViewProviderCovering._texture_cache[file_path] = img
+            return img
+
+        def _compute_texture_mapping(self, obj, display_mode):
+            """
+            Calculates the texture projection vectors and offsets.
+
+            Parameters
+            ----------
+            obj : App::FeaturePython
+                The Covering object.
+            display_mode : str
+                The current display mode ("Flat Lines", "Shaded", etc.).
+
+            Returns
+            -------
+            tuple or None
+                (dir_u, dir_v, s_offset, t_offset) where dir_* are FreeCAD.Vectors
+                and *_offset are floats. Returns None if mapping cannot be computed.
+            """
+            vobj = obj.ViewObject
+
+            # Geometry calculation (in Global Space, done once)
+            base_face = Arch.getFaceGeometry(obj.Base)
+            if not base_face:
+                return None
+
+            u_vec, v_vec, normal, center_point = Arch.getFaceUV(base_face)
+            origin = Arch.getFaceGridOrigin(
+                base_face, center_point, u_vec, v_vec, obj.TileAlignment, obj.AlignmentOffset
+            )
+
+            # Apply different logic based on the active DisplayMode
+            if display_mode == "Flat Lines":
+                # "Flat Lines" mode requires a Global-to-Local transform.
+                inv_pl = obj.Placement.inverse()
+                calc_u = inv_pl.Rotation.multVec(u_vec)
+                calc_v = inv_pl.Rotation.multVec(v_vec)
+                calc_norm = inv_pl.Rotation.multVec(normal)
+                calc_origin = inv_pl.multVec(origin)
+            elif display_mode == "Shaded":
+                # "Shaded" mode requires Global coordinates (no transform).
+                calc_u = u_vec
+                calc_v = v_vec
+                calc_norm = normal
+                calc_origin = origin
+            else:
+                return None
+
+            # Vector normalization
+            if calc_u.Length < Part.Precision.approximation():
+                calc_u = FreeCAD.Vector(1, 0, 0)
+            else:
+                calc_u.normalize()
+
+            if calc_v.Length < Part.Precision.approximation():
+                calc_v = FreeCAD.Vector(0, 1, 0)
+            else:
+                calc_v.normalize()
+
+            if calc_norm.Length > Part.Precision.approximation():
+                calc_norm.normalize()
+
+            # Apply Texture Rotation
+            if hasattr(obj, "Rotation") and obj.Rotation.Value != 0:
+                rot = FreeCAD.Rotation(calc_norm, obj.Rotation.Value)
+                calc_u = rot.multVec(calc_u)
+                calc_v = rot.multVec(calc_v)
+
+            # Apply Texture Scaling
+            scale_u = vobj.TextureScale.x if vobj.TextureScale.x != 0 else 1.0
+            scale_v = vobj.TextureScale.y if vobj.TextureScale.y != 0 else 1.0
+
+            # Calculate Period (Tile + Joint)
+            period_u = (obj.TileLength.Value + obj.JointWidth.Value) * scale_u
+            period_v = (obj.TileWidth.Value + obj.JointWidth.Value) * scale_v
+
+            if period_u == 0:
+                period_u = 1000.0
+            if period_v == 0:
+                period_v = 1000.0
+
+            # Calculate Final Directions
+            dir_u = calc_u.multiply(1.0 / period_u)
+            dir_v = calc_v.multiply(1.0 / period_v)
+
+            # Calculate Offsets
+            s_offset = calc_origin.dot(dir_u)
+            t_offset = calc_origin.dot(dir_v)
+
+            return dir_u, dir_v, s_offset, t_offset
 
     class ArchCoveringTaskPanel:
         """
