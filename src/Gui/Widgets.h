@@ -39,6 +39,7 @@
 #include <QPointer>
 #include <QPushButton>
 #include <QToolButton>
+#include <QTreeWidget>
 
 #include <Base/Parameter.h>
 #include "ExpressionBinding.h"
@@ -642,6 +643,29 @@ public:
 
 private:
     bool _exclusive;
+};
+
+// ----------------------------------------------------------------------
+
+class GuiExport PropertyMapEditor: public QTreeWidget, public ExpressionBinding
+{
+    Q_OBJECT
+
+public:
+    PropertyMapEditor(QWidget* parent);
+    virtual ~PropertyMapEditor() override;
+
+    virtual QVariantMap map() const;
+    virtual void setMap(const QVariantMap& data);
+
+    virtual App::ObjectIdentifier getMapItemPath(const QString& key) const;
+
+protected:
+    class PropertyMapEditorItemDelegate;
+
+    void resizeEvent(QResizeEvent* event) override;
+
+    PropertyMapEditorItemDelegate* delegate;
 };
 
 /**
