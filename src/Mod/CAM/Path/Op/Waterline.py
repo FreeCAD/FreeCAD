@@ -413,11 +413,11 @@ class ObjectWaterline(PathOp.ObjectOp):
             ),
             (
                 "App::PropertyBool",
-                "FastGeometricOffset",
+                "FastToolCompensation",
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
-                    "Use the Fast 2D Offset algorithm for Tool compensation. If False, skips directly to the more stable 3D Offset algorithm (useful for some models).",
+                    "Use the Fast 2D Tool Compensation algorithm. If False, skips directly to the more stable 3D Tool Compensation algorithm (useful for some models).",
                 ),
             ),
             (
@@ -515,7 +515,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             "GapThreshold": 0.005,
             "AngularDeflection": 0.25,
             "LinearDeflection": 0.0001,
-            "FastGeometricOffset": True,
+            "FastToolCompensation": True,
             "IgnoreHoles": False,
             # For debugging
             "ShowTempObjects": False,
@@ -549,7 +549,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("OptimizeStepOverTransitions", hide)
         obj.setEditorMode("GapThreshold", hide)
         obj.setEditorMode("GapSizes", hide)
-        obj.setEditorMode("FastGeometricOffset", hide)
+        obj.setEditorMode("FastToolCompensation", hide)
         obj.setEditorMode("IgnoreHoles", hide)
 
         if obj.Algorithm == "OCL Dropcutter":
@@ -583,7 +583,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("IgnoreOuterAbove", B)
         obj.setEditorMode("ClearLastLayer", C)
         obj.setEditorMode("CutPattern", C)
-        obj.setEditorMode("FastGeometricOffset", C)
+        obj.setEditorMode("FastToolCompensation", C)
         obj.setEditorMode("IgnoreHoles", C)
         obj.setEditorMode("MinSampleInterval", D)
         obj.setEditorMode("SampleInterval", G)
@@ -1794,7 +1794,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         cutPattern = obj.CutPattern
         self.endVector = None
         bbFace = None
-        self.fastOffset = obj.FastGeometricOffset
+        self.fastToolCmp = obj.FastToolCompensation
         self.ignoreHoles = obj.IgnoreHoles
 
         # Create a copy of the base shape
@@ -1991,8 +1991,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                 newFaces = self.getSolidAreasFromPlanarFaces(csFaces)
 
             if newFaces:
-                # 3D Geometric Offset
-                newFaces = self.getGeometricOffset(newFaces)
+                # Tool Compensation
+                newFaces = self.getToolCompensation(newFaces)
 
             if newFaces:
                 # Fuse overlapping tool compensation regions
@@ -2143,9 +2143,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             fused[z] = res
         return fused
 
-    def getGeometricOffset(self, Faces):
-        """Geometric Offset (Tool Compensation). Returns None if it fails."""
-        Path.Log.debug("getGeometricOffset()")
+    def getToolCompensation(self, Faces):
+        """Tool Compensation. Returns None if it fails."""
+        Path.Log.debug("getToolCompensation()")
 
         def _reconstructFaceFromSlice(slice_result):
             """Helper to turn slice wires back into a valid Face."""
@@ -2162,7 +2162,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         def _fallbackOffset(face):
             """Robust but slower fallback using Path Area utilities."""
             msg = translate(
-                "PathWaterline", "Fast 2D/3D Geometric Offset failed. Falling back to slow offset. "
+                "PathWaterline", "Fast 2D/3D Tool compensation failed. Falling back to slow Tool compensation. "
             )
             msg += translate("PathWaterline", "Examine the generated path for any errors!")
             FreeCAD.Console.PrintWarning(msg + "\n")
@@ -2170,6 +2170,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         tol = self.geoTlrnc if self.geoTlrnc > 0 else 0.01
         newFaces = []
+        failed_twice = False
+
         for face in Faces:
             # Analyze Geometry
             bb = face.BoundBox
@@ -2181,9 +2183,15 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             offsetResult = None
 
-            if self.fastOffset and len(newFace.Wires) == 1 and dz < 0.01:
+            # Fast 2D Tool compensation (Planar Faces Only - Single Wire)
+            if self.fastToolCmp and len(newFace.Wires) == 1 and dz < 0.01:
                 try:
-                    # Fast 2D Offset (Planar Faces Only - Single Wire)
+                    if faild_twice:
+                        # It appears that 2D Offset is facing some challenges (turn it off).
+                        continue
+
+                    # 2D Offset often produces hard to detect faulty surfaces.
+                    # Set a timer to catch errors.
                     start_time = time.time()
 
                     # Execute the 2D offset
@@ -2197,31 +2205,32 @@ class ObjectWaterline(PathOp.ObjectOp):
                         # Calculation took too long; reject even if successful
                         warn_msg = translate(
                             "PathWaterline",
-                            "Geometric Offset: The Fast 2D Geometric Offset engine took longer than expected. \n",
+                            "The Fast 2D Tool compensation algorithm took longer than expected. \n"
                         )
                         warn_msg += translate(
                             "PathWaterline",
-                            "Result rejected for stability and passed to the 3D Offset engine. \n",
+                            "Result rejected for stability and passed to the 3D Tool compensation algorithm. \n"
                         )
                         warn_msg += translate(
                             "PathWaterline",
-                            "Consider disabling the Fast Geometric Offset engine for this specific model. ",
+                            "Consider disabling the Fast Tool compensation algorithm for this specific model. "
                         )
                         FreeCAD.Console.PrintWarning(warn_msg + "\n")
                         offsetResult = None
                 except Exception as e:
+                    failed_twice = True
                     Path.Log.debug(
-                        "Fast 2D Offset failed: {}. Falling back to Fast 3D Offset".format(str(e))
+                        "Fast 2D Tool compensation failed: {}. Falling back to 3D Tool compensation".format(str(e))
                     )
 
             if not offsetResult:
-                # Fast 3D Offset
+                # Fast 3D Tool compensation
                 try:
                     # This ensures the vertical walls are much larger than any curved 3D Face.
                     extrude_val = (2.0 * dz) + 10.0
                     solid = newFace.extrude(FreeCAD.Vector(0, 0, extrude_val))
 
-                    # 3D Offset
+                    # Execute the 3D Offset
                     offsetSolid = solid.makeOffsetShape(self.radius, tol, True, False)
 
                     if not offsetSolid:
@@ -2236,9 +2245,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 except Exception as e:
                     # Fall Back to Slow getOffsetArea
                     Path.Log.debug(
-                        "Primary Fast 2D/3D Offset failed: {}. Falling back to getOffsetArea".format(
-                            str(e)
-                        )
+                        "Primary Fast 2D/3D Tool Compensation failed: {}. Falling back to getOffsetArea".format(str(e))
                     )
 
             if not offsetResult:
@@ -2251,7 +2258,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                     offsetResult.removeSplitter()
                 newFaces.append(offsetResult)
             else:
-                FreeCAD.Console.PrintError("Geometric Offset Logic failed: {} Step Skipped.\n")
+                FreeCAD.Console.PrintError("Tool Compensation Logic failed: {} Step Skipped.\n")
                 continue
 
         return newFaces if len(newFaces) > 0 else None
@@ -2538,15 +2545,17 @@ class ObjectWaterline(PathOp.ObjectOp):
                 pFc = cIds[af]
                 if pFc == -1:
                     # Simple, independent region
-                    holds[af] = csFaces[af]  # place face in hold
+                    holds[af] = csFaces[af] # place face in hold
                 else:
                     # Compound region
                     cnt = len(pFc)
                     if cnt % 2.0 == 0.0:
-                        if not self.ignoreHoles:
-                            # even is donut cut
-                            inr = pFc[cnt - 1]
-                            otr = pFc[cnt - 2]
+                        # even is donut cut
+                        inr = pFc[cnt - 1]
+                        otr = pFc[cnt - 2]
+                        if self.ignoreHoles:
+                            holds[af] = csFaces[otr]
+                        else:
                             holds[otr] = holds[otr].cut(csFaces[inr])
                     else:
                         # odd is floating solid
@@ -2554,7 +2563,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             for af in range(0, lenCsF):
                 if holds[af]:
-                    useFaces.append(holds[af])  # save independent solid
+                    useFaces.append(holds[af]) # save independent solid
         # Eif
 
         if len(useFaces) > 0:
