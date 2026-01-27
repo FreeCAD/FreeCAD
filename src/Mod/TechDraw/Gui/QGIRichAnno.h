@@ -122,8 +122,6 @@ protected:
     void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent* event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
-    void hoverEnterEvent(QGraphicsSceneHoverEvent* event) override;
-    void hoverLeaveEvent(QGraphicsSceneHoverEvent* event) override;
 
     void setLineSpacing(int lineSpacing);
     QFont prefFont(void);
@@ -145,7 +143,6 @@ protected:
     QPointF m_dragStartMouseScenePos;
     QPointF m_initialItemScenePos;   // Scene pos of QGIRichAnno item (center)
     double m_initialTextWidthScene;  // Scene units, from MaxWidth property
-    bool m_frameWasHiddenOnHoverEnter;  // To manage temporary frame visibility
 
     static const double HandleInteractionMargin;  // Margin for grabbing handles (scene units)
     static const double MinTextWidthDocument;     // Minimum resizable width (document units)
