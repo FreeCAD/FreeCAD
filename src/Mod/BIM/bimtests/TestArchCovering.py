@@ -63,7 +63,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         )
 
         # Verify thickness in the bounding box
-        # Since it is on the top face of a 1000mm box, ZMin should be 1000 and ZMax 1020
+        # Since it is on the top face of a 1000 mm box, ZMin should be 1000 and ZMax 1020
         bb = covering.Shape.BoundBox
         self.assertAlmostEqual(bb.ZLength, 20.0, places=3)
         self.assertAlmostEqual(bb.ZMin, 1000.0, places=3)
@@ -87,7 +87,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
     def test_tile_counting_logic(self):
         """Test that the object correctly calculates full vs partial tile counts."""
         # Box is 1000x1000. Tiles are 300x300.
-        # Use a 1mm joint to ensure the solids are physically discretized.
+        # Use a 1 mm joint to ensure the solids are physically discretized.
         base = (self.box, ["Face6"])
         covering = Arch.makeCovering(base)
         covering.TileLength = 300.0
@@ -99,7 +99,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.document.recompute()
 
         # The step is 301 mm. 301 * 3 = 903 mm.
-        # 3x3 full tiles (9 total) will fit within the 1000mm bounds.
+        # 3x3 full tiles (9 total) will fit within the 1000 mm bounds.
         # The remaining space (approx 97 mm) will be filled by partial tiles.
         self.assertEqual(covering.CountFullTiles, 9)
         self.assertGreater(covering.CountPartialTiles, 0)
@@ -247,11 +247,11 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.assertFalse(covering.Shape.isNull())
         self.assertEqual(covering.Shape.ShapeType, "Compound")
 
-        #  Assert correct number of wires
+        # Assert correct number of wires
         # A 2x2 grid should produce exactly 4 closed wires.
         self.assertEqual(len(covering.Shape.Wires), 4, "Should produce exactly 4 tile wires.")
 
-        #  Assert geometric content
+        # Assert geometric content
         # Verify that the final shape is not the same as the base face.
         # This confirms that the cutting and offsetting operations were successful.
         base_face = self.box.getSubObject("Face6")
@@ -303,7 +303,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         # View from side (looking at the curved face)
         face = Arch.getFaceName(cyl, view_vector=App.Vector(1, 0, 0))
 
-        # Should be Top or Bottom (planar), NOT Side (curved), despite Side being larger
+        # Should be Top or Bottom (planar), not Side (curved), despite Side being larger
         face_obj = cyl.Shape.getElement(face)
         self.assertIsNotNone(face_obj.findPlane(), "Selected face must be planar")
 
@@ -345,7 +345,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
         base = (self.box, ["Face6"])
         covering = Arch.makeCovering(base)
         covering.FinishMode = "Solid Tiles"
-        # 300x300 tiles, 10mm joints -> 310mm step
+        # 300x300 tiles, 10 mm joints -> 310 mm step
         # 1000 / 310 = 3.22 -> 4 tiles per row (16 total)
         covering.TileLength = 300.0
         covering.TileWidth = 300.0
@@ -493,7 +493,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
     def test_visual_limit_suppression(self):
         """Verify that layout lines are suppressed for extremely high counts."""
         self.printTestMessage("visual limit suppression...")
-        # 100mm tiles on 40m face = 400x400 grid = 160,000 units (> 100k)
+        # 100mm tiles on 40 m face = 400x400 grid = 160,000 units (> 100k)
         large_box = self.document.addObject("Part::Box", "XLargeBox")
         large_box.Length = 40000.0
         large_box.Width = 40000.0
@@ -556,8 +556,8 @@ class TestArchCovering(TestArchBase.TestArchBase):
         u, v, n, c = Arch.getFaceUV(substrate)
         origin = Arch.getFaceGridOrigin(substrate, c, u, v, alignment="BottomLeft")
 
-        # Scenario: 200x200 tiles, 50mm joint.
-        # Step is 250mm. 1000/250 = 4 tiles precisely per side. Total = 16.
+        # Scenario: 200x200 tiles, 50 mm joint.
+        # Step is 250 mm. 1000/250 = 4 tiles precisely per side. Total = 16.
         tessellator = ArchTessellation.RectangularTessellator(
             length=200, width=200, thickness=10, joint=50
         )
@@ -578,12 +578,12 @@ class TestArchCovering(TestArchBase.TestArchBase):
         u, v, n, c = Arch.getFaceUV(substrate)
         origin = App.Vector(0, 0, 0)
 
-        # Case 1: Invalid Dimensions (< 1.0mm)
+        # Case 1: invalid dimensions (< 1.0mm)
         t1 = ArchTessellation.RectangularTessellator(0.5, 100, 0, 0)
         res1 = t1.compute(substrate, origin, u, v, n)
         self.assertEqual(res1.status, ArchTessellation.TessellationStatus.INVALID_DIMENSIONS)
 
-        # Case 2: Too many tiles (> 10,000)
+        # Case 2: too many tiles (> 10,000)
         # 1000mm face / 5mm step = 200 divisions. 200^2 = 40,000 tiles.
         large_substrate = Part.makePlane(1000, 1000)
         t2 = ArchTessellation.RectangularTessellator(4, 4, 0, 1)
@@ -602,12 +602,12 @@ class TestArchCovering(TestArchBase.TestArchBase):
         self.document.recompute()
         expected_area = 10000.0
 
-        # 1. Draft Clone
+        # Draft Clone
         clone = Draft.make_clone(box)
-        # 2. App::Link
+        # App::Link
         link = self.document.addObject("App::Link", "AppLink")
         link.LinkedObject = box
-        # 3. SubShapeBinder
+        # SubShapeBinder
         binder = self.document.addObject("PartDesign::SubShapeBinder", "Binder")
         binder.Support = (box, ["Face1"])
         self.document.recompute()
@@ -655,14 +655,14 @@ class TestArchCovering(TestArchBase.TestArchBase):
     def test_alignment_and_offset_grid(self):
         """Verify that Running Bond offsets and grid alignments shift the geometry correctly."""
         self.printTestMessage("alignment and offset grid...")
-        # 1. Pure Logic Test: Verify the locator utility directly
+        # Pure logic test: verify the locator utility directly
         face = self.box.getSubObject("Face6")
         u, v, n, c = Arch.getFaceUV(face)
         origin_bl = Arch.getFaceGridOrigin(face, c, u, v, alignment="BottomLeft")
         origin_c = Arch.getFaceGridOrigin(face, c, u, v, alignment="Center")
         self.assertNotEqual(origin_bl, origin_c, "Grid origin must shift with alignment string.")
 
-        # 2. Integration Test: Verify the physical shift in the result
+        # Integration test: verify the physical shift in the result
         covering = Arch.makeCovering((self.box, ["Face6"]))
         covering.TileLength, covering.TileWidth, covering.JointWidth = 200.0, 200.0, 10.0
 
@@ -680,7 +680,8 @@ class TestArchCovering(TestArchBase.TestArchBase):
         )
 
     def test_quantity_takeoff_integrity(self):
-        """Verify consistency between geometric results and BIM quantities including PerimeterLength."""
+        """Verify consistency between geometric results and BIM quantities including
+        PerimeterLength."""
         self.printTestMessage("quantity take-off integrity...")
 
         # Base is 1000x1000 Face (Face6 of 1000^3 box)
@@ -760,7 +761,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
                 covering.TileAlignment = case["TileAlignment"]
                 self.document.recompute()
 
-                # 1. Joint and Perimeter Verification
+                # Joint and Perimeter Verification
                 self.assertAlmostEqual(
                     covering.TotalJointLength.Value,
                     case["expected_joints"],
@@ -774,7 +775,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
                     msg=f"{case['msg']}: Perimeter length mismatch",
                 )
 
-                # 2. Tile Counts
+                # Tile Counts
                 self.assertEqual(
                     covering.CountFullTiles,
                     case["expected_full"],
@@ -786,7 +787,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
                     msg=f"{case['msg']}: Partial tile count mismatch",
                 )
 
-                # 3. Areas
+                # Areas
                 if case["check_waste"]:
                     self.assertAlmostEqual(
                         covering.GrossArea.Value,
@@ -801,7 +802,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
                         msg=f"{case['msg']}: Waste area mismatch",
                     )
 
-        # Extreme Mode Case: Validates the analytical fallback logic
+        # Extreme Mode Case: validates the analytical fallback logic
         with self.subTest(msg="Extreme Mode Fallback (Mosaic)"):
             large_box = self.document.addObject("Part::Box", "LargeBox")
             large_box.Length = 20000.0
@@ -809,7 +810,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
             large_box.Height = 100.0
             self.document.recompute()
 
-            # Face Dimensions: 20m x 20m
+            # Face dimensions: 20m x 20m
             face_area = 400000000.0
             face_perimeter = 80000.0
 
@@ -824,7 +825,7 @@ class TestArchCovering(TestArchBase.TestArchBase):
             covering.TileAlignment = "BottomLeft"
             self.document.recompute()
 
-            # Analytical Calculation:
+            # Analytical calculation:
             # Grid Density Total = (Area / Step_U) + (Area / Step_V)
             # Total = (400M / 50) + (400M / 50) = 8M + 8M = 16,000,000 mm
             # Expected Internal Joint Length = Total - Perimeter
