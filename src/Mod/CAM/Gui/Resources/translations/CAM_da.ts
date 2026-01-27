@@ -3042,7 +3042,7 @@ See the file save policy below on how to deal with name conflicts.</translation>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="131"/>
       <source>Fixed</source>
-      <translation>Fastgjort</translation>
+      <translation>Fast retnining</translation>
     </message>
     <message>
       <location filename="../panels/DogboneEdit.ui" line="142"/>

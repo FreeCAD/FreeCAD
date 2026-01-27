@@ -2170,7 +2170,7 @@ Default: 3 mm</source>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="72"/>
       <source>Discretization Deflection</source>
-      <translation type="unfinished">Discretization Deflection</translation>
+      <translation>離散化の偏差</translation>
     </message>
     <message>
       <location filename="../panels/PageOpVcarveEdit.ui" line="79"/>
@@ -4368,7 +4368,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="79"/>
       <source>Deflection distance for arc interpolation</source>
-      <translation type="unfinished">Deflection distance for arc interpolation</translation>
+      <translation>円弧補間の偏差距離</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="88"/>
@@ -4607,7 +4607,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1746"/>
       <source>To take a finishing profile path at the end</source>
-      <translation type="unfinished">To take a finishing profile path at the end</translation>
+      <translation>最後に仕上げプロファイルのパスを取得</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1752"/>
@@ -4643,7 +4643,7 @@ Larger values (further to the right) will calculate faster; smaller values (furt
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1819"/>
       <source>Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</source>
-      <translation type="unfinished">Limit helix entry diameter, if limit larger than tool diameter or 0, tool diameter is used</translation>
+      <translation>工具径より大きい場合や、工具径が0である場合は、らせんの入力径を制限</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1828"/>
@@ -5442,7 +5442,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="333"/>
       <source>The deflection value for discretizing arcs</source>
-      <translation type="unfinished">The deflection value for discretizing arcs</translation>
+      <translation>離散化円弧の偏差の値</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Vcarve.py" line="343"/>
@@ -5496,18 +5496,18 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Dressup/Array.py" line="66"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="71"/>
       <source>The number of copies in X-direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in X-direction in linear pattern</translation>
+      <translation>直線パターンでのX方向のコピー数</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="74"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="79"/>
       <source>The number of copies in Y-direction in linear pattern</source>
-      <translation type="unfinished">The number of copies in Y-direction in linear pattern</translation>
+      <translation>直線パターンでのY方向のコピー数</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="103"/>
       <source>Make copies in X-direction before Y in linear 2D pattern</source>
-      <translation type="unfinished">Make copies in X-direction before Y in linear 2D pattern</translation>
+      <translation>直線2次元パターンでY方向の前にX方向にコピーを作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="109"/>
@@ -5537,25 +5537,25 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Dressup/Array.py" line="58"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="63"/>
       <source>The spacing between the array copies in linear pattern</source>
-      <translation type="unfinished">The spacing between the array copies in linear pattern</translation>
+      <translation>直線パターンでの整列コピーの間隔</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="80"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="85"/>
       <source>Total angle in polar pattern</source>
-      <translation type="unfinished">Total angle in polar pattern</translation>
+      <translation>軸周パターンの合計角度</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="88"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="93"/>
       <source>The number of copies in linear 1D and polar pattern</source>
-      <translation type="unfinished">The number of copies in linear 1D and polar pattern</translation>
+      <translation>直線1次元パターンと軸周パターンでのコピー数</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="94"/>
       <location filename="../../../Path/Op/Gui/Array.py" line="99"/>
       <source>The centre of rotation in polar pattern</source>
-      <translation type="unfinished">The centre of rotation in polar pattern</translation>
+      <translation>軸周パターンでの回転の中心</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Copy.py" line="51"/>
@@ -5568,7 +5568,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Gui/Array.py" line="218"/>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="78"/>
       <source>Operations cycle time estimation</source>
-      <translation type="unfinished">Operations cycle time estimation</translation>
+      <translation>工程サイクルの推定時間</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="42"/>
@@ -5578,12 +5578,12 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="269"/>
       <source>The unique ID of the tool shape (.fcstd)</source>
-      <translation type="unfinished">The unique ID of the tool shape (.fcstd)</translation>
+      <translation>ツールシェイプのユニークID (.fcstd)</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="279"/>
       <source>The tool shape type</source>
-      <translation type="unfinished">The tool shape type</translation>
+      <translation>ツールシェイプのタイプ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/base.py" line="292"/>
@@ -6916,42 +6916,42 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="138"/>
       <source>&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;This document uses an improper unit schema which can result in dangerous situations and machine crashes!&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;このドキュメントは適切でない単位スキーマを使用しており、危険な状況やマシンのクラッシュを引き起こす可能性があります！&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="149"/>
       <source>Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</source>
-      <translation type="unfinished">Current unit schema &apos;{}&apos; expresses velocity in values &lt;i&gt;per second&lt;/i&gt;.</translation>
+      <translation>現在の単位スキーマ &apos;{}&apos; は速度を&lt;i&gt;1秒間あたり&lt;/i&gt;の値で表現しています。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="161"/>
       <source>Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</source>
-      <translation type="unfinished">Please select a unit schema that expresses feed rates &lt;i&gt;per minute&lt;/i&gt; instead:</translation>
+      <translation>代わりに送り速度を&lt;i&gt;1分間&lt;/i&gt;あたりの値で表現する単位スキーマを選択してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="166"/>
       <source>Recommended Unit Schemas</source>
-      <translation type="unfinished">Recommended Unit Schemas</translation>
+      <translation>推奨される単位スキーマ</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="190"/>
       <source>Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</source>
-      <translation type="unfinished">Keeping the current unit schema can result in dangerous G-code errors. For details please refer to the &lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt; of the CAM Workbench&apos;s wiki page.</translation>
+      <translation>現在の単位スキーマを維持すると危険なGコードエラーが生じる可能性があります。詳しくはCAMワークベンチのWikiページにある&lt;a href=&apos;https://wiki.freecad.org/CAM_Workbench#Units&apos;&gt;Units section&lt;/a&gt;をご覧ください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="198"/>
       <source>Change Unit Schema</source>
-      <translation type="unfinished">Change Unit Schema</translation>
+      <translation>単位スキーマを変更</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="202"/>
       <source>Keep Current Schema</source>
-      <translation type="unfinished">Keep Current Schema</translation>
+      <translation>現在のスキーマを維持</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="205"/>
       <source>Don&apos;t Show Again</source>
-      <translation type="unfinished">Don&apos;t Show Again</translation>
+      <translation>今後は表示しない</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/JobDlg.py" line="234"/>
@@ -7129,7 +7129,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="121"/>
       <source>Customer</source>
-      <translation type="unfinished">Customer</translation>
+      <translation>顧客</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="88"/>
@@ -7154,7 +7154,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="84"/>
       <source>Manufacturer</source>
-      <translation type="unfinished">Manufacturer</translation>
+      <translation>メーカー</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="91"/>
@@ -7264,7 +7264,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="120"/>
       <source>Last Save</source>
-      <translation type="unfinished">Last Save</translation>
+      <translation>最後の保存</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Sanity/ReportGenerator.py" line="85"/>
@@ -7401,7 +7401,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/SanityCmd.py" line="56"/>
       <source>Checks the CAM job for common errors</source>
-      <translation type="unfinished">Checks the CAM job for common errors</translation>
+      <translation>CAMジョブの一般的なエラーを検査</translation>
     </message>
   </context>
   <context>
@@ -7429,13 +7429,13 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="623"/>
       <source>Legacy CAM Simulator</source>
-      <translation type="unfinished">Legacy CAM Simulator</translation>
+      <translation>旧来のCAMシミュレーター</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Simulator.py" line="625"/>
       <location filename="../../../Path/Main/Gui/SimulatorGL.py" line="353"/>
       <source>Simulates G-code on stock</source>
-      <translation type="unfinished">Simulates G-code on stock</translation>
+      <translation>ストックに対するGコードをシミュレート</translation>
     </message>
   </context>
   <context>
@@ -7458,7 +7458,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="1637"/>
       <source>Profiling</source>
-      <translation type="unfinished">Profiling</translation>
+      <translation>プロファイリング</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Adaptive.py" line="165"/>
@@ -7491,7 +7491,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="466"/>
       <source>Copy {0}…</source>
-      <translation type="unfinished">Copy {0}…</translation>
+      <translation>コピー {0}…</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Base.py" line="467"/>
@@ -7544,7 +7544,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="872"/>
       <source>Tool Feedrate Error</source>
-      <translation type="unfinished">Tool Feedrate Error</translation>
+      <translation>ツール送り速度エラー</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="878"/>
@@ -7569,7 +7569,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="117"/>
       <source>Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</source>
-      <translation type="unfinished">Hole diameter may be inaccurate due to tessellation on face. Consider selecting hole edge.</translation>
+      <translation>穴の直径は面のテセレーションによって不正確になる可能性があります。穴の縁を選択することを検討してください。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/CircularHoleBase.py" line="149"/>
@@ -7653,22 +7653,22 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/library/serializers/camotics.py" line="60"/>
       <source>Camotics Tool Library</source>
-      <translation type="unfinished">Camotics Tool Library</translation>
+      <translation>CAMoticsツールライブラリ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/fctl.py" line="43"/>
       <source>FreeCAD Tool Library</source>
-      <translation type="unfinished">FreeCAD Tool Library</translation>
+      <translation>FreeCADツールライブラリ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/serializers/linuxcnc.py" line="43"/>
       <source>LinuxCNC Tool Table</source>
-      <translation type="unfinished">LinuxCNC Tool Table</translation>
+      <translation>LinuxCNCツールテーブル</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/drill.py" line="57"/>
       <source>Drill</source>
-      <translation type="unfinished">Drill</translation>
+      <translation>ドリル</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/ballend.py" line="47"/>
@@ -7683,7 +7683,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/custom.py" line="41"/>
       <source>Unknown custom toolbit type</source>
-      <translation type="unfinished">Unknown custom toolbit type</translation>
+      <translation>不明なカスタムツールビットのタイプ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/models/dovetail.py" line="47"/>
@@ -7728,7 +7728,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="63"/>
       <source>Camotics Tool</source>
-      <translation type="unfinished">Camotics Tool</translation>
+      <translation>CAMoticsツール</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/toolbit/serializers/fctb.py" line="48"/>
@@ -7804,8 +7804,8 @@ Aborting op creation</translation>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="411"/>
       <source>Are you sure you want to remove the library &apos;{0}&apos;?
 This will not delete the toolbits contained within it.</source>
-      <translation type="unfinished">Are you sure you want to remove the library &apos;{0}&apos;?
-This will not delete the toolbits contained within it.</translation>
+      <translation>本当にライブラリ &apos;{0}&apos; を削除しますか？
+含まれるツールビットは削除されません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
@@ -7817,12 +7817,12 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="431"/>
       <source>Failed to delete library &apos;{0}&apos;: {1}</source>
-      <translation type="unfinished">Failed to delete library &apos;{0}&apos;: {1}</translation>
+      <translation>ライブラリ &apos;{0}&apos; の削除に失敗しました: {1}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="471"/>
       <source>Failed to import library: {file_path} {e}</source>
-      <translation type="unfinished">Failed to import library: {file_path} {e}</translation>
+      <translation>ライブラリのインポートに失敗しました: {file_path} {e}</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="508"/>
@@ -7850,7 +7850,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="610"/>
       <source>Failed to import toolbit from &apos;{file_path}&apos; to library &apos;{current_library.label}&apos;.</source>
-      <translation type="unfinished">Failed to import toolbit from &apos;{file_path}&apos; to library &apos;{current_library.label}&apos;.</translation>
+      <translation>&apos;{file_path}&apos; からライブラリ &apos;{current_library.label}&apos; へのツールビットのインポートに失敗しました。</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="622"/>
@@ -8079,7 +8079,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/FeatureExtension.py" line="186"/>
       <source>Extensions</source>
-      <translation type="unfinished">Extensions</translation>
+      <translation>拡張</translation>
     </message>
   </context>
   <context>
@@ -8182,7 +8182,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="671"/>
       <source>Current Extend Radius value produces negative arc radius.</source>
-      <translation type="unfinished">Current Extend Radius value produces negative arc radius.</translation>
+      <translation>現在の延長半径の値では負の円弧半径になります。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="687"/>
@@ -8219,7 +8219,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1034"/>
       <source>No parallel edges identified.</source>
-      <translation type="unfinished">No parallel edges identified.</translation>
+      <translation>平行なエッジが特定されていません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="1056"/>
@@ -8529,7 +8529,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="484"/>
       <source>Creates an array from selected toolpaths</source>
-      <translation type="unfinished">Creates an array from selected toolpaths</translation>
+      <translation>選択したツールパスから配列を作成</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Array.py" line="517"/>
@@ -8547,7 +8547,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Comment.py" line="105"/>
       <source>Adds a Comment to the CNC program</source>
-      <translation type="unfinished">Adds a Comment to the CNC program</translation>
+      <translation>CNCプログラムにコメントを追加</translation>
     </message>
   </context>
   <context>
@@ -8670,7 +8670,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Stop.py" line="112"/>
       <source>Adds an optional or mandatory stop to the program</source>
-      <translation type="unfinished">Adds an optional or mandatory stop to the program</translation>
+      <translation>プログラムにオプションまたは必須の停止を追加</translation>
     </message>
   </context>
   <context>
@@ -9046,7 +9046,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PathShapeTC.py" line="186"/>
       <source>Creates a path from the selected shapes with the tool controller</source>
-      <translation type="unfinished">Creates a path from the selected shapes with the tool controller</translation>
+      <translation>ツールコントローラーで選択した形状からパスを作成</translation>
     </message>
   </context>
   <context>
@@ -9302,7 +9302,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="37"/>
       <source>Cutting edge length</source>
-      <translation type="unfinished">Cutting edge length</translation>
+      <translation>切れ刃長さ</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="41"/>
@@ -9501,7 +9501,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../InitGui.py" line="176"/>
       <source>Simulators</source>
-      <translation type="unfinished">Simulators</translation>
+      <translation>シミュレーター</translation>
     </message>
   </context>
 </TS>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Προσθήκη Τριγώνου</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>Προσθέτει χειροκίνητα διαλέγωντας ένα-ένα τα σημεία (τις γωνίες) όπου θέλετε να μπει το τρίγωνο σε ένα πλέγμα</translation>
     </message>
   </context>
   <context>
@@ -29,12 +29,13 @@
     <message>
       <location filename="../../Command.cpp" line="1494"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Πληροφορίες Πλαισίου Ορίων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1495"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Εμφανίζει τις συντεταγμένες του πλαισίου ορίων του επιλεγμένου πλέγματος. 
+Σου δείχνει ακριβώς πού «τελειώνει» το αντικείμενό σου στον χώρο</translation>
     </message>
   </context>
   <context>
@@ -65,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Εγκάρσιες Τομές</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>Δημιουργεί εγκάρσιες τομές του πλέγματος</translation>
     </message>
   </context>
   <context>
@@ -83,7 +84,7 @@
     <message>
       <location filename="../../Command.cpp" line="1384"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>Μείωση Τριγώνων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1385"/>
@@ -106,7 +107,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>Δημιουργεί μια λογική διαφορά των επιλεγμένων πλεγμάτων</translation>
     </message>
   </context>
   <context>
@@ -119,12 +120,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Πληροφορίες Επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Εμφανίζει πληροφορίες για τις επιλεγμένες έδρες - επιφάνειες</translation>
     </message>
   </context>
   <context>
@@ -137,7 +138,7 @@
     <message>
       <location filename="../../Command.cpp" line="1313"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>Αξιολόγηση Στερεού</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1314"/>
@@ -155,7 +156,7 @@
     <message>
       <location filename="../../Command.cpp" line="1087"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>Αξιολόγηση και Επισκευή</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1088"/>
@@ -263,7 +264,7 @@
     <message>
       <location filename="../../Command.cpp" line="560"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Πλέγμα από Σχήμα</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="561"/>
@@ -389,7 +390,7 @@
     <message>
       <location filename="../../Command.cpp" line="1027"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1028"/>
@@ -786,7 +787,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1167"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1242"/>
@@ -1521,12 +1522,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>Λάμδα</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1559,12 +1560,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>Εμπρόσθιο τετράπλευρο</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>Ημι-δομημένο τετράπλευρο</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="201"/>
@@ -1575,7 +1576,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>Εκτέλεση του Gmsh…</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.cpp" line="270"/>
@@ -1593,12 +1594,12 @@ to a smoother appearance.
     <message>
       <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Προσθήκη Τριγώνου</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>Αναστροφή Όψης</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
@@ -1624,7 +1625,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="176"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>Προσαρμογή Επιφάνειας</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="183"/>
@@ -1687,12 +1688,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>Μέγιστο μέγεθος στοιχείου (0.0 = Αυτόματα)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>Ελάχιστο μέγεθος στοιχείου (0.0 = Αυτόματα)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1712,7 +1713,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>Αφήστε το κενό για χρήση του προεπιλεγμένου εκτελέσιμου αρχείου Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1722,7 +1723,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Χρόνος</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>
@@ -1735,7 +1736,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Αφαίρεση Τμημάτων</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -2330,7 +2331,7 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>Πληροφορίες πλέγματος</translation>
     </message>
   </context>
   <context>
@@ -2358,12 +2359,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>Εργαλεία πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>Τροποποίηση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -2373,17 +2374,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>Κοπή Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Τμηματοποίηση πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>Ανάλυση πλέγματος</translation>
     </message>
   </context>
 </TS>
