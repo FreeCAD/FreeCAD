@@ -24,6 +24,7 @@
 
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -36,7 +37,6 @@
 #include <Standard_Failure.hxx>
 #include <TopoDS.hxx>
 #include <TopExp_Explorer.hxx>
-#include <QtGlobal>
 #include <TopExp.hxx>
 
 #include "FaceMakerBullseye.h"
@@ -44,6 +44,8 @@
 
 #include "TopoShape.h"
 #include "WireJoiner.h"
+
+#include <BRepTools.hxx>
 
 
 using namespace Part;
@@ -338,12 +340,18 @@ void FaceMakerBullseye::FaceDriller::addHole(const WireInfo& wireInfo, std::vect
 
 int FaceMakerBullseye::FaceDriller::getWireDirection(const gp_Pln& plane, const TopoDS_Wire& wire)
 {
+    // use copy of geometry so we don't drag unnecessary pcurves
+    BRepBuilderAPI_Copy copy(wire, true, false);
+    const TopoDS_Wire& tmpWire = TopoDS::Wire(copy.Shape());
+
     // make a test face
-    BRepBuilderAPI_MakeFace mkFace(wire, /*onlyplane=*/Standard_True);
+    BRepBuilderAPI_MakeFace mkFace(tmpWire, /*onlyplane=*/Standard_True);
     TopoDS_Face tmpFace = mkFace.Face();
     if (tmpFace.IsNull()) {
         throw Standard_Failure("getWireDirection: Failed to create face from wire");
     }
+
+    BRepTools::RemoveUnusedPCurves(tmpWire);
 
     // compare face surface normal with our plane's one
     BRepAdaptor_Surface surf(tmpFace);
