@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="Part2DObjectPy"
+    Name="ShapeTextPy"
+    Twin="ShapeText"
+    TwinPointer="ShapeText"
+    Include="Mod/Text/App/ShapeText.h"
+    Namespace="Text"
+    FatherInclude="Mod/Part/App/Part2DObjectPy.h"
+    FatherNamespace="Part"
+    Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Martin Rodriguez Reboredo" EMail="yakoyoku@gmail.com" />
+      <UserDocu>Represents a text object</UserDocu>
+    </Documentation>
+    <Attribute Name="String" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Text string to be drawn.</UserDocu>
+        </Documentation>
+        <Parameter Name="String" Type="String"/>
+    </Attribute>
+    <Attribute Name="FontSource" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Whether the font comes from its family name, a file path or a document object (only font objects are accepted).</UserDocu>
+        </Documentation>
+        <Parameter Name="FontSource" Type="String"/>
+    </Attribute>
+    <Attribute Name="FontName" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font family name.</UserDocu>
+        </Documentation>
+        <Parameter Name="FontName" Type="String"/>
+    </Attribute>
+    <Attribute Name="FontFile" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font file location in the filesystem.</UserDocu>
+        </Documentation>
+        <Parameter Name="FontFile" Type="String"/>
+    </Attribute>
+    <Attribute Name="FontObject" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font document object.</UserDocu>
+        </Documentation>
+        <Parameter Name="FontObject" Type="Object"/>
+    </Attribute>
+    <Attribute Name="Size" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Text height, more specifically, the vertical bearing of glyphs.</UserDocu>
+        </Documentation>
+        <Parameter Name="Size" Type="Float"/>
+    </Attribute>
+    <Attribute Name="Aspect" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font face aspect, either normal, bold, italic or bold and italic.</UserDocu>
+        </Documentation>
+        <Parameter Name="Aspect" Type="String"/>
+    </Attribute>
+    <Attribute Name="Justification" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Horizontal and vertical alignment.</UserDocu>
+        </Documentation>
+        <Parameter Name="Justification" Type="String"/>
+    </Attribute>
+    <Attribute Name="HeightReference" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Height reference, either the height of the glyph caps or the text by itself.</UserDocu>
+        </Documentation>
+        <Parameter Name="HeightReference" Type="String"/>
+    </Attribute>
+    <Attribute Name="Direction" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Text direction from-to.</UserDocu>
+        </Documentation>
+        <Parameter Name="Direction" Type="String"/>
+    </Attribute>
+    <Attribute Name="KeepLeftMargin" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Keep left margin, i.e. whitespace used as indentation.</UserDocu>
+        </Documentation>
+        <Parameter Name="KeepLeftMargin" Type="Boolean"/>
+    </Attribute>
+    <Attribute Name="ScaleToSize" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Scale text to size instead of its glyphs' vertical bearing.</UserDocu>
+        </Documentation>
+        <Parameter Name="ScaleToSize" Type="Boolean"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
