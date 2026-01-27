@@ -49,6 +49,8 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
 
+#include "Utils.h"
+
 #include "ui_DlgScale.h"
 #include "DlgScale.h"
 
@@ -250,10 +252,17 @@ void DlgScale::apply()
                 // label = QStringLiteral("%1_Scale").arg((*it)->text(0));
             }
 
-            FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Scale','" << name << "')");
-            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "obj = App.ActiveDocument.addObject('Part::Scale','%s')",
+                name.c_str()
+            );
 
+
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
             this->writeParametersToFeature(*newObj, sourceObj);
+
+            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
             Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);
             Gui::Command::copyVisual(newObj, "LineColor", sourceObj);
