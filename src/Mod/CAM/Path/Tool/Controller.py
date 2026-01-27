@@ -274,6 +274,7 @@ class ToolController:
                 "Feed",
                 QT_TRANSLATE_NOOP("App::Property", "Feed rate for ramp moves"),
             )
+            obj.setExpression("RampFeed", "HorizFeed")
             _migrateRampDressups(obj)
             needsRecompute = True
 
