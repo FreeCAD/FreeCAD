@@ -24,6 +24,7 @@
 #define GUI_VIEWPROVIDER_ViewProviderPart_H
 
 #include "ViewProviderDragger.h"
+#include "ActiveObjectList.h"
 #include "ViewProviderOriginGroup.h"
 #include "ViewProviderFeaturePython.h"
 
@@ -43,7 +44,7 @@ public:
 
     bool doubleClicked() override;
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    bool isActivePart();
+    bool isActivePart(const char* key = PARTKEY);
     void toggleActivePart();
 
     /// deliver the icon shown in the tree view

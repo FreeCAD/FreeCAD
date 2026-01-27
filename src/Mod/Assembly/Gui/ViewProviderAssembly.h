@@ -263,6 +263,7 @@ private:
     );
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
+    void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     struct ComponentState
     {
@@ -287,6 +288,8 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
+
+    boost::signals2::connection connectActivatedVP;
     boost::signals2::connection connectSolverUpdate;
     boost::signals2::scoped_connection m_preTransactionConn;
 };
