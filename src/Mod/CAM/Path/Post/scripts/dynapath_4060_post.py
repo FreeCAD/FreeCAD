@@ -524,7 +524,7 @@ def parse(pathobj):
                         )  # First Reference plan (Safe Height)
                     elif param == "P":
                         outstring.append(
-                            "L" + format(c.Parameters[param],".1f" )
+                            "L" + format(c.Parameters[param], ".1f")
                         )  # Converts "P" to "L" for dynapath.
                     else:
                         if (
