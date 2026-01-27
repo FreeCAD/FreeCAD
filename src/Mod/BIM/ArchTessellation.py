@@ -161,7 +161,7 @@ class RectangularTessellator(Tessellator):
         # Generate the centerline wires for visualization.
         # If status is EXTREME_COUNT, this returns empty lists to save memory.
         tr, h_edges, v_edges, final_cl = self._generate_visual_grid(
-            origin, u_vec, v_vec, normal, params
+            origin, u_vec, v_vec, normal, params, substrate.BoundBox
         )
 
         # Quantity take-off (linear measurements)
@@ -249,7 +249,7 @@ class RectangularTessellator(Tessellator):
         }
 
     def _generate_lines_along_axis(
-        self, count, step, ortho_dim, line_start, line_len, is_horizontal
+        self, count, step, ortho_dim, line_start, line_len, is_horizontal, placement, bbox
     ):
         """
         Generates a list of parallel edges for the grid visualization.
@@ -268,6 +268,10 @@ class RectangularTessellator(Tessellator):
             The total length of the line.
         is_horizontal : bool
             If True, generates horizontal lines (Y-varying). If False, vertical (X-varying).
+        placement : FreeCAD.Placement
+            The global placement of the grid.
+        bbox : FreeCAD.BoundBox
+            The global bounding box of the substrate.
 
         Returns
         -------
@@ -287,10 +291,17 @@ class RectangularTessellator(Tessellator):
                 p1 = FreeCAD.Vector(pos, line_start, 0)
                 p2 = FreeCAD.Vector(pos, line_start + line_len, 0)
 
-            edges.append(Part.makeLine(p1, p2))
+            # Performance: Bounding Box pre-filter to avoid processing lines in "air"
+            p1_g, p2_g = placement.multVec(p1), placement.multVec(p2)
+            edge_bb = FreeCAD.BoundBox()
+            edge_bb.add(p1_g)
+            edge_bb.add(p2_g)
+            if bbox.intersect(edge_bb):
+                edges.append(Part.makeLine(p1, p2))
+
         return edges
 
-    def _generate_visual_grid(self, origin, u_vec, v_vec, normal, params):
+    def _generate_visual_grid(self, origin, u_vec, v_vec, normal, params, bbox):
         """
         Generates the visual centerlines compound and the local coordinate placement.
 
@@ -302,6 +313,8 @@ class RectangularTessellator(Tessellator):
             The orientation vectors.
         params : dict
             The grid parameters calculated by _calculate_grid_params.
+        bbox : FreeCAD.BoundBox
+            The global bounding box of the substrate.
 
         Returns
         -------
@@ -326,7 +339,9 @@ class RectangularTessellator(Tessellator):
                 self.width,
                 params["start_u"],
                 params["full_len_u"],
-                is_horizontal=True,
+                True,
+                tr,
+                bbox,
             )
             # Vertical lines (vary along U axis)
             v_edges = self._generate_lines_along_axis(
@@ -335,7 +350,9 @@ class RectangularTessellator(Tessellator):
                 self.length,
                 params["start_v"],
                 params["full_len_v"],
-                is_horizontal=False,
+                False,
+                tr,
+                bbox,
             )
 
             final_cl = Part.Compound(h_edges + v_edges)
