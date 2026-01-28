@@ -36,7 +36,7 @@ class BIM_Compound:
         return {
             "Pixmap": "Part_Compound",
             "MenuText": QT_TRANSLATE_NOOP("BIM_Compound", "Compound"),
-            "ToolTip": QT_TRANSLATE_NOOP("BIM_Compound", "Create a compound of several shapes"),
+            "ToolTip": QT_TRANSLATE_NOOP("BIM_Compound", "Creates a compound of several shapes"),
         }
 
     def IsActive(self):
