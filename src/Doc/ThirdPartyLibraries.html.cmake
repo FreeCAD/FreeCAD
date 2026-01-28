@@ -1,220 +1,202 @@
-<h2>FreeCAD<br />
-List of Open Source components<br />
-</h2>
-<p>FreeCAD uses the following Open Source Components.</p>
-<ul>
-<li><p><a href="#_TocBoost">Boost</a></p></li>
-<li><p><a href="#_TocCoin3D">Coin3D</a></p></li>
-<li><p><a href="#_TocEigen">Eigen</a></p></li>
-<li><p><a href="#_TocFreeType">FreeType</a></p></li>
-<li><p><a href="#_TocKDL">KDL</a></p></li>
-<li><p><a href="#_TocLibArea">libarea</a></p></li>
-<li><p><a href="#_TocOCCT">Open CASCADE Technology</a></p></li>
-<li><p><a href="#_TocPcl">Point Cloud Library</a></p></li>
-<li><p><a href="#_TocPyCXX">PyCXX</a></p></li>
-<li><p><a href="#_TocPython">Python</a></p></li>
-<li><p><a href="#_TocPySide">Shiboken/PySide</a></p></li>
-<li><p><a href="#_TocQt">Qt</a></p></li>
-<li><p><a href="#_TocSalomeSMESH">Salome SMESH</a></p></li>
-<li><p><a href="#_TocVtk">Visualization Toolkit</a></p></li>
-<li><p><a href="#_TocXercesC">Xerces-C</a></p></li>
-<li><p><a href="#_TocZipios">Zipios++</a></p></li>
-<li><p><a href="#_TocZlib">zlib</a></p></li>
-</ul>
+<!-- SPDX-License-Identifier: LGPL-2.1-or-later -->
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
 
+<p> 
+   FreeCAD uses a variety of open source libraries which have been <br/>
+   listed below with links to their project pages and license files. <br/>   
+</p>
 
-<h3><a name="_TocBoost"></a>Boost</h3>
-<p>Version: ${Boost_VERSION}</p>
-<p>Web site: <a href="https://www.boost.org/">https://www.boost.org/</a></p>
-<p>License: Boost Software License: <a href="https://www.boost.org/users/license.html">https://www.boost.org/users/license.html</a></p>
+<table
+   cellpadding = '4'
+>
 
+   <thead>
 
-<hr>
+      <tr>
 
-<h3><a name="_TocCoin3D"></a>Coin3D</h3>
-<p>Version: ${COIN3D_VERSION}</p>
-<p>Web site: <a href="https://coin3d.github.io">https://coin3d.github.io</a></p>
-<p>License: BSD 3-Clause: <a href="https://github.com/coin3d/coin/blob/master/COPYING">https://github.com/coin3d/coin/blob/master/COPYING</a></p>
+         <th 
+            align = 'right' 
+            scope = 'col' 
+         > Version </th>
 
+         <th 
+            align = 'center' 
+            scope = 'col' 
+         >🌐</th>
+         
+         <th 
+            align = 'left' 
+            scope = 'col' 
+         > Project </th>
 
-<hr>
+         <th 
+            align = 'right' 
+            scope = 'col' 
+         >🌐</th>
 
-<h3><a name="_TocEigen"></a>Eigen</h3>
-<p>Version: ${EIGEN3_VERSION}</p>
-<p>Web site: <a href="https://eigen.tuxfamily.org">https://eigen.tuxfamily.org</a></p>
-<p>License:  MPL version 2.0: <a href="https://www.mozilla.org/en-US/MPL/2.0/">https://www.mozilla.org/en-US/MPL/2.0/</a></p>
+         <th 
+            align = 'left' 
+            scope = 'col' 
+         > License </th>
 
+      </tr>
 
-<hr>
+   </thead>
 
-<h3><a name="_TocFreeType"></a>FreeType</h3>
-<p>Version: ${FREETYPE_VERSION_STRING}</p>
-<p>Web site: <a href="https://www.freetype.org/">https://www.freetype.org/</a></p>
-<p>License: FreeType License: <a href="https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT">https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT</a></p>
+   <tbody>
 
+      <tr>
+         <td align = 'right' > <code> ${Boost_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://boost.org' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Boost </td>
+         <td align = 'right' > <a href = 'https://boost.org/users/license.html' >🗗</a> </td>
+         <td align = 'left' > <code> BSL-1.0 </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${COIN3D_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://coin3d.github.io' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Coin3D </th>
+         <td align = 'right' > <a href = 'https://github.com/coin3d/coin/blob/master/COPYING' >🗗</a> </td>
+         <td align = 'left' > <code> BSD-3-Clause </code> </td>
+      </tr>
 
-<h3><a name="_TocKDL"></a>KDL</h3>
-<p>Web site: <a href="https://www.orocos.org/kdl.html">https://www.orocos.org/kdl.html</a></p>
-<p>License: LGPL version 2.1: <a href="#_LGPLv21">LGPL v2.1</a></p>
+      <tr>
+         <td align = 'right' > <code> ${EIGEN3_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://eigen.tuxfamily.org' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Eigen </th>
+         <td align = 'right' > <a href = 'https://mozilla.org/en-US/MPL/2.0' >🗗</a> </td>
+         <td align = 'left' > <code> MPL-2.0 </code> </td>
+      </tr>
 
+      <tr>
+         <td align = 'right' > <code> ${FREETYPE_VERSION_STRING} </code> </td>
+         <td align = 'center' > <a href = 'https://freetype.org' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > FreeType </th>
+         <td align = 'right' > <a href = 'https://gitlab.freedesktop.org/freetype/freetype/-/blob/master/docs/FTL.TXT' >🗗</a> </td>
+         <td align = 'left' > <code> FTL </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${KDL_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://orocos.org/kdl.html' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > KDL </th>
+         <td align = 'right' > <a href = 'https://github.com/orocos/orocos_kinematics_dynamics/blob/master/orocos_kdl/debian/copyright' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-2.1-or-later </code> </td>
+      </tr>
 
-<h3><a name="_TocLibArea"></a>libarea</h3>
-<p>Web site: <a href="https://github.com/danielfalck/libarea/">https://github.com/danielfalck/libarea/</a></p>
-<p>License: BSD-3-clause: <a href="https://github.com/danielfalck/libarea/blob/master/License.txt">https://github.com/danielfalck/libarea/blob/master/License.txt</a></p>
+      <tr>
+         <td align = 'right' > <code> </code> </td>
+         <td align = 'center' > <a href = 'https://github.com/danielfalck/libarea' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > LibArea </th>
+         <td align = 'right' > <a href = 'https://github.com/danielfalck/libarea/blob/master/License.txt' >🗗</a> </td>
+         <td align = 'left' > <code> BSD-3-Clause </code> </td>
+      </tr>
 
+      <tr>
+         <td align = 'right' > <code> 1.0.1 </code> </td>
+         <td align = 'center' > <a href = 'https://github.com/Ondsel-Development/OndselSolver' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Ondsel Solver </th>
+         <td align = 'right' > <a href = 'https://github.com/Ondsel-Development/OndselSolver/blob/main/LICENSE' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-2.1-or-later </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${OCC_VERSION_STRING} </code> </td>
+         <td align = 'center' > <a href = 'https://opencascade.com/open-cascade-technology' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Open CASCADE </th>
+         <td align = 'right' > <a href = 'https://dev.opencascade.org/resources/licensing' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-2.1-or-later </code> </td>
+      </tr>
 
-<h3><a name="_Ondsel"></a>Ondsel Solver</h3>
-<p>Version: 1.0.1</p>
-<p>Web site: <a href="https://github.com/Ondsel-Development/OndselSolver">https://github.com/Ondsel-Development/OndselSolver</a></p>
-<p>License: LGPL version 2.1: <a href="#_LGPLv21">LGPL v2.1</a></p>
+      <tr>
+         <td align = 'right' > <code> ${PCL_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://pointclouds.or' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > PCL </th>
+         <td align = 'right' > <a href = 'https://github.com/PointCloudLibrary/pcl/blob/master/LICENSE.txt' >🗗</a> </td>
+         <td align = 'left' > <code> BSD-3-Clause </code> </td>
+      </tr>
 
+      <tr>
+         <td align = 'right' > <code> ${PYCXX_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://cxx.sourceforge.net' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > PyCXX </th>
+         <td align = 'right' > <a href = 'https://sourceforge.net/p/cxx/code/HEAD/tree/trunk/CXX/COPYRIGHT' >🗗</a> </td>
+         <td align = 'left' > <code> BSD-3-Clause </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${Python3_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://python.org' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Python </th>
+         <td align = 'right' > <a href = 'https://docs.python.org/3.6/license.html' >🗗</a> </td>
+         <td align = 'left' > <i> PSF License </i> </td>
+      </tr>
 
-<h3><a name="_TocOCCT"></a>Open CASCADE Technology</h3>
-<p>Version: ${OCC_VERSION_STRING}</p>
-<p>Web site: <a href="https://www.opencascade.com/open-cascade-technology/">https://www.opencascade.com/open-cascade-technology/</a></p>
-<p>License: LGPL version 2.1 with additional exception:<a href="https://dev.opencascade.org/resources/licensing">https://dev.opencascade.org/resources/licensing</a></p>
+      <tr>
+         <td align = 'right' > <code> ${Shiboken_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://doc.qt.io/qtforpython-6/shiboken6/index.html' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Shiboken </th>
+         <td align = 'right' > <a href = 'https://www.gnu.org/licenses/lgpl-3.0.en.html' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-3.0-or-later </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${PySide_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://www.qt.io/development/qt-framework/python-bindings' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > PySide </th>
+         <td align = 'right' > <a href = 'https://www.gnu.org/licenses/lgpl-3.0.en.html' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-3.0-or-later </code> </td>
+      </tr>
 
-<h3><a name="_TocPcl"></a>Point Cloud Library</h3>
-<p>Version: ${PCL_VERSION}</p>
-<p>Web site: <a href="https://www.pointclouds.org">https://www.pointclouds.org</a></p>
-<p>License: BSD-3-clause<a href="https://github.com/PointCloudLibrary/pcl/blob/master/LICENSE.txt">https://github.com/PointCloudLibrary/pcl/blob/master/LICENSE.txt</a></p>
+      <tr>
+         <td align = 'right' > <code> ${QtCore_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://www.qt.io' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Qt </th>
+         <td align = 'right' > <a href = 'https://www.gnu.org/licenses/lgpl-3.0.en.html' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-3.0-or-later </code> </td>
+      </tr>
 
+      <tr>
+         <td align = 'right' > <code> ${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK} </code> </td>
+         <td align = 'center' > <a href = 'https://github.com/SalomePlatform/smesh' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Salome SMESH </th>
+         <td align = 'right' > <a href = 'https://github.com/SalomePlatform/smesh/blob/master/COPYING' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-2.1-or-later </code> </td>
+      </tr>
 
-<hr>
+      <tr>
+         <td align = 'right' > <code> ${VTK_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://www.vtk.org' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > VTK </th>
+         <td align = 'right' > <a href = 'https://vtk.org/Wiki/VTK/License' >🗗</a> </td>
+         <td align = 'left' > <code> BSD-3-Clause </code> </td>
+      </tr>
 
-<h3><a name="_TocPyCXX"></a>PyCXX</h3>
-<p>Version: ${PYCXX_VERSION}</p>
-<p>Web site: <a href="http://cxx.sourceforge.net">http://cxx.sourceforge.net</a></p>
-<p>License: BSD-3-clause</p>
-<pre>
-                           Copyright (c) 1998 - 2007
-                  The Regents of the University of California
-             Produced at the Lawrence Livermore National Laboratory
-             Written by Geoff Furnish, Paul F. Dubois, Barry A. Scott
-                               UCRL-CODE-227018
-                             All rights reserved.
+      <tr>
+         <td align = 'right' > <code> ${XercesC_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://xerces.apache.org/xerces-c' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Xerces-C </th>
+         <td align = 'right' > <a href = 'https://vtk.org/Wiki/VTK/License' >🗗</a> </td>
+         <td align = 'left' > <code> Apache-2.0 </code> </td>
+      </tr>
 
-This file is part of PyCXX. For details, see http://cxx.sourceforge.net.
+      <tr>
+         <td align = 'right' > <code> ${VTK_VERSION} </code> </td>
+         <td align = 'center' > <a href = 'https://zipios.sourceforge.net' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > Zipios++ </th>
+         <td align = 'right' > <a href = 'https://github.com/Zipios/Zipios/blob/main/COPYING' >🗗</a> </td>
+         <td align = 'left' > <code> LGPL-2.1-or-later </code> </td>
+      </tr>
 
-Redistribution  and  use   in  source  and  binary  forms,   with  or  without
-modification, are permitted provided that the following conditions are met:
+      <tr>
+         <td align = 'right' > <code> ${ZLIB_VERSION_STRING} </code> </td>
+         <td align = 'center' > <a href = 'https://zlib.net' >🗗</a> </td>
+         <th align = 'left' scope = 'row' > zlib </th>
+         <td align = 'right' > <a href = 'https://zlib.net/zlib_license.html' >🗗</a> </td>
+         <td align = 'left' > <code> Zlib </code> </td>
+      </tr>
 
- - Redistributions of source code must retain the above copyright notice, this
-   list of conditions and the disclaimer below.
- - Redistributions in  binary form must reproduce the above  copyright notice,
-   this  list of  conditions  and  the  disclaimer (as  noted  below)  in  the
-   documentation and/or materials provided with the distribution.
- - Neither the name  of the UC/LLNL nor  the names of its  contributors may be
-   used to  endorse or  promote products  derived from  this software  without
-   specific prior written permission.
+   </tbody>
 
-THIS SOFTWARE IS  PROVIDED BY THE COPYRIGHT  HOLDERS AND CONTRIBUTORS  "AS IS"
-AND ANY  EXPRESS OR  IMPLIED WARRANTIES, INCLUDING,  BUT NOT  LIMITED  TO, THE
-IMPLIED WARRANTIES  OF MERCHANTABILITY AND  FITNESS FOR  A PARTICULAR  PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE REGENTS OF THE UNIVERSITY OF CALIFORNIA,
-THE U.S.  DEPARTMENT  OF  ENERGY  OR CONTRIBUTORS BE  LIABLE  FOR  ANY DIRECT,
-INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
-BUT NOT LIMITED TO, PROCUREMENT OF  SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-DATA, OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER  CAUSED AND ON ANY THEORY
-OF LIABILITY,  WHETHER  IN  CONTRACT,  STRICT  LIABILITY,  OR  TORT (INCLUDING
-NEGLIGENCE OR OTHERWISE)  ARISING IN ANY WAY OUT OF THE  USE OF THIS SOFTWARE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Additional BSD Notice
-
-1. This notice  is required to be  provided under our  contract with  the U.S.
-   Department of Energy  (DOE).  This work was produced  at the  University of
-   California,  Lawrence  Livermore  National Laboratory  under  Contract  No.
-   W-7405-ENG-48 with the DOE.
-
-2. Neither the  United  States  Government nor  the University  of  California
-   nor any  of their  employees,  makes any warranty,  express or  implied, or
-   assumes any  liability or  responsibility for  the accuracy,  completeness,
-   or usefulness of any information, apparatus, product, or process disclosed,
-   or represents that its use would not infringe privately-owned rights.
-
-3. Also, reference  herein to any  specific commercial  products,  process, or
-   services by  trade name,  trademark,  manufacturer  or otherwise  does  not
-   necessarily  constitute  or  imply   its  endorsement,  recommendation,  or
-   favoring by the  United States Government or the  University of California.
-   The views  and opinions  of authors  expressed herein  do  not  necessarily
-   state or reflect  those of the  United States Government  or the University
-   of California, and shall not be used for advertising or product endorsement
-   purposes.
-</pre>
-
-
-<hr>
-
-<h3><a name="_TocPython"></a>Python</h3>
-<p>Version: ${Python3_VERSION}</p>
-<p>Web site: <a href="https://www.python.org/">https://www.python.org/</a></p>
-<p>License: <a href="https://docs.python.org/3.6/license.html">https://docs.python.org/3.6/license.html</a></p>
-
-
-<hr>
-
-<h3><a name="_TocPySide"></a>Qt for Python (Shiboken / PySide)</h3>
-<p>Version: ${PySide2_VERSION}</p>
-<p>Web site: <a href="https://wiki.qt.io/Qt_for_Python">https://wiki.qt.io/Qt_for_Python</a></p>
-<p>License: LGPL version 3 / GPL version 2: <a href="https://tldrlegal.com/license/gnu-lesser-general-public-license-v3-(lgpl-3)">LGPLv3</a> / <a href="https://tldrlegal.com/license/gnu-general-public-license-v2">GPLv2</a>
-
-
-<hr>
-
-<h3><a name="_TocQt"></a>Qt</h3>
-<p>Version: ${QtCore_VERSION}</p>
-<p>Web site: <a href="https://www.qt.io/">https://www.qt.io/</a></p>
-<p>License: LGPL version 3.0: <a href="https://www.gnu.org/licenses/lgpl-3.0.en.html">https://www.gnu.org/licenses/lgpl-3.0.en.html</a></p>
-
-
-<hr>
-
-<h3><a name="_TocSalomeSMESH"></a>Salome SMESH</h3>
-<p>Version: ${SMESH_VERSION_MAJOR}.${SMESH_VERSION_MINOR}.${SMESH_VERSION_PATCH}.${SMESH_VERSION_TWEAK}</p>
-<p>Web site: <a href="https://www.salome-platform.org/">https://www.salome-platform.org/</a></p>
-<p>License: LGPL version 2.1: <a href="#_LGPLv21">LGPL v2.1</a></p>
-</pre>
-
-<hr>
-
-<h3><a name="_TocVtk"></a>Visualization Toolkit</h3>
-<p>Version: ${VTK_VERSION}</p>
-<p>Web site: <a href="https://www.vtk.org">https://www.vtk.org</a></p>
-<p>License: BSD-3-clause: <a href="https://vtk.org/Wiki/VTK/License">https://vtk.org/Wiki/VTK/License</a></p>
-
-
-<hr>
-
-<h3><a name="_TocXercesC"></a>Xerces-C</h3>
-<p>Version: ${XercesC_VERSION}</p>
-<p>Web site: <a href="https://xerces.apache.org/xerces-c">https://xerces.apache.org/xerces-c</a></p>
-<p>License: Apache License Version 2.0: <a href="https://www.apache.org/licenses/LICENSE-2.0.html">https://www.apache.org/licenses/LICENSE-2.0.html</a></p>
-
-
-<hr>
-
-<h3><a name="_TocZipios"></a>Zipios++</h3>
-<p>Web site: <a href="http://zipios.sourceforge.net">http://zipios.sourceforge.net</a></p>
-<p>License: LGPL v2.1: <a href="https://github.com/Zipios/Zipios/blob/main/COPYING">https://github.com/Zipios/Zipios/blob/main/COPYING</a></p>
-
-
-<hr>
-
-<h3><a name="_TocZlib"></a>zlib</h3>
-<p>Version: ${ZLIB_VERSION_STRING}</p>
-<p>Web site: <a href="https://zlib.net/">https://zlib.net/</a></p>
-<p>License: zlib: <a href="https://zlib.net/zlib_license.html">https://zlib.net/zlib_license.html</p>
-
-
-<hr>
+</table>
