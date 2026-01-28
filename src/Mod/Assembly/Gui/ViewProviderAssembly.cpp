@@ -1330,8 +1330,10 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                     continue;
                 }
 
-                if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
-                    objToDel.push_back(parent);
+                if (parent->getPropertyByName("ObjectToGround")) {
+                    if (std::ranges::find(objToDel, parent) == objToDel.end()) {
+                        objToDel.push_back(parent);
+                    }
                 }
             }
         }
