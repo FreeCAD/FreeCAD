@@ -66,8 +66,9 @@ Sublist = list
 Units = str
 Values = dict[str, Any]
 Visible = dict[str, bool]
-nl = "\n" # particularly useful in a f-string
-PreventGuiTimeout = 1 # seconds
+nl = "\n"  # particularly useful in a f-string
+PreventGuiTimeout = 1  # seconds
+
 
 class Opensbp(PostProcessor):
     """For ShopBot (or other opensbp controllers), this is a CAM postprocessor.
@@ -115,7 +116,7 @@ class Opensbp(PostProcessor):
         #
         self.values: Values = {}
         self.init_values(self.values)
-        #debug_str = "\n".join(f"{k}:{self.values[k]}" for k in sorted(self.values.keys())); print(f"### .values\n{debug_str}")
+        # debug_str = "\n".join(f"{k}:{self.values[k]}" for k in sorted(self.values.keys())); print(f"### .values\n{debug_str}")
 
         self.argument_defaults: Defaults = {}
         self.init_argument_defaults(self.argument_defaults)
@@ -125,7 +126,7 @@ class Opensbp(PostProcessor):
         self.parser: Parser = self.init_arguments(
             self.values, self.argument_defaults, self.arguments_visible
         )
-        self.arguments = None # the parser.parse_args result
+        self.arguments = None  # the parser.parse_args result
 
         #
         # Create another parser just to get a list of all possible arguments
@@ -150,34 +151,37 @@ class Opensbp(PostProcessor):
         # Used in the argparser code as the "name" of the postprocessor program.
         values["MACHINE_NAME"] = "opensbp"
 
-        values.update({
-            'DRILL_CYCLES_TO_TRANSLATE' : [ "G73", "G81", "G82", "G83", "G85" ],
-            "ENABLE_COOLANT" : False,
-            'ENABLE_MACHINE_SPECIFIC_COMMANDS' : True,
-            'LINE_INCREMENT' : 1,
-            'OUTPUT_PATH_LABELS' : True,
-            'OUTPUT_TOOL_CHANGE' : False,
-            # 'PARAMETER_ORDER' : don't care about order, we aren't gcode
-            "POSTAMBLE" : "",
-            "POSTPROCESSOR_FILE_NAME" : __name__,
-            "PREAMBLE" : "",
-            'SPINDLE_WAIT' : 3, # for auto case
-            'STOP_SPINDLE_FOR_TOOL_CHANGE' : True,
-            'SUPPRESS_COMMANDS' : [ 'G54' ], # we don't have coord-systems (yet) # G99,G98,G80 added automatically
-            # 'TOOL_CHANGE' : we have to generate this dynamically
-            'TRANSLATE_DRILL_CYCLES' : True,
-            "UNITS" : self._units,
-            'UNIT_SPEED_FORMAT' : 'mm/s',
-            'USE_TLO' : False,
-            'line_number' : 1,
-            'SKIP_UNKNOWN' : [], # --skip-unknown
-            'last_command' : None,
-            'first_probe' : True,
-        })
+        values.update(
+            {
+                "DRILL_CYCLES_TO_TRANSLATE": ["G73", "G81", "G82", "G83", "G85"],
+                "ENABLE_COOLANT": False,
+                "ENABLE_MACHINE_SPECIFIC_COMMANDS": True,
+                "LINE_INCREMENT": 1,
+                "OUTPUT_PATH_LABELS": True,
+                "OUTPUT_TOOL_CHANGE": False,
+                # 'PARAMETER_ORDER' : don't care about order, we aren't gcode
+                "POSTAMBLE": "",
+                "POSTPROCESSOR_FILE_NAME": __name__,
+                "PREAMBLE": "",
+                "SPINDLE_WAIT": 3,  # for auto case
+                "STOP_SPINDLE_FOR_TOOL_CHANGE": True,
+                "SUPPRESS_COMMANDS": [
+                    "G54"
+                ],  # we don't have coord-systems (yet) # G99,G98,G80 added automatically
+                # 'TOOL_CHANGE' : we have to generate this dynamically
+                "TRANSLATE_DRILL_CYCLES": True,
+                "UNITS": self._units,
+                "UNIT_SPEED_FORMAT": "mm/s",
+                "USE_TLO": False,
+                "line_number": 1,
+                "SKIP_UNKNOWN": [],  # --skip-unknown
+                "last_command": None,
+                "first_probe": True,
+            }
+        )
         # FIXME: should be done by PostProcessor, isn't there yet in 1.0.
-        if 'G38.2' not in self.values['MOTION_COMMANDS']:
-            self.values['MOTION_COMMANDS'].append( 'G38.2' )
-
+        if "G38.2" not in self.values["MOTION_COMMANDS"]:
+            self.values["MOTION_COMMANDS"].append("G38.2")
 
     def init_argument_defaults(self, argument_defaults: Defaults) -> None:
         """Initialize which arguments (in a pair) are shown as the default argument."""
@@ -198,12 +202,11 @@ class Opensbp(PostProcessor):
         #        to actually make the default value(s) change to match.
         #
 
-        argument_defaults['tlo'] = False
+        argument_defaults["tlo"] = False
         # argument_defaults['metric_inches'] = True if From doc
-        argument_defaults['translate_drill'] = True
-        argument_defaults['tool_change'] = False
-        argument_defaults['wait-for-spindle'] = self.values['SPINDLE_WAIT']
-
+        argument_defaults["translate_drill"] = True
+        argument_defaults["tool_change"] = False
+        argument_defaults["wait-for-spindle"] = self.values["SPINDLE_WAIT"]
 
     def init_arguments_visible(self, arguments_visible: Visible) -> None:
         """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
@@ -211,12 +214,26 @@ class Opensbp(PostProcessor):
         #
         # Modify the visibility of any arguments from the defaults here.
         #
-        arguments_visible.update( { k:False for k in (
-            'bcnc', 'tlo', 'translate_drill',
-        ) } )
-        arguments_visible.update( { k:True for k in (
-            'tool_change', 'return_to', 'wait-for-spindle',
-        ) } )
+        arguments_visible.update(
+            {
+                k: False
+                for k in (
+                    "bcnc",
+                    "tlo",
+                    "translate_drill",
+                )
+            }
+        )
+        arguments_visible.update(
+            {
+                k: True
+                for k in (
+                    "tool_change",
+                    "return_to",
+                    "wait-for-spindle",
+                )
+            }
+        )
 
     def init_arguments(
         self,
@@ -241,20 +258,57 @@ class Opensbp(PostProcessor):
             "--native-postamble",
             help='verbatim opensbp commands to be issued after the last command, multi-line w/ \\n. After postamble. Consider a "Cn" or "FB". default=None',
         )
-        _parser.add_argument("--speed-modal", action="store_true", help="skip MS|JS if the speed hasn't changed. Default False", default=False)
-        _parser.add_argument("--o1", action="store_true", help="turns on optimizations that wouldn't break if you interrupt the execution and did some command manually: --no-comments --no-header") # no such optimizations at this time
-        _parser.add_argument("--o2", action="store_true", help='turns on --modal --axis-modal --speed-modal')
+        _parser.add_argument(
+            "--speed-modal",
+            action="store_true",
+            help="skip MS|JS if the speed hasn't changed. Default False",
+            default=False,
+        )
+        _parser.add_argument(
+            "--o1",
+            action="store_true",
+            help="turns on optimizations that wouldn't break if you interrupt the execution and did some command manually: --no-comments --no-header",
+        )  # no such optimizations at this time
+        _parser.add_argument(
+            "--o2", action="store_true", help="turns on --modal --axis-modal --speed-modal"
+        )
 
-        _parser.add_argument("--o3", action="store_true", help='turns on --no-comments --no-header --modal --axis-modal --speed-modal')
-        #_parser.add_argument(
+        _parser.add_argument(
+            "--o3",
+            action="store_true",
+            help="turns on --no-comments --no-header --modal --axis-modal --speed-modal",
+        )
+        # _parser.add_argument(
         #    # this should probably be True for most shopbot installations
         #    "--ab-is-distance", action="store_true", help="A & B axis are distances, default=degrees"
-        #)
-        _parser.add_argument("--filter","--filters", help="a ',' list of filters in FreeCAD.getUserMacroDir()/post to run on the gcode of each Path object, before we see it (i.e. cleanups). A class of same (camelcase) name as file, __init__(self,objectslist, filename, argstring), .filter(eachpathobj, its-.Commands) -> gcode")
-        _parser.add_argument("--abort-on-unknown", action=argparse.BooleanOptionalAction, help="Generate an error and fail if an unknown gcode is seen. default=True", default=True)
-        _parser.add_argument("--skip-unknown", help="if --abort-on-unknown, allow these gcodes, but change them to a comment. E.g. --skip-unknown G55,G56. Always include G54,G99,G98,G80")
-        _parser.add_argument("--native-rapid", action=argparse.BooleanOptionalAction, help="Use machine's rapid speeds, not the ToolController (never uses zeros), default=--no-native-rapid", default=True)
-        _parser.add_argument("--gcode-comments", action=argparse.BooleanOptionalAction, help="Add the original gcode as a comment, for debugging", default=False)
+        # )
+        _parser.add_argument(
+            "--filter",
+            "--filters",
+            help="a ',' list of filters in FreeCAD.getUserMacroDir()/post to run on the gcode of each Path object, before we see it (i.e. cleanups). A class of same (camelcase) name as file, __init__(self,objectslist, filename, argstring), .filter(eachpathobj, its-.Commands) -> gcode",
+        )
+        _parser.add_argument(
+            "--abort-on-unknown",
+            action=argparse.BooleanOptionalAction,
+            help="Generate an error and fail if an unknown gcode is seen. default=True",
+            default=True,
+        )
+        _parser.add_argument(
+            "--skip-unknown",
+            help="if --abort-on-unknown, allow these gcodes, but change them to a comment. E.g. --skip-unknown G55,G56. Always include G54,G99,G98,G80",
+        )
+        _parser.add_argument(
+            "--native-rapid",
+            action=argparse.BooleanOptionalAction,
+            help="Use machine's rapid speeds, not the ToolController (never uses zeros), default=--no-native-rapid",
+            default=True,
+        )
+        _parser.add_argument(
+            "--gcode-comments",
+            action=argparse.BooleanOptionalAction,
+            help="Add the original gcode as a comment, for debugging",
+            default=False,
+        )
 
         return _parser
 
@@ -280,56 +334,73 @@ class Opensbp(PostProcessor):
             # Update any variables that might have been modified while processing the arguments.
             #
             self._units = self.values["UNITS"]
-            self.values['UNIT_SPEED_FORMAT'] = 'mm/s' if self.values['UNIT_FORMAT']=='mm' else 'in/s'
+            self.values["UNIT_SPEED_FORMAT"] = (
+                "mm/s" if self.values["UNIT_FORMAT"] == "mm" else "in/s"
+            )
 
             if args.skip_unknown:
-                self.values['SUPPRESS_COMMANDS'].extend(
+                self.values["SUPPRESS_COMMANDS"].extend(
                     # and canonicalize
-                    [ re.sub(r'^([A-Z])(\d(\.|$))', r'\g<1>0\2', g) for g in args.skip_unknown.split(',') ]
+                    [
+                        re.sub(r"^([A-Z])(\d(\.|$))", r"\g<1>0\2", g)
+                        for g in args.skip_unknown.split(",")
+                    ]
                 )
 
             # too late for .values, so do them by hand
             arg_sets = {
-                'o1': {
-                    'cli' : { 'comments' : False, 'no_comments' : True, 'no_header' : True, 'header' : False },
-                    'values' : { 'OUTPUT_HEADER' : False, 'OUTPUT_COMMENTS' : False },
+                "o1": {
+                    "cli": {
+                        "comments": False,
+                        "no_comments": True,
+                        "no_header": True,
+                        "header": False,
+                    },
+                    "values": {"OUTPUT_HEADER": False, "OUTPUT_COMMENTS": False},
                 },
-                'o2' : {
-                    'cli' : {
-                        'modal' : True, 'no_modal' : False,
-                        'axis_modal' : True, 'no_axis_modal' : False,
-                        'speed_modal' : True,
+                "o2": {
+                    "cli": {
+                        "modal": True,
+                        "no_modal": False,
+                        "axis_modal": True,
+                        "no_axis_modal": False,
+                        "speed_modal": True,
                     },
-                    'values' : {
-                        'MODAL' : True,
-                        'OUTPUT_DOUBLES' : False,
+                    "values": {
+                        "MODAL": True,
+                        "OUTPUT_DOUBLES": False,
                     },
                 },
-                'o3': {
-                    'cli' : {
-                        'comments' : False, 'no_comments' : True,
-                        'no_header' : True, 'header' : False,
-                        'modal' : True, 'no_modal' : False,
-                        'axis_modal' : True , 'no_axis_modal' : False,
-                        'speed_modal' : True,
+                "o3": {
+                    "cli": {
+                        "comments": False,
+                        "no_comments": True,
+                        "no_header": True,
+                        "header": False,
+                        "modal": True,
+                        "no_modal": False,
+                        "axis_modal": True,
+                        "no_axis_modal": False,
+                        "speed_modal": True,
                     },
-                    'values' : {
-                        'OUTPUT_HEADER' : False, 'OUTPUT_COMMENTS' : False,
-                        'MODAL' : True,
-                        'OUTPUT_DOUBLES' : False,
+                    "values": {
+                        "OUTPUT_HEADER": False,
+                        "OUTPUT_COMMENTS": False,
+                        "MODAL": True,
+                        "OUTPUT_DOUBLES": False,
                     },
-                }
+                },
             }
 
-            for opt in ( 'o1', 'o2', 'o3' ):
+            for opt in ("o1", "o2", "o3"):
                 if getattr(args, opt, None):
-                    cli_set = arg_sets[opt]['cli']
-                    value_set = arg_sets[opt]['values']
+                    cli_set = arg_sets[opt]["cli"]
+                    value_set = arg_sets[opt]["values"]
                     for arg_name, value in cli_set.items():
                         Path.Log.debug(f"--{opt} set {arg_name}={value}")
-                        setattr(args, arg_name,value)
+                        setattr(args, arg_name, value)
                     for value_key, value in value_set.items():
-                        self.values[ value_key ] = value
+                        self.values[value_key] = value
 
         #
         # If the flag is False, then args is either None (indicating an error while
@@ -364,15 +435,17 @@ class Opensbp(PostProcessor):
             # We have to lie about self.values to get some expanded g-code that we rely on
             # e.g. we rely on comments
             was_values = copy(self.values)
-            self.values.update({
-                'MODAL' : False, # if true, this would elide the gcode "command", which screws us up. so, we do it later.
-                'OUTPUT_COMMENTS' : True, # we use this to detect operation and...
-                'OUTPUT_TOOL_CHANGE' : True, # we need this to ensure speeds
-                'SHOW_MACHINE_UNITS' : True, # we have to set the machine
-                'AXIS_PRECISION' : 5, # we do calculations, so more precision to prevent rounding errors
-                'FEED_PRECISION' : 5,
-                'SPINDLE_WAIT' : 0, # we'll do the logic in the right place later
-            })
+            self.values.update(
+                {
+                    "MODAL": False,  # if true, this would elide the gcode "command", which screws us up. so, we do it later.
+                    "OUTPUT_COMMENTS": True,  # we use this to detect operation and...
+                    "OUTPUT_TOOL_CHANGE": True,  # we need this to ensure speeds
+                    "SHOW_MACHINE_UNITS": True,  # we have to set the machine
+                    "AXIS_PRECISION": 5,  # we do calculations, so more precision to prevent rounding errors
+                    "FEED_PRECISION": 5,
+                    "SPINDLE_WAIT": 0,  # we'll do the logic in the right place later
+                }
+            )
             try:
                 # We get back a processed (expanded) set of gcode
                 # things like pre/post amble, canned-drill expansion, coolant on/off
@@ -383,13 +456,13 @@ class Opensbp(PostProcessor):
             finally:
                 self.values = was_values
 
-            #print(f"-gcode expanded-\n{gcode}--")
+            # print(f"-gcode expanded-\n{gcode}--")
 
             # ToOpenSBP will modify our .values, and not restore them
             was_values = copy(self.values)
             try:
                 # Treat each `sublist` as a unit/file, so new instance
-                native = ToOpenSBP(self).translate( gcode )
+                native = ToOpenSBP(self).translate(gcode)
             finally:
                 self.values = was_values
 
@@ -446,6 +519,7 @@ def gcode(*commands):
         `commands` is list of Gcodes, i.e. "G54", "G55",
         specify two digit gcode: e.g. "G01", "M06"
     """
+
     def gcode(func):
         # we really just want to make a map with it
         # But, we want the map to belong to the class
@@ -454,8 +528,8 @@ def gcode(*commands):
         # and collect/insert after the class
         func._gcode = []
         for c in commands:
-            func._gcode.append( c )
-            canonical = re.sub(r'^([A-Z])(\d(\.|$))', r'\g<1>0\2', c)
+            func._gcode.append(c)
+            canonical = re.sub(r"^([A-Z])(\d(\.|$))", r"\g<1>0\2", c)
             if canonical != c:
                 raise Exception(f"Internal: Must be a 2 digit gcode (e.g. G00): @gcode('{c}')")
 
@@ -465,6 +539,7 @@ def gcode(*commands):
 
     return gcode
 
+
 def gcode_insertmap():
     # see gcode() above. this inserts the map
     for attr in ToOpenSBP.__dict__.values():
@@ -472,29 +547,29 @@ def gcode_insertmap():
             for g in attr._gcode:
                 ToOpenSBP.DispatchMap[g] = attr
 
-class ToOpenSBP:
-    """Translate gcode to opensbp
-    """
 
-    PositionAxis = 'XYZAB' # though AB is barely supported here
+class ToOpenSBP:
+    """Translate gcode to opensbp"""
+
+    PositionAxis = "XYZAB"  # though AB is barely supported here
 
     DispatchMap = {}
 
-    def __init__(self, postprocessor : Opensbp):
+    def __init__(self, postprocessor: Opensbp):
         # we will use specific features (.values[x] and arguments from the opensbp post)
         self.post = postprocessor
 
         # xyzf etc state
-        self.current_location = { p:None for p in self.post.values["PARAMETER_ORDER"] }
-        self.end_location = [ None for x in self.PositionAxis ]
+        self.current_location = {p: None for p in self.post.values["PARAMETER_ORDER"]}
+        self.end_location = [None for x in self.PositionAxis]
 
-        self.set_units = None # flag and memory of the first time we see a G20/G21 set-units
-        self._postfix = [] # balancing things to add to end
+        self.set_units = None  # flag and memory of the first time we see a G20/G21 set-units
+        self._postfix = []  # balancing things to add to end
         self.last_gui_update = 0
         self.first_tool = True
         self.first_no_F = True
 
-    def translate(self, gcode ):
+    def translate(self, gcode):
         """Entry point, returns the translated contents, e.g. opensbp lines.
         We rely on self.post to hold some state vars: we reuse self.post.values.
         We have lost most context, and structuring of the gcode/job at this point,
@@ -516,79 +591,87 @@ class ToOpenSBP:
 
             # be nice
             if time.monotonic() - self.last_gui_update >= PreventGuiTimeout:
-                if 'Gui' in dir(FreeCADGui):
+                if "Gui" in dir(FreeCADGui):
                     FreeCADGui.updateGui()
                 self.last_gui_update = time.monotonic()
 
-            self.post.values["line_number"] += 1 # actual line number
+            self.post.values["line_number"] += 1  # actual line number
 
             # we need Path.Commands to work with
-            path_command = self.to_path_command(gcode_line, f"expanded gcode line {self.post.values['line_number']}")
+            path_command = self.to_path_command(
+                gcode_line, f"expanded gcode line {self.post.values['line_number']}"
+            )
             if path_command is None:
                 continue
 
             # canonicalize to 2 digits
-            if path_command.Name.startswith('('):
+            if path_command.Name.startswith("("):
                 pass
             else:
                 # canonicalize to 2 digits
                 # All the @gcode() methods can now assume 2 digits
                 # We have conflated Path.Command.Name and general gcode. this allows us to expand drill, then "post process" that.
-                path_command.Name = re.sub(r'^([A-Z])(\d(\.|$))', r'\g<1>0\2', path_command.Name)
+                path_command.Name = re.sub(r"^([A-Z])(\d(\.|$))", r"\g<1>0\2", path_command.Name)
 
-            #print(f"### GCODE [{self.post.values['line_number']}] {path_command.toGCode()}")
+            # print(f"### GCODE [{self.post.values['line_number']}] {path_command.toGCode()}")
 
             # And now we reproduce most of UtilsParse.parse_a_path
 
-            self.track_by_comments( path_command )
+            self.track_by_comments(path_command)
 
-            if self.post.arguments.gcode_comments and not path_command.Name.startswith('('):
-                native += self.comment( f"[{self.post.values['line_number']}] {path_command.toGCode()}" )
+            if self.post.arguments.gcode_comments and not path_command.Name.startswith("("):
+                native += self.comment(
+                    f"[{self.post.values['line_number']}] {path_command.toGCode()}"
+                )
 
             new_location = [
-                        float(path_command.Parameters.get(a, self.current_location.get(a, 0.0)) or 0.0)
-                        for a in self.PositionAxis
+                float(path_command.Parameters.get(a, self.current_location.get(a, 0.0)) or 0.0)
+                for a in self.PositionAxis
             ]
             skip_modal = False
 
-            if path_command.Name in {'G00', 'G01'} and self.post.values['MODAL'] and new_location == self.end_location:
+            if (
+                path_command.Name in {"G00", "G01"}
+                and self.post.values["MODAL"]
+                and new_location == self.end_location
+            ):
                 skip_modal = True
 
             # one place to figure out our end, used by set_speed()
-            if path_command.Name in self.post.values['MOTION_COMMANDS']:
-                if self.post.values['MOTION_MODE'] == 'G90':
+            if path_command.Name in self.post.values["MOTION_COMMANDS"]:
+                if self.post.values["MOTION_MODE"] == "G90":
                     self.end_location = new_location
                 else:
-                    raise Exception('Relative G91 not supported yet')
+                    raise Exception("Relative G91 not supported yet")
                     # FIXME: not tested (relative mode not fully implemented):
-                    #self.end_location = [
+                    # self.end_location = [
                     #    float(self.current_location[a] or 0.0) + float(path_command.Parameters.get(a, 0.0))
                     #    for a in self.current_location if a in self.PositionAxis
-                    #]
-                #print(f"### end at {self.end_location}")
+                    # ]
+                # print(f"### end at {self.end_location}")
 
             if skip_modal:
-                rez = ''
+                rez = ""
             else:
                 # handle that gcode
-                #print(f"### path_command is {path_command.__class__.__name__}")
-                rez = self.dispatch( path_command )
-                #print(f"### translated: {rez.rstrip()}")
+                # print(f"### path_command is {path_command.__class__.__name__}")
+                rez = self.dispatch(path_command)
+                # print(f"### translated: {rez.rstrip()}")
 
             # append to buffer
             native += rez
 
-            if path_command.Name in self.post.values['MOTION_COMMANDS']:
+            if path_command.Name in self.post.values["MOTION_COMMANDS"]:
                 # does the right thing for position axis, for relative
-                for i,a in enumerate(self.PositionAxis):
+                for i, a in enumerate(self.PositionAxis):
                     self.current_location[a] = self.end_location[i]
                 # all other parameters (especially F)
-                for a,v in path_command.Parameters.items():
+                for a, v in path_command.Parameters.items():
                     if a not in self.PositionAxis:
                         self.current_location[a] = v
-                #print(f"### current {self.current_location}")
+                # print(f"### current {self.current_location}")
 
-            self.post.values['last_command'] = path_command
+            self.post.values["last_command"] = path_command
 
         native += self.postfix()
 
@@ -599,46 +682,46 @@ class ToOpenSBP:
         rez = ""
 
         if postarg := self.post.arguments.native_postamble:
-            self.comment('native postamble')
-            post_lines = postarg.replace('\\n','\n')
+            self.comment("native postamble")
+            post_lines = postarg.replace("\\n", "\n")
             if not post_lines.endswith("\n"):
                 post_lines += "\n"
             rez += post_lines
 
         if self._postfix:
-            rez += nl.join( reversed(self._postfix) )
+            rez += nl.join(reversed(self._postfix))
             rez += nl
 
         return rez
 
     def reset_values(self):
-        self.post.values.update({
-            'line_number' : 0,
-            'COMMENT_SYMBOL' : "'",
-        })
+        self.post.values.update(
+            {
+                "line_number": 0,
+                "COMMENT_SYMBOL": "'",
+            }
+        )
 
-    def track_by_comments(self, path_command ):
+    def track_by_comments(self, path_command):
         """Since we've lost the Path objects structure (we only have the gcode str),
         we'll track things of interest by comments here.
         """
-        if path_command.Name.startswith('('):
+        if path_command.Name.startswith("("):
             if m := (
-                re.match(r'\(Path: ([^)]+)\)', path_command.Name)
-                or
-                re.match(r'\(Begin operation: ([^)]+)\)', path_command.Name)
-                or
-                re.match(r'\(Begin (preamble)\)', path_command.Name)
-                ):
-                self.post.values['Operation'] = m.group(1)
+                re.match(r"\(Path: ([^)]+)\)", path_command.Name)
+                or re.match(r"\(Begin operation: ([^)]+)\)", path_command.Name)
+                or re.match(r"\(Begin (preamble)\)", path_command.Name)
+            ):
+                self.post.values["Operation"] = m.group(1)
 
-    def to_path_command(self, gcode : str, during : str):
+    def to_path_command(self, gcode: str, during: str):
         """Utility,
         One gcode line to a Path.Command, with some error handling
         e.g. to_path_command("G0 X50", "preamble")
         `during` is explanatory text if we get a conversion error
         """
 
-        if gcode == '':
+        if gcode == "":
             return None
 
         pc = Path.Command()
@@ -661,21 +744,26 @@ class ToOpenSBP:
         or '' to mean nothing resulted
         """
         command = None
-        if path_command.Name.startswith('('):
+        if path_command.Name.startswith("("):
             # sadly, Path.Command doesn't set .Name to "comment", but rather to the comment string
-            command = 'comment'
+            command = "comment"
         else:
             command = path_command.Name
 
         # Call the translate handler
         if command in self.DispatchMap:
-            rez = self.DispatchMap[command](self, path_command ) # careful, doesn't do inheritance lookup
+            rez = self.DispatchMap[command](
+                self, path_command
+            )  # careful, doesn't do inheritance lookup
             return rez
 
         else:
             message = f"gcode not handled at {self.location(path_command)}"
-            if self.post.arguments.abort_on_unknown and command not in self.post.values['SKIP_UNKNOWN']:
-                FreeCAD.Console.PrintError(message+"\n")
+            if (
+                self.post.arguments.abort_on_unknown
+                and command not in self.post.values["SKIP_UNKNOWN"]
+            ):
+                FreeCAD.Console.PrintError(message + "\n")
                 raise NotImplementedError(message)
             else:
                 FreeCAD.Console.PrintWarning("Skipped:  " + message + "\n")
@@ -683,9 +771,13 @@ class ToOpenSBP:
 
     def location(self, path_command=None):
         """a message fragment of where we are, and the path_command if you want
-            `path_command` can be a literal-string gcode, or usually a Path.Command
+        `path_command` can be a literal-string gcode, or usually a Path.Command
         """
-        g = f": {self.post.values['line_number']} {path_command if isinstance(path_command, str) else path_command.toGCode()}" if path_command else ''
+        g = (
+            f": {self.post.values['line_number']} {path_command if isinstance(path_command, str) else path_command.toGCode()}"
+            if path_command
+            else ""
+        )
         return f"{self.post.values['Operation']}{g}"
 
     def comment(self, message, force=False):
@@ -700,9 +792,9 @@ class ToOpenSBP:
         if self.post.values["OUTPUT_COMMENTS"] or force:
             return self.post.values["COMMENT_SYMBOL"] + message + nl
         else:
-            return ''
+            return ""
 
-    @gcode('comment')
+    @gcode("comment")
     def t_comment(self, path_command):
         # leaves ()
         rez = ""
@@ -713,15 +805,15 @@ class ToOpenSBP:
         # We don't have access to the Path object, and we need/want to know where we are
         # e.g. probing. This should be fixed in the new "machine" style
         if path_command.Name.startswith("(Post Processor: "):
-            rez += self.comment( "  " + self.post._job.PostProcessorArgs )
+            rez += self.comment("  " + self.post._job.PostProcessorArgs)
         elif path_command.Name.startswith("(Cam File: "):
             rez += self.comment(f"Job: {self.post._job.Label}")
-        elif m:=re.match(r'\(\s*MC_RUN_COMMAND\s+(.+)\)$', path_command.Name):
+        elif m := re.match(r"\(\s*MC_RUN_COMMAND\s+(.+)\)$", path_command.Name):
             # let's leave the original as a comment (if comments are on)
             rez += m.group(1) + "\n"
-        elif m:=re.match(r'\(PROBEOPEN (.+)\)$', path_command.Name):
+        elif m := re.match(r"\(PROBEOPEN (.+)\)$", path_command.Name):
             filename = m.group(1)
-            if '.' not in filename:
+            if "." not in filename:
                 # default .txt (really "space delimited values")
                 filename += ".txt"
 
@@ -729,12 +821,14 @@ class ToOpenSBP:
 
             # can't get &UserDataFolder to catenate properly anywhere...
             # so, just filename
-            rez += self.comment("Load the My_Variables file from Custom Cut 90 in C:\\SbParts\\Custom")
+            rez += self.comment(
+                "Load the My_Variables file from Custom Cut 90 in C:\\SbParts\\Custom"
+            )
             rez += "C#,90" + nl
-            #if re.match(r'[^:]+:', filename):
+            # if re.match(r'[^:]+:', filename):
             #    # "absolute"
             #    rez += f'OPEN "{filename}" FOR OUTPUT as #1' + nl
-            #else:
+            # else:
             #    # "relative"
             #    rez += "GetUsrPath, &UserDataFolder" + nl
             #    rez += f'OPEN &UserDataFolder & "/{filename}" FOR OUTPUT as #1' + nl
@@ -743,9 +837,10 @@ class ToOpenSBP:
             rez += "&hit = 0" + nl
             # subroutines, cleanup
             # but only once per post
-            if self.post.values['first_probe']:
-                self.post.values['first_probe'] = False
-                self._postfix.append( """GOTO SkipProbeSubRoutines
+            if self.post.values["first_probe"]:
+                self.post.values["first_probe"] = False
+                self._postfix.append(
+                    """GOTO SkipProbeSubRoutines
 CaptureZPos:
   ' for g38.2 probe, write the data on probe-contact
   ' and set flag for didn't-fail
@@ -767,65 +862,78 @@ SkipProbeSubRoutines:"""
 
         return rez
 
-    @gcode('G20', 'G21') # inches, metric
+    @gcode("G20", "G21")  # inches, metric
     def t_units(self, path_command):
         if self.set_units:
-            raise ValueError("You can only set the units once, already {self.set_units['command']} at {self.set_units['at']}. You tried again at {self.location(path_command)}")
+            raise ValueError(
+                "You can only set the units once, already {self.set_units['command']} at {self.set_units['at']}. You tried again at {self.location(path_command)}"
+            )
         else:
             # remember where
-            self.set_units = { 'command' : path_command.Name, 'at' : self.location() }
+            self.set_units = {"command": path_command.Name, "at": self.location()}
 
-            undesired_units = { 'G20' : "1", "G21" : "0" }[path_command.Name] # OPPOSITE!
+            undesired_units = {"G20": "1", "G21": "0"}[path_command.Name]  # OPPOSITE!
             rez = [
                 f"IF %(25) = {undesired_units} THEN GOTO WrongUnits",
             ]
 
             # preambles should really be after setting units
             if prearg := self.post.arguments.native_preamble:
-                self.comment('native preamble')
-                pre_lines = prearg.split(r'\\n')
+                self.comment("native preamble")
+                pre_lines = prearg.split(r"\\n")
                 rez.extend(pre_lines)
 
-            pp_which = { 'G20' : 'G20/--inches', 'G21' : 'G21/--metric'  }[ path_command.Name ]
-            self._postfix.append( nl.join([
-                'GOTO AfterWrongUnits',
-                'WrongUnits:',
-                '  if %(25) = 0 THEN &shopbot_which="inches"',
-                '  if %(25) = 1 THEN &shopbot_which="mm"',
-                # NB: no commas in strings!
-                f'    MSGBOX("Post-processor wants {pp_which} but ShopBot is " & &shopbot_which & ". Change Units in ShopBot and try again.",0,"Change Units")',
-                '    ENDALL',
-                'AfterWrongUnits:',
-            ]))
+            pp_which = {"G20": "G20/--inches", "G21": "G21/--metric"}[path_command.Name]
+            self._postfix.append(
+                nl.join(
+                    [
+                        "GOTO AfterWrongUnits",
+                        "WrongUnits:",
+                        '  if %(25) = 0 THEN &shopbot_which="inches"',
+                        '  if %(25) = 1 THEN &shopbot_which="mm"',
+                        # NB: no commas in strings!
+                        f'    MSGBOX("Post-processor wants {pp_which} but ShopBot is " & &shopbot_which & ". Change Units in ShopBot and try again.",0,"Change Units")',
+                        "    ENDALL",
+                        "AfterWrongUnits:",
+                    ]
+                )
+            )
 
             return nl.join(rez) + nl
 
-    @gcode('G90') # no relative (G91) yet, have to fix modal handling for relative
+    @gcode("G90")  # no relative (G91) yet, have to fix modal handling for relative
     def t_absolute_mode(self, path_command):
-        self.post.values['MOTION_MODE'] = path_command.Name
-        return { 'G90':'SA', 'G91':'SR' }[ path_command.Name ] + nl
+        self.post.values["MOTION_MODE"] = path_command.Name
+        return {"G90": "SA", "G91": "SR"}[path_command.Name] + nl
 
-    @gcode('M06')
+    @gcode("M06")
     def t_toolchange(self, path_command):
-        tool_number = int(path_command.Parameters['T'])
+        tool_number = int(path_command.Parameters["T"])
         if len(self.post._job.Tools.Group) < tool_number:
-            raise ValueError(f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}")
+            raise ValueError(
+                f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}"
+            )
 
-        tool_controller = self.post._job.Tools.Group[ tool_number - 1 ]
-        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}" # not sure if we want both .Label's, just trying to help the operator
-        safe_tool_name = re.sub(r'[^A-Za-z0-9/_ .-]', '', tool_name)
+        tool_controller = self.post._job.Tools.Group[tool_number - 1]
+        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}"  # not sure if we want both .Label's, just trying to help the operator
+        safe_tool_name = re.sub(r"[^A-Za-z0-9/_ .-]", "", tool_name)
 
         rez = []
 
-        if not self.post.values['OUTPUT_TOOL_CHANGE']:
-            rez.append( self.comment(f"First change tool, should already be #{tool_number}: {safe_tool_name}", force=True).rstrip() )
+        if not self.post.values["OUTPUT_TOOL_CHANGE"]:
+            rez.append(
+                self.comment(
+                    f"First change tool, should already be #{tool_number}: {safe_tool_name}",
+                    force=True,
+                ).rstrip()
+            )
 
         rez += [
             f"&Tool={tool_number}",
             f'&ToolName="{safe_tool_name}"',
         ]
 
-        if self.post.values['OUTPUT_TOOL_CHANGE']:
+        if self.post.values["OUTPUT_TOOL_CHANGE"]:
             # automatic no prompt, or manual prompt (depends on correct shopbot setup)
             rez.append("C9")
 
@@ -833,11 +941,12 @@ SkipProbeSubRoutines:"""
             if self.first_tool:
                 self.first_tool = False
             else:
-                raise NotImplementedError(f"2nd tool can't be done, #{tool_number}, no way to change-tool when --no-tool-changer at {self.location(path_command)}. Try 'Order by Tool' or 'Order by Operation' in job's 'Output' tab.")
+                raise NotImplementedError(
+                    f"2nd tool can't be done, #{tool_number}, no way to change-tool when --no-tool-changer at {self.location(path_command)}. Try 'Order by Tool' or 'Order by Operation' in job's 'Output' tab."
+                )
 
-
-        rez.append( self.set_initial_speeds(tool_controller, path_command).rstrip() )
-        rez = nl.join( (x for x in rez if x != '') ) + nl
+        rez.append(self.set_initial_speeds(tool_controller, path_command).rstrip())
+        rez = nl.join((x for x in rez if x != "")) + nl
 
         return rez
 
@@ -862,66 +971,71 @@ SkipProbeSubRoutines:"""
             We assume a G1 happens before any other motion, to establish a position.
             We could abort on this...
         """
-        rez = ''
+        rez = ""
 
         # Optimize the command, specifying 1..5 axis values
-        axis = [ path_command.Parameters.get(a,None) for a in self.PositionAxis ]
+        axis = [path_command.Parameters.get(a, None) for a in self.PositionAxis]
         last_not_none = 0
         # XYZABC, but reversed
-        for i in reversed(range(0,len(axis))):
+        for i in reversed(range(0, len(axis))):
             if axis[i] is not None:
                 last_not_none = i
                 break
-        axis = axis[:last_not_none+1]
+        axis = axis[: last_not_none + 1]
 
-        if feed_rate := path_command.Parameters.get('F', None):
-            if path_command.Name == 'G00':
+        if feed_rate := path_command.Parameters.get("F", None):
+            if path_command.Name == "G00":
                 if self.post.arguments.abort_on_unknown:
-                    raise ValueError(f"Rapid moves (G0) can't have an F at {self.location(path_command)}")
+                    raise ValueError(
+                        f"Rapid moves (G0) can't have an F at {self.location(path_command)}"
+                    )
 
-        _, speed_command = self.set_speed( path_command )
+        _, speed_command = self.set_speed(path_command)
         rez += speed_command
 
-        native_command = 'J' if path_command.Name == 'G00' else "M"
+        native_command = "J" if path_command.Name == "G00" else "M"
 
         # nb, we don't have to do anything for --axis-modal, handled by common stuff earlier!
 
         axis_ct = len(axis)
         if axis_ct == 1:
-            native_command += 'X'
+            native_command += "X"
         else:
             native_command += str(axis_ct)
 
-        formatted_axis = ( (format(a,f".{self.post.values['FEED_PRECISION']}f") if a is not None else '') for a in axis )
+        formatted_axis = (
+            (format(a, f".{self.post.values['FEED_PRECISION']}f") if a is not None else "")
+            for a in axis
+        )
         rez += f"{native_command},{','.join(formatted_axis)}" + nl
 
         return rez
 
-    @gcode("M03") # clockwise only. do the spindle-controlers do CCW?
+    @gcode("M03")  # clockwise only. do the spindle-controlers do CCW?
     def t_spindle_speed(self, path_command):
-        native = ''
+        native = ""
 
-        if 'S' in path_command.Parameters:
-            native += f"TR,{int(path_command.Parameters['S'])}\n" # rpm units
+        if "S" in path_command.Parameters:
+            native += f"TR,{int(path_command.Parameters['S'])}\n"  # rpm units
 
         # macro will do the dialog-box if you don't have a controlled spindle
         native += "C6\n"
 
-        if self.post.values['SPINDLE_WAIT'] > 0:
+        if self.post.values["SPINDLE_WAIT"] > 0:
             native += f"PAUSE {int(self.post.values['SPINDLE_WAIT'])}\n"
 
         return native
 
-    def format_value(self, value, precision_type='FEED_PRECISION'):
+    def format_value(self, value, precision_type="FEED_PRECISION"):
         """format for the precision (e.g. AXIS_PRECISION)
         notably dealing with slightly-less-than-zero == "0" not "-0"
         """
         # format rounds, so duplicate that effect
-        if abs(value) < 0.5 * 10**(- self.post.values[precision_type]):
+        if abs(value) < 0.5 * 10 ** (-self.post.values[precision_type]):
             value = 0.0
         return format(value, f".{self.post.values[precision_type]}f")
 
-    @gcode("G02","G03")
+    @gcode("G02", "G03")
     def t_arc(self, path_command):
         # only center-format: IJ
         # only absolute mode
@@ -937,31 +1051,33 @@ SkipProbeSubRoutines:"""
         #   F is required
 
         # we would have to generate multiple CG's for repetitions (P)
-        handled_parameters = 'XYZIJFPK' # notably, not R
+        handled_parameters = "XYZIJFPK"  # notably, not R
 
         not_handled = []
-        not_handled = [ a for a in path_command.Parameters if a not in handled_parameters ]
+        not_handled = [a for a in path_command.Parameters if a not in handled_parameters]
         # we handle K=0.0 by ignoring it (xy-plane), other K's we don't handle
-        if 'K' in path_command.Parameters and path_command.Parameters['K'] != 0.0:
-            not_handled.append('K')
-        if 'P' in path_command.Parameters and path_command.Parameters['P'] != 1:
-            not_handled.append('P')
+        if "K" in path_command.Parameters and path_command.Parameters["K"] != 0.0:
+            not_handled.append("K")
+        if "P" in path_command.Parameters and path_command.Parameters["P"] != 1:
+            not_handled.append("P")
         if not_handled:
-            message = f"We can't do parameters {not_handled} for an arc in {self.location(path_command)}"
+            message = (
+                f"We can't do parameters {not_handled} for an arc in {self.location(path_command)}"
+            )
             FreeCAD.Console.PrintError(message)
             if self.post.arguments.abort_on_unknown:
                 raise ValueError(message)
             else:
-                return ''
+                return ""
 
-        if self.post.values['MOTION_MODE'] != 'G90':
-            opname = self.post.values['Operation'].Label if self.post.values['Operation'] else ''
+        if self.post.values["MOTION_MODE"] != "G90":
+            opname = self.post.values["Operation"].Label if self.post.values["Operation"] else ""
             message = f"We can't do relative mode for arcs in [{self.post.values['line_number']}] {opname} {path_command.toGCode()}"
             FreeCAD.Console.PrintError(message)
             if self.post.arguments.abort_on_unknown:
                 raise NotImplementedError(message)
             else:
-                return ''
+                return ""
 
         if path_command.Name == "G02":  # CW
             dirstring = "1"
@@ -969,113 +1085,127 @@ SkipProbeSubRoutines:"""
             dirstring = "-1"
         txt = ""
 
-        dz, speed_command = self.set_speed( path_command )
+        dz, speed_command = self.set_speed(path_command)
         txt += speed_command
 
         txt += "CG,"
-        txt += "," # no diameter
+        txt += ","  # no diameter
 
         # end
         # Omitting XY has special meaning to ShopBot, it is not the same as modal-axis
         # The PostProcess code will drop the XYZ axis on --axis-modal, but we need it:
-        x = path_command.Parameters.get('X', self.current_location['X'] )
-        y = path_command.Parameters.get('Y', self.current_location['Y'] )
+        x = path_command.Parameters.get("X", self.current_location["X"])
+        y = path_command.Parameters.get("Y", self.current_location["Y"])
 
         txt += self.format_value(x) + ","
         txt += self.format_value(y) + ","
 
         # Center is at offset:
-        txt += self.format_value(path_command.Parameters["I"] if 'I' in path_command.Parameters.keys() else 0.0)  + ","
-        txt += self.format_value(path_command.Parameters["J"] if 'J' in path_command.Parameters.keys() else 0.0)  + ","
-        txt += "T" + "," # move on diameter
+        txt += (
+            self.format_value(
+                path_command.Parameters["I"] if "I" in path_command.Parameters.keys() else 0.0
+            )
+            + ","
+        )
+        txt += (
+            self.format_value(
+                path_command.Parameters["J"] if "J" in path_command.Parameters.keys() else 0.0
+            )
+            + ","
+        )
+        txt += "T" + ","  # move on diameter
         txt += dirstring + ","
 
-        if 'Z' not in path_command.Parameters:
+        if "Z" not in path_command.Parameters:
             dz = 0
 
         # Z causes a helical, "causes the defined plunge to be made gradually as the cutter is circling down"
         # Note, dz is actual distance vector, but ShopBot uses -dz to mean "plunge" relative
         txt += self.format_value(-dz) + ","
 
-        txt += "," # repetitions
-        txt += "," # proportion-x
-        txt += "," # proportion-y
+        txt += ","  # repetitions
+        txt += ","  # proportion-x
+        txt += ","  # proportion-y
 
         if dz != 0.0:
             # helical cases
             # we don't do "bottom pass" (4) because FreeCAD seems to do that and it's not a g-code thing anyway
-            if 'X' not in path_command.Parameters and 'Y' not in path_command.Parameters:
+            if "X" not in path_command.Parameters and "Y" not in path_command.Parameters:
                 # circle
-                feature = 3 # spiral
+                feature = 3  # spiral
             else:
-                feature = 3 # spiral
+                feature = 3  # spiral
         else:
             feature = 0
 
         txt += f"{feature},"
-        txt += "1," # continue the CG plunging (don't pull up)
-        txt += "0" # no move before plunge
+        txt += "1,"  # continue the CG plunging (don't pull up)
+        txt += "0"  # no move before plunge
 
         # actual Z, opensbp plunge is a delta, note the actual Z as a comment
-        z = path_command.Parameters.get('Z', self.current_location['Z'] )
+        z = path_command.Parameters.get("Z", self.current_location["Z"])
         txt += " ' Z" + self.format_value(z)
         txt += "\n"
         return txt
 
-    @gcode('M00','M01')
+    @gcode("M00", "M01")
     def t_prompt(self, command):
         # Prompt with "Continue?" and pause, wait for user-interaction
         # If a comment precedes M00, that is used as the prompt (to emulate opensbp behavior)
 
-        txt = ''
-        if not self.post.values['last_command'].Name.startswith('('):
+        txt = ""
+        if not self.post.values["last_command"].Name.startswith("("):
             # default prompt
             where = []
             if self.post._job:
-                where.append( f"<{self.post._job.Label}>")
-            if self.post.values['Operation']:
-                where.append( f"<{self.post.values['Operation']}>" )
+                where.append(f"<{self.post._job.Label}>")
+            if self.post.values["Operation"]:
+                where.append(f"<{self.post.values['Operation']}>")
             txt += self.comment(f"Continue {'.'.join(where)}?", force=True)
-        elif not self.post.values['OUTPUT_COMMENTS']:
+        elif not self.post.values["OUTPUT_COMMENTS"]:
             # Force inclusion of that preceding comment as a prompt
-            txt += self.comment( self.post.values['last_command'].Name, force=True )
+            txt += self.comment(self.post.values["last_command"].Name, force=True)
         txt += "PAUSE\n"
         return txt
 
-    @gcode('M05')
+    @gcode("M05")
     def t_stop_spindle(self, command):
-        return 'C7\n'
+        return "C7\n"
 
-    @gcode('M02', 'M30')
+    @gcode("M02", "M30")
     def t_stop(self, command):
-        return 'END\n'
+        return "END\n"
 
-    @gcode('M08')
+    @gcode("M08")
     def t_coolant_on(self, command):
-        return 'SO,3,1\n'
+        return "SO,3,1\n"
 
-    @gcode('M09')
+    @gcode("M09")
     def t_cooland_off(self, command):
-        return 'SO,3,0\n'
+        return "SO,3,0\n"
 
-    @gcode('G38.2')
+    @gcode("G38.2")
     def t_probe(self, command):
 
-        speed = command.Parameters.get('F', None)
+        speed = command.Parameters.get("F", None)
         if speed is not None:
             speed = float(speed)
         if speed == 0.0:
-            FreeCAD.Console.PrintWarning(f"G38.2 with an F0.0, set Tool speeds? at {self.location(command)}\n")
-            return ''
+            FreeCAD.Console.PrintWarning(
+                f"G38.2 with an F0.0, set Tool speeds? at {self.location(command)}\n"
+            )
+            return ""
         if speed is None:
-            speed = self.current_location['ms'][1] # out of [ xy, z ]
+            speed = self.current_location["ms"][1]  # out of [ xy, z ]
 
-        axis = " ".join([ f"{a}{command.Parameters[a]}" for a in self.PositionAxis if a in command.Parameters])
+        axis = " ".join(
+            [f"{a}{command.Parameters[a]}" for a in self.PositionAxis if a in command.Parameters]
+        )
 
         # PROBEOPEN sets up the contact-detect, so G38.2 are just moves
         rez = ""
 
-        rez += "&hit = 0" + nl # for did-we-hit OR fail
+        rez += "&hit = 0" + nl  # for did-we-hit OR fail
 
         # for probing, we have to setup the on-input for every move
         rez += "ON INPUT(&my_ZzeroInput, 1) GOSUB CaptureZPos" + nl
@@ -1085,7 +1215,7 @@ SkipProbeSubRoutines:"""
         was = self.post.arguments.speed_modal
         try:
             self.post.arguments.speed_modal = True
-            rez += self.t_move( Path.Command(f"G01 F{speed} {axis}" ) )
+            rez += self.t_move(Path.Command(f"G01 F{speed} {axis}"))
         finally:
             self.post.arguments.speed_modal = was
 
@@ -1094,7 +1224,7 @@ SkipProbeSubRoutines:"""
 
         return rez
 
-    def set_speed( self, path_command ):
+    def set_speed(self, path_command):
         # For non-rapid, F applies to the vector of all the axis
         # For rapid, full speed on the axis from the toolchange settings
         #   (so no output here)
@@ -1105,29 +1235,31 @@ SkipProbeSubRoutines:"""
 
         native_command = None
         if path_command.Name == "G00":
-            native_command = 'JS'
+            native_command = "JS"
             # Actually, we just use the full speed on xy and z axis
             # which was initialized at toolchange time
-            return (0,'')
+            return (0, "")
         else:
-            native_command = 'MS'
+            native_command = "MS"
 
-        last_position = [ float(self.current_location[a] or 0) for a in self.PositionAxis ]
-        def fmt_diff( l ):
+        last_position = [float(self.current_location[a] or 0) for a in self.PositionAxis]
+
+        def fmt_diff(l):
             return [(f"{p:9.3f}" if p is not None else f"{str(p):9s}") for p in l]
 
         # Linear move
-        if path_command.Name == 'G01':
+        if path_command.Name == "G01":
             d_axis = list(map(operator.sub, self.end_location, last_position))
 
-            squared_d_axis = [ v**2 for v in d_axis]
-            distance = math.sqrt( sum( squared_d_axis ) )
+            squared_d_axis = [v**2 for v in d_axis]
+            distance = math.sqrt(sum(squared_d_axis))
             z_distance = abs(d_axis[2])
-            xy_distance = math.sqrt( sum( squared_d_axis[:2] ) )
-            axis = [ a for a in self.PositionAxis if a in path_command.Parameters ]
+            xy_distance = math.sqrt(sum(squared_d_axis[:2]))
+            axis = [a for a in self.PositionAxis if a in path_command.Parameters]
 
         # Arcs
-        elif path_command.Name in {'G02','G03'}:
+        elif path_command.Name in {"G02", "G03"}:
+
             def arc_length_3d(center, start, end, clockwise):
                 """center, start, end: (x, y, z) tuples
                 clockwise: True for G2, False for G3
@@ -1161,47 +1293,54 @@ SkipProbeSubRoutines:"""
                 arc_xy = abs(r * dtheta)
 
                 # ---- true helical arc length ----
-                return ( arc_xy, math.hypot(arc_xy, dz) )
+                return (arc_xy, math.hypot(arc_xy, dz))
 
-            start_position = [ float(self.current_location[a] or 0) for a in 'XYZ' ]
-            center_offset = [ float(path_command.Parameters.get(a,None) or 0) for a in 'IJK' ] # k always 0
-            end_position = [ float(path_command.Parameters.get(k, start_position[i])) for i,k in enumerate('XYZ') ]
+            start_position = [float(self.current_location[a] or 0) for a in "XYZ"]
+            center_offset = [
+                float(path_command.Parameters.get(a, None) or 0) for a in "IJK"
+            ]  # k always 0
+            end_position = [
+                float(path_command.Parameters.get(k, start_position[i]))
+                for i, k in enumerate("XYZ")
+            ]
             z_distance = start_position[2] - end_position[2]
 
             # If the XY is omitted, it means a whole circle, and arc-length-3d will give that
             xy_distance, distance = arc_length_3d(
-                map(operator.add, start_position, center_offset), # center
+                map(operator.add, start_position, center_offset),  # center
                 start_position,
                 end_position,
-                path_command.Name=='G02' # clockwise?
+                path_command.Name == "G02",  # clockwise?
             )
 
-            axis = list('XYZ')
+            axis = list("XYZ")
 
-        distances_for_speed = [ abs(xy_distance), abs(z_distance) ] # abs(xy) shouldn't be necessary
+        distances_for_speed = [abs(xy_distance), abs(z_distance)]  # abs(xy) shouldn't be necessary
 
-        if path_command.Name == 'G00':
+        if path_command.Name == "G00":
             # see above, we don't get to here on G0
             # Rapid speed is the full speed on xy, and z
             # no projecting on to the vector
             # FIXME: AB not handled yet
-            speeds = self.current_location['js']
+            speeds = self.current_location["js"]
 
         # feed motions
         else:
             # FIXME: AB speeds not handled yet
 
-            f = path_command.Parameters.get('F', None)
+            f = path_command.Parameters.get("F", None)
             if f is None:
-                f = self.current_location['F']
+                f = self.current_location["F"]
 
             if f is None:
                 # No F and no previous, which is not good. default to machine's feed speeds.
                 f = None
                 if self.first_no_F:
-                    FreeCAD.Console.PrintWarning(f"No F, and no previous F speed at {self.location(path_command)}. Using tool's feed speeds.\n")
+                    FreeCAD.Console.PrintWarning(
+                        f"No F, and no previous F speed at {self.location(path_command)}. Using tool's feed speeds.\n"
+                    )
                     self.first_no_F = False
-                speeds = [ '', '' ]
+                speeds = ["", ""]
 
             else:
                 # have a F/previous: use it
@@ -1209,54 +1348,60 @@ SkipProbeSubRoutines:"""
 
                 # if only in xy, or only in z, then speed=F
                 if xy_distance != 0.0 and z_distance == 0.0:
-                    speeds = [ f, 0.0 ]
+                    speeds = [f, 0.0]
                 elif xy_distance == 0.0 and z_distance != 0.0:
-                    speeds = [ 0.0, f ]
+                    speeds = [0.0, f]
 
                 else:
                     # FIXME: AB not handled yet
-                    speeds = [ ((f * d/distance) if distance!=0 else 0) for d in distances_for_speed ]
+                    speeds = [
+                        ((f * d / distance) if distance != 0 else 0) for d in distances_for_speed
+                    ]
 
-        if native_command == 'MS':
+        if native_command == "MS":
 
             non_elided = copy(speeds)
 
             if self.post.arguments.speed_modal:
                 # compare to previous 'ms' speeds, so we can skip 'MS' if nothing changes
-                for i,new_speed in enumerate( speeds ):
+                for i, new_speed in enumerate(speeds):
                     old_speed = self.current_location[native_command.lower()][i]
                     if float(old_speed) == new_speed:
-                        speeds[i] = ''
+                        speeds[i] = ""
 
             # save it for next time, for --speed-modal
-            self.current_location['ms'] = non_elided
+            self.current_location["ms"] = non_elided
 
         # only elide ''
         # 0.05 seems to be minimum on ShopBot
-        min_speed = 0.05 if self.post.values['UNITS']=='G20' else 1.30 # inches, or mm
+        min_speed = 0.05 if self.post.values["UNITS"] == "G20" else 1.30  # inches, or mm
+
         def gtmin(s):
-            if s == '':
+            if s == "":
                 return s
             elif abs(s) >= min_speed:
                 return s
             elif s == 0.0:
-                return ''
+                return ""
             elif abs(s) < min_speed:
-                return min_speed * (-1 if s<0 else 1)
+                return min_speed * (-1 if s < 0 else 1)
             # that's all the cases
 
-        speeds = [ gtmin(s) for s in speeds ]
-        speeds = [ (format(s, f'.{self.post.values["AXIS_PRECISION"]}f') if s !='' else '') for s in speeds ]
+        speeds = [gtmin(s) for s in speeds]
+        speeds = [
+            (format(s, f'.{self.post.values["AXIS_PRECISION"]}f') if s != "" else "")
+            for s in speeds
+        ]
 
         # cleans up trailing , when trailing speeds elided
-        cmd = f"{native_command},{','.join(speeds)}".rstrip(',')
+        cmd = f"{native_command},{','.join(speeds)}".rstrip(",")
 
         # If there is no speed to set (e.g. the move ends up as delta-0), no MS needed
         if cmd == "MS":
-            cmd = ''
+            cmd = ""
         else:
             cmd += nl
-        return ( z_distance, cmd )
+        return (z_distance, cmd)
 
     def set_initial_speeds(self, tool_controller, path_command):
         # need to ensure initial values for speeds
@@ -1264,80 +1409,93 @@ SkipProbeSubRoutines:"""
         # and we just set the initial speed for "feed" too
 
         Path.Log.debug(f"Setspeeds {tool_controller.Label}")
-        native = ''
+        native = ""
 
         native += self.comment(f"set speeds: {tool_controller.Label}")
         speeds = {
-            "ms" : [], # xy,z
-            "has_ms" : 0, # each axis adds 1 to xyz=3
-            "js" : [], # xy,z
-            "has_js" : 0, # each axis adds 1 to xyz=3
+            "ms": [],  # xy,z
+            "has_ms": 0,  # each axis adds 1 to xyz=3
+            "js": [],  # xy,z
+            "has_js": 0,  # each axis adds 1 to xyz=3
         }
 
-        if abs(tool_controller.HorizFeed) >= 0.5 * 10**(- self.post.values['FEED_PRECISION']): # i.e. not zero
-            speeds['has_ms'] += 2
+        if abs(tool_controller.HorizFeed) >= 0.5 * 10 ** (
+            -self.post.values["FEED_PRECISION"]
+        ):  # i.e. not zero
+            speeds["has_ms"] += 2
 
             xy = PostUtilsParse.format_for_feed(self.post.values, tool_controller.HorizFeed)
 
-            speeds['ms'].append( xy )
+            speeds["ms"].append(xy)
         else:
-            FreeCAD.Console.PrintWarning(f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set HorizFeed speed, set the HorizFeed and VertFeed. ( for {self.location(path_command)} )\n")
-            speeds['ms'].append('')
+            FreeCAD.Console.PrintWarning(
+                f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set HorizFeed speed, set the HorizFeed and VertFeed. ( for {self.location(path_command)} )\n"
+            )
+            speeds["ms"].append("")
             native += self.comment("no HorizFeed", force=True)
 
-        if abs(tool_controller.VertFeed) >= 0.5 * 10**(- self.post.values['FEED_PRECISION']): # i.e. not zero
-            speeds['has_ms'] += 1
-            z = PostUtilsParse.format_for_feed(self.post.values, tool_controller.VertFeed )
-            speeds['ms'].append( z )
+        if abs(tool_controller.VertFeed) >= 0.5 * 10 ** (
+            -self.post.values["FEED_PRECISION"]
+        ):  # i.e. not zero
+            speeds["has_ms"] += 1
+            z = PostUtilsParse.format_for_feed(self.post.values, tool_controller.VertFeed)
+            speeds["ms"].append(z)
         else:
-            FreeCAD.Console.PrintWarning(f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set VertFeed speed, set the HorizFeed and VertFeed. ( for {self.location(path_command)} )\n")
-            speeds['ms'].append('')
+            FreeCAD.Console.PrintWarning(
+                f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set VertFeed speed, set the HorizFeed and VertFeed. ( for {self.location(path_command)} )\n"
+            )
+            speeds["ms"].append("")
             native += self.comment("no VertFeed", force=True)
 
         # fixme: where to get A&B values?
-        #speeds['ms'].append('') # a-move-speed
-        #speeds['ms'].append('') # b-move-speed
+        # speeds['ms'].append('') # a-move-speed
+        # speeds['ms'].append('') # b-move-speed
 
-        if speeds['has_ms'] > 0:
-            native += "MS," + ','.join( speeds['ms'] ) + "\n"
+        if speeds["has_ms"] > 0:
+            native += "MS," + ",".join(speeds["ms"]) + "\n"
 
-        warn_rapid = [] # empty is no warning
+        warn_rapid = []  # empty is no warning
         if tool_controller.HorizRapid != 0.0:
-            speeds['has_js'] += 2
+            speeds["has_js"] += 2
             Path.Log.debug(f"setspeed tc horizR {tool_controller.HorizRapid}")
-            xy = PostUtilsParse.format_for_feed(self.post.values, tool_controller.HorizRapid )
-            speeds['js'].append( xy )
+            xy = PostUtilsParse.format_for_feed(self.post.values, tool_controller.HorizRapid)
+            speeds["js"].append(xy)
         else:
-            speeds['js'].append('')
+            speeds["js"].append("")
             native += self.comment("no HorizRapid", force=True)
             warn_rapid.append("HorizRapid")
 
         if tool_controller.VertRapid != 0.0:
-            speeds['has_js'] += 1
+            speeds["has_js"] += 1
             z = PostUtilsParse.format_for_feed(self.post.values, tool_controller.VertRapid)
-            speeds['js'].append( z )
+            speeds["js"].append(z)
         else:
-            speeds['js'].append('')
+            speeds["js"].append("")
             native += self.comment("no VertRapid", force=True)
             warn_rapid.append("VertRapid")
 
         if warn_rapid:
-            FreeCAD.Console.PrintWarning(f'Using machine\'s rapid ("jog") for {" and ".join(warn_rapid)}, for ToolController <{self.post._job.Label}>.<{tool_controller.Label}>\n')
+            FreeCAD.Console.PrintWarning(
+                f'Using machine\'s rapid ("jog") for {" and ".join(warn_rapid)}, for ToolController <{self.post._job.Label}>.<{tool_controller.Label}>\n'
+            )
 
         # for --speed-modal
-        for x in ('ms','js'):
+        for x in ("ms", "js"):
             self.current_location[x] = speeds[x]
 
         # don't use Tool's Rapid if --no-native-rapid
         if not self.post.arguments.native_rapid:
-            if speeds['has_js'] > 0:
-                native += "JS," + ','.join( speeds['js'] ) + "\n"
-                self.current_location['js'] = [ float(s) for s in speeds['js'] ]
+            if speeds["has_js"] > 0:
+                native += "JS," + ",".join(speeds["js"]) + "\n"
+                self.current_location["js"] = [float(s) for s in speeds["js"]]
 
             Path.Log.debug(f"setspeeds hasjs {speeds['has_js']} {speeds['js']}")
-            if speeds['has_js'] < 2:
-                raise ValueError(f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set xy&z rapid speeds, remove --native-rapid to allow at {self.location(path_command)}")
+            if speeds["has_js"] < 2:
+                raise ValueError(
+                    f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set xy&z rapid speeds, remove --native-rapid to allow at {self.location(path_command)}"
+                )
 
         return native
 
-gcode_insertmap() # fixup DispatchMap
+
+gcode_insertmap()  # fixup DispatchMap
