@@ -126,6 +126,12 @@ class ExplodedView:
 
         return positions
 
+    def explodeTemporarily(self, viewObj):
+        self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
+        self.applyMoves(viewObj)
+        for move in viewObj.Group:
+            move.Visibility = True
+
     def getAssembly(self, viewObj):
         for obj in viewObj.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
@@ -161,6 +167,9 @@ class ExplodedView:
             return
 
         UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
+
+        for move in viewObj.Group:
+            move.Visibility = False
 
     def _calculateExplodedPlacements(self, viewObj):
         """
@@ -464,6 +473,7 @@ class ExplodedViewStep:
             if move.ViewObject:
                 endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [ref])
                 positions.append([startPos, endPos])
+            obj.purgeTouched()
 
         if move.ViewObject:
             move.ViewObject.Proxy.redrawLines(move, positions)
@@ -647,6 +657,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.currentStep = None
         self.radialExplosion = False
 
+        self.viewObj.purgeTouched()
+
     def accept(self):
         self.deactivate()
         UtilsAssembly.restoreAssemblyPartsPlacements(self.assembly, self.initialPlcs)
@@ -658,6 +670,8 @@ class TaskAssemblyCreateView(QtCore.QObject):
             commands = commands + more
         Gui.doCommand(commands[:-1])  # Don't use the last \n
         App.closeActiveTransaction()
+
+        self.viewObj.purgeTouched()
         return True
 
     def reject(self):
