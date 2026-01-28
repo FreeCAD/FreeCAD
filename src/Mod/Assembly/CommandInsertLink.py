@@ -513,14 +513,20 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     # Fallback to the first valid part if no grounded joint was found in source
                     candidate = None
                     for child in targetObj.Group:
-                        if not candidate and (child.isDerivedFrom("App::Link") or child.isDerivedFrom("Part::Feature")):
+                        if not candidate and (
+                            child.isDerivedFrom("App::Link") or child.isDerivedFrom("Part::Feature")
+                        ):
                             candidate = child
 
-                        if srcGrounded and hasattr(child, "LinkedObject") and child.LinkedObject == srcGrounded:
+                        if (
+                            srcGrounded
+                            and hasattr(child, "LinkedObject")
+                            and child.LinkedObject == srcGrounded
+                        ):
                             candidate = child
                             break
 
-                    if not candidate: # Nothing to ground
+                    if not candidate:  # Nothing to ground
                         return
 
                     targetObj = candidate
