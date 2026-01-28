@@ -1338,12 +1338,14 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
 
         // Deletes them.
         for (auto* joint : objToDel) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,
-                "App.getDocument(\"%s\").removeObject(\"%s\")",
-                joint->getDocument()->getName(),
-                joint->getNameInDocument()
-            );
+            if (joint && joint->getNameInDocument() != nullptr) {
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.getDocument(\"%s\").removeObject(\"%s\")",
+                    joint->getDocument()->getName(),
+                    joint->getNameInDocument()
+                );
+            }
         }
     }
     return res;
