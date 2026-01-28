@@ -27,6 +27,23 @@ if [[ ${HOST} =~ .*darwin.* ]]; then
     # - macOS 15+ ARM: modern QuickLook App Extensions (.appex)
     DEPLOY_TARGET="${MACOS_DEPLOYMENT_TARGET:-11.0}"
     CMAKE_PLATFORM_FLAGS+=(-DCMAKE_OSX_DEPLOYMENT_TARGET=${DEPLOY_TARGET})
+
+    # Patch Qt6's FindWrapOpenGL.cmake to not link AGL on macOS 10.15+
+    # AGL framework was removed in macOS 10.15 Catalina and Qt6's cmake
+    # unconditionally tries to link it on Apple platforms, causing build failures.
+    # Only apply this patch for deployment targets >= 10.15.
+    # See: https://github.com/conda-forge/qt-main-feedstock/issues/240
+    DEPLOY_MAJOR=$(echo "$DEPLOY_TARGET" | cut -d. -f1)
+    DEPLOY_MINOR=$(echo "$DEPLOY_TARGET" | cut -d. -f2)
+    if [[ "$DEPLOY_MAJOR" -gt 10 ]] || [[ "$DEPLOY_MAJOR" -eq 10 && "$DEPLOY_MINOR" -ge 15 ]]; then
+        FIND_WRAP_OPENGL="$PREFIX/lib/cmake/Qt6/FindWrapOpenGL.cmake"
+        if [[ -f "$FIND_WRAP_OPENGL" ]]; then
+            echo "Patching Qt6 FindWrapOpenGL.cmake to remove AGL linkage (not available on macOS 10.15+)..."
+            sed -i.bak \
+                -e '/find_library(WrapOpenGL_AGL/,/target_link_libraries.*__opengl_agl_fw_path/d' \
+                "$FIND_WRAP_OPENGL"
+        fi
+    fi
 fi
 
 unset CMAKE_GENERATOR
