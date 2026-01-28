@@ -42,6 +42,7 @@
 #include "PropertyEditor.h"
 #include "Dialogs/DlgAddProperty.h"
 #include "MainWindow.h"
+#include "PropertyItem.h"
 #include "PropertyItemDelegate.h"
 #include "PropertyModel.h"
 #include "PropertyView.h"
@@ -212,6 +213,22 @@ bool PropertyEditor::event(QEvent* event)
             }
         }
     }
+    // Intercept Tab/Backtab for boolean fields to prevent Qt's default focus navigation.
+    // Without this, Tab on a boolean field (no editor open) moves focus outside the widget.
+    // See GitHub issue #22742.
+    if (event->type() == QEvent::KeyPress) {
+        auto kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->key() == Qt::Key_Tab || kevent->key() == Qt::Key_Backtab) {
+            auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
+            if (index.isValid()) {
+                auto* item = static_cast<PropertyItem*>(index.internalPointer());
+                if (qobject_cast<PropertyBoolItem*>(item)) {
+                    keyPressEvent(kevent);
+                    return true;
+                }
+            }
+        }
+    }
     return QTreeView::event(event);
 }
 
@@ -266,9 +283,36 @@ void PropertyEditor::keyPressEvent(QKeyEvent* event)
         event->accept();
         auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
         if (index.isValid()) {
+            // For boolean properties, toggle directly instead of opening editor
+            auto* item = static_cast<PropertyItem*>(index.internalPointer());
+            if (qobject_cast<PropertyBoolItem*>(item)) {
+                QVariant currentValue = index.data(Qt::EditRole);
+                bool newValue = !currentValue.toBool();
+                propertyModel->setData(index, QVariant(newValue), Qt::EditRole);
+                return;
+            }
             openEditor(index);
         }
         return;
+    }
+    else if (key == Qt::Key_Tab || key == Qt::Key_Backtab) {
+        // Handle Tab/Backtab when not editing (e.g., boolean field selected without editor).
+        // Navigate to next/previous editable field. See GitHub issue #22742.
+        auto index = model() ? model()->buddy(currentIndex()) : QModelIndex();
+        if (index.isValid()) {
+            auto* item = static_cast<PropertyItem*>(index.internalPointer());
+            // Only handle if current item is a boolean (no editor open)
+            if (qobject_cast<PropertyBoolItem*>(item)) {
+                event->accept();
+                QAbstractItemDelegate::EndEditHint hint = (key == Qt::Key_Tab)
+                    ? QAbstractItemDelegate::EditNextItem
+                    : QAbstractItemDelegate::EditPreviousItem;
+                // Use closeEditor to handle navigation (even though no editor is open,
+                // it will navigate to the next field)
+                closeEditor(nullptr, hint);
+                return;
+            }
+        }
     }
 
     QTreeView::keyPressEvent(event);
@@ -540,6 +584,12 @@ void PropertyEditor::closeEditor(QWidget* editor, QAbstractItemDelegate::EndEdit
         // does not accept focus, and in turn break Tab/Backtab navigation.
         if (item && item->isReadOnly()) {
             continue;
+        }
+
+        // For boolean properties, don't open editor - just keep painted Yes/No visible.
+        // User can click or press Return to toggle. See GitHub issue #22742.
+        if (qobject_cast<PropertyBoolItem*>(item)) {
+            break;
         }
 
         openEditor(index);
