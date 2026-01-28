@@ -559,6 +559,9 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
                     return true;  // We've handled this event, so stop further processing.
                 }
             }
+            else if (!m_placementMode && m_qgiAnno) {
+                refocusAnnotation();
+            }
         }
     }
 
