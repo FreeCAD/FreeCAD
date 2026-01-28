@@ -20,6 +20,10 @@ if(BUILD_TEMPLATE)
     add_subdirectory(Tools/_TEMPLATE_)
 endif(BUILD_TEMPLATE)
 
+if(BUILD_PROPERTY_ACCESSOR_REWRITER)
+    add_subdirectory(Tools/property-accessor-rewriter)
+endif()
+
 # "if" clause moved into local CMakeLists.txt file to support Conda and Homebrew builds
 add_subdirectory(MacAppBundle)
 

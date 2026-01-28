@@ -32,7 +32,20 @@
 #include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
+#include <utility>
+#include <functional>
+#include <type_traits>
 #include <FCGlobal.h>
+
+#if defined(__clang__)
+    // Used only by the Clang-based property access rewriter.
+    // GCC and MSVC see these as no-ops.
+    #define PROPERTY_GETTER [[clang::annotate("fc_property_getter")]]
+    #define PROPERTY_SETTER [[clang::annotate("fc_property_setter")]]
+#else
+    #define PROPERTY_GETTER
+    #define PROPERTY_SETTER
+#endif
 
 #include "ElementNamingUtils.h"
 namespace Py
@@ -45,6 +58,26 @@ namespace App
 
 class PropertyContainer;
 class ObjectIdentifier;
+class DocumentObject;
+
+class NoContextException : public std::exception
+{
+private:
+    std::string message;
+
+public:
+    explicit NoContextException(std::string  msg = "No context available")
+        : message(std::move(msg)) {}
+
+    const char* what() const noexcept override {
+        return message.c_str();
+    }
+};
+
+enum class CreatePropOption {
+    Create,
+    DoNotCreate
+};
 
 /**
  * @brief %Base class of all properties.
@@ -96,8 +129,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
@@ -447,24 +480,25 @@ public:
     /**
      * @brief Set the precision of floating point properties.
      *
-     * This sets the precision of properties using floating point
-     * numbers to single precision. The default is double precision.
+     * Deprecated.  All floating proint properties are double precision.
      *
-     * @param[in] single True to set single precision, false for double precision.
+     * @param[in] single Unused.
      */
-    void setSinglePrecision(bool single)
+    void setSinglePrecision(bool /*single*/)
     {
-        setStatus(App::Property::Single, single);
     }
 
     /**
      * @brief Gets precision of floating point properties.
      *
-     * @return True if single precision is set, false for double precision.
+     * This function is deprecated.  All floating point properties are
+     * double precision.
+     *
+     * @return False always.
      */
     inline bool isSinglePrecision() const
     {
-        return testStatus(App::Property::Single);
+        return false;
     }
     /// @}
 
@@ -586,6 +620,99 @@ protected:
      */
     std::string getFileName(const char* postfix = nullptr, const char* prefix = nullptr) const;
 
+    App::Property* getContextProperty(CreatePropOption option = CreatePropOption::DoNotCreate) const;
+
+    /**
+     * @brief Set value with taking context into account.
+     *
+     * This function captures the body of a property setter function, and
+     * verifies whether the property should be set in the context or in the
+     * original document object.
+     *
+     * In the first case, it calls the setter function on the context property,
+     * in the latter case, it calls the original setter function.
+     *
+     * @param[in] prop The property instance.
+     * @param[in] func The member function pointer to the setter function.
+     * @param[in] originalFunc The original setter function to call if no context.
+     * @param[in] args The arguments to pass to the setter function.
+     *
+     * @tparam PropertyType The type of the property.
+     * @tparam FuncType The type of the member function pointer.
+     * @tparam OriginalFuncType The type of the original function.
+     * @tparam ArgTypes The types of the arguments to pass to the setter function.
+     */
+    template<typename PropertyType, typename FuncType, typename OriginalFuncType, typename... ArgTypes>
+    void setWithContext(PropertyType* prop, FuncType func, OriginalFuncType originalFunc, ArgTypes&&... args)
+    {
+        if (!prop->template setInContext<PropertyType, FuncType>(func, std::forward<ArgTypes>(args)...)) {
+            originalFunc();
+        }
+    }
+
+    /**
+     * @brief Get value with taking context into account.
+     *
+     * This function captures the body of a property getter function, and
+     * verifies if a context property is available to get the value from.
+     *
+     * If there is no context, the original getter function is called to get
+     * the value from the original property.  If there is a context and the
+     * property is available in the context, the getter method is called on the
+     * context.  If the property is not in the context, the original getter
+     * function is called.
+     *
+     * @param[in] prop The property instance.
+     * @param[in] func The member function pointer to the getter function.
+     * @param[in] originalFunc The original getter function to call if no context.
+     * @param[in] args The arguments to pass to the getter function.
+     *
+     * @tparam PropertyType The type of the property.
+     * @tparam ReturnType The return type of the getter function.
+     * @tparam FuncType The type of the member function pointer.
+     * @tparam OriginalFuncType The type of the original function.
+     * @tparam ArgTypes The types of the arguments to pass to the getter function.
+     *
+     * @return The value returned either stored in the context or stored in the
+     * original object.
+     */
+    template<typename PropertyType,
+             typename ReturnType,
+             typename FuncType,
+             typename OriginalFuncType,
+             typename... ArgTypes>
+    ReturnType getWithContext(const PropertyType* prop,
+                              FuncType func,
+                              OriginalFuncType originalFunc,
+                              ArgTypes&&... args) const
+    {
+        return getWithContextImpl<PropertyType, ReturnType, FuncType, OriginalFuncType, ArgTypes...>(
+                // The trade off here is to avoid code duplication for const
+                // and non-const variants of getWithContext.
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
+                const_cast<PropertyType*>(prop),
+                func,
+                std::move(originalFunc),
+                std::forward<ArgTypes>(args)...);
+    }
+
+    template<typename PropertyType,
+             typename ReturnType,
+             typename FuncType,
+             typename OriginalFuncType,
+             typename... ArgTypes>
+    ReturnType getWithContext(PropertyType* self,
+                              FuncType func,
+                              OriginalFuncType originalFunc,
+                              ArgTypes&&... args)
+    {
+        return getWithContextImpl<PropertyType, ReturnType, FuncType, OriginalFuncType, ArgTypes...>(
+                self,
+                func,
+                std::move(originalFunc),
+                std::forward<ArgTypes>(args)...);
+    }
+
 public:
     /**
      * @brief The copy constructor is deleted to prevent copying.
@@ -600,6 +727,62 @@ public:
 private:
     // Sync status with Property_Type
     void syncType(unsigned type);
+
+    Property* createPropertyContext(const char* name, DocumentObject* obj, DocumentObject* objContext) const;
+
+    template<typename PropertyType,
+             typename ReturnType,
+             typename FuncType,
+             typename OriginalFuncType,
+             typename... ArgTypes>
+        ReturnType getWithContextImpl(PropertyType* /*originalProp*/,
+                                      FuncType func,
+                                      OriginalFuncType&& originalFunc,
+                                      ArgTypes&&... args) const
+    {
+        App::Property* prop = getContextProperty();
+        if (prop != nullptr) {
+            if (auto propWithConstType = freecad_cast<const PropertyType*>(prop)) {
+                // First try to cast to the const property type.
+                if constexpr (std::is_invocable_r_v<ReturnType, FuncType, const PropertyType&, ArgTypes...>) {
+                    return std::invoke(func, *propWithConstType, std::forward<ArgTypes>(args)...);
+                }
+            }
+
+            // Then try to cast to the non-const property type.
+            if (auto propWithType = freecad_cast<PropertyType*>(prop)) {
+                if constexpr (std::is_invocable_r_v<ReturnType, FuncType, PropertyType&, ArgTypes...>) {
+                    return std::invoke(func, *propWithType, std::forward<ArgTypes>(args)...);
+                }
+            }
+
+            throw Base::RuntimeError("Cannot invoke function on context property (type mismatch)");
+        }
+
+        return std::forward<OriginalFuncType>(originalFunc)();
+    }
+
+    template<typename PropertyType, typename FuncType, typename... ArgTypes>
+        bool setInContext(FuncType func, ArgTypes&&... args) const
+    {
+        static_assert(std::is_member_function_pointer_v<FuncType>,
+                      "Func must be a member function pointer.");
+
+        auto* propWithType = freecad_cast<PropertyType*>(getContextProperty(CreatePropOption::Create));
+        if (propWithType == nullptr) {
+            return false;
+        }
+
+        if constexpr (std::is_same_v<void,
+                      decltype(std::invoke(func,
+                                           *propWithType,
+                                           std::forward<ArgTypes>(args)...))>) {
+            std::invoke(func, *propWithType, std::forward<ArgTypes>(args)...);
+            return true;
+        }
+
+        return false;
+    }
 
 private:
     PropertyContainer* father {nullptr};

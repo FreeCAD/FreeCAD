@@ -73,27 +73,37 @@ public:
 
     /** Sets the property
      */
+    PROPERTY_SETTER
     void setValue(const Base::Vector3d& vec);
+    PROPERTY_SETTER
     void setValue(double x, double y, double z);
 
     /// Get valid paths for this property; used by auto completer
+    // Not a property getter as it doesn't access the value directly
     void getPaths(std::vector<ObjectIdentifier>& paths) const override;
 
     /** This method returns a string representation of the property
      */
+    PROPERTY_GETTER
     const Base::Vector3d& getValue() const;
+
     const char* getEditorName() const override
     {
         return "Gui::PropertyEditor::PropertyVectorItem";
     }
 
+    PROPERTY_GETTER
     PyObject* getPyObject() override;
+
+    PROPERTY_SETTER
     void setPyObject(PyObject*) override;
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
 
+    PROPERTY_GETTER
     Property* Copy() const override;
+    PROPERTY_SETTER
     void Paste(const Property& from) override;
 
     unsigned int getMemSize() const override
@@ -101,8 +111,10 @@ public:
         return sizeof(Base::Vector3d);
     }
 
+    PROPERTY_GETTER
     const boost::any getPathValue(const ObjectIdentifier& path) const override;
 
+    PROPERTY_GETTER
     bool getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const override;
 
     virtual Base::Unit getUnit() const
@@ -110,6 +122,7 @@ public:
         return {};
     }
 
+    // Not a getter as it is defined in terms of other property getters
     bool isSame(const Property& other) const override
     {
         if (&other == this) {

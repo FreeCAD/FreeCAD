@@ -27,6 +27,7 @@
 #ifndef SRC_APP_DOCUMENTOBJECT_H_
 #define SRC_APP_DOCUMENTOBJECT_H_
 
+#include <App/DepEdge.h>
 #include <App/TransactionalObject.h>
 #include <App/PropertyExpressionEngine.h>
 #include <App/PropertyGeo.h>
@@ -36,11 +37,13 @@
 #include <Base/Placement.h>
 
 #include <bitset>
+#include <stack>
 #include <unordered_map>
 #include <memory>
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Base
@@ -187,6 +190,7 @@ public:
     /// test if this document object is touched
     bool isTouched() const;
     /// Enforce this document object to be recomputed
+    void enforceRecompute(std::string& propName);
     void enforceRecompute();
     /// Test if this document object must be recomputed
     bool mustRecompute() const;
@@ -196,6 +200,7 @@ public:
         StatusBits.reset(ObjectStatus::Touch);
         StatusBits.reset(ObjectStatus::Enforce);
         setPropertyStatus(0, false);
+        touchedProps.clear();
     }
     /// set this feature to error
     bool isError() const
@@ -276,6 +281,8 @@ public:
     virtual bool hasChildElement() const;
     //@}
 
+    void pushContext(DocumentObject* context);
+    void popContext();
 
     /** DAG handling
         This part of the interface deals with viewing the document as
@@ -293,6 +300,10 @@ public:
         OutListNoXLinked = 4,
     };
     /// returns a list of objects this object is pointing to by Links
+    const std::vector<DepEdge>& getOutListProp();
+    std::vector<DepEdge> getOutListProp(int options);
+    void getOutListProp(int options, std::vector<DepEdge>& res);
+
     const std::vector<App::DocumentObject*>& getOutList() const;
     std::vector<App::DocumentObject*> getOutList(int option) const;
     void getOutList(int option, std::vector<App::DocumentObject*>& res) const;
@@ -307,8 +318,10 @@ public:
     std::vector<std::list<App::DocumentObject*>> getPathsByOutList(App::DocumentObject* to) const;
     /// get all objects link to this object
     const std::vector<App::DocumentObject*>& getInList() const;
-        /// get all objects link directly or indirectly to this object
-        std::vector<App::DocumentObject*> getInListRecursive() const;
+    /// get all objects link to this object
+    const std::vector<DepEdge>& getInListProp() const;
+    /// get all objects link directly or indirectly to this object
+    std::vector<App::DocumentObject*> getInListRecursive() const;
     /** Get a set of all objects linking to this object, including possible external parent objects
      *
      * @param inSet [out]: a set containing all objects linking to this object.
@@ -324,6 +337,8 @@ public:
      * @param recursive [in]: whether to obtain recursive in list
      */
     std::set<App::DocumentObject*> getInListEx(bool recursive) const;
+    void getInListExProp(std::set<DepEdge>& inSet, bool recursive) const;
+    std::set<DepEdge> getInListExProp(bool recursive) const;
 
     /// get group if object is part of a group, otherwise 0 is returned
     DocumentObjectGroup* getGroup() const;
@@ -340,6 +355,10 @@ public:
     void _removeBackLink(DocumentObject*);
     /// internal, used by PropertyLink to maintain DAG back links
     void _addBackLink(DocumentObject*);
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
+    /// internal, used by PropertyLink to maintain DAG back links
+    void _addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp = nullptr);
     //@}
 
     /**
@@ -356,6 +375,12 @@ public:
     bool testIfLinkDAGCompatible(const std::vector<DocumentObject*>& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSubList& linksTo) const;
     bool testIfLinkDAGCompatible(App::PropertyLinkSub& linkTo) const;
+
+    /// check if the property is an input property
+    bool isInputProperty(const std::string& propName) const;
+    bool isInputProperty(const Property* prop) const;
+    bool isOutputProperty(const std::string& propName) const;
+    bool isOutputProperty(const Property* prop) const;
 
     /** Return the element map version of the geometry data stored in the given property
      *
@@ -385,6 +410,8 @@ public:
      * objects that link it (i.e. its InList) will be recomputed.
      */
     virtual short mustExecute() const;
+
+    DocumentObject* getContext();
 
     /** Recompute only this feature
      *
@@ -790,6 +817,7 @@ protected:
 
 private:
     void printInvalidLinks() const;
+    void setTouched(const char* propName);
 
     /// python object of this class and all descendent
 protected:  // attributes
@@ -811,13 +839,21 @@ private:
     long _Id {0};
 
 private:
+    std::unordered_set<std::string> touchedProps;
+
+private:
     // Back pointer to all the fathers in a DAG of the document
     // this is used by the document (via friend) to have a effective DAG handling
     std::vector<App::DocumentObject*> _inList;
+    std::vector<DepEdge> _inListProp;
     mutable std::vector<App::DocumentObject*> _outList;
+    mutable std::vector<DepEdge> _outListProp;
     mutable std::unordered_map<const char*, App::DocumentObject*, CStringHasher, CStringHasher>
         _outListMap;
     mutable bool _outListCached = false;
+    mutable bool _outListCachedProp = false;
+
+    std::stack<DocumentObject*> context;
 };
 
 }  // namespace App
