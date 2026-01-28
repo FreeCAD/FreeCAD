@@ -93,8 +93,7 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         this,
         &TaskPipeParameters::onTransitionChanged
     );
-    connect(ui->checkBoxOutside, &QCheckBox::toggled,
-            this, &TaskPipeParameters::onOutsideChanged);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled, this, &TaskPipeParameters::onOutsideChanged);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);

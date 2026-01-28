@@ -30,26 +30,31 @@
 #include "TaskFeatureParameters.h"
 #include <Mod/PartDesign/App/FeatureAddSub.h>
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace PartDesignGui {
+namespace PartDesignGui
+{
 
 
 /// Convenience class to collect common methods for all AddSub features
-class TaskAddSubParameters : public PartDesignGui::TaskFeatureParameters,
-                                  public Gui::SelectionObserver
+class TaskAddSubParameters: public PartDesignGui::TaskFeatureParameters, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    TaskAddSubParameters(PartDesignGui::ViewProvider* vp, QWidget *parent,
-                              const std::string& pixmapname, const QString& parname);
+    TaskAddSubParameters(
+        PartDesignGui::ViewProvider* vp,
+        QWidget* parent,
+        const std::string& pixmapname,
+        const QString& parname
+    );
     // ~TaskAddSubParameters() override;
 
-// protected:
-// protected Q_SLOTS:
+    // protected:
+    // protected Q_SLOTS:
     void onOutsideChanged(bool);
     bool enableOutside(PartDesignGui::ViewProvider* vp);
 
@@ -57,12 +62,12 @@ protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 };
 
-class TaskDlgAddSubParameters : public PartDesignGui::TaskDlgFeatureParameters
+class TaskDlgAddSubParameters: public PartDesignGui::TaskDlgFeatureParameters
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgAddSubParameters(PartDesignGui::ViewProvider *vp);
+    explicit TaskDlgAddSubParameters(PartDesignGui::ViewProvider* vp);
     // ~TaskDlgAddSubParameters() override;
 
 public:
@@ -72,6 +77,6 @@ public:
     // bool reject() override;
 };
 
-} //namespace PartDesignGui
+}  // namespace PartDesignGui
 
-#endif // GUI_TASKVIEW_TaskAddSubParameters_H
+#endif  // GUI_TASKVIEW_TaskAddSubParameters_H

@@ -51,7 +51,7 @@
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderAddSub,PartDesignGui::ViewProvider)
+PROPERTY_SOURCE(PartDesignGui::ViewProviderAddSub, PartDesignGui::ViewProvider)
 
 ViewProviderAddSub::ViewProviderAddSub()
 {
@@ -74,17 +74,20 @@ ViewProviderAddSub::~ViewProviderAddSub()
     previewShape->unref();
 }
 
-void ViewProviderAddSub::attach(App::DocumentObject* obj) {
+void ViewProviderAddSub::attach(App::DocumentObject* obj)
+{
 
     ViewProvider::attach(obj);
 
     auto* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::OVERALL;
     auto* material = new SoMaterial();
-    if (static_cast<PartDesign::FeatureAddSub*>(obj)->isAdditive())
-        material->diffuseColor = SbColor(1,1,0);
-    else
-        material->diffuseColor = SbColor(1,0,0);
+    if (static_cast<PartDesign::FeatureAddSub*>(obj)->isAdditive()) {
+        material->diffuseColor = SbColor(1, 1, 0);
+    }
+    else {
+        material->diffuseColor = SbColor(1, 0, 0);
+    }
 
     material->transparency = 0.7f;
     auto* pick = new SoPickStyle();
@@ -101,14 +104,15 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     updateAddSubShapeIndicator();
 }
 
-void ViewProviderAddSub::updateAddSubShapeIndicator() {
+void ViewProviderAddSub::updateAddSubShapeIndicator()
+{
 
     TopoDS_Shape cShape(getObject<PartDesign::FeatureAddSub>()->AddSubShape.getValue());
     if (cShape.IsNull()) {
-        previewCoords  ->point      .setNum(0);
-        previewNorm    ->vector     .setNum(0);
-        previewFaceSet ->coordIndex .setNum(0);
-        previewFaceSet ->partIndex  .setNum(0);
+        previewCoords->point.setNum(0);
+        previewNorm->vector.setNum(0);
+        previewFaceSet->coordIndex.setNum(0);
+        previewFaceSet->partIndex.setNum(0);
         return;
     }
 
@@ -119,7 +123,8 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         bounds.SetGap(0.0);
         Standard_Real xMin, yMin, zMin, xMax, yMax, zMax;
         bounds.Get(xMin, yMin, zMin, xMax, yMax, zMax);
-        Standard_Real deflection = ((xMax-xMin)+(yMax-yMin)+(zMax-zMin))/300.0 * Deviation.getValue();
+        Standard_Real deflection = ((xMax - xMin) + (yMax - yMin) + (zMax - zMin)) / 300.0
+            * Deviation.getValue();
 
         // create or use the mesh on the data structure
         Standard_Real AngDeflectionRads = Base::toRadians(AngularDeflection.getValue());
@@ -131,43 +136,46 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         cShape.Location(aLoc);
 
         // count triangles and nodes in the mesh
-        int numTriangles=0,numNodes=0,numNorms=0,numFaces=0;
+        int numTriangles = 0, numNodes = 0, numNorms = 0, numFaces = 0;
         TopExp_Explorer Ex;
-        for (Ex.Init(cShape,TopAbs_FACE);Ex.More();Ex.Next()) {
-            Handle (Poly_Triangulation) mesh = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
+        for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next()) {
+            Handle(Poly_Triangulation) mesh
+                = BRep_Tool::Triangulation(TopoDS::Face(Ex.Current()), aLoc);
             // Note: we must also count empty faces
             if (!mesh.IsNull()) {
                 numTriangles += mesh->NbTriangles();
-                numNodes     += mesh->NbNodes();
-                numNorms     += mesh->NbNodes();
+                numNodes += mesh->NbNodes();
+                numNorms += mesh->NbNodes();
             }
             numFaces++;
         }
 
         // create memory for the nodes and indexes
-        previewCoords  ->point      .setNum(numNodes);
-        previewNorm    ->vector     .setNum(numNorms);
-        previewFaceSet ->coordIndex .setNum(numTriangles*4);
-        previewFaceSet ->partIndex  .setNum(numFaces);
+        previewCoords->point.setNum(numNodes);
+        previewNorm->vector.setNum(numNorms);
+        previewFaceSet->coordIndex.setNum(numTriangles * 4);
+        previewFaceSet->partIndex.setNum(numFaces);
 
         // get the raw memory for fast fill up
-        SbVec3f* verts = previewCoords      ->point      .startEditing();
-        SbVec3f* previewNorms = previewNorm ->vector     .startEditing();
-        int32_t* index = previewFaceSet     ->coordIndex .startEditing();
-        int32_t* parts = previewFaceSet     ->partIndex  .startEditing();
+        SbVec3f* verts = previewCoords->point.startEditing();
+        SbVec3f* previewNorms = previewNorm->vector.startEditing();
+        int32_t* index = previewFaceSet->coordIndex.startEditing();
+        int32_t* parts = previewFaceSet->partIndex.startEditing();
 
         // preset the previewNormal vector with null vector
-        for (int i=0;i < numNorms;i++)
-            previewNorms[i]= SbVec3f(0.0,0.0,0.0);
+        for (int i = 0; i < numNorms; i++) {
+            previewNorms[i] = SbVec3f(0.0, 0.0, 0.0);
+        }
 
-        int ii = 0,faceNodeOffset=0,faceTriaOffset=0;
-        for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next(),ii++) {
-            const TopoDS_Face &actFace = TopoDS::Face(Ex.Current());
+        int ii = 0, faceNodeOffset = 0, faceTriaOffset = 0;
+        for (Ex.Init(cShape, TopAbs_FACE); Ex.More(); Ex.Next(), ii++) {
+            const TopoDS_Face& actFace = TopoDS::Face(Ex.Current());
 
             TopLoc_Location loc;
             Handle(Poly_Triangulation) mesh = BRep_Tool::Triangulation(actFace, loc);
-            if (mesh.IsNull())
+            if (mesh.IsNull()) {
                 continue;
+            }
 
             // get triangulation
             std::vector<gp_Pnt> points;
@@ -181,30 +189,31 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
 
             // getting size of node and triangle array of this face
             std::size_t nbNodesInFace = points.size();
-            std::size_t nbTriInFace   = facets.size();
+            std::size_t nbTriInFace = facets.size();
 
             for (std::size_t i = 0; i < points.size(); i++) {
-                verts[faceNodeOffset+i] = SbVec3f(points[i].X(), points[i].Y(), points[i].Z());
+                verts[faceNodeOffset + i] = SbVec3f(points[i].X(), points[i].Y(), points[i].Z());
             }
 
             for (std::size_t i = 0; i < vertexnormals.size(); i++) {
-                previewNorms[faceNodeOffset+i] = SbVec3f(vertexnormals[i].X(), vertexnormals[i].Y(), vertexnormals[i].Z());
+                previewNorms[faceNodeOffset + i]
+                    = SbVec3f(vertexnormals[i].X(), vertexnormals[i].Y(), vertexnormals[i].Z());
             }
 
             // cycling through the poly mesh
-            for (std::size_t g=0; g < nbTriInFace; g++) {
+            for (std::size_t g = 0; g < nbTriInFace; g++) {
                 // Get the triangle
-                Standard_Integer N1,N2,N3;
-                facets[g].Get(N1,N2,N3);
+                Standard_Integer N1, N2, N3;
+                facets[g].Get(N1, N2, N3);
 
                 // set the index vector with the 3 point indexes and the end delimiter
-                index[faceTriaOffset*4+4*g]   = faceNodeOffset+N1;
-                index[faceTriaOffset*4+4*g+1] = faceNodeOffset+N2;
-                index[faceTriaOffset*4+4*g+2] = faceNodeOffset+N3;
-                index[faceTriaOffset*4+4*g+3] = SO_END_FACE_INDEX;
+                index[faceTriaOffset * 4 + 4 * g] = faceNodeOffset + N1;
+                index[faceTriaOffset * 4 + 4 * g + 1] = faceNodeOffset + N2;
+                index[faceTriaOffset * 4 + 4 * g + 2] = faceNodeOffset + N3;
+                index[faceTriaOffset * 4 + 4 * g + 3] = SO_END_FACE_INDEX;
             }
 
-            parts[ii] = nbTriInFace; // new part
+            parts[ii] = nbTriInFace;  // new part
 
             // counting up the per Face offsets
             faceNodeOffset += nbNodesInFace;
@@ -212,50 +221,61 @@ void ViewProviderAddSub::updateAddSubShapeIndicator() {
         }
 
         // previewNormalize all previewNormals
-        for (int i = 0; i< numNorms ;i++)
+        for (int i = 0; i < numNorms; i++) {
             previewNorms[i].normalize();
+        }
 
         // end the editing of the nodes
-        previewCoords  ->point       .finishEditing();
-        previewNorm    ->vector      .finishEditing();
-        previewFaceSet ->coordIndex  .finishEditing();
-        previewFaceSet ->partIndex   .finishEditing();
+        previewCoords->point.finishEditing();
+        previewNorm->vector.finishEditing();
+        previewFaceSet->coordIndex.finishEditing();
+        previewFaceSet->partIndex.finishEditing();
     }
     catch (...) {
-        Base::Console().error("Cannot compute Inventor representation for the shape of %s.\n",pcObject->getNameInDocument());
+        Base::Console().error(
+            "Cannot compute Inventor representation for the shape of %s.\n",
+            pcObject->getNameInDocument()
+        );
     }
 }
 
-void ViewProviderAddSub::updateData(const App::Property* p) {
+void ViewProviderAddSub::updateData(const App::Property* p)
+{
 
-    if(p->getName() && strcmp(p->getName(), "AddSubShape")==0)
+    if (p->getName() && strcmp(p->getName(), "AddSubShape") == 0) {
         updateAddSubShapeIndicator();
+    }
 
     PartDesignGui::ViewProvider::updateData(p);
 }
 
-void ViewProviderAddSub::setPreviewDisplayMode(bool onoff) {
+void ViewProviderAddSub::setPreviewDisplayMode(bool onoff)
+{
     // A mask mode is always set, also for hidden objects.
     // Now when changing to another mask mode this automatically
     // displays an object and when restoring the previous state it's
     // not sufficient to only revert the mask mode. Also the child
     // number of the switch node must be reverted.
     if (onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) == previewShape)
+        if (pcModeSwitch->getChild(getDefaultMode()) == previewShape) {
             return;
+        }
         displayMode = getActiveDisplayMode();
         whichChild = pcModeSwitch->whichChild.getValue();
         setDisplayMaskMode("Shape preview");
     }
 
     if (!onoff) {
-        if(pcModeSwitch->getChild(getDefaultMode()) != previewShape)
+        if (pcModeSwitch->getChild(getDefaultMode()) != previewShape) {
             return;
+        }
         setDisplayMaskMode(displayMode.c_str());
         pcModeSwitch->whichChild.setValue(whichChild);
     }
 
     App::DocumentObject* obj = getObject<PartDesign::Feature>()->BaseFeature.getValue();
-    if (obj)
-        static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))->makeTemporaryVisible(onoff);
+    if (obj) {
+        static_cast<PartDesignGui::ViewProvider*>(Gui::Application::Instance->getViewProvider(obj))
+            ->makeTemporaryVisible(onoff);
+    }
 }

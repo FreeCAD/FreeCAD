@@ -51,7 +51,7 @@ class LinearGizmo;
 namespace PartDesignGui
 {
 class Ui_DlgPrimitives;
-class TaskBoxPrimitives : public PartDesignGui::TaskAddSubParameters
+class TaskBoxPrimitives: public PartDesignGui::TaskAddSubParameters
 {
     Q_OBJECT
 
