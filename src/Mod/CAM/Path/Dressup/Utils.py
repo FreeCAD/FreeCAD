@@ -23,16 +23,47 @@
 
 import FreeCAD
 
+translate = FreeCAD.Qt.translate
 
-def selection():
-    """isActive() ... return True if a dressup command is possible."""
+
+def selection(verbose=False):
+    """selection() ... return object if selected one operation or dressup.
+    Allow to send error messages to Report view if verbose=True"""
     if FreeCAD.ActiveDocument and FreeCAD.GuiUp:
         import FreeCADGui
 
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature"):
-            return sel[0].Object
+        selected = FreeCADGui.Selection.getSelection()
+        if len(selected) != 1:
+            if verbose:
+                FreeCAD.Console.PrintError(
+                    translate("CAM_Dressup", "Please select one toolpath object\n")
+                )
+            return None
+        if not selected[0].isDerivedFrom("Path::Feature"):
+            if verbose:
+                FreeCAD.Console.PrintError(
+                    translate("CAM_Dressup", "The selected object is not a toolpath\n")
+                )
+            return None
+        if not isOp(selected[0]):
+            if verbose:
+                FreeCAD.Console.PrintError(
+                    translate("CAM_Dressup", "The selected object is not a operation or dressup\n")
+                )
+            return None
+        return selected[0]
+
     return None
+
+
+def isOp(obj):
+    """isOp(obj) ... return true if obj is operation or dressup."""
+    if not getattr(obj, "Proxy", None):
+        return False
+    proxy = obj.Proxy.__module__
+    if "Path.Op" not in proxy and "Path.Dressup" not in proxy:
+        return False
+    return True
 
 
 def hasEntryMethod(path):
