@@ -102,7 +102,8 @@ public:
         // return false;
         //}
 
-        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()) {
+        if (pObj->isDerivedFrom<Part::DatumLine>() || pObj->isDerivedFrom<Part::DatumPoint>()
+            || pObj->isDerivedFrom<App::Line>() || pObj->isDerivedFrom<App::Point>()) {
             return true;
         }
 
@@ -173,8 +174,10 @@ public:
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
             std::string subName(msg.pSubName);
+
             if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || obj->isDerivedFrom<Part::DatumLine>() || obj->isDerivedFrom<Part::DatumPoint>()
+                || obj->isDerivedFrom<App::Line>() || obj->isDerivedFrom<App::Point>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {

@@ -572,7 +572,8 @@ class ExplodedViewSelGate:
         self.viewObj = viewObj
 
     def allow(self, doc, obj, sub):
-        if (obj.Name == self.assembly.Name and sub) or self.assembly.hasObject(obj, True):
+        comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, obj, sub)
+        if comp:
             # Objects within the assembly.
             return True
 
@@ -676,7 +677,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
     def reject(self):
         self.deactivate()
         App.closeActiveTransaction(True)
-        self.viewObj.purgeTouched()
+        App.activeDocument().recompute()
         return True
 
     def deactivate(self):
@@ -724,9 +725,14 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 continue
 
             for sub_name in sel.SubElementNames:
-                ref = [sel.Object, [sub_name]]
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    self.assembly, sel.Object, sub_name
+                )
+                if not moving_part:
+                    continue
+
+                ref = [moving_part, [new_sub]]
                 obj = UtilsAssembly.getObject(ref)
-                moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
                 element_name = UtilsAssembly.getElementName(sub_name)
 
                 # Only objects within the assembly, not the assembly and not elements.
@@ -748,6 +754,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     ref[1][0] = UtilsAssembly.truncateSubAtFirst(ref[1][0], obj.Name)
 
                 if not obj in self.selectedObjs and hasattr(obj, "Placement"):
+                    ref = [sel.Object, [sub_name]]
                     self.selectedRefs.append(ref)
                     self.selectedObjs.append(obj)
                     self.selectedObjsInitPlc.append(App.Placement(obj.Placement))
@@ -1007,9 +1014,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
             return
 
         else:
-            ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
+            rootObj = App.getDocument(doc_name).getObject(obj_name)
+            moving_part, new_sub = UtilsAssembly.getComponentReference(
+                self.assembly, rootObj, sub_name
+            )
+            ref = [moving_part, [new_sub]]
             obj = UtilsAssembly.getObject(ref)
-            moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
 
             if obj is None or moving_part is None:
                 return

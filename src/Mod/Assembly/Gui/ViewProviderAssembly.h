@@ -265,6 +265,7 @@ private:
     );
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
+    void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
 
     struct ComponentState
     {
@@ -280,6 +281,9 @@ private:
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 
+    void highlightJointElements(App::DocumentObject* joint);
+    void clearJointElementHighlight();
+
     void applyIsolationRecursively(
         App::DocumentObject* current,
         std::set<App::DocumentObject*>& isolateSet,
@@ -287,6 +291,9 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
+    TaskAssemblyMessages* taskSolver;
+
+    fastsignals::connection connectActivatedVP;
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
 };
