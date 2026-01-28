@@ -254,6 +254,7 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+    void removeTaskSolver();
 
     void collectMovableObjects(
         App::DocumentObject* selRoot,
