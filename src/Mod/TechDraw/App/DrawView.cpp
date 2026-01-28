@@ -675,21 +675,25 @@ void DrawView::setScaleAttribute()
 }
 
 //! Due to changes made for the "intelligent" view creation tool, testing for a view being an
-//! instance of DrawProjGroupItem is no longer reliable, as views not in a group are sometimes
-//! created as DrawProjGroupItem without belonging to a group.  We now need to test for the
-//! existence of the parent DrawProjGroup
+//! instance of DrawProjGroupItem is no longer reliable, as views are sometimes
+//! created as DrawProjGroupItem without belonging to a group or as a DrawViewPart that does
+//! belong to a group.  We now need to test for the existence of the parent DrawProjGroup
 bool DrawView::isProjGroupItem(DrawViewPart* item)
 {
-    auto dpgi = freecad_cast<DrawProjGroupItem*>(item);
-    if (!dpgi) {
-        return false;
+    // we check if any object that points to us (as in the Views property of a collection)
+    // is a projection group.
+    std::vector<App::DocumentObject*> inlist = item->getInList();
+    for (auto& obj : inlist) {
+        auto* dpg = freecad_cast<DrawProjGroup*>(obj);
+        if (dpg) {
+            // if a dpg points at item, item must be considered a dpgi. Front is sometime a dvp,
+            // and not a dpgi.
+            return true;
+        }
     }
-    auto group = dpgi->getPGroup();
-    if (!group) {
-        return false;
-    }
-    return true;
+    return false;
 }
+
 int DrawView::prefScaleType()
 {
     return Preferences::getPreferenceGroup("General")->GetInt("DefaultScaleType", 0);

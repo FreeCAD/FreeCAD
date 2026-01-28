@@ -187,6 +187,7 @@ public:
 
     bool isExporting() const;
 
+    virtual void setMovableFlag();
 
 protected:
     QGIView* getQGIVByName(std::string name) const;
