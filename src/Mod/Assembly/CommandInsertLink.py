@@ -505,7 +505,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     # Attempt to find the grounded joint in the source assembly
                     # We look for a joint where JointType is 'Grounded'
                     for obj in linkedAsm.InListRecursive:
-                        if hasattr(obj, "ObjectToGround")
+                        if hasattr(obj, "ObjectToGround"):
                             srcGrounded = obj.ObjectToGround
                             break
 
