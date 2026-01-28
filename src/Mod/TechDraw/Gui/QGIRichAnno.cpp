@@ -660,6 +660,7 @@ void QGIRichAnno::updateLayout()
     if (scene()) {
         Q_EMIT positionChanged(scenePos());
     }
+    drawBorder();
 }
 
 #include <Mod/TechDraw/Gui/moc_QGIRichAnno.cpp>
