@@ -958,8 +958,10 @@ Py::Object View3DInventorPy::viewPosition(const Py::Tuple& args)
         rot.getValue(q0, q1, q2, q3);
         getView3DInventorPtr()->getViewer()->moveCameraTo(
             SbRotation((float)q0, (float)q1, (float)q2, (float)q3),
+            getView3DInventorPtr()->getViewer()->getCamera()->position.getValue(),
             SbVec3f((float)pos.x, (float)pos.y, (float)pos.z),
-            duration
+            duration,
+            true
         );
     }
 
