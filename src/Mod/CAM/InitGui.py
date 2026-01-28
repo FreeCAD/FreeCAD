@@ -366,55 +366,52 @@ class CAMWorkbench(Workbench):
         pass
 
     def ContextMenu(self, recipient):
-        import PathScripts
-
-        menuAppended = False
         selection = FreeCADGui.Selection.getSelection()
-        if len(selection) == 1:
-            obj = selection[0]
-            selectedName = obj.Name
-            if obj.isDerivedFrom("Path::Feature"):
-                self.appendContextMenu("", "Separator")
-                self.appendContextMenu("", ["CAM_Inspect"])
-                if "Remote" in selectedName:
-                    self.appendContextMenu("", ["Refresh_Path"])
-                if "Job" in selectedName:
-                    self.appendContextMenu("", ["CAM_ExportTemplate"])
-                menuAppended = True
-            if isinstance(obj.Proxy, Path.Op.Base.ObjectOp):
-                self.appendContextMenu("", ["CAM_OperationCopy", "CAM_OpActiveToggle"])
-                if hasattr(obj, "StartPoint"):
-                    self.appendContextMenu("", ["CAM_SetStartPoint"])
-                menuAppended = True
-            if obj.isDerivedFrom("Path::Feature"):
-                if (
-                    "Profile" in selectedName
-                    or "Contour" in selectedName
-                    or "Dressup" in selectedName
-                    or "Pocket" in selectedName
-                ):
-                    self.appendContextMenu("", "Separator")
-                    # self.appendContextMenu("", ["Set_StartPoint"])
-                    # self.appendContextMenu("", ["Set_EndPoint"])
-                    for cmd in self.dressupcmds:
-                        self.appendContextMenu("Dressup", [cmd])
-                    menuAppended = True
-            if isinstance(obj.Proxy, Path.Tool.ToolBit):
-                self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
-                menuAppended = True
+        if not selection:
+            return
 
-        if selection:
-            for obj in selection:
-                if not obj.isDerivedFrom("Path::Feature"):
-                    break
-            else:
-                self.appendContextMenu("", ["CAM_Post", "CAM_PostSelected"])
+        onlyOps = all(Path.Dressup.Utils.isOp(obj) for obj in selection)
+        onlyShapes = all(hasattr(sel, "Shape") for sel in selection)
+        onlyJob = (
+            len(selection) == 1
+            and hasattr(selection[0], "Proxy")
+            and isinstance(selection[0].Proxy, Path.Main.Job.ObjectJob)
+        )
+        onlyTool = (
+            len(selection) == 1
+            and hasattr(selection[0], "Proxy")
+            and isinstance(selection[0].Proxy, Path.Tool.ToolBit)
+        )
+        startPoint = hasattr(selection[0], "StartPoint")
 
-        if menuAppended:
+        if onlyShapes and not onlyTool:
+            self.appendContextMenu("", ["CAM_Job"])
+        if onlyOps and len(selection) == 1:
+            self.appendContextMenu("Path Dressup", self.dressupcmds)
+        if onlyOps:
+            self.appendContextMenu(
+                "Path Modification", ["CAM_Array", "CAM_OperationCopy", "CAM_SimpleCopy"]
+            )
+        if onlyJob:
+            self.appendContextMenu("", ["CAM_OpActiveToggle", "CAM_ExportTemplate", "CAM_Sanity"])
+        if startPoint and len(selection) == 1:
+            self.appendContextMenu("", ["CAM_SetStartPoint"])
+        if onlyOps:
+            self.appendContextMenu("", ["CAM_OpActiveToggle"])
+        if onlyOps and len(selection) == 1:
+            self.appendContextMenu("", ["CAM_Inspect"])
+        if onlyJob or onlyOps:
+            self.appendContextMenu("", ["CAM_Post"])
+        if onlyOps:
+            self.appendContextMenu("", ["CAM_PostSelected"])
+        if onlyTool:
+            self.appendContextMenu("", ["CAM_ToolBitSave", "CAM_ToolBitSaveAs"])
+
+        if onlyJob or onlyOps or onlyShapes or onlyTool or startPoint:
             self.appendContextMenu("", "Separator")
 
 
-Gui.addWorkbench(CAMWorkbench())
+FreeCADGui.addWorkbench(CAMWorkbench())
 
 FreeCAD.addImportType(
     "GCode (*.nc *.NC *.gc *.GC *.ncc *.NCC *.ngc *.NGC *.cnc *.CNC *.tap *.TAP *.gcode *.GCODE)",

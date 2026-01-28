@@ -25,14 +25,28 @@ import FreeCAD
 
 
 def selection():
-    """isActive() ... return True if a dressup command is possible."""
+    """selection() ... return object if selected one operation or dressup."""
     if FreeCAD.ActiveDocument and FreeCAD.GuiUp:
         import FreeCADGui
 
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) == 1 and sel[0].Object.isDerivedFrom("Path::Feature"):
-            return sel[0].Object
+        selection = FreeCADGui.Selection.getSelection()
+        if (
+            len(selection) == 1
+            and selection[0].isDerivedFrom("Path::Feature")
+            and isOp(selection[0])
+        ):
+            return selection[0]
     return None
+
+
+def isOp(obj):
+    """isOp(obj) ... return true if obj is operation or dressup."""
+    if not getattr(obj, "Proxy", None):
+        return False
+    proxy = obj.Proxy.__module__
+    if "Path.Op" not in proxy and "Path.Dressup" not in proxy:
+        return False
+    return True
 
 
 def hasEntryMethod(path):
