@@ -148,7 +148,9 @@ def setStatusIcons(show=True):
                 togglemenu.triggered.connect(toggleSaveSettings)
                 togglebutton.setIcon(QtGui.QIcon(":/icons/BIM_TogglePanels.svg"))
                 togglebutton.setText("")
-                togglebutton.setToolTip(translate("BIM", "Toggles the bottom dock panels on/off (Ctrl+0)"))
+                togglebutton.setToolTip(
+                    translate("BIM", "Toggles the bottom dock panels on/off (Ctrl+0)")
+                )
                 togglebutton.setCheckable(True)
                 rv = mw.findChild(QtGui.QWidget, "Python console")
                 if rv and rv.isVisible():

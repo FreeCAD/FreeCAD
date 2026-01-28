@@ -1336,7 +1336,8 @@ class ReportTaskPanel:
             )
             cols_item.setToolTip(
                 translate(
-                    "Arch", "Toggles whether to include this statement's column names in the report."
+                    "Arch",
+                    "Toggles whether to include this statement's column names in the report.",
                 )
             )
             self.table_statements.setItem(row_idx, 3, cols_item)
