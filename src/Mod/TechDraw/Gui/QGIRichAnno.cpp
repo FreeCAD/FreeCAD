@@ -505,6 +505,9 @@ void QGIRichAnno::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
         m_currentResizeHandle = ResizeHandle::NoHandle;
         setCursor(Qt::ArrowCursor);  // Reset cursor
 
+        // Ensure focus returns to the text item after the resize handle is released
+        refocusAnnotation();
+
         Q_EMIT positionChanged(scenePos());
 
         if (!isUnderMouse()) {
