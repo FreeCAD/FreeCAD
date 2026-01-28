@@ -188,6 +188,19 @@ private:
     mutable Gui::SelectionObject faceSelection;
 };
 
+App::GeoFeatureGroupExtension* getBoundaryGroupExtensionOfBody(const PartDesign::Body* activeBody)
+{
+    App::GeoFeatureGroupExtension* geoGroup {nullptr};
+    if (activeBody) {
+        auto group(App::GeoFeatureGroupExtension::getBoundaryGroupOfObject(activeBody));
+        if (group) {
+            geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
+        }
+    }
+
+    return geoGroup;
+}
+
 class SketchPreselection
 {
 public:
@@ -294,7 +307,8 @@ private:
 
     void handleIfSupportOutOfBody(App::DocumentObject* selectedObject)
     {
-        if (!activeBody->hasObject(selectedObject)) {
+        App::GeoFeatureGroupExtension* bodyGroup = getBoundaryGroupExtensionOfBody(activeBody);
+        if (bodyGroup && !bodyGroup->hasObject(selectedObject, true)) {
             if (!selectedObject->isDerivedFrom(App::Plane::getClassTypeId())) {
                 // TODO check here if the plane associated with right part/body (2015-09-01, Fat-Zer)
 
@@ -402,7 +416,7 @@ public:
 
     void findDatumPlanes()
     {
-        App::GeoFeatureGroupExtension* geoGroup = getGroupExtensionOfBody();
+        App::GeoFeatureGroupExtension* boundaryGroup = getBoundaryGroupExtensionOfBody(activeBody);
         const std::vector<Base::Type> types
             = {PartDesign::Plane::getClassTypeId(), App::Plane::getClassTypeId()};
         auto datumPlanes = appdocument->getObjectsOfType(types);
@@ -411,7 +425,14 @@ public:
             if (std::find(planes.begin(), planes.end(), plane) != planes.end()) {
                 continue;  // Skip if already in planes (for base planes)
             }
-
+            if (App::OriginGroupExtension::getGroupOfObject(plane)) {
+                continue;
+            }
+            if (boundaryGroup) {
+                if (!boundaryGroup->hasObject(plane, true)) {
+                    continue;
+                }
+            }
             planes.push_back(plane);
             // Check whether this plane belongs to the active body
             if (activeBody->hasObject(plane, true)) {
@@ -425,22 +446,25 @@ public:
             }
             else {
                 PartDesign::Body* planeBody = PartDesign::Body::findBodyOf(plane);
+                App::Part* activePart = PartDesignGui::getActivePart();
+                auto planePart = PartDesignGui::getPartFor(plane, false);
                 if (planeBody) {
-                    if ((geoGroup && geoGroup->hasObject(planeBody, true))
-                        || !App::GeoFeatureGroupExtension::getGroupOfObject(planeBody)) {
+                    if (!activePart || (activePart && activePart->hasObject(planeBody, true))) {
                         status.push_back(PartDesignGui::TaskFeaturePick::otherBody);
                     }
-                    else {
-                        status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
-                    }
-                }
-                else {
-                    if ((geoGroup && geoGroup->hasObject(plane, true))
-                        || App::GeoFeatureGroupExtension::getGroupOfObject(plane)) {
+                    else if (planePart) {
                         status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
                     }
                     else {
                         status.push_back(PartDesignGui::TaskFeaturePick::notInBody);
+                    }
+                }
+                else {
+                    if (planePart) {
+                        status.push_back(PartDesignGui::TaskFeaturePick::otherPart);
+                    }
+                    else {
+                        status.push_back(PartDesignGui::TaskFeaturePick::notInPart);
                     }
                 }
             }
@@ -480,18 +504,6 @@ private:
         }
     }
 
-    App::GeoFeatureGroupExtension* getGroupExtensionOfBody() const
-    {
-        App::GeoFeatureGroupExtension* geoGroup {nullptr};
-        if (activeBody) {
-            auto group(App::GeoFeatureGroupExtension::getGroupOfObject(activeBody));
-            if (group) {
-                geoGroup = group->getExtensionByType<App::GeoFeatureGroupExtension>();
-            }
-        }
-
-        return geoGroup;
-    }
 
 private:
     App::Document* appdocument;

@@ -34,7 +34,7 @@
 
 #include "AttachExtension.h"
 #include "AttachExtensionPy.h"
-
+#include <App/GeoFeatureGroupExtension.h>
 
 using namespace Part;
 using namespace Attacher;
@@ -153,6 +153,14 @@ AttachExtension::AttachExtension()
         "Attachment",
         App::Prop_None,
         "Extra placement to apply in addition to attachment (in local coordinates)"
+    );
+
+    EXTENSION_ADD_PROPERTY_TYPE(
+        RefPlacement,
+        (Base::Placement()),
+        "Attachment",
+        App::Prop_Transient,
+        "Cumulative placement of the group hierarchy above the object, up to the boundary"
     );
 
     // Only show these properties when applicable. Controlled by extensionOnChanged
@@ -335,6 +343,7 @@ bool AttachExtension::changeAttacherType(const char* typeName, bool base)
     throw AttachEngineException(errMsg.str());
 }
 
+
 bool AttachExtension::positionBySupport()
 {
     _active = 0;
@@ -345,6 +354,7 @@ bool AttachExtension::positionBySupport()
     }
     updateAttacherVals();
     Base::Placement plaOriginal = getPlacement().getValue();
+    Base::Placement refPlaOriginal = getRefPlacement().getValue();
     try {
         if (_props.attacher->mapMode == mmDeactivated) {
             return false;
@@ -355,8 +365,11 @@ bool AttachExtension::positionBySupport()
 
         Base::Placement basePlacement;
         if (_baseProps.attacher && _baseProps.attacher->mapMode != mmDeactivated) {
-            basePlacement
-                = _baseProps.attacher->calculateAttachedPlacement(Base::Placement(), &subChanged);
+            basePlacement = _baseProps.attacher->calculateAttachedPlacement(
+                Base::Placement(),
+                nullptr,
+                &subChanged
+            );
             if (subChanged) {
                 _baseProps.attachment->setValues(
                     _baseProps.attachment->getValues(),
@@ -364,10 +377,16 @@ bool AttachExtension::positionBySupport()
                 );
             }
         }
-
+        Base::Placement groupPla;
+        if (auto* obj = dynamic_cast<App::DocumentObject*>(getExtendedObject())) {
+            groupPla = App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(obj);
+        }
         subChanged = false;
         _props.attacher->setOffset(AttachmentOffset.getValue() * basePlacement.inverse());
-        auto placement = _props.attacher->calculateAttachedPlacement(plaOriginal, &subChanged);
+        Base::Placement refGroupPla;
+        auto refPla
+            = _props.attacher->calculateAttachedPlacement(refPlaOriginal, &refGroupPla, &subChanged);
+        Base::Placement placement = groupPla.inverse() * refGroupPla * refPla;
         if (subChanged) {
             Base::ObjectStatusLocker<App::Property::Status, App::Property> guard(
                 App::Property::User3,
@@ -375,6 +394,7 @@ bool AttachExtension::positionBySupport()
             );
             AttachmentSupport.setValues(AttachmentSupport.getValues(), _props.attacher->getSubValues());
         }
+        getRefPlacement().setValue(refPla);
         getPlacement().setValue(placement);
         _active = 1;
         return true;
@@ -382,14 +402,17 @@ bool AttachExtension::positionBySupport()
     catch (ExceptionCancel&) {
         // disabled, don't do anything
         getPlacement().setValue(plaOriginal);
+        getRefPlacement().setValue(refPlaOriginal);
         return false;
     }
     catch (Base::Exception&) {
         getPlacement().setValue(plaOriginal);
+        getRefPlacement().setValue(refPlaOriginal);
         throw;
     }
     catch (Standard_Failure&) {
         getPlacement().setValue(plaOriginal);
+        getRefPlacement().setValue(refPlaOriginal);
         throw;
     }
 }
@@ -819,6 +842,18 @@ App::PropertyPlacement& AttachExtension::getPlacement() const
     }
     return *pla;
 }
+
+App::PropertyPlacement& AttachExtension::getRefPlacement() const
+{
+    auto pla = freecad_cast<App::PropertyPlacement*>(
+        getExtendedObject()->getPropertyByName("RefPlacement")
+    );
+    if (!pla) {
+        throw Base::RuntimeError("AttachExtension cannot find placement property");
+    }
+    return *pla;
+}
+
 
 PyObject* AttachExtension::getExtensionPyObject()
 {

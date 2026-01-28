@@ -65,6 +65,8 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/Datums.h>
+#include <App/GeoFeatureGroupExtension.h>
+
 #include <Base/Console.h>
 
 #include "Attacher.h"
@@ -1128,6 +1130,7 @@ std::vector<App::DocumentObject*> AttachEngine::getRefObjects() const
 
 Base::Placement AttachEngine::calculateAttachedPlacement(
     const Base::Placement& origPlacement,
+    Base::Placement* groupPlacement,
     bool* subChanged
 )
 {
@@ -1193,6 +1196,11 @@ Base::Placement AttachEngine::calculateAttachedPlacement(
                 }
             }
             return pla;
+        }
+    }
+    if (objs.size() > 0) {
+        if (groupPlacement) {
+            *groupPlacement = App::GeoFeatureGroupExtension::globalGroupPlacementInBoundary(objs[0]);
         }
     }
     return _calculateAttachedPlacement(objs, subnames, origPlacement);

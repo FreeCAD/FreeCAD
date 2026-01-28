@@ -34,8 +34,10 @@
 #include <QWidgetAction>
 
 
+#include <App/GeoFeature.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/Datums.h>
+#include <Gui/ActiveObjectList.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -48,9 +50,11 @@
 #include <Gui/QuantitySpinBox.h>
 #include <Gui/Selection/SelectionFilter.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/MDIView.h>
 #include <Mod/Part/App/Attacher.h>
 #include <Mod/Part/App/Part2DObject.h>
 #include <Mod/Part/Gui/AttacherTexts.h>
+#include <Mod/Part/Gui/Utils.h>
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
@@ -246,9 +250,8 @@ void CmdSketcherNewSketch::activated(int iMsg)
         std::string FeatName = getUniqueObjectName("Sketch");
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch on a face"));
-        doCommand(Doc,
-                  "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
-                  FeatName.c_str());
+        doCommand(Doc,"obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+        doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
         if (mapmode < Attacher::mmDummy_NumberOfModes)
             doCommand(Gui,
                       "App.activeDocument().%s.MapMode = \"%s\"",
@@ -289,16 +292,16 @@ void CmdSketcherNewSketch::activated(int iMsg)
         openCommand(QT_TRANSLATE_NOOP("Command", "Create a new sketch"));
         if (groupSelected) {
             doCommand(Doc,
-                    "App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
+                    "obj = App.activeDocument().getObject('%s').addObject(App.activeDocument().addObject('Sketcher::SketchObject', '%s'))",
                     groupName.c_str(),
                     FeatName.c_str());
         }
         else {
             doCommand(Doc,
-                  "App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
+                  "obj = App.activeDocument().addObject('Sketcher::SketchObject', '%s')",
                   FeatName.c_str());
         }
-
+        doCommand(Doc, PartGui::getAutoGroupCommandStr().toUtf8());
         doCommand(Doc,
                   "App.activeDocument().%s.Placement = App.Placement(App.Vector(%f, %f, %f), "
                   "App.Rotation(%f, %f, %f, %f))",
@@ -1025,8 +1028,7 @@ void CmdSketcherMergeSketches::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Sketch");
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Merge sketches"));
-    doCommand(
-        Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().addObject('Sketcher::SketchObject', '%s')", FeatName.c_str());
 
     Sketcher::SketchObject* mergesketch =
         static_cast<Sketcher::SketchObject*>(doc->getObject(FeatName.c_str()));
