@@ -1222,7 +1222,6 @@ class GroundedJoint:
             locked=True,
         )
         joint.ObjectToGround = obj_to_ground
-        
 
     def onDocumentRestored(self, joint):
         self.migrationScript(joint)
