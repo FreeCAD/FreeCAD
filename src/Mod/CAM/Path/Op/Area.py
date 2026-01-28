@@ -155,7 +155,13 @@ class ObjectOp(PathOp.ObjectOp):
             if "Face" in subNames[0]:
                 faces = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Face")]
                 shape = Part.Compound(faces)
-                subBb = shape.BoundBox
+                try:
+                    # simple check if faces creates a closed area
+                    PathUtils.getEnvelope(shape)
+                    subBb = shape.BoundBox
+                except Exception:
+                    # for open area always offer Outside
+                    obj.Side = "Outside"
             elif "Edge" in subNames[0]:
                 edges = [base.Shape.getElement(sub) for sub in subNames if sub.startswith("Edge")]
                 wire = Part.Wire(Part.__sortEdges__(edges))
