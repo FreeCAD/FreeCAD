@@ -680,7 +680,7 @@ class BIM_Library_TaskPanel:
         from PySide import QtGui
 
         w = QtGui.QWidget()
-        w.setWindowTitle(translate("BIM", "Insertion point"))
+        w.setWindowTitle(translate("BIM", "Insertion Point"))
         w.setWindowIcon(
             QtGui.QIcon(os.path.join(os.path.dirname(__file__), "icons", "BIM_Library.svg"))
         )

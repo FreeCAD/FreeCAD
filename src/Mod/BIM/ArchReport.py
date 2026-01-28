@@ -1305,7 +1305,7 @@ class ReportTaskPanel:
             else:
                 pipe_item.setToolTip(
                     translate(
-                        "Arch", "Toggle whether to use the previous statement's results as input."
+                        "Arch", "Toggles whether to use the previous statement's results as input"
                     )
                 )
             self.table_statements.setItem(row_idx, 1, pipe_item)
@@ -1321,7 +1321,7 @@ class ReportTaskPanel:
             header_item.setToolTip(
                 translate(
                     "Arch",
-                    "Toggle whether to use this statement's Description as a section header.",
+                    "Toggles whether to use this statement's Description as a section header",
                 )
             )
             self.table_statements.setItem(row_idx, 2, header_item)
@@ -1336,7 +1336,8 @@ class ReportTaskPanel:
             )
             cols_item.setToolTip(
                 translate(
-                    "Arch", "Toggle whether to include this statement's column names in the report."
+                    "Arch",
+                    "Toggles whether to include this statement's column names in the report",
                 )
             )
             self.table_statements.setItem(row_idx, 3, cols_item)

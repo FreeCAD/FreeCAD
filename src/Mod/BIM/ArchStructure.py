@@ -389,9 +389,9 @@ class _CommandStructure:
         self.dents = ArchPrecast._DentsTaskPanel()
         self.precast.Dents = self.dents
         if self.beammode:
-            title = translate("Arch", "First point of the beam")
+            title = translate("Arch", "First Point of Beam")
         else:
-            title = translate("Arch", "Base point of column")
+            title = translate("Arch", "Base Point of Column")
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
             movecallback=self.update,
@@ -416,7 +416,7 @@ class _CommandStructure:
                 callback=self.getPoint,
                 movecallback=self.update,
                 extradlg=[self.taskbox(), self.precast.form, self.dents.form],
-                title=translate("Arch", "Next point") + ":",
+                title=translate("Arch", "Next Point") + ":",
                 mode="line",
             )
             return
@@ -535,7 +535,7 @@ class _CommandStructure:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Structure options"))
+        w.setWindowTitle(translate("Arch", "Structure Options"))
         grid = QtGui.QGridLayout(w)
 
         # mode box
