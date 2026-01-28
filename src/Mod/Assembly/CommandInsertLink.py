@@ -508,14 +508,14 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                         if hasattr(obj, "ObjectToGround")
                             srcGrounded = obj.ObjectToGround
                             break
-                    
+
                     # Search the sub-assembly group for the link pointing to the source grounded object
                     # Fallback to the first valid part if no grounded joint was found in source
                     candidate = None
                     for child in targetObj.Group:
                         if not candidate and (child.isDerivedFrom("App::Link") or child.isDerivedFrom("Part::Feature")):
                             candidate = child
-                        
+
                         if srcGrounded and hasattr(child, "LinkedObject") and child.LinkedObject == srcGrounded:
                             candidate = child
                             break
