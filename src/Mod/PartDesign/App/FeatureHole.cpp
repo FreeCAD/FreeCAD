@@ -2009,7 +2009,12 @@ App::DocumentObjectExecReturn* Hole::execute()
                 result = compound;
             }
             else {
-                result.makeElementBoolean(maker, {base, compound});
+                result.makeElementBoolean(
+                    maker,
+                    {base, compound},
+                    getNameInDocument(),
+                    Precision::Confusion()
+                );
             }
             result = getSolid(result);
             retry = false;
@@ -2031,7 +2036,12 @@ App::DocumentObjectExecReturn* Hole::execute()
             for (auto& hole : holes) {
                 ++i;
                 try {
-                    result.makeElementBoolean(maker, {base, hole});
+                    result.makeElementBoolean(
+                        maker,
+                        {base, hole},
+                        getNameInDocument(),
+                        Precision::Confusion()
+                    );
                 }
                 catch (Standard_Failure&) {
                     std::string msg(
