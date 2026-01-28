@@ -1314,13 +1314,13 @@ yyreduce:
     {
   case 2: /* input: exp  */
 #line 81 "Expression.y"
-                                                { ScanResult = (yyvsp[0].expr); valueExpression = true;                                        }
+                                                { ScanResult = std::unique_ptr<Expression>(yyvsp[0].expr); valueExpression = true;                                        }
 #line 1316 "Expression.tab.c"
     break;
 
   case 3: /* input: unit_exp  */
 #line 82 "Expression.y"
-                                                { ScanResult = (yyvsp[0].expr); unitExpression = true;                                         }
+                                                { ScanResult = std::unique_ptr<Expression>(yyvsp[0].expr); unitExpression = true;                                         }
 #line 1322 "Expression.tab.c"
     break;
 

@@ -129,14 +129,14 @@ public:
 
     virtual bool isTouched() const { return false; }
 
-    Expression * eval() const;
+    ExpressionPtr eval() const;
 
     std::string toString(bool persistent=false, bool checkPriority=false, int indent=0) const;
     void toString(std::ostream &os, bool persistent=false, bool checkPriority=false, int indent=0) const;
 
-    static Expression * parse(const App::DocumentObject * owner, const std::string& buffer);
+    static ExpressionPtr parse(const App::DocumentObject* owner, const std::string& buffer);
 
-    Expression * copy() const;
+    ExpressionPtr copy() const;
 
     virtual int priority() const;
 
@@ -164,7 +164,7 @@ public:
 
     bool adjustLinks(const std::set<App::DocumentObject*> &inList);
 
-    virtual Expression * simplify() const = 0;
+    virtual ExpressionPtr simplify() const = 0;
 
     void visit(ExpressionVisitor & v);
 
