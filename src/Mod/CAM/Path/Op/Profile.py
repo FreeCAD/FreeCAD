@@ -191,6 +191,12 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "If doing multiple passes, the extra offset of each additional pass",
                 ),
             ),
+            (
+                "App::PropertyBool",
+                "HelixRamp",
+                "Profile",
+                QT_TRANSLATE_NOOP("App::Property", "Create helix ramp for closed path"),
+            ),
         ]
 
     @classmethod
