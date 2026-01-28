@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QApplication>
-#include <QMessageBox>
+# include <QApplication>
+# include <QMessageBox>
 #endif
 
 #include <App/DocumentObserver.h>
@@ -38,11 +38,14 @@
 
 using namespace PartDesignGui;
 
-TaskAddSubParameters::TaskAddSubParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
-                                                     const std::string& pixmapname, const QString& parname)
+TaskAddSubParameters::TaskAddSubParameters(
+    PartDesignGui::ViewProvider* vp,
+    QWidget* parent,
+    const std::string& pixmapname,
+    const QString& parname
+)
     : TaskFeatureParameters(vp, parent, pixmapname, parname)
-{
-}
+{}
 
 
 void TaskAddSubParameters::onOutsideChanged(bool on)
@@ -52,7 +55,8 @@ void TaskAddSubParameters::onOutsideChanged(bool on)
     recomputeFeature();
 }
 
-bool TaskAddSubParameters::enableOutside(PartDesignGui::ViewProvider* vp)  {
+bool TaskAddSubParameters::enableOutside(PartDesignGui::ViewProvider* vp)
+{
     PartDesign::FeatureAddSub* addsub = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
     return addsub->isSubtractive();
 }
@@ -67,7 +71,7 @@ void TaskAddSubParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgAddSubParameters::TaskDlgAddSubParameters(PartDesignGui::ViewProvider *vp)
+TaskDlgAddSubParameters::TaskDlgAddSubParameters(PartDesignGui::ViewProvider* vp)
     : TaskDlgFeatureParameters(vp)
 {
     // assert(vp);

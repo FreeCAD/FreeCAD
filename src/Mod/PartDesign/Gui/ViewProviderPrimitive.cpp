@@ -62,18 +62,19 @@ QIcon ViewProviderPrimitive::getIcon() const
     // Rely on parent class to:
     // restitute old workbench (set setEdit above) and close the dialog if exiting editing
     PartDesignGui::ViewProvider::unsetEdit(ModNum);
-
 }
 
-void ViewProviderPrimitive::updateData(const App::Property* p) {
+void ViewProviderPrimitive::updateData(const App::Property* p)
+{
     PartDesignGui::ViewProviderAddSub::updateData(p);
 }
 
-QIcon ViewProviderPrimitive::getIcon() const {
+QIcon ViewProviderPrimitive::getIcon() const
+{
 
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::FeaturePrimitive>();
-    if(prim->isAdditive()) {
+    if (prim->isAdditive()) {
         str += QStringLiteral("Additive");
     }
     else {

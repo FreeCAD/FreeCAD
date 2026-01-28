@@ -151,7 +151,7 @@ QIcon ViewProviderLoft::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Loft>();
-    if(prim->isAdditive()) {
+    if (prim->isAdditive()) {
         str += QStringLiteral("Additive");
     }
     else {

@@ -321,450 +321,458 @@ void TaskHelixParameters::adaptVisibilityToMode()
     if (helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
         isOutsideVisible = true;
 
-    HelixMode mode = static_cast<HelixMode>(propMode->getValue());
-    if (mode == HelixMode::pitch_height_angle) {
-        isPitchVisible = true;
-        isHeightVisible = true;
-        isAngleVisible = true;
+        HelixMode mode = static_cast<HelixMode>(propMode->getValue());
+        if (mode == HelixMode::pitch_height_angle) {
+            isPitchVisible = true;
+            isHeightVisible = true;
+            isAngleVisible = true;
+        }
+        else if (mode == HelixMode::pitch_turns_angle) {
+            isPitchVisible = true;
+            isTurnsVisible = true;
+            isAngleVisible = true;
+        }
+        else if (mode == HelixMode::height_turns_angle) {
+            isHeightVisible = true;
+            isTurnsVisible = true;
+            isAngleVisible = true;
+        }
+        else if (mode == HelixMode::height_turns_growth) {
+            isHeightVisible = true;
+            isTurnsVisible = true;
+            isGrowthVisible = true;
+        }
+        else {
+            ui->labelMessage->setText(tr("Error: unsupported mode"));
+        }
+
+        ui->pitch->setVisible(isPitchVisible);
+        ui->labelPitch->setVisible(isPitchVisible);
+
+        ui->height->setVisible(isHeightVisible);
+        ui->labelHeight->setVisible(isHeightVisible);
+
+        ui->turns->setVisible(isTurnsVisible);
+        ui->labelTurns->setVisible(isTurnsVisible);
+
+        ui->coneAngle->setVisible(isAngleVisible);
+        ui->labelConeAngle->setVisible(isAngleVisible);
+
+        ui->growth->setVisible(isGrowthVisible);
+        ui->labelGrowth->setVisible(isGrowthVisible);
+
+        ui->checkBoxOutside->setVisible(isOutsideVisible);
     }
-    else if (mode == HelixMode::pitch_turns_angle) {
-        isPitchVisible = true;
-        isTurnsVisible = true;
-        isAngleVisible = true;
+
+    void TaskHelixParameters::assignToolTipsFromPropertyDocs()
+    {
+        auto helix = getObject<PartDesign::Helix>();
+        const char* propCategory = "App::Property";  // cf.
+                                                     // https://tracker.freecad.org/view.php?id=0002524
+        QString toolTip;
+
+        // Beware that "Axis" in the GUI actually represents the property "ReferenceAxis"!
+        // The property "Axis" holds only the directional part of the reference axis and has no
+        // corresponding GUI element.
+        toolTip = QApplication::translate(propCategory, helix->ReferenceAxis.getDocumentation());
+        ui->axis->setToolTip(toolTip);
+        ui->labelAxis->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Mode.getDocumentation());
+        ui->inputMode->setToolTip(toolTip);
+        ui->labelInputMode->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Pitch.getDocumentation());
+        ui->pitch->setToolTip(toolTip);
+        ui->labelPitch->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Height.getDocumentation());
+        ui->height->setToolTip(toolTip);
+        ui->labelHeight->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Turns.getDocumentation());
+        ui->turns->setToolTip(toolTip);
+        ui->labelTurns->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Angle.getDocumentation());
+        ui->coneAngle->setToolTip(toolTip);
+        ui->labelConeAngle->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Growth.getDocumentation());
+        ui->growth->setToolTip(toolTip);
+        ui->labelGrowth->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->LeftHanded.getDocumentation());
+        ui->checkBoxLeftHanded->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Reversed.getDocumentation());
+        ui->checkBoxReversed->setToolTip(toolTip);
+
+        toolTip = QApplication::translate(propCategory, helix->Outside.getDocumentation());
+        ui->checkBoxOutside->setToolTip(toolTip);
     }
-    else if (mode == HelixMode::height_turns_angle) {
-        isHeightVisible = true;
-        isTurnsVisible = true;
-        isAngleVisible = true;
+
+    void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
+    {
+        if (msg.Type == Gui::SelectionChanges::AddSelection) {
+            std::vector<std::string> axis;
+            App::DocumentObject* selObj {};
+            if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
+                exitSelectionMode();
+                propReferenceAxis->setValue(selObj, axis);
+                recomputeFeature();
+                updateUI();
+            }
+        }
     }
-    else if (mode == HelixMode::height_turns_growth) {
-        isHeightVisible = true;
-        isTurnsVisible = true;
-        isGrowthVisible = true;
-    }
-    else {
-        ui->labelMessage->setText(tr("Error: unsupported mode"));
-    }
 
-    ui->pitch->setVisible(isPitchVisible);
-    ui->labelPitch->setVisible(isPitchVisible);
-
-    ui->height->setVisible(isHeightVisible);
-    ui->labelHeight->setVisible(isHeightVisible);
-
-    ui->turns->setVisible(isTurnsVisible);
-    ui->labelTurns->setVisible(isTurnsVisible);
-
-    ui->coneAngle->setVisible(isAngleVisible);
-    ui->labelConeAngle->setVisible(isAngleVisible);
-
-    ui->growth->setVisible(isGrowthVisible);
-    ui->labelGrowth->setVisible(isGrowthVisible);
-
-    ui->checkBoxOutside->setVisible(isOutsideVisible);
-}
-
-void TaskHelixParameters::assignToolTipsFromPropertyDocs()
-{
-    auto helix = getObject<PartDesign::Helix>();
-    const char* propCategory = "App::Property";  // cf. https://tracker.freecad.org/view.php?id=0002524
-    QString toolTip;
-
-    // Beware that "Axis" in the GUI actually represents the property "ReferenceAxis"!
-    // The property "Axis" holds only the directional part of the reference axis and has no
-    // corresponding GUI element.
-    toolTip = QApplication::translate(propCategory, helix->ReferenceAxis.getDocumentation());
-    ui->axis->setToolTip(toolTip);
-    ui->labelAxis->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Mode.getDocumentation());
-    ui->inputMode->setToolTip(toolTip);
-    ui->labelInputMode->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Pitch.getDocumentation());
-    ui->pitch->setToolTip(toolTip);
-    ui->labelPitch->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Height.getDocumentation());
-    ui->height->setToolTip(toolTip);
-    ui->labelHeight->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Turns.getDocumentation());
-    ui->turns->setToolTip(toolTip);
-    ui->labelTurns->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Angle.getDocumentation());
-    ui->coneAngle->setToolTip(toolTip);
-    ui->labelConeAngle->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Growth.getDocumentation());
-    ui->growth->setToolTip(toolTip);
-    ui->labelGrowth->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->LeftHanded.getDocumentation());
-    ui->checkBoxLeftHanded->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Reversed.getDocumentation());
-    ui->checkBoxReversed->setToolTip(toolTip);
-
-    toolTip = QApplication::translate(propCategory, helix->Outside.getDocumentation());
-    ui->checkBoxOutside->setToolTip(toolTip);
-}
-
-void TaskHelixParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
-{
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        std::vector<std::string> axis;
-        App::DocumentObject* selObj {};
-        if (getReferencedSelection(getObject(), msg, selObj, axis) && selObj) {
-            exitSelectionMode();
-            propReferenceAxis->setValue(selObj, axis);
+    void TaskHelixParameters::onPitchChanged(double len)
+    {
+        if (getObject()) {
+            propPitch->setValue(len);
             recomputeFeature();
             updateUI();
         }
     }
-}
 
-void TaskHelixParameters::onPitchChanged(double len)
-{
-    if (getObject()) {
-        propPitch->setValue(len);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onHeightChanged(double len)
-{
-    if (getObject()) {
-        propHeight->setValue(len);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onTurnsChanged(double len)
-{
-    if (getObject()) {
-        propTurns->setValue(len);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onAngleChanged(double len)
-{
-    if (getObject()) {
-        propAngle->setValue(len);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onGrowthChanged(double len)
-{
-    if (getObject()) {
-        propGrowth->setValue(len);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onAxisChanged(int num)
-{
-    auto helix = getObject<PartDesign::ProfileBased>();
-
-    if (axesInList.empty()) {
-        return;
-    }
-
-    App::DocumentObject* oldRefAxis = propReferenceAxis->getValue();
-    std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
-    std::string oldRefName;
-    if (!oldSubRefAxis.empty()) {
-        oldRefName = oldSubRefAxis.front();
-    }
-
-    App::PropertyLinkSub& lnk = *(axesInList[num]);
-    if (!lnk.getValue()) {
-        // enter reference selection mode
-        // assure the sketch is visible
-        if (auto sketch = dynamic_cast<Part::Part2DObject*>(helix->Profile.getValue())) {
-            Gui::cmdAppObjectShow(sketch);
+    void TaskHelixParameters::onHeightChanged(double len)
+    {
+        if (getObject()) {
+            propHeight->setValue(len);
+            recomputeFeature();
+            updateUI();
         }
-        TaskSketchBasedParameters::onSelectReference(
-            AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
-        );
-        return;
     }
-    else {
-        if (!helix->getDocument()->isIn(lnk.getValue())) {
-            Base::Console().error("Object was deleted\n");
+
+    void TaskHelixParameters::onTurnsChanged(double len)
+    {
+        if (getObject()) {
+            propTurns->setValue(len);
+            recomputeFeature();
+            updateUI();
+        }
+    }
+
+    void TaskHelixParameters::onAngleChanged(double len)
+    {
+        if (getObject()) {
+            propAngle->setValue(len);
+            recomputeFeature();
+            updateUI();
+        }
+    }
+
+    void TaskHelixParameters::onGrowthChanged(double len)
+    {
+        if (getObject()) {
+            propGrowth->setValue(len);
+            recomputeFeature();
+            updateUI();
+        }
+    }
+
+    void TaskHelixParameters::onAxisChanged(int num)
+    {
+        auto helix = getObject<PartDesign::ProfileBased>();
+
+        if (axesInList.empty()) {
             return;
         }
-        propReferenceAxis->Paste(lnk);
 
-        // in case user is in selection mode, but changed their mind before selecting anything.
-        exitSelectionMode();
-    }
-
-    try {
-        App::DocumentObject* newRefAxis = propReferenceAxis->getValue();
-        const std::vector<std::string>& newSubRefAxis = propReferenceAxis->getSubValues();
-        std::string newRefName;
-        if (!newSubRefAxis.empty()) {
-            newRefName = newSubRefAxis.front();
+        App::DocumentObject* oldRefAxis = propReferenceAxis->getValue();
+        std::vector<std::string> oldSubRefAxis = propReferenceAxis->getSubValues();
+        std::string oldRefName;
+        if (!oldSubRefAxis.empty()) {
+            oldRefName = oldSubRefAxis.front();
         }
 
-        if (oldRefAxis != newRefAxis || oldSubRefAxis.size() != newSubRefAxis.size()
-            || oldRefName != newRefName) {
-            bool reversed = propReversed->getValue();
-            if (reversed != propReversed->getValue()) {
-                propReversed->setValue(reversed);
-                ui->checkBoxReversed->blockSignals(true);
-                ui->checkBoxReversed->setChecked(reversed);
-                ui->checkBoxReversed->blockSignals(false);
+        App::PropertyLinkSub& lnk = *(axesInList[num]);
+        if (!lnk.getValue()) {
+            // enter reference selection mode
+            // assure the sketch is visible
+            if (auto sketch = dynamic_cast<Part::Part2DObject*>(helix->Profile.getValue())) {
+                Gui::cmdAppObjectShow(sketch);
             }
-        }
-
-        recomputeFeature();
-        updateStatus();
-
-        setGizmoPositions();
-    }
-    catch (const Base::Exception& e) {
-        e.reportException();
-    }
-}
-
-void TaskHelixParameters::onModeChanged(int index)
-{
-    propMode->setValue(index);
-
-    ui->pitch->setValue(propPitch->getValue());
-    ui->height->setValue(propHeight->getValue());
-    ui->turns->setValue(propTurns->getValue());
-    ui->coneAngle->setValue(propAngle->getValue());
-    ui->growth->setValue(propGrowth->getValue());
-
-    recomputeFeature();
-    updateUI();
-}
-
-void TaskHelixParameters::onLeftHandedChanged(bool on)
-{
-    if (getObject()) {
-        propLeftHanded->setValue(on);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-void TaskHelixParameters::onReversedChanged(bool on)
-{
-    if (getObject()) {
-        propReversed->setValue(on);
-        recomputeFeature();
-        updateUI();
-
-        setGizmoPositions();
-    }
-}
-
-void TaskHelixParameters::onOutsideChanged(bool on)
-{
-    if (getObject()) {
-        propOutside->setValue(on);
-        recomputeFeature();
-        updateUI();
-    }
-}
-
-
-TaskHelixParameters::~TaskHelixParameters()
-{
-    try {
-        // hide the parts coordinate system axis for selection
-        auto obj = getObject();
-        PartDesign::Body* body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr;
-        if (body) {
-            App::Origin* origin = body->getOrigin();
-            ViewProviderCoordinateSystem* vpOrigin {};
-            vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
-                Gui::Application::Instance->getViewProvider(origin)
+            TaskSketchBasedParameters::onSelectReference(
+                AllowSelection::EDGE | AllowSelection::PLANAR | AllowSelection::CIRCLE
             );
-            vpOrigin->resetTemporaryVisibility();
-        }
-    }
-    catch (const Base::Exception& ex) {
-        ex.reportException();
-    }
-}
-
-void TaskHelixParameters::changeEvent(QEvent* e)
-{
-    TaskBox::changeEvent(e);
-    if (e->type() == QEvent::LanguageChange) {
-        // save current indexes
-        int axis = ui->axis->currentIndex();
-        int mode = ui->inputMode->currentIndex();
-        ui->retranslateUi(proxy);
-        assignToolTipsFromPropertyDocs();
-
-        // Axes added by the user cannot be restored
-        fillAxisCombo(true);
-
-        // restore the indexes
-        if (axis < ui->axis->count()) {
-            ui->axis->setCurrentIndex(axis);
-        }
-        ui->inputMode->setCurrentIndex(mode);
-    }
-}
-
-void TaskHelixParameters::getReferenceAxis(App::DocumentObject*& obj, std::vector<std::string>& sub) const
-{
-    if (axesInList.empty()) {
-        throw Base::RuntimeError("Not initialized!");
-    }
-
-    int num = ui->axis->currentIndex();
-    const App::PropertyLinkSub& lnk = *(axesInList.at(num));
-    if (!lnk.getValue()) {
-        throw Base::RuntimeError("Still in reference selection mode; reference was not selected yet");
-    }
-    else {
-        auto revolution = getObject<PartDesign::ProfileBased>();
-        if (!revolution->getDocument()->isIn(lnk.getValue())) {
-            throw Base::RuntimeError("Object was deleted");
-        }
-
-        obj = lnk.getValue();
-        sub = lnk.getSubValues();
-    }
-}
-
-bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
-{
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/PartDesign"
-    );
-    if ((hGrp->GetBool("SubractiveHelixPreview", true)
-         && helix->isSubtractive())
-        || (hGrp->GetBool("AdditiveHelixPreview", false)
-            && helix->isAdditive())) {
-        return true;
-    }
-
-    return false;
-}
-
-void TaskHelixParameters::startReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
-{
-    if (auto helix = getObject<PartDesign::Helix>()) {
-        if (helix && showPreview(helix)) {
-            Gui::Document* doc = getGuiDocument();
-            if (doc) {
-                doc->setHide(profile->getNameInDocument());
-            }
+            return;
         }
         else {
-            TaskSketchBasedParameters::startReferenceSelection(profile, base);
+            if (!helix->getDocument()->isIn(lnk.getValue())) {
+                Base::Console().error("Object was deleted\n");
+                return;
+            }
+            propReferenceAxis->Paste(lnk);
+
+            // in case user is in selection mode, but changed their mind before selecting anything.
+            exitSelectionMode();
+        }
+
+        try {
+            App::DocumentObject* newRefAxis = propReferenceAxis->getValue();
+            const std::vector<std::string>& newSubRefAxis = propReferenceAxis->getSubValues();
+            std::string newRefName;
+            if (!newSubRefAxis.empty()) {
+                newRefName = newSubRefAxis.front();
+            }
+
+            if (oldRefAxis != newRefAxis || oldSubRefAxis.size() != newSubRefAxis.size()
+                || oldRefName != newRefName) {
+                bool reversed = propReversed->getValue();
+                if (reversed != propReversed->getValue()) {
+                    propReversed->setValue(reversed);
+                    ui->checkBoxReversed->blockSignals(true);
+                    ui->checkBoxReversed->setChecked(reversed);
+                    ui->checkBoxReversed->blockSignals(false);
+                }
+            }
+
+            recomputeFeature();
+            updateStatus();
+
+            setGizmoPositions();
+        }
+        catch (const Base::Exception& e) {
+            e.reportException();
         }
     }
-}
 
-void TaskHelixParameters::finishReferenceSelection(App::DocumentObject* profile, App::DocumentObject* base)
-{
-    if (auto helix = getObject<PartDesign::Helix>()) {
-        if (helix && showPreview(helix)) {
-            Gui::Document* doc = getGuiDocument();
-            if (doc) {
-                doc->setShow(profile->getNameInDocument());
+    void TaskHelixParameters::onModeChanged(int index)
+    {
+        propMode->setValue(index);
+
+        ui->pitch->setValue(propPitch->getValue());
+        ui->height->setValue(propHeight->getValue());
+        ui->turns->setValue(propTurns->getValue());
+        ui->coneAngle->setValue(propAngle->getValue());
+        ui->growth->setValue(propGrowth->getValue());
+
+        recomputeFeature();
+        updateUI();
+    }
+
+    void TaskHelixParameters::onLeftHandedChanged(bool on)
+    {
+        if (getObject()) {
+            propLeftHanded->setValue(on);
+            recomputeFeature();
+            updateUI();
+        }
+    }
+
+    void TaskHelixParameters::onReversedChanged(bool on)
+    {
+        if (getObject()) {
+            propReversed->setValue(on);
+            recomputeFeature();
+            updateUI();
+
+            setGizmoPositions();
+        }
+    }
+
+    void TaskHelixParameters::onOutsideChanged(bool on)
+    {
+        if (getObject()) {
+            propOutside->setValue(on);
+            recomputeFeature();
+            updateUI();
+        }
+    }
+
+
+    TaskHelixParameters::~TaskHelixParameters()
+    {
+        try {
+            // hide the parts coordinate system axis for selection
+            auto obj = getObject();
+            PartDesign::Body* body = obj ? PartDesign::Body::findBodyOf(obj) : nullptr;
+            if (body) {
+                App::Origin* origin = body->getOrigin();
+                ViewProviderCoordinateSystem* vpOrigin {};
+                vpOrigin = static_cast<ViewProviderCoordinateSystem*>(
+                    Gui::Application::Instance->getViewProvider(origin)
+                );
+                vpOrigin->resetTemporaryVisibility();
             }
         }
-        else {
-            TaskSketchBasedParameters::finishReferenceSelection(profile, base);
+        catch (const Base::Exception& ex) {
+            ex.reportException();
         }
     }
-}
 
-// this is used for logging the command fully when recording macros
-void TaskHelixParameters::apply()  // NOLINT
-{
-    std::vector<std::string> sub;
-    App::DocumentObject* obj {};
-    getReferenceAxis(obj, sub);
-    std::string axis = buildLinkSingleSubPythonStr(obj, sub);
-    auto tobj = getObject();
-    FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
-    FCMD_OBJ_CMD(tobj, "Mode = " << propMode->getValue());
-    FCMD_OBJ_CMD(tobj, "Pitch = " << propPitch->getValue());
-    FCMD_OBJ_CMD(tobj, "Height = " << propHeight->getValue());
-    FCMD_OBJ_CMD(tobj, "Turns = " << propTurns->getValue());
-    FCMD_OBJ_CMD(tobj, "Angle = " << propAngle->getValue());
-    FCMD_OBJ_CMD(tobj, "Growth = " << propGrowth->getValue());
-    FCMD_OBJ_CMD(tobj, "LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
-    FCMD_OBJ_CMD(tobj, "Reversed = " << (propReversed->getValue() ? 1 : 0));
-}
+    void TaskHelixParameters::changeEvent(QEvent * e)
+    {
+        TaskBox::changeEvent(e);
+        if (e->type() == QEvent::LanguageChange) {
+            // save current indexes
+            int axis = ui->axis->currentIndex();
+            int mode = ui->inputMode->currentIndex();
+            ui->retranslateUi(proxy);
+            assignToolTipsFromPropertyDocs();
 
-void TaskHelixParameters::setupGizmos(ViewProviderHelix* vp)
-{
-    if (!GizmoContainer::isEnabled()) {
-        return;
+            // Axes added by the user cannot be restored
+            fillAxisCombo(true);
+
+            // restore the indexes
+            if (axis < ui->axis->count()) {
+                ui->axis->setCurrentIndex(axis);
+            }
+            ui->inputMode->setCurrentIndex(mode);
+        }
     }
 
-    heightGizmo = new Gui::LinearGizmo(ui->height);
+    void TaskHelixParameters::getReferenceAxis(App::DocumentObject * &obj, std::vector<std::string> & sub)
+        const
+    {
+        if (axesInList.empty()) {
+            throw Base::RuntimeError("Not initialized!");
+        }
 
-    connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
-        bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
-        heightGizmo->setVisibility(!isPitchTurnsAngle);
-    });
+        int num = ui->axis->currentIndex();
+        const App::PropertyLinkSub& lnk = *(axesInList.at(num));
+        if (!lnk.getValue()) {
+            throw Base::RuntimeError(
+                "Still in reference selection mode; reference was not selected yet"
+            );
+        }
+        else {
+            auto revolution = getObject<PartDesign::ProfileBased>();
+            if (!revolution->getDocument()->isIn(lnk.getValue())) {
+                throw Base::RuntimeError("Object was deleted");
+            }
 
-    gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
-
-    setGizmoPositions();
-
-    ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
-}
-
-void TaskHelixParameters::setGizmoPositions()
-{
-    if (!gizmoContainer) {
-        return;
+            obj = lnk.getValue();
+            sub = lnk.getSubValues();
+        }
     }
 
-    auto helix = getObject<PartDesign::Helix>();
-    if (!helix || helix->isError()) {
-        gizmoContainer->visible = false;
-        return;
+    bool TaskHelixParameters::showPreview(PartDesign::Helix * helix)
+    {
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/PartDesign"
+        );
+        if ((hGrp->GetBool("SubractiveHelixPreview", true) && helix->isSubtractive())
+            || (hGrp->GetBool("AdditiveHelixPreview", false) && helix->isAdditive())) {
+            return true;
+        }
+
+        return false;
     }
-    gizmoContainer->visible = true;
-    Part::TopoShape profileShape = helix->getProfileShape();
-    double reversed = propReversed->getValue() ? -1.0 : 1.0;
-    auto profileCentre = getMidPointFromProfile(profileShape);
-    Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
-    Base::Vector3d basePos = helix->Base.getValue();
 
-    // Project the centre point of the helix to a plane passing through the com of the profile
-    // and along the helix axis
-    Base::Vector3d pos = basePos + axisDir.Dot(profileCentre - basePos) * axisDir;
+    void TaskHelixParameters::startReferenceSelection(
+        App::DocumentObject * profile,
+        App::DocumentObject * base
+    )
+    {
+        if (auto helix = getObject<PartDesign::Helix>()) {
+            if (helix && showPreview(helix)) {
+                Gui::Document* doc = getGuiDocument();
+                if (doc) {
+                    doc->setHide(profile->getNameInDocument());
+                }
+            }
+            else {
+                TaskSketchBasedParameters::startReferenceSelection(profile, base);
+            }
+        }
+    }
 
-    heightGizmo->Gizmo::setDraggerPlacement(pos, axisDir);
-}
+    void TaskHelixParameters::finishReferenceSelection(
+        App::DocumentObject * profile,
+        App::DocumentObject * base
+    )
+    {
+        if (auto helix = getObject<PartDesign::Helix>()) {
+            if (helix && showPreview(helix)) {
+                Gui::Document* doc = getGuiDocument();
+                if (doc) {
+                    doc->setShow(profile->getNameInDocument());
+                }
+            }
+            else {
+                TaskSketchBasedParameters::finishReferenceSelection(profile, base);
+            }
+        }
+    }
+
+    // this is used for logging the command fully when recording macros
+    void TaskHelixParameters::apply()  // NOLINT
+    {
+        std::vector<std::string> sub;
+        App::DocumentObject* obj {};
+        getReferenceAxis(obj, sub);
+        std::string axis = buildLinkSingleSubPythonStr(obj, sub);
+        auto tobj = getObject();
+        FCMD_OBJ_CMD(tobj, "ReferenceAxis = " << axis);
+        FCMD_OBJ_CMD(tobj, "Mode = " << propMode->getValue());
+        FCMD_OBJ_CMD(tobj, "Pitch = " << propPitch->getValue());
+        FCMD_OBJ_CMD(tobj, "Height = " << propHeight->getValue());
+        FCMD_OBJ_CMD(tobj, "Turns = " << propTurns->getValue());
+        FCMD_OBJ_CMD(tobj, "Angle = " << propAngle->getValue());
+        FCMD_OBJ_CMD(tobj, "Growth = " << propGrowth->getValue());
+        FCMD_OBJ_CMD(tobj, "LeftHanded = " << (propLeftHanded->getValue() ? 1 : 0));
+        FCMD_OBJ_CMD(tobj, "Reversed = " << (propReversed->getValue() ? 1 : 0));
+    }
+
+    void TaskHelixParameters::setupGizmos(ViewProviderHelix * vp)
+    {
+        if (!GizmoContainer::isEnabled()) {
+            return;
+        }
+
+        heightGizmo = new Gui::LinearGizmo(ui->height);
+
+        connect(ui->inputMode, qOverload<int>(&QComboBox::currentIndexChanged), [this](int index) {
+            bool isPitchTurnsAngle = index == static_cast<int>(HelixMode::pitch_turns_angle);
+            heightGizmo->setVisibility(!isPitchTurnsAngle);
+        });
+
+        gizmoContainer = GizmoContainer::create({heightGizmo}, vp);
+
+        setGizmoPositions();
+
+        ui->inputMode->currentIndexChanged(ui->inputMode->currentIndex());
+    }
+
+    void TaskHelixParameters::setGizmoPositions()
+    {
+        if (!gizmoContainer) {
+            return;
+        }
+
+        auto helix = getObject<PartDesign::Helix>();
+        if (!helix || helix->isError()) {
+            gizmoContainer->visible = false;
+            return;
+        }
+        gizmoContainer->visible = true;
+        Part::TopoShape profileShape = helix->getProfileShape();
+        double reversed = propReversed->getValue() ? -1.0 : 1.0;
+        auto profileCentre = getMidPointFromProfile(profileShape);
+        Base::Vector3d axisDir = helix->Axis.getValue() * reversed;
+        Base::Vector3d basePos = helix->Base.getValue();
+
+        // Project the centre point of the helix to a plane passing through the com of the profile
+        // and along the helix axis
+        Base::Vector3d pos = basePos + axisDir.Dot(profileCentre - basePos) * axisDir;
+
+        heightGizmo->Gizmo::setDraggerPlacement(pos, axisDir);
+    }
 
 
-//**************************************************************************
-//**************************************************************************
-// TaskDialog
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix* HelixView)
-    : TaskDlgSketchBasedParameters(HelixView)
-{
-    assert(HelixView);
-    Content.push_back(new TaskHelixParameters(HelixView));
-    Content.push_back(preview);
-}
+    //**************************************************************************
+    //**************************************************************************
+    // TaskDialog
+    //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+    TaskDlgHelixParameters::TaskDlgHelixParameters(ViewProviderHelix * HelixView)
+        : TaskDlgSketchBasedParameters(HelixView)
+    {
+        assert(HelixView);
+        Content.push_back(new TaskHelixParameters(HelixView));
+        Content.push_back(preview);
+    }
 
 
 #include "moc_TaskHelixParameters.cpp"

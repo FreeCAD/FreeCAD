@@ -58,7 +58,7 @@ public:
     void updatePreviewShape() override;
 
     Part::PropertyPartShape AddSubShape;
-    App::PropertyBool         Outside;
+    App::PropertyBool Outside;
 
 protected:
     Type addSubType {Additive};

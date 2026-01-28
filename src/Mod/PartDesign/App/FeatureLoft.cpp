@@ -340,7 +340,7 @@ App::DocumentObjectExecReturn* Loft::execute()
         result.Tag = -getID();
         TopoShape boolOp(0, getDocument()->getStringHasher());
 
-        const char *maker;
+        const char* maker;
         if (isAdditive()) {
             maker = Part::OpCodes::Fuse;
         }

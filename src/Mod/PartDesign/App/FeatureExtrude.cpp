@@ -125,18 +125,21 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     return extrudeDirection;
 }
 
-void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds) {
-    if ( ! face.IsNull() ) {
+void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds)
+{
+    if (!face.IsNull()) {
         BRepAdaptor_Surface adapt = BRepAdaptor_Surface(face);
         // adapt.Initialize(face);
         TopoDS_Face plane = BRepBuilderAPI_MakeFace(adapt.Plane());
-        if ( ! bounds.IsNull() ) {
+        if (!bounds.IsNull()) {
             BRepAlgoAPI_Common mkCom(bounds, plane);
             // Protect if a compound with one entry is returned
-            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(),TopAbs_FACE);
+            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(), TopAbs_FACE);
             face = TopoDS::Face(xp.Current());
-        } else
+        }
+        else {
             face = TopoDS::Face(plane);
+        }
     }
 }
 

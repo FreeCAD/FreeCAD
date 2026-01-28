@@ -58,17 +58,19 @@ QIcon ViewProviderHelix::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Helix>();
-    if(prim->isAdditive())
+    if (prim->isAdditive()) {
         str += QStringLiteral("Additive");
     }
-    else {
-        str += QStringLiteral("Subtractive");
-    }
+}
+else
+{
+    str += QStringLiteral("Subtractive");
+}
 
-    str += QStringLiteral("Helix.svg");
-    return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
-        Gui::BitmapFactory().pixmap(str.toStdString().c_str())
-    );
+str += QStringLiteral("Helix.svg");
+return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
+    Gui::BitmapFactory().pixmap(str.toStdString().c_str())
+);
 }
 
 std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const
