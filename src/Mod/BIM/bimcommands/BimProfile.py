@@ -65,7 +65,7 @@ class Arch_Profile:
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
             extradlg=[self.taskbox()],
-            title=translate("Arch", "Create profile"),
+            title=translate("Arch", "Create Profile"),
         )
 
     def taskbox(self):
@@ -76,7 +76,7 @@ class Arch_Profile:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Profile settings"))
+        w.setWindowTitle(translate("Arch", "Profile Settings"))
         grid = QtGui.QGridLayout(w)
 
         # categories box
