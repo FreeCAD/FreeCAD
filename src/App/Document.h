@@ -252,6 +252,7 @@ public:
     ExportInfo exportInfo() const;
     void setExportInfo(const ExportInfo& info);
     void exportObjects(const std::vector<DocumentObject*>&, std::ostream&);
+    void exportGraphvizProp(std::ostream&) const;
     void exportGraphviz(std::ostream&) const;
     std::vector<DocumentObject*> importObjects(Base::XMLReader& reader);
     /** Import any externally linked objects

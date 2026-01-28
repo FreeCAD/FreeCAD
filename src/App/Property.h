@@ -96,8 +96,8 @@ public:
         PartialTrigger = 10,
         /// Whether to prevent to touch the owner for a recompute on property change.
         NoRecompute = 11,
-        /// Whether a floating point number should be saved as single precision.
-        Single = 12,
+        /// Whether a property is an input property.
+        Input = 12,
         /// For PropertyLists, whether the order of the elements is
         /// relevant for the container using it.
         Ordered = 13,
@@ -447,24 +447,25 @@ public:
     /**
      * @brief Set the precision of floating point properties.
      *
-     * This sets the precision of properties using floating point
-     * numbers to single precision. The default is double precision.
+     * Deprecated.  All floating proint properties are double precision.
      *
-     * @param[in] single True to set single precision, false for double precision.
+     * @param[in] single Unused.
      */
-    void setSinglePrecision(bool single)
+    void setSinglePrecision(bool /*single*/)
     {
-        setStatus(App::Property::Single, single);
     }
 
     /**
      * @brief Gets precision of floating point properties.
      *
-     * @return True if single precision is set, false for double precision.
+     * This function is deprecated.  All floating point properties are
+     * double precision.
+     *
+     * @return False always.
      */
     inline bool isSinglePrecision() const
     {
-        return testStatus(App::Property::Single);
+        return false;
     }
     /// @}
 
