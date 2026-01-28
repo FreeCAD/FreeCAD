@@ -56,6 +56,8 @@ public:
     int getDefFontSizeNum();
     QFont getDefFont();
 
+    void setMinimalMode(bool on);
+
 public Q_SLOTS:
     void setText(const QString &text);
 
@@ -73,6 +75,7 @@ protected:
   void focusInEvent(QFocusEvent *event) override;
   void keyPressEvent(QKeyEvent *event) override;
   bool hasMultipleSizes();
+  void updateFontSizeDisplay();
 
   void addFontSize(QString fontSize);
 
