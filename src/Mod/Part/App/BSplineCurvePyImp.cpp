@@ -327,6 +327,26 @@ PyObject* BSplineCurvePy::segment(PyObject* args)
     }
 }
 
+PyObject* BSplineCurvePy::split(PyObject* args) const
+{
+    double u {};
+    double tolerance = 0.0;
+    if (!PyArg_ParseTuple(args, "d|d", &u, &tolerance)) {
+        return nullptr;
+    }
+    try {
+        auto curves = getGeomBSplineCurvePtr()->split(u, tolerance);
+        Py::Tuple tuple(2);
+        tuple.setItem(0, Py::asObject(std::get<0>(curves)->getPyObject()));
+        tuple.setItem(1, Py::asObject(std::get<1>(curves)->getPyObject()));
+        return Py::new_reference_to(tuple);
+    }
+    catch (Standard_Failure& e) {
+        PyErr_SetString(PartExceptionOCCError, e.GetMessageString());
+        return nullptr;
+    }
+}
+
 PyObject* BSplineCurvePy::setKnot(PyObject* args)
 {
     int Index, M = -1;
