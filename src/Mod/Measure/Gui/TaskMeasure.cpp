@@ -403,6 +403,7 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     }
 
     group->addObject(measurement);
+    group->purgeTouched();
 }
 
 
