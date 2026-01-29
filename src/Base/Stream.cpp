@@ -22,11 +22,13 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QBuffer>
-#include <QIODevice>
 #ifdef __GNUC__
 # include <cstdint>
 #endif
+
+#include <cstring>
+#include <algorithm>
+#include <limits>
 
 #include "Stream.h"
 #include "Swap.h"
@@ -255,112 +257,139 @@ InputStream& InputStream::read(char* s, int n)
 
 // ----------------------------------------------------------------------
 
-ByteArrayOStreambuf::ByteArrayOStreambuf(QByteArray& ba)
-    : _buffer(new QBuffer(&ba))
-{
-    _buffer->open(QIODevice::WriteOnly);
-}
+StringOStreambuf::StringOStreambuf(std::string& buffer)
+    : _buffer(buffer)
+{}
 
-ByteArrayOStreambuf::~ByteArrayOStreambuf()
-{
-    _buffer->close();
-    delete _buffer;
-}
+StringOStreambuf::~StringOStreambuf() = default;
 
-std::streambuf::int_type ByteArrayOStreambuf::overflow(std::streambuf::int_type c)
+std::streambuf::int_type StringOStreambuf::overflow(std::streambuf::int_type c)
 {
-    if (c != EOF) {
-        char z = static_cast<char>(c);
-        if (_buffer->write(&z, 1) != 1) {
-            return EOF;
-        }
+    if (c == EOF) {
+        return EOF;
+    }
+
+    const char z = static_cast<char>(c);
+    if (xsputn(&z, 1) != 1) {
+        return EOF;
     }
     return c;
 }
 
-std::streamsize ByteArrayOStreambuf::xsputn(const char* s, std::streamsize num)
+std::streamsize StringOStreambuf::xsputn(const char* s, std::streamsize num)
 {
-    return _buffer->write(s, num);
+    if (num <= 0) {
+        return 0;
+    }
+
+    const auto count = static_cast<std::size_t>(num);
+    const auto needed = _pos + count;
+    if (needed > _buffer.size()) {
+        _buffer.resize(needed);
+    }
+
+    std::memcpy(_buffer.data() + _pos, s, count);
+    _pos += count;
+    return num;
 }
 
-std::streambuf::pos_type ByteArrayOStreambuf::
-    seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode /*mode*/)
+std::streambuf::pos_type StringOStreambuf::seekoff(
+    std::streambuf::off_type off,
+    std::ios_base::seekdir way,
+    std::ios_base::openmode /*mode*/
+)
 {
-    off_type endpos = 0;
-    off_type curpos = _buffer->pos();
+    off_type base = 0;
     switch (way) {
         case std::ios_base::beg:
-            endpos = off;
+            base = 0;
             break;
         case std::ios_base::cur:
-            endpos = curpos + off;
+            base = static_cast<off_type>(_pos);
             break;
         case std::ios_base::end:
-            endpos = _buffer->size();
+            base = static_cast<off_type>(_buffer.size());
             break;
         default:
             return {off_type(-1)};
     }
 
-    if (endpos != curpos) {
-        if (!_buffer->seek(endpos)) {
-            endpos = -1;
-        }
+    const off_type newpos = base + off;
+    if (newpos < 0) {
+        return {off_type(-1)};
+    }
+    if (static_cast<std::size_t>(newpos) > _buffer.size()) {
+        return {off_type(-1)};
     }
 
-    return {endpos};
+    _pos = static_cast<std::size_t>(newpos);
+    return {newpos};
 }
 
-std::streambuf::pos_type ByteArrayOStreambuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode /*mode*/)
+std::streambuf::pos_type StringOStreambuf::seekpos(
+    std::streambuf::pos_type pos,
+    std::ios_base::openmode /*mode*/
+)
 {
     return seekoff(pos, std::ios_base::beg);
 }
 
 // ----------------------------------------------------------------------
 
-ByteArrayIStreambuf::ByteArrayIStreambuf(const QByteArray& data)
-    : _buffer(data)
+StringIStreambuf::StringIStreambuf(const std::string& buffer)
+    : _buffer(buffer)
     , _beg(0)
-    , _end(data.size())
+    , _end(0)
     , _cur(0)
-{}
+{
+    const auto maxInt = static_cast<std::size_t>(std::numeric_limits<int>::max());
+    _end = static_cast<int>(std::min(_buffer.size(), maxInt));
+}
 
-ByteArrayIStreambuf::~ByteArrayIStreambuf() = default;
+StringIStreambuf::~StringIStreambuf() = default;
 
-ByteArrayIStreambuf::int_type ByteArrayIStreambuf::underflow()
+StringIStreambuf::int_type StringIStreambuf::underflow()
 {
     if (_cur == _end) {
         return traits_type::eof();
     }
 
-    return static_cast<ByteArrayIStreambuf::int_type>(_buffer[_cur]) & 0x000000ff;
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur])) & 0x000000ff;
 }
 
-ByteArrayIStreambuf::int_type ByteArrayIStreambuf::uflow()
+StringIStreambuf::int_type StringIStreambuf::uflow()
 {
     if (_cur == _end) {
         return traits_type::eof();
     }
 
-    return static_cast<ByteArrayIStreambuf::int_type>(_buffer[_cur++]) & 0x000000ff;
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur++])) & 0x000000ff;
 }
 
-ByteArrayIStreambuf::int_type ByteArrayIStreambuf::pbackfail(int_type ch)
+StringIStreambuf::int_type StringIStreambuf::pbackfail(int_type ch)
 {
-    if (_cur == _beg || (ch != traits_type::eof() && ch != _buffer[_cur - 1])) {
+    if (_cur == _beg) {
         return traits_type::eof();
     }
 
-    return static_cast<ByteArrayIStreambuf::int_type>(_buffer[--_cur]) & 0x000000ff;
+    if (ch != traits_type::eof()
+        && ch != static_cast<int_type>(static_cast<unsigned char>(_buffer[_cur - 1]))) {
+        return traits_type::eof();
+    }
+
+    return static_cast<int_type>(static_cast<unsigned char>(_buffer[--_cur])) & 0x000000ff;
 }
 
-std::streamsize ByteArrayIStreambuf::showmanyc()
+std::streamsize StringIStreambuf::showmanyc()
 {
     return _end - _cur;
 }
 
-std::streambuf::pos_type ByteArrayIStreambuf::
-    seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode /*mode*/)
+std::streambuf::pos_type StringIStreambuf::seekoff(
+    std::streambuf::off_type off,
+    std::ios_base::seekdir way,
+    std::ios_base::openmode /*mode*/
+)
 {
     int p_pos = -1;
     if (way == std::ios_base::beg) {
@@ -386,159 +415,15 @@ std::streambuf::pos_type ByteArrayIStreambuf::
     return ((p_pos + off) - _beg);
 }
 
-std::streambuf::pos_type ByteArrayIStreambuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode /*mode*/)
+std::streambuf::pos_type StringIStreambuf::seekpos(
+    std::streambuf::pos_type pos,
+    std::ios_base::openmode /*mode*/
+)
 {
     return seekoff(pos, std::ios_base::beg);
 }
 
 // ----------------------------------------------------------------------
-
-IODeviceOStreambuf::IODeviceOStreambuf(QIODevice* dev)
-    : device(dev)
-{}
-
-IODeviceOStreambuf::~IODeviceOStreambuf() = default;
-
-std::streambuf::int_type IODeviceOStreambuf::overflow(std::streambuf::int_type c)
-{
-    if (c != EOF) {
-        char z = static_cast<char>(c);
-        if (device->write(&z, 1) != 1) {
-            return EOF;
-        }
-    }
-    return c;
-}
-
-std::streamsize IODeviceOStreambuf::xsputn(const char* s, std::streamsize num)
-{
-    return device->write(s, num);
-}
-
-std::streambuf::pos_type IODeviceOStreambuf::
-    seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode /*mode*/)
-{
-    off_type endpos = 0;
-    off_type curpos = device->pos();
-    switch (way) {
-        case std::ios_base::beg:
-            endpos = off;
-            break;
-        case std::ios_base::cur:
-            endpos = curpos + off;
-            break;
-        case std::ios_base::end:
-            endpos = device->size();
-            break;
-        default:
-            return {off_type(-1)};
-    }
-
-    if (endpos != curpos) {
-        if (!device->seek(endpos)) {
-            endpos = -1;
-        }
-    }
-
-    return {endpos};
-}
-
-std::streambuf::pos_type IODeviceOStreambuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode /*mode*/)
-{
-    return seekoff(pos, std::ios_base::beg);
-}
-
-// ----------------------------------------------------------------------
-
-IODeviceIStreambuf::IODeviceIStreambuf(QIODevice* dev)
-    : device(dev)
-{
-    setg(
-        buffer + pbSize,  // beginning of putback area
-        buffer + pbSize,  // read position
-        buffer + pbSize
-    );  // end position
-}
-
-IODeviceIStreambuf::~IODeviceIStreambuf() = default;
-
-std::streambuf::int_type IODeviceIStreambuf::underflow()
-{
-#ifndef _MSC_VER
-    using std::memcpy;
-#endif
-
-    // is read position before end of buffer?
-    if (gptr() < egptr()) {
-        return *gptr();
-    }
-
-    /* process size of putback area
-     * - use number of characters read
-     * - but at most size of putback area
-     */
-    int numPutback {};
-    numPutback = gptr() - eback();
-    if (numPutback > pbSize) {
-        numPutback = pbSize;
-    }
-
-    /* copy up to pbSize characters previously read into
-     * the putback area
-     */
-    memcpy(buffer + (pbSize - numPutback), gptr() - numPutback, numPutback);
-
-    // read at most bufSize new characters
-    int num {};
-    num = device->read(buffer + pbSize, bufSize);
-    if (num <= 0) {
-        // ERROR or EOF
-        return EOF;
-    }
-
-    // reset buffer pointers
-    setg(
-        buffer + (pbSize - numPutback),  // beginning of putback area
-        buffer + pbSize,                 // read position
-        buffer + pbSize + num
-    );  // end of buffer
-
-    // return next character
-    return *gptr();
-}
-
-std::streambuf::pos_type IODeviceIStreambuf::
-    seekoff(std::streambuf::off_type off, std::ios_base::seekdir way, std::ios_base::openmode /*mode*/)
-{
-    off_type endpos = 0;
-    off_type curpos = device->pos();
-    switch (way) {
-        case std::ios_base::beg:
-            endpos = off;
-            break;
-        case std::ios_base::cur:
-            endpos = curpos + off;
-            break;
-        case std::ios_base::end:
-            endpos = device->size();
-            break;
-        default:
-            return {off_type(-1)};
-    }
-
-    if (endpos != curpos) {
-        if (!device->seek(endpos)) {
-            endpos = -1;
-        }
-    }
-
-    return {endpos};
-}
-
-std::streambuf::pos_type IODeviceIStreambuf::seekpos(std::streambuf::pos_type pos, std::ios_base::openmode /*mode*/)
-{
-    return seekoff(pos, std::ios_base::beg);
-}
 
 // ---------------------------------------------------------
 

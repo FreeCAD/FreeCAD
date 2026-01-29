@@ -27,6 +27,7 @@
 #define BASE_Quantity_H
 
 #include "Unit.h"
+#include <cstdint>
 #include <string>
 
 namespace Base
@@ -35,12 +36,17 @@ class UnitsSchema;
 
 struct BaseExport QuantityFormat
 {
-    enum NumberOption
-    {
-        None = 0x00,
-        OmitGroupSeparator = 0x01,
-        RejectGroupSeparator = 0x02
-    };
+    // Base-owned number formatting flags.
+    //
+    // Note: values intentionally match Qt's QLocale::NumberOptions bit assignments for historical
+    // compatibility (e.g. persisted config values), but this type is independent of Qt.
+    using NumberOptions = std::uint32_t;
+    static constexpr NumberOptions None = 0x00;
+    static constexpr NumberOptions OmitGroupSeparator = 0x01;
+    static constexpr NumberOptions RejectGroupSeparator = 0x02;
+    // Reserved for future use (aligns with Qt values if/when needed):
+    static constexpr NumberOptions OmitLeadingZeroInExponent = 0x04;
+    static constexpr NumberOptions IncludeTrailingZeroesAfterDot = 0x08;
     enum NumberFormat
     {
         Default = 0,
@@ -48,7 +54,6 @@ struct BaseExport QuantityFormat
         Scientific = 2
     };
 
-    using NumberOptions = int;
     NumberOptions option;
     NumberFormat format;
 

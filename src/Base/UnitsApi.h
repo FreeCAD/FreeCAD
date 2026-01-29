@@ -30,9 +30,6 @@
 #include "UnitsSchemasData.h"
 #include "Quantity.h"
 
-
-class QString;
-
 using PyObject = struct _object;
 using PyMethodDef = struct PyMethodDef;
 

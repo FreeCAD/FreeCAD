@@ -125,3 +125,46 @@ TEST_F(TextStreamIntegrationTest, OutputThenInputMultiLineWithCarriageReturns)
     // Assert
     EXPECT_EQ(multiLineStringResult, result);
 }
+
+
+class StringStreambufTest: public ::testing::Test
+{
+};
+
+TEST_F(StringStreambufTest, OutputOverwritesAndSeeks)
+{
+    std::string buffer(4, 'x');
+    Base::StringOStreambuf sbuf(buffer);
+    std::ostream out(&sbuf);
+
+    out.write("abcd", 4);
+    EXPECT_EQ("abcd", buffer);
+
+    out.seekp(2);
+    out.write("Z", 1);
+    EXPECT_EQ("abZd", buffer);
+}
+
+TEST_F(StringStreambufTest, RoundTripBinaryData)
+{
+    std::string buffer;
+    Base::StringOStreambuf obuf(buffer);
+    std::ostream out(&obuf);
+
+    const std::string payload("abc\0def", 7);
+    out.write(payload.data(), static_cast<std::streamsize>(payload.size()));
+    out.seekp(0);
+    out.write("X", 1);
+
+    Base::StringIStreambuf ibuf(buffer);
+    std::istream in(nullptr);
+    in.rdbuf(&ibuf);
+
+    std::string readBack(buffer.size(), '\0');
+    in.read(readBack.data(), static_cast<std::streamsize>(readBack.size()));
+    EXPECT_EQ(buffer, readBack);
+
+    in.clear();
+    in.seekg(3);
+    EXPECT_EQ(0, in.get());
+}

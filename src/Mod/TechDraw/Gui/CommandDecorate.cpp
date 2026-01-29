@@ -328,8 +328,8 @@ void CmdTechDrawImage::activated(int iMsg)
     }
 
     std::string FeatName = getUniqueObjectName("Image");
-    fileName = Base::Tools::escapeEncodeFilename(fileName);
-    auto filespec = DU::cleanFilespecBackslash(fileName.toStdString());
+    auto filespec = DU::cleanFilespecBackslash(
+        Base::Tools::escapeEncodeFilename(fileName.toStdString()));
 
     openCommand(QT_TRANSLATE_NOOP("Command", "Create Image"));
     doCommand(Doc, "App.activeDocument().addObject('TechDraw::DrawViewImage', '%s')", FeatName.c_str());

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
+#include <regex>
 #include <vector>
 
 // NOLINTBEGIN(cppcoreguidelines-*,readability-*)
@@ -112,6 +113,29 @@ TEST(BaseToolsSuite, TestEscapeQuotesFromString)
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\'"), "\\\'");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\""), "\\\"");
     EXPECT_EQ(Base::Tools::escapeQuotesFromString("\\"), "\\");
+}
+
+TEST(BaseToolsSuite, TestEscapeEncodeString)
+{
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\\b"), "a\\\\b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a\"b"), "a\\\"b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("a'b"), "a\\\'b");
+    EXPECT_EQ(Base::Tools::escapeEncodeString("plain"), "plain");
+}
+
+TEST(BaseToolsSuite, TestEscapeEncodeFilename)
+{
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a\"b"), "a\\\"b");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a'b"), "a\\\'b");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("plain"), "plain");
+    EXPECT_EQ(Base::Tools::escapeEncodeFilename("a\\b"), "a\\b");
+}
+
+TEST(BaseToolsSuite, TestCurrentDateTimeStringUtcIso)
+{
+    const std::string s = Base::Tools::currentDateTimeString();
+    static const std::regex re("^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z$");
+    EXPECT_TRUE(std::regex_match(s, re));
 }
 TEST(BaseToolsSuite, TestGetIdentifier)
 {
