@@ -23,14 +23,15 @@
 
 """ToolBit selector dialog."""
 
-from PySide import QtWidgets
+from PySide import QtWidgets, QtGui
 import FreeCAD
 from ...camassets import cam_assets
 from ...toolbit import ToolBit
 from .browser import ToolBitBrowserWidget
+from .typefilter import ToolBitTypeFilterMixin
 
 
-class ToolBitSelector(QtWidgets.QDialog):
+class ToolBitSelector(QtWidgets.QDialog, ToolBitTypeFilterMixin):
     """
     A dialog for selecting ToolBits using the ToolBitBrowserWidget.
     """
@@ -45,6 +46,14 @@ class ToolBitSelector(QtWidgets.QDialog):
         self.setWindowTitle(FreeCAD.Qt.translate("CAM", "Select Toolbit"))
 
         self._browser_widget = ToolBitBrowserWidget(cam_assets, compact=compact)
+
+        # Add tool type filter combo box to the browser widget
+        self._tool_type_combo = QtGui.QComboBox()
+        self._tool_type_combo.setSizePolicy(
+            QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred
+        )
+        self._browser_widget._top_layout.insertWidget(0, self._tool_type_combo, 1)
+        self._tool_type_combo.currentTextChanged.connect(self._on_tool_type_combo_changed)
 
         # Create OK and Cancel buttons
         self._ok_button = QtWidgets.QPushButton(button_label)
@@ -71,6 +80,25 @@ class ToolBitSelector(QtWidgets.QDialog):
         self._browser_widget.itemDoubleClicked.connect(self.accept)
 
         self._selected_tool_uri = None
+        self._selected_tool_type = None
+
+        # Initialize the tool type combo after browser widget is set up
+        self._browser_widget.refresh()
+        self._update_tool_type_combo()
+
+    def _get_assets_for_type_filter(self):
+        """Returns the list of assets to use for type filtering."""
+        return getattr(self._browser_widget, "_all_assets", [])
+
+    def _on_type_filter_changed(self):
+        """Called when the type filter changes - updates the filtered list."""
+        all_assets = getattr(self._browser_widget, "_all_assets", [])
+        self._refresh_filtered_list(
+            self._browser_widget._tool_list_widget,
+            self._browser_widget._search_edit,
+            all_assets,
+        )
+        self._browser_widget._tool_list_widget.apply_filter("")
 
     def _on_tool_selected(self, uri):
         """Enables/disables OK button based on selection."""
