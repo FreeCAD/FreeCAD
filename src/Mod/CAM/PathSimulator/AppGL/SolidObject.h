@@ -28,7 +28,7 @@
 #include "linmath.h"
 #include <vector>
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 class SolidObject
@@ -36,12 +36,15 @@ class SolidObject
 public:
     SolidObject();
     virtual ~SolidObject();
+
+    void Clear();
+
     void SetPosition(vec3 position);
 
     /// Calls the display list.
     virtual void render();
     Shape shape;
-    void GenerateSolid(std::vector<Vertex>& verts, std::vector<GLushort>& indices);
+    void GenerateSolid(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
     vec3 center = {};
     vec3 size = {};
     vec3 position = {};
@@ -50,6 +53,6 @@ public:
 protected:
     mat4x4 mModelMat;
 };
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif
