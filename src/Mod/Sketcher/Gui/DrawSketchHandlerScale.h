@@ -61,7 +61,8 @@ using DSHScaleController = DrawSketchDefaultWidgetController<
     /*OnViewParametersT =*/OnViewParameters<3>,
     /*WidgetParametersT =*/WidgetParameters<0>,
     /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;
 
 using DSHScaleControllerBase = DSHScaleController::ControllerBase;
 

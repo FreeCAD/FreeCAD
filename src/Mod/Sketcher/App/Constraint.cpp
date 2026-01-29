@@ -88,6 +88,7 @@ Constraint* Constraint::copy() const
     temp->isInVirtualSpace = this->isInVirtualSpace;
     temp->isVisible = this->isVisible;
     temp->isActive = this->isActive;
+    temp->isTextHeight = this->isTextHeight;
     temp->elements = this->elements;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
 
@@ -149,8 +150,12 @@ unsigned int Constraint::getMemSize() const
 void Constraint::Save(Writer& writer) const
 {
     std::string encodeName = encodeAttribute(Name);
+    std::string encodeText = encodeAttribute(Text);
+    std::string encodeFont = encodeAttribute(Font);
     writer.Stream() << writer.ind() << "<Constrain "
                     << "Name=\"" << encodeName << "\" "
+                    << "Text=\"" << encodeText << "\" "
+                    << "Font=\"" << encodeFont << "\" "
                     << "Type=\"" << (int)Type << "\" ";
     if (this->Type == InternalAlignment) {
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
@@ -162,7 +167,8 @@ void Constraint::Save(Writer& writer) const
                     << "IsDriving=\"" << (int)isDriving << "\" "
                     << "IsInVirtualSpace=\"" << (int)isInVirtualSpace << "\" "
                     << "IsVisible=\"" << (int)isVisible << "\" "
-                    << "IsActive=\"" << (int)isActive << "\" ";
+                    << "IsActive=\"" << (int)isActive << "\" "
+                    << "IsTextHeight=\"" << (int)isTextHeight << "\" ";
 
     // Save elements
     {
@@ -195,6 +201,8 @@ void Constraint::Restore(XMLReader& reader)
 {
     reader.readElement("Constrain");
     Name = reader.getAttribute<const char*>("Name");
+    Text = reader.hasAttribute("Text") ? reader.getAttribute<const char*>("Text") : "";
+    Font = reader.hasAttribute("Font") ? reader.getAttribute<const char*>("Font") : "";
     Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
 
@@ -232,6 +240,10 @@ void Constraint::Restore(XMLReader& reader)
 
     if (reader.hasAttribute("IsActive")) {
         isActive = reader.getAttribute<bool>("IsActive");
+    }
+
+    if (reader.hasAttribute("IsTextHeight")) {
+        isTextHeight = reader.getAttribute<bool>("IsTextHeight");
     }
 
     if (reader.hasAttribute("ElementIds") && reader.hasAttribute("ElementPositions")) {
@@ -391,32 +403,31 @@ GeoElementId Constraint::getElement(size_t index) const
 #endif
     return elements[index];
 }
+
 void Constraint::setElement(size_t index, GeoElementId element)
 {
-    if (index >= elements.size()) {
-        throw Base::IndexError("Constraint::getElement index out of range");
-    }
-
-    elements[index] = element;
+    if (ensureElementExists(index)) {
+        elements[index] = element;
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
-    if (index < 3) {
-        switch (index) {
-            case 0:
-                First = element.GeoId;
-                FirstPos = element.Pos;
-                break;
-            case 1:
-                Second = element.GeoId;
-                SecondPos = element.Pos;
-                break;
-            case 2:
-                Third = element.GeoId;
-                ThirdPos = element.Pos;
-                break;
+        if (index < 3) {
+            switch (index) {
+                case 0:
+                    First = element.GeoId;
+                    FirstPos = element.Pos;
+                    break;
+                case 1:
+                    Second = element.GeoId;
+                    SecondPos = element.Pos;
+                    break;
+                case 2:
+                    Third = element.GeoId;
+                    ThirdPos = element.Pos;
+                    break;
+            }
         }
-    }
 #endif
+    }
 }
 
 size_t Constraint::getElementsSize() const
@@ -433,4 +444,159 @@ void Constraint::addElement(GeoElementId element)
 #else
     elements.push_back(element);
 #endif
+}
+
+int Constraint::getGeoId(int index) const
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                return First;
+            case 1:
+                return Second;
+            case 2:
+                return Third;
+        }
+    }
+#endif
+    return hasElement(index) ? elements[index].GeoId : GeoEnum::GeoUndef;
+}
+
+PointPos Constraint::getPosId(int index) const
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                return FirstPos;
+            case 1:
+                return SecondPos;
+            case 2:
+                return ThirdPos;
+        }
+    }
+#endif
+    return hasElement(index) ? elements[index].Pos : PointPos::none;
+}
+
+int Constraint::getPosIdAsInt(int index) const
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                return (int)FirstPos;
+            case 1:
+                return (int)SecondPos;
+            case 2:
+                return (int)ThirdPos;
+        }
+    }
+#endif
+    return hasElement(index) ? elements[index].posIdAsInt() : 0;
+}
+
+bool Constraint::hasElement(int index) const
+{
+    return index >= 0 && index < elements.size();
+}
+
+void Constraint::setGeoId(int index, int geoId)
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                First = geoId;
+                break;
+            case 1:
+                Second = geoId;
+                break;
+            case 2:
+                Third = geoId;
+                break;
+        }
+    }
+#endif
+    if (ensureElementExists(index)) {
+        elements[index].GeoId = geoId;
+    }
+}
+
+void Constraint::setPosId(int index, PointPos pos)
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                FirstPos = pos;
+                break;
+            case 1:
+                SecondPos = pos;
+                break;
+            case 2:
+                ThirdPos = pos;
+                break;
+        }
+    }
+#endif
+    if (ensureElementExists(index)) {
+        elements[index].Pos = pos;
+    }
+}
+
+void Constraint::setPosId(int index, int pos)
+{
+#if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
+    if (index < 3) {
+        switch (index) {
+            case 0:
+                FirstPos = static_cast<PointPos>(pos);
+                break;
+            case 1:
+                SecondPos = static_cast<PointPos>(pos);
+                break;
+            case 2:
+                ThirdPos = static_cast<PointPos>(pos);
+                break;
+        }
+    }
+#endif
+    if (ensureElementExists(index)) {
+        elements[index].Pos = static_cast<PointPos>(pos);
+    }
+}
+
+bool Constraint::ensureElementExists(int index)
+{
+    if (index < 0) {
+        return false;  // Indicate failure for an invalid index
+    }
+    if (index >= elements.size()) {
+        elements.resize(index + 1);
+    }
+    return true;
+}
+
+void Constraint::swapElements(int index1, int index2)
+{
+    if (index1 == index2) {
+        return;
+    }
+    if (ensureElementExists(index1) && ensureElementExists(index2)) {
+        std::swap(elements[index1], elements[index2]);
+    }
+}
+
+bool Constraint::isElementsEmpty() const
+{
+    return elements.empty();
+}
+
+void Constraint::truncateElements(size_t newSize)
+{
+    if (newSize < elements.size()) {
+        elements.resize(newSize);
+    }
 }
