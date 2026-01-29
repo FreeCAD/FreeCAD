@@ -3572,9 +3572,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
     // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    listener = std::make_unique<ShortcutListener>(this);
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    Gui::getMainWindow()->installEventFilter(listener.get());
 
     Workbench::enterEditMode();
 
@@ -3729,8 +3729,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     Workbench::leaveEditMode();
 
     if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
+        Gui::getMainWindow()->removeEventFilter(listener.get());
+        listener.reset();
     }
 
     if (isInEditMode()) {
