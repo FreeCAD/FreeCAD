@@ -267,7 +267,6 @@ class TestArchCoveringGui(TestArchBaseGui.TestArchBaseGui):
         the texture elements were actually inserted.
         """
         self.printTestMessage("texture scene graph structure...")
-        import Arch
         import pivy.coin as coin
         from draftutils import gui_utils
         import tempfile
