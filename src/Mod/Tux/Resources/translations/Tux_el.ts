@@ -16,7 +16,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="91"/>
       <source>Rotate</source>
-      <translation>Περιστρέψτε</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="92"/>

@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Noktalarına Dönüştür</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Noktalarına Dönüştür</translation>
     </message>
   </context>
   <context>
@@ -66,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Nokta bulutlarını birleştir</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Birkaç nokta bulutunu tek bir tanede birleştir</translation>
     </message>
   </context>
   <context>

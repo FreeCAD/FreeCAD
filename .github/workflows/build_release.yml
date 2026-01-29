@@ -8,6 +8,7 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   upload_src:
@@ -43,6 +44,30 @@ jobs:
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
 
+      - name: Trigger notes updater workflow (only for weekly)
+        if: startsWith(steps.get_tag.outputs.build_tag, 'weekly-')
+        uses: actions/github-script@v7
+        env:
+          WEEKLY_TAG: ${{ steps.get_tag.outputs.build_tag }}
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo  = context.repo.repo;
+
+            // Reusable/dispatchable updater workflow file in .github/workflows/
+            const workflow_id = 'weekly-compare-link.yml';
+
+            // Use the default branch so the workflow file is available
+            const ref = (context.payload?.repository?.default_branch) || 'main';
+            const current_tag = process.env.WEEKLY_TAG || '';
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner, repo, workflow_id, ref,
+              inputs: { current_tag }
+            });
+
+            core.info(`Dispatched ${workflow_id} on ${ref} with current_tag='${current_tag}'.`)
+
       - name: Upload Source
         id: upload_source
         shell: bash -l {0}
@@ -70,8 +95,9 @@ jobs:
         include:
           - { target: linux-64, os: ubuntu-22.04 }
           - { target: linux-arm64, os: ubuntu-22.04-arm }
-          - { target: osx-64, os: macos-15-intel }
-          - { target: osx-arm64, os: macos-latest }
+          - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
           - { target: win-64, os: windows-latest }
       fail-fast: false
 
@@ -171,6 +197,9 @@ jobs:
           UPLOAD_RELEASE: "true"
           BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+          fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install

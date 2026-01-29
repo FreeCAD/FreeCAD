@@ -1447,7 +1447,7 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation>Apparence par défaut pour les nouveaux maillages</translation>
+      <translation>Apparence par défaut des nouveaux maillages</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1456,7 +1456,8 @@ If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
       <translation>La face inférieure de la surface sera rendue de la même manière que la face supérieure.
-Si cette option n'est pas cochée, le rendu dépendra de l'option "Couleur du rétroéclairage" (voir préférences Affichage → Vue 3D). La couleur du rétroéclairage sera utilisée ou ce sera noir.</translation>
+Si cette option n'est pas cochée, le rendu dépendra de l'option « Couleur du rétroéclairage » (voir les préférences Affichage → Vue 3D). La
+couleur du rétroéclairage sera utilisée ou ce sera noir.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="334"/>

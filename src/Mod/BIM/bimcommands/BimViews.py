@@ -32,7 +32,7 @@ import FreeCADGui
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 translate = FreeCAD.Qt.translate
 
-UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views window update
+UPDATEINTERVAL = 2000  # number of milliseconds between BIM Views Manager update
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 
@@ -158,7 +158,7 @@ class BIM_Views:
             width = PARAMS.GetBool("BimViewHeight", 300)
             tabs = PARAMS.GetString("BimViewTabs", "")
             vm.setObjectName("BIM Views Manager")
-            vm.setWindowTitle(translate("BIM", "BIM"))
+            vm.setWindowTitle(translate("BIM", "BIM Views Manager"))
             mw = FreeCADGui.getMainWindow()
             vm.setFloating(floating)
             vm.setGeometry(vm.x(), vm.y(), width, height)

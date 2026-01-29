@@ -447,7 +447,9 @@ void MDIViewPage::contextMenuEvent(QContextMenuEvent* event)
         menu.addAction(m_exportDXFAction);
         menu.addAction(m_exportPDFAction);
         menu.addAction(m_printAllAction);
-        if (PreferencesGui::getViewFrameMode() != ViewFrameMode::Manual) {
+        if (PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
+            m_toggleFrameAction->setEnabled(true);
+        } else {
             m_toggleFrameAction->setEnabled(false);
         }
         menu.exec(event->globalPos());

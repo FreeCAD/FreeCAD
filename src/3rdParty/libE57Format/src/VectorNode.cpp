@@ -146,7 +146,7 @@ unconstrained.
 @pre The @a destImageFile must have been opened in write mode (i.e. destImageFile.isWritable() must
 be true).
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see Node, VectorNode::allowHeteroChildren, ::ErrorHomogeneousViolation
@@ -223,7 +223,7 @@ changed.
 
 @return True if child elements can be different types.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ::ErrorHomogeneousViolation
@@ -241,7 +241,7 @@ bool VectorNode::allowHeteroChildren() const
 
 @return Number of child elements in this VectorNode.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see VectorNode::get(int64_t), VectorNode::append, StructureNode::childCount
@@ -268,8 +268,8 @@ The element names of child elements of VectorNodes are numbers, encoded as strin
 
 @return true if pathName is currently defined.
 
-@throw ::ErrorBadPathName
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see StructureNode::isDefined
@@ -290,8 +290,8 @@ bool VectorNode::isDefined( const ustring &pathName ) const
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorChildIndexOutOfBounds
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorChildIndexOutOfBounds (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see VectorNode::childCount, VectorNode::append, StructureNode::get(int64_t) const
@@ -319,9 +319,9 @@ The element names of child elements of VectorNodes are numbers, encoded as strin
 
 @return A smart Node handle referencing the child node.
 
-@throw ::ErrorBadPathName
-@throw ::ErrorPathUndefined
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorPathUndefined (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see VectorNode::childCount, VectorNode::append, StructureNode::get(int64_t) const
@@ -352,11 +352,11 @@ The VectorNode must not be a descendent of a homogeneous VectorNode with more th
 destImageFile().isWritable()).
 @post the childCount is incremented.
 
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorHomogeneousViolation
-@throw ::ErrorFileReadOnly
-@throw ::ErrorAlreadyHasParent
-@throw ::ErrorDifferentDestImageFile
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorHomogeneousViolation (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorAlreadyHasParent (n/c)
+@throw ::ErrorDifferentDestImageFile (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see VectorNode::childCount, VectorNode::get(int64_t), StructureNode::set
@@ -413,7 +413,7 @@ The handle @a n must be for an underlying VectorNode, otherwise an exception is 
 that need to avoid the exception, use Node::type() to determine the actual type of the @a n before
 downcasting. This function must be explicitly called (c++ compiler cannot insert it automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), VectorNode::operator Node()
 */
