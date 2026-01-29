@@ -533,7 +533,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         for rot_vec in (App.Vector(1, 0, 0), App.Vector(0, 1, 0)):
             cyl = Part.show(Part.makeCylinder(radius, height))
             cyl.Placement.Rotation = App.Rotation(rot_vec, 30)
-            obj = Arch.makeComponent(cyl)
+            obj = Arch.makeStructure(cyl)
             obj.recompute()
             area_actual = obj.HorizontalArea.getValueAs("m^2").Value
 
