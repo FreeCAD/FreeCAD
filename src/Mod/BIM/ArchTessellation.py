@@ -5,7 +5,6 @@
 # This file is part of the FreeCAD Arch workbench.
 # You can find the full license text in the LICENSE file in the root directory.
 
-import math
 import FreeCAD
 import Part
 from enum import Enum, auto

@@ -269,9 +269,6 @@ class TestArchCovering(TestArchBase.TestArchBase):
         slab = Arch.makeStructure(length=1000, width=1000, height=200)
         self.document.recompute()
 
-        # Create a temp covering to access the proxy logic
-        covering = Arch.makeCovering()
-
         # View looking DOWN (0,0,-1) at the top face
         # We expect the Top Face (Normal +Z) because it opposes the view vector
         face = Arch.getFaceName(slab, view_vector=App.Vector(0, 0, -1))
@@ -297,8 +294,6 @@ class TestArchCovering(TestArchBase.TestArchBase):
         cyl.Radius = 2
         cyl.Height = 10
         self.document.recompute()
-
-        covering = Arch.makeCovering()
 
         # View from side (looking at the curved face)
         face = Arch.getFaceName(cyl, view_vector=App.Vector(1, 0, 0))

@@ -1133,7 +1133,6 @@ if FreeCAD.GuiUp:
 
                 if not self.obj_to_edit:
                     # Creation mode
-                    import Arch
 
                     # Determine targets from selection
                     targets = self.selection_list
@@ -1219,7 +1218,6 @@ class _CoveringTemplate:
     """
 
     def __init__(self, name="CoveringTemplate"):
-        import Arch
 
         # Create the internal buffer object
         self.buffer = Arch.makeCovering(name=name)
