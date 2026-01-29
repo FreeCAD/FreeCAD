@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskDraftParameters_H
-#define GUI_TASKVIEW_TaskDraftParameters_H
+#pragma once
 
 #include "TaskDressUpParameters.h"
 #include "ViewProviderDraft.h"
@@ -91,5 +90,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

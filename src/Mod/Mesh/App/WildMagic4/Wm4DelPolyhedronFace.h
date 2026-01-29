@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELPOLYHEDRONFACE_H
-#define WM4DELPOLYHEDRONFACE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4ETManifoldMesh.h"
@@ -43,5 +42,3 @@ typedef DelPolyhedronFace<float> DelPolyhedronFacef;
 typedef DelPolyhedronFace<double> DelPolyhedronFaced;
 
 }
-
-#endif

@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TIMEINFO_H
-#define BASE_TIMEINFO_H
+#pragma once
 
 #include <chrono>
 #include <sstream>
@@ -131,5 +130,3 @@ public:
 };  // class TimeElapsed
 
 }  // namespace Base
-
-#endif  // BASE_TIMEINFO_H

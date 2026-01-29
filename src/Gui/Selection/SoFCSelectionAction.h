@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _SoFCSelectionAction_h
-#define _SoFCSelectionAction_h
+#pragma once
 
 #include <Inventor/SbColor.h>
 #include <Inventor/actions/SoGLRenderAction.h>
@@ -376,6 +375,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // _SoFCSelectionAction_h

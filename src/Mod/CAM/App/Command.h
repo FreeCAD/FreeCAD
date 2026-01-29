@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PATH_COMMAND_H
-#define PATH_COMMAND_H
+#pragma once
 
 #include <map>
 #include <string>
@@ -111,5 +110,3 @@ public:
 };
 
 }  // namespace Path
-
-#endif  // PATH_COMMAND_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
-#define GUI_TASKVIEW_TaskPrimitiveParameters_H
+#pragma once
 
 #include <memory>
 #include <Gui/DocumentObserver.h>
@@ -142,5 +141,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

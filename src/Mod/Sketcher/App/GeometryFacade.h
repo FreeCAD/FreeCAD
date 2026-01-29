@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GEOMETRYFACADE_H
-#define SKETCHER_GEOMETRYFACADE_H
+#pragma once
 
 #include <boost/uuid/uuid_io.hpp>
 
@@ -462,6 +461,3 @@ public:  // Factory methods
 
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_GEOMETRYFACADE_H

@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_GeoFeatureGroup_H
-#define APP_GeoFeatureGroup_H
+#pragma once
 
 #include <unordered_set>
 #include "DocumentObject.h"
@@ -159,6 +158,3 @@ using GeoFeatureGroupExtensionPython =
 
 
 }  // namespace App
-
-
-#endif  // APP_GeoFeatureGroup_H

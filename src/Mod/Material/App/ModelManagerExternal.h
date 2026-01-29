@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MODELMANAGEREXTERNAL_H
-#define MATERIAL_MODELMANAGEREXTERNAL_H
+#pragma once
 
 #include <memory>
 #include <lru/lru.hpp>
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MODELMANAGEREXTERNAL_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_STARTUPPROCESS_H
-#define GUI_STARTUPPROCESS_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <QStringList>
@@ -89,5 +88,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_STARTUPPROCESS_H

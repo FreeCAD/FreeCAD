@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMPLANE_H
-#define PARTDESIGN_DATUMPLANE_H
+#pragma once
 
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -60,6 +59,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMPLANE_H

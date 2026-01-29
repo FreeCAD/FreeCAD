@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_DECIMATION_H
-#define MESH_DECIMATION_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 
@@ -44,6 +43,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_DECIMATION_H

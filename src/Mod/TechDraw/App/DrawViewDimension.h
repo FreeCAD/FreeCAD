@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawViewDimension_h_
-#define TechDraw_DrawViewDimension_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <Base/UnitsApi.h>
@@ -286,4 +285,3 @@ private:
 };
 
 }  // namespace TechDraw
-#endif

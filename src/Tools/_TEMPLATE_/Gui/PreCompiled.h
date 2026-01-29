@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef TEMPLATE_GUI_PRECOMPILED_H
-#define TEMPLATE_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -62,5 +61,3 @@
 
 // Qt Toolkit
 #include <Gui/QtAll.h>
-
-#endif  // GUI_PRECOMPILED_H

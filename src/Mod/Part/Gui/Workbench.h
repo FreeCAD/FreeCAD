@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PART_WORKBENCH_H
-#define PART_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Part/PartGlobal.h>
@@ -53,6 +52,3 @@ protected:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PART_WORKBENCH_H

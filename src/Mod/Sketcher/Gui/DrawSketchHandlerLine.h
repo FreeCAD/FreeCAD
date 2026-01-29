@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerLine_H
-#define SKETCHERGUI_DrawSketchHandlerLine_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -889,6 +888,3 @@ void DSHLineController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerLine_H

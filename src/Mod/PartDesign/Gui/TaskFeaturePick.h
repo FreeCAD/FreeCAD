@@ -20,8 +20,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef PARTDESIGNGUI_FeaturePickDialog_H
-#define PARTDESIGNGUI_FeaturePickDialog_H
+#pragma once
 
 #include <functional>
 #include <QListWidgetItem>
@@ -152,5 +151,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // PARTDESIGNGUI_FeaturePickDialog_H

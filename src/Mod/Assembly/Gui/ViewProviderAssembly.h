@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
+#pragma once
 
 #include <QCoreApplication>
 #include <fastsignals/signal.h>
@@ -296,5 +295,3 @@ private:
 };
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H

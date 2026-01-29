@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawProjGroupItem_h_
-#define DrawProjGroupItem_h_
+#pragma once
 
 #include <gp_Ax2.hxx>
 
@@ -93,5 +92,3 @@ private:
 };
 
 } //namespace TechDraw
-
-#endif

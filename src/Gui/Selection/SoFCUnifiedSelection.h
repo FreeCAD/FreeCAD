@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCUNIFIEDSELECTION_H
-#define GUI_SOFCUNIFIEDSELECTION_H
+#pragma once
 
 #include <list>
 #include <unordered_map>
@@ -554,5 +553,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // !GUI_SOFCUNIFIEDSELECTION_H

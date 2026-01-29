@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherConstraints_H
-#define GUI_TASKVIEW_TaskSketcherConstraints_H
+#pragma once
 
 #include <QListWidget>
 
@@ -238,5 +237,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PROPERTIESDIALOG_H
-#define PROPERTIESDIALOG_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -82,5 +81,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // PROPERTIESDIALOG_H

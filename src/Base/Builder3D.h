@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BUILDER3D_H
-#define BASE_BUILDER3D_H
+#pragma once
 
 // Std. configurations
 
@@ -865,5 +864,3 @@ BaseExport Base::Vector3f stringToVector(std::string);
 BaseExport std::string vectorToString(Vector3f);
 
 }  // namespace Base
-
-#endif  // BASE_BUILDER3D_H

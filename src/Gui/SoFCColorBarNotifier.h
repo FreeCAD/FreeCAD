@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_SOFCCOLORBARNOTIFIER_H
-#define GUI_SOFCCOLORBARNOTIFIER_H
+#pragma once
 
 #include <Base/Parameter.h>
 #include <set>
@@ -52,6 +51,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCCOLORBARNOTIFIER_H

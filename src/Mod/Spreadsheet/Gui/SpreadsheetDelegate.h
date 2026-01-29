@@ -24,8 +24,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SPREADSHEETDELEGATE_H
-#define SPREADSHEETDELEGATE_H
+#pragma once
 
 #include <QStyledItemDelegate>
 
@@ -66,5 +65,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // SPREADSHEETDELEGATE_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderPipe_H
-#define PARTGUI_ViewProviderPipe_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -68,6 +67,3 @@ private:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderPipe_H

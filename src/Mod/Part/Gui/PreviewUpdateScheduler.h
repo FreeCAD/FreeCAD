@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_PREVIEWUPDATESCHEDULER_H
-#define FREECAD_PREVIEWUPDATESCHEDULER_H
+#pragma once
 
 #include "App/DocumentObserver.h"
 
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // FREECAD_PREVIEWUPDATESCHEDULER_H

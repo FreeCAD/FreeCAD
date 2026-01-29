@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKDIALOG_H
-#define GUI_TASKVIEW_TASKDIALOG_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -253,5 +252,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKDIALOG_H

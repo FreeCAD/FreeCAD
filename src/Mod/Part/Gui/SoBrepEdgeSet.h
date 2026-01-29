@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPEDGESET_H
-#define PARTGUI_SOBREPEDGESET_H
+#pragma once
 
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
@@ -95,6 +94,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_SOBREPEDGESET_H

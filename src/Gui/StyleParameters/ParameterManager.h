@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STYLEPARAMETERS_PARAMETERMANAGER_H
-#define STYLEPARAMETERS_PARAMETERMANAGER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -557,5 +556,3 @@ public:
 }  // namespace Gui::StyleParameters
 
 ENABLE_BITMASK_OPERATORS(Gui::StyleParameters::ParameterSourceOption);
-
-#endif  // STYLEPARAMETERS_PARAMETERMANAGER_H

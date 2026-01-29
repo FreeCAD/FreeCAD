@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TASKFEATUREPARAMETERS_H_NAHKE2YZ
-#define TASKFEATUREPARAMETERS_H_NAHKE2YZ
+#pragma once
 
 
 #include <type_traits>
@@ -182,6 +181,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif /* end of include guard: TASKFEATUREPARAMETERS_H_NAHKE2YZ */

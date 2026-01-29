@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASURE_TASKMEASURE_H
-#define MEASURE_TASKMEASURE_H
+#pragma once
 
 #include <qcolumnview.h>
 #include <QString>
@@ -114,5 +113,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-#endif  // MEASURE_TASKMEASURE_H

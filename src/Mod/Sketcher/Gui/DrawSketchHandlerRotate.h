@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerRotate_H
-#define SKETCHERGUI_DrawSketchHandlerRotate_H
+#pragma once
 
 #include <QApplication>
 
@@ -674,6 +673,3 @@ void DSHRotateController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerRotate_H

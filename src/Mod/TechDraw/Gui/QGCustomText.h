@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGCUSTOMTEXT_H
-#define DRAWINGGUI_QGCUSTOMTEXT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -97,5 +96,3 @@ private:
 };
 
 }
-
-#endif // DRAWINGGUI_QGCUSTOMTEXT_H

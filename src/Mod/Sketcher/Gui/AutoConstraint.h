@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_AutoConstraint_H
-#define SKETCHERGUI_AutoConstraint_H
+#pragma once
 
 #include <Mod/Sketcher/App/Constraint.h>
 
@@ -46,6 +45,3 @@ struct AutoConstraint
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_AutoConstraint_H

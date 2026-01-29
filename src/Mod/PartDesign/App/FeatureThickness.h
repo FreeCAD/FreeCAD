@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATURETHICKNESS_H
-#define PARTDESIGN_FEATURETHICKNESS_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
@@ -61,6 +60,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FEATURETHICKNESS_H

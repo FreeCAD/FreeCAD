@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditDatumDialog_H
-#define SKETCHERGUI_EditDatumDialog_H
+#pragma once
 
 #include <QObject>
 #include <memory>
@@ -74,4 +73,3 @@ private:
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_DrawSketchHandler_H

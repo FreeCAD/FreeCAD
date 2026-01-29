@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VECTOREDITWIDGET_H
-#define VECTOREDITWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QSize>
@@ -104,4 +103,3 @@ private:
 };
 
 } //namespace TechDrawGui
-#endif // VECTOREDITWIDGET_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskRevolutionParameters_H
-#define GUI_TASKVIEW_TaskRevolutionParameters_H
+#pragma once
 
 #include <Mod/PartDesign/App/FeatureRevolution.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
@@ -157,5 +156,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_COLOR_H
-#define APP_COLOR_H
+#pragma once
 
 #ifdef __GNUC__
 # include <cstdint>
@@ -322,5 +321,3 @@ private:
 
 }  // namespace Base
 // NOLINTEND(readability-magic-numbers)
-
-#endif  // APP_COLOR_H
