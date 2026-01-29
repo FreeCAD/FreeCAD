@@ -408,7 +408,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (isSubtractive()) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract")
                 );
@@ -425,79 +425,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            FCBRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed")
-                );
-            }
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoShape boolOp = this->getSolid(mkFuse.Shape());
-
-            // lets check if the result is a solid
-            if (boolOp.isNull()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
-                );
-            }
-
-            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids")
-                );
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            TopoShape boolOp;
-
-            if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                FCBRepAlgoAPI_Common mkCom(result, base.getShape());
-                if (!mkCom.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed")
-                    );
-                }
-                boolOp = this->getSolid(mkCom.Shape());
-            }
-            else {
-                FCBRepAlgoAPI_Cut mkCut(base.getShape(), result);
-                if (!mkCut.IsDone()) {
-                    return new App::DocumentObjectExecReturn(
-                        QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed")
-                    );
-                }
-                boolOp = this->getSolid(mkCut.Shape());
-            }
-
-            // lets check if the result is a solid
-            if (boolOp.isNull()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid")
-                );
-            }
-
-            if (!isSingleSolidRuleSatisfied(boolOp.getShape())) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids")
-                );
-            }
-
-            // store shape before refinement
-            this->rawShape = boolOp;
-            boolOp = refineShapeIfActive(boolOp, RefineErrorPolicy::Warn);
-            Shape.setValue(getSolid(boolOp));
-        }
-
-        return App::DocumentObject::StdReturn;
+        return FeatureAddSub::addSubOp(base.getShape(), result);
     }
     catch (Standard_Failure& e) {
 

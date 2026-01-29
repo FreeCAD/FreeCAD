@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
+ *   Copyright (C) 2023 <bgbsww@gmail.com>                                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,66 +20,60 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+#ifndef _PreComp_
+# include <QApplication>
+# include <QMessageBox>
+#endif
 
-#include <QAction>
-#include <QMenu>
-
-
-#include <Mod/PartDesign/App/FeatureHelix.h>
-#include <Gui/BitmapFactory.h>
-
+#include <App/DocumentObserver.h>
 #include <Gui/Application.h>
-#include <Mod/Sketcher/App/SketchObject.h>
+#include <Gui/CommandT.h>
+#include <Gui/MainWindow.h>
+#include <Gui/BitmapFactory.h>
+#include <Mod/PartDesign/App/Feature.h>
+#include <Mod/PartDesign/App/Body.h>
 
-#include "TaskHelixParameters.h"
-#include "ViewProviderHelix.h"
+#include "TaskAddSubParameters.h"
 
 using namespace PartDesignGui;
 
-PROPERTY_SOURCE(PartDesignGui::ViewProviderHelix, PartDesignGui::ViewProvider)
+TaskAddSubParameters::TaskAddSubParameters(
+    PartDesignGui::ViewProvider* vp,
+    QWidget* parent,
+    const std::string& pixmapname,
+    const QString& parname
+)
+    : TaskFeatureParameters(vp, parent, pixmapname, parname)
+{}
 
 
-ViewProviderHelix::ViewProviderHelix() = default;
-
-ViewProviderHelix::~ViewProviderHelix() = default;
-
-void ViewProviderHelix::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
+void TaskAddSubParameters::onOutsideChanged(bool on)
 {
-    addDefaultAction(menu, QObject::tr("Edit Helix"));
-    ViewProvider::setupContextMenu(menu, receiver, member);
+    PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
+    feature->Outside.setValue(on);
+    recomputeFeature();
 }
 
-TaskDlgFeatureParameters* ViewProviderHelix::getEditDialog()
+bool TaskAddSubParameters::enableOutside(PartDesignGui::ViewProvider* vp)
 {
-    return new TaskDlgHelixParameters(this);
+    PartDesign::FeatureAddSub* addsub = static_cast<PartDesign::FeatureAddSub*>(vp->getObject());
+    return addsub->isSubtractive();
 }
 
-QIcon ViewProviderHelix::getIcon() const
+void TaskAddSubParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    QString str = QStringLiteral("PartDesign_");
-    auto* prim = getObject<PartDesign::Helix>();
-    if (prim->isAdditive()) {
-        str += QStringLiteral("Additive");
-    }
-}
-else
-{
-    str += QStringLiteral("Subtractive");
+    Q_UNUSED(msg);
 }
 
-str += QStringLiteral("Helix.svg");
-return PartDesignGui::ViewProvider::mergeGreyableOverlayIcons(
-    Gui::BitmapFactory().pixmap(str.toStdString().c_str())
-);
-}
+//**************************************************************************
+//**************************************************************************
+// TaskDialog
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-std::vector<App::DocumentObject*> ViewProviderHelix::claimChildren() const
+TaskDlgAddSubParameters::TaskDlgAddSubParameters(PartDesignGui::ViewProvider* vp)
+    : TaskDlgFeatureParameters(vp)
 {
-    std::vector<App::DocumentObject*> temp;
-    App::DocumentObject* sketch = getObject<PartDesign::ProfileBased>()->Profile.getValue();
-    if (sketch && sketch->isDerivedFrom<Part::Part2DObject>()) {
-        temp.push_back(sketch);
-    }
-
-    return temp;
+    // assert(vp);
+    // Content.push_back ( new TaskAddSubParameters(vp2 ) );
 }

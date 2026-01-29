@@ -470,7 +470,7 @@ App::DocumentObjectExecReturn* Pipe::execute()
         }
 
         if (base.isNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive) {
+            if (isSubtractive()) {
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from")
                 );
