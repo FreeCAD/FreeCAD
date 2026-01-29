@@ -3990,9 +3990,10 @@ TopoShape& TopoShape::makeElementMirror(const TopoShape& shape, const gp_Ax2& ax
     }
     gp_Trsf mat;
     mat.SetMirror(ax2);
-    TopLoc_Location loc = shape.getShape().Location();
-    gp_Trsf placement = loc.Transformation();
-    mat = placement * mat;
+    // Note: Do NOT extract and pre-multiply the shape's Location/Placement here.
+    // BRepBuilderAPI_Transform correctly handles shapes with Location already.
+    // Pre-multiplying would double-apply the placement, causing incorrect results
+    // for shapes with non-identity Placement. See GitHub issue #20834.
     BRepBuilderAPI_Transform mkTrf(shape.getShape(), mat);
     return makeElementShape(mkTrf, shape, op);
 }
