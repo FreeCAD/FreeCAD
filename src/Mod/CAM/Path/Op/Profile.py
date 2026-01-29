@@ -30,7 +30,6 @@ import Path.Op.Area as PathAreaOp
 import Path.Op.Base as PathOp
 import PathScripts.PathUtils as PathUtils
 import math
-import numpy
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 # lazily loaded modules
@@ -453,12 +452,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             Path.Log.track("returned {} shapes".format(len(shapes)))
 
         Path.Log.track(remainingObjBaseFeatures)
-        if obj.Base and len(obj.Base) > 0 and not remainingObjBaseFeatures:
-            # Edges were already processed, or whole model targeted.
+        if obj.Base and not remainingObjBaseFeatures:
+            # edges were already processed, or whole model targeted
             Path.Log.track("remainingObjBaseFeatures is False")
-        elif (
-            remainingObjBaseFeatures and len(remainingObjBaseFeatures) > 0
-        ):  # Process remaining features after edges processed above.
+        elif remainingObjBaseFeatures:
+            # process remaining features after edges processed above
             for base, subsList in remainingObjBaseFeatures:
                 holes = []
                 faces = []
@@ -468,8 +466,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     shape = getattr(base.Shape, sub)
                     # only process faces here
                     if isinstance(shape, Part.Face):
-                        faces.append(shape)
-                        if numpy.isclose(abs(shape.normalAt(0, 0).z), 1):  # horizontal face
+                        if Path.Geom.isHorizontal(shape):  # horizontal face
+                            faces.append(shape)
                             Path.Log.debug(abs(shape.normalAt(0, 0).z))
                             for wire in shape.Wires:
                                 if wire.hashCode() == shape.OuterWire.hashCode():
@@ -583,7 +581,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         isRoughly = Path.Geom.isRoughly
         shapes = []
         basewires = []
-        ezMin = None
+        fzMin = None
         self.cutOut = self.tool.Diameter
 
         for base, subsList in obj.Base:
@@ -599,11 +597,27 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     keepFaces.append(sub)
             if len(edgelist) > 0:
                 basewires.append((base, DraftGeomUtils.findWires(edgelist)))
-                if ezMin is None or base.Shape.BoundBox.ZMin < ezMin:
-                    ezMin = base.Shape.BoundBox.ZMin
 
             if len(keepFaces) > 0:  # save faces for returning and processing
                 remainingObjBaseFeatures.append((base, keepFaces))
+
+                notHorFaces = []
+                for face in keepFaces:
+                    face = getattr(base.Shape, face)
+                    if not Path.Geom.isHorizontal(face):
+                        notHorFaces.append(face)
+                        if fzMin is None or face.BoundBox.ZMin < fzMin:
+                            fzMin = face.BoundBox.ZMin
+
+                bottomEdges = [
+                    e for f in notHorFaces for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)
+                ]
+
+                for cluster in Part.getSortedClusters(bottomEdges):
+                    wire = Part.Wire(Part.__sortEdges__(cluster))
+                    # if not wire.isClosed():
+                    edgelist.extend(cluster)
+                    basewires.append((base, [wire]))
 
         Path.Log.track(basewires)
         for base, wires in basewires:
