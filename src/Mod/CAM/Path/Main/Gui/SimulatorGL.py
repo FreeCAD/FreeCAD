@@ -242,12 +242,18 @@ class CAMSimulation:
         jCnt = len(jobList)
 
         # Check if user has selected a specific job for simulation
-        guiSelection = FreeCADGui.Selection.getSelectionEx()
-        if guiSelection:  #  Identify job selected by user
-            sel = guiSelection[0]
-            if hasattr(sel.Object, "Proxy") and isinstance(sel.Object.Proxy, PathJob.ObjectJob):
-                jobName = sel.Object.Name
-                FreeCADGui.Selection.clearSelection()
+        selection = FreeCADGui.Selection.getSelection()
+        if selection:  #  Identify job selected by user
+            sel = selection[0]
+            if hasattr(sel, "Proxy") and isinstance(sel.Proxy, PathJob.ObjectJob):
+                # Job selected
+                jobName = sel.Name
+            else:
+                for s in sel.InListRecursive:
+                    if hasattr(s, "Proxy") and isinstance(s.Proxy, PathJob.ObjectJob):
+                        # child object from Job selected
+                        jobName = s.Name
+                        break
 
         # populate the job selection combobox
         form.comboJobs.blockSignals(True)
