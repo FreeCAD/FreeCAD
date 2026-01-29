@@ -1319,9 +1319,14 @@ bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
         return false;
     }
     auto owner = freecad_cast<DocumentObject*>(getContainer());
-    std::ostringstream ss;
     const char* prefix;
-    if (owner && owner->getDocument() && owner->getDocument()->getStringHasher() == data->Hasher) {
+    // Use the same condition as getElementMapVersion() to determine expected prefix.
+    // The prefix "1." indicates both that there is an element map and that the hasher
+    // matches the document's hasher. Without checking hasElementMap() and getElementMapSize(),
+    // we could get a spurious version mismatch when a shape has no element map but its
+    // hasher was assigned from the document (common for imported geometry like KiCAD).
+    if (owner && owner->getDocument() && data->hasElementMap() && data->getElementMapSize()
+        && owner->getDocument()->getStringHasher() == data->Hasher) {
         prefix = "1.";
     }
     else {
