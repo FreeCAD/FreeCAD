@@ -461,16 +461,18 @@ public:
     /** @name Link handling */
     //@{
 
-    /** Check for link recursion depth
+    /**
+     * @brief Check for link recursion depth.
+     *
+     * The function uses an internal count of all objects in all documents as
+     * the limit of recursion depth.  If the depth exceeds this limit, it means
+     * that there is likely a cyclic reference in the links.
      *
      * @param depth: current depth
      * @param option: whether to throw exception, print an error message or quieten any output.
      * In the latter case the caller must check the returned value.
      *
      * @return Return the maximum remaining depth.
-     *
-     * The function uses an internal count of all objects in all documents as
-     * the limit of recursion depth.
      */
     int checkLinkDepth(int depth, MessageOption option = MessageOption::Error);
 
