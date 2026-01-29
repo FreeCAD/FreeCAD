@@ -111,6 +111,7 @@ Command = PathOpGui.SetupOperation(
     QT_TRANSLATE_NOOP("CAM_Helix", "Helix"),
     QT_TRANSLATE_NOOP("CAM_Helix", "Creates a Helical toolpath from the features of a base object"),
     PathHelix.SetupProperties,
+    commandClass=PathCircularHoleBaseGui.CircularHoleCommand,
 )
 
 FreeCAD.Console.PrintLog("Loading PathHelixGui... done\n")
