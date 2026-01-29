@@ -1083,6 +1083,13 @@ private:
 //***************************************
 // Linear Interpolation - area vs angle
 //***************************************
+struct InterpItem
+{
+    std::pair<double, IntPoint> angle;
+    double error;
+    bool isConventional;
+};
+
 class Interpolation
 {
 public:
@@ -1096,41 +1103,65 @@ public:
     }
     bool bothSides()
     {
-        return m_min && m_max && m_min->second < 0 && m_max->second >= 0;
+        return m_min && m_max && m_min->error < 0 && m_max->error >= 0
+            && (!m_min->isConventional || !m_max->isConventional);
     }
     // adds point keeping the incremental order of areas for interpolation to work correctly
-    void addPoint(double error, std::pair<double, IntPoint> angle, bool allowSkip = false)
+    void addPoint(double error, std::pair<double, IntPoint> angle, bool allowSkip, bool isConventional)
     {
+        const InterpItem newItem = {angle, error, isConventional};
+
         if (!m_min) {
-            m_min = {angle, error};
+            m_min = newItem;
         }
         else if (!m_max) {
-            m_max = {angle, error};
-            if (m_min->second > m_max->second) {
+            m_max = newItem;
+            if (m_min->error > m_max->error) {
                 auto tmp = m_min;
                 m_min = m_max;
                 m_max = tmp;
             }
         }
+        else if (isConventional && (m_min->isConventional ^ m_max->isConventional)) {
+            if (!allowSkip) {
+                if (m_min->isConventional) {
+                    m_min.reset();
+                }
+                else {
+                    m_max.reset();
+                }
+                addPoint(error, angle, false, isConventional);
+            }
+        }
         else if (bothSides()) {
             if (error < 0) {
-                m_min = {angle, error};
+                m_min = newItem;
             }
             else {
-                m_max = {angle, error};
+                m_max = newItem;
             }
         }
         else {
-            if (allowSkip && abs(error) > abs(m_min->second) && abs(error) > abs(m_max->second)) {
+            if (allowSkip && abs(error) > abs(m_min->error) && abs(error) > abs(m_max->error)
+                && (isConventional || !m_min->isConventional || !m_max->isConventional)) {
                 return;
             }
-            if (abs(m_min->second) > abs(m_max->second)) {
+
+            if (m_min->isConventional ^ m_max->isConventional) {
+                if (m_min->isConventional) {
+                    m_min.reset();
+                }
+                else {
+                    m_max.reset();
+                }
+            }
+            else if (abs(m_min->error) > abs(m_max->error)) {
                 m_min.reset();
             }
             else {
                 m_max.reset();
             }
-            addPoint(error, angle);
+            addPoint(error, angle, false, isConventional);
         }
     }
 
@@ -1143,7 +1174,7 @@ public:
         if (!m_max) {
             return MAX_ANGLE;
         }
-        double p = (0 - m_min->second) / (m_max->second - m_min->second);
+        double p = (0 - m_min->error) / (m_max->error - m_min->error);
 
         // Ensure search is sufficiently efficient -- this is a compromise
         // between binary search (p = 0.5, guaranteed search completion in log
@@ -1152,7 +1183,7 @@ public:
         const double minInterp = .2;
         p = max(min(p, 1 - minInterp), minInterp);
 
-        return m_min->first.first * (1 - p) + m_max->first.first * p;
+        return m_min->angle.first * (1 - p) + m_max->angle.first * p;
     }
 
     double clampAngle(double angle)
@@ -1167,8 +1198,8 @@ public:
 
 public:
     // {{angle, clipper point}, error}
-    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_min;
-    std::optional<std::pair<std::pair<double, IntPoint>, double>> m_max;
+    std::optional<InterpItem> m_min;
+    std::optional<InterpItem> m_max;
 };
 
 //***************************************
@@ -1235,22 +1266,9 @@ public:
     void moveToClosestPoint(const IntPoint& pt, double step)
     {
 
-        Path result;
-        IntPoint current = pt;
-        // chain paths according to distance in between
-        Paths toChain = toolBoundPaths;
-        toolBoundPaths.clear();
-        // if(toChain.size()>0) {
-        // 	toolBoundPaths.push_back(toChain.front());
-        // 	toChain.erase(toChain.begin());
-        // }
-        while (PopPathWithClosestPoint(toChain, current, result)) {
-            result.push_back(result[0]);
-            toolBoundPaths.push_back(result);
-            if (!result.empty()) {
-                current = result.back();
-            }
-        }
+        std::sort(toolBoundPaths.begin(), toolBoundPaths.end(), [&pt](const Path& a, const Path& b) {
+            return DistanceSqrd(pt, a[0]) < DistanceSqrd(pt, b[0]);
+        });
 
         SetState({});
         calculateCurrentPathLength();
@@ -1308,13 +1326,15 @@ public:
                 }
             }
             IntPoint cpt = getCurrentPoint();
-            double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea);
-            (*parent->fout) << "Testint point:"
+            double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea).first;
+            (*parent->fout) << "Testing point:"
                             << " cpt=(" << cpt.X << "," << cpt.Y << ")"
                             << " area=" << area << "\n";
             if (area > minCutArea && area < maxCutArea && area > prevArea) {
                 Perf_NextEngagePoint.Stop();
-                (*parent->fout) << "Done, accepted point.\n";
+                auto dir = getCurrentDir();
+                (*parent->fout) << "Done, accepted point. (" << cpt.X << "," << cpt.Y << ") dir (";
+                (*parent->fout) << dir.X << "," << dir.Y << ")" << endl;
                 return true;
             }
             prevArea = area;
@@ -1423,13 +1443,16 @@ Adaptive2d::Adaptive2d()
 // inverted
 //
 // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
+// 0.5) Rotate all geometry so the vector from c1 to c2 points up (y+)
 // 1) Find all x-coordinates of interest:
 //   a) All polygon vertices
 //   b) Intersection of all polygons with c1
 //   c) Intersection of all polygons with c2
 //   d) There are no self-intersections or intersection points with other polygons (guarantee from
-//   clipper), so we don't have to compute those e) Compute intersection points between c1 and c2 f)
-//   Add c1's and c2's vertical tangents to the list
+//   clipper), so we don't have to compute those
+//   e) Compute intersection points between c1 and c2
+//   f) //   Add c1's and c2's vertical tangents to the list
+//   g) x=c2.X
 // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r. We will consider
 // ranges of x-values between these points 3) For each non-empty range in x, construct a vertical
 // line through its midpoint
@@ -1446,21 +1469,21 @@ Adaptive2d::Adaptive2d()
 //       a) If outsideCount=0, totalArea += integral(x0, x1, crossed boundary)
 //       b) If outsideCount was 0 and just changed to 1, totalArea -= integral(x0, x1, crossed
 //       boundary)
-//         ...careful with the signs on those integrals; TODO be sure to add area from c2 and
+//         ...careful with the signs on those integrals; be sure to add area from c2 and
 //         subtract from other shapes
-// 4) Return accumulated area
-double Adaptive2d::CalcCutArea(
+//     3) if x<c2.X, additionally accumulate area in conventionalArea, for detection of conventional
+//     cutting
+// 4) Return <totalArea, conventionalArea>
+std::pair<double, double> Adaptive2d::CalcCutArea(
     Clipper& clip,
-    const IntPoint& c1,
-    const IntPoint& c2,
-    ClearedArea& clearedArea,
-    bool preventConventional
+    IntPoint c1,
+    IntPoint c2,
+    ClearedArea& clearedArea
 )
 {
-
     double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
-        return 0;
+        return {0, 0};
     }
 
     Perf_CalcCutAreaCirc.Start();
@@ -1509,6 +1532,25 @@ double Adaptive2d::CalcCutArea(
     // }
     // (*fout) << "] ";
 
+    // 0.5) Rotate all geometry so the vector from c1 to c2 points up (y+)
+    {
+        const double angle = std::numbers::pi / 2 - atan2(c2.Y - c1.Y, c2.X - c1.X);
+        const double ca = cos(angle);
+        const double sa = sin(angle);
+        c1 = {ca * c1.X - sa * c1.Y, sa * c1.X + ca * c1.Y};
+        c2 = {ca * c2.X - sa * c2.Y, sa * c2.X + ca * c2.Y};
+        vector<vector<DoublePoint>> rotatedPolygons;
+        for (vector<DoublePoint>& pgon : polygons) {
+            vector<DoublePoint> rotated;
+            for (auto& p : pgon) {
+                rotated.push_back({ca * p.X - sa * p.Y, sa * p.X + ca * p.Y});
+            }
+            rotatedPolygons.push_back(rotated);
+        }
+
+        polygons = rotatedPolygons;
+    }
+
     // 1) Find all x-coordinates of interest:
     vector<double> xs;
     for (const auto polygon : polygons) {
@@ -1553,6 +1595,9 @@ double Adaptive2d::CalcCutArea(
     xs.push_back(xmin);
     xs.push_back(xmax);
 
+    // 1.g) x=c2.X
+    xs.push_back(c2.X);
+
     // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r
     {
         vector<double> xfilter;
@@ -1574,6 +1619,7 @@ double Adaptive2d::CalcCutArea(
     // 3) For each non-empty range in x, construct a vertical line through its midpoint
     const vector<DoublePoint> circles = {c2, c1};
     double area = 0;
+    double conventionalArea = 0;
     for (int ix = 0; ix < xs.size() - 1; ix++) {
         const double x0 = xs[ix];
         const double x1 = xs[ix + 1];
@@ -1653,6 +1699,9 @@ double Adaptive2d::CalcCutArea(
                     const auto y1 = interpX(p0, p1, x1);
                     const double newArea = (y0 + y1) / 2 * (x1 - x0);
                     area += entranceExitSign * newArea;
+                    if (xtest < c2.X) {
+                        conventionalArea += entranceExitSign * newArea;
+                    }
                     //(*fout) << "Pgon[eeSign=" << entranceExitSign
                     //	<< " x0=(" << x0 << " x1=" << x1 << ")"
                     //	<< " p0=(" << p0.X << "," << p0.Y << ")"
@@ -1696,6 +1745,9 @@ double Adaptive2d::CalcCutArea(
                     const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
                     const double newArea = circleSign * areaSegment + areaTrapezoid;
                     area += entranceExitSign * newArea;
+                    if (xtest < c2.X) {
+                        conventionalArea += entranceExitSign * newArea;
+                    }
                     //(*fout) << "Circle[eeSign=" << entranceExitSign
                     //	<< " x0=(" << x0 << " x1=" << x1 << ")"
                     //	<< " c=(" << c.X << "," << c.Y << ")"
@@ -1712,9 +1764,9 @@ double Adaptive2d::CalcCutArea(
     }
 
     Perf_CalcCutAreaCirc.Stop();
-    (*fout) << "Area=" << area << endl;
+    (*fout) << "Area=" << area << " CA=" << conventionalArea << endl;
 
-    return area;
+    return {area, conventionalArea};
 }
 
 void Adaptive2d::ApplyStockToLeave(Paths& inputPaths)
@@ -2332,7 +2384,7 @@ bool Adaptive2d::IsAllowedToCutTrough(
                 long(p1.X + double(p2.X - p1.X) * p),
                 long(p1.Y + double(p2.Y - p1.Y) * p)
             );
-            double area = CalcCutArea(clip, toolPos1, toolPos2, cleared, false);
+            double area = CalcCutArea(clip, toolPos1, toolPos2, cleared).first;
             // if we are cutting above optimal -> not clear to cut
             if (area > areaFactor * stepSize * optimalCutAreaPD) {
                 Perf_IsAllowedToCutTrough.Stop();
@@ -2944,14 +2996,31 @@ void Adaptive2d::ProcessPolyNode(
     bool firstEngagePoint = true;
     Paths engageBounds = {};
 
-    const auto addEngageBounds = [&](Paths openPaths) {
+    const auto addEngageBounds = [&](Path openPath) {
+        // add end point before treating it as an open path
+        if (openPath.size()) {
+            openPath.push_back(openPath[0]);
+        }
+
+        // operate on positively oriented paths, so clipper doesn't change the orientation
+        // we will flip the orientation back later
+        const int initialOrientation = Orientation(openPath);
+        if (!initialOrientation) {
+            ReversePath(openPath);
+        }
+
         // Intersect with the tool bounds
         PolyTree result;
         clip.Clear();
-        clip.AddPaths(openPaths, PolyType::ptSubject, false);
+        clip.AddPath(openPath, PolyType::ptSubject, false);
         clip.AddPaths(toolBoundPaths, PolyType::ptClip, true);
         clip.Execute(ClipType::ctIntersection, result);
+        Paths openPaths;
         OpenPathsFromPolyTree(result, openPaths);
+
+        for (Path& p : openPaths) {
+            cout << "orientation after TB intersect " << Orientation(p) << endl;
+        }
 
         // Also subtract the cleared tool locations
         Paths clearedLocations;
@@ -2965,17 +3034,24 @@ void Adaptive2d::ProcessPolyNode(
         clip.Execute(ClipType::ctDifference, result);
         OpenPathsFromPolyTree(result, openPaths);
 
+        for (Path& p : openPaths) {
+            cout << "orientation after cleared intersect " << Orientation(p) << endl;
+        }
 
+        cout << "Adding " << openPaths.size() << " paths" << endl;
         for (auto& path : openPaths) {
+            if (!initialOrientation) {
+                ReversePath(path);
+            }
+            cout << "restored orientation " << Orientation(path) << endl;
+
             engageBounds.push_back(path);
         }
     };
 
     for (Path& tbp : toolBoundPaths) {
-        // close the path, and add to engageBounds
-        Path copy = tbp;
-        copy.push_back(copy[0]);
-        addEngageBounds({copy});
+        cout << "toolBounds orientation" << Orientation(tbp) << endl;
+        addEngageBounds(tbp);
     }
 
     // Initialize cleared area from previously cleared paths
@@ -3047,19 +3123,19 @@ void Adaptive2d::ProcessPolyNode(
         clipof.AddPaths(engagePaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(engagePaths, (flip ? -1 : 1) * (engagementProtrusion + engageBuffer));
 
-        // reverse output paths that bound holes
+        // ensure correct orientation
         for (Path& p : engagePaths) {
-            if (getPathNestingLevel(p, engagePaths) % 2 == 0) {
+            cout << "pre-reverse orientation " << Orientation(p) << " nesting "
+                 << (getPathNestingLevel(p, engagePaths) % 2 == 0) << " flip " << flip << endl;
+            if ((getPathNestingLevel(p, engagePaths) % 2 != 0) ^ Orientation(p) ^ flip) {
                 ReversePath(p);
+                cout << "  reversed orientation" << Orientation(p) << endl;
             }
         }
 
-        // Convert to an open path representation of a closed path, then add it
         for (auto& ep : engagePaths) {
-            // close the path, before telling clipper to treat it as open
-            ep.push_back(ep[0]);
+            addEngageBounds(ep);
         }
-        addEngageBounds(engagePaths);
     };
     // FIXME TODO HELP I just realized when PopClosest whatever rotates the open paths in
     // nextEngage, I always close the path, but that is incorrect. Yuck :P
@@ -3096,7 +3172,7 @@ void Adaptive2d::ProcessPolyNode(
             cleared,
             engageMoveDistance,
             ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
-            4 * referenceCutArea * stepOverFactor
+            4 * optimalCutAreaPD * MIN_STEP_CLIPPER
         )) {
         plungeEntry = true;
         toolPos = engage.getCurrentPoint();
@@ -3175,6 +3251,7 @@ void Adaptive2d::ProcessPolyNode(
         if (stopProcessing) {
             break;
         }
+        fout << "start point in bounds? " << IsPointWithinCutRegion(toolBoundPaths, toolPos) << endl;
 
         passToolPath.clear();
         toClearPath.clear();
@@ -3222,6 +3299,7 @@ void Adaptive2d::ProcessPolyNode(
             double distanceToBoundary = sqrt(
                 DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
             );
+            const IntPoint boundaryClosestPoint = clp;
             DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
             double distBoundaryPointToEngage = sqrt(DistanceSqrd(clp, engagePoint));
 
@@ -3258,6 +3336,8 @@ void Adaptive2d::ProcessPolyNode(
             double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
             fout << "optimal area " << optimalCutAreaPD << " maxError " << maxError << "\n";
             double area = 0;
+            bool isConventional = false;
+            const double conventionalCutoff = 0.51;  // allow some room for rounding, but otherwise < 50%
             double areaPD = 0;
             interp.clear();
             /******************************/
@@ -3281,9 +3361,10 @@ void Adaptive2d::ProcessPolyNode(
                 else if (iteration == 2) {
                     if (interp.bothSides()) {
                         angle = interp.interpolateAngle();
-                        fout << "(" << interp.m_min->first.first << ", " << interp.m_min->second
-                             << ") ~ (" << interp.m_max->first.first << ", " << interp.m_max->second
-                             << ") ";
+                        fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error
+                             << "," << interp.m_min->isConventional << ") ~ ("
+                             << interp.m_max->angle.first << ", " << interp.m_max->error << ","
+                             << interp.m_max->isConventional << ") ";
                         pointNotInterp = false;
                         fout << "case interp ";
                     }
@@ -3295,8 +3376,9 @@ void Adaptive2d::ProcessPolyNode(
                 }
                 else {
                     angle = interp.interpolateAngle();
-                    fout << "(" << interp.m_min->first.first << ", " << interp.m_min->second
-                         << ") ~ (" << interp.m_max->first.first << ", " << interp.m_max->second
+                    fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error << ","
+                         << interp.m_min->isConventional << ") ~ (" << interp.m_max->angle.first
+                         << ", " << interp.m_max->error << "," << interp.m_max->isConventional
                          << ") ";
                     pointNotInterp = false;
                     fout << "case interp ";
@@ -3314,19 +3396,21 @@ void Adaptive2d::ProcessPolyNode(
 
                 // Skip iteration if this IntPoint has already been processed
                 bool intRepeat = false;
-                if (interp.m_min && newToolPos == interp.m_min->first.second) {
-                    interp.m_min = {{angle, newToolPos}, interp.m_min->second};
+                if (interp.m_min && newToolPos == interp.m_min->angle.second) {
+                    interp.m_min
+                        = {{angle, newToolPos}, interp.m_min->error, interp.m_min->isConventional};
                     intRepeat = true;
                 }
-                if (interp.m_max && newToolPos == interp.m_max->first.second) {
-                    interp.m_max = {{angle, newToolPos}, interp.m_max->second};
+                if (interp.m_max && newToolPos == interp.m_max->angle.second) {
+                    interp.m_max
+                        = {{angle, newToolPos}, interp.m_max->error, interp.m_max->isConventional};
                     intRepeat = true;
                 }
 
                 if (intRepeat) {
                     if (interp.m_min && interp.m_max
-                        && abs(interp.m_min->first.second.X - interp.m_max->first.second.X) <= 1
-                        && abs(interp.m_min->first.second.Y - interp.m_max->first.second.Y) <= 1) {
+                        && abs(interp.m_min->angle.second.X - interp.m_max->angle.second.X) <= 1
+                        && abs(interp.m_min->angle.second.Y - interp.m_max->angle.second.Y) <= 1) {
                         if (pointNotInterp) {
                             // if this happens while testing min/max of the range it doesn't mean
                             // anything; only exit early if interpolation is down to adjacent
@@ -3336,15 +3420,31 @@ void Adaptive2d::ProcessPolyNode(
                         fout << "hit integer floor" << "\n";
                         // exit early, selecting the better of the two adjacent integers
                         double error;
-                        if (abs(interp.m_min->second) < abs(interp.m_max->second)) {
-                            newToolDir = rotate(toolDir, interp.m_min->first.first);
-                            newToolPos = interp.m_min->first.second;
-                            error = interp.m_min->second;
+                        if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
+                            if (!interp.m_min->isConventional) {
+                                newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                                newToolPos = interp.m_min->angle.second;
+                                error = interp.m_min->error;
+                                isConventional = interp.m_min->isConventional;
+                            }
+                            else {
+                                newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                                newToolPos = interp.m_max->angle.second;
+                                error = interp.m_max->error;
+                                isConventional = interp.m_max->isConventional;
+                            }
+                        }
+                        else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
+                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                            newToolPos = interp.m_min->angle.second;
+                            error = interp.m_min->error;
+                            isConventional = interp.m_min->isConventional;
                         }
                         else {
-                            newToolDir = rotate(toolDir, interp.m_max->first.first);
-                            newToolPos = interp.m_max->first.second;
-                            error = interp.m_max->second;
+                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                            newToolPos = interp.m_max->angle.second;
+                            error = interp.m_max->error;
+                            isConventional = interp.m_max->isConventional;
                         }
                         areaPD = error + targetAreaPD;
                         area = areaPD * double(stepScaled);
@@ -3354,17 +3454,19 @@ void Adaptive2d::ProcessPolyNode(
                     continue;
                 }
 
-                area = CalcCutArea(clip, toolPos, newToolPos, cleared);
+                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+                area = std::get<0>(caRet);
+                double conventionalArea = std::get<1>(caRet);
+                double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
+                isConventional = fractionConventional >= conventionalCutoff;
 
                 areaPD = area / double(stepScaled);  // area per distance
                 fout << "addPoint " << areaPD << " " << angle << " ";
                 double error = areaPD - targetAreaPD;
-                interp.addPoint(error, {angle, newToolPos}, pointNotInterp);
-                fout << "areaPD " << areaPD << " error " << error << " ";
-                // cout << " iter:" << iteration << " angle:" << angle << " area:" << areaPD
-                //      << " target:" << targetAreaPD << " error:" << error << " max:" << maxError
-                //      << endl;
-                if (fabs(error) < maxError) {
+                interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
+                fout << "areaPD " << areaPD << " error " << error << " conventional? "
+                     << isConventional << " ";
+                if (fabs(error) < maxError && !isConventional) {
                     angleHistory.push_back(angle);
                     if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
                         angleHistory.erase(angleHistory.begin());
@@ -3402,7 +3504,15 @@ void Adaptive2d::ProcessPolyNode(
                     cosAngle = -cosAngle;
                 }
                 double angle = acos(min(1., max(0., cosAngle)));
-                if (abs(angle) > maxAngleToBoundary) {
+                if (abs(angle) > maxAngleToBoundary
+                    && false /*TODO FIXME I THINK I JUST WANT TO DELETE BOUNDARY APPROACH*/) {
+                    fout << "\tRewrote tooldir/toolpos for boundary approach"
+                         << " old toolPos (" << toolPos.X << "," << toolPos.Y << ") "
+                         << " attempted newToolPos (" << newToolPos.X << "," << newToolPos.Y << ") "
+                         << " attempted newToolDir (" << newToolDir.X << "," << newToolDir.Y << ") "
+                         << " boundary pos (" << boundaryClosestPoint.X << ","
+                         << boundaryClosestPoint.Y << ") "
+                         << " boundaryDir (" << boundaryDir.X << "," << boundaryDir.Y << ") ";
                     double sign = bdir.X * newToolDir.Y - bdir.Y * newToolDir.X > 0 ? 1 : -1;
                     double desiredAngle = maxAngleToBoundary * sign;
                     newToolDir = rotate(bdir, desiredAngle);
@@ -3412,9 +3522,9 @@ void Adaptive2d::ProcessPolyNode(
                         long(toolPos.Y + newToolDir.Y * stepScaled)
                     );
                     recalcArea = true;
-                    fout << "\tRewrote tooldir/toolpos for boundary approach"
-                         << " a=" << angle << " maxA=" << maxAngleToBoundary << " (" << newToolPos.X
-                         << ", " << newToolPos.Y << ")" << "\n";
+                    fout << " angle=" << angle << " maxAngle=" << maxAngleToBoundary
+                         << " corrected tool pos (" << newToolPos.X << ", " << newToolPos.Y << ")"
+                         << "\n";
                 }
                 else {
                     fout << "\tRewrote tooldir/toolpos for boundary approach BUT NOT ACTUALLY \n";
@@ -3425,11 +3535,24 @@ void Adaptive2d::ProcessPolyNode(
             // CHECK AND RECORD NEW TOOL POS
             //**********************************************
             long rotateStep = 0;
+            double rotateIncrement;
+            {
+                double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
+                double toolAngle = atan2(newToolDir.Y, newToolDir.X);
+                double delta = boundaryAngle - toolAngle;
+                if (delta > std::numbers::pi) {
+                    delta -= 2 * std::numbers::pi;
+                }
+                if (delta < -std::numbers::pi) {
+                    delta += 2 * std::numbers::pi;
+                }
+                rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
+            }
             while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
                 rotateStep++;
                 // if new tool pos. outside boundary rotate until back in
                 recalcArea = true;
-                newToolDir = rotate(newToolDir, std::numbers::pi / 90);
+                newToolDir = rotate(newToolDir, rotateIncrement);
                 newToolPos = IntPoint(
                     long(toolPos.X + newToolDir.X * stepScaled),
                     long(toolPos.Y + newToolDir.Y * stepScaled)
@@ -3446,8 +3569,17 @@ void Adaptive2d::ProcessPolyNode(
             }
 
             if (recalcArea) {
-                area = CalcCutArea(clip, toolPos, newToolPos, cleared);
-                fout << "\tRecalc area: " << area << "\n";
+                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+                area = std::get<0>(caRet);
+                areaPD = area / double(stepScaled);  // area per distance
+                double error = areaPD - targetAreaPD;
+
+                double conventionalArea = std::get<1>(caRet);
+                double fractionConventional = area == 0 ? 0 : conventionalArea / area;
+                isConventional = fractionConventional >= conventionalCutoff;
+
+                fout << "\tRecalc area: " << area << "areaPD " << areaPD << " error " << error
+                     << " conventional? " << isConventional << "\n";
             }
 
             // safety condition
@@ -3466,8 +3598,9 @@ void Adaptive2d::ProcessPolyNode(
                 toClearPath.clear();
             }
 
-            if (area > 0) {  // cut is ok - record it
-                fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y << ")\n";
+            if (area > 0 && !isConventional) {  // cut is ok - record it
+                fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y
+                     << ") dir (" << newToolDir.X << "," << newToolDir.Y << ")\n";
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
@@ -3555,12 +3688,17 @@ void Adaptive2d::ProcessPolyNode(
         }
 
         {
+            // TODO FIXME HELP write helper method initToolDir that tries out a bunch of directions
+            // and picks a vaguely-valid looking tool direction. Say, increments of 45 degrees, pick
+            // something with valid CA and cut area as close as possible to target Invoke this
+            // method every time we reset the tool direction for a new engage (i.e. always except
+            // from helixing down)
             if (!engage.nextEngagePoint(
                     this,
                     cleared,
                     engageMoveDistance,
                     ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
-                    4 * referenceCutArea * stepOverFactor
+                    4 * optimalCutAreaPD * MIN_STEP_CLIPPER
                 )) {
                 // check if there are any uncleared area left
                 Paths remaining;
@@ -3588,7 +3726,7 @@ void Adaptive2d::ProcessPolyNode(
                 // try to find new engage point along the remaining
                 clipof.Clear();
                 clipof.AddPaths(remaining, JoinType::jtRound, EndType::etClosedPolygon);
-                clipof.Execute(remaining, toolRadiusScaled - 0.5 * stepOverScaled);
+                clipof.Execute(remaining, toolRadiusScaled - engagementProtrusion);
 
                 ReversePaths(remaining);
                 for (Path& p : remaining) {
@@ -3602,7 +3740,7 @@ void Adaptive2d::ProcessPolyNode(
                         cleared,
                         engageMoveDistance,
                         ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
-                        4 * referenceCutArea * stepOverFactor
+                        4 * optimalCutAreaPD * MIN_STEP_CLIPPER
                     )) {
                     break;
                 }

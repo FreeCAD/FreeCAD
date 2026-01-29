@@ -153,12 +153,11 @@ private:
         IntPoint& toolPos,
         DoublePoint& toolDir
     );
-    double CalcCutArea(
+    std::pair<double, double> CalcCutArea(
         Clipper& clip,
-        const IntPoint& toolPos,
-        const IntPoint& newToolPos,
-        ClearedArea& clearedArea,
-        bool preventConventionalMode = true
+        IntPoint toolPos,
+        IntPoint newToolPos,
+        ClearedArea& clearedArea
     );
     void AppendToolPath(
         TPaths& progressPaths,
@@ -254,7 +253,7 @@ private:
     // many-times divisible by 2, so I have chosen 16*3 (>38) for its new value.
 
     const double MIN_STEP_CLIPPER = 16.0 * 3;
-    const int MAX_ITERATIONS = 10;
+    const int MAX_ITERATIONS = 30;
     const double AREA_ERROR_FACTOR = 0.05;     /* how precise to match the cut area to optimal,
                                                   reasonable value: 0.05 = 5%*/
     const size_t ANGLE_HISTORY_POINTS = 3;     // used for angle prediction
