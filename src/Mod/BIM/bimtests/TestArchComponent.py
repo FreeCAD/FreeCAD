@@ -523,9 +523,9 @@ class TestArchComponent(TestArchBase.TestArchBase):
         radius = 100  # in mm
         height = 50000  # in mm
 
-        # To calculate to horizontal area, the shape can be reduces to a
-        # rectangular face through the center of the cylinder and two
-        # semi-circular faces for the top and bottom.
+        # To calculate the horizontal area, the shape to be projected can be
+        # reduced to a rectangular face through the center of the cylinder
+        # and two semi-circular faces for the top and bottom.
         area_rect = 2 * radius * height * cos(radians(90 - angle))
         area_circ = pi * radius**2 * cos(radians(angle))
         area_expected = (area_rect + area_circ) / 1e6  # in m^2
@@ -533,7 +533,7 @@ class TestArchComponent(TestArchBase.TestArchBase):
         for rot_vec in (App.Vector(1, 0, 0), App.Vector(0, 1, 0)):
             cyl = Part.show(Part.makeCylinder(radius, height))
             cyl.Placement.Rotation = App.Rotation(rot_vec, 30)
-            obj = Arch.makeStructure(cyl)
+            obj = Arch.makeComponent(cyl)
             obj.recompute()
             area_actual = obj.HorizontalArea.getValueAs("m^2").Value
 
