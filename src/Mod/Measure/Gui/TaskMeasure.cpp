@@ -348,6 +348,7 @@ void TaskMeasure::tryUpdate()
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
+    _mMeasureObject->purgeTouched();
 }
 
 
