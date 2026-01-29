@@ -3349,7 +3349,8 @@ public:
             throw Base::RuntimeError("Owner document not saved");
         }
 
-        QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
+        QFileInfo docFileInfo{QString::fromUtf8(docPath)};
+        QDir docDir(docFileInfo.canonicalPath());
         if (!absolute) {
             path = QDir::cleanPath(docDir.absoluteFilePath(path));
             if (fullPath) {
