@@ -208,6 +208,22 @@ This feature may slightly increase recomputation time.</string>
         </property>
        </widget>
       </item>
+      <item row="8" column="0">
+       <widget class="Gui::PrefCheckBox" name="prefEnableAsyncRecompute">
+        <property name="toolTip">
+         <string>This experimental feature allows more responsive GUI while recomputing features.</string>
+        </property>
+        <property name="text">
+         <string>Enables async document recomputation</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>EnableAsyncRecompute</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Document</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
