@@ -35,6 +35,7 @@
 #include <vector>
 #include <unordered_map>
 #include <unordered_set>
+#include <optional>
 
 #include <boost/bimap.hpp>
 #include <boost/graph/adjacency_list.hpp>
@@ -94,6 +95,11 @@ struct DocumentP
     int iUndoMode {0};
     unsigned int UndoMemSize {0};
     unsigned int UndoMaxStackSize {20};
+    unsigned int TransactionLock {0};
+    // Id and name that the next transaction will take
+    // as soon as there is a change to the document
+    int bookedTransaction { 0 }; 
+
     std::string programVersion;
     mutable HasherMap hashers;
     std::multimap<const App::DocumentObject*, std::unique_ptr<App::DocumentObjectExecReturn>>

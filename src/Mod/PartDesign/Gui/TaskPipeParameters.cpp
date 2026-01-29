@@ -549,7 +549,7 @@ bool TaskPipeParameters::accept()
             throw Base::RuntimeError(getObject()->getStatusString());
         }
         Gui::cmdGuiDocument(pipe, "resetEdit()");
-        Gui::Command::commitCommand();
+        pipe->getDocument()->commitTransaction();
 
         // we need to add the copied features to the body after the command action, as otherwise
         // FreeCAD crashes unexplainably
@@ -558,6 +558,7 @@ bool TaskPipeParameters::accept()
         }
     }
     catch (const Base::Exception& e) {
+        pipe->getDocument()->abortTransaction();
         QMessageBox::warning(this, tr("Input error"), QApplication::translate("Exception", e.what()));
         return false;
     }

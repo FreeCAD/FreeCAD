@@ -238,7 +238,7 @@ public:
             int currentgeoid = getHighestCurveIndex();
 
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc of Parabola"));
 
                 // Add arc of parabola
                 Gui::cmdAppObjectArgs(
@@ -265,14 +265,14 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP("Notifications", "Cannot create arc of parabola")
                 );
-                Gui::Command::abortCommand();
+                abortCommand();
 
                 tryAutoRecomputeIfNotSolve(sketchgui->getObject<Sketcher::SketchObject>());
 
                 return false;
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
 
             // add auto constraints for the focus point
             if (!sugConstr1.empty()) {

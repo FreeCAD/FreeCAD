@@ -171,20 +171,19 @@ void CmdSketcherSwitchVirtualSpace::activated(int iMsg)
 
         int successful = SubNames.size();
         // go through the selected subelements
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
-             ++it) {
+        for (const std::string& subName : SubNames) {
             // only handle constraints
-            if (it->size() > 10 && it->substr(0, 10) == "Constraint") {
-                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(*it);
-                Gui::Command::openCommand(
-                    QT_TRANSLATE_NOOP("Command", "Update constraint's virtual space")
-                );
+            if (subName.size() > 10 && subName.substr(0, 10) == "Constraint") {
+                int ConstrId = Sketcher::PropertyConstraintList::getIndexFromConstraintName(subName);
                 try {
                     Gui::cmdAppObjectArgs(Obj, "toggleVirtualSpace(%d)", ConstrId);
                 }
                 catch (const Base::Exception&) {
                     successful--;
                 }
+            }
+            else {
+                successful--;  // Not a failure, but not applicable
             }
         }
 

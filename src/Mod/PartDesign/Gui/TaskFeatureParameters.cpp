@@ -212,10 +212,10 @@ bool TaskDlgFeatureParameters::accept()
         }
 
         Gui::cmdGuiDocument(feature, "resetEdit()");
-        Gui::Command::commitCommand();
+        feature->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
-
+        feature->getDocument()->abortTransaction();
         QString errorText = QString::fromUtf8(e.what());
         QString statusText = QString::fromUtf8(getObject()->getStatusString());
 
@@ -261,7 +261,7 @@ bool TaskDlgFeatureParameters::reject()
     }
 
     // roll back the done things which may delete the feature
-    Gui::Command::abortCommand();
+    document->abortTransaction();
 
     // if abort command deleted the object make the previous feature visible again
     if (weakptr.expired()) {
@@ -282,6 +282,28 @@ bool TaskDlgFeatureParameters::reject()
     Gui::cmdGuiDocument(document, "resetEdit()");
 
     return true;
+}
+void TaskDlgFeatureParameters::activate()
+{
+    std::vector<QWidget*> subwidgets = getDialogContent();
+    for (auto it : subwidgets) {
+        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
+        if (param) {
+            param->attachSelection();
+        }
+    }
+}
+void TaskDlgFeatureParameters::deactivate()
+{
+    // detach the task panel from the selection to avoid to invoke
+    // eventually onAddSelection when the selection changes
+    std::vector<QWidget*> subwidgets = getDialogContent();
+    for (auto it : subwidgets) {
+        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
+        if (param) {
+            param->detachSelection();
+        }
+    }
 }
 
 #include "moc_TaskFeatureParameters.cpp"

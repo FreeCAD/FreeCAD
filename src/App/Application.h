@@ -36,10 +36,12 @@
 #include <set>
 #include <map>
 #include <string>
+#include <optional>
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
 #include <Base/ProgressIndicator.h>
+#include "TransactionDefs.h"
 
 // forward declarations
 using PyObject = struct _object;
@@ -185,27 +187,41 @@ public:
     bool isClosingAll() const;
     //@}
 
-    /** @name Application-wide trandaction setting */
+    /** @name Transaction setting */
     //@{
-    /** Setup a pending application-wide active transaction
+    /** Setup a pending active transaction
      *
      * @param name: new transaction name
-     * @param persist: by default, if the calling code is inside any invocation
-     * of a command, it will be auto closed once all command within the current
-     * stack exists. To disable auto closing, set persist=true
      *
      * @return The new transaction ID.
      *
-     * Call this function to setup an application-wide transaction. All current
-     * pending transactions of opening documents will be committed first.
-     * However, no new transaction is created by this call. Any subsequent
+     * Call this function to setup a transaction in the currently active document
+     * if no document is active, a global transaction is created. If the current 
+     * active document already has a transaction setup it will either commit the
+     * current transaction or rename it, depending on the tmpName flag of the 
+     * currently setup transaction. No new transaction is created by this call. Any subsequent
      * changes in any current opening document will auto create a transaction
      * with the given name and ID. If more than one document is changed, the
      * transactions will share the same ID, and will be undo/redo together.
      */
-    int setActiveTransaction(const char *name, bool persist=false);
-    /// Return the current active transaction name and ID
-    const char *getActiveTransaction(int *tid=nullptr) const;
+
+     int setActiveTransaction(TransactionName name);
+
+    /// Return the current global transaction name and ID if such a global transaction is
+    /// setup (uncommon)
+    std::string getActiveTransaction(int *tid=nullptr) const;
+
+    int openGlobalTransaction(TransactionName name);
+    int getGlobalTransaction() const;
+
+    bool transactionIsActive(int tid) const;
+    std::string getTransactionName(int tid) const;
+    bool transactionTmpName(int tid) const;
+    Document* transactionInitiator(int tid) const;
+    std::optional<TransactionDescription> transactionDescription(int tid) const;
+    void setTransactionDescription(int tid, const TransactionDescription& desc);
+    void setTransactionName(int tid, const TransactionName& name);
+
     /** Commit/abort current active transactions
      *
      * @param abort: whether to abort or commit the transactions
@@ -214,8 +230,15 @@ public:
      * if 1) any new transaction is created with a different ID, or 2) any
      * transaction with the current active transaction ID is either committed or
      * aborted
+     * returns true if it succeeded in closing the transaction
      */
-    void closeActiveTransaction(bool abort=false, int id=0);
+    bool closeActiveTransaction(TransactionCloseMode mode = TransactionCloseMode::Commit, int id=0);
+
+    /// Internally call closeActiveTransaction(), but it makes the call site clearer
+    bool commitTransaction(int tid);
+    bool abortTransaction(int tid);
+
+
     //@}
 
     // NOLINTBEGIN
@@ -674,10 +697,16 @@ private:
 
     friend class AutoTransaction;
 
-    std::string _activeTransactionName;
-    int _activeTransactionID{0};
-    int _activeTransactionGuard{0};
-    bool _activeTransactionTmpName{false};
+    std::map<int, TransactionDescription> _activeTransactionDescriptions; // Maps transaction ID to transaction name
+    
+    int currentlyClosingID {0};
+
+    // This is the transaction ID for a global transaction
+    // Documents will take this ID if it is non-zero
+    // and generate their own otherwise
+    int _globalTransactionID { 0 };
+    bool _globalTransactionTmpName {false};
+    std::string _globalTransactionName;
 
     Base::ProgressIndicator _progressIndicator;
 

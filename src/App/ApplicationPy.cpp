@@ -237,9 +237,7 @@ PyMethodDef Application::Methods[] = {
      METH_VARARGS,
      "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
      "name: the transaction name\n"
-     "persist(False): by default, if the calling code is inside any invocation of a command, it\n"
-     "                will be auto closed once all commands within the current stack exists. To\n"
-     "                disable auto closing, set persist=True\n"
+     "persist(False): This parameter has no effect and is kept for compatibility reasonss"
      "Returns the transaction ID for the active transaction. An application-wide\n"
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
@@ -1128,14 +1126,14 @@ PyObject* Application::sGetDependentObjects(PyObject* /*self*/, PyObject* args)
 PyObject* Application::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
 {
     char* name;
-    PyObject* persist = Py_False;
+    PyObject* persist = Py_False; // Not used
     if (!PyArg_ParseTuple(args, "s|O!", &name, &PyBool_Type, &persist)) {
         return nullptr;
     }
 
     PY_TRY
     {
-        Py::Long ret(GetApplication().setActiveTransaction(name, Base::asBoolean(persist)));
+        Py::Long ret(GetApplication().setActiveTransaction(TransactionName {.name=name, .temporary=false}));
         return Py::new_reference_to(ret);
     }
     PY_CATCH;
@@ -1150,8 +1148,8 @@ PyObject* Application::sGetActiveTransaction(PyObject* /*self*/, PyObject* args)
     PY_TRY
     {
         int id = 0;
-        const char* name = GetApplication().getActiveTransaction(&id);
-        if (!name || id <= 0) {
+        std::string name = GetApplication().getActiveTransaction(&id);
+        if (name.empty() || id <= 0) {
             Py_Return;
         }
         Py::Tuple ret(2);
@@ -1172,7 +1170,10 @@ PyObject* Application::sCloseActiveTransaction(PyObject* /*self*/, PyObject* arg
 
     PY_TRY
     {
-        GetApplication().closeActiveTransaction(Base::asBoolean(abort), id);
+        TransactionCloseMode mode = Base::asBoolean(abort)
+            ? TransactionCloseMode::Abort
+            : TransactionCloseMode::Commit;
+        GetApplication().closeActiveTransaction(mode, id);
         Py_Return;
     }
     PY_CATCH;

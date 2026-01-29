@@ -25,6 +25,7 @@
 #include <QMessageBox>
 
 
+#include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Control.h>
