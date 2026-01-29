@@ -26,6 +26,8 @@ import FreeCAD
 import Path
 import math
 
+from Path.Base.MachineState import MachineState
+
 from FreeCAD import Vector
 
 # lazily loaded modules
@@ -761,3 +763,45 @@ def combineHorizontalFaces(faces):
             horizontal = outer
 
     return horizontal
+
+
+def filterArcs(cmds, deflection=None):
+    """Replace G2/G3 commands with curvature less than 'deflection' by G1 moves."""
+    if not deflection:
+        prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
+        deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
+
+    machine = MachineState()
+
+    for i in range(len(cmds)):
+        if cmds[i].Name in Path.Geom.CmdMoveArc:
+            p3 = None
+            position = machine.getPosition()
+            try:
+                edge = Path.Geom.edgeForCmd(cmds[i], position)
+            except Exception:
+                # error can be related with precision, so use G1
+                edge = None
+                p3 = position
+                p3.x = cmds[i].x if cmds[i].x is not None else p3.x
+                p3.y = cmds[i].y if cmds[i].y is not None else p3.y
+                p3.z = cmds[i].z if cmds[i].z is not None else p3.z
+
+            if edge and not edge.isClosed():
+                firstParameter, lastParameter = edge.FirstParameter, edge.LastParameter
+                p1 = edge.valueAt(firstParameter)
+                p2 = edge.valueAt((firstParameter + lastParameter) / 2)
+                p3 = edge.valueAt(lastParameter)
+                d = p2.distanceToPoint(p1 + (p3 - p1) / 2)
+                if d > deflection:
+                    p3 = None
+
+            if p3:
+                params = {"X": p3.x, "Y": p3.y, "Z": p3.z}
+                if cmds[i].F:
+                    params.update({"F": cmds[i].F})
+                cmds[i] = Path.Command("G1", params)
+
+        machine.addCommand(cmds[i])
+
+    return cmds
