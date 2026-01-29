@@ -59,7 +59,7 @@ class BIM_TDPage:
             templatedir = None
         filename, _ = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Select page template"),
+            translate("BIM", "Select Page Template"),
             templatedir,
             "SVG file (*.svg)",
         )

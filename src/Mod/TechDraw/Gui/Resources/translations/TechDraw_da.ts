@@ -9213,7 +9213,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
-      <translation>Affasning</translation>
+      <translation>Skitse</translation>
     </message>
   </context>
   <context>

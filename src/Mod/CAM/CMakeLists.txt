@@ -585,6 +585,7 @@ SET(Tests_SRCS
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+    CAMTests/TestToolBitRecomputeState.py
 )
 
 SET(Tests_Fixtures

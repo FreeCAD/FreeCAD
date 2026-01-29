@@ -148,7 +148,9 @@ def setStatusIcons(show=True):
                 togglemenu.triggered.connect(toggleSaveSettings)
                 togglebutton.setIcon(QtGui.QIcon(":/icons/BIM_TogglePanels.svg"))
                 togglebutton.setText("")
-                togglebutton.setToolTip(translate("BIM", "Toggle report panels on/off (Ctrl+0)"))
+                togglebutton.setToolTip(
+                    translate("BIM", "Toggles the bottom dock panels on/off (Ctrl+0)")
+                )
                 togglebutton.setCheckable(True)
                 rv = mw.findChild(QtGui.QWidget, "Python console")
                 if rv and rv.isVisible():
@@ -166,7 +168,7 @@ def setStatusIcons(show=True):
 
                 bimviewsbutton.setText("")
                 bimviewsbutton.setToolTip(
-                    translate("BIM", "Toggle BIM views panel on/off (Ctrl+9)")
+                    translate("BIM", "Toggles the BIM Views Manager on/off (Ctrl+9)")
                 )
                 bimviewsbutton.setCheckable(True)
                 if BimViews.findWidget():
@@ -182,7 +184,7 @@ def setStatusIcons(show=True):
                 bgbutton.setIcon(QtGui.QIcon(":/icons/BIM_Background.svg"))
                 bgbutton.setText("")
                 bgbutton.setToolTip(
-                    translate("BIM", "Toggle 3D view background between simple and gradient")
+                    translate("BIM", "Toggles the 3D View background between simple and gradient")
                 )
                 statuswidget.bgbutton = bgbutton
                 bgbutton.triggered.connect(toggleBackground)

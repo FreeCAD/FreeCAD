@@ -807,7 +807,7 @@ SLOPE define la agudeza de la transición entre 0 y H1 y H2 a 0 sobre el tiempo 
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="20"/>
       <source>Search parts…</source>
-      <translation type="unfinished">Search parts…</translation>
+      <translation>Buscar partes…</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyInsertLink.ui" line="39"/>

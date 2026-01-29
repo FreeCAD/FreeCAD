@@ -9218,7 +9218,7 @@ there is an open task dialog.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>Draft</source>
-      <translation>Βύθισμα</translation>
+      <translation>Προσχέδιο</translation>
     </message>
   </context>
   <context>

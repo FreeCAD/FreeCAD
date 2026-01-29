@@ -71,6 +71,7 @@ public:
      * Update all of the components and joints from the Assembly
      */
     void updateContents();
+    void updateParentJoints();
 
     void synchronizeComponents();
     void synchronizeJoints();

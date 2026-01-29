@@ -4414,7 +4414,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="251"/>
       <source>Shaft design wizard...</source>
-      <translation>Entwurfsassistent für Wellen ...</translation>
+      <translation>Entwurfsassistent für Wellen...</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="254"/>
@@ -4476,9 +4476,9 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>Ergebnis hat mehrere Festkörper: aktiviere 'Verbund erlauben' im aktiven Körper.</translation>
     </message>
@@ -4503,12 +4503,12 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <translation>Eine Vertiefung mit einer Gesamtlänge von null kann nicht erstellt werden.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>Es wurde keine Extrusionsgeometrie erstellt.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>Die resultierende vereinigte Extrusion ist null.</translation>
     </message>
@@ -4516,7 +4516,7 @@ unter 90: kleinerer Bohrungsradius an der Unterseite
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>Die resultierende Form ist kein Festkörper</translation>
     </message>
@@ -4840,7 +4840,7 @@ Beim Erstellen von Taschen bis zu einer Fläche sind nur einzelne Flächen in de
       <translation>Ausformung: Fehler beim Erstellen des Hüllkörpers</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Konnte keine Fläche aus der Skizze erstellen.
@@ -5080,7 +5080,7 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Referenzachse ist ungültig</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Vereinigung mit Basis-Formelement ist fehlgeschlagen</translation>
     </message>
@@ -5095,17 +5095,17 @@ Skizzenobjekte dürfen einander nicht schneiden und auch mehrfache Flächen sind
       <translation>Es sind keine Originale mit dem transformierten Formelement verknüpft.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>Ungültige Stützform kann nicht transformiert werden</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>Die Form des hinzufügenden/abziehenden Formelements ist leer</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Es können nur hinzufügende und abziehende Formelemente transformiert werden</translation>
     </message>

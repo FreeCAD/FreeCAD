@@ -4475,9 +4475,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="780"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="793"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4502,12 +4502,12 @@ over 90: larger hole radius at the bottom</source>
       <translation>无法创建总长度为零的口袋。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="695"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>未生成任何拉伸几何体。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="719"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
@@ -4515,7 +4515,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="755"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4839,7 +4839,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：创建外壳失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="808"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>无法从草图立建面。
@@ -5079,7 +5079,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>参考坐标轴无效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="747"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>与基本特征联合失败</translation>
     </message>
@@ -5094,17 +5094,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>没有与变换特征链接的原始特征。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>无法变换无效的支持形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>添加/减料的特性形状为空</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>只能变换增料和减料特征</translation>
     </message>
