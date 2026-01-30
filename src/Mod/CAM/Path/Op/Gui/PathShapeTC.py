@@ -32,7 +32,6 @@ import PathScripts.PathUtils as PathUtils
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import math
-import pprint
 
 __title__ = "CAM Path from Shape with Tool Controller"
 __author__ = "tarman3"
@@ -229,7 +228,7 @@ class ObjectPathShape:
             "App::PropertyBool",
             "SafetyFinish",
             "Path",
-            QT_TRANSLATE_NOOP("App::Property", "Add move to clearance depth in the end"),
+            QT_TRANSLATE_NOOP("App::Property", "Add move to Clearanc Height Out in the end"),
         )
         obj.addProperty(
             "App::PropertyEnumeration",
@@ -244,6 +243,12 @@ class ObjectPathShape:
             QT_TRANSLATE_NOOP(
                 "App::Property", "Choose how to process multiple Base Geometry features"
             ),
+        )
+        obj.addProperty(
+            "App::PropertyString",
+            "PathParams",
+            "Path",
+            QT_TRANSLATE_NOOP("App::Property", "Parameters of Path.fromShapes(**params)"),
         )
 
         # Sorting properties group
@@ -342,7 +347,16 @@ class ObjectPathShape:
             "Depth",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "Retraction\n" "\nTool retraction absolute coordinate along retraction axis",
+                "Retraction\n\nTool retraction absolute coordinate along retraction axis",
+            ),
+        )
+        obj.addProperty(
+            "App::PropertyDistance",
+            "ClearanceHeightOut",
+            "Depth",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Clearance height in the end",
             ),
         )
         obj.addProperty(
@@ -438,6 +452,7 @@ class ObjectPathShape:
         obj.HandleMultipleFeatures = "Individually"
         obj.NearestK = 3
         obj.OffsetJoin = ("arcs", "tangent", "intersection")
+        obj.OffsetOpenResult = True
         obj.OffsetType = ("makeOffset2D", "offsetWire")
         obj.OffsetType = "offsetWire"
         obj.Orientation = ("Normal", "Reversed")
@@ -454,6 +469,7 @@ class ObjectPathShape:
     def setEditorMode(self, obj):
         obj.setEditorMode("CycleTime", 1)  # read-only
         # obj.setEditorMode("ToolController", 2)  # hidden
+        obj.setEditorMode("PathParams", 2)  # hidden
 
         startPointMode = 0 if obj.EnableStartPoint else 2
         offsetMode = 0 if obj.EnableOffset else 2
@@ -502,36 +518,37 @@ class ObjectPathShape:
             obj.Path = Path.Path()
             return
 
-        shapes = [source.Shape for source in obj.Sources]
+        wires = [w for s in obj.Sources for w in s.Shape.Wires]
 
-        offset = 0
+        offsetVal = 0
         if obj.EnableOffset:
-            offset = obj.OffsetExtra.Value
+            offsetVal = obj.OffsetExtra.Value
             if obj.UseComp:
-                offset += obj.ToolController.Tool.Diameter.Value / 2
+                offsetVal += obj.ToolController.Tool.Diameter.Value / 2
             if obj.OffsetInvertSide:
-                offset = -offset
+                offsetVal = -offsetVal
 
-        if offset:
+        if offsetVal:
             join = obj.getEnumerationsOfProperty("OffsetJoin").index(obj.OffsetJoin)
             openResult = obj.OffsetOpenResult
             job = PathUtils.findParentJob(obj)
             base = job.Model.Group[0].Shape
             offsets = []
+            for wire in wires:
+                if obj.OffsetType == "makeOffset2D":
+                    offset = wire.makeOffset2D(offsetVal, join=join, openResult=openResult)
+                else:
+                    offset = PathOpUtil.offsetWire(wire, base, offsetVal, forward=True)
+                offsets.append(offset)
 
-            for shape in shapes:
-                for wire in shape.Wires:
-                    if obj.OffsetType == "makeOffset2D":
-                        offset = wire.makeOffset2D(offset, join=join, openResult=openResult)
-                    else:
-                        offset = PathOpUtil.offsetWire(wire, base, offset, forward=True)
-                    offsets.append(offset)
+            wires = offsets
 
-            shapes = offsets
+        if obj.HandleMultipleFeatures == "Collectively" and len(wires) > 1:
+            shapes = [Part.makeCompound(wires)]
+        else:
+            shapes = wires
 
-        if obj.HandleMultipleFeatures == "Collectively":
-            shapes = [Part.makeCompound(shapes)]
-
+        print("shapes", shapes)
         params = {}
         if obj.EnableStartPoint:
             params["start"] = obj.StartPoint
@@ -555,7 +572,7 @@ class ObjectPathShape:
         params["preamble"] = obj.EmitPreamble
         params["deflection"] = obj.Deflection
 
-        pprint.pprint(params)
+        obj.PathParams = str({key: value for key, value in params.items()})
 
         commands = []
         for shape in shapes:
@@ -576,8 +593,8 @@ class ObjectPathShape:
             else:
                 commands.extend(path.Commands)
 
-            if obj.SafetyFinish:
-                commands.append(Path.Command("G00", {obj.RetractAxis: obj.ClearanceHeight.Value}))
+        if obj.SafetyFinish:
+            commands.append(Path.Command("G00", {obj.RetractAxis: obj.ClearanceHeightOut.Value}))
 
         obj.Path = Path.Path(commands)
 
@@ -733,18 +750,17 @@ Returns a Path object from a list of shapes
 
             if not skipRetract:
                 # add safety moves to start point before next step down
-                if rAxis == "Z":
+                if rAxis == "X":
                     commands.append(Path.Command("G00", {"Z": startPoint.z}))
                     commands.append(Path.Command("G00", {"X": startPoint.x}))
                     commands.append(Path.Command("G00", {"Y": startPoint.y}))
-                elif rAxis == "X":
-                    commands.append(Path.Command("G00", {"Z": startPoint.z}))
-                    commands.append(Path.Command("G00", {"X": startPoint.x}))
-                    commands.append(Path.Command("G00", {"Y": startPoint.y}))
-                else:
+                elif rAxis == "Y":
                     commands.append(Path.Command("G00", {"Z": startPoint.z}))
                     commands.append(Path.Command("G00", {"Y": startPoint.y}))
                     commands.append(Path.Command("G00", {"X": startPoint.x}))
+                elif rAxis == "Z":
+                    commands.append(Path.Command("G00", {"Z": startPoint.z}))
+                    commands.append(Path.Command("G00", {"X": startPoint.x, "Y": startPoint.y}))
 
             currentPath = pathReversed if changeDir else path
 
@@ -812,6 +828,7 @@ Returns a Path object from a list of shapes
             bbStock = job.Stock.Shape.BoundBox
             zmax = bbStock.ZMax
             obj.ClearanceHeight = zmax + 30
+            obj.setExpression("ClearanceHeightOut", "ClearanceHeight")
             obj.SafeHeight = zmax + 10
             obj.StartDepth = zmax + 1
 
@@ -858,8 +875,8 @@ class ObjectPartShape:
             else:
                 edges = [shape.getElement(name) for name in subNames if name.startswith("Edge")]
 
-            for sortedEdges in Part.sortEdges(edges):
-                wires.append(Part.Wire(sortedEdges))
+            ws = [Part.Wire(se) for se in Part.sortEdges(edges)]
+            wires.extend(ws)
 
         obj.Shape = Part.makeCompound(wires)
 
