@@ -1467,6 +1467,12 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    TopoDS_Shape shape = getRenderedShape().getShape();
+
+    if (lastRenderedShape.IsPartner(shape)) {
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -1483,10 +1489,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     try {
-        TopoDS_Shape cShape = getRenderedShape().getShape();
-
         setupCoinGeometry(
-            cShape,
+            shape,
             coords,
             faceset,
             norm,
@@ -1496,6 +1500,8 @@ void ViewProviderPartExt::updateVisual()
             AngularDeflection.getValue(),
             NormalsFromUV
         );
+
+        lastRenderedShape = shape;
 
         VisualTouched = false;
     }

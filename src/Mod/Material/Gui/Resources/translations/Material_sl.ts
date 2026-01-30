@@ -78,7 +78,7 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation>Potrdi brisanje</translation>
+      <translation>Potrdite izbris</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
@@ -221,7 +221,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Podoblika / Vrsta</translation>
+      <translation>Pod oblika / Vrsta</translation>
     </message>
     <message>
       <location filename="../../DlgInspectAppearance.ui" line="81"/>
@@ -304,7 +304,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="74"/>
       <source>Sub.Shape / Type</source>
-      <translation>Podoblika / Vrsta</translation>
+      <translation>Pod oblika / Vrsta</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.ui" line="81"/>
@@ -421,7 +421,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="329"/>
       <source>Model UUID: </source>
-      <translation>Oblikovančeva obča edinstvena oznaka (UUID): </translation>
+      <translation>Model UUID: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="333"/>
@@ -511,7 +511,7 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation>Tudi izkaznice snovi, ki so v izbrani mapi, bodo navedene kot rapoložljive</translation>
+      <translation>Tudi izkaznice snovi, ki so v izbrani mapi, bodo navedene kot razpoložljive</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
@@ -538,7 +538,7 @@
       <source>Material cards appear sorted by their resources (locations).
 If unchecked, they will be sorted by their name.</source>
       <translation>Izkaznice snovi so razvrščene glede na vir (mesto).
-Če je odznačeno, se razvrstijo po imenu.</translation>
+Če je ne označeno, se razvrstijo po imenu.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="183"/>
@@ -566,7 +566,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../DlgSettingsMaterial.ui" line="240"/>
       <location filename="../../DlgSettingsMaterial.ui" line="323"/>
       <source>Show empty libraries</source>
-      <translation>Pokaž prazne knjižnice</translation>
+      <translation>Pokaži prazne knjižnice</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="256"/>
@@ -784,7 +784,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation>Nadrejenik</translation>
+      <translation>Nadrejeni</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -819,7 +819,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
       <source>Adds or removes to/from favorites</source>
-      <translation>Doda oz. odstrani iz priljubljenih</translation>
+      <translation>Doda oziroma odstrani iz priljubljenih</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="205"/>
@@ -884,7 +884,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="608"/>
       <source>This file is in the old material card format.</source>
-      <translation>Ta datotaka je v zastarelem zapisu snovne izkaznice.</translation>
+      <translation>Ta datoteka je v zastarelem zapisu snovne izkaznice.</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="694"/>
@@ -973,7 +973,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
       <source>DOI</source>
-      <translation type="unfinished">DOI</translation>
+      <translation>DOI</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="87"/>
@@ -983,7 +983,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../ModelSelect.ui" line="159"/>
       <source>Adds or removes to/from favorites</source>
-      <translation>Doda oz. odstrani iz priljubljenih</translation>
+      <translation>Doda oziroma odstrani iz priljubljenih</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="162"/>
@@ -1041,7 +1041,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="14"/>
       <source>Material Editor</source>
-      <translation type="unfinished">Material Editor</translation>
+      <translation>Urejevalnik snovi</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
@@ -1051,7 +1051,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
       <source>Opens the Product URL of this material in an external browser</source>
-      <translation type="unfinished">Opens the Product URL of this material in an external browser</translation>
+      <translation>Odpre URL izdelka tega materiala v zunanjem brskalniku</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="56"/>
@@ -1076,12 +1076,12 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
       <source>Material Parameter</source>
-      <translation>Določilka snovi</translation>
+      <translation>Materialni parameter</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation>Dodaj/odstrani določilko</translation>
+      <translation>Dodaj/odstrani Parameter</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -1150,7 +1150,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1345"/>
       <source>Unsaved Material</source>
-      <translation>Neshranjena snov</translation>
+      <translation>Ne shranjena snov</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1346"/>
@@ -1167,7 +1167,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
-      <translation>Potrdi brisanje</translation>
+      <translation>Potrdite izbris</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
@@ -1227,7 +1227,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="27"/>
       <source>Select material libraries to migrate. Existing materials will not be overwritten.</source>
-      <translation>Izberite knjižnice snovi, ki jih želite preseliti. Obstečih snovi se ne bo povozilo.</translation>
+      <translation>Izberite knjižnice snovi, ki jih želite preseliti. Obstoječih snovi se ne bo povozilo.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="20"/>
@@ -1242,7 +1242,7 @@ If unchecked, they will be sorted by their name.</source>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="41"/>
       <source>Select model libraries to migrate. Existing models will not be overwritten.</source>
-      <translation>Izberite knjižnice modelov, ki jih želite preseliti. Obstečih modelov se ne bo povozilo.</translation>
+      <translation>Izberite knjižnice modelov, ki jih želite preseliti. Obstoječih modelov se ne bo povozilo.</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.ui" line="48"/>
@@ -1341,7 +1341,7 @@ If unchecked, they will be sorted by their name.</source>
       <location filename="../../TaskMigrateExternal.cpp" line="145"/>
       <location filename="../../TaskMigrateExternal.cpp" line="148"/>
       <source>Unknown exception - aborted</source>
-      <translation>Neznana izjema - prekinjeno</translation>
+      <translation>Neznana izjema – prekinjeno</translation>
     </message>
     <message>
       <location filename="../../TaskMigrateExternal.cpp" line="125"/>

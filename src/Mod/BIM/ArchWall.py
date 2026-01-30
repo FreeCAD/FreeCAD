@@ -649,8 +649,7 @@ class _Wall(ArchComponent.Component):
                                             offset += obj.BlockLength.Value + obj.Joint.Value
                                         offset -= edge.Length
 
-                            if isinstance(bplates, list):
-                                bplates = bplates[0]
+                            base_face = base_faces[0]
                             if obj.BlockHeight.Value:
                                 fsize = obj.BlockHeight.Value + obj.Joint.Value
                                 bh = obj.BlockHeight.Value
@@ -662,15 +661,15 @@ class _Wall(ArchComponent.Component):
                             svec = FreeCAD.Vector(n)
                             svec.multiply(fsize)
                             if cuts1:
-                                plate1 = bplates.cut(cuts1).Faces
+                                faces1 = base_face.cut(cuts1).Faces
                             else:
-                                plate1 = bplates.Faces
-                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
+                                faces1 = base_face.Faces
+                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
                             if cuts2:
-                                plate2 = bplates.cut(cuts2).Faces
+                                faces2 = base_face.cut(cuts2).Faces
                             else:
-                                plate2 = bplates.Faces
-                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
+                                faces2 = base_face.Faces
+                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
                             interval = extv.Length / (fsize)
                             entire = int(interval)
                             rest = interval - entire
@@ -689,9 +688,9 @@ class _Wall(ArchComponent.Component):
                                 rvec = FreeCAD.Vector(n)
                                 rvec.multiply(rest)
                                 if entire % 2:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate2])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces2])
                                 else:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate1])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces1])
                                 t = FreeCAD.Vector(svec)
                                 t.multiply(entire)
                                 b.translate(t)

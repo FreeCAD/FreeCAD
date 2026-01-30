@@ -441,7 +441,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="90"/>
       <source>Notes</source>
-      <translation type="unfinished">Notes</translation>
+      <translation>Note</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="107"/>
@@ -2316,7 +2316,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="26"/>
       <source>Default width</source>
-      <translation type="unfinished">Default width</translation>
+      <translation>Larghezza predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="33"/>
@@ -2330,7 +2330,7 @@ If the width is set to 0 the dressup will try to guess a reasonable value based 
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="42"/>
       <source>Default height</source>
-      <translation type="unfinished">Default height</translation>
+      <translation>Altezza predefinita</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="49"/>
@@ -2344,7 +2344,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="58"/>
       <source>Default angle</source>
-      <translation type="unfinished">Default angle</translation>
+      <translation>Angolo predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="65"/>
@@ -2354,7 +2354,7 @@ If the specified height is 0 the dressup will use half the height of the part. S
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="87"/>
       <source>Default radius</source>
-      <translation type="unfinished">Default radius</translation>
+      <translation>Raggio predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathDressupHoldingTags.ui" line="112"/>
@@ -2388,7 +2388,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="70"/>
       <source>Start at vertex</source>
-      <translation type="unfinished">Start at vertex</translation>
+      <translation>Inizia dal vertice</translation>
     </message>
     <message>
       <location filename="../panels/PageOpEngraveEdit.ui" line="77"/>
@@ -2552,7 +2552,7 @@ Vedi la politica di salvataggio del file qui sotto su come gestire i conflitti d
     <message>
       <location filename="../preferences/PathJob.ui" line="154"/>
       <source>Default path</source>
-      <translation type="unfinished">Default path</translation>
+      <translation>Percorso predefinito</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="207"/>
@@ -3479,7 +3479,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="1022"/>
       <source>Order by</source>
-      <translation type="unfinished">Order by</translation>
+      <translation>Ordina per</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1184"/>
@@ -6855,47 +6855,47 @@ Interruzione creazione op</translation>
       <translation>Tutti i File (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1399"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
       <source>Unsupported stock object %s</source>
       <translation>Tipo di oggetto grezzo non supportato %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1415"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1417"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Tipo di oggetto grezzo non supportato %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1506"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1508"/>
       <source>Model Selection</source>
       <translation>Selezione Modello</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
       <translation>Attenzione</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1662"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>Please add one.</source>
       <translation>Per favore, aggiungerne una.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
       <translation>Ok</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Add</source>
       <translation>Aggiungi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1676"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
       <source>This job has no base model.</source>
       <translation>Questa lavorazione non ha un modello di base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
       <source>This job has no tool.</source>
       <translation>Questa lavorazione non ha utensili.</translation>
     </message>
@@ -9188,6 +9188,7 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
       <translation type="unfinished">Cutting edge angle</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
@@ -9350,7 +9351,7 @@ Questo non eliminerà gli utensili contenuti al suo interno.</translation>
       <translation>Raggio di taglio</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation>Raggio fresatura</translation>
     </message>

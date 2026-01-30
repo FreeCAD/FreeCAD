@@ -120,12 +120,12 @@ public:
      long,                                                                                         \
      App::PropertyEnumeration,                                                                     \
      ((long)0),                                                                                    \
-     "Disabled: disable copy on change\n"                                                          \
-     "Enabled: enable copy linked object on change of any of its properties marked as "            \
-     "CopyOnChange\n"                                                                              \
-     "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"   \
-     "       the link will try to sync any change of the original linked object back to the "      \
-     "copy.",                                                                                      \
+     "Disabled: turns off copy-on-change\n"                                                        \
+     "Enabled: copies the linked object when any property marked CopyOnChange changes\n"           \
+     "Owned: the linked object has been copied and is owned by the link; changes to the original\n"\
+     "       will be synced back to the copy\n"                                                    \
+     "Tracking: copies the linked object when any property marked CopyOnChange changes, and keeps\n"\
+     "       future edits to the link in sync with the original",                                  \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...)                                                      \
@@ -133,7 +133,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "The copy on change source object",                                                           \
+     "The copy-on-change source object",                                                           \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_GROUP(...)                                                       \
@@ -141,7 +141,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "Linked to a internal group object for holding on change copies",                             \
+     "Linked to an internal group object for holding on change copies",                             \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...)                                                     \
@@ -341,6 +341,17 @@ public:
     const char* flattenSubname(const char* subname) const;
     void expandSubname(std::string& subname) const;
 
+    /**
+     * @brief Get the object the link points to.
+     *
+     * This method returns the linked object of this link. The @p depth
+     * parameter is used as an indication of how deep the recursion is as a
+     * safeguard against infinite recursion caused by cyclic dependencies.
+     *
+     * @param[in] depth The level on which we are resolving the link.
+     *
+     * @return Returns the linked object or @c nullptr if there is no linked value.
+     */
     DocumentObject* getLink(int depth = 0) const;
 
     Base::Matrix4D getTransform(bool transform) const;
@@ -403,6 +414,33 @@ public:
                  const char* subname = nullptr,
                  const std::vector<std::string>& subs = std::vector<std::string>());
 
+    /**
+     * @brief Get the true linked object.
+     *
+     * This method returns the true linked object, which is the object that the
+     * link points to.  The @p depth parameter is used as an indication of the
+     * current level of recursion is as a safeguard against infinite recursion
+     * caused by cyclic dependencies.
+     *
+     * @param recurse If true, it will recursively resolve the link until it reaches
+     * the final linked object, or until it reaches the maximum recursion depth.
+     *
+     * @param mat If non-null, it is used as the current transformation matrix on
+     * input. On output it is used as the accumulated transformation up until
+     * the final linked object.
+     *
+     * @param depth This parameter indicates the level on which we are
+     * resolving the link.
+     *
+     * @param noElement If true, it will not return the linked object if it is
+     * a link to an element.
+     *
+     * @return Returns the true linked object. If the linked object is not found
+     * or is invalid, it returns @c nullptr.
+     *
+     * @sa DocumentObject::getLinkedObject() which may return itself if it is not a link.
+     *
+     */
     DocumentObject* getTrueLinkedObject(bool recurse,
                                         Base::Matrix4D* mat = nullptr,
                                         int depth = 0,

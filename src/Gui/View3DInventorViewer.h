@@ -249,6 +249,7 @@ public:
     ViewProvider* getEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
+    SoNode* getEditingRoot() const;
     void setupEditingRoot(SoNode* node = nullptr, const Base::Matrix4D* mat = nullptr);
     void resetEditingRoot(bool updateLinks = true);
     void setEditingTransform(const Base::Matrix4D& mat);

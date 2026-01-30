@@ -3306,12 +3306,12 @@ Décocher pour utiliser le système de coordonnées du plan de travail.</transla
       <translation>Termine l'opération de dessin ou de l'édition en cours</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>Éditer des objets</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>Éléments de la surface liée</translation>
     </message>
@@ -3505,17 +3505,17 @@ préférence « Créer des primitives de Part si possible » est activée.</tran
       <translation>Groupement automatique :</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>Faces</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>Supprimer</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
@@ -4240,7 +4240,7 @@ The final angle will be the base angle plus this amount.</source>
       <location filename="../../draftguitools/gui_rotate.py" line="205"/>
       <location filename="../../draftguitools/gui_rotate.py" line="324"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="217"/>

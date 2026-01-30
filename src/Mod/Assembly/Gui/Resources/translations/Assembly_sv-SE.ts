@@ -48,7 +48,7 @@
       <translation>Ihopsättning</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
@@ -890,63 +890,63 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektet är kopplat till en eller flera fogar.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vill du flytta objektet och ta bort tillhörande fogar?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
       <source>Move part</source>
       <translation>Flytta del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
       <source>Empty Assembly</source>
       <translation>Tomt montage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
       <source>Over-constrained:</source>
       <translation>Överbelastad:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Malformed joints:</source>
       <translation>Felformade fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
       <source>Redundant joints:</source>
       <translation>Redundanta fogar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
       <source>Partially redundant:</source>
       <translation>Delvis överflödig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
       <source>Solver failed to converge</source>
       <translation>Lösaren lyckades inte konvergera</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
       <source>Under-constrained:</source>
       <translation>Underbegränsad:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Grader av frihet</numerusform>
@@ -954,7 +954,7 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
       <source>Fully constrained</source>
       <translation>Fullständigt begränsad</translation>
     </message>
@@ -1472,12 +1472,12 @@ Filerna heter "runPreDrag.asmt" och "dragging.log" och finns i standardkatalogen
       <translation>Infoga komponent</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="218"/>
+      <location filename="../../../CommandInsertLink.py" line="219"/>
       <source>Partially loaded</source>
       <translation>Delvis inläst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="572"/>
+      <location filename="../../../CommandInsertLink.py" line="573"/>
       <source>Fully load document</source>
       <translation>Fullständigt inläst dokument</translation>
     </message>
