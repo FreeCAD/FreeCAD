@@ -21,6 +21,7 @@ set(MeshPartGui_LIBS
 set(MeshPartGui_UIC_SRCS
     CrossSections.ui
     TaskCurveOnMesh.ui
+    TaskPatchOnMesh.ui
     Tessellation.ui
 )
 
@@ -40,11 +41,16 @@ SET(MeshPartGui_SRCS
     CrossSections.h
     CurveOnMesh.cpp
     CurveOnMesh.h
+    PatchOnMesh.cpp
+    PatchOnMesh.h
     Resources/MeshPart.qrc
     PreCompiled.h
     TaskCurveOnMesh.ui
     TaskCurveOnMesh.cpp
     TaskCurveOnMesh.h
+    TaskPatchOnMesh.ui
+    TaskPatchOnMesh.cpp
+    TaskPatchOnMesh.h
     Tessellation.ui
     Tessellation.cpp
     Tessellation.h

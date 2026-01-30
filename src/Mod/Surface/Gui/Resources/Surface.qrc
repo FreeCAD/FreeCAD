@@ -3,6 +3,7 @@
         <file>icons/Surface_BezierSurface.svg</file>
         <file>icons/Surface_BSplineSurface.svg</file>
         <file>icons/Surface_CurveOnMesh.svg</file>
+        <file>icons/Surface_PatchOnMesh.svg</file>
         <file>icons/Surface_Cut.svg</file>
         <file>icons/Surface_BlendCurve.svg</file>
         <file>icons/Surface_ExtendFace.svg</file>

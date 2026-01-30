@@ -41,6 +41,7 @@
 
 #include "CrossSections.h"
 #include "TaskCurveOnMesh.h"
+#include "TaskPatchOnMesh.h"
 #include "Tessellation.h"
 
 
@@ -341,6 +342,47 @@ bool CmdMeshPartCurveOnMesh::isActive()
     return doc && doc->countObjectsOfType<Mesh::Feature>() > 0;
 }
 
+DEF_STD_CMD_A(CmdMeshPartPatchOnMesh)
+
+CmdMeshPartPatchOnMesh::CmdMeshPartPatchOnMesh()
+    : Command("MeshPart_PatchOnMesh")
+{
+    sAppModule = "MeshPart";
+    sGroup = QT_TR_NOOP("Mesh");
+    sMenuText = QT_TR_NOOP("Grid of curves on mesh...");
+    sToolTipText = QT_TR_NOOP(
+        "Creates an approximated grid of curves on top of a mesh.\n"
+        "This command only works with a 'mesh' object."
+    );
+    sWhatsThis = "MeshPart_PatchOnMesh";
+    sStatusTip = sToolTipText;
+    sPixmap = "MeshPart_PatchOnMesh";
+}
+
+void CmdMeshPartPatchOnMesh::activated(int)
+{
+    Gui::Document* doc = getActiveGuiDocument();
+    std::list<Gui::MDIView*> mdis = doc->getMDIViewsOfType(Gui::View3DInventor::getClassTypeId());
+    if (mdis.empty()) {
+        return;
+    }
+
+    Gui::Control().showDialog(
+        new MeshPartGui::TaskPatchOnMesh(static_cast<Gui::View3DInventor*>(mdis.front()))
+    );
+}
+
+bool CmdMeshPartPatchOnMesh::isActive()
+{
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+
+    // Check for the selected mesh feature (all Mesh types)
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    return doc && doc->countObjectsOfType<Mesh::Feature>() > 0;
+}
+
 
 void CreateMeshPartCommands()
 {
@@ -350,4 +392,5 @@ void CreateMeshPartCommands()
     rcCmdMgr.addCommand(new CmdMeshPartSection());
     rcCmdMgr.addCommand(new CmdMeshPartCrossSections());
     rcCmdMgr.addCommand(new CmdMeshPartCurveOnMesh());
+    rcCmdMgr.addCommand(new CmdMeshPartPatchOnMesh());
 }

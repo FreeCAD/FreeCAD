@@ -26,6 +26,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
+#include "FeaturePatch.h"
 
 
 namespace MeshPart
@@ -44,7 +45,11 @@ PyMOD_INIT_FUNC(MeshPart)
         PyErr_SetString(PyExc_ImportError, e.what());
         PyMOD_Return(nullptr);
     }
+
     PyObject* mod = MeshPart::initModule();
-    Base::Console().log("Loading MeshPart module… done\n");
+
+    MeshPart::Patch::init();
+
+    Base::Console().log("Loading MeshPart module... done\n");
     PyMOD_Return(mod);
 }

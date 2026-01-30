@@ -208,6 +208,42 @@ bool CmdSurfaceCurveOnMesh::isActive()
     return doc && doc->countObjectsOfType("Mesh::Feature") > 0;
 }
 
+DEF_STD_CMD_A(CmdSurfacePatchOnMesh)
+
+CmdSurfacePatchOnMesh::CmdSurfacePatchOnMesh()
+    : Command("Surface_PatchOnMesh")
+{
+    sAppModule = "MeshPart";
+    sGroup = QT_TR_NOOP("Surface");
+    sMenuText = QT_TR_NOOP("Grid of Curves on Mesh");
+    sToolTipText = QT_TR_NOOP("Creates an approximated grid of curves on top of a mesh object");
+    sWhatsThis = "Surface_PatchOnMesh";
+    sStatusTip = sToolTipText;
+    sPixmap = "Surface_PatchOnMesh";
+}
+
+
+void CmdSurfacePatchOnMesh::activated(int)
+{
+    doCommand(
+        Doc,
+        "import MeshPartGui, FreeCADGui\n"
+        "FreeCADGui.runCommand('MeshPart_PatchOnMesh')\n"
+    );
+}
+
+bool CmdSurfacePatchOnMesh::isActive()
+{
+    if (Gui::Control().activeDialog()) {
+        return false;
+    }
+
+    // Check for the selected mesh feature (all Mesh types)
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    // Use string based check to avoid linking to Mesh module
+    return doc && doc->countObjectsOfType("Mesh::Feature") > 0;
+}
+
 //===========================================================================
 // CmdBlendCurve : Blend Curve Command
 //===========================================================================
@@ -363,5 +399,6 @@ void CreateSurfaceCommands()
     rcCmdMgr.addCommand(new CmdSurfaceSections());
     rcCmdMgr.addCommand(new CmdSurfaceExtendFace());
     rcCmdMgr.addCommand(new CmdSurfaceCurveOnMesh());
+    rcCmdMgr.addCommand(new CmdSurfacePatchOnMesh());
     rcCmdMgr.addCommand(new CmdBlendCurve());
 }

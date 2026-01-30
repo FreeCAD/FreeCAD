@@ -59,6 +59,8 @@ SET(MeshPart_SRCS
     AppMeshPartPy.cpp
     CurveProjector.cpp
     CurveProjector.h
+    FeaturePatch.cpp
+    FeaturePatch.h
     MeshAlgos.cpp
     MeshAlgos.h
     Mesher.cpp
