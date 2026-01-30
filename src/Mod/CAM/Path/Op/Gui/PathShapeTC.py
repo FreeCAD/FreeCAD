@@ -502,6 +502,8 @@ class ObjectPathShape:
             obj.Path = Path.Path()
             return
 
+        shapes = [source.Shape for source in obj.Sources]
+
         offset = 0
         if obj.EnableOffset:
             offset = obj.OffsetExtra.Value
@@ -513,23 +515,22 @@ class ObjectPathShape:
         if offset:
             join = obj.getEnumerationsOfProperty("OffsetJoin").index(obj.OffsetJoin)
             openResult = obj.OffsetOpenResult
-            shapes = []
-            if obj.OffsetType == "makeOffset2D":
-                for source in obj.Sources:
-                    for wire in source.Shape.Wires:
-                        shapes.append(wire.makeOffset2D(offset, join=join, openResult=openResult))
-            else:
-                job = PathUtils.findParentJob(obj)
-                base = job.Model.Group[0].Shape
-                for source in obj.Sources:
-                    for wire in source.Shape.Wires:
-                        shapes.append(PathOpUtil.offsetWire(wire, base, offset, forward=True))
+            job = PathUtils.findParentJob(obj)
+            base = job.Model.Group[0].Shape
+            offsets = []
 
-        else:
-            shapes = [so.Shape for so in obj.Sources]
+            for shape in shapes:
+                for wire in shape.Wires:
+                    if obj.OffsetType == "makeOffset2D":
+                        offset = wire.makeOffset2D(offset, join=join, openResult=openResult)
+                    else:
+                        offset = PathOpUtil.offsetWire(wire, base, offset, forward=True)
+                    offsets.append(offset)
 
-        if obj.HandleMultipleFeatures == "Individually":
-            shapes = [sub for sh in shapes for sub in sh.SubShapes]
+            shapes = offsets
+
+        if obj.HandleMultipleFeatures == "Collectively":
+            shapes = [Part.makeCompound(shapes)]
 
         params = {}
         if obj.EnableStartPoint:
@@ -698,7 +699,7 @@ Returns a Path object from a list of shapes
         startPoint = self.getPoint(path.Commands)
         endPoint = self.getPoint(reversed(path.Commands))
         rAxis = obj.RetractAxis
-        slaveAxis = "Y" if rAxis == "X" else "X"
+        # slaveAxis = "Y" if rAxis == "X" else "X"
 
         if obj.ClearanceHeight > obj.SafeHeight:
             self.invertAxis = False
@@ -820,6 +821,7 @@ class ObjectPartShape:
     def __init__(self, obj, base):
         self.Type = "PartShapeObject"
         self.obj = obj
+        obj.Proxy = self
         obj.addProperty(
             "App::PropertyLinkSubListGlobal",
             "Base",
@@ -849,15 +851,16 @@ class ObjectPartShape:
     def execute(self, obj):
         wires = []
         for base in obj.Base:
-            edges = []
             (baseObj, subNames) = base
+            shape = baseObj.Shape
             if not subNames or subNames == ("",):
-                subNames = [f"Edge{i[0]+1}" for i in enumerate(baseObj.Shape.Edges)]
-            edges.extend(
-                [baseObj.Shape.getElement(sub).copy() for sub in subNames if sub.startswith("Edge")]
-            )
+                edges = shape.Edges
+            else:
+                edges = [shape.getElement(name) for name in subNames if name.startswith("Edge")]
+
             for sortedEdges in Part.sortEdges(edges):
                 wires.append(Part.Wire(sortedEdges))
+
         obj.Shape = Part.makeCompound(wires)
 
 
@@ -936,13 +939,12 @@ class CommandPathShapeTC:
         shapeObj = doc.addObject("Part::FeaturePython", "PartShape")
         shapeObj.ViewObject.Proxy = 0
         shapeObj.Visibility = False
-        shapeObj.Proxy = ObjectPartShape(shapeObj, base)
+        ObjectPartShape(shapeObj, base)
 
         pathObj = doc.addObject("Path::FeaturePython", "PathShape")
         job = PathUtils.addToJob(pathObj)
-        pathObj.Proxy = ObjectPathShape(pathObj, job)
-        # pathObj.ViewObject.Proxy = 0
-        pathObj.ViewObject.Proxy = ViewProviderPathShape(pathObj.ViewObject)
+        ObjectPathShape(pathObj, job)
+        ViewProviderPathShape(pathObj.ViewObject)
         pathObj.Sources = [shapeObj]
         doc.recompute()
 
