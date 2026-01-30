@@ -236,7 +236,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
     if (vec1.IsParallel(vec2, Precision::Angular())) {
         // handle case when both vectors are parallel
         Angle.setValue(0);
-    } 
+    }
     else {
         // get oriented vectors based on common origin
         Base::Vector3d loc1 = getLoc(*ob1, subs1.at(0));
