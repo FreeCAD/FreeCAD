@@ -55,7 +55,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-
+#include <Inventor/nodes/SoScale.h>
 
 #include <Precision.hxx>
 #include <Geom_Curve.hxx>
@@ -337,9 +337,25 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pLightModel->model.setValue(SoLightModel::BASE_COLOR);
     pArrowNode->addChild(pLightModel);
 
-    auto pMaterial = new SoMaterial();
-    pMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
-    pArrowNode->addChild(pMaterial);
+    // scale arrows based on arc length prevent overlap
+    auto pScaleCalc = new SoCalculator();
+    pScaleCalc->a.connectFrom(&calculatorRadius->oa);
+    pScaleCalc->b.connectFrom(&fieldAngle);
+    pScaleCalc->c.connectFrom(&fieldArrowHeight);
+    pScaleCalc->expression.setValue("ta = (a*b)/(2.5*c);tb = ta<1?ta:1; oA = vec3f(tb, tb, tb)");
+
+    auto pScale = new SoScale();
+    pScale->scaleFactor.connectFrom(&pScaleCalc->oA);
+    pArrowNode->addChild(pScale);
+
+    // Offset cone tip
+    auto pTipOffsetCalc = new SoCalculator();
+    pTipOffsetCalc->a.connectFrom(&fieldArrowHeight);
+    pTipOffsetCalc->expression.setValue("oA = vec3f(0, -a*0.5, 0)");
+
+    auto pTipOffsetTrans = new SoTranslation();
+    pTipOffsetTrans->translation.connectFrom(&pTipOffsetCalc->oA);
+    pArrowNode->addChild(pTipOffsetTrans);
 
     // Create cone shape as Arrow
     auto pCone = new SoCone();
@@ -371,9 +387,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     arrowPosCalc->a.connectFrom(&calculatorRadius->oa);
     arrowPosCalc->b.connectFrom(&fieldAngle);
     arrowPosCalc->c.connectFrom(&fieldArrowHeight);
-    arrowPosCalc->expression.setValue(
-        "oA=vec3f(a, c*0.5, 0); oB=vec3f(a*cos(b)+c*0.5*sin(b), a*sin(b)-c*0.5*cos(b), 0)"
-    );
+    arrowPosCalc->expression.setValue("oA=vec3f(a, 0, 0); oB=vec3f(a*cos(b), a*sin(b), 0)");
     pLeftArrowTrans->translation.connectFrom(&arrowPosCalc->oA);
     pRightArrowTrans->translation.connectFrom(&arrowPosCalc->oB);
 
