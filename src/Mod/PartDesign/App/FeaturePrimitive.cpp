@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
             // as we use this for preview we can add it even if useless for subtractive
             AddSubShape.setValue(primitiveShape);
 
-            if (getAddSubType() == FeatureAddSub::Additive) {
+            if (isAdditive()) {
                 Shape.setValue(getSolid(primitiveShape));
             }
             else {
@@ -106,49 +106,11 @@ App::DocumentObjectExecReturn* FeaturePrimitive::execute(const TopoDS_Shape& pri
 
             return App::DocumentObject::StdReturn;
         }
-        AddSubShape.setValue(primitiveShape);
-
-        TopoShape boolOp(0);
-
-        const char* maker;
-        switch (getAddSubType()) {
-            case Additive:
-                maker = Part::OpCodes::Fuse;
-                break;
-            case Subtractive:
-                maker = Part::OpCodes::Cut;
-                break;
-            default:
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Unknown operation type")
-                );
-        }
-        try {
-            boolOp.makeElementBoolean(maker, {base, primitiveShape});
-        }
-        catch (Standard_Failure&) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation")
-            );
-        }
-
-        TopoShape solidBoolOp = getSolid(boolOp);
-        // lets check if the result is a solid
-        if (solidBoolOp.isNull()) {
-            return new App::DocumentObjectExecReturn(
-                QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid")
-            );
-        }
-        // store shape before refinement
-        this->rawShape = boolOp;
-
-        if (solidBoolOp == base) {
-            // solidBoolOp is misplaced but boolOp is ok
-            Shape.setValue(boolOp);
-            return App::DocumentObject::StdReturn;
-        }
-        solidBoolOp = refineShapeIfActive(solidBoolOp);
-        Shape.setValue(getSolid(solidBoolOp));
+#ifdef FC_USE_TNP_FIX
+        return FeatureAddSub::addSubOp(base.getShape(), primitiveShape.getShape());
+#else
+        return FeatureAddSub::addSubOp(base, primitiveShape);
+#endif
     }
     catch (Standard_Failure& e) {
 

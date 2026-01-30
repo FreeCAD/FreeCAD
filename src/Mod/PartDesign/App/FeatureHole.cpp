@@ -1993,6 +1993,7 @@ App::DocumentObjectExecReturn* Hole::execute()
             Shape.setValue(compound);
             return App::DocumentObject::StdReturn;
         }
+        TopoDS_Shape result = mkBool.Shape();
 
         // First try cutting with compound which will be faster as it is done in
         // parallel
