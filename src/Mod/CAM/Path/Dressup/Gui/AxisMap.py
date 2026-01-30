@@ -156,6 +156,7 @@ class TaskPanel:
         self.obj = obj
         self.form = FreeCADGui.PySideUic.loadUi(":/panels/AxisMapEdit.ui")
         self.radius = PathGuiUtil.QuantitySpinBox(self.form.radius, obj, "Radius")
+        self.invert = PathGuiUtil.BooleanComboBox(self.form.invert, obj, "Invert")
         FreeCAD.ActiveDocument.openTransaction("Edit AxisMap Dress-up")
 
     def reject(self):
@@ -172,11 +173,13 @@ class TaskPanel:
 
     def getFields(self):
         self.radius.updateProperty()
+        self.invert.updateProperty()
         self.obj.AxisMap = self.form.axisMapInput.currentText()
         self.obj.Proxy.execute(self.obj)
 
     def updateUI(self):
         self.radius.updateWidget()
+        self.invert.updateWidget()
         self.form.axisMapInput.setCurrentText(self.obj.AxisMap)
         self.updateModel()
 
@@ -193,6 +196,7 @@ class TaskPanel:
     def setupUi(self):
         self.setFields()
         self.form.radius.valueChanged.connect(self.updateModel)
+        self.form.invert.currentIndexChanged.connect(self.updateModel)
         self.form.axisMapInput.currentIndexChanged.connect(self.updateModel)
 
 
