@@ -303,8 +303,9 @@ std::string LabelDisambiguator::translateVisualToInternal(
     std::sort(
         replacements.begin(),
         replacements.end(),
-        [](const std::pair<std::string, std::string>& a, const std::pair<std::string, std::string>& b
-        ) { return a.first.length() > b.first.length(); }
+        [](const std::pair<std::string, std::string>& a, const std::pair<std::string, std::string>& b) {
+            return a.first.length() > b.first.length();
+        }
     );
 
     std::string result = input;
@@ -331,7 +332,6 @@ std::string LabelDisambiguator::translateVisualToInternal(
                     continue;
                 }
             }
-
 
 
             bool boundaryError = false;
