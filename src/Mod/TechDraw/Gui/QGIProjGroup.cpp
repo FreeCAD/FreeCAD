@@ -246,7 +246,7 @@ QList<QGIViewPart*> QGIProjGroup::secondaryQViews() const
         if (!qview) {
             continue;
         }
-        result.emplace_back(qview);
+        result.append(qview);
     }
     return result;
 }
