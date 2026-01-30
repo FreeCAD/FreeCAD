@@ -99,7 +99,7 @@ private:
 private:
     struct PropInfo;
     struct PropFind;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectPropData;
     Connection connectPropView;
     Connection connectPropAppend;

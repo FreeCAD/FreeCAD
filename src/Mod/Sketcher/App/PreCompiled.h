@@ -75,6 +75,7 @@
 # include <GC_MakeCircle.hxx>
 # include <GeomAPI_ProjectPointOnCurve.hxx>
 # include <GeomAPI_ProjectPointOnSurf.hxx>
+# include <GeomConvert.hxx>
 # include <GeomConvert_BSplineCurveKnotSplitting.hxx>
 # include <GeomLProp_CLProps.hxx>
 # include <Geom_BSplineCurve.hxx>

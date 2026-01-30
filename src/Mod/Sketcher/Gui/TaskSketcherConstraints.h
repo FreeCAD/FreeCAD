@@ -34,6 +34,7 @@
 
 #include "ConstraintFilters.h"
 
+class ConstraintItem;
 
 namespace App
 {
@@ -199,7 +200,7 @@ public:
 protected:
     void changeEvent(QEvent* e) override;
     ViewProviderSketch* sketchView;
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionConstraintsChanged;
 
 private:
@@ -220,7 +221,20 @@ private:
                                                             // constraints associated with the
                                                             // selected geometry
     ConstraintFilterList* filterList;
-    boost::signals2::scoped_connection changedSketchView;
+    fastsignals::advanced_scoped_connection changedSketchView;
+
+    // Buffering structures
+    std::unordered_map<int, ConstraintItem*> constraintMap;
+
+    struct PendingSelectionUpdate
+    {
+        ConstraintItem* item;
+        bool select;
+    };
+    std::vector<PendingSelectionUpdate> selectionBuffer;
+    bool selectionUpdateTimerPending = false;
+
+    void processSelectionBuffer();
 };
 
 }  // namespace SketcherGui

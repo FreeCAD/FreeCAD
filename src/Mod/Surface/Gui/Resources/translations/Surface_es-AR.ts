@@ -312,7 +312,7 @@
     <message>
       <location filename="../../Command.cpp" line="113"/>
       <source>Filling</source>
-      <translation type="unfinished">Filling</translation>
+      <translation>Relleno</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>

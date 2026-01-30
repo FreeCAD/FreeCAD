@@ -67,6 +67,8 @@ using DrawSketchHandlerSlotBase = DrawSketchControllableHandler<DSHSlotControlle
 
 class DrawSketchHandlerSlot: public DrawSketchHandlerSlotBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSlot)
+
     friend DSHSlotController;
     friend DSHSlotControllerBase;
 

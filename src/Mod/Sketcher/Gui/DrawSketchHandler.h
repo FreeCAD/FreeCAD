@@ -158,7 +158,7 @@ private:
  */
 class SketcherGuiExport DrawSketchHandler: public Gui::ToolHandler
 {
-    Q_DECLARE_TR_FUNCTIONS(DrawSketchHandler)
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandler)
 
 public:
     DrawSketchHandler();

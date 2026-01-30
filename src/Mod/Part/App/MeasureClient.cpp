@@ -498,6 +498,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportLengthCB()
     callbacks.emplace_back("Part", "Length", MeasureLengthHandler);
     callbacks.emplace_back("PartDesign", "Length", MeasureLengthHandler);
     callbacks.emplace_back("Sketcher", "Length", MeasureLengthHandler);
+    callbacks.emplace_back("Surface", "Length", MeasureLengthHandler);
     return callbacks;
 }
 
@@ -507,6 +508,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportPositionCB()
     callbacks.emplace_back("Part", "Position", MeasurePositionHandler);
     callbacks.emplace_back("PartDesign", "Position", MeasurePositionHandler);
     callbacks.emplace_back("Sketcher", "Position", MeasurePositionHandler);
+    callbacks.emplace_back("Surface", "Position", MeasurePositionHandler);
     return callbacks;
 }
 
@@ -516,6 +518,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportAreaCB()
     callbacks.emplace_back("Part", "Area", MeasureAreaHandler);
     callbacks.emplace_back("PartDesign", "Area", MeasureAreaHandler);
     callbacks.emplace_back("Sketcher", "Area", MeasureAreaHandler);
+    callbacks.emplace_back("Surface", "Area", MeasureAreaHandler);
     return callbacks;
 }
 
@@ -526,6 +529,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportAngleCB()
     callbacks.emplace_back("Part", "Angle", MeasureAngleHandler);
     callbacks.emplace_back("PartDesign", "Angle", MeasureAngleHandler);
     callbacks.emplace_back("Sketcher", "Angle", MeasureAngleHandler);
+    callbacks.emplace_back("Surface", "Angle", MeasureAngleHandler);
     return callbacks;
 }
 
@@ -536,6 +540,7 @@ Part::CallbackRegistrationList Part::MeasureClient::reportDistanceCB()
     callbacks.emplace_back("Part", "Distance", MeasureDistanceHandler);
     callbacks.emplace_back("PartDesign", "Distance", MeasureDistanceHandler);
     callbacks.emplace_back("Sketcher", "Distance", MeasureDistanceHandler);
+    callbacks.emplace_back("Surface", "Distance", MeasureDistanceHandler);
     return callbacks;
 }
 
@@ -546,5 +551,6 @@ Part::CallbackRegistrationList Part::MeasureClient::reportRadiusCB()
     callbacks.emplace_back("Part", "Radius", MeasureRadiusHandler);
     callbacks.emplace_back("PartDesign", "Radius", MeasureRadiusHandler);
     callbacks.emplace_back("Sketcher", "Radius", MeasureRadiusHandler);
+    callbacks.emplace_back("Surface", "Radius", MeasureRadiusHandler);
     return callbacks;
 }

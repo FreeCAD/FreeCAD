@@ -420,7 +420,7 @@ public:
     static bool
     setupCopyOnChange(App::DocumentObject* obj,
                       App::DocumentObject* linked,
-                      std::vector<boost::signals2::scoped_connection>* copyOnChangeConns,
+                      std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
                       bool checkExisting);
 
     static bool isCopyOnChangeProperty(App::DocumentObject* obj, const Property& prop);
@@ -483,7 +483,7 @@ protected:
     mutable std::vector<std::string> mySubElements;
     mutable std::string mySubName;
 
-    std::unordered_map<const App::DocumentObject*, boost::signals2::scoped_connection>
+    std::unordered_map<const App::DocumentObject*, fastsignals::scoped_connection>
         plainGroupConns;
 
     long prevLinkedObjectID = 0;
@@ -492,14 +492,14 @@ protected:
     mutable bool enableLabelCache {false};
     bool hasOldSubElement {false};
 
-    std::vector<boost::signals2::scoped_connection> copyOnChangeConns;
-    std::vector<boost::signals2::scoped_connection> copyOnChangeSrcConns;
+    std::vector<fastsignals::scoped_connection> copyOnChangeConns;
+    std::vector<fastsignals::scoped_connection> copyOnChangeSrcConns;
     bool hasCopyOnChange {true};
 
     mutable bool checkingProperty = false;
     bool pauseCopyOnChange = false;
 
-    boost::signals2::scoped_connection connCopyOnChangeSource;
+    fastsignals::scoped_connection connCopyOnChangeSource;
 };
 
 ///////////////////////////////////////////////////////////////////////////

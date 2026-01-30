@@ -73,6 +73,8 @@ using DrawSketchHandlerArcBase = DrawSketchControllableHandler<DSHArcController>
 
 class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerArc)
+
     friend DSHArcController;
     friend DSHArcControllerBase;
 

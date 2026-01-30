@@ -29,7 +29,7 @@
 #include <set>
 
 #include <boost/unordered/unordered_map.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 
@@ -184,7 +184,7 @@ public:
     size_t numExpressions() const;
 
     /// signal called when an expression was changed
-    boost::signals2::signal<void(const App::ObjectIdentifier&)> expressionChanged;
+    fastsignals::signal<void(const App::ObjectIdentifier&)> expressionChanged;
 
     void afterRestore() override;
     void onContainerRestored() override;

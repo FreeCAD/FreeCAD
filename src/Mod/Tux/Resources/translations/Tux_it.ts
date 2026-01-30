@@ -81,12 +81,12 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="657"/>
       <source>Turntable</source>
-      <translation>Piatto</translation>
+      <translation>Tavola girevole</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="658"/>
       <source>Free Turntable</source>
-      <translation>Piatto Libero</translation>
+      <translation>Tavola girevole libera</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="659"/>
