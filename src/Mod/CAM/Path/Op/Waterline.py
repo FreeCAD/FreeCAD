@@ -1060,7 +1060,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         Path.Log.info("Waterline " + msg + " {} sec.".format(execTime))
 
         # IMPORTANT: This prevents the 'OK' button double-recompute bug
-        obj.purgeTouched() 
+        obj.purgeTouched()
 
         return True
 
@@ -1805,7 +1805,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         if tool_params is None:
             error_msg = translate(
                 "PathWaterline",
-                "Operation failed: A Tool Type has been selected that is not supported by Experimental Algorithm."
+                "Operation failed: A Tool Type has been selected that is not supported by Experimental Algorithm.",
             )
             FreeCAD.Console.PrintError(error_msg + "\n")
             Path.Log.error("experimentalWaterlineOp: getToolParams returned None.")
@@ -1976,12 +1976,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         else:
             return None
 
-        return {
-            "radius": radius,
-            "corner_radius": c_rad,
-            "profile": profile,
-            "is_3d": is_3d
-        }
+        return {"radius": radius, "corner_radius": c_rad, "profile": profile, "is_3d": is_3d}
 
     def getOuterHull(self, shape):
         """Returns a version of the shape with all internal cavities removed."""
@@ -1998,8 +1993,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
     def getCutAreas(self, shape, depthparams, borderFace, tool_params):
         """
-        Generates 2D clearing areas for each Z-depth using a multi-slice fusion strategy. 
-        Accurately accounts for 3D tool profiles (Ball-nose/Bullnose) by sub-sampling 
+        Generates 2D clearing areas for each Z-depth using a multi-slice fusion strategy.
+        Accurately accounts for 3D tool profiles (Ball-nose/Bullnose) by sub-sampling
         the model silhouette and reconciling detected CAD floors.
         """
         Path.Log.debug("getCutAreas()")
@@ -2008,7 +2003,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             """Calculates effective radius based on tool profile."""
             r_eff = radius
             if profile == "Ballend":
-                r_eff = math.sqrt(max(0, radius**2 - (radius - h)**2))
+                r_eff = math.sqrt(max(0, radius**2 - (radius - h) ** 2))
             elif profile == "Bullnose":
                 if h < c_rad:
                     dist_to_arc_center = c_rad - h
@@ -2062,7 +2057,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             # Calculate how much of the tool is actually 'inside' the model's top
             distToTop = modelTop - z_target
             # We sample up to the equator (radius) OR the top of the model, whichever is lower
-            max_h = min(c_rad, max(0, distToTop)) # Use c_rad that works for Bull and Ball
+            max_h = min(c_rad, max(0, distToTop))  # Use c_rad that works for Bull and Ball
 
             for i in range(num_slices):
                 h = (max_h / (num_slices - 1)) * i if num_slices > 1 else 0
