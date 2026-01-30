@@ -24,11 +24,13 @@
 
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
-#include <vector>
-#include <string>
+#include <unicode/locid.h>
+#include <chrono>
+#include <ctime>
+#include <iomanip>
 #include <sstream>
-#include <QDateTime>
-#include <QTimeZone>
+#include <string>
+#include <vector>
 
 #include "PyExport.h"
 #include "Interpreter.h"
@@ -184,29 +186,6 @@ std::string Base::Tools::escapeQuotesFromString(const std::string& s)
     return result;
 }
 
-QString Base::Tools::escapeEncodeString(const QString& s)
-{
-    QString result;
-    const int len = s.length();
-    result.reserve(int(len * 1.1));
-    for (int i = 0; i < len; ++i) {
-        if (s.at(i) == QLatin1Char('\\')) {
-            result += QLatin1String("\\\\");
-        }
-        else if (s.at(i) == QLatin1Char('\"')) {
-            result += QLatin1String("\\\"");
-        }
-        else if (s.at(i) == QLatin1Char('\'')) {
-            result += QLatin1String("\\\'");
-        }
-        else {
-            result += s.at(i);
-        }
-    }
-    result.squeeze();
-    return result;
-}
-
 std::string Base::Tools::escapeEncodeString(const std::string& s)
 {
     std::string result;
@@ -227,26 +206,6 @@ std::string Base::Tools::escapeEncodeString(const std::string& s)
                 break;
         }
     }
-    return result;
-}
-
-QString Base::Tools::escapeEncodeFilename(const QString& s)
-{
-    QString result;
-    const int len = s.length();
-    result.reserve(int(len * 1.1));
-    for (int i = 0; i < len; ++i) {
-        if (s.at(i) == QLatin1Char('\"')) {
-            result += QLatin1String("\\\"");
-        }
-        else if (s.at(i) == QLatin1Char('\'')) {
-            result += QLatin1String("\\\'");
-        }
-        else {
-            result += s.at(i);
-        }
-    }
-    result.squeeze();
     return result;
 }
 
@@ -295,10 +254,39 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
 
 std::string Base::Tools::currentDateTimeString()
 {
-    return QDateTime::currentDateTime()
-        .toTimeZone(QTimeZone::systemTimeZone())
-        .toString(Qt::ISODate)
-        .toStdString();
+    const auto now = std::chrono::system_clock::now();
+    const std::time_t t = std::chrono::system_clock::to_time_t(now);
+
+    std::tm tmUtc {};
+#if defined(_WIN32)
+    gmtime_s(&tmUtc, &t);
+#else
+    gmtime_r(&t, &tmUtc);
+#endif
+
+    std::ostringstream out;
+    out << std::put_time(&tmUtc, "%Y-%m-%dT%H:%M:%SZ");
+    return out.str();
+}
+
+bool Base::Tools::isCLocaleName(std::string_view localeName)
+{
+    return localeName == "C" || localeName == "c" || localeName == "C.UTF-8" || localeName == "C.utf8"
+        || localeName == "c.utf8" || localeName == "POSIX" || localeName == "posix";
+}
+
+void Base::Tools::setIcuDefaultLocale(std::string_view icuLocaleId)
+{
+    UErrorCode status = U_ZERO_ERROR;
+
+    if (icuLocaleId.empty() || isCLocaleName(icuLocaleId)) {
+        icu::Locale::setDefault(icu::Locale("en_US_POSIX"), status);
+        return;
+    }
+
+    const std::string localeId(icuLocaleId);
+    const icu::Locale locale = icu::Locale::createFromName(localeId.c_str());
+    icu::Locale::setDefault(locale, status);
 }
 
 std::vector<std::string> Base::Tools::splitSubName(const std::string& subname)

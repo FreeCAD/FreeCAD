@@ -1746,12 +1746,12 @@ bool Document::saveCopy()
 
         // save as new file name
         Gui::WaitCursor wc;
-        QString pyfn = Base::Tools::escapeEncodeFilename(fn);
+        std::string pyfn = Base::Tools::escapeEncodeFilename(fn.toUtf8().constData());
         Command::doCommand(
             Command::Doc,
             "App.getDocument(\"%s\").saveCopy(\"%s\")",
             DocName,
-            (const char*)pyfn.toUtf8()
+            pyfn.c_str()
         );
 
         return true;

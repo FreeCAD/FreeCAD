@@ -26,20 +26,17 @@
 #include <string>
 #include <vector>
 
-#include <QCoreApplication>
-
 #include "UnitsSchemas.h"
 #include "Exception.h"
 #include "Quantity.h"
+#include "Translation.h"
 #include "UnitsApi.h"
 #include "UnitsSchema.h"
 #include "UnitsSchemasSpecs.h"
 #include "UnitsSchemasData.h"
 
-using Base::Quantity;
-using Base::UnitsSchema;
-using Base::UnitsSchemas;
-using Base::UnitsSchemaSpec;
+namespace Base
+{
 
 UnitsSchemas::UnitsSchemas(const UnitsSchemasDataPack& pack)
     : pack {pack}
@@ -71,7 +68,7 @@ std::vector<std::string> UnitsSchemas::names()
 std::vector<std::string> UnitsSchemas::descriptions()
 {
     return getVec([](const UnitsSchemaSpec& spec) {
-        return QCoreApplication::translate("UnitsApi", spec.description).toStdString();
+        return Translation::translate("UnitsApi", spec.description);
     });
 }
 
@@ -140,3 +137,5 @@ UnitsSchemaSpec UnitsSchemas::spec(const std::size_t num)
 {
     return findSpec([&num](const UnitsSchemaSpec& spec) { return spec.num == num; });
 }
+
+}  // namespace Base

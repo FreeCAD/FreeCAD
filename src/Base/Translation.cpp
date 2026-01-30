@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026                                                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,56 +22,78 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <QCoreApplication>
-#include <QEvent>
+#include "Translation.h"
 
-#include "Debugger.h"
-#include "Console.h"
+#include <atomic>
 
-
-using namespace Base;
-
-Debugger::Debugger(QObject* parent)
-    : QObject(parent)
-{}
-
-Debugger::~Debugger() = default;
-
-void Debugger::attach()
+namespace Base::Translation
 {
-    QCoreApplication::instance()->installEventFilter(this);
-    isAttached = true;
-}
 
-void Debugger::detach()
+namespace
 {
-    QCoreApplication::instance()->removeEventFilter(this);
-    isAttached = false;
-}
+std::atomic<const Translator*> activeTranslator {nullptr};
 
-bool Debugger::eventFilter(QObject* /*watched*/, QEvent* event)
+class NullTranslator final: public Translator
 {
-    if (event->type() == QEvent::KeyPress) {
-        if (loop.isRunning()) {
-            loop.quit();
-            return true;
-        }
+public:
+    std::string translate(
+        std::string_view /*context*/,
+        std::string_view sourceText,
+        std::string_view /*disambiguation*/,
+        int /*n*/
+    ) const override
+    {
+        return std::string(sourceText);
     }
 
-    return false;
-}
-
-int Debugger::exec()
-{
-    if (isAttached) {
-        Base::Console().message("TO CONTINUE PRESS ANY KEY...\n");
+    bool installTranslator(std::string_view /*filename*/) const override
+    {
+        return false;
     }
-    return loop.exec();
-}
 
-void Debugger::quit()
+    bool removeTranslators(const std::vector<std::string>& /*filenames*/) const override
+    {
+        return false;
+    }
+};
+
+NullTranslator nullTranslator;
+
+const Translator* translator()
 {
-    loop.quit();
+    const Translator* translator = activeTranslator.load(std::memory_order_acquire);
+    return translator ? translator : &nullTranslator;
+}
+}  // namespace
+
+void setTranslator(const Translator* translator)
+{
+    activeTranslator.store(translator, std::memory_order_release);
 }
 
-#include "moc_Debugger.cpp"
+const Translator* getTranslator()
+{
+    return translator();
+}
+
+std::string translate(
+    std::string_view context,
+    std::string_view sourceText,
+    std::string_view disambiguation,
+    int n
+)
+{
+    return translator()->translate(context, sourceText, disambiguation, n);
+}
+
+bool installTranslator(std::string_view filename)
+{
+    return translator()->installTranslator(filename);
+}
+
+bool removeTranslators(const std::vector<std::string>& filenames)
+{
+    return translator()->removeTranslators(filenames);
+}
+
+}  // namespace Base::Translation

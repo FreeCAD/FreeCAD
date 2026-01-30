@@ -24,8 +24,8 @@
 
 
 #include "Translate.h"
-#include <QCoreApplication>
-#include <QFileInfo>
+
+#include "Translation.h"
 
 using namespace Base;
 
@@ -103,8 +103,9 @@ Py::Object Translate::translate(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    QString str = QCoreApplication::translate(context, source, disambiguation, num);
-    return Py::asObject(PyUnicode_FromString(str.toUtf8()));
+    const std::string disambig = disambiguation ? std::string(disambiguation) : std::string();
+    const std::string translated = Base::Translation::translate(context, source, disambig, num);
+    return Py::asObject(PyUnicode_FromString(translated.c_str()));
 }
 
 Py::Object Translate::translateNoop(const Py::Tuple& args)
@@ -143,17 +144,12 @@ Py::Object Translate::installTranslator(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
         throw Py::Exception();
     }
-    QString filename = QString::fromUtf8(Name);
+    std::string filename(Name);
     PyMem_Free(Name);
 
-    bool ok = false;
-    QFileInfo fi(filename);
-    std::shared_ptr<QTranslator> translator(std::make_shared<QTranslator>(nullptr));
-    translator->setObjectName(fi.fileName());
-    if (translator->load(filename)) {
-        qApp->installTranslator(translator.get());
-        translators.push_back(translator);
-        ok = true;
+    const bool ok = Base::Translation::installTranslator(filename);
+    if (ok) {
+        translators.push_back(filename);
     }
 
     return Py::Boolean(ok);  // NOLINT
@@ -164,11 +160,14 @@ Py::Object Translate::removeTranslators(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
     }
-    bool ok = true;
-    for (const auto& it : translators) {
-        ok &= QCoreApplication::removeTranslator(it.get());
+
+    if (translators.empty()) {
+        return Py::Boolean(true);  // NOLINT
     }
 
-    translators.clear();
+    const bool ok = Base::Translation::removeTranslators(translators);
+    if (ok) {
+        translators.clear();
+    }
     return Py::Boolean(ok);  // NOLINT
 }

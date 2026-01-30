@@ -29,6 +29,7 @@
 #include <utility>
 #include <set>
 #include <memory>
+#include <new>
 #include <string>
 #include <map>
 #include <vector>
@@ -3379,21 +3380,21 @@ Document::copyObject(const std::vector<DocumentObject*>& objs, bool recursive, b
 
     // if less than ~10 MB
     bool use_buffer = (memsize < 0xA00000);
-    QByteArray res;
+    std::string res;
     try {
         res.reserve(memsize);
     }
-    catch (const Base::MemoryException&) {
+    catch (const std::bad_alloc&) {
         use_buffer = false;
     }
 
     std::vector<DocumentObject*> imported;
     if (use_buffer) {
-        Base::ByteArrayOStreambuf obuf(res);
+        Base::StringOStreambuf obuf(res);
         std::ostream ostr(&obuf);
         exportObjects(deps, ostr);
 
-        Base::ByteArrayIStreambuf ibuf(res);
+        Base::StringIStreambuf ibuf(res);
         std::istream istr(nullptr);
         istr.rdbuf(&ibuf);
         imported = md.importObjects(istr);

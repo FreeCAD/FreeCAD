@@ -27,13 +27,15 @@
 #include <map>
 #include <vector>
 
-#include <QtGlobal>
-
 #include "fmt/format.h"
 #include "fmt/ranges.h"
 
 #include "UnitsConvData.h"
 #include "UnitsSchemasSpecs.h"
+
+#ifndef QT_TRANSLATE_NOOP
+# define QT_TRANSLATE_NOOP(context, sourceText) sourceText
+#endif
 
 /**
  * UnitSchemas raw data
