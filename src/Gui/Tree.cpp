@@ -49,6 +49,7 @@
 #include <Base/Color.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Origin.h>
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
@@ -58,6 +59,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "ExpressionCompleter.h"
+#include "LabelDisambiguator.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
@@ -6559,88 +6561,49 @@ bool DocumentItem::isObjectShowable(App::DocumentObject* obj)
 
 void DocumentItem::updateDuplicateLabels()
 {
-    // Step 1: Group unique objects by their label.
-    std::map<std::string, std::set<App::DocumentObject*>> labelToObjectSet;
+    if (!pDocument) {
+        return;
+    }
+    App::Document* doc = pDocument->getDocument();
+    if (!doc) {
+        return;
+    }
 
+    // 1. Calculate all visual names in one fast pass (O(N log N))
+    auto visualNamesMap = LabelDisambiguator::computeVisualNames(doc);
+
+    // 2. Update the tree items (O(N))
     for (const auto& pair : ObjectMap) {
         App::DocumentObject* obj = pair.first;
         const auto& data = pair.second;
-        if (data && !data->label.empty()) {
-            labelToObjectSet[data->label].insert(obj);
-        }
-    }
-
-    // Step 2: Iterate through the grouped labels and apply disambiguation conditionally.
-    for (const auto& pair : labelToObjectSet) {
-        const std::string& label = pair.first;
-        const std::set<App::DocumentObject*>& objects = pair.second;
-
-        // Partition the objects into two groups based on the new ViewProvider function.
-        std::vector<App::DocumentObject*> objectsToNumber;
-        std::vector<App::DocumentObject*> objectsToKeepAsIs;
-
-        for (App::DocumentObject* obj : objects) {
-            auto vp = getViewProvider(obj);
-            if (vp && vp->showIndentationSuffixInLabel()) {
-                objectsToNumber.push_back(obj);
-            }
-            else {
-                objectsToKeepAsIs.push_back(obj);
-            }
+        if (!data) {
+            continue;
         }
 
-        // First, reset all objects that should NOT have a suffix to their original label.
-        // This clears any old suffixes from previous updates.
-        QString originalLabel = QString::fromStdString(label);
-        for (App::DocumentObject* obj : objectsToKeepAsIs) {
-            auto& data = ObjectMap.at(obj);
-            for (DocumentObjectItem* item : data->items) {
-                if (item->text(0) != originalLabel) {
-                    item->setText(0, originalLabel);
-                }
-            }
-        }
+        std::string visualName;
 
-        // Now, handle the objects that DO need a potential suffix.
-        // A suffix is only needed if there's an ambiguity. An ambiguity exists if:
-        // 1. There is more than one object that needs a suffix (e.g., two Links to the same thing).
-        // 2. There is at least one object that DOESN'T need a suffix (e.g., the original Body).
-        if (objectsToNumber.size() > 1 || !objectsToKeepAsIs.empty()) {
-            // Sort the objects that need numbering by their tree rank to ensure consistent order.
-            std::sort(
-                objectsToNumber.begin(),
-                objectsToNumber.end(),
-                [this](App::DocumentObject* a, App::DocumentObject* b) {
-                    auto vpA = getViewProvider(a);
-                    auto vpB = getViewProvider(b);
-                    if (!vpA || !vpB) {
-                        return a < b;
-                    }
-                    return vpA->getTreeRank() < vpB->getTreeRank();
-                }
-            );
-
-            // Apply the numbered suffix.
-            int counter = 1;
-            for (App::DocumentObject* obj : objectsToNumber) {
-                auto& data = ObjectMap.at(obj);
-                QString newLabel = originalLabel + QString::fromStdString(" <%1>").arg(counter);
-                for (DocumentObjectItem* item : data->items) {
-                    item->setText(0, newLabel);
-                }
-                counter++;
-            }
+        // Special Exception: Origin objects stay "Origin" in the tree
+        if (obj->isDerivedFrom<App::Origin>() || obj->is<App::Line>() || obj->is<App::Plane>()
+            || obj->is<App::Point>()) {
+            visualName = obj->Label.getValue();
         }
         else {
-            // This is the case where there is only one object that wants a suffix
-            // and no other objects share its label. No suffix is needed. Reset it.
-            for (App::DocumentObject* obj : objectsToNumber) {
-                auto& data = ObjectMap.at(obj);
-                for (DocumentObjectItem* item : data->items) {
-                    if (item->text(0) != originalLabel) {
-                        item->setText(0, originalLabel);
-                    }
-                }
+            // Check if this object was assigned a specific suffix in the batch map
+            auto it = visualNamesMap.find(obj);
+            if (it != visualNamesMap.end()) {
+                visualName = it->second;  // e.g. "Bolt <2>"
+            }
+            else {
+                visualName = obj->Label.getValue();  // Default unique label
+            }
+        }
+
+        QString qVisualName = QString::fromUtf8(visualName.c_str());
+
+        // Update the GUI items
+        for (DocumentObjectItem* item : data->items) {
+            if (item->text(0) != qVisualName) {
+                item->setText(0, qVisualName);
             }
         }
     }

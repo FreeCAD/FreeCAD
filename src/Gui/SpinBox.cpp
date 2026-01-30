@@ -125,7 +125,7 @@ void ExpressionSpinBox::showExpression(Number number)
         p.setColor(QPalette::Text, Qt::lightGray);
         lineedit->setPalette(p);
     }
-    iconLabel->setExpressionText(QString::fromStdString(getExpression()->toString()));
+    iconLabel->setExpressionText(QString::fromStdString(getExpressionVisualString()));
 }
 
 void ExpressionSpinBox::clearExpression()

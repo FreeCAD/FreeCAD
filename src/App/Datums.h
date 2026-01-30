@@ -62,6 +62,11 @@ public:
     /// Returns true if this DatumElement is part of a App::Origin.
     bool isOriginFeature() const;
 
+    bool allowDuplicateLabel() const override
+    {
+        return true;
+    }
+
 protected:
     void setBaseDirection(const Base::Vector3d& dir);
 

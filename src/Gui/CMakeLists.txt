@@ -1221,6 +1221,7 @@ SET(Widget_CPP_SRCS
     NotificationArea.cpp
     PrefWidgets.cpp
     InputField.cpp
+    LabelDisambiguator.cpp
     ProgressBar.cpp
     ProgressDialog.cpp
     QuantitySpinBox.cpp
@@ -1246,6 +1247,7 @@ SET(Widget_HPP_SRCS
     NotificationArea.h
     PrefWidgets.h
     InputField.h
+    LabelDisambiguator.h
     ProgressBar.h
     ProgressDialog.h
     QuantitySpinBox.h

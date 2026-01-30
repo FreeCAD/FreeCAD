@@ -37,6 +37,7 @@
 #include <App/ExpressionParser.h>
 #include <App/ObjectIdentifier.h>
 #include <Gui/Application.h>
+#include <Gui/LabelDisambiguator.h>
 #include <Gui/MainWindow.h>
 #include <Base/Tools.h>
 #include <CXX/Extensions.hxx>
@@ -353,11 +354,11 @@ public:
             }
 
             const auto& objs = doc->getObjects();
-            objSize = (int)objs.size() * 2;
+            objSize = (int)objs.size();
             // if this is a valid object, we found our object and break.
             // if not, this may be the root or one of current object's properties
             if (idx >= 0 && idx < objSize) {
-                obj = objs[idx / 2];
+                obj = objs[idx];
                 // if they are in the ignore list skip
                 if (inList.contains(obj)) {
                     return;
@@ -410,14 +411,10 @@ public:
                     }
                 }
                 else if (obj) {
-                    // the object has been resolved, use the saved idx to figure out quotation or
-                    // not.
-                    if (idx & 1) {
-                        res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                    }
-                    else {
-                        res = QString::fromLatin1(obj->getNameInDocument());
-                    }
+                    std::string visualName = LabelDisambiguator::getVisualName(obj);
+
+                    res = QString::fromUtf8(visualName.c_str());
+
                     if (sep && !noProperty) {
                         res += QLatin1Char('.');
                     }
@@ -446,12 +443,12 @@ public:
             // are we pointing to an object item, or our father (info) is an object
             idx = info.obj < 0 ? row : info.obj;
             const auto& objs = doc->getObjects();
-            objSize = (int)objs.size() * 2;
+            objSize = (int)objs.size();
             // if invalid index, or in the ignore list bail out
             if (idx < 0 || idx >= objSize || inList.contains(obj)) {
                 return;
             }
-            obj = objs[idx / 2];
+            obj = objs[idx];
 
             if (info.obj < 0) {
                 // if this is AN actual Object item and not a root
@@ -460,13 +457,9 @@ public:
                 }
                 if (v) {
                     // resolve the name
-                    QString res;
-                    if (idx & 1) {
-                        res = QString::fromUtf8(quote(obj->Label.getStrValue()).c_str());
-                    }
-                    else {
-                        res = QString::fromLatin1(obj->getNameInDocument());
-                    }
+                    std::string visualName = LabelDisambiguator::getVisualName(obj);
+                    QString res = QString::fromUtf8(visualName.c_str());
+
                     if (sep && !noProperty) {
                         res += QLatin1Char('.');
                     }
@@ -606,8 +599,8 @@ public:
                 auto cdoc = App::GetApplication().getDocument(currentDoc.c_str());
 
                 if (cdoc) {
-                    int objsSize = static_cast<int>(cdoc->getObjects().size() * 2);
-                    int idx = parentInfo.doc - static_cast<int>(docs.size());
+                    int objsSize = static_cast<int>(cdoc->getObjects().size());
+                    int idx = parentInfo.doc - static_cast<int>(docs.size() * 2);
                     if (idx < objsSize) {
                         //  |-- Parent (OBJECT)   - (row 4, [-1,-1,-1,0]) = encode as element =>
                         //  [parent.row,-1,-1,1]
@@ -785,19 +778,22 @@ QString ExpressionCompleter::pathFromIndex(const QModelIndex& index) const
 QStringList ExpressionCompleter::splitPath(const QString& input) const
 {
     QStringList resultList;
-    std::string path = input.toUtf8().constData();
-    if (path.empty()) {
+    std::string visualPath = input.toUtf8().constData();
+    if (visualPath.empty()) {
         return resultList;
     }
+
+    // 1. Translate Visual Path (e.g. "Corps <1>.") -> Internal Path (e.g. "Link002.")
+    const App::Document* doc = currentObj.getObject() ? currentObj.getObject()->getDocument()
+                                                      : nullptr;
+    std::string path = LabelDisambiguator::translateVisualToInternal(doc, visualPath);
 
     int retry = 0;
     std::string lastElem;  // used to recover in case of parse failure after ".".
     std::string trim;      // used to delete ._self added for another recovery path
     while (true) {
         try {
-            // this will not work for incomplete Tokens at the end
-            // "Sketch." will fail to parse and complete.
-
+            // 2. Parse the INTERNAL path
             App::ObjectIdentifier ident = ObjectIdentifier::parse(currentObj.getObject(), path);
 
             std::vector<std::string> stringList = ident.getStringList();
@@ -810,17 +806,29 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 if (!trim.empty() && boost::ends_with(stringList.back(), trim)) {
                     stringList.back().resize(stringList.back().size() - trim.size());
                 }
-                while (stringListIter != stringList.end()) {
-                    resultList << QString::fromStdString(*stringListIter);
-                    ++stringListIter;
+
+                // 3. Convert results back to Visual Names for the Completer Model
+                for (const std::string& comp : stringList) {
+                    std::string visualComp = comp;
+                    if (doc) {
+                        App::DocumentObject* obj = doc->getObject(comp.c_str());
+                        if (obj) {
+                            visualComp = LabelDisambiguator::getVisualName(obj);
+                        }
+                    }
+                    resultList << QString::fromStdString(visualComp);
                 }
             }
             if (lastElem.size()) {
-                // if we finish in a trailing separator
+                // 4. Handle the trailing separator/partial text
+                // If we stripped `lastElem` (e.g. "." or ".Le"), we need to add it back
+                // so the completer knows to filter the children of the found item.
                 if (!lastElem.empty()) {
-                    // erase the separator
-                    lastElem.erase(lastElem.begin());
-                    resultList << QString::fromStdString(lastElem);
+                    std::string remainder = lastElem;
+                    if (remainder.size() > 0 && (remainder[0] == '.' || remainder[0] == '#')) {
+                        remainder.erase(0, 1);
+                    }
+                    resultList << QString::fromStdString(remainder);
                 }
                 else {
                     // add empty string to allow completion after "." or "#"
@@ -828,7 +836,7 @@ QStringList ExpressionCompleter::splitPath(const QString& input) const
                 }
             }
             FC_TRACE(
-                "split path " << path << " -> "
+                "split path " << visualPath << " -> "
                               << resultList.join(QLatin1String("/")).toUtf8().constData()
             );
             return resultList;

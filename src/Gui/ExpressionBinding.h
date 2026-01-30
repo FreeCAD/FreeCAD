@@ -73,6 +73,7 @@ protected:
     }
     std::shared_ptr<App::Expression> getExpression() const;
     std::string getExpressionString(bool no_throw = true) const;
+    std::string getExpressionVisualString(bool no_throw = true) const;
     std::string getEscapedExpressionString() const;
     bool assignToProperty(const std::string& propName, double);
     virtual void setExpression(std::shared_ptr<App::Expression> expr);

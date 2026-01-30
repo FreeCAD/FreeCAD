@@ -47,6 +47,7 @@
 #include "Command.h"
 #include "Tools.h"
 #include "ExpressionBinding.h"
+#include "LabelDisambiguator.h"
 #include "BitmapFactory.h"
 #include "ViewProviderDocumentObject.h"
 
@@ -85,7 +86,14 @@ DlgExpressionInput::DlgExpressionInput(
     connect(discardBtn, &QPushButton::clicked, this, &DlgExpressionInput::setDiscarded);
 
     if (expression) {
-        ui->expression->setPlainText(QString::fromStdString(expression->toString()));
+        std::string exprStr = expression->toString();
+        if (path.getDocumentObject()) {
+            exprStr = Gui::LabelDisambiguator::translateInternalToVisual(
+                path.getDocumentObject()->getDocument(),
+                exprStr
+            );
+        }
+        ui->expression->setPlainText(QString::fromStdString(exprStr));
     }
     else {
         QVariant text = parent->property("text");
@@ -352,9 +360,19 @@ bool DlgExpressionInput::checkCyclicDependencyVarSet(const QString& text)
 
 void DlgExpressionInput::checkExpression(const QString& text)
 {
+    // Translate Visual Names (e.g. "Body <1>") to Internal Names (e.g. "Link002")
+    // so the parser can understand the object references.
+    std::string internalText = text.toUtf8().constData();
+    if (path.getDocumentObject()) {
+        internalText = Gui::LabelDisambiguator::translateVisualToInternal(
+            path.getDocumentObject()->getDocument(),
+            internalText
+        );
+    }
+
     // now handle expression
     std::shared_ptr<Expression> expr(
-        ExpressionParser::parse(path.getDocumentObject(), text.toUtf8().constData())
+        ExpressionParser::parse(path.getDocumentObject(), internalText.c_str())
     );
 
     if (expr) {
@@ -433,7 +451,17 @@ void DlgExpressionInput::textChanged()
         }
     }
     catch (Base::Exception& e) {
-        message = e.what();
+        std::string errMsg = e.what();
+
+        // Translate Internal Names (Link002) back to Visual Names (Corps <1>) in the error message
+        if (path.getDocumentObject()) {
+            errMsg = Gui::LabelDisambiguator::translateInternalToVisual(
+                path.getDocumentObject()->getDocument(),
+                errMsg
+            );
+        }
+
+        message = errMsg;
         setMsgText();
         QPalette p(ui->msg->palette());
         p.setColor(QPalette::WindowText, Qt::red);

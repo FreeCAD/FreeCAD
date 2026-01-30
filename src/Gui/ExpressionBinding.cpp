@@ -27,6 +27,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "ExpressionBinding.h"
+#include "LabelDisambiguator.h"
 #include "QuantitySpinBox_p.h"
 
 #include <App/Application.h>
@@ -171,6 +172,20 @@ std::string ExpressionBinding::getExpressionString(bool no_throw) const
         }
     }
     return {};
+}
+
+std::string ExpressionBinding::getExpressionVisualString(bool no_throw) const
+{
+    // Get the raw internal string (e.g. "Link002.Length")
+    std::string internalStr = getExpressionString(no_throw);
+
+    App::DocumentObject* docObj = path.getDocumentObject();
+    if (docObj) {
+        // Translate to Visual (e.g. "Bolt <2>.Length")
+        return LabelDisambiguator::translateInternalToVisual(docObj->getDocument(), internalStr);
+    }
+
+    return internalStr;
 }
 
 std::string ExpressionBinding::getEscapedExpressionString() const

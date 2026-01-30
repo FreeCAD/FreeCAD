@@ -47,6 +47,7 @@
 #include "QuantitySpinBox_p.h"
 #include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
+#include "LabelDisambiguator.h"
 #include "Tools.h"
 #include "Widgets.h"
 
@@ -140,6 +141,14 @@ public:
         try {
             QString copy = str;
             copy.remove(locale.groupSeparator());
+
+            std::string internalStr = copy.toUtf8().constData();
+            if (path.getDocumentObject()) {
+                internalStr = Gui::LabelDisambiguator::translateVisualToInternal(
+                    path.getDocumentObject()->getDocument(),
+                    internalStr
+                );
+            }
 
             // Expression parser
             std::shared_ptr<Expression> expr(
@@ -408,7 +417,7 @@ QString Gui::QuantitySpinBox::expressionText() const
 {
     try {
         if (hasExpression()) {
-            return QString::fromStdString(getExpressionString());
+            return QString::fromStdString(getExpressionVisualString());
         }
     }
     catch (const Base::Exception& e) {
