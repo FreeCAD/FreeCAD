@@ -23,7 +23,7 @@
 //  SMESH SMESH_Octree : Octree implementation
 //  File      : SMESH_Octree.hxx
 //  Created   : Tue Jan 16 16:00:00 2007
-//  Author    : Nicolas Geimer & Aurélien Motteux (OCC)
+//  Author    : Nicolas Geimer & AurÃ©lien Motteux (OCC)
 //  Module    : SMESH
 //
 #ifndef _SMESH_OCTREE_HXX_
