@@ -107,14 +107,14 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     );
     ADD_PROPERTY_TYPE(
         ArrowHeight,
-        (static_cast<float>(Preferences::defaultArrowHeight()) * 0.5f),
+        (Preferences::defaultArrowHeight()),
         agroup,
         App::Prop_None,
         "Height of arrow indicators"
     );
     ADD_PROPERTY_TYPE(
         ArrowRadius,
-        (static_cast<float>(Preferences::defaultArrowRadius()) * 0.5f),
+        (Preferences::defaultArrowRadius()),
         agroup,
         App::Prop_None,
         "Radius of arrow indicators"
