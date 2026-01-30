@@ -182,7 +182,7 @@
               <number>100</number>
             </property>
             <property name="value">
-              <number>2</number>
+              <number>6</number>
             </property>
             <property name="prefEntry" stdset="0">
               <cstring>DefaultArrowRadius</cstring>
@@ -214,7 +214,7 @@
               <number>100</number>
             </property>
             <property name="value">
-              <number>4</number>
+              <number>18</number>
             </property>
             <property name="prefEntry" stdset="0">
               <cstring>DefaultArrowHeight</cstring>

@@ -55,7 +55,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-
+#include <Inventor/nodes/SoScale.h>
 
 #include <Precision.hxx>
 #include <Geom_Curve.hxx>
@@ -79,6 +79,7 @@
 
 #include <Mod/Measure/App/Preferences.h>
 
+#include "SoScreenSpaceScale.h"
 #include "ViewProviderMeasureAngle.h"
 
 
@@ -337,9 +338,31 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pLightModel->model.setValue(SoLightModel::BASE_COLOR);
     pArrowNode->addChild(pLightModel);
 
-    auto pMaterial = new SoMaterial();
-    pMaterial->diffuseColor.setValue(1.0f, 1.0f, 1.0f);
-    pArrowNode->addChild(pMaterial);
+    // apply zoom based scaling
+    auto pScreenSpaceScale = new SoScreenSpaceScale();
+    pScreenSpaceScale->referenceSize.setValue(1.0f);  // 1 unit = 1 pixel
+    pArrowNode->addChild(pScreenSpaceScale);
+
+    // scale arrows based on arc length prevent overlap
+    auto pScaleCalc = new SoCalculator();
+    pScaleCalc->a.connectFrom(&calculatorRadius->oa);
+    pScaleCalc->b.connectFrom(&fieldAngle);
+    pScaleCalc->c.connectFrom(&fieldArrowHeight);
+    pScaleCalc->d.connectFrom(&pScreenSpaceScale->finalScale);
+    pScaleCalc->expression.setValue("ta = (a*b)/(3*c*d);tb = ta<1?ta:1; oA = vec3f(tb, tb, tb)");
+
+    auto pScale = new SoScale();
+    pScale->scaleFactor.connectFrom(&pScaleCalc->oA);
+    pArrowNode->addChild(pScale);
+
+    // Offset cone tip
+    auto pTipOffsetCalc = new SoCalculator();
+    pTipOffsetCalc->a.connectFrom(&fieldArrowHeight);
+    pTipOffsetCalc->expression.setValue("oA = vec3f(0, -a*0.5, 0)");
+
+    auto pTipOffsetTrans = new SoTranslation();
+    pTipOffsetTrans->translation.connectFrom(&pTipOffsetCalc->oA);
+    pArrowNode->addChild(pTipOffsetTrans);
 
     // Create cone shape as Arrow
     auto pCone = new SoCone();
@@ -366,16 +389,6 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     rightRotCalc->angle.connectFrom(&fieldAngle);
     pRightArrowTrans->rotation.connectFrom(&rightRotCalc->rotation);
 
-    // Consolidated arrow position calculator
-    auto arrowPosCalc = new SoCalculator();
-    arrowPosCalc->a.connectFrom(&calculatorRadius->oa);
-    arrowPosCalc->b.connectFrom(&fieldAngle);
-    arrowPosCalc->c.connectFrom(&fieldArrowHeight);
-    arrowPosCalc->expression.setValue(
-        "oA=vec3f(a, c*0.5, 0); oB=vec3f(a*cos(b)+c*0.5*sin(b), a*sin(b)-c*0.5*cos(b), 0)"
-    );
-    pLeftArrowTrans->translation.connectFrom(&arrowPosCalc->oA);
-    pRightArrowTrans->translation.connectFrom(&arrowPosCalc->oB);
 
     // normal for faces
     auto pNormalsSeparator = new SoSeparator();
@@ -396,6 +409,10 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     tipCalc->a.connectFrom(&calculatorRadius->oa);
     tipCalc->b.connectFrom(&fieldAngle);
     tipCalc->expression.setValue("oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0)");
+
+    // set arrow position
+    pLeftArrowTrans->translation.connectFrom(&tipCalc->oA);
+    pRightArrowTrans->translation.connectFrom(&tipCalc->oB);
 
     auto leftArrowGlobal = new SoTransformVec3f();
     leftArrowGlobal->matrix.connectFrom(&fieldNormalMatrix);
@@ -434,8 +451,8 @@ void ViewProviderMeasureAngle::redrawAnnotation()
     this->fieldAngle = Base::toRadians(angleDeg);
 
     // update arrow sizes from preferences, (same arrow size for all)
-    ArrowHeight.setValue(static_cast<float>(Measure::Preferences::defaultArrowHeight()) * 0.5f);
-    ArrowRadius.setValue(static_cast<float>(Measure::Preferences::defaultArrowRadius()) * 0.5f);
+    ArrowHeight.setValue(Measure::Preferences::defaultArrowHeight());
+    ArrowRadius.setValue(Measure::Preferences::defaultArrowRadius());
 
     auto loc1 = obj->location1();
     auto loc2 = obj->location2();
