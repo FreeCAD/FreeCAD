@@ -432,9 +432,13 @@ App::DocumentObjectExecReturn* Transformed::execute()
             auto shapes = getTransformedCompShape(supportShape, supportShape);
             if (OCCTProgressIndicator::getAppIndicator().UserBreak()) {
                 return new App::DocumentObjectExecReturn("User aborted");
-            }
+            }// check if shapes are valid for fusion
+          if (!shapes.empty()){
             supportShape.makeElementFuse(shapes);
-            break;
+          } else{
+            Base::Console().Warning("Transformation generated no valid shapes to fuse.\n");
+          }
+          break;
         }
     }
 
