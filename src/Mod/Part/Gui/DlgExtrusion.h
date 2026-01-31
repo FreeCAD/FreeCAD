@@ -31,6 +31,8 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Part/App/FeatureExtrusion.h>
+#include <Gui/ExpressionBinding.h>
+#include <Gui/QuantitySpinBox.h>
 
 
 class TopoDS_Shape;
@@ -46,6 +48,9 @@ class DlgExtrusion: public QDialog, public Gui::SelectionObserver
 public:
     DlgExtrusion(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgExtrusion() override;
+    void bindToObject(Part::Extrusion* obj);
+    void createPreviewObject();
+    void setupExpressionBindings(Part::Extrusion* obj);
     void accept() override;
     void apply();
     void reject() override;
@@ -102,6 +107,8 @@ private:
     std::string document, label;
     class EdgeSelection;
     EdgeSelection* filter;
+    std::vector<Gui::ExpressionBinding*> bindings;
+    Part::Extrusion* extrudeObject = nullptr;
 };
 
 class TaskExtrusion: public Gui::TaskView::TaskDialog
