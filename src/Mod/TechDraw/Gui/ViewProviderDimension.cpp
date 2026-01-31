@@ -179,7 +179,8 @@ void ViewProviderDimension::updateData(const App::Property* prop)
         prop == &(getViewObject()->EqualTolerance) ||
         prop == &(getViewObject()->OverTolerance) ||
         prop == &(getViewObject()->UnderTolerance) ||
-        prop == &(getViewObject()->Inverted)) {
+        prop == &(getViewObject()->Inverted) ||
+        prop == &(getViewObject()->ShowSupplementary)) {
 
         QGIView* qgiv = getQView();
         if (qgiv) {

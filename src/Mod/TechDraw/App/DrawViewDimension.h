@@ -81,6 +81,7 @@ public:
 
     App::PropertyBool TheoreticalExact;
     App::PropertyBool Inverted;
+    App::PropertyBool ShowSupplementary;
     App::PropertyString FormatSpec;
     App::PropertyString FormatSpecOverTolerance;
     App::PropertyString FormatSpecUnderTolerance;
