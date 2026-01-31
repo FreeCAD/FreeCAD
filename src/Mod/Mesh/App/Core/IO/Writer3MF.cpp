@@ -29,6 +29,7 @@
 #include "Core/Evaluation.h"
 #include "Core/MeshKernel.h"
 #include <Base/Tools.h>
+#include <Base/XMLTools.h>
 
 #include "Writer3MF.h"
 
@@ -74,11 +75,11 @@ void Writer3MF::Finish(std::ostream& str)
     str << "</model>\n";
 }
 
-bool Writer3MF::AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat)
+bool Writer3MF::AddMesh(const MeshKernel& mesh, const Base::Matrix4D& mat, const std::string& name)
 {
     int id = ++objectIndex;
     SaveBuildItem(id, mat);
-    return SaveObject(zip, id, mesh);
+    return SaveObject(zip, id, mesh, name);
 }
 
 void Writer3MF::AddResource(const Resource3MF& res)
@@ -111,7 +112,7 @@ bool Writer3MF::Save()
     return true;
 }
 
-bool Writer3MF::SaveObject(std::ostream& str, int id, const MeshKernel& mesh) const
+bool Writer3MF::SaveObject(std::ostream& str, int id, const MeshKernel& mesh, const std::string& name) const
 {
     // NOLINTBEGIN(readability-magic-numbers, cppcoreguidelines-avoid-magic-numbers)
     const MeshPointArray& rPoints = mesh.GetPoints();
@@ -121,7 +122,11 @@ bool Writer3MF::SaveObject(std::ostream& str, int id, const MeshKernel& mesh) co
         return false;
     }
 
-    str << Base::blanks(2) << "<object id=\"" << id << "\" type=\"" << GetType(mesh) << "\">\n";
+    str << Base::blanks(2) << "<object id=\"" << id << "\" type=\"" << GetType(mesh) << "\"";
+    if (!name.empty()) {
+        str << " name=\"" << XMLTools::escapeXml(name) << "\"";
+    }
+    str << ">\n";
     str << Base::blanks(3) << "<mesh>\n";
 
     // vertices
