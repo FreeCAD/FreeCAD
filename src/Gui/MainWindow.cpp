@@ -1094,6 +1094,25 @@ void MainWindow::showDocumentation(const QString& help)
     }
 }
 
+static View3DInventorViewer* spaceballMotionEventTarget()
+{
+    // check if the active window has a 3d view
+
+    if (auto viewer = getMainWindow()->activeWindow()->findChild<View3DInventorViewer*>()) {
+        return viewer;
+    }
+
+    // check active view for the document
+
+    if (Gui::Document* doc = Application::Instance->activeDocument()) {
+        if (auto view = dynamic_cast<View3DInventor*>(doc->getActiveView())) {
+            return view->getViewer();
+        }
+    }
+
+    return nullptr;
+}
+
 bool MainWindow::event(QEvent* e)
 {
     if (e->type() == QEvent::EnterWhatsThisMode) {
@@ -1163,15 +1182,7 @@ bool MainWindow::event(QEvent* e)
             return true;
         }
         motionEvent->setHandled(true);
-        Gui::Document* doc = Application::Instance->activeDocument();
-        if (!doc) {
-            return true;
-        }
-        auto temp = dynamic_cast<View3DInventor*>(doc->getActiveView());
-        if (!temp) {
-            return true;
-        }
-        View3DInventorViewer* view = temp->getViewer();
+        View3DInventorViewer* view = spaceballMotionEventTarget();
         if (view) {
             Spaceball::MotionEvent anotherEvent(*motionEvent);
             qApp->sendEvent(view, &anotherEvent);
