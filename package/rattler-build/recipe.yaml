@@ -1,9 +1,14 @@
 context:
-  version: "1.1.0dev"
+  version: '1.1.0dev'
+  # Qt version for modern platforms (macOS 15+, Linux, Windows).
+  # Update these two when adopting a newer Qt (e.g. 6.9/6.10).
+  # Legacy macOS (Big Sur) is pinned to Qt 6.7 via variants.yaml.
+  qt6_ver: '6.8'
+  qt6_ver_max: '6.9'
 
 package:
   name: freecad
-  version: "${{ version }}"
+  version: '${{ version }}'
 
 source:
   path: ../..
@@ -21,7 +26,7 @@ requirements:
     - ninja
     - noqt5
     - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=${{ qt6_ver }},<${{ qt6_ver_max }}
     - swig>=4.3,<4.4
 
     - if: linux and x86_64
@@ -52,7 +57,7 @@ requirements:
         - pixman-cos7-x86_64
         - sed
         - sysroot_linux-64
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor==0.1.5 ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-x86_64
         - xorg-x11-server-xvfb-cos7-x86_64
         - xorg-xproto
@@ -85,14 +90,14 @@ requirements:
         - pixman-cos7-aarch64
         - sed
         - sysroot_linux-aarch64
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor==0.1.5 ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
         - xorg-x11-server-common-cos7-aarch64
         - xorg-x11-server-xvfb-cos7-aarch64
         - xorg-xproto
 
     - if: osx and x86_64
       then:
-        - __osx >=10.13
+        - __osx >=11.0
 
     - if: build_platform != target_platform
       then:
@@ -116,7 +121,7 @@ requirements:
     - pybind11
     - pyside6
     - python>=3.11,<3.12
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=${{ qt6_ver }},<${{ qt6_ver_max }}
     - six
     - smesh
     - vtk
@@ -167,7 +172,7 @@ requirements:
     - python>=3.11,<3.12
     - pythonocc-core
     - pyyaml
-    - qt6-main>=6.8,<6.9
+    - qt6-main>=${{ qt6_ver }},<${{ qt6_ver_max }}
     - requests
     - scipy
     - sympy
@@ -179,4 +184,4 @@ requirements:
       then:
         - libspnav
         - qt6-wayland
-        - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
+        - xcb-util-cursor==0.1.5 ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726

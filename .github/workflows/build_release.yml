@@ -95,7 +95,7 @@ jobs:
         include:
           - { target: linux-64, os: ubuntu-22.04 }
           - { target: linux-arm64, os: ubuntu-22.04-arm }
-          - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
+          - { target: osx-64, os: macos-15-intel, deploy_target: "11.0" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
           - { target: win-64, os: windows-latest }
@@ -202,6 +202,11 @@ jobs:
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
+          # ARM legacy build (Big Sur): swap to Qt 6.7 variants + matching lock file.
+          if [[ "${{ matrix.target }}" == "osx-arm64" && "${{ matrix.deploy_target }}" == "11.0" ]]; then
+            cp variants_macos_arm64_legacy.yaml variants.yaml
+            cp pixi.lock.arm64-legacy pixi.lock
+          fi
           pixi install
           pixi run -e package create_bundle
 
