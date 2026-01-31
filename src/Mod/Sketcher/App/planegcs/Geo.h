@@ -52,6 +52,7 @@ public:
     double* y;
     int PushOwnParams(VEC_pD& pvec) const;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt);
+    bool operator==(const Point& other) const;
 };
 
 using VEC_P = std::vector<Point>;
@@ -207,6 +208,10 @@ class SketcherExport Line: public Curve
 public:
     Point p1;
     Point p2;
+
+    Line() = default;
+    Line(Point p1_, Point p2_);
+
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
@@ -219,6 +224,10 @@ class SketcherExport Circle: public Curve
 public:
     Point center;
     double* rad {nullptr};
+
+    Circle() = default;
+    Circle(Point center_, double* rad_);
+
     DeriVector2 CalculateNormal(const Point& p, const double* derivparam = nullptr) const override;
     DeriVector2 Value(double u, double du, const double* derivparam = nullptr) const override;
     int PushOwnParams(VEC_pD& pvec) override;
@@ -236,6 +245,10 @@ public:
     Point start;
     Point end;
     // Point center; //inherited
+
+    Arc() = default;
+    Arc(Point center_, double* rad_, Point start_, Point end_, double* startAngle_, double* endAngle_);
+
     int PushOwnParams(VEC_pD& pvec) override;
     void ReconstructOnNewPvec(VEC_pD& pvec, int& cnt) override;
     Arc* Copy() override;

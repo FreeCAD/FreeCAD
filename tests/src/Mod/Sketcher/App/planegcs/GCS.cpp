@@ -40,7 +40,7 @@ TEST_F(GCSTest, clearConstraints)  // NOLINT
     // Arrange
     const size_t numConstraints {100};
     for (size_t i = 0; i < numConstraints; ++i) {
-        System()->addConstraint(new GCS::Constraint());
+        System()->addConstraint(new GCS::Constraint(GCS::None));
     }
     ASSERT_EQ(numConstraints, System()->getNumberOfConstraints());
 
