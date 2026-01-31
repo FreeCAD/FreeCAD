@@ -874,6 +874,10 @@ double ConstraintP2LDistance::grad(double* param)
 
     if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
         || param == p2y()) {
+        if (!p0x() || !p0y() || !p1x() || !p1y() || !p2x() || !p2y()) {
+            return 0.0;  // Avoid crash if geometry is missing
+        }
+
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
         double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
         double dx = x2 - x1;
