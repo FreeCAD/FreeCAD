@@ -973,7 +973,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+      <translation>Define un nivel de acercamiento para la vista de tablas entre 60% y 160%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>

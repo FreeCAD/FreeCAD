@@ -5565,20 +5565,20 @@ en az 1 profil ve bir kenar veya tel seçin.</translation>
       <translation>%1'i düzenle</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation>Part and Part Design Çalışma Tezgahı</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation>Parça/Parça Tasarımı</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation>İçe-Dışa Aktar</translation>
     </message>
@@ -6664,12 +6664,12 @@ bir bileşiğin içindeki şekillerle 'dışlayıcı VEYA' (XOR) Boole işlemi y
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation>Parça ekstrüzyon yüz ölçümü</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Yüzleri deliklerle destekleme desteği, iç içe yerleştirmeyi desteklemez.</translation>
     </message>

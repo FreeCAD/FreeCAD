@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../CommandTest.cpp" line="705"/>
       <source>Test Console Output</source>
-      <translation type="unfinished">Test Console Output</translation>
+      <translation>Έξοδος Κονσόλας Δοκιμών</translation>
     </message>
     <message>
       <location filename="../CommandTest.cpp" line="706"/>
@@ -115,7 +115,7 @@
     <message>
       <location filename="../CommandStructure.cpp" line="205"/>
       <source>Add a variable set</source>
-      <translation type="unfinished">Add a variable set</translation>
+      <translation>Προσθήκη συνόλου μεταβλητών</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1085"/>
@@ -133,7 +133,7 @@
       <location filename="../TaskTransform.cpp" line="808"/>
       <location filename="../Transform.cpp" line="108"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3157"/>
@@ -169,12 +169,12 @@
     <message>
       <location filename="../CommandView.cpp" line="956"/>
       <source>Toggle Transparency</source>
-      <translation type="unfinished">Toggle Transparency</translation>
+      <translation>Εναλλαγή Διαφάνειας</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1075"/>
       <source>Toggle Selectability</source>
-      <translation type="unfinished">Toggle Selectability</translation>
+      <translation>Εναλλαγή Επιλογής</translation>
     </message>
   </context>
   <context>
@@ -247,12 +247,12 @@
     <message>
       <location filename="../Workbench.cpp" line="583"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="584"/>
       <source>Measure</source>
-      <translation>Μετρήστε</translation>
+      <translation>Μέτρηση</translation>
     </message>
   </context>
   <context>
@@ -270,22 +270,22 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
       <source>Global sensitivity</source>
-      <translation type="unfinished">Global sensitivity</translation>
+      <translation>Γενική ευαισθησία</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="54"/>
       <source>Dominant mode</source>
-      <translation type="unfinished">Dominant mode</translation>
+      <translation>Κυρίαρχη λειτουργία</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="72"/>
       <source>Enable translations</source>
-      <translation type="unfinished">Enable translations</translation>
+      <translation>Ενεργοποίηση μεταφράσεων</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="82"/>
       <source>Enable rotations</source>
-      <translation type="unfinished">Enable rotations</translation>
+      <translation>Ενεργοποίηση περιστροφών</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="107"/>
@@ -323,7 +323,7 @@
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="26"/>
       <source>Expression Editor</source>
-      <translation type="unfinished">Expression Editor</translation>
+      <translation>Επεξεργαστής Εκφρασης</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
@@ -788,7 +788,7 @@ while doing a left or right click and move the mouse up or down</translation>
       <location filename="../Clipping.ui" line="122"/>
       <location filename="../Clipping.ui" line="167"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="55"/>
@@ -924,7 +924,7 @@ while doing a left or right click and move the mouse up or down</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Προσθήκη ιδιότητας</translation>
     </message>
@@ -954,37 +954,37 @@ while doing a left or right click and move the mouse up or down</translation>
       <translation>Όνομα</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation type="unfinished">Invalid group name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation type="unfinished">Invalid type name</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation type="unfinished">Invalid property name '%1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation type="unfinished">Property '%1' already exists</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation type="unfinished">'%1' is a constant</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation type="unfinished">'%1' is a unit</translation>
     </message>
@@ -4574,7 +4574,7 @@ A larger value makes it easier to select elements, but may prevent selection of 
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -5173,7 +5173,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="702"/>
       <source>Change Value</source>
-      <translation>Change Value</translation>
+      <translation>Αλλαγή Τιμής</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="707"/>
@@ -5470,7 +5470,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Transform.cpp" line="322"/>
       <location filename="../Transform.cpp" line="460"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
   </context>
   <context>
@@ -5622,7 +5622,7 @@ originally selected prior to opening this dialog</translation>
       <location filename="../ReportView.cpp" line="645"/>
       <location filename="../ReportView.cpp" line="680"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Σφάλματα</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="655"/>
@@ -6839,7 +6839,7 @@ Exit without saving all data?</translation>
     <message>
       <location filename="../EditorView.cpp" line="817"/>
       <source>Previous</source>
-      <translation>Previous</translation>
+      <translation>Προηγούμενο</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="818"/>
@@ -7845,7 +7845,7 @@ Specify another directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="703"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="733"/>
@@ -8035,7 +8035,7 @@ Check the report view for more details.</translation>
     <message>
       <location filename="../Application.cpp" line="1256"/>
       <source>There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</source>
-      <translation type="unfinished">There were serious errors while loading the file. Some data might have been modified or not recovered at all. Saving the project will most likely result in loss of data.</translation>
+      <translation>Υπήρξαν σοβαρά σφάλματα κατά τη φόρτωση του αρχείου. Ορισμένα δεδομένα ενδέχεται να έχουν τροποποιηθεί ή να μην έχουν ανακτηθεί καθόλου. Η αποθήκευση του έργου πιθανότατα θα οδηγήσει σε απώλεια δεδομένων.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="236"/>
@@ -8327,7 +8327,7 @@ Continue?</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1303"/>
       <source>Change Value</source>
-      <translation>Change Value</translation>
+      <translation>Αλλαγή Τιμής</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="454"/>
@@ -8373,7 +8373,7 @@ Continue?</translation>
       <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1412"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8382,44 +8382,44 @@ Continue?</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1413"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation type="unfinished">Are you sure you want to continue?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1439"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation type="unfinished">Check report view for more…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1443"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation type="unfinished">Physical path:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1444"/>
       <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation type="unfinished">Document:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1445"/>
       <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Διαδρομή:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1463"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation type="unfinished">Identical physical path</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1475"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation type="unfinished">Could not save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1476"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8432,107 +8432,107 @@ Would you like to save the file with a different name?</source>
 Would you like to save the file with a different name?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1490"/>
-      <location filename="../Document.cpp" line="1648"/>
-      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1655"/>
+      <location filename="../Document.cpp" line="1757"/>
       <source>Saving aborted</source>
       <translation>Η αποθήκευση διεκόπη</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1536"/>
+      <location filename="../Document.cpp" line="1543"/>
       <source>Save dependent files</source>
       <translation>Save dependent files</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1537"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>The file contains external dependencies. Do you want to save the dependent files, too;</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
-      <location filename="../Document.cpp" line="1641"/>
+      <location filename="../Document.cpp" line="1590"/>
+      <location filename="../Document.cpp" line="1648"/>
       <source>Saving document failed</source>
       <translation>Αποτυχία αποθήκευσης εγγράφου</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
       <translation type="unfinished">Save document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1725"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save a copy of the document under new filename…</source>
       <translation type="unfinished">Save a copy of the document under new filename…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1607"/>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1614"/>
+      <location filename="../Document.cpp" line="1737"/>
       <source>Save %1 Document</source>
       <translation>Αποθήκευση Εγγράφου %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1609"/>
+      <location filename="../Document.cpp" line="1616"/>
       <source>Document</source>
       <translation>Έγγραφο</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1663"/>
-      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1670"/>
+      <location filename="../Document.cpp" line="1720"/>
       <source>Failed to save document</source>
       <translation>Failed to save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1664"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Documents contains cyclic dependencies. Do you still want to save them;</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1739"/>
       <source>%1 document (*.FCStd)</source>
       <translation>έγγραφο %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2406"/>
+      <location filename="../Document.cpp" line="2413"/>
       <source>Document not closable</source>
       <translation>Το έγγραφο δεν κλείνει</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2407"/>
+      <location filename="../Document.cpp" line="2414"/>
       <source>The document is not closable for the moment.</source>
       <translation>Το έγγραφο δεν κλείνει προς το παρόν.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2447"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation type="unfinished">Failed to save document '%1'. Would you like to cancel the closure?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2449"/>
+      <location filename="../Document.cpp" line="2456"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation type="unfinished">Document saving failed. Would you like to cancel the closure?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2461"/>
       <source>Unable to save document</source>
       <translation type="unfinished">Unable to save document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
       <translation type="unfinished">Undo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
       <translation type="unfinished">Redo</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2814"/>
+      <location filename="../Document.cpp" line="2821"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>There are grouped transactions in the following documents with other preceding transactions</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2819"/>
+      <location filename="../Document.cpp" line="2826"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8577,7 +8577,7 @@ Choose 'Abort' to abort</source>
     <message>
       <location filename="../MouseSelection.cpp" line="365"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="383"/>
@@ -8634,7 +8634,7 @@ Choose 'Abort' to abort</source>
       <location filename="../ViewProviderLink.cpp" line="3184"/>
       <location filename="../ViewProviderDragger.cpp" line="127"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="886"/>
@@ -8745,12 +8745,12 @@ Choose 'Abort' to abort</source>
       <translation>Failed to import all links</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Add property</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Failed to add property to '%1': %2</translation>
     </message>
@@ -9037,7 +9037,7 @@ the current copy will be lost.
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="96"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>Κλείσιμο αυτού του διαλόγου?</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
@@ -10438,7 +10438,7 @@ Additionally, pop-up notifications can be disabled. In this case the user can st
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="218"/>
       <source>Errors intended for developers will appear in the notification area.</source>
-      <translation type="unfinished">Errors intended for developers will appear in the notification area.</translation>
+      <translation>Τα σφάλματα που προορίζονται για προγραμματιστές θα εμφανίζονται στην περιοχή ειδοποιήσεων.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="237"/>
@@ -10593,7 +10593,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="81"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
@@ -10641,7 +10641,7 @@ after FreeCAD launches</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="80"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="100"/>
@@ -11326,7 +11326,7 @@ display the splash screen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="497"/>
       <source>Manage</source>
-      <translation type="unfinished">Manage</translation>
+      <translation>Διαχείριση</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="504"/>
@@ -11553,7 +11553,7 @@ on-screen while displaying the log message</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="422"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Σφάλματα</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsReportView.ui" line="501"/>
@@ -12012,7 +12012,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -12282,7 +12282,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="25"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Σύστημα συντεταγμένων</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="36"/>
@@ -12341,7 +12341,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="262"/>
       <source>Rotate</source>
-      <translation>Περιστρέψτε</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="288"/>
@@ -12478,7 +12478,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../TaskTransform.cpp" line="87"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
     <message>
       <location filename="../TaskTransform.cpp" line="172"/>
@@ -12539,7 +12539,7 @@ the region are non-opaque.</translation>
       <location filename="../InputHintWidget.cpp" line="252"/>
       <source>Enter</source>
       <extracomment>Keyboard key for numpad Enter</extracomment>
-      <translation type="unfinished">Enter</translation>
+      <translation>Εισαγωγή</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="254"/>
@@ -13046,7 +13046,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1673"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1675"/>
@@ -14404,7 +14404,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Tree.cpp" line="4180"/>
       <source>Tree View</source>
-      <translation type="unfinished">Tree View</translation>
+      <translation>Προβολή Δενδροδιαγράμματος</translation>
     </message>
   </context>
   <context>

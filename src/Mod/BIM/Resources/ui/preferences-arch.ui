@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>General Settings</string>
+   <string>General</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_1">
    <item>
@@ -71,7 +71,7 @@
       <item row="3" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_UseMaterialColor">
         <property name="toolTip">
-         <string>If this is checked, when an Arch object has a material, the object will take the color of the material. This can be overridden for each object.</string>
+         <string>If this is checked, when a BIM object has a material, the object will take the color of the material. This can be overridden for each object.</string>
         </property>
         <property name="text">
          <string>Use material color as shape color</string>
@@ -90,7 +90,7 @@
       <item row="4" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_applyconstructionStyle">
         <property name="toolTip">
-         <string>If this is checked, when an object becomes subtraction or addition of an Arch object, it will receive the Draft construction color.</string>
+         <string>If this is checked, when an object becomes subtraction or addition of a BIM object, it will receive the Draft construction color.</string>
         </property>
         <property name="text">
          <string>Apply Draft construction style to subcomponents</string>

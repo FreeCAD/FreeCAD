@@ -157,7 +157,7 @@ class IFC_MakeProject:
         objs = FreeCADGui.Selection.getSelection()
         sf = QtGui.QFileDialog.getSaveFileName(
             None,
-            "Save an IFC file",
+            "Save an IFC File",
             None,
             "Industry Foundation Classes (*.ifc)",
         )
