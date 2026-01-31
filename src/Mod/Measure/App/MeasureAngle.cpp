@@ -233,7 +233,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
     Base::Vector3d vec2;
     getVec(*ob2, subs2.at(0), vec2);
 
-    if (vec1.IsParallel(vec2, Precision::Angular())) {
+    if (vec1.IsParallel(vec2, Base::Precision::Angular())) {
         // handle case when both vectors are parallel
         Angle.setValue(0);
     }
