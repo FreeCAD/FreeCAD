@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREOFFSET_H
-#define PART_FEATUREOFFSET_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 
@@ -88,4 +87,3 @@ public:
 };
 
 }  // namespace Part
-#endif  // PART_FEATUREOFFSET_H

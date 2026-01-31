@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4TRIANGLE3_H
-#define WM4TRIANGLE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -54,5 +53,3 @@ typedef Triangle3<float> Triangle3f;
 typedef Triangle3<double> Triangle3d;
 
 }
-
-#endif

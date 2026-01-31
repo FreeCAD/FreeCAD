@@ -21,8 +21,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderMirrored_H
-#define PARTGUI_ViewProviderMirrored_H
+#pragma once
 
 #include "ViewProviderTransformed.h"
 
@@ -51,6 +50,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderMirrored_H

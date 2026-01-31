@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_PROPERTYMATERIAL_H
-#define MATERIAL_PROPERTYMATERIAL_H
+#pragma once
 
 #include <App/Property.h>
 #include <Base/Reader.h>
@@ -99,5 +98,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_PROPERTYMATERIAL_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONENGINE_H
-#define EXPRESSIONENGINE_H
+#pragma once
 
 #include <functional>
 #include <set>
@@ -251,5 +250,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // EXPRESSIONENGINE_H

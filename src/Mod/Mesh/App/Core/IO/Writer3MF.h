@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESH_IO_WRITER_3MF_H
-#define MESH_IO_WRITER_3MF_H
+#pragma once
 
 #include <Mod/Mesh/MeshGlobal.h>
 #include <iosfwd>
@@ -110,6 +109,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_IO_WRITER_3MF_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONEDITOR_H
-#define GUI_PYTHONEDITOR_H
+#pragma once
 
 #include "SyntaxHighlighter.h"
 #include "TextEdit.h"
@@ -93,5 +92,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONEDITOR_H

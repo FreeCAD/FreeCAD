@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CAMSimulator_CAMSim_H
-#define CAMSimulator_CAMSim_H
+#pragma once
 
 #include <memory>
 #include <TopoDS_Shape.hxx>
@@ -75,6 +74,3 @@ public:
 };
 
 }  // namespace CAMSimulator
-
-
-#endif  // CAMSimulator_CAMSim_H

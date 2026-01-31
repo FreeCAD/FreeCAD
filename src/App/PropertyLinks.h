@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYLINKS_H
-#define APP_PROPERTYLINKS_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -1653,6 +1652,3 @@ private:
 };
 
 }  // namespace App
-
-
-#endif  // APP_PROPERTYLINKS_H

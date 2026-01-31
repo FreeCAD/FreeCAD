@@ -27,10 +27,8 @@
  *  This file keeps the makefiles and project files cleaner.
  */
 
-
-#ifndef FC_CONFIG_H
-#define FC_CONFIG_H
-
+#pragma once
+ 
 
 //**************************************************************************
 // switching the operating systems
@@ -277,5 +275,3 @@ typedef unsigned __int64    uint64_t;
 #endif
 
 #endif
-
-#endif //FC_CONFIG_H

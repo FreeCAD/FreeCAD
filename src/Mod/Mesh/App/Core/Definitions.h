@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_DEFINITIONS_H
-#define MESH_DEFINITIONS_H
+#pragma once
 
 #ifndef MESH_GLOBAL_H
 # include <Mod/Mesh/MeshGlobal.h>
@@ -81,5 +80,3 @@ public:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_DEFINITIONS_H

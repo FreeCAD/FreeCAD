@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSION_H
-#define EXPRESSION_H
+#pragma once
 
 #include <deque>
 #include <set>
@@ -230,5 +229,3 @@ public:
 };
 
 }
-
-#endif // EXPRESSION_H

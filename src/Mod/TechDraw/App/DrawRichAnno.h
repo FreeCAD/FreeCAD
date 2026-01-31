@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawRichAnno_h_
-#define TechDraw_DrawRichAnno_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -68,4 +67,3 @@ private:
 using DrawRichAnnoPython = App::FeaturePythonT<DrawRichAnno>;
 
 } //namespace TechDraw
-#endif

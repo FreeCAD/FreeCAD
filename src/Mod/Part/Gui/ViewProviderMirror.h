@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERMIRROR_H
-#define PARTGUI_VIEWPROVIDERMIRROR_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -222,6 +221,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERMIRROR_H

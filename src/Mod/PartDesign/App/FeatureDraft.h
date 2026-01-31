@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FEATUREDRAFT_H
-#define PARTDESIGN_FEATUREDRAFT_H
+#pragma once
 
 #include <gp_Pln.hxx>
 #include <gp_Dir.hxx>
@@ -88,6 +87,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FEATUREDRAFT_H

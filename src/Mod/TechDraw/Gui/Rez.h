@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_REZ_H
-#define DRAWINGGUI_REZ_H
+#pragma once
 
 #include <QPointF>
 #include <QRectF>
@@ -65,4 +64,3 @@ private:
 };
 
 } //end namespace TechDrawGui
-#endif

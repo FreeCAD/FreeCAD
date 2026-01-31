@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatum_H
-#define PARTGUI_ViewProviderDatum_H
+#pragma once
 
 #include "Gui/ViewProviderGeometryObject.h"
 #include <Base/BoundBox.h>
@@ -150,6 +149,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDatum_H

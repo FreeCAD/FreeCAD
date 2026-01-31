@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_DYNAMICPROPERTY_H_
-#define SRC_APP_DYNAMICPROPERTY_H_
+#pragma once
 
 #include <map>
 #include <string>
@@ -229,5 +228,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // SRC_APP_DYNAMICPROPERTY_H_

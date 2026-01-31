@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskAssemblyMessages_H
-#define GUI_TASKVIEW_TaskAssemblyMessages_H
+#pragma once
 
 #include <Gui/TaskView/TaskSolverMessages.h>
 
@@ -51,5 +50,3 @@ protected:
 };
 
 }  // namespace AssemblyGui
-
-#endif  // GUI_TASKVIEW_TaskAssemblyMessages_H

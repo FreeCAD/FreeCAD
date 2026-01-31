@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __glutils_h__
-#define __glutils_h__
+#pragma once
 #include "OpenGlWrapper.h"
 #include "linmath.h"
 
@@ -69,4 +68,3 @@ extern int gDebug;
 extern int gWindowSizeW;
 extern int gWindowSizeH;
 }  // namespace MillSim
-#endif  // !__glutils_h__

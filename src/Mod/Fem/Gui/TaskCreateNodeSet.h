@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskCreateNodeSet_H
-#define GUI_TASKVIEW_TaskCreateNodeSet_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Fem/App/FemSetNodesObject.h>
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskCreateNodeSet_H

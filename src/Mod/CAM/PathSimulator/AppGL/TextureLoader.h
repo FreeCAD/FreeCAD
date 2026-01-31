@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __texture_loader_h__
-#define __texture_loader_h__
+#pragma once
 #include <string>
 #include <vector>
 #include <QImage>
@@ -54,4 +53,3 @@ protected:
 };
 
 }  // namespace MillSim
-#endif  // !__texture_loader_h__

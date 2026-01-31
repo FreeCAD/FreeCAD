@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskLoftParameters_H
-#define GUI_TASKVIEW_TaskLoftParameters_H
+#pragma once
 
 #include "TaskSketchBasedParameters.h"
 #include "ViewProviderLoft.h"
@@ -109,5 +108,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

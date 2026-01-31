@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef __millsimulation__h__
-#define __millsimulation__h__
+#pragma once
 
 #include "MillMotion.h"
 #include "GCodeParser.h"
@@ -144,4 +143,3 @@ protected:
     bool mSingleStep = false;
 };
 }  // namespace MillSim
-#endif

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_DATUMSHAPE_H
-#define PARTDESIGN_DATUMSHAPE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <App/DocumentObserver.h>
@@ -182,6 +181,3 @@ protected:
 using SubShapeBinderPython = App::FeaturePythonT<SubShapeBinder>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_DATUMSHAPE_H

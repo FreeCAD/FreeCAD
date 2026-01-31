@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
-#define GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -109,5 +108,3 @@ public:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSCACHEDIRECTORY_H

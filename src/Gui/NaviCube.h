@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_GUI_NAVICUBE_H_
-#define SRC_GUI_NAVICUBE_H_
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <QColor>
@@ -78,5 +77,3 @@ public:
 private:
     NaviCubeImplementation* m_NaviCubeImplementation;
 };
-
-#endif /* SRC_GUI_NAVICUBE_H_ */

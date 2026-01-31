@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskHelixParameters_H
-#define GUI_TASKVIEW_TaskHelixParameters_H
+#pragma once
 
 #include <Gui/Inventor/Draggers/Gizmo.h>
 
@@ -148,5 +147,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskHelixParameters_H

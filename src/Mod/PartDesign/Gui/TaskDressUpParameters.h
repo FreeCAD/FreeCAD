@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskDressUpParameters_H
-#define GUI_TASKVIEW_TaskDressUpParameters_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskView.h>
@@ -142,5 +141,3 @@ protected:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TaskDressUpParameters_H

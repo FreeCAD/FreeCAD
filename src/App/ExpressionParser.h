@@ -24,8 +24,7 @@
  ****************************************************************************/
 
 
-#ifndef EXPRESSION_PARSER_H
-#define EXPRESSION_PARSER_H
+#pragma once
 
 #include "Expression.h"
 #include <Base/Matrix.h>
@@ -671,5 +670,3 @@ public:
 }  // namespace ExpressionParser
 
 }  // namespace App
-
-#endif  // EXPRESSION_PARSER_H

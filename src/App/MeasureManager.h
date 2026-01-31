@@ -22,8 +22,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MEASUREMANAGER_H
-#define MEASUREMANAGER_H
+#pragma once
 
 
 #include <vector>
@@ -129,5 +128,3 @@ private:
 
 
 }  // namespace App
-
-#endif  // MEASUREMANAGER_H

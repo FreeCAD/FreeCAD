@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef FREECAD_REGEX_HPP_WORKAROUND
-#define FREECAD_REGEX_HPP_WORKAROUND
+#pragma once
 
 #include <boost/version.hpp>
 
@@ -17,5 +16,3 @@
 #endif
 
 #include <boost/regex.hpp>
-
-#endif // #ifndef FREECAD_REGEX_HPP_WORKAROUND

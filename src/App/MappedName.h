@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef APP_MAPPED_NAME_H
-#define APP_MAPPED_NAME_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -1048,6 +1047,3 @@ struct MappedNameRef
 
 
 }  // namespace Data
-
-
-#endif  // APP_MAPPED_NAME_H

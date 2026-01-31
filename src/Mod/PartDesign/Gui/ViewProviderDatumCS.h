@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderDatumCoordinateSystem_H
-#define PARTGUI_ViewProviderDatumCoordinateSystem_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -74,6 +73,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderDatumCoordinateSystem_H
