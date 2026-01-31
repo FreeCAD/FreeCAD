@@ -233,14 +233,19 @@ def export(
                     if hasattr(obj, "__len__"):
                         FreeCAD.Console.PrintMessage(f"{label}: Sub-Links are Unsupported.\n")
                         break
-                elif obj.isDerivedFrom("Part::Feature"):
-                    objShape = obj.Shape.copy(False)
-                    objShape.Placement = linkPlacement
-                    break
                 elif obj.isDerivedFrom("Mesh::Feature"):
                     mesh = obj.Mesh.copy()
                     mesh.Placement = linkPlacement
                     break
+                elif obj.isDerivedFrom("Part::Feature"):
+                    objShape = obj.Shape.copy(False)
+                    objShape.Placement = linkPlacement
+                    break
+                elif obj.isDerivedFrom("App::Part"):
+                    if hasattr(obj, "Shape") and not obj.Shape.isNull():
+                        objShape = obj.Shape.copy(False)
+                        objShape.Placement = linkPlacement
+                        break
 
         objdata = {
             "name": label,
