@@ -120,6 +120,7 @@ private:
     std::vector<std::vector<double*>> pDependentParametersGroups;
 
     std::vector<Constraint*> clist;
+    std::vector<Constraint*> drivenConstraints;
     std::map<Constraint*, VEC_pD> c2p;                // constraint to parameter adjacency list
     std::map<double*, std::vector<Constraint*>> p2c;  // parameter to constraint adjacency list
 
@@ -596,6 +597,8 @@ public:
     int solve(SubSystem* subsysA, SubSystem* subsysB, bool isFine = true, bool isRedundantsolving = false);
 
     void applySolution();
+    void evaluateDrivenConstraints();
+
     void undoSolution();
     // FIXME: looks like XconvergenceFine is not the solver precision, at least in DogLeg
     // solver.
