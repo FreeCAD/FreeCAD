@@ -301,6 +301,12 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     // Note: The original feature is already included in the list of transformations!
     // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
+   // just taken high value like 40
+        if (i > 40) { 
+            Base::Console().Error("Occurrence count too high. Aborting to prevent system hang.\n");
+            break; 
+        }
+        
         if (Mode.getValue() == (int)PolarPatternMode::Spacing) {
             double spacing;
             if (spacings[i - 1] != -1.0) {
