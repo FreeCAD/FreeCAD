@@ -3,6 +3,10 @@
  * @ingroup CORE
  * @brief The part of FreeCAD that works without GUI (console or server mode)
  *
+ * @htmlonly
+ * <div class="textblock">
+ * @endhtmlonly
+ *
  * @details It contains the App namespace and defines core concepts such as
  * @ref ApplicationGroup "Application", @ref DocumentGroup "Document", @ref
  * DocumentObjectGroup "DocumentObject", @ref PropertyFramework "Property
@@ -14,6 +18,10 @@
  * in @ref App::Document "Document" and @ref App::DocumentObject
  * "DocumentObject".  In addition, %App has a representation of the running
  * @ref App::Application "Application".
+ *
+ * @htmlonly
+ * </div>
+ * @endhtmlonly
  */
 
 /**
@@ -227,7 +235,11 @@
  * recomputed.  Since properties may depend on other document objects, for
  * example because of the @ref App::DocumentObject::ExpressionEngine
  * "ExpressionEngine" property, these document objects have to be computed
- * first.  Managing the order of recomputation is managed by the @ref
+ * first.  For more information on the role of expressions in recomputing
+ * document objects, see topic @ref SecExpressionsDocumentObjectRecompute
+ * "Expressions Framework".
+ *
+ * Managing the order of recomputation is managed by the @ref
  * App::Document "Document" which calls the @ref
  * App::DocumentObject::recompute() "recompute()" on the document object.  To
  * signal that a document object needs to be recomputed, the document object
@@ -251,7 +263,7 @@
  * Vice versa, if a property of an object is changed, the InList indicates
  * which other objects depend on it and need to be recomputed.
  *
- * So, as mentioned above, links define dependencies between document objects
+ * So, as mentioned above, links define dependencies between document objects.
  * These dependencies are recorded by means of setting the value of a @ref
  * App::PropertyLink "PropertyLink" (and similar properties) in a document
  * object `Obj` to a document object `Value`.  Within @ref
@@ -466,7 +478,78 @@
 /**
  * @defgroup ExpressionFramework Expressions framework
  * @ingroup APP
- * @brief The expression system allows users to write expressions and formulas that produce values
+ * @brief A system that allows users to write expressions and formulas that produce values.
+ *
+ * One of the differences between @ref DocumentObjectGroup "DocumentObjects"
+ * and @ref DocumentGroup "Documents" as @ref PropertyFramework
+ * "PropertyContainers" is that document objects support expressions whereas
+ * documents do not.  %Document objects have a special hidden property called
+ * @ref App::DocumentObject::ExpressionEngine "ExpressionEngine" of type @ref
+ * App::PropertyExpressionEngine "PropertyExpressionEngine" that contains a
+ * mapping from @ref App::ObjectIdentifier "ObjectIdentifier" to @ref
+ * App::Expression "Expression".  An object identifier defines the property
+ * inside the document object that will hold the result of the expression.  We
+ * can also say that the expression is bound to the property that the object
+ * identifier identifies.
+ *
+ * Expressions can be as simple as `2 + 3`, but typically they reference other
+ * document objects and their properties, such as `Box001.Length` or even
+ * document objects in other documents such as `myDocument#Box001.Length`.
+ *
+ * Since expressions can reference other document objects, they effectively
+ * link to other document objects, potentially in other documents, and as such,
+ * a @ref App::PropertyExpressionEngine "PropertyExpressionEngine" inherits
+ * from the property external link container @ref App::PropertyXLinkContainer
+ * "PropertyXLinkContainer".
+ *
+ * @section SecExpressionsDocumentObjectRecompute The role of expressions in recomputing Documents
+ *
+ * For a high level overview of how document objects recompute, see topics @ref
+ * DependencyGraph "Document" and @ref SecDocumentObjectRecompute "Document
+ * Objects".  On a recompute of a document object, the expressions in the
+ * expression engine are first evaluated by calling the @ref
+ * App::PropertyExpressionEngine::execute "PropertyExpressionEngine::execute()"
+ * function.  This function obtains the values of the properties it references
+ * and evaluates the expression to a value that is stored in the property to
+ * which the expression is bound to.
+ *
+ * Now that the properties of the document objects have been updated according
+ * to the expressions, the document object can call @ref
+ * App::DocumentObject::execute "DocumentObject::execute()" to update its
+ * internal properties.
+ *
+ * After this execute of the document objects, the expression engine is
+ * executed again, but now only for the output properties ensuring that
+ * expressions that depend on properties of the document object itself that are
+ * set by @ref App::DocumentObject::execute "DocumentObject::execute()" are
+ * also updated.
+ *
+ * This process makes clear why it is important that there is a well-defined
+ * dependency graph and a topological order of document objects in terms of
+ * their dependencies as was discussed in topic @ref DependencyGraph
+ * "Document": If a document object is executed and references a property of
+ * another document object, we need to make sure that that document object has
+ * fully recomputed as we would compute a stale value of the property
+ * otherwise.  Similarly, objects that refer to properties of a recently
+ * recomputed document object, need to be certain that the properties of this
+ * object have the latest value.  As such, it is not possible to have a cyclic
+ * dependency between document objects as they would continuously update
+ * themselves.
+ *
+ * @section SecExpressionVisitors Expression Visitors
+ *
+ * Some actions require that expressions are updated.  For example, when a document
+ * is relabeled, expressions that refer to the old name must be updated to
+ * refer to the new name.
+ *
+ * For this purpose, the visitor pattern is used.  An expression visitor is derived
+ * from @ref App::ExpressionVisitor "ExpressionVisitor" and implements the
+ * virtual function @ref App::ExpressionVisitor::visit "visit()".  This
+ * function is called for each node in the expression tree.
+ *
+ * There are two types of visitors: ones that gather information, for example a
+ * list of object identifiers in the expression, and ones that modify the
+ * expression, for example in case a document is relabeled.
  */
 
 /**
@@ -753,6 +836,45 @@
  */
 
 /**
+ * @defgroup ElementMapping Element Mapping for Topological naming.
+ * @ingroup APP
+ * @brief Element mapping system for topological naming
+ *
+ * Since the names of vertices, edges, and faces that we obtain from
+ * OpenCascade are not stable under modifications of the shape, FreeCAD
+ * implements a system called "topological naming" to provide stable names for
+ * these elements.
+ *
+ * A shape in FreeCAD is represented by Part::TopoShape, a subclass of
+ * Data::ComplexGeoData that contains much of the logic for element mapping.
+ * This logic mainly resides in package Data.
+ *
+ * A @ref Data::ComplexGeoData "ComplexGeoData" object contains a @ref
+ * Data::ComplexGeoData::Tag "Tag" that uniquely identifies the shape in the
+ * document.  A @ref Data::ComplexGeoData "ComplexGeoData" object also contains
+ * a @ref Data::ElementMap "ElementMap" that maintains a mapping from an @ref
+ * Data::IndexedName "IndexedName" to a @ref Data::MappedName "MappedName".
+ *
+ * An indexed name, is a name that we obtain from the shapes from OpenCascade.
+ * A mapped name is a name that is formed by means of topological relations.  A
+ * mapped name consists of an immutable base name (called the "data") while the
+ * second part is appended on operations on the shape.  This is called the
+ * "postfix" of the mapped name.  For a selection of used postfix tags, see
+ * the @ref ElementNameConstants "Element name constants" section in Data.
+ *
+ * An example of a mapped name is
+ * `Pocket.;g2;SKT;:H7cf,E;:G;XTR;:H7cf:7,F;:M;CUT;:H-7d0:7,F.Face8` which
+ * roughly means that the selected face `Face8` was modified `M` with a `CUT`
+ * operation.  The `T` or `H` tags provide the tag of the shape in decimal and
+ * hexadecimal respectively.
+ *
+ * Because multiple operations can result in long mapped names, FreeCAD makes
+ * use of a string hasher that creates short hashes out of the long mapped
+ * names.  An example of the hashed name for the above mapped name is:
+ * `Pocket.;#20:2;:M;CUT;:H-e61:7,F.Face8`.
+ */
+
+/**
  * @namespace App
  * @ingroup APP
  * @brief The namespace for the part of FreeCAD that works without GUI.
@@ -764,5 +886,12 @@
  *   - The Property classes
  *
  * For a more high-level discussion see the topic @ref APP "App".
+ */
+
+/**
+ * @namespace Data
+ * @ingroup ElementMapping
+ * @brief The namespace for element names
+ *
  */
 
