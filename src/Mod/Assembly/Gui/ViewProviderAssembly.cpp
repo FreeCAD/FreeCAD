@@ -130,6 +130,8 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+
+    removeTaskSolver();
 };
 
 QIcon ViewProviderAssembly::getIcon() const
@@ -354,11 +356,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
             );
         }
 
-        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-        if (taskView) {
-            // Waiting for the solver to support reporting information.
-            taskView->removeContextualPanel(taskSolver);
-        }
+        removeTaskSolver();
 
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
@@ -366,6 +364,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
         return;
     }
     ViewProviderPart::unsetEdit(mode);
+}
+
+void ViewProviderAssembly::removeTaskSolver()
+{
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    if (taskView) {
+        // Waiting for the solver to support reporting information.
+        taskView->removeContextualPanel(taskSolver);
+    }
 }
 
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
