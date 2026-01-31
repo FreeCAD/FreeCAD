@@ -28,6 +28,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsTextItem>
 #include <QPointF>
+#include <QTextCursor>
 
 QT_BEGIN_NAMESPACE
 class QPainter;
@@ -44,6 +45,7 @@ namespace TechDrawGui
 
 class TechDrawGuiExport QGCustomText : public QGraphicsTextItem
 {
+    Q_OBJECT
 public:
     explicit QGCustomText(QGraphicsItem* parent = nullptr);
     ~QGCustomText() override {}
@@ -82,7 +84,14 @@ public:
     void makeMark(double x, double y);
     void makeMark(Base::Vector3d v);
 
+Q_SIGNALS:
+    void selectionChanged();
+
 protected:
+    void keyPressEvent(QKeyEvent* event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent* event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent* event) override;
+    void focusInEvent(QFocusEvent* event) override;
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
@@ -93,6 +102,8 @@ protected:
     QColor m_colNormal;
 
 private:
+    void checkCursorChange();
+    QTextCursor m_lastCursor;
 
 };
 
