@@ -1593,7 +1593,7 @@ class _Wall(ArchComponent.Component):
         obj.Placement.Base = new_midpoint
         obj.Placement.Rotation = new_rotation
 
-    def handleComponentRemoval(self, obj, subobject, manage_transaction=True):
+    def handleComponentRemoval(self, obj, subobject):
         """
         Overrides the default component removal to implement smart debasing
         when the Base object is being removed.
@@ -1605,9 +1605,7 @@ class _Wall(ArchComponent.Component):
         if hasattr(obj, "Base") and obj.Base == subobject:
             if Arch.is_debasable(obj):
                 # This is a valid, single-line wall. Perform a clean debase.
-                # Pass manage_transaction=False because the TaskPanel already has an open
-                # transaction context.
-                Arch.debaseWall(obj, manage_transaction=manage_transaction)
+                Arch.debaseWall(obj)
             else:
                 # This is a complex wall. Behavior depends on GUI availability.
                 if FreeCAD.GuiUp:
@@ -1632,9 +1630,7 @@ class _Wall(ArchComponent.Component):
                     msg_box.setDefaultButton(QtGui.QMessageBox.Cancel)
                     if msg_box.exec_() == QtGui.QMessageBox.Yes:
                         # User confirmed, perform the standard removal
-                        super(_Wall, self).handleComponentRemoval(
-                            obj, subobject, manage_transaction=manage_transaction
-                        )
+                        super(_Wall, self).handleComponentRemoval(obj, subobject)
                 else:
                     # --- Headless Path: Do not perform the destructive action. Print a warning. ---
                     FreeCAD.Console.PrintWarning(
@@ -1644,9 +1640,7 @@ class _Wall(ArchComponent.Component):
         else:
             # If it's not the base (e.g., an Addition), use the default behavior
             # from the parent Component class.
-            super(_Wall, self).handleComponentRemoval(
-                obj, subobject, manage_transaction=manage_transaction
-            )
+            super(_Wall, self).handleComponentRemoval(obj, subobject)
 
     def get_width(self, obj, widths=True):
         """Returns a width and a list of widths for this wall.

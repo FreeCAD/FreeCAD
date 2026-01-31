@@ -2205,7 +2205,7 @@ def is_debasable(wall):
     return True
 
 
-def debaseWall(wall, manage_transaction=True):
+def debaseWall(wall):
     """
     Converts a line-based Arch Wall to be parametrically driven by its own
     properties (Length, Width, Height) and Placement, removing its dependency
@@ -2218,9 +2218,6 @@ def debaseWall(wall, manage_transaction=True):
     ----------
     wall : FreeCAD.DocumentObject
         The Arch Wall object to debase.
-    manage_transaction : bool
-        If True (default), this function creates its own transaction.
-        If False, it assumes the caller manages the transaction.
 
     Returns
     -------
@@ -2234,9 +2231,6 @@ def debaseWall(wall, manage_transaction=True):
         return False
 
     doc = wall.Document
-
-    if manage_transaction:
-        doc.openTransaction(f"Debase Wall: {wall.Label}")
 
     try:
         # --- Calculation of the final placement ---
@@ -2301,13 +2295,8 @@ def debaseWall(wall, manage_transaction=True):
         doc.recompute()
 
     except Exception as e:
-        if manage_transaction:
-            doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
-
-    if manage_transaction:
-        doc.commitTransaction()
 
     return True
 

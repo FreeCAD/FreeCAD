@@ -834,7 +834,7 @@ class Component(ArchIFC.IfcProduct):
                     if o:
                         o.ViewObject.hide()
 
-    def handleComponentRemoval(self, obj, subobject, manage_transaction=True):
+    def handleComponentRemoval(self, obj, subobject):
         """
         Default handler for when a component is removed via the Task Panel.
         Subclasses can override this to provide special behavior.
@@ -2339,9 +2339,7 @@ class ComponentTaskPanel:
         # Call the polymorphic handler on the object's proxy.
         # This is generic and works for any Arch object.
         if hasattr(self.obj.Proxy, "handleComponentRemoval"):
-            self.obj.Proxy.handleComponentRemoval(
-                self.obj, element_to_remove, manage_transaction=False
-            )
+            self.obj.Proxy.handleComponentRemoval(self.obj, element_to_remove)
         else:
             # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
@@ -2354,16 +2352,14 @@ class ComponentTaskPanel:
 
         Recomputes the document, and leave edit mode.
         """
-        if self.doc.HasPendingTransaction:
-            self.doc.commitTransaction()
+        self.doc.commitTransaction()
 
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def reject(self):
-        if self.doc.HasPendingTransaction:
-            self.doc.abortTransaction()
+        self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
