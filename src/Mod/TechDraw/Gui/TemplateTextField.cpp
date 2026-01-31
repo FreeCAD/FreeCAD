@@ -43,7 +43,7 @@ TemplateTextField::TemplateTextField(QGraphicsItem *parent,
                                      const std::string &myFieldName)
     : QGraphicsItemGroup(parent),
       tmplte(myTmplte),
-      fieldNameStr(myFieldName),
+      fieldName(myFieldName),
       m_rect(new QGraphicsRectItem()),
       m_line(new QGraphicsPathItem())
 {
@@ -79,45 +79,27 @@ void TemplateTextField::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
         event->accept();
 
         DlgTemplateField ui(Gui::getMainWindow());
+        ui.setTemplate(tmplte);
 
-        ui.setFieldName(fieldNameStr);
-        ui.setFieldContent(tmplte->EditableTexts[fieldNameStr]);
+        ui.setFieldName(QString::fromStdString(fieldName));
+        ui.setFieldContent(QString::fromStdString(tmplte->EditableTexts.getValue(fieldName)));
+        ui.setAutofillContent(QString::fromStdString(tmplte->getAutofillValue(autofillId)));
 
-        auto qName = QString::fromStdString(fieldNameStr);
-        auto svgTemplate = freecad_cast<DrawSVGTemplate*>(tmplte);
-        if (svgTemplate) {
-            // preset the autofill with the current value - something might have changed since this field was created
-            m_autofillString = svgTemplate->getAutofillByEditableName(qName);
-        }
-        ui.setAutofillContent(m_autofillString.toStdString());
+        std::ostringstream ss;
+        ss << "Edit field " << fieldName << " in " << tmplte->Label.getValue();
+        App::GetApplication().setActiveTransaction(ss.str().c_str());
 
-        if (ui.exec() == QDialog::Accepted) {
-            QString qsClean = ui.getFieldContent();
-            std::string utf8Content = qsClean.toUtf8().constData();
-            if (ui.getAutofillState()) {
-                if (svgTemplate) {
-                    // unlikely, but something could have changed since we grabbed the autofill value
-                    QString fieldName = QString::fromStdString(fieldNameStr);
-                    QString autofillValue = svgTemplate->getAutofillByEditableName(fieldName);
-                    if (!autofillValue.isEmpty()) {
-                        utf8Content = autofillValue.toUtf8().constData();
-                    }
-                }
-            }
-            tmplte->EditableTexts.setValue(fieldNameStr, utf8Content);
+        int result = ui.exec();
+        if (result == QDialog::Accepted) {
+            tmplte->EditableTexts.setValue(fieldName, ui.getFieldContent().toStdString());
         }
 
-    } else {
+        App::GetApplication().closeActiveTransaction(result != QDialog::Accepted);
+    }
+    else {
         QGraphicsItemGroup::mouseReleaseEvent(event);
     }
 }
-
-//void setAutofill(std::string autofillString);
-void TemplateTextField::setAutofill(const QString& autofillString)
-{
-    m_autofillString = autofillString;
-}
-
 
 void TemplateTextField::setRectangle(QRectF rect)
 {

@@ -262,63 +262,29 @@ std::map<std::string, std::string> DrawSVGTemplate::getEditableTextsFromTemplate
         "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
         [this, &editables](QDomElement& tspan) -> bool {
             QDomElement parent = tspan.parentNode().toElement();
-            QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
-            QString editableValue;
-            if (parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
-                QString autofillName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL));
-                QString autofillValue = getAutofillValue(autofillName);
-                if (!autofillValue.isEmpty()) {
-                    editableValue = autofillValue;
+
+            std::string editableName = parent.attribute(QStringLiteral(FREECAD_ATTR_EDITABLE)).toStdString();
+            if (!editableName.empty()) {
+                std::string editableValue;
+
+                if (parent.hasAttribute(QStringLiteral(FREECAD_ATTR_AUTOFILL))) {
+                    std::string autofillId = parent.attribute(QStringLiteral(FREECAD_ATTR_AUTOFILL)).toStdString();
+                    editableValue = getAutofillValue(autofillId);
                 }
+
+                // If the autofill value is not specified or unsupported, use the default text value
+                if (editableValue.empty()) {
+                    editableValue = tspan.firstChild().nodeValue().toStdString();
+                }
+
+                editables[editableName] = editableValue;
             }
 
-            // If the autofill value is not specified or unsupported, use the default text value
-            if (editableValue.isEmpty()) {
-                editableValue = tspan.firstChild().nodeValue();
-            }
-
-            editables[std::string(editableName.toUtf8().constData())] =
-                std::string(editableValue.toUtf8().constData());
             return true;
         });
 
     return editables;
 }
-
-QString  DrawSVGTemplate::getAutofillByEditableName(QString nameToMatch)
-{
-    QString result;
-    QString nameCapture{nameToMatch};
-
-    QDomDocument templateDocument;
-    if (!getTemplateDocument(PageResult.getValue(), templateDocument)) {
-        return {};
-    }
-
-    XMLQuery query(templateDocument);
-
-    // XPath query to select all <tspan> nodes whose <text> parent
-    // has "freecad:editable" attribute
-    query.processItems(QStringLiteral(
-        "declare default element namespace \"" SVG_NS_URI "\"; "
-        "declare namespace freecad=\"" FREECAD_SVG_NS_URI "\"; "
-        "//text[@" FREECAD_ATTR_EDITABLE "]/tspan"),
-        [this, &nameCapture, &result](QDomElement& tspan) -> bool {
-            QDomElement parent = tspan.parentNode().toElement();
-            QString editableName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_EDITABLE));
-            if (editableName == nameCapture  &&
-                parent.hasAttribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL))) {
-                QString autofillName = parent.attribute(QString::fromUtf8(FREECAD_ATTR_AUTOFILL));
-                QString autofillValue = getAutofillValue(autofillName);
-                if (!autofillValue.isEmpty()) {
-                    result = autofillValue;
-                }
-            }
-            return true;
-        });
-    return result;
-}
-
 
 //! get a translated label string from the context (ex TaskActiveView), the base name (ex ActiveView) and
 //! the unique name within the document (ex ActiveView001), and use it to update the Label property.

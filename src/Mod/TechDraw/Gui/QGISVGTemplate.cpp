@@ -26,6 +26,7 @@
 # include <QGraphicsColorizeEffect>
 # include <QGraphicsEffect>
 # include <QGraphicsSvgItem>
+# include <QMap>
 # include <QPen>
 # include <QSvgRenderer>
 # include <QRegularExpression>
@@ -52,19 +53,74 @@
 
 
 namespace {
-    QFont getFont(QDomElement& elem)
-    {
-        if(elem.hasAttribute(QStringLiteral("font-family"))) {
-            return elem.attribute(QStringLiteral("font-family"));
+
+    QMap<QString, QString> parseStyle(QString style) {
+        QMap<QString, QString> result;
+
+        QStringList pairs = style.split(';', Qt::SkipEmptyParts);
+        for (QString pair : pairs) {
+            QStringList propVal = pair.split(':');
+            if (propVal.length() > 1) {
+                result[propVal[0].trimmed()] = propVal[1].trimmed();
+            }
         }
+
+        return result;
+    }
+
+    double getPointSize(const QString& sz) {
+        double ratio = 72.0/96.0; // 72pt per inch, 96 dpi
+        int unitLen = 0;
+
+        if (sz.endsWith(QStringLiteral("pt"))) {
+            unitLen = 2;
+        }
+        else if (sz.endsWith(QStringLiteral("mm"))) {
+            ratio = 72.0/25.4;
+            unitLen = 2;
+        }
+        else if (sz.endsWith(QStringLiteral("cm"))) {
+            ratio = 72.0/2.54;
+            unitLen = 2;
+        }
+        else if (sz.endsWith(QStringLiteral("in"))) {
+            ratio = 72.0;
+            unitLen = 2;
+        }
+        else if (sz.endsWith(QStringLiteral("px"))) {
+            unitLen = 2;
+        }
+
+        return ratio*sz.chopped(unitLen).trimmed().toDouble();
+    }
+
+    QFont getFont(QDomElement& elem) {
+        if (elem.isNull()) {
+            return QFont(QStringLiteral("sans"));
+        }
+
         QDomElement parent = elem.parentNode().toElement();
-        // Check if has parent
-        if(!parent.isNull()) {
-            // Traverse up and check if parent node has attribute
-            return getFont(parent);
+        QFont result = getFont(parent);
+
+        if (elem.hasAttribute(QStringLiteral("style"))) {
+            QMap<QString, QString> style = parseStyle(elem.attribute(QStringLiteral("style")));
+
+            if (style.contains(QStringLiteral("font-family"))) {
+                result.setFamily(style[QStringLiteral("font-family")]);
+            }
+            if (style.contains(QStringLiteral("font-size"))) {
+                result.setPointSizeF(getPointSize(style[QStringLiteral("font-size")]));
+            }
         }
-        // No attribute and no parent nodes left? Defaulting:
-        return QFont(QStringLiteral("sans"));
+
+        if (elem.hasAttribute(QStringLiteral("font-family"))) {
+            result.setFamily(elem.attribute(QStringLiteral("font-family")));
+        }
+        if (elem.hasAttribute(QStringLiteral("font-size"))) {
+            result.setPointSizeF(getPointSize(elem.attribute(QStringLiteral("font-size"))));
+        }
+
+        return result;
     }
 
     std::vector<QDomElement> getFCElements(QDomDocument& doc) {
@@ -311,14 +367,35 @@ void QGISVGTemplate::createClickHandles()
 
     std::vector<QDomElement> textElements = getFCElements(templateDocument);
     for(QDomElement& textElement : textElements) {
+        // Get tight bounding box of text
+        QFont font = getFont(textElement);
+        QFontMetricsF fm(font);
+
         // Get elements bounding box of text
         QString id = textElement.attribute(QStringLiteral("id"));
         QRectF textRect = m_svgRender->boundsOnElement(id);
+        if (!textRect.isValid()) {
+            // This is a Qt5 workaround for boundsOnElement() issue fixed in Qt6.2.0
+            // Once Qt6 is mandatory, this code may be safely removed.
+            // For more details please see https://qt-project.atlassian.net/browse/QTBUG-32405
+            textRect = fm.boundingRect(textElement.text());
+            if (textRect.isValid()) {
+                textRect = m_svgRender->transformForElement(id).mapRect(textRect);
+                textRect.translate(textElement.attribute(QStringLiteral("x")).toDouble(),
+                                   textElement.attribute(QStringLiteral("y")).toDouble());
 
-        // Get tight bounding box of text
-        QDomElement tspan = textElement.firstChildElement();
-        QFont font = getFont(tspan);
-        QFontMetricsF fm(font);
+                QMap<QString, QString> styleMap = parseStyle(textElement.attribute(QStringLiteral("style")));
+                QString textAnchor = styleMap[QStringLiteral("text-anchor")];
+
+                if (textAnchor.compare(QStringLiteral("middle")) == 0) {
+                    textRect.translate(-textRect.width()/2.0, 0.0);
+                }
+                else if (textAnchor.compare(QStringLiteral("end")) == 0) {
+                    textRect.translate(-textRect.width(), 0.0);
+                }
+            }
+        }
+
         double factor = textRect.height() / fm.height();  // Correcting font metrics and SVG text due to different font sizes
         QRectF tightTextRect = textRect.adjusted(0.0, 0.0, 0.0, -fm.descent() * factor);
         tightTextRect.setTop(tightTextRect.bottom() - fm.capHeight() * factor);
@@ -350,8 +427,8 @@ void QGISVGTemplate::createClickHandles()
 
         QString name = textElement.attribute(QStringLiteral(FREECAD_ATTR_EDITABLE));
         auto item(new TemplateTextField(this, svgTemplate, name.toStdString()));
-        auto autoValue = svgTemplate->getAutofillByEditableName(name);
-        item->setAutofill(autoValue);
+        item->setAutofillId(textElement.attribute(QStringLiteral(FREECAD_ATTR_AUTOFILL)).toStdString());
+
         constexpr double TopPadFactor{0.15};
         constexpr double BottomPadFactor{0.2};
         QMarginsF padding(

@@ -125,70 +125,66 @@ std::pair<int, int> DrawTemplate::getPageNumbers() const
 }
 
 //! get replacement values from document
-QString DrawTemplate::getAutofillValue(const QString &id) const
+std::string DrawTemplate::getAutofillValue(const std::string& id) const
 {
-    constexpr int ISODATELENGTH {10};
     auto doc = getDocument();
-    if (!doc) {
-        return QString();
+    if (!doc || id.empty()) {
+        return std::string();
     }
+
     // author
-    if (id.compare(QString::fromUtf8(Autofill::Author)) == 0) {
-        auto value = QString::fromUtf8(doc->CreatedBy.getValue());
-        if (!value.isEmpty()) {
-            return value;
-        }
+    if (id == Autofill::Author) {
+        return doc->CreatedBy.getValue();
     }
     // date
-    else if (id.compare(QString::fromUtf8(Autofill::Date)) == 0) {
-        auto timeLocale = std::setlocale(LC_TIME, nullptr);
-        QDateTime date = QDateTime::currentDateTime();
+    else if (id == Autofill::Date) {
+        std::time_t now = std::time(0);
+        std::tm cal = *std::localtime(&now);
+
+        std::ostringstream oss;
         if (Preferences::enforceISODate()) {
-            auto rawDate = date.toString(Qt::ISODate);
-            return rawDate.left(ISODATELENGTH);
+            oss << std::put_time(&cal, "%F"); // %F format for ISO 8601 date format
+            return oss.str();
         }
-        auto qTimeLocale = QString::fromUtf8(timeLocale);
-        return date.toString(QLocale(qTimeLocale).dateFormat(QLocale::ShortFormat));
+
+        oss.imbue(std::locale(""));       // Set output stream's locale to user native locale
+        oss << std::put_time(&cal, "%x"); // %x format for localized date format
+        return oss.str();
     }
     // organization ( also organisation/owner/company )
-    else if (id.compare(QString::fromUtf8(Autofill::Organization)) == 0 ||
-             id.compare(QString::fromUtf8(Autofill::Organisation)) == 0 ||
-             id.compare(QString::fromUtf8(Autofill::Owner)) == 0 ||
-             id.compare(QString::fromUtf8(Autofill::Company)) == 0 ) {
-        auto value = QString::fromUtf8(doc->Company.getValue());
-        if (!value.isEmpty()) {
-            return value;
-        }
+    else if (id == Autofill::Organization || id == Autofill::Organisation
+             || id == Autofill::Owner || id == Autofill::Company) {
+        return doc->Company.getValue();
     }
     // scale
-    else if (id.compare(QString::fromUtf8(Autofill::Scale)) == 0) {
+    else if (id == Autofill::Scale) {
         DrawPage *page = getParentPage();
         if (page) {
             std::pair<int, int> scale = DrawUtil::nearestFraction(page->Scale.getValue());
-            return QString::asprintf("%d : %d", scale.first, scale.second);
+            return (std::ostringstream() << scale.first << " : " << scale.second).str();
         }
     }
     // sheet
-    else if (id.compare(QString::fromUtf8(Autofill::Sheet)) == 0) {
+    else if (id == Autofill::Sheet) {
         std::pair<int, int> pageNumbers = getPageNumbers();
-        return QString::asprintf("%d / %d", pageNumbers.first, pageNumbers.second);
+        return (std::ostringstream() << pageNumbers.first << " / " << pageNumbers.second).str();
     }
     // title
-    else if (id.compare(QString::fromUtf8(Autofill::Title)) == 0) {
-        return QString::fromUtf8(getDocument()->Label.getValue());
+    else if (id == Autofill::Title) {
+        return getDocument()->Label.getValue();
     }
     // page number
-    else if (id.compare(QString::fromUtf8(Autofill::PageNumber)) == 0) {
+    else if (id == Autofill::PageNumber) {
         std::pair<int, int> pageNumbers = getPageNumbers();
-        return QString::number(pageNumbers.first);
+        return std::to_string(pageNumbers.first);
     }
     // page total
-    else if (id.compare(QString::fromUtf8(Autofill::PageCount)) == 0) {
+    else if (id == Autofill::PageCount) {
         std::pair<int, int> pageNumbers = getPageNumbers();
-        return QString::number(pageNumbers.second);
+        return std::to_string(pageNumbers.second);
     }
 
-    return QString();
+    return std::string();
 }
 
 // Python Template feature ---------------------------------------------------------
