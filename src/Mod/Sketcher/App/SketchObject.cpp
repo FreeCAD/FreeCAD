@@ -92,6 +92,7 @@
 #include <App/MappedName.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
+#include <App/Link.h>
 #include <App/Part.h>
 #include <Base/Console.h>
 #include <Base/Reader.h>
@@ -7519,11 +7520,24 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
         return -1;
     }
 
+    // For Link Arrays and similar, SubName may contain a path prefix like "2.Face6"
+    // where "2." identifies the array element and "Face6" is the actual geometry.
+    // We need to preserve this path prefix when storing the reference.
+    std::string subPath;
+    const char* elementName = Data::findElementName(SubName);
+    if (elementName && elementName != SubName) {
+        // There's a path prefix before the element name (e.g., "2." in "2.Face6")
+        subPath = std::string(SubName, elementName - SubName);
+    }
+
+    // Get the shape to search within. For arrays, we want the element's shape,
+    // not the whole resolved object, so we pass the subPath.
     auto wholeShape = Part::Feature::getTopoShape(
         Obj,
-        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform
+        Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+        subPath.empty() ? nullptr : subPath.c_str()
     );
-    auto shape = wholeShape.getSubTopoShape(SubName, /*silent*/ true);
+    auto shape = wholeShape.getSubTopoShape(elementName ? elementName : SubName, /*silent*/ true);
     TopAbs_ShapeEnum shapeType = TopAbs_SHAPE;
     if (shape.shapeType(/*silent*/ true) != TopAbs_FACE) {
         if (shape.hasSubShape(TopAbs_FACE)) {
@@ -7535,7 +7549,8 @@ int SketchObject::addExternal(App::DocumentObject* Obj, const char* SubName, boo
     }
 
     if (shapeType != TopAbs_SHAPE) {
-        std::string element = Part::TopoShape::shapeName(shapeType);
+        // Build element name with path prefix preserved
+        std::string element = subPath + Part::TopoShape::shapeName(shapeType);
         std::size_t elementNameSize = element.size();
         int geometryCount = ExternalGeometry.getSize();
 
@@ -9307,9 +9322,38 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
             if (auto* datum = freecad_cast<const Part::Datum*>(resolvedObj)) {
                 refSubShape = datum->getShape();
             }
-            else if (auto* refObj = freecad_cast<const Part::Feature*>(resolvedObj)) {
-                const Part::TopoShape& refShape = refObj->Shape.getShape();
-                refSubShape = refShape.getSubShape(SubElement.c_str());
+            else if (freecad_cast<const Part::Feature*>(resolvedObj)
+                     || Obj->hasExtension(App::LinkBaseExtension::getExtensionClassTypeId())) {
+                // Use getTopoShape with ResolveLink to handle both Part::Feature and App::Link.
+                // For Link Arrays, SubElement may contain path like "0.Edge1" where "0." is
+                // the array element index and "Edge1" is the actual geometry element.
+                // We need to split these: pass the path part to getTopoShape for correct
+                // placement resolution, then extract the element with getSubShape.
+                std::string subPath;
+                const char* elementName = nullptr;
+                if (!SubElement.empty()) {
+                    elementName = Data::findElementName(SubElement.c_str());
+                    if (elementName && elementName != SubElement.c_str()) {
+                        // There's a path before the element name (e.g., "0." in "0.Edge1")
+                        subPath = std::string(SubElement.c_str(), elementName - SubElement.c_str());
+                    }
+                }
+                Part::TopoShape refShape = Part::Feature::getTopoShape(
+                    Obj,
+                    Part::ShapeOption::ResolveLink | Part::ShapeOption::Transform,
+                    subPath.empty() ? nullptr : subPath.c_str()
+                );
+                if (!refShape.isNull()) {
+                    if (elementName && *elementName) {
+                        refSubShape = refShape.getSubShape(elementName);
+                    }
+                    else if (!SubElement.empty()) {
+                        refSubShape = refShape.getSubShape(SubElement.c_str());
+                    }
+                    else {
+                        refSubShape = refShape.getShape();
+                    }
+                }
             }
             else if (auto* pl = freecad_cast<const App::Plane*>(resolvedObj)) {
                 Base::Vector3d base = pl->getBasePoint();
