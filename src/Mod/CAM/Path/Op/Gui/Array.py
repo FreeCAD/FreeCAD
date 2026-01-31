@@ -543,7 +543,8 @@ class CommandPathArray:
         FreeCADGui.doCommand("obj.Base = %s" % baseString)
 
         FreeCADGui.doCommand("Path.Op.Gui.Array.ViewProviderArray(obj.ViewObject)")
-        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj)")
+        FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(obj.Base[0])")
+        FreeCADGui.doCommand("PathScripts.PathUtils.addToJob(obj, job.Name)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
 
