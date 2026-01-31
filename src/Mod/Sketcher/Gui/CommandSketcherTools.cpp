@@ -248,6 +248,8 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj)
         Sketcher::PythonConverter::Mode::OmitInternalGeometry);
 
     // Export constraints of selected geos.
+    std::vector<Sketcher::Constraint*> rawCstrs;
+#if 0
     std::vector<std::unique_ptr<Sketcher::Constraint>> shapeConstraints;
     for (auto constr : obj->Constraints.getValues()) {
 
@@ -284,11 +286,12 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj)
         }
         shapeConstraints.push_back(std::move(temp));
     }
-    std::vector<Sketcher::Constraint*> rawCstrs;
     rawCstrs.reserve(shapeConstraints.size());
     for (const auto& c : shapeConstraints) {
         rawCstrs.push_back(c.get());
     }
+#endif
+
     std::string cstrAsStr = Sketcher::PythonConverter::convert(
         "objectStr",
         rawCstrs,
