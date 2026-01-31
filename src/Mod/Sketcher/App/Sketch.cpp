@@ -3575,7 +3575,7 @@ int Sketch::addDistanceConstraint(
     geoId2 = checkGeoId(geoId2);
 
     int pointId1 = getPointId(geoId1, pos1);
-    if (pointId1 < 0 && pointId1 >= int(Points.size())) {
+    if (pointId1 < 0 || pointId1 >= int(Points.size())) {
         return -1;
     }
     GCS::Point& p1 = Points[pointId1];
