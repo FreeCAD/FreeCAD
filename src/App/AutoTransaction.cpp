@@ -137,7 +137,7 @@ std::optional<TransactionDescription> Application::transactionDescription(int ti
     }
     auto found = _activeTransactionDescriptions.find(tid);
     if (found != _activeTransactionDescriptions.end()) {
-        std::optional<TransactionDescription>(found->second);
+        return std::optional<TransactionDescription>(found->second);
     }
     return std::nullopt;    
 }
