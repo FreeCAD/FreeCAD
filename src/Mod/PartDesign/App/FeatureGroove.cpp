@@ -40,7 +40,7 @@ Groove::Groove()
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
-    ADD_PROPERTY_TYPE(Type, (0L), "Groove", App::Prop_None, "Groove type");
+    ADD_PROPERTY_TYPE(Type, (OneAngle), "Groove", App::Prop_None, "Groove type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(
         Base,

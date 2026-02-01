@@ -44,7 +44,7 @@ Revolution::Revolution()
     const double fullAngle = 360.0;
     const double emptyAngle = 0.0;
 
-    ADD_PROPERTY_TYPE(Type, (0L), "Revolution", App::Prop_None, "Revolution type");
+    ADD_PROPERTY_TYPE(Type, (OneAngle), "Revolution", App::Prop_None, "Revolution type");
     Type.setEnums(TypeEnums);
     ADD_PROPERTY_TYPE(
         Base,

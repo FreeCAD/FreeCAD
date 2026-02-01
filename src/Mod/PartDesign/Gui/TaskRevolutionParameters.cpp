@@ -279,7 +279,7 @@ void TaskRevolutionParameters::setCheckboxes(PartDesign::Revolution::RevolMethod
     bool isReversedEnabled = false;
     bool isFaceEditEnabled = false;
 
-    if (mode == PartDesign::Revolution::RevolMethod::Angle) {
+    if (mode == PartDesign::Revolution::RevolMethod::OneAngle) {
         isRevolveAngleVisible = true;
         ui->revolveAngle->selectNumber();
         QMetaObject::invokeMethod(ui->revolveAngle, "setFocus", Qt::QueuedConnection);
@@ -598,7 +598,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
     App::PropertyEnumeration* propEnum = &(getObject<PartDesign::Revolved>()->Type);
 
     switch (static_cast<PartDesign::Revolution::RevolMethod>(index)) {
-        case PartDesign::Revolution::RevolMethod::Angle:
+        case PartDesign::Revolution::RevolMethod::OneAngle:
             propEnum->setValue("Angle");
             break;
         case PartDesign::Revolution::RevolMethod::ToLast:

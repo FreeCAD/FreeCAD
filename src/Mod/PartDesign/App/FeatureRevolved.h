@@ -60,9 +60,9 @@ public:
     /// suggests a value for Reversed flag so that material is always added to the support
     bool suggestReversed();
 
-    enum class RevolMethod
+    enum RevolMethod : std::uint8_t
     {
-        Angle,
+        OneAngle,
         ThroughAll,
         ToLast = ThroughAll,
         ToFirst,

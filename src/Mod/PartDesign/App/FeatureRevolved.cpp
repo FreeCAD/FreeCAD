@@ -85,7 +85,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     }
 
     constexpr double maxDegree = 360.0;
-    auto method = methodFromString(Type.getValueAsString());
+    const RevolMethod method = static_cast<RevolMethod>(Type.getValue());
 
     // Validate parameters
     double angleDeg = Angle.getValue();
@@ -96,7 +96,7 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
     }
 
     auto angle = Base::toRadians<double>(angleDeg);
-    if (angle < Precision::Angular() && method == RevolMethod::Angle) {
+    if (angle < Precision::Angular() && method == RevolMethod::OneAngle) {
         return new App::DocumentObjectExecReturn(
             QT_TRANSLATE_NOOP("Exception", "Angle of revolution too small")
         );
@@ -297,29 +297,6 @@ void Revolved::updateAxis()
     Axis.setValue(dir);
 }
 
-Revolved::RevolMethod Revolved::methodFromString(const std::string& methodStr) const
-{
-    // clang-format off
-    static constexpr auto methods = std::to_array<std::tuple<std::string_view, Revolved::RevolMethod>>({
-        {"Angle",      RevolMethod::Angle},
-        {"UpToLast",   RevolMethod::ToLast},
-        {"ThroughAll", RevolMethod::ThroughAll},
-        {"UpToFirst",  RevolMethod::ToFirst},
-        {"UpToFace",   RevolMethod::ToFace},
-        {"TwoAngles",  RevolMethod::TwoAngles},
-    });
-    // clang-format on
-
-    auto it = std::find_if(methods.begin(), methods.end(), [methodStr](const auto& mode) {
-        return std::get<0>(mode) == methodStr;
-    });
-    if (it != methods.end()) {
-        return std::get<1>(*it);
-    }
-
-    throw Base::ValueError("Revolved: No such method");
-}
-
 void Revolved::generateRevolution(
     TopoShape& revol,
     const TopoShape& sketchshape,
@@ -331,7 +308,7 @@ void Revolved::generateRevolution(
     RevolMethod method
 )
 {
-    if (method == RevolMethod::Angle || method == RevolMethod::TwoAngles
+    if (method == RevolMethod::OneAngle || method == RevolMethod::TwoAngles
         || method == RevolMethod::ThroughAll) {
         double angleTotal = angle;
         double angleOffset = 0.;
@@ -423,7 +400,7 @@ void Revolved::updateProperties(RevolMethod method)
     bool isReversedEnabled = false;
     bool isUpToFaceEnabled = false;
     switch (method) {
-        case RevolMethod::Angle:
+        case RevolMethod::OneAngle:
             isAngleEnabled = true;
             isMidplaneEnabled = true;
             isReversedEnabled = !Midplane.getValue();
