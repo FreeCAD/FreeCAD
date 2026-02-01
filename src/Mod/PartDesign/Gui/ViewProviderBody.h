@@ -24,11 +24,13 @@
 #ifndef PARTGUI_ViewProviderBody_H
 #define PARTGUI_ViewProviderBody_H
 
+#include "Mod/PartDesign/App/FeatureHole.h"
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
 #include <Mod/PartDesign/App/Feature.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+#include <fastsignals/signal.h>
 
 class SoGroup;
 class SoSeparator;
@@ -96,6 +98,8 @@ public:
     {
         return true;
     };
+    /** Update the nodes for threads */
+    void updateThreadTextureForHole(const PartDesign::Hole* hole);
 
     /// Override to return the color of the tip instead of the body, which doesn't really have color
     std::map<std::string, Base::Color> getElementColors(const char* element) const override;
@@ -108,8 +112,18 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
-};
 
+    // Cosmetical thread
+    std::map<const PartDesign::Hole*, SoSwitch*> m_threadOverlays;
+    void clearThreadTextures();
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
+    fastsignals::scoped_connection m_RecomputedConn;
+    void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
+    fastsignals::scoped_connection m_ChangedConn;
+    bool isHoleThreadVisible(const PartDesign::Hole* hole) const;
+    void refreshAllHoleThreads();
+    // End of Cosmetical thread
+};
 
 }  // namespace PartDesignGui
 
