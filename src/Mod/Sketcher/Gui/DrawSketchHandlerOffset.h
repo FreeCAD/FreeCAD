@@ -266,8 +266,8 @@ private:
 
             auto lineExists = [&](const Base::Vector3d& p1, const Base::Vector3d& p2) {
                 for (const auto& [a, b] : addedLines) {
-                    if (((p1-a).Length() < tolerance && (p2-b).Length() < tolerance) ||
-                        ((p1-b).Length() < tolerance && (p2-a).Length() < tolerance)) {
+                    if (((p1 - a).Length() < tolerance && (p2 - b).Length() < tolerance)
+                        || ((p1 - b).Length() < tolerance && (p2 - a).Length() < tolerance)) {
                         return true;
                     }
                 }
@@ -275,8 +275,12 @@ private:
             };
 
             auto addLineEdge = [&](const Base::Vector3d& p1, const Base::Vector3d& p2) {
-                if ((p1 - p2).Length() < tolerance) return;
-                if (lineExists(p1, p2)) return;
+                if ((p1 - p2).Length() < tolerance) {
+                    return;
+                }
+                if (lineExists(p1, p2)) {
+                    return;
+                }
 
                 gp_Pnt gp1(p1.x, p1.y, p1.z);
                 gp_Pnt gp2(p2.x, p2.y, p2.z);
@@ -285,43 +289,55 @@ private:
                 addedLines.push_back({p1, p2});
             };
 
-            auto arcExists = [&](const Base::Vector3d& center, double radius,
-                                 double startAngle, double endAngle) {
-                for (const auto& [c, r, s, e] : addedArcs) {
-                    if ((center - c).Length() < tolerance && fabs(radius - r) < tolerance) {
-                        auto norm = [](double a) {
-                            while (a < 0) a += 2 * M_PI;
-                            while (a >= 2 * M_PI) a -= 2 * M_PI;
-                            return a;
-                        };
-                        double ns = norm(startAngle), ne = norm(endAngle);
-                        double os = norm(s), oe = norm(e);
-                        if ((fabs(ns - os) < 0.1 && fabs(ne - oe) < 0.1) ||
-                            (fabs(ns - oe) < 0.1 && fabs(ne - os) < 0.1)) {
-                            return true;
+            auto arcExists =
+                [&](const Base::Vector3d& center, double radius, double startAngle, double endAngle) {
+                    for (const auto& [c, r, s, e] : addedArcs) {
+                        if ((center - c).Length() < tolerance && fabs(radius - r) < tolerance) {
+                            auto norm = [](double a) {
+                                while (a < 0) {
+                                    a += 2 * M_PI;
+                                }
+                                while (a >= 2 * M_PI) {
+                                    a -= 2 * M_PI;
+                                }
+                                return a;
+                            };
+                            double ns = norm(startAngle), ne = norm(endAngle);
+                            double os = norm(s), oe = norm(e);
+                            if ((fabs(ns - os) < 0.1 && fabs(ne - oe) < 0.1)
+                                || (fabs(ns - oe) < 0.1 && fabs(ne - os) < 0.1)) {
+                                return true;
+                            }
                         }
                     }
-                }
-                return false;
-            };
+                    return false;
+                };
 
-            auto addArcEdge = [&](const Base::Vector3d& center, double radius,
-                                  double startAngle, double endAngle) {
-                if (fabs(endAngle - startAngle) < 0.01) return;
-                if (arcExists(center, radius, startAngle, endAngle)) return;
+            auto addArcEdge =
+                [&](const Base::Vector3d& center, double radius, double startAngle, double endAngle) {
+                    if (fabs(endAngle - startAngle) < 0.01) {
+                        return;
+                    }
+                    if (arcExists(center, radius, startAngle, endAngle)) {
+                        return;
+                    }
 
-                gp_Pnt c(center.x, center.y, center.z);
-                gp_Circ circ(gp_Ax2(c, gp::DZ()), radius);
-                TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(circ, startAngle, endAngle).Edge();
-                builder.Add(compound, edge);
-                addedArcs.push_back({center, radius, startAngle, endAngle});
-            };
+                    gp_Pnt c(center.x, center.y, center.z);
+                    gp_Circ circ(gp_Ax2(c, gp::DZ()), radius);
+                    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(circ, startAngle, endAngle).Edge();
+                    builder.Add(compound, edge);
+                    addedArcs.push_back({center, radius, startAngle, endAngle});
+                };
 
-            auto lineIntersection = [](const Base::Vector3d& p1, const Base::Vector3d& d1,
-                                       const Base::Vector3d& p2, const Base::Vector3d& d2,
+            auto lineIntersection = [](const Base::Vector3d& p1,
+                                       const Base::Vector3d& d1,
+                                       const Base::Vector3d& p2,
+                                       const Base::Vector3d& d2,
                                        Base::Vector3d& intersection) -> bool {
                 double denom = d1.x * d2.y - d1.y * d2.x;
-                if (fabs(denom) < 1e-10) return false;
+                if (fabs(denom) < 1e-10) {
+                    return false;
+                }
                 double t = ((p2.x - p1.x) * d2.y - (p2.y - p1.y) * d2.x) / denom;
                 intersection = p1 + d1 * t;
                 return true;
@@ -329,12 +345,17 @@ private:
 
             // Track which outer endpoints need semicircles vs partial arcs
             // A geoId can have MULTIPLE arc ranges (from different wedges)
-            std::map<int, std::vector<std::pair<double, double>>> outerArcRanges;  // geoId -> list of (startAngle, endAngle) arcs already drawn
+            std::map<int, std::vector<std::pair<double, double>>> outerArcRanges;  // geoId -> list
+                                                                                   // of (startAngle,
+                                                                                   // endAngle) arcs
+                                                                                   // already drawn
 
             for (const auto& branchPt : branchPoints) {
                 std::vector<int> sortedEdges = getEdgesSortedByAngle(branchPt);
                 size_t numEdges = sortedEdges.size();
-                if (numEdges < 2) continue;
+                if (numEdges < 2) {
+                    continue;
+                }
 
                 for (size_t i = 0; i < numEdges; i++) {
                     int geoId1 = sortedEdges[i];
@@ -386,9 +407,13 @@ private:
                             if (joinType == 0) {
                                 double angle1 = atan2(perp1.y, perp1.x);
                                 double angle2 = atan2(perp2.y, perp2.x);
-                                while (angle2 < angle1) angle2 += 2 * M_PI;
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
                                 if (angle2 - angle1 > M_PI) {
-                                    double temp = angle1; angle1 = angle2; angle2 = temp + 2 * M_PI;
+                                    double temp = angle1;
+                                    angle1 = angle2;
+                                    angle2 = temp + 2 * M_PI;
                                 }
                                 addArcEdge(branchPt, absOffset, angle1, angle2);
                             }
@@ -421,9 +446,17 @@ private:
                             addLineEdge(intersection, off2End);
                             if (joinType == 0) {
                                 double angle1 = atan2(perp1.y, perp1.x);
-                                double angle2 = atan2((intersection - branchPt).y, (intersection - branchPt).x);
-                                while (angle2 < angle1) angle2 += 2 * M_PI;
-                                if (angle2 - angle1 > M_PI) { std::swap(angle1, angle2); while (angle2 < angle1) angle2 += 2 * M_PI; }
+                                double angle2
+                                    = atan2((intersection - branchPt).y, (intersection - branchPt).x);
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
+                                if (angle2 - angle1 > M_PI) {
+                                    std::swap(angle1, angle2);
+                                    while (angle2 < angle1) {
+                                        angle2 += 2 * M_PI;
+                                    }
+                                }
                                 addArcEdge(branchPt, absOffset, angle1, angle2);
                             }
                         }
@@ -432,10 +465,18 @@ private:
                             addLineEdge(off1End, intersection);
                             addLineEdge(off2Start, off2End);
                             if (joinType == 0) {
-                                double angle1 = atan2((intersection - branchPt).y, (intersection - branchPt).x);
+                                double angle1
+                                    = atan2((intersection - branchPt).y, (intersection - branchPt).x);
                                 double angle2 = atan2(perp2.y, perp2.x);
-                                while (angle2 < angle1) angle2 += 2 * M_PI;
-                                if (angle2 - angle1 > M_PI) { std::swap(angle1, angle2); while (angle2 < angle1) angle2 += 2 * M_PI; }
+                                while (angle2 < angle1) {
+                                    angle2 += 2 * M_PI;
+                                }
+                                if (angle2 - angle1 > M_PI) {
+                                    std::swap(angle1, angle2);
+                                    while (angle2 < angle1) {
+                                        angle2 += 2 * M_PI;
+                                    }
+                                }
                                 addArcEdge(branchPt, absOffset, angle1, angle2);
                             }
                         }
@@ -450,10 +491,13 @@ private:
 
                     bool isShared = false;
                     for (int otherGeoId : listOfGeoIds) {
-                        if (otherGeoId == geoId) continue;
+                        if (otherGeoId == geoId) {
+                            continue;
+                        }
                         Base::Vector3d op1, op2;
                         if (getFirstSecondPoints(otherGeoId, op1, op2)) {
-                            if ((outer - op1).Length() < tolerance || (outer - op2).Length() < tolerance) {
+                            if ((outer - op1).Length() < tolerance
+                                || (outer - op2).Length() < tolerance) {
                                 isShared = true;
                                 break;
                             }
@@ -472,8 +516,12 @@ private:
 
                             // Normalize angles relative to the semicircle range
                             auto normalizeToRange = [](double angle, double refAngle) {
-                                while (angle < refAngle - M_PI) angle += 2 * M_PI;
-                                while (angle > refAngle + M_PI) angle -= 2 * M_PI;
+                                while (angle < refAngle - M_PI) {
+                                    angle += 2 * M_PI;
+                                }
+                                while (angle > refAngle + M_PI) {
+                                    angle -= 2 * M_PI;
+                                }
                                 return angle;
                             };
 
@@ -483,7 +531,9 @@ private:
                                 double normStart = normalizeToRange(ds, centerAngle);
                                 double normEnd = normalizeToRange(de, centerAngle);
                                 // Ensure start < end
-                                if (normStart > normEnd) std::swap(normStart, normEnd);
+                                if (normStart > normEnd) {
+                                    std::swap(normStart, normEnd);
+                                }
                                 normalizedArcs.push_back({normStart, normEnd});
                             }
 
@@ -509,7 +559,8 @@ private:
                             if (currentPos < endAngle - angleTol) {
                                 addArcEdge(outer, absOffset, currentPos, endAngle);
                             }
-                        } else {
+                        }
+                        else {
                             addArcEdge(outer, absOffset, startAngle, endAngle);
                         }
                     }
