@@ -880,6 +880,15 @@ QVariant PropertyStringItem::editorData(QWidget* editor) const
     return {le->text()};
 }
 
+QVariant PropertyStringItem::toolTip(const App::Property* prop) const
+{
+    // For the FileName property, show the actual file path in the tooltip
+    if (prop && std::string(prop->getName()) == "FileName") {
+        return value(prop);
+    }
+    return PropertyItem::toolTip(prop);
+}
+
 // --------------------------------------------------------------------
 
 PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyFontItem)
