@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn* Groove::execute()
     }
 
     constexpr double maxDegree = 360.0;
-    auto method = methodFromString(Type.getValueAsString());
+    auto method = static_cast<RevolMethod>(Type.getValue());
 
     // Validate parameters
     double angleDeg = Angle.getValue();
@@ -311,30 +311,6 @@ void Groove::updateAxis()
 
     Base.setValue(base.x, base.y, base.z);
     Axis.setValue(dir.x, dir.y, dir.z);
-}
-
-Groove::RevolMethod Groove::methodFromString(const std::string& methodStr)
-{
-    if (methodStr == "Angle") {
-        return RevolMethod::Angle;
-    }
-    if (methodStr == "UpToLast") {
-        return RevolMethod::ToLast;
-    }
-    if (methodStr == "ThroughAll") {
-        return RevolMethod::ThroughAll;
-    }
-    if (methodStr == "UpToFirst") {
-        return RevolMethod::ToFirst;
-    }
-    if (methodStr == "UpToFace") {
-        return RevolMethod::ToFace;
-    }
-    if (methodStr == "TwoAngles") {
-        return RevolMethod::TwoAngles;
-    }
-
-    throw Base::ValueError("Groove:: No such method");
 }
 
 void Groove::generateRevolution(

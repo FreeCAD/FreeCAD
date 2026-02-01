@@ -95,8 +95,6 @@ protected:
         None = 2
     };
 
-    RevolMethod methodFromString(const std::string& methodStr);
-
     /**
      * Generates a [groove] of the input sketchshape and stores it in the given \a revol.
      */
