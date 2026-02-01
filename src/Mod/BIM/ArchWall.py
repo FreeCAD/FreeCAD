@@ -1810,7 +1810,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Wall_Clone.svg"
-            elif (not self.Object.Base) and self.Object.Additions:
+            elif (not self.Object.Base) and self.Object.Additions and not self.Object.Length.Value:
+                # The wall is an assembly: it is built from additions only, yet it is not
+                # strictly a baseless wall, since baseless walls are parametric.
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
