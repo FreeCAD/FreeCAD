@@ -1966,7 +1966,12 @@ class ObjectWaterline(PathOp.ObjectOp):
         else:
             return None
 
-        return {"radius": radius, "corner_radius": c_rad, "profile": profile, "is_threeD": is_threeD}
+        return {
+            "radius": radius,
+            "corner_radius": c_rad,
+            "profile": profile,
+            "is_threeD": is_threeD,
+        }
 
     def getOuterHull(self, shape):
         """Returns a version of the shape with all internal cavities removed."""
@@ -1994,17 +1999,14 @@ class ObjectWaterline(PathOp.ObjectOp):
             """Creates a unique key for a set of faces and a specific radius."""
             if not nestedFaces:
                 return None
-            
+
             fp = []
             for f in nestedFaces:
                 bb = f.BoundBox
                 # We round values to ignore tiny floating point noise
-                fp.append((
-                    len(f.Wires), 
-                    round(f.Area, 4), 
-                    round(bb.XLength, 4), 
-                    round(bb.YLength, 4)
-                ))
+                fp.append(
+                    (len(f.Wires), round(f.Area, 4), round(bb.XLength, 4), round(bb.YLength, 4))
+                )
             # Return a tuple (hashable) containing the geometry details and the radius
             return (tuple(fp), round(r_eff, 4))
 
@@ -2037,13 +2039,13 @@ class ObjectWaterline(PathOp.ObjectOp):
             return sliceHght
 
         # --- Initialization ---
-        self.comp_cache = {} # Key: (TipFingerprint, max_h)
+        self.comp_cache = {}  # Key: (TipFingerprint, max_h)
 
         CUTAREAS = list()
         allPrevComp = Part.makeCompound([])
         isFirst = True
         lenDP = len(depthparams)
-        self.fast2Dfailed = 0 # Reset Fast Tool Comp
+        self.fast2Dfailed = 0  # Reset Fast Tool Comp
 
         # Extract tool variables for local math
         radius = tool_params["radius"]
@@ -2062,7 +2064,8 @@ class ObjectWaterline(PathOp.ObjectOp):
         categorizedSteps = self.categorizeFloorSteps(shape, depthparams)
 
         for z_target, status, floor_geo in categorizedSteps:
-            if z_target > (modelTop + 0.001): continue
+            if z_target > (modelTop + 0.001):
+                continue
 
             # Compensated faces for each sub-slice height
             sub_envelope_list = []
@@ -2074,20 +2077,22 @@ class ObjectWaterline(PathOp.ObjectOp):
             for i in range(num_slices):
                 # Ballend, Bullnose
                 if is_threeD:
-                     # Height calculation (squeezed between Tip and available material)
+                    # Height calculation (squeezed between Tip and available material)
                     h = (max_h / (num_slices - 1)) * i
                     r_eff = _getEffectiveRadius(h, radius, c_rad, profile)
                     sliceHght = _determineSliceHght(z_target + h, modelBottom, modelTop, epsilon)
-                else: # Endill
+                else:  # Endill
                     r_eff = radius
                     sliceHght = z_target + epsilon
 
                 csFaces = self.getModelCrossSection(shape, sliceHght)
-                if not csFaces: continue
+                if not csFaces:
+                    continue
 
                 # Identify Solid Areas (Nesting)
                 nestedFaces = self.getSolidAreasFromPlanarFaces(csFaces)
-                if not nestedFaces: continue
+                if not nestedFaces:
+                    continue
 
                 # Create a fingerprint for this geometry + radius
                 fingerprint = _getSliceFingerprint(nestedFaces, r_eff)
@@ -2098,7 +2103,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                 else:
                     # Tool Compensation
                     compFaces = self.getToolCompensation(nestedFaces, r_eff)
-                    if not compFaces: continue
+                    if not compFaces:
+                        continue
 
                     # Union islands at this height
                     sub_union = compFaces[0]
@@ -2114,11 +2120,12 @@ class ObjectWaterline(PathOp.ObjectOp):
                     # Store in cache for future layers
                     self.comp_cache[fingerprint] = sub_union.copy()
 
-                if sub_union:    
+                if sub_union:
                     sub_envelope_list.append(sub_union)
 
             # Fuse all height-samples
-            if not sub_envelope_list: continue
+            if not sub_envelope_list:
+                continue
 
             compAdjFaces = sub_envelope_list[0]
             if len(sub_envelope_list) > 1:
