@@ -45,6 +45,11 @@ public:
     {
         return "PartGui::ViewProviderPlane";
     }
+
+    bool allowDuplicateLabel() const override
+    {
+        return false;
+    }
 };
 
 class PartExport DatumLine: public App::Line, public AttachExtension
@@ -58,6 +63,11 @@ public:
     {
         return "PartGui::ViewProviderLine";
     }
+
+    bool allowDuplicateLabel() const override
+    {
+        return false;
+    }
 };
 
 class PartExport DatumPoint: public App::Point, public AttachExtension
@@ -70,6 +80,11 @@ public:
     const char* getViewProviderName() const override
     {
         return "PartGui::ViewProviderPoint";
+    }
+
+    bool allowDuplicateLabel() const override
+    {
+        return false;
     }
 };
 

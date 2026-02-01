@@ -1007,7 +1007,7 @@ QString PropertyIntegerItem::toString(const QVariant& v) const
     QString string(PropertyItem::toString(v));
 
     if (hasExpression()) {
-        string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionVisualString()));
     }
 
     return string;
@@ -1090,7 +1090,7 @@ QString PropertyIntegerConstraintItem::toString(const QVariant& v) const
     QString string(PropertyItem::toString(v));
 
     if (hasExpression()) {
-        string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        string += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionVisualString()));
     }
 
     return string;
@@ -1109,7 +1109,7 @@ QString PropertyFloatItem::toString(const QVariant& prop) const
     QString data = QLocale().toString(value, 'f', decimals());
 
     if (hasExpression()) {
-        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionVisualString()));
     }
 
     return data;
@@ -1180,7 +1180,7 @@ QString PropertyUnitItem::toString(const QVariant& prop) const
     const Base::Quantity& unit = prop.value<Base::Quantity>();
     std::string str = unit.getUserString();
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += fmt::format("  ( {} )", getExpressionVisualString());
     }
 
     return QString::fromStdString(str);
@@ -1501,7 +1501,7 @@ QString PropertyVectorItem::toString(const QVariant& prop) const
                            loc.toString(value.z, 'f', lowPrec)
                        );
     if (hasExpression()) {
-        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionVisualString()));
     }
     return data;
 }
@@ -1723,7 +1723,7 @@ QString PropertyVectorListItem::toString(const QVariant& prop) const
                        );
 
     if (hasExpression()) {
-        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionString()));
+        data += QStringLiteral("  ( %1 )").arg(QString::fromStdString(getExpressionVisualString()));
     }
     return data;
 }
@@ -1808,7 +1808,7 @@ QString PropertyVectorDistanceItem::toString(const QVariant& prop) const
         Base::Quantity(value.z, Base::Unit::Length).getUserString()
     );
     if (hasExpression()) {
-        str += fmt::format("  ( {} )", getExpressionString());
+        str += fmt::format("  ( {} )", getExpressionVisualString());
     }
     return QString::fromStdString(str);
 }

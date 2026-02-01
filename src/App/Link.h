@@ -1021,6 +1021,10 @@ public:
     bool isLink() const override;
 
     bool isLinkGroup() const override;
+
+    bool allowDuplicateLabel() const override;
+
+    void onParentLabelChanged(const char* newParentLabel) override;
 };
 
 using LinkPython = App::FeaturePythonT<Link>;

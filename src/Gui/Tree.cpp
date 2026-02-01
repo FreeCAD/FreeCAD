@@ -49,6 +49,7 @@
 #include <Base/Color.h>
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
+#include <App/Origin.h>
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
@@ -58,6 +59,7 @@
 #include "Command.h"
 #include "Document.h"
 #include "ExpressionCompleter.h"
+#include "LabelDisambiguator.h"
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
@@ -487,6 +489,8 @@ public:
         const QStyleOptionViewItem& option,
         const QModelIndex& index
     ) const;
+
+    virtual void setEditorData(QWidget* editor, const QModelIndex& index) const override;
 };
 
 }  // namespace Gui
@@ -656,6 +660,39 @@ QSize TreeWidgetItemDelegate::sizeHint(const QStyleOptionViewItem& option, const
     int spacing = std::max(0, static_cast<int>(TreeParams::getItemSpacing()));
     size.setHeight(size.height() + spacing);
     return size;
+}
+
+void TreeWidgetItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+    // For expression-enabled labels, the binding handles everything, so we can
+    // let the default implementation run.
+    if (TreeParams::getLabelExpression() || (index.column() != 0)) {
+        inherited::setEditorData(editor, index);
+        return;
+    }
+
+    // For regular text labels, we take control to handle the suffix.
+    auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+    if (ti->type() == TreeWidget::ObjectType) {
+        auto item = static_cast<DocumentObjectItem*>(ti);
+        App::DocumentObject* obj = item->object()->getObject();
+
+        QString rawValue = QString::fromUtf8(obj->Label.getValue());
+
+        // Cast the editor and set its text to the raw value.
+        auto* lineEdit = static_cast<DynamicQLineEdit*>(editor);
+        if (lineEdit) {
+            lineEdit->setText(rawValue);
+        }
+        else {
+            // Fallback for safety, though it shouldn't be needed.
+            inherited::setEditorData(editor, index);
+        }
+    }
+    else {
+        // For any other item type (like documents), use the default behavior.
+        inherited::setEditorData(editor, index);
+    }
 }
 // ---------------------------------------------------------------------------
 
@@ -3584,6 +3621,11 @@ void TreeWidget::onUpdateStatus()
         scrollToItem(errItem);
     }
 
+    // Visually disambiguate any items that have the same label.
+    for (auto& v : DocumentMap) {
+        v.second->updateDuplicateLabels();
+    }
+
     updateGeometries();
     statusTimer->stop();
 
@@ -6379,7 +6421,17 @@ void DocumentObjectItem::setData(int column, int role, const QVariant& value)
         label.setValue(value.toString().toUtf8().constData());
         doc->commitTransaction();
 
-        myValue = QString::fromUtf8(label.getValue());
+        // Instead of letting the base class update this single item's text,
+        // we immediately tell the owner DocumentItem to re-run the disambiguation
+        // logic for all of its items. This ensures the suffix is reapplied
+        // correctly right away if necessary.
+        if (getOwnerDocument()) {
+            getOwnerDocument()->updateDuplicateLabels();
+        }
+
+        // We explicitly `return` here to prevent the call to the base class below,
+        // which would overwrite our carefully managed display text with the raw label.
+        return;
     }
     QTreeWidgetItem::setData(column, role, myValue);
 }
@@ -6505,6 +6557,56 @@ bool DocumentItem::isObjectShowable(App::DocumentObject* obj)
         showable = false;
     }
     return showable;
+}
+
+void DocumentItem::updateDuplicateLabels()
+{
+    if (!pDocument) {
+        return;
+    }
+    App::Document* doc = pDocument->getDocument();
+    if (!doc) {
+        return;
+    }
+
+    // 1. Calculate all visual names in one fast pass (O(N log N))
+    auto visualNamesMap = LabelDisambiguator::computeVisualNames(doc);
+
+    // 2. Update the tree items (O(N))
+    for (const auto& pair : ObjectMap) {
+        App::DocumentObject* obj = pair.first;
+        const auto& data = pair.second;
+        if (!data) {
+            continue;
+        }
+
+        std::string visualName;
+
+        // Special Exception: Origin objects stay "Origin" in the tree
+        if (obj->isDerivedFrom<App::Origin>() || obj->is<App::Line>() || obj->is<App::Plane>()
+            || obj->is<App::Point>()) {
+            visualName = obj->Label.getValue();
+        }
+        else {
+            // Check if this object was assigned a specific suffix in the batch map
+            auto it = visualNamesMap.find(obj);
+            if (it != visualNamesMap.end()) {
+                visualName = it->second;  // e.g. "Bolt <2>"
+            }
+            else {
+                visualName = obj->Label.getValue();  // Default unique label
+            }
+        }
+
+        QString qVisualName = QString::fromUtf8(visualName.c_str());
+
+        // Update the GUI items
+        for (DocumentObjectItem* item : data->items) {
+            if (item->text(0) != qVisualName) {
+                item->setText(0, qVisualName);
+            }
+        }
+    }
 }
 
 int DocumentObjectItem::isParentGroup() const

@@ -158,6 +158,11 @@ public:
     }
     //@}
 
+    virtual bool showIndentationSuffixInLabel() const
+    {
+        return false;
+    }
+
     bool removeDynamicProperty(const char* prop) override;
 
     App::Property* addDynamicProperty(

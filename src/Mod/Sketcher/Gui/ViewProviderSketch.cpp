@@ -62,6 +62,7 @@
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 // #include <Gui/Inventor/SoFCSwitch.h>
 #include <Gui/Utilities.h>
+#include <Gui/LabelDisambiguator.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
@@ -2560,6 +2561,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                 for (int id : result.ConstrIndices) {
                     if (constraintHasExpression(id)) {
                         std::string expr = getSketchObject()->getConstraintExpression(id);
+                        expr = Gui::LabelDisambiguator::translateInternalToVisual(getSketchObject()->getDocument(), expr);
                         if (!expr.empty()) {
                             tooltipText = QString::fromUtf8("\U0001D453\U0001D465 = ") + QString::fromStdString(expr);
                             break;

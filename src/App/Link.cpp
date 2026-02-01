@@ -23,6 +23,7 @@
  ****************************************************************************/
 
 #include <limits>
+#include <set>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/range.hpp>
@@ -1697,11 +1698,52 @@ bool LinkBaseExtension::extensionGetLinkedObject(DocumentObject*& ret,
     return true;
 }
 
+// Static guard to prevent infinite loops when syncing labels
+static thread_local std::set<const App::DocumentObject*> _linkRecursionGuard;
+
 void LinkBaseExtension::extensionOnChanged(const Property* prop)
 {
     auto parent = getContainer();
-    if (parent && !parent->isRestoring() && prop && !prop->testStatus(Property::User3)) {
-        update(parent, prop);
+    if (parent && !parent->isRestoring() && prop) {
+        if (!prop->testStatus(Property::User3)) {
+            update(parent, prop);
+        }
+
+        if (prop == &parent->Label) {
+            // Check if we are already handling this object to avoid recursion
+            if (_linkRecursionGuard.find(parent) == _linkRecursionGuard.end()) {
+                _linkRecursionGuard.insert(parent);
+
+                // Safe block to ensure we erase the guard even if something throws
+                try {
+                    std::string linkLabel = parent->Label.getValue();
+                    App::DocumentObject* linkedObj = parent->getLinkedObject();
+
+                    if (linkedObj) {
+                        std::string linkLabel = parent->Label.getValue();
+                        std::string linkedLabel = linkedObj->Label.getValue();
+
+                        if (linkLabel != linkedLabel) {
+                            // 1. Temporarily vacate the label on the Link.
+                            parent->Label.setValue(parent->getNameInDocument());
+
+                            // 2. Set the child to the desired label.
+                            linkedObj->Label.setValue(linkLabel);
+
+                            // 3. Set the Link back to whatever the child actually got
+                            // (in case of conflict with a third object).
+                            parent->Label.setValue(linkedObj->Label.getValue());
+                        }
+                    }
+                }
+                catch (...) {
+                    _linkRecursionGuard.erase(parent);
+                    throw;
+                }
+
+                _linkRecursionGuard.erase(parent);
+            }
+        }
     }
     inherited::extensionOnChanged(prop);
 }
@@ -2693,6 +2735,18 @@ bool Link::isLink() const
 bool Link::isLinkGroup() const
 {
     return ElementCount.getValue() > 0;
+}
+
+bool Link::allowDuplicateLabel() const
+{
+    return true;
+}
+
+void Link::onParentLabelChanged(const char* newParentLabel)
+{
+    if (strcmp(Label.getValue(), newParentLabel) != 0) {
+        Label.setValue(newParentLabel);
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

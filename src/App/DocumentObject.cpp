@@ -890,6 +890,9 @@ void DocumentObject::onChanged(const Property* prop)
 
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue()) {
         _pDoc->signalRelabelObject(*this);
+        for (auto* obj : getInList()) {
+            obj->onParentLabelChanged(Label.getValue());
+        }
     }
 
     // set object touched if it is an input property
@@ -914,6 +917,11 @@ void DocumentObject::onChanged(const Property* prop)
     }
 
     signalChanged(*this, *prop);
+}
+
+void DocumentObject::onParentLabelChanged(const char* /*newParentLabel*/)
+{
+    // Base implementation does nothing.
 }
 
 void DocumentObject::clearOutListCache() const

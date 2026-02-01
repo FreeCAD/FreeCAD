@@ -56,8 +56,6 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         return tokens;
     };
 
-    QString completionPrefix;
-
     // Compute start; if prefix starts with =, start parsing from offset 1.
     int start = (prefix.size() > 0 && prefix.at(0) == QChar::fromLatin1('=')) ? 1 : 0;
 
@@ -124,6 +122,62 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         i = static_cast<long>(tokens.size()) - 1;
         for (; i >= 0; --i) {
             int token = std::get<0>(tokens[i]);
+
+            // Allow Visual Name Suffix: IDENTIFIER < INTEGER >
+            // We are iterating backwards. If we see GT, look back for INT then LT.
+            if (token == ExpressionParser::GT) {
+                bool isSuffix = false;
+                if (i >= 2) {
+                    int prev1 = std::get<0>(tokens[i - 1]);
+                    int prev2 = std::get<0>(tokens[i - 2]);
+
+                    // Check for pattern: < INT >
+                    // Added ExpressionParser::ONE (259) to the check
+                    if ((prev1 == ExpressionParser::INTEGER || prev1 == ExpressionParser::NUM
+                         || prev1 == ExpressionParser::ONE)
+                        && prev2 == ExpressionParser::LT) {
+                        isSuffix = true;
+                        i -= 2;  // Skip over the INTEGER/ONE and LT
+                    }
+                }
+                if (isSuffix) {
+                    continue;
+                }
+            }
+
+            if (token == ')') {
+                int nesting = 1;
+                long j = i - 1;
+                while (j >= 0) {
+                    int t = std::get<0>(tokens[j]);
+                    if (t == ')') {
+                        nesting++;
+                    }
+                    else if (t == '(') {
+                        nesting--;
+                    }
+
+                    if (nesting == 0) {
+                        break;
+                    }
+                    j--;
+                }
+
+                // If we found the matching '(', check if the token before it is "Origin"
+                if (j > 0) {
+                    int prevToken = std::get<0>(tokens[j - 1]);
+                    if (prevToken == ExpressionParser::IDENTIFIER) {
+                        // If the pattern is "Identifier (...)", we treat it as a potential
+                        // disambiguated name (like "Origin (Body)" or "Group (Item)")
+                        i = j - 1;
+                        continue;
+                    }
+                }
+                // If it was "hiddenref" or "sin", we fall through here.
+                // The check below (token != IDENTIFIER...) will catch the ')' and break the loop.
+                // This ensures "hiddenref(...)" is NOT treated as a single token.
+            }
+
             if (token != '.' && token != '#' && token != ExpressionParser::IDENTIFIER
                 && token != ExpressionParser::INTEGER && token != ExpressionParser::STRING
                 && token != ExpressionParser::UNIT && token != ExpressionParser::ONE) {
@@ -141,11 +195,7 @@ QString ExpressionTokenizer::perform(const QString& prefix, int pos)
         prefixStart = start + std::get<1>(tokens[i]);
     }
 
-    // Build prefix from tokens
-    while (i < static_cast<long>(tokens.size())) {
-        completionPrefix += std::get<2>(tokens[i]);
-        ++i;
-    }
+    QString completionPrefix = prefix.mid(prefixStart, prefixEnd - prefixStart);
 
     if (trim && trim < int(completionPrefix.size())) {
         completionPrefix.resize(completionPrefix.size() - trim);

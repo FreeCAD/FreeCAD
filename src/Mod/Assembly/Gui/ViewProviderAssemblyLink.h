@@ -72,6 +72,10 @@ public:
     {
         return false;
     };
+    bool showIndentationSuffixInLabel() const override
+    {
+        return true;
+    }
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 };
