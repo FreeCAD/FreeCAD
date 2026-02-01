@@ -413,15 +413,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             ),
             (
                 "App::PropertyBool",
-                "FastToolCompensation",
-                "Clearing Options",
-                QT_TRANSLATE_NOOP(
-                    "App::Property",
-                    "Use the Fast 2D Tool Compensation algorithm. If False, skips directly to the more stable 3D Tool Compensation algorithm (useful for some models).",
-                ),
-            ),
-            (
-                "App::PropertyBool",
                 "IgnoreHoles",
                 "Clearing Options",
                 QT_TRANSLATE_NOOP(
@@ -515,7 +506,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             "GapThreshold": 0.005,
             "AngularDeflection": 0.25,
             "LinearDeflection": 0.0001,
-            "FastToolCompensation": True,
             "IgnoreHoles": False,
             # For debugging
             "ShowTempObjects": False,
@@ -549,7 +539,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("OptimizeStepOverTransitions", hide)
         obj.setEditorMode("GapThreshold", hide)
         obj.setEditorMode("GapSizes", hide)
-        obj.setEditorMode("FastToolCompensation", hide)
         obj.setEditorMode("IgnoreHoles", hide)
 
         if obj.Algorithm == "OCL Dropcutter":
@@ -583,7 +572,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         obj.setEditorMode("IgnoreOuterAbove", B)
         obj.setEditorMode("ClearLastLayer", C)
         obj.setEditorMode("CutPattern", C)
-        obj.setEditorMode("FastToolCompensation", C)
         obj.setEditorMode("IgnoreHoles", C)
         obj.setEditorMode("MinSampleInterval", D)
         obj.setEditorMode("SampleInterval", G)
@@ -1044,6 +1032,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.ClearHeightOffset = None
         self.depthParams = None
         self.midDep = None
+        self.comp_cache = None
         del self.modelSTLs
         del self.safeSTLs
         del self.modelTypes
@@ -1054,6 +1043,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         del self.ClearHeightOffset
         del self.depthParams
         del self.midDep
+        del self.comp_cache
 
         execTime = time.time() - startTime
         msg = translate("PathWaterline", "operation time is")
@@ -1797,7 +1787,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         cutPattern = obj.CutPattern
         self.endVector = None
         bbFace = None
-        self.fastToolCmp = obj.FastToolCompensation
+        self.fast2Dfailed = 0
         self.ignoreHoles = obj.IgnoreHoles
 
         # Identify Tool Type
@@ -1963,20 +1953,20 @@ class ObjectWaterline(PathOp.ObjectOp):
         if "Ballend" in shape_type:
             profile = "Ballend"
             c_rad = radius
-            is_3d = True
+            is_threeD = True
         elif "Bullnose" in shape_type:
             profile = "Bullnose"
             # Retrieve CornerRadius specifically for Bullnose tools
             c_rad = float(getattr(tool, "CornerRadius", 0.0))
-            is_3d = True
+            is_threeD = True
         elif "Endmill" in shape_type:
             profile = "Endmill"
             c_rad = 0.0
-            is_3d = False
+            is_threeD = False
         else:
             return None
 
-        return {"radius": radius, "corner_radius": c_rad, "profile": profile, "is_3d": is_3d}
+        return {"radius": radius, "corner_radius": c_rad, "profile": profile, "is_threeD": is_threeD}
 
     def getOuterHull(self, shape):
         """Returns a version of the shape with all internal cavities removed."""
@@ -1998,6 +1988,25 @@ class ObjectWaterline(PathOp.ObjectOp):
         the model silhouette and reconciling detected CAD floors.
         """
         Path.Log.debug("getCutAreas()")
+
+        # --- Helpers ---
+        def _getSliceFingerprint(nestedFaces, r_eff):
+            """Creates a unique key for a set of faces and a specific radius."""
+            if not nestedFaces:
+                return None
+            
+            fp = []
+            for f in nestedFaces:
+                bb = f.BoundBox
+                # We round values to ignore tiny floating point noise
+                fp.append((
+                    len(f.Wires), 
+                    round(f.Area, 4), 
+                    round(bb.XLength, 4), 
+                    round(bb.YLength, 4)
+                ))
+            # Return a tuple (hashable) containing the geometry details and the radius
+            return (tuple(fp), round(r_eff, 4))
 
         def _getEffectiveRadius(h, radius, c_rad, profile):
             """Calculates effective radius based on tool profile."""
@@ -2022,76 +2031,94 @@ class ObjectWaterline(PathOp.ObjectOp):
                 Path.Log.debug("Step {} below model. Sampling at: {}".format(csHght, sliceHght))
             else:
                 # Step is within model. Use calculated epsilon.
-                sliceHght = csHght + epsilon
-                # Clamping to ensure slice plane stays within geometry
-                sliceHght = max(modelBottom + 1e-3, min(sliceHght, modelTop - 1e-3))
+                slcHght = csHght + epsilon
+                # Ensure slice plane stays within geometry
+                sliceHght = (modelTop - epsilon) if slcHght > (modelTop - epsilon) else slcHght
             return sliceHght
+
+        # --- Initialization ---
+        self.comp_cache = {} # Key: (TipFingerprint, max_h)
 
         CUTAREAS = list()
         allPrevComp = Part.makeCompound([])
         isFirst = True
         lenDP = len(depthparams)
+        self.fast2Dfailed = 0 # Reset Fast Tool Comp
 
         # Extract tool variables for local math
         radius = tool_params["radius"]
         c_rad = tool_params["corner_radius"]
         profile = tool_params["profile"]
-        is_3d = tool_params["is_3d"]
+        is_threeD = tool_params["is_threeD"]
 
+        # Determine boundaries
         z_dir = -1.0 if (lenDP > 1 and depthparams[0] > depthparams[-1]) else 1.0
         epsilon = z_dir * -0.001
         modelBottom, modelTop = shape.BoundBox.ZMin, shape.BoundBox.ZMax
 
         # Determine tool sampling strategy
-        num_slices = 4 if is_3d else 1
+        num_slices = 4 if is_threeD else 1
 
         categorizedSteps = self.categorizeFloorSteps(shape, depthparams)
 
         for z_target, status, floor_geo in categorizedSteps:
-            if z_target > (modelTop + 0.001):
-                continue
+            if z_target > (modelTop + 0.001): continue
 
             # Compensated faces for each sub-slice height
             sub_envelope_list = []
 
-            # Calculate how much of the tool is actually 'inside' the model's top
-            distToTop = modelTop - z_target
-            # We sample up to the equator (radius) OR the top of the model, whichever is lower
-            max_h = min(c_rad, max(0, distToTop))  # Use c_rad that works for Bull and Ball
+            #  Sub-Sampling Logic
+            dist_submerged = modelTop - z_target
+            max_h = min(c_rad, max(0, dist_submerged))
 
             for i in range(num_slices):
-                h = (max_h / (num_slices - 1)) * i if num_slices > 1 else 0
-
-                # Calculate effective radius and sampling height offset
-                r_eff = _getEffectiveRadius(h, radius, c_rad, profile)
-
-                # Sample the model at Tip_Depth + Height_offset
-                sliceHght = _determineSliceHght(z_target + h, modelBottom, modelTop, epsilon)
+                # Ballend, Bullnose
+                if is_threeD:
+                     # Height calculation (squeezed between Tip and available material)
+                    h = (max_h / (num_slices - 1)) * i
+                    r_eff = _getEffectiveRadius(h, radius, c_rad, profile)
+                    sliceHght = _determineSliceHght(z_target + h, modelBottom, modelTop, epsilon)
+                else: # Endill
+                    r_eff = radius
+                    sliceHght = z_target + epsilon
 
                 csFaces = self.getModelCrossSection(shape, sliceHght)
+                if not csFaces: continue
 
-                if csFaces:
-                    # Identify Solid Areas (Nesting)
-                    nestedFaces = self.getSolidAreasFromPlanarFaces(csFaces)
+                # Identify Solid Areas (Nesting)
+                nestedFaces = self.getSolidAreasFromPlanarFaces(csFaces)
+                if not nestedFaces: continue
 
-                    if nestedFaces:
-                        # Tool Compensation
-                        compFaces = self.getToolCompensation(nestedFaces, r_eff)
+                # Create a fingerprint for this geometry + radius
+                fingerprint = _getSliceFingerprint(nestedFaces, r_eff)
 
-                        if compFaces:
-                            # Union islands at this height
-                            sub_union = compFaces[0]
-                            if len(compFaces) > 1:
-                                for f_idx in range(1, len(compFaces)):
-                                    sub_union = sub_union.fuse(compFaces[f_idx])
+                if fingerprint in self.comp_cache:
+                    # Cache HIT: Reuse the previous result
+                    sub_union = self.comp_cache[fingerprint].copy()
+                else:
+                    # Tool Compensation
+                    compFaces = self.getToolCompensation(nestedFaces, r_eff)
+                    if not compFaces: continue
 
-                            # Ensure the union result is normalized to Z=0
-                            sub_union.translate(FreeCAD.Vector(0, 0, -sub_union.BoundBox.ZMin))
-                            sub_envelope_list.append(sub_union)
+                    # Union islands at this height
+                    sub_union = compFaces[0]
+                    if len(compFaces) > 1:
+                        for f_idx in range(1, len(compFaces)):
+                            sub_union = sub_union.fuse(compFaces[f_idx])
+
+                    # Ensure the union result is normalized to Z=0
+                    sub_union.translate(FreeCAD.Vector(0, 0, -sub_union.BoundBox.ZMin))
+                    if hasattr(sub_union, "removeSplitter"):
+                        sub_union.removeSplitter()
+
+                    # Store in cache for future layers
+                    self.comp_cache[fingerprint] = sub_union.copy()
+
+                if sub_union:    
+                    sub_envelope_list.append(sub_union)
 
             # Fuse all height-samples
-            if not sub_envelope_list:
-                continue
+            if not sub_envelope_list: continue
 
             compAdjFaces = sub_envelope_list[0]
             if len(sub_envelope_list) > 1:
@@ -2175,6 +2202,7 @@ class ObjectWaterline(PathOp.ObjectOp):
     def getFusedFloorGeometry(self, shape, startZ, finalZ, tolerance=0.001):
         """Identifies, tests, and fuses upward-facing horizontal faces."""
 
+        # --- Helpers ---
         def _isUpwardFacing(face):
             """True if the face normal points toward the tool (+Z)."""
             u1, u2, v1, v2 = face.ParameterRange
@@ -2204,6 +2232,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             except:
                 return False
 
+        # --- Initialization ---
         floor_accumulator = {}
         abs_top, abs_bottom = shape.BoundBox.ZMax, shape.BoundBox.ZMin
         z_min, z_max = min(startZ, finalZ), max(startZ, finalZ)
@@ -2243,6 +2272,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         """Tool Compensation. Returns None if it fails."""
         Path.Log.debug("getToolCompensation()")
 
+        # --- Helpers ---
         def _reconstructFaceFromSlice(slice_result):
             """Helper to turn slice wires back into a valid Face."""
             wires = []
@@ -2265,9 +2295,9 @@ class ObjectWaterline(PathOp.ObjectOp):
             FreeCAD.Console.PrintWarning(msg + "\n")
             return PathUtils.getOffsetArea(face, radius, tolerance=0.01)
 
+        # --- Initialization ---
         tol = self.geoTlrnc if self.geoTlrnc > 0 else 0.01
         newFaces = []
-        failed_twice = 0
 
         # Handle Radius = 0 (Tip Sampling)
         if radius < 1e-6:
@@ -2293,10 +2323,10 @@ class ObjectWaterline(PathOp.ObjectOp):
             offsetResult = None
 
             # Fast 2D Tool compensation (Planar Faces Only - Single Wire)
-            if self.fastToolCmp and len(newFace.Wires) == 1 and dz < 0.01:
+            if len(newFace.Wires) == 1 and dz < 0.01:
 
                 # It appears that 2D Offset is facing some challenges (if failed twice skip)
-                if failed_twice > 1:
+                if self.fast2Dfailed < 2:
                     try:
                         # 2D Offset often produces hard to detect faulty faces
                         # Set a timer to catch errors
@@ -2311,23 +2341,10 @@ class ObjectWaterline(PathOp.ObjectOp):
                             offsetResult = tempResult
                         else:
                             # Calculation took too long; reject even if successful
-                            warn_msg = translate(
-                                "PathWaterline",
-                                "The Fast 2D Tool compensation algorithm took longer than expected. \n",
-                            )
-                            warn_msg += translate(
-                                "PathWaterline",
-                                "Result rejected for stability and passed to the 3D Tool compensation algorithm. \n",
-                            )
-                            warn_msg += translate(
-                                "PathWaterline",
-                                "Consider disabling the Fast Tool compensation algorithm for this specific model. ",
-                            )
-                            FreeCAD.Console.PrintWarning(warn_msg + "\n")
-                            failed_twice += 1
+                            self.fast2Dfailed += 1
                             offsetResult = None
                     except Exception as e:
-                        failed_twice += 1
+                        self.fast2Dfailed += 1
                         Path.Log.debug(
                             "Fast 2D Tool compensation failed: {}. Falling back to 3D Tool compensation".format(
                                 str(e)
