@@ -1345,20 +1345,24 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                     continue;
                 }
 
-                if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
-                    objToDel.push_back(parent);
+                if (parent->getPropertyByName("ObjectToGround")) {
+                    if (std::ranges::find(objToDel, parent) == objToDel.end()) {
+                        objToDel.push_back(parent);
+                    }
                 }
             }
         }
 
         // Deletes them.
         for (auto* joint : objToDel) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,
-                "App.getDocument(\"%s\").removeObject(\"%s\")",
-                joint->getDocument()->getName(),
-                joint->getNameInDocument()
-            );
+            if (joint && joint->getNameInDocument() != nullptr) {
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.getDocument(\"%s\").removeObject(\"%s\")",
+                    joint->getDocument()->getName(),
+                    joint->getNameInDocument()
+                );
+            }
         }
     }
     return res;

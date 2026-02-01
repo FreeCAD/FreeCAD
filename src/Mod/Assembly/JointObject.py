@@ -1211,15 +1211,31 @@ class GroundedJoint:
         joint.Proxy = self
         self.joint = joint
 
+        self.createObjectToGroundProperty(joint, obj_to_ground)
+
+    def createObjectToGroundProperty(self, joint, obj_to_ground):
         joint.addProperty(
-            "App::PropertyLink",
+            "App::PropertyLinkGlobal",
             "ObjectToGround",
             "Ground",
             QT_TRANSLATE_NOOP("App::Property", "The object to ground"),
             locked=True,
         )
-
         joint.ObjectToGround = obj_to_ground
+
+    def onDocumentRestored(self, joint):
+        self.migrationScript(joint)
+
+    def migrationScript(self, joint):
+        if (
+            hasattr(joint, "ObjectToGround")
+            and joint.getTypeIdOfProperty("ObjectToGround") == "App::PropertyLink"
+        ):
+            obj_to_ground = joint.ObjectToGround
+            joint.setPropertyStatus("ObjectToGround", "-LockDynamic")
+            joint.removeProperty("ObjectToGround")
+
+            self.createObjectToGroundProperty(joint, obj_to_ground)
 
     def dumps(self):
         return None
