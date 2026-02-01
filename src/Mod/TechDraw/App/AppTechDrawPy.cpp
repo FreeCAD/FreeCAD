@@ -693,7 +693,9 @@ private:
     {
         PyObject *pageObj(nullptr);
         char* name(nullptr);
-        if (!PyArg_ParseTuple(args.ptr(), "Oet", &pageObj, "utf-8", &name)) {
+        double fontSize(3.5); // Default font size if not provided by the caller.
+
+        if (!PyArg_ParseTuple(args.ptr(), "Oetd", &pageObj, "utf-8", &name, &fontSize)) {
             throw Py::TypeError("expected (page, path");
         }
 
@@ -778,7 +780,7 @@ private:
                             } else if (dvd->Type.isValue("DistanceY") ) {
                                 type = 2;
                             }
-                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText, type);
+                            writer.exportLinearDim(textLocn, lineLocn, extLine1Start, extLine2Start, dimText, type, fontSize);
                         } else if (dvd->Type.isValue("Angle")) {
                             Base::Vector3d textLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
                             Base::Vector3d lineLocn(dvd->X.getValue() + parentX, dvd->Y.getValue() + parentY, 0.0);
