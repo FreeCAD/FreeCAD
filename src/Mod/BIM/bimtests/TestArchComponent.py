@@ -459,8 +459,6 @@ class TestArchComponent(TestArchBase.TestArchBase):
         mixed geometry types (planar, cylindrical, and generic) within a single object,
         while correctly ignoring horizontal faces.
         """
-        import Part
-        from math import pi
 
         # Create planar geometry (Box)
         # 10x10x10 box.
@@ -511,3 +509,41 @@ class TestArchComponent(TestArchBase.TestArchBase):
             places=3,
             msg=f"Failed to aggregate vertical areas of mixed types. Expected {total_expected}, got {complex_obj.VerticalArea.Value}",
         )
+
+    def test_horizontal_area_tilted_cylinders(self):
+        """
+        Verify that the HorizontalArea of tilted cylinders is correct.
+        The cylinders are rotated around the X-axis and the Y-axis.
+        """
+
+        # The created cylinders are very tall to also check for potential
+        # 'crazy edge' issues related to the use of TechDraw code. Edges
+        # longer than ca. 10m are considered 'crazy'.
+        angle = 30  # in degrees
+        radius = 100  # in mm
+        height = 50000  # in mm
+
+        # To calculate the horizontal area, the shape to be projected can be
+        # reduced to a rectangular face through the center of the cylinder
+        # and two semi-circular faces for the top and bottom.
+        area_rect = 2 * radius * height * cos(radians(90 - angle))
+        area_circ = pi * radius**2 * cos(radians(angle))
+        area_expected = (area_rect + area_circ) / 1e6  # in m^2
+
+        for rot_vec in (App.Vector(1, 0, 0), App.Vector(0, 1, 0)):
+            cyl = Part.show(Part.makeCylinder(radius, height))
+            cyl.Placement.Rotation = App.Rotation(rot_vec, 30)
+            obj = Arch.makeStructure(cyl)
+            obj.recompute()
+            area_actual = obj.HorizontalArea.getValueAs("m^2").Value
+
+            self.assertAlmostEqual(
+                area_expected,
+                area_actual,
+                places=3,
+                msg=(
+                    "Horizontal area > 0.1% tolerance | "
+                    f"Exp: {area_expected:.3f} m² | "
+                    f"Got: {area_actual:.3f} m²"
+                ),
+            )
