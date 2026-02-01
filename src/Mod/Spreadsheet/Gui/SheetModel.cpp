@@ -77,11 +77,8 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
                                 QStringLiteral("V"), QStringLiteral("W"), QStringLiteral("X"),
                                 QStringLiteral("Y"), QStringLiteral("Z")};
 
-    for (const QString& letter : alphabet) {
-        columnLabels << letter;
-    }
-
-    for (const QString& left : alphabet) {
+    for (const QString& left :
+         {QStringLiteral(""), QStringLiteral("A"), QStringLiteral("B"), QStringLiteral("C")}) {
         for (const QString& right : alphabet) {
             columnLabels << left + right;
         }
