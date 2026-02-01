@@ -1,10 +1,8 @@
 context:
   version: '1.1.0dev'
-  # Qt version for modern platforms (macOS 15+, Linux, Windows).
-  # Update these two when adopting a newer Qt (e.g. 6.9/6.10).
-  # Legacy macOS (Big Sur) is pinned to Qt 6.7 via variants.yaml.
-  qt6_ver: '6.8'
-  qt6_ver_max: '6.9'
+  # Qt version for all platforms (macOS 15+, Linux, Windows).
+  # qt6_ver and qt6_ver_max are defined in variants.yaml (not here)
+  # so that CI can swap variant configs for legacy macOS builds.
 
 package:
   name: freecad
