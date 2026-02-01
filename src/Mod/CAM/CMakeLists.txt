@@ -503,6 +503,7 @@ SET(Tests_SRCS
     CAMTests/TestGrblPost.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestMach3Mach4Post.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
