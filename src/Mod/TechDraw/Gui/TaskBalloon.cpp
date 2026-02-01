@@ -119,7 +119,7 @@ bool TaskBalloon::accept()
         m_guiDocument->commitCommand();
     } else {
         // see comment in reject(). this may not do what we want.
-        Gui::Command::abortCommand();
+        m_guiDocument->abortCommand();
     }
 
     m_guiDocument->resetEdit();

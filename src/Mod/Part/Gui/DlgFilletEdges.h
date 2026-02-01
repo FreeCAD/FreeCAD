@@ -106,6 +106,7 @@ public:
     );
     ~DlgFilletEdges() override;
     bool accept();
+    void setSelectionGate();
 
 protected:
     void findShapes();
@@ -186,6 +187,8 @@ public:
     void clicked(int) override;
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

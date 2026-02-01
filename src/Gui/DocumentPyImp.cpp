@@ -577,6 +577,34 @@ Py::Long DocumentPy::getEditMode() const
     return Py::Long(mode);
 }
 
+PyObject* DocumentPy::openCommand(PyObject* arg, PyObject* kwd)
+{
+    const char* name = nullptr;
+    if (!PyArg_ParseTuple(arg, "s", &name)) {
+        throw Py::Exception();
+    }
+    int tid = getDocumentPtr()->openCommand(name);
+
+    return Py::new_reference_to(Py::Long(tid));
+}
+PyObject* DocumentPy::commitCommand(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    getDocumentPtr()->commitCommand();
+
+    Py_Return;
+}
+PyObject* DocumentPy::abortCommand(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    getDocumentPtr()->abortCommand();
+
+    Py_Return;
+}
 Py::Boolean DocumentPy::getTransacting() const
 {
     return {getDocumentPtr()->isPerformingTransaction()};

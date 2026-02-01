@@ -128,7 +128,7 @@ public:
         }
 
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Scale geometries"));
 
             createShape(false);
 
@@ -144,7 +144,7 @@ public:
             }
 
             scaleLabels(initialConstraintCount);
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception& e) {
             e.reportException();
@@ -155,7 +155,7 @@ public:
             );
 
             if (abortOnFail) {
-                Gui::Command::abortCommand();
+                abortCommand();
             }
             THROWM(
                 Base::RuntimeError,

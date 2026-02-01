@@ -96,7 +96,7 @@ void ViewProviderGeomFillSurface::unsetEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // when pressing ESC make sure to close the dialog
-        QTimer::singleShot(0, &Gui::Control(), &Gui::ControlSingleton::closeDialog);
+        QTimer::singleShot(0, [] { Gui::Control().closeDialog(); });
     }
     else {
         PartGui::ViewProviderSpline::unsetEdit(ModNum);
@@ -309,6 +309,12 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 
     attachDocument(Gui::Application::Instance->getDocument(doc));
 }
+void GeomFillSurface::setSelectionGate()
+{
+    if (selectionMode != None) {
+        Gui::Selection().addSelectionGate(new EdgeSelection(selectionMode == Append, editedObject));
+    }
+}
 
 void GeomFillSurface::changeEvent(QEvent* e)
 {
@@ -339,10 +345,10 @@ void GeomFillSurface::clearSelection()
 
 void GeomFillSurface::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -403,8 +409,8 @@ bool GeomFillSurface::accept()
 
     this->vp->highlightReferences(false);
 
-    Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
+    editedObject->getDocument()->commitTransaction();
     Gui::Command::updateActive();
     return true;
 }
@@ -415,7 +421,7 @@ bool GeomFillSurface::reject()
     selectionMode = None;
     Gui::Selection().rmvSelectionGate();
 
-    Gui::Command::abortCommand();
+    editedObject->getDocument()->abortTransaction();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
     return true;
@@ -455,7 +461,7 @@ void GeomFillSurface::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
         selectionMode = Append;
-        Gui::Selection().addSelectionGate(new EdgeSelection(true, editedObject));
+        setSelectionGate();
     }
     else if (selectionMode == Append) {
         exitSelectionMode();
@@ -466,7 +472,7 @@ void GeomFillSurface::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
         selectionMode = Remove;
-        Gui::Selection().addSelectionGate(new EdgeSelection(false, editedObject));
+        setSelectionGate();
     }
     else if (selectionMode == Remove) {
         exitSelectionMode();
@@ -680,6 +686,14 @@ bool TaskGeomFillSurface::accept()
 bool TaskGeomFillSurface::reject()
 {
     return widget->reject();
+}
+void TaskGeomFillSurface::activate()
+{
+    widget->attachSelection();
+}
+void TaskGeomFillSurface::deactivate()
+{
+    widget->detachSelection();
 }
 
 }  // namespace SurfaceGui
