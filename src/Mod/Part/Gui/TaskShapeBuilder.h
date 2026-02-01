@@ -42,6 +42,7 @@ public:
 
     bool accept();
     bool reject();
+    void setSelectionGate();
 
 private:
     void onCreateButtonClicked();
@@ -78,6 +79,8 @@ public:
     bool accept() override;
     bool reject() override;
     void clicked(int) override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

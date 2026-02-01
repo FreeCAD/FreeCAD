@@ -2961,6 +2961,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         return;
     }
 
+    Gui::Document* doc = getDocument();
+
     _setupContextMenu(ext, menu, receiver, member);
     Gui::ActionFunction* func = nullptr;
 
@@ -3012,8 +3014,14 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         options |= App::Link::OnChangeCopyOptions::ApplyAll;
                     }
 
-                    App::AutoTransaction guard("Setup configurable object");
+                    int tid = 0;
                     auto sels = dlg.getSelections(DlgObjectSelection::SelectionOptions::InvertSort);
+
+                    // Open transaction on all touched documents if there is more than one
+                    for (const auto& sel : sels) {
+                        tid = sel->getDocument()->openTransaction("Setup configurable object", tid);
+                    }
+
                     for (const auto& exclude : excludes) {
                         auto iter = std::lower_bound(sels.begin(), sels.end(), exclude);
                         if (iter == sels.end() || *iter != exclude) {
@@ -3042,6 +3050,8 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                         }
                     }
                     Command::updateActive();
+
+                    App::GetApplication().commitTransaction(tid);
                 }
                 catch (Base::Exception& e) {
                     e.reportException();
@@ -3059,9 +3069,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
             if (!func) {
                 func = new Gui::ActionFunction(menu);
             }
-            func->trigger(act, [ext]() {
+            func->trigger(act, [ext, doc]() {
                 try {
-                    App::AutoTransaction guard("Enable Link copy on change");
+                    App::AutoTransaction guard(doc->openCommand("Enable Link copy on change"));
                     ext->getLinkCopyOnChangeProperty()->setValue(1);
                     Command::updateActive();
                 }
@@ -3077,9 +3087,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
                 )
             );
             act->setData(-1);
-            func->trigger(act, [ext]() {
+            func->trigger(act, [ext, doc]() {
                 try {
-                    App::AutoTransaction guard("Enable Link tracking");
+                    App::AutoTransaction guard(doc->openCommand("Enable Link tracking"));
                     ext->getLinkCopyOnChangeProperty()->setValue(3);
                     Command::updateActive();
                 }
@@ -3096,9 +3106,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         if (!func) {
             func = new Gui::ActionFunction(menu);
         }
-        func->trigger(act, [ext]() {
+        func->trigger(act, [ext, doc]() {
             try {
-                App::AutoTransaction guard("Disable copy on change");
+                App::AutoTransaction guard(doc->openCommand("Disable copy on change"));
                 ext->getLinkCopyOnChangeProperty()->setValue((long)0);
                 Command::updateActive();
             }
@@ -3121,9 +3131,9 @@ void ViewProviderLink::setupContextMenu(QMenu* menu, QObject* receiver, const ch
         if (!func) {
             func = new Gui::ActionFunction(menu);
         }
-        func->trigger(act, [ext]() {
+        func->trigger(act, [ext, doc]() {
             try {
-                App::AutoTransaction guard("Link refresh");
+                App::AutoTransaction guard(doc->openCommand("Link refresh"));
                 ext->syncCopyOnChange();
                 Command::updateActive();
             }
@@ -3152,9 +3162,12 @@ void ViewProviderLink::_setupContextMenu(
 
     if (ext->getLinkedObjectProperty() && ext->_getShowElementProperty()
         && ext->_getElementCountValue() > 1) {
-        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext] {
+        Gui::Document* doc = getDocument();
+        auto action = menu->addAction(QObject::tr("Toggle Array Elements"), [ext, doc] {
             try {
-                App::AutoTransaction guard(QT_TRANSLATE_NOOP("Command", "Toggle array elements"));
+                App::AutoTransaction guard(
+                    doc->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle array elements"))
+                );
                 ext->getShowElementProperty()->setValue(!ext->getShowElementValue());
                 Command::updateActive();
             }
@@ -3262,15 +3275,18 @@ bool ViewProviderLink::initDraggingPlacement()
         FC_ERR("no placement");
         return false;
     }
-    auto doc = Application::Instance->editDocument();
-    if (!doc) {
-        FC_ERR("no editing document");
+
+    // Used to check for the only document in edit
+    // now we specifically ask for the document to be the vp's document
+    // I think it makes sense but there may be cases I did not consider - theo-vt
+    if (!Application::Instance->isInEdit(getDocument())) {
+        FC_ERR("document is not in edit");
         return false;
     }
 
     dragCtx = std::make_unique<DraggerContext>();
 
-    dragCtx->preTransform = doc->getEditingTransform();
+    dragCtx->preTransform = getDocument()->getEditingTransform();
     const auto& pla = getObject()->getPlacementProperty()->getValue();
 
     // Cancel out our own transformation from the editing transform, because
@@ -3317,7 +3333,11 @@ ViewProvider* ViewProviderLink::startEditing(int mode)
     static thread_local bool _pendingTransform;
     static thread_local Matrix4D _editingTransform;
 
-    auto doc = Application::Instance->editDocument();
+    // Used to take the document in edit when there could only be one at a time
+    // here we take the current document the vp's document if it is in edit
+    // I don't think there is a case where a this function is invoked in another document
+    // with the intent of modifying that other document - theo-vt
+    Gui::Document* doc = Application::Instance->isInEdit(getDocument()) ? getDocument() : nullptr;
 
     if (mode == ViewProvider::Transform) {
         if (_pendingTransform && doc) {
@@ -3389,9 +3409,9 @@ bool ViewProviderLink::setEdit(int ModNum)
         if (!ext || !ext->getColoredElementsProperty()) {
             return false;
         }
-        TaskView::TaskDialog* dlg = Control().activeDialog();
+        TaskView::TaskDialog* dlg = Control().activeDialog(getDocument()->getDocument());
         if (dlg) {
-            Control().showDialog(dlg);
+            Control().showDialog(dlg, getDocument()->getDocument());
             return false;
         }
         Selection().clearSelection();
@@ -3404,7 +3424,7 @@ bool ViewProviderLink::setEdit(int ModNum)
 void ViewProviderLink::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
     if (ModNum == ViewProvider::Color) {
-        Gui::Control().showDialog(new TaskElementColors(this));
+        Gui::Control().showDialog(new TaskElementColors(this), getDocument()->getDocument());
         return;
     }
 

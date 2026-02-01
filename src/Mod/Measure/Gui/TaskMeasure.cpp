@@ -108,12 +108,7 @@ TaskMeasure::TaskMeasure()
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
     delta = settings.value(QLatin1String(taskMeasureShowDeltaSettingsName), true).toBool();
     mAutoSave = settings.value(QLatin1String(taskMeasureAutoSaveSettingsName), mAutoSave).toBool();
-    if (settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool()) {
-        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
-    }
-    else {
-        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
-    }
+    mGreedySelection = settings.value(QLatin1String(taskMeasureGreedySelection), false).toBool();
     settings.endGroup();
 
     showDelta = new QCheckBox();
@@ -217,7 +212,6 @@ TaskMeasure::TaskMeasure()
     Content.emplace_back(taskbox);
 
     // engage the selectionObserver
-    attachSelection();
 
     if (auto* doc = App::GetApplication().getActiveDocument()) {
         m_deletedConnection = doc->signalDeletedObject.connect([this](auto&& obj) {
@@ -225,8 +219,9 @@ TaskMeasure::TaskMeasure()
         });
     }
 
-    if (!App::GetApplication().getActiveTransaction()) {
-        App::GetApplication().setActiveTransaction("Add Measurement");
+    if (auto* doc = Gui::Application::Instance->activeDocument()) {
+        mTargetDoc = doc;
+        mTargetDoc->openCommand("Add Measurement");
     }
 
     setAutoCloseOnDeletedDocument(true);
@@ -575,8 +570,10 @@ bool TaskMeasure::apply(bool reset)
     }
 
     // Commit transaction
-    App::GetApplication().closeActiveTransaction();
-    App::GetApplication().setActiveTransaction("Add Measurement");
+    if (mTargetDoc) {
+        mTargetDoc->commitCommand();
+        mTargetDoc->openCommand("Add Measurement");
+    }
     return false;
 }
 
@@ -586,7 +583,9 @@ bool TaskMeasure::reject()
     closeDialog();
 
     // Abort transaction
-    App::GetApplication().closeActiveTransaction(true);
+    if (mTargetDoc) {
+        mTargetDoc->abortCommand();
+    }
     return false;
 }
 
@@ -605,6 +604,19 @@ void TaskMeasure::reset()
     // explicitMode = false;
 
     this->update();
+}
+void TaskMeasure::activate()
+{
+    updateSelectionType();
+    // engage the selectionObserver
+    attachSelection();
+    qApp->installEventFilter(this);
+}
+void TaskMeasure::deactivate()
+{
+    Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
+    detachSelection();
+    qApp->removeEventFilter(this);
 }
 
 
@@ -751,15 +763,20 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
 {
     QSettings settings;
     settings.beginGroup(QLatin1String(taskMeasureSettingsGroup));
-    if (!checked) {
-        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
-        settings.setValue(QLatin1String(taskMeasureGreedySelection), false);
+    settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
+    mGreedySelection = checked;
+    updateSelectionType();
+
+    settings.endGroup();
+}
+void TaskMeasure::updateSelectionType()
+{
+    if (mGreedySelection) {
+        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
     }
     else {
-        Gui::Selection().setSelectionStyle(SelectionStyle::GreedySelection);
-        settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
+        Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
     }
-    settings.endGroup();
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)

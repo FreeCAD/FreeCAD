@@ -385,6 +385,9 @@ def getGlobalPlacement(ref, targetObj=None):
 
 
 def isThereOneRootAssembly():
+    if Gui.activeDocument() is None:
+        return False
+
     for part in Gui.activeDocument().TreeRootObjects:
         if part.TypeId == "Assembly::AssemblyObject":
             return True

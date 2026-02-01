@@ -287,9 +287,11 @@ bool ThicknessWidget::accept()
             throw Base::CADKernelError(d->thickness->getStatusString());
         }
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
-        Gui::Command::commitCommand();
+        d->thickness->getDocument()->commitTransaction();  // Opened in
+                                                           // ViewProviderDocumentObject::startDefaultEditMode()
     }
     catch (const Base::Exception& e) {
+        d->thickness->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
         QMessageBox::warning(
             this,
             tr("Input error"),
@@ -313,7 +315,7 @@ bool ThicknessWidget::reject()
     App::DocumentObject* source = d->thickness->Faces.getValue();
 
     // roll back the done things
-    Gui::Command::abortCommand();
+    d->thickness->getDocument()->abortTransaction();  // ViewProviderDocumentObject::startDefaultEditMode()
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     Gui::Command::updateActive();
 

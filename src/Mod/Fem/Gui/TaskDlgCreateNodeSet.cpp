@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 
+#include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Gui/Application.h>
@@ -73,10 +74,12 @@ bool TaskDlgCreateNodeSet::accept()
         param->MeshViewProvider->resetHighlightNodes();
         FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        FemSetNodesObject->getDocument()->commitTransaction();
 
         return true;
     }
     catch (const Base::Exception& e) {
+        FemSetNodesObject->getDocument()->abortTransaction();
         Base::Console().warning("TaskDlgCreateNodeSet::accept(): %s\n", e.what());
     }
 
@@ -90,7 +93,7 @@ bool TaskDlgCreateNodeSet::reject()
     // if(doc)
     //     doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
-    Gui::Command::abortCommand();
+    FemSetNodesObject->getDocument()->abortTransaction();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
 
     return true;
@@ -98,5 +101,15 @@ bool TaskDlgCreateNodeSet::reject()
 
 void TaskDlgCreateNodeSet::helpRequested()
 {}
+
+void TaskDlgCreateNodeSet::activate()
+{
+    param->attachSelection();
+    param->setSelectionGate();
+}
+void TaskDlgCreateNodeSet::deactivate()
+{
+    param->detachSelection();
+}
 
 #include "moc_TaskDlgCreateNodeSet.cpp"

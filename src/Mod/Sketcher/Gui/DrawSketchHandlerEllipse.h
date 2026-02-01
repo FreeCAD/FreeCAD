@@ -209,7 +209,7 @@ private:
     void executeCommands() override
     {
         try {
-            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
 
             ellipseGeoId = getHighestCurveIndex() + 1;
 
@@ -223,7 +223,7 @@ private:
                 Gui::cmdAppObjectArgs(sketchgui->getObject(), "exposeInternalGeometry(%d)", ellipseGeoId);
             }
 
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(
@@ -232,7 +232,7 @@ private:
                 QT_TRANSLATE_NOOP("Notifications", "Failed to add ellipse")
             );
 
-            Gui::Command::abortCommand();
+            abortCommand();
             THROWM(
                 Base::RuntimeError,
                 QT_TRANSLATE_NOOP(
