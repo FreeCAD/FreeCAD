@@ -219,13 +219,13 @@ GeoFeatureGroupExtension::removeObjects(std::vector<App::DocumentObject*> object
 
 void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
 {
+    auto owner = getExtendedObject();
 
     // objects are only allowed in a single GeoFeatureGroup
     if (p == &Group && !Group.testStatus(Property::User3)) {
 
-        if ((!getExtendedObject()->isRestoring()
-             || getExtendedObject()->getDocument()->testStatus(Document::Importing))
-            && !getExtendedObject()->getDocument()->isPerformingTransaction()) {
+        if ((!owner->isRestoring() || owner->getDocument()->testStatus(Document::Importing))
+            && !owner->getDocument()->isPerformingTransaction()) {
 
             bool error = false;
             auto corrected = Group.getValues();
@@ -236,7 +236,7 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 // an error. We need a custom check
                 auto list = obj->getInList();
                 for (auto in : list) {
-                    if (in == getExtendedObject()) {
+                    if (in == owner) {
                         continue;
                     }
                     auto parent = in->getExtensionByType<GeoFeatureGroupExtension>(true);
@@ -255,6 +255,14 @@ void GeoFeatureGroupExtension::extensionOnChanged(const Property* p)
                 throw Base::RuntimeError("Object can only be in a single GeoFeatureGroup");
             }
         }
+
+        // Skip handling in parent class GroupExtension
+        return;
+    }
+
+    if (p == &owner->Visibility) {
+        // Skip visibility handling in parent class GroupExtension
+        return;
     }
 
     App::GroupExtension::extensionOnChanged(p);
