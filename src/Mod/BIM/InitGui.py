@@ -119,6 +119,7 @@ class BIMWorkbench(Workbench):
             "BIM_Slab",
             "BIM_Door",
             "Arch_Window",
+            "BIM_Covering",
             "Arch_Pipe",
             "Arch_PipeConnector",
             "Arch_Stairs",

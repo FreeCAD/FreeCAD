@@ -555,6 +555,13 @@ def _get_param_dictionary():
     param_dict["Mod/Arch"] = {
         "applyConstructionStyle":      ("bool",      True),
         "ClaimHosted":                 ("bool",      True),
+        "CoveringAlignment":           ("string",    "Center"),
+        "CoveringFinishMode":          ("string",    "Solid Tiles"),
+        "CoveringJoint":               ("float",     5.0),
+        "CoveringLength":              ("float",     300.0),
+        "CoveringThickness":           ("float",     10.0),
+        "CoveringRotation":            ("float",     0.0),
+        "CoveringWidth":               ("float",     300.0),
         "CustomIfcSchema":             ("string",    ""),     # importIFClegacy.py
         "createIfcGroups":             ("bool",      False),  # importIFClegacy.py
         "DoorHeight":                  ("float",     2100.0),
