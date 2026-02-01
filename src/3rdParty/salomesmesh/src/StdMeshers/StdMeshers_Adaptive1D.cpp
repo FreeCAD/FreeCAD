@@ -38,7 +38,6 @@
 #include <BRepBndLib.hxx>
 #include <BRepMesh_IncrementalMesh.hxx>
 #include <BRep_Tool.hxx>
-#include <Bnd_B3d.hxx>
 #include <Bnd_Box.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GeomAdaptor_Curve.hxx>
@@ -58,6 +57,7 @@
 #include <TopoDS_Vertex.hxx>
 #include <gp_Lin.hxx>
 #include <gp_Pnt.hxx>
+#include <TColStd_Array1OfInteger.hxx>
 
 #include <limits>
 #include <vector>
@@ -73,9 +73,21 @@ namespace // internal utils
    */
   struct BBox : public Bnd_B3d
   {
-    gp_XYZ Center() const { return gp_XYZ( myCenter[0], myCenter[1], myCenter[2] ); }
-    gp_XYZ HSize()  const { return gp_XYZ( myHSize[0],  myHSize[1],  myHSize[2]  ); }
-    double Size()   const { return 2 * myHSize[0]; }
+      gp_XYZ Center() const
+      {
+          const std::array<Standard_Real, 3>& myCenter = Bnd_B3d::Center();
+          return gp_XYZ( myCenter[0], myCenter[1], myCenter[2]);
+      }
+      gp_XYZ HSize() const
+      {
+          const std::array<Standard_Real, 3>& myHSize = Bnd_B3d::HSize();
+          return gp_XYZ(myHSize[0], myHSize[1], myHSize[2]);
+      }
+      double Size() const
+      {
+          const std::array<Standard_Real, 3>& myHSize = Bnd_B3d::HSize();
+          return 2 * myHSize[0];
+      }
   };
   //================================================================================
   /*!

@@ -24,6 +24,7 @@
 
 #include <Mod/Part/PartGlobal.h>
 
+#include <TopTools_SequenceOfShape.hxx>
 #include <TopoDS.hxx>
 
 
