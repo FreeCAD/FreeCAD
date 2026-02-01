@@ -15,13 +15,17 @@ MACOSX_DEPLOYMENT_TARGET:
 - if: osx and x86_64
   then: "11.0"
 
-# Pin Qt 6.7 for macOS Intel — last Qt version supporting macOS 11 (Big Sur).
+# Qt version per platform. Update the non-Intel entries when adopting newer Qt.
+# macOS Intel is pinned to Qt 6.7 — last version supporting macOS 11 (Big Sur).
 # For the ARM legacy build (also targeting Big Sur), CI copies
 # variants_macos_arm64_legacy.yaml over this file (see build_release.yml).
-# The defaults (6.8/6.9) are set in recipe.yaml context.
 qt6_ver:
 - if: osx and x86_64
   then: "6.7"
+- if: not (osx and x86_64)
+  then: "6.8"
 qt6_ver_max:
 - if: osx and x86_64
   then: "6.8"
+- if: not (osx and x86_64)
+  then: "6.9"
