@@ -56,10 +56,11 @@ using DSHSlotController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerSlot,
     StateMachines::ThreeSeekEnd,
     /*PAutoConstraintSize =*/2,
-    /*OnViewParametersT =*/OnViewParameters<5>,   // NOLINT
-    /*WidgetParametersT =*/WidgetParameters<0>,   // NOLINT
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,   // NOLINT
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;  // NOLINT
+    /*OnViewParametersT =*/OnViewParameters<5>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHSlotControllerBase = DSHSlotController::ControllerBase;
 
