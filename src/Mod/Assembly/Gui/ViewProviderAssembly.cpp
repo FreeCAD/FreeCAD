@@ -130,6 +130,8 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+
+    removeTaskSolver();
 };
 
 QIcon ViewProviderAssembly::getIcon() const
@@ -354,11 +356,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
             );
         }
 
-        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-        if (taskView) {
-            // Waiting for the solver to support reporting information.
-            taskView->removeContextualPanel(taskSolver);
-        }
+        removeTaskSolver();
 
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
@@ -366,6 +364,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
         return;
     }
     ViewProviderPart::unsetEdit(mode);
+}
+
+void ViewProviderAssembly::removeTaskSolver()
+{
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    if (taskView) {
+        // Waiting for the solver to support reporting information.
+        taskView->removeContextualPanel(taskSolver);
+    }
 }
 
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
@@ -1219,11 +1226,19 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
                 isolateJointReferences(obj);
                 return;
             }
+            else if (explodeTemporarily(obj)) {
+                return;
+            }
+        }
+        else {
+            clearIsolate();
+            clearTemporaryExplosion();
         }
     }
     if (msg.Type == Gui::SelectionChanges::ClrSelection
         || msg.Type == Gui::SelectionChanges::RmvSelection) {
         clearIsolate();
+        clearTemporaryExplosion();
     }
 
     if (!isInEditMode()) {
@@ -1602,6 +1617,76 @@ void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName
 {
     Q_UNUSED(cmdName);
     this->clearIsolate();
+    this->clearTemporaryExplosion();
+}
+
+bool ViewProviderAssembly::explodeTemporarily(App::DocumentObject* explodedView)
+{
+    if (!explodedView || temporaryExplosion == explodedView) {
+        return false;
+    }
+
+    clearTemporaryExplosion();
+
+    Base::PyGILStateLocker lock;
+
+    App::PropertyPythonObject* proxy = explodedView
+        ? dynamic_cast<App::PropertyPythonObject*>(explodedView->getPropertyByName("Proxy"))
+        : nullptr;
+
+    if (!proxy) {
+        return false;
+    }
+
+    Py::Object jointPy = proxy->getValue();
+
+    if (!jointPy.hasAttr("explodeTemporarily")) {
+        return false;
+    }
+
+    Py::Object attr = jointPy.getAttr("explodeTemporarily");
+    if (attr.ptr() && attr.isCallable()) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(explodedView->getPyObject()));
+        Py::Callable(attr).apply(args);
+        temporaryExplosion = explodedView;
+        temporaryExplosion->purgeTouched();
+        return true;
+    }
+
+    return false;
+}
+
+void ViewProviderAssembly::clearTemporaryExplosion()
+{
+    if (!temporaryExplosion) {
+        return;
+    }
+
+    Base::PyGILStateLocker lock;
+
+    App::PropertyPythonObject* proxy = temporaryExplosion
+        ? dynamic_cast<App::PropertyPythonObject*>(temporaryExplosion->getPropertyByName("Proxy"))
+        : nullptr;
+
+    if (!proxy) {
+        return;
+    }
+
+    Py::Object jointPy = proxy->getValue();
+
+    if (!jointPy.hasAttr("restoreAssembly")) {
+        return;
+    }
+
+    Py::Object attr = jointPy.getAttr("restoreAssembly");
+    if (attr.ptr() && attr.isCallable()) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(temporaryExplosion->getPyObject()));
+        Py::Callable(attr).apply(args);
+        temporaryExplosion->purgeTouched();
+        temporaryExplosion = nullptr;
+    }
 }
 
 // UTILS

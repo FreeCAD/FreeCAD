@@ -178,4 +178,5 @@ requirements:
     - if: linux
       then:
         - libspnav
+        - qt6-wayland
         - xcb-util-cursor==0.1.5  ## hack to address https://github.com/FreeCAD/FreeCAD/issues/26726
