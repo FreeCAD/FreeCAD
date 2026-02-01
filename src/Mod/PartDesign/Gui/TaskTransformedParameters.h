@@ -237,6 +237,9 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
+    void activate() override;
+    void deactivate() override;
+
 protected:
     TaskTransformedParameters* parameter = nullptr;
     TaskTransformedMessages* message = nullptr;

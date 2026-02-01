@@ -116,6 +116,7 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
     : QDialog(parent, fl)
     , ui(new Ui_DlgExtrusion)
     , filter(nullptr)
+    , filterSelection(false)
 {
     ui->setupUi(this);
     setupConnections();
@@ -154,6 +155,7 @@ DlgExtrusion::~DlgExtrusion()
     if (filter) {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
     }
 
     // no need to delete child widgets, Qt does it all for us
@@ -222,9 +224,9 @@ void DlgExtrusion::onDirModeNormalToggled(bool on)
 
 void DlgExtrusion::onSelectEdgeClicked()
 {
-    if (!filter) {
-        filter = new EdgeSelection();
-        Gui::Selection().addSelectionGate(filter);
+    if (!filterSelection) {
+        filterSelection = true;
+        setSelectionGate();
         ui->btnSelectEdge->setText(tr("Selecting…"));
 
         // visibility automation
@@ -254,6 +256,7 @@ void DlgExtrusion::onSelectEdgeClicked()
     else {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
+        filterSelection = false;
         ui->btnSelectEdge->setText(tr("Select"));
 
         // visibility automation
@@ -894,6 +897,13 @@ void DlgExtrusion::writeParametersToFeature(App::DocumentObject& feature, App::D
         ui->spinTaperAngleRev->value().getValue()
     );
 }
+void DlgExtrusion::setSelectionGate()
+{
+    if (filterSelection) {
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
+    }
+}
 
 
 // ---------------------------------------
@@ -925,6 +935,15 @@ void TaskExtrusion::clicked(int id)
         catch (Base::AbortException&) {
         };
     }
+}
+void TaskExtrusion::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskExtrusion::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_DlgExtrusion.cpp"

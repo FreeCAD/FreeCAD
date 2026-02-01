@@ -155,6 +155,8 @@ private:
     // and return the index of that cell if found
     QModelIndex indexResizable(QPoint mouse_pos);
 
+    App::Document* propertyDocument(App::PropertyContainer* cont) const;
+
 private:
     PropertyItemDelegate* delegate;
     PropertyModel* propertyModel;

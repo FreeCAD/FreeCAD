@@ -74,6 +74,7 @@ public:
     void checkOpenCommand();
     void setEditedObject(Surface::Filling* obj);
     void appendButtons(Gui::ButtonGroup*);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;

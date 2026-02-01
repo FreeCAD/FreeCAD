@@ -180,7 +180,7 @@ public:
         if (geo->isDerivedFrom<Part::GeomTrimmedCurve>() || geo->is<Part::GeomCircle>()
             || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomBSplineCurve>()) {
             try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
+                openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                 Gui::cmdAppObjectArgs(
                     sketchgui->getObject(),
                     "trim(%d,App.Vector(%f,%f,0))",
@@ -188,7 +188,7 @@ public:
                     onSketchPos.x,
                     onSketchPos.y
                 );
-                Gui::Command::commitCommand();
+                commitCommand();
                 tryAutoRecompute(sketchgui->getObject<Sketcher::SketchObject>());
             }
             catch (const Base::Exception&) {
@@ -198,7 +198,7 @@ public:
                     QT_TRANSLATE_NOOP("Notifications", "Failed to trim edge")
                 );
 
-                Gui::Command::abortCommand();
+                abortCommand();
             }
         }
     }

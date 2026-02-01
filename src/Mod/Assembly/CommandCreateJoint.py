@@ -455,7 +455,7 @@ class CommandToggleGrounded:
         if not selection:
             return
 
-        App.setActiveTransaction("Toggle grounded")
+        Gui.ActiveDocument("Toggle grounded")
         for sel in selection:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
@@ -500,7 +500,7 @@ class CommandToggleGrounded:
 
                 # Create groundedJoint.
                 createGroundedJoint(moving_part)
-        App.closeActiveTransaction()
+        Gui.ActiveDocument.commitCommand()
 
 
 if App.GuiUp:

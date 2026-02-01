@@ -192,15 +192,13 @@ void ViewProviderFilling::highlightReferences(ShapeType type, const References& 
 class FillingPanel::ShapeSelection: public Gui::SelectionFilterGate
 {
 public:
-    ShapeSelection(FillingPanel::SelectionMode& mode, Surface::Filling* editedObject)
+    ShapeSelection(FillingPanel::SelectionMode mode, Surface::Filling* editedObject)
         : Gui::SelectionFilterGate(nullPointer())
         , mode(mode)
         , editedObject(editedObject)
     {}
     ~ShapeSelection() override
-    {
-        mode = FillingPanel::None;
-    }
+    {}
     /**
      * Allow the user to pick only edges.
      */
@@ -261,7 +259,7 @@ private:
     }
 
 private:
-    FillingPanel::SelectionMode& mode;
+    FillingPanel::SelectionMode mode;
     Surface::Filling* editedObject;
 };
 
@@ -328,6 +326,12 @@ void FillingPanel::appendButtons(Gui::ButtonGroup* buttonGroup)
     buttonGroup->addButton(ui->buttonInitFace, int(SelectionMode::InitFace));
     buttonGroup->addButton(ui->buttonEdgeAdd, int(SelectionMode::AppendEdge));
     buttonGroup->addButton(ui->buttonEdgeRemove, int(SelectionMode::RemoveEdge));
+}
+void FillingPanel::setSelectionGate()
+{
+    if (selectionMode != None) {
+        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
+    }
 }
 
 // stores object pointer, its old fill type and adjusts radio buttons according to it.
@@ -441,10 +445,10 @@ void FillingPanel::clearSelection()
 
 void FillingPanel::checkOpenCommand()
 {
-    if (checkCommand && !Gui::Command::hasPendingCommand()) {
+    if (checkCommand && !editedObject->getDocument()->hasPendingTransaction()) {
         std::string Msg("Edit ");
         Msg += editedObject->Label.getValue();
-        Gui::Command::openCommand(Msg.c_str());
+        editedObject->getDocument()->openTransaction(Msg.c_str());
         checkCommand = false;
     }
 }
@@ -555,17 +559,15 @@ void FillingPanel::onLineInitFaceNameTextChanged(const QString& text)
 
 void FillingPanel::onButtonInitFaceClicked()
 {
-    // 'selectionMode' is passed by reference and changed when the filter is deleted
-    Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
     selectionMode = InitFace;
+    setSelectionGate();
 }
 
 void FillingPanel::onButtonEdgeAddToggled(bool checked)
 {
     if (checked) {
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
         selectionMode = AppendEdge;
+        setSelectionGate();
     }
     else if (selectionMode == AppendEdge) {
         exitSelectionMode();
@@ -575,9 +577,8 @@ void FillingPanel::onButtonEdgeAddToggled(bool checked)
 void FillingPanel::onButtonEdgeRemoveToggled(bool checked)
 {
     if (checked) {
-        // 'selectionMode' is passed by reference and changed when the filter is deleted
-        Gui::Selection().addSelectionGate(new ShapeSelection(selectionMode, editedObject.get()));
         selectionMode = RemoveEdge;
+        setSelectionGate();
     }
     else if (selectionMode == RemoveEdge) {
         exitSelectionMode();
@@ -586,9 +587,9 @@ void FillingPanel::onButtonEdgeRemoveToggled(bool checked)
 
 void FillingPanel::onListBoundaryItemDoubleClicked(QListWidgetItem* item)
 {
+    selectionMode = None;
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
-    selectionMode = None;
 
     ui->comboBoxFaces->clear();
     ui->comboBoxCont->clear();
@@ -674,8 +675,8 @@ void FillingPanel::onSelectionChanged(const Gui::SelectionChanges& msg)
             links.emplace_back(sel.getObject(), subList);
             this->vp->highlightReferences(ViewProviderFilling::Face, links, true);
 
-            Gui::Selection().rmvSelectionGate();
             selectionMode = None;
+            Gui::Selection().rmvSelectionGate();
         }
         else if (selectionMode == AppendEdge) {
             QListWidgetItem* item = new QListWidgetItem(ui->listBoundary);
@@ -953,6 +954,7 @@ void FillingPanel::exitSelectionMode()
     // 'selectionMode' is passed by reference to the filter and changed when the filter is deleted
     Gui::Selection().clearSelection();
     Gui::Selection().rmvSelectionGate();
+    selectionMode = None;
 }
 
 // ----------------------------------------------------------------------------
@@ -962,6 +964,8 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
     // Set up button group
     buttonGroup = new Gui::ButtonGroup(this);
     buttonGroup->setExclusive(true);
+
+    editedObj = obj;
 
     // first task box
     widget1 = new FillingPanel(vp, obj);
@@ -981,6 +985,10 @@ TaskFilling::TaskFilling(ViewProviderFilling* vp, Surface::Filling* obj)
 
 void TaskFilling::setEditedObject(Surface::Filling* obj)
 {
+    if (editedObj != nullptr && obj != editedObj) {
+        editedObj->getDocument()->commitTransaction();
+    }
+    editedObj = obj;
     widget1->setEditedObject(obj);
 }
 
@@ -1002,7 +1010,7 @@ bool TaskFilling::accept()
     if (ok) {
         widget2->reject();
         widget3->reject();
-        Gui::Command::commitCommand();
+        editedObj->getDocument()->commitTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
@@ -1016,12 +1024,29 @@ bool TaskFilling::reject()
     if (ok) {
         widget2->reject();
         widget3->reject();
-        Gui::Command::abortCommand();
+        editedObj->getDocument()->abortTransaction();
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
         Gui::Command::updateActive();
     }
 
     return ok;
+}
+void TaskFilling::activate()
+{
+    widget1->attachSelection();
+    widget1->setSelectionGate();
+
+    widget2->attachSelection();
+    widget2->setSelectionGate();
+
+    widget3->attachSelection();
+    widget3->setSelectionGate();
+}
+void TaskFilling::deactivate()
+{
+    widget1->detachSelection();
+    widget2->detachSelection();
+    widget3->detachSelection();
 }
 
 }  // namespace SurfaceGui

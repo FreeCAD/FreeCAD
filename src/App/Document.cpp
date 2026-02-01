@@ -35,6 +35,7 @@
 #include <list>
 #include <algorithm>
 #include <filesystem>
+#include <format>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
@@ -190,6 +191,7 @@ bool Document::undo(const int id)
             mRedoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
             mRedoTransactions.push_back(d->activeUndoTransaction);
             d->activeUndoTransaction = nullptr;
+            d->bookedTransaction = 0;
 
             mUndoMap.erase(mUndoTransactions.back()->getID());
             delete mUndoTransactions.back();
@@ -242,6 +244,7 @@ bool Document::redo(const int id)
             mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
             mUndoTransactions.push_back(d->activeUndoTransaction);
             d->activeUndoTransaction = nullptr;
+            d->bookedTransaction = 0;
 
             mRedoMap.erase(mRedoTransactions.back()->getID());
             delete mRedoTransactions.back();
@@ -271,10 +274,10 @@ void Document::changePropertyOfObject(TransactionalObject* obj,
     }
     if ((d->iUndoMode != 0) && !isPerformingTransaction() && !d->activeUndoTransaction) {
         if (!testStatus(Restoring) || testStatus(Importing)) {
-            int tid = 0;
-            const char* name = GetApplication().getActiveTransaction(&tid);
-            if (name && tid > 0) {
-                _openTransaction(name, tid);
+            if (d->bookedTransaction == NullTransaction) {
+                d->bookedTransaction = GetApplication().getGlobalTransaction();
+            } else {
+                _openTransaction(GetApplication().getTransactionName(d->bookedTransaction), d->bookedTransaction);
             }
         }
     }
@@ -329,71 +332,92 @@ std::vector<std::string> Document::getAvailableRedoNames() const
     return vList;
 }
 
-void Document::openTransaction(const char* name) // NOLINT
+int Document::openTransaction(TransactionName name, int tid) // NOLINT
 {
-    if (isPerformingTransaction() || d->committing) {
-        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-            FC_WARN("Cannot open transaction while transacting");
-        }
-        return;
+    if (tid != NullTransaction && tid == d->bookedTransaction) {
+        return tid; // Early exit without warning
     }
-
-    GetApplication().setActiveTransaction(name ? name : "<empty>");
-}
-
-int Document::_openTransaction(const char* name, int id)
-{
+    if (isTransactionLocked()) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Transaction locked, ignore new transaction '" << name.name << "'");
+        }
+        return 0;
+    }
     if (isPerformingTransaction() || d->committing) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot open transaction while transacting");
         }
         return 0;
     }
-
-    if (d->iUndoMode != 0) {
-        // Avoid recursive calls that is possible while
-        // clearing the redo transactions and will cause
-        // a double deletion of some transaction and thus
-        // a segmentation fault
-        if (d->opentransaction) {
-            return 0;
-        }
-        Base::FlagToggler<> flag(d->opentransaction);
-
-        if ((id != 0) && mUndoMap.find(id) != mUndoMap.end()) {
-            throw Base::RuntimeError("invalid transaction id");
-        }
-        if (d->activeUndoTransaction) {
-            _commitTransaction(true);
-        }
-        _clearRedos();
-
-        d->activeUndoTransaction = new Transaction(id);
-        if (!name) {
-            name = "<empty>";
-        }
-        d->activeUndoTransaction->Name = name;
-        mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
-        id = d->activeUndoTransaction->getID();
-
-        signalOpenTransaction(*this, name);
-
-        auto& app = GetApplication();
-        auto activeDoc = app.getActiveDocument();
-        if (activeDoc && activeDoc != this && !activeDoc->hasPendingTransaction()) {
-            std::string aname("-> ");
-            aname += d->activeUndoTransaction->Name;
-            FC_LOG("auto transaction " << getName() << " -> " << activeDoc->getName());
-            activeDoc->_openTransaction(aname.c_str(), id);
-        }
-        return id;
+    if (name.name.empty()) {
+        name.name = "<empty>";
     }
-    return 0;
+    return setActiveTransaction(name, tid);
+}
+int Document::openTransaction(std::string name, int tid)
+{
+    return openTransaction(TransactionName {.name = name, .temporary = false}, tid);
 }
 
-void Document::renameTransaction(const char* name, const int id) const
+int Document::_openTransaction(std::string name, int id)
 {
-    if (name && d->activeUndoTransaction && d->activeUndoTransaction->getID() == id) {
+    if (isTransactionLocked() && id != d->bookedTransaction) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Transaction locked, ignore new transaction '" << name << "'");
+        }
+    }
+    if (isPerformingTransaction() || d->committing) {
+        if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+            FC_WARN("Cannot open transaction while transacting");
+        }
+        return 0;
+    }
+    if (d->iUndoMode == 0) {
+        return 0;
+    }
+
+    // Avoid recursive calls that is possible while
+    // clearing the redo transactions and will cause
+    // a double deletion of some transaction and thus
+    // a segmentation fault
+    if (d->opentransaction) {
+        return 0;
+    }
+    Base::FlagToggler<> flag(d->opentransaction);
+
+    if ((id != 0) && mUndoMap.find(id) != mUndoMap.end()) {
+        throw Base::RuntimeError("invalid transaction id");
+    }
+    if (d->activeUndoTransaction) {
+        _commitTransaction(true);
+    }
+    _clearRedos();
+
+    // When id == 0, this creates a new id
+    // for instance, when there is no global transaction
+    // from the application to stick to
+    d->activeUndoTransaction = new Transaction(id);
+    if (name.empty()) {
+        name = "<empty>";
+    }
+    d->activeUndoTransaction->Name = name;
+    mUndoMap[d->activeUndoTransaction->getID()] = d->activeUndoTransaction;
+    id = d->activeUndoTransaction->getID();
+
+    signalOpenTransaction(*this, name);
+
+    Document* transactionInitiator = GetApplication().transactionInitiator(id);
+    if (transactionInitiator && transactionInitiator != this && !transactionInitiator->hasPendingTransaction()) {
+        std::string aname = std::format("-> {}", d->activeUndoTransaction->Name);
+        FC_LOG("auto transaction " << getName() << " -> " << transactionInitiator->getName());
+        transactionInitiator->_openTransaction(aname, id);
+    }
+    return id;
+}
+
+void Document::renameTransaction(const std::string& name, const int id) const
+{
+    if (!name.empty() && d->activeUndoTransaction && d->activeUndoTransaction->getID() == id) {
         if (boost::starts_with(d->activeUndoTransaction->Name, "-> ")) {
             d->activeUndoTransaction->Name.resize(3);
         }
@@ -403,48 +427,108 @@ void Document::renameTransaction(const char* name, const int id) const
         d->activeUndoTransaction->Name += name;
     }
 }
+int Document::setActiveTransaction(TransactionName name, int tid)
+{
+    // Probably a group transaction situation
+    if (tid != NullTransaction) {
+        if (!GetApplication().transactionIsActive(tid)) {
+            FC_LOG("Could not set active transaction to inactive ID");
+            return NullTransaction;
+        }
+        if (d->bookedTransaction != NullTransaction && d->bookedTransaction != tid && !_commitTransaction(true)) {
+            FC_LOG("Could not book transaction for document");
+            return NullTransaction;
+        }
+        d->bookedTransaction = tid;
+ 
+        if (GetApplication().transactionTmpName(d->bookedTransaction)) {
+            GetApplication().setTransactionName(d->bookedTransaction, name);
+        }
+        return d->bookedTransaction;
+    }
+
+    // Rename the transaction if it had a tmp name
+    if (d->bookedTransaction != NullTransaction && GetApplication().transactionTmpName(d->bookedTransaction)) {
+        GetApplication().setTransactionName(d->bookedTransaction, name);
+        return d->bookedTransaction;
+    }
+    if (d->bookedTransaction != NullTransaction && !_commitTransaction(true)) {
+        FC_LOG("Could not book transaction for document");
+        return NullTransaction;
+    }
+    d->bookedTransaction = Transaction::getNewID();
+
+    GetApplication().setTransactionDescription(d->bookedTransaction, TransactionDescription {.initiator = this, .name = name});
+    return d->bookedTransaction;
+}
+
+void Document::lockTransaction()
+{
+    d->TransactionLock++;
+}
+void Document::unlockTransaction()
+{
+    if (d->TransactionLock > 0) {
+        d->TransactionLock--;
+    }
+}
+bool Document::isTransactionLocked() const
+{
+    return d->TransactionLock > 0;
+}
+bool Document::transacting() const
+{
+    return isPerformingTransaction() || d->committing;
+}
 
 void Document::_checkTransaction(DocumentObject* pcDelObj, const Property* What, int line)
 {
     // if the undo is active but no transaction open, open one!
-    if ((d->iUndoMode != 0) && !isPerformingTransaction()) {
-        if (!d->activeUndoTransaction) {
-            if (!testStatus(Restoring) || testStatus(Importing)) {
-                int tid = 0;
-                const char* name = GetApplication().getActiveTransaction(&tid);
-                if (name && tid > 0) {
-                    bool ignore = false;
-                    if (What && What->testStatus(Property::NoModify)) {
-                        ignore = true;
-                    }
-                    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                        if (What) {
-                            FC_LOG((ignore ? "ignore" : "auto")
-                                   << " transaction (" << line << ") '" << What->getFullName());
-                        }
-                        else {
-                            FC_LOG((ignore ? "ignore" : "auto") << " transaction (" << line << ") '"
-                                                                << name << "' in " << getName());
-                        }
-                    }
-                    if (!ignore) {
-                        _openTransaction(name, tid);
-                    }
-                    return;
+    if (d->iUndoMode == 0 || isPerformingTransaction() || d->activeUndoTransaction) {
+        return;
+    }
+
+    if (!testStatus(Restoring) || testStatus(Importing)) {
+
+        // Priority to a transaction that has been booked
+        // explicitly for this document, it there are none
+        // get a sticky transaction from application
+        if (!d->bookedTransaction) {
+            d->bookedTransaction = GetApplication().getGlobalTransaction();
+        }
+
+        if (d->bookedTransaction != NullTransaction) {
+            std::string name = GetApplication().getTransactionName(d->bookedTransaction);
+            bool ignore = false;
+            if (What && What->testStatus(Property::NoModify)) {
+                ignore = true;
+            }
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                if (What) {
+                    FC_LOG((ignore ? "ignore" : "auto")
+                            << " transaction (" << line << ") '" << What->getFullName());
+                }
+                else {
+                    FC_LOG((ignore ? "ignore" : "auto") << " transaction (" << line << ") '"
+                                                        << name << "' in " << getName());
                 }
             }
-            if (!pcDelObj) {
-                return;
+            if (!ignore) {
+                _openTransaction(name, d->bookedTransaction);
             }
-            // When the object is going to be deleted we have to check if it has already been added
-            // to the undo transactions
-            std::list<Transaction*>::iterator it;
-            for (it = mUndoTransactions.begin(); it != mUndoTransactions.end(); ++it) {
-                if ((*it)->hasObject(pcDelObj)) {
-                    _openTransaction("Delete");
-                    break;
-                }
-            }
+            return;
+        }
+    }
+    if (!pcDelObj) {
+        return;
+    }
+    // When the object is going to be deleted we have to check if it has already been added
+    // to the undo transactions
+    std::list<Transaction*>::iterator it;
+    for (it = mUndoTransactions.begin(); it != mUndoTransactions.end(); ++it) {
+        if ((*it)->hasObject(pcDelObj)) {
+            _openTransaction("Delete");
+            break;
         }
     }
 }
@@ -473,29 +557,36 @@ void Document::commitTransaction() // NOLINT
     }
 
     if (d->activeUndoTransaction) {
-        GetApplication().closeActiveTransaction(false, d->activeUndoTransaction->getID());
+        // This will iterate over all documents and ask them to
+        // commit their transaction if their ID matches
+        GetApplication().commitTransaction(d->activeUndoTransaction->getID());
+    } else {
+        d->bookedTransaction = 0; // Reset booked transaction even if it was not used
     }
 }
 
-void Document::_commitTransaction(const bool notify)
+bool Document::_commitTransaction(const bool notify)
 {
     if (isPerformingTransaction()) {
         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
             FC_WARN("Cannot commit transaction while transacting");
         }
-        return;
+        return false;
     }
     if (d->committing) {
         // for a recursive call return without printing a warning
-        return;
+        return false;
     }
 
+    d->bookedTransaction = 0;
     if (d->activeUndoTransaction) {
         Base::FlagToggler<> flag(d->committing);
         Application::TransactionSignaller signaller(false, true);
         const int id = d->activeUndoTransaction->getID();
+
         mUndoTransactions.push_back(d->activeUndoTransaction);
         d->activeUndoTransaction = nullptr;
+
         // check the stack for the limits
         if (mUndoTransactions.size() > d->UndoMaxStackSize) {
             mUndoMap.erase(mUndoTransactions.front()->getID());
@@ -504,11 +595,12 @@ void Document::_commitTransaction(const bool notify)
         }
         signalCommitTransaction(*this);
 
-        // closeActiveTransaction() may call again _commitTransaction()
+        // commitTransaction() may call again _commitTransaction()
         if (notify) {
-            GetApplication().closeActiveTransaction(false, id);
+            GetApplication().commitTransaction(id);
         }
     }
+    return true;
 }
 
 void Document::abortTransaction() const
@@ -520,7 +612,9 @@ void Document::abortTransaction() const
         return;
     }
     if (d->activeUndoTransaction) {
-        GetApplication().closeActiveTransaction(true, d->activeUndoTransaction->getID());
+        GetApplication().abortTransaction(d->activeUndoTransaction->getID());
+    } else {
+        d->bookedTransaction = 0; // Reset booked transaction even if it was not used
     }
 }
 
@@ -532,6 +626,7 @@ void Document::_abortTransaction()
         }
     }
 
+    d->bookedTransaction = 0;
     if (d->activeUndoTransaction) {
         Base::FlagToggler<bool> flag(d->rollback);
         Application::TransactionSignaller signaller(true, true);
@@ -575,7 +670,10 @@ int Document::getTransactionID(const bool undo, unsigned pos) const
     for (; pos != 0U; ++rit, --pos) {}
     return (*rit)->getID();
 }
-
+int Document::getBookedTransactionID() const
+{
+    return d->bookedTransaction;
+}
 bool Document::isTransactionEmpty() const
 {
     return !d->activeUndoTransaction;
@@ -3304,7 +3402,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         return;
     }
 
-    TransactionLocker tlock;
+    TransactionLocker tlock(this);
 
     _checkTransaction(pcObject, nullptr, __LINE__);
 

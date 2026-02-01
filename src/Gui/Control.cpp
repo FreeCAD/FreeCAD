@@ -26,10 +26,12 @@
 #include <QDockWidget>
 #include <QPointer>
 
-#include <App/AutoTransaction.h>
+#include <App/Document.h>
+#include <Gui/Application.h>
 #include <Gui/ComboView.h>
 #include <Gui/DockWindowManager.h>
 #include <Gui/MainWindow.h>
+#include <Gui/Document.h>
 
 #include "Control.h"
 #include "BitmapFactory.h"
@@ -45,8 +47,7 @@ using namespace std;
 ControlSingleton* ControlSingleton::_pcSingleton = nullptr;
 
 ControlSingleton::ControlSingleton()
-    : ActiveDialog(nullptr)
-    , oldTabIndex(-1)
+    : oldTabIndex(-1)
 {}
 
 ControlSingleton::~ControlSingleton() = default;
@@ -145,14 +146,28 @@ void ControlSingleton::showModelView()
     }
 }
 
-void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg)
+void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo)
 {
+    attachTo = docOrDefault(attachTo);
+    if (!attachTo) {
+        qWarning() << "ControlSingleton::showDialog: Cannot attach to nullptr document";
+        return;
+    }
+
+    Gui::TaskView::TaskView* taskView = taskPanel();
+    // should return the pointer to combo view
+    if (!taskView) {
+        return;
+    }
+
     // only one dialog at a time, print a warning instead of raising an assert
-    if (ActiveDialog && ActiveDialog != dlg) {
+    TaskView::TaskDialog* foundDialog = taskView->dialog(attachTo);
+    if (!dlg || foundDialog == dlg) {
         if (dlg) {
             qWarning() << "ControlSingleton::showDialog: Can't show "
                        << dlg->metaObject()->className()
-                       << " since there is already an active task dialog";
+                       << " since there is already an active task dialog in Document "
+                       << (attachTo ? attachTo->getName() : "''");
         }
         else {
             qWarning() << "ControlSingleton::showDialog: Task dialog is null";
@@ -160,69 +175,87 @@ void ControlSingleton::showDialog(Gui::TaskView::TaskDialog* dlg)
         return;
     }
 
-    // Since the caller sets up a modeless task panel, it indicates intention
-    // for prolonged editing. So disable auto transaction in the current call
-    // stack.
-    // Do this before showing the dialog because its open() function is called
-    // which may open a transaction but fails when auto transaction is still active.
-    App::AutoTransaction::setEnable(false);
+    bool addedDialog = taskView->showDialog(dlg, attachTo);
 
-    Gui::TaskView::TaskView* taskView = taskPanel();
-    // should return the pointer to combo view
-    if (taskView) {
-        taskView->showDialog(dlg);
-
-        // make sure that the combo view is shown
-        auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget());
-        if (dw) {
-            aboutToShowDialog(dw);
-            dw->setVisible(true);
-            dw->toggleViewAction()->setVisible(true);
-            dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
-        }
-
-        if (ActiveDialog == dlg) {
-            return;  // dialog is already defined
-        }
-        ActiveDialog = dlg;
-        connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, &ControlSingleton::closedDialog);
+    // make sure that the combo view is shown
+    if (auto dw = qobject_cast<QDockWidget*>(taskView->parentWidget())) {
+        aboutToShowDialog(dw);
+        dw->setVisible(true);
+        dw->toggleViewAction()->setVisible(true);
+        dw->setFeatures(QDockWidget::DockWidgetMovable | QDockWidget::DockWidgetFloatable);
     }
+
+    if (!addedDialog) {
+        return;  // dialog is already defined
+    }
+
+    connect(dlg, &TaskView::TaskDialog::aboutToBeDestroyed, this, [this, attachTo] {
+        closedDialog(attachTo);
+    });
 }
 
-Gui::TaskView::TaskDialog* ControlSingleton::activeDialog() const
+Gui::TaskView::TaskDialog* ControlSingleton::activeDialog(App::Document* attachedTo) const
 {
-    return ActiveDialog;
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        return nullptr;
+    }
+
+    Gui::TaskView::TaskView* taskView = taskPanel();
+
+    if (taskView) {
+        return taskView->dialog(attachedTo);
+    }
+    return nullptr;
 }
 
-void ControlSingleton::accept()
+void ControlSingleton::accept(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        qWarning() << "ControlSingleton::accept: Cannot accept dialog of nullptr document";
+        return;
+    }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->accept();
+        taskView->accept(attachedTo);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
-void ControlSingleton::reject()
+void ControlSingleton::reject(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        qWarning() << "ControlSingleton::reject: Cannot reject dialog of nullptr document";
+        return;
+    }
+
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->reject();
+        taskView->reject(attachedTo);
         qApp->processEvents(QEventLoop::ExcludeUserInputEvents | QEventLoop::ExcludeSocketNotifiers);
     }
 }
 
-void ControlSingleton::closeDialog()
+void ControlSingleton::closeDialog(App::Document* attachedTo)
 {
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        qWarning() << "ControlSingleton::closeDialog: Cannot close dialog of nullptr document";
+        return;
+    }
+
     Gui::TaskView::TaskView* taskView = taskPanel();
     if (taskView) {
-        taskView->removeDialog();
+        taskView->removeDialog(attachedTo);
     }
 }
 
-void ControlSingleton::closedDialog()
+void ControlSingleton::closedDialog(App::Document* attachedTo)
 {
-    ActiveDialog = nullptr;
     Gui::TaskView::TaskView* taskView = taskPanel();
     assert(taskView);
 
@@ -237,29 +270,55 @@ void ControlSingleton::closedDialog()
     }
 }
 
-bool ControlSingleton::isAllowedAlterDocument() const
+bool ControlSingleton::isAllowedAlterDocument(App::Document* attachedTo) const
 {
-    if (ActiveDialog) {
-        return ActiveDialog->isAllowedAlterDocument();
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        return true;
+    }
+    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+
+    if (dlg) {
+        return dlg->isAllowedAlterDocument();
     }
     return true;
 }
 
-
-bool ControlSingleton::isAllowedAlterView() const
+bool ControlSingleton::isAllowedAlterView(App::Document* attachedTo) const
 {
-    if (ActiveDialog) {
-        return ActiveDialog->isAllowedAlterView();
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        return true;
+    }
+    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+
+    if (dlg) {
+        return dlg->isAllowedAlterView();
     }
     return true;
 }
 
-bool ControlSingleton::isAllowedAlterSelection() const
+bool ControlSingleton::isAllowedAlterSelection(App::Document* attachedTo) const
 {
-    if (ActiveDialog) {
-        return ActiveDialog->isAllowedAlterSelection();
+    attachedTo = docOrDefault(attachedTo);
+    if (!attachedTo) {
+        return true;
+    }
+
+    Gui::TaskView::TaskDialog* dlg = activeDialog(attachedTo);
+
+    if (dlg) {
+        return dlg->isAllowedAlterSelection();
     }
     return true;
+}
+
+App::Document* ControlSingleton::docOrDefault(App::Document* attachedTo)
+{
+    if (!attachedTo && Application::Instance->activeDocument()) {
+        attachedTo = Application::Instance->activeDocument()->getDocument();
+    }
+    return attachedTo;
 }
 
 // -------------------------------------------

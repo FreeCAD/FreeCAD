@@ -90,12 +90,6 @@ public:
      */
     void setScheme(ActionPanelScheme *scheme);
 
-    /**
-     * @brief Returns the recommended minimum size for the panel.
-     * @return The minimum size hint.
-     */
-    QSize minimumSizeHint() const override;
-
 protected:
     /** @brief The color scheme used by the panel. */
     ActionPanelScheme *myScheme;

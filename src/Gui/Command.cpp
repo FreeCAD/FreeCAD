@@ -36,7 +36,7 @@
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
-#include <App/AutoTransaction.h>
+#include <App/Transactions.h>
 #include <Base/Console.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -45,6 +45,7 @@
 
 #include "Command.h"
 #include "Action.h"
+#include "App/Application.h"
 #include "Application.h"
 #include "BitmapFactory.h"
 #include "Control.h"
@@ -446,11 +447,6 @@ void Command::invoke(int i, TriggerSource trigger)
 void Command::_invoke(int id, bool disablelog)
 {
     try {
-        // Because Transaction now captures ViewObject changes, auto named
-        // transaction is disabled here to avoid too many unnecessary transactions.
-        //
-        App::AutoTransaction committer(nullptr, true);
-
         // set the application module type for the macro
         getGuiApplication()->macroManager()->setModule(sAppModule);
 
@@ -462,7 +458,6 @@ void Command::_invoke(int id, bool disablelog)
         // check if it really works NOW (could be a delay between click deactivation of the button)
         if (isActive()) {
             auto manager = getGuiApplication()->macroManager();
-            auto editDoc = getGuiApplication()->editDocument();
 
             if (!logdisabler) {
                 activated(id);
@@ -498,12 +493,10 @@ void Command::_invoke(int id, bool disablelog)
             }
 
             getMainWindow()->updateActions();
-
-            // If this command starts an editing, let the transaction persist
-            if (!editDoc && getGuiApplication()->editDocument()) {
-                committer.setEnable(false);
-            }
         }
+        // here we assume that the overriden activated() function
+        // commited, aborted or gave the transaction id to a dialog
+        currentTransactionID = App::NullTransaction;  // Get ready for next invoke
     }
     catch (const Base::SystemExitException&) {
         throw;
@@ -549,9 +542,10 @@ void Command::testActive()
 
     if (!(eType & ForEdit)) {  // special case for commands which are only in some edit modes active
 
-        if ((!Gui::Control().isAllowedAlterDocument() && eType & AlterDoc)
-            || (!Gui::Control().isAllowedAlterView() && eType & Alter3DView)
-            || (!Gui::Control().isAllowedAlterSelection() && eType & AlterSelection)) {
+        App::Document* doc = getDocument();
+        if ((!Gui::Control().isAllowedAlterDocument(doc) && eType & AlterDoc)
+            || (!Gui::Control().isAllowedAlterView(doc) && eType & Alter3DView)
+            || (!Gui::Control().isAllowedAlterSelection(doc) && eType & AlterSelection)) {
             _pcAction->setEnabled(false);
             return;
         }
@@ -680,27 +674,67 @@ QString Command::translatedGroupName() const
  *  operation default is the Command name.
  *  @see CommitCommand(),AbortCommand()
  */
-void Command::openCommand(const char* sCmdName)
+int Command::openCommand(App::TransactionName name)
 {
-    if (!sCmdName) {
-        sCmdName = "Command";
+    currentTransactionID = openActiveDocumentCommand(name);
+    return currentTransactionID;
+}
+int Command::openCommand(std::string name)
+{
+    return openCommand(App::TransactionName {.name = name, .temporary = false});
+}
+int Command::openActiveDocumentCommand(App::TransactionName name, int tid)
+{
+    if (Gui::Document* guidoc = getGuiApplication()->activeDocument()) {
+        return guidoc->getDocument()->setActiveTransaction(name, tid);
     }
-    App::GetApplication().setActiveTransaction(sCmdName);
+    return 0;
+}
+int Command::openActiveDocumentCommand(std::string name, int tid)
+{
+    return openActiveDocumentCommand(App::TransactionName {.name = name, .temporary = false}, tid);
+}
+void Command::rename(const std::string& name)
+{
+    App::GetApplication().setTransactionName(
+        currentTransactionID,
+        App::TransactionName {.name = name, .temporary = false}
+    );
 }
 
 void Command::commitCommand()
 {
-    App::GetApplication().closeActiveTransaction();
+    commitCommand(currentTransactionID);
+    currentTransactionID = App::NullTransaction;
 }
-
+void Command::commitCommand(int tid)
+{
+    if (tid != App::NullTransaction) {
+        App::GetApplication().commitTransaction(tid);
+    }
+}
 void Command::abortCommand()
 {
-    App::GetApplication().closeActiveTransaction(true);
+    abortCommand(currentTransactionID);
+    currentTransactionID = App::NullTransaction;
 }
-
+void Command::abortCommand(int tid)
+{
+    if (tid != App::NullTransaction) {
+        App::GetApplication().abortTransaction(tid);
+    }
+}
+int Command::transactionID() const
+{
+    return currentTransactionID;
+}
+void Command::resetTransactionID()
+{
+    currentTransactionID = App::NullTransaction;
+}
 bool Command::hasPendingCommand()
 {
-    return !!App::GetApplication().getActiveTransaction();
+    return App::GetApplication().getActiveDocument()->getBookedTransactionID() != 0;
 }
 
 bool Command::_blockCmd = false;

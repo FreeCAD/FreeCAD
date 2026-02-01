@@ -75,7 +75,7 @@ class CommandAxoLengthDimension:
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
 
-        App.setActiveTransaction("Create axonometric length dimension")
+        App.ActiveDocument.openTransaction("Create axonometric length dimension")
         vertexes = []
         edges = []
 
@@ -157,7 +157,7 @@ class CommandAxoLengthDimension:
             view.requestPaint()
 
         Gui.Selection.clearSelection()
-        App.closeActiveTransaction()
+        App.ActiveDocument.commitTransaction()
         view.touch()	# make view claim its new child
 
     def IsActive(self):

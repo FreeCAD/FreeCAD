@@ -62,6 +62,8 @@ public:
     bool accept();
     bool reject();
 
+    void setSelectionGate();
+
 protected:
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -88,7 +90,6 @@ private:
     void onFirstEdgeSizeChanged(double value);
     void onSecondEdgeSizeChanged(double value);
 
-    void onStartSelection();
     void clearSelection();
     void exitSelectionMode();
     void setStartEdge(App::DocumentObject* obj, const std::string& subname);
@@ -116,6 +117,8 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

@@ -66,6 +66,8 @@ public:
 
     void writeParametersToFeature(App::DocumentObject& feature, App::DocumentObject* base) const;
 
+    void setSelectionGate();
+
 protected:
     void findShapes();
     bool canExtrude(const TopoDS_Shape&) const;
@@ -102,6 +104,7 @@ private:
     std::string document, label;
     class EdgeSelection;
     EdgeSelection* filter;
+    bool filterSelection;
 };
 
 class TaskExtrusion: public Gui::TaskView::TaskDialog
@@ -115,6 +118,8 @@ public:
     bool accept() override;
     bool reject() override;
     void clicked(int) override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

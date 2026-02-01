@@ -226,7 +226,7 @@ class GuiExport SelectionObserver
 public:
     /** Constructor
      *
-     * @param attach: whether to attach this observer on construction
+     * @param attach: whether to   attach this observer on construction
      * @param resolve: sub-object resolving mode.
      */
     explicit SelectionObserver(bool attach = true, ResolveMode resolve = ResolveMode::OldStyleElement);

@@ -88,6 +88,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::GeomFillSurface* obj);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -129,6 +130,8 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
