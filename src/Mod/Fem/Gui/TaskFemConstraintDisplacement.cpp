@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015, 2023 FreeCAD Developers                           *
  *   Authors: Michael Hindley <hindlemp@eskom.co.za>                       *

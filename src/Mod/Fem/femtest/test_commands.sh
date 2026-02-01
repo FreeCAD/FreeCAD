@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # created by Python
 '''
 from femtest.app.support_utils import get_fem_test_defs
