@@ -18,6 +18,7 @@ set(TechDrawGui_XML_SRCS
 set(TechDrawGui_LIBS
     TechDraw
     FreeCADGui
+    Mesh
 )
 
 set (TechDraw_TR_QRC ${CMAKE_CURRENT_BINARY_DIR}/Resources/TechDraw_translation.qrc)
