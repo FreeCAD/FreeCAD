@@ -2092,6 +2092,10 @@ class ComponentTaskPanel:
     """
 
     def __init__(self):
+        """
+        Initializes the task panel. The transaction context is implicitly opened by the C++ layer
+        when entering edit mode.
+        """
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -2177,7 +2181,6 @@ class ComponentTaskPanel:
         self.update()
 
         self.doc = FreeCAD.ActiveDocument
-        self.doc.openTransaction("BIM Component Edit")
 
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
@@ -2351,14 +2354,18 @@ class ComponentTaskPanel:
         """This method runs as a callback when the user selects the ok button.
 
         Recomputes the document, and leave edit mode.
-        """
-        self.doc.commitTransaction()
 
+        The transaction is implicitly committed by the C++ layer during resetEdit.
+        """
         FreeCAD.ActiveDocument.recompute()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
     def reject(self):
+        """
+        Aborts the edit session. An explicit abort is required to prevent the C++ layer from
+        committing changes during resetEdit.
+        """
         self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
