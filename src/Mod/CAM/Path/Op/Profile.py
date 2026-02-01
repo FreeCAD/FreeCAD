@@ -219,13 +219,14 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 ),
             ),
             (
-                "App::PropertyEnumeration",
-                "StartPointOverride",
+                "App::PropertyBool",
+                "UseLongestEdge",
                 "Start Point",
                 QT_TRANSLATE_NOOP(
                     "App::Property",
                     "Override start point"
-                    "\nShoud be used only with Individually HandleMultipleFeatures",
+                    "\nShoud be used only with Individually HandleMultipleFeatures"
+                    "and disabled UseStartPoint",
                 ),
             ),
             (
@@ -269,16 +270,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                 (translate("PathProfile", "Outside"), "Outside"),
                 (translate("PathProfile", "Inside"), "Inside"),
             ],  # side of profile that cutter is on in relation to direction of profile
-            "StartPointOverride": [
-                (translate("PathProfile", "No"), "No"),
-                (translate("PathProfile", "Corner"), "Corner"),
-                (translate("PathProfile", "Middle-Long"), "Middle-Long"),
-                (translate("PathProfile", "Middle-Long-Straight"), "Middle-Long-Straight"),
-                (translate("PathProfile", "Middle-Short"), "Middle-Short"),
-                (translate("PathProfile", "Middle-Short-Straight"), "Middle-Short-Straight"),
-            ],
             "StartAt": [
-                (translate("CAM_Pocket", "Center"), "Center"),
+                (translate("CAM_Pocket", "OutOfEdge"), "OutOfEdge"),
                 (translate("CAM_Pocket", "Edge"), "Edge"),
             ],
         }
@@ -354,8 +347,9 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         elif opType == "Edge":
             pass
 
-        print("setOpEditorProperties")
-        startPointOverrideMode = 0 if obj.HandleMultipleFeatures == "Individually" else 2
+        useLongestEdgeMode = (
+            0 if obj.HandleMultipleFeatures == "Individually" and not obj.UseStartPoint else 2
+        )
         multiPassMode = 0 if obj.NumPasses > 1 else 2
         offsetFinishMode = 0 if obj.NumPasses > 1 and obj.OffsetFinish else 2
 
@@ -366,7 +360,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         obj.setEditorMode("processCircles", fc)
         obj.setEditorMode("processHoles", fc)
         obj.setEditorMode("processPerimeter", fc)
-        obj.setEditorMode("StartPointOverride", startPointOverrideMode)
+        obj.setEditorMode("UseLongestEdge", useLongestEdgeMode)
         obj.setEditorMode("Stepover", multiPassMode)
         obj.setEditorMode("OffsetFinish", multiPassMode)
         obj.setEditorMode("RetractThreshold", multiPassMode)
@@ -413,7 +407,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         offset = obj.OffsetExtra.Value
         offsetFinish = obj.OffsetFinish.Value
         if obj.NumPasses > 1:
-            offset += obj.OffsetFinish.Value
+            offset += offsetFinish
         if obj.UseComp:
             offset += self.radius
         if obj.Side == "Inside":
@@ -427,10 +421,11 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Create list of offsets for multiple passes
         offsets = [offset + i * stepover for i in range(num_passes)]
-        if obj.StartAt == "Center":
+        if obj.StartAt != "Edge":
             offsets.reverse()
-        if obj.OffsetFinish.Value and obj.NumPasses > 1:
-            offsets.append(offsets[-1] - offsetFinish)
+        if obj.NumPasses > 1 and obj.OffsetFinish:
+            offsets.append(offset - offsetFinish)
+
         params["Offset"] = offsets
         params["ExtraPass"] = 0
         params["Stepover"] = 0
