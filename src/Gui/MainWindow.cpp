@@ -2453,10 +2453,10 @@ void MainWindow::loadUrls(App::Document* doc, const QList<QUrl>& urls)
                 info.setFile(info.symLinkTarget());
             }
             std::vector<std::string> module = App::GetApplication().getImportModules(
-                info.completeSuffix().toLatin1()
+                info.completeSuffix().toStdString()
             );
             if (module.empty()) {
-                module = App::GetApplication().getImportModules(info.suffix().toLatin1());
+                module = App::GetApplication().getImportModules(info.suffix().toStdString());
             }
             if (!module.empty()) {
                 // ok, we support files with this extension

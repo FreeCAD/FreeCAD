@@ -244,6 +244,8 @@ private:
      * into the actual map */
     std::unique_ptr<std::vector<RestoredExpression>> restoredExpressions;
 
+    void tryRestoreExpression(DocumentObject* docObj, const RestoredExpression& info);
+
     struct Private;
     std::unique_ptr<Private> pimpl;
 
