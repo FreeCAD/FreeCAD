@@ -88,10 +88,18 @@ public:
     App::PropertyColor TextBackgroundColor;
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
+    // Arrow properties
+    App::PropertyFloat ArrowHeight;
+    App::PropertyFloat ArrowRadius;
+
+    App::PropertyVector LabelPosition;
     // NOLINTEND
 
     // Fields
     SoSFFloat fieldFontSize;
+    // Arrow fields
+    SoSFFloat fieldArrowHeight;
+    SoSFFloat fieldArrowRadius;
 
     /**
      * Attaches the document object to this view provider.
