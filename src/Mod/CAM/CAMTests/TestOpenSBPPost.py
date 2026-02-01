@@ -37,18 +37,19 @@ from Path.Post.Processor import PostProcessorFactory
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
 
-nl="\n"
+nl = "\n"
 
 # for testing, the tool is set to:
-FeedSpeed = 700 # mm/min
+FeedSpeed = 700  # mm/min
 RapidSpeed = FeedSpeed * 3
 # verticals are /2
 
+
 class TestOpenSBPPost(PathTestUtils.PathTestBase):
     """NB: the post-processor has globals,
-        which are not reset for each .assertX,
-        e.g. for the arguments.
-        So, you have to deal with state, e.g. --inches is persistent till the next testX()
+    which are not reset for each .assertX,
+    e.g. for the arguments.
+    So, you have to deal with state, e.g. --inches is persistent till the next testX()
     """
 
     @classmethod
@@ -75,19 +76,19 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             if tool_controller.HorizFeed.Value == 0.0:
                 tool_controller.HorizFeed = Units.Quantity(FeedSpeed, "mm/min")
             if tool_controller.VertFeed.Value == 0.0:
-                tool_controller.VertFeed = Units.Quantity(FeedSpeed/2, "mm/min")
-            #settings = { p:getattr(tool_controller, p) for p in ['HorizFeed','VertFeed','HorizRapid','VertRapid'] }
-            #print(f"### tc setup {settings}")
+                tool_controller.VertFeed = Units.Quantity(FeedSpeed / 2, "mm/min")
+            # settings = { p:getattr(tool_controller, p) for p in ['HorizFeed','VertFeed','HorizRapid','VertRapid'] }
+            # print(f"### tc setup {settings}")
         setup_sheet = cls.job.SetupSheet
         if setup_sheet.HorizRapid.Value == 0.0:
             setup_sheet.HorizRapid = Units.Quantity(RapidSpeed, "mm/min")
         if setup_sheet.VertRapid.Value == 0.0:
-            setup_sheet.VertRapid = Units.Quantity(RapidSpeed/2, "mm/min")
+            setup_sheet.VertRapid = Units.Quantity(RapidSpeed / 2, "mm/min")
         cls.doc.recompute()
 
         if len(cls.job.Operations.Group) > 0:
             # restrict to one job
-            cls.job.Operations.Group = [ cls.job.Operations.Group[0] ]
+            cls.job.Operations.Group = [cls.job.Operations.Group[0]]
             # remember the "Profile" operation
             cls.profile_op = cls.job.Operations.Group[0]
             print(f"### Operation {cls.job.Label}.{cls.profile_op.Label}")
@@ -113,17 +114,18 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         objects here that are needed for multiple `test()` methods.
         """
         self.maxDiff = None
-        self.doc.UnitSystem = 'Metric small parts & CNC (mm, mm/min)'
+        self.doc.UnitSystem = "Metric small parts & CNC (mm, mm/min)"
 
         # in case someone chooses a different job
         self.__class__.job = self.doc.getObject("Job")
         self.__class__.post = PostProcessorFactory.get_post_processor(self.job, "opensbp")
         self.__class__.fixup_test_context()
 
-
         self.post.reinitialize()
 
-        postprocessor.UNDER_UNITTEST = True # because we don't setup a tool-controller in these tests
+        postprocessor.UNDER_UNITTEST = (
+            True  # because we don't setup a tool-controller in these tests
+        )
 
     def tearDown(self):
         """tearDown()...
@@ -133,7 +135,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         if FreeCAD.ActiveDocument and FreeCAD.ActiveDocument.findObjects(Name="testpath"):
             FreeCAD.ActiveDocument.removeObject("testpath")
 
-    def compare_multi(self, *args, remove=None, debug=False, skip=False ):
+    def compare_multi(self, *args, remove=None, debug=False, skip=False):
         """Actually as if: ( *gcode, options, expected, debug=True )
         `*gcode` is all str (gcodes), or None to use extant self.job
         `remove` is a pattern to remove lines from both expected and generated
@@ -144,13 +146,13 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         if args[0] is None:
             self.profile_op.Path = Path.Path([])
-        elif isinstance(args[0],str):
+        elif isinstance(args[0], str):
             try:
-                self.profile_op.Path = Path.Path([ Path.Command(x) for x in args[:-2]])
+                self.profile_op.Path = Path.Path([Path.Command(x) for x in args[:-2]])
             except ValueError as e:
                 try:
-                    i=None # hack: we use the i from the 'for' in the `except`
-                    for i,x in enumerate(args[:-2]):
+                    i = None  # hack: we use the i from the 'for' in the `except`
+                    for i, x in enumerate(args[:-2]):
                         Path.Command(x)
                 except ValueError:
                     raise ValueError(f"for [{i}] '{x}'") from e
@@ -161,11 +163,11 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         expected = args[-1]
 
         # need the --.... line
-        if post_args != '' and post_args is not None:
+        if post_args != "" and post_args is not None:
             expected = expected.format(ARGS=f"'  {post_args}")
 
-        #print(f"###test multi path str {args[:-2]}")
-        #print(f"###test in gcode {[p.toGCode() for p in self.profile_op.Path.Commands]}")
+        # print(f"###test multi path str {args[:-2]}")
+        # print(f"###test in gcode {[p.toGCode() for p in self.profile_op.Path.Commands]}")
         self.job.PostProcessorArgs = post_args
 
         rez = self.post.export()
@@ -173,18 +175,31 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             raise Exception("Error processing arguments")
         else:
             _, gcode = rez[0]
-        #print(f"### gcode {gcode}")
+        # print(f"### gcode {gcode}")
 
         if debug:
             print(f"--------{nl}{gcode}--------{nl}")
         if remove:
-            expected = nl.join( (x for x in expected.split('\n') if not re.match(remove,x)) )
-            gcode =    nl.join( (x for x in gcode.split(nl)      if not re.match(remove,x)) )
+            expected = nl.join((x for x in expected.split("\n") if not re.match(remove, x)))
+            gcode = nl.join((x for x in gcode.split(nl) if not re.match(remove, x)))
         print(f"###E---{expected}---")
-        #print(f"###G---{gcode}---")
-        self.assertEqual(expected, gcode) # most other tests have this reversed, and the diff reads wrong to me
+        # print(f"###G---{gcode}---")
+        self.assertEqual(
+            expected, gcode
+        )  # most other tests have this reversed, and the diff reads wrong to me
 
-    def wrap(self, expected, inches=None, preamble='', postamble='', nativepre='', comments=False, header=False, precision=None, postfix=""):
+    def wrap(
+        self,
+        expected,
+        inches=None,
+        preamble="",
+        postamble="",
+        nativepre="",
+        comments=False,
+        header=False,
+        precision=None,
+        postfix="",
+    ):
         # compare_multi helper
         # wraps the expected path-gcode in std prefix, postfix, no-header
         # make `comments` match with --comments or --no-comments
@@ -192,13 +207,13 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
 
         # hack'ish: adapt to precision
         if precision is not None:
-            z = '0' * precision
-        elif m := re.search(r'\.(\d+)', expected):
-            z = '0' * len(m.group(1))
+            z = "0" * precision
+        elif m := re.search(r"\.(\d+)", expected):
+            z = "0" * len(m.group(1))
         else:
-            z = '0' * 3
+            z = "0" * 3
 
-        fmt = lambda v : format(v, f"0.{len(z)}f")
+        fmt = lambda v: format(v, f"0.{len(z)}f")
 
         # remember we are x/s and freecad is x/min (usually)
         speeds = ""
@@ -217,13 +232,13 @@ JS,{fmt(RapidSpeed/60)},{fmt(RapidSpeed/2/60)}"""
                 # clean up multiple blank lines
                 # clean up leading \n
                 # clean up trailing \n and empty
-                text = re.sub(r"^'.+$", '', text, flags=re.MULTILINE)
-                text = re.sub(r'\n\n+', '\n', text)
-                text = re.sub(r'^\n', '', text)
-                if text != '' and not text.endswith("\n"):
+                text = re.sub(r"^'.+$", "", text, flags=re.MULTILINE)
+                text = re.sub(r"\n\n+", "\n", text)
+                text = re.sub(r"^\n", "", text)
+                if text != "" and not text.endswith("\n"):
                     text += "\n"
-                elif text == '\n':
-                    text = ''
+                elif text == "\n":
+                    text = ""
             return text
 
         hdr = ""
@@ -234,7 +249,8 @@ JS,{fmt(RapidSpeed/60)},{fmt(RapidSpeed/2/60)}"""
 '(Cam File: boxtest.fcstd)
 'Job: Job
 """
-        pre = [ f"""{hdr}'(Begin preamble)
+        pre = [
+            f"""{hdr}'(Begin preamble)
 {preamble}SA
 IF %(25) = {0 if not inches else 1} THEN GOTO WrongUnits
 {nativepre}'(Begin operation: Fixture)
@@ -259,7 +275,7 @@ C7
 '(Begin operation: Profile)
 '(Machine units: mm/s)
 '(Path: Profile)
-"""
+""",
         ]
         pre[0] = ifcomments(pre[0])
         pre[2] = ifcomments(pre[2])
@@ -288,7 +304,8 @@ AfterWrongUnits:
 
         # Test generating with header
         # Header contains a time stamp that messes up diff.
-        self.compare_multi( None,
+        self.compare_multi(
+            None,
             "--no-show-editor",
             self.wrap("", comments=True, header=True),
             remove=r"'\(Output Time:",
@@ -296,10 +313,7 @@ AfterWrongUnits:
 
         # Test without header
 
-        self.compare_multi( None,
-            "--no-header --no-comments --no-show-editor",
-            self.wrap("")
-        )
+        self.compare_multi(None, "--no-header --no-comments --no-show-editor", self.wrap(""))
 
     def test010(self):
         """Test command Generation.
@@ -309,100 +323,125 @@ AfterWrongUnits:
 
         # default is metric-mm (internal default)
         self.compare_multi(
-            "G0 X10 Y20 Z30", # simple rapid
+            "G0 X10 Y20 Z30",  # simple rapid
             "--no-header --no-comments --no-show-editor --metric --no-abort-on-unknown",
-            self.wrap("""J3,10.000,20.000,30.000
-"""),
+            self.wrap(
+                """J3,10.000,20.000,30.000
+"""
+            ),
         )
 
         self.compare_multi(
             "G0 X10 Y20 Z30",
             "--no-header --no-comments --precision=2 --no-show-editor",
-            self.wrap("""J3,10.00,20.00,30.00
-"""),
+            self.wrap(
+                """J3,10.00,20.00,30.00
+"""
+            ),
         )
 
         self.compare_multi(
             "G0 X10 Y20 Z30",
             "--no-header --no-comments --inches --no-show-editor",
-            self.wrap("""J3,0.3937,0.7874,1.1811
-""", 'inches'),
+            self.wrap(
+                """J3,0.3937,0.7874,1.1811
+""",
+                "inches",
+            ),
         )
 
         self.compare_multi(
             "G0 X10 Y20 Z30",
             "--no-header --no-comments --inches --precision=2 --no-show-editor",
-            self.wrap("""J3,0.39,0.79,1.18
-""", 'inches')
+            self.wrap(
+                """J3,0.39,0.79,1.18
+""",
+                "inches",
+            ),
         )
 
     def test015(self):
-        """Test precision, and units, with G1, which generates MS commands
-        """
-        f = FeedSpeed / 60.0 # mm/s
+        """Test precision, and units, with G1, which generates MS commands"""
+        f = FeedSpeed / 60.0  # mm/s
 
         # default is metric-mm (internal default)
         self.compare_multi(
-            f"G1 F{f} X10 Y20 Z30", # simple cut
+            f"G1 F{f} X10 Y20 Z30",  # simple cut
             "--no-header --no-comments --no-show-editor --metric --no-abort-on-unknown",
-            self.wrap("""MS,6.972,9.354
+            self.wrap(
+                """MS,6.972,9.354
 M3,10.000,20.000,30.000
-"""),
+"""
+            ),
         )
 
         self.compare_multi(
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --precision=2 --no-show-editor",
-            self.wrap("""MS,6.97,9.35
+            self.wrap(
+                """MS,6.97,9.35
 M3,10.00,20.00,30.00
-"""),
+"""
+            ),
         )
 
         self.compare_multi(
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --inches --no-show-editor",
-            self.wrap("""MS,0.2745,0.3683
+            self.wrap(
+                """MS,0.2745,0.3683
 M3,0.3937,0.7874,1.1811
-""", 'inches'),
+""",
+                "inches",
+            ),
         )
         self.compare_multi(
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --inches --precision=2 --no-show-editor",
-            self.wrap("""MS,0.27,0.37
+            self.wrap(
+                """MS,0.27,0.37
 M3,0.39,0.79,1.18
-""", 'inches')
+""",
+                "inches",
+            ),
         )
 
     def test020(self):
         """Test single axis vs speed"""
 
-        f = f"{FeedSpeed / 60.0:0.3f}" # mm/s
+        f = f"{FeedSpeed / 60.0:0.3f}"  # mm/s
 
         # one axis: X
         self.compare_multi(
             f"G1 F{f} X10",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""MS,{f}
+            self.wrap(
+                f"""MS,{f}
 MX,10.000
-""")
+"""
+            ),
         )
 
         # one axis: y
         self.compare_multi(
             f"G1 F{f} Y10",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""MS,{f}
+            self.wrap(
+                f"""MS,{f}
 M2,,10.000
-""")
+"""
+            ),
         )
 
         # one axis: Z
         self.compare_multi(
             f"G1 F{f} Z10",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""MS,,{f}
+            self.wrap(
+                f"""MS,,{f}
 M3,,,10.000
-""")
+"""
+            ),
         )
 
         # this relies on the internal initial position being 0,0,0
@@ -410,15 +449,17 @@ M3,,,10.000
         self.compare_multi(
             f"G1 F{f} X10 Y0 Z0",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""MS,{f}
+            self.wrap(
+                f"""MS,{f}
 M3,10.000,0.000,0.000
-""")
+"""
+            ),
         )
 
     def test025(self):
         """Test negative directions for speed"""
 
-        f = f"{FeedSpeed / 60.0:0.3f}" # mm/s
+        f = f"{FeedSpeed / 60.0:0.3f}"  # mm/s
 
         # each axis
         self.compare_multi(
@@ -427,14 +468,16 @@ M3,10.000,0.000,0.000
             f"G1 F{f} Y1",
             f"G1 F{f} Z1",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""J3,10.000,10.000,10.000
+            self.wrap(
+                f"""J3,10.000,10.000,10.000
 MS,{f}
 MX,1.000
 MS,{f}
 M2,,1.000
 MS,,{f}
 M3,,,1.000
-""")
+"""
+            ),
         )
 
         # xy
@@ -442,10 +485,12 @@ M3,,,1.000
             "G0 X10 Y10 Z10",
             f"G1 F{f} X1 Y1",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap(f"""J3,10.000,10.000,10.000
+            self.wrap(
+                f"""J3,10.000,10.000,10.000
 MS,{f}
 M2,1.000,1.000
-""")
+"""
+            ),
         )
 
         # xyz
@@ -453,10 +498,12 @@ M2,1.000,1.000
             "G0 X10 Y10 Z10",
             f"G1 F{f} X1 Y1 Z1",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
+            self.wrap(
+                """J3,10.000,10.000,10.000
 MS,9.526,6.736
 M3,1.000,1.000,1.000
-""")
+"""
+            ),
         )
 
         # XYZ <0
@@ -464,125 +511,155 @@ M3,1.000,1.000,1.000
             "G0 X10 Y10 Z10",
             f"G1 F{f} X-2 Y-3 Z-4",
             "--no-header --no-comments --metric --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
+            self.wrap(
+                """J3,10.000,10.000,10.000
 MS,9.149,7.240
 M3,-2.000,-3.000,-4.000
-""")
+"""
+            ),
         )
 
     def test030(self):
-        """Test Pre-amble
-        """
+        """Test Pre-amble"""
 
         # preamble values are verbatim, not unit converted!
         self.compare_multi(
             "(none)",
             "--no-header --no-comments --preamble='G0 Z50\nG1 F700 X20' --no-show-editor --metric",
-            self.wrap("", preamble="""J3,,,50.000
+            self.wrap(
+                "",
+                preamble="""J3,,,50.000
 MS,700.000
 MX,20.000
-""")
+""",
+            ),
         )
 
     def test040(self):
-        """Test Post-amble
-        """
+        """Test Post-amble"""
         # postamble is literal gcode, no unit translation
         self.compare_multi(
             "(none)",
             "--no-header --no-comments --postamble='G0 Z55\nG1 F700 X22' --no-show-editor",
-        self.wrap('', postamble="""J3,,,55.000
+            self.wrap(
+                "",
+                postamble="""J3,,,55.000
 MS,700.000
 MX,22.000
-""")
+""",
+            ),
         )
 
     def test050(self):
-        """Test inches
-        """
+        """Test inches"""
 
         # inches
         self.compare_multi(
-            "G0 X10 Y20 Z30", # simple move
+            "G0 X10 Y20 Z30",  # simple move
             "--no-header --no-comments --no-show-editor --inches",
-            self.wrap("""J3,0.3937,0.7874,1.1811
-""", 'inches')
+            self.wrap(
+                """J3,0.3937,0.7874,1.1811
+""",
+                "inches",
+            ),
         )
 
         self.compare_multi(
-            "G0 X10 Y20 Z30", # simple move
+            "G0 X10 Y20 Z30",  # simple move
             "--no-header --no-comments --no-show-editor --inches --precision 2",
-            self.wrap("""J3,0.39,0.79,1.18
-""", 'inches')
+            self.wrap(
+                """J3,0.39,0.79,1.18
+""",
+                "inches",
+            ),
         )
 
     def test060(self):
         """Test test modal
         Suppress the command name if the same as previous
         """
-        f = f"{FeedSpeed / 60.0:0.3f}" # mm/s
+        f = f"{FeedSpeed / 60.0:0.3f}"  # mm/s
         c = f"G1 F{f} X10 Y20 Z30"
 
-        self.compare_multi( c, c,
+        self.compare_multi(
+            c,
+            c,
             "--no-header --no-comments --no-show-editor",
             # note no second MS, because no delta-position
-            self.wrap("""MS,6.972,9.354
+            self.wrap(
+                """MS,6.972,9.354
 M3,10.000,20.000,30.000
 M3,10.000,20.000,30.000
-""")
+"""
+            ),
         )
-        self.compare_multi( c, c,
+        self.compare_multi(
+            c,
+            c,
             "--no-header --no-comments --modal --speed-modal --no-show-editor",
-            self.wrap("""MS,6.972,9.354
+            self.wrap(
+                """MS,6.972,9.354
 M3,10.000,20.000,30.000
-""")
+"""
+            ),
         )
 
     def test070(self):
-        """Suppress the axis coordinate if the same as previous
-        """
+        """Suppress the axis coordinate if the same as previous"""
 
         # w/o axis-modal
-        c="G0 X10 Y20 Z30"
-        self.compare_multi( c, "G0 X10 Y30 Z30",
+        c = "G0 X10 Y20 Z30"
+        self.compare_multi(
+            c,
+            "G0 X10 Y30 Z30",
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""J3,10.000,20.000,30.000
+            self.wrap(
+                """J3,10.000,20.000,30.000
 J3,10.000,30.000,30.000
-""")
+"""
+            ),
         )
 
         # g91 relative, not impl yet
         # "G0 X10 Y30 Z30", "G91", "G0 X0 Y31 Z0",
 
         # diff y
-        self.compare_multi( c, "G0 X10 Y21 Z30",
+        self.compare_multi(
+            c,
+            "G0 X10 Y21 Z30",
             "--no-header --no-comments --axis-modal --no-show-editor",
-            self.wrap("""J3,10.000,20.000,30.000
+            self.wrap(
+                """J3,10.000,20.000,30.000
 J2,,21.000
-""")
+"""
+            ),
         )
 
         # diff z
-        self.compare_multi( c, "G0 X10 Y20 Z31",
+        self.compare_multi(
+            c,
+            "G0 X10 Y20 Z31",
             "--no-header --no-comments --axis-modal --no-show-editor",
-            self.wrap("""J3,10.000,20.000,30.000
+            self.wrap(
+                """J3,10.000,20.000,30.000
 J3,,,31.000
-""")
+"""
+            ),
         )
 
     def test080(self):
-        """Test tool change, and spindle
-        """
+        """Test tool change, and spindle"""
 
         self.__class__.job = self.doc.getObject("Job001")
         self.__class__.post = PostProcessorFactory.get_post_processor(self.job, "opensbp")
         self.__class__.fixup_test_context()
 
-        gcode_in = [ "M6 T2", "M3 S3000", "M6 T3" ]
+        gcode_in = ["M6 T2", "M3 S3000", "M6 T3"]
 
         # tool change: manual
         with self.assertRaises(NotImplementedError) as context:
-            self.compare_multi( *gcode_in,
+            self.compare_multi(
+                *gcode_in,
                 "--no-header --no-comments --comments --no-show-editor",
                 """SA
 &Tool=1
@@ -643,55 +720,56 @@ AfterWrongUnits:
 """
 
         # both tool and spindle: auto
-        self.compare_multi( *gcode_in,
+        self.compare_multi(
+            *gcode_in,
             "--tool_change --no-comments --no-header --no-show-editor",
-            expect.format(3) # wait time
+            expect.format(3),  # wait time
         )
 
         # auto-spindle with wait
-        self.compare_multi( *gcode_in,
+        self.compare_multi(
+            *gcode_in,
             "--tool_change --no-comments --wait-for-spindle 2 --no-header --no-show-editor",
-            expect.format(2) # wait time
+            expect.format(2),  # wait time
         )
-
 
     def test090(self):
-        """Test comment
-        """
+        """Test comment"""
 
-        self.compare_multi( "(comment)",
-            "--no-header --no-comments --no-show-editor",
-            self.wrap("")
-        )
+        self.compare_multi("(comment)", "--no-header --no-comments --no-show-editor", self.wrap(""))
 
-        self.compare_multi( "(comment)",
+        self.compare_multi(
+            "(comment)",
             "--no-header --comments --no-show-editor",
-            self.wrap("'(comment)\n", comments=True)
+            self.wrap("'(comment)\n", comments=True),
         )
 
     def test100(self):
-        """Test A, B axis output for values between 0 and 90 degrees
-        """
+        """Test A, B axis output for values between 0 and 90 degrees"""
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""MS,211.058,283.164
+            self.wrap(
+                """MS,211.058,283.164
 M5,10.000,20.000,30.000,40.000,50.000
-"""),
+"""
+            ),
         )
 
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --inches --no-show-editor",
-            self.wrap("""MS,0.3788,0.5082
+            self.wrap(
+                """MS,0.3788,0.5082
 M5,0.3937,0.7874,1.1811,40.0000,50.0000
-""", 'inches')
+""",
+                "inches",
+            ),
         )
 
     @unittest.expectedFailure
     def test105(self):
-        """Test A, B axis output for distance, not degrees
-        """
+        """Test A, B axis output for distance, not degrees"""
 
         # only noticeable for --inches
 
@@ -699,14 +777,14 @@ M5,0.3937,0.7874,1.1811,40.0000,50.0000
             "G1 X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --inches --no-show-editor",
             """M5,0.3937,0.7874,1.1811,40.0000,50.0000
-"""
+""",
         )
 
         self.compare_multi(
             "G1 X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --no-show-editor --inches --ab-is-distance",
             """M5,0.3937,0.7874,1.1811,1.5748,1.9685
-"""
+""",
         )
 
     def test110(self):
@@ -714,16 +792,21 @@ M5,0.3937,0.7874,1.1811,40.0000,50.0000
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A89 B89",
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""MS,119.204,159.928
+            self.wrap(
+                """MS,119.204,159.928
 M5,10.000,20.000,30.000,89.000,89.000
-"""),
+"""
+            ),
         )
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A89 B89",
             "--no-header --no-comments --inches --no-show-editor",
-            self.wrap("""MS,0.1927,0.2586
+            self.wrap(
+                """MS,0.1927,0.2586
 M5,0.3937,0.7874,1.1811,89.0000,89.0000
-""", 'inches')
+""",
+                "inches",
+            ),
         )
 
     # FIXME: the use of getPathWithPlacement() causes a yaw-pitch calculation which gives odd AB values
@@ -811,16 +894,21 @@ M5,0.3937,0.7874,1.1811,89.0000,89.0000
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A-40 B-50",
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""MS,211.058,283.164
+            self.wrap(
+                """MS,211.058,283.164
 M5,10.000,20.000,30.000,-40.000,-50.000
-"""),
+"""
+            ),
         )
         self.compare_multi(
             f"G1 F{FeedSpeed} X10 Y20 Z30 A-40 B-50",
             "--no-header --no-comments --inches --no-show-editor",
-            self.wrap("""MS,0.3788,0.5082
+            self.wrap(
+                """MS,0.3788,0.5082
 M5,0.3937,0.7874,1.1811,-40.0000,-50.0000
-""",'inches')
+""",
+                "inches",
+            ),
         )
 
     @unittest.expectedFailure
@@ -869,20 +957,26 @@ M5,0.3937,0.7874,1.1811,-40.0000,-50.0000
         """Test return-to"""
 
         # return-to is before postamble
-        self.compare_multi("(none)",
+        self.compare_multi(
+            "(none)",
             "--no-comments --postamble 'G0 X1 Y2 Z3' --return-to='12,34,56' --no-header --no-show-editor",
-            self.wrap("""J3,12.000,34.000,56.000
+            self.wrap(
+                """J3,12.000,34.000,56.000
 J3,1.000,2.000,3.000
-""")
+"""
+            ),
         )
 
-        if False: # fails in UtilsArguments currently, because empty , isn't allowed
+        if False:  # fails in UtilsArguments currently, because empty , isn't allowed
             # allow empty ,
-            self.compare_multi("(none)",
+            self.compare_multi(
+                "(none)",
                 "--no-comments --postamble 'G0 X1 Y2 Z3' --return-to=',34,56' --no-header --no-show-editor",
-                self.wrap("""J3,34.000,56.000
+                self.wrap(
+                    """J3,34.000,56.000
 J3,1.000,2.000,3.000
-""")
+"""
+                ),
             )
 
     def test220(self):
@@ -891,11 +985,13 @@ J3,1.000,2.000,3.000
         self.compare_multi(
             "(none)",
             "--no-comments --postamble 'G0 X1 Y2 Z3' --native-postamble 'verbatim-post' --preamble 'G0 X4 Y5 Z6' --native-preamble 'verbatim-pre' --no-header --no-show-editor",
-            self.wrap("""J3,1.000,2.000,3.000
+            self.wrap(
+                """J3,1.000,2.000,3.000
 verbatim-post
 """,
-            preamble="J3,4.000,5.000,6.000\n",
-            nativepre="verbatim-pre\n")
+                preamble="J3,4.000,5.000,6.000\n",
+                nativepre="verbatim-pre\n",
+            ),
         )
 
     def test240(self):
@@ -906,44 +1002,50 @@ verbatim-post
         c = "G0 X10 Y20 Z30"
 
         with self.assertRaises(NotImplementedError) as context:
-            self.compare_multi( "G91", c, c, "G90", c, c,
+            self.compare_multi(
+                "G91",
+                c,
+                c,
+                "G90",
+                c,
+                c,
                 "--no-header --no-comments --modal --no-show-editor",
                 """SR 'RELATIVE
 J3,10.000,20.000,30.000
 J3,10.000,20.000,30.000
 SA 'ABSOLUTE
 J3,10.000,20.000,30.000
-"""
+""",
             )
-        self.assertTrue('gcode not handled' in str(context.exception))
+        self.assertTrue("gcode not handled" in str(context.exception))
 
     def test250(self):
         """Test G54"""
         # G54 is already in the Job we are using, but, why not:
 
-        self.compare_multi( "G54",
-            "--no-header --no-comments --no-show-editor",
-            self.wrap("")
-        )
+        self.compare_multi("G54", "--no-header --no-comments --no-show-editor", self.wrap(""))
 
     def test260(self):
         """Test Arc"""
 
         # a few un-handled params
-        for bad in ( 'K2', 'P3', 'R1' ):
+        for bad in ("K2", "P3", "R1"):
             with self.assertRaises(ValueError) as context:
-                self.compare_multi(f"G2 {bad} X10 Y20 Z40 I1 J2 F99", "--no-show-editor", "shoulld be no output")
-            self.assertIn(f"'{bad[0]}'",str(context.exception))
+                self.compare_multi(
+                    f"G2 {bad} X10 Y20 Z40 I1 J2 F99", "--no-show-editor", "shoulld be no output"
+                )
+            self.assertIn(f"'{bad[0]}'", str(context.exception))
 
         self.compare_multi(
-            "G0 Z5.00", # the arc-CG plunge is relative, so start from non-0 to test
-            f"G2 F{FeedSpeed} X10 Y20 Z40 I1 J2", # helical segment
+            "G0 Z5.00",  # the arc-CG plunge is relative, so start from non-0 to test
+            f"G2 F{FeedSpeed} X10 Y20 Z40 I1 J2",  # helical segment
             "G0 Z5.01",
-            f"G2 F{FeedSpeed-100} Z40.01 I1 J2", # helical circle
+            f"G2 F{FeedSpeed-100} Z40.01 I1 J2",  # helical circle
             "G0 Z5.02",
-            f"G2 F{FeedSpeed-200} X50 Y60.02 I1 J2", # segment
+            f"G2 F{FeedSpeed-200} X50 Y60.02 I1 J2",  # segment
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""J3,,,5.000
+            self.wrap(
+                """J3,,,5.000
 MS,137.749,686.313
 CG,,10.000,20.000,1.000,2.000,T,1,35.000,,,,3,1,0 ' Z40.000
 J3,,,5.010
@@ -952,37 +1054,50 @@ CG,,10.000,20.000,1.000,2.000,T,1,35.000,,,,3,1,0 ' Z40.010
 J3,,,5.020
 MS,500.000
 CG,,50.000,60.020,1.000,2.000,T,1,0.000,,,,0,1,0 ' Z5.020
-""")
+"""
+            ),
         )
 
     def test270(self):
         """Test M00 w/prompt (pause): dialog box"""
 
         self.compare_multi(
-            "(With Prompt)", "M0",
+            "(With Prompt)",
+            "M0",
             "--no-header --comments --no-show-editor",
-            self.wrap("""'(With Prompt)
+            self.wrap(
+                """'(With Prompt)
 PAUSE
-""", comments=True)
+""",
+                comments=True,
+            ),
         )
 
         self.compare_multi(
             # Include the preceding comment even if no-comments
-            "(With Prompt)", "M0",
+            "(With Prompt)",
+            "M0",
             "--no-header --no-comments --no-show-editor",
-            self.wrap("""'(With Prompt)
+            self.wrap(
+                """'(With Prompt)
 PAUSE
-""")
+"""
+            ),
         )
 
         self.compare_multi(
-            "(Doesn't count as prompt)","G0 X0", "M0", # default prompt
+            "(Doesn't count as prompt)",
+            "G0 X0",
+            "M0",  # default prompt
             "--no-header --comments --no-show-editor",
-            self.wrap("""'(Doesn't count as prompt)
+            self.wrap(
+                """'(Doesn't count as prompt)
 JX,0.000
 'Continue <Job>.<Profile>?
 PAUSE
-""", comments=True)
+""",
+                comments=True,
+            ),
         )
 
     def test280(self):
@@ -993,7 +1108,8 @@ PAUSE
             "G00 X0 Y0 Z5",
             "G73 X1 Y2 Z0 R5 Q1.5 F123",
             "--no-header --comments --no-show-editor",
-            self.wrap("""J3,0.000,0.000,5.000
+            self.wrap(
+                """J3,0.000,0.000,5.000
 '( G73 X1.00000 Y2.00000 Z0.00000 R5.00000 Q1.50000 F123.00000 )
 J2,1.000,2.000
 MS,,123.000
@@ -1011,19 +1127,24 @@ J3,,,0.575
 MS,,123.000
 M3,,,0.000
 J3,,,5.000
-""", comments=True),
+""",
+                comments=True,
+            ),
         )
 
     def test290(self):
         """MC_RUN_COMMAND: native pass-through"""
 
         self.compare_multi(
-            #"G00 X10 Y10 Z5",
+            # "G00 X10 Y10 Z5",
             '(MC_RUN_COMMAND PRINT "Hello")',
             "--no-header --comments --no-show-editor",
-            self.wrap("""'(MC_RUN_COMMAND PRINT "Hello")
+            self.wrap(
+                """'(MC_RUN_COMMAND PRINT "Hello")
 PRINT "Hello"
-""", comments=True)
+""",
+                comments=True,
+            ),
         )
 
     def test310(self):
@@ -1035,15 +1156,17 @@ PRINT "Hello"
             "G1 F100 Z100",
             "G1 F100 Z200",
             "--speed-modal --no-header --no-comments --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
+            self.wrap(
+                """J3,10.000,10.000,10.000
 MS,100.000
 MX,100.000
 MX,200.000
 MS,,100.000
 M3,,,100.000
 M3,,,200.000
-"""),
-    )
+"""
+            ),
+        )
 
         self.compare_multi(
             "G1 Z3.83000 F42.33333",
@@ -1051,13 +1174,15 @@ M3,,,200.000
             "G1 Y-25.00000",
             "G2 X25.00000 Y-26.58500 I-1.58500 J0.00000 K0.00000",
             "--o2 --no-header --no-comments --no-show-editor",
-            self.wrap("""MS,,42.333
+            self.wrap(
+                """MS,,42.333
 M3,,,3.830
 MS,42.333
 CG,,26.585,25.000,-1.121,-1.121,T,1,0.000,,,,0,1,0 ' Z3.830
 M2,,-25.000
 CG,,25.000,-26.585,-1.585,0.000,T,1,0.000,,,,0,1,0 ' Z3.830
-""")
+"""
+            ),
         )
 
     def test320(self):
@@ -1065,73 +1190,80 @@ CG,,25.000,-26.585,-1.585,0.000,T,1,0.000,,,,0,1,0 ' Z3.830
         self.compare_multi(
             # all G0's, so no MS
             "G0 X10 Y10 Z10",
-            "G0 F100 X100 Y10 Z10", # dX
-            "G0 F100 X101 Z10", # dx
-            "G0 F100 X101 Y102 Z10", # dY
-            "G0 F100 X101 Y102 Z103", # dz
-            "G0 F100 X104 Y105 Z103", # dxy
-            "G0 F100 X106 Y105 Z107", # dxz
+            "G0 F100 X100 Y10 Z10",  # dX
+            "G0 F100 X101 Z10",  # dx
+            "G0 F100 X101 Y102 Z10",  # dY
+            "G0 F100 X101 Y102 Z103",  # dz
+            "G0 F100 X104 Y105 Z103",  # dxy
+            "G0 F100 X106 Y105 Z107",  # dxz
             "--axis-modal --speed-modal --no-header --no-comments --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
+            self.wrap(
+                """J3,10.000,10.000,10.000
 JX,100.000
 JX,101.000
 J2,,102.000
 J3,,,103.000
 J2,104.000,105.000
 J3,106.000,,107.000
-""")
-    )
+"""
+            ),
+        )
 
     def test330(self):
         """Optimization o1 o2 o3"""
 
         self.compare_multi(
             "G0 X10 Y10 Z10",
-            "G0 X10 Y10 Z10", # should see the repeated command
+            "G0 X10 Y10 Z10",  # should see the repeated command
             "--o1 --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
+            self.wrap(
+                """J3,10.000,10.000,10.000
 J3,10.000,10.000,10.000
-""")
-    )
+"""
+            ),
+        )
 
         self.compare_multi(
             "G0 X10 Y10 Z10",
-            "G0 X10 Y10 Z10", # should not see the repeated command
+            "G0 X10 Y10 Z10",  # should not see the repeated command
             "--o2 --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
-""", comments=True, header=True),
-    remove=r"'\(Output Time:",
-    )
+            self.wrap(
+                """J3,10.000,10.000,10.000
+""",
+                comments=True,
+                header=True,
+            ),
+            remove=r"'\(Output Time:",
+        )
 
         self.compare_multi(
             "G0 X10 Y10 Z10",
-            "G0 X10 Y10 Z10", # should not see the repeated command
+            "G0 X10 Y10 Z10",  # should not see the repeated command
             "--o3 --no-show-editor",
-            self.wrap("""J3,10.000,10.000,10.000
-""")
-    )
+            self.wrap(
+                """J3,10.000,10.000,10.000
+"""
+            ),
+        )
 
     def test350(self):
         """--skip-unknown"""
 
         with self.assertRaises(NotImplementedError) as context:
-            self.compare_multi(
-                "G111",
-                "--no-show-editor",
-                self.wrap("throws")
-            )
-        self.assertTrue('gcode not handled' in str(context.exception))
+            self.compare_multi("G111", "--no-show-editor", self.wrap("throws"))
+        self.assertTrue("gcode not handled" in str(context.exception))
 
         self.compare_multi(
             "G111",
             "--skip-unknown G111,G777 --no-show-editor --no-comments --no-header",
-            self.wrap("")
+            self.wrap(""),
         )
 
     def test360(self):
         """Probe operation"""
 
-        self.compare_multi(*"""(Probe009)
+        self.compare_multi(
+            *"""(Probe009)
 (Begin Probing)
 (PROBEOPEN probe)
 G0 Z56.00000
@@ -1142,9 +1274,12 @@ G0 X50.000000 Y-1.000000 Z54.000000
 G38.2 F0.000000 Z50.000000
 G0 Z54.000000
 (PROBECLOSE)
-G0 Z56.000000""".split("\n"),
+G0 Z56.000000""".split(
+                "\n"
+            ),
             "--no-show-editor --comments --no-header",
-            self.wrap("""'(Probe009)
+            self.wrap(
+                """'(Probe009)
 '(Begin Probing)
 '(PROBEOPEN probe)
 'Load the My_Variables file from Custom Cut 90 in C:\\SbParts\\Custom
@@ -1169,7 +1304,8 @@ J3,,,54.000
 ON INPUT(&my_ZzeroInput, 1)
 CLOSE #1
 J3,,,56.000
-""", postfix="""GOTO SkipProbeSubRoutines
+""",
+                postfix="""GOTO SkipProbeSubRoutines
 CaptureZPos:
   ' for g38.2 probe, write the data on probe-contact
   ' and set flag for didn't-fail
@@ -1184,6 +1320,8 @@ FailedToTouch:
   END
 SkipProbeSubRoutines:
 """,
-            comments=True, precision=3),
-            debug=True
+                comments=True,
+                precision=3,
+            ),
+            debug=True,
         )
