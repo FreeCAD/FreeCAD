@@ -1621,11 +1621,13 @@ static bool tryGetColorFromHashTags(
 // Helper function to try getting color from a source object for a given face element
 // If notReadyYet is provided, it will be set to true if the source VP is still restoring
 // recursionDepth prevents infinite recursion when tracing through objects with MapFaceColor
-static bool tryGetSourceColor(App::DocumentObject* sourceObj,
-                              const std::string& sourceElement,
-                              App::Material& outMaterial,
-                              bool* notReadyYet = nullptr,
-                              int recursionDepth = 0)
+static bool tryGetSourceColor(
+    App::DocumentObject* sourceObj,
+    const std::string& sourceElement,
+    App::Material& outMaterial,
+    bool* notReadyYet = nullptr,
+    int recursionDepth = 0
+)
 {
     if (!sourceObj || sourceElement.empty()) {
         return false;
@@ -1699,8 +1701,8 @@ static bool tryGetSourceColor(App::DocumentObject* sourceObj,
     // If we have per-face materials, use the appropriate one
     // Otherwise use the first (default) material
     size_t matIndex = (materials.size() > 1 && faceIndex <= static_cast<int>(materials.size()))
-                          ? static_cast<size_t>(faceIndex - 1)
-                          : 0;
+        ? static_cast<size_t>(faceIndex - 1)
+        : 0;
 
     outMaterial = materials[matIndex];
     return true;
@@ -1869,7 +1871,8 @@ static bool tryGetColorFromModifiedSource(
                             indexEnd++;
                         }
                         if (indexEnd > indexPos) {
-                            faceIndex = std::stoi(afterM.substr(indexPos, indexEnd - indexPos), nullptr, 16);
+                            faceIndex
+                                = std::stoi(afterM.substr(indexPos, indexEnd - indexPos), nullptr, 16);
                         }
                     }
 
@@ -1973,7 +1976,8 @@ static bool tryGetColorFromHashTags(
                     typePos++;
                     if (typePos < elemStr.size() && elemStr[typePos] == 'F') {
                         // This is a Face element
-                        std::string sourceElement = "Face" + std::to_string(faceIndex > 0 ? faceIndex : 1);
+                        std::string sourceElement = "Face"
+                            + std::to_string(faceIndex > 0 ? faceIndex : 1);
 
                         if (tryGetSourceColor(sourceObj, sourceElement, outMaterial)) {
                             return true;
@@ -2133,8 +2137,8 @@ void ViewProviderPartExt::applyMappedColors()
         mapColorRetryCount = 0;  // Reset retry counter on success
     }
     else if (hasSourceHistory && mapColorRetryCount < 5) {
-        // We have source history but couldn't get colors - source objects may not be fully restored yet.
-        // Apply ShapeAppearance as fallback so display isn't blank, then schedule a retry.
+        // We have source history but couldn't get colors - source objects may not be fully restored
+        // yet. Apply ShapeAppearance as fallback so display isn't blank, then schedule a retry.
         setHighlightedFaces(ShapeAppearance.getValues());
         mapColorRetryCount++;
         QTimer::singleShot(100, [this]() {
