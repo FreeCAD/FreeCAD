@@ -55,12 +55,6 @@ bool CArc::AlmostALine() const
         return true;
     }
 
-    const double max_arc_radius = 1.0 / CArea::get_accuracy();
-    double radius = m_c.dist(m_s);
-    if (radius > max_arc_radius) {
-        return true;  // We don't want to produce an arc whose radius is too large.
-    }
-
     return false;
 }
 
