@@ -1528,8 +1528,8 @@ void ViewProviderPartExt::updateVisual()
         // If geometry is properly set up, we can skip
         // But only if we actually have faces and they match - don't skip for empty/null shapes
         if (numFaces > 0 && partIndexNum == numFaces) {
-            std::cerr << "  -> early return (same shape, geometry ok: numFaces="
-                      << numFaces << " partIndex=" << partIndexNum << ")" << std::endl;
+            std::cerr << "  -> early return (same shape, geometry ok: numFaces=" << numFaces
+                      << " partIndex=" << partIndexNum << ")" << std::endl;
             return;
         }
         // Also skip if shape truly has no faces (nothing to render)
@@ -1537,8 +1537,8 @@ void ViewProviderPartExt::updateVisual()
             std::cerr << "  -> early return (null shape)" << std::endl;
             return;
         }
-        std::cerr << "  -> continuing despite same shape (faceset not ready: numFaces="
-                  << numFaces << " partIndex=" << partIndexNum << ")" << std::endl;
+        std::cerr << "  -> continuing despite same shape (faceset not ready: numFaces=" << numFaces
+                  << " partIndex=" << partIndexNum << ")" << std::endl;
     }
 
     Gui::SoUpdateVBOAction action;
@@ -1607,9 +1607,11 @@ void ViewProviderPartExt::forceUpdate(bool enable)
 }
 
 // Helper function to try getting color from a source object for a given face element
-static bool tryGetSourceColor(App::DocumentObject* sourceObj,
-                              const std::string& sourceElement,
-                              App::Material& outMaterial)
+static bool tryGetSourceColor(
+    App::DocumentObject* sourceObj,
+    const std::string& sourceElement,
+    App::Material& outMaterial
+)
 {
     if (!sourceObj || sourceElement.empty()) {
         return false;
@@ -1625,7 +1627,8 @@ static bool tryGetSourceColor(App::DocumentObject* sourceObj,
     if (it != colorMap.end()) {
         outMaterial.diffuseColor = it->second;
         outMaterial.transparency = it->second.transparency();
-        std::cerr << "    applying color from " << sourceObj->getFullName() << " " << sourceElement << std::endl;
+        std::cerr << "    applying color from " << sourceObj->getFullName() << " " << sourceElement
+                  << std::endl;
         return true;
     }
     return false;
@@ -1650,12 +1653,15 @@ static std::string extractBaseFaceName(const std::string& elemStr)
 // Helper function to try getting color from a modified face source
 // Handles two patterns:
 //   1. ";:M(FaceX;:Htag,F)" - modified face with explicit source
-//   2. "FaceX;:M;OP;:Htag,F" - modified face without explicit source (source is base element + first tag)
+//   2. "FaceX;:M;OP;:Htag,F" - modified face without explicit source (source is base element +
+//   first tag)
 // Returns true if a color was found
-static bool tryGetColorFromModifiedSource(App::Document* doc,
-                                          const std::string& elemStr,
-                                          App::DocumentObject* skipObj,
-                                          App::Material& outMaterial)
+static bool tryGetColorFromModifiedSource(
+    App::Document* doc,
+    const std::string& elemStr,
+    App::DocumentObject* skipObj,
+    App::Material& outMaterial
+)
 {
     // First, look for ";:M(" pattern which indicates a modified face with explicit source
     size_t mParenPos = elemStr.find(";:M(");
@@ -1691,7 +1697,8 @@ static bool tryGetColorFromModifiedSource(App::Document* doc,
                         if (negative) {
                             tag = -tag;
                         }
-                        std::cerr << "  M() has tag inside: " << tag << " (0x" << hexStr << ")" << std::endl;
+                        std::cerr << "  M() has tag inside: " << tag << " (0x" << hexStr << ")"
+                                  << std::endl;
                     }
                 }
 
@@ -1717,7 +1724,8 @@ static bool tryGetColorFromModifiedSource(App::Document* doc,
                             if (negative) {
                                 tag = -tag;
                             }
-                            std::cerr << "  M() no tag inside, using first tag after: " << tag << " (0x" << hexStr << ")" << std::endl;
+                            std::cerr << "  M() no tag inside, using first tag after: " << tag
+                                      << " (0x" << hexStr << ")" << std::endl;
                         }
                     }
                 }
@@ -1804,10 +1812,12 @@ static bool tryGetColorFromModifiedSource(App::Document* doc,
 }
 
 // Helper function to parse all hash tags from a mapped element name and try to find source colors
-static bool tryGetColorFromHashTags(App::Document* doc,
-                                    const Data::MappedName& mappedName,
-                                    App::DocumentObject* skipObj,
-                                    App::Material& outMaterial)
+static bool tryGetColorFromHashTags(
+    App::Document* doc,
+    const Data::MappedName& mappedName,
+    App::DocumentObject* skipObj,
+    App::Material& outMaterial
+)
 {
     // Parse all hash tags from the element name
     // Element name format: Face1;:M;CMN;:Hb98:7,F;:Hb97,F
@@ -1888,7 +1898,8 @@ static bool tryGetColorFromHashTags(App::Document* doc,
                     typePos++;
                     if (typePos < elemStr.size() && elemStr[typePos] == 'F') {
                         // This is a Face element
-                        std::string sourceElement = "Face" + std::to_string(faceIndex > 0 ? faceIndex : 1);
+                        std::string sourceElement = "Face"
+                            + std::to_string(faceIndex > 0 ? faceIndex : 1);
                         std::cerr << "    trying source element: " << sourceElement << std::endl;
 
                         if (tryGetSourceColor(sourceObj, sourceElement, outMaterial)) {
@@ -1971,8 +1982,7 @@ void ViewProviderPartExt::applyMappedColors()
         auto history = Part::Feature::getElementHistory(feature, elementName.c_str(), true, false);
 
         std::cerr << "MapFaceColor: " << feature->getFullName() << " " << elementName
-                  << " mapped=" << mappedStr
-                  << " history size=" << history.size() << std::endl;
+                  << " mapped=" << mappedStr << " history size=" << history.size() << std::endl;
 
         bool colorFound = false;
 
@@ -1993,8 +2003,7 @@ void ViewProviderPartExt::applyMappedColors()
             // Walk through history to find a source with face colors
             for (const auto& item : history) {
                 std::cerr << "  history item: obj=" << (item.obj ? item.obj->getFullName() : "null")
-                          << " tag=" << item.tag
-                          << " index=" << item.index.toString()
+                          << " tag=" << item.tag << " index=" << item.index.toString()
                           << " element=" << item.element.toString()
                           << " intermediates=" << item.intermediates.size() << std::endl;
 
