@@ -8607,12 +8607,12 @@ Vælg 'Afbryd' for at afbryde</translation>
       <translation>Kan ikke åbne systembrowseren.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Ikke mere hukommelse</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Ikke nok hukommelse til at vise dataene.</translation>
     </message>
@@ -9080,7 +9080,7 @@ i den aktuelle kopi vil gå tabt.
       <translation>Ikke tilladt:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Valget tillades ikke af filteret</translation>
     </message>
@@ -10070,7 +10070,7 @@ Fortsæt?
     <message>
       <location filename="../CommandView.cpp" line="780"/>
       <source>Normal mode</source>
-      <translation>Normal visning</translation>
+      <translation>Standardvisning</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="782"/>
@@ -10249,7 +10249,7 @@ Vil du gemme dokumentet nu?</translation>
     <message>
       <location filename="../Workbench.cpp" line="610"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Link handlinger</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="595"/>
@@ -13121,12 +13121,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="84"/>
       <source>Link Group</source>
-      <translation type="unfinished">Link Group</translation>
+      <translation>Link gruppe</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="85"/>
       <source>Creates a group of links</source>
-      <translation type="unfinished">Creates a group of links</translation>
+      <translation>Opretter en gruppe af links</translation>
     </message>
   </context>
   <context>
@@ -13134,12 +13134,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="258"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Opret link</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="259"/>
       <source>A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Et link er et objekt, der henviser (linker) til et andet objekt, enten i samme dokument eller i et andet dokument. Til forskel fra kloner, henviser links direkte til den oprindelige geometri, hvilket gør dem mere hukommelseseffektive, og hjælper ved oprettelsen af komplekse samlinger.</translation>
     </message>
   </context>
   <context>
@@ -13173,12 +13173,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="646"/>
       <source>Import Links</source>
-      <translation type="unfinished">Import Links</translation>
+      <translation>Importer links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="647"/>
       <source>Imports selected external links</source>
-      <translation type="unfinished">Imports selected external links</translation>
+      <translation>Importerer valgte eksterne links</translation>
     </message>
   </context>
   <context>
@@ -13186,12 +13186,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="720"/>
       <source>Import All Links</source>
-      <translation type="unfinished">Import All Links</translation>
+      <translation>Importer alle links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="721"/>
       <source>Imports all links of the active document</source>
-      <translation type="unfinished">Imports all links of the active document</translation>
+      <translation>Importerer alle links i det aktive dokument</translation>
     </message>
   </context>
   <context>
@@ -13225,7 +13225,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="956"/>
       <source>Select &amp;All Links</source>
-      <translation type="unfinished">Select &amp;All Links</translation>
+      <translation>Vælg alle links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="957"/>
@@ -13238,12 +13238,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="1029"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Link handlinger</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="1030"/>
       <source>Commands that operate on link objects</source>
-      <translation type="unfinished">Commands that operate on link objects</translation>
+      <translation>Kommandoer der virker på linkobjekter</translation>
     </message>
   </context>
   <context>
@@ -13433,7 +13433,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="593"/>
       <source>Donate to FreeCA&amp;D</source>
-      <translation>Doner til FreeCA&amp;D</translation>
+      <translation>Støt FreeCA&amp;D</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="594"/>
@@ -13550,7 +13550,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="275"/>
       <source>Restore Saved Camera</source>
-      <translation type="unfinished">Restore Saved Camera</translation>
+      <translation>Gendan kameraindstillinger</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="276"/>
@@ -14568,12 +14568,12 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Ja</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Nej</translation>
     </message>

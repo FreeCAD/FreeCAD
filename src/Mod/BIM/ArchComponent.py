@@ -2092,6 +2092,10 @@ class ComponentTaskPanel:
     """
 
     def __init__(self):
+        """
+        Initializes the task panel. The transaction context is implicitly opened by the C++ layer
+        when entering edit mode.
+        """
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -2176,6 +2180,8 @@ class ComponentTaskPanel:
         )
         self.update()
 
+        self.doc = FreeCAD.ActiveDocument
+
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
         the selection while it is open.
@@ -2201,9 +2207,9 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        """Add the standard ok button."""
+        """Add the standard Ok/Cancel buttons."""
 
-        return QtGui.QDialogButtonBox.Ok
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
         """This method is run as the callback when the user selects an item in the tree.
@@ -2319,6 +2325,7 @@ class ComponentTaskPanel:
                     mod = a
             for o in FreeCADGui.Selection.getSelection():
                 addToComponent(self.obj, o, mod)
+            self.obj.recompute()
         self.update()
 
     def removeElement(self):
@@ -2340,15 +2347,26 @@ class ComponentTaskPanel:
             # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
 
+        self.obj.recompute()
         self.update()
 
     def accept(self):
         """This method runs as a callback when the user selects the ok button.
 
         Recomputes the document, and leave edit mode.
-        """
 
+        The transaction is implicitly committed by the C++ layer during resetEdit.
+        """
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        """
+        Aborts the edit session. An explicit abort is required to prevent the C++ layer from
+        committing changes during resetEdit.
+        """
+        self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 
