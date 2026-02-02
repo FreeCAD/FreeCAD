@@ -95,6 +95,8 @@ public:
     App::PropertyColor LineColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
+    // Color mapping from element history
+    App::PropertyBool MapFaceColor;
 
     void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
@@ -214,6 +216,8 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
+    /// Apply colors mapped from source element history
+    void applyMappedColors();
     void handleChangedPropertyName(
         Base::XMLReader& reader,
         const char* TypeName,

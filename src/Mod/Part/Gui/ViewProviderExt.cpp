@@ -50,6 +50,7 @@
 
 #include <QAction>
 #include <QMenu>
+#include <cctype>
 #include <sstream>
 
 #include <Inventor/SoPickedPoint.h>
@@ -68,14 +69,17 @@
 #include <Inventor/nodes/SoShapeHints.h>
 
 #include <boost/algorithm/string/predicate.hpp>
+#include <iostream>
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/MappedElement.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
 #include <Base/TimeInfo.h>
 #include <Base/Tools.h>
 
+#include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/SoFCSelectionAction.h>
@@ -225,6 +229,13 @@ ViewProviderPartExt::ViewProviderPartExt()
         "Display Options",
         App::Prop_None,
         "If true, placement of object is additionally rendered."
+    );
+    ADD_PROPERTY_TYPE(
+        MapFaceColor,
+        (false),
+        "Display Options",
+        App::Prop_None,
+        "If true, face colors are inherited from source elements in modeling history."
     );
 
     coords = new SoCoordinate3();
@@ -407,7 +418,13 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         ShapeAppearance.setTransparencies(transparencies);
     }
     else if (prop == &ShapeAppearance) {
+        std::cerr << "onChanged(ShapeAppearance) for "
+                  << (getObject() ? getObject()->getFullName() : "null") << std::endl;
         setHighlightedFaces(ShapeAppearance);
+        // Re-apply mapped colors if enabled, since ShapeAppearance change would overwrite them
+        if (MapFaceColor.getValue()) {
+            applyMappedColors();
+        }
         ViewProviderGeometryObject::onChanged(prop);
     }
     else if (prop == &Transparency) {
@@ -444,6 +461,15 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
         pcPlacement->whichChild = (ShowPlacement.getValue() && Visibility.getValue())
             ? SO_SWITCH_ALL
             : SO_SWITCH_NONE;
+    }
+    else if (prop == &MapFaceColor) {
+        if (MapFaceColor.getValue()) {
+            applyMappedColors();
+        }
+        else {
+            // Restore the original ShapeAppearance colors
+            setHighlightedFaces(ShapeAppearance.getValues());
+        }
     }
     else {
         // if the object was invisible and has been changed, recreate the visual
@@ -684,6 +710,11 @@ std::vector<Base::Vector3d> ViewProviderPartExt::getSelectionShape(const char* /
 
 void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& materials)
 {
+    if (getObject()) {
+        std::cerr << "setHighlightedFaces: " << getObject()->getFullName()
+                  << " materials.size()=" << materials.size()
+                  << " partIndex.getNum()=" << this->faceset->partIndex.getNum() << std::endl;
+    }
     if (getObject() && getObject()->testStatus(App::ObjectStatus::TouchOnColorChange)) {
         getObject()->touch(true);
     }
@@ -741,10 +772,16 @@ void ViewProviderPartExt::setHighlightedFaces(const std::vector<App::Material>& 
         pcShapeMaterial->emissiveColor.finishEditing();
         pcShapeMaterial->shininess.finishEditing();
         pcShapeMaterial->transparency.finishEditing();
+        std::cerr << "  -> applied per-face colors" << std::endl;
     }
     else if (size == 1) {
         pcFaceBind->value = SoMaterialBinding::OVERALL;
         setCoinAppearance(materials[0]);
+        std::cerr << "  -> applied single color" << std::endl;
+    }
+    else {
+        std::cerr << "  -> SKIPPED: size mismatch (size=" << size
+                  << " partIndex=" << this->faceset->partIndex.getNum() << ")" << std::endl;
     }
 }
 
@@ -994,6 +1031,14 @@ void ViewProviderPartExt::finishRestoring()
         onChanged(&_diffuseColor);
     }
     Gui::ViewProviderGeometryObject::finishRestoring();
+
+    // Apply mapped colors after all view providers are restored
+    // This ensures source objects' view providers are available
+    if (MapFaceColor.getValue()) {
+        std::cerr << "finishRestoring: calling applyMappedColors for "
+                  << (getObject() ? getObject()->getFullName() : "unknown") << std::endl;
+        applyMappedColors();
+    }
 }
 
 void ViewProviderPartExt::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
@@ -1467,10 +1512,33 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    if (getObject()) {
+        std::cerr << "updateVisual: " << getObject()->getFullName() << std::endl;
+    }
     TopoDS_Shape shape = getRenderedShape().getShape();
 
     if (lastRenderedShape.IsPartner(shape)) {
-        return;
+        // Even if shape is the same, check if faceset geometry is properly initialized
+        // This can happen when loading a file - the shape is restored but geometry isn't set up
+        TopTools_IndexedMapOfShape faceMap;
+        TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
+        int numFaces = faceMap.Extent();
+        int partIndexNum = this->faceset->partIndex.getNum();
+
+        // If geometry is properly set up, we can skip
+        // But only if we actually have faces and they match - don't skip for empty/null shapes
+        if (numFaces > 0 && partIndexNum == numFaces) {
+            std::cerr << "  -> early return (same shape, geometry ok: numFaces="
+                      << numFaces << " partIndex=" << partIndexNum << ")" << std::endl;
+            return;
+        }
+        // Also skip if shape truly has no faces (nothing to render)
+        if (numFaces == 0 && shape.IsNull()) {
+            std::cerr << "  -> early return (null shape)" << std::endl;
+            return;
+        }
+        std::cerr << "  -> continuing despite same shape (faceset not ready: numFaces="
+                  << numFaces << " partIndex=" << partIndexNum << ")" << std::endl;
     }
 
     Gui::SoUpdateVBOAction action;
@@ -1519,6 +1587,9 @@ void ViewProviderPartExt::updateVisual()
     setHighlightedFaces(ShapeAppearance.getValues());
     setHighlightedEdges(LineColorArray.getValues());
     setHighlightedPoints(PointColorArray.getValue());
+
+    // Apply colors from element history if enabled
+    applyMappedColors();
 }
 
 void ViewProviderPartExt::forceUpdate(bool enable)
@@ -1535,6 +1606,452 @@ void ViewProviderPartExt::forceUpdate(bool enable)
     }
 }
 
+// Helper function to try getting color from a source object for a given face element
+static bool tryGetSourceColor(App::DocumentObject* sourceObj,
+                              const std::string& sourceElement,
+                              App::Material& outMaterial)
+{
+    if (!sourceObj || sourceElement.empty()) {
+        return false;
+    }
+
+    auto* vp = Gui::Application::Instance->getViewProvider<ViewProviderPartExt>(sourceObj);
+    if (!vp) {
+        return false;
+    }
+
+    auto colorMap = vp->getElementColors(sourceElement.c_str());
+    auto it = colorMap.find(sourceElement);
+    if (it != colorMap.end()) {
+        outMaterial.diffuseColor = it->second;
+        outMaterial.transparency = it->second.transparency();
+        std::cerr << "    applying color from " << sourceObj->getFullName() << " " << sourceElement << std::endl;
+        return true;
+    }
+    return false;
+}
+
+// Helper function to extract base element name (e.g., "Face6" from "Face6;:M(...)")
+static std::string extractBaseFaceName(const std::string& elemStr)
+{
+    if (elemStr.compare(0, 4, "Face") != 0) {
+        return "";
+    }
+    size_t pos = 4;
+    while (pos < elemStr.size() && std::isdigit(elemStr[pos])) {
+        ++pos;
+    }
+    if (pos > 4) {
+        return elemStr.substr(0, pos);
+    }
+    return "";
+}
+
+// Helper function to try getting color from a modified face source
+// Handles two patterns:
+//   1. ";:M(FaceX;:Htag,F)" - modified face with explicit source
+//   2. "FaceX;:M;OP;:Htag,F" - modified face without explicit source (source is base element + first tag)
+// Returns true if a color was found
+static bool tryGetColorFromModifiedSource(App::Document* doc,
+                                          const std::string& elemStr,
+                                          App::DocumentObject* skipObj,
+                                          App::Material& outMaterial)
+{
+    // First, look for ";:M(" pattern which indicates a modified face with explicit source
+    size_t mParenPos = elemStr.find(";:M(");
+    if (mParenPos != std::string::npos) {
+        size_t contentStart = mParenPos + 4;  // After ";:M("
+        size_t contentEnd = elemStr.find(')', contentStart);
+        if (contentEnd != std::string::npos) {
+            std::string modContent = elemStr.substr(contentStart, contentEnd - contentStart);
+            std::cerr << "  found M() content: " << modContent << std::endl;
+
+            // Parse the source element from the M() content
+            std::string sourceFace = extractBaseFaceName(modContent);
+            if (!sourceFace.empty()) {
+                // First try to find the tag in the M() content
+                size_t tagPos = modContent.find(";:H");
+                long tag = 0;
+
+                if (tagPos != std::string::npos) {
+                    size_t hexStart = tagPos + 3;
+                    bool negative = (hexStart < modContent.size() && modContent[hexStart] == '-');
+                    if (negative) {
+                        hexStart++;
+                    }
+
+                    size_t hexEnd = hexStart;
+                    while (hexEnd < modContent.size() && std::isxdigit(modContent[hexEnd])) {
+                        hexEnd++;
+                    }
+
+                    if (hexEnd > hexStart) {
+                        std::string hexStr = modContent.substr(hexStart, hexEnd - hexStart);
+                        tag = std::stol(hexStr, nullptr, 16);
+                        if (negative) {
+                            tag = -tag;
+                        }
+                        std::cerr << "  M() has tag inside: " << tag << " (0x" << hexStr << ")" << std::endl;
+                    }
+                }
+
+                // If no tag inside M(), look for the first tag AFTER the M() closing paren
+                if (tag == 0) {
+                    std::string afterM = elemStr.substr(contentEnd + 1);
+                    size_t firstTagPos = afterM.find(";:H");
+                    if (firstTagPos != std::string::npos) {
+                        size_t hexStart = firstTagPos + 3;
+                        bool negative = (hexStart < afterM.size() && afterM[hexStart] == '-');
+                        if (negative) {
+                            hexStart++;
+                        }
+
+                        size_t hexEnd = hexStart;
+                        while (hexEnd < afterM.size() && std::isxdigit(afterM[hexEnd])) {
+                            hexEnd++;
+                        }
+
+                        if (hexEnd > hexStart) {
+                            std::string hexStr = afterM.substr(hexStart, hexEnd - hexStart);
+                            tag = std::stol(hexStr, nullptr, 16);
+                            if (negative) {
+                                tag = -tag;
+                            }
+                            std::cerr << "  M() no tag inside, using first tag after: " << tag << " (0x" << hexStr << ")" << std::endl;
+                        }
+                    }
+                }
+
+                if (tag != 0) {
+                    std::cerr << "  M() source: " << sourceFace << " from tag " << tag << std::endl;
+                    App::DocumentObject* sourceObj = doc->getObjectByID(std::abs(tag));
+                    if (sourceObj && sourceObj != skipObj) {
+                        std::cerr << "  M() resolved to: " << sourceObj->getFullName() << std::endl;
+                        if (tryGetSourceColor(sourceObj, sourceFace, outMaterial)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Second, look for ";:M" followed by optional digits and ";" pattern (without parentheses)
+    // e.g., "Face1;:M;CMN;:Hb97:7,F" or "Face1;:M2;CMN;:H7:8,F"
+    // The base element before ";:M" is the source face, and the first tag indicates the source object
+    size_t mPos = elemStr.find(";:M");
+    if (mPos != std::string::npos) {
+        // Check if this is ";:M(" which we already handled above
+        size_t afterMPos = mPos + 3;
+        if (afterMPos < elemStr.size() && elemStr[afterMPos] == '(') {
+            // Already handled by the M() pattern above
+            return false;
+        }
+
+        // Skip any digits after ";:M" (e.g., ";:M2")
+        while (afterMPos < elemStr.size() && std::isdigit(elemStr[afterMPos])) {
+            afterMPos++;
+        }
+
+        // Must be followed by ";"
+        if (afterMPos >= elemStr.size() || elemStr[afterMPos] != ';') {
+            return false;
+        }
+
+        // Extract the base element name before ";:M"
+        std::string basePart = elemStr.substr(0, mPos);
+        std::string sourceFace = extractBaseFaceName(basePart);
+
+        if (!sourceFace.empty()) {
+            std::cerr << "  found ;:M pattern, base element: " << sourceFace << std::endl;
+
+            // Find the first tag after the M marker
+            std::string afterM = elemStr.substr(afterMPos + 1);
+            size_t firstTagPos = afterM.find(";:H");
+            if (firstTagPos != std::string::npos) {
+                size_t hexStart = firstTagPos + 3;
+                bool negative = (hexStart < afterM.size() && afterM[hexStart] == '-');
+                if (negative) {
+                    hexStart++;
+                }
+
+                size_t hexEnd = hexStart;
+                while (hexEnd < afterM.size() && std::isxdigit(afterM[hexEnd])) {
+                    hexEnd++;
+                }
+
+                if (hexEnd > hexStart) {
+                    std::string hexStr = afterM.substr(hexStart, hexEnd - hexStart);
+                    long tag = std::stol(hexStr, nullptr, 16);
+                    if (negative) {
+                        tag = -tag;
+                    }
+                    std::cerr << "  ;:M; first tag: " << tag << " (0x" << hexStr << ")" << std::endl;
+
+                    App::DocumentObject* sourceObj = doc->getObjectByID(std::abs(tag));
+                    if (sourceObj && sourceObj != skipObj) {
+                        std::cerr << "  ;:M; resolved to: " << sourceObj->getFullName() << std::endl;
+                        if (tryGetSourceColor(sourceObj, sourceFace, outMaterial)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+// Helper function to parse all hash tags from a mapped element name and try to find source colors
+static bool tryGetColorFromHashTags(App::Document* doc,
+                                    const Data::MappedName& mappedName,
+                                    App::DocumentObject* skipObj,
+                                    App::Material& outMaterial)
+{
+    // Parse all hash tags from the element name
+    // Element name format: Face1;:M;CMN;:Hb98:7,F;:Hb97,F
+    // Each ";:H" followed by hex tag identifies a source object
+    std::string elemStr = mappedName.toString();
+    std::cerr << "  parsing hash tags from: " << elemStr << std::endl;
+
+    // First, try to find source from M() pattern (modified face indicator)
+    // This takes priority as it indicates the true geometric source
+    if (tryGetColorFromModifiedSource(doc, elemStr, skipObj, outMaterial)) {
+        return true;
+    }
+
+    size_t searchPos = 0;
+    while (searchPos < elemStr.size()) {
+        // Find next ";:H" tag marker
+        size_t tagPos = elemStr.find(";:H", searchPos);
+        if (tagPos == std::string::npos) {
+            break;
+        }
+
+        // Parse the hex tag value
+        size_t hexStart = tagPos + 3;  // Skip ";:H"
+        if (hexStart >= elemStr.size()) {
+            break;
+        }
+
+        // Handle negative tag
+        bool negative = (elemStr[hexStart] == '-');
+        if (negative) {
+            hexStart++;
+        }
+
+        // Read hex digits
+        size_t hexEnd = hexStart;
+        while (hexEnd < elemStr.size() && std::isxdigit(elemStr[hexEnd])) {
+            hexEnd++;
+        }
+
+        if (hexEnd > hexStart) {
+            std::string hexStr = elemStr.substr(hexStart, hexEnd - hexStart);
+            long tag = std::stol(hexStr, nullptr, 16);
+            if (negative) {
+                tag = -tag;
+            }
+
+            std::cerr << "    found tag: " << tag << " (0x" << hexStr << ")" << std::endl;
+
+            // Look up object by tag
+            App::DocumentObject* sourceObj = doc->getObjectByID(std::abs(tag));
+            if (sourceObj && sourceObj != skipObj) {
+                std::cerr << "    resolved to: " << sourceObj->getFullName() << std::endl;
+
+                // Try to find the face element after the tag
+                // Format: ;:Hb98:7,F means this is a Face element
+                // Look for the element type character after the tag
+                size_t typePos = hexEnd;
+                int faceIndex = 0;
+
+                // Skip over the length field if present (e.g., ":7" in ";:Hb98:7,F")
+                if (typePos < elemStr.size() && elemStr[typePos] == ':') {
+                    typePos++;
+                    size_t lenEnd = typePos;
+                    while (lenEnd < elemStr.size() && std::isxdigit(elemStr[lenEnd])) {
+                        lenEnd++;
+                    }
+                    // The length field in hex represents the face index
+                    if (lenEnd > typePos) {
+                        std::string lenStr = elemStr.substr(typePos, lenEnd - typePos);
+                        faceIndex = std::stoi(lenStr, nullptr, 16);
+                        std::cerr << "    face index from len field: " << faceIndex << std::endl;
+                    }
+                    typePos = lenEnd;
+                }
+
+                // Check for element type
+                if (typePos < elemStr.size() && elemStr[typePos] == ',') {
+                    typePos++;
+                    if (typePos < elemStr.size() && elemStr[typePos] == 'F') {
+                        // This is a Face element
+                        std::string sourceElement = "Face" + std::to_string(faceIndex > 0 ? faceIndex : 1);
+                        std::cerr << "    trying source element: " << sourceElement << std::endl;
+
+                        if (tryGetSourceColor(sourceObj, sourceElement, outMaterial)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        searchPos = tagPos + 3;
+    }
+
+    return false;
+}
+
+void ViewProviderPartExt::applyMappedColors()
+{
+    std::cerr << "applyMappedColors called, MapFaceColor=" << MapFaceColor.getValue() << std::endl;
+    if (!MapFaceColor.getValue()) {
+        return;
+    }
+
+    auto* feature = dynamic_cast<Part::Feature*>(getObject());
+    if (!feature) {
+        return;
+    }
+
+    const Part::TopoShape& topoShape = feature->Shape.getShape();
+    TopoDS_Shape shape = topoShape.getShape();
+    if (shape.IsNull()) {
+        return;
+    }
+
+    App::Document* doc = feature->getDocument();
+    if (!doc) {
+        return;
+    }
+
+    // Build indexed map of faces
+    TopTools_IndexedMapOfShape faceMap;
+    TopExp::MapShapes(shape, TopAbs_FACE, faceMap);
+    int numFaces = faceMap.Extent();
+    if (numFaces == 0) {
+        return;
+    }
+
+    // Check if faceset geometry is ready - if partIndex doesn't match numFaces,
+    // the visual hasn't been updated yet and we should skip (colors will be applied
+    // when updateVisual() runs later)
+    int partIndexNum = this->faceset->partIndex.getNum();
+    if (numFaces > 1 && partIndexNum != numFaces) {
+        std::cerr << "  skipping: geometry not ready (numFaces=" << numFaces
+                  << " partIndex=" << partIndexNum << ")" << std::endl;
+        return;
+    }
+
+    // Get the default appearance
+    std::vector<App::Material> materials = ShapeAppearance.getValues();
+    if (materials.empty()) {
+        return;
+    }
+
+    // Resize to match the number of faces
+    if (static_cast<int>(materials.size()) != numFaces) {
+        App::Material defaultMat = materials[0];
+        materials.resize(numFaces, defaultMat);
+    }
+
+    bool anyColorMapped = false;
+
+    // For each face, trace its history and try to get the source color
+    for (int i = 1; i <= numFaces; i++) {
+        std::string elementName = std::string("Face") + std::to_string(i);
+        Data::IndexedName idx(elementName.c_str());
+        Data::MappedName mappedName = topoShape.getMappedName(idx, true);
+        std::string mappedStr = mappedName.toString();
+
+        // Get the element history for this face (recursive=true, sameType=false to follow all history)
+        auto history = Part::Feature::getElementHistory(feature, elementName.c_str(), true, false);
+
+        std::cerr << "MapFaceColor: " << feature->getFullName() << " " << elementName
+                  << " mapped=" << mappedStr
+                  << " history size=" << history.size() << std::endl;
+
+        bool colorFound = false;
+
+        // FIRST: Try to find source from M pattern (modified face indicator)
+        // This takes priority because it indicates the true geometric source of the face,
+        // which is important for Common operations where the history API follows the wrong path
+        // Handles ";:M(" and ";:M;" and ";:MN;" patterns (N = digit)
+        if (!mappedStr.empty() && mappedStr.find(";:M") != std::string::npos) {
+            std::cerr << "  trying M pattern first..." << std::endl;
+            if (tryGetColorFromModifiedSource(doc, mappedStr, feature, materials[i - 1])) {
+                colorFound = true;
+                anyColorMapped = true;
+            }
+        }
+
+        // SECOND: Try standard element history
+        if (!colorFound && !history.empty()) {
+            // Walk through history to find a source with face colors
+            for (const auto& item : history) {
+                std::cerr << "  history item: obj=" << (item.obj ? item.obj->getFullName() : "null")
+                          << " tag=" << item.tag
+                          << " index=" << item.index.toString()
+                          << " element=" << item.element.toString()
+                          << " intermediates=" << item.intermediates.size() << std::endl;
+
+                // Check the history element for M pattern - it may have the correct source info
+                // even if the history API traced to a different object
+                std::string elemStr = item.element.toString();
+                if (elemStr.find(";:M") != std::string::npos) {
+                    std::cerr << "  checking history element for M pattern..." << std::endl;
+                    if (tryGetColorFromModifiedSource(doc, elemStr, feature, materials[i - 1])) {
+                        colorFound = true;
+                        anyColorMapped = true;
+                        break;
+                    }
+                }
+
+                if (!item.obj || item.obj == feature) {
+                    continue;
+                }
+
+                // Try to get the source element name - first from index, then parse from element
+                std::string sourceElement;
+                if (!item.index.isNull() && strncmp(item.index.getType(), "Face", 4) == 0) {
+                    sourceElement = item.index.toString();
+                }
+                else {
+                    sourceElement = extractBaseFaceName(item.element.toString());
+                }
+
+                // Only consider Face elements
+                if (sourceElement.empty() || sourceElement.compare(0, 4, "Face") != 0) {
+                    continue;
+                }
+
+                if (tryGetSourceColor(item.obj, sourceElement, materials[i - 1])) {
+                    colorFound = true;
+                    anyColorMapped = true;
+                    break;
+                }
+            }
+        }
+
+        // THIRD: Fallback to parsing all hash tags from element name
+        if (!colorFound && !mappedName.empty()) {
+            std::cerr << "  trying hash tag fallback..." << std::endl;
+            if (tryGetColorFromHashTags(doc, mappedName, feature, materials[i - 1])) {
+                anyColorMapped = true;
+            }
+        }
+    }
+
+    std::cerr << "applyMappedColors: anyColorMapped=" << anyColorMapped
+              << " materials.size()=" << materials.size() << std::endl;
+    if (anyColorMapped) {
+        std::cerr << "  calling setHighlightedFaces with mapped colors" << std::endl;
+        setHighlightedFaces(materials);
+    }
+}
 
 void ViewProviderPartExt::handleChangedPropertyName(
     Base::XMLReader& reader,
