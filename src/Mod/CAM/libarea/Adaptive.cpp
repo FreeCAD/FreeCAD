@@ -2958,6 +2958,16 @@ void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, Motion
     }
 }
 
+struct IterateNextStepOutput
+{
+    std::optional<double> iterationAngle;
+    bool tooManyIterations = false;
+    bool failed;
+    double area;
+    IntPoint newToolPos;
+    DoublePoint newToolDir;
+};
+
 void Adaptive2d::ProcessPolyNode(
     Paths boundPaths,
     Paths toolBoundPaths,
@@ -3201,8 +3211,6 @@ void Adaptive2d::ProcessPolyNode(
     long stepScaled = long(MIN_STEP_CLIPPER);
     IntPoint engagePoint;
 
-    IntPoint newToolPos;
-    DoublePoint newToolDir;
     DoublePoint lastExpandToolDir = toolDir;
 
     CheckReportProgress(progressPaths, true);
@@ -3212,7 +3220,10 @@ void Adaptive2d::ProcessPolyNode(
 
     Path passToolPath;  // to store pass toolpath
     Path toClearPath;
-    IntPoint clp;                 // to store closest point
+    IntPoint clp;  // to store closest point
+    size_t clpPathIndex;
+    size_t clpSegmentIndex;
+    double clpParameter;
     vector<DoublePoint> gyro;     // used to average tool direction
     vector<double> angleHistory;  // use to predict deflection angle
     double angle = std::numbers::pi;
@@ -3243,6 +3254,263 @@ void Adaptive2d::ProcessPolyNode(
     }
     fout << "\n";
 
+
+    const auto iterateNextStep = [&](const IntPoint& toolPos, const DoublePoint& toolDir) {
+        IterateNextStepOutput out;
+
+        Perf_DistanceToBoundary.Start();
+
+        double distanceToBoundary = sqrt(
+            DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
+        );
+        DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+
+        Perf_DistanceToBoundary.Stop();
+        double distanceToEngage = sqrt(DistanceSqrd(toolPos, engagePoint));
+
+        double targetAreaPD = optimalCutAreaPD;
+
+        // set the step size: 1x to 8x base size
+        double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
+        if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
+            stepScaled = long(MIN_STEP_CLIPPER);
+        }
+        else if (fabs(angle) > NTOL) {
+            stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
+        }
+        else {
+            stepScaled = long(MIN_STEP_CLIPPER * 8);
+        }
+
+        // clamp the step size - for stability
+        if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
+            stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
+        }
+        if (stepScaled < MIN_STEP_CLIPPER) {
+            stepScaled = long(MIN_STEP_CLIPPER);
+        }
+        fout << "\tstepScaled " << stepScaled << "\n";
+
+        //*****************************
+        // ANGLE vs AREA ITERATIONS
+        //*****************************
+        double predictedAngle = averageDV(angleHistory);
+        double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
+        fout << "optimal area " << optimalCutAreaPD << " maxError " << maxError << "\n";
+        double area = 0;
+        bool isConventional = false;
+        const double conventionalCutoff = 0.51;  // allow some room for rounding, but otherwise < 50%
+        double areaPD = 0;
+        interp.clear();
+        /******************************/
+        Perf_PointIterations.Start();
+        int iteration;
+        double prev_error = __DBL_MAX__;
+        bool pointNotInterp;
+        IntPoint newToolPos;
+        DoublePoint newToolDir;
+        for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
+            total_iterations++;
+            fout << "It " << iteration << " ";
+            if (iteration == 0) {
+                angle = predictedAngle;
+                pointNotInterp = true;
+                fout << "case predicted ";
+            }
+            else if (iteration == 1) {
+                angle = interp.MIN_ANGLE;  // max engage
+                pointNotInterp = true;
+                fout << "case minimum ";
+            }
+            else if (iteration == 2) {
+                if (interp.bothSides()) {
+                    angle = interp.interpolateAngle();
+                    fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error << ","
+                         << interp.m_min->isConventional << ") ~ (" << interp.m_max->angle.first
+                         << ", " << interp.m_max->error << "," << interp.m_max->isConventional
+                         << ") ";
+                    pointNotInterp = false;
+                    fout << "case interp ";
+                }
+                else {
+                    angle = interp.MAX_ANGLE;  // min engage
+                    fout << "case maximum ";
+                    pointNotInterp = true;
+                }
+            }
+            else {
+                angle = interp.interpolateAngle();
+                fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error << ","
+                     << interp.m_min->isConventional << ") ~ (" << interp.m_max->angle.first << ", "
+                     << interp.m_max->error << "," << interp.m_max->isConventional << ") ";
+                pointNotInterp = false;
+                fout << "case interp ";
+            }
+            fout << "raw " << angle << " ";
+            angle = interp.clampAngle(angle);
+            fout << "clamped " << angle << " ";
+
+            newToolDir = rotate(toolDir, angle);
+            newToolPos = IntPoint(
+                long(toolPos.X + newToolDir.X * stepScaled),
+                long(toolPos.Y + newToolDir.Y * stepScaled)
+            );
+            fout << "int pos " << newToolPos << " ";
+
+            // Skip iteration if this IntPoint has already been processed
+            bool intRepeat = false;
+            if (interp.m_min && newToolPos == interp.m_min->angle.second) {
+                interp.m_min = {{angle, newToolPos}, interp.m_min->error, interp.m_min->isConventional};
+                intRepeat = true;
+            }
+            if (interp.m_max && newToolPos == interp.m_max->angle.second) {
+                interp.m_max = {{angle, newToolPos}, interp.m_max->error, interp.m_max->isConventional};
+                intRepeat = true;
+            }
+
+            if (intRepeat) {
+                if (interp.m_min && interp.m_max
+                    && abs(interp.m_min->angle.second.X - interp.m_max->angle.second.X) <= 1
+                    && abs(interp.m_min->angle.second.Y - interp.m_max->angle.second.Y) <= 1) {
+                    if (pointNotInterp) {
+                        // if this happens while testing min/max of the range it doesn't mean
+                        // anything; only exit early if interpolation is down to adjacent
+                        // integers
+                        continue;
+                    }
+                    fout << "hit integer floor" << "\n";
+                    // exit early, selecting the better of the two adjacent integers
+                    double error;
+                    if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
+                        if (!interp.m_min->isConventional) {
+                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                            newToolPos = interp.m_min->angle.second;
+                            error = interp.m_min->error;
+                            isConventional = interp.m_min->isConventional;
+                        }
+                        else {
+                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                            newToolPos = interp.m_max->angle.second;
+                            error = interp.m_max->error;
+                            isConventional = interp.m_max->isConventional;
+                        }
+                    }
+                    else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
+                        newToolDir = rotate(toolDir, interp.m_min->angle.first);
+                        newToolPos = interp.m_min->angle.second;
+                        error = interp.m_min->error;
+                        isConventional = interp.m_min->isConventional;
+                    }
+                    else {
+                        newToolDir = rotate(toolDir, interp.m_max->angle.first);
+                        newToolPos = interp.m_max->angle.second;
+                        error = interp.m_max->error;
+                        isConventional = interp.m_max->isConventional;
+                    }
+                    areaPD = error + targetAreaPD;
+                    area = areaPD * double(stepScaled);
+                    break;
+                }
+                fout << "skip area calc " << "\n";
+                continue;
+            }
+
+            const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+            area = std::get<0>(caRet);
+            double conventionalArea = std::get<1>(caRet);
+            double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
+            isConventional = fractionConventional >= conventionalCutoff;
+
+            areaPD = area / double(stepScaled);  // area per distance
+            fout << "addPoint " << areaPD << " " << angle << " ";
+            double error = areaPD - targetAreaPD;
+            interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
+            fout << "areaPD " << areaPD << " error " << error << " conventional? " << isConventional
+                 << " ";
+            if (fabs(error) < maxError && !isConventional) {
+                out.iterationAngle = angle;
+                fout << "small enough" << "\n";
+                break;
+            }
+            if (iteration == MAX_ITERATIONS - 1) {
+                fout << "too many iterations!" << "\n";
+                out.tooManyIterations = true;
+            }
+            fout << "\n";
+            prev_error = error;
+        }
+        Perf_PointIterations.Stop();
+        fout << "Iterations: " << iteration << "\n";
+
+        bool recalcArea = false;
+
+        //**********************************************
+        // CHECK AND RECORD NEW TOOL POS
+        //**********************************************
+        long rotateStep = 0;
+        double rotateIncrement;
+        {
+            double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
+            double toolAngle = atan2(newToolDir.Y, newToolDir.X);
+            double delta = boundaryAngle - toolAngle;
+            if (delta > std::numbers::pi) {
+                delta -= 2 * std::numbers::pi;
+            }
+            if (delta < -std::numbers::pi) {
+                delta += 2 * std::numbers::pi;
+            }
+            rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
+        }
+        while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
+            rotateStep++;
+            // if new tool pos. outside boundary rotate until back in
+            recalcArea = true;
+            newToolDir = rotate(newToolDir, rotateIncrement);
+            newToolPos = IntPoint(
+                long(toolPos.X + newToolDir.X * stepScaled),
+                long(toolPos.Y + newToolDir.Y * stepScaled)
+            );
+            fout << "\tMoving tool back within boundary..."
+                 << "(" << newToolPos.X << ", " << newToolPos.Y << ")" << "\n";
+        }
+        if (rotateStep >= 180) {
+#ifdef DEV_MODE
+            cerr << "Warning: unexpected number of rotate iterations." << endl;
+            fout << "Warning: unexpected number of rotate iterations." << endl;
+#endif
+            out.failed = true;
+        }
+
+        if (recalcArea) {
+            const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+            area = std::get<0>(caRet);
+            areaPD = area / double(stepScaled);  // area per distance
+            double error = areaPD - targetAreaPD;
+
+            double conventionalArea = std::get<1>(caRet);
+            double fractionConventional = area == 0 ? 0 : conventionalArea / area;
+            isConventional = fractionConventional >= conventionalCutoff;
+
+            fout << "\tRecalc area: " << area << "areaPD " << areaPD << " error " << error
+                 << " conventional? " << isConventional << "\n";
+        }
+
+        // safety condition
+        if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
+            over_cut_count++;
+            fout << "\tCut area too big!!!" << "\n";
+            out.failed = true;
+        }
+
+        out.area = area;
+        out.failed |= isConventional;
+        out.failed |= area <= 0;
+        out.newToolPos = newToolPos;
+        out.newToolDir = newToolDir;
+        return out;
+    };
+
+
     //*******************************
     // LOOP - PASSES
     //*******************************
@@ -3269,7 +3537,6 @@ void Adaptive2d::ProcessPolyNode(
         }
 
         angle = std::numbers::pi / 4;  // initial pass angle
-        bool recalcArea = false;
         double cumulativeCutArea = 0;
         // init gyro
         gyro.clear();
@@ -3277,9 +3544,6 @@ void Adaptive2d::ProcessPolyNode(
             gyro.push_back(toolDir);
         }
 
-        size_t clpPathIndex;
-        size_t clpSegmentIndex;
-        double clpParameter;
         double passLength = 0;
         double noCutDistance = 0;
         clearedBeforePass.SetClearedPaths(cleared.GetCleared());
@@ -3294,320 +3558,41 @@ void Adaptive2d::ProcessPolyNode(
 
             total_points++;
             AverageDirection(gyro, toolDir);
-            Perf_DistanceToBoundary.Start();
 
-            double distanceToBoundary = sqrt(
-                DistancePointToPathsSqrd(toolBoundPaths, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
-            );
-            const IntPoint boundaryClosestPoint = clp;
-            DoublePoint boundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
-            double distBoundaryPointToEngage = sqrt(DistanceSqrd(clp, engagePoint));
+            const auto itResult = iterateNextStep(toolPos, toolDir);
 
-            Perf_DistanceToBoundary.Stop();
-            double distanceToEngage = sqrt(DistanceSqrd(toolPos, engagePoint));
-
-            double targetAreaPD = optimalCutAreaPD;
-
-            // set the step size: 1x to 8x base size
-            double slowDownDistance = max(double(toolRadiusScaled) / 4, MIN_STEP_CLIPPER * 8);
-            if (distanceToBoundary < slowDownDistance || distanceToEngage < slowDownDistance) {
-                stepScaled = long(MIN_STEP_CLIPPER);
-            }
-            else if (fabs(angle) > NTOL) {
-                stepScaled = long(MIN_STEP_CLIPPER / fabs(angle));
-            }
-            else {
-                stepScaled = long(MIN_STEP_CLIPPER * 8);
+            if (itResult.tooManyIterations) {
+                total_exceeded++;
             }
 
-            // clamp the step size - for stability
-            if (stepScaled > min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8))) {
-                stepScaled = min(long(toolRadiusScaled / 4), long(MIN_STEP_CLIPPER * 8));
-            }
-            if (stepScaled < MIN_STEP_CLIPPER) {
-                stepScaled = long(MIN_STEP_CLIPPER);
-            }
-            fout << "\tstepScaled " << stepScaled << "\n";
-
-            //*****************************
-            // ANGLE vs AREA ITERATIONS
-            //*****************************
-            double predictedAngle = averageDV(angleHistory);
-            double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
-            fout << "optimal area " << optimalCutAreaPD << " maxError " << maxError << "\n";
-            double area = 0;
-            bool isConventional = false;
-            const double conventionalCutoff = 0.51;  // allow some room for rounding, but otherwise < 50%
-            double areaPD = 0;
-            interp.clear();
-            /******************************/
-            Perf_PointIterations.Start();
-            int iteration;
-            double prev_error = __DBL_MAX__;
-            bool pointNotInterp;
-            for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
-                total_iterations++;
-                fout << "It " << iteration << " ";
-                if (iteration == 0) {
-                    angle = predictedAngle;
-                    pointNotInterp = true;
-                    fout << "case predicted ";
+            if (itResult.iterationAngle) {
+                angleHistory.push_back(*itResult.iterationAngle);
+                if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
+                    angleHistory.erase(angleHistory.begin());
                 }
-                else if (iteration == 1) {
-                    angle = interp.MIN_ANGLE;  // max engage
-                    pointNotInterp = true;
-                    fout << "case minimum ";
-                }
-                else if (iteration == 2) {
-                    if (interp.bothSides()) {
-                        angle = interp.interpolateAngle();
-                        fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error
-                             << "," << interp.m_min->isConventional << ") ~ ("
-                             << interp.m_max->angle.first << ", " << interp.m_max->error << ","
-                             << interp.m_max->isConventional << ") ";
-                        pointNotInterp = false;
-                        fout << "case interp ";
-                    }
-                    else {
-                        angle = interp.MAX_ANGLE;  // min engage
-                        fout << "case maximum ";
-                        pointNotInterp = true;
-                    }
-                }
-                else {
-                    angle = interp.interpolateAngle();
-                    fout << "(" << interp.m_min->angle.first << ", " << interp.m_min->error << ","
-                         << interp.m_min->isConventional << ") ~ (" << interp.m_max->angle.first
-                         << ", " << interp.m_max->error << "," << interp.m_max->isConventional
-                         << ") ";
-                    pointNotInterp = false;
-                    fout << "case interp ";
-                }
-                fout << "raw " << angle << " ";
-                angle = interp.clampAngle(angle);
-                fout << "clamped " << angle << " ";
-
-                newToolDir = rotate(toolDir, angle);
-                newToolPos = IntPoint(
-                    long(toolPos.X + newToolDir.X * stepScaled),
-                    long(toolPos.Y + newToolDir.Y * stepScaled)
-                );
-                fout << "int pos " << newToolPos << " ";
-
-                // Skip iteration if this IntPoint has already been processed
-                bool intRepeat = false;
-                if (interp.m_min && newToolPos == interp.m_min->angle.second) {
-                    interp.m_min
-                        = {{angle, newToolPos}, interp.m_min->error, interp.m_min->isConventional};
-                    intRepeat = true;
-                }
-                if (interp.m_max && newToolPos == interp.m_max->angle.second) {
-                    interp.m_max
-                        = {{angle, newToolPos}, interp.m_max->error, interp.m_max->isConventional};
-                    intRepeat = true;
-                }
-
-                if (intRepeat) {
-                    if (interp.m_min && interp.m_max
-                        && abs(interp.m_min->angle.second.X - interp.m_max->angle.second.X) <= 1
-                        && abs(interp.m_min->angle.second.Y - interp.m_max->angle.second.Y) <= 1) {
-                        if (pointNotInterp) {
-                            // if this happens while testing min/max of the range it doesn't mean
-                            // anything; only exit early if interpolation is down to adjacent
-                            // integers
-                            continue;
-                        }
-                        fout << "hit integer floor" << "\n";
-                        // exit early, selecting the better of the two adjacent integers
-                        double error;
-                        if (interp.m_min->isConventional ^ interp.m_max->isConventional) {
-                            if (!interp.m_min->isConventional) {
-                                newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                                newToolPos = interp.m_min->angle.second;
-                                error = interp.m_min->error;
-                                isConventional = interp.m_min->isConventional;
-                            }
-                            else {
-                                newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                                newToolPos = interp.m_max->angle.second;
-                                error = interp.m_max->error;
-                                isConventional = interp.m_max->isConventional;
-                            }
-                        }
-                        else if (abs(interp.m_min->error) < abs(interp.m_max->error)) {
-                            newToolDir = rotate(toolDir, interp.m_min->angle.first);
-                            newToolPos = interp.m_min->angle.second;
-                            error = interp.m_min->error;
-                            isConventional = interp.m_min->isConventional;
-                        }
-                        else {
-                            newToolDir = rotate(toolDir, interp.m_max->angle.first);
-                            newToolPos = interp.m_max->angle.second;
-                            error = interp.m_max->error;
-                            isConventional = interp.m_max->isConventional;
-                        }
-                        areaPD = error + targetAreaPD;
-                        area = areaPD * double(stepScaled);
-                        break;
-                    }
-                    fout << "skip area calc " << "\n";
-                    continue;
-                }
-
-                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
-                area = std::get<0>(caRet);
-                double conventionalArea = std::get<1>(caRet);
-                double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
-                isConventional = fractionConventional >= conventionalCutoff;
-
-                areaPD = area / double(stepScaled);  // area per distance
-                fout << "addPoint " << areaPD << " " << angle << " ";
-                double error = areaPD - targetAreaPD;
-                interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
-                fout << "areaPD " << areaPD << " error " << error << " conventional? "
-                     << isConventional << " ";
-                if (fabs(error) < maxError && !isConventional) {
-                    angleHistory.push_back(angle);
-                    if (angleHistory.size() > ANGLE_HISTORY_POINTS) {
-                        angleHistory.erase(angleHistory.begin());
-                    }
-                    fout << "small enough" << "\n";
-                    break;
-                }
-                if (iteration == MAX_ITERATIONS - 1) {
-                    fout << "too many iterations!" << "\n";
-                    total_exceeded++;
-                }
-                fout << "\n";
-                prev_error = error;
-            }
-            Perf_PointIterations.Stop();
-            fout << "Iterations: " << iteration << "\n";
-
-            recalcArea = false;
-            // approach end boundary tangentially
-            double relDistToBoundary = 4 * distanceToBoundary / stepOverScaled;
-            if (relDistToBoundary <= 1.0 && passLength > 2 * stepOverFactor
-                && distanceToEngage > 2 * stepOverScaled
-                && distBoundaryPointToEngage > 2 * stepOverScaled) {
-
-                // 10 degrees per stepOver? idk, let's try it
-                double maxAngleToBoundary = 10 * std::numbers::pi / 180
-                    * max(1., distanceToBoundary / stepOverScaled);
-
-                // compute current approach angle
-                double cosAngle = newToolDir.X * boundaryDir.X + newToolDir.Y * boundaryDir.Y;
-                DoublePoint bdir = boundaryDir;
-                if (cosAngle < 0) {
-                    // approaching the edge backwards: recompute for flipped boundary edge
-                    bdir = {-bdir.X, -bdir.Y};
-                    cosAngle = -cosAngle;
-                }
-                double angle = acos(min(1., max(0., cosAngle)));
-                if (abs(angle) > maxAngleToBoundary
-                    && false /*TODO FIXME I THINK I JUST WANT TO DELETE BOUNDARY APPROACH*/) {
-                    fout << "\tRewrote tooldir/toolpos for boundary approach"
-                         << " old toolPos (" << toolPos.X << "," << toolPos.Y << ") "
-                         << " attempted newToolPos (" << newToolPos.X << "," << newToolPos.Y << ") "
-                         << " attempted newToolDir (" << newToolDir.X << "," << newToolDir.Y << ") "
-                         << " boundary pos (" << boundaryClosestPoint.X << ","
-                         << boundaryClosestPoint.Y << ") "
-                         << " boundaryDir (" << boundaryDir.X << "," << boundaryDir.Y << ") ";
-                    double sign = bdir.X * newToolDir.Y - bdir.Y * newToolDir.X > 0 ? 1 : -1;
-                    double desiredAngle = maxAngleToBoundary * sign;
-                    newToolDir = rotate(bdir, desiredAngle);
-                    NormalizeV(newToolDir);
-                    newToolPos = IntPoint(
-                        long(toolPos.X + newToolDir.X * stepScaled),
-                        long(toolPos.Y + newToolDir.Y * stepScaled)
-                    );
-                    recalcArea = true;
-                    fout << " angle=" << angle << " maxAngle=" << maxAngleToBoundary
-                         << " corrected tool pos (" << newToolPos.X << ", " << newToolPos.Y << ")"
-                         << "\n";
-                }
-                else {
-                    fout << "\tRewrote tooldir/toolpos for boundary approach BUT NOT ACTUALLY \n";
-                }
-            }
-
-            //**********************************************
-            // CHECK AND RECORD NEW TOOL POS
-            //**********************************************
-            long rotateStep = 0;
-            double rotateIncrement;
-            {
-                double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
-                double toolAngle = atan2(newToolDir.Y, newToolDir.X);
-                double delta = boundaryAngle - toolAngle;
-                if (delta > std::numbers::pi) {
-                    delta -= 2 * std::numbers::pi;
-                }
-                if (delta < -std::numbers::pi) {
-                    delta += 2 * std::numbers::pi;
-                }
-                rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
-            }
-            while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
-                rotateStep++;
-                // if new tool pos. outside boundary rotate until back in
-                recalcArea = true;
-                newToolDir = rotate(newToolDir, rotateIncrement);
-                newToolPos = IntPoint(
-                    long(toolPos.X + newToolDir.X * stepScaled),
-                    long(toolPos.Y + newToolDir.Y * stepScaled)
-                );
-                fout << "\tMoving tool back within boundary..."
-                     << "(" << newToolPos.X << ", " << newToolPos.Y << ")" << "\n";
-            }
-            if (rotateStep >= 180) {
-#ifdef DEV_MODE
-                cerr << "Warning: unexpected number of rotate iterations." << endl;
-                fout << "Warning: unexpected number of rotate iterations." << endl;
-#endif
-                break;
-            }
-
-            if (recalcArea) {
-                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
-                area = std::get<0>(caRet);
-                areaPD = area / double(stepScaled);  // area per distance
-                double error = areaPD - targetAreaPD;
-
-                double conventionalArea = std::get<1>(caRet);
-                double fractionConventional = area == 0 ? 0 : conventionalArea / area;
-                isConventional = fractionConventional >= conventionalCutoff;
-
-                fout << "\tRecalc area: " << area << "areaPD " << areaPD << " error " << error
-                     << " conventional? " << isConventional << "\n";
-            }
-
-            // safety condition
-            if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
-                over_cut_count++;
-                fout << "\tCut area too big!!!" << "\n";
-                break;
             }
 
             // if the path has changed direction by more than 45 degrees (such that we consider
             // continuations (>45)+45>90 degrees from the original direction) then we need to
             // update cleared paths
-            if (lastExpandToolDir.X * newToolDir.X + lastExpandToolDir.Y * newToolDir.Y
+            if (lastExpandToolDir.X * itResult.newToolDir.X
+                    + lastExpandToolDir.Y * itResult.newToolDir.Y
                 < cos(std::numbers::pi / 4)) {
                 cleared.ExpandCleared(toClearPath);
                 toClearPath.clear();
             }
 
-            if (area > 0 && !isConventional) {  // cut is ok - record it
-                fout << "\tFinal cut acceptance (" << newToolPos.X << "," << newToolPos.Y
-                     << ") dir (" << newToolDir.X << "," << newToolDir.Y << ")\n";
+            if (!itResult.failed) {  // cut is ok - record it
+                fout << "\tFinal cut acceptance (" << itResult.newToolPos.X << ","
+                     << itResult.newToolPos.Y << ") dir (" << itResult.newToolDir.X << ","
+                     << itResult.newToolDir.Y << ")\n";
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
                 }
-                toClearPath.push_back(newToolPos);
+                toClearPath.push_back(itResult.newToolPos);
 
-                cumulativeCutArea += area;
+                cumulativeCutArea += itResult.area;
 
                 // append to toolpaths
                 if (passToolPath.empty()) {
@@ -3624,22 +3609,22 @@ void Adaptive2d::ProcessPolyNode(
                     }
                     passToolPath.push_back(toolPos);
                 }
-                passToolPath.push_back(newToolPos);
+                passToolPath.push_back(itResult.newToolPos);
                 perf_total_len += stepScaled;
                 passLength += stepScaled;
-                toolPos = newToolPos;
+                toolPos = itResult.newToolPos;
 
                 // append to progress info paths
                 if (progressPaths.empty()) {
                     progressPaths.push_back(TPath());
                 }
                 progressPaths.back().second.emplace_back(
-                    double(newToolPos.X) / scaleFactor,
-                    double(newToolPos.Y) / scaleFactor
+                    double(itResult.newToolPos.X) / scaleFactor,
+                    double(itResult.newToolPos.Y) / scaleFactor
                 );
 
                 // append gyro
-                gyro.push_back(newToolDir);
+                gyro.push_back(itResult.newToolDir);
                 gyro.erase(gyro.begin());
                 CheckReportProgress(progressPaths);
             }
@@ -3683,7 +3668,7 @@ void Adaptive2d::ProcessPolyNode(
 
         /*****NEXT ENGAGE POINT******/
         if (firstEngagePoint) {
-            engage.moveToClosestPoint(newToolPos, stepScaled + 1);
+            engage.moveToClosestPoint(toolPos, stepScaled + 1);
             firstEngagePoint = false;
         }
 
@@ -3734,7 +3719,7 @@ void Adaptive2d::ProcessPolyNode(
                     p.push_back(p[0]);
                 }
                 engage.SetPaths(remaining);
-                engage.moveToClosestPoint(newToolPos, stepScaled + 1);
+                engage.moveToClosestPoint(toolPos, stepScaled + 1);
                 if (!engage.nextEngagePoint(
                         this,
                         cleared,
