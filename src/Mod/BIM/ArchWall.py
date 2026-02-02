@@ -1788,35 +1788,29 @@ if FreeCAD.GuiUp:
             ArchComponent.ComponentTaskPanel.__init__(self)
             self.obj = obj
             self.wallWidget = QtGui.QWidget()
-            self.wallWidget.setWindowTitle(
-                QtGui.QApplication.translate("Arch", "Wall Options", None)
-            )
+            self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
 
             layout = QtGui.QFormLayout(self.wallWidget)
 
             self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
             self.length.setProperty("unit", "mm")
             self.length.setText(obj.Length.UserString)
-            layout.addRow(QtGui.QApplication.translate("Arch", "Length", None), self.length)
+            layout.addRow(translate("Arch", "Length"), self.length)
 
             self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
             self.width.setProperty("unit", "mm")
             self.width.setText(obj.Width.UserString)
-            layout.addRow(QtGui.QApplication.translate("Arch", "Width", None), self.width)
+            layout.addRow(translate("Arch", "Width"), self.width)
 
             self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
             self.height.setProperty("unit", "mm")
             self.height.setText(obj.Height.UserString)
-            layout.addRow(QtGui.QApplication.translate("Arch", "Height", None), self.height)
+            layout.addRow(translate("Arch", "Height"), self.height)
 
             self.alignLayout = QtGui.QHBoxLayout()
-            self.alignLeft = QtGui.QRadioButton(QtGui.QApplication.translate("Arch", "Left", None))
-            self.alignCenter = QtGui.QRadioButton(
-                QtGui.QApplication.translate("Arch", "Center", None)
-            )
-            self.alignRight = QtGui.QRadioButton(
-                QtGui.QApplication.translate("Arch", "Right", None)
-            )
+            self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
+            self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
+            self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
             self.alignLayout.addWidget(self.alignLeft)
             self.alignLayout.addWidget(self.alignCenter)
             self.alignLayout.addWidget(self.alignRight)
@@ -1835,7 +1829,7 @@ if FreeCAD.GuiUp:
             else:
                 self.alignCenter.setChecked(True)
 
-            layout.addRow(QtGui.QApplication.translate("Arch", "Alignment", None), self.alignLayout)
+            layout.addRow(translate("Arch", "Alignment"), self.alignLayout)
 
             # Wall Options first, then Components (inherited self.form)
             self.form = [self.wallWidget, self.form]
