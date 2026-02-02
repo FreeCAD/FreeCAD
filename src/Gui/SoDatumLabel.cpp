@@ -192,6 +192,10 @@ void SoDatumLabel::drawImage()
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,8,0)
+    font.setStyleStrategy(QFont::PreferTypoLineMetrics);
+#endif
+    
     int w = Gui::QtTools::horizontalAdvance(fm, str);
     int h = fm.height();
 
