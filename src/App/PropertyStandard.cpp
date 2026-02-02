@@ -3194,6 +3194,7 @@ const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
     std::vector<Base::Color> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.diffuseColor);
     }
@@ -3244,6 +3245,7 @@ float PropertyMaterialList::getTransparency(int index) const
 std::vector<float> PropertyMaterialList::getTransparencies() const
 {
     std::vector<float> list;
+    list.reserve(_lValueList.size());
     for (auto& material : _lValueList) {
         list.push_back(material.transparency);
     }
