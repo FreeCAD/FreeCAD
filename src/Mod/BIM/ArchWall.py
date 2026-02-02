@@ -1789,7 +1789,7 @@ if FreeCAD.GuiUp:
             self.obj = obj
             self.wallWidget = QtGui.QWidget()
             self.wallWidget.setWindowTitle(
-                QtGui.QApplication.translate("Arch", "Wall options", None)
+                QtGui.QApplication.translate("Arch", "Wall Options", None)
             )
 
             layout = QtGui.QFormLayout(self.wallWidget)
