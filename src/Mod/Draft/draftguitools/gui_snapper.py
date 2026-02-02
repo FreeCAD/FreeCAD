@@ -412,7 +412,7 @@ class Snapper:
                             # extra ellipse options
                             snaps.extend(self.snapToCenter(edge))
                         elif et == "BSplineCurve":
-                            snaps.extend(self.snapToBSpline(edge))
+                            snaps.extend(self.snapToBSplineKnots(edge))
                 elif "Face" in comp:
                     # we are snapping to a face
                     if shape.ShapeType == "Face":
@@ -800,16 +800,15 @@ class Snapper:
                     snaps.append([mp, "midpoint", self.toWP(mp)])
         return snaps
 
-    def snapToBSpline(self, edge):
+    def snapToBSplineKnots(self, edge):
         """Return a list of knot snap locations for a BSpline."""
         snaps = []
-        if self.isEnabled("Endpoint"):
+        if self.isEnabled("Special"):
             if hasattr(edge, "Curve") and isinstance(edge.Curve, Part.BSplineCurve):
                 knots = edge.Curve.getKnots()
-                # endpoints are already handled by snapToEndpoints
-                for k in knots[1:-1]:
+                for k in knots:
                     p = edge.Curve.value(k)
-                    snaps.append([p, "endpoint", self.toWP(p)])
+                    snaps.append([p, "special", self.toWP(p)])
         return snaps
 
     def snapToNear(self, shape, point):
