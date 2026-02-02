@@ -6698,7 +6698,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="74"/>
       <source>Custom appearance</source>
-      <translation type="unfinished">Custom appearance</translation>
+      <translation>Προσαρμοσμένη εμφάνιση</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
