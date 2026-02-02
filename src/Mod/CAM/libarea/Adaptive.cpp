@@ -2964,6 +2964,7 @@ struct IterateNextStepOutput
     bool tooManyIterations = false;
     bool failed;
     double area;
+    double errorFraction;
     IntPoint newToolPos;
     DoublePoint newToolDir;
 };
@@ -3002,7 +3003,7 @@ void Adaptive2d::ProcessPolyNode(
 
     IntPoint toolPos;
     DoublePoint toolDir;
-    bool plungeEntry = false;
+    bool reengageEntry = false;
     bool firstEngagePoint = true;
     Paths engageBounds = {};
 
@@ -3184,7 +3185,7 @@ void Adaptive2d::ProcessPolyNode(
             ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
             4 * optimalCutAreaPD * MIN_STEP_CLIPPER
         )) {
-        plungeEntry = true;
+        reengageEntry = true;
         toolPos = engage.getCurrentPoint();
         toolDir = engage.getCurrentDir();
         entryPoint = toolPos;
@@ -3210,8 +3211,6 @@ void Adaptive2d::ProcessPolyNode(
 
     long stepScaled = long(MIN_STEP_CLIPPER);
     IntPoint engagePoint;
-
-    DoublePoint lastExpandToolDir = toolDir;
 
     CheckReportProgress(progressPaths, true);
 
@@ -3257,6 +3256,8 @@ void Adaptive2d::ProcessPolyNode(
 
     const auto iterateNextStep = [&](const IntPoint& toolPos, const DoublePoint& toolDir) {
         IterateNextStepOutput out;
+        out.tooManyIterations = false;
+        out.failed = false;
 
         Perf_DistanceToBoundary.Start();
 
@@ -3296,6 +3297,7 @@ void Adaptive2d::ProcessPolyNode(
         //*****************************
         double predictedAngle = averageDV(angleHistory);
         double maxError = AREA_ERROR_FACTOR * optimalCutAreaPD;
+        double errorFraction = 1;
         fout << "optimal area " << optimalCutAreaPD << " maxError " << maxError << "\n";
         double area = 0;
         bool isConventional = false;
@@ -3424,6 +3426,7 @@ void Adaptive2d::ProcessPolyNode(
             areaPD = area / double(stepScaled);  // area per distance
             fout << "addPoint " << areaPD << " " << angle << " ";
             double error = areaPD - targetAreaPD;
+            errorFraction = abs(error / optimalCutAreaPD);
             interp.addPoint(error, {angle, newToolPos}, pointNotInterp, isConventional);
             fout << "areaPD " << areaPD << " error " << error << " conventional? " << isConventional
                  << " ";
@@ -3486,6 +3489,7 @@ void Adaptive2d::ProcessPolyNode(
             area = std::get<0>(caRet);
             areaPD = area / double(stepScaled);  // area per distance
             double error = areaPD - targetAreaPD;
+            errorFraction = abs(error / optimalCutAreaPD);
 
             double conventionalArea = std::get<1>(caRet);
             double fractionConventional = area == 0 ? 0 : conventionalArea / area;
@@ -3502,14 +3506,41 @@ void Adaptive2d::ProcessPolyNode(
             out.failed = true;
         }
 
+        fout << "itResult: area=" << area << " isConventional=" << isConventional
+             << " otherwiseFailed=" << out.failed << "\n";
         out.area = area;
         out.failed |= isConventional;
         out.failed |= area <= 0;
         out.newToolPos = newToolPos;
         out.newToolDir = newToolDir;
+        out.errorFraction = errorFraction;
         return out;
     };
 
+    // initialize tool dir
+    if (reengageEntry) {
+        DoublePoint testDirs[] = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+        std::optional<std::pair<DoublePoint, double>> bestDir;
+        for (const auto& testDir : testDirs) {
+            const auto itResult = iterateNextStep(toolPos, testDir);
+            if (!itResult.failed) {
+                fout << "Found a candidate tool direction\n";
+                if (!bestDir || itResult.errorFraction < bestDir->second) {
+                    bestDir = {itResult.newToolDir, itResult.errorFraction};
+                }
+            }
+        }
+
+        if (bestDir) {
+            toolDir = bestDir->first;
+        }
+        else {
+            cout << "FAILED TO REEVALUATE INITIAL TOOL DIRECTION!!!\n";
+            fout << "FAILED TO REEVALUATE INITIAL TOOL DIRECTION!!!\n";
+        }
+    }
+
+    DoublePoint lastExpandToolDir = toolDir;
 
     //*******************************
     // LOOP - PASSES
@@ -3598,7 +3629,7 @@ void Adaptive2d::ProcessPolyNode(
                 if (passToolPath.empty()) {
                     // in outside entry first successful cut defines the "helix center" and start
                     // point in this case helix diameter is 0 (straight line downwards)
-                    if (output.AdaptivePaths.empty() && plungeEntry) {
+                    if (output.AdaptivePaths.empty() && reengageEntry) {
                         entryPoint = toolPos;
                         output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
                         output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
@@ -3673,11 +3704,6 @@ void Adaptive2d::ProcessPolyNode(
         }
 
         {
-            // TODO FIXME HELP write helper method initToolDir that tries out a bunch of directions
-            // and picks a vaguely-valid looking tool direction. Say, increments of 45 degrees, pick
-            // something with valid CA and cut area as close as possible to target Invoke this
-            // method every time we reset the tool direction for a new engage (i.e. always except
-            // from helixing down)
             if (!engage.nextEngagePoint(
                     this,
                     cleared,
