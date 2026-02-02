@@ -2589,13 +2589,11 @@ class ComponentTaskPanel:
             ifcData["IfcUID"] = self.ifcEditor.labelUUID.text()
             ifcData["FlagForceBrep"] = str(self.ifcEditor.checkBrep.isChecked())
             ifcData["FlagParametric"] = str(self.ifcEditor.checkParametric.isChecked())
-            if (ifcdict != self.obj.IfcProperties) or (ifcData != self.obj.IfcData):
-                FreeCAD.ActiveDocument.openTransaction("Change Ifc Properties")
-                if ifcdict != self.obj.IfcProperties:
-                    self.obj.IfcProperties = ifcdict
-                if ifcData != self.obj.IfcData:
-                    self.obj.IfcData = ifcData
-                FreeCAD.ActiveDocument.commitTransaction()
+            # The transaction context is implicitly opened by the C++ layer when entering edit mode.
+            if ifcdict != self.obj.IfcProperties:
+                self.obj.IfcProperties = ifcdict
+            if ifcData != self.obj.IfcData:
+                self.obj.IfcData = ifcData
             del self.ifcEditor
 
     def addIfcProperty(self, idx=0, pset=None, prop=None, ptype=None):
