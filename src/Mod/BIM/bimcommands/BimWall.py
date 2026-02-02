@@ -295,9 +295,6 @@ class Arch_Wall:
 
             # Apply placement and geometry using the correctly identified object name.
             FreeCADGui.doCommand(f"base.Placement = {placement_str}")
-
-            # Apply placement and geometry using the correctly identified object name.
-            FreeCADGui.doCommand(f"base.Placement = {placement_str}")
             FreeCADGui.doCommand(f"base.addGeometry(trace)")
 
         FreeCADGui.doCommand("FreeCAD.ActiveDocument.recompute()")
