@@ -372,15 +372,15 @@ public:
     /// Change the module name of a registered filetype
     void changeImportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
-    std::vector<std::string> getImportModules(const char* Type) const;
+    std::vector<std::string> getImportModules(const std::string& Type) const;
     /// Return a list of all modules.
     std::vector<std::string> getImportModules() const;
     /// Return a list of filetypes that are supported by a module.
-    std::vector<std::string> getImportTypes(const char* Module) const;
+    std::vector<std::string> getImportTypes(const std::string& Module) const;
     /// Return a list of all filetypes.
     std::vector<std::string> getImportTypes() const;
     /// Return the import filters with modules of a given filetype.
-    std::map<std::string, std::string> getImportFilters(const char* Type) const;
+    std::map<std::string, std::string> getImportFilters(const std::string& Type) const;
     /// Return a list of all import filters.
     std::map<std::string, std::string> getImportFilters() const;
     //@}
@@ -390,15 +390,15 @@ public:
     /// Change the module name of a registered filetype
     void changeExportModule(const char* Type, const char* OldModuleName, const char* NewModuleName);
     /// Return a list of modules that support the given filetype.
-    std::vector<std::string> getExportModules(const char* Type) const;
+    std::vector<std::string> getExportModules(const std::string& Type) const;
     /// Return a list of all modules.
     std::vector<std::string> getExportModules() const;
     /// Return a list of filetypes that are supported by a module.
-    std::vector<std::string> getExportTypes(const char* Module) const;
+    std::vector<std::string> getExportTypes(const std::string& Module) const;
     /// Return a list of all filetypes.
     std::vector<std::string> getExportTypes() const;
     /// Return the export filters with modules of a given filetype.
-    std::map<std::string, std::string> getExportFilters(const char* Type) const;
+    std::map<std::string, std::string> getExportFilters(const std::string& Type) const;
     /// Return a list of all export filters.
     std::map<std::string, std::string> getExportFilters() const;
     //@}

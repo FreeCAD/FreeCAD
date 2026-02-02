@@ -32,6 +32,7 @@
 #  define WINVER 0x502 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
+# include <boost/algorithm/string.hpp>
 # include <boost/program_options.hpp>
 # include <boost/date_time/posix_time/posix_time.hpp>
 # include <boost/scope_exit.hpp>
@@ -1345,18 +1346,15 @@ void Application::changeImportModule(const char* Type, const char* OldModuleName
     }
 }
 
-std::vector<std::string> Application::getImportModules(const char* Type) const
+std::vector<std::string> Application::getImportModules(const std::string& extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 modules.push_back(it.module);
+            }
         }
     }
 
@@ -1375,16 +1373,13 @@ std::vector<std::string> Application::getImportModules() const
     return modules;
 }
 
-std::vector<std::string> Application::getImportTypes(const char* Module) const
+std::vector<std::string> Application::getImportTypes(const std::string& Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mImportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (boost::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
+        }
     }
 
     return types;
@@ -1403,18 +1398,15 @@ std::vector<std::string> Application::getImportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getImportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getImportFilters(const std::string& extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mImportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
+            }
         }
     }
 
@@ -1470,18 +1462,15 @@ void Application::changeExportModule(const char* Type, const char* OldModuleName
     }
 }
 
-std::vector<std::string> Application::getExportModules(const char* Type) const
+std::vector<std::string> Application::getExportModules(const std::string& extension) const
 {
     std::vector<std::string> modules;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 modules.push_back(it.module);
+            }
         }
     }
 
@@ -1500,16 +1489,13 @@ std::vector<std::string> Application::getExportModules() const
     return modules;
 }
 
-std::vector<std::string> Application::getExportTypes(const char* Module) const
+std::vector<std::string> Application::getExportTypes(const std::string& Module) const
 {
     std::vector<std::string> types;
     for (const auto & it : _mExportTypes) {
-#ifdef __GNUC__
-        if (strcasecmp(Module,it.module.c_str()) == 0)
-#else
-        if (_stricmp(Module,it.module.c_str()) == 0)
-#endif
+        if (boost::iequals(Module, it.module)) {
             types.insert(types.end(), it.types.begin(), it.types.end());
+        }
     }
 
     return types;
@@ -1528,18 +1514,15 @@ std::vector<std::string> Application::getExportTypes() const
     return types;
 }
 
-std::map<std::string, std::string> Application::getExportFilters(const char* Type) const
+std::map<std::string, std::string> Application::getExportFilters(const std::string& extension) const
 {
     std::map<std::string, std::string> moduleFilter;
     for (const auto & it : _mExportTypes) {
         const std::vector<std::string>& types = it.types;
         for (const auto & jt : types) {
-#ifdef __GNUC__
-            if (strcasecmp(Type,jt.c_str()) == 0)
-#else
-            if (_stricmp(Type,jt.c_str()) == 0)
-#endif
+            if (boost::iequals(extension, jt)) {
                 moduleFilter[it.filter] = it.module;
+            }
         }
     }
 
@@ -2855,8 +2838,7 @@ std::list<std::string> Application::processFiles(const std::list<std::string>& f
                 }
             }
             else {
-                std::string ext = file.extension();
-                std::vector<std::string> mods = GetApplication().getImportModules(ext.c_str());
+                std::vector<std::string> mods = GetApplication().getImportModules(file.extension());
                 if (!mods.empty()) {
                     std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(file.filePath().c_str());
                     escapedstr = Base::Tools::escapeEncodeFilename(escapedstr);
@@ -2914,9 +2896,8 @@ void Application::processCmdLineFiles()
         output = Base::Tools::escapeEncodeFilename(output);
 
         const Base::FileInfo fi(output);
-        const std::string ext = fi.extension();
         try {
-            const std::vector<std::string> mods = GetApplication().getExportModules(ext.c_str());
+            const std::vector<std::string> mods = GetApplication().getExportModules(fi.extension());
             if (!mods.empty()) {
                 Base::Interpreter().loadModule(mods.front().c_str());
                 Base::Interpreter().runStringArg("import %s",mods.front().c_str());
@@ -3711,24 +3692,23 @@ void Application::getVerboseCommonInfo(QTextStream& str, const std::map<std::str
 #endif
     str << "xerces-c " << fcXercescVersion << ", ";
 
-    const char* cmd = "import ifcopenshell\n"
-                  "version = ifcopenshell.version";
-    PyObject * ifcopenshellVer = nullptr;
-
     try {
-        ifcopenshellVer = Base::Interpreter().getValue(cmd, "version");
-    }
-    catch (const Base::Exception& e) {
-        Base::Console().log("%s (safe to ignore, unless using the BIM workbench and IFC).\n", e.what());
-    }
-
-    if (ifcopenshellVer) {
-        const char* ifcopenshellVerAsStr = PyUnicode_AsUTF8(ifcopenshellVer);
-
-        if (ifcopenshellVerAsStr) {
-            str << "IfcOpenShell " << ifcopenshellVerAsStr << ", ";
+        Base::PyGILStateLocker lock;
+        Py::Module module(PyImport_ImportModule("ifcopenshell"), true);
+        if (!module.isNull() && module.hasAttr("version")) {
+            Py::String version(module.getAttr("version"));
+            auto ver_str = static_cast<std::string>(version);
+            str << "IfcOpenShell " << ver_str.c_str() << ", ";
         }
-        Py_DECREF(ifcopenshellVer);
+        else {
+            Base::Console().log("Module 'ifcopenshell' not found (safe to ignore, unless using "
+                                "the BIM workbench and IFC).\n");
+        }
+    }
+    catch (const Py::Exception&) {
+        Base::PyGILStateLocker lock;
+        Base::PyException e;
+        Base::Console().log("%s\n", e.what());
     }
 
 #if defined(HAVE_OCC_VERSION)
