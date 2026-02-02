@@ -1857,12 +1857,6 @@ bool Document::saveToFile(const char* filename) const
         int count_bak = static_cast<int>(GetApplication()
                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                             ->GetInt("CountBackupFiles", 1));
-        bool backup = GetApplication()
-                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                          ->GetBool("CreateBackupFiles", true);
-        if (!backup) {
-            count_bak = -1;
-        }
         bool useFCBakExtension =
             GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")

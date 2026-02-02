@@ -91,7 +91,6 @@ void DlgSettingsDocumentImp::saveSettings()
     ui->prefSaveThumbnail->onSave();
     ui->prefThumbnailSize->onSave();
     ui->prefAddLogo->onSave();
-    ui->prefSaveBackupFiles->onSave();
     ui->prefCountBackupFiles->onSave();
     ui->prefSaveBackupExtension->onSave();
     ui->prefSaveBackupDateFormat->onSave();
@@ -126,7 +125,6 @@ void DlgSettingsDocumentImp::loadSettings()
     ui->prefSaveThumbnail->onRestore();
     ui->prefThumbnailSize->onRestore();
     ui->prefAddLogo->onRestore();
-    ui->prefSaveBackupFiles->onRestore();
     ui->prefCountBackupFiles->onRestore();
     ui->prefSaveBackupExtension->onRestore();
     ui->prefSaveBackupDateFormat->onRestore();
@@ -189,5 +187,6 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
         ui->prefLicenseUrl->setReadOnly(false);
     }
 }
+
 
 #include "moc_DlgSettingsDocumentImp.cpp"

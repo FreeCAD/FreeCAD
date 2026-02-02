@@ -357,21 +357,9 @@ Common sizes are 128, 256 and 512.</string>
          <number>0</number>
         </property>
         <item>
-         <widget class="Gui::PrefCheckBox" name="prefSaveBackupFiles">
-          <property name="toolTip">
-           <string>How many backup files will be kept when saving document</string>
-          </property>
+         <widget class="QLabel" name="label_7">
           <property name="text">
-           <string>Maximum number of backup files to keep when resaving document</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CreateBackupFiles</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Document</cstring>
+           <string>Number of backup files to keep when resaving document</string>
           </property>
          </widget>
         </item>
@@ -394,9 +382,9 @@ Common sizes are 128, 256 and 512.</string>
         <item>
          <widget class="Gui::PrefSpinBox" name="prefCountBackupFiles">
           <property name="minimum">
-           <number>1</number>
+           <number>0</number>
           </property>
-          <property name="prefEntry" stdset="0">
+          <property name="prefEntry" stdset="1">
            <cstring>CountBackupFiles</cstring>
           </property>
           <property name="prefPath" stdset="0">
@@ -772,22 +760,6 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</string>
  </customwidgets>
  <resources/>
  <connections>
-  <connection>
-   <sender>prefSaveBackupFiles</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>prefCountBackupFiles</receiver>
-   <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>150</x>
-     <y>525</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>584</x>
-     <y>527</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>prefAutoSaveEnabled</sender>
    <signal>toggled(bool)</signal>
