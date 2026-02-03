@@ -203,7 +203,13 @@ public:
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
                 std::string startAngleString = angleToDisplayFormat(startAngle * 180 / pi, 1);
-                text.sprintf(" (R%s, R%s, %s, %s)", aString.c_str(), bString.c_str(), angleString.c_str(), startAngleString.c_str());
+                text.sprintf(
+                    " (R%s, R%s, %s, %s)",
+                    aString.c_str(),
+                    bString.c_str(),
+                    angleString.c_str(),
+                    startAngleString.c_str()
+                );
                 setPositionText(onSketchPos, text);
             }
 
