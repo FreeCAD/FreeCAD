@@ -66,6 +66,9 @@ public:
     // This function returns the linked object, either an AssemblyObject or an AssemblyLink
     App::DocumentObject* getLinkedObject2(bool recurse = true) const;
 
+    void onDocumentRestored() override;
+    void onParentLabelChanged(App::DocumentObject* parent) override;
+
     bool isRigid() const;
 
     /**
@@ -84,8 +87,6 @@ public:
     void ensureNoJointGroup();
     JointGroup* ensureJointGroup();
     std::vector<App::DocumentObject*> getJoints();
-
-    bool allowDuplicateLabel() const override;
 
     bool isEmpty() const;
     int numberOfComponents() const;

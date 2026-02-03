@@ -412,7 +412,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         screenCorner = view.getPointOnFocalPlane(x, y)
 
         addedObject.LinkedObject = selectedPart
-        addedObject.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
+        # addedObject.Label = selectedPart.Label  # non-ASCII characters fails with newObject. #12164
         addedObject.recompute()
 
         insertionDict = {}
