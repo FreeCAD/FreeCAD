@@ -71,6 +71,8 @@ public:
     TopoDS_Shape makeCuttingToolFromClosedProfile(const TopoDS_Wire& profileWire, double dMax);
     TopoDS_Shape cuttingToolFromProfile(const TopoDS_Wire& inProfileWire,
                                         double dMax) const;
+    TopoDS_Wire closeSingleEdgeProfile(const TopoDS_Edge& singleEdge,
+                                       double dMax) const;
 
 
     void makeAlignedPieces(const TopoDS_Shape& rawShape);
