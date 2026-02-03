@@ -57,7 +57,6 @@
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
-#include <Mod/Part/App/FCBRepAlgoAPI_Cut.h>
 #include <BRepAlgo_NormalProjection.hxx>
 #include <BRepBndLib.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
@@ -999,7 +998,7 @@ bool DrawComplexSection::boxesIntersect(TopoDS_Face& face, TopoDS_Shape& shape)
     Bnd_Box box0;
     Bnd_Box box1;
     BRepBndLib::Add(face, box0);
-    box0.SetGap(OverlapTolerance);//generous
+    box0.SetGap(OverlapTolerance);  //generous
     BRepBndLib::Add(shape, box1);
     box1.SetGap(OverlapTolerance);
     return !box0.IsOut(box1);
@@ -1048,23 +1047,33 @@ TopoDS_Wire DrawComplexSection::makeNoseToTailWire(const TopoDS_Shape& inShape)
         return {};
     }
 
-    std::list<TopoDS_Edge> inList;
+    std::list<TopoDS_Edge> inEdges;
     TopExp_Explorer expEdges(inShape, TopAbs_EDGE);
     for (; expEdges.More(); expEdges.Next()) {
         TopoDS_Edge edge = TopoDS::Edge(expEdges.Current());
-        inList.push_back(edge);
+        inEdges.push_back(edge);
     }
 
+    BRepBuilderAPI_MakeWire mkWire;
+
     std::list<TopoDS_Edge> sortedList;
-    if (inList.empty() || inList.size() == 1) {
+    if (inEdges.empty() ) {
         return {};
     }
 
-    sortedList = DrawUtil::sort_Edges(EWTOLERANCE, inList);
-    BRepBuilderAPI_MakeWire mkWire;
+    // Prior to https://github.com/FreeCAD/FreeCAD/issues/26838, this method demanded that the
+    // tool profile shape have at least 2 edges.  Allowing single edge tool here requires adding
+    // support for this case in closeProfileForCut().
+    if (inEdges.size() == 1) {
+        mkWire.Add(inEdges.front());
+        return mkWire.Wire();
+    }
+
+    sortedList = DrawUtil::sort_Edges(EWTOLERANCE, inEdges);
     for (auto& edge : sortedList) {
         mkWire.Add(edge);
     }
+
     return mkWire.Wire();
 }
 
@@ -1397,7 +1406,7 @@ DrawComplexSection::getSegmentViewDirections(const TopoDS_Wire& profileWire,
     std::vector<std::pair<int, Base::Vector3d>> normalKV;
     TopExp_Explorer expFaces(profileSolidTool, TopAbs_FACE);
     // are all these shenanigans necessary?
-    // no guarantee of order from TopExp_Explorer??  Need to match faces to the profile segment that
+    // no guarantee of order from TopExp_Explorer.  Need to match faces to the profile segment that
     // generated it?
     for (int iFace = 0; expFaces.More(); expFaces.Next(), iFace++) {
         auto shape = expFaces.Current();
@@ -1645,7 +1654,7 @@ TopoDS_Shape DrawComplexSection::cuttingToolFromProfile(const TopoDS_Wire& inPro
 }
 
 TopoDS_Wire DrawComplexSection::closeProfileForCut(const TopoDS_Wire& profileWire,
-                                             double dMax) const
+                                                   double dMax) const
 {
     // TODO: do these conversions gp_Pnt <-> Base::Vector3d <-> QPointF cause our problems with low
     //       digits?
@@ -1667,6 +1676,13 @@ TopoDS_Wire DrawComplexSection::closeProfileForCut(const TopoDS_Wire& profileWir
     awayDirection.Normalize();
 
     std::vector<TopoDS_Edge> profileEdges = DU::shapeToVector(flatWire);
+    if (profileEdges.size() == 1) {
+        // single edge tool profile needs special handling
+        TopoDS_Edge firstEdge = profileEdges.front();
+        return closeSingleEdgeProfile(firstEdge, dMax);
+    }
+
+    // traditional multi edge profile
     TopoDS_Edge firstEdge = profileEdges.front();
     std::pair<Base::Vector3d, Base::Vector3d> edgeEnds = getSegmentEnds(firstEdge);
     Base::Vector3d firstExtendDir = edgeEnds.first - edgeEnds.second;
@@ -1718,6 +1734,35 @@ TopoDS_Wire DrawComplexSection::closeProfileForCut(const TopoDS_Wire& profileWir
     for (auto& edge : newProfileEdges) {
         mkWire.Add(edge);
     }
+
+    return mkWire.Wire();
+}
+
+//! make a rectangular wire based on the single edge
+TopoDS_Wire DrawComplexSection::closeSingleEdgeProfile(const TopoDS_Edge& singleEdge,
+                                                       double dMax) const
+{
+    std::pair<Base::Vector3d, Base::Vector3d> edgeEnds = getSegmentEnds(singleEdge);
+
+    Base::Vector3d midEdgePoint = (edgeEnds.first + edgeEnds.second / 2);
+    Base::Vector3d SNPoint = SectionNormal.getValue() * dMax;
+    Base::Vector3d awayDirection = SNPoint - midEdgePoint;   // from midpoint to snpoint
+    awayDirection.Normalize();
+
+    Base::Vector3d far0 = edgeEnds.first + awayDirection * dMax;
+    Base::Vector3d far1 = edgeEnds.second + awayDirection * dMax;
+    TopoDS_Edge farEdge = BRepBuilderAPI_MakeEdge(Base::convertTo<gp_Pnt>(far1 ),
+                                                  Base::convertTo<gp_Pnt>(far0));   //switch these parms?
+    TopoDS_Edge nearToFarEdge = BRepBuilderAPI_MakeEdge(Base::convertTo<gp_Pnt>(edgeEnds.second),
+                                                        Base::convertTo<gp_Pnt>(far1));
+    TopoDS_Edge farToNearEdge = BRepBuilderAPI_MakeEdge(Base::convertTo<gp_Pnt>(far0),
+                                                        Base::convertTo<gp_Pnt>(edgeEnds.first));
+
+    BRepBuilderAPI_MakeWire mkWire;
+    mkWire.Add(singleEdge);
+    mkWire.Add(nearToFarEdge);
+    mkWire.Add(farEdge);
+    mkWire.Add(farToNearEdge);
 
     return mkWire.Wire();
 }
