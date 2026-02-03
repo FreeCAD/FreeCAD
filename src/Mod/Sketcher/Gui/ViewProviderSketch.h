@@ -581,6 +581,10 @@ public:
         return Mode;
     }
 
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
+
     // create right click context menu based on selection in the 3D view
     void generateContextMenu();
 
@@ -856,10 +860,6 @@ private:
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
-    //@}
-
     /** @name signals*/
     //@{
     /// signals a tool change
@@ -993,7 +993,7 @@ private:
     Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
     Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
-    ShortcutListener* listener;
+    std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 

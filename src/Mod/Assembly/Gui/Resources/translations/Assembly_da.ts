@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
       <source>Active object</source>
       <translation>Aktivt objekt</translation>
     </message>
@@ -75,7 +75,7 @@
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
-      <translation type="unfinished">N/A</translation>
+      <translation>Ikke tilgængelig</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="311"/>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation>Fastgjort</translation>
+      <translation>Fast retnining</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -132,7 +132,7 @@
       <location filename="../../../JointObject.py" line="55"/>
       <location filename="../../../JointObject.py" line="1700"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Afstand</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="56"/>
@@ -660,7 +660,7 @@ SLOPE definerer udglatnigen af overgangen mellem henholdsvis 0 og H1 og H2 til 0
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="135"/>
       <source>Simulation time step for output.</source>
-      <translation type="unfinished">Simulation time step for output.</translation>
+      <translation>Intervallet mellem hvert simuleringstidspunkt, til brug for output af resultater.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="147"/>
@@ -889,63 +889,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
       <source>The object is associated to one or more joints.</source>
-      <translation type="unfinished">The object is associated to one or more joints.</translation>
+      <translation>Objektet har en eller flere tilknyttede forbindelser.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Vil du flytte objektet og slette tilknyttede forbindelser?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
       <source>Move part</source>
       <translation>Flyt komponent</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
       <source>Empty Assembly</source>
       <translation>Tom samling</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
       <source>Over-constrained:</source>
       <translation>For mange relationer:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Malformed joints:</source>
       <translation>Fejlbehæftede forbindelser:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
       <source>Redundant joints:</source>
       <translation>Overflødige forbindelser:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
       <source>Partially redundant:</source>
       <translation>Delvis overflødig:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
       <source>Solver failed to converge</source>
       <translation>Løsningen konvergerer ikke</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
       <source>Under-constrained:</source>
       <translation>For få relationer:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Frihedsgrader</numerusform>
@@ -953,7 +953,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
       <source>Fully constrained</source>
       <translation>Fuldstændigt låst</translation>
     </message>
@@ -1014,7 +1014,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateView.ui" line="56"/>
       <source>Explode Radially</source>
-      <translation type="unfinished">Explode Radially</translation>
+      <translation>Eksploderet radialt</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="23"/>
@@ -1150,35 +1150,35 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="98"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="105"/>
       <source>Start time of the simulation</source>
-      <translation type="unfinished">Start time of the simulation</translation>
+      <translation>Starttidspunkt for simuleringen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="112"/>
       <source>End</source>
-      <translation type="unfinished">End</translation>
+      <translation>Slut</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="115"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="122"/>
       <source>End time of the simulation</source>
-      <translation type="unfinished">End time of the simulation</translation>
+      <translation>Sluttidspunkt for simuleringen</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="129"/>
       <source>Step</source>
-      <translation type="unfinished">Step</translation>
+      <translation>Trin</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="132"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="139"/>
       <source>Time step</source>
-      <translation type="unfinished">Time step</translation>
+      <translation>Tidsinterval</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="149"/>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="156"/>
       <source>Global error tolerance</source>
-      <translation type="unfinished">Global error tolerance</translation>
+      <translation>Global fejltolerance</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
@@ -1188,7 +1188,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
       <source>Frames per second</source>
-      <translation type="unfinished">Frames per second</translation>
+      <translation>Billeder pr. sekund</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="146"/>
@@ -1203,7 +1203,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Billede</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
@@ -1213,7 +1213,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="232"/>
       <source>Step backward</source>
-      <translation type="unfinished">Step backward</translation>
+      <translation>Gå tilbage</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="252"/>
@@ -1233,7 +1233,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="312"/>
       <source>Step forward</source>
-      <translation type="unfinished">Step forward</translation>
+      <translation>Gå fremad</translation>
     </message>
   </context>
   <context>
@@ -1471,12 +1471,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Indsæt komponent</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="218"/>
+      <location filename="../../../CommandInsertLink.py" line="219"/>
       <source>Partially loaded</source>
       <translation>Delvist indlæst</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="572"/>
+      <location filename="../../../CommandInsertLink.py" line="573"/>
       <source>Fully load document</source>
       <translation type="unfinished">Fully load document</translation>
     </message>

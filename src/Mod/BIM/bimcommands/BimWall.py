@@ -142,7 +142,7 @@ class Arch_Wall:
         FreeCADGui.Snapper.getPoint(
             callback=self.getPoint,
             extradlg=self.taskbox(),
-            title=translate("Arch", "First point of wall"),
+            title=translate("Arch", "First Point of Wall"),
         )
         FreeCADGui.draftToolBar.continueCmd.show()
 
@@ -452,7 +452,7 @@ class Arch_Wall:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Wall options"))
+        w.setWindowTitle(translate("Arch", "Wall Options"))
         grid = QtGui.QGridLayout(w)
 
         # Wall presets input

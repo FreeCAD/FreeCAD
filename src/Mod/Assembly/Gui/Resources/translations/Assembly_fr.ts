@@ -53,7 +53,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Assemblage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
       <source>Active object</source>
       <translation>Activer/désactiver l'objet</translation>
     </message>
@@ -723,7 +723,7 @@ hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translat
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="151"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateJoint.ui" line="175"/>
@@ -902,63 +902,63 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1052"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1597"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Fournisseur d'affichage d'Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1614"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1619"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1627"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
       <source>Redundant joints:</source>
       <translation>Liaisons redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1643"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
       <source>Partially redundant:</source>
       <translation>Esquisse avec contraintes partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1651"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1659"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1661"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -966,7 +966,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -1507,12 +1507,12 @@ moins une pièce à bloquer avant de commencer l'assemblage.</translation>
       <translation>Insérer un composant</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="218"/>
+      <location filename="../../../CommandInsertLink.py" line="219"/>
       <source>Partially loaded</source>
       <translation>Partiellement chargé</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="572"/>
+      <location filename="../../../CommandInsertLink.py" line="573"/>
       <source>Fully load document</source>
       <translation>Document entièrement chargé</translation>
     </message>

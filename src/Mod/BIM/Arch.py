@@ -2231,7 +2231,6 @@ def debaseWall(wall):
         return False
 
     doc = wall.Document
-    doc.openTransaction(f"Debase Wall: {wall.Label}")
 
     try:
         # --- Calculation of the final placement ---
@@ -2296,11 +2295,8 @@ def debaseWall(wall):
         doc.recompute()
 
     except Exception as e:
-        doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
-    finally:
-        doc.commitTransaction()
 
     return True
 

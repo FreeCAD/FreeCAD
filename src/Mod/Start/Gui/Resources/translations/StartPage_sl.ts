@@ -16,12 +16,12 @@
     <message>
       <location filename="../../FirstStartWidget.cpp" line="98"/>
       <source>Set your basic configuration options below.</source>
-      <translation type="unfinished">Set your basic configuration options below.</translation>
+      <translation>Spodaj nastavite osnovne konfiguracije.</translation>
     </message>
     <message>
       <location filename="../../FirstStartWidget.cpp" line="99"/>
       <source>These options (and many more) can be changed later in the preferences.</source>
-      <translation type="unfinished">These options (and many more) can be changed later in the preferences.</translation>
+      <translation>Te možnosti (in številne druge) lahko pozneje spremenite v nastavitvah.</translation>
     </message>
   </context>
   <context>
@@ -57,7 +57,7 @@
     <message>
       <location filename="../../Manipulator.cpp" line="47"/>
       <source>Displays the start page</source>
-      <translation type="unfinished">Displays the start page</translation>
+      <translation>Prikaži začetno stran</translation>
     </message>
   </context>
   <context>
@@ -80,7 +80,7 @@
     <message>
       <location filename="../../StartView.cpp" line="226"/>
       <source>Creates a 2D Draft document</source>
-      <translation type="unfinished">Creates a 2D Draft document</translation>
+      <translation>Ustvari 2D osnutek dokumenta</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="229"/>
@@ -90,37 +90,37 @@
     <message>
       <location filename="../../StartView.cpp" line="206"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Prazna datoteka</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="207"/>
       <source>Creates a new empty FreeCAD file</source>
-      <translation type="unfinished">Creates a new empty FreeCAD file</translation>
+      <translation>Ustvari novo prazno FreeCAD datoteko</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="212"/>
       <source>Opens an existing CAD file or 3D model</source>
-      <translation type="unfinished">Opens an existing CAD file or 3D model</translation>
+      <translation>Odpri obstoječo CAD datoteko ali 3D model</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="216"/>
       <source>Parametric Body</source>
-      <translation type="unfinished">Parametric Body</translation>
+      <translation>Parametrično telo</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="217"/>
       <source>Creates a body with the Part Design workbench</source>
-      <translation type="unfinished">Creates a body with the Part Design workbench</translation>
+      <translation>Ustvari telo z delovno mizo za oblikovanje orodij</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="222"/>
       <source>Creates an assembly project</source>
-      <translation type="unfinished">Creates an assembly project</translation>
+      <translation>Ustvari montažni projekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="230"/>
       <source>Creates an architectural project</source>
-      <translation type="unfinished">Creates an architectural project</translation>
+      <translation>Ustvari arhitekturni projekt</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="509"/>
@@ -140,12 +140,12 @@
     <message>
       <location filename="../../StartView.cpp" line="527"/>
       <source>Open First Start Setup</source>
-      <translation type="unfinished">Open First Start Setup</translation>
+      <translation>Odprite prve začetne nastavitve</translation>
     </message>
     <message>
       <location filename="../../StartView.cpp" line="528"/>
       <source>Do not show this Start page again (start with blank screen)</source>
-      <translation type="unfinished">Do not show this Start page again (start with blank screen)</translation>
+      <translation>Ne prikaži več te začetne strani (začni s praznim zaslonom)</translation>
     </message>
   </context>
   <context>
@@ -234,18 +234,17 @@
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>An optional custom folder to be displayed on the Start page.
 Multiple folders can be added using ";;" to separate paths.</source>
-      <translation type="unfinished">An optional custom folder to be displayed on the Start page.
-Multiple folders can be added using ";;" to separate paths.</translation>
+      <translation>Izbirna mapa po meri, ki bo prikazana na začetni strani. Več map je mogoče dodati z ";;", da ločite poti.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="64"/>
       <source>Shows example files on the start page</source>
-      <translation type="unfinished">Shows example files on the start page</translation>
+      <translation>Prikaži primere datotek na začetni strani</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="114"/>
       <source>The start page is closed automatically when FreeCAD launches</source>
-      <translation type="unfinished">The start page is closed automatically when FreeCAD launches</translation>
+      <translation>Začetna stran se samodejno zapre ob zagonu FreeCAD-a</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="108"/>

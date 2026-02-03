@@ -386,27 +386,27 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="27"/>
       <source>Adds a new library</source>
-      <translation type="unfinished">Adds a new library</translation>
+      <translation>Añade una nueva biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="38"/>
       <source>Removes the library</source>
-      <translation type="unfinished">Removes the library</translation>
+      <translation>Elimina la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="49"/>
       <source>Renames the library</source>
-      <translation type="unfinished">Renames the library</translation>
+      <translation>Renombra la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="60"/>
       <source>Imports a library</source>
-      <translation type="unfinished">Imports a library</translation>
+      <translation>Importa una biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="71"/>
       <source>Exports the library</source>
-      <translation type="unfinished">Exports the library</translation>
+      <translation>Exporta la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitLibraryEdit.ui" line="111"/>
@@ -434,32 +434,32 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation type="unfinished">Toolbit Parameter Editor</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="65"/>
+      <location filename="../panels/ToolBitEditor.ui" line="50"/>
       <source>Toolbit</source>
       <translation type="unfinished">Toolbit</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="90"/>
+      <location filename="../panels/ToolBitEditor.ui" line="75"/>
       <source>Notes</source>
       <translation>Notas</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="107"/>
+      <location filename="../panels/ToolBitEditor.ui" line="92"/>
       <source>Coating</source>
       <translation type="unfinished">Coating</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="117"/>
+      <location filename="../panels/ToolBitEditor.ui" line="102"/>
       <source>Hardness</source>
       <translation type="unfinished">Hardness</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="127"/>
+      <location filename="../panels/ToolBitEditor.ui" line="112"/>
       <source>Materials</source>
       <translation>Materiales</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="140"/>
+      <location filename="../panels/ToolBitEditor.ui" line="125"/>
       <source>Supplier</source>
       <translation type="unfinished">Supplier</translation>
     </message>
@@ -5909,22 +5909,22 @@ Use property KeepToolDown to change this</translation>
       <translation>No hay datos de escaneo para convertir a G-code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2676"/>
       <source>Failed to identify tool for operation.</source>
       <translation>Error al identificar la herramienta de operación.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2685"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2686"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
       <translation>No se pudo asignar la herramienta seleccionada a un tipo de herramienta OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2697"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2698"/>
       <source>Failed to translate active tool to OCL tool type.</source>
       <translation>Error al traducir la herramienta activa al tipo de herramienta OCL.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2709"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2710"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
       <translation>Herramienta OCL no disponible. No se puede determinar si la herramienta de corte tiene la inclinación disponible.</translation>
     </message>
@@ -6854,47 +6854,47 @@ Abortando la creación de la op</translation>
       <translation>Todos los archivos (*.*)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1399"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1401"/>
       <source>Unsupported stock object %s</source>
       <translation>Tipo de objeto stock no soportado %s</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1415"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1417"/>
       <source>Unsupported stock type %s (%d)</source>
       <translation>Tipo de stock no soportado %s (%d)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1506"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1508"/>
       <source>Model Selection</source>
       <translation>Selección de modelo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1661"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
       <source>Warning</source>
       <translation>Advertencia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1662"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1664"/>
       <source>Please add one.</source>
       <translation>Por favor agregue uno.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1663"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
       <source>Ok</source>
       <translation>Aceptar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1665"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1667"/>
       <source>Add</source>
       <translation>Agregar</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1676"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1678"/>
       <source>This job has no base model.</source>
       <translation>Este trabajo no tiene un modelo base.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Job.py" line="1683"/>
+      <location filename="../../../Path/Main/Gui/Job.py" line="1685"/>
       <source>This job has no tool.</source>
       <translation>Este trabajo no tiene herramienta.</translation>
     </message>
@@ -7651,7 +7651,7 @@ Abortando la creación de la op</translation>
       <translation>Procesador posterior de SVG</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="60"/>
+      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="67"/>
       <source>Camotics Tool Library</source>
       <translation type="unfinished">Camotics Tool Library</translation>
     </message>
@@ -7726,7 +7726,7 @@ Abortando la creación de la op</translation>
       <translation type="unfinished">{diameter} {cutting_edge_angle} v-bit, {flutes}-flute</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="63"/>
+      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="69"/>
       <source>Camotics Tool</source>
       <translation>Herramienta de Camotics</translation>
     </message>
@@ -7793,12 +7793,12 @@ Abortando la creación de la op</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="386"/>
       <source>New Library</source>
-      <translation type="unfinished">New Library</translation>
+      <translation>Nueva biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="406"/>
       <source>Confirm Library Removal</source>
-      <translation type="unfinished">Confirm Library Removal</translation>
+      <translation>Confirmar eliminación de biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="411"/>
@@ -7906,6 +7906,11 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="47"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation type="unfinished">{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="555"/>
@@ -8771,7 +8776,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="379"/>
       <source>Error Saving Library</source>
-      <translation type="unfinished">Error Saving Library</translation>
+      <translation>Error al guardar la biblioteca</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/dock.py" line="60"/>
@@ -8820,12 +8825,12 @@ This will not delete the toolbits contained within it.</translation>
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
       <source>Simulates using CAMotics</source>
       <translation type="unfinished">Simulates using CAMotics</translation>
     </message>
@@ -9109,6 +9114,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="35"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
@@ -9123,6 +9129,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
@@ -9137,6 +9144,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
@@ -9154,6 +9162,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
@@ -9168,6 +9177,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
@@ -9187,6 +9197,7 @@ This will not delete the toolbits contained within it.</translation>
       <translation type="unfinished">Cutting edge angle</translation>
     </message>
     <message>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="64"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="61"/>
       <source>Tip diameter</source>
@@ -9349,9 +9360,24 @@ This will not delete the toolbits contained within it.</translation>
       <translation>Radio de corte</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/shape/models/radius.py" line="68"/>
+      <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation type="unfinished">Radius Mill</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
+      <source>Included Taper angle</source>
+      <translation type="unfinished">Included Taper angle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="59"/>
+      <source>Diameter at top of Taper</source>
+      <translation type="unfinished">Diameter at top of Taper</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
+      <source>Tapered Ball Nose</source>
+      <translation type="unfinished">Tapered Ball Nose</translation>
     </message>
   </context>
   <context>
@@ -9453,7 +9479,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="14"/>
       <source>Library Property Editor</source>
-      <translation type="unfinished">Library Property Editor</translation>
+      <translation>Editor de propiedades de la biblioteca</translation>
     </message>
     <message>
       <location filename="../panels/LibraryProperties.ui" line="34"/>
@@ -9474,7 +9500,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Tool/library/ui/properties.py" line="80"/>
       <source>Library Properties - {current_name or self.library.label}</source>
-      <translation type="unfinished">Library Properties - {current_name or self.library.label}</translation>
+      <translation>Propiedades de la biblioteca - {current_name or self.library.label}</translation>
     </message>
   </context>
   <context>

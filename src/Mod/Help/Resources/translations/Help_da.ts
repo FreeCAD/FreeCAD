@@ -104,7 +104,7 @@ stylesheet som angives nedenfor, og kan blive pænere end wiki-versionen. &apos;
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="170"/>
       <source>Note: if PySide Web components are not found on the system, help pages will open in the default web browser regardless of the options below.</source>
-      <translation>Bemærk: Hvis PySide Web-komponenter ikke findes på systemet, vil hjælpesider åbne i standard webbrowseren uanset mulighederne nedenfor.</translation>
+      <translation>Bemærk: Hvis der ikke er installeret PySide Web-komponenter på systemet, vil hjælpesider blive åbnet i standard-webbrowseren uanset mulighederne nedenfor.</translation>
     </message>
     <message>
       <location filename="../../dlgPreferencesHelp.ui" line="180"/>

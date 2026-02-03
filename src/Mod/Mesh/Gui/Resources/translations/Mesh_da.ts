@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Tværsnit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Fladeinformation</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Viser information om de valgte flader</translation>
     </message>
   </context>
   <context>

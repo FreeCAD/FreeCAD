@@ -377,7 +377,7 @@ class Arch_Window:
 
         w = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        w.setWindowTitle(translate("Arch", "Window options"))
+        w.setWindowTitle(translate("Arch", "Window Options"))
         grid = QtGui.QGridLayout(w)
 
         # include box
