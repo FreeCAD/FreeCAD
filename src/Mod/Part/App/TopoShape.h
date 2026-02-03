@@ -705,7 +705,8 @@ public:
      *
      * @return Return the outer wire
      */
-    TopoShape splitWires(std::vector<TopoShape>* innerWiresOutput = nullptr,
+    TopoShape splitWires(
+        std::vector<TopoShape>* innerWiresOutput = nullptr,
         SplitWireReorient reorient = Reorient
     ) const;
 

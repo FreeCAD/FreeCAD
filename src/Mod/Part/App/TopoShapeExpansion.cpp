@@ -5335,8 +5335,7 @@ std::vector<Data::MappedName> TopoShape::decodeElementComboName(
  * @return The outer wire, or an empty TopoShape if this isn't a Face, has no Face subShapes, or the
  *         outer wire isn't found.
  */
-TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput,
-                                SplitWireReorient reorient) const
+TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitWireReorient reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
