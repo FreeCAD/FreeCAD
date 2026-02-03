@@ -71,7 +71,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="655"/>
       <source>Compact</source>
-      <translation>Kompakt</translation>
+      <translation>Sıkışık</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="656"/>

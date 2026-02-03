@@ -84,8 +84,12 @@ class TestCamoticsToolBitSerializer(_BaseToolBitSerializerTestCase):
 
         self.assertIsInstance(deserialized_bit, ToolBit)
         self.assertEqual(deserialized_bit.label, "Test Tool")
-        self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
-        self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
+        self.assertEqual(
+            deserialized_bit.get_diameter(), FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length)
+        )
+        self.assertEqual(
+            deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
+        )
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
 
 
@@ -99,8 +103,14 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         data = json.loads(serialized_data.decode("utf-8"))
         self.assertEqual(data.get("name"), "Test Tool")
         self.assertEqual(data.get("shape"), "endmill.fcstd")
-        self.assertEqual(data.get("parameter", {}).get("Diameter"), "4.12 mm")
-        self.assertEqual(data.get("parameter", {}).get("Length"), "15.00 mm", data)
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Diameter")),
+            FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length),
+        )
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Length")),
+            FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
+        )
 
     def test_extract_dependencies(self):
         """Test dependency extraction for FCTB."""
@@ -134,8 +144,12 @@ class TestFCTBSerializer(_BaseToolBitSerializerTestCase):
         self.assertIsInstance(deserialized_bit, ToolBit)
         self.assertEqual(deserialized_bit.label, "Test Tool")
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
-        self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
-        self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
+        self.assertEqual(
+            deserialized_bit.get_diameter(), FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length)
+        )
+        self.assertEqual(
+            deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
+        )
 
 
 class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
@@ -150,8 +164,14 @@ class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(data.get("name"), "Test Tool")
         self.assertEqual(data.get("shape"), "endmill.fcstd")
         self.assertEqual(data.get("shape-type"), "Endmill")
-        self.assertEqual(data.get("parameter", {}).get("Diameter"), "4.12 mm")
-        self.assertEqual(data.get("parameter", {}).get("Length"), "15.00 mm")
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Diameter")),
+            FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length),
+        )
+        self.assertEqual(
+            FreeCAD.Units.Quantity(data.get("parameter", {}).get("Length")),
+            FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length),
+        )
 
     def test_extract_dependencies(self):
         """Test dependency extraction for YAML."""
@@ -196,8 +216,12 @@ class TestYamlToolBitSerializer(_BaseToolBitSerializerTestCase):
         self.assertEqual(deserialized_bit.id, "TestID")
         self.assertEqual(deserialized_bit.label, "Test Tool")
         self.assertEqual(deserialized_bit.get_shape_name(), "Endmill")
-        self.assertEqual(str(deserialized_bit.get_diameter()), "4.12 mm")
-        self.assertEqual(str(deserialized_bit.get_length()), "15.0 mm")
+        self.assertEqual(
+            deserialized_bit.get_diameter(), FreeCAD.Units.Quantity(4.12, FreeCAD.Units.Length)
+        )
+        self.assertEqual(
+            deserialized_bit.get_length(), FreeCAD.Units.Quantity(15.0, FreeCAD.Units.Length)
+        )
 
         # Test with ID argument.
         deserialized_bit = cast(

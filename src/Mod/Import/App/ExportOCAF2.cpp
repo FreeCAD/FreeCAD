@@ -52,7 +52,6 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF2.h"
 
@@ -403,16 +402,6 @@ TDF_Label ExportOCAF2::exportObject(
             FC_WARN(obj->getFullName() << " has null shape");
         }
         return {};
-    }
-
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip) {
-            // keep the shape from the body, but use the tip's colors
-            // by replacing obj with tip
-            obj = tip;
-        }
     }
 
     // sub may contain more than one hierarchy, e.g. Assembly container may use

@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from Base.Vector import Vector
 from TopoShape import TopoShape
@@ -87,7 +91,7 @@ class TopoShapeFace(TopoShape):
     eigen vectors of the matrix of inertia of the system.
     """
 
-    def addWire(self, wire: object) -> None:
+    def addWire(self, wire: object, /) -> None:
         """
         Adds a wire to the face.
         addWire(wire)
@@ -95,7 +99,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def makeOffset(self, dist: float) -> object:
+    def makeOffset(self, dist: float, /) -> object:
         """
         Offset the face by a given amount.
         makeOffset(dist) -> Face
@@ -107,13 +111,13 @@ class TopoShapeFace(TopoShape):
     @constmethod
     def makeEvolved(
         self,
-        *,
         Profile: TopoShape,
         Join: int,
+        *,
         AxeProf: bool,
         Solid: bool,
         ProfOnSpine: bool,
-        Tolerance: float
+        Tolerance: float,
     ) -> TopoShape:
         """
         Profile along the spine
@@ -131,7 +135,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def tangentAt(self, u: float, v: float) -> Vector:
+    def tangentAt(self, u: float, v: float, /) -> Vector:
         """
         Get the tangent in u and v isoparametric at the given point if defined
         tangentAt(u,v) -> Vector
@@ -139,7 +143,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def valueAt(self, u: float, v: float) -> Vector:
+    def valueAt(self, u: float, v: float, /) -> Vector:
         """
         Get the point at the given parameter [0|Length] if defined
         valueAt(u,v) -> Vector
@@ -147,7 +151,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def normalAt(self, pos: float) -> Vector:
+    def normalAt(self, pos: float, /) -> Vector:
         """
         Get the normal vector at the given parameter [0|Length] if defined
         normalAt(pos) -> Vector
@@ -155,7 +159,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def derivative1At(self, u: float, v: float) -> Tuple[Vector, Vector]:
+    def derivative1At(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
         """
         Get the first derivative at the given parameter [0|Length] if defined
         derivative1At(u,v) -> (vectorU,vectorV)
@@ -163,7 +167,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def derivative2At(self, u: float, v: float) -> Tuple[Vector, Vector]:
+    def derivative2At(self, u: float, v: float, /) -> Tuple[Vector, Vector]:
         """
         Vector = d2At(pos) - Get the second derivative at the given parameter [0|Length] if defined
         derivative2At(u,v) -> (vectorU,vectorV)
@@ -171,7 +175,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def curvatureAt(self, u: float, v: float) -> float:
+    def curvatureAt(self, u: float, v: float, /) -> float:
         """
         Get the curvature at the given parameter [0|Length] if defined
         curvatureAt(u,v) -> Float
@@ -179,7 +183,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def isPartOfDomain(self, u: float, v: float) -> bool:
+    def isPartOfDomain(self, u: float, v: float, /) -> bool:
         """
         Check if a given (u,v) pair is inside the domain of a face
         isPartOfDomain(u,v) -> bool
@@ -187,7 +191,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def makeHalfSpace(self, pos: object) -> object:
+    def makeHalfSpace(self, pos: object, /) -> object:
         """
         Make a half-space solid by this face and a reference point.
         makeHalfSpace(pos) -> Shape
@@ -216,7 +220,7 @@ class TopoShapeFace(TopoShape):
         ...
 
     @constmethod
-    def curveOnSurface(self, Edge: object) -> Optional[Tuple[object, float, float]]:
+    def curveOnSurface(self, Edge: object, /) -> Optional[Tuple[object, float, float]]:
         """
         Returns the curve associated to the edge in the parametric space of the face.
         curveOnSurface(Edge) -> (curve, min, max) or None
@@ -226,7 +230,7 @@ class TopoShapeFace(TopoShape):
         """
         ...
 
-    def cutHoles(self, list_of_wires: List[object]) -> None:
+    def cutHoles(self, list_of_wires: List[object], /) -> None:
         """
         Cut holes in the face.
         cutHoles(list_of_wires)

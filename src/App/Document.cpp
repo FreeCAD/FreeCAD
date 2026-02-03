@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -1249,12 +1251,12 @@ constexpr auto fcAttrDepObjName {"Name"};
 constexpr auto fcAttrDepAllowPartial {"AllowPartial"};
 constexpr auto fcElementObjectDep {"Dep"};
 
-void Document::writeObjects(const std::vector<DocumentObject*>& obj,
+void Document::writeObjects(const std::vector<DocumentObject*>& objs,
                             Base::Writer& writer) const
 {
     // writing the features types
     writer.incInd();  // indentation for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
+    writer.Stream() << writer.ind() << "<Objects Count=\"" << objs.size();
     if (isExporting(nullptr) == 0U) {
         writer.Stream() << "\" " << fcAttrDependencies << "=\"1";
     }
@@ -1263,7 +1265,7 @@ void Document::writeObjects(const std::vector<DocumentObject*>& obj,
     writer.incInd();  // indentation for 'Object type'
 
     if (isExporting(nullptr) == 0U) {
-        for (const auto o : obj) {
+        for (const auto o : objs) {
             const auto& outList =
                 o->getOutList(DocumentObject::OutListNoHidden | DocumentObject::OutListNoXLinked);
             writer.Stream() << writer.ind()
@@ -1292,7 +1294,7 @@ void Document::writeObjects(const std::vector<DocumentObject*>& obj,
     }
 
     std::vector<DocumentObject*>::const_iterator it;
-    for (it = obj.begin(); it != obj.end(); ++it) {
+    for (it = objs.begin(); it != objs.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object "
                         << "type=\"" << (*it)->getTypeId().getName() << "\" "
                         << "name=\"" << (*it)->getExportName() << "\" "
@@ -1322,10 +1324,10 @@ void Document::writeObjects(const std::vector<DocumentObject*>& obj,
     writer.Stream() << writer.ind() << "</Objects>" << '\n';
 
     // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() << "\">" << '\n';
+    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << objs.size() << "\">" << '\n';
 
     writer.incInd();  // indentation for 'Object name'
-    for (it = obj.begin(); it != obj.end(); ++it) {
+    for (it = objs.begin(); it != objs.end(); ++it) {
         writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getExportName() << "\"";
         if ((*it)->hasExtensions()) {
             writer.Stream() << " Extensions=\"True\"";
@@ -1792,6 +1794,12 @@ bool Document::saveToFile(const char* filename) const
     // realpath is canonical filename i.e. without symlink
     std::string nativePath = canonical_path(filename);
 
+    // check if file is writeable, then block the save if it is not.
+    Base::FileInfo originalFileInfo(nativePath);
+    if (originalFileInfo.exists() && !originalFileInfo.isWritable()) {
+        throw Base::FileException("Unable to save document because file is marked as read-only or write permission is not available.", originalFileInfo);
+    }
+
     // make a tmp. file where to save the project data first and then rename to
     // the actual file name. This may be useful if overwriting an existing file
     // fails so that the data of the work up to now isn't lost.
@@ -2028,11 +2036,11 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
         return false;
     }
 
-    // some link type property cannot restore link information until other
-    // objects has been restored. For example, PropertyExpressionEngine and
-    // PropertySheet with expression containing label reference. So we add the
-    // Property::afterRestore() interface to let them sort it out. Note, this
-    // API is not called in object dedpenency order, because the order
+    // Some link type properties cannot restore link information until other
+    // objects have been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expressions containing a label reference. So we add
+    // the Property::afterRestore() interface to let them sort it out. Note,
+    // this API is not called in object dependency order, because the order
     // information is not ready yet.
     std::map<DocumentObject*, std::vector<Property*>> propMap;
     for (auto obj : objArray) {
@@ -2086,6 +2094,16 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << e.what());
         }
         catch (...) {
+
+            // If a Python exception occurred, it must be cleared immediately.
+            // Otherwise, the interpreter remains in a dirty state, causing
+            // Segfaults later when FreeCAD interacts with Python.
+            if (PyErr_Occurred()) {
+                Base::Console().error("Python error during object restore:\n");
+                PyErr_Print(); // Print the traceback to stderr/Console
+                PyErr_Clear(); // Reset the interpreter state
+            }
+
             d->addRecomputeLog("Unknown exception on restore", obj);
             FC_ERR("Failed to restore " << obj->getFullName() << ": " << "unknown exception");
         }
@@ -2210,7 +2228,7 @@ vector<DocumentObject*> Document::getTouched() const
     return result;
 }
 
-void Document::setClosable(const bool c) // NOLINT
+void Document::setClosable(bool c) // NOLINT
 {
     setStatus(Document::Closable, c);
 }
@@ -2490,7 +2508,7 @@ std::vector<Document*> Document::getDependentDocuments(const bool sort)
 }
 
 std::vector<Document*> Document::getDependentDocuments(std::vector<Document*> docs,
-                                                            const bool sort)
+                                                       const bool sort)
 {
     DependencyList depList;
     std::map<Document*, Vertex> docMap;
@@ -2552,11 +2570,6 @@ std::vector<Document*> Document::getDependentDocuments(std::vector<Document*> do
         ret.push_back(vertexMap[*rIt]);
     }
     return ret;
-}
-
-void Document::_rebuildDependencyList(const std::vector<DocumentObject*>& objs)
-{
-    (void)objs;
 }
 
 /**
@@ -3126,15 +3139,15 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
     return objects;
 }
 
-void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
+void Document::addObject(DocumentObject* obj, const char* name)
 {
-    if (pcObject->getDocument()) {
+    if (obj->getDocument()) {
         throw Base::RuntimeError("Document object is already added to a document");
     }
 
-    pcObject->setDocument(this);
+    obj->setDocument(this);
 
-    _addObject(pcObject, pObjectName, AddObjectOption::SetNewStatus | AddObjectOption::ActivateObject);
+    _addObject(obj, name, AddObjectOption::SetNewStatus | AddObjectOption::ActivateObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)

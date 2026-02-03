@@ -27,6 +27,7 @@
 
 #include <map>
 #include <string>
+#include <variant>
 #include <Base/Persistence.h>
 #include <Base/Placement.h>
 #include <Base/Vector3D.h>
@@ -43,6 +44,11 @@ public:
     // constructors
     Command();
     Command(const char* name, const std::map<std::string, double>& parameters);
+    Command(
+        const char* name,
+        const std::map<std::string, double>& parameters,
+        const std::map<std::string, std::variant<std::string, double>>& annotations
+    );
     ~Command() override;
     // from base class
     unsigned int getMemSize() const override;
@@ -71,6 +77,26 @@ public:
     double getValue(const std::string& name) const;  // returns the value of a given parameter
     void scaleBy(double factor);  // scales the receiver - use for imperial/metric conversions
 
+    // annotation methods
+    void setAnnotation(
+        const std::string& key,
+        const std::string& value
+    );  // sets a string annotation
+    void setAnnotation(const std::string& key,
+                       double value);                         // sets a numeric annotation
+    std::string getAnnotation(const std::string& key) const;  // gets an annotation value as string
+    std::string getAnnotationString(const std::string& key) const;  // gets string annotation
+    double getAnnotationDouble(
+        const std::string& key,
+        double fallback = 0.0
+    ) const;  // gets numeric annotation
+    std::variant<std::string, double> getAnnotationValue(
+        const std::string& key
+    ) const;                                                       // gets raw annotation value
+    bool hasAnnotation(const std::string& key) const;              // checks if annotation exists
+    Command& setAnnotations(const std::string& annotationString);  // sets annotations from string and
+                                                                   // returns reference for chaining
+
     // this assumes the name is upper case
     inline double getParam(const std::string& name, double fallback = 0.0) const
     {
@@ -81,6 +107,7 @@ public:
     // attributes
     std::string Name;
     std::map<std::string, double> Parameters;
+    std::map<std::string, std::variant<std::string, double>> Annotations;
 };
 
 }  // namespace Path

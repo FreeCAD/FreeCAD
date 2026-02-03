@@ -4,53 +4,54 @@
   <context>
     <name>CmdMeshAddFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="715"/>
+      <location filename="../../Command.cpp" line="754"/>
       <source>Mesh</source>
       <translation type="unfinished">Mesh</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="716"/>
+      <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Προσθήκη Τριγώνου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="717"/>
+      <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation type="unfinished">Adds a triangle manually to a mesh</translation>
+      <translation>Προσθέτει χειροκίνητα διαλέγωντας ένα-ένα τα σημεία (τις γωνίες) όπου θέλετε να μπει το τρίγωνο σε ένα πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1432"/>
+      <location filename="../../Command.cpp" line="1493"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1433"/>
+      <location filename="../../Command.cpp" line="1494"/>
       <source>Bounding Box Info</source>
-      <translation type="unfinished">Bounding Box Info</translation>
+      <translation>Πληροφορίες Πλαισίου Ορίων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1434"/>
+      <location filename="../../Command.cpp" line="1495"/>
       <source>Shows the bounding box coordinates of the selected mesh</source>
-      <translation type="unfinished">Shows the bounding box coordinates of the selected mesh</translation>
+      <translation>Εμφανίζει τις συντεταγμένες του πλαισίου ορίων του επιλεγμένου πλέγματος. 
+Σου δείχνει ακριβώς πού «τελειώνει» το αντικείμενό σου στον χώρο</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshBuildRegularSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1484"/>
+      <location filename="../../Command.cpp" line="1548"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1485"/>
+      <location filename="../../Command.cpp" line="1549"/>
       <source>Regular Solid</source>
       <translation>Κανονικό Στερεό</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1486"/>
+      <location filename="../../Command.cpp" line="1550"/>
       <source>Builds a regular solid</source>
       <translation>Χτίζει ένα κανονικό στερεό</translation>
     </message>
@@ -58,35 +59,35 @@
   <context>
     <name>CmdMeshCrossSections</name>
     <message>
-      <location filename="../../Command.cpp" line="952"/>
+      <location filename="../../Command.cpp" line="998"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="953"/>
+      <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Εγκάρσιες Τομές</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="954"/>
+      <location filename="../../Command.cpp" line="1000"/>
       <source>Creates cross-sections of the mesh</source>
-      <translation type="unfinished">Creates cross-sections of the mesh</translation>
+      <translation>Δημιουργεί εγκάρσιες τομές του πλέγματος</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshDecimating</name>
     <message>
-      <location filename="../../Command.cpp" line="1328"/>
+      <location filename="../../Command.cpp" line="1383"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1329"/>
+      <location filename="../../Command.cpp" line="1384"/>
       <source>Decimate</source>
-      <translation type="unfinished">Decimate</translation>
+      <translation>Μείωση Τριγώνων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1330"/>
+      <location filename="../../Command.cpp" line="1385"/>
       <source>Decimates a mesh</source>
       <translation>Μείωση Δεκαδικών πλέγματος</translation>
     </message>
@@ -94,53 +95,53 @@
   <context>
     <name>CmdMeshDifference</name>
     <message>
-      <location filename="../../Command.cpp" line="164"/>
+      <location filename="../../Command.cpp" line="172"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="165"/>
+      <location filename="../../Command.cpp" line="173"/>
       <source>Difference</source>
       <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="166"/>
+      <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation type="unfinished">Creates a boolean difference of the selected meshes</translation>
+      <translation>Δημιουργεί μια λογική διαφορά των επιλεγμένων πλεγμάτων</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateFacet</name>
     <message>
-      <location filename="../../Command.cpp" line="1083"/>
+      <location filename="../../Command.cpp" line="1131"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1084"/>
+      <location filename="../../Command.cpp" line="1132"/>
       <source>Face Info</source>
-      <translation type="unfinished">Face Info</translation>
+      <translation>Πληροφορίες Επιφάνειας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="1133"/>
       <source>Displays information about the selected faces</source>
-      <translation type="unfinished">Displays information about the selected faces</translation>
+      <translation>Εμφανίζει πληροφορίες για τις επιλεγμένες έδρες - επιφάνειες</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshEvaluateSolid</name>
     <message>
-      <location filename="../../Command.cpp" line="1258"/>
+      <location filename="../../Command.cpp" line="1312"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1259"/>
+      <location filename="../../Command.cpp" line="1313"/>
       <source>Evaluate Solid</source>
-      <translation type="unfinished">Evaluate Solid</translation>
+      <translation>Αξιολόγηση Στερεού</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1260"/>
+      <location filename="../../Command.cpp" line="1314"/>
       <source>Checks whether the mesh is a solid</source>
       <translation>Ελέγχει αν το πλέγμα είναι στερεό</translation>
     </message>
@@ -148,17 +149,17 @@
   <context>
     <name>CmdMeshEvaluation</name>
     <message>
-      <location filename="../../Command.cpp" line="1038"/>
+      <location filename="../../Command.cpp" line="1085"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1040"/>
+      <location filename="../../Command.cpp" line="1087"/>
       <source>Evaluate and Repair</source>
-      <translation type="unfinished">Evaluate and Repair</translation>
+      <translation>Αξιολόγηση και Επισκευή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1041"/>
+      <location filename="../../Command.cpp" line="1088"/>
       <source>Opens a dialog to analyze and repair a mesh</source>
       <translation>Ανοίγει ένα παράθυρο διαλόγου για την ανάλυση και την επισκευή ενός πλέγματος</translation>
     </message>
@@ -166,125 +167,125 @@
   <context>
     <name>CmdMeshExport</name>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Export Mesh…</source>
-      <translation type="unfinished">Export Mesh…</translation>
+      <translation>Εξαγωγή πλέγματος…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation type="unfinished">Exports a mesh to a file</translation>
+      <translation>Εξαγωγή πλέγματος σε αρχείο</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillInteractiveHole</name>
     <message>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1635"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1568"/>
+      <location filename="../../Command.cpp" line="1636"/>
       <source>Close Hole</source>
-      <translation type="unfinished">Close Hole</translation>
+      <translation>Κλείσιμο Οπής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1569"/>
+      <location filename="../../Command.cpp" line="1637"/>
       <source>Closes a hole interactively in the mesh</source>
-      <translation type="unfinished">Closes a hole interactively in the mesh</translation>
+      <translation>Κλείσιμο οπής στο πλέγμα με επιλογή από τον χρήστη</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFillupHoles</name>
     <message>
-      <location filename="../../Command.cpp" line="1516"/>
+      <location filename="../../Command.cpp" line="1580"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1517"/>
+      <location filename="../../Command.cpp" line="1581"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Γέμισμα Οπών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1518"/>
+      <location filename="../../Command.cpp" line="1582"/>
       <source>Fills holes in the mesh</source>
-      <translation type="unfinished">Fills holes in the mesh</translation>
+      <translation>Γεμίζει τις οπές στο πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFlipNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1396"/>
+      <location filename="../../Command.cpp" line="1454"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1397"/>
+      <location filename="../../Command.cpp" line="1455"/>
       <source>Flip Normals</source>
-      <translation type="unfinished">Flip Normals</translation>
+      <translation>Αντιστροφή Όψεων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1398"/>
+      <location filename="../../Command.cpp" line="1456"/>
       <source>Flips the normals of the selected mesh</source>
-      <translation type="unfinished">Flips the normals of the selected mesh</translation>
+      <translation>Αντιστρέφει τις όψεις του επιλεγμένου πλέγματος</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromGeometry</name>
     <message>
-      <location filename="../../Command.cpp" line="456"/>
+      <location filename="../../Command.cpp" line="486"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="457"/>
+      <location filename="../../Command.cpp" line="487"/>
       <source>Mesh From Geometry</source>
-      <translation type="unfinished">Mesh From Geometry</translation>
+      <translation>Πλέγμα από Γεωμετρία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="458"/>
+      <location filename="../../Command.cpp" line="488"/>
       <source>Creates a mesh from the selected geometry</source>
-      <translation type="unfinished">Creates a mesh from the selected geometry</translation>
+      <translation>Μετατροπή του επιλεγμένου αντικειμένου σε πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshFromPartShape</name>
     <message>
-      <location filename="../../Command.cpp" line="527"/>
+      <location filename="../../Command.cpp" line="559"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="528"/>
+      <location filename="../../Command.cpp" line="560"/>
       <source>Mesh From Shape</source>
-      <translation type="unfinished">Mesh From Shape</translation>
+      <translation>Πλέγμα από Σχήμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="529"/>
+      <location filename="../../Command.cpp" line="561"/>
       <source>Tessellates the selected shape to a mesh</source>
-      <translation type="unfinished">Tessellates the selected shape to a mesh</translation>
+      <translation>Μετατρέπει το επιλεγμένο σχέδιο σε πλέγμα (για 3D εκτύπωση)</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshHarmonizeNormals</name>
     <message>
-      <location filename="../../Command.cpp" line="1360"/>
+      <location filename="../../Command.cpp" line="1415"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1361"/>
+      <location filename="../../Command.cpp" line="1416"/>
       <source>Harmonize Normals</source>
-      <translation type="unfinished">Harmonize Normals</translation>
+      <translation>Διόρθωση Φοράς των Όψεω</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1362"/>
+      <location filename="../../Command.cpp" line="1417"/>
       <source>Harmonizes the normals of the mesh</source>
       <translation>Εναρμονίζει τα κάθετα διανύσματα του πλέγματος</translation>
     </message>
@@ -292,53 +293,53 @@
   <context>
     <name>CmdMeshImport</name>
     <message>
-      <location filename="../../Command.cpp" line="320"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="321"/>
+      <location filename="../../Command.cpp" line="345"/>
       <source>Import Mesh…</source>
-      <translation type="unfinished">Import Mesh…</translation>
+      <translation>Εισαγωγή πλέγματος…</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="322"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Imports a mesh from a file</source>
-      <translation type="unfinished">Imports a mesh from a file</translation>
+      <translation>Εισαγωγή ενός έτοιμου πλέγματος από αρχείο</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshIntersection</name>
     <message>
-      <location filename="../../Command.cpp" line="242"/>
+      <location filename="../../Command.cpp" line="258"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="243"/>
+      <location filename="../../Command.cpp" line="259"/>
       <source>Intersection</source>
       <translation>Σημείο τομής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="244"/>
+      <location filename="../../Command.cpp" line="260"/>
       <source>Creates a boolean intersection from the selected meshes</source>
-      <translation type="unfinished">Creates a boolean intersection from the selected meshes</translation>
+      <translation>Δημιουργεί ένα νέο σχήμα από το σημείο που ενώνονται τα επιλεγμένα πλέγματα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="1686"/>
+      <location filename="../../Command.cpp" line="1757"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1687"/>
+      <location filename="../../Command.cpp" line="1758"/>
       <source>Merge</source>
       <translation>Συγχώνευση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1688"/>
+      <location filename="../../Command.cpp" line="1759"/>
       <source>Merges selected meshes into one</source>
       <translation>Συγχωνεύει επιλεγμένα πλέγματα σε ένα</translation>
     </message>
@@ -346,35 +347,35 @@
   <context>
     <name>CmdMeshPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="764"/>
+      <location filename="../../Command.cpp" line="806"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="765"/>
+      <location filename="../../Command.cpp" line="807"/>
       <source>Cut</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="766"/>
+      <location filename="../../Command.cpp" line="808"/>
       <source>Cuts the mesh with a selected polygon</source>
-      <translation type="unfinished">Cuts the mesh with a selected polygon</translation>
+      <translation>Κόψιμο του πλέγματος με βάση ένα επιλεγμένο σχήμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolySegm</name>
     <message>
-      <location filename="../../Command.cpp" line="656"/>
+      <location filename="../../Command.cpp" line="693"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="657"/>
+      <location filename="../../Command.cpp" line="694"/>
       <source>Segment</source>
       <translation>Τμήμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="658"/>
+      <location filename="../../Command.cpp" line="695"/>
       <source>Creates a mesh segment</source>
       <translation>Δημιουργεί ένα τμήμα πλέγματος</translation>
     </message>
@@ -382,40 +383,40 @@
   <context>
     <name>CmdMeshPolySplit</name>
     <message>
-      <location filename="../../Command.cpp" line="981"/>
+      <location filename="../../Command.cpp" line="1026"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="982"/>
+      <location filename="../../Command.cpp" line="1027"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="983"/>
+      <location filename="../../Command.cpp" line="1028"/>
       <source>Splits a mesh into 2 meshes</source>
-      <translation type="unfinished">Splits a mesh into 2 meshes</translation>
+      <translation>Χωρίζει ένα πλέγμα σε 2 κομμάτια</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshPolyTrim</name>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
+      <location filename="../../Command.cpp" line="873"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="830"/>
+      <location filename="../../Command.cpp" line="874"/>
       <source>Trim</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="831"/>
+      <location filename="../../Command.cpp" line="875"/>
       <source>Trims a mesh with a selected polygon</source>
-      <translation type="unfinished">Trims a mesh with a selected polygon</translation>
+      <translation>Περικοπή του πλέγματος γύρω από ένα επιλεγμένο σχήμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="877"/>
       <source>Trims a mesh with a picked polygon</source>
       <translation>Περικόπτει τις ακμές ενός πλέγματος με ένα επιλεγμένο αντικείμενο</translation>
     </message>
@@ -423,181 +424,181 @@
   <context>
     <name>CmdMeshRemeshGmsh</name>
     <message>
-      <location filename="../../Command.cpp" line="1177"/>
+      <location filename="../../Command.cpp" line="1228"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1178"/>
+      <location filename="../../Command.cpp" line="1229"/>
       <source>Refinement</source>
-      <translation type="unfinished">Refinement</translation>
+      <translation>Εξομάλυνση Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1179"/>
+      <location filename="../../Command.cpp" line="1230"/>
       <source>Refines an existing mesh</source>
-      <translation type="unfinished">Refines an existing mesh</translation>
+      <translation>Βελτιώνει και στρώνει ένα υπάρχον πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveCompByHand</name>
     <message>
-      <location filename="../../Command.cpp" line="1211"/>
+      <location filename="../../Command.cpp" line="1262"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1212"/>
+      <location filename="../../Command.cpp" line="1263"/>
       <source>Remove Components Manually</source>
-      <translation type="unfinished">Remove Components Manually</translation>
+      <translation>Χειροκίνητη Αφαίρεση Τμημάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1213"/>
+      <location filename="../../Command.cpp" line="1264"/>
       <source>Marks a component to remove it from the mesh</source>
-      <translation type="unfinished">Marks a component to remove it from the mesh</translation>
+      <translation>Σημειώστε (μαρκάρετε) ένα κομμάτι για να το διαγράψετε από το πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshRemoveComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1129"/>
+      <location filename="../../Command.cpp" line="1180"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1130"/>
+      <location filename="../../Command.cpp" line="1181"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Αφαίρεση Τμημάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1131"/>
+      <location filename="../../Command.cpp" line="1182"/>
       <source>Removes topologically independent components from the mesh</source>
-      <translation type="unfinished">Removes topologically independent components from the mesh</translation>
+      <translation>Αφαιρεί κομμάτια του πλέγματος που δεν ενώνονται μεταξύ τους</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshScale</name>
     <message>
-      <location filename="../../Command.cpp" line="1779"/>
+      <location filename="../../Command.cpp" line="1852"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1780"/>
+      <location filename="../../Command.cpp" line="1853"/>
       <source>Scale</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1781"/>
+      <location filename="../../Command.cpp" line="1854"/>
       <source>Scales the selected mesh objects</source>
-      <translation type="unfinished">Scales the selected mesh objects</translation>
+      <translation>Αλλαγή μεγέθους των επιλεγμένων πλεγμάτων</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSectionByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="923"/>
+      <location filename="../../Command.cpp" line="969"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="924"/>
+      <location filename="../../Command.cpp" line="970"/>
       <source>Section From Plane</source>
-      <translation type="unfinished">Section From Plane</translation>
+      <translation>Τομή από Επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="925"/>
+      <location filename="../../Command.cpp" line="971"/>
       <source>Sections the mesh with the selected plane</source>
-      <translation type="unfinished">Sections the mesh with the selected plane</translation>
+      <translation>Δημιουργεί μια τομή στο πλέγμα χρησιμοποιώντας το επιλεγμένο επίπεδο</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentation</name>
     <message>
-      <location filename="../../Command.cpp" line="1614"/>
+      <location filename="../../Command.cpp" line="1683"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1684"/>
       <source>Segmentation</source>
       <translation>Κατάτμηση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1685"/>
       <source>Creates new mesh segments from the mesh</source>
-      <translation type="unfinished">Creates new mesh segments from the mesh</translation>
+      <translation>Δημιουργεί νέα, ξεχωριστά τμήματα από το πλέγμα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSegmentationBestFit</name>
     <message>
-      <location filename="../../Command.cpp" line="1650"/>
+      <location filename="../../Command.cpp" line="1720"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1651"/>
+      <location filename="../../Command.cpp" line="1721"/>
       <source>Segmentation From Best-Fit Surfaces</source>
-      <translation type="unfinished">Segmentation From Best-Fit Surfaces</translation>
+      <translation>Κατάτμηση Βάσει Επιφανειών Βέλτιστης Προσαρμογής</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1652"/>
+      <location filename="../../Command.cpp" line="1722"/>
       <source>Creates new mesh segments from the best-fit surfaces</source>
-      <translation type="unfinished">Creates new mesh segments from the best-fit surfaces</translation>
+      <translation>Δημιουργεί νέα τμήματα πλέγματος αναγνωρίζοντας αυτόματα τα σχήματά του</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSmoothing</name>
     <message>
-      <location filename="../../Command.cpp" line="1299"/>
+      <location filename="../../Command.cpp" line="1354"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1300"/>
+      <location filename="../../Command.cpp" line="1355"/>
       <source>Smooth</source>
-      <translation type="unfinished">Smooth</translation>
+      <translation>Λείανση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1301"/>
+      <location filename="../../Command.cpp" line="1356"/>
       <source>Smoothes the selected meshes</source>
-      <translation type="unfinished">Smoothes the selected meshes</translation>
+      <translation>Λειαίνει τα επιλεγμένα πλέγματα</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshSplitComponents</name>
     <message>
-      <location filename="../../Command.cpp" line="1731"/>
+      <location filename="../../Command.cpp" line="1803"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1732"/>
+      <location filename="../../Command.cpp" line="1804"/>
       <source>Split by Components</source>
-      <translation type="unfinished">Split by Components</translation>
+      <translation>Διαχωρισμός σε Μεμονωμένα Κομμάτια</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1733"/>
+      <location filename="../../Command.cpp" line="1805"/>
       <source>Splits the selected mesh into its components</source>
-      <translation type="unfinished">Splits the selected mesh into its components</translation>
+      <translation>Χωρίζει το επιλεγμένο πλέγμα στα κομμάτια από τα οποία αποτελείται</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshTrimByPlane</name>
     <message>
-      <location filename="../../Command.cpp" line="894"/>
+      <location filename="../../Command.cpp" line="940"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="895"/>
+      <location filename="../../Command.cpp" line="941"/>
       <source>Trim With Plane</source>
-      <translation type="unfinished">Trim With Plane</translation>
+      <translation>Περικοπή με Επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="896"/>
+      <location filename="../../Command.cpp" line="942"/>
       <source>Trims a mesh by removing faces on one side of a selected plane</source>
-      <translation type="unfinished">Trims a mesh by removing faces on one side of a selected plane</translation>
+      <translation>Περικόπτει το πλέγμα διαγράφοντας τις όψεις από τη μία πλευρά ενός επιλεγμένου επιπέδου</translation>
     </message>
   </context>
   <context>
@@ -615,23 +616,23 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Unifies the selected meshes</source>
-      <translation type="unfinished">Unifies the selected meshes</translation>
+      <translation>Ενοποίηση των επιλεγμένων πλεγμάτω</translation>
     </message>
   </context>
   <context>
     <name>CmdMeshVertexCurvature</name>
     <message>
-      <location filename="../../Command.cpp" line="553"/>
+      <location filename="../../Command.cpp" line="585"/>
       <source>Mesh</source>
       <translation>Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="554"/>
+      <location filename="../../Command.cpp" line="586"/>
       <source>Curvature Plot</source>
-      <translation type="unfinished">Curvature Plot</translation>
+      <translation>Διάγραμμα Καμπυλότητας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="555"/>
+      <location filename="../../Command.cpp" line="587"/>
       <source>Calculates the curvature of the vertices of a mesh</source>
       <translation>Υπολογίζει την καμπυλότητα των κορυφών ενός πλέγματος</translation>
     </message>
@@ -639,132 +640,132 @@
   <context>
     <name>CmdMeshVertexCurvatureInfo</name>
     <message>
-      <location filename="../../Command.cpp" line="608"/>
+      <location filename="../../Command.cpp" line="642"/>
       <source>Mesh</source>
       <translation>Πλέγμα (Mesh)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="609"/>
+      <location filename="../../Command.cpp" line="643"/>
       <source>Curvature Info</source>
-      <translation type="unfinished">Curvature Info</translation>
+      <translation>Πληροφορίες Καμπυλότητας</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="610"/>
+      <location filename="../../Command.cpp" line="644"/>
       <source>Displays information about the curvature</source>
-      <translation type="unfinished">Displays information about the curvature</translation>
+      <translation>Εμφανίζει πληροφορίες για την καμπυλότητα</translation>
     </message>
   </context>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="103"/>
+      <location filename="../../Command.cpp" line="104"/>
       <source>Mesh union</source>
       <translation>Ένωση πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="179"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Mesh difference</source>
       <translation>Διαφορά πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="257"/>
+      <location filename="../../Command.cpp" line="274"/>
       <source>Mesh intersection</source>
       <translation>Διατομή πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="352"/>
+      <location filename="../../Command.cpp" line="378"/>
       <source>Import Mesh</source>
       <translation>Εισαγωγή πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="570"/>
+      <location filename="../../Command.cpp" line="603"/>
       <source>Mesh VertexCurvature</source>
       <translation>Καμπυλότητα κορυφής πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../DlgSmoothing.cpp" line="170"/>
+      <location filename="../../DlgSmoothing.cpp" line="169"/>
       <source>Mesh Smoothing</source>
       <translation>Εξομάλυνση πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1372"/>
+      <location filename="../../Command.cpp" line="1428"/>
       <source>Harmonize mesh normals</source>
       <translation>Εναρμόνιση των κανονικών πλεγμάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1408"/>
+      <location filename="../../Command.cpp" line="1467"/>
       <source>Flip mesh normals</source>
       <translation>Αναδιπλούμενο πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1542"/>
+      <location filename="../../Command.cpp" line="1608"/>
       <source>Fill up holes</source>
       <translation>Γέμισμα οπών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1701"/>
+      <location filename="../../Command.cpp" line="1772"/>
       <source>Mesh merge</source>
       <translation>Συγχώνευση πλεγμάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1818"/>
       <source>Mesh split</source>
       <translation>Διαχωρισμός πλεγμάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1808"/>
+      <location filename="../../Command.cpp" line="1883"/>
       <source>Mesh scale</source>
       <translation>Κλίμακα πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="157"/>
+      <location filename="../../DlgDecimating.cpp" line="166"/>
       <source>Mesh Decimating</source>
       <translation>Μειώσει αριθμό κορυφών, ακμών και τριγώνων στο πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="548"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="552"/>
       <source>Harmonize normals</source>
       <translation>Εναρμόνιση καθέτων διανυσμάτων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="659"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="666"/>
       <source>Remove non-manifolds</source>
       <translation>Αφαιρέστε τα μη πολλαπλάσια</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="763"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="773"/>
       <source>Fix indices</source>
       <translation>Διόρθωση δεικτών</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="832"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="844"/>
       <source>Remove degenerated faces</source>
       <translation>Αφαίρεση εκφυλισμένων όψεων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="903"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="917"/>
       <source>Remove duplicated faces</source>
       <translation>Αφαίρεση διπλών όψεων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="972"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="987"/>
       <source>Remove duplicated points</source>
       <translation>Αφαίρεση διπλότυπων σημείων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1057"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1073"/>
       <source>Fix self-intersections</source>
       <translation>Διόρθωση Αυτό - διασταυρώσεων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1135"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1151"/>
       <source>Remove folds</source>
       <translation>Αφαίρεση πτυχών</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1179"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation type="unfinished">Repair Mesh</translation>
+      <translation>Επιδιόρθωση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -779,27 +780,27 @@
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="965"/>
-      <location filename="../../ViewProvider.cpp" line="1085"/>
+      <location filename="../../ViewProvider.cpp" line="1082"/>
       <source>Trim</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1172"/>
+      <location filename="../../ViewProvider.cpp" line="1167"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1245"/>
+      <location filename="../../ViewProvider.cpp" line="1242"/>
       <source>Segment</source>
       <translation>Τμήμα</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1847"/>
+      <location filename="../../ViewProvider.cpp" line="1872"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1973"/>
+      <location filename="../../ViewProvider.cpp" line="2001"/>
       <source>Fill hole</source>
       <translation>Γέμισμα οπής</translation>
     </message>
@@ -828,7 +829,7 @@
     </message>
     <message>
       <location filename="../../DlgDecimating.ui" line="66"/>
-      <location filename="../../DlgDecimating.cpp" line="102"/>
+      <location filename="../../DlgDecimating.cpp" line="107"/>
       <source>Absolute number</source>
       <translation>Απόλυτος αριθμός</translation>
     </message>
@@ -838,7 +839,7 @@
       <translation>Ανοχή</translation>
     </message>
     <message>
-      <location filename="../../DlgDecimating.cpp" line="96"/>
+      <location filename="../../DlgDecimating.cpp" line="101"/>
       <source>Absolute number (Maximum: %1)</source>
       <translation>Απόλυτος αριθμός (Μέγιστο: %1)</translation>
     </message>
@@ -863,17 +864,17 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="745"/>
       <source>Mesh Information</source>
-      <translation type="unfinished">Mesh Information</translation>
+      <translation>Πληροφορίες Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="772"/>
       <source>Number of faces</source>
-      <translation type="unfinished">Number of faces</translation>
+      <translation>Αριθμός Όψεων</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="805"/>
       <source>Number of edges</source>
-      <translation type="unfinished">Number of edges</translation>
+      <translation>Αριθμός ακμών</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
@@ -888,7 +889,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="14"/>
       <source>Evaluate and Repair Mesh</source>
-      <translation type="unfinished">Evaluate and Repair Mesh</translation>
+      <translation>Έλεγχος και Eπιδιόρθωση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="37"/>
@@ -970,16 +971,12 @@
   <context>
     <name>MeshGui::DlgEvaluateMeshImp</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="253"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="420"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="255"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="424"/>
       <source>No selection</source>
       <translation>Καμία επιλογή</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="450"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="451"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="452"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="453"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="454"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="455"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="456"/>
@@ -987,149 +984,153 @@
       <location filename="../../DlgEvaluateMeshImp.cpp" line="458"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="459"/>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="460"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="461"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="462"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="463"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="464"/>
       <source>No information</source>
       <translation>Καμία πληροφορία</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="556"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="562"/>
       <source>Orientation</source>
       <translation>Προσανατολισμός</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="524"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="528"/>
       <source>No flipped normals</source>
       <translation>Κανένα αντεστραμμένο κάθετο διάνυσμα</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="141"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="142"/>
       <source>Settings</source>
       <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="530"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="534"/>
       <source>%1 flipped normals</source>
       <translation>%1 αντεστραμμένα κάθετα διανύσματα</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="616"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="622"/>
       <source>No non-manifolds</source>
       <translation>Κανένα μη-πολλαπλό</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="624"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="630"/>
       <source>%1 non-manifolds</source>
       <translation>%1 μη-πολλαπλά</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="675"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="685"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Non-manifolds</source>
       <translation>Μη-πολλαπλά</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="678"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="688"/>
       <source>Cannot remove non-manifolds</source>
       <translation>Αδυναμία αφαίρεσης των μη-πολλαπλών</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="718"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="728"/>
       <source>Invalid face indices</source>
       <translation>Μη έγκυροι δείκτες όψεων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="725"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="735"/>
       <source>Invalid point indices</source>
       <translation>Μη έγκυροι δείκτες σημείων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="732"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="742"/>
       <source>Multiple point indices</source>
       <translation>Πολλαπλοί δείκτες σημείων</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="739"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="749"/>
       <source>Invalid neighbour indices</source>
       <translation>Μη έγκυροι γειτονικοί δείκτες</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="746"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="756"/>
       <source>No invalid indices</source>
       <translation>Κανένας μη έγκυρος δείκτης</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="771"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="783"/>
       <source>Indices</source>
       <translation>Δείκτες</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="808"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="820"/>
       <source>No degenerations</source>
       <translation>Κανένας εκφυλισμός</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="814"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="826"/>
       <source>%1 degenerated faces</source>
       <translation>%1 εκφυλισμένες όψεις</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="841"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="855"/>
       <source>Degenerations</source>
       <translation>Εκφυλισμοί</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="878"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="892"/>
       <source>No duplicated faces</source>
       <translation>Καμία διπλή όψη</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="884"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="898"/>
       <source>%1 duplicated faces</source>
       <translation>%1 διπλές όψεις</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="912"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="927"/>
       <source>Duplicated faces</source>
       <translation>Διπλές όψεις</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="948"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="963"/>
       <source>No duplicated points</source>
       <translation>Κανένα διπλό σημείο</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="954"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="981"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="969"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="997"/>
       <source>Duplicated points</source>
       <translation>Διπλά σημεία</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1024"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1040"/>
       <source>No self-intersections</source>
       <translation>Χωρίς αυτοτομές</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1030"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1046"/>
       <source>Self-intersections</source>
       <translation>Αυτοτομές</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1100"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
       <source>No folds on surface</source>
       <translation>Καμία πτύχωση στην επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1116"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1132"/>
       <source>%1 folds on surface</source>
       <translation>%1 πτυχώσεις στην επιφάνεια</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1144"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1161"/>
       <source>Folds</source>
       <translation>Πτυχώσεις</translation>
     </message>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1278"/>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1281"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1295"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1298"/>
       <source>Mesh repair</source>
       <translation>Επισκευή πλέγματος</translation>
     </message>
@@ -1139,7 +1140,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="14"/>
       <source>Evaluation Settings</source>
-      <translation type="unfinished">Evaluation Settings</translation>
+      <translation>Ρυθμίσεις Ελέγχου</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
@@ -1231,7 +1232,7 @@
       <location filename="../../DlgRegularSolid.ui" line="273"/>
       <location filename="../../DlgRegularSolid.ui" line="424"/>
       <source>Edge length</source>
-      <translation type="unfinished">Edge length</translation>
+      <translation>Μήκος Ακμής</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="293"/>
@@ -1240,21 +1241,21 @@
       <location filename="../../DlgRegularSolid.ui" line="642"/>
       <location filename="../../DlgRegularSolid.ui" line="746"/>
       <source>Sampling</source>
-      <translation type="unfinished">Sampling</translation>
+      <translation>Δειγματοληψία</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="353"/>
       <location filename="../../DlgRegularSolid.ui" line="588"/>
       <location filename="../../DlgRegularSolid.ui" line="692"/>
       <source>Radius 1</source>
-      <translation type="unfinished">Radius 1</translation>
+      <translation>Ακτίνα 1</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="370"/>
       <location filename="../../DlgRegularSolid.ui" line="605"/>
       <location filename="../../DlgRegularSolid.ui" line="709"/>
       <source>Radius 2</source>
-      <translation type="unfinished">Radius 2</translation>
+      <translation>Ακτίνα 2</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="307"/>
@@ -1356,7 +1357,7 @@
       <translation>Ύψος</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsImportExportImp.cpp" line="40"/>
+      <location filename="../../DlgSettingsImportExportImp.cpp" line="41"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
       <translation>Αυτή η παράμετρος υποδεικνύει αν χρησιμοποιείται η συμπίεση ZIP όταν γράφετε ένα αρχείο σε μορφή AMF</translation>
@@ -1442,12 +1443,12 @@ is used when writing a file in AMF format</source>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="14"/>
       <source>Mesh View</source>
-      <translation type="unfinished">Mesh View</translation>
+      <translation>Προβολή Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="35"/>
       <source>Default Appearance for New Meshes</source>
-      <translation type="unfinished">Default Appearance for New Meshes</translation>
+      <translation>Προεπιλεγμένη Εμφάνιση Νέων Πλεγμάτων</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeshView.ui" line="251"/>
@@ -1521,12 +1522,12 @@ to a smoother appearance.
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
       <source>Lambda</source>
-      <translation type="unfinished">Lambda</translation>
+      <translation>Λάμδα</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="95"/>
       <source>Mu</source>
-      <translation type="unfinished">Mu</translation>
+      <translation>Mu</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="118"/>
@@ -1537,53 +1538,53 @@ to a smoother appearance.
   <context>
     <name>MeshGui::GmshWidget</name>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="99"/>
+      <location filename="../../RemeshGmsh.cpp" line="100"/>
       <source>Automatic</source>
       <translation>Αυτόματη</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="100"/>
+      <location filename="../../RemeshGmsh.cpp" line="101"/>
       <source>Adaptive</source>
       <translation>Προσαρμοσμένο</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="102"/>
+      <location filename="../../RemeshGmsh.cpp" line="103"/>
       <source>Frontal</source>
       <translation>Μετωπικό</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="105"/>
+      <location filename="../../RemeshGmsh.cpp" line="106"/>
       <source>Parallelograms</source>
       <translation>Παραλληλόγραμμα</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="104"/>
+      <location filename="../../RemeshGmsh.cpp" line="105"/>
       <source>Frontal quad</source>
-      <translation type="unfinished">Frontal quad</translation>
+      <translation>Εμπρόσθιο τετράπλευρο</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="106"/>
+      <location filename="../../RemeshGmsh.cpp" line="107"/>
       <source>Quasi-structured quad</source>
-      <translation type="unfinished">Quasi-structured quad</translation>
+      <translation>Ημι-δομημένο τετράπλευρο</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="200"/>
-      <location filename="../../RemeshGmsh.cpp" line="258"/>
+      <location filename="../../RemeshGmsh.cpp" line="201"/>
+      <location filename="../../RemeshGmsh.cpp" line="259"/>
       <source>Time:</source>
       <translation>Ώρα:</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="246"/>
+      <location filename="../../RemeshGmsh.cpp" line="247"/>
       <source>Running Gmsh…</source>
-      <translation type="unfinished">Running Gmsh…</translation>
+      <translation>Εκτέλεση του Gmsh…</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="269"/>
+      <location filename="../../RemeshGmsh.cpp" line="270"/>
       <source>Failed to start</source>
       <translation>Αποτυχία εκκίνησης</translation>
     </message>
     <message>
-      <location filename="../../RemeshGmsh.cpp" line="276"/>
+      <location filename="../../RemeshGmsh.cpp" line="277"/>
       <source>Error</source>
       <translation>Σφάλμα</translation>
     </message>
@@ -1591,22 +1592,22 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFaceAddition</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="395"/>
+      <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation type="unfinished">Add Triangle</translation>
+      <translation>Προσθήκη Τριγώνου</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="396"/>
+      <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Flip Normal</source>
-      <translation type="unfinished">Flip Normal</translation>
+      <translation>Αναστροφή Όψης</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="397"/>
+      <location filename="../../MeshEditor.cpp" line="395"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="../../MeshEditor.cpp" line="413"/>
+      <location filename="../../MeshEditor.cpp" line="411"/>
       <source>Finish</source>
       <translation>Ολοκλήρωση</translation>
     </message>
@@ -1614,7 +1615,7 @@ to a smoother appearance.
   <context>
     <name>MeshGui::MeshFillHole</name>
     <message>
-      <location filename="../../MeshEditor.cpp" line="766"/>
+      <location filename="../../MeshEditor.cpp" line="762"/>
       <source>Finish</source>
       <translation>Ολοκλήρωση</translation>
     </message>
@@ -1622,47 +1623,47 @@ to a smoother appearance.
   <context>
     <name>MeshGui::ParametersDialog</name>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="172"/>
+      <location filename="../../SegmentationBestFit.cpp" line="176"/>
       <source>Surface Fit</source>
-      <translation type="unfinished">Surface Fit</translation>
+      <translation>Προσαρμογή Επιφάνειας</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="179"/>
+      <location filename="../../SegmentationBestFit.cpp" line="183"/>
       <source>Parameters</source>
       <translation>Παράμετροι</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="184"/>
+      <location filename="../../SegmentationBestFit.cpp" line="188"/>
       <source>Selection</source>
       <translation>Επιλογή</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="192"/>
+      <location filename="../../SegmentationBestFit.cpp" line="196"/>
       <source>Region</source>
       <translation>Περιοχή</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="198"/>
+      <location filename="../../SegmentationBestFit.cpp" line="202"/>
       <source>Triangle</source>
       <translation>Τρίγωνο</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="204"/>
+      <location filename="../../SegmentationBestFit.cpp" line="208"/>
       <source>Clear</source>
       <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="210"/>
+      <location filename="../../SegmentationBestFit.cpp" line="214"/>
       <source>Compute</source>
       <translation>Υπολογισμός</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="305"/>
+      <location filename="../../SegmentationBestFit.cpp" line="308"/>
       <source>No selection</source>
       <translation>Καμία επιλογή</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="306"/>
+      <location filename="../../SegmentationBestFit.cpp" line="308"/>
       <source>Before fitting the surface select an area.</source>
       <translation>Πριν την τοποθέτηση της επιφάνειας επιλέξτε μια περιοχή.</translation>
     </message>
@@ -1687,12 +1688,12 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
       <source>Max element size (0.0 = Auto)</source>
-      <translation type="unfinished">Max element size (0.0 = Auto)</translation>
+      <translation>Μέγιστο μέγεθος στοιχείου (0.0 = Αυτόματα)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="68"/>
       <source>Min element size (0.0 = Auto)</source>
-      <translation type="unfinished">Min element size (0.0 = Auto)</translation>
+      <translation>Ελάχιστο μέγεθος στοιχείου (0.0 = Αυτόματα)</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="94"/>
@@ -1712,7 +1713,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="141"/>
       <source>Leave empty to use default gmsh executable</source>
-      <translation type="unfinished">Leave empty to use default gmsh executable</translation>
+      <translation>Αφήστε το κενό για χρήση του προεπιλεγμένου εκτελέσιμου αρχείου Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="157"/>
@@ -1722,7 +1723,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemeshGmsh.ui" line="184"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Χρόνος</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="191"/>
@@ -1735,7 +1736,7 @@ to a smoother appearance.
     <message>
       <location filename="../../RemoveComponents.ui" line="14"/>
       <source>Remove Components</source>
-      <translation type="unfinished">Remove Components</translation>
+      <translation>Αφαίρεση Τμημάτων</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="20"/>
@@ -1769,17 +1770,17 @@ to a smoother appearance.
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Επιλογή Τριγώνου</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Επιλογές Περιοχής</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Να επηρεάζονται μόνο οι επιφάνειες που βλέπω στην οθόνη</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1812,7 +1813,7 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Διαχωρισμός Πλέγματος σε Τμήματα</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1854,22 +1855,22 @@ to a smoother appearance.
     <message>
       <location filename="../../Segmentation.ui" line="109"/>
       <source>Tolerance (flat)</source>
-      <translation type="unfinished">Tolerance (flat)</translation>
+      <translation>Ανοχή Επιπεδότητας</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="126"/>
       <source>Tolerance (curved)</source>
-      <translation type="unfinished">Tolerance (curved)</translation>
+      <translation>Ανοχή Καμπυλότητας</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="235"/>
       <source>Maximum curvature</source>
-      <translation type="unfinished">Maximum curvature</translation>
+      <translation>Μέγιστη καμπυλότητα</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="269"/>
       <source>Minimum curvature</source>
-      <translation type="unfinished">Minimum curvature</translation>
+      <translation>Ελάχιστη καμπυλότητα</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="163"/>
@@ -1892,7 +1893,7 @@ to a smoother appearance.
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Διαχωρισμός Πλέγματος σε Τμήματα</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
@@ -1926,29 +1927,29 @@ to a smoother appearance.
       <translation>Σφαίρα</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="374"/>
-      <location filename="../../SegmentationBestFit.cpp" line="399"/>
+      <location filename="../../SegmentationBestFit.cpp" line="376"/>
+      <location filename="../../SegmentationBestFit.cpp" line="401"/>
       <source>Base</source>
       <translation>Βάση</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="375"/>
+      <location filename="../../SegmentationBestFit.cpp" line="377"/>
       <source>Normal</source>
       <translation>Κανονικό</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="400"/>
+      <location filename="../../SegmentationBestFit.cpp" line="402"/>
       <source>Axis</source>
       <translation>Άξονας</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="401"/>
-      <location filename="../../SegmentationBestFit.cpp" line="428"/>
+      <location filename="../../SegmentationBestFit.cpp" line="403"/>
+      <location filename="../../SegmentationBestFit.cpp" line="429"/>
       <source>Radius</source>
       <translation>Ακτίνα</translation>
     </message>
     <message>
-      <location filename="../../SegmentationBestFit.cpp" line="427"/>
+      <location filename="../../SegmentationBestFit.cpp" line="428"/>
       <source>Center</source>
       <translation>Κέντρο</translation>
     </message>
@@ -1974,12 +1975,12 @@ to a smoother appearance.
     <message>
       <location filename="../../Selection.ui" line="53"/>
       <source>Accept only visible triangles</source>
-      <translation type="unfinished">Accept only visible triangles</translation>
+      <translation>Επιλογή μόνο των ορατών τριγώνων</translation>
     </message>
     <message>
       <location filename="../../Selection.ui" line="63"/>
       <source>Accept only triangles with screen-facing normals</source>
-      <translation type="unfinished">Accept only triangles with screen-facing normals</translation>
+      <translation>Επιλογή μόνο των τριγώνων που κοιτάζουν προς την οθόνη</translation>
     </message>
     <message>
       <location filename="../../Selection.cpp" line="87"/>
@@ -2019,7 +2020,7 @@ to a smoother appearance.
   <context>
     <name>Mesh_BoundingBox</name>
     <message>
-      <location filename="../../Command.cpp" line="1456"/>
+      <location filename="../../Command.cpp" line="1520"/>
       <source>Boundings of %1:</source>
       <translation>Ορεοθέτηση του %1:</translation>
     </message>
@@ -2027,36 +2028,36 @@ to a smoother appearance.
   <context>
     <name>Mesh_Union</name>
     <message>
-      <location filename="../../Command.cpp" line="138"/>
-      <location filename="../../Command.cpp" line="143"/>
-      <location filename="../../Command.cpp" line="216"/>
-      <location filename="../../Command.cpp" line="221"/>
-      <location filename="../../Command.cpp" line="294"/>
-      <location filename="../../Command.cpp" line="299"/>
+      <location filename="../../Command.cpp" line="141"/>
+      <location filename="../../Command.cpp" line="148"/>
+      <location filename="../../Command.cpp" line="227"/>
+      <location filename="../../Command.cpp" line="234"/>
+      <location filename="../../Command.cpp" line="313"/>
+      <location filename="../../Command.cpp" line="320"/>
       <source>OpenSCAD</source>
       <translation>OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="139"/>
-      <location filename="../../Command.cpp" line="217"/>
-      <location filename="../../Command.cpp" line="295"/>
+      <location filename="../../Command.cpp" line="142"/>
+      <location filename="../../Command.cpp" line="228"/>
+      <location filename="../../Command.cpp" line="314"/>
       <source>Unknown error occurred while running OpenSCAD.</source>
       <translation>Προέκυψε άγνωστο σφάλμα κατά την εκτέλεση του OpenSCAD.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
-      <location filename="../../Command.cpp" line="222"/>
-      <location filename="../../Command.cpp" line="300"/>
+      <location filename="../../Command.cpp" line="149"/>
+      <location filename="../../Command.cpp" line="235"/>
+      <location filename="../../Command.cpp" line="321"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation type="unfinished">OpenSCAD cannot be found on the system.
-Visit https://openscad.org/ to install it.</translation>
+      <translation>Το OpenSCAD δεν βρέθηκε στο σύστημα.
+Επισκεφθείτε τη διεύθυνση https://openscad.org/ για να το εγκαταστήσετε.</translation>
     </message>
   </context>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../../DlgEvaluateMeshImp.cpp" line="1328"/>
+      <location filename="../../DlgEvaluateMeshImp.cpp" line="1345"/>
       <source>Evaluate &amp; Repair Mesh</source>
       <translation>Αξιολόγηση &amp; Επισκευή Πλέγματος</translation>
     </message>
@@ -2069,238 +2070,238 @@ Visit https://openscad.org/ to install it.</translation>
       <translation>Απεικόνιση</translation>
     </message>
     <message>
-      <location filename="../../AppMeshGui.cpp" line="158"/>
+      <location filename="../../AppMeshGui.cpp" line="159"/>
       <source>Import-Export</source>
       <translation>Εισαγωγή-Εξαγωγή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="333"/>
+      <location filename="../../Command.cpp" line="357"/>
       <source>All Mesh Files</source>
       <translation>Όλα τα Αρχεία Πλεγμάτων</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="334"/>
-      <location filename="../../Command.cpp" line="394"/>
+      <location filename="../../Command.cpp" line="358"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Binary STL</source>
       <translation>Δυαδικό STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="335"/>
-      <location filename="../../Command.cpp" line="395"/>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="359"/>
+      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="423"/>
       <source>ASCII STL</source>
       <translation>ASCII STL</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="336"/>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="360"/>
+      <location filename="../../Command.cpp" line="424"/>
       <source>Binary Mesh</source>
       <translation>Πλέγμα Δυαδικού Συστήματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="337"/>
-      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="361"/>
+      <location filename="../../Command.cpp" line="425"/>
       <source>Alias Mesh</source>
       <translation>Πλέγμα Alias</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="338"/>
-      <location filename="../../Command.cpp" line="400"/>
+      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="427"/>
       <source>Object File Format</source>
       <translation>Μορφή Αρχείου Αντικειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="363"/>
       <source>Inventor V2.1 ASCII</source>
       <translation>Εφευρέτης V2.1 ASCII</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
-      <location filename="../../Command.cpp" line="405"/>
+      <location filename="../../Command.cpp" line="364"/>
+      <location filename="../../Command.cpp" line="432"/>
       <source>Stanford Polygon</source>
       <translation>Πολύγωνο Stanford</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="365"/>
       <source>NASTRAN</source>
       <translation>NASTRAN</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="342"/>
-      <location filename="../../Command.cpp" line="412"/>
+      <location filename="../../Command.cpp" line="366"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>All Files</source>
       <translation>Όλα τα Αρχεία</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="346"/>
+      <location filename="../../Command.cpp" line="371"/>
       <source>Import Mesh</source>
       <translation>Εισαγωγή πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="399"/>
+      <location filename="../../Command.cpp" line="426"/>
       <source>Simple Model Format</source>
       <translation>Απλή μορφή μοντέλου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="401"/>
+      <location filename="../../Command.cpp" line="428"/>
       <source>Inventor V2.1 ascii</source>
       <translation>Inventor V2.1 ascii</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="402"/>
+      <location filename="../../Command.cpp" line="429"/>
       <source>X3D Extensible 3D</source>
       <translation>X3D Επεκτάσιμο 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="403"/>
+      <location filename="../../Command.cpp" line="430"/>
       <source>Compressed X3D</source>
       <translation>Συμπιεσμένο X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="404"/>
+      <location filename="../../Command.cpp" line="431"/>
       <source>WebGL/X3D</source>
       <translation>WebGL/X3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="406"/>
+      <location filename="../../Command.cpp" line="433"/>
       <source>VRML V2.0</source>
       <translation>VRML V2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="434"/>
       <source>Compressed VRML 2.0</source>
       <translation>Συμπιεσμένο VRML 2.0</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="408"/>
+      <location filename="../../Command.cpp" line="435"/>
       <source>Nastran</source>
       <translation>Nastran</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="409"/>
+      <location filename="../../Command.cpp" line="436"/>
       <source>Python module def</source>
       <translation>Ορισμός λειτουργικής μονάδας Python</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="410"/>
+      <location filename="../../Command.cpp" line="437"/>
       <source>Asymptote Format</source>
       <translation>Ασύμπτωτη Μορφή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="411"/>
+      <location filename="../../Command.cpp" line="438"/>
       <source>3D Manufacturing Format</source>
       <translation>Μορφή Παραγωγής 3D</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="421"/>
+      <location filename="../../Command.cpp" line="449"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>Εξαγωγή Πλέγματος</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="467"/>
+      <location filename="../../Command.cpp" line="498"/>
       <source>Meshing Tolerance</source>
       <translation>Ανοχή Πλεγματοποίησης</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="468"/>
+      <location filename="../../Command.cpp" line="499"/>
       <source>Enter tolerance for meshing geometry:</source>
       <translation>Εισάγετε ανοχή για την γεωμετρία πλεγματοποίησης:</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1274"/>
+      <location filename="../../Command.cpp" line="1329"/>
       <source>The mesh '%1' is not a solid.</source>
       <translation>Το πλέγμα '%1' δεν είναι στερεό.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1278"/>
+      <location filename="../../Command.cpp" line="1333"/>
       <source>The mesh '%1' is a solid.</source>
       <translation>Το πλέγμα '%1' είναι στερεό.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1281"/>
+      <location filename="../../Command.cpp" line="1336"/>
       <source>Solid Mesh</source>
       <translation>Στερεό Πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1465"/>
+      <location filename="../../Command.cpp" line="1529"/>
       <source>Boundings</source>
       <translation>Οριοθετήσεις</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1531"/>
+      <location filename="../../Command.cpp" line="1596"/>
       <source>Fill Holes</source>
-      <translation type="unfinished">Fill Holes</translation>
+      <translation>Γέμισμα Οπών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1532"/>
+      <location filename="../../Command.cpp" line="1597"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>Γέμισμα οπών με μέγιστο αριθμό ακμών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1796"/>
+      <location filename="../../Command.cpp" line="1870"/>
       <source>Scaling</source>
       <translation>Κλίμακα</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1797"/>
+      <location filename="../../Command.cpp" line="1871"/>
       <source>Enter scaling factor:</source>
       <translation>Εισάγετε συντελεστή κλίμακας:</translation>
     </message>
     <message>
-      <location filename="../../PropertyEditorMesh.cpp" line="78"/>
+      <location filename="../../PropertyEditorMesh.cpp" line="81"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
       <translation>[Σημεία: %1, Ακμές: %2, Όψεις: %3]</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="794"/>
+      <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>Εμφάνιση Τμημάτων</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="802"/>
+      <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>Εμφάνιση Ξεχωριστών Τμημάτων</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="810"/>
+      <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>Εμφάνιση Χρωμάτων</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1680"/>
-      <location filename="../../ViewProviderCurvature.cpp" line="539"/>
+      <location filename="../../ViewProvider.cpp" line="1701"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="535"/>
       <source>Leave Info Mode</source>
-      <translation type="unfinished">Leave Info Mode</translation>
+      <translation>Έξοδος από τη Λειτουργία Πληροφοριών</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1747"/>
+      <location filename="../../ViewProvider.cpp" line="1771"/>
       <source>Index: %1</source>
       <translation>Δείκτης: %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1773"/>
+      <location filename="../../ViewProvider.cpp" line="1799"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>Έξοδος από την Λειτουργία Γεμίσματος Οπών</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1821"/>
+      <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>Έξοδος από την Λειτουργία Αφαίρεσης</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1822"/>
+      <location filename="../../ViewProvider.cpp" line="1847"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>Διαγραφή των Επιλεγμένων Όψεων</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="1823"/>
+      <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>Εκκαθάριση των Επιλεγμένων Όψεων</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCurvature.cpp" line="536"/>
+      <location filename="../../ViewProviderCurvature.cpp" line="532"/>
       <source>Annotation</source>
-      <translation>Σχολιασμός</translation>
+      <translation>Περιγραφή</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
@@ -2310,27 +2311,27 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>Αριθμός εδρών</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>Ελάχιστο όριο</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>Μέγιστο όριο</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation>Πλαίσιο Πληροφοριών Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>Πληροφορίες πλέγματος</translation>
     </message>
   </context>
   <context>
@@ -2358,12 +2359,12 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>Εργαλεία πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>Τροποποίηση Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -2373,17 +2374,17 @@ Visit https://openscad.org/ to install it.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>Κοπή Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Τμηματοποίηση πλέγματος</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>Ανάλυση πλέγματος</translation>
     </message>
   </context>
 </TS>

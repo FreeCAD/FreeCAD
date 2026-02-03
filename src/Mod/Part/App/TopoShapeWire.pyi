@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import export, constmethod
 from TopoShape import TopoShape
 from typing import Dict, List, Final, overload, Optional
@@ -85,14 +89,14 @@ class TopoShapeWire(TopoShape):
         """
         ...
 
-    def add(self, edge: object) -> None:
+    def add(self, edge: object, /) -> None:
         """
         Add an edge to the wire
         add(edge)
         """
         ...
 
-    def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None) -> None:
+    def fixWire(self, face: Optional[object] = None, tolerance: Optional[float] = None, /) -> None:
         """
         Fix wire
         fixWire([face, tolerance])
@@ -102,7 +106,7 @@ class TopoShapeWire(TopoShape):
         ...
 
     @constmethod
-    def makeHomogenousWires(self, wire: object) -> object:
+    def makeHomogenousWires(self, wire: object, /) -> object:
         """
         Make this and the given wire homogeneous to have the same number of edges
         makeHomogenousWires(wire) -> Wire
@@ -110,7 +114,7 @@ class TopoShapeWire(TopoShape):
         ...
 
     @constmethod
-    def makePipe(self, profile: object) -> object:
+    def makePipe(self, profile: object, /) -> object:
         """
         Make a pipe by sweeping along a wire.
         makePipe(profile) -> Shape
@@ -124,6 +128,7 @@ class TopoShapeWire(TopoShape):
         isSolid: bool = False,
         isFrenet: bool = False,
         transition: int = 0,
+        /,
     ) -> object:
         """
         Make a loft defined by a list of profiles along a wire.
@@ -136,9 +141,9 @@ class TopoShapeWire(TopoShape):
     @constmethod
     def makeEvolved(
         self,
-        *,
         Profile: TopoShape,
         Join: int,
+        *,
         AxeProf: bool,
         Solid: bool,
         ProfOnSpine: bool,
@@ -152,7 +157,6 @@ class TopoShapeWire(TopoShape):
     @constmethod
     def approximate(
         self,
-        *,
         Tol2d: float = None,
         Tol3d: float = 0.0001,
         MaxSegments: int = 10,

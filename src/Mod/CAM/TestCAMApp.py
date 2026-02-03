@@ -25,9 +25,16 @@
 import TestApp
 
 from CAMTests.TestCAMSanity import TestCAMSanity
+from CAMTests.TestLinkingGenerator import TestGetLinkingMoves
+from CAMTests.TestMachine import (
+    TestMachineDataclass,
+    TestMachineFactory,
+    TestSpindle,
+)
 from CAMTests.TestPathProfile import TestPathProfile
 
 from CAMTests.TestPathAdaptive import TestPathAdaptive
+from CAMTests.TestPathCommandAnnotations import TestPathCommandAnnotations
 from CAMTests.TestPathCore import TestPathCore
 from CAMTests.TestPathDepthParams import depthTestCases
 from CAMTests.TestPathDressupDogbone import TestDressupDogbone
@@ -35,6 +42,7 @@ from CAMTests.TestPathDressupDogboneII import TestDressupDogboneII
 from CAMTests.TestPathDressupHoldingTags import TestHoldingTags
 from CAMTests.TestPathDrillable import TestPathDrillable
 from CAMTests.TestPathDrillGenerator import TestPathDrillGenerator
+from CAMTests.TestPathFacingGenerator import TestPathFacingGenerator
 from CAMTests.TestPathGeneratorDogboneII import TestGeneratorDogboneII
 from CAMTests.TestPathGeom import TestPathGeom
 from CAMTests.TestPathLanguage import TestPathLanguage
@@ -72,6 +80,7 @@ from CAMTests.TestPathToolAssetManager import TestPathToolAssetManager
 from CAMTests.TestPathToolAssetStore import TestPathToolFileStore, TestPathToolMemoryStore
 from CAMTests.TestPathToolAssetUri import TestPathToolAssetUri
 from CAMTests.TestPathToolBit import TestPathToolBit
+from CAMTests.TestToolBitRecomputeState import TestToolBitRecomputeState
 from CAMTests.TestPathToolShapeClasses import TestPathToolShapeClasses
 from CAMTests.TestPathToolShapeDoc import TestPathToolShapeDoc
 from CAMTests.TestPathToolShapeIcon import (
@@ -91,22 +100,26 @@ from CAMTests.TestPathToolLibrarySerializer import (
 )
 from CAMTests.TestPathToolChangeGenerator import TestPathToolChangeGenerator
 from CAMTests.TestPathToolController import TestPathToolController
-from CAMTests.TestPathToolMachine import TestPathToolMachine
 from CAMTests.TestPathUtil import TestPathUtil
 from CAMTests.TestPathVcarve import TestPathVcarve
 from CAMTests.TestPathVoronoi import TestPathVoronoi
 
-from CAMTests.TestCentroidPost import TestCentroidPost
-from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestGenericPost import TestGenericPost
 from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
+from CAMTests.TestFanucPost import TestFanucPost
+from CAMTests.TestGrblPost import TestGrblPost
+from CAMTests.TestMassoG3Post import TestMassoG3Post
+from CAMTests.TestCentroidPost import TestCentroidPost
 from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
-from CAMTests.TestRefactoredCentroidPost import TestRefactoredCentroidPost
-from CAMTests.TestRefactoredGrblPost import TestRefactoredGrblPost
-from CAMTests.TestRefactoredLinuxCNCPost import TestRefactoredLinuxCNCPost
-from CAMTests.TestRefactoredMassoG3Post import TestRefactoredMassoG3Post
-from CAMTests.TestRefactoredMach3Mach4Post import TestRefactoredMach3Mach4Post
-from CAMTests.TestRefactoredTestDressupPost import TestRefactoredTestDressupPost
-from CAMTests.TestRefactoredTestPost import TestRefactoredTestPost
-from CAMTests.TestRefactoredTestPostGCodes import TestRefactoredTestPostGCodes
-from CAMTests.TestRefactoredTestPostMCodes import TestRefactoredTestPostMCodes
+from CAMTests.TestTestPost import TestTestPost
+from CAMTests.TestPostGCodes import TestPostGCodes
+from CAMTests.TestPostMCodes import TestPostMCodes
+from CAMTests.TestDressupPost import TestDressupPost
+
+from CAMTests.TestLinuxCNCLegacyPost import TestLinuxCNCLegacyPost
+from CAMTests.TestGrblLegacyPost import TestGrblLegacyPost
+from CAMTests.TestCentroidLegacyPost import TestCentroidLegacyPost
+from CAMTests.TestMach3Mach4LegacyPost import TestMach3Mach4LegacyPost
+
 from CAMTests.TestSnapmakerPost import TestSnapmakerPost
+from CAMTests.TestTSPSolver import TestTSPSolver

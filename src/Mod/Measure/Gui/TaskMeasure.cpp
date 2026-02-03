@@ -131,10 +131,10 @@ TaskMeasure::TaskMeasure()
 
     // Create mode dropdown and add all registered measuretypes
     modeSwitch = new QComboBox();
-    modeSwitch->addItem(QStringLiteral("Auto"));
+    modeSwitch->addItem(tr("Auto"));
 
     for (App::MeasureType* mType : App::MeasureManager::getMeasureTypes()) {
-        modeSwitch->addItem(QString::fromLatin1(mType->label.c_str()));
+        modeSwitch->addItem(tr(mType->label.c_str()));
     }
 
     // Connect dropdown's change signal to our onModeChange slot
@@ -348,6 +348,7 @@ void TaskMeasure::tryUpdate()
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
+    _mMeasureObject->purgeTouched();
 }
 
 
@@ -402,6 +403,7 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
     }
 
     group->addObject(measurement);
+    group->purgeTouched();
 }
 
 

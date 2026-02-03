@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Jürgen Riegel <juergen.riegel@web.de>              *
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -30,6 +32,7 @@
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
 #include <Base/Tools.h>
 #include <Base/Writer.h>
 
@@ -203,13 +206,6 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
-/**
- * @brief Set this document object touched.
- * Touching a document object does not mean to recompute it, it only means that
- * other document objects that link it (i.e. its InList) will be recomputed.
- * If it should be forced to recompute a document object then use
- * \ref enforceRecompute() instead.
- */
 void DocumentObject::touch(bool noRecompute)
 {
     if (!noRecompute) {
@@ -221,10 +217,6 @@ void DocumentObject::touch(bool noRecompute)
     }
 }
 
-/**
- * @brief Set this document object freezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::freeze()
 {
     StatusBits.set(ObjectStatus::Freeze);
@@ -247,10 +239,6 @@ void DocumentObject::freeze()
     }
 }
 
-/**
- * @brief Set this document object unfreezed.
- * A freezed document object does not recompute ever.
- */
 void DocumentObject::unfreeze(bool noRecompute)
 {
     StatusBits.reset(ObjectStatus::Freeze);
@@ -268,31 +256,16 @@ void DocumentObject::unfreeze(bool noRecompute)
     touch(noRecompute);
 }
 
-/**
- * @brief Check whether the document object is touched or not.
- * @return true if document object is touched, false if not.
- */
 bool DocumentObject::isTouched() const
 {
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
 }
 
-/**
- * @brief Enforces this document object to be recomputed.
- * This can be useful to recompute the feature without
- * having to change one of its input properties.
- */
 void DocumentObject::enforceRecompute()
 {
     touch(false);
 }
 
-/**
- * @brief Check whether the document object must be recomputed or not.
- * This means that the 'Enforce' flag is set or that \ref mustExecute()
- * returns a value > 0.
- * @return true if document object must be recomputed, false if not.
- */
 bool DocumentObject::mustRecompute() const
 {
     if (StatusBits.test(ObjectStatus::Freeze)) {
@@ -643,7 +616,7 @@ bool DocumentObject::isInOutListRecursive(DocumentObject* linkTo) const
 }
 
 std::vector<std::list<App::DocumentObject*>>
-DocumentObject::getPathsByOutList(App::DocumentObject* to) const
+DocumentObject::getPathsByOutList(const App::DocumentObject* to) const
 {
     return _pDoc->getPathsByOutList(this, to);
 }
@@ -1207,32 +1180,15 @@ void DocumentObject::Save(Base::Writer& writer) const
     App::ExtensionContainer::Save(writer);
 }
 
-/**
- * @brief Associate the expression \expr with the object identifier \a path in this document object.
- * @param path Target object identifier for the result of the expression
- * @param expr Expression tree
- */
-
 void DocumentObject::setExpression(const ObjectIdentifier& path, std::shared_ptr<Expression> expr)
 {
     ExpressionEngine.setValue(path, std::move(expr));
 }
 
-/**
- * @brief Clear the expression of the object identifier \a path in this document object.
- * @param path Target object identifier
- */
-
 void DocumentObject::clearExpression(const ObjectIdentifier& path)
 {
     setExpression(path, std::shared_ptr<Expression>());
 }
-
-/**
- * @brief Get expression information associated with \a path.
- * @param path Object identifier
- * @return Expression info, containing expression and optional comment.
- */
 
 const PropertyExpressionEngine::ExpressionInfo
 DocumentObject::getExpression(const ObjectIdentifier& path) const
@@ -1246,13 +1202,6 @@ DocumentObject::getExpression(const ObjectIdentifier& path) const
         return PropertyExpressionEngine::ExpressionInfo();
     }
 }
-
-/**
- * @brief Invoke ExpressionEngine's renameObjectIdentifier, to possibly rewrite expressions using
- * the \a paths map with current and new identifiers.
- *
- * @param paths
- */
 
 void DocumentObject::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
@@ -1615,3 +1564,54 @@ void DocumentObject::onPropertyStatusChanged(const Property& prop, unsigned long
         getDocument()->signalChangePropertyEditor(*getDocument(), prop);
     }
 }
+
+Base::Placement DocumentObject::getPlacementOf(const std::string& sub, DocumentObject* targetObj)
+{
+    Base::Placement plc;
+    auto* propPlacement = freecad_cast<App::PropertyPlacement*>(getPropertyByName("Placement"));
+    if (propPlacement) {
+        // If the object has no placement (like a Group), plc stays identity so we can proceed.
+        plc = propPlacement->getValue();
+    }
+
+    std::vector<std::string> names = Base::Tools::splitSubName(sub);
+
+    if (names.empty() || this == targetObj) {
+        return plc;
+    }
+
+    DocumentObject* subObj = getDocument()->getObject(names.front().c_str());
+
+    if (!subObj) {
+        return plc;
+    }
+
+    std::vector<std::string> newNames(names.begin() + 1, names.end());
+    std::string newSub = Base::Tools::joinList(newNames, ".");
+
+    return plc * subObj->getPlacementOf(newSub, targetObj);
+}
+
+Base::Placement DocumentObject::getPlacement() const
+{
+    Base::Placement plc;
+    if (auto* prop = getPlacementProperty()) {
+        plc = prop->getValue();
+    }
+    return plc;
+}
+
+App::PropertyPlacement* DocumentObject::getPlacementProperty() const
+{
+    if (auto linkExtension = getExtensionByType<App::LinkBaseExtension>(true)) {
+        if (auto linkPlacementProp = linkExtension->getLinkPlacementProperty()) {
+            return linkPlacementProp;
+        }
+
+        return linkExtension->getPlacementProperty();
+    }
+
+    return getPropertyByName<App::PropertyPlacement>("Placement");
+}
+
+

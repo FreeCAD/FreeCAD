@@ -60,6 +60,10 @@ class ToolBitShapeRadius(ToolBitShape):
                 FreeCAD.Qt.translate("ToolBitShape", "Shank diameter"),
                 "App::PropertyLength",
             ),
+            "TipDiameter": (
+                FreeCAD.Qt.translate("ToolBitShape", "Tip diameter"),
+                "App::PropertyLength",
+            ),
         }
 
     @property

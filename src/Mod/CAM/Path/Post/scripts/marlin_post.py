@@ -88,6 +88,13 @@ POST_OPERATION = """"""  # Post operation text will be inserted after
 TOOL_CHANGE = """"""  # Tool Change commands will be inserted
 # before a tool change
 
+# Default preamble text will appear at the beginning of the gcode output file.
+PREAMBLE = """"""
+
+# Default postamble text will appear following the last operation.
+POSTAMBLE = """M5
+"""
+
 # *****************************************************************************
 # * Initial gcode output options, changeable via command line arguments       *
 # *****************************************************************************
@@ -155,10 +162,16 @@ parser.add_argument(
     help="do not translate drill cycles G81, G82, G83 into G0/G1 movements",
 )
 parser.add_argument(
-    "--preamble", help='set commands to be issued before the first command, default=""'
+    "--preamble",
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
-    "--postamble", help='set commands to be issued after the last command, default="M5\\n"'
+    "--postamble",
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument("--tool-change", action="store_true", help="Insert M6 for all tool changes")
 parser.add_argument(
@@ -192,13 +205,6 @@ TOOLTIP_ARGS = parser.format_help()
 # * Marlin 2.x ignores the ENTIRE COMMAND LINE if there is more than          *
 # * one command per line.                                                     *
 # *****************************************************************************
-
-# Default preamble text will appear at the beginning of the gcode output file.
-PREAMBLE = """"""
-
-# Default postamble text will appear following the last operation.
-POSTAMBLE = """M5
-"""
 
 # *****************************************************************************
 # * Internal global variables                                                 *
@@ -440,7 +446,7 @@ def export(objectslist, filename, argstring):
     # Show the gcode result dialog:
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

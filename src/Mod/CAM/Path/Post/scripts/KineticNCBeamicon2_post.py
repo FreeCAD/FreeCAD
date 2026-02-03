@@ -36,6 +36,7 @@
 import FreeCAD
 from FreeCAD import Units
 import Path
+import Path.Base.Util as PathUtil
 import Path.Post.Utils as PostUtils
 import argparse
 import datetime
@@ -56,6 +57,18 @@ import KineticNCBeamicon2_post
 KineticNCBeamicon2_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """%
+G17 G21 G40 G49 G80 G90
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+M09
+G17 G90 G80 G40
+M30
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(
@@ -73,11 +86,15 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help=r'set commands to be issued before the first command, default="%%\nG17 G21 G40 G49 G80 G90\nM08\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help=r'set commands to be issued after the last command, default="M05 M09\nG17 G90 G80 G40\nM30\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -110,19 +127,6 @@ MACHINE_NAME = "not set"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 1000, "y": 600, "z": 300}
 PRECISION = 3
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """%
-G17 G21 G40 G49 G80 G90
-M08
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-M09
-G17 G90 G80 G40
-M30
-"""
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
@@ -214,6 +218,9 @@ def export(objectslist, filename, argstring):
     gcode += linenumber() + UNITS + "\n"
 
     for obj in objectslist:
+        # Skip inactive operations
+        if not PathUtil.activeForOp(obj):
+            continue
 
         # fetch machine details
         job = PathUtils.findParentJob(obj)
@@ -243,6 +250,19 @@ def export(objectslist, filename, argstring):
         for line in PRE_OPERATION.splitlines(True):
             gcode += linenumber() + line
 
+        # get coolant mode
+        coolantMode = PathUtil.coolantModeForOp(obj)
+
+        # turn coolant on if required
+        if OUTPUT_COMMENTS:
+            if not coolantMode == "None":
+                gcode += linenumber() + "(Coolant On:" + coolantMode + ")\n"
+        if coolantMode == "Flood":
+            gcode += linenumber() + "M8" + "\n"
+        if coolantMode == "Mist":
+            gcode += linenumber() + "M7" + "\n"
+
+        # process the operation gcode
         gcode += parse(obj)
 
         # do the post_op
@@ -250,6 +270,12 @@ def export(objectslist, filename, argstring):
             gcode += linenumber() + "(finish operation: %s)\n" % obj.Label
         for line in POST_OPERATION.splitlines(True):
             gcode += linenumber() + line
+
+        # turn coolant off if required
+        if not coolantMode == "None":
+            if OUTPUT_COMMENTS:
+                gcode += linenumber() + "(Coolant Off:" + coolantMode + ")\n"
+            gcode += linenumber() + "M9" + "\n"
 
     # do the post_amble
     if OUTPUT_COMMENTS:
@@ -259,7 +285,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()
@@ -341,6 +367,15 @@ def parse(pathobj):
 
             outstring = []
             command = c.Name
+
+            if pathobj.Label == "Drilling" and command in ["G98", "G99"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
+            if command in ["G85"]:
+                out += linenumber() + "(" + command + " removed as KineticNC do not support it)\n"
+                continue
+
             outstring.append(command)
 
             # if modal: suppress the command if it is the same as the last one
@@ -392,6 +427,20 @@ def parse(pathobj):
                             outstring.append(
                                 param + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
                             )
+
+            if (
+                command in ["G0"]
+                and "Z" not in c.Parameters
+                and pathobj.Label == "Drilling"
+                and "R" in currLocation.keys()
+            ):
+                if not OUTPUT_DOUBLES:
+                    continue
+                else:
+                    pos = Units.Quantity(currLocation["R"], FreeCAD.Units.Length)
+                    outstring.append(
+                        "Z" + format(float(pos.getValueAs(UNIT_FORMAT)), precision_string)
+                    )
 
             # store the latest command
             lastcommand = command

@@ -23,6 +23,7 @@
 
 
 #include <QAction>
+#include <QApplication>
 #include <QMessageBox>
 
 
@@ -258,6 +259,9 @@ void TaskBooleanParameters::onTypeChanged(int index)
         default:
             pcBoolean->Type.setValue("Fuse");
     }
+
+    // Force UI update before starting heavy computation to show user's selection immediately
+    QApplication::processEvents();
 
     pcBoolean->getDocument()->recomputeFeature(pcBoolean);
 }

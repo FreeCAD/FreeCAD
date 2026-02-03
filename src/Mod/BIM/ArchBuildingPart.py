@@ -44,6 +44,7 @@ import Draft
 import DraftVecUtils
 
 from draftutils import params
+from draftutils import utils
 
 if FreeCAD.GuiUp:
     from PySide.QtCore import QT_TRANSLATE_NOOP
@@ -356,7 +357,9 @@ class BuildingPart(ArchIFC.IfcProduct):
                 deltar = obj.Placement.Rotation * self.oldPlacement.Rotation.inverted()
                 if deltar.Angle < 0.0001:
                     deltar = None
-                for child in self.getMovableChildren(obj):
+                children = self.getMovableChildren(obj)
+                children = utils._modifiers_filter_objects(children, False)
+                for child in children:
                     if deltar:
                         child.Placement.rotate(
                             self.oldPlacement.Base,
@@ -1112,6 +1115,7 @@ class ViewProviderBuildingPart:
     def onDelete(self, vobj, subelements):
 
         if self.clip:
+            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
             sg.removeChild(self.clip)
             self.clip = None
         for o in Draft.get_group_contents(vobj.Object.Group, walls=True):

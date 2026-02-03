@@ -9,9 +9,6 @@ mkdir -p ${conda_env}
 
 cp -a ../.pixi/envs/default/* ${conda_env}
 
-export PATH="${PWD}/${conda_env}/bin:${PATH}"
-export CONDA_PREFIX="${PWD}/${conda_env}"
-
 # delete unnecessary stuff
 rm -rf ${conda_env}/include
 find ${conda_env} -name \*.a -delete
@@ -50,8 +47,12 @@ cmake --build build
 mkdir -p FreeCAD.app/Contents/MacOS
 cp build/FreeCAD FreeCAD.app/Contents/MacOS/FreeCAD
 
-python_version=$(python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
-version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)-${python_version}"
+python_version=$(${conda_env}/bin/python -c 'import platform; print("py" + platform.python_version_tuple()[0] + platform.python_version_tuple()[1])')
+
+# Add deployment target suffix to artifact name (e.g., "-macOS11" or "-macOS15")
+deploy_target="${MACOS_DEPLOYMENT_TARGET:-11.0}"
+deploy_suffix="-macOS${deploy_target%%.*}"
+version_name="FreeCAD_${BUILD_TAG}-macOS-$(uname -m)${deploy_suffix}-${python_version}"
 application_menu_name="FreeCAD_${BUILD_TAG}"
 
 echo -e "\################"
@@ -65,14 +66,37 @@ sed -i "s/APPLICATION_MENU_NAME/${application_menu_name}/" ${conda_env}/../Info.
 pixi list -e default > FreeCAD.app/Contents/packages.txt
 sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 
-# copy the plugin into its final location
-cp -a ${conda_env}/Library ${conda_env}/..
-rm -rf ${conda_env}/Library
+# move plugins into their final location (Library only exists for macOS < 15.0 builds)
+if [ -d "${conda_env}/Library" ]; then
+    mv ${conda_env}/Library ${conda_env}/..
+fi
+
+# move App Extensions (PlugIns) to the correct location for macOS registration
+if [ -d "${conda_env}/PlugIns" ]; then
+    mv ${conda_env}/PlugIns ${conda_env}/..
+fi
 
 if [[ "${SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ./macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
+    # Ad-hoc sign for local builds (required for QuickLook extensions to register)
+    if [ -d "FreeCAD.app/Contents/PlugIns" ]; then
+        echo "Ad-hoc signing App Extensions with entitlements..."
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/ThumbnailExtension.entitlements \
+            FreeCAD.app/Contents/PlugIns/FreeCADThumbnailExtension.appex
+        codesign --force --sign - \
+            --entitlements ../../../src/MacAppBundle/QuickLook/modern/PreviewExtension.entitlements \
+            FreeCAD.app/Contents/PlugIns/FreeCADPreviewExtension.appex
+    fi
+    echo "Ad-hoc signing app bundle..."
+    codesign --force --sign - FreeCAD.app/Contents/packages.txt
+    if [ -f "FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+        codesign --force --sign - FreeCAD.app/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd
+    fi
+    codesign --force --sign - FreeCAD.app
+
     # create the dmg
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
 fi

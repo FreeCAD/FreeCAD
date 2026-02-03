@@ -87,6 +87,7 @@ def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     argument_defaults["output_path_labels"] = False
     argument_defaults["output_visible_arguments"] = False
     argument_defaults["show-editor"] = True
+    argument_defaults["split_arcs"] = False
     argument_defaults["tlo"] = True
     argument_defaults["tool_change"] = True
     argument_defaults["translate_drill"] = False
@@ -123,6 +124,7 @@ def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     arguments_visible["precision"] = True
     arguments_visible["return-to"] = False
     arguments_visible["show-editor"] = True
+    arguments_visible["split_arcs"] = True
     arguments_visible["tlo"] = True
     arguments_visible["tool_change"] = False
     arguments_visible["translate_drill"] = False
@@ -438,6 +440,15 @@ def init_shared_arguments(
     )
     add_flag_type_arguments(
         shared,
+        argument_defaults["split_arcs"],
+        "--split-arcs",
+        "--no-split-arcs",
+        "Convert G2/G3 arc commands to discrete G1 line segments",
+        "Output G2/G3 arc commands as-is",
+        arguments_visible["split_arcs"],
+    )
+    add_flag_type_arguments(
+        shared,
         argument_defaults["tlo"],
         "--tlo",
         "--no-tlo",
@@ -703,6 +714,10 @@ def init_shared_values(values: Values) -> None:
     #
     values["SHOW_EDITOR"] = True
     #
+    # If True then G2/G3 arc commands will be converted to discrete G1 line segments.
+    #
+    values["SPLIT_ARCS"] = False
+    #
     # If True then the current machine units are output just before the PRE_OPERATION.
     #
     values["SHOW_MACHINE_UNITS"] = True
@@ -906,6 +921,10 @@ def process_shared_arguments(
             values["SHOW_EDITOR"] = True
         if args.no_show_editor:
             values["SHOW_EDITOR"] = False
+        if args.split_arcs:
+            values["SPLIT_ARCS"] = True
+        if args.no_split_arcs:
+            values["SPLIT_ARCS"] = False
         if args.tlo:
             values["USE_TLO"] = True
         if args.no_tlo:

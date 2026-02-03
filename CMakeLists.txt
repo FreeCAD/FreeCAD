@@ -55,6 +55,7 @@ set(PACKAGE_VERSION_MINOR "2")
 set(PACKAGE_VERSION_PATCH "0") # number of patch release (e.g. "4" for the 0.18.4 release)
 set(PACKAGE_VERSION_SUFFIX "dev") # either "dev" for development snapshot or "" (empty string)
 set(PACKAGE_BUILD_VERSION "0") # used when the same FreeCAD version will be re-released (for example using an updated LibPack)
+string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
@@ -115,6 +116,10 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
 
     # SetupCoin3D can overwrite find_package(Boost) output so keep this after.
     SetupBoost()
+
+    if(BUILD_BIM)
+        SetupLark()
+    endif()
 endif()
 
 if(BUILD_VR)

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <set>
 
 #include <boost/unordered/unordered_map.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <boost_graph_adjacency_list.hpp>
 #include <boost/graph/topological_sort.hpp>
 
@@ -98,7 +100,6 @@ public:
     /**
      * @brief The ExpressionInfo struct encapsulates an expression.
      */
-
     struct ExpressionInfo
     {
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
@@ -182,7 +183,7 @@ public:
     size_t numExpressions() const;
 
     /// signal called when an expression was changed
-    boost::signals2::signal<void(const App::ObjectIdentifier&)> expressionChanged;
+    fastsignals::signal<void(const App::ObjectIdentifier&)> expressionChanged;
 
     void afterRestore() override;
     void onContainerRestored() override;
@@ -242,6 +243,8 @@ private:
     /**< Expressions are read from file to this map first before they are validated and inserted
      * into the actual map */
     std::unique_ptr<std::vector<RestoredExpression>> restoredExpressions;
+
+    void tryRestoreExpression(DocumentObject* docObj, const RestoredExpression& info);
 
     struct Private;
     std::unique_ptr<Private> pimpl;

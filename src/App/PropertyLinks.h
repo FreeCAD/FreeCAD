@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -260,14 +262,20 @@ public:
         return nullptr;
     }
 
-    /** Update object label reference in this property
+    /**
+     * @brief Update the object label reference of this property.
      *
-     * @param obj: the object owner of the changing label
-     * @param ref: subname reference to old label
-     * @param newLabel: the future new label
+     * This method does not update the property itself, but returns a copy of
+     * the property with the updated label reference if the property is
+     * affected.  The copy will later be assigned to this property by calling its
+     * Paste() method.
      *
-     * @return Returns a copy of the property if its link reference is affected.
-     * The copy will later be assgiend to this property by calling its Paste().
+     * @param[in] obj The object owner of the changing label.
+     * @param[in] ref The subname reference to old label.
+     * @param[in] newLabel The future new label.
+     *
+     * @return A copy of the property if its link reference is affected,
+     * otherwise `nullptr`.
      */
     virtual Property*
     CopyOnLabelChange(App::DocumentObject* obj, const std::string& ref, const char* newLabel) const
@@ -554,13 +562,17 @@ public:
      */
     static void getLabelReferences(std::vector<std::string>& labels, const char* subname);
 
-    /** Helper function to collect changed property when an object re-label
+    /**
+     * @brief Update label references on label change of a document object.
      *
-     * @param obj: the object that owns the label
-     * @param newLabel: the new label
+     * This helper function collects changed properties when an object re-label
+     * takes place.  It returns a map from affected properties to copies of
+     * those affectedd propertiess with updated subname references.
      *
-     * @return return a map from the affected property to a copy of it with
-     * updated subname references
+     * @param[in] obj The object that owns the label that is changed.
+     * @param[in] newLabel The new label of the object.
+     *
+     * @return The map from affected property to a copy of it.
      */
     static std::vector<std::pair<Property*, std::unique_ptr<Property>>>
     updateLabelReferences(App::DocumentObject* obj, const char* newLabel);
@@ -616,7 +628,7 @@ public:
 
     void setSilentRestore(bool enable);
 
-    boost::signals2::signal<void(const std::string&, const std::string&)>
+    fastsignals::signal<void(const std::string&, const std::string&)>
         signalUpdateElementReference;
 
 protected:

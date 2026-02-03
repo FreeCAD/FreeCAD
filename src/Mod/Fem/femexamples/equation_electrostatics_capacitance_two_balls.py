@@ -141,7 +141,7 @@ def setup(doc=None, solvertype="elmer"):
     name_pot1 = "ElectrostaticPotential1"
     con_elect_pot1 = ObjectsFem.makeConstraintElectrostaticPotential(doc, name_pot1)
     con_elect_pot1.References = [(geom_obj, "Face1")]
-    con_elect_pot1.ElectricInfinity = True
+    con_elect_pot1.FarField = True
     con_elect_pot1.PotentialEnabled = False
     analysis.addObject(con_elect_pot1)
 

@@ -21,7 +21,7 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="642"/>
       <source>Imperial for Civil Eng (ft, lb, mph)</source>
-      <translation>Imperiales para ingeniería civil (pies, libras, millas por hora)</translation>
+      <translation>Imperial para ingeniería civil (pies, libras, millas por hora)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="75"/>
@@ -31,12 +31,12 @@
     <message>
       <location filename="../../UnitsSchemasData.h" line="554"/>
       <source>Building Euro (cm, m², m³)</source>
-      <translation>Construcción Euro (cm, m², m³)</translation>
+      <translation>Construcción europea (cm, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="631"/>
       <source>Building US (ft-in, sqft, cft)</source>
-      <translation>Construcción US (ft-in, sqft, cft)</translation>
+      <translation>Construcción estadounidense (ft-in, sqft, cft)</translation>
     </message>
     <message>
       <location filename="../../UnitsSchemasData.h" line="53"/>

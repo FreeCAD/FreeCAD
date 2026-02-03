@@ -76,6 +76,24 @@ import dynapath_post
 dynapath_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """G17
+G90
+;G90.1 ;needed for simulation only
+G80
+G40
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M09
+M05
+G80
+G40
+G17
+G90
+M30
+"""
+
 parser = argparse.ArgumentParser(prog="dynapath_post", add_help=False)
 parser.add_argument("--no-header", action="store_true", help="suppress header output")
 parser.add_argument("--no-comments", action="store_true", help="suppress comment output")
@@ -88,11 +106,17 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG90\\nG80\\nG40\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
+    default=PREAMBLE,
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M09\\nM05\\nG80\\nG40\\nG17\\nG90\\nM30\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
+    default=POSTAMBLE,
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -120,24 +144,6 @@ UNITS = "G21"  # G21 for metric, G20 for us standard
 MACHINE_NAME = "Tree MM"
 CORNER_MIN = {"x": -340, "y": 0, "z": 0}
 CORNER_MAX = {"x": 340, "y": -355, "z": -150}
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17
-G90
-;G90.1 ;needed for simulation only
-G80
-G40
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M09
-M05
-G80
-G40
-G17
-G90
-M30
-"""
 
 
 # Pre operation text will be inserted before every operation
@@ -263,7 +269,7 @@ def export(objectslist, filename, argstring):
     print("show editor: {}".format(SHOW_EDITOR))
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

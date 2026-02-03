@@ -93,6 +93,7 @@ SET(PathPythonMain_SRCS
 SET(PathPythonMainGui_SRCS
     Path/Main/Gui/__init__.py
     Path/Main/Gui/Camotics.py
+    Path/Main/Gui/Editor.py
     Path/Main/Gui/Fixture.py
     Path/Main/Gui/Inspect.py
     Path/Main/Gui/Job.py
@@ -169,9 +170,24 @@ SET(PathPythonToolsGui_SRCS
     Path/Tool/Gui/Controller.py
 )
 
+SET(PathPythonMachineUi_SRCS
+    Path/Machine/ui/__init__.py
+)
+
+SET(PathPythonMachineUiEditor_SRCS
+    Path/Machine/ui/editor/machine_editor.py
+    Path/Machine/ui/editor/__init__.py
+)
+
+SET(PathPythonMachineModels_SRCS
+    Path/Machine/models/__init__.py
+    Path/Machine/models/machine.py
+)
+
 SET(PathPythonToolsToolBit_SRCS
     Path/Tool/toolbit/__init__.py
     Path/Tool/toolbit/util.py
+    Path/Tool/toolbit/migration.py
 )
 
 SET(PathPythonToolsToolBitMixins_SRCS
@@ -195,6 +211,7 @@ SET(PathPythonToolsToolBitModels_SRCS
     Path/Tool/toolbit/models/reamer.py
     Path/Tool/toolbit/models/slittingsaw.py
     Path/Tool/toolbit/models/tap.py
+    Path/Tool/toolbit/models/taperedballnose.py
     Path/Tool/toolbit/models/threadmill.py
     Path/Tool/toolbit/models/vbit.py
 )
@@ -246,15 +263,6 @@ SET(PathPythonToolsLibraryUi_SRCS
     Path/Tool/library/ui/properties.py
 )
 
-SET(PathPythonToolsMachine_SRCS
-    Path/Tool/machine/__init__.py
-)
-
-SET(PathPythonToolsMachineModels_SRCS
-    Path/Tool/machine/models/__init__.py
-    Path/Tool/machine/models/machine.py
-)
-
 SET(PathPythonToolsShape_SRCS
     Path/Tool/shape/__init__.py
     Path/Tool/shape/util.py
@@ -277,6 +285,7 @@ SET(PathPythonToolsShapeModels_SRCS
     Path/Tool/shape/models/reamer.py
     Path/Tool/shape/models/slittingsaw.py
     Path/Tool/shape/models/tap.py
+    Path/Tool/shape/models/taperedballnose.py
     Path/Tool/shape/models/threadmill.py
     Path/Tool/shape/models/vbit.py
 )
@@ -292,6 +301,7 @@ SET(PathPythonToolsShapeUi_SRCS
 SET(PathPythonPost_SRCS
     Path/Post/__init__.py
     Path/Post/Command.py
+    Path/Post/PostList.py
     Path/Post/Processor.py
     Path/Post/Utils.py
     Path/Post/UtilsArguments.py
@@ -302,34 +312,33 @@ SET(PathPythonPost_SRCS
 SET(PathPythonPostScripts_SRCS
     Path/Post/scripts/__init__.py
     Path/Post/scripts/centroid_post.py
-    Path/Post/scripts/comparams_post.py
+    Path/Post/scripts/centroid_legacy_post.py
     Path/Post/scripts/dxf_post.py
     Path/Post/scripts/dynapath_post.py
     Path/Post/scripts/dynapath_4060_post.py
     Path/Post/scripts/estlcam_post.py
-    Path/Post/scripts/example_pre.py
     Path/Post/scripts/fablin_post.py
     Path/Post/scripts/fanuc_post.py
     Path/Post/scripts/fangling_post.py
     Path/Post/scripts/gcode_pre.py
     Path/Post/scripts/generic_post.py
-    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
     Path/Post/scripts/heidenhain_post.py
     Path/Post/scripts/jtech_post.py
     Path/Post/scripts/KineticNCBeamicon2_post.py
     Path/Post/scripts/linuxcnc_post.py
+    Path/Post/scripts/linuxcnc_legacy_post.py
     Path/Post/scripts/mach3_mach4_post.py
+    Path/Post/scripts/mach3_mach4_legacy_post.py
+    Path/Post/scripts/masso_g3_post.py
     Path/Post/scripts/marlin_post.py
     Path/Post/scripts/nccad_post.py
     Path/Post/scripts/opensbp_post.py
     Path/Post/scripts/opensbp_pre.py
     Path/Post/scripts/philips_post.py
-    Path/Post/scripts/refactored_centroid_post.py
-    Path/Post/scripts/refactored_grbl_post.py
-    Path/Post/scripts/refactored_linuxcnc_post.py
-    Path/Post/scripts/refactored_mach3_mach4_post.py
-    Path/Post/scripts/refactored_masso_g3_post.py
-    Path/Post/scripts/refactored_test_post.py
+    Path/Post/scripts/grbl_post.py
+    Path/Post/scripts/grbl_legacy_post.py
+    Path/Post/scripts/test_post.py
     Path/Post/scripts/rml_post.py
     Path/Post/scripts/rrf_post.py
     Path/Post/scripts/slic3r_pre.py
@@ -354,6 +363,7 @@ SET(PathPythonOp_SRCS
     Path/Op/Drilling.py
     Path/Op/Helix.py
     Path/Op/MillFace.py
+    Path/Op/MillFacing.py
     Path/Op/Pocket.py
     Path/Op/PocketBase.py
     Path/Op/PocketShape.py
@@ -384,6 +394,7 @@ SET(PathPythonOpGui_SRCS
     Path/Op/Gui/FeatureExtension.py
     Path/Op/Gui/Helix.py
     Path/Op/Gui/MillFace.py
+    Path/Op/Gui/MillFacing.py
     Path/Op/Gui/PathShapeTC.py
     Path/Op/Gui/Pocket.py
     Path/Op/Gui/PocketBase.py
@@ -412,7 +423,13 @@ SET(PathScripts_SRCS
 SET(PathPythonBaseGenerator_SRCS
     Path/Base/Generator/dogboneII.py
     Path/Base/Generator/drill.py
+    Path/Base/Generator/facing_common.py
+    Path/Base/Generator/spiral_facing.py
+    Path/Base/Generator/zigzag_facing.py
+    Path/Base/Generator/directional_facing.py
+    Path/Base/Generator/bidirectional_facing.py
     Path/Base/Generator/helix.py
+    Path/Base/Generator/linking.py
     Path/Base/Generator/rotation.py
     Path/Base/Generator/tapping.py
     Path/Base/Generator/threadmilling.py
@@ -472,6 +489,8 @@ SET(Tools_Shape_SRCS
     Tools/Shape/slittingsaw.svg
     Tools/Shape/tap.fcstd
     Tools/Shape/tap.svg
+    Tools/Shape/taperedballnose.fcstd
+    Tools/Shape/taperedballnose.svg
     Tools/Shape/thread-mill.fcstd
     Tools/Shape/thread-mill.svg
     Tools/Shape/v-bit.fcstd
@@ -481,24 +500,30 @@ SET(Tools_Shape_SRCS
 SET(Tests_SRCS
     CAMTests/__init__.py
     CAMTests/boxtest.fcstd
-    CAMTests/boxtest1.fcstd
     CAMTests/dressuptest.FCStd
     CAMTests/Drilling_1.FCStd
-    CAMTests/drill_test1.FCStd
     CAMTests/FilePathTestUtils.py
     CAMTests/PathTestUtils.py
+    CAMTests/PostTestMocks.py
     CAMTests/test_adaptive.fcstd
     CAMTests/test_profile.fcstd
-    CAMTests/test_centroid_00.ngc
-    CAMTests/test_filenaming.fcstd
     CAMTests/test_geomop.fcstd
     CAMTests/test_holes00.fcstd
     CAMTests/TestCAMSanity.py
     CAMTests/TestCentroidPost.py
+    CAMTests/TestCentroidLegacyPost.py
+    CAMTests/TestFanucPost.py
+    CAMTests/TestGenericPost.py
     CAMTests/TestGrblPost.py
+    CAMTests/TestGrblLegacyPost.py
     CAMTests/TestLinuxCNCPost.py
+    CAMTests/TestLinkingGenerator.py
+    CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4Post.py
+    CAMTests/TestMach3Mach4LegacyPost.py
+    CAMTests/TestMassoG3Post.py
     CAMTests/TestPathAdaptive.py
+    CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
     CAMTests/TestPathDepthParams.py
     CAMTests/TestPathDressupArray.py
@@ -507,6 +532,7 @@ SET(Tests_SRCS
     CAMTests/TestPathDressupHoldingTags.py
     CAMTests/TestPathDrillGenerator.py
     CAMTests/TestPathDrillable.py
+    CAMTests/TestPathFacingGenerator.py
     CAMTests/TestPathGeneratorDogboneII.py
     CAMTests/TestPathGeom.py
     CAMTests/TestPathHelix.py
@@ -544,24 +570,22 @@ SET(Tests_SRCS
     CAMTests/TestPathToolShapeIcon.py
     CAMTests/TestPathToolLibrary.py
     CAMTests/TestPathToolLibrarySerializer.py
-    CAMTests/TestPathToolMachine.py
     CAMTests/TestPathToolController.py
     CAMTests/TestPathUtil.py
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
-    CAMTests/TestRefactoredCentroidPost.py
-    CAMTests/TestRefactoredGrblPost.py
-    CAMTests/TestRefactoredLinuxCNCPost.py
-    CAMTests/TestRefactoredMach3Mach4Post.py
-    CAMTests/TestRefactoredMassoG3Post.py
-    CAMTests/TestRefactoredTestDressupPost.py
-    CAMTests/TestRefactoredTestPost.py
-    CAMTests/TestRefactoredTestPostGCodes.py
-    CAMTests/TestRefactoredTestPostMCodes.py
+    CAMTests/TestGrblLegacyPost.py
+    CAMTests/TestLinuxCNCLegacyPost.py
+    CAMTests/TestDressupPost.py
+    CAMTests/TestTestPost.py
+    CAMTests/TestPostGCodes.py
+    CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
+    CAMTests/TestTSPSolver.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+    CAMTests/TestToolBitRecomputeState.py
 )
 
 SET(Tests_Fixtures
@@ -626,8 +650,9 @@ SET(all_files
     ${PathPythonToolsLibraryModels_SRCS}
     ${PathPythonToolsLibrarySerializers_SRCS}
     ${PathPythonToolsLibraryUi_SRCS}
-    ${PathPythonToolsMachine_SRCS}
-    ${PathPythonToolsMachineModels_SRCS}
+    ${PathPythonMachineModels_SRCS}
+    ${PathPythonMachineUi_SRCS}
+    ${PathPythonMachineUiEditor_SRCS}
     ${PathPythonGui_SRCS}
     ${Tools_SRCS}
     ${Tools_Bit_SRCS}
@@ -898,16 +923,23 @@ INSTALL(
 
 INSTALL(
     FILES
-        ${PathPythonToolsMachine_SRCS}
+        ${PathPythonMachineModels_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/machine
+        Mod/CAM/Path/Machine/models
 )
 
 INSTALL(
     FILES
-        ${PathPythonToolsMachineModels_SRCS}
+        ${PathPythonMachineUi_SRCS}
     DESTINATION
-        Mod/CAM/Path/Tool/machine/models
+        Mod/CAM/Path/Machine/ui
+)
+
+INSTALL(
+    FILES
+        ${PathPythonMachineUiEditor_SRCS}
+    DESTINATION
+        Mod/CAM/Path/Machine/ui/editor
 )
 
 INSTALL(

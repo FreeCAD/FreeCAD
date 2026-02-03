@@ -397,7 +397,11 @@ class _Stairs(ArchComponent.Component):
                 QT_TRANSLATE_NOOP("App::Property", "The type of landings of these stairs"),
                 locked=True,
             )
-            obj.Landings = ["None", "At center", "At each corner"]
+        landingsEnum = ["None", "At center"]
+        if not obj.getEnumerationsOfProperty("Landings") == landingsEnum:
+            obj.Landings = landingsEnum
+            # For an object with the old enumeration: ["None", "At center", "At each corner"],
+            # "At each corner" is automatically replaced by "None". Other values are kept.
 
         # Not implemented yet, remarked out at the moment
         # if not "Winders" in pl:
@@ -2158,7 +2162,7 @@ class _Stairs(ArchComponent.Component):
             if wantLanding:  # but not numOfSteps > 3, so no hasLanding
                 print("Fewer than 4 steps, unable to create landing")
 
-        # TODO height shoulld follow edge's z info if any?
+        # TODO height should follow edge's z info if any?
         #      Order of precedence in makeStraightStairs() - vHeight, hgt, edge height if present
         # setup height
         if height is None:  # if not height:

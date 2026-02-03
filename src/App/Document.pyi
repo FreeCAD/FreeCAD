@@ -1,13 +1,15 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from PropertyContainer import PropertyContainer
 from DocumentObject import DocumentObject
-from typing import Final, List, Tuple, Sequence
+from typing import Final, Sequence
 
 
 class Document(PropertyContainer):
     """
-    This is a Document class
-    Author: Juergen Riegel (FreeCAD@juergen-riegel.net)
-    Licence: LGPL
+    This is the Document class.
     """
 
     DependencyGraph: Final[str] = ""
@@ -16,16 +18,16 @@ class Document(PropertyContainer):
     ActiveObject: Final[DocumentObject] = None
     """The last created object in this document"""
 
-    Objects: Final[List[DocumentObject]] = []
+    Objects: Final[list[DocumentObject]] = []
     """The list of objects in this document"""
 
-    TopologicalSortedObjects: Final[List[DocumentObject]] = []
+    TopologicalSortedObjects: Final[list[DocumentObject]] = []
     """The list of objects in this document in topological sorted order"""
 
-    RootObjects: Final[List[DocumentObject]] = []
+    RootObjects: Final[list[DocumentObject]] = []
     """The list of root objects in this document"""
 
-    RootObjectsIgnoreLinks: Final[List[DocumentObject]] = []
+    RootObjectsIgnoreLinks: Final[list[DocumentObject]] = []
     """The list of root objects in this document ignoring references from links."""
 
     UndoMode: int = 0
@@ -40,10 +42,10 @@ class Document(PropertyContainer):
     RedoCount: Final[int] = 0
     """Number of possible Redos"""
 
-    UndoNames: Final[List[str]] = []
+    UndoNames: Final[list[str]] = []
     """A list of Undo names"""
 
-    RedoNames: Final[List[str]] = []
+    RedoNames: Final[list[str]] = []
     """A List of Redo names"""
 
     Name: Final[str] = ""
@@ -55,10 +57,10 @@ class Document(PropertyContainer):
     HasPendingTransaction: Final[bool] = False
     """Check if there is a pending transaction"""
 
-    InList: Final[List["Document"]] = []
+    InList: Final[list[Document]] = []
     """A list of all documents that link to this document."""
 
-    OutList: Final[List["Document"]] = []
+    OutList: Final[list[Document]] = []
     """A list of all documents that this document links to."""
 
     Restoring: Final[bool] = False
@@ -84,25 +86,25 @@ class Document(PropertyContainer):
 
     def save(self) -> None:
         """
-        Save the document to disk
+        Save the document to disk.
         """
         ...
 
-    def saveAs(self) -> None:
+    def saveAs(self, path: str, /) -> None:
         """
-        Save the document under a new name to disk
-        """
-        ...
-
-    def saveCopy(self) -> None:
-        """
-        Save a copy of the document under a new name to disk
+        Save the document under a new name to disk.
         """
         ...
 
-    def load(self) -> None:
+    def saveCopy(self, path: str, /) -> None:
         """
-        Load the document from the given path
+        Save a copy of the document under a new name to disk.
+        """
+        ...
+
+    def load(self, path: str, /) -> None:
+        """
+        Load the document from the given path.
         """
         ...
 
@@ -131,37 +133,40 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getUniqueObjectName(self, objName: str) -> str:
+    def getUniqueObjectName(self, objName: str, /) -> str:
         """
-        getUniqueObjectName(objName) -> objName
-
         Return the same name, or the name made unique, for Example Box -> Box002 if there are conflicting name
         already in the document.
 
-        ObjName : str
-        Object name.
+        Args:
+            objName: Object name candidate.
+
+        Returns:
+            Unique object name based on objName.
         """
         ...
 
-    def mergeProject(self) -> None:
+    def mergeProject(self, path: str, /) -> None:
         """
-        Merges this document with another project file
-        """
-        ...
-
-    def exportGraphviz(self) -> None:
-        """
-        Export the dependencies of the objects as graph
+        Merges this document with another project file.
         """
         ...
 
-    def openTransaction(self, name: str) -> None:
+    def exportGraphviz(self, path: str = None, /) -> str | None:
         """
-                openTransaction(name) - Open a new Undo/Redo transaction.
+        Export the dependencies of the objects as graph.
+
+        If path is passed, graph is written to it. if not a string is returned.
+        """
+        ...
+
+    def openTransaction(self, name: str, /) -> None:
+        """
+        Open a new Undo/Redo transaction.
 
         This function no long creates a new transaction, but calls
         FreeCAD.setActiveTransaction(name) instead, which will auto creates a
-        transaction with the given name when any change happed in any opened document.
+        transaction with the given name when any change happened in any opened document.
         If more than one document is changed, all newly created transactions will have
         the same internal ID and will be undo/redo together.
         """
@@ -181,7 +186,6 @@ class Document(PropertyContainer):
 
     def addObject(
         self,
-        *,
         type: str,
         name: str = None,
         objProxy: object = None,
@@ -190,24 +194,22 @@ class Document(PropertyContainer):
         viewType: str = None,
     ) -> DocumentObject:
         """
-        addObject(type, name=None, objProxy=None, viewProxy=None, attach=False, viewType=None)
+        Add an object to document.
 
-        Add an object to document
-
-        type (String): the type of the document object to create.
-        name (String): the optional name of the new object.
-        objProxy (Object): the Python binding object to attach to the new document object.
-        viewProxy (Object): the Python binding object to attach the view provider of this object.
-        attach (Boolean): if True, then bind the document object first before adding to the document
-                to allow Python code to override view provider type. Once bound, and before adding to
-                the document, it will try to call Python binding object's attach(obj) method.
-        viewType (String): override the view provider type directly, only effective when attach is False.
+        Args:
+            type: the type of the document object to create.
+            name: the optional name of the new object.
+            objProxy: the Python binding object to attach to the new document object.
+            viewProxy: the Python binding object to attach the view provider of this object.
+            attach: if True, then bind the document object first before adding to the document
+                    to allow Python code to override view provider type. Once bound, and before adding to
+                    the document, it will try to call Python binding object's attach(obj) method.
+            viewType: override the view provider type directly, only effective when attach is False.
         """
         ...
 
     def addProperty(
         self,
-        *,
         type: str,
         name: str,
         group: str = "",
@@ -216,22 +218,37 @@ class Document(PropertyContainer):
         read_only: bool = False,
         hidden: bool = False,
         locked: bool = False,
-    ) -> "Document":
+        enum_vals: list[str] | None = None,
+    ) -> Document:
         """
-        addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, locked=False) -- Add a generic property.
+        Add a generic property.
+
+        Args:
+            type: The type of the property to add.
+            name: The name of the property.
+            group: The group to which the property belongs. Defaults to "".
+            doc: The documentation string for the property. Defaults to "".
+            attr: Attribute flags for the property. Defaults to 0.
+            read_only: Whether the property is read-only. Defaults to False.
+            hidden: Whether the property is hidden. Defaults to False.
+            locked: Whether the property is locked. Defaults to False.
+
+        Returns:
+            The document instance with the added property.
         """
         ...
 
-    def removeProperty(self, string: str) -> None:
+    def removeProperty(self, name: str, /) -> None:
         """
-        removeProperty(string) -- Remove a generic property.
+        Remove a generic property.
+
         Note, you can only remove user-defined properties but not built-in ones.
         """
         ...
 
-    def removeObject(self) -> None:
+    def removeObject(self, name: str, /) -> None:
         """
-        Remove an object from the document
+        Remove an object from the document.
         """
         ...
 
@@ -241,34 +258,39 @@ class Document(PropertyContainer):
         *,
         recursive: bool = False,
         return_all: bool = False,
-    ) -> Tuple[DocumentObject, ...]:
+    ) -> tuple[DocumentObject, ...]:
         """
-        copyObject(object, recursive=False, return_all=False)
         Copy an object or objects from another document to this document.
 
-        object: can either be a single object or sequence of objects
-        recursive: if True, also recursively copies internal objects
-        return_all: if True, returns all copied objects, or else return only the copied
-                    object corresponding to the input objects.
+        Args:
+            object: can either be a single object or sequence of objects
+            recursive: if True, also recursively copies internal objects
+            return_all: if True, returns all copied objects, or else return only the copied
+                        object corresponding to the input objects.
         """
         ...
 
     def moveObject(
-        self, object: DocumentObject, with_dependencies: bool = False
+        self,
+        object: DocumentObject,
+        with_dependencies: bool = False,
+        /,
     ) -> DocumentObject:
         """
-        moveObject(object, bool with_dependencies = False)
         Transfers an object from another document to this document.
 
-        object: can either a single object or sequence of objects
-        with_dependencies: if True, all internal dependent objects are copied too.
+        Args:
+            object: can either a single object or sequence of objects
+            with_dependencies: if True, all internal dependent objects are copied too.
         """
         ...
 
-    def importLinks(self, object: DocumentObject = None) -> Tuple[DocumentObject, ...]:
+    def importLinks(
+        self,
+        object: DocumentObject = None,
+        /,
+    ) -> tuple[DocumentObject, ...]:
         """
-        importLinks(object|[object...])
-
         Import any externally linked object given a list of objects in
         this document.  Any link type properties of the input objects
         will be automatically reassigned to the imported object
@@ -302,7 +324,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def setClosable(self, closable: bool) -> None:
+    def setClosable(self, closable: bool, /) -> None:
         """
         Set a flag that allows or forbids to close a document
         """
@@ -314,7 +336,7 @@ class Document(PropertyContainer):
         """
         ...
 
-    def setAutoCreated(self, autoCreated: bool) -> None:
+    def setAutoCreated(self, autoCreated: bool, /) -> None:
         """
         Set a flag that indicates if a document is autoCreated
         """
@@ -326,9 +348,15 @@ class Document(PropertyContainer):
         """
         ...
 
-    def recompute(self, objs: Sequence[DocumentObject] = None) -> int:
+    def recompute(
+        self,
+        objs: Sequence[DocumentObject] = None,
+        force: bool = False,
+        check_cycle: bool = False,
+        /,
+    ) -> int:
         """
-        recompute(objs=None): Recompute the document and returns the amount of recomputed features
+        Recompute the document and returns the amount of recomputed features.
         """
         ...
 
@@ -350,41 +378,55 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getObject(self, name: str) -> DocumentObject:
+    def getObject(self, name: str, /) -> DocumentObject:
         """
         Return the object with the given name
         """
         ...
 
-    def getObjectsByLabel(self, label: str) -> List[DocumentObject]:
+    def getObjectsByLabel(self, label: str, /) -> list[DocumentObject]:
         """
         Return the objects with the given label name.
+
         NOTE: It's possible that several objects have the same label name.
         """
         ...
 
     def findObjects(
-        self, *, Type: str = None, Name: str = None, Label: str = None
-    ) -> List[DocumentObject]:
+        self,
+        Type: str = None,
+        Name: str = None,
+        Label: str = None,
+    ) -> list[DocumentObject]:
         """
-        findObjects([Type=string], [Name=string], [Label=string]) -> list
         Return a list of objects that match the specified type, name or label.
+
         Name and label support regular expressions. All parameters are optional.
+
+        Args:
+            Type: Type of the feature.
+            Name: Name
+            Label: Label
         """
         ...
 
     def getLinksTo(
-        self, obj: DocumentObject, options: int = 0, maxCount: int = 0
-    ) -> Tuple[DocumentObject, ...]:
+        self,
+        obj: DocumentObject,
+        options: int = 0,
+        maxCount: int = 0,
+        /,
+    ) -> tuple[DocumentObject, ...]:
         """
-        getLinksTo(obj, options=0, maxCount=0): return objects linked to 'obj'
+        Return objects linked to 'obj'
 
-        options: 1: recursive, 2: check link array. Options can combine.
-        maxCount: to limit the number of links returned
+        Args:
+            options: 1: recursive, 2: check link array. Options can combine.
+            maxCount: to limit the number of links returned.
         """
         ...
 
-    def supportedTypes(self) -> List[str]:
+    def supportedTypes(self) -> list[str]:
         """
         A list of supported types of objects
         """
@@ -396,12 +438,11 @@ class Document(PropertyContainer):
         """
         ...
 
-    def getDependentDocuments(self, sort: bool = True) -> List[DocumentObject]:
+    def getDependentDocuments(self, sort: bool = True, /) -> list[DocumentObject]:
         """
-        getDependentDocuments(sort=True)
-
         Returns a list of documents that this document directly or indirectly links to including itself.
 
-        sort: whether to topologically sort the return list
+        Args:
+            sort: whether to topologically sort the return list
         """
         ...

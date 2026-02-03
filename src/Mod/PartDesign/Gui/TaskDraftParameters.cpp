@@ -27,17 +27,20 @@
 #include <QListWidget>
 #include <QMessageBox>
 
-
-#include <Base/Interpreter.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <Base/Converter.h>
 #include <Gui/Command.h>
+#include <Base/Interpreter.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/Inventor/Draggers/Gizmo.h>
+#include <Gui/Inventor/Draggers/SoRotationDragger.h>
+#include <Gui/Utilities.h>
 #include <Mod/PartDesign/App/FeatureDraft.h>
 #include <Mod/PartDesign/Gui/ReferenceSelection.h>
 #include <Mod/Part/App/GizmoHelper.h>
+#include <Mod/Part/App/Tools.h>
 
 #include "ui_TaskDraftParameters.h"
 #include "TaskDraftParameters.h"
@@ -117,6 +120,8 @@ TaskDraftParameters::TaskDraftParameters(ViewProviderDressUp* DressUpView, QWidg
     else {
         hideOnError();
     }
+
+    setupGizmos(DressUpView);
 }
 
 void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
@@ -145,11 +150,12 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getDressUpView()->highlightReferences(true);
             // hide the draft if there was a computation error
             hideOnError();
+            setGizmoPositions();
         }
         else if (selectionMode == line) {
             auto pcDraft = getObject<PartDesign::Draft>();
             std::vector<std::string> edges;
-            App::DocumentObject* selObj;
+            App::DocumentObject* selObj = nullptr;
             getReferencedSelection(pcDraft, msg, selObj, edges);
             if (!selObj) {
                 return;
@@ -163,7 +169,13 @@ void TaskDraftParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             getDressUpView()->highlightReferences(true);
             // hide the draft if there was a computation error
             hideOnError();
+            setGizmoPositions();
         }
+    }
+    else if (msg.Type == Gui::SelectionChanges::ClrSelection) {
+        // TODO: the gizmo position should be only recalculated when the feature associated
+        // with the gizmo is removed from the list
+        setGizmoPositions();
     }
 }
 
@@ -244,15 +256,17 @@ double TaskDraftParameters::getAngle() const
     return ui->draftAngle->value().getValue();
 }
 
-void TaskDraftParameters::onReversedChanged(const bool on)
+void TaskDraftParameters::onReversedChanged(const bool reversed)
 {
     if (auto draft = getObject<PartDesign::Draft>()) {
         setButtons(none);
         setupTransaction();
-        draft->Reversed.setValue(on);
+        draft->Reversed.setValue(reversed);
         draft->recomputeFeature();
         // hide the draft if there was a computation error
         hideOnError();
+
+        setGizmoPositions();
     }
 }
 
@@ -291,15 +305,83 @@ void TaskDraftParameters::apply()
     TaskDressUpParameters::apply();
 }
 
+
+void TaskDraftParameters::setupGizmos(ViewProvider* vp)
+{
+    if (!GizmoContainer::isEnabled()) {
+        return;
+    }
+
+    angleGizmo = new Gui::RotationGizmo(ui->draftAngle);
+
+    gizmoContainer = GizmoContainer::create({angleGizmo}, vp);
+
+    setGizmoPositions();
+}
+
+void TaskDraftParameters::setGizmoPositions()
+{
+    if (!gizmoContainer) {
+        return;
+    }
+    gizmoContainer->visible = false;
+
+    auto draft = getObject<PartDesign::Draft>();
+    if (!draft || draft->isError()) {
+        return;
+    }
+    Part::TopoShape baseShape = draft->getBaseTopoShape(true);
+    auto faces = draft->getFaces(baseShape);
+    if (faces.empty()) {
+        return;
+    }
+
+    auto [pullDirection, neutralPlane] = draft->getLastComputedProps();
+
+    std::optional<DraggerPlacementPropsWithNormals> props
+        = getDraggerPlacementFromPlaneAndFace(faces[0], neutralPlane);
+    if (!props) {
+        return;
+    }
+
+    if (auto normalProps = props->normalProps) {
+        auto pos = Base::convertTo<SbVec3f>(props->placementProps.position);
+        auto dir = Base::convertTo<SbVec3f>(props->placementProps.dir);
+        auto lineDir = Base::convertTo<SbVec3f>(normalProps->normal);
+        auto pp = Base::convertTo<SbVec3f>(pullDirection);
+
+        angleGizmo->setDraggerPlacement(pos, (dir.dot(pp) < 0) ? -pp : pp);
+
+        auto rotDir = Base::convertTo<SbVec3f>(normalProps->faceNormal).cross(pp);
+        if (lineDir.dot(rotDir) < 0) {
+            lineDir *= -1;
+        }
+        if (draft->Reversed.getValue()) {
+            lineDir = -lineDir;
+        }
+        angleGizmo->getDraggerContainer()->setArcNormalDirection(lineDir);
+        angleGizmo->automaticOrientation = false;
+    }
+    else {
+        // The face is cone or cylinder
+        angleGizmo->setDraggerPlacement(
+            Base::convertTo<SbVec3f>(props->placementProps.position),
+            Base::convertTo<SbVec3f>(props->placementProps.dir)
+        );
+        angleGizmo->automaticOrientation = true;
+    }
+    gizmoContainer->visible = true;
+}
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft* DressUpView)
-    : TaskDlgDressUpParameters(DressUpView)
+TaskDlgDraftParameters::TaskDlgDraftParameters(ViewProviderDraft* DraftView)
+    : TaskDlgDressUpParameters(DraftView)
 {
-    parameter = new TaskDraftParameters(DressUpView);
+    parameter = new TaskDraftParameters(DraftView);
 
     Content.push_back(parameter);
     Content.push_back(preview);
@@ -319,7 +401,7 @@ bool TaskDlgDraftParameters::accept()
     parameter->apply();
 
     std::vector<std::string> strings;
-    App::DocumentObject* obj;
+    App::DocumentObject* obj = nullptr;
     TaskDraftParameters* draftparameter = static_cast<TaskDraftParameters*>(parameter);
 
     draftparameter->getPlane(obj, strings);

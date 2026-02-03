@@ -803,11 +803,12 @@ class DraftToolBar:
             self.xValue.setFocus()
             self.xValue.setSelection(0, self.number_length(self.xValue.text()))
 
-    def number_length(self, str):
-        nl = 0
-        for char in str:
-            if char in "0123456789.,-":
-                nl += 1
+    def number_length(self, st):
+        nl = len(st)
+        for char in st[::-1]:
+            if char in "0123456789.,-+/":
+                break
+            nl -= 1
         return nl
 
     def extraLineUi(self):
@@ -1718,7 +1719,10 @@ class DraftToolBar:
             self.mask = val
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.mask = val
-                self.new_point = FreeCADGui.Snapper.constrain(self.new_point, self.get_last_point())
+                if self.new_point is not None:
+                    self.new_point = FreeCADGui.Snapper.constrain(
+                        self.new_point, self.get_last_point()
+                    )
 
     def changeXValue(self, d):
         if self.display_point_active:

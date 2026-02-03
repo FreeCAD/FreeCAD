@@ -136,10 +136,11 @@ public:
     TechDraw::DrawPage* getDrawPage();
 
     void setExportingSvg(bool enable);
-    bool getExportingSvg() { return m_exportingSvg; }
+    bool getExportingSvg() const { return m_exportingSvg; }
 
     void setExportingPdf(bool enable) { m_exportingPdf = enable; };
     bool getExportingPdf() const { return m_exportingPdf; }
+    bool getExportingAny() const { return getExportingPdf() || getExportingSvg(); }
 
     virtual void refreshViews();
 

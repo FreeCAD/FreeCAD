@@ -153,7 +153,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
 
     if (m_pbTrackerState == TrackerAction::CANCEL) {
         m_pbTrackerState = TrackerAction::PICK;
-        ui->pbTracker->setText(tr("Pick points"));
+        ui->pbTracker->setText(tr("Pick Points"));
         enableTaskButtons(true);
 
         setEditCursor(Qt::ArrowCursor);
@@ -170,7 +170,7 @@ void TaskCosVertex::onTrackerClicked(bool clicked)
     QString msg = tr("Pick a point for cosmetic vertex");
     getMainWindow()->statusBar()->show();
     Gui::getMainWindow()->showMessage(msg, 3000);
-    ui->pbTracker->setText(tr("Escape picking"));
+    ui->pbTracker->setText(tr("Escape Picking"));
     ui->pbTracker->setEnabled(true);
     m_pbTrackerState = TrackerAction::CANCEL;
     enableTaskButtons(false);
@@ -185,6 +185,9 @@ void TaskCosVertex::startTracker()
 
     if (!m_tracker) {
         m_tracker = new QGTracker(m_vpp->getQGSPage(), m_trackerMode);
+        std::string parentName = m_baseFeat->getNameInDocument();
+        QGIView* parentView = m_vpp->getQGSPage()->getQGIVByName(parentName);
+        m_tracker->setOwnerQView(parentView);
         QObject::connect(
             m_tracker, &QGTracker::drawingFinished,
             this, &TaskCosVertex::onTrackerFinished
@@ -242,7 +245,7 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     m_tracker->sleep(true);
     m_inProgressLock = false;
     m_pbTrackerState = TrackerAction::PICK;
-    ui->pbTracker->setText(tr("Pick points"));
+    ui->pbTracker->setText(tr("Pick Points"));
     ui->pbTracker->setEnabled(true);
     enableTaskButtons(true);
     setEditCursor(Qt::ArrowCursor);

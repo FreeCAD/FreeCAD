@@ -889,6 +889,9 @@ void OverlayTabWidget::restore(ParameterGrp::handle handle)
 
     getSplitter()->setSizes(sizes);
     hGrp = handle;
+
+    // if updated save the state into settings to preserve layout in case of defaults change
+    saveTabs();
 }
 
 void OverlayTabWidget::saveTabs()
@@ -1244,6 +1247,10 @@ bool OverlayTabWidget::checkAutoHide() const
     if (autoMode == AutoMode::EditShow) {
         return !Application::Instance->editDocument()
             && (!Control().taskPanel() || Control().taskPanel()->isEmpty(false));
+    }
+
+    if (autoMode == AutoMode::TaskShow) {
+        return (!Control().taskPanel() || Control().taskPanel()->isEmpty());
     }
 
     if (autoMode == AutoMode::EditHide && Application::Instance->editDocument()) {
