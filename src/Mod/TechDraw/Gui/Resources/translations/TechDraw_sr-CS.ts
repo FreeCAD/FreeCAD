@@ -1692,7 +1692,7 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
     <message>
       <location filename="../../Command.cpp" line="109"/>
       <source>Creates a new page with the default template</source>
-      <translation>Napravi novi unapred zadani prazni crtež</translation>
+      <translation>Upotrebi unapred podešeni šablon praznog crteža</translation>
     </message>
   </context>
   <context>
@@ -1710,7 +1710,7 @@ Levi klik na prazan prostor potvrdiće trenutnu kotu. Desni klik ili pritisak n
     <message>
       <location filename="../../Command.cpp" line="169"/>
       <source>Creates a new page from a custom template</source>
-      <translation>Izaberi i napravi novi prazni crtež</translation>
+      <translation>Izaberi i upotrebi šablon praznog crteža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="181"/>
@@ -2181,7 +2181,7 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Napravi skraćeni pogled</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Sačuvaj crtež u DXF formatu</translation>
@@ -2462,7 +2462,7 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Prevuci pozicionu oznaku</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Prevuci kotu</translation>
     </message>
@@ -3476,7 +3476,7 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Sve datoteke</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -4093,19 +4093,19 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Izabrano je manje od tri kruga</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Nedostaje kota</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>Kota nije pronađena. Da li je obrisana? Ne može da se nastavi.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Izaberi 2 temena ili ivicu</translation>
     </message>
@@ -4218,7 +4218,7 @@ Ako nijedan objekat nije izabran, otvoriće se prozor pomoću kojeg možeš izab
       <translation>Grеška paramеtra</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Ime dokumenta:</translation>
     </message>
@@ -5687,7 +5687,7 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="495"/>
       <source>Default template file for new pages</source>
-      <translation>Podrazumevani šablon praznog crteža za nove crteže</translation>
+      <translation>Datoteka unapred podešenog šablona praznog crteža</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="476"/>
@@ -5811,7 +5811,7 @@ parametar &apos;Ažuriraj sa 3D&apos;</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="615"/>
       <source>Default template</source>
-      <translation>Unapred zadana šara šrafure</translation>
+      <translation>Unapred podešeni prazni crtež</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="627"/>
@@ -7985,8 +7985,8 @@ Možeš odabrati dodatne tačke da bi dobio segmente linija.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Top</source>
       <translation>Odozgo</translation>
     </message>
@@ -7997,8 +7997,8 @@ Možeš odabrati dodatne tačke da bi dobio segmente linija.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Left</source>
       <translation>Sleva</translation>
     </message>
@@ -8009,14 +8009,14 @@ Možeš odabrati dodatne tačke da bi dobio segmente linija.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Right</source>
       <translation>Sdesna</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Rear</source>
       <translation>Straga</translation>
     </message>
@@ -8027,8 +8027,8 @@ Možeš odabrati dodatne tačke da bi dobio segmente linija.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Bottom</source>
       <translation>Odozdo</translation>
     </message>
@@ -8084,31 +8084,31 @@ using the given X/Y spacings</source>
       <translation>Vertikalni razmak između osnovnih pogleda</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopLeft</source>
       <translation>SpredaOdozgoSleva</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomRight</source>
       <translation>SpredaOdozdoSdesna</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontTopRight</source>
       <translation>SpredaOdozgoSdesna</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontBottomLeft</source>
       <translation>SpredaOdozdoSleva</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
       <source>Front</source>
       <translation>Spreda</translation>
     </message>
@@ -9442,17 +9442,17 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Popuni polja šablona </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Ažuriranje</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Ažuriraj sve</translation>
     </message>
@@ -9485,12 +9485,12 @@ there is an open task dialog.</source>
       <translation>Nedostaje pogled ili grupa osnovnih pogleda</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Nedostaju odgovarajuća polja šablona</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation>Popuni polja šablona</translation>
     </message>
@@ -9499,27 +9499,33 @@ there is an open task dialog.</source>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Nije izabrano teme</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Izaberi bar </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> temena</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Nema odabranih ivica</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> ivice</translation>
     </message>
@@ -9804,22 +9810,22 @@ there is an open task dialog.</source>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="965"/>
+      <location filename="../../TaskProjGroup.cpp" line="966"/>
       <source>Direction</source>
       <translation>Pravac</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1002"/>
+      <location filename="../../TaskProjGroup.cpp" line="1003"/>
       <source>OK</source>
       <translation>U redu</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1003"/>
+      <location filename="../../TaskProjGroup.cpp" line="1004"/>
       <source>Cancel</source>
       <translation>Otkaži</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1009"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>Rotate by</source>
       <translation>Okreni za</translation>
     </message>
@@ -9984,12 +9990,12 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation>Aksonometrijska dužinska kota</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Napravi dužinsku kotu na aksonometrijskom pogledu, koristeći izabrane ivice ili parove temena za određivanje pravca i dužine</translation>
     </message>

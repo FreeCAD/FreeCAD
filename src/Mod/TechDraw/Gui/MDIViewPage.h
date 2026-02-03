@@ -121,6 +121,7 @@ public Q_SLOTS:
     void saveSVG();
     void saveDXF();
     void slotContextExportPdf();
+    void toggleFrame();
     void toggleKeepUpdated();
     void sceneSelectionChanged();
     void printAll();
@@ -140,9 +141,10 @@ protected:
     void sceneSelectionManager();
 
 private:
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDeletedObject;
 
+    QAction *m_toggleFrameAction;
     QAction *m_toggleKeepUpdatedAction;
     QAction *m_exportSVGAction;
     QAction *m_exportDXFAction;

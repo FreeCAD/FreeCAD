@@ -7,7 +7,8 @@
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Enregistre le dernier choix de l'utilisateur concernant la configuration de CopyOnChange sur tous les liens qui font référence au même objet configurable.</translation>
+      <translation>Enregistre le dernier choix de l'utilisateur concernant la configuration de CopyOnChange sur tous les liens qui font référence au
+même objet configurable.</translation>
     </message>
   </context>
   <context>
@@ -41,37 +42,37 @@ L'utilisateur doit ensuite cliquer sur le bouton "Rafraîchir" dans la barre d'o
   <context>
     <name>App::LocalCoordinateSystem</name>
     <message>
-      <location filename="../../Datums.cpp" line="260"/>
+      <location filename="../../Datums.cpp" line="265"/>
       <source>X-axis</source>
       <translation>Axe X</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="261"/>
+      <location filename="../../Datums.cpp" line="266"/>
       <source>Y-axis</source>
       <translation>Axe Y</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="262"/>
+      <location filename="../../Datums.cpp" line="267"/>
       <source>Z-axis</source>
       <translation>Axe Z</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="263"/>
+      <location filename="../../Datums.cpp" line="268"/>
       <source>XY-plane</source>
       <translation>Plan XY</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="264"/>
+      <location filename="../../Datums.cpp" line="269"/>
       <source>XZ-plane</source>
       <translation>Plan XZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="265"/>
+      <location filename="../../Datums.cpp" line="270"/>
       <source>YZ-plane</source>
       <translation>Plan YZ</translation>
     </message>
     <message>
-      <location filename="../../Datums.cpp" line="266"/>
+      <location filename="../../Datums.cpp" line="271"/>
       <source>Origin</source>
       <translation>Origine</translation>
     </message>

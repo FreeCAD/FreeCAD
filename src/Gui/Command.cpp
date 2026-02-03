@@ -1444,12 +1444,8 @@ void PythonCommand::activated(int iMsg)
             }
         }
         catch (const Base::PyException& e) {
-            Base::Console().error(
-                "Running the Python command '%s' failed:\n%s\n%s",
-                sName,
-                e.getStackTrace().c_str(),
-                e.what()
-            );
+            Base::Console().error("Running the Python command '%s' failed:", sName);
+            e.reportException();
         }
         catch (const Base::Exception&) {
             Base::Console().error("Running the Python command '%s' failed, try to resume", sName);
@@ -1595,7 +1591,7 @@ bool PythonCommand::isChecked() const
     }
 }
 
-void PythonCommand::onActionInit() const
+void PythonCommand::onActionInit()
 {
     try {
         Base::PyGILStateLocker lock;
@@ -1697,12 +1693,8 @@ void PythonGroupCommand::activated(int iMsg)
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error(
-            "Running the Python command '%s' failed:\n%s\n%s",
-            sName,
-            e.getStackTrace().c_str(),
-            e.what()
-        );
+        Base::Console().error("Running the Python command '%s' failed:", sName);
+        e.reportException();
     }
 }
 
@@ -1794,12 +1786,8 @@ Action* PythonGroupCommand::createAction()
     catch (Py::Exception&) {
         Base::PyGILStateLocker lock;
         Base::PyException e;
-        Base::Console().error(
-            "createAction() of the Python command '%s' failed:\n%s\n%s",
-            sName,
-            e.getStackTrace().c_str(),
-            e.what()
-        );
+        Base::Console().error("createAction() of the Python command '%s' failed:", sName);
+        e.reportException();
     }
 
     _pcAction = pcAction;
@@ -1979,7 +1967,7 @@ bool PythonGroupCommand::hasDropDownMenu() const
     }
 }
 
-void PythonGroupCommand::onActionInit() const
+void PythonGroupCommand::onActionInit()
 {
     try {
         Base::PyGILStateLocker lock;

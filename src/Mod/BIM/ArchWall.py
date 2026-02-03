@@ -560,45 +560,41 @@ class _Wall(ArchComponent.Component):
 
         extdata = self.getExtrusionData(obj)
         if extdata:
-            bplates = extdata[0]
+            base_faces = extdata[0]
             extv = extdata[2].Rotation.multVec(extdata[1])
-            if isinstance(bplates, list):
-                shps = []
-                # Test : if base is Sketch, then fuse all solid; otherwise, makeCompound
-                sketchBaseToFuse = obj.Base.getLinkedObject().isDerivedFrom(
-                    "Sketcher::SketchObject"
-                )
-                # but turn this off if we have layers, otherwise layers get merged
-                if (
+
+            # Normalize geometry: getExtrusionData can return a single face or a list of faces.
+            # Normalize it to always be a list to simplify the logic below.
+            if not isinstance(base_faces, list):
+                base_faces = [base_faces]
+
+            # Determine the fusion strategy: solids should only be fused if the base is a Sketch and
+            # it is not a multi-layer wall.
+            should_fuse_solids = False
+            if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                is_multi_layer = (
                     hasattr(obj, "Material")
                     and obj.Material
                     and hasattr(obj.Material, "Materials")
                     and obj.Material.Materials
-                ):
-                    sketchBaseToFuse = False
-                for b in bplates:
-                    b.Placement = extdata[2].multiply(b.Placement)
-                    b = b.extrude(extv)
+                )
+                if not is_multi_layer:
+                    should_fuse_solids = True
 
-                    # See getExtrusionData() - not fusing baseplates there - fuse solids here
-                    # Remarks - If solids are fused, but exportIFC.py use underlying baseplates w/o fuse, the result in ifc look slightly different from in FC.
+            # Generate solids
+            solids = []
+            for face in base_faces:
+                face.Placement = extdata[2].multiply(face.Placement)
+                solids.append(face.extrude(extv))
 
-                    if sketchBaseToFuse:
-                        if shps:
-                            shps = shps.fuse(b)  # shps.fuse(b)
-                        else:
-                            shps = b
-                    else:
-                        shps.append(b)
-                    # TODO - To let user to select whether to fuse (slower) or to do a compound (faster) only ?
-
-                if sketchBaseToFuse:
-                    base = shps
-                else:
-                    base = Part.makeCompound(shps)
+            # Apply the fusion strategy
+            if should_fuse_solids:
+                fused_shape = None
+                for solid in solids:
+                    fused_shape = fused_shape.fuse(solid) if fused_shape else solid
+                base = fused_shape
             else:
-                bplates.Placement = extdata[2].multiply(bplates.Placement)
-                base = bplates.extrude(extv)
+                base = Part.makeCompound(solids)
         if obj.Base:
             if hasattr(obj.Base, "Shape"):
                 if obj.Base.Shape.isNull():
@@ -653,8 +649,7 @@ class _Wall(ArchComponent.Component):
                                             offset += obj.BlockLength.Value + obj.Joint.Value
                                         offset -= edge.Length
 
-                            if isinstance(bplates, list):
-                                bplates = bplates[0]
+                            base_face = base_faces[0]
                             if obj.BlockHeight.Value:
                                 fsize = obj.BlockHeight.Value + obj.Joint.Value
                                 bh = obj.BlockHeight.Value
@@ -666,15 +661,15 @@ class _Wall(ArchComponent.Component):
                             svec = FreeCAD.Vector(n)
                             svec.multiply(fsize)
                             if cuts1:
-                                plate1 = bplates.cut(cuts1).Faces
+                                faces1 = base_face.cut(cuts1).Faces
                             else:
-                                plate1 = bplates.Faces
-                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
+                                faces1 = base_face.Faces
+                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
                             if cuts2:
-                                plate2 = bplates.cut(cuts2).Faces
+                                faces2 = base_face.cut(cuts2).Faces
                             else:
-                                plate2 = bplates.Faces
-                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
+                                faces2 = base_face.Faces
+                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
                             interval = extv.Length / (fsize)
                             entire = int(interval)
                             rest = interval - entire
@@ -693,9 +688,9 @@ class _Wall(ArchComponent.Component):
                                 rvec = FreeCAD.Vector(n)
                                 rvec.multiply(rest)
                                 if entire % 2:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate2])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces2])
                                 else:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate1])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces1])
                                 t = FreeCAD.Vector(svec)
                                 t.multiply(entire)
                                 b.translate(t)
@@ -726,10 +721,19 @@ class _Wall(ArchComponent.Component):
             # return
             # walls can be made of only a series of additions and have no base shape
             base = Part.Shape()
-
         base = self.processSubShapes(obj, base, pl)
-
         self.applyShape(obj, base, pl)
+
+        # Check if there is base, and if width and height is provided or not
+        # Provide users message below to check the setting of the Wall object
+        if base.isNull() and (self.noWidths or self.noHeight):
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "Arch",
+                    f"Cannot create or update {obj.Label} as its length, height or width is zero, and there are no solids in its additions",
+                )
+                + "\n"
+            )
 
         # count blocks
         if hasattr(obj, "MakeBlocks"):
@@ -936,6 +940,9 @@ class _Wall(ArchComponent.Component):
                 return data
         length = obj.Length.Value
         # TODO currently layers were not supported when len(basewires) > 0	##( or 1 ? )
+
+        self.noWidths = False
+        self.noHeight = False
         width = 0
         # Get width of each edge segment from Base Objects if they store it
         # (Adding support in SketchFeaturePython, DWire...)
@@ -975,16 +982,36 @@ class _Wall(ArchComponent.Component):
             elif obj.Width:
                 widths = [obj.Width.Value]
             else:
-                # having no width is valid for walls so the user doesn't need to be warned
-                # it just disables extrusions and return none
-                # print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
-                return None
+                ## having no width is valid for walls so the user doesn't need to be warned
+                ## it just disables extrusions and return none
+                ## print ("Width & OverrideWidth & base.getWidths() should not be all 0 or None or [] empty list ")
+                #
+                # Having no width is valid for walls for a few cases, e.g.-
+                # - it has Base with solid
+                # - it has Additions
+                # A message could be provided in the Report panel for users
+                # to note if this is intended, then ignore extrusion afterwards,
+                # i.e. return None.
+                # Also should check Height.
+                self.noWidths = True
+                # return None
 
         # Set 'default' width - for filling in any item in the list == 0 or None
         if obj.Width.Value:
             width = obj.Width.Value
         else:
             width = 200  # 'Default' width value
+
+        # Check height
+        height = obj.Height.Value
+        if not height:
+            height = self.getParentHeight(obj)
+        if not height:
+            self.noHeight = True
+
+        # Check width and height is provided or not
+        if self.noWidths or self.noHeight:
+            return None
 
         # Get align of each edge segment from Base Objects if they store it.
         # (Adding support in SketchFeaturePython, DWire...)
@@ -1066,11 +1093,6 @@ class _Wall(ArchComponent.Component):
         # Set 'default' offset - for filling in any item in the list == 0 or None
         offset = obj.Offset.Value  # could be 0
 
-        height = obj.Height.Value
-        if not height:
-            height = self.getParentHeight(obj)
-        if not height:
-            return None
         if obj.Normal == Vector(0, 0, 0):
             if obj.Base and hasattr(obj.Base, "Shape"):
                 normal = DraftGeomUtils.get_shape_normal(obj.Base.Shape)
@@ -1180,7 +1202,6 @@ class _Wall(ArchComponent.Component):
                                     (Part.LineSegment, Part.Circle, Part.ArcOfCircle, Part.Ellipse),
                                 ):
                                     skGeomEdgesI = geom.Geometry.toShape()
-
                                     skGeomEdges.append(skGeomEdgesI)
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
@@ -1190,7 +1211,6 @@ class _Wall(ArchComponent.Component):
                                 edge.Placement = edge.Placement.multiply(
                                     skPlacement
                                 )  ## TODO add attribute to skip Transform...
-
                                 clusterTransformed.append(edge)
                             # Only use cluster of edges rather than turning into wire
                             self.basewires.append(clusterTransformed)
@@ -1526,32 +1546,10 @@ class _Wall(ArchComponent.Component):
                         if baseface:
                             base, placement = self.rebase(baseface)
 
-        # Build Wall if there is no obj.Base or even obj.Base is not valid
+        # Build Wall from scratch if there is no obj.Base or even obj.Base is not valid
         else:
-            if layers:
-                totalwidth = sum([abs(l) for l in layers])
-                offset = 0
-                base = []
-                for l in layers:
-                    if l > 0:
-                        l2 = length / 2 or 0.5
-                        w1 = -totalwidth / 2 + offset
-                        w2 = w1 + l
-                        v1 = Vector(-l2, w1, 0)
-                        v2 = Vector(l2, w1, 0)
-                        v3 = Vector(l2, w2, 0)
-                        v4 = Vector(-l2, w2, 0)
-                        base.append(Part.Face(Part.makePolygon([v1, v2, v3, v4, v1])))
-                    offset += abs(l)
-            else:
-                l2 = length / 2 or 0.5
-                w2 = width / 2 or 0.5
-                v1 = Vector(-l2, -w2, 0)
-                v2 = Vector(l2, -w2, 0)
-                v3 = Vector(l2, w2, 0)
-                v4 = Vector(-l2, w2, 0)
-                base = Part.Face(Part.makePolygon([v1, v2, v3, v4, v1]))
-            placement = FreeCAD.Placement()
+            base, placement = self.build_base_from_scratch(obj)
+
         if base and placement:
             normal.normalize()
             extrusion = normal.multiply(height)
@@ -1559,6 +1557,40 @@ class _Wall(ArchComponent.Component):
                 extrusion = placement.inverse().Rotation.multVec(extrusion)
             return (base, extrusion, placement)
         return None
+
+    def calc_endpoints(self, obj):
+        """Returns the global start and end points of a baseless wall's centerline."""
+        # The wall's shape is centered, so its endpoints in local coordinates
+        # are at (-Length/2, 0, 0) and (+Length/2, 0, 0).
+        p1_local = FreeCAD.Vector(-obj.Length.Value / 2, 0, 0)
+        p2_local = FreeCAD.Vector(obj.Length.Value / 2, 0, 0)
+
+        # Transform these local points into global coordinates using the wall's placement.
+        p1_global = obj.Placement.multVec(p1_local)
+        p2_global = obj.Placement.multVec(p2_local)
+
+        return [p1_global, p2_global]
+
+    def set_from_endpoints(self, obj, pts):
+        """Sets the Length and Placement of a baseless wall from two global points."""
+        if len(pts) < 2:
+            return
+
+        p1 = pts[0]
+        p2 = pts[1]
+
+        # Recalculate the wall's properties based on the new endpoints
+        new_length = p1.distanceToPoint(p2)
+        new_midpoint = (p1 + p2) * 0.5
+        new_direction = (p2 - p1).normalize()
+
+        # Calculate the rotation required to align the local X-axis with the new direction
+        new_rotation = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), new_direction)
+
+        # Apply the new properties to the wall object
+        obj.Length = new_length
+        obj.Placement.Base = new_midpoint
+        obj.Placement.Rotation = new_rotation
 
     def handleComponentRemoval(self, obj, subobject):
         """
@@ -1609,6 +1641,213 @@ class _Wall(ArchComponent.Component):
             # from the parent Component class.
             super(_Wall, self).handleComponentRemoval(obj, subobject)
 
+    def get_width(self, obj, widths=True):
+        """Returns a width and a list of widths for this wall.
+        If widths is False, only the main width is returned"""
+        import ArchSketchObject
+
+        # Set 'default' width - for filling in any item in the list == 0 or None
+        if obj.Width.Value:
+            width = obj.Width.Value
+        else:
+            width = 200  # 'Default' width value
+        if not widths:
+            return width
+
+        lwidths = []
+        if (
+            hasattr(obj, "ArchSketchData")
+            and obj.ArchSketchData
+            and Draft.getType(obj.Base) == "ArchSketch"
+        ):
+            if hasattr(obj.Base, "Proxy"):
+                if hasattr(obj.Base.Proxy, "getWidths"):
+                    lwidths = obj.Base.Proxy.getWidths(
+                        obj.Base, propSetUuid=self.ArchSkPropSetPickedUuid
+                    )
+        if not lwidths:
+            if obj.OverrideWidth:
+                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                    lwidths = ArchSketchObject.sortSketchWidth(
+                        obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
+                    )
+                else:
+                    lwidths = obj.OverrideWidth
+            elif obj.Width:
+                lwidths = [obj.Width.Value]
+            else:
+                return None
+        return width, lwidths
+
+    def get_layers(self, obj):
+        """Returns a list of layers"""
+        layers = []
+        width = self.get_width(obj, widths=False)
+        if hasattr(obj, "Material"):
+            if obj.Material:
+                if hasattr(obj.Material, "Materials"):
+                    thicknesses = [abs(t) for t in obj.Material.Thicknesses]
+                    restwidth = width - sum(thicknesses)
+                    varwidth = 0
+                    if restwidth > 0:
+                        varwidth = [t for t in thicknesses if t == 0]
+                        if varwidth:
+                            varwidth = restwidth / len(varwidth)
+                    for t in obj.Material.Thicknesses:
+                        if t:
+                            layers.append(t)
+                        elif varwidth:
+                            layers.append(varwidth)
+        return layers
+
+    def build_base_from_scratch(self, obj):
+        """Generate the 2D profile for extruding a baseless Arch Wall.
+
+        This function creates the rectangular face or faces that form the wall's cross-section,
+        which is then used by the caller for extrusion. It handles both single- and multi-layer wall
+        configurations.
+
+        Parameters
+        ----------
+        obj : FreeCAD.DocumentObject
+            The wall object being built. Its Length, Align, and layer
+            properties are used.
+
+        Returns
+        -------
+        tuple of (list of Part.Face, FreeCAD.Placement)
+            A tuple containing two elements:
+            1. A list of one or more Part.Face objects representing the cross-section.
+            2. An identity Placement, as the geometry is in local coordinates.
+
+        Notes
+        -----
+        The geometry follows the convention where `Align='Left'` offsets the wall in the negative-Y
+        direction (the geometric right).
+        """
+        import Part
+
+        def _create_face_from_coords(half_length, y_min, y_max):
+            """Creates a rectangular Part.Face centered on the X-axis, defined by Y coordinates."""
+            bottom_left = Vector(-half_length, y_min, 0)
+            bottom_right = Vector(half_length, y_min, 0)
+            top_right = Vector(half_length, y_max, 0)
+            top_left = Vector(-half_length, y_max, 0)
+            return Part.Face(
+                Part.makePolygon([bottom_left, bottom_right, top_right, top_left, bottom_left])
+            )
+
+        layers = self.get_layers(obj)
+        width = self.get_width(obj, widths=False)
+        align = obj.Align
+
+        # Use a small default for zero dimensions to ensure a valid shape can be created.
+        safe_length = obj.Length.Value or 0.5
+
+        if not layers:
+            safe_width = width or 0.5
+            layers = [safe_width]  # Treat a single-layer wall as a multi-layer wall with one layer.
+
+        # --- Calculate and Create Geometry ---
+        base_faces = []
+
+        # The total width is needed to calculate the starting offset for alignment.
+        totalwidth = sum([abs(layer) for layer in layers])
+
+        # The offset acts as a cursor, tracking the current position along the Y-axis.
+        offset = 0
+        if align == "Center":
+            offset = -totalwidth / 2
+        elif align == "Left":
+            # Per convention, 'Left' is on the geometric right (-Y direction).
+            offset = -totalwidth
+
+        # Loop through all layers and create a face for each.
+        for layer in layers:
+            # A negative layer value is not drawn, so its geometry is skipped.
+            if layer > 0:
+                half_length = safe_length / 2
+                layer_y_min = offset
+                layer_y_max = offset + layer
+                face = _create_face_from_coords(half_length, layer_y_min, layer_y_max)
+                base_faces.append(face)
+
+            # The offset is always increased by the absolute thickness of the layer.
+            offset += abs(layer)
+
+        placement = FreeCAD.Placement()
+
+        return base_faces, placement
+
+
+if FreeCAD.GuiUp:
+
+    class WallTaskPanel(ArchComponent.ComponentTaskPanel):
+        def __init__(self, obj):
+            ArchComponent.ComponentTaskPanel.__init__(self)
+            self.obj = obj
+            self.wallWidget = QtGui.QWidget()
+            self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
+
+            layout = QtGui.QFormLayout(self.wallWidget)
+
+            self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.length.setProperty("unit", "mm")
+            self.length.setText(obj.Length.UserString)
+            layout.addRow(translate("Arch", "Length"), self.length)
+
+            self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.width.setProperty("unit", "mm")
+            self.width.setText(obj.Width.UserString)
+            layout.addRow(translate("Arch", "Width"), self.width)
+
+            self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.height.setProperty("unit", "mm")
+            self.height.setText(obj.Height.UserString)
+            layout.addRow(translate("Arch", "Height"), self.height)
+
+            self.alignLayout = QtGui.QHBoxLayout()
+            self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
+            self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
+            self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLayout.addWidget(self.alignLeft)
+            self.alignLayout.addWidget(self.alignCenter)
+            self.alignLayout.addWidget(self.alignRight)
+            self.alignLayout.addStretch()
+
+            self.alignGroup = QtGui.QButtonGroup(self.wallWidget)
+            self.alignGroup.addButton(self.alignLeft)
+            self.alignGroup.addButton(self.alignCenter)
+            self.alignGroup.addButton(self.alignRight)
+            self.alignGroup.buttonClicked.connect(self.setAlign)
+
+            if obj.Align == "Left":
+                self.alignLeft.setChecked(True)
+            elif obj.Align == "Right":
+                self.alignRight.setChecked(True)
+            else:
+                self.alignCenter.setChecked(True)
+
+            layout.addRow(translate("Arch", "Alignment"), self.alignLayout)
+
+            # Wall Options first, then Components (inherited self.form)
+            self.form = [self.wallWidget, self.form]
+
+        def setAlign(self, button):
+            if button == self.alignLeft:
+                self.obj.Align = "Left"
+            elif button == self.alignRight:
+                self.obj.Align = "Right"
+            else:
+                self.obj.Align = "Center"
+            self.obj.recompute()
+
+        def accept(self):
+            self.obj.Length = self.length.text()
+            self.obj.Width = self.width.text()
+            self.obj.Height = self.height.text()
+            return super().accept()
+
 
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
@@ -1640,7 +1879,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Wall_Clone.svg"
-            elif (not self.Object.Base) and self.Object.Additions:
+            elif (not self.Object.Base) and self.Object.Additions and not self.Object.Length.Value:
+                # The wall is an assembly: it is built from additions only, yet it is not
+                # strictly a baseless wall, since baseless walls are parametric.
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
@@ -1792,6 +2033,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     self.fset.coordIndex.setValues(0, len(fdata), fdata)
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        taskd = WallTaskPanel(vobj.Object)
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
     def setupContextMenu(self, vobj, menu):
 

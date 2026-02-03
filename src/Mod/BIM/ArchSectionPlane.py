@@ -142,7 +142,7 @@ def getCutShapes(
                 shapes.extend(v1.Solids)
                 objectShapes.append((k, v1.Solids))
             else:
-                print("ArchSectionPlane: Fusing Arch objects produced non-solid results")
+                print("ArchSectionPlane: Fusing BIM objects produced non-solid results")
                 shapes.append(v1)
                 objectShapes.append((k, [v1]))
     else:
@@ -404,7 +404,7 @@ def getSVG(
                 mv = pl.multVec(FreeCAD.Vector(0, 0, 1))
                 mv.multiply(source.ViewObject.CutMargin)
                 pl.move(mv)
-            wp.align_to_placement(pl)
+            wp.align_to_rotation(pl.Rotation)
             # wp.inverse()
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)
@@ -769,6 +769,9 @@ def getCoinSVG(cutplane, objs, cameradata=None, linewidth=0.2, singleface=False,
     view_window = FreeCADGui.createViewer()
     view_window_name = "Temp" + str(uuid.uuid4().hex[:8])
     view_window.setName(view_window_name)
+    # disable animations to prevent a crash:
+    # https://github.com/FreeCAD/FreeCAD/issues/24929
+    view_window.setAnimationEnabled(False)
     inventor_view = view_window.getViewer()
 
     inventor_view.setBackgroundColor(1, 1, 1)

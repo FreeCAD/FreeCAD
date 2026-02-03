@@ -44,6 +44,16 @@ import jtech_post
 jtech_post.export(object,"/path/to/file.ngc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """M05 S0
+G90
+"""
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05 S0
+M2
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="jtech", add_help=False)
@@ -58,11 +68,15 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="M05 S0\\nG90\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05 S0\\nM2\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -99,16 +113,6 @@ UNIT_FORMAT = "mm"
 
 MACHINE_NAME = "JTECH Photonic Laser"
 PRECISION = 3
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """M05 S0
-G90
-"""
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05 S0
-M2
-"""
 
 PRE_FEED = """M03
 G4 P{}
@@ -228,7 +232,7 @@ def export(objectslist, filename, argstring):
 
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

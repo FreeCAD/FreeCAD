@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="1339"/>
       <source>Clip Group</source>
-      <translation>Ausschnittsgruppe</translation>
+      <translation>Ausschnittgruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1340"/>
       <source>Inserts a new clip group for the selected view</source>
-      <translation>Fügt eine neue Ausschnittsgruppe für die ausgewählte Ansicht ein</translation>
+      <translation>Fügt eine neue Ausschnittgruppe für die ausgewählte Ansicht ein</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="1376"/>
       <source>Add View To Clip Group</source>
-      <translation>Ansicht zu Ausschnittsgruppe hinzufügen</translation>
+      <translation>Ansicht zu Ausschnittgruppe hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1377"/>
       <source>Adds the selected view to a clip group</source>
-      <translation>Fügt die ausgewählte Ansicht zu einer Ausschnittsgruppe hinzu</translation>
+      <translation>Fügt die ausgewählte Ansicht zu einer Ausschnittgruppe hinzu</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="1460"/>
       <source>Remove From Clip Group</source>
-      <translation>Aus Ausschnittsgruppe entfernen</translation>
+      <translation>Aus Ausschnittgruppe entfernen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1461"/>
       <source>Removes a view based on the selected clip group</source>
-      <translation>Entfernt eine Ansicht basierend auf der ausgewählten Ausschnittsgruppe</translation>
+      <translation>Entfernt eine Ansicht basierend auf der ausgewählten Ausschnittgruppe</translation>
     </message>
   </context>
   <context>
@@ -372,7 +372,7 @@
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1364"/>
       <source>Dimension</source>
-      <translation>Maß gemäß Auswahl</translation>
+      <translation>Maß</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1365"/>
@@ -1194,7 +1194,7 @@ Ein Linksklick auf einen leeren Bereich bestätigt das aktuelle Maß. Ein Rechts
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1542"/>
       <source>Toggle View Lock</source>
-      <translation>Gesperrte Ansicht umschalten</translation>
+      <translation>Ansichtsperre umschalten</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1543"/>
@@ -2184,7 +2184,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Eine unterbrochene Ansicht erstellen</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="424"/>
+      <location filename="../../PagePrinter.cpp" line="428"/>
       <location filename="../../Command.cpp" line="1893"/>
       <source>Save page to DXF</source>
       <translation>Zeichnungsblatt als DXF speichern</translation>
@@ -2208,12 +2208,12 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
     <message>
       <location filename="../../Command.cpp" line="1428"/>
       <source>Add clip group</source>
-      <translation>Ausschnittsgruppe hinzufügen</translation>
+      <translation>Ausschnittgruppe hinzufügen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1499"/>
       <source>Remove clip group</source>
-      <translation>Ausschnittsgruppe entfernen</translation>
+      <translation>Ausschnittgruppe entfernen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1634"/>
@@ -2462,10 +2462,10 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
     <message>
       <location filename="../../QGIViewBalloon.cpp" line="506"/>
       <source>Drag Balloon</source>
-      <translation>Hinweisfeld bewegen</translation>
+      <translation>Hinweisfeld ziehen</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="313"/>
+      <location filename="../../QGIViewDimension.cpp" line="306"/>
       <source>Drag Dimension</source>
       <translation>Maß ziehen</translation>
     </message>
@@ -3165,12 +3165,12 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
     <message>
       <location filename="../../Command.cpp" line="1406"/>
       <source>Select exactly one view to add to clip group</source>
-      <translation>Genau eine Ansicht auswählen, die zu der Ausschnittsgruppe hinzugefügt werden soll</translation>
+      <translation>Genau eine Ansicht auswählen, die zu der Ausschnittgruppe hinzugefügt werden soll</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1473"/>
       <source>Select exactly one view to remove from clip group</source>
-      <translation>Genau eine Ansicht auswählen, die aus der Ausschnittsgruppe entfernt werden soll</translation>
+      <translation>Genau eine Ansicht auswählen, die aus der Ausschnittgruppe entfernt werden soll</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1835"/>
@@ -3335,7 +3335,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
     <message>
       <location filename="../../Command.cpp" line="1389"/>
       <source>Select one clip group and one view</source>
-      <translation>Wähle eine Ausschnittsgruppe und eine Ansicht</translation>
+      <translation>Wähle eine Ausschnittgruppe und eine Ansicht</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1871"/>
@@ -3345,7 +3345,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
     <message>
       <location filename="../../Command.cpp" line="1411"/>
       <source>Select exactly one clip group</source>
-      <translation>Wähle genau eine Ausschnittsgruppe</translation>
+      <translation>Wähle genau eine Ausschnittgruppe</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1420"/>
@@ -3479,7 +3479,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Alle Dateien</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="549"/>
+      <location filename="../../TaskDimension.cpp" line="551"/>
       <location filename="../../CommandAlign.cpp" line="53"/>
       <location filename="../../CommandCreateDims.cpp" line="2014"/>
       <location filename="../../CommandCreateDims.cpp" line="2030"/>
@@ -4096,19 +4096,19 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Weniger als drei Kreise ausgewählt</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="195"/>
-      <location filename="../../TaskDimension.cpp" line="210"/>
+      <location filename="../../TaskDimension.cpp" line="197"/>
+      <location filename="../../TaskDimension.cpp" line="212"/>
       <source>Missing Dimension</source>
       <translation>Fehlende Bemaßung</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="196"/>
-      <location filename="../../TaskDimension.cpp" line="211"/>
+      <location filename="../../TaskDimension.cpp" line="198"/>
+      <location filename="../../TaskDimension.cpp" line="213"/>
       <source>Dimension not found. Was it deleted? Cannot continue.</source>
       <translation>Maß nicht gefunden. Wurde es gelöscht? Kann nicht fortfahren.</translation>
     </message>
     <message>
-      <location filename="../../TaskDimension.cpp" line="550"/>
+      <location filename="../../TaskDimension.cpp" line="552"/>
       <source>Select 2 vertices or 1 edge</source>
       <translation>Wähle zwei Knoten oder eine Kante</translation>
     </message>
@@ -4221,7 +4221,7 @@ Ist kein Objekt ausgewählt, öffnet sich ein Datei-Browser, um eine SVG- oder e
       <translation>Parameterfehler</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="264"/>
+      <location filename="../../PagePrinter.cpp" line="270"/>
       <source>Document Name:</source>
       <translation>Dokumentname:</translation>
     </message>
@@ -4608,7 +4608,7 @@ Dieses Verzeichnis wird für die Symbolauswahl verwendet.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="37"/>
       <source>Switch workbench on click</source>
-      <translation>Arbeitsbereich bei Klick wechseln</translation>
+      <translation>Arbeitsbereich mit Klick wechseln</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="59"/>
@@ -4633,7 +4633,7 @@ Dieses Verzeichnis wird für die Symbolauswahl verwendet.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="85"/>
       <source>Use new face finder algorithm</source>
-      <translation>Den neuen Flächenfinder-Algorithmus verwenden</translation>
+      <translation>Neuen Flächenfinder-Algorithmus verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="107"/>
@@ -4692,7 +4692,7 @@ Schraffieren zu können; dies kann aber zu Performance-Einbußen bei komplexen M
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="265"/>
       <source>Mark fuzz</source>
-      <translation type="unfinished">Mark fuzz</translation>
+      <translation>Auswahlbereich für Mittelpunktsmarkierungen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="301"/>
@@ -4743,7 +4743,7 @@ Limit erhöhen, falls erforderlich.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="501"/>
       <source>Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</source>
-      <translation type="unfinished">Choose non-conflicting key bindings as some combinations of OS and navigation style key bindings may conflict with the default modifier keys for balloon dragging and view snapping override.</translation>
+      <translation>Nicht-konfliktbehaftete Tastenkombinationen wählen, da einige Kombinationen von Betriebssystem- und Navigationsstil-Tastenkombinationen mit den Standard-Modifikatortasten für das Ziehen von Hinweisfeldern und das Überschreiben des Ansichts-Fang in Konflikt stehen können.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="515"/>
@@ -4753,7 +4753,7 @@ Limit erhöhen, falls erforderlich.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="532"/>
       <source>Balloon drag</source>
-      <translation type="unfinished">Balloon drag</translation>
+      <translation>Hinweisfeld ziehen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="440"/>
@@ -4824,37 +4824,37 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="542"/>
       <source>Alt</source>
-      <translation>Alt - Taste</translation>
+      <translation>Alt-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="549"/>
       <source>Check this box to include the Shift key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Umschalttaste (Shift) zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Umschalttaste zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="552"/>
       <source>Shift</source>
-      <translation>Shift - Taste</translation>
+      <translation>Umschalttaste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Meta/Start/Super-Taste zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Strg-Taste (Ctrl) zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
       <source>Meta</source>
-      <translation>Meta</translation>
+      <translation>Meta-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="569"/>
       <source>Check this box to include the Control key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Strg-Taste (Ctrl) zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Strg-Taste zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="572"/>
       <source>Control</source>
-      <translation>Steuerung</translation>
+      <translation>Strg-Taste</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="590"/>
@@ -5089,7 +5089,7 @@ bei Verwendung von Zeichnungen als 1:1 Schnittvorlage.
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="550"/>
       <source>Center line style</source>
-      <translation>Mittellinien-Stil</translation>
+      <translation>Linienart für Mittellinien</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="631"/>
@@ -5853,7 +5853,7 @@ die globale Einstellung &apos;Mit 3D aktualisieren&apos; überschreiben kann</tr
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="838"/>
       <source>Use 3D camera direction</source>
-      <translation>Verwende die 3D-Kamerarichtung</translation>
+      <translation>3D-Kamerarichtung verwenden</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="856"/>
@@ -5918,7 +5918,7 @@ die globale Einstellung &apos;Mit 3D aktualisieren&apos; überschreiben kann</tr
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="816"/>
       <source>View Defaults</source>
-      <translation>Ansicht Standards</translation>
+      <translation>Ansicht Standard</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="859"/>
@@ -5994,7 +5994,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="143"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="176"/>
       <source>Show hard lines</source>
-      <translation>Zeigt harte Linien</translation>
+      <translation>Körperkanten anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="173"/>
@@ -6004,12 +6004,12 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="200"/>
       <source>Shows smooth lines</source>
-      <translation>Zeigt glatte Linien</translation>
+      <translation>Tangentiale Flächenränder anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="230"/>
       <source>Shows hidden smooth edges</source>
-      <translation type="unfinished">Shows hidden smooth edges</translation>
+      <translation>Versteckte glatte Kanten anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="257"/>
@@ -6030,7 +6030,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="317"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="344"/>
       <source>Show UV ISO lines</source>
-      <translation type="unfinished">Show UV ISO lines</translation>
+      <translation>UV-ISO-Linien anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="341"/>
@@ -6040,7 +6040,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="368"/>
       <source>ISO count</source>
-      <translation type="unfinished">ISO count</translation>
+      <translation>ISO-Anzahl</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="83"/>
@@ -6056,7 +6056,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="203"/>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="233"/>
       <source>Show smooth lines</source>
-      <translation>Tangentiale Linien anzeigen</translation>
+      <translation>Tangentiale Flächenränder anzeigen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawHLR.ui" line="260"/>
@@ -6121,7 +6121,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="184"/>
       <source>Default scale for views if &apos;View scale type&apos; is &apos;Custom&apos;</source>
-      <translation type="unfinished">Default scale for views if &apos;View scale type&apos; is &apos;Custom&apos;</translation>
+      <translation>Voreingestellter Maßstab für Ansichten, wenn &apos;Maßstabstyp&apos; auf &apos;Benutzerdefiniert&apos; eingestellt ist</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="214"/>
@@ -6136,7 +6136,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
       <source>Legacy symbol scaling</source>
-      <translation type="unfinished">Legacy symbol scaling</translation>
+      <translation>Skalierung von veralteten Symbolen</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="259"/>
@@ -6156,7 +6156,7 @@ Schnell, aber das Ergebnis ist eine Sammlung von kurzen geraden Linien.</transla
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
       <source>Template edit mark</source>
-      <translation>Markierung für editierbare Vorlagentexte</translation>
+      <translation>Markierung für bearbeitbare Vorlagentexte</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
@@ -6363,7 +6363,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="266"/>
       <source>Controls whether the leader line is visible or not</source>
-      <translation type="unfinished">Controls whether the leader line is visible or not</translation>
+      <translation>Steuert, ob die Hinweislinie sichtbar ist oder nicht</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="286"/>
@@ -6373,7 +6373,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskBalloon.ui" line="324"/>
       <source>Leader kink length</source>
-      <translation type="unfinished">Leader kink length</translation>
+      <translation>Länge des Hinweislinien-Knicks</translation>
     </message>
     <message>
       <location filename="../../TaskBalloon.ui" line="194"/>
@@ -6878,7 +6878,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="382"/>
       <source>Unequal bilateral</source>
-      <translation type="unfinished">Unequal bilateral</translation>
+      <translation>Ungleiches bilaterales</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="397"/>
@@ -7262,7 +7262,7 @@ Benutzerdefiniert: Der benutzerdefinierte Maßstab wird verwendet</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="136"/>
       <source>If theoretically exact (basic) dimension</source>
-      <translation type="unfinished">If theoretically exact (basic) dimension</translation>
+      <translation>Wenn theoretisch genaues (einfaches) Maß</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="139"/>
@@ -7310,7 +7310,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskDimension.ui" line="42"/>
       <source>Sets use of &apos;Format spec&apos; instead of the dimension value</source>
-      <translation type="unfinished">Sets use of &apos;Format spec&apos; instead of the dimension value</translation>
+      <translation>Legt die Verwendung von &apos;Format spec&apos; anstelle des Dimensionswerts fest</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.ui" line="45"/>
@@ -7490,7 +7490,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="46"/>
       <source>Pattern file</source>
-      <translation>Muster-Datei</translation>
+      <translation>Musterdatei</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="59"/>
@@ -7573,7 +7573,7 @@ durch den negativen Wert des „Oberen Abmaßes“ ersetzt.</translation>
     <message>
       <location filename="../../TaskHatch.ui" line="62"/>
       <source>Pattern file</source>
-      <translation>Muster-Datei</translation>
+      <translation>Musterdatei</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.ui" line="85"/>
@@ -7985,8 +7985,8 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="362"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Top</source>
       <translation>Draufsicht</translation>
     </message>
@@ -7997,8 +7997,8 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="409"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Left</source>
       <translation>Rechts</translation>
     </message>
@@ -8009,14 +8009,14 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="449"/>
-      <location filename="../../TaskProjGroup.cpp" line="660"/>
-      <location filename="../../TaskProjGroup.cpp" line="662"/>
+      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="663"/>
       <source>Right</source>
       <translation>Rechts</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="466"/>
-      <location filename="../../TaskProjGroup.cpp" line="663"/>
+      <location filename="../../TaskProjGroup.cpp" line="664"/>
       <source>Rear</source>
       <translation>Rückansicht</translation>
     </message>
@@ -8027,8 +8027,8 @@ Weitere Punkte auswählen, um Liniensegmente zu erhalten.</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="516"/>
-      <location filename="../../TaskProjGroup.cpp" line="658"/>
-      <location filename="../../TaskProjGroup.cpp" line="665"/>
+      <location filename="../../TaskProjGroup.cpp" line="659"/>
+      <location filename="../../TaskProjGroup.cpp" line="666"/>
       <source>Bottom</source>
       <translation>Untersicht</translation>
     </message>
@@ -8085,31 +8085,31 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
       <translation>Vertikaler Abstand zwischen den Rändern der Ansichten</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontTopLeft</source>
       <translation>VorneObenLinks</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="657"/>
-      <location filename="../../TaskProjGroup.cpp" line="666"/>
+      <location filename="../../TaskProjGroup.cpp" line="658"/>
+      <location filename="../../TaskProjGroup.cpp" line="667"/>
       <source>FrontBottomRight</source>
       <translation>VorneUntenRechts</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontTopRight</source>
       <translation>VorneObenRechts</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="659"/>
-      <location filename="../../TaskProjGroup.cpp" line="664"/>
+      <location filename="../../TaskProjGroup.cpp" line="660"/>
+      <location filename="../../TaskProjGroup.cpp" line="665"/>
       <source>FrontBottomLeft</source>
       <translation>VorneUntenLinks</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="661"/>
+      <location filename="../../TaskProjGroup.cpp" line="662"/>
       <source>Front</source>
       <translation>Vorderansicht</translation>
     </message>
@@ -9061,7 +9061,7 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="43"/>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Rechts</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="44"/>
@@ -9432,7 +9432,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="81"/>
       <source>Offset Vertex</source>
-      <translation>Versatz-Scheitelpunkt</translation>
+      <translation>Knoten versetzen</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/CommandVertexCreations.py" line="84"/>
@@ -9443,17 +9443,17 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="140"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
       <source>Fill Template Fields In </source>
       <translation>Vorlagenfelder ausfüllen </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="147"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
       <source>Update</source>
       <translation>Aktualisierung</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="404"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
       <source>Update All</source>
       <translation>Alle aktualisieren</translation>
     </message>
@@ -9486,12 +9486,12 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
       <translation>Ansicht oder Ansichtengruppe fehlt</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="443"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
       <source>Corresponding template fields missing</source>
       <translation>Korrespondierende Vorlagenfelder fehlen</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="528"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
       <source>Fill template fields</source>
       <translation>Vorlagenfelder ausfüllen</translation>
     </message>
@@ -9500,27 +9500,33 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <name>TechDraw_Utils</name>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="174"/>
       <source>No vertex selected</source>
       <translation>Kein Punkt ausgewählt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="186"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="218"/>
       <source>Select at least </source>
       <translation>Wähle mindestens </translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="187"/>
       <source> vertexes</source>
       <translation> Punkt(e)</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="206"/>
       <source>No edge selected</source>
       <translation>Keine Kante ausgewählt</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="219"/>
       <source> edges</source>
       <translation> Kante(n)</translation>
     </message>
@@ -9806,22 +9812,22 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDrawGui::DirectionEditDialog</name>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="965"/>
+      <location filename="../../TaskProjGroup.cpp" line="966"/>
       <source>Direction</source>
       <translation>Richtung</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1002"/>
+      <location filename="../../TaskProjGroup.cpp" line="1003"/>
       <source>OK</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1003"/>
+      <location filename="../../TaskProjGroup.cpp" line="1004"/>
       <source>Cancel</source>
       <translation>Abbrechen</translation>
     </message>
     <message>
-      <location filename="../../TaskProjGroup.cpp" line="1009"/>
+      <location filename="../../TaskProjGroup.cpp" line="1010"/>
       <source>Rotate by</source>
       <translation>Drehe um</translation>
     </message>
@@ -9867,7 +9873,7 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="102"/>
       <source>ZigZag</source>
-      <translation>ZickZack</translation>
+      <translation>Zick­zack</translation>
     </message>
     <message>
       <location filename="../../../App/DrawBrokenView.cpp" line="103"/>
@@ -9986,12 +9992,12 @@ noch ein Aufgaben-Dialog geöffnet ist.</translation>
   <context>
     <name>TechDraw_AxoLengthDimension</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="54"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="71"/>
       <source>Axonometric Length Dimension</source>
       <translation>Axonometrisches Längenmaß</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="58"/>
+      <location filename="../../../TechDrawTools/CommandAxoLengthDimension.py" line="75"/>
       <source>Creates a length dimension in with axonometric view, using selected edges or vertex pairs to define direction and measurement</source>
       <translation>Erstellt ein Längenmaß in einer axonometrischer Ansicht und verwendet ausgewählte Kanten oder Knotenpaare zum Festlegen von Richtung und Messung</translation>
     </message>

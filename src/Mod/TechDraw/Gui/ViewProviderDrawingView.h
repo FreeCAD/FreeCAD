@@ -26,12 +26,14 @@
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
+#include <Gui/Document.h>
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Mod/TechDraw/App/DrawView.h>
 
 #include "ViewProviderDrawingViewExtension.h"
+
 
 namespace TechDraw {
 class DrawView;
@@ -87,7 +89,7 @@ public:
     void onProgressMessage(const TechDraw::DrawView* dv,
                          const std::string featureName,
                          const std::string text);
-    using Connection = boost::signals2::scoped_connection;
+    using Connection = fastsignals::scoped_connection;
     Connection connectGuiRepaint;
     Connection connectProgressMessage;
 
@@ -101,6 +103,11 @@ public:
 
     virtual void fixSceneDependencies();
     std::vector<App::DocumentObject*> claimChildren() const override;
+
+    void fixColorAlphaValues();
+    bool checkMiniumumDocumentVersion(int minMajor, int minMinor) const
+        { return checkMiniumumDocumentVersion(this->getDocument()->getDocument(), minMajor, minMinor); }
+    static bool checkMiniumumDocumentVersion(App::Document* toBeChecked, int minMajor, int minMinor);
 
 
 private:

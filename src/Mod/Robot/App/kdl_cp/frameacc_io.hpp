@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /*****************************************************************************
  * \file
  *      Defines I/O related routines to the FrameAccs classes defined in

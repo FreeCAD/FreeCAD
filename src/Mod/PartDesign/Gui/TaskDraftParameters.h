@@ -30,6 +30,12 @@
 
 class Ui_TaskDraftParameters;
 
+namespace Gui
+{
+class RotationGizmo;
+class GizmoContainer;
+}  // namespace Gui
+
 namespace PartDesignGui
 {
 
@@ -52,17 +58,22 @@ public:
 private Q_SLOTS:
     void onAngleChanged(double angle);
     void onReversedChanged(bool reversed);
-    void onButtonPlane(const bool checked);
-    void onButtonLine(const bool checked);
+    void onButtonPlane(bool checked);
+    void onButtonLine(bool checked);
     void onRefDeleted() override;
 
 protected:
-    void setButtons(const selectionModes mode) override;
+    void setButtons(selectionModes mode) override;
     void changeEvent(QEvent* e) override;
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
 private:
     std::unique_ptr<Ui_TaskDraftParameters> ui;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::RotationGizmo* angleGizmo = nullptr;
+    void setupGizmos(ViewProvider* vp);
+    void setGizmoPositions();
 };
 
 /// simulation dialog for the TaskView

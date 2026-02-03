@@ -1,3 +1,7 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+from __future__ import annotations
+
 from Base.Metadata import constmethod
 from Base.BoundBox import BoundBox
 from App.ExtensionContainer import ExtensionContainer
@@ -18,7 +22,6 @@ class ViewProvider(ExtensionContainer):
 
     def addProperty(
         self,
-        *,
         type: str,
         name: str,
         group: str,
@@ -29,8 +32,6 @@ class ViewProvider(ExtensionContainer):
         locked: bool = False,
     ) -> "ViewProvider":
         """
-        addProperty(type, name, group, doc, attr=0, read_only=False, hidden=False, locked=False) -> ViewProvider
-
         Add a generic property.
 
         type : str
@@ -50,10 +51,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def removeProperty(self, name: str) -> bool:
+    def removeProperty(self, name: str, /) -> bool:
         """
-        removeProperty(name) -> bool
-
         Remove a generic property.
         Only user-defined properties can be removed, not built-in ones.
 
@@ -64,40 +63,30 @@ class ViewProvider(ExtensionContainer):
 
     def supportedProperties(self) -> list:
         """
-        supportedProperties() -> list
-
         A list of supported property types.
         """
         ...
 
     def show(self) -> None:
         """
-        show() -> None
-
         Show the object.
         """
         ...
 
     def hide(self) -> None:
         """
-        hide() -> None
-
         Hide the object.
         """
         ...
 
     def isVisible(self) -> bool:
         """
-        isVisible() -> bool
-
         Check if the object is visible.
         """
         ...
 
-    def canDragObject(self, obj: Any = None) -> bool:
+    def canDragObject(self, obj: Any = None, /) -> bool:
         """
-        canDragObject(obj=None) -> bool
-
         Check whether the child object can be removed by dragging.
         If 'obj' is not given, check without filter by any particular object.
 
@@ -106,10 +95,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def dragObject(self, obj: Any) -> None:
+    def dragObject(self, obj: Any, /) -> None:
         """
-        dragObject(obj) -> None
-
         Remove a child object by dropping.
 
         obj : App.DocumentObject
@@ -118,11 +105,9 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def canDropObject(
-        self, *, obj: Any = None, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self, obj: Any = None, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> bool:
         """
-        canDropObject(obj=None, owner=None, subname, elem=None) -> bool
-
         Check whether the child object can be added by dropping.
         If 'obj' is not given, check without filter by any particular object.
 
@@ -139,11 +124,9 @@ class ViewProvider(ExtensionContainer):
         ...
 
     def dropObject(
-        self, *, obj: Any, owner: Any = None, subname: str, elem: Optional[List[str]] = None
+        self, obj: Any, *, owner: Any = None, subname: str, elem: Optional[List[str]] = None
     ) -> str:
         """
-        dropObject(obj, owner=None, subname, elem=None) -> str
-
         Add a child object by dropping.
 
         obj : App.DocumentObject
@@ -158,10 +141,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def canDragAndDropObject(self, obj: Any) -> bool:
+    def canDragAndDropObject(self, obj: Any, /) -> bool:
         """
-        canDragAndDropObject(obj) -> bool
-
         Check whether the child object can be removed from
         other parent and added here by drag and drop.
 
@@ -170,10 +151,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def replaceObject(self, oldObj: Any, newObj: Any) -> int:
+    def replaceObject(self, oldObj: Any, newObj: Any, /) -> int:
         """
-        replaceObject(oldObj, newObj) -> int
-
         Replace a child object.
         Returns 1 if succeeded, 0 if not found, -1 if not supported.
 
@@ -186,16 +165,12 @@ class ViewProvider(ExtensionContainer):
 
     def doubleClicked(self) -> bool:
         """
-        doubleClicked() -> bool
-
         Trigger double clicking the corresponding tree item of this view object.
         """
         ...
 
-    def addDisplayMode(self, obj: Any, mode: str) -> None:
+    def addDisplayMode(self, obj: Any, mode: str, /) -> None:
         """
-        addDisplayMode(obj, mode) -> None
-
         Add a new display mode to the view provider.
 
         obj : coin.SoNode
@@ -207,24 +182,18 @@ class ViewProvider(ExtensionContainer):
 
     def listDisplayModes(self) -> list:
         """
-        listDisplayModes() -> list
-
         Show a list of all display modes.
         """
         ...
 
     def toString(self) -> str:
         """
-        toString() -> str
-
         Return a string representation of the Inventor node.
         """
         ...
 
-    def setTransformation(self, trans: Any) -> None:
+    def setTransformation(self, trans: Any, /) -> None:
         """
-        setTransformation(trans) -> None
-
         Set a transformation on the Inventor node.
 
         trans : Base.Placement, Base.Matrix
@@ -234,8 +203,6 @@ class ViewProvider(ExtensionContainer):
     @constmethod
     def claimChildren(self) -> list:
         """
-        claimChildren() -> list
-
         Returns list of objects that are to be grouped in tree under this object.
         """
         ...
@@ -243,16 +210,12 @@ class ViewProvider(ExtensionContainer):
     @constmethod
     def claimChildrenRecursive(self) -> list:
         """
-        claimChildrenRecursive() -> list
-
         Returns list of objects that are to be grouped in tree under this object recursively.
         """
         ...
 
-    def partialRender(self, sub: Any = None, clear: bool = False) -> int:
+    def partialRender(self, sub: Any = None, clear: bool = False, /) -> int:
         """
-        partialRender(sub=None, clear=False) -> int
-
         Render only part of the object.
 
         sub: None, str, sequence of str
@@ -262,10 +225,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def getElementColors(self, elementName: Optional[str] = None) -> dict:
+    def getElementColors(self, elementName: Optional[str] = None, /) -> dict:
         """
-        getElementColors(elementName) -> dict
-
         Get a dictionary of the form {elementName : (r,g,b,a)}.
         If no element name is given a dictionary with all the elements is returned.
 
@@ -274,10 +235,8 @@ class ViewProvider(ExtensionContainer):
         """
         ...
 
-    def setElementColors(self, colors: dict) -> None:
+    def setElementColors(self, colors: dict, /) -> None:
         """
-        setElementColors(colors) -> None
-
         Set element colors.
 
         colors: dict
@@ -286,10 +245,8 @@ class ViewProvider(ExtensionContainer):
         ...
 
     @constmethod
-    def getElementPicked(self, pickPoint: Any) -> str:
+    def getElementPicked(self, pickPoint: Any, /) -> str:
         """
-        getElementPicked(pickPoint) -> str
-
         Return the picked subelement.
 
         pickPoint : coin.SoPickedPoint
@@ -297,10 +254,8 @@ class ViewProvider(ExtensionContainer):
         ...
 
     @constmethod
-    def getDetailPath(self, subelement: str, path: Any, append: bool = True) -> Any:
+    def getDetailPath(self, subelement: str, path: Any, append: bool = True, /) -> Any:
         """
-        getDetailPath(subelement, path, append=True) -> coin.SoDetail or None
-
         Return Coin detail and path of an subelement.
 
         subname: str
@@ -316,18 +271,14 @@ class ViewProvider(ExtensionContainer):
     @constmethod
     def signalChangeIcon(self) -> None:
         """
-        signalChangeIcon() -> None
-
         Trigger icon changed signal.
         """
         ...
 
     def getBoundingBox(
-        self, subName: Optional[str] = None, transform: bool = True, view: Any = None
+        self, subName: Optional[str] = None, transform: bool = True, view: Any = None, /
     ) -> BoundBox:
         """
-        getBoundingBox(subName, transform=True, view) -> Base.BoundBox
-
         Obtain the bounding box of this view object.
 
         subName : str

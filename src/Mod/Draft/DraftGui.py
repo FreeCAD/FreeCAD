@@ -1719,7 +1719,10 @@ class DraftToolBar:
             self.mask = val
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.mask = val
-                self.new_point = FreeCADGui.Snapper.constrain(self.new_point, self.get_last_point())
+                if self.new_point is not None:
+                    self.new_point = FreeCADGui.Snapper.constrain(
+                        self.new_point, self.get_last_point()
+                    )
 
     def changeXValue(self, d):
         if self.display_point_active:
@@ -1862,7 +1865,7 @@ class DraftToolBar:
                     "Draft_ShapeString",
                     "Draft_BezCurve",
                 ]
-                self.title = "Create objects"
+                self.title = "Create Objects"
 
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (
