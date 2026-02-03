@@ -773,6 +773,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -972,6 +973,7 @@ private:
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
