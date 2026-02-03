@@ -114,22 +114,30 @@ public:
             );
         }
         else if (Mode == STATUS_SEEK_Third) {
-            // angle between the major axis of the ellipse and the X axis
-            double a = (EditCurve[1] - EditCurve[0]).Length();
-            double phi = atan2(EditCurve[1].y - EditCurve[0].y, EditCurve[1].x - EditCurve[0].x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acos(
-                (onSketchPos.x - EditCurve[0].x + (onSketchPos.y - EditCurve[0].y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            double a = delta12.Length();
+            // if a is 0 the ellipse is degenerate
+
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
+
+            Base::Vector2d delta13 = onSketchPos - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
             );
-            double b = (onSketchPos.y - EditCurve[0].y - a * cos(angleatpoint) * sin(phi))
-                / (sin(angleatpoint) * cos(phi));
+
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+            // if sinT is 0 the ellipse is degenerate
+
+            double b = abs(delta13Prime.y) / sinT;
 
             for (int i = 1; i < 16; i++) {
                 double angle = i * pi / 16.0;
-                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                double rx1 = a * cos(angle) * aDir.x + b * sin(angle) * bDir.x;
+                double ry1 = a * cos(angle) * aDir.y + b * sin(angle) * bDir.y;
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
                 EditCurve[17 + i] = Base::Vector2d(EditCurve[0].x - rx1, EditCurve[0].y - ry1);
             }
@@ -149,48 +157,44 @@ public:
             seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
         else if (Mode == STATUS_SEEK_Fourth) {  // here we differ from ellipse creation
-            // angle between the major axis of the ellipse and the X axis
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acos(
-                (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            double a = delta12.Length();
+            // if a is 0 the ellipse is degenerate
+
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
+
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
             );
-            double b = abs(
-                (startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                / (sin(angleatpoint) * cos(phi))
+
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+            // if sinT is 0 the ellipse is degenerate
+
+            double b = abs(delta13Prime.y) / sinT;
+
+            startAngle = atan2(delta13Prime.y, delta13Prime.x);
+
+            Base::Vector2d delta14 = onSketchPos - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
             );
-
-            double rxs = startingPoint.x - centerPoint.x;
-            double rys = startingPoint.y - centerPoint.y;
-            startAngle = atan2(
-                a * (rys * cos(phi) - rxs * sin(phi)),
-                b * (rxs * cos(phi) + rys * sin(phi))
-            );  // eccentric anomaly angle
-
-            double angle1 = atan2(
-                                a
-                                    * ((onSketchPos.y - centerPoint.y) * cos(phi)
-                                       - (onSketchPos.x - centerPoint.x) * sin(phi)),
-                                b
-                                    * ((onSketchPos.x - centerPoint.x) * cos(phi)
-                                       + (onSketchPos.y - centerPoint.y) * sin(phi))
-                            )
-                - startAngle;
-
+            double angle1 = atan2(delta14Prime.y, delta14Prime.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
-            arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
+
+            arcAngle = arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             for (int i = 0; i < 34; i++) {
-                double angle = startAngle + i * arcAngle / 34.0;
-                double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
-                double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
+                double angle = startAngle + i * arcAngle / 33.0;
+                double rx1 = a * cos(angle) * aDir.x + b * sin(angle) * bDir.x;
+                double ry1 = a * cos(angle) * aDir.y + b * sin(angle) * bDir.y;
                 EditCurve[i] = Base::Vector2d(centerPoint.x + rx1, centerPoint.y + ry1);
             }
-            //             EditCurve[33] = EditCurve[1];
-            //             EditCurve[17] = EditCurve[16];
 
             // Display radii and angle for user
             if (showCursorCoords()) {
@@ -198,7 +202,8 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
-                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
+                std::string startAngleString = angleToDisplayFormat(startAngle * 180 / pi, 1);
+                text.sprintf(" (R%s, R%s, %s, %s)", aString.c_str(), bString.c_str(), angleString.c_str(), startAngleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -247,31 +252,34 @@ public:
             unsetCursor();
             resetPositionText();
 
-            // angle between the major axis of the ellipse and the X axisEllipse
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acos(
-                (startingPoint.x - centerPoint.x + (startingPoint.y - centerPoint.y) * tan(phi))
-                / (a * (cos(phi) + tan(phi) * sin(phi)))
+            double a = delta12.Length();
+            // if a is 0 the ellipse is degenerate
+
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
+
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
             );
-            double b = abs(
-                (startingPoint.y - centerPoint.y - a * cos(angleatpoint) * sin(phi))
-                / (sin(angleatpoint) * cos(phi))
+
+            double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
+            double sinT = sqrt(max(0.0, 1 - cosT * cosT));
+            // if sinT is 0 the ellipse is degenerate
+
+            double b = abs(delta13Prime.y) / sinT;
+
+            Base::Vector2d delta14 = endPoint - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
             );
-
-            double angle1 = atan2(
-                                a
-                                    * ((endPoint.y - centerPoint.y) * cos(phi)
-                                       - (endPoint.x - centerPoint.x) * sin(phi)),
-                                b
-                                    * ((endPoint.x - centerPoint.x) * cos(phi)
-                                       + (endPoint.y - centerPoint.y) * sin(phi))
-                            )
-                - startAngle;
-
+            double angle1 = atan2(delta14Prime.y, delta14Prime.x) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
+
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             bool isOriginalArcCCW = true;
