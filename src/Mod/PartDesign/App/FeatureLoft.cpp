@@ -354,7 +354,7 @@ App::DocumentObjectExecReturn* Loft::execute()
                 );
         }
         try {
-            boolOp.makeElementBoolean(maker, {base, result});
+            boolOp.makeElementBoolean(maker, {base, result}, nullptr, FuzzyTolerance.getValue());
         }
         catch (Standard_Failure&) {
             return new App::DocumentObjectExecReturn(
