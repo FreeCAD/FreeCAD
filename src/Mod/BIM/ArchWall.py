@@ -649,8 +649,7 @@ class _Wall(ArchComponent.Component):
                                             offset += obj.BlockLength.Value + obj.Joint.Value
                                         offset -= edge.Length
 
-                            if isinstance(bplates, list):
-                                bplates = bplates[0]
+                            base_face = base_faces[0]
                             if obj.BlockHeight.Value:
                                 fsize = obj.BlockHeight.Value + obj.Joint.Value
                                 bh = obj.BlockHeight.Value
@@ -662,15 +661,15 @@ class _Wall(ArchComponent.Component):
                             svec = FreeCAD.Vector(n)
                             svec.multiply(fsize)
                             if cuts1:
-                                plate1 = bplates.cut(cuts1).Faces
+                                faces1 = base_face.cut(cuts1).Faces
                             else:
-                                plate1 = bplates.Faces
-                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in plate1])
+                                faces1 = base_face.Faces
+                            blocks1 = Part.makeCompound([f.extrude(bvec) for f in faces1])
                             if cuts2:
-                                plate2 = bplates.cut(cuts2).Faces
+                                faces2 = base_face.cut(cuts2).Faces
                             else:
-                                plate2 = bplates.Faces
-                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in plate2])
+                                faces2 = base_face.Faces
+                            blocks2 = Part.makeCompound([f.extrude(bvec) for f in faces2])
                             interval = extv.Length / (fsize)
                             entire = int(interval)
                             rest = interval - entire
@@ -689,9 +688,9 @@ class _Wall(ArchComponent.Component):
                                 rvec = FreeCAD.Vector(n)
                                 rvec.multiply(rest)
                                 if entire % 2:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate2])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces2])
                                 else:
-                                    b = Part.makeCompound([f.extrude(rvec) for f in plate1])
+                                    b = Part.makeCompound([f.extrude(rvec) for f in faces1])
                                 t = FreeCAD.Vector(svec)
                                 t.multiply(entire)
                                 b.translate(t)
@@ -1781,6 +1780,75 @@ class _Wall(ArchComponent.Component):
         return base_faces, placement
 
 
+if FreeCAD.GuiUp:
+
+    class WallTaskPanel(ArchComponent.ComponentTaskPanel):
+        def __init__(self, obj):
+            ArchComponent.ComponentTaskPanel.__init__(self)
+            self.obj = obj
+            self.wallWidget = QtGui.QWidget()
+            self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
+
+            layout = QtGui.QFormLayout(self.wallWidget)
+
+            self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.length.setProperty("unit", "mm")
+            self.length.setText(obj.Length.UserString)
+            layout.addRow(translate("Arch", "Length"), self.length)
+
+            self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.width.setProperty("unit", "mm")
+            self.width.setText(obj.Width.UserString)
+            layout.addRow(translate("Arch", "Width"), self.width)
+
+            self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+            self.height.setProperty("unit", "mm")
+            self.height.setText(obj.Height.UserString)
+            layout.addRow(translate("Arch", "Height"), self.height)
+
+            self.alignLayout = QtGui.QHBoxLayout()
+            self.alignLeft = QtGui.QRadioButton(translate("Arch", "Left"))
+            self.alignCenter = QtGui.QRadioButton(translate("Arch", "Center"))
+            self.alignRight = QtGui.QRadioButton(translate("Arch", "Right"))
+            self.alignLayout.addWidget(self.alignLeft)
+            self.alignLayout.addWidget(self.alignCenter)
+            self.alignLayout.addWidget(self.alignRight)
+            self.alignLayout.addStretch()
+
+            self.alignGroup = QtGui.QButtonGroup(self.wallWidget)
+            self.alignGroup.addButton(self.alignLeft)
+            self.alignGroup.addButton(self.alignCenter)
+            self.alignGroup.addButton(self.alignRight)
+            self.alignGroup.buttonClicked.connect(self.setAlign)
+
+            if obj.Align == "Left":
+                self.alignLeft.setChecked(True)
+            elif obj.Align == "Right":
+                self.alignRight.setChecked(True)
+            else:
+                self.alignCenter.setChecked(True)
+
+            layout.addRow(translate("Arch", "Alignment"), self.alignLayout)
+
+            # Wall Options first, then Components (inherited self.form)
+            self.form = [self.wallWidget, self.form]
+
+        def setAlign(self, button):
+            if button == self.alignLeft:
+                self.obj.Align = "Left"
+            elif button == self.alignRight:
+                self.obj.Align = "Right"
+            else:
+                self.obj.Align = "Center"
+            self.obj.recompute()
+
+        def accept(self):
+            self.obj.Length = self.length.text()
+            self.obj.Width = self.width.text()
+            self.obj.Height = self.height.text()
+            return super().accept()
+
+
 class _ViewProviderWall(ArchComponent.ViewProviderComponent):
     """The view provider for the wall object.
 
@@ -1811,7 +1879,9 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             if self.Object.CloneOf:
                 return ":/icons/Arch_Wall_Clone.svg"
-            elif (not self.Object.Base) and self.Object.Additions:
+            elif (not self.Object.Base) and self.Object.Additions and not self.Object.Length.Value:
+                # The wall is an assembly: it is built from additions only, yet it is not
+                # strictly a baseless wall, since baseless walls are parametric.
                 return ":/icons/Arch_Wall_Tree_Assembly.svg"
         return ":/icons/Arch_Wall_Tree.svg"
 
@@ -1963,6 +2033,14 @@ class _ViewProviderWall(ArchComponent.ViewProviderComponent):
                     self.fset.coordIndex.setValues(0, len(fdata), fdata)
             return "Wireframe"
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+        taskd = WallTaskPanel(vobj.Object)
+        taskd.update()
+        FreeCADGui.Control.showDialog(taskd)
+        return True
 
     def setupContextMenu(self, vobj, menu):
 

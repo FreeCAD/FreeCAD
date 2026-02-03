@@ -100,7 +100,6 @@ public:
     /**
      * @brief The ExpressionInfo struct encapsulates an expression.
      */
-
     struct ExpressionInfo
     {
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
@@ -244,6 +243,8 @@ private:
     /**< Expressions are read from file to this map first before they are validated and inserted
      * into the actual map */
     std::unique_ptr<std::vector<RestoredExpression>> restoredExpressions;
+
+    void tryRestoreExpression(DocumentObject* docObj, const RestoredExpression& info);
 
     struct Private;
     std::unique_ptr<Private> pimpl;

@@ -123,7 +123,11 @@ done
 
 # Two additional files that must be signed that aren't caught by the above searches:
 run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/packages.txt"
-run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+
+# Sign legacy QuickLook generator if present (not built for macOS 15.0+)
+if [ -f "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd" ]; then
+    run_codesign "${CONTAINING_FOLDER}/${APP_NAME}/Contents/Library/QuickLook/QuicklookFCStd.qlgenerator/Contents/MacOS/QuicklookFCStd"
+fi
 
 # Sign new Swift QuickLook extensions (macOS 15.0+) with their specific entitlements
 # These must be signed before the app itself to avoid overriding the extension signatures

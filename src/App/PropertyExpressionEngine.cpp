@@ -467,19 +467,34 @@ void PropertyExpressionEngine::afterRestore()
         ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
 
         for (auto& info : *restoredExpressions) {
-            ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
-            if (!info.expr.empty()) {
-                std::shared_ptr<Expression> expression(
-                    Expression::parse(docObj, info.expr.c_str()));
-                if (expression) {
-                    expression->comment = std::move(info.comment);
-                }
-                setValue(path, expression);
-            }
+            tryRestoreExpression(docObj, info);
         }
         signaller.tryInvoke();
     }
     restoredExpressions.reset();
+}
+
+void PropertyExpressionEngine::tryRestoreExpression(DocumentObject* docObj,
+                                                    const RestoredExpression& info)
+{
+    try {
+        ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
+        if (!info.expr.empty()) {
+            std::shared_ptr<Expression> expression(
+                Expression::parse(docObj, info.expr));
+            if (expression) {
+                expression->comment = info.comment;
+            }
+            setValue(path, expression);
+        }
+    }
+    catch (const Base::Exception& e) {
+        FC_ERR("Failed to restore " << docObj->getFullName()
+                                    << '.'
+                                    << getName()
+                                    << ": "
+                                    << e.what());
+    }
 }
 
 void PropertyExpressionEngine::onContainerRestored()

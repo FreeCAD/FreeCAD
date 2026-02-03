@@ -653,7 +653,7 @@ class BIM_ProjectManager:
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Save template file"),
+            translate("BIM", "Save Template File"),
             None,
             "FreeCAD file (*.FCStd)",
         )
@@ -675,7 +675,7 @@ class BIM_ProjectManager:
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("BIM", "Open template file"),
+            translate("BIM", "Open Template File"),
             None,
             "FreeCAD file (*.FCStd)",
         )

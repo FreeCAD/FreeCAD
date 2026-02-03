@@ -121,8 +121,11 @@ public:
         signalChangedObject;
     /// signal on renamed Object
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalRelabelObject;
-    /// signal on activated Object
+    /// signal on activated Object (relay of App activation signal)
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalActivatedObject;
+    /// signal on activated Object in the tree (bold item)
+    mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject*, const char*)>
+        signalActivatedViewProvider;
     /// signal on entering in edit mode
     mutable fastsignals::signal<void(const Gui::ViewProviderDocumentObject&)> signalInEdit;
     /// signal on leaving edit mode

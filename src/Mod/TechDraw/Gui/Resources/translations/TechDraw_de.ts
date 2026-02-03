@@ -4839,7 +4839,7 @@ das Schraffieren einer Fläche mit einem PAT-Schraffurmuster</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="559"/>
       <source>Check this box to include the Meta/Start/Super key in the modifiers.</source>
-      <translation>Diese Option aktivieren, um die Meta/Start/Super-Taste zu den Modifikatortasten hinzuzufügen.</translation>
+      <translation>Diese Option aktivieren, um die Strg-Taste (Ctrl) zu den Modifikatortasten hinzuzufügen.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="562"/>
@@ -5918,7 +5918,7 @@ die globale Einstellung &apos;Mit 3D aktualisieren&apos; überschreiben kann</tr
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="816"/>
       <source>View Defaults</source>
-      <translation>Standardwerte für Ansicht</translation>
+      <translation>Ansicht Standard</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="859"/>
@@ -9061,7 +9061,7 @@ entsprechend den angegebenen X- und Y-Abständen</translation>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="43"/>
       <source>Left</source>
-      <translation>Links</translation>
+      <translation>Rechts</translation>
     </message>
     <message>
       <location filename="../../../App/DrawProjGroupItem.cpp" line="44"/>
