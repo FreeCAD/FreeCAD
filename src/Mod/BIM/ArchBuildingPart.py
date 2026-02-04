@@ -410,14 +410,21 @@ class BuildingPart(ArchIFC.IfcProduct):
     def getArea(self, obj):
         "computes the area of this floor by adding its inner spaces"
 
-        area = 0
-        if hasattr(obj, "Group"):
-            for child in obj.Group:
-                if (Draft.get_type(child) in ["Space", "BuildingPart"]) and hasattr(
-                    child, "IfcType"
-                ):
-                    area += child.Area.Value
-        return area
+        def _getArea(obj):
+            area = 0
+            if hasattr(obj, "Group"):
+                for child in obj.Group:
+                    if (
+                        Draft.get_type(child) in ["Space", "BuildingPart"]
+                        and hasattr(child, "IfcType")
+                        and hasattr(child, "Area")
+                    ):
+                        area += child.Area.Value
+                    else:
+                        area += _getArea(child)
+            return area
+
+        return _getArea(obj)
 
     def getShapes(self, obj):
         "recursively get the shapes of objects inside this BuildingPart"

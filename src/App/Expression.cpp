@@ -41,6 +41,7 @@
 #include <sstream>
 #include <stack>
 #include <string>
+#include <fmt/format.h>
 
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -1012,7 +1013,7 @@ ExpressionPtr Expression::importSubNames(const std::map<std::string,std::string>
                 if(key.second.empty() || subNameMap.contains(key))
                     continue;
                 std::string imported = PropertyLinkBase::tryImportSubName(
-                               obj,key.second.c_str(),owner->getDocument(), nameMap);
+                               obj, key.second.c_str(), owner->getDocument(), nameMap);
                 if(!imported.empty())
                     subNameMap.emplace(std::move(key),std::move(imported));
             }
@@ -1212,14 +1213,6 @@ void UnitExpression::setQuantity(const Quantity &_quantity)
     }
 }
 
-/**
-  * Set unit information.
-  *
-  * @param _unit    A unit object
-  * @param _unitstr The unit expressed as a string
-  * @param _scaler  Scale factor to convert unit into internal unit.
-  */
-
 void UnitExpression::setUnit(const Quantity &_quantity)
 {
     quantity = _quantity;
@@ -1230,32 +1223,15 @@ void UnitExpression::setUnit(const Quantity &_quantity)
     }
 }
 
-/**
-  * Simplify the expression. In this case, a NumberExpression is returned,
-  * as it cannot be simplified any more.
-  */
-
 Expression *UnitExpression::simplify() const
 {
     return new NumberExpression(owner, quantity);
 }
 
-/**
-  * Return a string representation, in this case the unit string.
-  */
-
-/**
-  * Return a string representation of the expression.
-  */
-
 void UnitExpression::_toString(std::ostream &ss, bool,int) const
 {
     ss << unitStr;
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *UnitExpression::_copy() const
 {
@@ -1279,28 +1255,15 @@ NumberExpression::NumberExpression(const DocumentObject *_owner, const Quantity 
 {
 }
 
-/**
-  * Simplify the expression. For NumberExpressions, we return a copy(), as it cannot
-  * be simplified any more.
-  */
-
 Expression *NumberExpression::simplify() const
 {
     return copy();
 }
 
-/**
-  * Create and return a copy of the expression.
-  */
-
 Expression *NumberExpression::_copy() const
 {
     return new NumberExpression(owner, getQuantity());
 }
-
-/**
-  * Negate the stored value.
-  */
 
 void NumberExpression::negate()
 {
@@ -1351,10 +1314,6 @@ OperatorExpression::~OperatorExpression()
     delete left;
     delete right;
 }
-
-/**
-  * Determine whether the expression is touched or not, i.e relies on properties that are touched.
-  */
 
 bool OperatorExpression::isTouched() const
 {
@@ -1477,14 +1436,6 @@ Py::Object OperatorExpression::_getPyValue() const {
     return calc(this,op,left,right,false);
 }
 
-/**
-  * Simplify the expression. For OperatorExpressions, we return a NumberExpression if
-  * both the left and right side can be simplified to NumberExpressions. In this case
-  * we can calculate the final value of the expression.
-  *
-  * @returns Simplified expression.
-  */
-
 Expression *OperatorExpression::simplify() const
 {
     Expression * v1 = left->simplify();
@@ -1499,12 +1450,6 @@ Expression *OperatorExpression::simplify() const
     else
         return new OperatorExpression(owner, v1, op, v2);
 }
-
-/**
-  * Create a string representation of the expression.
-  *
-  * @returns A string representing the expression.
-  */
 
 void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
 {
@@ -1607,21 +1552,10 @@ void OperatorExpression::_toString(std::ostream &s, bool persistent,int) const
         right->toString(s,persistent);
 }
 
-/**
-  * A deep copy of the expression.
-  */
-
 Expression *OperatorExpression::_copy() const
 {
     return new OperatorExpression(owner, left->copy(), op, right->copy());
 }
-
-/**
-  * Return the operators priority. This is used to add parentheses where
-  * needed when creating a string representation of the expression.
-  *
-  * @returns The operator's priority.
-  */
 
 int OperatorExpression::priority() const
 {
@@ -1848,13 +1782,6 @@ FunctionExpression::~FunctionExpression()
         ++i;
     }
 }
-
-/**
-  * Determine whether the expressions is considered touched, i.e one or both of its arguments
-  * are touched.
-  *
-  * @return True if touched, false if not.
-  */
 
 bool FunctionExpression::isTouched() const
 {
@@ -2657,12 +2584,6 @@ Py::Object FunctionExpression::_getPyValue() const {
     return evaluate(this,f,args);
 }
 
-/**
-  * Try to simplify the expression, i.e calculate all constant expressions.
-  *
-  * @returns A simplified expression.
-  */
-
 Expression *FunctionExpression::simplify() const
 {
     size_t numerics = 0;
@@ -2690,12 +2611,6 @@ Expression *FunctionExpression::simplify() const
         return new FunctionExpression(owner, f, std::string(fname),
                                       std::move(simplifiedArgs));
 }
-
-/**
-  * Create a string representation of the expression.
-  *
-  * @returns A string representing the expression.
-  */
 
 void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
 {
@@ -2847,12 +2762,6 @@ void FunctionExpression::_toString(std::ostream &ss, bool persistent,int) const
     ss << ')';
 }
 
-/**
-  * Create a copy of the expression.
-  *
-  * @returns A deep copy of the expression.
-  */
-
 Expression *FunctionExpression::_copy() const
 {
     std::vector<Expression*>::const_iterator i = args.begin();
@@ -2890,29 +2799,10 @@ VariableExpression::VariableExpression(const DocumentObject *_owner, const Objec
 
 VariableExpression::~VariableExpression() = default;
 
-/**
-  * Determine if the expression is touched or not, i.e whether the Property object it
-  * refers to is touched().
-  *
-  * @returns True if the Property object is touched, false if not.
-  */
-
 bool VariableExpression::isTouched() const
 {
     return var.isTouched();
 }
-
-/**
-  * Find the property this expression referse to.
-  *
-  * Unqualified names (i.e the name only without any dots) are resolved in the owning DocumentObjects.
-  * Qualified names are looked up in the owning Document. It is first looked up by its internal name.
-  * If not found, the DocumentObjects' labels searched.
-  *
-  * If something fails, an exception is thrown.
-  *
-  * @returns The Property object if it is derived from either PropertyInteger, PropertyFloat, or PropertyString.
-  */
 
 const Property * VariableExpression::getProperty() const
 {
@@ -2985,21 +2875,10 @@ void VariableExpression::_toString(std::ostream &ss, bool persistent,int) const 
         ss << var.toString();
 }
 
-/**
-  * Simplify the expression. Simplification of VariableExpression objects is
-  * not possible (if it is instantiated it would be an evaluation instead).
-  *
-  * @returns A copy of the expression.
-  */
-
 Expression *VariableExpression::simplify() const
 {
     return copy();
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *VariableExpression::_copy() const
 {
@@ -3201,10 +3080,6 @@ StringExpression::~StringExpression() {
     }
 }
 
-/**
-  * Simplify the expression. For strings, this is a simple copy of the object.
-  */
-
 Expression *StringExpression::simplify() const
 {
     return copy();
@@ -3214,10 +3089,6 @@ void StringExpression::_toString(std::ostream &ss, bool,int) const
 {
     ss << quote(text);
 }
-
-/**
-  * Return a copy of the expression.
-  */
 
 Expression *StringExpression::_copy() const
 {
@@ -3548,9 +3419,10 @@ bool isModuleImported(PyObject *module) {
 }
 
 /**
- * Error function for parser. Throws a generic Base::Exception with the parser error.
+ * @brief Error function for parser.
+ *
+ * @throws Base::Exception A generic parser error.
  */
-
 void ExpressionParser_yyerror(const char *errorinfo)
 {
     (void)errorinfo;
@@ -3586,12 +3458,24 @@ double num_change(char* yytext,char dez_delim,char grp_delim)
     return ret_val;
 }
 
-static Expression * ScanResult = nullptr;                    /**< The resulting expression after a successful parsing */
-static const App::DocumentObject * DocumentObject = nullptr; /**< The DocumentObject that will own the expression */
-static bool unitExpression = false;                    /**< True if the parsed string is a unit only */
-static bool valueExpression = false;                   /**< True if the parsed string is a full expression */
-static std::stack<std::string> labels;                /**< Label string primitive */
-static std::map<std::string, FunctionExpression::Function> registered_functions;                /**< Registered functions */
+/// The resulting expression after a successful parsing.
+static Expression* ScanResult = nullptr;
+
+/// The DocumentObject that will own the expression.
+static const App::DocumentObject* DocumentObject = nullptr;
+
+/// Whether the parsed string is a unit only.
+static bool unitExpression = false;
+
+/// Whether the parsed string is a full expression.
+static bool valueExpression = false;
+
+/// Label string primitive.
+static std::stack<std::string> labels;
+
+/// Registered functions during parsing.
+static std::map<std::string, FunctionExpression::Function> registered_functions;
+
 static int last_column;
 static int column;
 
@@ -3786,14 +3670,17 @@ Expression * App::ExpressionParser::parse(const App::DocumentObject *owner, cons
     // run the parser
     int result = ExpressionParser::ExpressionParser_yyparse ();
 
-    if (result != 0)
-        throw ParserError("Failed to parse expression.");
+    if (result != 0) {
+        throw ParserError(fmt::format("Failed to parse expression '{}'", buffer));
+    }
 
-    if (!ScanResult)
-        throw ParserError("Unknown error in expression");
+    if (!ScanResult) {
+        throw ParserError(fmt::format("Unknown error in expression '{}'", buffer));
+    }
 
-    if (valueExpression)
+    if (valueExpression) {
         return ScanResult;
+    }
     else {
         delete ScanResult;
         throw Expression::Exception("Expression can not evaluate to a value.");
@@ -3885,3 +3772,4 @@ bool ExpressionParser::isTokenAUnit(const std::string & str)
 #if defined(__clang__)
 # pragma clang diagnostic pop
 #endif
+
