@@ -150,7 +150,7 @@ class BIM_Box:
 
         wid = QtGui.QWidget()
         ui = FreeCADGui.UiLoader()
-        wid.setWindowTitle(translate("BIM", "Box dimensions"))
+        wid.setWindowTitle(translate("BIM", "Box Dimensions"))
         grid = QtGui.QGridLayout(wid)
 
         label1 = QtGui.QLabel(translate("BIM", "Length"))

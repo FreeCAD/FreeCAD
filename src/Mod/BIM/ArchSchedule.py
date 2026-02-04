@@ -768,9 +768,9 @@ class _ViewProviderArchSchedule:
         menu.addAction(actionEdit)
 
         if self.Object.CreateSpreadsheet is True:
-            msg = translate("Arch", "Remove spreadsheet")
+            msg = translate("Arch", "Remove Spreadsheet")
         else:
-            msg = translate("Arch", "Attach spreadsheet")
+            msg = translate("Arch", "Attach Spreadsheet")
         actionToggleSpreadsheet = QtGui.QAction(QtGui.QIcon(":/icons/Arch_Schedule.svg"), msg, menu)
         QtCore.QObject.connect(
             actionToggleSpreadsheet, QtCore.SIGNAL("triggered()"), self.toggleSpreadsheet
@@ -897,7 +897,7 @@ class ArchScheduleTaskPanel:
 
         filename = QtGui.QFileDialog.getOpenFileName(
             QtGui.QApplication.activeWindow(),
-            translate("Arch", "Import CSV file"),
+            translate("Arch", "Import CSV File"),
             None,
             "CSV files (*.csv *.CSV)",
         )
@@ -934,7 +934,7 @@ class ArchScheduleTaskPanel:
 
         filename = QtGui.QFileDialog.getSaveFileName(
             QtGui.QApplication.activeWindow(),
-            translate("Arch", "Export CSV file"),
+            translate("Arch", "Export CSV File"),
             None,
             "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)",
         )

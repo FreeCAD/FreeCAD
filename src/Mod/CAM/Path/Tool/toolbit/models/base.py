@@ -914,6 +914,9 @@ class ToolBit(Asset, ABC):
             )
             raise
 
+        # clear the touched state since visual updates shouldn't require recompute
+        self.obj.purgeTouched()
+
     def to_dict(self):
         """
         Returns a dictionary representation of the tool bit.

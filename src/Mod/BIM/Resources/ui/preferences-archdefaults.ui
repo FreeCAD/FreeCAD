@@ -538,7 +538,7 @@
       <item row="8" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBox">
         <property name="toolTip">
-         <string>When clicking a view or level in the BIM views manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</string>
+         <string>When clicking a view or level in the BIM Views Manager, this switches the background to plain color when activating a 2D view, and to gradient color when activating a level</string>
         </property>
         <property name="text">
          <string>Switch backgrounds</string>

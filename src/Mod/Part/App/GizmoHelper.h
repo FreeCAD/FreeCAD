@@ -64,7 +64,6 @@ struct PartExport DraggerPlacementProps
 {
     Base::Vector3d position;
     Base::Vector3d dir;
-    Base::Vector3d tangent;
 };
 DraggerPlacementProps PartExport
 getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, TopoDS_Face& face);
@@ -77,5 +76,18 @@ std::vector<Part::TopoShape> PartExport getAdjacentEdgesFromFace(Part::TopoShape
 Base::Vector3d PartExport getMidPointFromFace(Part::TopoShape& face);
 
 Base::Vector3d PartExport getMidPointFromProfile(Part::TopoShape& profile);
+
+struct PartExport DraggerNormalProps
+{
+    Base::Vector3d normal;
+    Base::Vector3d faceNormal;
+};
+struct PartExport DraggerPlacementPropsWithNormals
+{
+    DraggerPlacementProps placementProps;
+    std::optional<DraggerNormalProps> normalProps;
+};
+std::optional<DraggerPlacementPropsWithNormals> PartExport
+getDraggerPlacementFromPlaneAndFace(Part::TopoShape& face, gp_Pln& plane);
 
 #endif /* GIZMO_HELPER_H */

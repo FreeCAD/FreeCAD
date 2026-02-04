@@ -121,6 +121,11 @@ int EditDatumDialog::exec(bool atCursor)
         }
         double datum = Constr->getValue();
 
+        bool showRadiusDiameterBtns = Constr->Type == Sketcher::Radius
+            || Constr->Type == Sketcher::Diameter;
+        ui_ins_datum->rbRadius->setVisible(showRadiusDiameterBtns);
+        ui_ins_datum->rbDiameter->setVisible(showRadiusDiameterBtns);
+
         ui_ins_datum->labelEdit->setEntryName(QByteArray("DatumValue"));
         if (Constr->Type == Sketcher::Angle) {
             datum = Base::toDegrees<double>(datum);
@@ -138,6 +143,7 @@ int EditDatumDialog::exec(bool atCursor)
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
+            ui_ins_datum->rbRadius->setChecked(true);
         }
         else if (Constr->Type == Sketcher::Diameter) {
             dlg.setWindowTitle(tr("Insert Diameter"));
@@ -146,6 +152,7 @@ int EditDatumDialog::exec(bool atCursor)
             ui_ins_datum->labelEdit->setParamGrpPath(
                 QByteArray("User parameter:BaseApp/History/SketcherLength")
             );
+            ui_ins_datum->rbDiameter->setChecked(true);
         }
         else if (Constr->Type == Sketcher::Weight) {
             dlg.setWindowTitle(tr("Insert Weight"));
@@ -194,6 +201,7 @@ int EditDatumDialog::exec(bool atCursor)
             this,
             &EditDatumDialog::formEditorOpened
         );
+        connect(ui_ins_datum->rbRadius, &QRadioButton::toggled, this, &EditDatumDialog::typeChanged);
         connect(&dlg, &QDialog::accepted, this, &EditDatumDialog::accepted);
         connect(&dlg, &QDialog::rejected, this, &EditDatumDialog::rejected);
 
@@ -217,8 +225,41 @@ int EditDatumDialog::exec(bool atCursor)
     return QDialog::Rejected;
 }
 
+void EditDatumDialog::typeChanged(bool checked)
+{
+    if (!ui_ins_datum->rbRadius->isVisible()) {
+        return;
+    }
+
+    // Updates UI labels based on selection, but does NOT change value yet
+    QWidget* dlg = ui_ins_datum->labelEdit->parentWidget();
+    while (dlg && !dlg->isWindow()) {
+        dlg = dlg->parentWidget();
+    }
+    if (ui_ins_datum->rbRadius->isChecked()) {
+        ui_ins_datum->label->setText(tr("Radius"));
+        if (dlg) {
+            dlg->setWindowTitle(tr("Insert Radius"));
+        }
+    }
+    else {
+        ui_ins_datum->label->setText(tr("Diameter"));
+        if (dlg) {
+            dlg->setWindowTitle(tr("Insert Diameter"));
+        }
+    }
+}
+
 void EditDatumDialog::accepted()
 {
+    // Check if we need to swap Radius <-> Diameter
+    if (Constr->Type == Sketcher::Radius && ui_ins_datum->rbDiameter->isChecked()) {
+        Constr->Type = Sketcher::Diameter;
+    }
+    else if (Constr->Type == Sketcher::Diameter && ui_ins_datum->rbRadius->isChecked()) {
+        Constr->Type = Sketcher::Radius;
+    }
+
     Base::Quantity newQuant = ui_ins_datum->labelEdit->value();
     if (Constr->Type == Sketcher::SnellsLaw || Constr->Type == Sketcher::Weight
         || !newQuant.isDimensionless()) {

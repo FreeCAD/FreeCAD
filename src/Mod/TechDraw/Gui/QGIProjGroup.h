@@ -41,6 +41,7 @@ namespace TechDraw {
 
 namespace TechDrawGui
 {
+class QGIViewPart;
 
 class TechDrawGuiExport QGIProjGroup : public QGIViewCollection
 {
@@ -60,6 +61,9 @@ public:
     void drawBorder() override;
 
     bool isMember(App::DocumentObject* dvpObj) const;
+    QGIView* getAnchorQItem() const;
+    TechDraw::DrawProjGroup* getPGroupFeature() const;
+    QList<QGIViewPart*> secondaryQViews() const;
 
 protected:
     bool sceneEventFilter(QGraphicsItem* watched, QEvent *event) override;
@@ -70,11 +74,9 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent * event) override;
 
     void mouseReleaseEvent(QGIView* originator, QGraphicsSceneMouseEvent* event);
-    QGIView* getAnchorQItem() const;
 
 private:
     /// Convenience function
-    TechDraw::DrawProjGroup* getDrawView() const;
     bool autoDistributeEnabled() const;
 
     QGraphicsItem* m_origin;

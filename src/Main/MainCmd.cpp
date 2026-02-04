@@ -28,6 +28,8 @@
 # include <config.h>
 #endif  // HAVE_CONFIG_H
 
+#include <Build/Version.h>  // For FCCopyrightYear
+
 #include <cstdio>
 #include <ostream>
 #include <QString>
@@ -44,9 +46,11 @@
 using App::Application;
 using Base::Console;
 
-const char sBanner[]
-    = "(C) 2001-2025 FreeCAD contributors\n"
-      "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n";
+const auto sBanner = fmt::format(
+    "(C) 2001-{} FreeCAD contributors\n"
+    "FreeCAD is free and open-source software licensed under the terms of LGPL2+ license.\n\n",
+    FCCopyrightYear
+);
 
 int main(int argc, char** argv)
 {

@@ -10,10 +10,10 @@ cmake_minimum_required(VERSION 3.22)
 set(TARGET_APP_BUNDLE "${CMAKE_BINARY_DIR}/src/MacAppBundle/FreeCAD.app")
 set(LEGACY_QUICKLOOK_DIR "${TARGET_APP_BUNDLE}/Contents/Library/QuickLook")
 
-# Build legacy QuickLook generator using traditional CMake approach
+# Build legacy QuickLook generator as a proper macOS plugin bundle
 add_library(
     QuicklookFCStd
-    SHARED
+    MODULE
     GeneratePreviewForURL.m
     GenerateThumbnailForURL.m
     main.c
@@ -22,8 +22,9 @@ add_library(
 set_target_properties(
     QuicklookFCStd
     PROPERTIES
-    FRAMEWORK TRUE
-    MACOSX_FRAMEWORK_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/QuicklookFCStd.qlgenerator/Contents/Info.plist"
+    BUNDLE TRUE
+    BUNDLE_EXTENSION "qlgenerator"
+    MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/QuicklookFCStd.qlgenerator/Contents/Info.plist"
 )
 
 target_link_libraries(

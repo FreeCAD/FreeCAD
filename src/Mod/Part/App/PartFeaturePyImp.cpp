@@ -37,7 +37,7 @@ using namespace Part;
 // returns a string which represent the object e.g. when printed in python
 std::string PartFeaturePy::representation() const
 {
-    return {"<Part::Feature>"};
+    return fmt::format("<{}>", static_cast<std::string>(getTypeId()));
 }
 
 PyObject* PartFeaturePy::getElementHistory(PyObject* args, PyObject* kwds) const

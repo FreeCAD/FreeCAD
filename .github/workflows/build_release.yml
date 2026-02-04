@@ -95,8 +95,9 @@ jobs:
         include:
           - { target: linux-64, os: ubuntu-22.04 }
           - { target: linux-arm64, os: ubuntu-22.04-arm }
-          - { target: osx-64, os: macos-15-intel }
-          - { target: osx-arm64, os: macos-latest }
+          - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
+          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
           - { target: win-64, os: windows-latest }
       fail-fast: false
 
@@ -196,6 +197,9 @@ jobs:
           UPLOAD_RELEASE: "true"
           BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
+          if [[ "${{ runner.os }}" == "macOS" ]]; then
+            export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+          fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install

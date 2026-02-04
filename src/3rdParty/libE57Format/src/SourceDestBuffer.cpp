@@ -149,10 +149,10 @@ transfer with a CompressedVectorNode.
 @pre The @a destImageFile must be open (i.e. destImageFile.isOpen() must be true).
 @pre The stride must be >= sizeof(*b)
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorBadPathName
-@throw ::ErrorBadBuffer
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorBadBuffer (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see ImageFile::reader, ImageFile::writer,
@@ -287,10 +287,10 @@ destroyed).
 @pre b.size() must be > 0.
 @pre The @a destImageFile must be open (i.e. destImageFile.isOpen() must be true).
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorBadPathName
-@throw ::ErrorBadBuffer
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorBadPathName (n/c)
+@throw ::ErrorBadBuffer (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see SourceDestBuffer::doConversion for discussion on representations compatible with string
@@ -397,7 +397,7 @@ CompressedVectorReader or CompressedVectorWriter is created).
 
 @return true if conversions will be performed to match the memory type of buffer.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 */
 bool SourceDestBuffer::doConversion() const
