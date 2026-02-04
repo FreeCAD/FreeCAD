@@ -191,6 +191,7 @@ void SoDatumLabel::drawImage()
     QFont font(QString::fromLatin1(name.getValue(), -1), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
+    QRect rect = fm.boundingRect(str);
 
     int w = Gui::QtTools::horizontalAdvance(fm, str);
     int h = fm.height();
@@ -216,7 +217,7 @@ void SoDatumLabel::drawImage()
 
     painter.setPen(front);
     painter.setFont(font);
-    painter.drawText(0, 0, w, h, Qt::AlignLeft, str);
+    painter.drawText(0, fm.ascent() + rect.y(), w, rect.height(), Qt::AlignLeft, str);
     painter.end();
 
     Gui::BitmapFactory().convert(image, this->image);
