@@ -429,9 +429,13 @@ class Edit(gui_base_original.Modifier):
             # App.Console.PrintMessage("pressed key : "+str(key)+"\n")
             if key == 65307:  # ESC
                 self.finish()
+            # show context menu on pressing 'e' (only on key down)
             if key == 101:  # "e"
-            if event.getState() == coin.SoKeyboardEvent.DOWN:
-                self.display_tracker_menu(event)
+                if event.getState() == coin.SoKeyboardEvent.DOWN:
+                    self.display_tracker_menu(event)
+            # Delete key handling (keep separate)
+            if key == 65535 and Gui.Selection.getSelection() is None:
+                # BUG: delete key activate Std::Delete command at the same time!
                 print("DELETE PRESSED\n")
                 self.delPoint(event)
 
