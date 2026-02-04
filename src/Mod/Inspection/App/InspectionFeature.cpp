@@ -40,7 +40,6 @@
 #include <QtConcurrentMap>
 
 #include <Base/Console.h>
-#include <Base/FutureWatcherProgress.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 
@@ -939,13 +938,23 @@ App::DocumentObjectExecReturn* Feature::execute()
         QFuture<DistanceInspectionRMS> future
             = QtConcurrent::mappedReduced(index, fMap, &DistanceInspectionRMS::operator+=);
         // Setup progress bar
-        Base::FutureWatcherProgress progress("Inspecting...", actual->countPoints());
+        Base::SequencerLauncher seq("Inspecting...", 100);
+        unsigned int currentStep = 0;
+        const unsigned int steps = static_cast<unsigned int>(actual->countPoints());
         QFutureWatcher<DistanceInspectionRMS> watcher;
         QObject::connect(
             &watcher,
             &QFutureWatcher<DistanceInspectionRMS>::progressValueChanged,
-            &progress,
-            &Base::FutureWatcherProgress::progressValueChanged
+            [&](int value) {
+                if (steps == 0) {
+                    return;
+                }
+                const unsigned int step = (100U * static_cast<unsigned int>(value)) / steps;
+                if (step > currentStep) {
+                    currentStep = step;
+                    seq.next();
+                }
+            }
         );
         // Keep UI responsive during computation
         QEventLoop loop;

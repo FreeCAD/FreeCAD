@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2012 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026                                                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -22,66 +22,50 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifndef BASE_TRANSLATION_H
+#define BASE_TRANSLATION_H
 
-#ifndef BASE_DEBUGGER_H
-#define BASE_DEBUGGER_H
+#include <string>
+#include <string_view>
+#include <vector>
 
-#include <QEventLoop>
-#include <QObject>
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
 #endif
 
-namespace Base
+namespace Base::Translation
 {
-/**
-  This is a utility class to break the application at a point to inspect e.g. the result of
-  an algorithm.
-  You usually use it like this
-  \code
-    ...
-    Base::Debugger dbg;
-    dbg.attach();
-    dbg.exec();
-    ...
-  \endcode
-  Or you can connect it with a button and let the user click it in order to continue.
-  \code
-    QPushButton* btn = new QPushButton();
-    btn->setText("Continue");
-    btn->show();
-    Base::Debugger dbg;
-    connect(btn, &QPushButton::clicked, &dbg, &Debugger::quit);
-    dbg.exec();
-  \endcode
- \author Werner Mayer
- */
-class BaseExport Debugger: public QObject
-{
-    Q_OBJECT
 
+class BaseExport Translator
+{
 public:
-    explicit Debugger(QObject* parent = nullptr);
-    ~Debugger() override;
+    virtual ~Translator() = default;
 
-    Debugger(const Debugger&) = delete;
-    Debugger(Debugger&&) = delete;
-    Debugger& operator=(const Debugger&) = delete;
-    Debugger& operator=(Debugger&&) = delete;
+    virtual std::string translate(
+        std::string_view context,
+        std::string_view sourceText,
+        std::string_view disambiguation,
+        int n
+    ) const
+        = 0;
 
-    void attach();
-    void detach();
-    bool eventFilter(QObject* obj, QEvent* event) override;
-    int exec();
-
-public Q_SLOTS:
-    void quit();
-
-private:
-    bool isAttached {false};
-    QEventLoop loop;
+    virtual bool installTranslator(std::string_view filename) const = 0;
+    virtual bool removeTranslators(const std::vector<std::string>& filenames) const = 0;
 };
 
-}  // namespace Base
+BaseExport void setTranslator(const Translator* translator);
+BaseExport const Translator* getTranslator();
 
-#endif  // BASE_DEBUGGER_H
+BaseExport std::string translate(
+    std::string_view context,
+    std::string_view sourceText,
+    std::string_view disambiguation = {},
+    int n = -1
+);
+
+BaseExport bool installTranslator(std::string_view filename);
+BaseExport bool removeTranslators(const std::vector<std::string>& filenames);
+
+}  // namespace Base::Translation
+
+#endif  // BASE_TRANSLATION_H

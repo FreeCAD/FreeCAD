@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2018 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2026                                                   *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -17,49 +17,62 @@
  *                                                                         *
  *   You should have received a copy of the GNU Library General Public     *
  *   License along with this library; see the file COPYING.LIB. If not,    *
- *   write to the Free Software Foundation, Inc., 51 Franklin Street,      *
- *   Fifth Floor, Boston, MA  02110-1301, USA                              *
+ *   write to the Free Software Foundation, Inc., 59 Temple Place,         *
+ *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
 
+#ifndef BASE_FILELOCK_H
+#define BASE_FILELOCK_H
 
-#ifndef BASE_TRANSLATE_H
-#define BASE_TRANSLATE_H
-
-#include <CXX/Extensions.hxx>
 #include <string>
-#include <vector>
+
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
 #endif
 
-namespace Py
-{
-class Object;
-class Tuple;
-}  // namespace Py
-
 namespace Base
 {
 
-class BaseExport Translate: public Py::ExtensionModule<Translate>  // NOLINT
+/**
+ * Small cross-platform advisory file lock.
+ *
+ * This takes and holds an exclusive lock on a given path. The file is created if it does not
+ * exist.
+ *
+ * Note: this is an advisory lock; it does not implement "stale lock" handling (PID checking, etc).
+ * On Emscripten/WASM this is a no-op (single-process), and always succeeds.
+ */
+class BaseExport FileLock
 {
 public:
-    Translate();
-    ~Translate() override;
+    explicit FileLock(std::string path);
+    ~FileLock();
+
+    FileLock(const FileLock&) = delete;
+    FileLock(FileLock&&) = delete;
+    FileLock& operator=(const FileLock&) = delete;
+    FileLock& operator=(FileLock&&) = delete;
+
+    bool tryLock(int timeoutMs);
+    bool lock();
+    void unlock();
+    bool isLocked() const;
 
 private:
-    Py::Object translate(const Py::Tuple& args);
-    Py::Object translateNoop(const Py::Tuple& args);
-    Py::Object translateNoop3(const Py::Tuple& args);
-    Py::Object trNoop(const Py::Tuple& args);
-    Py::Object installTranslator(const Py::Tuple& args);
-    Py::Object removeTranslators(const Py::Tuple& args);
+    std::string _path;
 
-private:
-    std::vector<std::string> translators;
+#if defined(__EMSCRIPTEN__)
+    bool _locked {false};
+#elif defined(_WIN32)
+    void* _handle {nullptr};
+    bool _locked {false};
+#else
+    int _fd {-1};
+    bool _locked {false};
+#endif
 };
 
 }  // namespace Base
 
-#endif  // BASE_TRANSLATE_H
+#endif  // BASE_FILELOCK_H
