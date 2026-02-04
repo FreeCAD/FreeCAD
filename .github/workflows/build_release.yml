@@ -97,7 +97,6 @@ jobs:
           - { target: linux-arm64, os: ubuntu-22.04-arm }
           - { target: osx-64, os: macos-15-intel, deploy_target: "10.13" }
           - { target: osx-arm64, os: macos-latest, deploy_target: "11.0" }
-          - { target: osx-arm64, os: macos-latest, deploy_target: "15.0" }
           - { target: win-64, os: windows-latest }
       fail-fast: false
 
