@@ -431,9 +431,7 @@ class Edit(gui_base_original.Modifier):
                 self.finish()
             if key == 101:  # "e"
             if event.getState() == coin.SoKeyboardEvent.DOWN:
-                self.display_tracker_menu(event)            if (
-                key == 65535 and Gui.Selection.getSelection() is None
-            ):  # BUG: delete key activate Std::Delete command at the same time!
+                self.display_tracker_menu(event)
                 print("DELETE PRESSED\n")
                 self.delPoint(event)
 
