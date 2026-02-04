@@ -22,7 +22,7 @@ requirements:
     - noqt5
     - python>=3.11,<3.12
     - qt6-main>=6.8,<6.9
-    - swig
+    - swig>=4.3,<4.4
 
     - if: linux and x86_64
       then:
