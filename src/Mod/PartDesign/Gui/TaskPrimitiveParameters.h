@@ -45,7 +45,7 @@ namespace Gui
 class ViewProvider;
 class GizmoContainer;
 class LinearGizmo;
-}
+}  // namespace Gui
 
 namespace PartDesignGui
 {

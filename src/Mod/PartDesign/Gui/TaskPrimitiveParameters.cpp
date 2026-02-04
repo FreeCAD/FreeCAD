@@ -1012,7 +1012,7 @@ void TaskBoxPrimitives::setupGizmos()
         return;
     }
 
-    switch(getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+    switch (getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
         case PartDesign::FeaturePrimitive::Box:
             lengthGizmo = new Gui::LinearGizmo(ui->boxLength);
             widthGizmo = new Gui::LinearGizmo(ui->boxWidth);
@@ -1044,18 +1044,14 @@ void TaskBoxPrimitives::setGizmoPositions()
         return;
     }
 
-    SbVec3f pos = Base::convertTo<SbVec3f>(
-        vp->getObjectPlacement().getPosition()
-    );
-    SbRotation rot = Base::convertTo<SbRotation>(
-        vp->getObjectPlacement().getRotation()
-    );
+    SbVec3f pos = Base::convertTo<SbVec3f>(vp->getObjectPlacement().getPosition());
+    SbRotation rot = Base::convertTo<SbRotation>(vp->getObjectPlacement().getRotation());
     auto getVec = [rot](SbVec3f vec) {
         rot.multVec(vec, vec);
 
         return vec;
     };
-    switch(getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
+    switch (getObject<PartDesign::FeaturePrimitive>()->getPrimitiveType()) {
         case PartDesign::FeaturePrimitive::Box:
             lengthGizmo->setDraggerPlacement(pos, getVec({1, 0, 0}));
             widthGizmo->setDraggerPlacement(pos, getVec({0, 1, 0}));
@@ -1085,7 +1081,12 @@ TaskDlgPrimitiveParameters::TaskDlgPrimitiveParameters(ViewProviderPrimitive* Pr
     Content.push_back(parameter);
     Content.push_back(preview);
 
-    connect(parameter, &PartGui::TaskAttacher::placementUpdated, primitive, &TaskBoxPrimitives::onPlacementChanged);
+    connect(
+        parameter,
+        &PartGui::TaskAttacher::placementUpdated,
+        primitive,
+        &TaskBoxPrimitives::onPlacementChanged
+    );
 }
 
 TaskDlgPrimitiveParameters::~TaskDlgPrimitiveParameters() = default;
