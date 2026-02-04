@@ -274,9 +274,8 @@ class Arch_Wall:
             import ArchSketchObject
 
             # Check ArchSketchLock and makeArchSketch() here
-            useArchSketch = hasattr(ArchSketchObject, "makeArchSketch") and (
-                not hasattr(FreeCAD, "ArchSketchLock") or FreeCAD.ArchSketchLock
-            )
+            useArchSketch = hasattr(ArchSketchObject, "makeArchSketch") and \
+                getattr(FreeCAD, "ArchSketchLock", True)
 
             if not useArchSketch:
                 # Regular path without SketchArch add-on installed. Execute creation command with a
@@ -289,7 +288,6 @@ class Arch_Wall:
                 FreeCADGui.doCommand(f"base.Label = {repr(user_label)}")
             else:
                 # Use ArchSketch if SketchArch add-on is present
-                # TODO 2026.1.18 Do translation in Add-on
                 FreeCADGui.doCommand("import ArchSketchObject")
                 FreeCADGui.doCommand("base = ArchSketchObject.makeArchSketch()")
 
