@@ -22,6 +22,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="4" column="1">
        <widget class="Gui::PrefColorButton" name="SelectionColor">
+        <property name="toolTip">
+         <string>Color used to highlight selected objects in the 3D view</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -124,6 +127,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
       </item>
       <item row="3" column="1">
        <widget class="Gui::PrefColorButton" name="HighlightColor">
+        <property name="toolTip">
+         <string>Color used to highlight preselected objects in the 3D view</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -191,6 +197,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoSwitch">
+        <property name="toolTip">
+         <string>When you select an item in the tree, switch to the 3D view that contains it</string>
+        </property>
         <property name="text">
          <string>Auto switch to the 3D view containing the selected item</string>
         </property>
@@ -204,6 +213,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxAutoExpand">
+        <property name="toolTip">
+         <string>Expand the tree automatically whne an object is selected in the 3D view</string>
+        </property>
         <property name="text">
          <string>Auto expand tree item when the corresponding object is selected in the 3D view</string>
         </property>
@@ -217,6 +229,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxRecord">
+        <property name="toolTip">
+         <string>Record tree selections so Back/Forward navigation can return to them</string>
+        </property>
         <property name="text">
          <string>Record selection in tree view in order to go back/forward using navigation button</string>
         </property>
@@ -230,6 +245,9 @@ A larger value makes it easier to select elements, but may prevent selection of 
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkBoxSelectionCheckBoxes">
+        <property name="toolTip">
+         <string>Show selection checkboxes next to tree item for quick selection</string>
+        </property>
         <property name="text">
          <string>Add checkboxes for selection in document tree</string>
         </property>
