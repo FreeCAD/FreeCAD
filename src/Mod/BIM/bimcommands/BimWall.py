@@ -274,8 +274,9 @@ class Arch_Wall:
             import ArchSketchObject
 
             # Check ArchSketchLock and makeArchSketch() here
-            useArchSketch = hasattr(ArchSketchObject, "makeArchSketch") and \
-                getattr(FreeCAD, "ArchSketchLock", True)
+            useArchSketch = hasattr(ArchSketchObject, "makeArchSketch") and getattr(
+                FreeCAD, "ArchSketchLock", True
+            )
 
             if not useArchSketch:
                 # Regular path without SketchArch add-on installed. Execute creation command with a
