@@ -25,15 +25,26 @@
 name: Build Windows
 on:
   workflow_dispatch:
+    inputs:
+      artifactBasename:
+        description: "Base name for artifact"
+        required: false
+        type: string
+        default: "FreeCAD"
+      allowedToFail:
+        description: "whether a failed build is allowed"
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       artifactBasename:
-        type: string
         required: true
+        type: string
       allowedToFail:
+        required: false
         default: false
         type: boolean
-        required: false
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -41,7 +52,7 @@ on:
 jobs:
   Build:
     runs-on: windows-latest
-    continue-on-error: ${{ inputs.allowedToFail || false }}
+    continue-on-error: ${{ inputs.allowedToFail }}
     env:
       CCACHE_COMPILERCHECK: "%compiler%" # default:mtime
       CCACHE_COMPRESS: true
