@@ -188,5 +188,4 @@ void DlgSettingsDocumentImp::onLicenseTypeChanged(int index)
     }
 }
 
-
 #include "moc_DlgSettingsDocumentImp.cpp"
