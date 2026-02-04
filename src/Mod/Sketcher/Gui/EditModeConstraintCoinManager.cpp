@@ -934,6 +934,7 @@ Restart:
                             asciiText->string = SbString(
                                 getPresentationString(Constr, "◠ ").toUtf8().constData()
                             );
+                            asciiText->strikethrough = !Constr->isActive;
 
                             asciiText->pnts.setNum(3);
                             SbVec3f* verts = asciiText->pnts.startEditing();
@@ -956,6 +957,7 @@ Restart:
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
+                    asciiText->strikethrough = !Constr->isActive;
 
                     if (Constr->Type == Distance) {
                         asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -1466,6 +1468,7 @@ Restart:
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
+                    asciiText->strikethrough = !Constr->isActive;
                     asciiText->datumtype = SoDatumLabel::ANGLE;
                     asciiText->param1 = distance;
                     asciiText->param2 = startangle;
@@ -1541,6 +1544,7 @@ Restart:
                     asciiText->string = SbString(
                         getPresentationString(Constr, "⌀").toUtf8().constData()
                     );
+                    asciiText->strikethrough = !Constr->isActive;
 
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
@@ -1623,6 +1627,7 @@ Restart:
                         asciiText->string = SbString(
                             getPresentationString(Constr, "R").toUtf8().constData()
                         );
+                        asciiText->strikethrough = !Constr->isActive;
                     }
 
                     asciiText->datumtype = SoDatumLabel::RADIUS;
@@ -2162,14 +2167,6 @@ QString EditModeConstraintCoinManager::getPresentationString(
 
     if (!constraint->isDriving) {
         fixedValueStr = QStringLiteral("(") + fixedValueStr + QStringLiteral(")");
-    }
-
-    if (!constraint->isActive) {
-        QString result = QStringLiteral("\u0336");
-        for (auto c : std::as_const(fixedValueStr)) {
-            result += c + QStringLiteral("\u0336");
-        }
-        return result;
     }
 
     return fixedValueStr;
