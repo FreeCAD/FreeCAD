@@ -15,7 +15,7 @@ set(MassPropertiesGui_SRCS
     AppMassPropertiesGui.cpp
     Command.cpp
     TaskMassProperties.cpp
-    UnitSystem.cpp
+    UnitHelper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesResult.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesResult.h
 )

@@ -20,41 +20,27 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef MASSPROPERTIES_UNITSYSTEM_H
-#define MASSPROPERTIES_UNITSYSTEM_H
+#ifndef MASSPROPERTIES_UNITHELPER_H
+#define MASSPROPERTIES_UNITHELPER_H
 
 #include <string>
+#include <vector>
+
+namespace Base
+{
+class Quantity;
+}
 
 namespace MassPropertiesGui {
 
-struct UnitConversions {
-    double lengthFactor;
-    double volumeFactor;
-    double massFactor;
-    double densityFactor;
-    double areaFactor;
-    double inertiaFactor;
-    
-    std::string lengthUnit;
-    std::string volumeUnit;
-    std::string massUnit;
-    std::string densityUnit;
-    std::string areaUnit;
-    std::string inertiaUnit;
-};
-
-class UnitSystem {
+class UnitHelper {
 public:
-    static UnitConversions getConversions(const std::string& systemName);
-    static std::string getPreferredSystemName();
-    static int getSystemIndex(const std::string& systemName);
-    
-    static const char* metric_mm_kg;
-    static const char* metric_m_kg;
-    static const char* imperial_inch_lb;
-    static const char* imperial_ft_lb;
+    static int getPreferred();
+    static int getComboIndex(int schemaIndex);
+    static int getSchemaIndex(int comboIndex, int preferredSchemaIndex);
+    static std::string translate(const Base::Quantity& quantity, int schemaIndex);
 };
 
 } // namespace MassPropertiesGui
 
-#endif // MASSPROPERTIES_UNITSYSTEM_H
+#endif // MASSPROPERTIES_UNITHELPER_H

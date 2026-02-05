@@ -27,16 +27,11 @@
 #include <vector>
 #include <string>
 
+#include <Base/Vector3D.h>
+
 
 class TopoDS_Shape;
 namespace App { class DocumentObject; }
-
-struct Vec3
-{
-    double x;
-    double y;
-    double z;
-};
 
 struct MassPropertiesData {
     double volume;
@@ -59,14 +54,13 @@ struct MassPropertiesData {
     double inertiaJxy;
     double inertiaJzx;
     double inertiaJzy;
-
     double inertiaJx;
     double inertiaJy;
     double inertiaJz;
 
-    Vec3 principalAxisX;
-    Vec3 principalAxisY;
-    Vec3 principalAxisZ;
+    Base::Vector3d principalAxisX = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d principalAxisY = Base::Vector3d(0.0, 0.0, 0.0);
+    Base::Vector3d principalAxisZ = Base::Vector3d(0.0, 0.0, 0.0);
 
     double axisInertia;
 };
