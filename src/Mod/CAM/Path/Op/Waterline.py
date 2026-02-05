@@ -2013,7 +2013,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         # --- Helpers ---
         def _getEffectiveRadius(h, radius, c_rad, profile):
             if profile == "Ballend":
-                return math.sqrt(max(0, radius**2 - (radius - h)**2))
+                return math.sqrt(max(0, radius**2 - (radius - h) ** 2))
             elif profile == "Bullnose":
                 if h < c_rad:
                     dist_to_arc_center = c_rad - h
@@ -2113,17 +2113,17 @@ class ObjectWaterline(PathOp.ObjectOp):
                         if hasattr(compFace, "removeSplitter"):
                             compFace = compFace.removeSplitter()
                         compFace.translate(FreeCAD.Vector(0, 0, -compFace.BoundBox.ZMin))
-                        sub_envelope_list.append(compFace)   
+                        sub_envelope_list.append(compFace)
 
             if not sub_envelope_list:
                 continue
 
             fusion_engine = Path.Area()
             fusion_engine.setPlane(self.wpc)
-            
+
             for env_item in sub_envelope_list:
                 # Clipper (Path.Area) automatically unions overlapping shapes
-                fusion_engine.add(env_item) 
+                fusion_engine.add(env_item)
 
             # Extract the single, dissolved silhouette
             compAdjFaces = fusion_engine.getShape()
@@ -2147,7 +2147,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 # Standard Waterline Logic: New Material = (Stock - Model) - Already Cut
                 layer_engine.add(borderFace)
                 layer_engine.add(compAdjFaces, op=1)
-                
+
                 if not isFirst and allPrevComp:
                     # Subtract everything already cleared in layers above
                     layer_engine.add(allPrevComp, op=1)
@@ -2304,7 +2304,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         commands.append(Path.Command("N (Cut Area {}.)".format(round(csHght, 2))))
 
-        #start = 0
+        # start = 0
         start = 1
         if csHght < obj.IgnoreOuterAbove or obj.CutPattern == "Offset":
             start = 0
