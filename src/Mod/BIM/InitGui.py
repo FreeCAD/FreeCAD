@@ -636,8 +636,8 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D geometry"),
-                BimWatcher(self.bimtools, "3D/BIM geometry"),
+                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
+                BimWatcher(self.bimtools, "3D/BIM Geometry"),
                 BimWatcher(self.modify, "Modify", invert=True),
             ]
         )

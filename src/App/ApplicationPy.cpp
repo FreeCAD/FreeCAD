@@ -760,7 +760,7 @@ PyObject* Application::sGetExportType(PyObject* /*self*/, PyObject* args)
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
         for (const auto& it : types) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it.c_str());
+            std::vector<std::string> modules = GetApplication().getExportModules(it);
             if (modules.empty()) {
                 dict.setItem(it.c_str(), Py::None());
             }

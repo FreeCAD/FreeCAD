@@ -2014,7 +2014,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 hitWidget->setFocus();
                 d->_trackingWidget = hitWidget;
                 d->_trackingOverlay = activeTabWidget;
-                d->_trackingOverlay->grabMouse();
+                // Wayland doesn't allow mouse grab
+                if (QGuiApplication::platformName() != QLatin1String("wayland")) {
+                    d->_trackingOverlay->grabMouse();
+                }
             }
             return true;
         }
@@ -2039,7 +2042,10 @@ public:
     ~MouseGrabberGuard()
     {
         if (_grabber) {
-            _grabber->grabMouse();
+            // Wayland doesn't allow mouse grab
+            if (QGuiApplication::platformName() != QLatin1String("wayland")) {
+                _grabber->grabMouse();
+            }
         }
     }
 

@@ -108,7 +108,6 @@ public:
     Base::Placement getMbdPlacement(std::shared_ptr<MbD::ASMTPart> mbdPart);
     bool validateNewPlacements();
     void setNewPlacements();
-    static void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
     static void redrawJointPlacement(App::DocumentObject* joint);
 

@@ -1246,7 +1246,7 @@ class _PrecastTaskPanel:
     def retranslateUi(self, dialog):
         from PySide import QtGui
 
-        self.form.setWindowTitle(translate("Arch", "Precast elements"))
+        self.form.setWindowTitle(translate("Arch", "Precast Elements"))
         self.labelSlabType.setText(translate("Arch", "Slab type"))
         self.labelChamfer.setText(translate("Arch", "Chamfer"))
         self.labelDentLength.setText(translate("Arch", "Dent length"))
@@ -1712,10 +1712,10 @@ class _DentsTaskPanel:
     def retranslateUi(self, dialog):
         from PySide import QtGui
 
-        self.form.setWindowTitle(translate("Arch", "Precast options"))
+        self.form.setWindowTitle(translate("Arch", "Precast Options"))
         self.labelDents.setText(translate("Arch", "Dents list"))
-        self.buttonAdd.setText(translate("Arch", "Add dent"))
-        self.buttonRemove.setText(translate("Arch", "Remove dent"))
+        self.buttonAdd.setText(translate("Arch", "Add Dent"))
+        self.buttonRemove.setText(translate("Arch", "Remove Dent"))
         self.labelLength.setText(translate("Arch", "Length"))
         self.labelWidth.setText(translate("Arch", "Width"))
         self.labelHeight.setText(translate("Arch", "Height"))
