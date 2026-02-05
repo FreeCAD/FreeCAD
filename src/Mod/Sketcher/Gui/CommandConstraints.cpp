@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -76,12 +78,10 @@ bool isCreateConstraintActive(Gui::Document* doc)
 {
     if (doc) {
         // checks if a Sketch View provider is in Edit and is in no special mode
-        if (doc->getInEdit()
-            && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
-            if (static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit())->getSketchMode()
-                == ViewProviderSketch::STATUS_NONE) {
-                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>()
-                    > 0) {
+        auto vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+        if (vp && vp->isInEditMode()) {
+            if (vp->getSketchMode() == ViewProviderSketch::STATUS_NONE) {
+                if (Gui::Selection().countObjectsOfType<Sketcher::SketchObject>() > 0) {
                     return true;
                 }
             }
@@ -107,7 +107,6 @@ void finishDatumConstraint(Gui::Command* cmd,
 
     // Guess some reasonable distance for placing the datum text
     Gui::Document* doc = cmd->getActiveGuiDocument();
-    float scaleFactor = 1.0;
     double labelPosition = 0.0;
     float labelPositionRandomness = 0.0;
 
@@ -131,13 +130,10 @@ void finishDatumConstraint(Gui::Command* cmd,
         && doc->getInEdit()->isDerivedFrom<SketcherGui::ViewProviderSketch>()) {
         SketcherGui::ViewProviderSketch* vp =
             static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        scaleFactor = vp->getScaleFactor();
 
         int firstConstraintIndex = lastConstraintIndex - numberofconstraints + 1;
 
         for (int i = lastConstraintIndex; i >= firstConstraintIndex; i--) {
-            ConStr[i]->LabelDistance = 2. * scaleFactor;
-
             if (lastConstraintType == Radius || lastConstraintType == Diameter) {
                 const Part::Geometry* geo = sketch->getGeometry(ConStr[i]->First);
 

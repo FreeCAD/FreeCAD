@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -65,6 +67,7 @@ private Q_SLOTS:
     void drivingToggled(bool);
     void datumChanged();
     void formEditorOpened(bool);
+    void typeChanged(bool);
 
 private:
     void performAutoScale(double newDatum);

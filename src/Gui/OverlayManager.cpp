@@ -199,7 +199,7 @@ struct OverlayInfo
     Qt::DockWidgetArea dockArea;
     std::unordered_map<QDockWidget*, OverlayInfo*>& overlayMap;
     ParameterGrp::handle hGrp;
-    boost::signals2::scoped_connection conn;
+    fastsignals::scoped_connection conn;
 
     OverlayInfo(
         QWidget* parent,
@@ -409,6 +409,7 @@ public:
         Application::Instance->signalResetEdit.connect([this](const ViewProviderDocumentObject&) {
             refresh();
         });
+        Application::Instance->signalActivateWorkbench.connect([this](const char*) { refresh(); });
 
         _actOverlay.setData(QStringLiteral("OBTN Overlay"));
         _actFloat.setData(QStringLiteral("OBTN Float"));
@@ -2013,7 +2014,10 @@ bool OverlayManager::eventFilter(QObject* o, QEvent* ev)
                 hitWidget->setFocus();
                 d->_trackingWidget = hitWidget;
                 d->_trackingOverlay = activeTabWidget;
-                d->_trackingOverlay->grabMouse();
+                // Wayland doesn't allow mouse grab
+                if (QGuiApplication::platformName() != QLatin1String("wayland")) {
+                    d->_trackingOverlay->grabMouse();
+                }
             }
             return true;
         }
@@ -2038,7 +2042,10 @@ public:
     ~MouseGrabberGuard()
     {
         if (_grabber) {
-            _grabber->grabMouse();
+            // Wayland doesn't allow mouse grab
+            if (QGuiApplication::platformName() != QLatin1String("wayland")) {
+                _grabber->grabMouse();
+            }
         }
     }
 

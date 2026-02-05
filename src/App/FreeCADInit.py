@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #***************************************************************************
 #*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
 #*   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
@@ -1277,8 +1279,6 @@ class DirModScanner:
         if not base.exists():
             if warning:
                 Wrn(warning)
-            else:
-                Wrn(f"No modules found in {base!s}")
             return
 
         if warning:
@@ -1311,8 +1311,14 @@ class InitPipeline:
     """
 
     std_home = Path(App.getHomePath()).resolve()
-    std_lib = Path(App.getLibraryDir()).resolve()
     user_home = Path(App.getUserAppDataDir()).resolve()
+    try:
+        std_lib = Path(App.getLibraryDir()).resolve()
+    except OSError:
+        # The library path is not strictly required, so if the OS itself raises an error when trying
+        # to resolve it, just fall back to something reasonable. See #26864.
+        std_lib = std_home / "lib"
+        Log(f"Resolving library directory '{App.getLibraryDir()}' failed, using fallback '{std_lib}'")
     dir_mod_scanner = DirModScanner()
     ext_mod_scanner = ExtModScanner()
     search_paths = SearchPaths()

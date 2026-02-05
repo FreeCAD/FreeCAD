@@ -129,10 +129,14 @@ Clipping::Clipping(Gui::View3DInventor* view, QWidget* parent)
     View3DInventorViewer* viewer = view->getViewer();
     d->node = static_cast<SoGroup*>(viewer->getSceneGraph());
     d->node->ref();
-    d->node->insertChild(d->clipX, 0);
-    d->node->insertChild(d->clipY, 0);
-    d->node->insertChild(d->clipZ, 0);
-    d->node->insertChild(d->clipView, 0);
+    int index = -1;
+    if (auto editingRoot = viewer->getEditingRoot()) {
+        index = d->node->findChild(editingRoot);
+    }
+    d->node->insertChild(d->clipX, index + 1);
+    d->node->insertChild(d->clipY, index + 1);
+    d->node->insertChild(d->clipZ, index + 1);
+    d->node->insertChild(d->clipView, index + 1);
 
     SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
     action.apply(viewer->getSceneGraph());

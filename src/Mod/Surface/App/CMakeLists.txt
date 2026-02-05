@@ -45,6 +45,8 @@ SET(Surface_SRCS
   FeatureSewing.h
   FeatureCut.cpp
   FeatureCut.h
+  Measure.cpp
+  Measure.h
 )
 
 add_library(Surface SHARED ${Surface_SRCS})

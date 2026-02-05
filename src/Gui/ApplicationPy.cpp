@@ -1123,14 +1123,14 @@ PyObject* ApplicationPy::sActivateWorkbenchHandler(PyObject* /*self*/, PyObject*
         PyErr_SetString(e.getPyExceptionType(), err.str().c_str());
         return nullptr;
     }
-    catch (const XERCES_CPP_NAMESPACE_QUALIFIER TranscodingException& e) {
+    catch (const XERCES_CPP_NAMESPACE::TranscodingException& e) {
         std::stringstream err;
-        char* pMsg = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(e.getMessage());
+        char* pMsg = XERCES_CPP_NAMESPACE::XMLString::transcode(e.getMessage());
         err << "Transcoding exception in Xerces-c:\n\n"
             << "Transcoding exception raised in activateWorkbench.\n"
             << "Check if your user configuration file is valid.\n"
             << "  Exception message:" << pMsg;
-        XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&pMsg);
+        XERCES_CPP_NAMESPACE::XMLString::release(&pMsg);
         PyErr_SetString(PyExc_RuntimeError, err.str().c_str());
         return nullptr;
     }

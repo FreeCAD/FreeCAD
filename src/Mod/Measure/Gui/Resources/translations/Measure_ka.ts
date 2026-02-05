@@ -71,7 +71,7 @@
     <message>
       <location filename="../../QuickMeasure.cpp" line="226"/>
       <source>Area: %1</source>
-      <translation type="unfinished">Area: %1</translation>
+      <translation>ფართობი %1</translation>
     </message>
     <message>
       <location filename="../../QuickMeasure.cpp" line="230"/>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="51"/>
       <source>&amp;Measure</source>
-      <translation type="unfinished">&amp;Measure</translation>
+      <translation>გაზო&amp;მვა</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="52"/>
@@ -232,12 +232,12 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="160"/>
       <source>Mode:</source>
-      <translation type="unfinished">Mode:</translation>
+      <translation>რეჟიმი:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="162"/>
       <source>Result:</source>
-      <translation type="unfinished">Result:</translation>
+      <translation>შედეგი:</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="197"/>
@@ -293,7 +293,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>პოზიცია</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="155"/>

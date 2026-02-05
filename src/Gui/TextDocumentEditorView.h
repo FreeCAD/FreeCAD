@@ -75,8 +75,8 @@ private:
 private:
     QPlainTextEdit* const editor;
     App::TextDocument* const textDocument;
-    boost::signals2::connection textConnection;
-    boost::signals2::connection labelConnection;
+    fastsignals::advanced_connection textConnection;
+    fastsignals::connection labelConnection;
     bool aboutToClose = false;
 };
 

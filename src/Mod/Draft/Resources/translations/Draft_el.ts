@@ -37,7 +37,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="14"/>
       <source>Layers Manager</source>
-      <translation>Διαχειριστής επιπέδων</translation>
+      <translation>Διαχειριστής Επιπέδων</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="43"/>
@@ -117,7 +117,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="602"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="612"/>
       <source>The distance the dimension line is additionally extended</source>
-      <translation>Η απόσταση που η γραμμή διάστασης επεκτείνεται επιπλέον</translation>
+      <translation>Η απόσταση κατά την οποία επεκτείνεται επιπλέον η γραμμή διάστασης</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="605"/>
@@ -166,7 +166,8 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="170"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="192"/>
       <source>A multiplier factor that affects the size of texts and markers</source>
-      <translation>Ένας συντελεστής πολλαπλασιαστή που επηρεάζει το μέγεθος των κειμένων και των δεικτών</translation>
+      <translation>Είναι ή τιμή (αριθμός) για να μεγαλώσετε ή να μικρύνετε ομοιόμορφα όλα τα κείμενα και τα σύμβολα όπως βέλη ή σημεία στο σχέδιό σας.
+(Πώς λειτουργεί: Αν ο συντελεστής είναι 1.0, τα μεγέθη παραμένουν ως έχουν. Αν τον κάνετε 2.0, όλα τα κείμενα και οι δείκτες θα γίνουν διπλάσιοι. Αν τον κάνετε 0.5, θα γίνουν οι μισοί.)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="20"/>
@@ -176,7 +177,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="38"/>
       <source>The name of the style. Existing style names can be edited.</source>
-      <translation>Το όνομα του στυλ. Τα υπάρχοντα ονόματα στυλ μπορούν να τροποποιηθούν.</translation>
+      <translation>Το όνομα του στυλ. Μπορείτε να επεξεργαστείτε τα ονόματα των στυλ που υπάρχουν ήδη.</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="50"/>
@@ -197,7 +198,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="355"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Τύπος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="403"/>
@@ -209,34 +210,34 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="411"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="421"/>
       <source>The size of the starting arrows or markers in system units</source>
-      <translation type="unfinished">The size of the starting arrows or markers in system units</translation>
+      <translation>Η τιμή που καθορίζει πόσο μεγάλα ή μικρά θα φαίνονται τα βέλη στην αρχή των γραμμών διάστασης, χρησιμοποιώντας τη μονάδα μέτρησης που έχετε ορίσει στο freecad (συνήθως χιλιοστά - mm)</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="414"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Μέγεθος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="431"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="453"/>
       <source>The type of the ending arrows or markers to use for dimensions and labels</source>
-      <translation type="unfinished">The type of the ending arrows or markers to use for dimensions and labels</translation>
+      <translation>Η επιλογή που καθορίζει τη μορφή του συμβόλου (βέλος, τελεία, γραμμή) που θα εμφανίζεται στο τέλος μιας γραμμής διάστασης ή μιας ετικέτας σημείωσης</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="434"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Τύπος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="490"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="500"/>
       <source>The size of the ending arrows or markers in system units</source>
-      <translation type="unfinished">The size of the ending arrows or markers in system units</translation>
+      <translation>Είναι η αριθμητική τιμή που ορίζει πόσο μεγάλο θα είναι το βέλος (ή ο δείκτης) στο τέλος μιας γραμμής διάστασης, χρησιμοποιώντας τη βασική μονάδα μέτρησης του έργου σας</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="493"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Μέγεθος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="536"/>
@@ -268,7 +269,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="596"/>
       <source>Dimension Details</source>
-      <translation type="unfinished">Dimension Details</translation>
+      <translation>Λεπτομέρειες Διάστασης</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="662"/>
@@ -299,13 +300,13 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="300"/>
       <source>Lines and Arrows</source>
-      <translation type="unfinished">Lines and Arrows</translation>
+      <translation>Γραμμές και Βέλη</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="306"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="316"/>
       <source>Displays the dimension line</source>
-      <translation type="unfinished">Displays the dimension line</translation>
+      <translation>Εμφανίζει τη γραμμή διάστασης</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="309"/>
@@ -350,7 +351,7 @@
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="546"/>
       <source>Shows the unit next to the dimension value</source>
-      <translation type="unfinished">Shows the unit next to the dimension value</translation>
+      <translation>Εμφανίζει τη μονάδα μέτρησης (π. χ. mm, in, m) αμέσως μετά τον αριθμό της διάστασης στο σχέδιο</translation>
     </message>
     <message>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="579"/>
@@ -366,7 +367,7 @@
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="622"/>
       <location filename="../ui/dialog_AnnotationStyleEditor.ui" line="632"/>
       <source>The length of the extension lines</source>
-      <translation>Μήκος των γραμμών επέκτασης</translation>
+      <translation>Το μήκος των γραμμών επέκτασης</translation>
     </message>
   </context>
   <context>
@@ -374,7 +375,7 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="26"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Κυκλική Διάταξη</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="34"/>
@@ -385,20 +386,19 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
       <source>Radial distance</source>
-      <translation>Radial distance</translation>
+      <translation>Ακτινική απόσταση</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="68"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Distance from one element in one ring of the array to the next element in the same ring.
-It cannot be zero.</translation>
+      <translation>Απόσταση από ένα στοιχείο ενός δακτυλίου της διάταξης στο επόμενο στοιχείο του ίδιου δακτυλίου. Δεν μπορεί να είναι μηδέν.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
       <source>Tangential distance</source>
-      <translation>Στόχος απόστασης</translation>
+      <translation>Εφαπτομενική απόσταση</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="110"/>
@@ -414,12 +414,12 @@ It cannot be zero.</translation>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="209"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>Μηδενίζει τις τιμές θέσης του σημείου γύρω από το οποίο περιστρέφεται μια διάταξη ή ένα αντικείμενο, επαναφέροντάς το στην αρχή των αξόνων (0,0,0)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="212"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Επαναφορά Σημείου</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="113"/>
@@ -464,8 +464,7 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="224"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Αν επιλεγεί, τα αντίγραφα που ακουμπάνε μεταξύ τους θα ενωθούν σε ένα σώμα. Λειτουργεί μόνο αν η "Διάταξη συνδέσμων" είναι κλειστή.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="228"/>
@@ -476,13 +475,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="235"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Αν επιλεγεί, το αντικείμενο που θα προκύψει θα είναι μια "Διάταξη συνδέσμων" αντί για μια κανονική διάταξη. 
+Μια διάταξη συνδέσμων είναι πιο αποδοτική κατά τη δημιουργία πολλών αντιγράφων, αλλά τα στοιχεία της δεν μπορούν να συγχωνευθούν (ενωθούν) μεταξύ τους.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="239"/>
       <source>Link array</source>
-      <translation>Link array</translation>
+      <translation>Διάταξη συνδέσμων</translation>
     </message>
   </context>
   <context>
@@ -491,8 +490,8 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="79"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation>Number of elements in the array in the specified direction, including a copy of the original object.
-The number must be at least 1 in each direction.</translation>
+      <translation>Αυτή η ρύθμιση καθορίζει πόσα αντίγραφα του αντικειμένου σας θα δημιουργηθούν προς μια συγκεκριμένη πλευρά (π. χ. οριζόντια, κάθετα ή σε βάθος) συμπεριλαμβανομένου και του αρχικού αντικειμένου.
+Ο αριθμός πρέπει να είναι τουλάχιστον 1 για κάθε κατεύθυνση.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="91"/>
@@ -521,21 +520,21 @@ The number must be at least 1 in each direction.</translation>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="249"/>
       <source>Reset X</source>
-      <translation>Reset X</translation>
+      <translation>Επαναφορά X</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="340"/>
       <source>Reset Y</source>
-      <translation>Reset Y</translation>
+      <translation>Επαναφορά Y</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="350"/>
       <source>Distance between the elements in the Z direction.
 Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
 Negative values will result in copies produced in the negative direction.</source>
-      <translation>Distance between the elements in the Z direction.
-Normally, only the Z value is necessary; the other two values can give an additional shift in their respective directions.
-Negative values will result in copies produced in the negative direction.</translation>
+      <translation>Απόσταση μεταξύ των στοιχείων, (πώς θα απλώνονται τα αντίγραφα καθ' ύψος στον άξονα Z). 
+Συνήθως, μόνο η τιμή Z είναι απαραίτητη· οι άλλες δύο τιμές μπορούν να δώσουν μια επιπλέον μετατόπιση στις αντίστοιχες κατευθύνσεις τους. 
+Οι αρνητικές τιμές θα οδηγήσουν σε αντίγραφα στην αρνητική κατεύθυνση.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="26"/>
@@ -570,7 +569,7 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="83"/>
       <source>Number of Elements</source>
-      <translation type="unfinished">Number of Elements</translation>
+      <translation>Αριθμός Στοιχείων</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="156"/>
@@ -596,7 +595,7 @@ Negative values will result in copies produced in the negative direction.</trans
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="337"/>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="428"/>
       <source>Resets the distances</source>
-      <translation type="unfinished">Resets the distances</translation>
+      <translation>Επαναφορά των αποστάσεων</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="259"/>
@@ -620,14 +619,13 @@ Negative values will result in copies produced in the negative direction.</trans
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="431"/>
       <source>Reset Z</source>
-      <translation>Reset Z</translation>
+      <translation>Επαναφορά Z</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="443"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Αν επιλεγεί, τα αντίγραφα που ακουμπάνε μεταξύ τους θα ενωθούν σε ένα σώμα. Λειτουργεί μόνο αν η "Διάταξη συνδέσμων" είναι κλειστή.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="447"/>
@@ -638,13 +636,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="454"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Αν επιλεγεί, το αντικείμενο που θα προκύψει θα είναι μια "Διάταξη συνδέσμων" αντί για μια κανονική διάταξη. 
+Μια διάταξη συνδέσμων είναι πιο αποδοτική κατά τη δημιουργία πολλών αντιγράφων, αλλά τα στοιχεία της δεν μπορούν να συγχωνευθούν (ενωθούν) μεταξύ τους.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="458"/>
       <source>Link array</source>
-      <translation>Link array</translation>
+      <translation>Διάταξη συνδέσμων</translation>
     </message>
   </context>
   <context>
@@ -660,33 +658,34 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
       <source>Sweeping angle of the polar distribution.
 A negative angle produces a polar pattern in the opposite direction.
 The maximum absolute value is 360 degrees.</source>
-      <translation>Sweeping angle of the polar distribution.
-A negative angle produces a polar pattern in the opposite direction.
-The maximum absolute value is 360 degrees.</translation>
+      <translation>Αυτή η ρύθμιση καθορίζει πόσο «ανοιχτή» θα είναι η βεντάλια της κυκλικής σας διάταξης. 
+Γωνία κάλυψης: Είναι το συνολικό τόξο πάνω στο οποίο θα απλωθούν τα αντίγραφά σας. Αν βάλετε 360°, τα αντικείμενα θα σχηματίσουν έναν πλήρη κύκλο, αν βάλετε 180° τα αντικείμενα θα απλωθούν σε έναν ημικύκλιο.
+Οι θετικές τιμές απλώνουν τα αντικείμενα αριστερόστροφα, ενώ οι αρνητικές τιμές (π. χ. -90°) τα απλώνουν δεξιόστροφα.
+Η μέγιστη απόλυτη τιμή είναι οι 360 μοίρες.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="39"/>
       <source>Polar angle</source>
-      <translation>Πολική γωνία</translation>
+      <translation>Γωνία περιστροφής</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="67"/>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="78"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Number of elements in the array, including a copy of the original object.
-It must be at least 2.</translation>
+      <translation>Ο αριθμός των αντικειμένων στη διάταξη, συμπεριλαμβανομένου και του αρχικού αντικειμένου. Πρέπει να είναι τουλάχιστον 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="71"/>
       <source>Number of elements</source>
-      <translation>Number of elements</translation>
+      <translation>Αριθμός Στοιχείων</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="97"/>
       <source>The coordinates of the point through which the axis of rotation passes.
 Change the direction of the axis itself in the property editor.</source>
-      <translation>Κυκλικό βέλος.</translation>
+      <translation>Αυτή η ρύθμιση ορίζει το «πού» βρίσκεται το κέντρο γύρω από το οποίο θα γυρίσουν τα αντίγραφα της διάταξής σας.
+Αλλάξτε την κατεύθυνση του ίδιου του άξονα στον πίνακα ιδιοτήτων.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="101"/>
@@ -696,12 +695,12 @@ Change the direction of the axis itself in the property editor.</source>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="171"/>
       <source>Resets the coordinates of the center of rotation</source>
-      <translation type="unfinished">Resets the coordinates of the center of rotation</translation>
+      <translation>Μηδενίζει τις τιμές θέσης του σημείου γύρω από το οποίο περιστρέφεται μια διάταξη ή ένα αντικείμενο, επαναφέροντάς το στην αρχή των αξόνων (0,0,0)</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="174"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Επαναφορά Σημείου</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="109"/>
@@ -722,8 +721,7 @@ Change the direction of the axis itself in the property editor.</source>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="186"/>
       <source>If checked, the resulting objects in the array will be fused if they touch each other.
 This only works if "Link array" is off.</source>
-      <translation>If checked, the resulting objects in the array will be fused if they touch each other.
-This only works if "Link array" is off.</translation>
+      <translation>Αν επιλεγεί, τα αντίγραφα που ακουμπάνε μεταξύ τους θα ενωθούν σε ένα σώμα. Λειτουργεί μόνο αν η "Διάταξη συνδέσμων" είναι κλειστή.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="190"/>
@@ -734,13 +732,13 @@ This only works if "Link array" is off.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="197"/>
       <source>If checked, the resulting object will be a "Link array" instead of a regular array.
 A Link array is more efficient when creating multiple copies, but it cannot be fused together.</source>
-      <translation>If checked, the resulting object will be a "Link array" instead of a regular array.
-A Link array is more efficient when creating multiple copies, but it cannot be fused together.</translation>
+      <translation>Αν επιλεγεί, το αντικείμενο που θα προκύψει θα είναι μια "Διάταξη συνδέσμων" αντί για μια κανονική διάταξη. 
+Μια διάταξη συνδέσμων είναι πιο αποδοτική κατά τη δημιουργία πολλών αντιγράφων, αλλά τα στοιχεία της δεν μπορούν να συγχωνευθούν (ενωθούν) μεταξύ τους.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="201"/>
       <source>Link array</source>
-      <translation>Link array</translation>
+      <translation>Διάταξη συνδέσμων</translation>
     </message>
   </context>
   <context>
@@ -785,7 +783,7 @@ Uncheck to use working plane coordinate system</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="143"/>
       <source>Text to be made into ShapeString</source>
-      <translation>Κείμενο που θα μετατραπεί σε ShapeString</translation>
+      <translation>Κείμενο για μετατροπή σε σχήμα</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="41"/>
@@ -797,12 +795,12 @@ Uncheck to use working plane coordinate system</translation>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="96"/>
       <source>Resets the picked point</source>
-      <translation type="unfinished">Resets the picked point</translation>
+      <translation>Επαναφορά του επιλεγμένου σημείου</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="102"/>
       <source>Reset Point</source>
-      <translation type="unfinished">Reset Point</translation>
+      <translation>Επαναφορά Σημείου</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="109"/>
@@ -840,12 +838,12 @@ Uncheck to use working plane coordinate system</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="53"/>
       <source>Side (YZ)</source>
-      <translation>Side (YZ)</translation>
+      <translation>Πλευρική (YZ)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="60"/>
       <source>Sets the working plane facing the current view</source>
-      <translation>Sets the working plane facing the current view</translation>
+      <translation>Ορίζει το επίπεδο εργασίας ώστε να βλέπει προς την τρέχουσα προβολή</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="14"/>
@@ -881,8 +879,8 @@ Uncheck to use working plane coordinate system</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="70"/>
       <source>The working plane will align to the current
 view each time a command is started</source>
-      <translation>The working plane will align to the current
-view each time a command is started</translation>
+      <translation>Το επίπεδο εργασίας θα ευθυγραμμιστεί με την τρέχουσα προβολή
+κάθε φορά που ξεκινά μια εντολή</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="77"/>
@@ -892,16 +890,14 @@ view each time a command is started</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="86"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="93"/>
       <source>An optional offset to give to the working plane
 above its base position. Use this together with one
 of the buttons above</source>
-      <translation>An optional offset to give to the working plane
-above its base position. Use this together with one
-of the buttons above</translation>
+      <translation>Μια προαιρετική μετατόπιση (offset) για το επίπεδο εργασίας πάνω από την αρχική του θέση. Χρησιμοποιήστε το σε συνδυασμό με ένα από τα παραπάνω κουμπιά</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="105"/>
@@ -945,7 +941,7 @@ will be moved to the center of the view.</source>
       <location filename="../ui/TaskSelectPlane.ui" line="157"/>
       <location filename="../ui/TaskSelectPlane.ui" line="167"/>
       <source>The color of the grid</source>
-      <translation>The color of the grid</translation>
+      <translation>Το χρώμα του Πλέγματος (κανάβου)</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="160"/>
@@ -1015,22 +1011,22 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="243"/>
       <source>Snapping radius</source>
-      <translation>Snapping radius</translation>
+      <translation>Ακτίνα έλξης</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="262"/>
       <source>Centers the view on the current working plane</source>
-      <translation>Centers the view on the current working plane</translation>
+      <translation>Είναι μια εντολή που μετακινεί αυτόματα την κάμερα ώστε το σημείο που σχεδιάζετε (το επίπεδο εργασίας) να έρθει ακριβώς στο κέντρο της οθόνης σας</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="274"/>
       <source>Resets the working plane to its previous position</source>
-      <translation>Resets the working plane to its previous position</translation>
+      <translation>Επαναφέρει το επίπεδο εργασίας στην προηγούμενη θέση του</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="277"/>
       <source>Previous</source>
-      <translation>Previous</translation>
+      <translation>Προηγούμενο</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
@@ -1201,7 +1197,7 @@ will be moved to the center of the view.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="279"/>
       <source>Annotation</source>
-      <translation>Σχολιασμός</translation>
+      <translation>Περιγραφή</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="315"/>
@@ -1222,7 +1218,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="409"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Τύπος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="422"/>
@@ -1257,17 +1253,17 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="450"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Μέγεθος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="464"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Τύπος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="505"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Μέγεθος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="563"/>
@@ -1332,7 +1328,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="40"/>
       <source>Saves the current style as a preset</source>
-      <translation type="unfinished">Saves the current style as a preset</translation>
+      <translation>Αποθήκευση του τρέχοντος στυλ ως προεπιλογή</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="63"/>
@@ -1342,7 +1338,7 @@ Annotation scale widget. If the scale is 1:100 the multiplier is 100.</source>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="389"/>
       <source>Lines and Arrows</source>
-      <translation>Γραμμές και βέλη</translation>
+      <translation>Γραμμές και Βέλη</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="546"/>
@@ -1473,7 +1469,7 @@ faces are picked during commands.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="94"/>
       <source>XY (Top)</source>
-      <translation>XY (Οροφή)</translation>
+      <translation>XY (Πάνω όψη)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="99"/>
@@ -1483,7 +1479,7 @@ faces are picked during commands.</source>
     <message>
       <location filename="../ui/preferences-draft.ui" line="104"/>
       <source>YZ (Side)</source>
-      <translation>YZ (Πλευρά)</translation>
+      <translation>YZ (Πλάγια όψη)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="112"/>
@@ -1628,7 +1624,7 @@ This allows indicating a direction and then type a distance.</translation>
     <message>
       <location filename="../ui/preferences-draft.ui" line="175"/>
       <source>Set focus on Length instead of X coordinate</source>
-      <translation>Set focus on Length instead of X coordinate</translation>
+      <translation>Εστίαση στο Μήκος αντί για τη συντεταγμένη (άξονα) X.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draft.ui" line="191"/>
@@ -1737,7 +1733,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="560"/>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>χιλιοστά</translation>
     </message>
@@ -1749,7 +1745,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="266"/>
       <source>Start arrow type</source>
-      <translation type="unfinished">Start arrow type</translation>
+      <translation>Τύπος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="279"/>
@@ -1765,7 +1761,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="322"/>
       <source>Start arrow size</source>
-      <translation type="unfinished">Start arrow size</translation>
+      <translation>Μέγεθος Αρχικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="329"/>
@@ -1775,7 +1771,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="354"/>
       <source>End arrow type</source>
-      <translation type="unfinished">End arrow type</translation>
+      <translation>Τύπος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="367"/>
@@ -1785,7 +1781,7 @@ pattern definitions to be added to the standard patterns</source>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="410"/>
       <source>End arrow size</source>
-      <translation type="unfinished">End arrow size</translation>
+      <translation>Μέγεθος τελικού βέλους</translation>
     </message>
     <message>
       <location filename="../ui/preferences-drafttexts.ui" line="417"/>
@@ -2112,7 +2108,7 @@ a raw wire from the original shape is added</translation>
     <message>
       <location filename="../ui/preferences-svg.ui" line="242"/>
       <source>All white lines will appear in black in the SVG for better readability against white backgrounds</source>
-      <translation>All white lines will appear in black in the SVG for better readability against white backgrounds</translation>
+      <translation>Όλες οι λευκές γραμμές θα εμφανίζονται σε μαύρο χρώμα στο SVG για καλύτερη αναγνωσιμότητα σε λευκό φόντο</translation>
     </message>
     <message>
       <location filename="../ui/preferences-svg.ui" line="245"/>
@@ -2170,12 +2166,12 @@ This value is the maximum segment length.</translation>
       <translation>Εισάγετε</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
       <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="636"/>
+      <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Project exported objects along current view direction</source>
       <translation>Προβάλετε τα εξαγόμενα αντικείμενα κατά την τρέχουσα διεύθυνση προβολής</translation>
     </message>
@@ -2187,7 +2183,7 @@ This value is the maximum segment length.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="446"/>
       <source>Join geometry</source>
-      <translation>Ενώστε γεωμετρία</translation>
+      <translation>Ένωση γεωμετρίας</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="415"/>
@@ -2457,36 +2453,36 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <translation>Επιλογές εξαγωγής</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
       <translation type="unfinished">Maximum spline segment</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="554"/>
+      <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
       <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="589"/>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation type="unfinished">Export 3D objects as polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="606"/>
+      <location filename="../ui/preferences-dxf.ui" line="603"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation type="unfinished">TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="610"/>
+      <location filename="../ui/preferences-dxf.ui" line="607"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Εξαγωγή Προβολών TechDraw ως μπλοκ</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="633"/>
+      <location filename="../ui/preferences-dxf.ui" line="630"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
-      <translation>Exported objects will be projected to reflect the current view direction</translation>
+      <translation>Τα αντικείμενα προς εξαγωγή θα προβάλλονται ώστε να αντικατοπτρίζουν την τρέχουσα κατεύθυνση προβολής</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="425"/>
@@ -2538,7 +2534,7 @@ Major grid lines are thicker than minor grid lines.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="396"/>
       <source>Snap modifier</source>
-      <translation>Τροποποιητής Προσκόλληση</translation>
+      <translation>Τροποποιητής Προσκόλλησης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="412"/>
@@ -2594,12 +2590,12 @@ Use Draft ToggleGrid to change this for the active view.</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="20"/>
       <source>Grid</source>
-      <translation>Κάναβος</translation>
+      <translation>Πλέγμα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="30"/>
       <source>Always show the grid</source>
-      <translation>Να εμφανίζεται πάντα ο κάναβος</translation>
+      <translation>Να εμφανίζεται πάντα το πλέγμα</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="49"/>
@@ -2622,7 +2618,7 @@ showing the main square size in the bottom left corner</source>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="73"/>
       <source>Show grid border</source>
-      <translation>Εμφάνιση περιγράμματος καννάβου</translation>
+      <translation>Εμφάνιση περιγράμματος πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="96"/>
@@ -2639,17 +2635,17 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="116"/>
       <source>Use colored axes</source>
-      <translation>Use colored axes</translation>
+      <translation>Χρήση χρωματιστών αξόνων</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="181"/>
       <source>Grid spacing</source>
-      <translation>Αποστάσεις του κανάβου</translation>
+      <translation>Αποστάσεις του πλέγματος (κανάβου)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="213"/>
       <source>Grid size</source>
-      <translation>Μέγεθος κανάβου</translation>
+      <translation>Μέγεθος πλέγματος (κανάβου)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="220"/>
@@ -2699,12 +2695,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="347"/>
       <source>Snap symbol color</source>
-      <translation>Χρώμα συμβόλου Snap</translation>
+      <translation>Χρώμα συμβόλου έλξης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="354"/>
       <source>The color for snap symbols</source>
-      <translation>Χρώμα συμβόλων προσκόλλησης</translation>
+      <translation>Χρώμα συμβόλων έλξης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="374"/>
@@ -2714,12 +2710,12 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="275"/>
       <source>The color of the grid</source>
-      <translation>The color of the grid</translation>
+      <translation>Το χρώμα του Πλέγματος (κανάβου)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="249"/>
       <source>The overall transparency of the grid</source>
-      <translation>The overall transparency of the grid</translation>
+      <translation>Η συνολική διαφάνεια του πλέγματος</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dwg.ui" line="14"/>
@@ -2880,7 +2876,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="330"/>
       <source>Wipe</source>
-      <translation>Εκκαθαρίστε</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="343"/>
@@ -2925,7 +2921,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="458"/>
       <source>Cycle snap</source>
-      <translation>Ελευθέρωση Κύκλου</translation>
+      <translation>Κυκλική εναλλαγή σημείων έλξης</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="490"/>
@@ -2940,7 +2936,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="554"/>
       <source>Snap</source>
-      <translation>Snap</translation>
+      <translation>Έλξη</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="567"/>
@@ -2950,7 +2946,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="650"/>
       <source>Restrict X</source>
-      <translation>Περιορίστε X</translation>
+      <translation>Περιορισμός στον άξονα X (Οριζόντιος)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="663"/>
@@ -2960,7 +2956,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="682"/>
       <source>Restrict Y</source>
-      <translation>Περιορίστε Y</translation>
+      <translation>Περιορισμός στον άξονα Y (Βάθους)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="695"/>
@@ -2970,7 +2966,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="714"/>
       <source>Restrict Z</source>
-      <translation>Περιορίστε Z</translation>
+      <translation>Περιορισμός στον άξονα Z (Ύψους)</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="727"/>
@@ -3049,7 +3045,7 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="657"/>
       <source>If checked, the next dimension will be placed in a chain with the previously placed Dimension</source>
-      <translation type="unfinished">If checked, the next dimension will be placed in a chain with the previously placed Dimension</translation>
+      <translation>Αν επιλεγεί, η επόμενη διάσταση θα τοποθετηθεί σε σειρά (αλυσίδα) με την προηγούμενη</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="671"/>
@@ -3077,81 +3073,81 @@ if they match the X, Y or Z axis of the global coordinate system</translation>
     <message>
       <location filename="../../DraftGui.py" line="675"/>
       <source>Wipe</source>
-      <translation>Εκκαθαρίστε</translation>
+      <translation>Εκκαθάριση</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="891"/>
+      <location filename="../../WorkingPlane.py" line="906"/>
       <location filename="../../draftmake/make_sketch.py" line="121"/>
       <location filename="../../draftmake/make_sketch.py" line="137"/>
       <source>All shapes must be coplanar</source>
       <translation type="unfinished">All shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="898"/>
+      <location filename="../../WorkingPlane.py" line="913"/>
       <source>Selected shapes must define a plane</source>
       <translation type="unfinished">Selected shapes must define a plane</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="984"/>
-      <location filename="../../WorkingPlane.py" line="1560"/>
-      <location filename="../../WorkingPlane.py" line="1561"/>
+      <location filename="../../WorkingPlane.py" line="999"/>
+      <location filename="../../WorkingPlane.py" line="1575"/>
+      <location filename="../../WorkingPlane.py" line="1576"/>
       <source>Top</source>
       <translation>Πάνω</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="996"/>
-      <location filename="../../WorkingPlane.py" line="1582"/>
-      <location filename="../../WorkingPlane.py" line="1583"/>
+      <location filename="../../WorkingPlane.py" line="1011"/>
+      <location filename="../../WorkingPlane.py" line="1597"/>
+      <location filename="../../WorkingPlane.py" line="1598"/>
       <source>Front</source>
       <translation>Εμπρόσθια</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1015"/>
-      <location filename="../../WorkingPlane.py" line="1604"/>
-      <location filename="../../WorkingPlane.py" line="1605"/>
+      <location filename="../../WorkingPlane.py" line="1030"/>
+      <location filename="../../WorkingPlane.py" line="1619"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>Side</source>
-      <translation>Side</translation>
+      <translation>Πλευρικά</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1238"/>
-      <location filename="../../WorkingPlane.py" line="1538"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
+      <location filename="../../WorkingPlane.py" line="1253"/>
+      <location filename="../../WorkingPlane.py" line="1553"/>
+      <location filename="../../WorkingPlane.py" line="1554"/>
       <source>Auto</source>
       <translation>Αυτόματο</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1239"/>
+      <location filename="../../WorkingPlane.py" line="1254"/>
       <source>Current working plane: Auto</source>
       <translation type="unfinished">Current working plane: Auto</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1721"/>
+      <location filename="../../WorkingPlane.py" line="1736"/>
       <source>Current working plane:</source>
       <translation>Τρέχον επίπεδο εργασίας:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1316"/>
-      <location filename="../../WorkingPlane.py" line="1345"/>
+      <location filename="../../WorkingPlane.py" line="1331"/>
+      <location filename="../../WorkingPlane.py" line="1360"/>
       <source>Selected shapes do not define a plane</source>
       <translation>Τα επιλεγμένα σχήματα δεν ορίζουν ένα επίπεδο</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1685"/>
+      <location filename="../../WorkingPlane.py" line="1700"/>
       <source>No previous working plane</source>
       <translation>Δεν υπάρχει προηγούμενο επίπεδο εργασίας</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1696"/>
+      <location filename="../../WorkingPlane.py" line="1711"/>
       <source>No next working plane</source>
       <translation>Κανένα επόμενο επίπεδο εργασίας</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1725"/>
+      <location filename="../../WorkingPlane.py" line="1740"/>
       <source>Axes:</source>
       <translation>Άξονες:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1732"/>
+      <location filename="../../WorkingPlane.py" line="1747"/>
       <source>Position:</source>
       <translation>Θέση:</translation>
     </message>
@@ -3296,12 +3292,12 @@ Uncheck to use working plane coordinate system</translation>
       <translation type="unfinished">Finishes the current drawing or editing operation</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>Τροποποίηση αντικειμένων</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3408,7 +3404,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     <message>
       <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
-      <translation>Σύρμα προσχεδίου</translation>
+      <translation>Πολυγραμμή ( Σύνθετη Γραμμή)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="880"/>
@@ -3424,7 +3420,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
-      <translation>Περιστρέψτε</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="896"/>
@@ -3442,7 +3438,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="957"/>
@@ -3456,7 +3452,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
-      <translation>Απόσταση Offset</translation>
+      <translation>Απόσταση Μετατόπισης</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="971"/>
@@ -3495,24 +3491,24 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>Αυτόματη Ομαδοποίηση:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
-      <translation>Όψεις</translation>
+      <translation>Επιφάνειες</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>Αφαίρεση</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>Προσθήκη</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="46"/>
       <source>Draft</source>
-      <translation>Βύθισμα</translation>
+      <translation>Προσχέδιο</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="298"/>
@@ -3529,7 +3525,7 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <location filename="../../importDWG.py" line="321"/>
       <location filename="../../importDWG.py" line="339"/>
       <source>Conversion successful</source>
-      <translation>Μετατροπή επιτυχής</translation>
+      <translation>Επιτυχής μετατροπή</translation>
     </message>
     <message>
       <location filename="../../importDWG.py" line="307"/>
@@ -3569,10 +3565,10 @@ or try saving to a lower DWG version.</source>
       <translation>Σφάλμα κατά τη μετατροπή DWG. Δοκιμάστε να μετακινήσετε το αρχείο DWG σε μια διαδρομή καταλόγου χωρίς κενά και μη αγγλικούς χαρακτήρες ή προσπαθήστε να το αποθηκεύσετε σε μια χαμηλότερη έκδοση DWG.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1351"/>
-      <location filename="../../WorkingPlane.py" line="1352"/>
-      <location filename="../../WorkingPlane.py" line="1631"/>
-      <location filename="../../WorkingPlane.py" line="1632"/>
+      <location filename="../../WorkingPlane.py" line="1366"/>
+      <location filename="../../WorkingPlane.py" line="1367"/>
+      <location filename="../../WorkingPlane.py" line="1646"/>
+      <location filename="../../WorkingPlane.py" line="1647"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="67"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="82"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
@@ -3657,17 +3653,17 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="796"/>
       <source>filename does not exist on the system or in the resource file</source>
-      <translation>Το όνομα αρχείου δεν υπάρχει στο σύστημα ή στο αρχείο</translation>
+      <translation>το όνομα αρχείου δεν υπάρχει στο σύστημα ή στο αρχείο</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="855"/>
       <source>unable to load texture</source>
-      <translation>Αδυναμία φόρτωσης υφής</translation>
+      <translation>αδυναμία φόρτωσης υφής</translation>
     </message>
     <message>
       <location filename="../../draftutils/gui_utils.py" line="922"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
-      <translation>Δεν έχει 'ViewObject.RootNode'.</translation>
+      <translation>Δεν διαθέτει 'ViewObject.RootNode'.</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="569"/>
@@ -3677,12 +3673,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="570"/>
       <source>Faces:</source>
-      <translation>Όψεις:</translation>
+      <translation>Επιφάνειες:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="571"/>
       <source>Wires:</source>
-      <translation>Σύρματα:</translation>
+      <translation>Σύνθετες Γραμμές:</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="572"/>
@@ -3697,12 +3693,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftutils/utils.py" line="577"/>
       <source>Face</source>
-      <translation>Όψη</translation>
+      <translation>Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="582"/>
       <source>Wire</source>
-      <translation>Σύρμα</translation>
+      <translation>Σύνθετη Γραμμή</translation>
     </message>
     <message>
       <location filename="../../draftutils/utils.py" line="615"/>
@@ -3803,7 +3799,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="321"/>
       <source>%1 pick next point</source>
-      <translation>%1 pick next point</translation>
+      <translation>%1 επιλέξτε το επόμενο σημείο</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="374"/>
@@ -3831,7 +3827,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="398"/>
       <source>Convert to Wire</source>
-      <translation>Μετατρέψτε σε Σύρμα</translation>
+      <translation>Μετατροπή σε Σύνθετη Γραμμή</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_join.py" line="71"/>
@@ -3877,12 +3873,12 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="121"/>
       <source>Convert to Draft</source>
-      <translation>Μετατροπή σε Σχέδιο</translation>
+      <translation>Μετατρέψτε σε Προσχέδιο</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_draft2sketch.py" line="150"/>
       <source>Convert Draft/Sketch</source>
-      <translation>Μετατροπή σχεδίου / σκίτσου</translation>
+      <translation>Μετατροπή Προσχεδίου/Σκίτσου</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="80"/>
@@ -3910,7 +3906,7 @@ or try saving to a lower DWG version.</source>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="216"/>
       <source>Move</source>
-      <translation>Μετακινήστε</translation>
+      <translation>Μετακίνηση</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_polygons.py" line="86"/>
@@ -4036,7 +4032,7 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_arcs.py" line="544"/>
       <location filename="../../draftguitools/gui_arcs.py" line="590"/>
       <source>Arc From 3 Points</source>
-      <translation>Arc From 3 Points</translation>
+      <translation>Τόξο από 3 Σημεία</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="617"/>
@@ -4049,13 +4045,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_ellipses.py" line="220"/>
       <location filename="../../draftguitools/gui_arcs.py" line="655"/>
       <source>%1 pick first point</source>
-      <translation>%1 pick first point</translation>
+      <translation>%1 επιλέξτε το πρώτο σημείο</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lines.py" line="310"/>
       <location filename="../../draftguitools/gui_arcs.py" line="659"/>
       <source>%1 pick second point</source>
-      <translation>%1 pick second point</translation>
+      <translation>%1 επιλέξτε το δεύτερο σημείο</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="663"/>
@@ -4183,13 +4179,13 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftguitools/gui_points.py" line="139"/>
       <location filename="../../draftguitools/gui_points.py" line="153"/>
       <source>Create Point</source>
-      <translation>Δημιουργία σημείου</translation>
+      <translation>Δημιουργία Σημείου</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="188"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="212"/>
       <source>%1 pick point</source>
-      <translation>%1 pick point</translation>
+      <translation>%1 σημείο επιλογής</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="81"/>
@@ -4791,159 +4787,159 @@ The final angle will be the base angle plus this amount.</translation>
       <translation type="unfinished">Downgrade</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="164"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="300"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="227"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="403"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="185"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="338"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="171"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="192"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="343"/>
       <source>Object:</source>
       <translation>Αντικείμενο:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="92"/>
       <source>Polar Array</source>
       <translation type="unfinished">Polar Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="168"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="175"/>
       <source>Number of elements must be at least 2</source>
-      <translation type="unfinished">Number of elements must be at least 2</translation>
+      <translation>Ο αριθμός των στοιχείων (αντικειμένων) πρέπει να είναι τουλάχιστον 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="176"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
       <translation type="unfinished">The angle is above 360 degrees. It is set to this value to proceed.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="190"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
       <translation type="unfinished">The angle is below -360 degrees. It is set to this value to proceed.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="237"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="244"/>
       <source>Create Polar Array</source>
       <translation type="unfinished">Create Polar Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="271"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="374"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="309"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="276"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="314"/>
       <source>Fuse:</source>
       <translation type="unfinished">Fuse:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="322"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="327"/>
       <source>Create Link array:</source>
-      <translation type="unfinished">Create Link array:</translation>
+      <translation>Δημιουργία διάταξης συνδέσμων:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="301"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="306"/>
       <source>Number of elements:</source>
-      <translation type="unfinished">Number of elements:</translation>
+      <translation>Αριθμός στοιχείων:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="302"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="307"/>
       <source>Polar angle:</source>
       <translation type="unfinished">Polar angle:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="350"/>
       <source>Center of rotation:</source>
       <translation type="unfinished">Center of rotation:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="92"/>
       <source>Orthogonal Array</source>
       <translation type="unfinished">Orthogonal Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
       <source>Number of elements must be at least 1</source>
-      <translation type="unfinished">Number of elements must be at least 1</translation>
+      <translation>Ο αριθμός των στοιχείων (αντικειμένων) πρέπει να είναι τουλάχιστον 1</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="237"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
       <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="309"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
       <source>Create Orthogonal Array</source>
       <translation type="unfinished">Create Orthogonal Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="284"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="389"/>
       <source>Create link array:</source>
-      <translation type="unfinished">Create link array:</translation>
+      <translation>Δημιουργία διάταξης συνδέσμων:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="407"/>
       <source>Number of X elements:</source>
-      <translation type="unfinished">Number of X elements:</translation>
+      <translation>Αριθμός στοιχείων X:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="408"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="410"/>
       <source>Interval X:</source>
       <translation type="unfinished">Interval X:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="410"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="412"/>
       <source>Number of Y elements:</source>
-      <translation type="unfinished">Number of Y elements:</translation>
+      <translation>Αριθμός στοιχείων Υ:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="413"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="415"/>
       <source>Interval Y:</source>
       <translation type="unfinished">Interval Y:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="415"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="417"/>
       <source>Number of Z elements:</source>
-      <translation type="unfinished">Number of Z elements:</translation>
+      <translation>Αριθμός στοιχείων Ζ:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="418"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="420"/>
       <source>Interval Z:</source>
       <translation type="unfinished">Interval Z:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="434"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="436"/>
       <source>Switch to Ortho Mode</source>
       <translation type="unfinished">Switch to Ortho Mode</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="451"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="489"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="453"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="491"/>
       <source>X-Axis</source>
       <translation>Άξονας X</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="453"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="491"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="455"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="493"/>
       <source>Y-Axis</source>
       <translation>Άξονας Y</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="455"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="493"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="457"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="495"/>
       <source>Z-Axis</source>
       <translation type="unfinished">Z-Axis</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="457"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="459"/>
       <source>Switch to Linear Mode</source>
       <translation type="unfinished">Switch to Linear Mode</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="528"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="530"/>
       <source>Number of elements</source>
-      <translation>Number of elements</translation>
+      <translation>Αριθμός Στοιχείων</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="529"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="531"/>
       <source>Interval</source>
       <translation type="unfinished">Interval</translation>
     </message>
@@ -4958,71 +4954,71 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>Προεπιλεγμένο</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="198"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
-      <translation type="unfinished">Radial distance is zero. Resulting array may not look correct.</translation>
+      <translation>Η ακτινική απόσταση είναι μηδέν. Η διάταξη που θα προκύψει ενδέχεται να μην είναι σωστή.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="193"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
-      <translation type="unfinished">Radial distance is negative. It is made positive to proceed.</translation>
+      <translation>Η ακτινική απόσταση είναι αρνητική. Μετατράπηκε σε θετική για να συνεχιστεί η διαδικασία.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="92"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Κυκλική Διάταξη</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="156"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="215"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="173"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="222"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="180"/>
       <source>At least 1 element must be selected</source>
       <translation type="unfinished">At least 1 element must be selected</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="177"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
       <source>Number of layers must be at least 2</source>
       <translation type="unfinished">Number of layers must be at least 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="233"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
       <source>Selection is not suitable for array</source>
       <translation type="unfinished">Selection is not suitable for array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="197"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
       <source>Tangential distance cannot be 0</source>
       <translation type="unfinished">Tangential distance cannot be 0</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="211"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
       <translation type="unfinished">Tangential distance is negative. It is made positive to proceed.</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="263"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="270"/>
       <source>Create Circular Array</source>
       <translation type="unfinished">Create Circular Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="339"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="344"/>
       <source>Radial distance:</source>
-      <translation type="unfinished">Radial distance:</translation>
+      <translation>Ακτινική απόσταση:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="340"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
       <source>Tangential distance:</source>
       <translation type="unfinished">Tangential distance:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="346"/>
       <source>Number of concentric circles:</source>
       <translation type="unfinished">Number of concentric circles:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="342"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="347"/>
       <source>Symmetry parameter:</source>
       <translation type="unfinished">Symmetry parameter:</translation>
     </message>
@@ -5235,7 +5231,7 @@ The final angle will be the base angle plus this amount.</translation>
       <location filename="../../draftmake/make_orthoarray.py" line="119"/>
       <location filename="../../draftmake/make_orthoarray.py" line="122"/>
       <source>Input: number of elements must be at least 1. It is set to 1.</source>
-      <translation type="unfinished">Input: number of elements must be at least 1. It is set to 1.</translation>
+      <translation>Είσοδος: ο αριθμός των στοιχείων πρέπει να είναι τουλάχιστον 1. Ρυθμίστηκε αυτόματα στο 1.</translation>
     </message>
     <message>
       <location filename="../../draftmake/make_label.py" line="216"/>
@@ -5719,7 +5715,7 @@ of existing objects in all opened documents?</translation>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="56"/>
       <source>Toggle Grid</source>
-      <translation>Toggle Grid</translation>
+      <translation>Εναλλαγή Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_lineslope.py" line="62"/>
@@ -5996,16 +5992,16 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation type="unfinished">Slope</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="115"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="149"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="122"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="122"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="129"/>
       <source>True</source>
       <translation>Αληθές</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="119"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="151"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="126"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="126"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="133"/>
       <source>False</source>
       <translation>Ψευδές</translation>
     </message>
@@ -6188,7 +6184,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="105"/>
       <source>Create Clone</source>
-      <translation type="unfinished">Create Clone</translation>
+      <translation>Δημιουργία Κλώνου (Πιστό Αντίγραφο)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_hatch.py" line="61"/>
@@ -6334,7 +6330,7 @@ The lines must share a common point at the start or at the end.</translation>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="58"/>
       <source>Move</source>
-      <translation>Μετακινήστε</translation>
+      <translation>Μετακίνηση</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_move.py" line="62"/>
@@ -6380,7 +6376,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_points.py" line="67"/>
       <source>Creates a point</source>
-      <translation>Creates a point</translation>
+      <translation>Δημιουργεί ένα Σημείο</translation>
     </message>
   </context>
   <context>
@@ -6388,7 +6384,7 @@ If the "Copy" option is active, it creates displaced copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="60"/>
       <source>Rotate</source>
-      <translation>Περιστρέψτε</translation>
+      <translation>Περιστροφή</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_rotate.py" line="64"/>
@@ -6429,7 +6425,7 @@ If the "Copy" option is active, it will create rotated copies.</translation>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="54"/>
       <source>Split</source>
-      <translation>Χωρισμός</translation>
+      <translation>Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_split.py" line="57"/>
@@ -6587,7 +6583,7 @@ Objects added to this layer can share the same visual properties.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="74"/>
       <source>Clone</source>
-      <translation>Κλωνοποιήστε</translation>
+      <translation>Πιστό Αντίγραφο</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="75"/>
@@ -6619,7 +6615,7 @@ convert closed edges into filled faces and parametric polygons, and merge faces 
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="66"/>
       <source>Offset</source>
-      <translation>Μετατοπίστε</translation>
+      <translation>Μετατόπιση (Offset)</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_offset.py" line="70"/>
@@ -6880,7 +6876,7 @@ set True for fusion or False for compound</translation>
       <location filename="../../draftobjects/pointarray.py" line="111"/>
       <location filename="../../draftobjects/array.py" line="324"/>
       <source>Show the individual array elements (only for Link arrays)</source>
-      <translation type="unfinished">Show the individual array elements (only for Link arrays)</translation>
+      <translation>Εμφάνιση των μεμονωμένων στοιχείων της διάταξης (μόνο για διατάξεις συνδέσμων)</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pathtwistedarray.py" line="158"/>
@@ -7225,8 +7221,7 @@ Leave this property empty to be able to set 'Axis' and 'Center' manually.</trans
       <location filename="../../draftobjects/array.py" line="140"/>
       <source>Total number of elements in the array.
 This property is read-only, as the number depends on the parameters of the array.</source>
-      <translation type="unfinished">Total number of elements in the array.
-This property is read-only, as the number depends on the parameters of the array.</translation>
+      <translation>Συνολικός αριθμός στοιχείων στη διάταξη. Αυτή η ιδιότητα είναι μόνο για ανάγνωση, καθώς ο αριθμός εξαρτάται από τις παραμέτρους της διάταξης.</translation>
     </message>
     <message>
       <location filename="../../draftobjects/pointarray.py" line="68"/>
@@ -7682,12 +7677,12 @@ the 'First Angle' and 'Last Angle' properties.</translation>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="104"/>
       <source>Force sync pattern placements even when array elements are expanded</source>
-      <translation type="unfinished">Force sync pattern placements even when array elements are expanded</translation>
+      <translation>Αναγκαστικός συγχρονισμός που εξασφαλίζει ότι όλα τα αντίγραφα θα παραμείνουν αυστηρά στις προκαθορισμένες θέσεις του μοτίβου (π. χ. στον κύκλο ή στη γραμμή), ακόμη και αν εσείς προσπαθήσετε να μετακινήσετε κάποιο μεμονωμένο στοιχείο από τη λίστα</translation>
     </message>
     <message>
       <location filename="../../draftobjects/draftlink.py" line="113"/>
       <source>Show the individual array elements</source>
-      <translation type="unfinished">Show the individual array elements</translation>
+      <translation>Εμφάνιση των μεμονωμένων στοιχείων της διάταξης, επιτρέποντας τον χρήστη να βλέπει και να διαχειρίζεται κάθε αντίγραφο της διάταξης ξεχωριστά μέσα στο δέντρο εργασιών</translation>
     </message>
     <message>
       <location filename="../../draftviewproviders/view_draft_annotation.py" line="130"/>
@@ -7916,7 +7911,7 @@ beyond the dimension line</translation>
       <location filename="../../draftviewproviders/view_hatch.py" line="92"/>
       <location filename="../../draftviewproviders/view_base.py" line="502"/>
       <source>Transform</source>
-      <translation>Μετατόπιση</translation>
+      <translation>Χειροκίνητη Μετακίνηση/Περιστροφή</translation>
     </message>
   </context>
   <context>
@@ -7928,7 +7923,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Βύθισμα</translation>
+      <translation>Προσχέδιο</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>
@@ -7957,7 +7952,7 @@ beyond the dimension line</translation>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="518"/>
       <source>Arc From 3 Points</source>
-      <translation>Arc From 3 Points</translation>
+      <translation>Τόξο από 3 Σημεία</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_arcs.py" line="521"/>
@@ -8037,7 +8032,7 @@ Control points and properties of each knot can be edited after creation.</transl
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="58"/>
       <source>Circular Array</source>
-      <translation type="unfinished">Circular Array</translation>
+      <translation>Κυκλική Διάταξη</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_circulararray.py" line="62"/>
@@ -8082,7 +8077,7 @@ However, a single sketch with disconnected traces is converted into several indi
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="63"/>
       <source>Toggle Grid</source>
-      <translation>Toggle Grid</translation>
+      <translation>Εναλλαγή Πλέγματος</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_grid.py" line="66"/>
@@ -8237,12 +8232,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="181"/>
       <source>Path Link Array</source>
-      <translation type="unfinished">Path Link Array</translation>
+      <translation>Διάταξη Συνδέσμων σε Διαδρομή</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_patharray.py" line="185"/>
       <source>Creates linked copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates linked copies of the selected object along a selected path</translation>
+      <translation>Είναι η λειτουργία που παίρνει ένα αντικείμενο και το «αντιγράφει» επανειλημμένα πάνω σε μια γραμμή ή καμπύλη που εσείς έχετε ορίσει</translation>
     </message>
   </context>
   <context>
@@ -8263,12 +8258,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="136"/>
       <source>Twisted Path Link Array</source>
-      <translation type="unfinished">Twisted Path Link Array</translation>
+      <translation>Διάταξη Συνδέσμων σε Ελικοειδή Διαδρομή</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pathtwistedarray.py" line="140"/>
       <source>Creates twisted linked copies of the selected object along a selected path</source>
-      <translation type="unfinished">Creates twisted linked copies of the selected object along a selected path</translation>
+      <translation>Πρόκειται για μια λειτουργία που παίρνει ένα αντικείμενο και, καθώς το τοποθετεί πάνω σε μια γραμμή, το περιστρέφει (στρίβει) ταυτόχρονα γύρω από αυτήν</translation>
     </message>
   </context>
   <context>
@@ -8302,12 +8297,12 @@ straight Draft lines that are drawn on the XY-plane.</translation>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="148"/>
       <source>Point Link Array</source>
-      <translation type="unfinished">Point Link Array</translation>
+      <translation>Διάταξη Συνδέσμων σε Σημεία</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_pointarray.py" line="152"/>
       <source>Creates linked copies of the selected object at the points of a point object</source>
-      <translation type="unfinished">Creates linked copies of the selected object at the points of a point object</translation>
+      <translation>Πρόκειται για μια λειτουργία που «διαβάζει» τις θέσεις από μια ομάδα σημείων και τοποθετεί αυτόματα ένα αντίγραφο του αντικειμένου σας σε κάθε ένα από αυτά τα σημεία</translation>
     </message>
   </context>
   <context>
@@ -8530,7 +8525,7 @@ The initial projection direction is the opposite of the current active view dire
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="274"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°</source>
-      <translation type="unfinished">Snaps to imaginary lines that cross the previous point at multiples of 45°</translation>
+      <translation>Έλξη σε νοητές γραμμές που διέρχονται από το προηγούμενο σημείο σε πολλαπλάσια των 45°. Όταν σχεδιάζεις μια γραμμή, σε βοηθάει να την "κλειδώσεις" αυτόματα σε συγκεκριμένες γωνίες (0°, 45°, 90°, 135° κ. λπ.) σε σχέση με το σημείο που έκανες κλικ πριν</translation>
     </message>
   </context>
   <context>

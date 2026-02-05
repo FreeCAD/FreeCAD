@@ -27,6 +27,8 @@
 
 #include <QColor>
 
+#include "QGIView.h"
+
 class QColor;
 class QString;
 
@@ -94,6 +96,10 @@ static double       templateClickBoxSize();
 static QColor       templateClickBoxColor();
 
 static int          get3dMarkerSize();
+
+static ViewFrameMode getViewFrameMode();
+static void setViewFrameMode(ViewFrameMode newMode);
+
 
 };
 

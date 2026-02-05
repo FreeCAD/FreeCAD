@@ -687,7 +687,15 @@ class _ArchReport:
                 f"Report '{getattr(obj, 'Label', '')}': No target spreadsheet found.\n"
             )
             return
-        sp.clearAll()
+        # clear all the content of the spreadsheet
+        used_range = sp.getUsedRange()
+        if used_range:
+            sp.clear(f"{used_range[0]}:{used_range[1]}")
+        else:
+            FreeCAD.Console.PrintError(
+                f"Report '{getattr(obj, 'Label', '')}': Invalid cell address found, clearing spreadsheet.\n"
+            )
+            sp.clearAll()
 
         # Reset the row counter for a new report build.
         self.spreadsheet_current_row = 1
@@ -1297,7 +1305,7 @@ class ReportTaskPanel:
             else:
                 pipe_item.setToolTip(
                     translate(
-                        "Arch", "Toggle whether to use the previous statement's results as input."
+                        "Arch", "Toggles whether to use the previous statement's results as input"
                     )
                 )
             self.table_statements.setItem(row_idx, 1, pipe_item)
@@ -1313,7 +1321,7 @@ class ReportTaskPanel:
             header_item.setToolTip(
                 translate(
                     "Arch",
-                    "Toggle whether to use this statement's Description as a section header.",
+                    "Toggles whether to use this statement's Description as a section header",
                 )
             )
             self.table_statements.setItem(row_idx, 2, header_item)
@@ -1328,7 +1336,8 @@ class ReportTaskPanel:
             )
             cols_item.setToolTip(
                 translate(
-                    "Arch", "Toggle whether to include this statement's column names in the report."
+                    "Arch",
+                    "Toggles whether to include this statement's column names in the report",
                 )
             )
             self.table_statements.setItem(row_idx, 3, cols_item)

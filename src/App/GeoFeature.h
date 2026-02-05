@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -91,19 +93,23 @@ public:
         const char* name,
         ElementNameType type = Normal) const;
 
-    /** Resolve both the new and old style element name
+    /**
+     * @brief Resolve both the new and old style element name.
      *
-     * @param obj: top parent object
-     * @param subname: subname reference
-     * @param elementName: output of a pair(newElementName,oldElementName)
-     * @param append: Whether to include subname prefix into the returned
-     *                element name
-     * @param type: the type of element name to request
-     * @param filter: If none zero, then only perform lookup when the element
-     *                owner object is the same as this filter
-     * @param element: return the start of element name in subname
+     * @param[in] obj The top parent object
+     * @param[in] subname The subname reference.
+     * @param[out] elementName Output of a pair(newElementName,oldElementName)
+     * @param[in] append: Whether to include the subname prefix into the
+     * returned element name.
+     * @param[in] type The type of element name to request.
+     * @param[in] filter If not `nullptr`, then only perform lookup when the
+     * element owner object is the same as this filter.
+     * @param[out] element If not `nullptr`, provide start of element name in
+     * subname.
+     * @param[out] geoFeature If not `nullptr`, provide the GeoFeature that
+     * contains the element.
      *
-     * @return Return the owner object of the element
+     * @return Return the owner object of the element.
      */
     static DocumentObject* resolveElement(const App::DocumentObject* obj,
                                           const char* subname,
@@ -112,7 +118,7 @@ public:
                                           ElementNameType type = Normal,
                                           const DocumentObject* filter = nullptr,
                                           const char** element = nullptr,
-                                          GeoFeature** geo = nullptr);
+                                          GeoFeature** geoFeature = nullptr);
 
     /**
      * @brief Deprecated. Calculates the placement in the global reference coordinate system

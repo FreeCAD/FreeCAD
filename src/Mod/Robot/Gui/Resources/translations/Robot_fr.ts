@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="200"/>
       <source>Place Robot</source>
-      <translation type="unfinished">Place Robot</translation>
+      <translation>Placer un robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="201"/>
       <source>Places a robot in the scene</source>
-      <translation type="unfinished">Places a robot in the scene</translation>
+      <translation>Place un robot dans la scène</translation>
     </message>
   </context>
   <context>

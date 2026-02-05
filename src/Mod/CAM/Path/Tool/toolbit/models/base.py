@@ -793,7 +793,7 @@ class ToolBit(Asset, ABC):
 
         # 3. Ensure Units property exists and is set
         if not hasattr(self.obj, "Units"):
-            print("Adding Units property")
+            Path.Log.debug("Adding Units property")
             self.obj.addProperty(
                 "App::PropertyEnumeration",
                 "Units",
@@ -913,6 +913,9 @@ class ToolBit(Asset, ABC):
                 f" '{self._tool_bit_shape.name}': {e}"
             )
             raise
+
+        # clear the touched state since visual updates shouldn't require recompute
+        self.obj.purgeTouched()
 
     def to_dict(self):
         """

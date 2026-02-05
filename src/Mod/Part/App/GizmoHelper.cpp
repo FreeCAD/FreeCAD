@@ -28,6 +28,7 @@
 #include <BOPTools_AlgoTools3D.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepGProp.hxx>
+#include <ElCLib.hxx>
 #include <GProp_GProps.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 #include <TopExp_Explorer.hxx>
@@ -35,6 +36,8 @@
 #include <TopoDS.hxx>
 #include <Precision.hxx>
 #include <IntTools_Context.hxx>
+#include <IntAna_IntConicQuad.hxx>
+#include <IntAna_QuadQuadGeo.hxx>
 
 #include <Base/BoundBox.h>
 #include <Base/Converter.h>
@@ -43,23 +46,24 @@
 
 EdgeMidPointProps getEdgeMidPointProps(Part::TopoShape& edge)
 {
-    std::unique_ptr<Part::Geometry> geom = Part::Geometry::fromShape(edge.getShape());
-    auto curve = freecad_cast<Part::GeomCurve*>(geom.get());
-    double u1 = curve->getFirstParameter();
-    double u2 = curve->getLastParameter();
-    double middle = (u1 + u2) / 2;
-    Base::Vector3d position = curve->pointAtParameter(middle);
+    double u1, u2;
+    TopoDS_Edge TDSEdge = TopoDS::Edge(edge.getShape());
+    Handle(Geom_Curve) curve = BRep_Tool::Curve(TDSEdge, u1, u2);
+    double middle = (u1 + u2) / 2.0;
 
-    Base::Vector3d tangent;
-    bool ret = curve->tangent(middle, tangent);
-    if (ret) {
-        return {position, tangent, middle};
+    gp_Pnt pos;
+    gp_Vec derivative;
+    curve->D1(middle, pos, derivative);
+
+    auto position = Base::convertTo<Base::Vector3d>(pos);
+    auto tangent = Base::convertTo<Base::Vector3d>(derivative);
+    tangent.Normalize();
+
+    if (TDSEdge.Orientation() == TopAbs_REVERSED) {
+        tangent = -tangent;
     }
 
-    Base::Console().error(
-        "Failed to calculate tangent for the draggers! Please file a bug report for this."
-    );
-    return {position, Base::Vector3d {0, 0, 0}, middle};
+    return {position, tangent, middle};
 }
 
 Base::Vector3d getCentreOfMassFromFace(TopoDS_Face& face)
@@ -69,30 +73,41 @@ Base::Vector3d getCentreOfMassFromFace(TopoDS_Face& face)
     return Base::convertTo<Base::Vector3d>(massProps.CentreOfMass());
 }
 
-std::optional<std::pair<Base::Vector3d, Base::Vector3d>> getFaceNormalFromPointNearEdge(
+PointOnFaceNearEdgeProps getFaceNormalFromPointNearEdge(
     Part::TopoShape& edge,
     double middle,
     TopoDS_Face& face
 )
 {
-    auto _edge = TopoDS::Edge(edge.getShape());
+    auto TDSedge = TopoDS::Edge(edge.getShape());
 
-    gp_Pnt _inwardPoint;
-    gp_Dir _normal;
+    gp_Pnt inwardPoint;
+    gp_Pnt2d inwardPoint2d;
+    gp_Dir normal;
     Handle(IntTools_Context) context = new IntTools_Context;
 
-    if (!BOPTools_AlgoTools3D::GetApproxNormalToFaceOnEdge(
-            _edge,
-            face,
-            middle,
-            _inwardPoint,
-            _normal,
-            context
-        )) {
-        return std::nullopt;
+    int res
+        = BOPTools_AlgoTools3D::PointNearEdge(TDSedge, face, middle, inwardPoint2d, inwardPoint, context);
+
+    PointOnFaceNearEdgeProps props;
+    switch (res) {
+        case 0:
+            props.state = PointOnFaceNearEdgeProps::State::OnFace;
+            break;
+        case 2:
+            props.state = PointOnFaceNearEdgeProps::State::OutsideFace;
+            break;
+        default:
+            props.state = PointOnFaceNearEdgeProps::State::Undefined;
+            return props;
     }
 
-    return {{Base::convertTo<Base::Vector3d>(_inwardPoint), Base::convertTo<Base::Vector3d>(_normal)}};
+    BOPTools_AlgoTools3D::GetNormalToFaceOnEdge(TDSedge, face, middle, normal, context);
+
+    props.position = Base::convertTo<Base::Vector3d>(inwardPoint);
+    props.normal = Base::convertTo<Base::Vector3d>(normal);
+
+    return props;
 }
 
 Base::Vector3d getFaceNormalFromPoint(Base::Vector3d& point, TopoDS_Face& face)
@@ -132,9 +147,10 @@ DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, 
 
     Base::Vector3d normal;
     Base::Vector3d inwardPoint;
-    if (auto ret = getFaceNormalFromPointNearEdge(edge, middle, face)) {
-        inwardPoint = ret->first;
-        normal = ret->second;
+    auto props = getFaceNormalFromPointNearEdge(edge, middle, face);
+    if (props.state != PointOnFaceNearEdgeProps::State::Undefined) {
+        inwardPoint = props.position;
+        normal = props.normal;
     }
     else {
         // Failed to compute the normal at a point on the face near the edge
@@ -151,13 +167,19 @@ DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, 
         dir = -dir;
     }
 
-    return {position, dir, tangent};
+    // Assumption: Since the point is very close to the edge but lies outside
+    // the face we can reverse the direction to point towards the face material
+    if (props.state == PointOnFaceNearEdgeProps::State::OutsideFace) {
+        dir = -dir;
+    }
+
+    return {position, dir};
 }
 
 DraggerPlacementProps getDraggerPlacementFromEdgeAndFace(Part::TopoShape& edge, Part::TopoShape& face)
 {
-    TopoDS_Face _face = TopoDS::Face(face.getShape());
-    return getDraggerPlacementFromEdgeAndFace(edge, _face);
+    TopoDS_Face TDSFace = TopoDS::Face(face.getShape());
+    return getDraggerPlacementFromEdgeAndFace(edge, TDSFace);
 }
 
 std::vector<Part::TopoShape> getAdjacentEdgesFromFace(Part::TopoShape& face)
@@ -225,4 +247,75 @@ Base::Vector3d getMidPointFromProfile(Part::TopoShape& profile)
     profile.getCenterOfGravity(midPoint);
 
     return midPoint;
+}
+
+std::optional<DraggerPlacementPropsWithNormals> getDraggerPlacementFromPlaneAndFace(
+    Part::TopoShape& face,
+    gp_Pln& plane
+)
+{
+    TopoDS_Face TDSFace = TopoDS::Face(face.getShape());
+    if (TDSFace.IsNull()) {
+        return std::nullopt;
+    }
+
+    auto cog = getCentreOfMassFromFace(TDSFace);
+    auto orientation = TDSFace.Orientation();
+
+    auto getPropsFromShapePlaneIntersection =
+        [&cog](auto&& shape, const gp_Pln& plane) -> std::optional<DraggerPlacementPropsWithNormals> {
+        if (plane.Axis().IsNormal(shape.Axis(), Precision::Angular())) {
+            return std::nullopt;
+        }
+
+        gp_Lin line(shape.Axis());
+        IntAna_IntConicQuad intersector(line, plane, Precision::Confusion());
+        if (intersector.IsDone() && intersector.NbPoints() > 0) {
+            auto pos = Base::convertTo<Base::Vector3d>(intersector.Point(1));
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
+                .normalProps = std::nullopt
+            };
+        }
+        return std::nullopt;
+    };
+
+    auto getPropsFromPlanePlaneIntersection = [&cog, orientation](
+                                                  const gp_Pln&& facePlane,
+                                                  const gp_Pln& plane
+                                              ) -> std::optional<DraggerPlacementPropsWithNormals> {
+        if (plane.Axis().IsParallel(facePlane.Axis(), Precision::Angular())) {
+            return std::nullopt;
+        }
+
+        IntAna_QuadQuadGeo intersector(facePlane, plane, Precision::Angular(), Precision::Confusion());
+        if (intersector.IsDone() && intersector.NbSolutions() > 0) {
+            gp_Lin line = intersector.Line(1);
+            Standard_Real u = ElCLib::Parameter(line, Base::convertTo<gp_Pnt>(cog));
+            auto pos = Base::convertTo<Base::Vector3d>(ElCLib::Value(u, line));
+            auto lineDir = Base::convertTo<Base::Vector3d>(line.Direction());
+            auto faceNormal = Base::convertTo<Base::Vector3d>(facePlane.Axis().Direction());
+            if (orientation == TopAbs_REVERSED) {
+                faceNormal *= -1;
+            }
+
+            return DraggerPlacementPropsWithNormals {
+                .placementProps = {.position = pos, .dir = cog - pos},
+                .normalProps = DraggerNormalProps {.normal = lineDir, .faceNormal = faceNormal}
+            };
+        }
+        return std::nullopt;
+    };
+
+    BRepAdaptor_Surface adapt(TDSFace);
+    switch (adapt.GetType()) {
+        case GeomAbs_Cylinder:
+            return getPropsFromShapePlaneIntersection(adapt.Cylinder(), plane);
+        case GeomAbs_Cone:
+            return getPropsFromShapePlaneIntersection(adapt.Cone(), plane);
+        case GeomAbs_Plane:
+            return getPropsFromPlanePlaneIntersection(adapt.Plane(), plane);
+        default:
+            return std::nullopt;
+    }
 }

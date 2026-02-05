@@ -147,7 +147,6 @@ class ArchReference:
 
         import Part
 
-        pl = obj.Placement
         filename = self.getFile(obj)
         if filename and self.reload and obj.ReferenceMode in ["Normal", "Transient"]:
             self.parts = self.getPartsList(obj)
@@ -155,6 +154,7 @@ class ArchReference:
                 if filename.lower().endswith(".fcstd"):
                     zdoc = zipfile.ZipFile(filename)
                     if zdoc:
+                        pl = obj.Placement
                         self.shapes = []
                         if obj.Part:
                             if obj.Part in self.parts:
@@ -166,8 +166,6 @@ class ArchReference:
                                     shape = self.cleanShape(shapedata, obj, self.parts[obj.Part][2])
                                     self.shapes.append(shape)
                                     obj.Shape = shape
-                                    if not pl.isIdentity():
-                                        obj.Placement = pl
                                 else:
                                     t = translate("Arch", "Part not found in file")
                                     FreeCAD.Console.PrintError(t + "\n")
@@ -181,6 +179,7 @@ class ArchReference:
                                 self.shapes.append(shape)
                             if self.shapes:
                                 obj.Shape = Part.makeCompound(self.shapes)
+                        obj.Placement = pl
                 elif filename.lower().endswith(".ifc"):
                     ifcfile = self.getIfcFile(filename)
                     if not ifcfile:
@@ -895,7 +894,7 @@ class ArchReferenceTaskPanel:
         self.obj = obj
         self.filename = None
         self.form = QtGui.QWidget()
-        self.form.setWindowTitle(translate("Arch", "External reference"))
+        self.form.setWindowTitle(translate("Arch", "External Reference"))
         layout = QtGui.QVBoxLayout(self.form)
         label1 = QtGui.QLabel(translate("Arch", "External file") + ":")
         layout.addWidget(label1)
@@ -977,7 +976,7 @@ class ArchReferenceTaskPanel:
             filters += " *.ifc"
         filters = translate("Arch", "Reference files") + " (" + filters + ")"
         f = QtGui.QFileDialog.getOpenFileName(
-            self.form, translate("Arch", "Choose reference file"), loc, filters
+            self.form, translate("Arch", "Choose Reference File"), loc, filters
         )
         if f:
             self.filename = f[0]

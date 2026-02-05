@@ -298,7 +298,6 @@ class BIMWorkbench(Workbench):
             def GetCommands(self):
                 # default: Draft_ArrayTools (the main Array UI)
                 return (
-                    "Draft_ArrayTools",
                     "Draft_OrthoArray",
                     "Draft_PathArray",
                     "Draft_PolarArray",
@@ -637,8 +636,8 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D geometry"),
-                BimWatcher(self.bimtools, "3D/BIM geometry"),
+                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
+                BimWatcher(self.bimtools, "3D/BIM Geometry"),
                 BimWatcher(self.modify, "Modify", invert=True),
             ]
         )

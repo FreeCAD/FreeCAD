@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <vector>
 
 #include <boost/unordered/unordered_map.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <App/Property.h>
 #include <Mod/Part/App/Geometry.h>
@@ -150,9 +152,9 @@ public:
 
     using ConstraintInfo = std::pair<int, const Constraint*>;
 
-    boost::signals2::signal<void(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>&)>
+    fastsignals::signal<void(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>&)>
         signalConstraintsRenamed;
-    boost::signals2::signal<void(const std::set<App::ObjectIdentifier>&)> signalConstraintsRemoved;
+    fastsignals::signal<void(const std::set<App::ObjectIdentifier>&)> signalConstraintsRemoved;
 
     static std::string getConstraintName(const std::string& name, int i);
 

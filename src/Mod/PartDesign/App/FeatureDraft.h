@@ -25,6 +25,9 @@
 #ifndef PARTDESIGN_FEATUREDRAFT_H
 #define PARTDESIGN_FEATUREDRAFT_H
 
+#include <gp_Pln.hxx>
+#include <gp_Dir.hxx>
+
 #include <App/PropertyStandard.h>
 #include <App/PropertyUnits.h>
 #include <App/PropertyLinks.h>
@@ -32,6 +35,11 @@
 
 namespace PartDesign
 {
+struct PartDesignExport DraftComputeProps
+{
+    gp_Dir pullDirection;
+    gp_Pln neutralPlane;
+};
 
 class PartDesignExport Draft: public DressUp
 {
@@ -57,6 +65,17 @@ public:
     }
     //@}
 
+    /**
+     * @brief getLastComputedProps: Returns the Pull Direction and Neutral Plane
+     * computed during the last call of the execute method.
+     * Note: The returned values might be in the default initialized state if
+     * they were not computed or computation failed
+     */
+    DraftComputeProps getLastComputedProps() const
+    {
+        return computeProps;
+    }
+
 private:
     void handleChangedPropertyType(
         Base::XMLReader& reader,
@@ -64,6 +83,8 @@ private:
         App::Property* prop
     ) override;
     static const App::PropertyAngle::Constraints floatAngle;
+
+    DraftComputeProps computeProps;
 };
 
 }  // namespace PartDesign

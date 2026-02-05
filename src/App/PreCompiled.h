@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2002 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -48,6 +50,7 @@
 #include <sstream>
 
 // STL
+#include <array>
 #include <bitset>
 #include <chrono>
 #if defined(FC_OS_WIN32)
@@ -72,7 +75,7 @@
 
 // Boost
 #include <boost_graph_adjacency_list.hpp>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 
 #include <boost/program_options.hpp>
 #include <boost/regex.hpp>
