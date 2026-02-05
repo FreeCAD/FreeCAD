@@ -177,17 +177,17 @@ public:
 
             double b = abs(delta13Prime.y) / sinT;
 
-            startAngle = atan2(delta13Prime.y, delta13Prime.x);
+            startAngle = atan2(delta13Prime.y / b, delta13Prime.x / a);
 
             Base::Vector2d delta14 = onSketchPos - centerPoint;
             Base::Vector2d delta14Prime(
                 delta14.x * aDir.x + delta14.y * aDir.y,
                 delta14.x * bDir.x + delta14.y * bDir.y
             );
-            double angle1 = atan2(delta14Prime.y, delta14Prime.x) - startAngle;
+            double angle1 = atan2(delta14Prime.y / b, delta14Prime.x / a) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
 
-            arcAngle = arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
+            arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
 
             for (int i = 0; i < 34; i++) {
                 double angle = startAngle + i * arcAngle / 33.0;
@@ -202,7 +202,7 @@ public:
                 std::string aString = lengthToDisplayFormat(a, 1);
                 std::string bString = lengthToDisplayFormat(b, 1);
                 std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / pi, 1);
-                text.sprintf(" (R%s, R%s, %s,)", aString.c_str(), bString.c_str(), angleString.c_str());
+                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), angleString.c_str());
                 setPositionText(onSketchPos, text);
             }
 
@@ -276,7 +276,7 @@ public:
                 delta14.x * aDir.x + delta14.y * aDir.y,
                 delta14.x * bDir.x + delta14.y * bDir.y
             );
-            double angle1 = atan2(delta14Prime.y, delta14Prime.x) - startAngle;
+            double angle1 = atan2(delta14Prime.y / b, delta14Prime.x / a) - startAngle;
             double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * pi;
 
             arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
