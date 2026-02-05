@@ -1789,7 +1789,6 @@ class ObjectWaterline(PathOp.ObjectOp):
         base = JOB.Model.Group[mdlIdx]
         radius = self.radius
         adj = obj.BoundaryAdjustment.Value - radius - 0.01  # Minus a small buffer
-        cutPattern = obj.CutPattern
         self.endVector = None
         bbFace = None
         self.sampAccuracy = int(obj.SamplingAccuracy)
