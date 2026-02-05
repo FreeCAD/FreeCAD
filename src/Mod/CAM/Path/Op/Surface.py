@@ -2065,13 +2065,9 @@ class ObjectSurface(PathOp.ObjectOp):
                     rSTG = self._rotationalScanToGcode(obj, rng, rNum, prevDepth, layDep, advances)
                     commands.extend(rSTG)
                     if arc != 360.0:
-<<<<<<< 3D-Surface-Enhance-Performance
-                        commands.append(Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid}))
-=======
                         commands.append(
                             Path.Command("G0", {"Z": self.clearHeight, "F": self.vertRapid})
                         )
->>>>>>> main
                     rNum += 1
                 # Eol
 
