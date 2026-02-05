@@ -1170,11 +1170,7 @@ DocumentObject* DocumentObject::getLinkedObject(bool recursive,
 
 void DocumentObject::Save(Base::Writer& writer) const
 {
-    if (this->isFreezed()) {
-        throw Base::AbortException("At least one object is frozen, unable to save.");
-    }
-
-    if (this->isAttachedToDocument()){
+    if (this->isAttachedToDocument()) {
         writer.ObjectName = this->getNameInDocument();
     }
     App::ExtensionContainer::Save(writer);
