@@ -206,6 +206,9 @@ class Component(ArchIFC.IfcProduct):
         self.Type = "Component"
         Component.setProperties(self, obj)
 
+        # Add features from the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
+
     def setProperties(self, obj):
         """Give the component its component specific properties, such as material.
 
@@ -377,6 +380,9 @@ class Component(ArchIFC.IfcProduct):
             The component object.
         """
         Component.setProperties(self, obj)
+
+        # Add features from the SketchArch External Add-on, if present
+        self.addSketchArchFeatures(obj)
 
     def execute(self, obj):
         """Method run when the object is recomputed.
@@ -1303,6 +1309,48 @@ class Component(ArchIFC.IfcProduct):
             if self._isInternalLinkgroup(inObj):
                 return True
         return False
+
+    # Hooks for the external SketchArch add-on.
+    # SketchArch enhances standard Sketches with BIM-specific features when used
+    # as the base for Arch objects (Walls, Structures, etc.).
+    # https://github.com/paullee0/FreeCAD_SketchArch
+
+    def addSketchArchFeatures(self, obj, linkObj=None, mode=None):
+        """
+        Injects properties from the external SketchArch add-on if available.
+
+        This method checks if the SketchArch add-on is installed. If so, it delegates
+        to the add-on to add specific properties (like extended linking attributes)
+        to the object.
+        """
+        import ArchSketchObject
+
+        if ArchSketchObject.is_installed():
+            ArchSketchObject.ArchSketch.setPropertiesLinkCommon(self, obj, linkObj, mode)
+
+    def executeSketchArchFeatures(self, obj, linkObj=None, index=None, linkElement=None):
+        """
+        Executes geometry updates from the external SketchArch add-on if available.
+
+        This method checks if the SketchArch add-on is installed. If so, it triggers
+        updates for specific behaviors like intuitive automatic placement offsets.
+        """
+        import ArchSketchObject
+
+        if ArchSketchObject.is_installed():
+            ArchSketchObject.updateAttachmentOffset(obj, linkObj)
+
+    def appLinkExecute(self, obj, linkObj, index, linkElement):
+        """
+        Callback executed when this object is linked via an App::Link.
+
+        This ensures that SketchArch features (properties and placement logic)
+        are correctly applied/updated when the object is referenced by a Link.
+
+        See https://forum.freecad.org/viewtopic.php?f=22&t=42184&start=10#p361124
+        """
+        self.addSketchArchFeatures(obj, linkObj)
+        self.executeSketchArchFeatures(obj, linkObj)
 
 
 class AreaCalculator:

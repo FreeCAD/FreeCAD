@@ -26,6 +26,15 @@ import ArchWindow
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 
+def is_installed():
+    """Checks if the external SketchArch add-on is installed and active.
+
+    Returns True if the 'makeArchSketch' function (provided by the add-on)
+    is available in this module's namespace.
+    """
+    return "makeArchSketch" in globals()
+
+
 class ArchSketchObject:
     def __init__(self, obj):
         pass

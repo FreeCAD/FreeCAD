@@ -957,27 +957,25 @@ class _Wall(ArchComponent.Component):
                     # Return a list of Width corresponding to indexes of sorted
                     # edges of Sketch.
                     widths = obj.Base.Proxy.getWidths(obj.Base, propSetUuid=propSetUuid)
+
         # Get width of each edge/wall segment from ArchWall.OverrideWidth if
         # Base Object does not provide it
         if not widths:
             if obj.OverrideWidth:
                 if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getWidth() not implemented yet):-
-                    # sort the width list in OverrrideWidth to correspond to indexes of sorted edges of Sketch
-                    try:
-                        import ArchSketchObject
-                    except Exception:
-                        print("ArchSketchObject add-on module is not installed yet")
-                    try:
+                    # If the Base object is a Sketch, we try to use SketchArch's features
+                    # to sort the widths to match the sketch edge order.
+                    import ArchSketchObject
+
+                    if ArchSketchObject.is_installed():
                         widths = ArchSketchObject.sortSketchWidth(
                             obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
                         )
-                    except Exception:
+                    else:
                         widths = obj.OverrideWidth
                 else:
-                    # If Base Object is not Sketch, but e.g. DWire, the width
-                    # list in OverrrideWidth just correspond to sequential
-                    # order of edges
+                    # If the Base object is not a Sketch (e.g. DWire), the width
+                    # list corresponds to the sequential order of edges
                     widths = obj.OverrideWidth
             elif obj.Width:
                 widths = [obj.Width.Value]
@@ -1026,29 +1024,24 @@ class _Wall(ArchComponent.Component):
                     # Return a list of Align corresponds to indexes of sorted
                     # edges of Sketch.
                     aligns = obj.Base.Proxy.getAligns(obj.Base, propSetUuid=propSetUuid)
+
         # Get align of each edge/wall segment from ArchWall.OverrideAlign if
         # Base Object does not provide it
         if not aligns:
             if obj.OverrideAlign:
                 if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when
-                    # ArchSketch.getAligns() not implemented yet):- sort the
-                    # align list in OverrideAlign to correspond to indexes of
-                    # sorted edges of Sketch
-                    try:
-                        import ArchSketchObject
-                    except Exception:
-                        print("ArchSketchObject add-on module is not installed yet")
-                    try:
+
+                    # If the Base object is a Sketch, we try to use SketchArch's features
+                    # to sort the align list to match the sketch edge order.
+                    import ArchSketchObject
+
+                    if ArchSketchObject.is_installed():
                         aligns = ArchSketchObject.sortSketchAlign(
                             obj.Base, obj.OverrideAlign, obj.ArchSketchEdges
                         )
-                    except Exception:
-                        aligns = obj.OverrideAlign
                 else:
-                    # If Base Object is not Sketch, but e.g. DWire, the align
-                    # list in OverrideAlign just correspond to sequential order
-                    # of edges
+                    # If the Base object is not a Sketch (e.g. DWire), the align
+                    # list corresponds to the sequential order of edges
                     aligns = obj.OverrideAlign
             else:
                 aligns = [obj.Align]
@@ -1069,23 +1062,25 @@ class _Wall(ArchComponent.Component):
                     # Return a list of Offset corresponding to indexes of sorted
                     # edges of Sketch.
                     offsets = obj.Base.Proxy.getOffsets(obj.Base, propSetUuid=propSetUuid)
+
         # Get offset of each edge/wall segment from ArchWall.OverrideOffset if
         # Base Object does not provide it
         if not offsets:
             if obj.OverrideOffset:
                 if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
-                    # If Base Object is ordinary Sketch (or when ArchSketch.getOffsets() not implemented yet):-
-                    # sort the offset list in OverrideOffset to correspond to indexes of sorted edges of Sketch
-                    if hasattr(ArchSketchObject, "sortSketchOffset"):
+                    # If the Base object is a Sketch, try to use SketchArch to sort
+                    # offsets to match the sketch edge order.
+                    import ArchSketchObject
+
+                    if ArchSketchObject.is_installed():
                         offsets = ArchSketchObject.sortSketchOffset(
                             obj.Base, obj.OverrideOffset, obj.ArchSketchEdges
                         )
                     else:
                         offsets = obj.OverrideOffset
                 else:
-                    # If Base Object is not Sketch, but e.g. DWire, the width
-                    # list in OverrrideWidth just correspond to sequential
-                    # order of edges
+                    # If the Base object is not a Sketch (e.g. DWire), the offset
+                    # list corresponds to the sequential order of edges
                     offsets = obj.OverrideOffset
             elif obj.Offset:
                 offsets = [obj.Offset.Value]
@@ -1665,14 +1660,21 @@ class _Wall(ArchComponent.Component):
                     lwidths = obj.Base.Proxy.getWidths(
                         obj.Base, propSetUuid=self.ArchSkPropSetPickedUuid
                     )
+
         if not lwidths:
             if obj.OverrideWidth:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"):
+                # Default to the unsorted list
+                lwidths = obj.OverrideWidth
+
+                # If Base is a Sketch and the add-on is present, try to sort the widths
+                if (
+                    obj.Base
+                    and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+                    and ArchSketchObject.is_installed()
+                ):
                     lwidths = ArchSketchObject.sortSketchWidth(
                         obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
                     )
-                else:
-                    lwidths = obj.OverrideWidth
             elif obj.Width:
                 lwidths = [obj.Width.Value]
             else:

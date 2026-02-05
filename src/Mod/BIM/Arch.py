@@ -1784,27 +1784,26 @@ def joinWalls(walls, delete=False, deletebase=False):
         return None
     deleteList = []
     base = walls.pop()
+
     if base.Base:
         if base.Base.Shape.Faces:
             return None
-        # Use ArchSketch if SketchArch add-on is present
-        if Draft.getType(base.Base) == "ArchSketch":
-            sk = base.Base
-        else:
-            try:
-                import ArchSketchObject
+        # Check if we need to upgrade the base to a Sketch or ArchSketch
+        if Draft.getType(base.Base) != "ArchSketch":
+            import ArchSketchObject
 
+            newSk = None
+
+            if ArchSketchObject.is_installed():
                 newSk = ArchSketchObject.makeArchSketch()
-            except:
-                if Draft.getType(base.Base) != "Sketcher::SketchObject":
-                    newSk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "WallTrace")
-                else:
-                    newSk = None
+            elif Draft.getType(base.Base) != "Sketcher::SketchObject":
+                # Upgrade non-sketch (e.g. Draft Wire) to standard Sketch if ArchSketch isn't available
+                newSk = FreeCAD.ActiveDocument.addObject("Sketcher::SketchObject", "WallTrace")
+
             if newSk:
                 sk = Draft.makeSketch(base.Base, autoconstraints=True, addTo=newSk)
                 base.Base = sk
-            else:
-                sk = base.Base
+
     for w in walls:
         if w.Base and not w.Base.Shape.Faces:
             for hostedObj in w.Proxy.getHosts(w):
