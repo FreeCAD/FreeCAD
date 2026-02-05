@@ -11,7 +11,7 @@ import Draft
 
 class TestPartMirroringRegression(unittest.TestCase):
     """Regression test for GitHub issue #27365.
-    
+
     Part::Mirroring with Draft Clone produces incorrect results after PR #26963.
     The mirror position shifts on recompute when the source has non-identity Placement.
     """
@@ -24,11 +24,11 @@ class TestPartMirroringRegression(unittest.TestCase):
 
     def testMirroringWithDraftCloneStability(self):
         """Test that Part::Mirroring position is stable across recomputes.
-        
+
         This test reproduces issue #27365: mirroring a Draft Clone that has
         placement, and causes the mirror position to be incorrect and/or shift
         on recompute.
-        
+
         This test FAILS on current main (after PR #26963) and should pass after a fix is applied.
         """
         # create sketch at origin
@@ -41,17 +41,18 @@ class TestPartMirroringRegression(unittest.TestCase):
 
         # create draft clone at X=30 with 90° rotation around Z
         clone = Draft.make_clone(sketch)
-        clone.Placement = App.Placement(
-            App.Vector(30, 0, 0),
-            App.Rotation(App.Vector(0, 0, 1), 90)
-        )
+        clone.Placement = App.Placement(App.Vector(30, 0, 0), App.Rotation(App.Vector(0, 0, 1), 90))
         self.doc.recompute()
 
         # verify clone is positioned correctly
         clone_bbox = clone.Shape.BoundBox
         clone_center_x = (clone_bbox.XMin + clone_bbox.XMax) / 2
-        self.assertAlmostEqual(clone_center_x, 30.0, delta=5.0,
-            msg=f"clone should be centered around X=30, but is at X={clone_center_x:.2f}")
+        self.assertAlmostEqual(
+            clone_center_x,
+            30.0,
+            delta=5.0,
+            msg=f"clone should be centered around X=30, but is at X={clone_center_x:.2f}",
+        )
 
         # mirror across YZ plane (X=0, normal in +X direction)
         mirror = self.doc.addObject("Part::Mirroring", "Mirror")
@@ -66,9 +67,12 @@ class TestPartMirroringRegression(unittest.TestCase):
 
         # mirror should be on opposite side of plane from clone
         # clone is at X≈30, plane at X=0, so mirror should be at X≈-30
-        self.assertLess(initial_center_x, -20.0,
+        self.assertLess(
+            initial_center_x,
+            -20.0,
             msg=f"mirror should be at X≈-30 (opposite side of X=0 from clone at X≈30), "
-                f"but is at X={initial_center_x:.2f}")
+            f"but is at X={initial_center_x:.2f}",
+        )
 
         # position must be stable across recompute
         # this is the core bug, ie. position shifts on recompute
@@ -79,13 +83,17 @@ class TestPartMirroringRegression(unittest.TestCase):
         final_center_x = (final_bbox.XMin + final_bbox.XMax) / 2
 
         # position should not change (within tolerance)
-        self.assertAlmostEqual(initial_center_x, final_center_x, places=3,
+        self.assertAlmostEqual(
+            initial_center_x,
+            final_center_x,
+            places=3,
             msg=f"mirror position shifted on recompute: "
-                f"X={initial_center_x:.6f} -> X={final_center_x:.6f}")
+            f"X={initial_center_x:.6f} -> X={final_center_x:.6f}",
+        )
 
 
 # for standalone execution
-if __name__ == '__main__':
+if __name__ == "__main__":
     suite = unittest.TestSuite()
     suite.addTest(unittest.TestLoader().loadTestsFromTestCase(TestPartMirroringRegression))
     runner = unittest.TextTestRunner()
