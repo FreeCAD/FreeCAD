@@ -2687,6 +2687,7 @@ class OCL_Tool:
                 "endmill": "CylCutter",
                 "ballend": "BallCutter",
                 "bullnose": "BullCutter",
+                "taperedballnose": "BallCutter",
                 "drill": "ConeCutter",
                 "engraver": "ConeCutter",
                 "v_bit": "ConeCutter",
