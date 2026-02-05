@@ -21,7 +21,7 @@
  ******************************************************************************/
 
 #include "TaskMassProperties.h"
-#include "UnitSystem.h"
+#include "UnitHelper.h"
 #include "Mod/MassProperties/App/MassPropertiesResult.h"
 
 #include <QtWidgets>
@@ -32,10 +32,11 @@
 #include <Gui/Application.h>
 
 #include <Base/Console.h>
-#include <Base/Vector3D.h>
-#include <Base/Placement.h>
-#include <Base/Vector3D.h>
 #include <Base/Matrix.h>
+#include <Base/Placement.h>
+#include <Base/Quantity.h>
+#include <Base/Vector3D.h>
+#include <Base/Vector3D.h>
 
 
 #include <App/DocumentObject.h>
@@ -53,7 +54,6 @@ using namespace MassPropertiesGui;
 MassPropertiesData currentInfo;
 std::string currentMode = "Global";
 App::DocumentObject* currentDatum = nullptr;
-std::string unitSystem = "mm, kg, kg·mm²";
 
 TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true)
@@ -123,18 +123,21 @@ TaskMassProperties::TaskMassProperties()
     customForm->addRow(customRadioButton, customControls);
     physicalLayout->addLayout(customForm);
 
-    QComboBox *UnitsComboBox = new QComboBox(physicalProperties);
-    UnitsComboBox->addItem(QStringLiteral("mm, kg, kg·mm²"));
-    UnitsComboBox->addItem(QStringLiteral("m, kg, kg·m²"));
-    UnitsComboBox->addItem(QStringLiteral("in, lb, lb·in²"));
-    UnitsComboBox->addItem(QStringLiteral("ft, lb, lb·ft²"));
-    physicalLayout->addWidget(UnitsComboBox);
+    unitsComboBox = new QComboBox(physicalProperties);
+    unitsComboBox->addItem(QString::fromUtf8("mm, kg, kg·mm²"));
+    unitsComboBox->addItem(QString::fromUtf8("m, kg, kg·m²"));
+    unitsComboBox->addItem(QString::fromUtf8("in, lb, lb·in²"));
+    unitsComboBox->addItem(QString::fromUtf8("ft, lb, lb·ft²"));
 
-    unitSystem = UnitSystem::getPreferredSystemName();
-    UnitsComboBox->setCurrentIndex(UnitSystem::getSystemIndex(unitSystem));
+    physicalLayout->addWidget(unitsComboBox);
 
-    QObject::connect(UnitsComboBox, &QComboBox::currentTextChanged, [=](const QString &text){
-        unitSystem = text.toStdString();
+    const int preferredSchemaIndex = UnitHelper::getPreferred();
+    
+    unitsComboBox->setCurrentIndex(UnitHelper::getComboIndex(preferredSchemaIndex));
+    unitsSchemaIndex = UnitHelper::getSchemaIndex(unitsComboBox->currentIndex(), preferredSchemaIndex);
+
+    QObject::connect(unitsComboBox, &QComboBox::currentIndexChanged, [=](int index) {
+        unitsSchemaIndex = UnitHelper::getSchemaIndex(index, preferredSchemaIndex);
         update(Gui::SelectionChanges());
     });
 
@@ -361,7 +364,6 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(inertiaProperties);
 
     currentMode = "Global";
-    unitSystem = UnitSystem::getPreferredSystemName();
 
     QTimer::singleShot(0, this, &TaskMassProperties::invoke);
 
@@ -597,39 +599,39 @@ void TaskMassProperties::tryupdate()
 
 
 
-    UnitConversions conv = UnitSystem::getConversions(unitSystem);
-    
-    auto setText = [](QLineEdit* edit, double value, double factor, int precision, const std::string& unit, const QString& suffix = QString()) {
-        QString text;
-        QTextStream stream(&text);
-        stream << QString::number(value * factor, 'f', precision) << " " << QString::fromUtf8(unit.c_str()) << suffix;
-        edit->setText(text);
+    auto setText = [&](QLineEdit* edit, double value, const Base::Unit& unit, int precision, const QString& suffix = QString()) {
+        Base::Quantity q {value, unit};
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, precision);
+        q.setFormat(format);
+
+        const std::string text = UnitHelper::translate(q, unitsSchemaIndex);
+        edit->setText(QString::fromUtf8(text.c_str()) + suffix);
         edit->setCursorPosition(0);
     };
 
-    setText(volumeEdit, info.volume, conv.volumeFactor, 6, conv.volumeUnit);
-    setText(massEdit, info.mass, conv.massFactor, 6, conv.massUnit);
-    setText(surfaceAreaEdit, info.surfaceArea, conv.areaFactor, 6, conv.areaUnit);
-    setText(densityEdit, info.density, conv.densityFactor, 2, conv.densityUnit, QLatin1String(" (Avg)"));
+    setText(volumeEdit, info.volume, Base::Unit::Volume, 6);
+    setText(massEdit, info.mass, Base::Unit::Mass, 6);
+    setText(surfaceAreaEdit, info.surfaceArea, Base::Unit::Area, 6);
+    setText(densityEdit, info.density, Base::Unit::Density, 2, QLatin1String(" (Avg)"));
 
-    setText(cogXText, info.cogX, conv.lengthFactor, 6, conv.lengthUnit);
-    setText(cogYText, info.cogY, conv.lengthFactor, 6, conv.lengthUnit);
-    setText(cogZText, info.cogZ, conv.lengthFactor, 6, conv.lengthUnit);
-    setText(covXText, info.covX, conv.lengthFactor, 6, conv.lengthUnit);
-    setText(covYText, info.covY, conv.lengthFactor, 6, conv.lengthUnit);
-    setText(covZText, info.covZ, conv.lengthFactor, 6, conv.lengthUnit);
+    setText(cogXText, info.cogX, Base::Unit::Length, 6);
+    setText(cogYText, info.cogY, Base::Unit::Length, 6);
+    setText(cogZText, info.cogZ, Base::Unit::Length, 6);
+    setText(covXText, info.covX, Base::Unit::Length, 6);
+    setText(covYText, info.covY, Base::Unit::Length, 6);
+    setText(covZText, info.covZ, Base::Unit::Length, 6);
 
-    setText(inertiaJoxText, info.inertiaJox, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJoyText, info.inertiaJoy, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJozText, info.inertiaJoz, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJxyText, info.inertiaJxy, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJzxText, info.inertiaJzx, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJzyText, info.inertiaJzy, conv.inertiaFactor, 6, conv.inertiaUnit);
+    setText(inertiaJoxText, info.inertiaJox, Base::Unit::Inertia, 6);
+    setText(inertiaJoyText, info.inertiaJoy, Base::Unit::Inertia, 6);
+    setText(inertiaJozText, info.inertiaJoz, Base::Unit::Inertia, 6);
+    setText(inertiaJxyText, info.inertiaJxy, Base::Unit::Inertia, 6);
+    setText(inertiaJzxText, info.inertiaJzx, Base::Unit::Inertia, 6);
+    setText(inertiaJzyText, info.inertiaJzy, Base::Unit::Inertia, 6);
 
-    setText(inertiaJxText, info.inertiaJx, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJyText, info.inertiaJy, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(inertiaJzText, info.inertiaJz, conv.inertiaFactor, 6, conv.inertiaUnit);
-    setText(axisInertiaText, info.axisInertia, conv.inertiaFactor, 6, conv.inertiaUnit);
+    setText(inertiaJxText, info.inertiaJx, Base::Unit::Inertia, 6);
+    setText(inertiaJyText, info.inertiaJy, Base::Unit::Inertia, 6);
+    setText(inertiaJzText, info.inertiaJz, Base::Unit::Inertia, 6);
+    setText(axisInertiaText, info.axisInertia, Base::Unit::Inertia, 6);
 }
 
 void TaskMassProperties::updateInertiaVisibility()

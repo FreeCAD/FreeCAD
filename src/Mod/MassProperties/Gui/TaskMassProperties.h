@@ -23,10 +23,11 @@
 #ifndef MASSPROPERTIES_TASKMASSPROPERTIES_H
 #define MASSPROPERTIES_TASKMASSPROPERTIES_H
 
+#include <QComboBox>
 #include <QLabel>
-#include <QString>
-#include <QListWidget>
 #include <QLineEdit>
+#include <QListWidget>
+#include <QString>
 #include <QWidget>
 
 #include <Gui/TaskView/TaskDialog.h>
@@ -73,6 +74,7 @@ private:
 
     QListWidget* listWidget = nullptr;
     QLineEdit* customEdit = nullptr;
+    QComboBox* unitsComboBox = nullptr;
 
     QLineEdit* volumeEdit = nullptr;
     QLineEdit* massEdit = nullptr;
@@ -107,6 +109,7 @@ private:
 
     bool selectingCustomCoordSystem = false;
     bool isUpdating = false;
+    int unitsSchemaIndex = -1;
 
 };
 

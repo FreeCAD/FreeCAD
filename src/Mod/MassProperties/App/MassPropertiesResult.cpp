@@ -140,64 +140,44 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
         principal = globalMassProps.PrincipalProperties();
 
         if (principal.HasSymmetryPoint()) {
-            data.principalAxisX = { 1.0, 0.0, 0.0 };
-            data.principalAxisY = { 0.0, 1.0, 0.0 };
-            data.principalAxisZ = { 0.0, 0.0, 1.0 };
+            data.principalAxisX = Base::Vector3d::UnitX;
+            data.principalAxisY = Base::Vector3d::UnitY;
+            data.principalAxisZ = Base::Vector3d::UnitZ;
         }
         else if (principal.HasSymmetryAxis()) {
             gp_Vec zVec = principal.FirstAxisOfInertia();
-            Vec3 Z = { zVec.X(), zVec.Y(), zVec.Z() };
+            Base::Vector3d zAxis(zVec.X(), zVec.Y(), zVec.Z());
+            zAxis.Normalize();
 
-            double lenZ = std::sqrt(Z.x * Z.x + Z.y * Z.y + Z.z * Z.z);
-            if (lenZ > 0.0) {
-                Z.x /= lenZ;
-                Z.y /= lenZ;
-                Z.z /= lenZ;
+            Base::Vector3d ref(0.0, 0.0, 1.0);
+            if (std::fabs(zAxis.z) > 0.9) {
+                ref = Base::Vector3d(0.0, 1.0, 0.0);
             }
 
+            Base::Vector3d xAxis = ref.Cross(zAxis);
+            xAxis.Normalize();
 
-            Vec3 ref = { 0.0, 0.0, 1.0 };
-            if (std::fabs(Z.z) > 0.9) {
-                ref = { 0.0, 1.0, 0.0 };
-            }
-            Vec3 X = { ref.y * Z.z - ref.z * Z.y,
-                       ref.z * Z.x - ref.x * Z.z,
-                       ref.x * Z.y - ref.y * Z.x };
+            Base::Vector3d yAxis = zAxis.Cross(xAxis);
+            yAxis.Normalize();
 
-            double lenX = std::sqrt(X.x*X.x + X.y*X.y + X.z*X.z);
-            if (lenX > 0.0) {
-                X.x /= lenX;
-                X.y /= lenX;
-                X.z /= lenX;
-            }
-
-            Vec3 Y = { Z.y*X.z - Z.z*X.y, Z.z*X.x - Z.x*X.z, Z.x*X.y - Z.y*X.x };
-            double lenY = std::sqrt(Y.x*Y.x + Y.y*Y.y + Y.z*Y.z);
-            if (lenY > 0.0) {
-                Y.x /= lenY;
-                Y.y /= lenY;
-                Y.z /= lenY;
-            }
-            
-            data.principalAxisZ = Z;
-            data.principalAxisX = X;
-            data.principalAxisY = Y;
+            data.principalAxisZ = zAxis;
+            data.principalAxisX = xAxis;
+            data.principalAxisY = yAxis;
         }
         else {
             gp_Vec v1 = principal.FirstAxisOfInertia();
             gp_Vec v2 = principal.SecondAxisOfInertia();
-            gp_Vec v3 = principal.ThirdAxisOfInertia();
-    
+
             gp_Dir Z(v1);
             gp_Dir X(v2);
             gp_Dir Y = Z.Crossed(X);
-    
-            data.principalAxisZ = { Z.X(), Z.Y(), Z.Z() };
-            data.principalAxisX = { X.X(), X.Y(), X.Z() };
-            data.principalAxisY = { Y.X(), Y.Y(), Y.Z() };
+
+            data.principalAxisZ = Base::Vector3d(Z.X(), Z.Y(), Z.Z());
+            data.principalAxisX = Base::Vector3d(X.X(), X.Y(), X.Z());
+            data.principalAxisY = Base::Vector3d(Y.X(), Y.Y(), Y.Z());
         }
 
-        auto axisMoment = [&](const Vec3& u) {
+        auto axisMoment = [&](const Base::Vector3d& u) {
             return u.x * (inertia(1, 1) * u.x + inertia(1, 2) * u.y + inertia(1, 3) * u.z)
                  + u.y * (inertia(2, 1) * u.x + inertia(2, 2) * u.y + inertia(2, 3) * u.z)
                  + u.z * (inertia(3, 1) * u.x + inertia(3, 2) * u.y + inertia(3, 3) * u.z);
@@ -256,9 +236,9 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
         jacobi.Vector(2, v2);
         jacobi.Vector(3, v3);
         
-        data.principalAxisX = { v1(1), v1(2), v1(3) };
-        data.principalAxisY = { v2(1), v2(2), v2(3) };
-        data.principalAxisZ = { v3(1), v3(2), v3(3) };
+        data.principalAxisX = Base::Vector3d(v1(1), v1(2), v1(3));
+        data.principalAxisY = Base::Vector3d(v2(1), v2(2), v2(3));
+        data.principalAxisZ = Base::Vector3d(v3(1), v3(2), v3(3));
     }
     else if (mode == "Custom") {
         if (!referenceDatum) {
@@ -366,9 +346,9 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
         jacobi.Vector(2, v2);
         jacobi.Vector(3, v3);
         
-        data.principalAxisX = { v1(1), v1(2), v1(3) };
-        data.principalAxisY = { v2(1), v2(2), v2(3) };
-        data.principalAxisZ = { v3(1), v3(2), v3(3) };
+        data.principalAxisX = Base::Vector3d(v1(1), v1(2), v1(3));
+        data.principalAxisY = Base::Vector3d(v2(1), v2(2), v2(3));
+        data.principalAxisZ = Base::Vector3d(v3(1), v3(2), v3(3));
     }
 
     return data;
