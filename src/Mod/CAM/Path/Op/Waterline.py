@@ -1871,7 +1871,6 @@ class ObjectWaterline(PathOp.ObjectOp):
             return commands
 
         caCnt = 0
-        toolRadius = -self.radius
 
         caLen = len(CUTAREAS)
         lastCA = caLen - 1
