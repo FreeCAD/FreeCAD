@@ -1910,9 +1910,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                             "Depth {}: Clear area vanished (below pocket). skipping.".format(csHght)
                         )
                         cont = False
-                except:
+                except Exception as e:
                     # If the math fails (FloatingPointError) or the area is Null
-                    Path.Log.debug("Depth {}: Invalid geometry after cut. skipping.".format(csHght))
+                    Path.Log.debug("Depth {}: Invalid geometry after cut. skipping.".format(csHght,str(e)))
                     cont = False
 
             if cont:
@@ -2083,7 +2083,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 if is_threeD:
                     # Ballend and Bullnose End-Mills
                     # h is calculated, then nudged by the vertical bias
-                    h_base = (max_h / (num_slices - 1)) * i
+                    h_base = (max_h / (num_slices - 1)) * i if num_slices > 1 else 0.0
                     h = h_base + h_bias_nudge
 
                     # r_eff is calculated from base h, then biased horizontally
@@ -2303,7 +2303,6 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         commands.append(Path.Command("N (Cut Area {}.)".format(round(csHght, 2))))
 
-        # start = 0
         start = 1
         if csHght < obj.IgnoreOuterAbove or obj.CutPattern == "Offset":
             start = 0
@@ -2353,8 +2352,8 @@ class ObjectWaterline(PathOp.ObjectOp):
                 PGG.setDebugObjectsGroup(self.tempGroup)
             self.tmpCOM = PGG.getCenterOfPattern()
             pathGeom = PGG.generatePathGeometry()
-            if not pathGeom or not len(pathGeom.Edges):
-                # Empty pathGeom from small areas - Skip (nothing to see here)
+            if not pathGeom or (hasattr(pathGeom, "Edges") and not pathGeom.Edges):
+                # Empty pathGeom from small areas - Skip
                 return commands
             pathGeom.translate(FreeCAD.Vector(0.0, 0.0, csHght - pathGeom.BoundBox.ZMin))
 
