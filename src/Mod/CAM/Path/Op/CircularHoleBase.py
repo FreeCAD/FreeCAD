@@ -116,7 +116,7 @@ class ObjectOp(PathOp.ObjectOp):
                 )
             )
             return shape.BoundBox.XLength
-        except Part.OCCError as e:
+        except Exception as e:
             Path.Log.error(e)
 
         return 0
