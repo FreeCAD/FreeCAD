@@ -1912,7 +1912,9 @@ class ObjectWaterline(PathOp.ObjectOp):
                         cont = False
                 except Exception as e:
                     # If the math fails (FloatingPointError) or the area is Null
-                    Path.Log.debug("Depth {}: Invalid geometry after cut. skipping.".format(csHght,str(e)))
+                    Path.Log.debug(
+                        "Depth {}: Invalid geometry after cut. skipping.".format(csHght, str(e))
+                    )
                     cont = False
 
             if cont:
