@@ -40,6 +40,7 @@
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Gui/Inventor/So3DAnnotation.h>
 
 #include <Base/Exception.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
@@ -884,7 +885,7 @@ void EditModeCoinManager::updateGeometryLayersConfiguration()
 void EditModeCoinManager::createEditModeInventorNodes()
 {
     // 1 - Create the edit root node
-    editModeScenegraphNodes.EditRoot = new SoSeparator;
+    editModeScenegraphNodes.EditRoot = new Gui::So3DAnnotation;
     editModeScenegraphNodes.EditRoot->ref();  // Node is unref in the destructor of EditModeCoinManager
     editModeScenegraphNodes.EditRoot->setName("Sketch_EditRoot");
     ViewProviderSketchCoinAttorney::addNodeToRoot(viewProvider, editModeScenegraphNodes.EditRoot);
