@@ -217,7 +217,7 @@ void DlgSettingsDocumentImp::onCountBackupFilesChanged(int state)
 
 void DlgSettingsDocumentImp::onSaveBackupFilesChanged(int state)
 {
-    if(state == Qt::CheckState::Unchecked) {
+    if (state == Qt::CheckState::Unchecked) {
         ui->prefCountBackupFiles->setEnabled(false);
         if (auto* le = ui->prefCountBackupFiles->findChild<QLineEdit*>()) {
             // deselects the value and removes the highlight which doesn't clear otherwise
@@ -228,9 +228,10 @@ void DlgSettingsDocumentImp::onSaveBackupFilesChanged(int state)
                 le->clearFocus();
             });
         }
-    } else {
+    }
+    else {
         ui->prefCountBackupFiles->setEnabled(true);
-        if(ui->prefCountBackupFiles->value() == 0) {
+        if (ui->prefCountBackupFiles->value() == 0) {
             ui->prefCountBackupFiles->setValue(1);
         }
     }
