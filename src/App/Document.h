@@ -1329,6 +1329,10 @@ protected:
      */
     void writeObjects(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
 
+    void writeObjectDeps(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectType(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectData(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+
     /**
      * @brief Save the document to a file.
      *
