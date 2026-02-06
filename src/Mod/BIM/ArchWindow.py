@@ -394,6 +394,7 @@ class _Window(ArchComponent.Component):
         self.vshapes = []
         shapes = []
         rotdata = None
+        transdata = None
         for i in range(int(len(obj.WindowParts) / 5)):
             wires = []
             hinge = None
@@ -439,7 +440,11 @@ class _Window(ArchComponent.Component):
                             FreeCAD.Vector(0, 0, 1)
                         )
                         norm = norm.negative()
-                if hinge and omode:
+                if hinge is not None and omode:
+                    # A new movement is defined for this part, clear any inherited sticky movement
+                    # data
+                    rotdata = None
+                    transdata = None
                     opening = None
                     if hasattr(obj, "Opening"):
                         if obj.Opening:
@@ -542,9 +547,20 @@ class _Window(ArchComponent.Component):
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
                         elif omode == 9:  # sliding
-                            pass
-                        elif omode == 10:  # -sliding
-                            pass
+                            # Direction: Vertex 0 -> Vertex 1
+                            travel = ev2.sub(ev1)
+                            if opening:
+                                transdata = [travel.multiply(opening)]
+                            # 2D Symbol: Line from current position indicating movement
+                            # ISO 7519: arrow or line. Use line for simplicity.
+                            ssymbols.append(Part.LineSegment(ev1, ev2).toShape())
+                        elif omode == 10:  # -sliding (inverted)
+                            # Direction: Vertex 1 -> Vertex 0
+                            travel = ev1.sub(ev2)
+                            if opening:
+                                transdata = [travel.multiply(opening)]
+                            # 2D Symbol
+                            ssymbols.append(Part.LineSegment(ev2, ev1).toShape())
                 exv = FreeCAD.Vector()
                 zov = FreeCAD.Vector()
                 V = 0
@@ -607,6 +623,11 @@ class _Window(ArchComponent.Component):
                                 shape = shape.cut(self.boxes)
                 if rotdata:
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
+
+                # Apply translation for sliding parts if it exists
+                if transdata:
+                    shape.translate(transdata[0])
+
                 shapes.append(shape)
                 self.sshapes.extend(ssymbols)
                 self.vshapes.extend(vsymbols)
@@ -1094,6 +1115,17 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             )
             menu.addAction(actionInvertHinge)
 
+        # Check if this is a sliding window/door
+        parts_str = "".join(vobj.Object.WindowParts)
+        if "Mode9" in parts_str or "Mode10" in parts_str:
+            actionInvertSlide = QtGui.QAction(
+                QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
+                translate("Arch", "Invert Sliding Direction"),
+                menu,
+            )
+            actionInvertSlide.triggered.connect(self.invertSlide)
+            menu.addAction(actionInvertSlide)
+
         super().contextMenuAddToggleSubcomponents(menu)
 
     def invertOpening(self):
@@ -1127,6 +1159,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         # Also invert opening direction, so the door still opens towards
         # the same side of the wall
         self.invertOpening()
+
+    def invertSlide(self):
+        """Swaps the direction of a sliding door/window"""
+        pairs = [["Mode9", "Mode10"]]
+        self.invertPairs(pairs)
 
     def invertPairs(self, pairs):
         """scans the WindowParts of this window and swaps the two elements of each pair, if found"""

@@ -35,6 +35,7 @@ WindowPresets = [
     "Sash 2-pane",
     "Sliding 2-pane",
     "Simple door",
+    "Sliding door",
     "Glass door",
     "Sliding 4-pane",
     "Awning",
@@ -484,6 +485,13 @@ def makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, plac
 
             wp = doorFrame(s, width, height, h1, w1, o1)
             wp.extend(["Door", "Solid panel", "Wire1,Edge8,Mode1", str(w2), str(o2) + "+V"])
+
+        elif windowtype == "Sliding door":
+            wp = doorFrame(s, width, height, h1, w1, o1)
+            # Use Wire1 as the inner opening
+            # Use Edge 1 (the bottom edge of the frame) as the track
+            # Use Mode 9 (sliding)
+            wp.extend(["Door", "Solid panel", "Wire1,Edge1,Mode9", str(w2), str(o2) + "+V"])
 
         elif windowtype == "Glass door":
 
