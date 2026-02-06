@@ -39,7 +39,6 @@
 
 #include <Base/Observer.h>
 #include <Base/Parameter.h>
-#include <Base/ProgressIndicator.h>
 
 // forward declarations
 using PyObject = struct _object;
@@ -855,9 +854,6 @@ public:
     bool hasLinksTo(const DocumentObject *obj) const;
     /// @}
 
-    /// Gets the base progress indicator instance.
-    Base::ProgressIndicator& getProgressIndicator() { return _progressIndicator; }
-
     friend class App::Document;
 
 protected:
@@ -1019,8 +1015,6 @@ private:
     int _activeTransactionID{0};
     int _activeTransactionGuard{0};
     bool _activeTransactionTmpName{false};
-
-    Base::ProgressIndicator _progressIndicator;
 
     static Base::ConsoleObserverStd  *_pConsoleObserverStd;
     static Base::ConsoleObserverFile *_pConsoleObserverFile;
