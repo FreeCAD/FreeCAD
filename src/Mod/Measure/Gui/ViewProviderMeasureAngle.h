@@ -69,11 +69,15 @@ public:
 private:
     // Fields
     SoSFFloat fieldAngle;  // radians.
-    SoSFVec3f fieldNormalPosition1;
-    SoSFVec3f fieldNormalPosition2;
-    SoSFMatrix fieldNormalMatrix;  // local to global
 
     SbMatrix getMatrix();
+    bool findCommonEdge(
+        const App::DocumentObject* obj1,
+        const std::string& subName1,
+        const App::DocumentObject* obj2,
+        const std::string& subName2,
+        gp_Pnt& outOrigin
+    );
 };
 
 

@@ -233,7 +233,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
     Base::Vector3d vec2;
     getVec(*ob2, subs2.at(0), vec2);
 
-    Angle.setValue(Base::toDegrees(vec1.GetAngle(vec2)));
+    Angle.setValue(Base::toDegrees(M_PI - vec1.GetAngle(vec2)));
 
     return DocumentObject::StdReturn;
 }

@@ -82,6 +82,15 @@
 #include "SoScreenSpaceScale.h"
 #include "ViewProviderMeasureAngle.h"
 
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Shape.hxx>
+
+#include <Mod/Part/App/PartFeature.h>
+
+#include <BRep_Tool.hxx>
+
 
 using namespace MeasureGui;
 using namespace Measure;
@@ -91,6 +100,54 @@ gp_Lin getLine(gp_Vec& vec, gp_Vec& origin)
     gp_Pnt tempOrigin;
     tempOrigin.SetXYZ(origin.XYZ());
     return gp_Lin(tempOrigin, gp_Dir(vec));
+}
+
+bool ViewProviderMeasureAngle::findCommonEdge(
+    const App::DocumentObject* obj1,
+    const std::string& subName1,
+    const App::DocumentObject* obj2,
+    const std::string& subName2,
+    gp_Pnt& outOrigin
+)
+{
+    if (!obj1 || !obj2) {
+        return false;
+    }
+    try {
+        TopoDS_Shape s1
+            = Part::Feature::getShape(obj1, Part::ShapeOption::NeedSubElement, subName1.c_str());
+        TopoDS_Shape s2
+            = Part::Feature::getShape(obj2, Part::ShapeOption::NeedSubElement, subName2.c_str());
+        if (s1.IsNull() || s2.IsNull()) {
+            return false;
+        }
+
+        TopExp_Explorer exp1(s1, TopAbs_EDGE);
+        TopExp_Explorer exp2(s2, TopAbs_EDGE);
+        while (exp1.More()) {
+            auto ed1 = TopoDS::Edge(exp1.Current());
+            exp2.Init(s2, TopAbs_EDGE);
+            while (exp2.More()) {
+                auto ed2 = TopoDS::Edge(exp2.Current());
+                if (ed1.IsSame(ed2)) {
+                    // calculate outOrigin from the common edge
+                    TopoDS_Vertex v1, v2;
+                    TopExp::Vertices(ed1, v1, v2);
+                    outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
+                    return true;
+                }
+                exp2.Next();
+            }
+            exp1.Next();
+        }
+
+        // No common edge found
+        return false;
+    }
+    catch (...) {
+        Base::Console().warning("Cannot find common edge\n");
+        return false;
+    }
 }
 
 SbMatrix ViewProviderMeasureAngle::getMatrix()
@@ -125,7 +182,6 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
     gp_Lin lin2 = getLine(vector2, loc2);
 
     SbMatrix dimSys = SbMatrix();
-    double radius;
 
     if (vector1.IsParallel(vector2, Precision::Angular())) {
         // take first point project it onto second vector.
@@ -191,58 +247,97 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
             0.0,
             1.0
         );
-        dimSys = dimSys.transpose();
 
-        radius = midPointProjection.Magnitude();
+        dimSys = dimSys.transpose();
     }
     else {
-        Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
-        Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
-
-        GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
-
-        if (extrema.NbExtrema() < 1) {
-            throw Base::RuntimeError("Could not get extrema");
-        }
-
-        gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
-        extrema.Points(1, extremaPoint1, extremaPoint2);
-
-        bool linesIntersect = extremaPoint1.Distance(extremaPoint2) < Precision::Confusion();
-
-        if (linesIntersect) {
-            dimensionOriginPoint = extremaPoint1;
-        }
-        else {
-            dimensionOriginPoint.SetXYZ(loc2.XYZ());
-        }
-
+        gp_Pnt dimensionOriginPoint;
+        dimensionOriginPoint.SetCoord(0, 0, 0);
+        bool originFound = false;
         gp_Vec thirdPoint;
-        gp_Vec originVector(dimensionOriginPoint.XYZ());
 
-        if (linesIntersect) {
-            gp_Vec extrema2Vector(extremaPoint2.XYZ());
-            double radius = (loc1 - originVector).Magnitude();
-            double legOne = (extrema2Vector - originVector).Magnitude();
-            if (legOne > Precision::Confusion()) {
-                double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
-                gp_Vec projectionVector(vector2);
-                projectionVector.Normalize();
-                projectionVector *= legTwo;
-                thirdPoint = extrema2Vector + projectionVector;
+        std::vector<std::string> sub1 = measurement->Element1.getSubValues();
+        std::vector<std::string> sub2 = measurement->Element2.getSubValues();
+        bool isFaceSelection
+            = (!sub1.empty() && sub1[0].find("Face") != std::string::npos && !sub2.empty()
+               && sub2[0].find("Face") != std::string::npos);
+
+        if (isFaceSelection) {
+            originFound = findCommonEdge(
+                measurement->Element1.getValue(),
+                sub1[0],
+                measurement->Element2.getValue(),
+                sub2[0],
+                dimensionOriginPoint
+            );
+            if (originFound) {
+                thirdPoint = gp_Vec(dimensionOriginPoint.XYZ()) + vector2.Normalized();
+            }
+        }
+
+        if (!originFound) {
+            Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
+            Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
+
+            GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
+
+            if (extrema.NbExtrema() < 1) {
+                throw Base::RuntimeError("Could not get extrema");
+            }
+
+            gp_Pnt extremaPoint1, extremaPoint2;
+            extrema.Points(1, extremaPoint1, extremaPoint2);
+
+            bool linesIntersect = extremaPoint1.Distance(extremaPoint2) < Precision::Confusion();
+
+            if (linesIntersect) {
+                dimensionOriginPoint = extremaPoint1;
+            }
+            else {
+                dimensionOriginPoint.SetXYZ(loc2.XYZ());
+            }
+
+            gp_Vec originVector(dimensionOriginPoint.XYZ());
+
+            if (linesIntersect) {
+                gp_Vec extrema2Vector(extremaPoint2.XYZ());
+                double radiusCalc = (loc1 - originVector).Magnitude();
+                double legOne = (extrema2Vector - originVector).Magnitude();
+                if (legOne > Precision::Confusion() && radiusCalc > legOne) {
+                    double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
+                    gp_Vec projectionVector(vector2);
+                    projectionVector.Normalize();
+                    projectionVector *= legTwo;
+                    thirdPoint = extrema2Vector + projectionVector;
+                }
+                else {
+                    thirdPoint = originVector + vector2.Normalized();
+                }
             }
             else {
                 thirdPoint = originVector + vector2.Normalized();
             }
         }
-        else {
-            thirdPoint = originVector + vector2.Normalized();
-        }
 
+        gp_Vec originVector(dimensionOriginPoint.XYZ());
         gp_Vec xAxis = (loc1 - originVector).Normalized();
-        gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
-        gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
-        gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
+        gp_Vec zAxis;
+        gp_Vec yAxis;
+
+        if (originFound) {
+            zAxis = vector1.Crossed(vector2);
+            if (zAxis.Magnitude() < Precision::Confusion()) {
+                zAxis = xAxis.Crossed(vector1);
+            }
+            zAxis.Normalize();
+            yAxis = zAxis.Crossed(xAxis).Normalized();
+            xAxis = zAxis.Crossed(yAxis).Normalized();
+        }
+        else {
+            gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
+            zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
+            yAxis = zAxis.Crossed(xAxis).Normalized();
+        }
 
         dimSys = SbMatrix(
             xAxis.X(),
@@ -408,27 +503,23 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     auto tipCalc = new SoCalculator();
     tipCalc->a.connectFrom(&calculatorRadius->oa);
     tipCalc->b.connectFrom(&fieldAngle);
-    tipCalc->expression.setValue("oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0)");
+
+    // oC is used as the local origin
+    tipCalc->expression.setValue(
+        "oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0); oC = vec3f(0,0,0)"
+    );
 
     // set arrow position
     pLeftArrowTrans->translation.connectFrom(&tipCalc->oA);
     pRightArrowTrans->translation.connectFrom(&tipCalc->oB);
 
-    auto leftArrowGlobal = new SoTransformVec3f();
-    leftArrowGlobal->matrix.connectFrom(&fieldNormalMatrix);
-    leftArrowGlobal->vector.connectFrom(&tipCalc->oA);
-
-    auto rightArrowGlobal = new SoTransformVec3f();
-    rightArrowGlobal->matrix.connectFrom(&fieldNormalMatrix);
-    rightArrowGlobal->vector.connectFrom(&tipCalc->oB);
-
     auto normalsConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
 
-    normalsConcat->input[0]->connectFrom(&fieldNormalPosition1);
-    normalsConcat->input[1]->connectFrom(&leftArrowGlobal->point);
+    normalsConcat->input[0]->connectFrom(&tipCalc->oC);
+    normalsConcat->input[1]->connectFrom(&tipCalc->oA);
 
-    normalsConcat->input[2]->connectFrom(&fieldNormalPosition2);
-    normalsConcat->input[3]->connectFrom(&rightArrowGlobal->point);
+    normalsConcat->input[2]->connectFrom(&tipCalc->oC);
+    normalsConcat->input[3]->connectFrom(&tipCalc->oB);
 
     pNormalsCoords->point.connectFrom(normalsConcat->output);
 
@@ -441,7 +532,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pNormalsSeparator->addChild(pNormalsCoords);
     pNormalsSeparator->addChild(pNormalsLines);
 
-    pGlobalSeparator->addChild(pNormalsSeparator);
+    pLineSeparator->addChild(pNormalsSeparator);
 }
 
 void ViewProviderMeasureAngle::redrawAnnotation()
@@ -454,20 +545,10 @@ void ViewProviderMeasureAngle::redrawAnnotation()
     ArrowHeight.setValue(Measure::Preferences::defaultArrowHeight());
     ArrowRadius.setValue(Measure::Preferences::defaultArrowRadius());
 
-    auto loc1 = obj->location1();
-    auto loc2 = obj->location2();
-
-    // Set positions for normal line start points
-    fieldNormalPosition1.setValue(SbVec3f(loc1.X(), loc1.Y(), loc1.Z()));
-    fieldNormalPosition2.setValue(SbVec3f(loc2.X(), loc2.Y(), loc2.Z()));
-
     // Set matrix
     try {
         SbMatrix matrix = getMatrix();
         pcTransform->setMatrix(matrix);
-
-        // matrix for local to global space for arrow tip
-        fieldNormalMatrix.setValue(matrix);
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
