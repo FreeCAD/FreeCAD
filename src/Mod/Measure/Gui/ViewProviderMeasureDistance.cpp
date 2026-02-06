@@ -531,5 +531,3 @@ void ViewProviderMeasureDistance::onChanged(const App::Property* prop)
 
     ViewProviderMeasureBase::onChanged(prop);
 }
-
-

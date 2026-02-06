@@ -112,13 +112,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Saved label offset for the measurement"
     );
-    ADD_PROPERTY_TYPE(
-        LabelPositionCustom,
-        (false),
-        agroup,
-        App::Prop_None,
-        "Use the saved label offset"
-    );
+    ADD_PROPERTY_TYPE(LabelPositionCustom, (false), agroup, App::Prop_None, "Use the saved label offset");
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();

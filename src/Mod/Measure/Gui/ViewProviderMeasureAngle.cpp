@@ -357,5 +357,3 @@ Measure::MeasureAngle* ViewProviderMeasureAngle::getMeasureAngle()
     }
     return feature;
 }
-
-
