@@ -413,8 +413,7 @@ class PathGeometryGenerator:
 
             # process each wire within face
             for f in offsetArea.Faces:
-                wires = wires + f.Wires
-                # wires.extend(f.Wires)
+                wires.extend(f.Wires)
             offset -= self.cutOut
 
         return wires
@@ -1273,9 +1272,8 @@ def _makeSTL(model, obj, ocl, model_type=None):
 
         # If the user has set a simplification value, we reduce the mesh density here.
         if hasattr(obj, "MeshSimplification") and obj.MeshSimplification > 0:
-            reduction_percent = obj.MeshSimplification
-            if reduction_percent > 99.0:
-                reduction_percent = 99.0  # Safety cap
+            allowed_max = 99.0
+            reduction_percent = min(obj.MeshSimplification, allowed_max)
 
             reduction_decimal = reduction_percent / 100.0
             tolerance = 0.001

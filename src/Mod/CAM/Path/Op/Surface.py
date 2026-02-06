@@ -52,6 +52,7 @@ import Path.Op.SurfaceSupport as PathSurfaceSupport
 import PathScripts.PathUtils as PathUtils
 import math
 import time
+from itertools import groupby
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -533,7 +534,7 @@ class ObjectSurface(PathOp.ObjectOp):
             "HandleMultipleFeatures": "Collectively",
             "PatternCenterAt": "CenterOfMass",
             "GapSizes": "No gaps identified.",
-            "StepOver": 100.0,
+            "StepOver": 50.0,
             "CutPatternAngle": 0.0,
             "CutterTilt": 0.0,
             "StartIndex": 0.0,
@@ -1487,17 +1488,8 @@ class ObjectSurface(PathOp.ObjectOp):
         if not points:
             return []
 
-        # Create a new list, starting with the first point.
-        unique_points = [points[0]]
-
-        # Iterate through the rest of the points, only adding them if they are
-        # different from the last point that was added.
-        for i in range(1, len(points)):
-            if points[i] != unique_points[-1]:
-                unique_points.append(points[i])
-
-        # All subsequent operations now use the clean, de-duplicated list.
-        points = unique_points
+        # de-duplicated the list of points
+        points = [p for p, _ in groupby(points)]
 
         if obj.OptimizeLinearPaths:
             points = PathUtils.simplify3dLine(points, tolerance=obj.LinearDeflection.Value)
@@ -2416,11 +2408,8 @@ class ObjectSurface(PathOp.ObjectOp):
                 p.z += depth_offset
 
         zs = [p.z for p in pdcLine]
-        if not zs:
-            minZ = maxZ = 0.0
-        else:
-            minZ = min(zs)
-            maxZ = max(zs)
+        minZ = min(zs, default=0.0)
+        maxZ = max(zs, default=0.0)
 
         return (pdcLine, minZ, maxZ)
 
