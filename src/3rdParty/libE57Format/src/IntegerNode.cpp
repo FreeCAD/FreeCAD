@@ -134,10 +134,10 @@ ignored). If the IntegerNode is to be used in a prototype, it is recommended to 
 be true).
 @pre minimum <= value <= maximum
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorValueOutOfBounds
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorValueOutOfBounds (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see IntegerNode::value, Node, CompressedVectorNode, CompressedVectorNode::prototype
@@ -211,7 +211,7 @@ bool IntegerNode::isAttached() const
 
 @return integer value stored.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal  All objects in undocumented state
 
 @see IntegerNode::minimum, IntegerNode::maximum
@@ -229,7 +229,7 @@ int64_t IntegerNode::value() const
 
 @return The declared minimum that the value may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see IntegerNode::value
@@ -247,7 +247,7 @@ int64_t IntegerNode::minimum() const
 
 @return The declared maximum that the value may take.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see IntegerNode::value
@@ -303,7 +303,7 @@ The handle @a n must be for an underlying IntegerNode, otherwise an exception is
 that need to avoid the exception, use Node::type() to determine the actual type of the @a n before
 downcasting. This function must be explicitly called (c++ compiler cannot insert it automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), IntegerNode::operator Node()
 */

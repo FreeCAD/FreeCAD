@@ -1933,7 +1933,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1330"/>
       <source>Toggle Edge Visibility</source>
-      <translation>Afficher/masquer les arrêtes invisibles</translation>
+      <translation>Activer/désactiver la visibilité des arêtes</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1331"/>
@@ -2392,7 +2392,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1148"/>
       <source>Add distanceX dimension</source>
-      <translation>Ajouter une cote horizontale</translation>
+      <translation>Insérer une cote horizontale</translation>
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1155"/>
@@ -2457,7 +2457,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../CommandCreateDims.cpp" line="2252"/>
       <source>Create dimension</source>
-      <translation>Créer une cote</translation>
+      <translation>Insérer une cote</translation>
     </message>
     <message>
       <location filename="../../TaskHatch.cpp" line="200"/>
@@ -5108,12 +5108,13 @@ extrémités plates ou carrées sont utiles pour utiliser les dessins comme guid
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="482"/>
       <source>Fills out template date fields using ccyy-mm-dd format automatically, even if that is not the standard format for the current locale.</source>
-      <translation>Remplit automatiquement les champs de date du modèle au format ssaa-mm-jj, même si ce n'est pas le format standard pour les paramètres régionaux en cours.</translation>
+      <translation>Remplit automatiquement les champs de date du modèle au format ssaa-mm-jj, même si ce n'est pas le format standard pour les
+paramètres régionaux en cours.</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
       <source>Enforce ISO 8601 date format</source>
-      <translation>Forcer le format de date ISO 8601</translation>
+      <translation>Appliquer le format de date ISO 8601</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="550"/>
@@ -5928,7 +5929,7 @@ Les modifications n'ont aucun effet sur les cotes existantes.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="676"/>
       <source>Pattern name</source>
-      <translation>Répertoire du fichier PAT</translation>
+      <translation>Nom du motif</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="688"/>
@@ -6169,7 +6170,7 @@ Sinon, une méthode plus précise sera utilisée.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="229"/>
       <source>Legacy symbol scaling</source>
-      <translation>Mise à l'échelle des symboles hérités</translation>
+      <translation>Échelle d'origine des symboles</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="259"/>
@@ -6189,7 +6190,7 @@ Sinon, une méthode plus précise sera utilisée.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="370"/>
       <source>Template edit mark</source>
-      <translation>Taille des marques d'édition du modèle</translation>
+      <translation>Taille des repères</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="405"/>
@@ -6209,7 +6210,7 @@ Sinon, une méthode plus précise sera utilisée.</translation>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="389"/>
       <source>Size of template field click handles</source>
-      <translation>Taille des poignées des balises du modèle</translation>
+      <translation>Taille des repères des champs personnalisables</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawScale.ui" line="412"/>
@@ -7535,7 +7536,7 @@ Utilise les angles par défaut si cette option n'est pas cochée.</translation>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="97"/>
       <source>Pattern name</source>
-      <translation>Répertoire du fichier PAT</translation>
+      <translation>Nom du motif</translation>
     </message>
     <message>
       <location filename="../../TaskGeomHatch.ui" line="104"/>
@@ -8707,7 +8708,7 @@ using the given X/Y spacings</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Stacking</source>
-      <translation>Empilement</translation>
+      <translation>Position dans la pile</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -9869,7 +9870,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="1404"/>
       <source>Dimension tools</source>
-      <translation>Outils de dimensionnement</translation>
+      <translation>Outils de cotation</translation>
     </message>
   </context>
   <context>

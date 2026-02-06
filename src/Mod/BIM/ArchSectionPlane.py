@@ -142,7 +142,7 @@ def getCutShapes(
                 shapes.extend(v1.Solids)
                 objectShapes.append((k, v1.Solids))
             else:
-                print("ArchSectionPlane: Fusing Arch objects produced non-solid results")
+                print("ArchSectionPlane: Fusing BIM objects produced non-solid results")
                 shapes.append(v1)
                 objectShapes.append((k, [v1]))
     else:

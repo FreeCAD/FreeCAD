@@ -20,16 +20,13 @@
  *                                                                          *
  ****************************************************************************/
 
-
 #include <sstream>
-
 
 #include <Base/PlacementPy.h>
 
-// inclusion of the generated files (generated out of ViewProviderLinkPy.pyi)
+// generated out of ViewProviderLink.pyi
 #include "ViewProviderLinkPy.h"
 #include "ViewProviderLinkPy.cpp"
-
 
 using namespace Gui;
 

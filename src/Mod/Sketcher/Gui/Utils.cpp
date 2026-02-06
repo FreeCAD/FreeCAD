@@ -750,16 +750,11 @@ void SketcherGui::ConstraintToAttachment(
 void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
 {
     using std::numbers::pi;
-    double angleModPi = std::fmod(angle, pi);
-    double angleModHalfPi = std::fmod(angle, pi / 2);
 
-    if (fabs(angleModPi - pi) < Precision::Confusion()
-        || fabs(angleModPi + pi) < Precision::Confusion()
-        || fabs(angleModPi) < Precision::Confusion()) {
+    if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
     }
-    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
-             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+    else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
     }
     else {
