@@ -1853,25 +1853,16 @@ bool Document::saveToFile(const char* filename) const
     }
 
     if (policy) {
-        //CreateBackupFiles is a legacy parameter, can be disabled even if the number of backup files is positive
-        //if backups were disabled the number of backups should be set to zero and then the parameter should be deleted
-        bool backup = GetApplication()
-                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                          ->GetBool("CreateBackupFiles", true);
-        if (backup == false) {
-            GetApplication()
-                .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-                ->SetInt("CountBackupFiles", 0);
-        }
-        GetApplication()
-            .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
-            ->RemoveBool("CreateBackupFiles");
-
-
         // if saving the project data succeeded rename to the actual file name
         int count_bak = static_cast<int>(GetApplication()
                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
                             ->GetInt("CountBackupFiles", 1));
+        bool backup = GetApplication()
+                          .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")
+                          ->GetBool("CreateBackupFiles", true);
+        if (!backup) {
+            count_bak = -1;
+        }
         bool useFCBakExtension =
             GetApplication()
                 .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document")

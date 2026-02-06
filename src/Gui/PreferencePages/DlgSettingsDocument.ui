@@ -357,9 +357,21 @@ Common sizes are 128, 256 and 512.</string>
          <number>0</number>
         </property>
         <item>
-         <widget class="QLabel" name="label_7">
+         <widget class="Gui::PrefCheckBox" name="prefSaveBackupFiles">
+          <property name="toolTip">
+           <string>How many backup files will be kept when saving document</string>
+          </property>
           <property name="text">
-           <string>Number of backup files to keep when resaving document</string>
+           <string>Maximum number of backup files to keep when resaving document</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CreateBackupFiles</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Document</cstring>
           </property>
          </widget>
         </item>
