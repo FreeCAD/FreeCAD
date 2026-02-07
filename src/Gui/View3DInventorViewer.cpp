@@ -1729,7 +1729,7 @@ void View3DInventorViewer::savePicture(int width, int height, int sample, const 
     if (useGrabFramebuffer) {
         auto self = const_cast<View3DInventorViewer*>(this);  // NOLINT
         img = self->grabFramebuffer();
-        img = img.mirrored();
+        img = img.flipped();
         img = img.scaledToWidth(width);
         return;
     }

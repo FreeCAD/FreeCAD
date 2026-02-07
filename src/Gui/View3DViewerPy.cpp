@@ -693,7 +693,7 @@ Py::Object View3DInventorViewerPy::grabFramebuffer(const Py::Tuple& args)
 
     PythonWrapper wrap;
     wrap.loadGuiModule();
-    return wrap.fromQImage(img.mirrored());
+    return wrap.fromQImage(img.flipped());
 }
 
 Py::Object View3DInventorViewerPy::setOverrideMode(const Py::Tuple& args)

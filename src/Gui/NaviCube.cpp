@@ -534,7 +534,7 @@ void NaviCubeImplementation::createCubeFaceTextures()
         if (m_LabelTextures[pickId].texture) {
             delete m_LabelTextures[pickId].texture;
         }
-        m_LabelTextures[pickId].texture = new QOpenGLTexture(image.mirrored());
+        m_LabelTextures[pickId].texture = new QOpenGLTexture(image.flipped());
         m_LabelTextures[pickId].texture->setMaximumAnisotropy(4.0);
         m_LabelTextures[pickId].texture->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
         m_LabelTextures[pickId].texture->setMagnificationFilter(QOpenGLTexture::Linear);
