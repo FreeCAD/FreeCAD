@@ -761,7 +761,7 @@ def makeBoundBoxFace(bBox, offset=0.0, zHeight=0.0):
 
 
 # Method to combine faces if connected
-def combineHorizontalFaces(faces):
+def combineHorizontalFaces(faces, keepOrder=False):
     """combineHorizontalFaces(faces)...
     This function successfully identifies and combines multiple connected faces and
     works on multiple independent faces with multiple connected faces within the list.
@@ -770,6 +770,8 @@ def combineHorizontalFaces(faces):
 
     Attempts to do the same shape connecting failed with TechDraw.findShapeOutline() and
     Path.Geom.combineConnectedShapes(), so this algorithm was created.
+
+    If keepOrder is True, returns shapes with original order
     """
     horizontal = list()
     offset = 10.0
@@ -845,5 +847,19 @@ def combineHorizontalFaces(faces):
                 horizontal.append(f)
         else:
             horizontal = outer
+
+    # restore order
+    if keepOrder:
+        ordered = [None] * len(faces)
+        for face in horizontal:
+            for i, f in enumerate(faces):
+                if face.isInside(f.Vertexes[0].Point, Tolerance, False):
+                    ordered[i] = face
+                    break
+        ordered = [x for x in ordered if x]
+        if len(ordered) == len(horizontal):
+            horizontal = ordered
+        else:
+            Path.Log.info(translate("PathGeom", "Can not restore order of faces."))
 
     return horizontal
