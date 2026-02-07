@@ -45,7 +45,7 @@ class ArchSketch(ArchSketchObject):
             pass
         else:
             if "Hosts" not in prop:
-                # inherited properties of Link are not in PropertiesList: 
+                # inherited properties of Link are not in PropertiesList:
                 old_hosts = getattr(fp, "Hosts", [])
                 fp.addProperty(
                     "App::PropertyLinkList",
