@@ -562,6 +562,7 @@ FileOptionsDialog::FileOptionsDialog(QWidget* parent, Qt::WindowFlags fl)
     extensionButton->setText(tr("Extended"));
 
     setOption(QFileDialog::DontUseNativeDialog);
+    setDirectory(FileDialog::getWorkingDirectory());
 
     // search for the grid layout and add the new button
     auto grid = this->findChild<QGridLayout*>();
@@ -1097,12 +1098,12 @@ SelectModule::Dict SelectModule::exportHandler(const QStringList& fileNames, con
         QFileInfo fi(fileName);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getExportFilters(
-            ext.toLatin1()
+            ext.toStdString()
         );
 
         if (filters.empty()) {
             ext = fi.suffix().toLower();
-            filters = App::GetApplication().getExportFilters(ext.toLatin1());
+            filters = App::GetApplication().getExportFilters(ext.toStdString());
         }
 
         fileExtension[ext].push_back(fileName);
@@ -1167,12 +1168,12 @@ SelectModule::Dict SelectModule::importHandler(const QStringList& fileNames, con
         QFileInfo fi(fileName);
         QString ext = fi.completeSuffix().toLower();
         std::map<std::string, std::string> filters = App::GetApplication().getImportFilters(
-            ext.toLatin1()
+            ext.toStdString()
         );
 
         if (filters.empty()) {
             ext = fi.suffix().toLower();
-            filters = App::GetApplication().getImportFilters(ext.toLatin1());
+            filters = App::GetApplication().getImportFilters(ext.toStdString());
         }
 
         fileExtension[ext].push_back(fileName);

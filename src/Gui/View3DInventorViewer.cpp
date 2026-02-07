@@ -999,6 +999,11 @@ void View3DInventorViewer::setEditingTransform(const Base::Matrix4D& mat)
     // NOLINTEND
 }
 
+SoNode* View3DInventorViewer::getEditingRoot() const
+{
+    return pcEditingRoot;
+}
+
 void View3DInventorViewer::setupEditingRoot(SoNode* node, const Base::Matrix4D* mat)
 {
     if (!editViewProvider) {

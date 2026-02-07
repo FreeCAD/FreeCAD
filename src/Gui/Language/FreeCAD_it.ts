@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Enum</translation>
     </message>
@@ -736,7 +736,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="380"/>
       <source>Camera Settings</source>
-      <translation>Impostazioni fotocamera</translation>
+      <translation>Impostazioni telecamera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="387"/>
@@ -923,7 +923,7 @@ while doing a left or right click and move the mouse up or down</source>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Aggiungi proprietà</translation>
     </message>
@@ -953,37 +953,37 @@ while doing a left or right click and move the mouse up or down</source>
       <translation>Nome</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Aggiungi</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Nome gruppo non valido</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Nome tipo non valido</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Nome proprietà non valido: %1'</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>La proprietà '%1' esiste già in</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>'%1' è una costante</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>'%1' è un'unità</translation>
     </message>
@@ -2908,7 +2908,7 @@ del riquadro di delimitazione dell'oggetto 3D che è attualmente visualizzato.</
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
       <source>Camera Type</source>
-      <translation>Tipo fotocamera</translation>
+      <translation>Tipo telecamera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="588"/>
@@ -4072,23 +4072,23 @@ Tavola girevole libera: il pezzo verrà ruotato attorno all'asse Z.</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="560"/>
       <source>Default camera orientation</source>
-      <translation>Orientamento predefinito della fotocamera</translation>
+      <translation>Orientamento predefinito della telecamera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="579"/>
       <source>Default camera orientation when creating a new document or selecting the home view</source>
-      <translation>Orientamento predefinito della fotocamera quando si crea un nuovo documento o si seleziona la vista iniziale</translation>
+      <translation>Orientamento predefinito della telecamera quando si crea un nuovo documento o si seleziona la vista iniziale</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="586"/>
       <source>Camera zoom</source>
-      <translation>Zoom fotocamera</translation>
+      <translation>Zoom telecamera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
       <source>Sets camera zoom for new documents.
 The value is the diameter of the sphere to fit on the screen.</source>
-      <translation>Imposta lo zoom della fotocamera per i nuovi documenti.
+      <translation>Imposta lo zoom della telecamera per i nuovi documenti.
 Il valore è il diametro della sfera da adattare allo schermo.</translation>
     </message>
     <message>
@@ -8595,12 +8595,12 @@ Scegliere 'Annulla' per interrompere</translation>
       <translation>Impossibile aprire il browser di sistema.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Memoria insufficiente</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Memoria disponibile insufficiente per visualizzare i dati.</translation>
     </message>
@@ -8740,12 +8740,12 @@ Scegliere 'Annulla' per interrompere</translation>
       <translation>Impossibile importare tutti i link</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Aggiungi proprietà</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Impossibile aggiungere la proprietà a '%1': %2</translation>
     </message>
@@ -8893,7 +8893,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="399"/>
       <source>Delay mouse wheel pass through</source>
-      <translation>Ritardo di passaggio rotellina del mouse</translation>
+      <translation>Ritardo dell'attraversamento rotellina del mouse</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsAdvanced.cpp" line="404"/>
@@ -9065,7 +9065,7 @@ the current copy will be lost.
       <translation>Non consentito:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Selezione non consentita dal filtro</translation>
     </message>
@@ -9646,7 +9646,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1386"/>
       <source>Sets the camera to the bottom view</source>
-      <translation>Imposta la fotocamera sulla vista inferiore</translation>
+      <translation>Imposta la telecamera sulla vista inferiore</translation>
     </message>
   </context>
   <context>
@@ -9659,7 +9659,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1555"/>
       <source>Sets the camera to the dimetric view</source>
-      <translation>Imposta la fotocamera sulla vista dimetrica</translation>
+      <translation>Imposta la telecamera sulla vista dimetrica</translation>
     </message>
   </context>
   <context>
@@ -9698,7 +9698,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1410"/>
       <source>Sets the camera to the front view</source>
-      <translation>Imposta la fotocamera sulla vista frontale</translation>
+      <translation>Imposta la telecamera sulla vista frontale</translation>
     </message>
   </context>
   <context>
@@ -9711,7 +9711,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1352"/>
       <source>Sets the camera to the default home view</source>
-      <translation>Imposta la fotocamera sulla vista home predefinita</translation>
+      <translation>Imposta la telecamera sulla vista home predefinita</translation>
     </message>
   </context>
   <context>
@@ -9724,7 +9724,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1531"/>
       <source>Sets the camera to the isometric view</source>
-      <translation>Imposta la fotocamera sulla vista isometrica</translation>
+      <translation>Imposta la telecamera sulla vista isometrica</translation>
     </message>
   </context>
   <context>
@@ -9776,7 +9776,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1434"/>
       <source>Sets the camera to the left view</source>
-      <translation>Imposta la fotocamera sulla vista da sinistra</translation>
+      <translation>Imposta la telecamera sulla vista da sinistra</translation>
     </message>
   </context>
   <context>
@@ -9789,7 +9789,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1458"/>
       <source>Sets the camera to the rear view</source>
-      <translation>Imposta la fotocamera sulla vista posteriore</translation>
+      <translation>Imposta la telecamera sulla vista posteriore</translation>
     </message>
   </context>
   <context>
@@ -9802,7 +9802,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1482"/>
       <source>Sets the camera to the right view</source>
-      <translation>Imposta la fotocamera sulla vista da destra</translation>
+      <translation>Imposta la telecamera sulla vista da destra</translation>
     </message>
   </context>
   <context>
@@ -9828,7 +9828,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1506"/>
       <source>Sets the camera to the top view</source>
-      <translation>Imposta la fotocamera sulla vista superiore</translation>
+      <translation>Imposta la telecamera sulla vista superiore</translation>
     </message>
   </context>
   <context>
@@ -9841,7 +9841,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandView.cpp" line="1578"/>
       <source>Sets the camera to the trimetric view</source>
-      <translation>Imposta la fotocamera sulla vista trimetrica</translation>
+      <translation>Imposta la telecamera sulla vista trimetrica</translation>
     </message>
   </context>
   <context>
@@ -13516,12 +13516,12 @@ Procedere?</translation>
     <message>
       <location filename="../CommandView.cpp" line="249"/>
       <source>Save Current Camera</source>
-      <translation>Salva fotocamera corrente</translation>
+      <translation>Salva telecamera corrente</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="250"/>
       <source>Saves the current camera settings</source>
-      <translation>Salva le impostazioni correnti della fotocamera</translation>
+      <translation>Salva le impostazioni correnti della telecamera</translation>
     </message>
   </context>
   <context>
@@ -13529,12 +13529,12 @@ Procedere?</translation>
     <message>
       <location filename="../CommandView.cpp" line="275"/>
       <source>Restore Saved Camera</source>
-      <translation>Ripristina fotocamera salvata</translation>
+      <translation>Ripristina telecamera salvata</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="276"/>
       <source>Restores the saved camera settings</source>
-      <translation>Ripristina le impostazioni della fotocamera salvate</translation>
+      <translation>Ripristina le impostazioni della telecamera salvate</translation>
     </message>
   </context>
   <context>
@@ -13841,12 +13841,12 @@ Procedere?</translation>
     <message>
       <location filename="../CommandView.cpp" line="2619"/>
       <source>Issue Camera &amp;Position</source>
-      <translation>Invia &amp;posizione fotocamera</translation>
+      <translation>Invia &amp;posizione telecamera</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2620"/>
       <source>Issues the camera position to the console and to a macro, to easily recall this position</source>
-      <translation>Invia la posizione della fotocamera alla console e a una macro, per richiamare facilmente questa posizione</translation>
+      <translation>Invia la posizione della telecamera alla console e a una macro, per richiamare facilmente questa posizione</translation>
     </message>
   </context>
   <context>
@@ -14292,7 +14292,7 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4202"/>
       <source>Aligns the camera view to the selected elements in the 3D view</source>
-      <translation>Allinea la vista della fotocamera agli elementi selezionati nella vista 3D</translation>
+      <translation>Allinea la vista della telecamera agli elementi selezionati nella vista 3D</translation>
     </message>
   </context>
   <context>
@@ -14377,7 +14377,7 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="2195"/>
       <source>Mouse pass through, Esc to stop</source>
-      <translation type="unfinished">Mouse pass through, Esc to stop</translation>
+      <translation>Attraversamento del mouse, Esc per fermare</translation>
     </message>
   </context>
   <context>
@@ -14547,12 +14547,12 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Sì</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>No</translation>
     </message>
