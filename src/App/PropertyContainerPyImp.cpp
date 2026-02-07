@@ -77,6 +77,23 @@ PyObject* PropertyContainerPy::getPropertyByName(PyObject* args)
     return Py::new_reference_to(res);
 }
 
+PyObject* PropertyContainerPy::getPropertyNames(PyObject* args) const
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+
+    std::map<std::string, Property*> propMap;
+    getPropertyContainerPtr()->getPropertyMap(propMap);
+
+    Py::List names;
+    for (const auto& it : propMap) {
+        names.append(Py::String(it.first));
+    }
+
+    return Py::new_reference_to(names);
+}
+
 PyObject* PropertyContainerPy::getPropertyTouchList(PyObject* args)
 {
     char* pstr {};
