@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 #ifndef SMALLCHANGE_SWITCHBOARD_H
 #define SMALLCHANGE_SWITCHBOARD_H

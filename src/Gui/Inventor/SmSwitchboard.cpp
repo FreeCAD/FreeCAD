@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
