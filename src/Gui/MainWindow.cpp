@@ -1976,8 +1976,8 @@ void MainWindow::switchToDockedMode()
 
 void MainWindow::loadWindowSettings()
 {
-    QString vendor = QString::fromUtf8(App::Application::Config()["ExeVendor"].c_str());
-    QString application = QString::fromUtf8(App::Application::Config()["ExeName"].c_str());
+    QString vendor = QString::fromStdString(App::Application::Config()["ExeVendor"]);
+    QString application = QString::fromStdString(App::Application::getExecutableName());
     int major = (QT_VERSION >> 0x10) & 0xff;
     int minor = (QT_VERSION >> 0x08) & 0xff;
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
