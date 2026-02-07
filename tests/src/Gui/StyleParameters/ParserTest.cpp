@@ -604,6 +604,268 @@ TEST_F(ParserTest, ParseOperatorPrecedence)
     }
 }
 
+// Test unnamed tuple
+TEST_F(ParserTest, ParseUnnamedTuple)
+{
+    Parser parser("(10, 20, 30)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(0)).value, 10.0);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(1)).value, 20.0);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(2)).value, 30.0);
+}
+
+// Test named tuple
+TEST_F(ParserTest, ParseNamedTuple)
+{
+    Parser parser("(x: 10, y: 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*x).value, 10.0);
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*y).value, 20.0);
+}
+
+// Test mixed named/unnamed tuple
+TEST_F(ParserTest, ParseMixedTuple)
+{
+    Parser parser("(x: 10, 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*x).value, 10.0);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(1)).value, 20.0);
+}
+
+// Test single named element is a tuple, not a grouped expression
+TEST_F(ParserTest, ParseSingleNamedElementIsTuple)
+{
+    Parser parser("(x: 10)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 1);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*x).value, 10.0);
+}
+
+// Test expressions inside tuple elements
+TEST_F(ParserTest, ParseTupleWithExpressions)
+{
+    Parser parser("(x: 10 + 5, y: @TestParam)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*x).value, 15.0);
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*y).value, 10.0);
+    EXPECT_EQ(std::get<Numeric>(*y).unit, "px");
+}
+
+// Test mixed types in tuple
+TEST_F(ParserTest, ParseTupleWithMixedTypes)
+{
+    Parser parser("(color: #ff0000, opacity: 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* color = tuple.find("color");
+    ASSERT_NE(color, nullptr);
+    EXPECT_TRUE(std::holds_alternative<Base::Color>(*color));
+    auto c = std::get<Base::Color>(*color);
+    EXPECT_EQ(c.r, 1);
+    EXPECT_EQ(c.g, 0);
+    EXPECT_EQ(c.b, 0);
+
+    auto* opacity = tuple.find("opacity");
+    ASSERT_NE(opacity, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*opacity).value, 0.5);
+}
+
+// Test nested tuples
+TEST_F(ParserTest, ParseNestedTuples)
+{
+    Parser parser("((1, 2), (3, 4))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& outer = result.get<Tuple>();
+    EXPECT_EQ(outer.size(), 2);
+
+    EXPECT_TRUE(outer.at(0).holds<Tuple>());
+    const auto& inner1 = outer.at(0).get<Tuple>();
+    EXPECT_EQ(inner1.size(), 2);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(inner1.at(0)).value, 1.0);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(inner1.at(1)).value, 2.0);
+
+    EXPECT_TRUE(outer.at(1).holds<Tuple>());
+    const auto& inner2 = outer.at(1).get<Tuple>();
+    EXPECT_EQ(inner2.size(), 2);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(inner2.at(0)).value, 3.0);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(inner2.at(1)).value, 4.0);
+}
+
+// Test complex expressions in tuple elements
+TEST_F(ParserTest, ParseTupleWithComplexExpressions)
+{
+    Parser parser("(x: lighten(#ff0000, 20), y: 10px * 2)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_TRUE(std::holds_alternative<Base::Color>(*x));
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*y).value, 20.0);
+    EXPECT_EQ(std::get<Numeric>(*y).unit, "px");
+}
+
+// Test tuple toString roundtrip
+TEST_F(ParserTest, TupleToString)
+{
+    {
+        Parser parser("(x: 10, y: 20)");
+        auto expr = parser.parse();
+        auto result = expr->evaluate({&manager, {}});
+        auto str = result.toString();
+        EXPECT_EQ(str, "(x: 10, y: 20)");
+    }
+
+    {
+        Parser parser("(10, 20, 30)");
+        auto expr = parser.parse();
+        auto result = expr->evaluate({&manager, {}});
+        auto str = result.toString();
+        EXPECT_EQ(str, "(10, 20, 30)");
+    }
+
+    {
+        Parser parser("(x: 10, 20)");
+        auto expr = parser.parse();
+        auto result = expr->evaluate({&manager, {}});
+        auto str = result.toString();
+        EXPECT_EQ(str, "(x: 10, 20)");
+    }
+}
+
+// Test Value::holds and Value::get
+TEST_F(ParserTest, ValueHoldsAndGet)
+{
+    Value numericValue = Numeric {42, "px"};
+    EXPECT_TRUE(numericValue.holds<Numeric>());
+    EXPECT_FALSE(numericValue.holds<Tuple>());
+    EXPECT_DOUBLE_EQ(numericValue.get<Numeric>().value, 42.0);
+
+    Value colorValue = Base::Color(1.0, 0.0, 0.0);
+    EXPECT_TRUE(colorValue.holds<Base::Color>());
+    EXPECT_FALSE(colorValue.holds<Tuple>());
+
+    Value stringValue = std::string("hello");
+    EXPECT_TRUE(stringValue.holds<std::string>());
+    EXPECT_FALSE(stringValue.holds<Tuple>());
+
+    Parser parser("(1, 2)");
+    auto expr = parser.parse();
+    auto tupleValue = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(tupleValue.holds<Tuple>());
+    EXPECT_FALSE(tupleValue.holds<Numeric>());
+    EXPECT_EQ(tupleValue.get<Tuple>().size(), 2);
+}
+
+// Test Tuple::at out of bounds
+TEST_F(ParserTest, TupleAtOutOfBounds)
+{
+    Parser parser("(10, 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_NO_THROW(tuple.at(0));
+    EXPECT_NO_THROW(tuple.at(1));
+    EXPECT_THROW(tuple.at(2), Base::RuntimeError);
+}
+
+// Test Tuple::find nonexistent name
+TEST_F(ParserTest, TupleFindNonexistent)
+{
+    Parser parser("(x: 10, y: 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_NE(tuple.find("x"), nullptr);
+    EXPECT_NE(tuple.find("y"), nullptr);
+    EXPECT_EQ(tuple.find("z"), nullptr);
+}
+
+// Test error: missing ')' in tuple
+TEST_F(ParserTest, TupleMissingClosingParen)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("(x: 10, y: 20");
+            parser.parse();
+        },
+        Base::ParserError
+    );
+}
+
+// Test that grouped expressions still work (backward compatibility)
+TEST_F(ParserTest, GroupedExpressionStillWorks)
+{
+    {
+        Parser parser("(10 + 5) * 2");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 30.0);
+    }
+
+    {
+        Parser parser("(42)");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 42.0);
+    }
+}
+
 // Test nested parentheses
 TEST_F(ParserTest, ParseNestedParentheses)
 {
