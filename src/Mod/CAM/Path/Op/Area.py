@@ -434,7 +434,11 @@ class ObjectOp(PathOp.ObjectOp):
             else:
                 shapes.append(shp)
 
-        if len(shapes) > 1:
+        if (
+            len(shapes) > 1
+            and getattr(obj, "SortingMode", None) != "Manual"
+            and getattr(obj, "HandleMultipleFeatures", False) != "Collectively"
+        ):
             locations = []
             for s in shapes:
                 if s[2] == "OpenEdge":
