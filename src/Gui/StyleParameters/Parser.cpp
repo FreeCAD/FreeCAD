@@ -53,29 +53,32 @@ Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value FunctionCall::evaluate(const EvaluationContext& context) const
 {
-    const auto lightenOrDarken = [this](const EvaluationContext& context) -> Value {
-        if (arguments.size() != 2) {
+    auto argsValue = arguments.evaluate(context);
+    const auto& args = argsValue.get<Tuple>();
+
+    const auto lightenOrDarken = [this, &args]() -> Value {
+        if (args.size() != 2) {
             THROWM(
                 Base::ExpressionError,
-                fmt::format("Function '{}' expects 2 arguments, got {}", functionName, arguments.size())
+                fmt::format("Function '{}' expects 2 arguments, got {}", functionName, args.size())
             );
         }
 
-        auto colorArg = arguments[0]->evaluate(context);
-        auto amountArg = arguments[1]->evaluate(context);
+        const auto& colorArg = args.at(0);
+        const auto& amountArg = args.at(1);
 
-        if (!std::holds_alternative<Base::Color>(colorArg)) {
+        if (!colorArg.holds<Base::Color>()) {
             THROWM(Base::ExpressionError, fmt::format("'{}' is not supported for colors", functionName));
         }
 
-        auto color = std::get<Base::Color>(colorArg).asValue<QColor>();
+        auto color = colorArg.get<Base::Color>().asValue<QColor>();
 
         // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
         // we, however, want users to pass only the relative difference, hence we need to add the
         // 100 required by Qt.
         //
         // NOLINTNEXTLINE(*-magic-numbers)
-        auto amount = 100 + static_cast<int>(std::get<Numeric>(amountArg).value);
+        auto amount = 100 + static_cast<int>(amountArg.get<Numeric>().value);
 
         if (functionName == "lighten") {
             return Base::Color::fromValue(color.lighter(amount));
@@ -88,36 +91,36 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return {};
     };
 
-    const auto blend = [this](const EvaluationContext& context) -> Value {
-        if (arguments.size() != 3) {
+    const auto blend = [this, &args]() -> Value {
+        if (args.size() != 3) {
             THROWM(
                 Base::ExpressionError,
-                fmt::format("Function '{}' expects 3 arguments, got {}", functionName, arguments.size())
+                fmt::format("Function '{}' expects 3 arguments, got {}", functionName, args.size())
             );
         }
 
-        auto firstColorArg = arguments[0]->evaluate(context);
-        auto secondColorArg = arguments[1]->evaluate(context);
-        auto amountArg = arguments[2]->evaluate(context);
+        const auto& firstColorArg = args.at(0);
+        const auto& secondColorArg = args.at(1);
+        const auto& amountArg = args.at(2);
 
-        if (!std::holds_alternative<Base::Color>(firstColorArg)) {
+        if (!firstColorArg.holds<Base::Color>()) {
             THROWM(
                 Base::ExpressionError,
                 fmt::format("first argument of '{}' must be color", functionName)
             );
         }
 
-        if (!std::holds_alternative<Base::Color>(secondColorArg)) {
+        if (!secondColorArg.holds<Base::Color>()) {
             THROWM(
                 Base::ExpressionError,
                 fmt::format("second argument of '{}' must be color", functionName)
             );
         }
 
-        auto firstColor = std::get<Base::Color>(firstColorArg);
-        auto secondColor = std::get<Base::Color>(secondColorArg);
+        auto firstColor = firstColorArg.get<Base::Color>();
+        auto secondColor = secondColorArg.get<Base::Color>();
 
-        auto amount = Base::fromPercent(static_cast<long>(std::get<Numeric>(amountArg).value));
+        auto amount = Base::fromPercent(static_cast<long>(amountArg.get<Numeric>().value));
 
         return Base::Color(
             (1 - amount) * firstColor.r + amount * secondColor.r,
@@ -126,15 +129,14 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         );
     };
 
-    std::map<std::string, std::function<Value(const EvaluationContext&)>> functions = {
+    std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
         {"blend", blend},
     };
 
     if (functions.contains(functionName)) {
-        auto function = functions.at(functionName);
-        return function(context);
+        return functions.at(functionName)();
     }
 
     THROWM(Base::ExpressionError, fmt::format("Unknown function '{}'", functionName));
@@ -415,21 +417,8 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
         THROWM(Base::ParserError, fmt::format("Expected '(' after function name, got '{}'", input[pos]));
     }
 
-    std::vector<std::unique_ptr<Expr>> arguments;
-    if (!match(')')) {
-        do {  // NOLINT(*-avoid-do-while)
-            arguments.push_back(parseExpression());
-        } while (match(','));
-
-        if (!match(')')) {
-            THROWM(
-                Base::ParserError,
-                fmt::format("Expected ')' after function arguments, got '{}'", input[pos])
-            );
-        }
-    }
-
-    return std::make_unique<FunctionCall>(functionName, std::move(arguments));
+    auto arguments = parseTuple();
+    return std::make_unique<FunctionCall>(functionName, std::move(*arguments));
 }
 
 bool Parser::peekNamedElement()
@@ -459,7 +448,7 @@ bool Parser::peekNamedElement()
     return found;
 }
 
-std::unique_ptr<Expr> Parser::parseTuple(std::optional<TupleLiteral::Element> firstElement)
+std::unique_ptr<TupleLiteral> Parser::parseTuple(std::optional<TupleLiteral::Element> firstElement)
 {
     auto tuple = std::make_unique<TupleLiteral>();
 
