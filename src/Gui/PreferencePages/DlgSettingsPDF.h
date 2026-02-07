@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef GUI_DIALOG_DLGSETTINGSPDF_H
 #define GUI_DIALOG_DLGSETTINGSPDF_H
 
