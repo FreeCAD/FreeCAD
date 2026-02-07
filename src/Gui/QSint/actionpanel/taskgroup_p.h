@@ -1,4 +1,6 @@
 // SPDX-License-Identifier: LGPL-3.0-only
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /***************************************************************************
  *                                                                         *
  *   Copyright: https://code.google.com/p/qsint/                           *
