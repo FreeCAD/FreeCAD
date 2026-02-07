@@ -55,8 +55,8 @@ class ArchSketch(ArchSketchObject):
                     locked=True,
                 )
                 fp.Hosts = old_hosts
-                for obj in old_hosts:
-                    obj.touch()
+                for host in old_hosts:
+                    host.touch()
                 # Arch Window's code
 
 
