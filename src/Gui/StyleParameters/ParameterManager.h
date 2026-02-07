@@ -30,6 +30,7 @@
 #include <optional>
 #include <set>
 #include <string>
+#include <type_traits>
 #include <vector>
 
 #include <QColor>
@@ -142,6 +143,14 @@ struct Tuple
      * @brief Returns the number of elements in the tuple.
      */
     size_t size() const;
+
+    /**
+     * @brief Gets a named element with type checking and user-friendly error messages.
+     *
+     * @throws Base::ExpressionError if the element is not found or has the wrong type.
+     */
+    template<typename T>
+    const T& get(const std::string& name) const;
 };
 
 /**
@@ -185,6 +194,75 @@ struct Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     {
         return std::get<T>(*this);
     }
+};
+
+template<typename T>
+constexpr const char* valueTypeName()
+{
+    if constexpr (std::is_same_v<T, Numeric>) {
+        return "numeric";
+    }
+    else if constexpr (std::is_same_v<T, Base::Color>) {
+        return "color";
+    }
+    else if constexpr (std::is_same_v<T, std::string>) {
+        return "string";
+    }
+    else if constexpr (std::is_same_v<T, Tuple>) {
+        return "tuple";
+    }
+}
+
+template<typename T>
+const T& Tuple::get(const std::string& name) const
+{
+    const Value* v = find(name);
+    if (!v) {
+        THROWM(Base::ExpressionError, fmt::format("Missing argument '{}'", name));
+    }
+    if (!v->holds<T>()) {
+        THROWM(
+            Base::ExpressionError,
+            fmt::format("Argument '{}' must be {}, got {}", name, valueTypeName<T>(), v->toString())
+        );
+    }
+    return v->get<T>();
+}
+
+/**
+ * @brief Defines a single parameter in a function signature.
+ *
+ * Used with ArgumentParser to declare positional/named parameters with optional defaults.
+ */
+struct ParamDef
+{
+    std::string name;
+    std::optional<Value> defaultValue = {};
+};
+
+/**
+ * @brief Resolves a Tuple of mixed positional/named arguments against a declared signature.
+ *
+ * Named arguments are matched by name, unnamed arguments fill remaining slots in declaration
+ * order, and defaults fill any still-empty slots. The result is a Tuple with all elements named
+ * per the signature.
+ *
+ * Example:
+ * @code{.cpp}
+ * auto resolved = ArgumentParser{{"color"}, {"amount", Numeric{20, ""}}}.resolve(args);
+ * auto& color  = *resolved.find("color");
+ * auto& amount = *resolved.find("amount");
+ * @endcode
+ */
+class GuiExport ArgumentParser
+{
+public:
+    ArgumentParser(std::initializer_list<ParamDef> params);
+
+    Tuple resolve(const Tuple& args) const;
+
+private:
+    std::vector<ParamDef> params_;
 };
 
 /**

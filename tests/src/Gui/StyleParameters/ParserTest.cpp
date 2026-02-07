@@ -889,3 +889,217 @@ TEST_F(ParserTest, ParseNestedParentheses)
         EXPECT_EQ(length.unit, "");
     }
 }
+
+// ArgumentParser tests
+
+class ArgumentParserTest: public ::testing::Test
+{
+    struct NameValuePair
+    {
+        std::optional<std::string> name;
+        Value value;
+    };
+
+protected:
+    static Tuple makeTuple(std::vector<NameValuePair> elements)
+    {
+        Tuple tuple;
+        for (auto& [name, value] : elements) {
+            tuple.elements.emplace_back(name, std::make_shared<const Value>(std::move(value)));
+        }
+        return tuple;
+    }
+};
+
+TEST_F(ArgumentParserTest, AllPositional)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::nullopt, .value = Numeric {2, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    ASSERT_NE(resolved.find("x"), nullptr);
+    ASSERT_NE(resolved.find("y"), nullptr);
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, AllNamed)
+{
+    auto args = makeTuple({
+        {.name = std::string("x"), .value = Numeric {10, ""}},
+        {.name = std::string("y"), .value = Numeric {20, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 20.0);
+}
+
+TEST_F(ArgumentParserTest, AllNamedReversedOrder)
+{
+    auto args = makeTuple({
+        {.name = std::string("y"), .value = Numeric {20, ""}},
+        {.name = std::string("x"), .value = Numeric {10, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 20.0);
+}
+
+TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
+{
+    // f(1, y: 2) with signature (x, y)
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::string("y"), .value = Numeric {2, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
+{
+    // f(y: 2, 1) with signature (x, y) — positional 1 fills unclaimed x
+    auto args = makeTuple({
+        {.name = std::string("y"), .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("x")->get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 99.0);
+}
+
+TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::nullopt, .value = Numeric {2, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::string("y"), .value = Numeric {2, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y", Numeric {99, ""}}}.resolve(args);
+
+    EXPECT_DOUBLE_EQ(resolved.find("y")->get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
+{
+    auto args = makeTuple({
+        {.name = std::string("y"), .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+    });
+    auto resolved = ArgumentParser {{"x"}, {"y"}}.resolve(args);
+
+    // at(0) is x, at(1) is y — matches declaration order
+    EXPECT_DOUBLE_EQ(resolved.at(0).get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.at(1).get<Numeric>().value, 2.0);
+}
+
+TEST_F(ArgumentParserTest, MixedTypes)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
+        {.name = std::nullopt, .value = Numeric {20, ""}},
+    });
+    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+
+    EXPECT_TRUE(resolved.find("color")->holds<Base::Color>());
+    EXPECT_TRUE(resolved.find("amount")->holds<Numeric>());
+}
+
+TEST_F(ArgumentParserTest, ErrorOnUnknownName)
+{
+    auto args = makeTuple({
+        {.name = std::string("unknown"), .value = Numeric {1, ""}},
+    });
+    ArgumentParser parser {{"x"}, {"y"}};
+    EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
+}
+
+TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
+{
+    auto args = makeTuple({
+        {.name = std::string("x"), .value = Numeric {1, ""}},
+        {.name = std::string("x"), .value = Numeric {2, ""}},
+    });
+    ArgumentParser parser {{"x"}, {"y"}};
+    EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
+}
+
+TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+    });
+    ArgumentParser parser {{"x"}, {"y"}};
+    EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
+}
+
+TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {1, ""}},
+        {.name = std::nullopt, .value = Numeric {2, ""}},
+        {.name = std::nullopt, .value = Numeric {3, ""}},
+    });
+    ArgumentParser parser {{"x"}, {"y"}};
+    EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
+}
+
+TEST_F(ArgumentParserTest, TypedGetSuccess)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
+        {.name = std::nullopt, .value = Numeric {20, ""}},
+    });
+    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+
+    EXPECT_NO_THROW(resolved.get<Base::Color>("color"));
+    EXPECT_NO_THROW(resolved.get<Numeric>("amount"));
+    EXPECT_DOUBLE_EQ(resolved.get<Numeric>("amount").value, 20.0);
+}
+
+TEST_F(ArgumentParserTest, TypedGetWrongType)
+{
+    auto args = makeTuple({
+        {.name = std::nullopt, .value = Numeric {10, "px"}},
+        {.name = std::nullopt, .value = Numeric {20, ""}},
+    });
+    auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
+
+    EXPECT_THROW(resolved.get<Base::Color>("color"), Base::ExpressionError);
+}
+
+TEST_F(ArgumentParserTest, TypedGetMissingName)
+{
+    auto args = makeTuple({{.name = std::nullopt, .value = Numeric {10, ""}}});
+    auto resolved = ArgumentParser {{"x"}}.resolve(args);
+
+    EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
+}

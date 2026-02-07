@@ -57,28 +57,16 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
     const auto& args = argsValue.get<Tuple>();
 
     const auto lightenOrDarken = [this, &args]() -> Value {
-        if (args.size() != 2) {
-            THROWM(
-                Base::ExpressionError,
-                fmt::format("Function '{}' expects 2 arguments, got {}", functionName, args.size())
-            );
-        }
+        auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
 
-        const auto& colorArg = args.at(0);
-        const auto& amountArg = args.at(1);
-
-        if (!colorArg.holds<Base::Color>()) {
-            THROWM(Base::ExpressionError, fmt::format("'{}' is not supported for colors", functionName));
-        }
-
-        auto color = colorArg.get<Base::Color>().asValue<QColor>();
+        auto color = resolved.get<Base::Color>("color").asValue<QColor>();
 
         // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
         // we, however, want users to pass only the relative difference, hence we need to add the
         // 100 required by Qt.
         //
         // NOLINTNEXTLINE(*-magic-numbers)
-        auto amount = 100 + static_cast<int>(amountArg.get<Numeric>().value);
+        auto amount = 100 + static_cast<int>(resolved.get<Numeric>("amount").value);
 
         if (functionName == "lighten") {
             return Base::Color::fromValue(color.lighter(amount));
@@ -91,36 +79,12 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return {};
     };
 
-    const auto blend = [this, &args]() -> Value {
-        if (args.size() != 3) {
-            THROWM(
-                Base::ExpressionError,
-                fmt::format("Function '{}' expects 3 arguments, got {}", functionName, args.size())
-            );
-        }
+    const auto blend = [&args]() -> Value {
+        auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
 
-        const auto& firstColorArg = args.at(0);
-        const auto& secondColorArg = args.at(1);
-        const auto& amountArg = args.at(2);
-
-        if (!firstColorArg.holds<Base::Color>()) {
-            THROWM(
-                Base::ExpressionError,
-                fmt::format("first argument of '{}' must be color", functionName)
-            );
-        }
-
-        if (!secondColorArg.holds<Base::Color>()) {
-            THROWM(
-                Base::ExpressionError,
-                fmt::format("second argument of '{}' must be color", functionName)
-            );
-        }
-
-        auto firstColor = firstColorArg.get<Base::Color>();
-        auto secondColor = secondColorArg.get<Base::Color>();
-
-        auto amount = Base::fromPercent(static_cast<long>(amountArg.get<Numeric>().value));
+        auto firstColor = resolved.get<Base::Color>("from");
+        auto secondColor = resolved.get<Base::Color>("to");
+        auto amount = Base::fromPercent(static_cast<long>(resolved.get<Numeric>("amount").value));
 
         return Base::Color(
             (1 - amount) * firstColor.r + amount * secondColor.r,

@@ -150,6 +150,80 @@ size_t Tuple::size() const
     return elements.size();
 }
 
+ArgumentParser::ArgumentParser(std::initializer_list<ParamDef> params)
+    : params_(params)
+{}
+
+Tuple ArgumentParser::resolve(const Tuple& args) const
+{
+    // Slots for resolved values, one per declared parameter
+    std::vector<std::shared_ptr<const Value>> slots(params_.size());
+
+    // 1. Match named arguments to their declared parameter
+    for (const auto& elem : args.elements) {
+        if (!elem.name) {
+            continue;
+        }
+
+        auto it = std::ranges::find_if(params_, [&](const ParamDef& p) {
+            return p.name == *elem.name;
+        });
+
+        if (it == params_.end()) {
+            THROWM(Base::ExpressionError, fmt::format("Unknown argument '{}'", *elem.name));
+        }
+
+        auto index = static_cast<size_t>(std::distance(params_.begin(), it));
+
+        if (slots[index]) {
+            THROWM(Base::ExpressionError, fmt::format("Duplicate argument '{}'", *elem.name));
+        }
+
+        slots[index] = elem.value;
+    }
+
+    // 2. Fill remaining slots with unnamed arguments in order
+    auto unnamed = args.elements
+        | std::views::filter([](const Tuple::Element& e) { return !e.name.has_value(); });
+    auto unnamedIt = unnamed.begin();
+
+    for (size_t i = 0; i < params_.size(); ++i) {
+        if (slots[i]) {
+            continue;  // already claimed by name
+        }
+
+        if (unnamedIt != unnamed.end()) {
+            slots[i] = unnamedIt->value;
+            ++unnamedIt;
+        }
+        else if (params_[i].defaultValue) {
+            slots[i] = std::make_shared<const Value>(*params_[i].defaultValue);
+        }
+        else {
+            THROWM(
+                Base::ExpressionError,
+                fmt::format("Missing required argument '{}'", params_[i].name)
+            );
+        }
+    }
+
+    // 3. Check for excess positional arguments
+    if (unnamedIt != unnamed.end()) {
+        THROWM(
+            Base::ExpressionError,
+            fmt::format("Too many arguments: expected {}, got {}", params_.size(), args.size())
+        );
+    }
+
+    // 4. Build result Tuple with all elements named per signature
+    Tuple result;
+    for (size_t i = 0; i < params_.size(); ++i) {
+        result.elements.push_back({params_[i].name, std::move(slots[i])});
+    }
+
+    return result;
+}
+
 ParameterSource::ParameterSource(const Metadata& metadata)
     : metadata(metadata)
 {}
