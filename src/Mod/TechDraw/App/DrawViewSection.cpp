@@ -1271,8 +1271,6 @@ void DrawViewSection::Restore(Base::XMLReader &reader)
 
 void DrawViewSection::handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop)
 {
-    DrawViewPart::handleChangedPropertyType(reader, TypeName, prop);
-
     if (prop == &SectionOrigin) {
         // SectionOrigin was PropertyVector then briefly PropertyPosition, now back to PropertyVector
         App::PropertyPosition tmp;
