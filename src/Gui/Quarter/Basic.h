@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef QUARTER_BASIC_H
 #define QUARTER_BASIC_H
 

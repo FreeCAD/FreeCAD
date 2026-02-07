@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /*
  * <one line to give the library's name and an idea of what it does.>
  * Copyright (C) 2014  Stefan Tröger <stefantroeger@gmx.net>

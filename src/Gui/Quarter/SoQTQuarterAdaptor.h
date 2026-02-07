@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /*
  * Extends the QuarterWidget with all functions the SoQtViewer has
  * Copyright (c) 2014 Stefan Tröger <stefantroeger@gmx.net>

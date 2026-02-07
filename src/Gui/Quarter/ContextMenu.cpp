@@ -1,3 +1,4 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS

@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef QUARTER_EVENTFILTER_H
 #define QUARTER_EVENTFILTER_H
 
