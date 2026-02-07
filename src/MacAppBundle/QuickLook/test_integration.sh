@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # FreeCAD QuickLook Extensions - Integration Test Script
 # This script tests the QuickLook extension integration in FreeCAD.app
