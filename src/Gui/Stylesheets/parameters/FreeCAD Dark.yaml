@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 3DViewBackgroundRefColor: "@BackgroundColor"
 ButtonBackgroundHooverColor: "@ButtonTopBackgroundColor"
 ButtonBorderColor: "@GeneralBorderColor"

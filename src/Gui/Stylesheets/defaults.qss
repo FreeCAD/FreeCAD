@@ -1,3 +1,5 @@
+/* SPDX-FileNotice: Part of the FreeCAD project. */
+
 /*
  * This is a file with default QSS styles that will be preincluded for all themes. It should cover only the styles for
  * our own controls and not alter visuals of stuff like buttons etc. This is created so we can use QSS to add color
