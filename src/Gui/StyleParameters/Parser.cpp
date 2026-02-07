@@ -166,6 +166,17 @@ Value BinaryOp::evaluate(const EvaluationContext& context) const
     }
 }
 
+Value TupleLiteral::evaluate(const EvaluationContext& context) const
+{
+    Tuple tuple;
+    for (const auto& elem : elements) {
+        tuple.elements.push_back(
+            {elem.name, std::make_shared<const Value>(elem.expression->evaluate(context))}
+        );
+    }
+    return tuple;
+}
+
 Value UnaryOp::evaluate(const EvaluationContext& context) const
 {
     Value val = operand->evaluate(context);
@@ -246,7 +257,25 @@ std::unique_ptr<Expr> Parser::parseFactor()
         return std::make_unique<UnaryOp>(op, parseFactor());
     }
     if (match('(')) {
+        // Disambiguation: tuple vs grouped expression
+        // 1. If we see `identifier:` pattern → definitely a tuple
+        if (peekNamedElement()) {
+            return parseTuple();
+        }
+
+        // 2. Otherwise parse first expression
         auto expr = parseExpression();
+        skipWhitespace();
+
+        // If followed by `,` → reinterpret as tuple with this as first element
+        if (pos < input.size() && input[pos] == ',') {
+            ++pos;
+            TupleLiteral::Element first;
+            first.expression = std::move(expr);
+            return parseTuple(std::move(first));
+        }
+
+        // If followed by `)` → grouped expression (backward compatible)
         if (!match(')')) {
             THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
         }
@@ -401,6 +430,82 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
     }
 
     return std::make_unique<FunctionCall>(functionName, std::move(arguments));
+}
+
+bool Parser::peekNamedElement()
+{
+    size_t saved = pos;
+    skipWhitespace();
+
+    // Check for `identifier :` pattern
+    if (pos >= input.size() || !isalpha(input[pos])) {
+        pos = saved;
+        return false;
+    }
+
+    // Skip identifier characters
+    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+        ++pos;
+    }
+
+    // Skip whitespace between identifier and colon
+    while (pos < input.size() && isspace(input[pos])) {
+        ++pos;
+    }
+
+    // Check for colon
+    bool found = pos < input.size() && input[pos] == ':';
+    pos = saved;
+    return found;
+}
+
+std::unique_ptr<Expr> Parser::parseTuple(std::optional<TupleLiteral::Element> firstElement)
+{
+    auto tuple = std::make_unique<TupleLiteral>();
+
+    const auto parseElement = [this]() {
+        TupleLiteral::Element elem;
+
+        // Check if this element has a name
+        if (peekNamedElement()) {
+            skipWhitespace();
+            size_t start = pos;
+            while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+                ++pos;
+            }
+            elem.name = input.substr(start, pos - start);
+            skipWhitespace();
+            ++pos;  // consume ':'
+        }
+
+        elem.expression = parseExpression();
+        return elem;
+    };
+
+    if (firstElement) {
+        // Called from unnamed-element path: first element already parsed, comma already consumed
+        tuple->elements.push_back(std::move(*firstElement));
+        // Parse the second element immediately (comma was already consumed by caller)
+        tuple->elements.push_back(parseElement());
+    }
+
+    // Parse remaining elements
+    while (true) {
+        skipWhitespace();
+        if (pos < input.size() && input[pos] == ')') {
+            ++pos;
+            return tuple;
+        }
+
+        if (!tuple->elements.empty() && !match(',')) {
+            if (pos >= input.size()) {
+                THROWM(Base::ParserError, "Expected ')' to close tuple");
+            }
+            THROWM(Base::ParserError, fmt::format("Expected ',' or ')' in tuple, got '{}'", input[pos]));
+        }
+
+        tuple->elements.push_back(parseElement());
+    }
 }
 
 int Parser::parseInt()
