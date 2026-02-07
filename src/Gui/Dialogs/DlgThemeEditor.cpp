@@ -66,6 +66,9 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             },
             [](const Base::Color&) {
                 return QWidget::tr("Color");
+            },
+            [](const Gui::StyleParameters::Tuple&) {
+                return QWidget::tr("Tuple");
             }
         },
         value

@@ -26,6 +26,7 @@
 
 #include <list>
 #include <map>
+#include <memory>
 #include <optional>
 #include <set>
 #include <string>
@@ -105,19 +106,58 @@ private:
     void ensureEqualUnits(const Numeric& rhs) const;
 };
 
+// Forward declaration: Tuple::Element uses shared_ptr<const Value> to break the
+// circular dependency (Value contains Tuple, Tuple elements contain Value).
+struct Value;
+
+/**
+ * @brief Represents a tuple of named or unnamed values.
+ *
+ * Tuples group related values into a single parameter using `(key: val1, val2)` syntax.
+ * Elements can optionally have names for named access.
+ */
+struct Tuple
+{
+    struct Element
+    {
+        std::optional<std::string> name;
+        std::shared_ptr<const Value> value;
+    };
+
+    std::vector<Element> elements;
+
+    /**
+     * @brief Returns the value at the given index (bounds-checked).
+     * @throws Base::RuntimeError if index is out of range.
+     */
+    const Value& at(size_t index) const;
+
+    /**
+     * @brief Finds an element by name.
+     * @return Pointer to the value if found, nullptr otherwise.
+     */
+    const Value* find(const std::string& name) const;
+
+    /**
+     * @brief Returns the number of elements in the tuple.
+     */
+    size_t size() const;
+};
+
 /**
  * @brief This struct represents any valid value that can be used as the parameter value.
  *
- * The value can be one of three basic types:
- *  - Numbers / Lengths (so any length with optional unit) (Length)
- *  - Colors (QColor)
- *  - Any other generic expression. (std::string)
+ * The value can be one of four basic types:
+ *  - Numbers / Lengths (so any length with optional unit) (Numeric)
+ *  - Colors (Base::Color)
+ *  - Any other generic expression (std::string)
+ *  - Tuples of values (Tuple)
  *
  * As a rule, operations can be only performed over values of the same type.
  */
-struct Value: std::variant<Numeric, Base::Color, std::string>
+struct Value: std::variant<Numeric, Base::Color, std::string, Tuple>
 {
-    using std::variant<Numeric, Base::Color, std::string>::variant;
+    using std::variant<Numeric, Base::Color, std::string, Tuple>::variant;
 
     /**
      * Converts the object into its string representation.
@@ -125,6 +165,26 @@ struct Value: std::variant<Numeric, Base::Color, std::string>
      * @return A string representation of the object that can later be used in QSS.
      */
     std::string toString() const;
+
+    /**
+     * @brief Checks whether this value holds the given type.
+     */
+    template<typename T>
+    bool holds() const
+    {
+        return std::holds_alternative<T>(*this);
+    }
+
+    /**
+     * @brief Gets the value of the given type.
+     *
+     * Throws std::bad_variant_access if the value does not hold the requested type.
+     */
+    template<typename T>
+    const T& get() const
+    {
+        return std::get<T>(*this);
+    }
 };
 
 /**

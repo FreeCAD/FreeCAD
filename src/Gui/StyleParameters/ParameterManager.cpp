@@ -95,17 +95,59 @@ void Numeric::ensureEqualUnits(const Numeric& rhs) const
 
 std::string Value::toString() const
 {
-    if (std::holds_alternative<Numeric>(*this)) {
-        auto [value, unit] = std::get<Numeric>(*this);
+    if (holds<Numeric>()) {
+        auto [value, unit] = get<Numeric>();
         return fmt::format("{}{}", value, unit);
     }
 
-    if (std::holds_alternative<Base::Color>(*this)) {
-        auto color = std::get<Base::Color>(*this);
+    if (holds<Base::Color>()) {
+        auto color = get<Base::Color>();
         return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
     }
 
-    return std::get<std::string>(*this);
+    if (holds<Tuple>()) {
+        const auto& tuple = get<Tuple>();
+        std::string result = "(";
+        for (size_t i = 0; i < tuple.elements.size(); ++i) {
+            if (i > 0) {
+                result += ", ";
+            }
+            const auto& elem = tuple.elements[i];
+            if (elem.name) {
+                result += *elem.name + ": ";
+            }
+            result += elem.value->toString();
+        }
+        result += ")";
+        return result;
+    }
+
+    return get<std::string>();
+}
+
+const Value& Tuple::at(size_t index) const
+{
+    if (index >= elements.size()) {
+        THROWM(
+            Base::RuntimeError,
+            fmt::format("Tuple index {} out of range (size {})", index, elements.size())
+        );
+    }
+    return *elements[index].value;
+}
+
+const Value* Tuple::find(const std::string& name) const
+{
+    auto it = std::ranges::find_if(elements, [&](const Element& elem) {
+        return elem.name && *elem.name == name;
+    });
+
+    return it != elements.end() ? it->value.get() : nullptr;
+}
+
+size_t Tuple::size() const
+{
+    return elements.size();
 }
 
 ParameterSource::ParameterSource(const Metadata& metadata)
