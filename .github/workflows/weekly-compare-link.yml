@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 name: Weekly compare link to release notes
 
 on:
