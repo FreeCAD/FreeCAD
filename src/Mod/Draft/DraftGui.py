@@ -1030,7 +1030,7 @@ class DraftToolBar:
                 if self.state[5]:
                     self.zValue.show()
                 if self.state[6]:
-                    self.labellength.show() 
+                    self.labellength.show()
                 if self.state[7]:
                     self.labelangle.show()
                 if self.state[8]:
