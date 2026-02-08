@@ -1163,6 +1163,8 @@ void GridSpaceAction::updateWidget()
 
         updateCheckBoxFromProperty(gridAutoSpacing, sketchView->GridAuto);
 
+        updateCheckBoxFromProperty(overlaySketch, sketchView->overlaySketch);
+
         ParameterGrp::handle hGrp = getParameterPath();
         updateCheckBox(snapToGrid, hGrp->GetBool("SnapToGrid", false));
 
@@ -1188,6 +1190,10 @@ void GridSpaceAction::languageChange()
         tr("New points will snap to the nearest grid line.\nPoints must be set closer than a "
             "fifth of the grid spacing to a grid line to snap."));
     snapToGrid->setStatusTip(snapToGrid->toolTip());
+
+    overlaySketch->setText(tr("Overlay sketch"));
+    overlaySketch->setToolTip(tr("Brings sketch on top of everything."));
+    overlaySketch->setStatusTip(overlaySketch->toolTip());
 }
 
 QWidget* GridSpaceAction::createWidget(QWidget* parent)
@@ -1197,6 +1203,8 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
     gridAutoSpacing = new QCheckBox();
 
     snapToGrid = new QCheckBox();
+
+    overlaySketch = new QCheckBox();
 
     sizeLabel = new QLabel();
 
@@ -1211,8 +1219,9 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
     layout->addWidget(gridShow, 0, 0, 1, 2);
     layout->addWidget(gridAutoSpacing, 1, 0, 1, 2);
     layout->addWidget(snapToGrid, 2, 0, 1, 2);
-    layout->addWidget(sizeLabel, 3, 0);
-    layout->addWidget(gridSizeBox, 3, 1);
+    layout->addWidget(overlaySketch, 3, 0, 1, 2);
+    layout->addWidget(sizeLabel, 4, 0);
+    layout->addWidget(gridSizeBox, 4, 1);
 
     languageChange();
 
@@ -1249,6 +1258,19 @@ QWidget* GridSpaceAction::createWidget(QWidget* parent)
 #endif
         ParameterGrp::handle hGrp = this->getParameterPath();
         hGrp->SetBool("SnapToGrid", state == Qt::Checked);
+    });
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,7,0)
+    QObject::connect(overlaySketch, &QCheckBox::checkStateChanged, [this](int state) {
+#else
+    QObject::connect(overlaySketch, &QCheckBox::stateChanged, [this](int state) {
+#endif
+        auto* sketchView = getView();
+
+        if (sketchView) {
+            auto enable = (state == Qt::Checked);
+            sketchView->overlaySketch.setValue(enable);
+        }
     });
 
     QObject::connect(gridSizeBox,

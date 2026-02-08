@@ -533,6 +533,7 @@ public:
     App::PropertyBool SectionView;
     App::PropertyBool AutoColor;
     App::PropertyString EditingWorkbench;
+    App::PropertyBool overlaySketch;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
 
