@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 [workspace]
 name = "FreeCAD"
 version = "1.0.0"

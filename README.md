@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 <a href="https://freecad.org"><img src="/src/Gui/Icons/freecad.svg" height="100px" width="100px"></a>
 
 ### Your own 3D Parametric Modeler
