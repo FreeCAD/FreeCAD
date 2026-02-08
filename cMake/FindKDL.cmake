@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Locate KDL install directory
 
 # This module defines

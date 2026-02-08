@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # - Try to find OpenCV library installation
 # See http://sourceforge.net/projects/opencvlibrary/
 #

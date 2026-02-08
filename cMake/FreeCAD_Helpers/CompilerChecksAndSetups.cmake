@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Some resources
 # https://github.com/dev-cafe/cmake-cookbook
 # https://cmake.org/cmake/help/v3.8/manual/cmake-compile-features.7.html
