@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 version: 2
 updates:
   - package-ecosystem: github-actions

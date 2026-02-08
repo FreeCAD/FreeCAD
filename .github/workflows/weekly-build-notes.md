@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 > [!IMPORTANT]
 > Bleeding edge FreeCAD development builds for testing bugfixes, regressions, and recently implemented features. Do not use in a production environment.
 
