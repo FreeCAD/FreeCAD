@@ -957,15 +957,12 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             elif obj.Base and hasattr(obj.Base, "Shape"):
                 # Type-based window: obj.Base furnishes the window solids
                 sol1 = self.getSolidSignature(solids[i])
-                # here we look for all the ways to retrieve a name for each
-                # solid. Currently we look for similar solids in the
-                if hasattr(obj.Base, "Group"):
-                    for child in obj.Base.Group:
-                        if hasattr(child, "Shape") and child.Shape and child.Shape.Solids:
-                            sol2 = self.getSolidSignature(child.Shape)
-                            if sol1 == sol2:
-                                color = self.getSolidMaterial(obj, arch_mat, child.Label)
-                                break
+                for child in getattr(obj.Base, "Group", []) + getattr(obj.Base, "ElementList", []):
+                    if hasattr(child, "Shape") and child.Shape and child.Shape.Solids:
+                        sol2 = self.getSolidSignature(child.Shape)
+                        if sol1 == sol2:
+                            color = self.getSolidMaterial(obj, arch_mat, child.Label)
+                            break
             if color is None:
                 typeidx = (i * 5) + 1
                 if typeidx < len(obj.WindowParts):
