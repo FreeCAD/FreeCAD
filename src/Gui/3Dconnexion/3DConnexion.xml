@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
 <ButtonMap DeviceName="Default">
    <Mapping>
       <Map Description="1"             KeyCode="0"  DownTime="short" Command=""/>
