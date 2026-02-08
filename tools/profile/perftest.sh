@@ -1,4 +1,5 @@
 #! /bin/bash
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Example file to drive the performance profiling python test from the shell.
 # Built to support the Topological Naming Problem fixes from early 2024;

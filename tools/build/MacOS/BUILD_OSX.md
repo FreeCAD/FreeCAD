@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 # Contents
 
 <a name="contents"></a>

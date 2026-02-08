@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
 performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,google-explicit-constructor,
