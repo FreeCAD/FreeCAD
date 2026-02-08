@@ -183,7 +183,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             expected = nl.join((x for x in expected.split("\n") if not re.match(remove, x)))
             gcode = nl.join((x for x in gcode.split(nl) if not re.match(remove, x)))
         print(f"###E---{expected}---")
-        # print(f"###G---{gcode}---")
+        print(f"###G---{gcode}---")
         self.assertEqual(
             expected, gcode
         )  # most other tests have this reversed, and the diff reads wrong to me
@@ -199,6 +199,8 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         header=False,
         precision=None,
         postfix="",
+        JS=None, # set to explicit command that isn't our test default
+        noHorizRapid=False, noVertRapid=False, # which "no" comment is expected
     ):
         # compare_multi helper
         # wraps the expected path-gcode in std prefix, postfix, no-header
@@ -216,15 +218,27 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         fmt = lambda v: format(v, f"0.{len(z)}f")
 
         # remember we are x/s and freecad is x/min (usually)
-        speeds = ""
+        speeds = []
         if comments:
-            speeds += "'set speeds: TC: Default Tool\n"
+            speeds.append( "'set speeds: TC: Default Tool" )
         if inches:
-            speeds += f"""MS,{fmt(FeedSpeed/60/25.4)},{fmt(FeedSpeed/2/60/25.4)}
-JS,{fmt(RapidSpeed/60/25.4)},{fmt(RapidSpeed/2/60/25.4)}"""
+            speeds.append( f"MS,{fmt(FeedSpeed/60/25.4)},{fmt(FeedSpeed/2/60/25.4)}" )
+            if JS is None:
+                speeds.append( f"JS,{fmt(RapidSpeed/60/25.4)},{fmt(RapidSpeed/2/60/25.4)}" )
         else:
-            speeds += f"""MS,{fmt(FeedSpeed/60)},{fmt(FeedSpeed/2/60)}
-JS,{fmt(RapidSpeed/60)},{fmt(RapidSpeed/2/60)}"""
+            speeds.append( f"MS,{fmt(FeedSpeed/60)},{fmt(FeedSpeed/2/60)}" )
+            if JS is None:
+                speeds.append( f"JS,{fmt(RapidSpeed/60)},{fmt(RapidSpeed/2/60)}" )
+
+        if noHorizRapid and comments:
+            speeds.append( "'no HorizRapid" )
+        if noVertRapid and comments:
+            speeds.append( "'no VertRapid" )
+        if JS is not None and JS != '': # '' means skip
+            speeds.append(JS)
+
+        speeds = "\n".join(speeds)
+        print(f"T### speeds---{speeds}---")
 
         def ifcomments(text):
             if not comments:
@@ -256,7 +270,7 @@ IF %(25) = {0 if not inches else 1} THEN GOTO WrongUnits
 {nativepre}'(Begin operation: Fixture)
 '(Machine units: mm/s)
 '(Path: Fixture)
-'( G54 )
+'(G54)
 '(Finish operation: Fixture)
 '(Begin operation: TC: Default Tool)
 '(Machine units: mm/s)
@@ -315,6 +329,34 @@ AfterWrongUnits:
 
         self.compare_multi(None, "--no-header --no-comments --no-show-editor", self.wrap(""))
 
+    def test005(self):
+        """Test native-rapid
+            default should skip the jog-speed setting.
+            --no-native-rapid-fallback should cause an error.
+        """
+        setup_sheet = self.job.SetupSheet 
+
+        # 0's only for horizrapid
+        setup_sheet.HorizRapid = Units.Quantity(0.0, "mm/min")
+        self.doc.recompute()
+        self.compare_multi(None, "--no-header --no-show-editor", 
+            self.wrap("", JS="JS,,17.500", noHorizRapid=True, noVertRapid=False, comments=True )
+        )
+
+        # 0's for both rapid:
+        setup_sheet.HorizRapid = Units.Quantity(0.0, "mm/min")
+        setup_sheet.VertRapid = Units.Quantity(0.0, "mm/min")
+        self.doc.recompute()
+        # nb: can't test --no-comments, because "noHorizRapid" is always inserted, and .wrap doesn't know that
+        self.compare_multi(None, "--no-header --no-show-editor", 
+            self.wrap("", JS="", noHorizRapid=True, noVertRapid=True, comments=True )
+        )
+
+        with self.assertRaises(ValueError) as context:
+            self.compare_multi(None, "--no-header --no-show-editor --no-native-rapid-fallback", "should raise")
+        self.assertTrue("did not set" in str(context.exception))
+
+
     def test010(self):
         """Test command Generation.
         Test Precision
@@ -324,7 +366,7 @@ AfterWrongUnits:
         # default is metric-mm (internal default)
         self.compare_multi(
             "G0 X10 Y20 Z30",  # simple rapid
-            "--no-header --no-comments --no-show-editor --metric --no-abort-on-unknown",
+            "--no-header --no-comments --no-show-editor --metric --no-native-rapid-fallback --no-abort-on-unknown",
             self.wrap(
                 """J3,10.000,20.000,30.000
 """

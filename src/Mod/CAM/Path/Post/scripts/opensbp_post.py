@@ -99,12 +99,18 @@ class Opensbp(PostProcessor):
     * The A and B axis will probably do the wrong thing, act like they are unsupported.
     """
 
-    def __init__(self, job) -> None:
+    def __init__(
+        self, 
+        job,
+        tooltip=translate("CAM", "see property below"),
+        tooltipargs=[""],
+        units="Metric",
+    ) -> None:
         super().__init__(
             job=job,
-            tooltip=translate("CAM", "see property below"),
-            tooltipargs=[""],
-            units="Metric",
+            tooltip=tooltip,
+            tooltipargs=tooltipargs,
+            units=units,
         )
         self.reinitialize()
         Path.Log.debug("Refactored opensbp post processor initialized.")
@@ -298,9 +304,9 @@ class Opensbp(PostProcessor):
             help="if --abort-on-unknown, allow these gcodes, but change them to a comment. E.g. --skip-unknown G55,G56. Always include G54,G99,G98,G80",
         )
         _parser.add_argument(
-            "--native-rapid",
+            "--native-rapid-fallback",
             action=argparse.BooleanOptionalAction,
-            help="Use machine's rapid speeds, not the ToolController (never uses zeros), default=--no-native-rapid",
+            help="Use machine's rapid speeds if ToolController rapid speeds are zero, default=true. --no-native-rapid-fallback causes error on zeros.",
             default=True,
         )
         _parser.add_argument(
@@ -908,14 +914,14 @@ SkipProbeSubRoutines:"""
 
     @gcode("M06")
     def t_toolchange(self, path_command):
-        tool_number = int(path_command.Parameters["T"])
-        if len(self.post._job.Tools.Group) < tool_number:
-            raise ValueError(
-                f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}"
-            )
+        tool_number = int(path_command.Parameters['T'])
 
-        tool_controller = self.post._job.Tools.Group[tool_number - 1]
-        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}"  # not sure if we want both .Label's, just trying to help the operator
+        # check for tool actually existing
+        tool_controller = next((x for x in self.post._job.Tools.Group if x.ToolNumber == tool_number), None)
+        if not tool_controller:
+            raise ValueError(f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}")
+
+        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}" # not sure if we want both .Label's, just trying to help the operator
         safe_tool_name = re.sub(r"[^A-Za-z0-9/_ .-]", "", tool_name)
 
         rez = []
@@ -1454,6 +1460,8 @@ SkipProbeSubRoutines:"""
         if speeds["has_ms"] > 0:
             native += "MS," + ",".join(speeds["ms"]) + "\n"
 
+        print(f"### vrapid {tool_controller.VertRapid} hrapid {tool_controller.HorizRapid}")
+
         warn_rapid = []  # empty is no warning
         if tool_controller.HorizRapid != 0.0:
             speeds["has_js"] += 2
@@ -1473,27 +1481,32 @@ SkipProbeSubRoutines:"""
             speeds["js"].append("")
             native += self.comment("no VertRapid", force=True)
             warn_rapid.append("VertRapid")
+        print(f'### speeds[js] {speeds["js"]}')
 
         if warn_rapid:
-            FreeCAD.Console.PrintWarning(
-                f'Using machine\'s rapid ("jog") for {" and ".join(warn_rapid)}, for ToolController <{self.post._job.Label}>.<{tool_controller.Label}>\n'
-            )
+            if not self.post.arguments.native_rapid_fallback:
+                raise ValueError(
+                    f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set xy&z rapid speeds, and you specified --no-native-rapid-fallback. Set the rapid speeds. {self.location(path_command)}"
+                )
+            else:
+                FreeCAD.Console.PrintWarning(
+                    f'Using machine\'s rapid ("jog") for {" and ".join(warn_rapid)}, for ToolController <{self.post._job.Label}>.<{tool_controller.Label}>\n'
+                )
 
         # for --speed-modal
         for x in ("ms", "js"):
             self.current_location[x] = speeds[x]
 
-        # don't use Tool's Rapid if --no-native-rapid
-        if not self.post.arguments.native_rapid:
-            if speeds["has_js"] > 0:
-                native += "JS," + ",".join(speeds["js"]) + "\n"
-                self.current_location["js"] = [float(s) for s in speeds["js"]]
+        # Add the jog speed to output (if we have one)
+        print(f"### native-rapid? {self.post.arguments.native_rapid_fallback}")
+        print(f'### has_js? {speeds["has_js"]} ? {speeds["has_js"]>0}')
 
-            Path.Log.debug(f"setspeeds hasjs {speeds['has_js']} {speeds['js']}")
-            if speeds["has_js"] < 2:
-                raise ValueError(
-                    f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set xy&z rapid speeds, remove --native-rapid to allow at {self.location(path_command)}"
-                )
+        if speeds["has_js"] > 0:
+            native += "JS," + ",".join(speeds["js"]) + "\n"
+            self.current_location["js"] = [(float(s) if s != '' else '') for s in speeds["js"]]
+            print(f"### added JS")
+
+        Path.Log.debug(f"setspeeds hasjs {speeds['has_js']} {speeds['js']}")
 
         return native
 
