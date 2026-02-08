@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 cmake_minimum_required(VERSION 3.20)
 project(freecad-launcher LANGUAGES CXX)
 
