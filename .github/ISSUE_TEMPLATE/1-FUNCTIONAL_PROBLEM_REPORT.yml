@@ -5,7 +5,34 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this problem report! Please [search](https://github.com/FreeCAD/FreeCAD/issues) if a similar issue already exists and check out [how to report issues](https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues). By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md).
+
+        <br/>
+        
+        Thank you for taking the time to fill out this report!
+
+        ### Verify
+        
+        Please have a look at our open [Issues] to see if your  
+        problem has already been reported by someone else.
+        
+        ### Discuss
+
+        We also encourage you to come talk to us either on our  
+        [Forum] or [Discord] before opening on an issue for this.
+
+        <br/>
+
+        > [!TIP]
+        > If this is your first time, read [how to report an issue to FreeCAD][Guide].
+
+        > [!IMPORTANT]
+        > By submitting this issue, you agree to follow our [Code of Conduct].
+
+        [Code of Conduct]: https://github.com/FreeCAD/FreeCAD/blob/main/CODE_OF_CONDUCT.md
+        [Discord]: https://discord.gg/w2cTKGzccC
+        [Issues]: https://github.com/FreeCAD/FreeCAD/issues
+        [Guide]: https://github.com/FreeCAD/FreeCAD?tab=readme-ov-file#reporting-issues
+        [Forum]: https://forum.freecad.org
 
   - type: textarea
     id: description
