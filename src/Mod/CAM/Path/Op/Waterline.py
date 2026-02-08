@@ -1903,6 +1903,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         caCnt = 0
         caLen = len(CUTAREAS)
+        indicator = FreeCAD.Base.ProgressIndicator()
+        indicator.start("Experimental Z-Level Hybrid: Generating G-Code...", caLen)        
         for ca in range(0, caLen):
             area = CUTAREAS[ca]
             meta = LAYER_METADATA[ca]
@@ -1917,6 +1919,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 cont = True
                 self.showDebugObject(area, "CutArea_{}".format(caCnt))
             else:
+                indicator.next()
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
                 Path.Log.debug("Cut area at {} is zero.".format(data))
 
@@ -1963,7 +1966,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         # Validate the result of the intersection
                         if res_planar and not res_planar.isNull() and res_planar.Area > 1e-7:
                             if hasattr(res_planar, "removeSplitter"):
-                                res_planar = res_planar.removeSplitter()
+                                res_planar.removeSplitter()
                             planarArea = res_planar
                             Path.Log.debug(
                                 "Depth {}: Targeted planar clearing successfully restricted to footprint.".format(
@@ -2016,8 +2019,11 @@ class ObjectWaterline(PathOp.ObjectOp):
                         self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, pattern_to_use)
                     )
 
+            indicator.next()
+
         # Efor
 
+        indicator.stop()
         return commands
 
     def _getToolParams(self, obj):
@@ -2105,6 +2111,9 @@ class ObjectWaterline(PathOp.ObjectOp):
         allPrevComp = Part.makeCompound([])
         isFirst = True
 
+        # Initialize Progress Indicator
+        indicator = FreeCAD.Base.ProgressIndicator()
+
         # Initialize area and load the 3D model
         area = Path.Area()
         wpc = PathUtils.makeWorkplane(shape)
@@ -2126,10 +2135,16 @@ class ObjectWaterline(PathOp.ObjectOp):
         num_slices = self.sampAccuracy if is_threeD else 1
 
         categorizedSteps = self._categorizeFloorSteps(shape, depthparams)
+        total_layers = len(categorizedSteps)
+
+        # Start the indicator
+        indicator.start("Experimental Z-Level Hybrid: Processing Geometry...", total_layers)
 
         # Main Depth Loop
-        for z_target, status, floor_geo in categorizedSteps:
+        for idx, (z_target, status, floor_geo) in enumerate(categorizedSteps):
+
             if z_target > (modelTop + 0.0005):
+                indicator.next()  # Increment anyway to keep bar moving
                 continue
 
             sub_envelope_list = []
@@ -2248,6 +2263,11 @@ class ObjectWaterline(PathOp.ObjectOp):
                 isFirst = False
                 self.showDebugObject(cutArea, "CutArea_Z_{}".format(round(z_target, 5)))
 
+            # Increment the progress bar after each layer is finished
+            indicator.next()
+
+        # Stop the indicator when finished
+        indicator.stop()
         return CUTAREAS, LAYER_METADATA
 
     def _categorizeFloorSteps(self, shape, depthparams):
