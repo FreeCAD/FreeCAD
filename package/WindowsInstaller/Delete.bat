@@ -1,3 +1,5 @@
+@REM SPDX-FileNotice: Part of the FreeCAD project.
+
 del /S *_d.*
 del /S *_debug.*
 del /S *.pyc

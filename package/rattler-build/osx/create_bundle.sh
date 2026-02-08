@@ -1,4 +1,5 @@
 #!/bin/bash
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set -e
 set -x

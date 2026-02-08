@@ -1,4 +1,6 @@
-﻿/*
+﻿; SPDX-FileNotice: Part of the FreeCAD project.
+
+/*
 init.nsh
 
 Initialization functions

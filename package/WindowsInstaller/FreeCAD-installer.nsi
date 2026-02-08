@@ -1,4 +1,6 @@
-﻿/*
+﻿; SPDX-FileNotice: Part of the FreeCAD project.
+
+/*
 FreeCAD Installer for Windows
 Author: Uwe Stöhr
 Compatible with NSIS 3.x

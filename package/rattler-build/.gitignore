@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 linux/AppDir/usr
 linux/AppDir/*.desktop
 linux/AppDir/*.svg

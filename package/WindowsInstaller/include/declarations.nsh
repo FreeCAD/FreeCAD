@@ -1,4 +1,6 @@
-﻿/*
+﻿; SPDX-FileNotice: Part of the FreeCAD project.
+
+/*
 declaration.nsh
 
 Configuration and variables of FreeCAD installer
