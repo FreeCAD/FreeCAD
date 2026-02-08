@@ -30,7 +30,7 @@
 
 #include <QSocketNotifier>
 
-#include <spnav.h>
+#include <spnav.h>  // spnav_* functions.
 
 Gui::GuiNativeEvent::GuiNativeEvent(Gui::GUIApplicationNativeEventAware* app)
     : GuiAbstractNativeEvent(app)
@@ -46,21 +46,18 @@ Gui::GuiNativeEvent::~GuiNativeEvent()
     }
 }
 
-void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
+void Gui::GuiNativeEvent::initSpaceball([[maybe_unused]] QMainWindow* window)
 {
-    Q_UNUSED(window)
     if (spnav_open() == -1) {
         Base::Console().log(
             "Couldn't connect to spacenav daemon. Please ignore if you don't have a spacemouse.\n"
         );
+        return;
     }
-    else {
-        Base::Console().log("Connected to spacenav daemon\n");
-        QSocketNotifier* SpacenavNotifier
-            = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
-        connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
-        mainApp->setSpaceballPresent(true);
-    }
+    Base::Console().log("Connected to spacenav daemon\n");
+    const auto SpacenavNotifier = new QSocketNotifier(spnav_fd(), QSocketNotifier::Read, this);
+    connect(SpacenavNotifier, SIGNAL(activated(int)), this, SLOT(pollSpacenav()));
+    mainApp->setSpaceballPresent(true);
 }
 
 void Gui::GuiNativeEvent::pollSpacenav()

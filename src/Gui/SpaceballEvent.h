@@ -25,19 +25,25 @@
 
 #include <QInputEvent>
 
+#include <tuple>
+
 namespace Spaceball
 {
-enum ButtonStateType
+
+enum class ButtonState
 {
-    BUTTON_NONE = 0,
-    BUTTON_PRESSED,
-    BUTTON_RELEASED
+    None = 0,
+    Pressed,
+    Released
 };
 
+/**
+ * @brief Base class for Spaceball events.
+ */
 class EventBase: public QInputEvent
 {
 public:
-    bool isHandled()
+    [[nodiscard]] bool isHandled() const
     {
         return handled;
     }
@@ -48,41 +54,68 @@ public:
 
 protected:
     explicit EventBase(QEvent::Type event);
+
+private:
     bool handled {false};
 };
 
+/**
+ * @brief Represents a motion event from the Spaceball.
+ */
 class MotionEvent: public EventBase
 {
 public:
     MotionEvent();
-    MotionEvent(const MotionEvent& in);
-    MotionEvent& operator=(const MotionEvent& in);
-    void translations(int& xTransOut, int& yTransOut, int& zTransOut);
-    void setTranslations(const int& xTransIn, const int& yTransIn, const int& zTransIn);
-    int translationX()
+    MotionEvent(const MotionEvent& in) = default;
+    MotionEvent& operator=(const MotionEvent& in) = default;
+    MotionEvent(MotionEvent&&) noexcept = default;
+    MotionEvent& operator=(MotionEvent&&) noexcept = default;
+    ~MotionEvent() override = default;
+
+
+    [[nodiscard]] std::tuple<int, int, int> translations() const
+    {
+        return {xTrans, yTrans, zTrans};
+    }
+    void setTranslations(int xTransIn, int yTransIn, int zTransIn)
+    {
+        xTrans = xTransIn;
+        yTrans = yTransIn;
+        zTrans = zTransIn;
+    }
+
+    [[nodiscard]] int translationX() const
     {
         return xTrans;
     }
-    int translationY()
+    [[nodiscard]] int translationY() const
     {
         return yTrans;
     }
-    int translationZ()
+    [[nodiscard]] int translationZ() const
     {
         return zTrans;
     }
 
-    void rotations(int& xRotOut, int& yRotOut, int& zRotOut);
-    void setRotations(const int& xRotIn, const int& yRotIn, const int& zRotIn);
-    int rotationX()
+    [[nodiscard]] std::tuple<int, int, int> rotations() const
+    {
+        return {xRot, yRot, zRot};
+    }
+    void setRotations(int xRotIn, int yRotIn, int zRotIn)
+    {
+        xRot = xRotIn;
+        yRot = yRotIn;
+        zRot = zRotIn;
+    }
+    [[nodiscard]] int rotationX() const
     {
         return xRot;
     }
-    int rotationY()
+    [[nodiscard]] int rotationY() const
     {
         return yRot;
     }
-    int rotationZ()
+    [[nodiscard]] int rotationZ() const
     {
         return zRot;
     }
@@ -98,22 +131,44 @@ private:
     int zRot {0};
 };
 
+/**
+ * @brief Represents a button event from the Spaceball.
+ */
 class ButtonEvent: public EventBase
 {
 public:
     ButtonEvent();
-    ButtonEvent(const ButtonEvent& in);
-    ButtonEvent& operator=(const ButtonEvent& in);
-    ButtonStateType buttonStatus();
-    void setButtonStatus(const ButtonStateType& buttonStatusIn);
-    int buttonNumber();
-    void setButtonNumber(const int& buttonNumberIn);
+    ButtonEvent(const ButtonEvent& in) = default;
+    ButtonEvent& operator=(const ButtonEvent& in) = default;
+    ButtonEvent(ButtonEvent&&) noexcept = default;
+    ButtonEvent& operator=(ButtonEvent&&) noexcept = default;
+    ~ButtonEvent() override = default;
+
+
+    [[nodiscard]] ButtonState buttonStatus() const
+    {
+        return buttonState;
+    }
+    void setButtonStatus(ButtonState buttonStatusIn)
+    {
+        buttonState = buttonStatusIn;
+    }
+    [[nodiscard]] int buttonNumber() const
+    {
+        return button;
+    }
+    void setButtonNumber(int buttonNumberIn)
+    {
+        button = buttonNumberIn;
+    }
 
     static int ButtonEventType;
 
 private:
-    ButtonStateType buttonState;
-    int button;
+    ButtonState buttonState {ButtonState::None};
+    int button {0};
 };
+
 }  // namespace Spaceball
+
 #endif  // SPACEBALLEVENT_H

@@ -21,8 +21,13 @@
  ***************************************************************************/
 
 
+#include <algorithm>
+#include <array>
+#include <cstddef>
 #include <iomanip>
+#include <qapplication.h>
 #include <sstream>
+#include <vector>
 
 #include <QMainWindow>
 #include <FCConfig.h>
@@ -45,6 +50,61 @@
 # endif  // Platform switch
 #endif   // Spacemice
 
+namespace
+{
+
+// Strings found in `src/Gui/3Dconnexion/3DConnexion.xml`.
+constexpr auto ctrlString = "CTRL";
+constexpr auto altString = "ALT";
+constexpr auto shiftString = "SHIFT";
+constexpr auto escString = "ESC";
+
+enum class SpecialKey
+{
+    None = 0,
+    Ctrl,
+    Alt,
+    Shift,
+    Esc
+};
+
+// @brief Pressed or released special key on Spaceball
+//
+// @Return {"Ctrl", "Alt", "Shift", "Esc"} or None if not a special
+// or if mapped to a command (what makes is unspecial).
+SpecialKey getSpecialKey(int buttonNumber)
+{
+    const ParameterGrp::handle group = App::GetApplication()
+                                           .GetUserParameter()
+                                           .GetGroup("BaseApp")
+                                           ->GetGroup("Spaceball")
+                                           ->GetGroup("Buttons");
+    QByteArray groupName(QVariant(buttonNumber).toByteArray());
+    if (group->HasGroup(groupName.data())) {
+        ParameterGrp::handle commandGroup = group->GetGroup(groupName.data());
+        const std::string commandName(commandGroup->GetASCII("Command"));
+        if (!commandName.empty()) {
+            return SpecialKey::None;
+        }
+        const std::string buttonName(commandGroup->GetASCII("Description"));
+        if (buttonName == escString) {
+            return SpecialKey::Esc;
+        }
+        if (buttonName == altString) {
+            return SpecialKey::Alt;
+        }
+        if (buttonName == shiftString) {
+            return SpecialKey::Shift;
+        }
+        if (buttonName == ctrlString) {
+            return SpecialKey::Ctrl;
+        }
+    }
+    return SpecialKey::None;
+}
+
+}  // Anonymous namespace
+
 Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, char* argv[])
     : QApplication(argc, argv)
     , spaceballPresent(false)
@@ -53,8 +113,6 @@ Gui::GUIApplicationNativeEventAware::GUIApplicationNativeEventAware(int& argc, c
     nativeEvent = new Gui::GuiNativeEvent(this);
 #endif
 }
-
-Gui::GUIApplicationNativeEventAware::~GUIApplicationNativeEventAware() = default;
 
 void Gui::GUIApplicationNativeEventAware::initSpaceball(QMainWindow* window)
 {
@@ -102,9 +160,39 @@ bool Gui::GUIApplicationNativeEventAware::processSpaceballEvent(QObject* object,
             return true;
         }
         if (!buttonEvent->isHandled()) {
-            // make a new event and post to parent.
-            auto newEvent = new Spaceball::ButtonEvent(*buttonEvent);
-            postEvent(object->parent(), newEvent);
+            const auto specialKey = getSpecialKey(buttonEvent->buttonNumber());
+            if (specialKey == SpecialKey::Esc) {
+                /* If button number is 10, create and send a keyboard event, Esc key. */
+                const auto keyEvent = new QKeyEvent {
+                    buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed
+                        ? QEvent::KeyPress
+                        : QEvent::KeyRelease,
+                    Qt::Key_Escape,
+                    Qt::KeyboardModifier::NoModifier
+                };
+                QWidget* focusWidget = QApplication::focusWidget();
+                if (focusWidget) {
+                    QApplication::postEvent(focusWidget, keyEvent);
+                }
+            }
+            else if (specialKey == SpecialKey::Alt) {
+                spaceballAltIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else if (specialKey == SpecialKey::Shift) {
+                spacebackShiftIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else if (specialKey == SpecialKey::Ctrl) {
+                spaceballCtrlIsPressed
+                    = (buttonEvent->buttonStatus() == Spaceball::ButtonState::Pressed);
+            }
+            else {
+                // Other buttons.
+                // make a new event and post to parent.
+                auto newEvent = new Spaceball::ButtonEvent(*buttonEvent);
+                postEvent(object->parent(), newEvent);
+            }
         }
     }
     return true;
@@ -121,7 +209,7 @@ void Gui::GUIApplicationNativeEventAware::postMotionEvent(std::vector<int> motio
     auto motionEvent = new Spaceball::MotionEvent();
     motionEvent->setTranslations(motionDataArray[0], motionDataArray[1], motionDataArray[2]);
     motionEvent->setRotations(motionDataArray[3], motionDataArray[4], motionDataArray[5]);
-    this->postEvent(currentWidget, motionEvent);
+    Gui::GUIApplicationNativeEventAware::postEvent(currentWidget, motionEvent);
 }
 
 void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int buttonPress)
@@ -134,22 +222,20 @@ void Gui::GUIApplicationNativeEventAware::postButtonEvent(int buttonNumber, int 
     auto buttonEvent = new Spaceball::ButtonEvent();
     buttonEvent->setButtonNumber(buttonNumber);
     if (buttonPress) {
-        buttonEvent->setButtonStatus(Spaceball::BUTTON_PRESSED);
+        buttonEvent->setButtonStatus(Spaceball::ButtonState::Pressed);
     }
     else {
-        buttonEvent->setButtonStatus(Spaceball::BUTTON_RELEASED);
+        buttonEvent->setButtonStatus(Spaceball::ButtonState::Released);
     }
-    this->postEvent(currentWidget, buttonEvent);
+    Gui::GUIApplicationNativeEventAware::postEvent(currentWidget, buttonEvent);
 }
 
-float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(int value)
+float Gui::GUIApplicationNativeEventAware::convertPrefToSensitivity(long value)
 {
     if (value < 0) {
-        return ((0.9 / 50) * float(value) + 1);
+        return (static_cast<float>(0.9 / 50) * float(value) + 1);
     }
-    else {
-        return ((2.5 / 50) * float(value) + 1);
-    }
+    return (static_cast<float>(2.5 / 50) * float(value) + 1);
 }
 
 void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motionDataArray)
@@ -190,7 +276,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     float generalSensitivity = convertPrefToSensitivity(group->GetInt("GlobalSensitivity"));
 
     // array that has stored info about "Enabled" checkboxes of all axes
-    bool enabled[6];
+    std::array<bool, 6> enabled {};
     enabled[0] = group->GetBool("Translations", true) && group->GetBool("PanLREnable", true);
     enabled[1] = group->GetBool("Translations", true) && group->GetBool("PanUDEnable", true);
     enabled[2] = group->GetBool("Translations", true) && group->GetBool("ZoomEnable", true);
@@ -199,7 +285,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     enabled[5] = group->GetBool("Rotations", true) && group->GetBool("SpinEnable", true);
 
     // array that has stored info about "Reversed" checkboxes of all axes
-    bool reversed[6];
+    std::array<bool, 6> reversed {};
     reversed[0] = group->GetBool("PanLRReverse");
     reversed[1] = group->GetBool("PanUDReverse");
     reversed[2] = group->GetBool("ZoomReverse");
@@ -210,7 +296,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
     // array that has stored info about sliders - on each slider you need to use method
     // DlgSpaceballSettings::GetValuefromSlider which will convert <-50, 50> linear integers from
     // slider to <0.1, 10> exponential floating values
-    float sensitivity[6];
+    std::array<float, 6> sensitivity {};
     sensitivity[0] = convertPrefToSensitivity(group->GetInt("PanLRSensitivity"));
     sensitivity[1] = convertPrefToSensitivity(group->GetInt("PanUDSensitivity"));
     sensitivity[2] = convertPrefToSensitivity(group->GetInt("ZoomSensitivity"));
@@ -230,66 +316,42 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
 
         return;
     }
-    else {
-        motionDataArray[0] = motionDataArray[0] - group->GetInt("CalibrationX");
-        motionDataArray[1] = motionDataArray[1] - group->GetInt("CalibrationY");
-        motionDataArray[2] = motionDataArray[2] - group->GetInt("CalibrationZ");
-        motionDataArray[3] = motionDataArray[3] - group->GetInt("CalibrationXr");
-        motionDataArray[4] = motionDataArray[4] - group->GetInt("CalibrationYr");
-        motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");
-    }
-
-    int i;
+    motionDataArray[0] = motionDataArray[0] - group->GetInt("CalibrationX");
+    motionDataArray[1] = motionDataArray[1] - group->GetInt("CalibrationY");
+    motionDataArray[2] = motionDataArray[2] - group->GetInt("CalibrationZ");
+    motionDataArray[3] = motionDataArray[3] - group->GetInt("CalibrationXr");
+    motionDataArray[4] = motionDataArray[4] - group->GetInt("CalibrationYr");
+    motionDataArray[5] = motionDataArray[5] - group->GetInt("CalibrationZr");
 
     if (flipXY) {
-        bool tempBool;
-        float tempFloat;
 
-        tempBool = enabled[1];
-        enabled[1] = enabled[2];
-        enabled[2] = tempBool;
+        std::swap(enabled[1], enabled[2]);
+        std::swap(enabled[4], enabled[5]);
 
-        tempBool = enabled[4];
-        enabled[4] = enabled[5];
-        enabled[5] = tempBool;
+        std::swap(reversed[1], reversed[2]);
+        std::swap(reversed[4], reversed[5]);
 
+        std::swap(sensitivity[1], sensitivity[2]);
+        std::swap(sensitivity[4], sensitivity[5]);
 
-        tempBool = reversed[1];
-        reversed[1] = reversed[2];
-        reversed[2] = tempBool;
-
-        tempBool = reversed[4];
-        reversed[4] = reversed[5];
-        reversed[5] = tempBool;
-
-
-        tempFloat = sensitivity[1];
-        sensitivity[1] = sensitivity[2];
-        sensitivity[2] = tempFloat;
-
-        tempFloat = sensitivity[4];
-        sensitivity[4] = sensitivity[5];
-        sensitivity[5] = tempFloat;
-
-
-        i = motionDataArray[1];
+        const int motion_data_1 = motionDataArray[1];
         motionDataArray[1] = motionDataArray[2];
-        motionDataArray[2] = -i;
+        motionDataArray[2] = -motion_data_1;
 
-        i = motionDataArray[4];
+        const int motion_data_4 = motionDataArray[4];
         motionDataArray[4] = motionDataArray[5];
-        motionDataArray[5] = -i;
+        motionDataArray[5] = -motion_data_4;
     }
 
     if (dominant) {  // if dominant is checked
         int max = 0;
         bool flag = false;
-        for (i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if (abs(motionDataArray[i]) > abs(max)) {
                 max = motionDataArray[i];
             }
         }
-        for (i = 0; i < 6; ++i) {
+        for (std::size_t i = 0; i < 6; ++i) {
             if ((motionDataArray[i] != max) || (flag)) {
                 motionDataArray[i] = 0;
             }
@@ -299,7 +361,7 @@ void Gui::GUIApplicationNativeEventAware::importSettings(std::vector<int>& motio
         }
     }
 
-    for (i = 0; i < 6; ++i) {
+    for (std::size_t i = 0; i < 6; ++i) {
         if (motionDataArray[i] != 0) {
             if (!enabled[i]) {
                 motionDataArray[i] = 0;
