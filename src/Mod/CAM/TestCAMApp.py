@@ -109,6 +109,7 @@ from CAMTests.TestLinuxCNCPost import TestLinuxCNCPost
 from CAMTests.TestFanucPost import TestFanucPost
 from CAMTests.TestGrblPost import TestGrblPost
 from CAMTests.TestMassoG3Post import TestMassoG3Post
+from CAMTests.TestOpenSBPPost import TestOpenSBPPost
 from CAMTests.TestCentroidPost import TestCentroidPost
 from CAMTests.TestMach3Mach4Post import TestMach3Mach4Post
 from CAMTests.TestTestPost import TestTestPost
