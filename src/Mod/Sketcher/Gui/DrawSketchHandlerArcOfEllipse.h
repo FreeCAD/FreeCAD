@@ -126,7 +126,7 @@ public:
 
             double cosT = max(-1.0, min(1.0, delta13Prime.x / a));
             double sinT = sqrt(max(0.0, 1 - cosT * cosT));
-            
+
             double b = abs(delta13Prime.y) / sinT;
             if (sinT == 0.0) {
                 b = 0.0;
@@ -203,10 +203,12 @@ public:
                 setPositionText(onSketchPos, text);
             }
 
-            if (onSketchPos != centerPoint)
+            if (onSketchPos != centerPoint) {
                 drawEdit(EditCurve);
-            else
+            }
+            else {
                 drawEdit(std::vector<Base::Vector2d>());
+            }
             seekAndRenderAutoConstraint(sugConstr4, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
     }
@@ -221,7 +223,8 @@ public:
             setAngleSnapping(true, centerPoint);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second && (centerPoint-onSketchPos).Length() >= Precision::Confusion()) {
+        else if (Mode == SelectMode::Second
+                 && (centerPoint - onSketchPos).Length() >= Precision::Confusion()) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             Mode = SelectMode::Third;
@@ -231,8 +234,8 @@ public:
             arcAngle = 0.;
             Mode = SelectMode::Fourth;
         }
-        else if (Mode == SelectMode::Fourth && centerPoint != onSketchPos && 
-            arcAngle != 0 && abs(arcAngle) != 2*pi) { 
+        else if (Mode == SelectMode::Fourth && centerPoint != onSketchPos && arcAngle != 0
+                 && abs(arcAngle) != 2 * pi) {
             endPoint = onSketchPos;
 
             setAngleSnapping(false);
