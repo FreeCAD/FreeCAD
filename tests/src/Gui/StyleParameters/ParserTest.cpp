@@ -41,6 +41,9 @@ protected:
                 {"TestParam", "10px"},
                 {"TestColor", "#ff0000"},
                 {"TestNumber", "5"},
+                {"TestTupleParam", "(left: 1px, right: 2px, top: 3px, bottom: 4px)"},
+                {"TestIndexedTuple", "(10, 20, 30)"},
+                {"TestNestedTuple", "((x: 1, y: 2), (x: 3, y: 4))"},
             },
             ParameterSource::Metadata {"Test Source"}
         );
@@ -888,6 +891,135 @@ TEST_F(ParserTest, ParseNestedParentheses)
         EXPECT_DOUBLE_EQ(length.value, 10.0);  // (10 - 5) * 2 = 5 * 2 = 10
         EXPECT_EQ(length.unit, "");
     }
+}
+
+// Test member access on tuple parameters (named)
+TEST_F(ParserTest, MemberAccessNamed)
+{
+    {
+        Parser parser("@TestTupleParam.left");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+
+        auto length = std::get<Numeric>(result);
+        EXPECT_DOUBLE_EQ(length.value, 1.0);
+        EXPECT_EQ(length.unit, "px");
+    }
+
+    {
+        Parser parser("@TestTupleParam.right");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+
+        auto length = std::get<Numeric>(result);
+        EXPECT_DOUBLE_EQ(length.value, 2.0);
+        EXPECT_EQ(length.unit, "px");
+    }
+}
+
+// Test member access on tuple parameters (indexed)
+TEST_F(ParserTest, MemberAccessIndexed)
+{
+    {
+        Parser parser("@TestIndexedTuple.0");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 10.0);
+    }
+
+    {
+        Parser parser("@TestIndexedTuple.2");
+        auto expr = parser.parse();
+
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 30.0);
+    }
+}
+
+// Test member access on inline tuples
+TEST_F(ParserTest, MemberAccessInlineTuple)
+{
+    {
+        Parser parser("(x: 10, y: 20).x");
+        auto expr = parser.parse();
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 10.0);
+    }
+
+    {
+        Parser parser("(10, 20, 30).1");
+        auto expr = parser.parse();
+        auto result = expr->evaluate({&manager, {}});
+        EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+        EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 20.0);
+    }
+}
+
+// Test member access in arithmetic expressions
+TEST_F(ParserTest, MemberAccessInArithmetic)
+{
+    Parser parser("@TestTupleParam.left + @TestTupleParam.right");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+
+    auto length = std::get<Numeric>(result);
+    EXPECT_DOUBLE_EQ(length.value, 3.0);
+    EXPECT_EQ(length.unit, "px");
+}
+
+// Test chained member access on nested tuples
+TEST_F(ParserTest, MemberAccessChained)
+{
+    Parser parser("@TestNestedTuple.0.x");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(std::holds_alternative<Numeric>(result));
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(result).value, 1.0);
+}
+
+// Test member access error cases
+TEST_F(ParserTest, MemberAccessErrors)
+{
+    // Named member not found
+    EXPECT_THROW(
+        {
+            Parser parser("@TestTupleParam.nonexistent");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::ExpressionError
+    );
+
+    // Index out of bounds
+    EXPECT_THROW(
+        {
+            Parser parser("@TestIndexedTuple.5");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::RuntimeError
+    );
+
+    // Member access on non-tuple
+    EXPECT_THROW(
+        {
+            Parser parser("@TestNumber.foo");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::ExpressionError
+    );
 }
 
 // ArgumentParser tests

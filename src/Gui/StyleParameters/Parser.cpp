@@ -28,9 +28,7 @@
 #include <Base/Tools.h>
 
 #include <QColor>
-#include <QRegularExpression>
-#include <QString>
-#include <ranges>
+#include <algorithm>
 #include <variant>
 
 namespace Gui::StyleParameters
@@ -161,6 +159,26 @@ Value UnaryOp::evaluate(const EvaluationContext& context) const
     }
 }
 
+Value MemberAccess::evaluate(const EvaluationContext& context) const
+{
+    Value val = object->evaluate(context);
+    if (!val.holds<Tuple>()) {
+        THROWM(Base::ExpressionError, "Member access requires a tuple");
+    }
+
+    const auto& tuple = val.get<Tuple>();
+
+    if (const Value* found = tuple.find(member)) {
+        return *found;
+    }
+
+    if (std::ranges::all_of(member, ::isdigit)) {
+        return tuple.at(std::stoul(member));
+    }
+
+    THROWM(Base::ExpressionError, fmt::format("Tuple has no member '{}'", member));
+}
+
 std::unique_ptr<Expr> Parser::parse()
 {
     auto expr = parseExpression();
@@ -222,41 +240,54 @@ std::unique_ptr<Expr> Parser::parseFactor()
         Operator op = (input[pos - 1] == '+') ? Operator::Add : Operator::Subtract;
         return std::make_unique<UnaryOp>(op, parseFactor());
     }
+
+    std::unique_ptr<Expr> expr;
+
     if (match('(')) {
         // Disambiguation: tuple vs grouped expression
         // 1. If we see `identifier:` pattern → definitely a tuple
         if (peekNamedElement()) {
-            return parseTuple();
+            expr = parseTuple();
         }
+        else {
+            // 2. Otherwise parse first expression
+            expr = parseExpression();
+            skipWhitespace();
 
-        // 2. Otherwise parse first expression
-        auto expr = parseExpression();
-        skipWhitespace();
-
-        // If followed by `,` → reinterpret as tuple with this as first element
-        if (pos < input.size() && input[pos] == ',') {
-            ++pos;
-            TupleLiteral::Element first;
-            first.expression = std::move(expr);
-            return parseTuple(std::move(first));
+            // If followed by `,` → reinterpret as tuple with this as first element
+            if (pos < input.size() && input[pos] == ',') {
+                ++pos;
+                TupleLiteral::Element first;
+                first.expression = std::move(expr);
+                expr = parseTuple(std::move(first));
+            }
+            else {
+                // If followed by `)` → grouped expression (backward compatible)
+                if (!match(')')) {
+                    THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
+                }
+            }
         }
+    }
+    else if (peekColor()) {
+        expr = parseColor();
+    }
+    else if (peekParameter()) {
+        expr = parseParameter();
+    }
+    else if (peekFunction()) {
+        expr = parseFunctionCall();
+    }
+    else {
+        expr = parseNumber();
+    }
 
-        // If followed by `)` → grouped expression (backward compatible)
-        if (!match(')')) {
-            THROWM(Base::ParserError, fmt::format("Expected ')', got '{}'", input[pos]));
-        }
-        return expr;
+    while (pos < input.size() && input[pos] == '.') {
+        ++pos;
+        expr = std::make_unique<MemberAccess>(std::move(expr), parseMember());
     }
-    if (peekColor()) {
-        return parseColor();
-    }
-    if (peekParameter()) {
-        return parseParameter();
-    }
-    if (peekFunction()) {
-        return parseFunctionCall();
-    }
-    return parseNumber();
+
+    return expr;
 }
 
 bool Parser::peekColor()
@@ -500,6 +531,18 @@ std::string Parser::parseUnit()
     }
     if (start == pos) {
         return "";
+    }
+    return input.substr(start, pos - start);
+}
+
+std::string Parser::parseMember()
+{
+    size_t start = pos;
+    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
+        ++pos;
+    }
+    if (start == pos) {
+        THROWM(Base::ParserError, "Expected member name after '.'");
     }
     return input.substr(start, pos - start);
 }

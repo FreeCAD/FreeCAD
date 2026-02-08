@@ -145,6 +145,19 @@ struct GuiExport UnaryOp: public Expr
     Value evaluate(const EvaluationContext& context) const override;
 };
 
+struct GuiExport MemberAccess: public Expr
+{
+    std::unique_ptr<Expr> object;
+    std::string member;
+
+    MemberAccess(std::unique_ptr<Expr> object, std::string member)
+        : object(std::move(object))
+        , member(std::move(member))
+    {}
+
+    Value evaluate(const EvaluationContext& context) const override;
+};
+
 class GuiExport Parser
 {
     static constexpr auto rgbFunction = "rgb(";
@@ -174,6 +187,7 @@ private:
     int parseInt();
     std::unique_ptr<Expr> parseNumber();
     std::string parseUnit();
+    std::string parseMember();
     bool peekNamedElement();
     std::unique_ptr<TupleLiteral> parseTuple(
         std::optional<TupleLiteral::Element> firstElement = std::nullopt
