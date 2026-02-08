@@ -26,10 +26,13 @@
 
 #include "MappedName.h"
 
+
 #include "Base/Console.h"
 
+#include <iostream>
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <unordered_set>
 
 
 FC_LOG_LEVEL_INIT("MappedName", true, 2);  // NOLINT
@@ -48,6 +51,74 @@ void MappedName::compact() const
     }
 }
 
+std::string escapeString(const std::string stringToEscape)
+{
+    std::stringstream ss;
+    std::unordered_set<char> charsToEscape {'|', ';', ':', ','};
+
+    for (size_t i = 0; i < stringToEscape.size(); ++i) {
+        char currentChar = stringToEscape[i];
+
+        if (charsToEscape.contains(currentChar)) {
+            ss << "^";
+        }
+
+        ss << currentChar;
+    }
+
+    return ss.str();
+}
+
+std::string MappedName::makeSection(std::vector<std::string> referenceIDs,
+                                           std::vector<MappedName> referenceNames,
+                                           int iterationTag,
+                                           std::string opCode,
+                                           int index,
+                                           char elementType,
+                                           int duplicateCount,
+                                           std::string mapperInfo)
+{
+    std::stringstream ss;
+
+    if (referenceIDs.empty()) {
+        ss << "_";
+    } else {
+        for (size_t i = 0; i < referenceIDs.size(); ++i) {
+            if (i != 0)
+                ss << ",";
+
+            ss << referenceIDs[i];
+        }
+    }
+
+    ss << ";";
+
+    if (referenceNames.empty()) {
+        ss << "_";
+    } else {
+        for (size_t i = 0; i < referenceNames.size(); ++i) {
+            if (i != 0)
+                ss << ",";
+
+            ss << MappedName::escapeString(referenceNames[i].toString());
+        }
+    }
+
+    ss << ";" 
+       << iterationTag
+       << ";"
+       << opCode
+       << ";"
+       << index
+       << ";"
+       << elementType
+       << ";"
+       << duplicateCount
+       << ";"
+       << mapperInfo;
+    
+    return ss.str();
+}
 
 int MappedName::findTagInElementName(long* tagOut,
                                      int* lenOut,

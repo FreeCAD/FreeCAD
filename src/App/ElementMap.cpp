@@ -625,6 +625,9 @@ void ElementMap::encodeElementName(char element_type,
                                    long tag,
                                    bool forceTag) const
 {
+    if (name.getHistoryAlgorithm() != App::HistoryAlgorithm::V1 && this->getHistoryAlgorithm() != App::HistoryAlgorithm::V1)
+        return;
+
     if (postfix && (postfix[0] != 0)) {
         if (!boost::starts_with(postfix, ELEMENT_MAP_PREFIX)) {
             ss << ELEMENT_MAP_PREFIX;

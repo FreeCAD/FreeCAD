@@ -331,13 +331,31 @@ void SketchObject::buildShape()
     std::vector<Part::TopoShape> vertices;
     int geoId = 0;
 
-    auto addVertex = [&vertices](auto vertex, auto name) {
+    auto addVertex = [&vertices](auto vertex, auto name, int tag) {
         if (!vertex.hasElementMap()) {
             vertex.resetElementMap(std::make_shared<Data::ElementMap>());
         }
+
+        Data::MappedName builtName = Data::MappedName();
+
+        if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+            builtName = name;
+        } else if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            builtName = Data::MappedName::makeSection({name},
+                                                      {},
+                                                      tag,
+                                                      "SKT",
+                                                      0,
+                                                      'V',
+                                                      0,
+                                                      "_");
+        } else {
+            // unimplemented algorithm, do not touch the name.
+        }
+
         vertex.setElementName(
             Data::IndexedName::fromConst("Vertex", 1),
-            Data::MappedName::fromRawData(name.c_str()),
+            builtName,
             0L
         );
         vertices.push_back(vertex);
@@ -362,7 +380,8 @@ void SketchObject::buildShape()
             int idx = getVertexIndexGeoPos(geoId - 1, Sketcher::PointPos::start);
             addVertex(
                 Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false)
+                convertSubName(Data::IndexedName::fromConst("Vertex", idx + 1), false),
+                getID()
             );
         }
         else {
@@ -387,7 +406,8 @@ void SketchObject::buildShape()
         if (geo->isDerivedFrom<Part::GeomPoint>()) {
             addVertex(
                 Part::TopoShape {TopoDS::Vertex(geo->toShape())},
-                convertSubName(indexedName, false)
+                convertSubName(indexedName, false),
+                getID()
             );
         }
         else {
@@ -11794,6 +11814,21 @@ App::ElementNamePair SketchObject::getElementName(
 Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *name) const
 {
     Part::TopoShape shape(geo->toShape());
+    Data::MappedName builtName = Data::MappedName();
+    Data::MappedName builtVertexName = Data::MappedName();
+
+    if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+        builtName = name;
+    } else if (builtName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+        builtName = Data::MappedName::makeSection({name},
+                                                  {},
+                                                  getID(),
+                                                  "SKT",
+                                                  0,
+                                                  'E',
+                                                  0,
+                                                  "_");
+    }
     // Originally in ComplexGeoData::setElementName
     // LinkStable/src/App/ComplexGeoData.cpp#L1631
     // No longer possible after map separated in ElementMap.cpp
@@ -11801,7 +11836,7 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
         shape.resetElementMap(std::make_shared<Data::ElementMap>());
     }
     shape.setElementName(Data::IndexedName::fromConst("Edge", 1),
-                          Data::MappedName::fromRawData(name),0L);
+                          builtName,0L);
     TopTools_IndexedMapOfShape vmap;
     TopExp::MapShapes(shape.getShape(), TopAbs_VERTEX, vmap);
     std::ostringstream ss;
@@ -11813,8 +11848,20 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
             if(getPoint(geo,pos[j]) == pt) {
                 ss.str("");
                 ss << name << 'v' << static_cast<int>(pos[j]);
+                if (builtVertexName.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    builtVertexName = ss.str();
+                } else if (builtVertexName.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+                    builtVertexName = Data::MappedName::makeSection({ss.str()},
+                                                                    {},
+                                                                    getID(),
+                                                                    "SKT",
+                                                                    0,
+                                                                    'V',
+                                                                    0,
+                                                                    "_");
+                }
                 shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
-                                      Data::MappedName::fromRawData(ss.str().c_str()),0L);
+                                     builtVertexName,0L);
                 break;
             }
         }

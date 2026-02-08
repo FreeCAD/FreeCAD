@@ -89,9 +89,11 @@ public:
      * element map prefix, which will be omitted from the stored MappedName.
      *
      * @param nameString The new name. A deep copy is made.
+     * @param historyAlgorithm The algorithm used to make `nameString`. Defaulted to `V1`.
      */
-    explicit MappedName(const std::string& nameString)
+    explicit MappedName(const std::string& nameString, const App::HistoryAlgorithm historyAlgorithm = App::HistoryAlgorithm::V2)
         : raw(false)
+        , usedHistoryAlgorithm(historyAlgorithm)
     {
         auto size = nameString.size();
         const char* name = nameString.c_str();
@@ -133,6 +135,12 @@ public:
         : raw(false)
     {}
 
+    /// Create a MappedName with a marked history algorithm.
+    MappedName(const App::HistoryAlgorithm historyAlgorithm)
+        : raw(false)
+        , usedHistoryAlgorithm(historyAlgorithm)
+    {}
+
     MappedName(const MappedName& other) = default;
 
     /**
@@ -149,7 +157,7 @@ public:
      * and start positions
      */
     MappedName(const MappedName& other, int startPosition, int size = -1)
-        : raw(false)
+        : raw(false), usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {
         append(other, startPosition, size);
     }
@@ -166,12 +174,14 @@ public:
         : data(other.data + other.postfix)
         , postfix(postfix)
         , raw(false)
+        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     MappedName(MappedName&& other) noexcept
         : data(std::move(other.data))
         , postfix(std::move(other.postfix))
         , raw(other.raw)
+        , usedHistoryAlgorithm(other.usedHistoryAlgorithm)
     {}
 
     ~MappedName() = default;
@@ -244,6 +254,7 @@ public:
 
         MappedName res;
         res.raw = true;
+        res.usedHistoryAlgorithm = other.usedHistoryAlgorithm;
         if (size < 0) {
             size = other.size() - startPosition;
         }
@@ -923,6 +934,7 @@ public:
         MappedName res;
         res.data.append(this->data.constData(), this->data.size());
         res.postfix = this->postfix;
+        res.usedHistoryAlgorithm = this->usedHistoryAlgorithm;
         return res;
     }
 
@@ -1144,10 +1156,32 @@ public:
         return qHash(data, qHash(postfix));
     }
 
+    App::HistoryAlgorithm getHistoryAlgorithm() const {
+        return usedHistoryAlgorithm;
+    };
+
+    App::HistoryAlgorithm setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+        usedHistoryAlgorithm = newAlgorithm;
+        
+        return usedHistoryAlgorithm;
+    };
+
+    static std::string makeSection(std::vector<std::string> referenceIDs = { },
+                                   std::vector<MappedName> referenceNames = { },
+                                   int iterationTag = 0,
+                                   std::string opCode = "MKR",
+                                   int index = 0,
+                                   char elementType = 'E',
+                                   int duplicateCount = 0,
+                                   std::string mapperInfo = "_");
+    
+    static std::string escapeString(const std::string stringToEscape);
+
 private:
     QByteArray data;
     QByteArray postfix;
     bool raw;
+    enum App::HistoryAlgorithm usedHistoryAlgorithm = App::HistoryAlgorithm::V2;
 };
 
 

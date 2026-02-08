@@ -10,6 +10,11 @@
 namespace App
 {
 
+enum HistoryAlgorithm : int {
+    V1 = 0,
+    V2 = 1
+};
+
 /// Return type for lookups of new and old style sub-element names
 struct ElementNamePair
 {
