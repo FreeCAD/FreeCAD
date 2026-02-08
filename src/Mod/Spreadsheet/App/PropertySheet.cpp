@@ -1382,25 +1382,42 @@ void PropertySheet::addDependencies(CellAddress key)
             ++updateCount;
 
             for (auto& name : dep.second) {
-                std::string propName = docObjName + "." + name;
-                FC_LOG("dep " << key.toString() << " -> " << name);
+                std::string propName = name;
+
+                // Fixes #7645: Absolute cells in a spreadsheet are not updated
+                //
+                // Check if the property name is a cell address. If yes then get a clean name
+                // without the characters of absolute addresses because they are invalid for a
+                // correct property name.
+                // This is needed in getDeps() where a clean name is passed to find the referenced
+                // cell addresses and to setup the correct execution order in the sheet's execute
+                // method. If the execution order is arbitrary it can happen that a cell references
+                // a not yet processed cell. This leads to a failing resolution of the property of
+                // the object identifier because the property hasn't been added to the object yet
+                // and results into a failed processing of the cell.
+                App::CellAddress addr(propName);
+                if (addr.isValid()) {
+                    propName = addr.toString(App::CellAddress::Cell::ShowRowColumn);
+                }
+                std::string fullName = docObjName + "." + propName;
+                FC_LOG("dep " << key.toString() << " -> " << propName);
 
                 // Insert into maps
-                propertyNameToCellMap[propName].insert(key);
-                cellToPropertyNameMap[key].insert(propName);
+                propertyNameToCellMap[fullName].insert(key);
+                cellToPropertyNameMap[key].insert(fullName);
 
                 // Also an alias?
-                if (!name.empty() && docObj->isDerivedFrom<Sheet>()) {
+                if (!propName.empty() && docObj->isDerivedFrom<Sheet>()) {
                     auto other = static_cast<Sheet*>(docObj);
-                    auto j = other->cells.revAliasProp.find(name);
+                    auto j = other->cells.revAliasProp.find(propName);
 
                     if (j != other->cells.revAliasProp.end()) {
-                        propName = docObjName + "." + j->second.toString();
-                        FC_LOG("dep " << key.toString() << " -> " << propName);
+                        fullName = docObjName + "." + j->second.toString();
+                        FC_LOG("dep " << key.toString() << " -> " << fullName);
 
                         // Insert into maps
-                        propertyNameToCellMap[propName].insert(key);
-                        cellToPropertyNameMap[key].insert(std::move(propName));
+                        propertyNameToCellMap[fullName].insert(key);
+                        cellToPropertyNameMap[key].insert(std::move(fullName));
                     }
                 }
             }
