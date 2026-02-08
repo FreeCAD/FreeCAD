@@ -150,7 +150,8 @@ void PropertyItemDelegate::paint(
         );
         if (readonly) {
             painter->setPen(palette.color(QPalette::Disabled, QPalette::Text));
-        } else {
+        }
+        else {
             painter->setPen(palette.color(QPalette::Text));
         }
         painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, labelText);
