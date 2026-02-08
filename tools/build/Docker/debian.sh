@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 apt-get install --no-install-recommends --yes build-essential cmake doxygen \
     git libboost-date-time-dev libboost-dev libboost-filesystem-dev \
     libboost-graph-dev libboost-iostreams-dev libboost-program-options-dev \

@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 pacman --noconfirm --sync boost boost-libs cmake coin curl desktop-file-utils doxygen \
     eigen gc gcc-fortran git glew gnu-free-fonts guile hicolor-icon-theme jsoncpp \
     libspnav libtool make med opencascade pyside2 pyside2-tools python-matplotlib \
