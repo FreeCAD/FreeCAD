@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # The Qt for Python project officially recommends using pip to install PySide, so we expect to find PySide in the
 # site-packages directory. The library will be called "PySide6.abi3.*", and there will be an "include" directory inside
 # the site-packages/PySide6. Over time some distros may provide custom versions, so we also support using a more normal

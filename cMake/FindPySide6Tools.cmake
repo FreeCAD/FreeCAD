@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Try to find PYSIDE6 utilities, PYSIDE6UIC and PYSIDE6RCC:
 # PYSIDE_UIC_EXECUTABLE - Location of PYSIDE6UIC executable
 # PYSIDE_RCC_EXECUTABLE - Location of PYSIDE6RCC executable

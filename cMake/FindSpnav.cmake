@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Find the spnav library and header.
 #
 # Sets the usual variables expected for find_package scripts:

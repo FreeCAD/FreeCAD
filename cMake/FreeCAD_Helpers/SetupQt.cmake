@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # -------------------------------- Qt --------------------------------
 
 set(FREECAD_QT_COMPONENTS Core Concurrent Network Xml)

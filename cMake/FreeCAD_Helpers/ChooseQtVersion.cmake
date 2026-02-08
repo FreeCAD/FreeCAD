@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ADAPTED FOR FREECAD FROM VTK'S vtkQt.cmake
 # ORIGINAL VTK COPYRIGHT NOTICE FOLLOWS (BSD 3-CLAUSE)
 #

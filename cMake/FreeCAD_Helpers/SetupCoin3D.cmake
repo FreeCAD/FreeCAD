@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(SetupCoin3D)
     # -------------------------------- Coin3D --------------------------------
 
