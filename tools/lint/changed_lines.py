@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Modified to generate output compatible with `clang-tidy`'s `--line-filter` option
 #

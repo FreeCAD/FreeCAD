@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 dnf --assumeyes install boost-devel cmake Coin3 Coin3-devel desktop-file-utils doxygen \
     eigen3-devel freeimage-devel freetype freetype-devel gcc gettext git libspnav-devel \
     libXmu-devel med med-devel mesa-libGLU-devel ode-devel opencascade-devel \

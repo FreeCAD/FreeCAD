@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 # Security Policy
 
 The FreeCAD project is a FOSS (Free and Open-Source Software) project that has a community of thousands of users and

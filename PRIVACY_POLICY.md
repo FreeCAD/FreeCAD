@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 # FreeCAD Privacy Policy
 
 The FreeCAD application does not collect, transmit, share or use any Personal Data.

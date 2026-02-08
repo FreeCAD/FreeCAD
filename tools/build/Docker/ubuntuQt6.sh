@@ -1,4 +1,5 @@
 #!/bin/sh
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 apt-get install --no-install-recommends --yes build-essential cmake doxygen git \
 libtool lsb-release \
