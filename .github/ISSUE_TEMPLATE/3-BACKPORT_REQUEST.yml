@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 name: Request a Backport
 description: Suggest that a commit from the main development branch be backported to the next point release
 title: "[Backport] "

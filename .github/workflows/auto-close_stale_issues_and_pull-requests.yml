@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # This workflow warns and then closes issues that have had no activity for a
 # specified amount of time. You can adjust the behavior by modifying this file.
 # For more information, see:
