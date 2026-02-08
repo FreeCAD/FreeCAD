@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: LGPL-2.1-or-later */
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 document.addEventListener('DOMContentLoaded', function () {
     var path = window.location.pathname || window.location.href || '';
