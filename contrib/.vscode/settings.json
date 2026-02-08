@@ -1,3 +1,4 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
 {
   // This disables vscode from adding lines to files.associations,
   // some files might not be recognized though.

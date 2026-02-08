@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # pylint: disable=line-too-long
 """
  QT Pretty Printer for GDB

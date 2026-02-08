@@ -1,3 +1,5 @@
+@REM SPDX-FileNotice: Part of the FreeCAD project.
+
 @echo off
 REM Change to the directory of this script (any subdirectory in the repository should work)
 cd /d "%~dp0"
