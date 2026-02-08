@@ -356,7 +356,10 @@ class ObjectWaterline(PathOp.ObjectOp):
                 "App::PropertyBool",
                 "IgnoreOuter",
                 "Clearing Options",
-                QT_TRANSLATE_NOOP("App::Property", "If true, the operation ignores the outermost boundary and only machines internal perimeters (typically is used for the stock)."),
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "If true, the operation ignores the outermost boundary and only machines internal perimeters (typically is used for the stock).",
+                ),
             ),
             (
                 "App::PropertyEnumeration",
@@ -534,7 +537,7 @@ class ObjectWaterline(PathOp.ObjectOp):
     def setEditorProperties(self, obj):
         # Used to hide inputs in properties list (UI modes: 0 = show, 2 = hide)
         expMode = G = 0
-        show = hide = A = B = C = D = E = 2 
+        show = hide = A = B = C = D = E = 2
 
         # Default hidden properties for all algorithms
         obj.setEditorMode("BoundaryEnforcement", hide)
@@ -556,25 +559,25 @@ class ObjectWaterline(PathOp.ObjectOp):
             expMode = 2
         elif obj.Algorithm == "Experimental":
             # Default visibility for Experimental properties
-            A = B = C = E = 0 
-            expMode = G = D = 2 
+            A = B = C = E = 0
+            expMode = G = D = 2
 
             cutPattern = obj.CutPattern
 
             if cutPattern == "None":
                 # If no pattern, hide clearing-specific settings
-                A = B = E = 2 
+                A = B = E = 2
                 show = 2
             elif cutPattern == "Offset":
                 # Offset uses StepOver and Planar toggle, but not Angle
-                show = 2 
+                show = 2
             elif cutPattern in ["Line", "ZigZag"]:
-                show = 0 # Show Angle
+                show = 0  # Show Angle
             elif cutPattern in ["Circular", "CircularZigZag"]:
                 show = 2
-                hide = 0 # Show Pattern Center
+                hide = 0  # Show Pattern Center
             elif cutPattern == "Spiral":
-                G = hide = 0 # Show Sample Interval and Pattern Center
+                G = hide = 0  # Show Sample Interval and Pattern Center
 
         # Apply visibility states to properties
         obj.setEditorMode("CutPatternAngle", show)
@@ -1890,7 +1893,9 @@ class ObjectWaterline(PathOp.ObjectOp):
         self.showDebugObject(trimFace, "TrimFace")
 
         # Cycle through layer depths
-        (CUTAREAS, LAYER_METADATA) = self._getCutAreas(shape, depthparams, borderFace, tool_params, stock_to_leave)
+        (CUTAREAS, LAYER_METADATA) = self._getCutAreas(
+            shape, depthparams, borderFace, tool_params, stock_to_leave
+        )
 
         if not CUTAREAS:
             Path.Log.error("No cross-section cut areas identified.")
@@ -1960,13 +1965,25 @@ class ObjectWaterline(PathOp.ObjectOp):
                             if hasattr(res_planar, "removeSplitter"):
                                 res_planar = res_planar.removeSplitter()
                             planarArea = res_planar
-                            Path.Log.debug("Depth {}: Targeted planar clearing successfully restricted to footprint.".format(csHght))
+                            Path.Log.debug(
+                                "Depth {}: Targeted planar clearing successfully restricted to footprint.".format(
+                                    csHght
+                                )
+                            )
                         else:
-                            Path.Log.debug("Depth {}: Intersection result empty, falling back to full area.".format(csHght))
+                            Path.Log.debug(
+                                "Depth {}: Intersection result empty, falling back to full area.".format(
+                                    csHght
+                                )
+                            )
 
                     except Exception as e:
                         # If the intersection fails, just proceed using the full clearArea.
-                        Path.Log.warning("Depth {}: Footprint intersection failed ({}), using fallback.".format(csHght, str(e)))
+                        Path.Log.warning(
+                            "Depth {}: Footprint intersection failed ({}), using fallback.".format(
+                                csHght, str(e)
+                            )
+                        )
 
             if cont:
                 data = FreeCAD.Units.Quantity(csHght, FreeCAD.Units.Length).UserString
@@ -1989,12 +2006,12 @@ class ObjectWaterline(PathOp.ObjectOp):
                 if pattern_to_use == "Offset":
                     # The 'Offset' pattern follows the part profile recursively
                     Path.Log.debug(" - Clearing planar face via Offset at Z: {}".format(csHght))
-                    commands.extend(
-                        self._makeOffsetLayerPaths(obj, clearArea, csHght)
-                    )
+                    commands.extend(self._makeOffsetLayerPaths(obj, clearArea, csHght))
                 elif pattern_to_use != "None":
                     # All other patterns (ZigZag, Line, Spiral, etc.) use the generator
-                    Path.Log.debug(" - Clearing planar face via {} at Z: {}".format(pattern_to_use, csHght))
+                    Path.Log.debug(
+                        " - Clearing planar face via {} at Z: {}".format(pattern_to_use, csHght)
+                    )
                     commands.extend(
                         self._makeCutPatternLayerPaths(JOB, obj, clearArea, csHght, pattern_to_use)
                     )
@@ -2140,11 +2157,11 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                     # r_eff is calculated from base h, then biased horizontally
                     r_base = _getEffectiveRadius(h_base, radius, c_rad, profile)
-                    r_eff =  (r_base + stock_to_leave) * r_bias
+                    r_eff = (r_base + stock_to_leave) * r_bias
                     target_h = z_target + h
                 else:
                     # Flat Endmill (single slice)
-                    r_eff = radius +  stock_to_leave
+                    r_eff = radius + stock_to_leave
                     target_h = z_target
 
                 sliceHght = _determineSliceHght(target_h, modelBottom, modelTop, epsilon)
@@ -2225,10 +2242,9 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             if cutArea.Area > 1e-9:
                 CUTAREAS.append(cutArea)
-                LAYER_METADATA.append({
-                    "status": status,
-                    "footprint": compAdjFaces.copy() # The 'mask' of the part
-                })
+                LAYER_METADATA.append(
+                    {"status": status, "footprint": compAdjFaces.copy()}  # The 'mask' of the part
+                )
                 isFirst = False
                 self.showDebugObject(cutArea, "CutArea_Z_{}".format(round(z_target, 5)))
 
