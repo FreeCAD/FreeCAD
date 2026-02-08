@@ -919,7 +919,14 @@ SkipProbeSubRoutines:"""
         # check for tool actually existing
         tool_controller = next((x for x in self.post._job.Tools.Group if x.ToolNumber == tool_number), None)
         if not tool_controller:
-            raise ValueError(f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}")
+            # HACK: at least till 1.1, nothing enforces tool-numbers in the job to be unique
+            #   and "Tn" doesn't have to match a ToolNumber
+            #   we'll do a compatibility hack ONLY if all tools == 1
+            if all(  x.ToolNumber == 1 for x in self.post._job.Tools.Group ) and len(self.post._job.Tools.Group) >= tool_number:
+                tool_controller = self.post._job.Tools.Group[tool_number - 1]
+                FreeCAD.Console.PrintWarning(f"Job <{self.post._job.Label}> doesn't have unique tool-numbers? at {self.location(path_command)}")
+            else:
+                raise ValueError(f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}. Do tools have unique tool-numbers?")
 
         tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}" # not sure if we want both .Label's, just trying to help the operator
         safe_tool_name = re.sub(r"[^A-Za-z0-9/_ .-]", "", tool_name)
