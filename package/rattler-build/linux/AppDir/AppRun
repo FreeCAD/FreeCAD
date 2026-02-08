@@ -1,4 +1,6 @@
 #!/bin/bash
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 HERE="$(dirname "$(readlink -f "${0}")")"
 export PREFIX=${HERE}/usr
 # export LD_LIBRARY_PATH=${HERE}/usr/lib${LD_LIBRARY_PATH:+':'}$LD_LIBRARY_PATH

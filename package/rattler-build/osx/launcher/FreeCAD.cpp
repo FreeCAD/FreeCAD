@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
