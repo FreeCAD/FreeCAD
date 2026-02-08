@@ -45,6 +45,8 @@ class ArchSketch(ArchSketchObject):
             pass
         else:
             if "Hosts" not in prop:
+                # inherited properties of Link are not in PropertiesList:
+                old_hosts = getattr(fp, "Hosts", [])
                 fp.addProperty(
                     "App::PropertyLinkList",
                     "Hosts",
@@ -52,6 +54,9 @@ class ArchSketch(ArchSketchObject):
                     QT_TRANSLATE_NOOP("App::Property", "The objects that host this window"),
                     locked=True,
                 )
+                fp.Hosts = old_hosts
+                for host in old_hosts:
+                    host.touch()
                 # Arch Window's code
 
 
