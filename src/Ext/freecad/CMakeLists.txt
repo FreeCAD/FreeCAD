@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 EXECUTE_PROCESS(COMMAND ${Python3_EXECUTABLE} -c
     "from sysconfig import get_path; print(get_path('purelib'))"
