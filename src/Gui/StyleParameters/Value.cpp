@@ -23,6 +23,7 @@
 
 #include "Value.h"
 
+#include <functional>
 #include <ranges>
 #include <fmt/ranges.h>
 
@@ -115,6 +116,163 @@ std::string Value::toString() const
     }
 
     return get<std::string>();
+}
+
+namespace
+{
+
+Tuple elementWise(const Tuple& lhs, const Tuple& rhs, auto op)
+{
+    Tuple result;
+    std::vector<bool> rhsUsed(rhs.size(), false);
+
+    // Phase 1: LHS named elements — match by name in RHS
+    for (size_t i = 0; i < lhs.size(); ++i) {
+        if (!lhs.elements[i].name) {
+            continue;
+        }
+
+        const auto& name = *lhs.elements[i].name;
+        bool matched = false;
+
+        for (size_t j = 0; j < rhs.size(); ++j) {
+            if (!rhsUsed[j] && rhs.elements[j].name && *rhs.elements[j].name == name) {
+                rhsUsed[j] = true;
+                matched = true;
+                result.elements.emplace_back(
+                    lhs.elements[i].name,
+                    std::make_shared<const Value>(op(lhs.at(i), rhs.at(j)))
+                );
+                break;
+            }
+        }
+
+        if (!matched) {
+            result.elements.push_back(lhs.elements[i]);
+        }
+    }
+
+    // Phase 2: RHS named elements not yet matched
+    for (size_t j = 0; j < rhs.size(); ++j) {
+        if (rhsUsed[j] || !rhs.elements[j].name) {
+            continue;
+        }
+        rhsUsed[j] = true;
+        result.elements.push_back(rhs.elements[j]);
+    }
+
+    // Phase 3: Unnamed elements — match positionally
+    std::vector<size_t> lhsUnnamed;
+    std::vector<size_t> rhsUnnamed;
+
+    for (size_t i = 0; i < lhs.size(); ++i) {
+        if (!lhs.elements[i].name) {
+            lhsUnnamed.push_back(i);
+        }
+    }
+    for (size_t j = 0; j < rhs.size(); ++j) {
+        if (!rhsUsed[j]) {
+            rhsUnnamed.push_back(j);
+        }
+    }
+
+    size_t paired = std::min(lhsUnnamed.size(), rhsUnnamed.size());
+    for (size_t k = 0; k < paired; ++k) {
+        result.elements.emplace_back(
+            std::nullopt,
+            std::make_shared<const Value>(op(lhs.at(lhsUnnamed[k]), rhs.at(rhsUnnamed[k])))
+        );
+    }
+    for (size_t k = paired; k < lhsUnnamed.size(); ++k) {
+        result.elements.push_back(lhs.elements[lhsUnnamed[k]]);
+    }
+    for (size_t k = paired; k < rhsUnnamed.size(); ++k) {
+        result.elements.push_back(rhs.elements[rhsUnnamed[k]]);
+    }
+
+    return result;
+}
+
+Tuple scalarBroadcast(const Tuple& tuple, const Value& scalar, auto op)
+{
+    Tuple result;
+    for (size_t i = 0; i < tuple.size(); ++i) {
+        result.elements.emplace_back(
+            tuple.elements[i].name,
+            std::make_shared<const Value>(op(tuple.at(i), scalar))
+        );
+    }
+    return result;
+}
+
+}  // namespace
+
+Value Value::operator+(const Value& rhs) const
+{
+    if (holds<Numeric>() && rhs.holds<Numeric>()) {
+        return get<Numeric>() + rhs.get<Numeric>();
+    }
+    if (holds<Tuple>() && rhs.holds<Tuple>()) {
+        return elementWise(get<Tuple>(), rhs.get<Tuple>(), std::plus<Value> {});
+    }
+    THROWM(Base::ExpressionError, "Addition requires two numerics or two tuples of equal size");
+}
+
+Value Value::operator-(const Value& rhs) const
+{
+    if (holds<Numeric>() && rhs.holds<Numeric>()) {
+        return get<Numeric>() - rhs.get<Numeric>();
+    }
+    if (holds<Tuple>() && rhs.holds<Tuple>()) {
+        return elementWise(get<Tuple>(), rhs.get<Tuple>(), std::minus<Value> {});
+    }
+    THROWM(Base::ExpressionError, "Subtraction requires two numerics or two tuples of equal size");
+}
+
+Value Value::operator*(const Value& rhs) const
+{
+    if (holds<Numeric>() && rhs.holds<Numeric>()) {
+        return get<Numeric>() * rhs.get<Numeric>();
+    }
+    if (holds<Tuple>() && rhs.holds<Numeric>()) {
+        return scalarBroadcast(get<Tuple>(), rhs, std::multiplies<Value> {});
+    }
+    if (holds<Numeric>() && rhs.holds<Tuple>()) {
+        return scalarBroadcast(rhs.get<Tuple>(), *this, [](const Value& elem, const Value& scalar) {
+            return elem * scalar;
+        });
+    }
+    THROWM(Base::ExpressionError, "Multiplication requires two numerics or tuple with scalar");
+}
+
+Value Value::operator/(const Value& rhs) const
+{
+    if (holds<Numeric>() && rhs.holds<Numeric>()) {
+        return get<Numeric>() / rhs.get<Numeric>();
+    }
+    if (holds<Tuple>() && rhs.holds<Numeric>()) {
+        return scalarBroadcast(get<Tuple>(), rhs, std::divides<Value> {});
+    }
+    THROWM(Base::ExpressionError, "Division requires two numerics or tuple divided by scalar");
+}
+
+Value Value::operator-() const
+{
+    if (holds<Numeric>()) {
+        return -get<Numeric>();
+    }
+    if (holds<Tuple>()) {
+        Tuple result;
+        const auto& tuple = get<Tuple>();
+        for (size_t i = 0; i < tuple.size(); ++i) {
+            result.elements.emplace_back(
+                tuple.elements[i].name,
+                std::make_shared<const Value>(-tuple.at(i))
+            );
+        }
+        return result;
+    }
+    THROWM(Base::ExpressionError, "Unary negation requires a numeric or tuple value");
 }
 
 const Value& Tuple::at(size_t index) const

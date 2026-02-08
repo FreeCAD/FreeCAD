@@ -181,6 +181,20 @@ struct GuiExport Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     {
         return std::get<T>(*this);
     }
+
+    /**
+     * @name Arithmetic operators
+     *
+     * Element-wise operations for tuples of equal size, scalar broadcast for Tuple × Numeric.
+     * Delegates to Numeric operators for Numeric × Numeric.
+     * @{
+     */
+    Value operator+(const Value& rhs) const;
+    Value operator-(const Value& rhs) const;
+    Value operator*(const Value& rhs) const;
+    Value operator/(const Value& rhs) const;
+    Value operator-() const;
+    /// @}
 };
 
 template<typename T>

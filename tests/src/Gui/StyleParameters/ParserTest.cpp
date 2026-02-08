@@ -1022,6 +1022,248 @@ TEST_F(ParserTest, MemberAccessErrors)
     );
 }
 
+// Tuple arithmetic tests
+
+TEST_F(ParserTest, TupleElementWiseAdd)
+{
+    Parser parser("(1px, 2px) + (3px, 4px)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 4.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 6.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, TupleElementWiseSubtract)
+{
+    Parser parser("(10, 20) - (3, 7)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 7.0);
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 13.0);
+}
+
+TEST_F(ParserTest, TupleScalarMultiplyTupleFirst)
+{
+    Parser parser("(1px, 2px, 3px) * 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 2.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 4.0);
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
+}
+
+TEST_F(ParserTest, TupleScalarMultiplyScalarFirst)
+{
+    Parser parser("2 * (1px, 2px, 3px)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 2.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 4.0);
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
+}
+
+TEST_F(ParserTest, TupleScalarDivide)
+{
+    Parser parser("(10, 20) / 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 10.0);
+}
+
+TEST_F(ParserTest, TupleUnaryNegate)
+{
+    Parser parser("-(1px, 2px)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, -1.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, -2.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, TupleAddPreservesNames)
+{
+    Parser parser("(x: 1, y: 2) + (x: 3, y: 4)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(x->get<Numeric>().value, 4.0);
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(y->get<Numeric>().value, 6.0);
+}
+
+TEST_F(ParserTest, TupleAddMatchesByName)
+{
+    Parser parser("(x: 10, y: 20) + (y: 30, x: 5)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(x->get<Numeric>().value, 15.0);
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(y->get<Numeric>().value, 50.0);
+}
+
+TEST_F(ParserTest, TupleParamArithmetic)
+{
+    Parser parser("@TestTupleParam + @TestTupleParam");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 2.0);
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 4.0);
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
+    EXPECT_DOUBLE_EQ(tuple.at(3).get<Numeric>().value, 8.0);
+}
+
+TEST_F(ParserTest, TupleUnionMixedNamedUnnamed)
+{
+    // (x: 5, 10) + (y: 10, 5, 20) → (x: 5, y: 10, 15, 20)
+    Parser parser("(x: 5, 10) + (y: 10, 5, 20)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 4);
+
+    auto* x = tuple.find("x");
+    ASSERT_NE(x, nullptr);
+    EXPECT_DOUBLE_EQ(x->get<Numeric>().value, 5.0);
+
+    auto* y = tuple.find("y");
+    ASSERT_NE(y, nullptr);
+    EXPECT_DOUBLE_EQ(y->get<Numeric>().value, 10.0);
+
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 15.0);
+    EXPECT_DOUBLE_EQ(tuple.at(3).get<Numeric>().value, 20.0);
+}
+
+TEST_F(ParserTest, TupleUnionNamedDifferentSizes)
+{
+    // (x: 1, y: 2) + (x: 3, y: 4, z: 5) → (x: 4, y: 6, z: 5)
+    Parser parser("(x: 1, y: 2) + (x: 3, y: 4, z: 5)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+
+    EXPECT_DOUBLE_EQ(tuple.find("x")->get<Numeric>().value, 4.0);
+    EXPECT_DOUBLE_EQ(tuple.find("y")->get<Numeric>().value, 6.0);
+    EXPECT_DOUBLE_EQ(tuple.find("z")->get<Numeric>().value, 5.0);
+}
+
+TEST_F(ParserTest, TupleUnionUnnamedDifferentSizes)
+{
+    // (1, 2) + (3, 4, 5) → (4, 6, 5)
+    Parser parser("(1, 2) + (3, 4, 5)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 4.0);
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 6.0);
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 5.0);
+}
+
+TEST_F(ParserTest, TupleAddNumericError)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("(1, 2) + 5");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, TupleNestedScalarMultiply)
+{
+    Parser parser("((1, 2), (3, 4)) * 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({&manager, {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& outer = result.get<Tuple>();
+    EXPECT_EQ(outer.size(), 2);
+
+    EXPECT_TRUE(outer.at(0).holds<Tuple>());
+    const auto& inner1 = outer.at(0).get<Tuple>();
+    EXPECT_DOUBLE_EQ(inner1.at(0).get<Numeric>().value, 2.0);
+    EXPECT_DOUBLE_EQ(inner1.at(1).get<Numeric>().value, 4.0);
+
+    EXPECT_TRUE(outer.at(1).holds<Tuple>());
+    const auto& inner2 = outer.at(1).get<Tuple>();
+    EXPECT_DOUBLE_EQ(inner2.at(0).get<Numeric>().value, 6.0);
+    EXPECT_DOUBLE_EQ(inner2.at(1).get<Numeric>().value, 8.0);
+}
+
 // ArgumentParser tests
 
 class ArgumentParserTest: public ::testing::Test

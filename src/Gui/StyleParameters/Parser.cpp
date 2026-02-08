@@ -109,22 +109,15 @@ Value BinaryOp::evaluate(const EvaluationContext& context) const
     Value lval = left->evaluate(context);
     Value rval = right->evaluate(context);
 
-    if (!std::holds_alternative<Numeric>(lval) || !std::holds_alternative<Numeric>(rval)) {
-        THROWM(Base::ExpressionError, "Math operations are supported only on lengths");
-    }
-
-    auto lhs = std::get<Numeric>(lval);
-    auto rhs = std::get<Numeric>(rval);
-
     switch (op) {
         case Operator::Add:
-            return lhs + rhs;
+            return lval + rval;
         case Operator::Subtract:
-            return lhs - rhs;
+            return lval - rval;
         case Operator::Multiply:
-            return lhs * rhs;
+            return lval * rval;
         case Operator::Divide:
-            return lhs / rhs;
+            return lval / rval;
         default:
             THROWM(Base::ExpressionError, "Unknown operator");
     }
@@ -144,16 +137,12 @@ Value TupleLiteral::evaluate(const EvaluationContext& context) const
 Value UnaryOp::evaluate(const EvaluationContext& context) const
 {
     Value val = operand->evaluate(context);
-    if (std::holds_alternative<Base::Color>(val)) {
-        THROWM(Base::ExpressionError, "Unary operations on colors are not supported");
-    }
 
-    auto v = std::get<Numeric>(val);
     switch (op) {
         case Operator::Add:
-            return v;
+            return val;
         case Operator::Subtract:
-            return -v;
+            return -val;
         default:
             THROWM(Base::ExpressionError, "Unknown unary operator");
     }
