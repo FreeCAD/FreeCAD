@@ -850,7 +850,7 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
-        auto invObjLoc = getLocation().Inverted();
+        invObjLoc = getLocation().Inverted();
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {
