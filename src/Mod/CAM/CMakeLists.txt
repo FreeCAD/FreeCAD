@@ -518,6 +518,8 @@ SET(Tests_SRCS
     CAMTests/TestMachine.py
     CAMTests/TestMach3Mach4LegacyPost.py
     CAMTests/TestMassoG3Post.py
+    CAMTests/TestOpenSBPLegacyPost.py
+    CAMTests/TestOpenSBPPost.py
     CAMTests/TestPathAdaptive.py
     CAMTests/TestPathCommandAnnotations.py
     CAMTests/TestPathCore.py
