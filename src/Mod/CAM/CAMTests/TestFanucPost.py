@@ -21,11 +21,13 @@
 # *                                                                         *
 # ***************************************************************************
 
+import FreeCAD
+import Part
 import Path
 from CAMTests import PathTestUtils
 from CAMTests import PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
-
+import Path.Base.Generator.drill as drill
 
 Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
 Path.Log.trackModule(Path.Log.thisModule())
@@ -362,3 +364,101 @@ M30
         result = gcode.splitlines()[19]
         expected = "(COMMENT)"
         self.assertEqual(result, expected)
+
+    def test_drilling_peck(self):
+        """
+        Test drilling with pecking
+        """
+
+        # Drill three holes, to verify required parameters are inclued
+        # in every block
+        commandlist = []
+        for x in (0, 20, 40):
+            drillcommands = drill.generate(
+                Part.makeLine(
+                    FreeCAD.Vector(x, 0, 10),
+                    FreeCAD.Vector(x, 0, 0),
+                ),
+                dwelltime=0.0,
+                peckdepth=2.0,
+                repeat=1,
+                retractheight=None,
+                chipBreak=False,
+                feedRetract=False,
+            )
+            commandlist.append(Path.Command(f"G0 X{x} Y0"))
+            for command in drillcommands:
+                # Insert feed rate without using a ToolController
+                params = command.Parameters
+                params["F"] = 100.0
+                command.Parameters = params
+
+                commandlist.append(command)
+
+        self.profile_op.Path = Path.Path(commandlist)
+        self.job.PostProcessorArgs = "--no-header --no-show-editor"
+        gcode = self.post.export()[0][1]
+        glines = gcode.splitlines()
+        print("Testing drilling")
+        print(gcode)
+        expected = "G0 X0.000 Y0.000"
+        self.assertEqual(glines[19], expected)
+        expected = "G83 Z0.000 F6000.000 Q2.000 R10.000"
+        self.assertEqual(glines[20], expected)
+        expected = "G0 X20.000"
+        self.assertEqual(glines[21], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[22], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[23], expected)
+        expected = "G83 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[24], expected)
+
+    def test_drilling_peck_chipbreak(self):
+        """
+        Test drilling with pecking and chip breaking
+        """
+
+        # Drill three holes, to verify required parameters are inclued
+        # in every block
+        commandlist = []
+        for x in (0, 20, 40):
+            drillcommands = drill.generate(
+                Part.makeLine(
+                    FreeCAD.Vector(x, 0, 10),
+                    FreeCAD.Vector(x, 0, 0),
+                ),
+                dwelltime=0.0,
+                peckdepth=2.0,
+                repeat=1,
+                retractheight=None,
+                chipBreak=True,
+                feedRetract=False,
+            )
+            commandlist.append(Path.Command(f"G0 X{x} Y0"))
+            for command in drillcommands:
+                # Insert feed rate without using a ToolController
+                params = command.Parameters
+                params["F"] = 100.0
+                command.Parameters = params
+
+                commandlist.append(command)
+
+        self.profile_op.Path = Path.Path(commandlist)
+        self.job.PostProcessorArgs = "--no-header --no-show-editor"
+        gcode = self.post.export()[0][1]
+        glines = gcode.splitlines()
+        print("Testing drilling")
+        print(gcode)
+        expected = "G0 X0.000 Y0.000"
+        self.assertEqual(glines[19], expected)
+        expected = "G73 Z0.000 F6000.000 Q2.000 R10.000"
+        self.assertEqual(glines[20], expected)
+        expected = "G0 X20.000"
+        self.assertEqual(glines[21], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[22], expected)
+        expected = "G0 X40.000"
+        self.assertEqual(glines[23], expected)
+        expected = "G73 Z0.000 Q2.000 R10.000"
+        self.assertEqual(glines[24], expected)
