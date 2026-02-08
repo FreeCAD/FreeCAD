@@ -1904,7 +1904,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         caCnt = 0
         caLen = len(CUTAREAS)
         indicator = FreeCAD.Base.ProgressIndicator()
-        indicator.start("Experimental Z-Level Hybrid: Generating G-Code...", caLen)        
+        indicator.start("Experimental Z-Level Hybrid: Generating G-Code...", caLen)
         for ca in range(0, caLen):
             area = CUTAREAS[ca]
             meta = LAYER_METADATA[ca]
