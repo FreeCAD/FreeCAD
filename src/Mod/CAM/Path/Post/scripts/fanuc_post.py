@@ -143,6 +143,11 @@ POST_OPERATION = """"""
 TOOL_CHANGE = """G28 G91 Z0
 """
 
+# List of drill G codes where some parameters are required and their
+# required parameters.
+DRILL_OPERATION = ("G73", "G81", "G82", "G83", "G84", "G85")
+DRILL_PARAM_REQ = ("L", "P", "Q", "R", "Z")
+
 
 def processArguments(argstring):
     global OUTPUT_HEADER
@@ -380,6 +385,8 @@ def linenumber():
 
 def parse(pathobj):
     global PRECISION
+    global DRILL_OPERATION
+    global DRILL_PARAM_REQ
     global MODAL
     global OUTPUT_DOUBLES
     global UNIT_FORMAT
@@ -612,7 +619,11 @@ def parse(pathobj):
                         if (
                             (not OUTPUT_DOUBLES)
                             and (param in currLocation)
-                            and (currLocation[param] == c.Parameters[param])
+                            and currLocation[param] == c.Parameters[param]
+                            and (
+                                command not in DRILL_OPERATION
+                                or (command in DRILL_OPERATION and param not in DRILL_PARAM_REQ)
+                            )
                         ):
                             continue
                         else:
