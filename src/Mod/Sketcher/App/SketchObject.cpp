@@ -5639,9 +5639,9 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         case Sketcher::Horizontal:
         case Sketcher::Vertical: {
             // Only remove alignment for Lines (PointPos::none), not individual points
-            if (constr->FirstPos == Sketcher::PointPos::none && 
+            if (constr->FirstPos == Sketcher::PointPos::none &&
                 constr->SecondPos == Sketcher::PointPos::none) {
-                
+
                 changed = true;
 
                 // The first H/V constraint found acts as the "reference" and is effectively removed.
@@ -5649,7 +5649,7 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
                 if (referenceGeoIds[constr->Type] == GeoEnum::GeoUndef) {
                     referenceGeoIds[constr->Type] = constr->First;
                     // We do NOT add the constraint to newConstraints, effectively deleting it.
-                } 
+                }
                 else {
                     // Convert to Parallel
                     Constraint* newConstr = new Constraint();
@@ -5658,7 +5658,7 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
                     newConstr->Second = constr->First;
                     newConstraints.push_back(newConstr);
                 }
-            } 
+            }
             else {
                 // If it's H/V on a specific point (not the whole line), keep it.
                 newConstraints.push_back(constr);
@@ -12344,4 +12344,3 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
-
