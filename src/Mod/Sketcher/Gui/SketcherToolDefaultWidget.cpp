@@ -56,6 +56,10 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
 {
     ui->setupUi(this);
 
+    ui->comboBox1->setMaxVisibleItems(25);
+    ui->comboBox2->setMaxVisibleItems(25);
+    ui->comboBox3->setMaxVisibleItems(25);
+
     // connecting the needed signals
     setupConnections();
 

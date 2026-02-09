@@ -92,7 +92,7 @@ public:
     int addGeometry(
         const std::vector<Part::Geometry*>& geos,
         const std::vector<bool>& blockedGeometry,
-        const std::set<int>& slaveGeoIds
+        const std::set<int>& inGroupGeoIds
     );
     /// get boolean list indicating whether the geometry is to be blocked or not
     void getBlockedGeometry(

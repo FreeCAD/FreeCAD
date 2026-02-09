@@ -105,6 +105,7 @@
 #include <TColStd_Array1OfReal.hxx>
 #include <TColStd_HArray1OfBoolean.hxx>
 #include <TopExp_Explorer.hxx>
+#include <ShapeFix_Wire.hxx>
 
 #if OCC_VERSION_HEX < 0x070600
 # include <GeomAdaptor_HSurface.hxx>
@@ -7344,6 +7345,7 @@ struct FTDC_Ctx
     std::vector<TopoDS_Wire> Wires;
     std::vector<TopoDS_Edge> Edges;
     FT_Vector LastVert;
+    FT_Vector StartVert;
     Handle(Geom_Surface) surf;
 };
 
@@ -7360,6 +7362,11 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge>& Edges)
     if (mkWire.IsDone()) {
         TopoDS_Wire wire = mkWire.Wire();
         BRepLib::BuildCurves3d(wire);
+        // Ensure the wire is topologically closed and valid
+        ShapeFix_Wire sfw;
+        sfw.Load(wire);
+        sfw.FixClosed();
+        wire = sfw.Wire();
         return wire;
     }
     else {
@@ -7367,18 +7374,37 @@ TopoDS_Wire edgesToWire(std::vector<TopoDS_Edge>& Edges)
         return TopoDS_Wire();
     }
 }
+// Helper to close the current contour if needed and flush to Wires list
+void flushContour(FTDC_Ctx* dc)
+{
+    if (dc->Edges.empty()) {
+        return;
+    }
+
+    // Check if the contour is geometrically closed.
+    // If not, add a closing segment from LastVert to StartVert.
+    gp_Pnt2d pStart(dc->StartVert.x, dc->StartVert.y);
+    gp_Pnt2d pEnd(dc->LastVert.x, dc->LastVert.y);
+
+    if (!pStart.IsEqual(pEnd, Precision::Confusion())) {
+        Handle(Geom2d_TrimmedCurve) lseg = GCE2d_MakeSegment(pEnd, pStart);
+        TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(lseg, dc->surf);
+        dc->Edges.push_back(edge);
+    }
+
+    TopoDS_Wire newWire = edgesToWire(dc->Edges);
+    if (!newWire.IsNull()) {
+        dc->Wires.push_back(newWire);
+    }
+    dc->Edges.clear();
+}
 
 // FT Decompose callbacks
 int move_cb(const FT_Vector* pt, void* p)
 {
     FTDC_Ctx* dc = static_cast<FTDC_Ctx*>(p);
-    if (!dc->Edges.empty()) {
-        TopoDS_Wire newWire = edgesToWire(dc->Edges);
-        if (!newWire.IsNull()) {
-            dc->Wires.push_back(newWire);
-        }
-        dc->Edges.clear();
-    }
+    flushContour(dc);
+    dc->StartVert = *pt;
     dc->LastVert = *pt;
     return 0;
 }
@@ -7622,12 +7648,19 @@ std::vector<TopoDS_Shape> makeTextWires(
         return allWires;
     }
 
-    FT_Set_Char_Size(ftFace, 0, 48 * 64 * 10, 0, 0);
-    double scaleFactor = (height / static_cast<double>(ftFace->height)) / 10.0;
+    // Use the font's native units for maximum precision
+    double unitsPerEM = static_cast<double>(ftFace->units_per_EM);
+    if (unitsPerEM < 1.0) {
+        unitsPerEM = 2048.0;  // Fallback
+    }
+
+    // We want a nominal height of 1.0 for the base shapes
+    double scaleFactor = (height / unitsPerEM);
     FT_Outline_Funcs ftCallbacks = {move_cb, line_cb, quad_cb, cubic_cb, 0, 0};
-    FT_UInt ftLoadFlags = FT_LOAD_DEFAULT | FT_LOAD_NO_BITMAP;
+    FT_UInt ftLoadFlags = FT_LOAD_NO_SCALE | FT_LOAD_NO_BITMAP;
 
     double penPos = 0.0;
+    double currentTracking = 0.0;
     FT_ULong prevCharcode = 0;
 
     std::wstring_convert<std::codecvt_utf8<char32_t>, char32_t> converter;
@@ -7635,13 +7668,6 @@ std::vector<TopoDS_Shape> makeTextWires(
 
     for (size_t i = 0; i < wide_text.length(); ++i) {
         FT_ULong charcode = wide_text[i];
-        if (charcode == ' ') {
-            if (FT_Load_Char(ftFace, charcode, ftLoadFlags) == 0) {
-                penPos += ftFace->glyph->advance.x;
-            }
-            prevCharcode = charcode;
-            continue;
-        }
 
         if (FT_Load_Char(ftFace, charcode, ftLoadFlags) != 0) {
             continue;
@@ -7653,37 +7679,38 @@ std::vector<TopoDS_Shape> makeTextWires(
                 ftFace,
                 FT_Get_Char_Index(ftFace, prevCharcode),
                 FT_Get_Char_Index(ftFace, charcode),
-                FT_KERNING_DEFAULT,
+                FT_KERNING_UNSCALED,
                 &kern
             );
             penPos += kern.x;
         }
 
-        FTDC_Ctx ctx;
-        ctx.surf = new Geom_Plane(gp::Origin(), gp::DZ());
-        FT_Outline_Decompose(&ftFace->glyph->outline, &ftCallbacks, &ctx);
+        if (ftFace->glyph->format == FT_GLYPH_FORMAT_OUTLINE
+            && ftFace->glyph->outline.n_contours > 0) {
+            FTDC_Ctx ctx;
+            ctx.surf = new Geom_Plane(gp::Origin(), gp::DZ());
+            FT_Outline_Decompose(&ftFace->glyph->outline, &ftCallbacks, &ctx);
 
-        if (!ctx.Edges.empty()) {
-            TopoDS_Wire lastWire = edgesToWire(ctx.Edges);
-            if (!lastWire.IsNull()) {
-                ctx.Wires.push_back(lastWire);
-            }
-        }
+            flushContour(&ctx);
 
-        gp_Trsf charTransform;
-        charTransform.SetScale(gp::Origin(), scaleFactor);
-        gp_Vec translation(penPos * scaleFactor + i * tracking, 0.0, 0.0);
-        charTransform.SetTranslationPart(translation);
+            if (!ctx.Wires.empty()) {
+                gp_Trsf charTransform;
+                charTransform.SetScale(gp::Origin(), scaleFactor);
+                gp_Vec translation(penPos * scaleFactor + currentTracking, 0.0, 0.0);
+                charTransform.SetTranslationPart(translation);
 
-        for (const auto& wire : ctx.Wires) {
-            BRepBuilderAPI_Transform performer(charTransform);
-            performer.Perform(wire, true);  // true = create a copy
-            if (performer.IsDone()) {
-                allWires.push_back(performer.Shape());
+                for (const auto& wire : ctx.Wires) {
+                    BRepBuilderAPI_Transform performer(charTransform);
+                    performer.Perform(wire, true);  // true = create a copy
+                    if (performer.IsDone()) {
+                        allWires.push_back(performer.Shape());
+                    }
+                }
             }
         }
 
         penPos += ftFace->glyph->advance.x;
+        currentTracking += tracking;
         prevCharcode = charcode;
     }
 

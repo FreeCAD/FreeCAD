@@ -138,7 +138,7 @@ void doEndpointToEdgeTangency(
 /// notifications
 void notifyConstraintSubstitutions(const QString& message);
 
-
+std::string escapeForPython(const std::string& input);
 bool addListConstraint(
     Sketcher::SketchObject* Obj,
     std::vector<Sketcher::GeoElementId>& elts,
@@ -149,6 +149,5 @@ bool addListConstraint(
     const std::string& text = "",
     const std::string& font = ""
 );
-
 }  // namespace SketcherGui
 #endif  // SKETCHERGUI_CommandConstraints_H

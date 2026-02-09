@@ -272,7 +272,7 @@ public:
             auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
-                if (!constr->isActive) {
+                if (!sketch->isConstraintActiveInSketch(constr)) {
                     QIcon darkIcon;
                     int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
@@ -1628,6 +1628,10 @@ bool TaskSketcherConstraints::isConstraintFiltered(QListWidgetItem* item)
     ConstraintItem* it = static_cast<ConstraintItem*>(item);
     const Sketcher::Constraint* constraint = vals[it->ConstraintNbr];
 
+    // Text constraint is hidden from the list widget.
+    if (constraint->Type == Sketcher::Text) {
+        return true;
+    }
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");

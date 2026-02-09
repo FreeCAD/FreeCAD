@@ -120,6 +120,8 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             return false;  // Failure
         }
 
+        constr_ptr->truncateElements(0);
+
         for (Py_ssize_t i = 0; i < list_size; i += 2) {
             PyObject* py_geoId_obj = PyList_GetItem(list, i);
             PyObject* py_posId_obj = PyList_GetItem(list, i + 1);
@@ -177,15 +179,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
 
             // Set the specific members for the Text constraint
-            constraint->Text = text_str;
-            constraint->Font = font_str;
+            constraint->setText(text_str);
+            constraint->setFont(font_str);
 
             // Check and set the optional boolean
             if (py_is_height && PyBool_Check(py_is_height)) {
-                constraint->isTextHeight = (py_is_height == Py_True);
+                constraint->setIsTextHeight(py_is_height == Py_True);
             }
             else {
-                constraint->isTextHeight = true;
+                constraint->setIsTextHeight(true);
             }
 
             return 0;  // Success!

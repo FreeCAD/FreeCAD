@@ -45,15 +45,17 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
 {
     ui->setupUi(this);
 
+    ui->comboBox_font->setMaxVisibleItems(20);
+
     const Sketcher::SketchObject* sketch = sketchView->getSketchObject();
     const Sketcher::Constraint* constraint = sketch->Constraints[constrIndex];
 
     // Initialize Text
-    ui->lineEdit_text->setText(QString::fromStdString(constraint->Text));
+    ui->lineEdit_text->setText(QString::fromStdString(constraint->getText()));
 
     // Initialize Font
     populateFontList();
-    QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->Font));
+    QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->getFont()));
     if (!currentFontName.isEmpty()) {
         ui->comboBox_font->setCurrentText(currentFontName);
     }
@@ -89,7 +91,7 @@ void EditTextDialog::on_buttonBox_accepted()
     const Sketcher::Constraint* constraint = sketch->Constraints[constrIndex];
 
     // Check if anything changed
-    if (newText == constraint->Text && newFontPath == constraint->Font) {
+    if (newText == constraint->getText() && newFontPath == constraint->getFont()) {
         return;  // Nothing to do
     }
 

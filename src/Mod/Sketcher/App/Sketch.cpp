@@ -198,12 +198,12 @@ int Sketch::setUpSketch(
     clear();
 
     // The geometries that are in groups are going to be ignored by the solver.
-    std::set<int> slaveGeoIds;
+    std::set<int> inGroupGeoIds;
     for (const auto& c : ConstraintList) {
         if (c->Type == Group || c->Type == Text) {
             // Start from index 1, as 0 is the frame.
             for (int i = 1; c->hasElement(i); ++i) {
-                slaveGeoIds.insert(c->getGeoId(i));
+                inGroupGeoIds.insert(c->getGeoId(i));
             }
         }
     }
@@ -259,7 +259,7 @@ int Sketch::setUpSketch(
 
     buildInternalAlignmentGeometryMap(ConstraintList);
 
-    addGeometry(intGeoList, onlyBlockedGeometry, slaveGeoIds);
+    addGeometry(intGeoList, onlyBlockedGeometry, inGroupGeoIds);
     int extStart = Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd = Geoms.size() - 1;
@@ -277,9 +277,8 @@ int Sketch::setUpSketch(
                 continue;
             }
 
-            bool hasSlaveReference = false;
             for (int j = 0; c->hasElement(j); ++j) {
-                if (slaveGeoIds.count(c->getGeoId(j))) {
+                if (inGroupGeoIds.count(c->getGeoId(j))) {
                     unenforceableConstraints[i] = true;
                     break;
                 }
@@ -769,7 +768,7 @@ int Sketch::addGeometry(const std::vector<Part::Geometry*>& geos, bool fixed)
 int Sketch::addGeometry(
     const std::vector<Part::Geometry*>& geos,
     const std::vector<bool>& blockedGeometry,
-    const std::set<int>& slaveGeoIds
+    const std::set<int>& inGroupGeoIds
 )
 {
     assert(geos.size() == blockedGeometry.size());
@@ -784,8 +783,8 @@ int Sketch::addGeometry(
          ++it, ++bit, ++geoIdCounter) {
 
         // Check if the current geometry is in group.
-        bool isSlave = slaveGeoIds.count(geoIdCounter);
-        if (isSlave) {
+        bool isInGroup = inGroupGeoIds.count(geoIdCounter);
+        if (isInGroup) {
             GeoDef def;
             def.geo = (*it)->clone();
             Geoms.push_back(def);
@@ -1917,6 +1916,7 @@ int Sketch::checkGeoId(int geoId) const
         geoId += Geoms.size();  // convert negative external-geometry index to index into Geoms
     }
     if (!(geoId >= 0 && geoId < int(Geoms.size()))) {
+        Base::Console().warning("geoId %d  Geoms.size %d\n", geoId, int(Geoms.size()));
         throw Base::IndexError("Sketch::checkGeoId. GeoId index out range.");
     }
     return geoId;
@@ -5688,18 +5688,20 @@ void Sketch::applyGroupTransformations()
         T2[2][3] = postSolveFrame.startPoint.z;
 
         // 5. Combine the matrices in the correct order: T_final = T2 * R * S * T1
-        // The * operator is overloaded for matrix multiplication.
         Base::Matrix4D transform = T2 * R * S * T1;
 
-        // --- Loop through slave elements and apply the transform ---
+        // --- Loop through grouped elements and apply the transform ---
         for (int i = 1; c->hasElement(i); ++i) {
-            int slaveGeoId = c->getGeoId(i);
+            int groupedGeoId = c->getGeoId(i);
+            if (groupedGeoId == GeoEnum::GeoUndef) {
+                continue;
+            }
 
             // Get the slave's current (pre-solve) state
-            Part::Geometry* slaveGeo = Geoms[checkGeoId(slaveGeoId)].geo;
+            Part::Geometry* groupedGeo = Geoms[checkGeoId(groupedGeoId)].geo;
 
             // Apply the calculated transformation
-            slaveGeo->transform(transform);
+            groupedGeo->transform(transform);
         }
     }
 

@@ -93,6 +93,8 @@
         <file>icons/elements/Sketcher_Element_Line_Edge.svg</file>
         <file>icons/elements/Sketcher_Element_Line_EndPoint.svg</file>
         <file>icons/elements/Sketcher_Element_Line_StartingPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Text_EndPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Text_StartPoint.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_Centre_Point.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_Edge.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_End_Point.svg</file>

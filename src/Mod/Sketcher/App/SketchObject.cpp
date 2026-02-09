@@ -905,7 +905,7 @@ double SketchObject::getDatum(int ConstrId) const
     return this->Constraints[ConstrId]->getValue();
 }
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont)
+int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isConstruction)
 {
 ;    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -920,32 +920,39 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     }
 
     auto* constr = vals[ConstrId];
-    if (constr->Type != Text || !constr->hasElement(1)) {
+    if (constr->Type != Text || !constr->hasElement(0)) {
         return -1;
     }
 
     // First we replace the old geometries by the new text.
-    const bool isHeight = constr->isTextHeight;
-    const std::string oldText = constr->Text;
-    const std::string oldFont = constr->Font;
+    const bool isHeight = constr->getIsTextHeight();
+    const std::string oldText = constr->getText();
+    const std::string oldFont = constr->getFont();
     int handleGeoId = constr->getGeoId(0);
     int firstTextGeoId = constr->getGeoId(1);
+    bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
     bool handleLast = handleGeoId > firstTextGeoId;
 
-    // Check if text is construction or normal geos
-    auto* geo1 = getGeometry(firstTextGeoId);
-    bool isConstruction = GeometryFacade::getConstruction(geo1);
+    if (hasExistingText) {
+        // Check if text is construction or normal geos
+        auto* geo1 = getGeometry(firstTextGeoId);
+        isConstruction = GeometryFacade::getConstruction(geo1);
 
-    // Delete all the old text geos. Not the handle!
-    std::vector<int> geoIdsToDelete;
-    for (int i = 1; constr->hasElement(i); ++i) {
-        geoIdsToDelete.push_back(constr->getGeoId(i));
-        if (handleLast) {
-            --handleGeoId; // handle line is added after all text geos.
+        // Delete all the old text geos. Not the handle!
+        std::vector<int> geoIdsToDelete;
+        for (int i = 1; constr->hasElement(i); ++i) {
+            if (constr->getGeoId(i) == GeoEnum::GeoUndef) {
+                continue;
+            }
+            geoIdsToDelete.push_back(constr->getGeoId(i));
+            if (handleLast) {
+                --handleGeoId; // handle line is added after all text geos.
+            }
         }
+
+        delGeometries(geoIdsToDelete);
     }
 
-    delGeometries(geoIdsToDelete);
     auto* line = dynamic_cast<const Part::GeomLineSegment*>(getGeometry(handleGeoId));
     if (!line) {
         return -1;
@@ -959,11 +966,6 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
                                     line->getStartPoint(),
                                     line->getEndPoint(),
                                     isHeight);
-    if (isConstruction) {
-        for (size_t i = 0; i < newGeos.size(); ++i) {
-            Sketcher::GeometryFacade::setConstruction(newGeos[i].get(), isConstruction);
-        }
-    }
 
     // Add the geometries to sketch
     int lastGeoid = getHighestCurveIndex();
@@ -983,26 +985,32 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     newGeos.clear();
     addGeometry(newGeosRawPtrs);
 
-    // Create a new constraint to replace the one that was deleted.
     int newLastGeoid = getHighestCurveIndex();
-    constr = new Constraint();
-    constr->Type = Text;
-    constr->truncateElements(0); // remove the First/Second/Third that are created automatically
-    constr->addElement(GeoElementId(handleGeoId));
+
+    // If there was text geos, they were deleted, which deleted the text constraint.
+    // In this case create a new constraint to replace it.
+    if (hasExistingText) {
+        constr = new Constraint();
+        constr->Type = Text;
+        constr->truncateElements(0); // remove the First/Second/Third that are created automatically
+        constr->addElement(GeoElementId(handleGeoId));
+    }
     for (int i = lastGeoid + 1; i <= newLastGeoid; ++i) {
         constr->addElement(GeoElementId(i));
     }
-    constr->Text = newText;
-    constr->Font = newFont;
-    constr->isTextHeight = isHeight;
+    constr->setText(newText);
+    constr->setFont(newFont);
+    constr->setIsTextHeight(isHeight);
 
-    addConstraint(constr);
+    if (hasExistingText) {
+        addConstraint(constr);
+    }
 
     int err = solve();
 
     if (err) {
-        constr->Text = oldText;
-        constr->Font = oldFont;
+        constr->setText(oldText);
+        constr->setFont(oldFont);
     }
 
     return err;
@@ -1106,6 +1114,26 @@ int SketchObject::getActive(int ConstrId, bool& isactive)
     isactive = vals[ConstrId]->isActive;
 
     return 0;
+}
+
+bool SketchObject::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const
+{
+    // If the constraint is deactivated then it's over
+    if (!cstr || !cstr->isActive) {
+        return false;
+    }
+
+    if (cstr->Type == Group || cstr->Type == Text) {
+        return true;
+    }
+
+    // If the constraint is not deactivated, it could still constraint something in a group
+    for (int j = 0; cstr->hasElement(j); ++j) {
+        if (isInGroup(cstr->getGeoId(j), false)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 int SketchObject::toggleActive(int ConstrId)
@@ -10108,10 +10136,10 @@ bool SketchObject::evaluateConstraint(const Constraint* constraint) const
         case Equal:
         case PointOnObject:
         case Angle:
+        case Text:
             break;
         case Tangent:
         case Group:
-        case Text:
             requireSecond = true;
             break;
         case Symmetric:

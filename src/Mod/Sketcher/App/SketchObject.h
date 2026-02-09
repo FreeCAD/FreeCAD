@@ -353,7 +353,12 @@ public:
     /// get the datum of a Distance or Angle constraint
     double getDatum(int ConstrId) const;
     /// set the text and font of a text constraint
-    int setTextAndFont(int ConstrId, std::string& newText, std::string& newFont);
+    int setTextAndFont(
+        int ConstrId,
+        std::string& newText,
+        std::string& newFont,
+        bool isConstruction = false
+    );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
@@ -368,6 +373,8 @@ public:
     int setActive(int ConstrId, bool isactive);
     /// get the driving status of this constraint
     int getActive(int ConstrId, bool& isactive);
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 

@@ -31,6 +31,8 @@
 #include <string>
 #include <vector>
 
+#include "json.hpp"
+
 #include <fmt/ranges.h>
 
 #include <Base/Reader.h>
@@ -88,9 +90,9 @@ Constraint* Constraint::copy() const
     temp->isInVirtualSpace = this->isInVirtualSpace;
     temp->isVisible = this->isVisible;
     temp->isActive = this->isActive;
-    temp->isTextHeight = this->isTextHeight;
     temp->elements = this->elements;
     // Do not copy tag, otherwise it is considered a clone, and a "rename" by the expression engine.
+    temp->MetaData = this->MetaData;
 
 #if SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     temp->First = this->First;
@@ -150,12 +152,10 @@ unsigned int Constraint::getMemSize() const
 void Constraint::Save(Writer& writer) const
 {
     std::string encodeName = encodeAttribute(Name);
-    std::string encodeText = encodeAttribute(Text);
-    std::string encodeFont = encodeAttribute(Font);
+    std::string encodeMetaData = encodeAttribute(MetaData);
     writer.Stream() << writer.ind() << "<Constrain "
                     << "Name=\"" << encodeName << "\" "
-                    << "Text=\"" << encodeText << "\" "
-                    << "Font=\"" << encodeFont << "\" "
+                    << "MetaData=\"" << encodeMetaData << "\" "
                     << "Type=\"" << (int)Type << "\" ";
     if (this->Type == InternalAlignment) {
         writer.Stream() << "InternalAlignmentType=\"" << (int)AlignmentType << "\" "
@@ -167,8 +167,7 @@ void Constraint::Save(Writer& writer) const
                     << "IsDriving=\"" << (int)isDriving << "\" "
                     << "IsInVirtualSpace=\"" << (int)isInVirtualSpace << "\" "
                     << "IsVisible=\"" << (int)isVisible << "\" "
-                    << "IsActive=\"" << (int)isActive << "\" "
-                    << "IsTextHeight=\"" << (int)isTextHeight << "\" ";
+                    << "IsActive=\"" << (int)isActive << "\" ";
 
     // Save elements
     {
@@ -201,8 +200,7 @@ void Constraint::Restore(XMLReader& reader)
 {
     reader.readElement("Constrain");
     Name = reader.getAttribute<const char*>("Name");
-    Text = reader.hasAttribute("Text") ? reader.getAttribute<const char*>("Text") : "";
-    Font = reader.hasAttribute("Font") ? reader.getAttribute<const char*>("Font") : "";
+    MetaData = reader.hasAttribute("MetaData") ? reader.getAttribute<const char*>("MetaData") : "";
     Type = reader.getAttribute<ConstraintType>("Type");
     Value = reader.getAttribute<double>("Value");
 
@@ -240,10 +238,6 @@ void Constraint::Restore(XMLReader& reader)
 
     if (reader.hasAttribute("IsActive")) {
         isActive = reader.getAttribute<bool>("IsActive");
-    }
-
-    if (reader.hasAttribute("IsTextHeight")) {
-        isTextHeight = reader.getAttribute<bool>("IsTextHeight");
     }
 
     if (reader.hasAttribute("ElementIds") && reader.hasAttribute("ElementPositions")) {
@@ -599,4 +593,95 @@ void Constraint::truncateElements(size_t newSize)
     if (newSize < elements.size()) {
         elements.resize(newSize);
     }
+}
+
+std::string Constraint::getText() const
+{
+    if (MetaData.empty()) {
+        return {};
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("text")) {
+            return j["text"].get<std::string>();
+        }
+    }
+    catch (...) {
+        // Handle JSON parsing errors or type mismatches silently
+    }
+    return {};
+}
+
+void Constraint::setText(const std::string& text)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["text"] = text;
+    MetaData = j.dump();
+}
+
+std::string Constraint::getFont() const
+{
+    if (MetaData.empty()) {
+        return {};
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("font")) {
+            return j["font"].get<std::string>();
+        }
+    }
+    catch (...) {
+    }
+    return {};
+}
+
+void Constraint::setFont(const std::string& font)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["font"] = font;
+    MetaData = j.dump();
+}
+
+bool Constraint::getIsTextHeight() const
+{
+    if (MetaData.empty()) {
+        return true;  // Default value
+    }
+    try {
+        auto j = nlohmann::json::parse(MetaData);
+        if (j.contains("isTextHeight")) {
+            return j["isTextHeight"].get<bool>();
+        }
+    }
+    catch (...) {
+    }
+    return true;  // Default value
+}
+
+void Constraint::setIsTextHeight(bool isHeight)
+{
+    nlohmann::json j;
+    if (!MetaData.empty()) {
+        try {
+            j = nlohmann::json::parse(MetaData);
+        }
+        catch (...) {
+        }
+    }
+    j["isTextHeight"] = isHeight;
+    MetaData = j.dump();
 }

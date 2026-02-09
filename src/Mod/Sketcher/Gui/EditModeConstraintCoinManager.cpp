@@ -1939,12 +1939,16 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
         }
         else {
+            bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+                viewProvider,
+                constraint
+            );
             if (hasDatumLabel) {
                 SoDatumLabel* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
 
-                l->textColor = constraint->isActive
+                l->textColor = isActive
                     ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
                         ? drawingParameters.ExprBasedConstrDimColor
                         : (constraint->isDriving ? drawingParameters.ConstrDimColor
@@ -1952,7 +1956,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
-                m->diffuseColor = constraint->isActive
+                m->diffuseColor = isActive
                     ? (constraint->isDriving ? drawingParameters.ConstrDimColor
                                              : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
@@ -2028,7 +2032,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial* mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = (*it)->isActive
+        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, *it);
+        mat->diffuseColor = isActive
             ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                 : drawingParameters.NonDrivingConstrDimColor)
             : drawingParameters.DeactivatedConstrDimColor;
@@ -2046,7 +2051,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 SoDatumLabel* text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = (*it)->isActive
+                text->textColor = isActive
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
@@ -3038,6 +3043,10 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     };
 
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+    bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+        viewProvider,
+        constraints[constraintId]
+    );
 
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.PreselectColor);
@@ -3045,7 +3054,7 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.SelectColor);
     }
-    else if (!constraints[constraintId]->isActive) {
+    else if (!isActive) {
         return toQColor(drawingParameters.DeactivatedConstrDimColor);
     }
     else if (!constraints[constraintId]->isDriving) {

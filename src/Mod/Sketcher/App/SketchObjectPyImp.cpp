@@ -730,17 +730,19 @@ PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* kwd)
     char* textStr;
     char* fontStr;
     char* constrName = nullptr;
+    PyObject* isConstrObj = Py_False;  // Default to null (parameter not provided)
 
-    // Try to parse (int, str, str)
-    if (PyArg_ParseTuple(args, "iss", &constrIndex, &textStr, &fontStr)) {
-        // This format is valid, proceed.
+    // "iss|O" means: int, string, string, | optional Object
+    if (!PyArg_ParseTuple(args, "iss|O!", &constrIndex, &textStr, &fontStr, &PyBool_Type, &isConstrObj)) {
+        return nullptr;
     }
 
     std::string text(textStr);
     std::string font(fontStr);
 
     // Call the C++ implementation
-    int err = this->getSketchObjectPtr()->setTextAndFont(constrIndex, text, font);
+    int err = this->getSketchObjectPtr()
+                  ->setTextAndFont(constrIndex, text, font, Base::asBoolean(isConstrObj));
 
     // Handle errors returned from the C++ function
     if (err) {
