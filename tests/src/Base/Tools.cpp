@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <gtest/gtest.h>
 #include <Base/Tools.h>
 #include <bitset>
