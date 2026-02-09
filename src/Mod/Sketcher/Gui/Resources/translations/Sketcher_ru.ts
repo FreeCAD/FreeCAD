@@ -24,17 +24,17 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8882"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation>Ограничивает радиус или диаметр дуги или окружности</translation>
+      <translation>Фиксировать радиус/диаметр дуги/ окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8992"/>
       <source>Constrain radius</source>
-      <translation>Размер радиуса</translation>
+      <translation>Фиксировать радиус</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8998"/>
       <source>Constrain diameter</source>
-      <translation>Размер диаметра</translation>
+      <translation>Фиксировать диаметр</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9004"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
       <source>Geometry to B-Spline</source>
-      <translation>Геометрию в B-сплайн</translation>
+      <translation>Преобразовать фигуру в B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
       <source>Converts the selected geometry to B-splines</source>
-      <translation>Преобразует выбранную геометрию в B-сплайны</translation>
+      <translation>Преобразует выбранную фигуру в B-сплайны</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@ as mirroring reference</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1582"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрию, взяв за точку отсчёта последнюю выбранную точку</translation>
+      <translation>Сдвигает фигуры, ведя отсчет от последней выбранной точки</translation>
     </message>
   </context>
   <context>
@@ -274,8 +274,7 @@ as mirroring reference</source>
       <location filename="../../Command.cpp" line="833"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation>Проверяет эскиз на наличие пропущенных ограничений совпадения,
-некорректных ограничений и вырожденной геометрии</translation>
+      <translation>Проверяет эскиз на пропуск совпадений, неверных фиксаций и невозможной геометрии</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="849"/>
@@ -420,12 +419,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2372"/>
       <source>Add Horizontal constraint</source>
-      <translation>Добавить ограничение горизонтальности</translation>
+      <translation>Добавить фиксацию горизонтальности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2377"/>
       <source>Add Vertical constraint</source>
-      <translation>Добавить ограничение вертикальности</translation>
+      <translation>Добавить фиксацию вертикальности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2381"/>
@@ -481,24 +480,24 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="4357"/>
       <location filename="../../CommandConstraints.cpp" line="4538"/>
       <source>Add point on object constraint</source>
-      <translation>Добавить ограничение точки на объекте</translation>
+      <translation>Добавить фиксацию точки на объекте</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2470"/>
       <location filename="../../CommandConstraints.cpp" line="2502"/>
       <source>Add arc length constraint</source>
-      <translation>Добавить ограничение длины дуги</translation>
+      <translation>Добавить фиксацию длины дуги</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4925"/>
       <location filename="../../CommandConstraints.cpp" line="5302"/>
       <source>Add point to line distance constraint</source>
-      <translation>Добавить ограничение расстояния от точки до линии</translation>
+      <translation>Добавить фиксацию расстояния между точкой и линией</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4955"/>
       <source>Add point to circle distance constraint</source>
-      <translation>Добавить ограничение расстояния от точки до окружности</translation>
+      <translation>Добавить фиксацию расстояния от точки до окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5543"/>
@@ -509,7 +508,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5584"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation>Добавить ограничение фиксировать X-координату</translation>
+      <translation>Добавить фиксацию X-координаты</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5843"/>
@@ -520,7 +519,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5881"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation>Добавить ограничение фиксировать Y-координату</translation>
+      <translation>Добавить фиксацию Y-координаты</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6114"/>
@@ -639,12 +638,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10230"/>
       <source>Add Snell's law constraint</source>
-      <translation>Добавить ограничение приломления</translation>
+      <translation>Добавить фиксацию преломления</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10459"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Переключить ограничения в основные/вспомогательные</translation>
+      <translation>Переключить фиксации между основными/вспомогательными</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -684,7 +683,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="132"/>
       <source>Add sketch line</source>
-      <translation>Добавить эскиз линии</translation>
+      <translation>Добавить линию в эскиз</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
@@ -694,7 +693,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="283"/>
       <source>Add sketch arc</source>
-      <translation>Добавить эскиз дуги</translation>
+      <translation>Добавить в эскиз дугу</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="212"/>
@@ -4069,7 +4068,7 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1706"/>
       <location filename="../../CommandSketcherTools.cpp" line="1708"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрию, взяв за точку отсчёта последнюю выбранную точку</translation>
+      <translation>Сдвигает фигуры, ведя отсчет от последней выбранной точки</translation>
     </message>
   </context>
   <context>
