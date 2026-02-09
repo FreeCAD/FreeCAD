@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
 <component type="desktop-application">
   <id>org.freecad.FreeCAD</id>
   <project_license>LGPL-2.1</project_license>
