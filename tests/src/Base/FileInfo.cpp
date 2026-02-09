@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <gtest/gtest.h>
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>

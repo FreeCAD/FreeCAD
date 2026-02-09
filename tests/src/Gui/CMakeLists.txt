@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Standard C++ GTest tests
 add_executable(Gui_tests_run

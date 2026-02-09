@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <gtest/gtest.h>
 #include <Base/DualQuaternion.h>
 #include <Base/Matrix.h>
