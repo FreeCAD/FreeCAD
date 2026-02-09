@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-only OR GPL-3.0-only
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 /****************************************************************************
 **
