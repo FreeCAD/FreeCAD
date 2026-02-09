@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2023 edi <edi271@a1.net>                                *
 # *                                                                         *

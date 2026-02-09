@@ -1,8 +1,8 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /***************************************************************************
  *   Copyright (c) 2014 Joe Dowsett <dowsettjoe[at]yahoo[dot]co[dot]uk>    *
  *   Copyright (c) 2014 Luke Parry <l.parry@warwick.ac.uk>                 *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *

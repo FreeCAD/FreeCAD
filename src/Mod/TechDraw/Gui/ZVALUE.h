@@ -1,4 +1,7 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #pragma once
+
 namespace ZVALUE {
     const int BACKGROUND = -999999;
     const int TEMPLATE = -1000;

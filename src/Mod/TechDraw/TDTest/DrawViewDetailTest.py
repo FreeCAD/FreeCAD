@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # test script for DrawViewDetail
 # creates a page, a view and a detail view
