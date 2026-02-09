@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Cloud gui init module
 # (c) 2001 Juergen Riegel LGPL
