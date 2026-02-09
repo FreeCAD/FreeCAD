@@ -46,6 +46,8 @@
 #include "ViewProviderRevolution.h"
 #include "ReferenceSelection.h"
 
+#include <QStandardItemModel>
+
 using namespace PartDesignGui;
 using namespace Gui;
 
@@ -202,6 +204,16 @@ void TaskRevolutionParameters::translateModeList(int index)
         ui->changeMode->addItem(tr("Through all"));
     }
     ui->changeMode->addItem(tr("To first"));
+
+    // "To first" is not available for revolutions right now, but if we just don't add it, the index
+    // will be wrong. So disable it instead. Messy workaround for #27403
+    auto toFirstIndex = ui->changeMode->count() - 1;
+    auto* model = qobject_cast<QStandardItemModel*>(ui->changeMode->model());
+    if (model) {
+        QStandardItem* item = model->item(toFirstIndex);
+        item->setFlags(item->flags() & ~Qt::ItemIsEnabled);
+    }
+
     ui->changeMode->addItem(tr("Up to face"));
     ui->changeMode->addItem(tr("Two angles"));
     ui->changeMode->setCurrentIndex(index);
