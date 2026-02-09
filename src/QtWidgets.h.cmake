@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef FREECAD_QTWIDGETS_H
 #define FREECAD_QTWIDGETS_H
 
