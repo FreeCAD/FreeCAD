@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 if(MSVC)
     add_compile_options(/utf-8)
 endif(MSVC)

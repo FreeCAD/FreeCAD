@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 import FreeCAD
 from FreeCAD import Units
 import unittest

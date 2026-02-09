@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=1)
 
