@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2013 WandererFan <wandererfan@gmail.com>                *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
