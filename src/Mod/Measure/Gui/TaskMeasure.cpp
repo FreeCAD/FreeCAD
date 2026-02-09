@@ -47,7 +47,10 @@
 #include <QShortcut>
 #include <QToolTip>
 
+#include <Base/Quantity.h>
+
 using namespace MeasureGui;
+using namespace Base;
 
 namespace
 {
@@ -57,6 +60,68 @@ constexpr auto taskMeasureAutoSaveSettingsName = "AutoSave";
 constexpr auto taskMeasureGreedySelection = "GreedySelection";
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
+
+QStringList buildLengthUnitLabels()
+{
+    return QStringList() << "nm" << "µm" << "mm" << "cm" 
+                         << "dm" << "m" << "km"  << "in" 
+                         << "ft" << "thou" << "yd" << "mi";
+}
+
+QStringList buildAngleUnitLabels()
+{
+    return QStringList() << "deg" << "rad" << "gon";
+}
+
+QStringList buildAreaUnitLabels()
+{
+    return QStringList() << "mm²" << "cm²" << "m²" << "km²" 
+                         << "in²" << "ft²" << "yd²" << "mi²";
+}
+
+Base::Quantity getQuantityForUnit(const QString& unitLabel)
+{
+    if (unitLabel == "nm")   return Base::Quantity::NanoMetre;
+    if (unitLabel == "µm")   return Base::Quantity::MicroMetre;
+    if (unitLabel == "mm")   return Base::Quantity::MilliMetre;
+    if (unitLabel == "cm")   return Base::Quantity::CentiMetre;
+    if (unitLabel == "dm")   return Base::Quantity::DeciMetre;
+    if (unitLabel == "m")    return Base::Quantity::Metre;
+    if (unitLabel == "km")   return Base::Quantity::KiloMetre;
+    if (unitLabel == "in")   return Base::Quantity::Inch;
+    if (unitLabel == "ft")   return Base::Quantity::Foot;
+    if (unitLabel == "thou") return Base::Quantity::Thou;
+    if (unitLabel == "yd")   return Base::Quantity::Yard;
+    if (unitLabel == "mi")   return Base::Quantity::Mile;
+    if (unitLabel == "deg")  return Base::Quantity::Degree;
+    if (unitLabel == "rad")  return Base::Quantity::Radian;
+    if (unitLabel == "gon")  return Base::Quantity::Gon;
+    if (unitLabel == "mm²")  return Base::Quantity::MilliMetre * Base::Quantity::MilliMetre;
+    if (unitLabel == "cm²")  return Base::Quantity::CentiMetre * Base::Quantity::CentiMetre;
+    if (unitLabel == "m²")   return Base::Quantity::Metre * Base::Quantity::Metre;
+    if (unitLabel == "km²")  return Base::Quantity::KiloMetre * Base::Quantity::KiloMetre;
+    if (unitLabel == "in²")  return Base::Quantity::Inch * Base::Quantity::Inch;
+    if (unitLabel == "ft²")  return Base::Quantity::SquareFoot;
+    if (unitLabel == "yd²")  return Base::Quantity::Yard * Base::Quantity::Yard;
+    if (unitLabel == "mi²")  return Base::Quantity::Mile * Base::Quantity::Mile;
+    
+    return Base::Quantity::MilliMetre;
+}
+
+QString extractUnitFromResultString(const QString& resultString)
+{
+    if (resultString.isEmpty()) {
+        return QString();
+    }
+    
+    int lastSpace = resultString.lastIndexOf(' ');
+    if (lastSpace >= 0 && lastSpace < resultString.length() - 1) {
+        QString unit = resultString.mid(lastSpace + 1);
+        return unit;
+    }
+    
+    return QString();
+}
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -140,6 +205,11 @@ TaskMeasure::TaskMeasure()
     // Connect dropdown's change signal to our onModeChange slot
     connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
+    unitSwitch = new QComboBox();
+    unitSwitch->addItem("-");
+    connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+
+
     // Result widget
     valueResult = new QLineEdit();
     valueResult->setReadOnly(true);
@@ -160,6 +230,7 @@ TaskMeasure::TaskMeasure()
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
     formLayout->addRow(tr("Result:"), valueResult);
+    formLayout->addRow(tr("Unit:"), unitSwitch);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -307,6 +378,11 @@ void TaskMeasure::tryUpdate()
 
 
     if (!measureType) {
+        if (unitSwitch->count() != 1) {
+            unitSwitch->clear();
+            unitSwitch->addItem(QLatin1String("-"));
+            mLastUnitSelection = QLatin1String("-");
+        }
 
         // Note: If there's no valid measure type we might just restart the selection,
         // however this requires enough coverage of measuretypes that we can access all of them
@@ -323,6 +399,8 @@ void TaskMeasure::tryUpdate()
         enableAnnotateButton(false);
         return;
     }
+
+    updateUnitDropdown(measureType);
 
     // Update tool mode display
     setModeSilent(measureType);
@@ -341,14 +419,121 @@ void TaskMeasure::tryUpdate()
         // Fill measure object's properties from selection
         _mMeasureObject->parseSelection(selection);
 
-        // Get result
-        valueResult->setText(_mMeasureObject->getResultString());
+        setUnitFromResultString();
 
+        updateResultWithUnit();
 
         // Initialite the measurement's viewprovider
         initViewObject(_mMeasureObject);
     }
     _mMeasureObject->purgeTouched();
+}
+
+void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
+{
+    QStringList units;
+    
+    if (measureType->identifier == "LENGTH" 
+        || measureType->identifier == "DISTANCE" 
+        || measureType->identifier == "DISTANCEFREE" 
+        || measureType->identifier == "RADIUS" 
+        || measureType->identifier == "DIAMETER" 
+        || measureType->identifier == "POSITION"
+        || measureType->identifier == "CENTEROFMASS") {
+        units = buildLengthUnitLabels();
+    }
+    else if (measureType->identifier == "ANGLE") {
+        units = buildAngleUnitLabels();
+    }
+    else if (measureType->identifier == "AREA") {
+        units = buildAreaUnitLabels();
+    }
+    else {
+        if (unitSwitch->count() != 0) {
+            unitSwitch->clear();
+            mLastUnitSelection = QLatin1String("-");
+        }
+        return;
+    }
+
+    bool needsUpdate = false;
+    if (unitSwitch->count() != units.size()) {
+        needsUpdate = true;
+    }
+    else if (units.isEmpty() && unitSwitch->count() != 0) {
+        needsUpdate = true;
+    }
+    else if (!units.isEmpty() && unitSwitch->itemText(0) != units.front()) {
+        needsUpdate = true;
+    }
+
+    if (needsUpdate) {
+        // Disconnect signal to prevent onUnitChanged from firing during clear/addItems
+        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        
+        unitSwitch->clear();
+        unitSwitch->addItems(units);
+
+        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+    }
+}
+
+void TaskMeasure::setUnitFromResultString()
+{
+    if (!_mMeasureObject) {
+        return;
+    }
+
+    if (mLastUnitSelection != QLatin1String("-") && !mLastUnitSelection.isEmpty()) {
+        return;
+    }
+
+    QString resultString = _mMeasureObject->getResultString();
+    QString unitFromResult = extractUnitFromResultString(resultString);
+    
+    if (unitFromResult.isEmpty()) {
+        return;
+    }
+
+    int unitIndex = unitSwitch->findText(unitFromResult);
+    
+    if (unitIndex >= 0) {
+        unitSwitch->setCurrentIndex(unitIndex);
+        mLastUnitSelection = unitFromResult;
+    }
+}
+
+void TaskMeasure::updateResultWithUnit()
+{
+    if (!_mMeasureObject) {
+        return;
+    }
+    
+    QString resultString = _mMeasureObject->getResultString();
+    QString currentUnit = unitSwitch->currentText();
+    
+    if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
+        Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
+        Base::Quantity targetUnit = getQuantityForUnit(currentUnit);
+        double convertedValue = resultQty.getValueAs(targetUnit);
+
+        QString formattedValue;
+        // 4 decimal places, if between -1 and 1 4 signfnificant digits
+        if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
+            formattedValue = QString::number(convertedValue, 'g', 4);
+        } else {
+            formattedValue = QString::number(convertedValue, 'f', 4);
+        }
+        
+        QString formattedResult = formattedValue + " " + currentUnit;
+        valueResult->setText(formattedResult);
+        
+        Base::Console().message("updateResultWithUnit: Converted %f to %s\n",
+                                convertedValue, formattedResult.toStdString().c_str());
+    }
+    else {
+        valueResult->setText(resultString);
+    }
 }
 
 
@@ -557,6 +742,19 @@ void TaskMeasure::onModeChanged(int index)
     explicitMode = (index != 0);
 
     this->update();
+}
+
+void TaskMeasure::onUnitChanged(int index)
+{
+    QString currentUnit = unitSwitch->itemText(index);
+
+    if (mLastUnitSelection != QLatin1String("-") && currentUnit != mLastUnitSelection) {
+        updateResultWithUnit();
+    } else if (mLastUnitSelection == QLatin1String("-") && currentUnit != QLatin1String("-")) {
+        updateResultWithUnit();
+    }
+    
+    mLastUnitSelection = currentUnit;
 }
 
 void TaskMeasure::showDeltaChanged(int checkState)
