@@ -2091,7 +2091,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
             # Define Slicing height
             bb = envelop.BoundBox
-            slice_z = bb.ZMin + 0.001 
+            slice_z = bb.ZMin + 0.001
 
             # Configure Parameters
             params = env_engine.getDefaultParams()
