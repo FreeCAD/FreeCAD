@@ -2467,7 +2467,7 @@ class ObjectWaterline(PathOp.ObjectOp):
             commands.append(
                 Path.Command("G0", {"X": startVect.x, "Y": startVect.y, "F": self.horizRapid})
             )
-            (cmds, endVect) = self.wireToPath(obj, wire, startVect)
+            (cmds, endVect) = self._wireToPath(obj, wire, startVect)
             commands.extend(cmds)
             commands.append(Path.Command("G0", {"Z": obj.SafeHeight.Value, "F": self.vertRapid}))
 
@@ -2685,8 +2685,8 @@ class ObjectWaterline(PathOp.ObjectOp):
 
         return GCODE
 
-    def wireToPath(self, obj, wire, startVect):
-        """wireToPath(obj, wire, startVect) ... wire to path."""
+    def _wireToPath(self, obj, wire, startVect):
+        """_wireToPath(obj, wire, startVect) ... wire to path."""
         Path.Log.track()
 
         paths = []
