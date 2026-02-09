@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 // clang-format off
 /*
 PPEMBED, VERSION 2.0
