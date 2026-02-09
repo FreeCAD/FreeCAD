@@ -378,18 +378,12 @@ void TaskMeasure::tryUpdate()
 
 
     if (!measureType) {
-        if (unitSwitch->count() != 1) {
-            unitSwitch->clear();
-            unitSwitch->addItem(QLatin1String("-"));
-            mLastUnitSelection = QLatin1String("-");
-        }
-
-        // Note: If there's no valid measure type we might just restart the selection,
-        // however this requires enough coverage of measuretypes that we can access all of them
-
-        // std::tuple<std::string, std::string> sel = selection.back();
-        // clearSelection();
-        // addElement(measureModule.c_str(), get<0>(sel).c_str(), get<1>(sel).c_str());
+        // Disconnect to prevent spurious signals
+        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        unitSwitch->clear();
+        unitSwitch->addItem(QLatin1String("-"));
+        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        mLastUnitSelection = QLatin1String("-");
 
         // Reset measure object
         if (!explicitMode) {
@@ -449,33 +443,18 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
         units = buildAreaUnitLabels();
     }
     else {
-        if (unitSwitch->count() != 0) {
-            unitSwitch->clear();
-            mLastUnitSelection = QLatin1String("-");
-        }
-        return;
+        units.clear();
     }
 
-    bool needsUpdate = false;
-    if (unitSwitch->count() != units.size()) {
-        needsUpdate = true;
-    }
-    else if (units.isEmpty() && unitSwitch->count() != 0) {
-        needsUpdate = true;
-    }
-    else if (!units.isEmpty() && unitSwitch->itemText(0) != units.front()) {
-        needsUpdate = true;
-    }
-
-    if (needsUpdate) {
-        // Disconnect signal to prevent onUnitChanged from firing during clear/addItems
-        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
-        
-        unitSwitch->clear();
+    // disconnect before modifying the list 
+    disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+    
+    unitSwitch->clear();
+    if (!units.isEmpty()) {
         unitSwitch->addItems(units);
-
-        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
     }
+    
+    connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
 }
 
 void TaskMeasure::setUnitFromResultString()
@@ -484,6 +463,7 @@ void TaskMeasure::setUnitFromResultString()
         return;
     }
 
+    // Only set default unit if user hasn't made a selection yet
     if (mLastUnitSelection != QLatin1String("-") && !mLastUnitSelection.isEmpty()) {
         return;
     }
@@ -496,9 +476,12 @@ void TaskMeasure::setUnitFromResultString()
     }
 
     int unitIndex = unitSwitch->findText(unitFromResult);
-    
     if (unitIndex >= 0) {
+        // Disconnect to avoid triggering onUnitChanged for default selection
+        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
         unitSwitch->setCurrentIndex(unitIndex);
+        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        
         mLastUnitSelection = unitFromResult;
     }
 }
@@ -527,9 +510,6 @@ void TaskMeasure::updateResultWithUnit()
         
         QString formattedResult = formattedValue + " " + currentUnit;
         valueResult->setText(formattedResult);
-        
-        Base::Console().message("updateResultWithUnit: Converted %f to %s\n",
-                                convertedValue, formattedResult.toStdString().c_str());
     }
     else {
         valueResult->setText(resultString);
