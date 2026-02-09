@@ -135,7 +135,7 @@ public:
             if (deleteOriginal) {
                 deleteOriginalGeos();
             }
-            size_t initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
+            int initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
 
             commandAddShapeGeometryAndConstraints();
 
@@ -348,16 +348,16 @@ private:
             Base::Console().error("%s\n", e.what());
         }
     }
-    void scaleLabels(size_t constraintIndexOffset)
+    void scaleLabels(int constraintIndexOffset)
     {
         SketchObject* sketch = sketchgui->getSketchObject();
 
         for (auto toScale : listOfLabelsToScale) {
             int constrId = toScale.constrId + constraintIndexOffset;
 
-            sketch->setLabelDistance(constrId, toScale.distance * scaleFactor);
+            sketch->setLabelDistance(constrId, toScale.distance * static_cast<float>(scaleFactor));
 
-            // Label position or radii and diameters represent an angle, so
+            // Label position or radii anddiameters represent an angle, so
             // they should not be scaled
             Sketcher::ConstraintType type = sketch->Constraints[constrId]->Type;
             if (type == Sketcher::ConstraintType::Radius
@@ -365,7 +365,7 @@ private:
                 sketch->setLabelPosition(constrId, toScale.position);
             }
             else {
-                sketch->setLabelPosition(constrId, toScale.position * scaleFactor);
+                sketch->setLabelPosition(constrId, toScale.position * static_cast<float>(scaleFactor));
             }
         }
     }
@@ -499,7 +499,7 @@ private:
             }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-            size_t cstrIndex = 0;
+            int cstrIndex = 0;
             for (auto cstr : vals) {
                 if (skipConstraint(cstr)) {
                     continue;
@@ -514,7 +514,7 @@ private:
                 if (firstIndex != GeoEnum::GeoUndef) {
                     listOfLabelsToScale.push_back(
                         LabelToScale {
-                            .constrId = static_cast<int>(cstrIndex),
+                            .constrId = cstrIndex,
                             .position = cstr->LabelPosition,
                             .distance = cstr->LabelDistance
                         }
