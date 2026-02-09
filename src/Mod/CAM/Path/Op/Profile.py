@@ -307,7 +307,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             return "Contour"
 
         # return first geometry type selected
-        (_, subsList) = obj.Base[0]
+        _, subsList = obj.Base[0]
         return subsList[0][:4]
 
     def areaOpOnDocumentRestored(self, obj):
@@ -612,7 +612,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
                     # f = Part.makeFace(wire, 'Part::FaceMakerSimple')
                     # if planar error, Comment out previous line, uncomment the next two
-                    (origWire, flatWire) = self._flattenWire(obj, wire, obj.FinalDepth.Value)
+                    origWire, flatWire = self._flattenWire(obj, wire, obj.FinalDepth.Value)
                     f = flatWire.Wires[0]
                     if f:
                         shapeEnv = PathUtils.getEnvelope(Part.Face(f), depthparams=self.depthparams)
@@ -638,7 +638,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                                 self.ofstRadius + i * abs(params["Stepover"])
                                 for i in range(params["ExtraPass"] + 1)
                             ][::-1]
-                            (origWire, flatWire) = flattened
+                            origWire, flatWire = flattened
 
                             self._addDebugObject("FlatWire", flatWire)
 
@@ -744,7 +744,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             ecp = FreeCAD.Vector(endE.Vertexes[1].X, endE.Vertexes[1].Y, fdv)
 
         # Create intersection tags for determining which side of wire to cut
-        (begInt, begExt, iTAG, eTAG) = self._makeIntersectionTags(useWire, numOrigEdges, fdv)
+        begInt, begExt, iTAG, eTAG = self._makeIntersectionTags(useWire, numOrigEdges, fdv)
         if not begInt or not begExt:
             return False
         self.iTAG = iTAG
@@ -797,7 +797,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         comFC = topComp.common(botComp)
 
         # Determine with which set of intersection tags the model intersects
-        (cmnIntArea, cmnExtArea) = self._checkTagIntersection(iTAG, eTAG, "QRY", comFC)
+        cmnIntArea, cmnExtArea = self._checkTagIntersection(iTAG, eTAG, "QRY", comFC)
         if cmnExtArea > cmnIntArea:
             Path.Log.debug("Cutting on Ext side.")
             self.cutSide = "E"
@@ -961,7 +961,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min0:
                 min0 = N[4]
                 # min0i = n
-        (w0, vi0, pnt0, _, _) = NEAR0[0]  # min0i
+        w0, vi0, pnt0, _, _ = NEAR0[0]  # min0i
         near0Shp = Part.makeLine(cent0, pnt0)
         self._addDebugObject("Near0", near0Shp)
 
@@ -973,7 +973,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
             if N[4] < min1:
                 min1 = N[4]
                 # min1i = n
-        (w1, vi1, pnt1, _, _) = NEAR1[0]  # min1i
+        w1, vi1, pnt1, _, _ = NEAR1[0]  # min1i
         near1Shp = Part.makeLine(cent1, pnt1)
         self._addDebugObject("Near1", near1Shp)
 
@@ -1023,7 +1023,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Break offset loop into two wires - one of which is the desired profile path wire.
         try:
-            (edgeIdxs0, edgeIdxs1) = self._separateWireAtVertexes(
+            edgeIdxs0, edgeIdxs1 = self._separateWireAtVertexes(
                 mainWire, mainWire.Vertexes[vi0], mainWire.Vertexes[vi1]
             )
         except Exception as ee:
@@ -1284,7 +1284,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                             aspc = LE * 0.75
                         cp1 = E.valueAt(E.getParameterByLength(0))
                         cp2 = E.valueAt(E.getParameterByLength(aspc))
-                        (intTObj, extTObj) = self._makeOffsetCircleTag(
+                        intTObj, extTObj = self._makeOffsetCircleTag(
                             cp1, cp2, tagRad, fdv, "BeginEdge[{}]_".format(e)
                         )
                         if intTObj and extTObj:
@@ -1300,7 +1300,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                         posTestLen = d + (LE * 0.25)
                     cp1 = E.valueAt(E.getParameterByLength(negTestLen))
                     cp2 = E.valueAt(E.getParameterByLength(posTestLen))
-                    (intTObj, extTObj) = self._makeOffsetCircleTag(
+                    intTObj, extTObj = self._makeOffsetCircleTag(
                         cp1, cp2, tagRad, fdv, "Edge[{}]_".format(e)
                     )
                     if intTObj and extTObj:

@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Rectangle object."""
+
 ## @package rectangle
 # \ingroup draftobjects
 # \brief Provides the object code for the Rectangle object.

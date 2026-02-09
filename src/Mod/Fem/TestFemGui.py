@@ -24,6 +24,5 @@
 # Gui Unit tests for the FEM module
 from femtest.gui.test_open import TestObjectOpen as FemGuiTest01
 
-
 # dummy usage to get flake8 and lgtm quiet
 False if FemGuiTest01.__name__ else True

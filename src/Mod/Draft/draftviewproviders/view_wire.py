@@ -27,6 +27,7 @@
 This viewprovider is also used by simple lines, B-splines, bezier curves,
 and similar objects.
 """
+
 ## @package view_wire
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Wire (polyline) object.

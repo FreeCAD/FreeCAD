@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the viewprovider code for the Text object."""
+
 ## @package view_text
 # \ingroup draftviewproviders
 # \brief Provides the viewprovider code for the Text object.

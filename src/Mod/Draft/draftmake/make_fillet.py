@@ -26,6 +26,7 @@
 This creates a `Part::Part2DObjectPython`, and then assigns the Proxy class
 `Fillet`, and the `ViewProviderFillet` for the view provider.
 """
+
 ## @package make_fillet
 # \ingroup draftmake
 # \brief Provides functions to create Fillet objects between two lines.

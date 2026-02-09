@@ -47,8 +47,8 @@ def ExportCompactSub(Rob, Trak, FileName):
     SrcFile.write("\n;------------- main part ------------\n")
 
     for w in Traj.Waypoints:
-        (X, Y, Z) = (w.Pos.Base.x, w.Pos.Base.x, w.Pos.Base.x)
-        (A, B, C) = w.Pos.Rotation.toEuler()
+        X, Y, Z = (w.Pos.Base.x, w.Pos.Base.x, w.Pos.Base.x)
+        A, B, C = w.Pos.Rotation.toEuler()
         V = w.Velocity / 1000.0  # from mm/s to m/s
         SrcFile.write("$VEL.CP = %f ; m/s ; m/s \n" % V)
         SrcFile.write(

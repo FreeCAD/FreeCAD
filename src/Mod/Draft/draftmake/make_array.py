@@ -26,6 +26,7 @@
 
 This includes orthogonal arrays, polar arrays, and circular arrays.
 """
+
 ## @package make_array
 # \ingroup draftmake
 # \brief Provides functions to create Array objects.

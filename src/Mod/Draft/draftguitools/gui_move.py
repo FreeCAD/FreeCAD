@@ -26,6 +26,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides GUI tools to move objects in the 3D space."""
+
 ## @package gui_move
 # \ingroup draftguitools
 # \brief Provides GUI tools to move objects in the 3D space.

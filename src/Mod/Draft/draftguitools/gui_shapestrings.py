@@ -33,6 +33,7 @@ into solid bodies.
 
 They are more complex that simple text annotations.
 """
+
 ## @package gui_shapestrings
 # \ingroup draftguitools
 # \brief Provides GUI tools to create text shapes with a particular font.

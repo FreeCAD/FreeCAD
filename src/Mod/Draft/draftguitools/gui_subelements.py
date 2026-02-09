@@ -29,6 +29,7 @@
 The highlighting can be used to manipulate shapes with other tools
 such as Move, Rotate, and Scale.
 """
+
 ## @package gui_subelements
 # \ingroup draftguitools
 # \brief Provides GUI tools to highlight subelements of objects.

@@ -33,6 +33,7 @@ through Coin (pivy).
 - Label
 - Text
 """
+
 ## @package draft_annotation
 # \ingroup draftobjects
 # \brief Provides the object code for all annotation type objects.
