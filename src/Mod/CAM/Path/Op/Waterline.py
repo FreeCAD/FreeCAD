@@ -1839,7 +1839,7 @@ class ObjectWaterline(PathOp.ObjectOp):
         shape = base.Shape.copy()
         # Clean up redundant edges/faces and get outer hull
         try:
-            shape.removeSplitter()
+            shape = shape.removeSplitter()
         except:
             pass
         # Get Outer Hull
@@ -1870,27 +1870,26 @@ class ObjectWaterline(PathOp.ObjectOp):
         border_engine.setPlane(self.wpc)
         border_engine.add(borderFace)
 
-        # Get correct boundbox
+        # Get boundbox envelope
+        envelop = None
         if obj.BoundBox == "Stock":
-            stockEnv = PathSurfaceSupport.getShapeEnvelope(JOB.Stock.Shape)
-            bbFace = PathSurfaceSupport.getCrossSection(stockEnv)  # returned at Z=0.0
+            envelop = PathSurfaceSupport.getShapeEnvelope(JOB.Stock.Shape)
         elif obj.BoundBox == "BaseBoundBox":
-            baseEnv = PathSurfaceSupport.getShapeEnvelope(shape)
-            bbFace = PathSurfaceSupport.getCrossSection(baseEnv)
+            envelop = PathSurfaceSupport.getShapeEnvelope(shape)
 
         # Apply BoundaryAdjustment
+        bbFace = None
+        if envelop:
+            bbFace = self._getBoundaryAdj(envelop, adj)
         if bbFace:
-            bbFace.translate(FreeCAD.Vector(0.0, 0.0, 0.0 - bbFace.BoundBox.ZMin))
-            try:
-                bbFace = bbFace.makeOffset2D(adj, join=0, fill=False)
-            except Exception as e:
-                Path.Log.warning("BoundaryAdjustment failed: {}".format(e))
+            border_engine.add(bbFace, op=1)
 
-        border_engine.add(bbFace, op=1)
+        # Extract the final trimFace
         trimFace = border_engine.getShape()
-        trimFace.removeSplitter()
+        if hasattr(trimFace, "removeSplitter"):
+            trimFace = trimFace.removeSplitter()
 
-        self.showDebugObject(trimFace, "TrimFace")
+        self.showDebugObject(trimFace, "TrimFace_Clipper")
 
         # Cycle through layer depths
         (CUTAREAS, LAYER_METADATA) = self._getCutAreas(
@@ -1937,7 +1936,7 @@ class ObjectWaterline(PathOp.ObjectOp):
 
                     clearArea = clear_engine.getShape()
                     if hasattr(clearArea, "removeSplitter"):
-                        clearArea.removeSplitter()
+                        clearArea = clearArea.removeSplitter()
                     # Check if the resulting shape is valid and has actual geometry
                     if not clearArea or clearArea.BoundBox.DiagonalLength < 1e-6:
                         Path.Log.debug(
@@ -1966,7 +1965,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                         # Validate the result of the intersection
                         if res_planar and not res_planar.isNull() and res_planar.Area > 1e-7:
                             if hasattr(res_planar, "removeSplitter"):
-                                res_planar.removeSplitter()
+                                res_planar = res_planar.removeSplitter()
                             planarArea = res_planar
                             Path.Log.debug(
                                 "Depth {}: Targeted planar clearing successfully restricted to footprint.".format(
@@ -2075,6 +2074,51 @@ class ObjectWaterline(PathOp.ObjectOp):
             return shape
         except:
             return shape
+
+    def _getBoundaryAdj(self, envelop, adj):
+        """Returns Boundary Adjustment face at Z=0."""
+        Path.Log.debug("Waterline: Executing _getBoundaryAdj")
+
+        boundary_adj = None
+
+        try:
+            # Setup the Path.Area engine
+            env_engine = Path.Area()
+            # Generate the workplane from the envelope geometry
+            wpc = PathUtils.makeWorkplane(envelop)
+            env_engine.setPlane(wpc)
+            env_engine.add(envelop)
+
+            # Define Slicing height
+            bb = envelop.BoundBox
+            slice_z = bb.ZMin + 0.001 
+
+            # Configure Parameters
+            params = env_engine.getDefaultParams()
+            params["SectionTolerance"] = 0.0001
+            params["Offset"] = adj
+            env_engine.setParams(**params)
+
+            # Execute with Projection
+            boundary_adj = env_engine.makeSections(mode=0, project=True, heights=[slice_z])
+
+        except Exception as e:
+            Path.Log.warning("Waterline: BoundaryAdjustment C++ engine failed: {}".format(str(e)))
+            return None
+
+        # Extract and Clean result
+        if boundary_adj:
+            bbFace = boundary_adj[0].getShape()
+
+            if bbFace and not bbFace.isNull():
+                if hasattr(bbFace, "removeSplitter"):
+                    bbFace = bbFace.removeSplitter()
+
+                # Normalize to Z=0 for the border_engine
+                bbFace.translate(FreeCAD.Vector(0, 0, -bbFace.BoundBox.ZMin))
+                return bbFace
+
+        return None
 
     def _getCutAreas(self, shape, depthparams, borderFace, tool_params, stock_to_leave):
         """
@@ -2382,7 +2426,7 @@ class ObjectWaterline(PathOp.ObjectOp):
                 for i in range(1, len(faces)):
                     res = res.fuse(faces[i])
                 if hasattr(res, "removeSplitter"):
-                    res.removeSplitter()
+                    res = res.removeSplitter()
             fused[z] = res
         return fused
 
