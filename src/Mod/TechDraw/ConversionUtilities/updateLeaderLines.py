@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2024 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
