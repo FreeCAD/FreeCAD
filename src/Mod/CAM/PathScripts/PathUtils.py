@@ -912,6 +912,9 @@ class depth_params(object):
         all steps are of size 'size' except the one at the bottom which can be
         smaller."""
 
+        if Path.Geom.isRoughly(start, stop):
+            return [stop]
+
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)
         depths = list(linspace(last_step, start, fullsteps, endpoint=False))
