@@ -147,11 +147,11 @@
        </widget>
       </item>
       <item row="4" column="1">
-        <widget class="QComboBox" name="comboBox_unitSystem">
-         <property name="toolTip">
-          <string>Unit system for this file</string>
-         </property>
-        </widget>
+       <widget class="QComboBox" name="comboBox_unitSystem">
+        <property name="toolTip">
+         <string>Unit system for this file</string>
+        </property>
+       </widget>
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="textLabelCreator">
@@ -285,7 +285,25 @@
        </widget>
       </item>
       <item row="10" column="1">
-       <widget class="QComboBox" name="comboLicense"/>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QComboBox" name="comboLicense">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonLicenses">
+          <property name="text">
+           <string notr="true">...</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item row="11" column="0">
        <widget class="QLabel" name="textLabelLicenseURL">

@@ -42,9 +42,10 @@ class Ui_DlgProjectInformation;
 class DlgProjectInformationImp: public QDialog
 {
     Q_OBJECT
+    Q_DISABLE_COPY_MOVE(DlgProjectInformationImp)
 
 public:
-    DlgProjectInformationImp(
+    explicit DlgProjectInformationImp(
         App::Document* doc,
         QWidget* parent = nullptr,
         Qt::WindowFlags fl = Qt::WindowFlags()
@@ -55,6 +56,7 @@ public:
 private Q_SLOTS:
     void open_url();
     void onLicenseTypeChanged(int index);
+    void onMoreLicenses();
 
 private:
     App::Document* _doc;
