@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 set(TestGui_LIBS
     FreeCADGui
 )
