@@ -63,8 +63,8 @@ using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 
 QStringList buildLengthUnitLabels()
 {
-    return QStringList() << "nm" << "µm" << "mm" << "cm" 
-                         << "dm" << "m" << "km"  << "in" 
+    return QStringList() << "nm" << "µm" << "mm" << "cm"
+                         << "dm" << "m" << "km" << "in"
                          << "ft" << "thou" << "yd" << "mi";
 }
 
@@ -75,36 +75,82 @@ QStringList buildAngleUnitLabels()
 
 QStringList buildAreaUnitLabels()
 {
-    return QStringList() << "mm²" << "cm²" << "m²" << "km²" 
+    return QStringList() << "mm²" << "cm²" << "m²" << "km²"
                          << "in²" << "ft²" << "yd²" << "mi²";
 }
 
 Base::Quantity getQuantityForUnit(const QString& unitLabel)
 {
-    if (unitLabel == "nm")   return Base::Quantity::NanoMetre;
-    if (unitLabel == "µm")   return Base::Quantity::MicroMetre;
-    if (unitLabel == "mm")   return Base::Quantity::MilliMetre;
-    if (unitLabel == "cm")   return Base::Quantity::CentiMetre;
-    if (unitLabel == "dm")   return Base::Quantity::DeciMetre;
-    if (unitLabel == "m")    return Base::Quantity::Metre;
-    if (unitLabel == "km")   return Base::Quantity::KiloMetre;
-    if (unitLabel == "in")   return Base::Quantity::Inch;
-    if (unitLabel == "ft")   return Base::Quantity::Foot;
-    if (unitLabel == "thou") return Base::Quantity::Thou;
-    if (unitLabel == "yd")   return Base::Quantity::Yard;
-    if (unitLabel == "mi")   return Base::Quantity::Mile;
-    if (unitLabel == "deg")  return Base::Quantity::Degree;
-    if (unitLabel == "rad")  return Base::Quantity::Radian;
-    if (unitLabel == "gon")  return Base::Quantity::Gon;
-    if (unitLabel == "mm²")  return Base::Quantity::MilliMetre * Base::Quantity::MilliMetre;
-    if (unitLabel == "cm²")  return Base::Quantity::CentiMetre * Base::Quantity::CentiMetre;
-    if (unitLabel == "m²")   return Base::Quantity::Metre * Base::Quantity::Metre;
-    if (unitLabel == "km²")  return Base::Quantity::KiloMetre * Base::Quantity::KiloMetre;
-    if (unitLabel == "in²")  return Base::Quantity::Inch * Base::Quantity::Inch;
-    if (unitLabel == "ft²")  return Base::Quantity::SquareFoot;
-    if (unitLabel == "yd²")  return Base::Quantity::Yard * Base::Quantity::Yard;
-    if (unitLabel == "mi²")  return Base::Quantity::Mile * Base::Quantity::Mile;
-    
+    if (unitLabel == "nm") {
+        return Base::Quantity::NanoMetre;
+    }
+    if (unitLabel == "µm") {
+        return Base::Quantity::MicroMetre;
+    }
+    if (unitLabel == "mm") {
+        return Base::Quantity::MilliMetre;
+    }
+    if (unitLabel == "cm") {
+        return Base::Quantity::CentiMetre;
+    }
+    if (unitLabel == "dm") {
+        return Base::Quantity::DeciMetre;
+    }
+    if (unitLabel == "m") {
+        return Base::Quantity::Metre;
+    }
+    if (unitLabel == "km") {
+        return Base::Quantity::KiloMetre;
+    }
+    if (unitLabel == "in") {
+        return Base::Quantity::Inch;
+    }
+    if (unitLabel == "ft") {
+        return Base::Quantity::Foot;
+    }
+    if (unitLabel == "thou") {
+        return Base::Quantity::Thou;
+    }
+    if (unitLabel == "yd") {
+        return Base::Quantity::Yard;
+    }
+    if (unitLabel == "mi") {
+        return Base::Quantity::Mile;
+    }
+    if (unitLabel == "deg") {
+        return Base::Quantity::Degree;
+    }
+    if (unitLabel == "rad") {
+        return Base::Quantity::Radian;
+    }
+    if (unitLabel == "gon") {
+        return Base::Quantity::Gon;
+    }
+    if (unitLabel == "mm²") {
+        return Base::Quantity::MilliMetre * Base::Quantity::MilliMetre;
+    }
+    if (unitLabel == "cm²") {
+        return Base::Quantity::CentiMetre * Base::Quantity::CentiMetre;
+    }
+    if (unitLabel == "m²") {
+        return Base::Quantity::Metre * Base::Quantity::Metre;
+    }
+    if (unitLabel == "km²") {
+        return Base::Quantity::KiloMetre * Base::Quantity::KiloMetre;
+    }
+    if (unitLabel == "in²") {
+        return Base::Quantity::Inch * Base::Quantity::Inch;
+    }
+    if (unitLabel == "ft²") {
+        return Base::Quantity::SquareFoot;
+    }
+    if (unitLabel == "yd²") {
+        return Base::Quantity::Yard * Base::Quantity::Yard;
+    }
+    if (unitLabel == "mi²") {
+        return Base::Quantity::Mile * Base::Quantity::Mile;
+    }
+
     return Base::Quantity::MilliMetre;
 }
 
@@ -113,13 +159,13 @@ QString extractUnitFromResultString(const QString& resultString)
     if (resultString.isEmpty()) {
         return QString();
     }
-    
+
     int lastSpace = resultString.lastIndexOf(' ');
     if (lastSpace >= 0 && lastSpace < resultString.length() - 1) {
         QString unit = resultString.mid(lastSpace + 1);
         return unit;
     }
-    
+
     return QString();
 }
 }  // namespace
@@ -379,10 +425,20 @@ void TaskMeasure::tryUpdate()
 
     if (!measureType) {
         // Disconnect to prevent spurious signals
-        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        disconnect(
+            unitSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onUnitChanged
+        );
         unitSwitch->clear();
         unitSwitch->addItem(QLatin1String("-"));
-        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        connect(
+            unitSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onUnitChanged
+        );
         mLastUnitSelection = QLatin1String("-");
 
         // Reset measure object
@@ -426,13 +482,10 @@ void TaskMeasure::tryUpdate()
 void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
 {
     QStringList units;
-    
-    if (measureType->identifier == "LENGTH" 
-        || measureType->identifier == "DISTANCE" 
-        || measureType->identifier == "DISTANCEFREE" 
-        || measureType->identifier == "RADIUS" 
-        || measureType->identifier == "DIAMETER" 
-        || measureType->identifier == "POSITION"
+
+    if (measureType->identifier == "LENGTH" || measureType->identifier == "DISTANCE"
+        || measureType->identifier == "DISTANCEFREE" || measureType->identifier == "RADIUS"
+        || measureType->identifier == "DIAMETER" || measureType->identifier == "POSITION"
         || measureType->identifier == "CENTEROFMASS") {
         units = buildLengthUnitLabels();
     }
@@ -446,14 +499,19 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
         units.clear();
     }
 
-    // disconnect before modifying the list 
-    disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
-    
+    // disconnect before modifying the list
+    disconnect(
+        unitSwitch,
+        qOverload<int>(&QComboBox::currentIndexChanged),
+        this,
+        &TaskMeasure::onUnitChanged
+    );
+
     unitSwitch->clear();
     if (!units.isEmpty()) {
         unitSwitch->addItems(units);
     }
-    
+
     connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
 }
 
@@ -470,7 +528,7 @@ void TaskMeasure::setUnitFromResultString()
 
     QString resultString = _mMeasureObject->getResultString();
     QString unitFromResult = extractUnitFromResultString(resultString);
-    
+
     if (unitFromResult.isEmpty()) {
         return;
     }
@@ -478,10 +536,20 @@ void TaskMeasure::setUnitFromResultString()
     int unitIndex = unitSwitch->findText(unitFromResult);
     if (unitIndex >= 0) {
         // Disconnect to avoid triggering onUnitChanged for default selection
-        disconnect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
+        disconnect(
+            unitSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onUnitChanged
+        );
         unitSwitch->setCurrentIndex(unitIndex);
-        connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
-        
+        connect(
+            unitSwitch,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &TaskMeasure::onUnitChanged
+        );
+
         mLastUnitSelection = unitFromResult;
     }
 }
@@ -491,10 +559,10 @@ void TaskMeasure::updateResultWithUnit()
     if (!_mMeasureObject) {
         return;
     }
-    
+
     QString resultString = _mMeasureObject->getResultString();
     QString currentUnit = unitSwitch->currentText();
-    
+
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
         Base::Quantity targetUnit = getQuantityForUnit(currentUnit);
@@ -504,10 +572,11 @@ void TaskMeasure::updateResultWithUnit()
         // 4 decimal places, if between -1 and 1 4 signfnificant digits
         if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
             formattedValue = QString::number(convertedValue, 'g', 4);
-        } else {
+        }
+        else {
             formattedValue = QString::number(convertedValue, 'f', 4);
         }
-        
+
         QString formattedResult = formattedValue + " " + currentUnit;
         valueResult->setText(formattedResult);
     }
@@ -730,10 +799,11 @@ void TaskMeasure::onUnitChanged(int index)
 
     if (mLastUnitSelection != QLatin1String("-") && currentUnit != mLastUnitSelection) {
         updateResultWithUnit();
-    } else if (mLastUnitSelection == QLatin1String("-") && currentUnit != QLatin1String("-")) {
+    }
+    else if (mLastUnitSelection == QLatin1String("-") && currentUnit != QLatin1String("-")) {
         updateResultWithUnit();
     }
-    
+
     mLastUnitSelection = currentUnit;
 }
 
