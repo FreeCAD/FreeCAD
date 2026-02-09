@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <Base/Builder3D.h>
 #include <Inventor/SoDB.h>
 #include <Inventor/SoInput.h>

@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #include <gtest/gtest.h>
 #ifdef WIN32
 # define WIN32_LEAN_AND_MEAN
