@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 FILE( GLOB_RECURSE KDL_SRCS [^.]*.cpp [^.]*.cxx)
 FILE( GLOB KDL_HPPS [^.]*.hpp [^.]*.inl)

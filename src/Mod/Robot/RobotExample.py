@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Example how to use the basic robot class Robot6Axis which represent a 6-Axis
 # industrial robot. The Robot Module is dependent on Part but not on other Modules.
