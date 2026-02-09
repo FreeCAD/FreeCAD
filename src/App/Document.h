@@ -465,14 +465,14 @@ public:
     /**
      * @brief Add an object of a given type to the document.
      *
-     * Add an object of of a given type with @p pObjectName that should be
-     * ASCII to this document and set it active.  Unicode names are set through
-     * the Label property.
+     * Add an object of a given type with @p pObjectName that should be ASCII
+     * to this document and set it active.  Unicode names are set through the
+     * Label property.
      *
      * @tparam T The type of created object.
-     * @param[in] pObjectName if `nullptr` generate a new unique name based on @p
-     * T, otherwise use this name.
-     * @param[in] isNew if `false don't call the DocumentObject::setupObject()
+     * @param[in] pObjectName if `nullptr` generate a new unique name based on
+     * @p T, otherwise use this name.
+     * @param[in] isNew if `false` don't call the DocumentObject::setupObject()
      * callback (default * is true)
      * @param[in] viewType    override object's view provider name
      * @param[in] isPartial   indicate if this object is meant to be partially loaded
@@ -1328,6 +1328,10 @@ protected:
      * @param[in, out] writer The XML writer to write to.
      */
     void writeObjects(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+
+    void writeObjectDeps(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectType(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
+    void writeObjectData(const std::vector<DocumentObject*>& objs, Base::Writer& writer) const;
 
     /**
      * @brief Save the document to a file.

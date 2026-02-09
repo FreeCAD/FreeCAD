@@ -217,6 +217,8 @@ public:
     void isolateComponents(std::set<App::DocumentObject*>& parts, IsolateMode mode);
     void isolateJointReferences(App::DocumentObject* joint, IsolateMode mode = IsolateMode::Transparent);
     void clearIsolate();
+    bool explodeTemporarily(App::DocumentObject* explodedView);
+    void clearTemporaryExplosion();
 
     DragMode dragMode;
     bool canStartDragging;
@@ -254,6 +256,7 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
+    void removeTaskSolver();
 
     void collectMovableObjects(
         App::DocumentObject* selRoot,
@@ -275,6 +278,7 @@ private:
     };
 
     std::unordered_map<App::DocumentObject*, ComponentState> stateBackup;
+    App::DocumentObject* temporaryExplosion {nullptr};
     App::DocumentObject* isolatedJoint {nullptr};
     bool isolatedJointVisibilityBackup {false};
 

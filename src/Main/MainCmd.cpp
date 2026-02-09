@@ -104,7 +104,7 @@ int main(int argc, char** argv)
         exit(0);
     }
     catch (const Base::Exception& e) {
-        std::string appName = App::Application::Config()["ExeName"];
+        std::string appName = App::Application::getExecutableName();
         std::cout << "While initializing " << appName << " the following exception occurred: '"
                   << e.what() << "'\n\n";
         std::cout << "Python is searching for its runtime files in the following directories:\n"
@@ -123,7 +123,7 @@ int main(int argc, char** argv)
         exit(100);
     }
     catch (...) {
-        std::string appName = App::Application::Config()["ExeName"];
+        std::string appName = App::Application::getExecutableName();
         std::cout << "Unknown runtime error occurred while initializing " << appName << ".\n\n";
         std::cout << "Please contact the application's support team for more information.";
         std::cout << std::endl;

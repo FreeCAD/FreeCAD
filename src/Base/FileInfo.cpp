@@ -425,6 +425,16 @@ bool FileInfo::isDir() const
     return false;
 }
 
+bool FileInfo::isSymlink() const
+{
+    fs::path path = stringToPath(FileName);
+    if (fs::exists(path)) {
+        return fs::is_symlink(path);
+    }
+
+    return false;
+}
+
 unsigned int FileInfo::size() const
 {
     unsigned int bytes {};
@@ -565,4 +575,25 @@ std::vector<Base::FileInfo> FileInfo::getDirectoryContent() const
     }
 
     return list;
+}
+
+std::optional<std::string> FileInfo::getSymlinkTarget()
+{
+    fs::path path = stringToPath(FileName);
+    if (isSymlink()) {
+        return pathToString(fs::read_symlink(path));
+    }
+    return std::nullopt;
+}
+
+std::optional<std::string> FileInfo::getCannonicalPath()
+{
+    try {
+        fs::path path = stringToPath(FileName);
+        return pathToString(fs::canonical(path));
+    }
+    catch (const fs::filesystem_error& e) {
+        std::clog << e.what() << '\n';
+        return std::nullopt;
+    }
 }

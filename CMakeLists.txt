@@ -95,8 +95,11 @@ if(NOT FREECAD_LIBPACK_USE OR FREECAD_LIBPACK_CHECKFILE_CLBUNDLER OR FREECAD_LIB
     endif(BUILD_GUI)
     SetupSalomeSMESH()
     if (BUILD_FEM_NETGEN)
-        find_package(NETGEN)
-    endif(BUILD_FEM_NETGEN)
+        set(NETGEN_DEFINITIONS -DNO_PARALLEL_THREADS -DOCCGEOMETRY)
+        if (NOT FREECAD_USE_EXTERNAL_SMESH)
+            find_package(NETGEN REQUIRED)
+        endif()
+    endif()
     # not needed at the moment
     #find_package(OpenCV REQUIRED)
     SetupSwig()
