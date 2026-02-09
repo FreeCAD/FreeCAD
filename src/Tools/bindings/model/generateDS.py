@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # SPDX-License-Identifier: MIT
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 ## LICENSE
 
