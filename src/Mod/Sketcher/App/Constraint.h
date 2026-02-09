@@ -216,8 +216,7 @@ public:
     ConstraintType Type {None};
     InternalAlignmentType AlignmentType {Undef};
     std::string Name;
-    std::string Text;
-    std::string Font;
+    std::string MetaData;
     float LabelDistance {10.F};
     float LabelPosition {0.F};
     bool isDriving {true};
@@ -228,7 +227,6 @@ public:
     bool isVisible {true};
 
     bool isActive {true};
-    bool isTextHeight {true};
 
     GeoElementId getElement(size_t index) const;
     void setElement(size_t index, GeoElementId element);
@@ -245,6 +243,13 @@ public:
     void setPosId(int index, int pos);
     void swapElements(int index1, int index2);
     bool ensureElementExists(int index);
+
+    std::string getText() const;
+    void setText(const std::string& text);
+    std::string getFont() const;
+    void setFont(const std::string& font);
+    bool getIsTextHeight() const;
+    void setIsTextHeight(bool val);
 
 #ifdef SKETCHER_CONSTRAINT_USE_LEGACY_ELEMENTS
     // Deprecated, use getElement/setElement instead

@@ -128,29 +128,53 @@ private:
     void executeCommands() override
     {
         try {
-            int firstCurve = getHighestCurveIndex() + 1;
-
-            createShape(false);
-
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch Text"));
 
-            commandAddShapeGeometryAndConstraints();
+            // Add the Handle Line
+            Gui::cmdAppObjectArgs(
+                getSketchObject(),
+                "addGeometry(Part.LineSegment(App.Vector(%f, %f,0), App.Vector(%f, %f,0)), True)",
+                startPoint.x,
+                startPoint.y,
+                endPoint.x,
+                endPoint.y
+            );
+            handleId = getHighestCurveIndex();
 
-            handleId = getHighestCurveIndex() + 1;  // line is not added yet
-
-            std::vector<Sketcher::GeoElementId> elts;
-            for (int i = firstCurve; i < handleId; ++i) {
-                elts.push_back(GeoElementId(i));
-            }
+            std::string escText = escapeForPython(text);
+            std::string escFont = escapeForPython(font);
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
-            if (!addListConstraint(getSketchObject(), elts, "Text", startPoint, endPoint, isHeight, text, font)) {
-                Gui::Command::abortCommand();
-                return;
-            }
+            const char* constrBoolStr = isConstructionMode() ? "True" : "False";
+
+            // Add the 'Text' Constraint (Empty)
+            // We initialize the constraint containing ONLY the handle (element 0).
+            // We do not add the text geometry manually to avoid floating-point precision loss
+            // associated with Python serialization.
+            Gui::cmdAppObjectArgs(
+                getSketchObject(),
+                "addConstraint(Sketcher.Constraint('Text', [%d, 0], '%s', '%s', %s))",
+                handleId,
+                escText.c_str(),
+                escFont.c_str(),
+                isHeight ? "True" : "False"
+            );
+
+            // Generate Text Geometry by calling setTextAndFont on the new constraint.
+            // This triggers the C++ logic to generate the exact geometry and insert it
+            // into the sketch, ensuring closed wires and perfect precision.
+            Gui::cmdAppObjectArgs(
+                getSketchObject(),
+                "setTextAndFont(len(App.ActiveDocument.getObject('%s').Constraints)-1, '%s', '%s', "
+                "%s)",
+                getSketchObject()->getNameInDocument(),
+                escText.c_str(),
+                escFont.c_str(),
+                constrBoolStr
+            );
 
             Gui::Command::commitCommand();
         }
-        catch (const Base::Exception&) {
+        catch (const Base::Exception& e) {
             Gui::NotifyError(
                 sketchgui,
                 QT_TRANSLATE_NOOP("Notifications", "Error"),
@@ -158,14 +182,6 @@ private:
             );
 
             Gui::Command::abortCommand();
-            THROWM(
-                Base::RuntimeError,
-                QT_TRANSLATE_NOOP(
-                    "Notifications",
-                    "Tool execution aborted"
-                ) "\n"
-            )  // This prevents constraints from being
-               // applied on non existing geometry
         }
     }
 

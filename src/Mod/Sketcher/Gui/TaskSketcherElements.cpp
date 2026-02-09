@@ -204,7 +204,8 @@ public:
         Base::Type geometryType,
         GeometryState state,
         const QString& lab,
-        ViewProviderSketch* sketchView
+        ViewProviderSketch* sketchView,
+        bool isTextHandle = false
     )
         : ElementNbr(elementnr)
         , StartingVertex(startingVertex)
@@ -219,6 +220,7 @@ public:
         , clickedOn(SubElementType::none)
         , hovered(SubElementType::none)
         , rightClicked(false)
+        , isTextHandle(isTextHandle)
         , label(lab)
         , sketchView(sketchView)
     {
@@ -319,6 +321,7 @@ public:
     SubElementType clickedOn;
     SubElementType hovered;
     bool rightClicked;
+    bool isTextHandle;
 
     QString label;
 
@@ -377,11 +380,12 @@ public:
 
     static const QIcon&
     getIcon(Base::Type type, Sketcher::PointPos pos,
-            ElementItem::GeometryState icontype = ElementItem::GeometryState::Normal)
+            ElementItem::GeometryState icontype = ElementItem::GeometryState::Normal,
+                             bool isTextHandle = false)
     {
         static ElementWidgetIcons elementicons;
 
-        return elementicons.getIconImpl(type, pos, icontype);
+        return elementicons.getIconImpl(type, pos, icontype, isTextHandle);
     }
 
 private:
@@ -505,11 +509,34 @@ private:
                     {Sketcher::PointPos::none,
                      getMultIcon("Sketcher_Element_SelectionTypeInvalid")},
                 }));
+
+        // Text Handle Icons
+        textIcons[Sketcher::PointPos::none] = Gui::BitmapFactory().iconFromTheme("Sketcher_CreateText");
+        textIcons[Sketcher::PointPos::start] = Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Text_StartPoint");
+        textIcons[Sketcher::PointPos::end] = Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Text_EndPoint");
     }
 
     const QIcon& getIconImpl(Base::Type type, Sketcher::PointPos pos,
-                             ElementItem::GeometryState icontype)
+                             ElementItem::GeometryState icontype,
+                             bool isTextHandle)
     {
+        if (isTextHandle) {
+            auto it = textIcons.find(pos);
+            if (it != textIcons.end()) {
+                return it->second;
+            }
+            // Fallback for Midpoint or other positions: use normal line icon without blue filter
+            if (type == Part::GeomLineSegment::getClassTypeId()) {
+                auto typekey = icons.find(type);
+                if (typekey != icons.end()) {
+                    auto poskey = typekey->second.find(pos);
+                    if (poskey != typekey->second.end()) {
+                        // Return the 'Normal' variant (index 0) to avoid blue construction color
+                        return std::get<0>(poskey->second);
+                    }
+                }
+            }
+        }
 
         auto typekey = icons.find(type);
 
@@ -585,6 +612,7 @@ private:
 private:
     std::map<Base::Type, std::map<Sketcher::PointPos, std::tuple<QIcon, QIcon, QIcon, QIcon>>>
         icons;
+    std::map<Sketcher::PointPos, QIcon> textIcons;
 };
 
 ElementView::ElementView(QWidget* parent)
@@ -719,6 +747,14 @@ void ElementView::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu;
     QList<QListWidgetItem*> items = selectedItems();
+
+    if (items.size() == 1) {
+        ElementItem* item = static_cast<ElementItem*>(items.first());
+        if (item->isTextHandle) {
+             menu.addSeparator();
+             menu.addAction(tr("Convert to geometries"), this, SLOT(doConvertToGeometries()));
+        }
+    }
 
     // NOTE: If extending this context menu, be sure to add the items to the translation block at
     // the top of this file
@@ -944,6 +980,25 @@ ElementItem* ElementView::itemFromIndex(const QModelIndex& index)
     return static_cast<ElementItem*>(QListWidget::itemFromIndex(index));
 }
 
+void ElementView::doConvertToGeometries()
+{
+    QList<QListWidgetItem*> items = selectedItems();
+    if (items.isEmpty())
+        return;
+
+    ElementItem* item = static_cast<ElementItem*>(items.first());
+    if (!item->isTextHandle)
+        return;
+
+    int geoId = item->ElementNbr;
+    Sketcher::SketchObject* sketch = item->getSketchObject();
+
+    // Deleting the handle geometry will automatically remove the Text constraint
+    // (turning it to None), leaving the generated text geometries intact.
+    Gui::Selection().clearSelection();
+    sketch->delGeometry(geoId);
+}
+
 // clang-format on
 /* ElementItem delegate ---------------------------------------------------- */
 ElementItemDelegate::ElementItemDelegate(ElementView* parent)
@@ -1038,7 +1093,8 @@ void ElementItemDelegate::drawSubControl(
     auto isHovered = rect.contains(mousePos);
 
     auto drawSelectIcon = [&](Sketcher::PointPos pos) {
-        auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
+        auto icon
+            = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State, item->isTextHandle);
 
         auto isOptionSelected = option.state & QStyle::State_Selected;
         auto isOptionHovered = option.state & QStyle::State_MouseOver;
@@ -1977,6 +2033,7 @@ void TaskSketcherElements::slotElementsChanged()
         QString label;
         // This is a regular geometry. Get its type name.
         QString baseName;
+        bool isTextHandle = false;
         if (type == Part::GeomPoint::getClassTypeId()) {
             baseName = tr("Point");
         }
@@ -1990,6 +2047,7 @@ void TaskSketcherElements::slotElementsChanged()
                 }
                 else {
                     baseName = tr("Text");
+                    isTextHandle = true;
                 }
             }
             else {
@@ -2043,7 +2101,8 @@ void TaskSketcherElements::slotElementsChanged()
             type,
             state,
             label,
-            sketchView);
+            sketchView,
+            isTextHandle);
 
         ui->listWidgetElements->addItem(itemN);
 

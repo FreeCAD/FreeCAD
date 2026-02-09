@@ -85,6 +85,7 @@ protected Q_SLOTS:
     void doSymmetricConstraint();
     void doBlockConstraint();
     void doGroupConstraint();
+    void doConvertToGeometries();
 
     void doLockConstraint();
     void doHorizontalConstraint();
