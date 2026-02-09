@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ignore the pyc files created while compile
 model/*.pyc
 templates/*.pyc

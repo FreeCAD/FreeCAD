@@ -1,12 +1,11 @@
 #!/usr/bin/python3
-
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2010 Werner Mayer <wmayer@users.sourceforge.net>        *
 # *   Copyright (c) 2025 The FreeCAD project association AISBL              *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
 # *   FreeCAD is free software: you can redistribute it and/or modify it    *
 # *   under the terms of the GNU Lesser General Public License as           *

@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 IF (BUILD_GUI)
     PYSIDE_WRAP_RC(_TEMPLATEPY__QRC_SRCS Resources/_TEMPLATEPY_.qrc)
