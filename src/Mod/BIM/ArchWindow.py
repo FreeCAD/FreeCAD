@@ -1629,7 +1629,7 @@ class _ArchWindowTaskPanel:
 
     def retranslateUi(self, TaskPanel):
 
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window Elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(
             QtGui.QApplication.translate(
