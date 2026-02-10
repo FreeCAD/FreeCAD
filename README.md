@@ -65,6 +65,18 @@ their respective platforms:
 - [macOS](https://wiki.freecad.org/Compile_on_MacOS)
 - [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
 
+### Nix (Linux)
+
+With [Nix](https://nixos.org/) installed (flakes enabled), you can enter a
+development shell with all dependencies:
+
+```sh
+nix develop
+cmake -B build -G Ninja -DFREECAD_QT_VERSION=6
+cmake --build build -j$(nproc)
+./build/bin/FreeCAD
+```
+
 
 Reporting Issues
 ---------
