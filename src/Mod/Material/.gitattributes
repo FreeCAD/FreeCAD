@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # In case people don't have core.autocrlf set, this will manage the default line-ending
 # behaviour for all files recursively
 # * text=auto
