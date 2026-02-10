@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 add_definitions(-DMOD_TECHDRAW_HANDLE_FACES=1)
 

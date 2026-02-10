@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-License-Identifier: LGPL-2.1-or-later
 
 # basic test script for TechDraw Py functions migrated from Drawing
 

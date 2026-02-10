@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2024 Wanderer Fan <wandererfan@gmail.com>               *
 # *                                                                         *
