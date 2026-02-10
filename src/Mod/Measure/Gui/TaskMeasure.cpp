@@ -62,20 +62,12 @@ constexpr auto taskMeasureGreedySelection = "GreedySelection";
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 
-constexpr std::array lengthUnitLabels{
-    "nm", "µm", "mm", "cm", 
-    "dm", "m", "km", "in", 
-    "ft", "thou", "yd", "mi"
-};
+constexpr std::array
+    lengthUnitLabels {"nm", "µm", "mm", "cm", "dm", "m", "km", "in", "ft", "thou", "yd", "mi"};
 
-constexpr std::array angleUnitLabels{
-    "deg", "rad", "gon"
-};
+constexpr std::array angleUnitLabels {"deg", "rad", "gon"};
 
-constexpr std::array areaUnitLabels{
-    "mm²", "cm²", "m²", "km²",
-    "in²", "ft²", "yd²", "mi²"
-};
+constexpr std::array areaUnitLabels {"mm²", "cm²", "m²", "km²", "in²", "ft²", "yd²", "mi²"};
 
 template<std::size_t N>
 QStringList toQStringList(const std::array<const char*, N>& strings)
@@ -92,7 +84,7 @@ QString extractUnitFromResultString(const QString& resultString)
 {
     std::string str = resultString.toStdString();
     auto lastSpace = str.find_last_of(' ');
-    
+
     if (lastSpace != std::string::npos && lastSpace < str.length() - 1) {
         return QString::fromStdString(str.substr(lastSpace + 1));
     }
