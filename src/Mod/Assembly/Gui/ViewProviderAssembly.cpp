@@ -1517,7 +1517,6 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
         return;
     }
 
-    ;
     if (auto* prop = joint->getPropertyByName<App::PropertyLink>("ObjectToGround")) {
         auto* groundedObj = prop->getValue();
 
