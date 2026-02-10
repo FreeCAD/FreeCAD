@@ -25,6 +25,7 @@
 #include "clipper.hpp"
 #include <vector>
 #include <list>
+#include <optional>
 #include <time.h>
 #include <fstream>
 
@@ -51,7 +52,7 @@ enum MotionType
     mtCutting = 0,
     mtLinkClear = 1,
     mtLinkNotClear = 2,
-    mtLinkClearAtPrevPass = 3
+    mtLinkClearAtPrevPass = 3  // unused
 };
 
 enum OperationType
@@ -159,14 +160,15 @@ private:
         IntPoint newToolPos,
         ClearedArea& clearedArea
     );
-    void AppendToolPath(
-        TPaths& progressPaths,
-        AdaptiveOutput& output,
-        const Path& passToolPath,
-        ClearedArea& clearedAreaBefore,
-        ClearedArea& clearedAreaAfter,
+    TPaths FindLinkPath(
+        const std::optional<IntPoint>& prevPoint,
+        const std::optional<DoublePoint>& prevDir,
+        const IntPoint& pathStart,
+        const DoublePoint& pathDir,
+        ClearedArea& cleared,
         const Paths& toolBoundPaths
     );
+    void AppendToolPath(AdaptiveOutput& output, const Path& passToolPath, TPaths& linkPath);
     bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
     bool IsAllowedToCutTrough(
         const IntPoint& p1,
@@ -192,8 +194,6 @@ private:
         ClearedArea& clearedArea,
         Path& output
     );
-
-    friend class EngagePoint;  // for CalcCutArea
 
     void CheckReportProgress(TPaths& progressPaths, bool force = false);
     void AddPathsToProgress(
@@ -260,9 +260,7 @@ private:
     const int DIRECTION_SMOOTHING_BUFLEN = 3;  // gyro points - used for angle smoothing
 
 
-    const double MIN_CUT_AREA_FACTOR = 0.1;          // used for filtering out of insignificant cuts
-    const double ENGAGE_AREA_THR_FACTOR = .3;        // influences minimal engage area
-    const double ENGAGE_SCAN_DISTANCE_FACTOR = 0.2;  // influences the engage scan/stepping distance
+    const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts
 
     const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
     const double FINISHING_CLEAN_PATH_TOLERANCE = 1.41;  // should be >1
