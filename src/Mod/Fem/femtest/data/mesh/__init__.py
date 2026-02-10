@@ -1,0 +1,1 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
