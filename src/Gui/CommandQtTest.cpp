@@ -72,7 +72,7 @@ void StdCmdQtTestRecord::activated(int iMsg)
     );
     if (!filename.isEmpty()) {
         Base::Console().log("Recording to file '%s'\n", filename.toStdString().c_str());
-        // QApplication::activateWindow(mainWindow);
+        QApplication::setActiveWindow(mainWindow);
         auto& testUtility = mainWindow->getTestUtility();
         testUtility.recordTests(filename);
     }
