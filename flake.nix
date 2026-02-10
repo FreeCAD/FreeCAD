@@ -11,6 +11,8 @@
       systems = [
         "x86_64-linux"
         "aarch64-linux"
+        "x86_64-darwin"
+        "aarch64-darwin"
       ];
       forAllSystems =
         f:
@@ -47,6 +49,7 @@
               ccache
               swig
               qt6.wrapQtAppsHook
+              doxygen
             ];
 
             buildInputs = with pkgs; [
