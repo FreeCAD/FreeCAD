@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # created by Python
 '''
 from femtest.app.support_utils import get_fem_test_defs
