@@ -1,5 +1,6 @@
 
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // pyarea.cpp
 // Copyright 2017, Lorenz Lechner

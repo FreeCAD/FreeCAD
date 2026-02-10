@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2025 FreeCAD Contributors                               *
