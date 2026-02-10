@@ -68,6 +68,42 @@ GuiExport std::size_t choosePreferredPick(const std::vector<Candidate>& picked);
 class Document;
 class ViewProviderDocumentObject;
 
+class AutoPreselection
+{
+public:
+    void setEnabled(SbBool on);
+    void setMinumumFPS(double value);
+    void addFrametime(double picktime);
+    SbBool shouldDisablePreselection() const;
+
+private:
+    void resetFrameCounter();
+
+private:
+    SbBool enabled = false;
+    double minFPS = 1000.0;
+
+    struct Time
+    {
+        double traversal = 0.0;
+        double rendering = 0.0;
+        double frmpersec = 0.0;
+        void reset()
+        {
+            traversal = 0.0;
+            rendering = 0.0;
+            frmpersec = 0.0;
+        }
+    };
+
+    const int arraySize = 100;
+    std::array<Time, 100> frames;
+    double totalcoin = 0.0;
+    double totaldraw = 0.0;
+    double lastgettimeofday = 0.0;
+    int framecount = 0;
+};
+
 /**  Unified Selection node
  *  This is the new selection node for the 3D Viewer which will
  *  gradually remove all the low level selection nodes in the view
@@ -163,6 +199,7 @@ private:
     // -1 = not handled, 0 = not selected, 1 = selected
     int32_t preSelection;
     SoColorPacker colorpacker;
+    AutoPreselection autoPreselect;
 };
 
 class GuiExport SoFCPathAnnotation: public SoSeparator

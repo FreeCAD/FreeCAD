@@ -181,6 +181,66 @@ std::size_t choosePreferredPick(const std::vector<Candidate>& picked)
 
 // *************************************************************************
 
+void AutoPreselection::setEnabled(SbBool on)
+{
+    if (!enabled && on) {
+        resetFrameCounter();
+    }
+
+    enabled = on;
+}
+
+void AutoPreselection::setMinumumFPS(double value)
+{
+    minFPS = value;
+}
+
+SbBool AutoPreselection::shouldDisablePreselection() const
+{
+    if (!enabled) {
+        return false;
+    }
+
+    double min = minFPS;
+    return std::all_of(frames.cbegin(), frames.cend(), [min](const auto& time) {
+        return time.frmpersec > 0.0 && time.frmpersec < min;
+    });
+}
+
+void AutoPreselection::resetFrameCounter()
+{
+    framecount = 0;
+    for (auto& it : frames) {
+        it.reset();
+    }
+
+    totalcoin = 0.0;
+    totaldraw = 0.0;
+    lastgettimeofday = SbTime::getTimeOfDay().getValue();
+}
+
+void AutoPreselection::addFrametime(double picktime)
+{
+    int index = framecount % arraySize;
+    framecount++;
+
+    totalcoin += (picktime - frames[index].traversal);
+    double coinfps = totalcoin / std::min(framecount, arraySize);
+
+    double timeofday = SbTime::getTimeOfDay().getValue();
+    double rendertime = timeofday - lastgettimeofday;
+    totaldraw += (rendertime - frames[index].rendering);
+    double drawfps = totaldraw / std::min(framecount, arraySize);
+    std::ignore = drawfps;
+
+    frames[index].traversal = picktime;
+    frames[index].rendering = rendertime;
+    frames[index].frmpersec = 1.0 / coinfps;
+    lastgettimeofday = timeofday;
+}
+
+// *************************************************************************
+
 SO_NODE_SOURCE(SoFCUnifiedSelection)
 
 /*!
@@ -1034,6 +1094,8 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
         // just check for a picked point if the data set has been selected.
         if (preselectionMode == SoFCUnifiedSelection::AUTO
             || preselectionMode == SoFCUnifiedSelection::ON) {
+            autoPreselect.setEnabled(preselectionMode == SoFCUnifiedSelection::AUTO);
+            SbTime picktime = SbTime::getTimeOfDay();
             // check to see if the mouse is over our geometry...
             auto infos = this->getPickedList(action, true);
             if (!infos.empty()) {
@@ -1047,6 +1109,13 @@ void SoFCUnifiedSelection::handleEvent(SoHandleEventAction* action)
                     // because only from there the SoGLWidgetElement delivers the OpenGL window
                     this->touch();
                 }
+            }
+
+            picktime = SbTime::getTimeOfDay() - picktime;
+            autoPreselect.addFrametime(picktime.getValue());
+            if (autoPreselect.shouldDisablePreselection()) {
+                autoPreselect.setEnabled(false);
+                this->preselectionMode.setValue(SoFCUnifiedSelection::OFF);
             }
         }
     }
