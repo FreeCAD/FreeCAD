@@ -48,6 +48,7 @@
 #include <QToolTip>
 
 #include <Base/Quantity.h>
+#include <array>
 
 using namespace MeasureGui;
 using namespace Base;
@@ -61,109 +62,39 @@ constexpr auto taskMeasureGreedySelection = "GreedySelection";
 
 using SelectionStyle = Gui::SelectionSingleton::SelectionStyle;
 
-QStringList buildLengthUnitLabels()
-{
-    return QStringList() << "nm" << "µm" << "mm" << "cm"
-                         << "dm" << "m" << "km" << "in"
-                         << "ft" << "thou" << "yd" << "mi";
-}
+constexpr std::array lengthUnitLabels{
+    "nm", "µm", "mm", "cm", 
+    "dm", "m", "km", "in", 
+    "ft", "thou", "yd", "mi"
+};
 
-QStringList buildAngleUnitLabels()
-{
-    return QStringList() << "deg" << "rad" << "gon";
-}
+constexpr std::array angleUnitLabels{
+    "deg", "rad", "gon"
+};
 
-QStringList buildAreaUnitLabels()
-{
-    return QStringList() << "mm²" << "cm²" << "m²" << "km²"
-                         << "in²" << "ft²" << "yd²" << "mi²";
-}
+constexpr std::array areaUnitLabels{
+    "mm²", "cm²", "m²", "km²",
+    "in²", "ft²", "yd²", "mi²"
+};
 
-Base::Quantity getQuantityForUnit(const QString& unitLabel)
+template<std::size_t N>
+QStringList toQStringList(const std::array<const char*, N>& strings)
 {
-    if (unitLabel == "nm") {
-        return Base::Quantity::NanoMetre;
+    QList<QString> labels;
+    labels.reserve(N);
+    for (const auto& str : strings) {
+        labels.append(QString::fromUtf8(str));
     }
-    if (unitLabel == "µm") {
-        return Base::Quantity::MicroMetre;
-    }
-    if (unitLabel == "mm") {
-        return Base::Quantity::MilliMetre;
-    }
-    if (unitLabel == "cm") {
-        return Base::Quantity::CentiMetre;
-    }
-    if (unitLabel == "dm") {
-        return Base::Quantity::DeciMetre;
-    }
-    if (unitLabel == "m") {
-        return Base::Quantity::Metre;
-    }
-    if (unitLabel == "km") {
-        return Base::Quantity::KiloMetre;
-    }
-    if (unitLabel == "in") {
-        return Base::Quantity::Inch;
-    }
-    if (unitLabel == "ft") {
-        return Base::Quantity::Foot;
-    }
-    if (unitLabel == "thou") {
-        return Base::Quantity::Thou;
-    }
-    if (unitLabel == "yd") {
-        return Base::Quantity::Yard;
-    }
-    if (unitLabel == "mi") {
-        return Base::Quantity::Mile;
-    }
-    if (unitLabel == "deg") {
-        return Base::Quantity::Degree;
-    }
-    if (unitLabel == "rad") {
-        return Base::Quantity::Radian;
-    }
-    if (unitLabel == "gon") {
-        return Base::Quantity::Gon;
-    }
-    if (unitLabel == "mm²") {
-        return Base::Quantity::MilliMetre * Base::Quantity::MilliMetre;
-    }
-    if (unitLabel == "cm²") {
-        return Base::Quantity::CentiMetre * Base::Quantity::CentiMetre;
-    }
-    if (unitLabel == "m²") {
-        return Base::Quantity::Metre * Base::Quantity::Metre;
-    }
-    if (unitLabel == "km²") {
-        return Base::Quantity::KiloMetre * Base::Quantity::KiloMetre;
-    }
-    if (unitLabel == "in²") {
-        return Base::Quantity::Inch * Base::Quantity::Inch;
-    }
-    if (unitLabel == "ft²") {
-        return Base::Quantity::SquareFoot;
-    }
-    if (unitLabel == "yd²") {
-        return Base::Quantity::Yard * Base::Quantity::Yard;
-    }
-    if (unitLabel == "mi²") {
-        return Base::Quantity::Mile * Base::Quantity::Mile;
-    }
-
-    return Base::Quantity::MilliMetre;
+    return QStringList(labels.begin(), labels.end());
 }
 
 QString extractUnitFromResultString(const QString& resultString)
 {
-    if (resultString.isEmpty()) {
-        return QString();
-    }
-
-    int lastSpace = resultString.lastIndexOf(' ');
-    if (lastSpace >= 0 && lastSpace < resultString.length() - 1) {
-        QString unit = resultString.mid(lastSpace + 1);
-        return unit;
+    std::string str = resultString.toStdString();
+    auto lastSpace = str.find_last_of(' ');
+    
+    if (lastSpace != std::string::npos && lastSpace < str.length() - 1) {
+        return QString::fromStdString(str.substr(lastSpace + 1));
     }
 
     return QString();
@@ -487,13 +418,13 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
         || measureType->identifier == "DISTANCEFREE" || measureType->identifier == "RADIUS"
         || measureType->identifier == "DIAMETER" || measureType->identifier == "POSITION"
         || measureType->identifier == "CENTEROFMASS") {
-        units = buildLengthUnitLabels();
+        units = toQStringList(lengthUnitLabels);
     }
     else if (measureType->identifier == "ANGLE") {
-        units = buildAngleUnitLabels();
+        units = toQStringList(angleUnitLabels);
     }
     else if (measureType->identifier == "AREA") {
-        units = buildAreaUnitLabels();
+        units = toQStringList(areaUnitLabels);
     }
     else {
         units.clear();
@@ -565,7 +496,8 @@ void TaskMeasure::updateResultWithUnit()
 
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
-        Base::Quantity targetUnit = getQuantityForUnit(currentUnit);
+        // Parse unit string like "1 mm" to get the target quantity
+        Base::Quantity targetUnit = Base::Quantity::parse(("1 " + currentUnit).toStdString());
         double convertedValue = resultQty.getValueAs(targetUnit);
 
         QString formattedValue;
