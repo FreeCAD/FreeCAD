@@ -33,7 +33,7 @@
 using namespace QtTesting;
 
 QtTestUtility::QtTestUtility(QObject* parent)
-    : pqTestUtility (parent)
+    : pqTestUtility(parent)
 {
     addCustomTranslators();
     addCustomEventPlayers();
@@ -41,10 +41,9 @@ QtTestUtility::QtTestUtility(QObject* parent)
 
 void QtTestUtility::addWidgetEventTranslator(pqWidgetEventTranslator* translator)
 {
-  if (translator)
-  {
-    eventTranslator()->addWidgetEventTranslator(translator);
-  }
+    if (translator) {
+        eventTranslator()->addWidgetEventTranslator(translator);
+    }
 }
 
 void QtTestUtility::addCustomTranslators()
@@ -54,10 +53,9 @@ void QtTestUtility::addCustomTranslators()
 
 void QtTestUtility::addWidgetEventPlayer(pqWidgetEventPlayer* player)
 {
-  if (player)
-  {
-    eventPlayer()->addWidgetEventPlayer(player);
-  }
+    if (player) {
+        eventPlayer()->addWidgetEventPlayer(player);
+    }
 }
 
 void QtTestUtility::addCustomEventPlayers()

@@ -48,6 +48,6 @@ private:
     QXmlStreamReader* xmlStream;
 };
 
-}  // namespace Gui
+}  // namespace QtTesting
 
 #endif  // GUI_XMLEVENTSOURCE_H

@@ -65,9 +65,9 @@
 #endif
 
 #if defined(BUILD_QTTESTING)
-#include "QtTesting/QtTestUtility.h"
-#include "QtTesting/XMLEventObserver.h"
-#include "QtTesting/XMLEventSource.h"
+# include "QtTesting/QtTestUtility.h"
+# include "QtTesting/XMLEventObserver.h"
+# include "QtTesting/XMLEventSource.h"
 #endif
 
 #include <algorithm>

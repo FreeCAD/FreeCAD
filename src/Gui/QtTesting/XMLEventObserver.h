@@ -52,6 +52,6 @@ private:
     QString xmlString;
 };
 
-}  // namespace Gui
+}  // namespace QtTesting
 
 #endif  // GUI_XMLEVENTOBSERVER_H
