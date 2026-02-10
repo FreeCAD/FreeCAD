@@ -1,9 +1,9 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /**************************************************************************
  *   Copyright (c) 2016 FreeCAD Developers                                 *
  *   Author: Bernd Hahnebach <bernd@bimstatik.ch>                          *
  *   Based on src/Mod/Fem/Gui/DlgSettingsFemCcx.h                          *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *

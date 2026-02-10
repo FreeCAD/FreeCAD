@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Many warnings caused by vtk
 if(CMAKE_COMPILER_IS_CLANGXX)

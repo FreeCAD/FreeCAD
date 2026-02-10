@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 def create_nodes(femmesh):
     # nodes
     femmesh.addNode(0.0, 500.0, 500.0, 1)
