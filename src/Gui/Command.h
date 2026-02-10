@@ -247,6 +247,9 @@ void CreateWindowStdCommands();
 void CreateStructureCommands();
 void CreateTestCommands();
 void CreateLinkCommands();
+#if defined(BUILD_QTTESTING)
+void CreateQtTestingCommands();
+#endif
 
 
 /** The CommandBase class

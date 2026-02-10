@@ -129,6 +129,10 @@ if(BUILD_VR)
     find_package(Rift)
 endif(BUILD_VR)
 
+if(BUILD_QTTESTING)
+    SetupQtTesting()
+endif(BUILD_QTTESTING)
+
 SetLibraryVersions()
 SetGlobalCompilerAndLinkerSettings()
 

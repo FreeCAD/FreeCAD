@@ -1017,6 +1017,9 @@ void Application::createStandardOperations()
     Gui::CreateStructureCommands();
     Gui::CreateTestCommands();
     Gui::CreateLinkCommands();
+#if defined(BUILD_QTTESTING)
+    Gui::CreateQtTestingCommands();
+#endif
 }
 
 void Application::slotNewDocument(const App::Document& Doc, bool isMainDoc)

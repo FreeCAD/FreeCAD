@@ -64,6 +64,12 @@
 # endif
 #endif
 
+#if defined(BUILD_QTTESTING)
+#include "QtTesting/QtTestUtility.h"
+#include "QtTesting/XMLEventObserver.h"
+#include "QtTesting/XMLEventSource.h"
+#endif
+
 #include <algorithm>
 #include <boost/algorithm/string/predicate.hpp>
 
@@ -493,6 +499,12 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
     // accept drops on the window, get handled in dropEvent, dragEnterEvent
     setAcceptDrops(true);
+
+#if defined(BUILD_QTTESTING)
+    qtTestUtility = std::make_unique<QtTesting::QtTestUtility>(this);
+    qtTestUtility->addEventObserver(QStringLiteral("xml"), new QtTesting::XMLEventObserver(this));
+    qtTestUtility->addEventSource(QStringLiteral("xml"), new QtTesting::XMLEventSource(this));
+#endif
 
     statusBar()->showMessage(tr("Ready"), 2001);
 }
