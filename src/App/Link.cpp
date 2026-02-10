@@ -2753,9 +2753,19 @@ void Link::migrateLabelUtility(App::DocumentObject* link, App::DocumentObject* l
     }
 
     std::string targetLabel = linked->Label.getValue();
+
+    // Case 1: Handle identical labels (e.g., "SubAssembly" link to "SubAssembly")
+    // We want "SubAssembly <1>", "SubAssembly <2>", etc., not "SubAssembly <SubAssembly>"
+    if (currentLabel == targetLabel) {
+        std::string migrated = link->getDocument()->makeUniqueLinkLabel(targetLabel);
+        link->Label.setValue(migrated);
+        link->Label.purgeTouched();
+        return;
+    }
+
     std::string newInst;
 
-    // Case 1: Standard Numeric Uniqueness (e.g., "Cube001" -> "Cube <1>")
+    // Case 2: Standard Numeric Uniqueness (e.g., "Cube001" -> "Cube <1>")
     // We use decomposeLabel to see if the existing label is just the target + numbers.
     auto [pref, suff, count, val] = link->getDocument()->decomposeLabel(currentLabel);
     if (count > 0 && pref == targetLabel && suff.empty()) {
@@ -2763,14 +2773,14 @@ void Link::migrateLabelUtility(App::DocumentObject* link, App::DocumentObject* l
     }
     else if (currentLabel.size() > targetLabel.size()
              && currentLabel.compare(0, targetLabel.size(), targetLabel) == 0) {
-        // Case 2: Prefixed custom name (e.g., "Cube left" -> "Cube <left>")
+        // Case 3: Prefixed custom name (e.g., "Cube left" -> "Cube <left>")
         newInst = currentLabel.substr(targetLabel.size());
         // Clean up separators like "Cube-left" or "Cube left"
         auto firstPos = newInst.find_first_not_of(" -_");
         newInst = (firstPos != std::string::npos) ? newInst.substr(firstPos) : currentLabel;
     }
     else {
-        // Case 3: Totally custom name (e.g., "Coco" -> "Cube <Coco>")
+        // Case 4: Totally custom name (e.g., "Coco" -> "Cube <Coco>")
         newInst = currentLabel;
     }
 
