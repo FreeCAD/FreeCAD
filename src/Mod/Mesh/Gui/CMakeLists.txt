@@ -127,7 +127,6 @@ SET(MeshGui_SRCS
     ${ViewProvider_SRCS}
     AppMeshGui.cpp
     Command.cpp
-    Doxygen.cpp
     PreCompiled.h
     MeshEditor.cpp
     MeshEditor.h
