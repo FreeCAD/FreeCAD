@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 if (NOT FREECAD_USE_EXTERNAL_ONDSELSOLVER)
 include_directories(
