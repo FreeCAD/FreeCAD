@@ -34,6 +34,7 @@
 # @{
 import math
 import sys
+import textwrap
 import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
@@ -189,6 +190,22 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.onChanged(vobj, "ArrowSizeStart")
         self.onChanged(vobj, "Line")
 
+    def update_text(self, obj, vobj):
+        """Update the text string in the scene, wrapping it if needed."""
+        self.text_wld.string.setValue("")
+        self.text_scr.string.setValue("")
+        _list = [l for l in obj.Text if l] if obj.Text else []
+
+        if _list and hasattr(vobj, "MaxChars") and vobj.MaxChars > 0:
+            new_list = []
+            for line in _list:
+                new_list.extend(textwrap.wrap(line, vobj.MaxChars))
+            _list = new_list
+
+        self.text_wld.string.setValues(_list)
+        self.text_scr.string.setValues(_list)
+        self.onChanged(vobj, "DisplayMode")
+
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
         vobj = obj.ViewObject
@@ -228,14 +245,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             # We could have used a different property.
 
         elif prop == "Text" and obj.Text:
-            self.text_wld.string.setValue("")
-            self.text_scr.string.setValue("")
-
-            _list = [l for l in obj.Text if l]
-
-            self.text_wld.string.setValues(_list)
-            self.text_scr.string.setValues(_list)
-            self.onChanged(obj.ViewObject, "DisplayMode")
+            self.update_text(obj, vobj)
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -268,6 +278,9 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.update_label(obj, vobj)
             if can_update_frame:
                 self.update_frame(obj, vobj)
+
+        elif prop == "MaxChars" and "MaxChars" in properties:
+            self.update_text(obj, vobj)
 
         elif prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
             if "ArrowSizeStart" in properties:
