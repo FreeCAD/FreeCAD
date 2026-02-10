@@ -113,7 +113,12 @@ std::string Base::UniqueNameManager::makeUniqueName(
     std::string baseName = namePrefix + nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
-        if (digitCount > 0) {
+        // If we are using a trailer (like ">") and the model name already
+        // has digits (like "Cube <1>"), we keep them because "Cube <>"
+        // is not a desired label.
+        // Otherwise, for standard names like "Body123", we strip digits
+        // to return "Body" (as it was before).
+        if (!trailer.empty() && digitCount > 0) {
             return modelName;
         }
         // First use of baseName, just return it with no unique digits
