@@ -86,12 +86,10 @@ private:
     struct Time
     {
         double traversal = 0.0;
-        double rendering = 0.0;
         double frmpersec = 0.0;
         void reset()
         {
             traversal = 0.0;
-            rendering = 0.0;
             frmpersec = 0.0;
         }
     };
@@ -99,8 +97,6 @@ private:
     const int arraySize = 100;
     std::array<Time, 100> frames;
     double totalcoin = 0.0;
-    double totaldraw = 0.0;
-    double lastgettimeofday = 0.0;
     int framecount = 0;
 };
 

@@ -214,8 +214,6 @@ void AutoPreselection::resetFrameCounter()
     }
 
     totalcoin = 0.0;
-    totaldraw = 0.0;
-    lastgettimeofday = SbTime::getTimeOfDay().getValue();
 }
 
 void AutoPreselection::addFrametime(double picktime)
@@ -226,16 +224,8 @@ void AutoPreselection::addFrametime(double picktime)
     totalcoin += (picktime - frames[index].traversal);
     double coinfps = totalcoin / std::min(framecount, arraySize);
 
-    double timeofday = SbTime::getTimeOfDay().getValue();
-    double rendertime = timeofday - lastgettimeofday;
-    totaldraw += (rendertime - frames[index].rendering);
-    double drawfps = totaldraw / std::min(framecount, arraySize);
-    std::ignore = drawfps;
-
     frames[index].traversal = picktime;
-    frames[index].rendering = rendertime;
     frames[index].frmpersec = 1.0 / coinfps;
-    lastgettimeofday = timeofday;
 }
 
 // *************************************************************************
