@@ -66,6 +66,8 @@ using DrawSketchHandlerSymmetryBase = DrawSketchControllableHandler<DSHSymmetryC
 
 class DrawSketchHandlerSymmetry: public DrawSketchHandlerSymmetryBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerSymmetry)
+
     friend DSHSymmetryController;
     friend DSHSymmetryControllerBase;
 
@@ -278,9 +280,24 @@ void DSHSymmetryController::configureToolWidget()
             WCheckbox::FirstBox,
             QApplication::translate("TaskSketcherTool_c1_symmetry", "Delete original geometries (U)")
         );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::FirstBox,
+            QApplication::translate(
+                "TaskSketcherTool_c1_symmetry",
+                "Removes the original geometry and keeps only the mirrored result."
+
+            )
+        );
         toolWidget->setCheckboxLabel(
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_symmetry", "Create symmetry constraints (J)")
+        );
+        toolWidget->setCheckboxToolTip(
+            WCheckbox::SecondBox,
+            QApplication::translate(
+                "TaskSketcherTool_c2_symmetry",
+                "Create symmetry constraints between the original and mirrored geometries"
+            )
         );
     }
 }

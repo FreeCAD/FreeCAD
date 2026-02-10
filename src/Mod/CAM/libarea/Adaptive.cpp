@@ -494,23 +494,13 @@ bool Circle2CircleIntersect(
 bool Line2CircleIntersect(
     const IntPoint& c,
     double radius,
-    const IntPoint& p1,
-    const IntPoint& p2,
+    const DoublePoint& p1,
+    const DoublePoint& p2,
     vector<DoublePoint>& result,
     bool clamp = true
 )
 {
     // if more intersections returned, first is closer to p1
-
-    // box  check for performance
-    if (clamp) {
-        BoundBox cBB(c, (ClipperLib::cInt)radius + 1);  // circle bound box
-        BoundBox sBB(p1, p2);
-        if (!sBB.CollidesWith(cBB)) {
-            return false;
-        }
-    }
-
     double dx = double(p2.X - p1.X);
     double dy = double(p2.Y - p1.Y);
     double lcx = double(p1.X - c.X);
@@ -526,16 +516,10 @@ bool Line2CircleIntersect(
     double t1 = (-b - sq) / (2 * a);
     double t2 = (-b + sq) / (2 * a);
     result.clear();
-    if (clamp) {
-        if (t1 >= 0.0 && t1 <= 1.0) {
-            result.emplace_back(p1.X + t1 * dx, p1.Y + t1 * dy);
-        }
-        if (t2 >= 0.0 && t2 <= 1.0) {
-            result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
-        }
+    if ((t1 >= 0.0 && t1 <= 1.0) || !clamp) {
+        result.emplace_back(p1.X + t1 * dx, p1.Y + t1 * dy);
     }
-    else {
-        result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
+    if ((t2 >= 0.0 && t2 <= 1.0) || !clamp) {
         result.emplace_back(p1.X + t2 * dx, p1.Y + t2 * dy);
     }
     return !result.empty();
@@ -777,7 +761,8 @@ bool PopPathWithClosestPoint(
                     start with closest point */
     ,
     IntPoint p1,
-    Path& result
+    Path& result,
+    double extraDistanceAround = 0
 )
 {
 
@@ -800,14 +785,18 @@ bool PopPathWithClosestPoint(
         }
     }
 
+    Path& closestPath = paths.at(closestPathIndex);
+    while (extraDistanceAround > 0) {
+        long nexti = (closestPointIndex + 1) % closestPath.size();
+        extraDistanceAround -= sqrt(DistanceSqrd(closestPath[closestPointIndex], closestPath[nexti]));
+        closestPointIndex = nexti;
+    }
+
     result.clear();
     // make new path starting with that point
-    Path& closestPath = paths.at(closestPathIndex);
     for (size_t i = 0; i < closestPath.size(); i++) {
         long index = closestPointIndex + long(i);
-        if (index >= long(closestPath.size())) {
-            index -= long(closestPath.size());
-        }
+        index = index % closestPath.size();
         result.push_back(closestPath.at(index));
     }
     // remove the closest path
@@ -966,7 +955,6 @@ private:
 
 PerfCounter Perf_ProcessPolyNode("ProcessPolyNode");
 PerfCounter Perf_CalcCutAreaCirc("CalcCutArea");
-PerfCounter Perf_CalcCutAreaClip("CalcCutAreaClip");
 PerfCounter Perf_NextEngagePoint("NextEngagePoint");
 PerfCounter Perf_PointIterations("PointIterations");
 PerfCounter Perf_ExpandCleared("ExpandCleared");
@@ -1012,73 +1000,46 @@ public:
         Perf_ExpandCleared.Stop();
     }
 
-    // gets the path sections inside the ext. tool bounding box
-    Paths& GetBoundedClearedPaths(const IntPoint& toolPos)
-    {
-        BoundBox toolBB(toolPos, toolRadiusScaled);
-        if (!bboxPathsInvalid && clearedBBPathsInFocus.Contains(toolBB)) {
-            return clearedBoundedPaths;
-        }
-        ClipperLib::cInt delta = focusBBFactor1 * toolRadiusScaled;
-        clearedBBPathsInFocus.SetFirstPoint(IntPoint(toolPos.X - delta, toolPos.Y - delta));
-        clearedBBPathsInFocus.AddPoint(IntPoint(toolPos.X + delta, toolPos.Y + delta));
-
-        BoundBox bb(toolPos, focusBBFactor2 * toolRadiusScaled);
-        clearedBoundedPaths.clear();
-        for (const auto& pth : clearedPaths) {
-            if (pth.size() < 2) {
-                continue;
-            }
-            Path bPath;
-            size_t size = pth.size();
-            for (size_t i = 0; i < size + 1; i++) {
-                IntPoint last = (i > 0 ? pth[i - 1] : pth.back());
-                IntPoint next = i < size ? pth[i] : pth.front();
-                BoundBox ptbox(last, next);
-                if (ptbox.CollidesWith(bb)) {
-                    if (bPath.empty() || bPath.back() != last) {
-                        bPath.push_back(last);
-                    }
-                    bPath.push_back(next);
-                }
-                else {
-                    if (!bPath.empty()) {
-                        clearedBoundedPaths.push_back(bPath);
-                        bPath.clear();
-                    }
-                }
-            }
-            if (!bPath.empty()) {
-                clearedBoundedPaths.push_back(bPath);
-                bPath.clear();
-            }
-        }
-        bboxPathsInvalid = false;
-        return clearedBoundedPaths;
-    }
-
     // get cleared area/poly bounded to toolbox
-    Paths& GetBoundedClearedAreaClipped(const IntPoint& toolPos)
+    Paths& GetBoundedClearedAreaClipped(const IntPoint& toolPos, int delta)
     {
-        BoundBox toolBB(toolPos, toolRadiusScaled);
+        // first, attempt to serve this query from cache
+        BoundBox toolBB(toolPos, delta);
         if (!bboxClippedInvalid && clearedBBClippedInFocus.Contains(toolBB)) {
             return clearedBoundedClipped;
         }
-        ClipperLib::cInt delta = focusBBFactor1 * toolRadiusScaled;
+
+        // second, check if the window needs to be recomputed
+        if (bboxClippedInvalid || !clearedBBWindow.Contains(toolBB)) {
+            const int deltaWindow = delta * clearedBoundedWindowScale;
+            clearedBBWindow.SetFirstPoint(IntPoint(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
+            clearedBBWindow.AddPoint(IntPoint(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
+
+            Path bbPath;
+            bbPath.push_back(IntPoint(toolPos.X - deltaWindow, toolPos.Y - deltaWindow));
+            bbPath.push_back(IntPoint(toolPos.X + deltaWindow, toolPos.Y - deltaWindow));
+            bbPath.push_back(IntPoint(toolPos.X + deltaWindow, toolPos.Y + deltaWindow));
+            bbPath.push_back(IntPoint(toolPos.X - deltaWindow, toolPos.Y + deltaWindow));
+            clip.Clear();
+            clip.AddPath(bbPath, PolyType::ptSubject, true);
+            clip.AddPaths(clearedPaths, PolyType::ptClip, true);
+            clip.Execute(ClipType::ctIntersection, clearedBoundedWindow);
+        }
+
+        // finally, perform the query using data from the window
         clearedBBClippedInFocus.SetFirstPoint(IntPoint(toolPos.X - delta, toolPos.Y - delta));
         clearedBBClippedInFocus.AddPoint(IntPoint(toolPos.X + delta, toolPos.Y + delta));
 
-        // a little larger area is bounded than checked
-        ClipperLib::cInt delta2 = focusBBFactor2 * toolRadiusScaled;
         Path bbPath;
-        bbPath.push_back(IntPoint(toolPos.X - delta2, toolPos.Y - delta2));
-        bbPath.push_back(IntPoint(toolPos.X + delta2, toolPos.Y - delta2));
-        bbPath.push_back(IntPoint(toolPos.X + delta2, toolPos.Y + delta2));
-        bbPath.push_back(IntPoint(toolPos.X - delta2, toolPos.Y + delta2));
+        bbPath.push_back(IntPoint(toolPos.X - delta, toolPos.Y - delta));
+        bbPath.push_back(IntPoint(toolPos.X + delta, toolPos.Y - delta));
+        bbPath.push_back(IntPoint(toolPos.X + delta, toolPos.Y + delta));
+        bbPath.push_back(IntPoint(toolPos.X - delta, toolPos.Y + delta));
         clip.Clear();
         clip.AddPath(bbPath, PolyType::ptSubject, true);
-        clip.AddPaths(clearedPaths, PolyType::ptClip, true);
+        clip.AddPaths(clearedBoundedWindow, PolyType::ptClip, true);
         clip.Execute(ClipType::ctIntersection, clearedBoundedClipped);
+
         bboxClippedInvalid = false;
         return clearedBoundedClipped;
     }
@@ -1093,18 +1054,18 @@ private:
     Clipper clip;
     ClipperOffset clipof;
     Paths clearedPaths;
+    Paths clearedBoundedWindow;
     Paths clearedBoundedClipped;
     Paths clearedBoundedPaths;
 
     ClipperLib::cInt toolRadiusScaled;
+    BoundBox clearedBBWindow;
     BoundBox clearedBBClippedInFocus;
     BoundBox clearedBBPathsInFocus;
 
     bool bboxClippedInvalid = false;
     bool bboxPathsInvalid = false;
-    // size of the focus BB
-    const ClipperLib::cInt focusBBFactor1 = 8;
-    const ClipperLib::cInt focusBBFactor2 = 9;
+    int clearedBoundedWindowScale = 10;
 };
 
 //***************************************
@@ -1313,7 +1274,7 @@ public:
         Perf_NextEngagePoint.Start();
         double prevArea = 0;  // we want to make sure that we catch the point where the area is on
                               // raising slope
-        IntPoint initialPoint(-1000000000, -1000000000);
+        const IntPoint dummyInitialPoint(-1000000000, -1000000000);
         for (;;) {
             if (!moveForward(step)) {
                 if (!nextPath()) {
@@ -1326,7 +1287,7 @@ public:
                 }
             }
             IntPoint cpt = getCurrentPoint();
-            double area = parent->CalcCutArea(clip, initialPoint, cpt, clearedArea);
+            double area = parent->CalcCutArea(clip, dummyInitialPoint, cpt, clearedArea);
             if (area > minCutArea && area < maxCutArea && area > prevArea) {
                 Perf_NextEngagePoint.Stop();
                 return true;
@@ -1429,6 +1390,40 @@ private:
 Adaptive2d::Adaptive2d()
 {}
 
+// Algorithm to compute area inside circle c2 but outside circle c1 and polygons clearedArea:
+// All computations are done on doubles (at some point we can transition off of clipper and operate
+// on curves!)
+//
+// Re-express the problem: find area inside all circles and polygons, where c1 and polygons are
+// inverted
+//
+// 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
+// 1) Find all x-coordinates of interest:
+//   a) All polygon vertices
+//   b) Intersection of all polygons with c1
+//   c) Intersection of all polygons with c2
+//   d) There are no self-intersections or intersection points with other polygons (guarantee from
+//   clipper), so we don't have to compute those e) Compute intersection points between c1 and c2 f)
+//   Add c1's and c2's vertical tangents to the list
+// 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r. We will consider
+// ranges of x-values between these points 3) For each non-empty range in x, construct a vertical
+// line through its midpoint
+//   Over the full (open) x-range, vertical lines cross all polygons/circles in the same order (no
+//   topology changes!) Also note that this line is guaranteed to not pass through any polygon
+//   vertex, or tangent to any circle. No funny business! a) Compute the intersection point(s)
+//   between the line and each polygon and circle. Keep track of which shape crossing each parameter
+//   came from (polygon index and edge index, or circle index and top/bottom flag) b) Sort these
+//   intersection on their y-coordinate. c) Loop over y-coordinates. At each, we will update state
+//   to account for stepping over that crossing:
+//     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
+//     1) Identify the shape we are crossing; determine check in->out vs out->in
+//     2) Update outsideCount and the list of what we're outside.
+//       a) If outsideCount=0, totalArea += integral(x0, x1, crossed boundary)
+//       b) If outsideCount was 0 and just changed to 1, totalArea -= integral(x0, x1, crossed
+//       boundary)
+//         ...careful with the signs on those integrals; TODO be sure to add area from c2 and
+//         subtract from other shapes
+// 4) Return accumulated area
 double Adaptive2d::CalcCutArea(
     Clipper& clip,
     const IntPoint& c1,
@@ -1438,278 +1433,232 @@ double Adaptive2d::CalcCutArea(
 )
 {
 
-    double dist = DistanceSqrd(c1, c2);
+    double dist = sqrt(DistanceSqrd(c1, c2));
     if (dist < NTOL) {
         return 0;
     }
 
     Perf_CalcCutAreaCirc.Start();
 
-    /// new alg
-    double rsqrd = toolRadiusScaled * toolRadiusScaled;
-    double area = 0;
-    Paths interPaths;
-    IntPoint clp;                // to hold closest point
-    vector<DoublePoint> inters;  // to hold intersection results
-    BoundBox c2BB(c2, toolRadiusScaled);
-    BoundBox c1BB(c1, toolRadiusScaled);
-    Paths& clearedBounded = clearedArea.GetBoundedClearedAreaClipped(c2);
+    // 0) Extract from clearedArea a set of polygons close enough to potentially affect the bounded area
+    vector<vector<DoublePoint>> polygons;
+    vector<DoublePoint> inters;  // temporary, to hold intersection results
+    const BoundBox c2BB(c2, toolRadiusScaled);
+    // get curves from slightly enlarged region that will cover all points tested in this iteration
+    const bool useC2 = dist > 2 * toolRadiusScaled;
+    const Paths& clearedBounded = clearedArea.GetBoundedClearedAreaClipped(
+        useC2 ? c2 : c1,
+        toolRadiusScaled + (useC2 ? 0 : (int)dist) + 4
+    );
+
     for (const Path& path : clearedBounded) {
-        size_t size = path.size();
-        if (size == 0) {
+        if (path.size() == 0) {
             continue;
         }
 
-        //** bound box check
-        // construct bound box for path
+        // bound box check
         BoundBox pathBB(path.front());
         for (const auto& pt : path) {
             pathBB.AddPoint(pt);
         }
-        if (!c2BB.CollidesWith(c2)) {
+        if (!pathBB.CollidesWith(c2BB)) {
             continue;  // this path cannot colide with tool
         }
-        //** end of BB check
 
-        size_t curPtIndex = 0;
-        bool found = false;
-        // step 1: we find the starting point on the cleared path that is outside new tool shape
-        // (c2)
-        for (size_t i = 0; i < size; i++) {
-            if (DistanceSqrd(path[curPtIndex], c2) > rsqrd) {
-                found = true;
-                break;
-            }
-            curPtIndex++;
-            if (curPtIndex >= size) {
-                curPtIndex = 0;
-            }
+        vector<DoublePoint> polygon;
+        for (const auto p : path) {
+            polygon.push_back({(double)p.X, (double)p.Y});
         }
-        if (!found) {
-            continue;  // try another path
+        polygons.push_back(polygon);
+    }
+
+    // 1) Find all x-coordinates of interest:
+    vector<double> xs;
+    for (const auto polygon : polygons) {
+        // 1.a) All polygon vertices
+        for (const auto p : polygon) {
+            xs.push_back(p.X);
         }
 
-        // step 2: iterate through path from starting point and find the part of the path inside the
-        // c2
-        size_t prevPtIndex = curPtIndex;
-        Path* interPath = NULL;
-        bool prev_inside = false;
-        const IntPoint* p1 = &path[prevPtIndex];
-        double par;  // to hold parameter output
-        for (size_t i = 0; i < size; i++) {
-            curPtIndex++;
-            if (curPtIndex >= size) {
-                curPtIndex = 0;
-            }
-            const IntPoint* p2 = &path[curPtIndex];
-            BoundBox segBB(*p1, *p2);
-            if (!prev_inside) {  // prev state: outside, find first point inside C2
-                if (segBB.CollidesWith(c2BB)
-                    && DistancePointToLineSegSquared(*p1, *p2, c2, clp, par)
-                        <= rsqrd) {  // current segment inside, start
-                    prev_inside = true;
-                    interPaths.push_back(Path());
-                    if (interPaths.size() > 1) {
-                        break;  // we will use poly clipping alg. if there are more intersecting
-                                // paths
-                    }
-                    interPath = &interPaths.back();
-                    // current segment inside c2, prev point outside, find intersection:
-                    if (Line2CircleIntersect(c2, toolRadiusScaled, *p1, *p2, inters)) {
-                        interPath->push_back(IntPoint(long(inters[0].X), long(inters[0].Y)));
-                        if (inters.size() > 1) {
-                            interPath->push_back(IntPoint(long(inters[1].X), long(inters[1].Y)));
-                            prev_inside = false;
-                        }
-                        else {
-                            interPath->push_back(IntPoint(*p2));
-                        }
-                    }
-                    else {  // no intersection - must be edge case, add p2
-                        interPath->push_back(IntPoint(*p2));
-                    }
+        // 1.b) Intersection of all polygons with c1
+        // 1.c) Intersection of all polygons with c2
+        for (int i = 0; i < polygon.size(); i++) {
+            const auto p0 = polygon[i];
+            const auto p1 = polygon[(i + 1) % polygon.size()];
+            if (Line2CircleIntersect(c1, toolRadiusScaled, p0, p1, inters)) {
+                for (const auto p : inters) {
+                    xs.push_back(p.X);
                 }
             }
-            else if (interPath != NULL) {                // state: inside
-                if ((DistanceSqrd(c2, *p2) <= rsqrd)) {  // next point still inside, add it and
-                                                         // continue, no state change
-                    interPath->push_back(IntPoint(*p2));
-                }
-                else {  // prev point inside, current point outside, find intersection
-                    if (Line2CircleIntersect(c2, toolRadiusScaled, *p1, *p2, inters)) {
-                        if (inters.size() > 1) {
-                            interPath->push_back(IntPoint(long(inters[1].X), long(inters[1].Y)));
-                        }
-                        else {
-                            interPath->push_back(IntPoint(long(inters[0].X), long(inters[0].Y)));
-                        }
-                    }
-                    prev_inside = false;
+            if (Line2CircleIntersect(c2, toolRadiusScaled, p0, p1, inters)) {
+                for (const auto p : inters) {
+                    xs.push_back(p.X);
                 }
             }
-            prevPtIndex = curPtIndex;
-            p1 = p2;
-        }
-        if (interPaths.size() > 1) {
-            break;  // we will use poly clipping alg. if there are more intersecting paths with the
-                    // tool (rare case)
         }
     }
+
+    // 1.e) Compute intersection points between c1 and c2
+    {
+        pair<DoublePoint, DoublePoint> res;
+        if (Circle2CircleIntersect(c1, c2, toolRadiusScaled, res)) {
+            xs.push_back(res.first.X);
+            xs.push_back(res.second.X);
+        }
+    }
+
+    // 1.f) Add c1's and c2's vertical tangents to the list
+    xs.push_back((double)c1.X - toolRadiusScaled);
+    xs.push_back((double)c1.X + toolRadiusScaled);
+
+    const double xmin = (double)c2.X - toolRadiusScaled;
+    const double xmax = (double)c2.X + toolRadiusScaled;
+    xs.push_back(xmin);
+    xs.push_back(xmax);
+
+    // 2) Sort these x-coordinates. Discard all values before c2-r or after c2+r
+    {
+        vector<double> xfilter;
+        for (const double x : xs) {
+            if (xmin <= x && x <= xmax) {
+                xfilter.push_back(x);
+            }
+        }
+        xs = xfilter;
+        std::sort(xs.begin(), xs.end());
+    }
+
+    const auto interpX = [](const DoublePoint p0, const DoublePoint p1, double x) {
+        const double interp = (x - p0.X) / (p1.X - p0.X);
+        const double y = p1.Y * interp + p0.Y * (1 - interp);
+        return y;
+    };
+
+    // 3) For each non-empty range in x, construct a vertical line through its midpoint
+    const vector<DoublePoint> circles = {c2, c1};
+    double area = 0;
+    for (int ix = 0; ix < xs.size() - 1; ix++) {
+        const double x0 = xs[ix];
+        const double x1 = xs[ix + 1];
+        if (x0 == x1) {
+            continue;
+        }
+        const double xtest = (x0 + x1) / 2;
+
+        // 3.a) Compute the intersection point(s) between the line and each polygon and circle. Keep
+        // track of which shape crossing each parameter came from (polygon index and edge index, or
+        // circle index and top/bottom flag)
+
+        // y, polygon index (or polygons.size() + circle index), edge index (or 0/1 for top/bottom half)
+        vector<tuple<double, int, int>> ys;
+
+        for (int ipolygon = 0; ipolygon < polygons.size(); ipolygon++) {
+            const auto polygon = polygons[ipolygon];
+            for (int iedge = 0; iedge < polygon.size(); iedge++) {
+                const auto p0 = polygon[iedge];
+                const auto p1 = polygon[(iedge + 1) % polygon.size()];
+                // note: we skip if the edge is vertical, p0.X == p1.X == xtest
+                if (min(p0.X, p1.X) < xtest && max(p0.X, p1.X) > xtest) {
+                    const double y = interpX(p0, p1, xtest);
+                    ys.push_back({y, ipolygon, iedge});
+                }
+            }
+        }
+
+        for (int icircle = 0; icircle < circles.size(); icircle++) {
+            const DoublePoint c = circles[icircle];
+            const double dx = abs(xtest - c.X);
+            if (dx < toolRadiusScaled) {  // skip tangent; xtest can't be a tangent anyway
+                const double dy = sqrt(toolRadiusScaled * toolRadiusScaled - dx * dx);
+                ys.push_back({c.Y + dy, polygons.size() + icircle, 0});
+                ys.push_back({c.Y - dy, polygons.size() + icircle, 1});
+            }
+        }
+
+        // 3.b) Sort these intersection on their y-coordinate.
+        std::sort(
+            ys.begin(),
+            ys.end(),
+            [](std::tuple<double, int, int> a, std::tuple<double, int, int> b) {
+                return std::get<0>(a) < std::get<0>(b);
+            }
+        );
+
+        // 3.c) Loop over y-coordinates. At each, we will update state to account for stepping over
+        // that crossing:
+        //     Init (i.e. y=-inf): outsideCount = 1 (outside c2 and inside all other shapes)
+        std::vector<bool> outside;
+        for (int i = 0; i < polygons.size() + circles.size(); i++) {
+            outside.push_back(i == (polygons.size()));  // poly_0, ..., poly_n-1, c2, c1
+        }
+        int outsideCount = 1;
+        for (int iy = 0; iy < ys.size(); iy++) {
+            const int ishape = std::get<1>(ys[iy]);
+            const int ipart = std::get<2>(ys[iy]);
+
+            const bool prevOutside = outside[ishape];
+            const int prevCount = outsideCount;
+            outside[ishape] = !outside[ishape];
+            outsideCount += prevOutside ? -1 : 1;
+
+            // Sign
+            // We want to compute integral(exitY - entranceY)
+            // We do this in two steps: -integral(entranceY - 0) + integral(exitY - 0)
+            const double entranceExitSign = prevOutside ? -1 : 1;
+
+            if (outsideCount == 0 || prevCount == 0) {
+                if (ishape < polygons.size()) {
+                    // crossed a polygon
+                    const auto polygon = polygons[ishape];
+                    const auto p0 = polygon[ipart];
+                    const auto p1 = polygon[(ipart + 1) % polygon.size()];
+                    const auto y0 = interpX(p0, p1, x0);
+                    const auto y1 = interpX(p0, p1, x1);
+                    const double newArea = (y0 + y1) / 2 * (x1 - x0);
+                    area += entranceExitSign * newArea;
+                }
+                else {
+                    // crossed a circle
+                    const auto c = circles[ishape - polygons.size()];
+                    const double circleSign = ipart == 0 ? 1 : -1;
+
+                    // first, compute area of sector - area of triangle = area of segment
+                    const auto clamp = [](double a) {
+                        return max(-1.0, min(1.0, a));
+                    };
+                    // clamp is required only because of floating point rounding errors
+                    const double phi0 = acos(clamp((x0 - c.X) / toolRadiusScaled)) * circleSign;
+                    const double phi1 = acos(clamp((x1 - c.X) / toolRadiusScaled)) * circleSign;
+                    const double areaSector = toolRadiusScaled * toolRadiusScaled / 2
+                        * abs(phi1 - phi0);
+
+                    const double y0 = c.Y
+                        + circleSign
+                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x0 - c.X) * (x0 - c.X));
+                    const double y1 = c.Y
+                        + circleSign
+                            * sqrt(toolRadiusScaled * toolRadiusScaled - (x1 - c.X) * (x1 - c.X));
+                    const double tbase = sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0));
+                    const double tmidx = (x0 + x1) / 2;
+                    const double tmidy = (y0 + y1) / 2;
+                    const double th = sqrt(
+                        (tmidx - c.X) * (tmidx - c.X) + (tmidy - c.Y) * (tmidy - c.Y)
+                    );
+                    const double areaTriangle = tbase * th / 2;
+                    const double areaSegment = areaSector - areaTriangle;
+
+                    // then add on trapezoid between the segment and 0
+                    // the sign of the segment area is negative for bottom half of the circle,
+                    // positive for top half
+                    const double areaTrapezoid = (x1 - x0) * (y0 + y1) / 2;
+                    const double newArea = circleSign * areaSegment + areaTrapezoid;
+                    area += entranceExitSign * newArea;
+                }
+            }
+        }
+    }
+
     Perf_CalcCutAreaCirc.Stop();
-    if (interPaths.size() == 1 && interPaths.front().size() > 1) {
-        Perf_CalcCutAreaCirc.Start();
-        Path* interPath = &interPaths.front();
-        // interPath - now contains the part of cleared path inside the C2
-        size_t ipc2_size = interPath->size();
-        const IntPoint& fpc2 = interPath->front();  // first point
-        const IntPoint& lpc2 = interPath->back();   // last point
-        // path length
-        double interPathLen = 0;
-        for (size_t j = 1; j < ipc2_size; j++) {
-            interPathLen += sqrt(DistanceSqrd(interPath->at(j - 1), interPath->at(j)));
-        }
-
-        Paths inPaths;
-        inPaths.reserve(200);
-        inPaths.push_back(*interPath);
-        Path pthToSubtract;
-        pthToSubtract.push_back(fpc2);
-
-        double fi1 = atan2(fpc2.Y - c2.Y, fpc2.X - c2.X);
-        double fi2 = atan2(lpc2.Y - c2.Y, lpc2.X - c2.X);
-        double minFi = fi1;
-        double maxFi = fi2;
-        if (maxFi < minFi) {
-            maxFi += 2 * std::numbers::pi;
-        }
-
-        if (preventConventional && interPathLen >= MIN_STEP_CLIPPER) {
-            // detect conventional mode cut - we want only climb mode
-            IntPoint midPoint(
-                long(c2.X + toolRadiusScaled * cos(0.5 * (maxFi + minFi))),
-                long(c2.Y + toolRadiusScaled * sin(0.5 * (maxFi + minFi)))
-            );
-            if (PointSideOfLine(c1, c2, midPoint) < 0) {
-                area = __DBL_MAX__;
-                Perf_CalcCutAreaCirc.Stop();
-                // #ifdef DEV_MODE
-                // 	cout << "Break: @(" << double(c2.X)/scaleFactor << "," <<
-                // double(c2.Y)/scaleFactor  << ") conventional mode" << endl; #endif
-                return area;
-            }
-        }
-
-        double scanDistance = 2.5 * toolRadiusScaled;
-        // stepping through path discretized to stepDistance
-        double stepDistance = min(double(MIN_STEP_CLIPPER), interPathLen / 24) + 1;
-        const IntPoint* prevPt = &interPath->front();
-        double distance = 0;
-        for (size_t j = 1; j < ipc2_size; j++) {
-            const IntPoint* cpt = &interPath->at(j);
-            double segLen = sqrt(DistanceSqrd(*cpt, *prevPt));
-            if (segLen < NTOL) {
-                continue;  // skip point - segment too short
-            }
-            for (double pos_unclamped = 0.0; pos_unclamped < segLen + stepDistance;
-                 pos_unclamped += stepDistance) {
-                double pos = pos_unclamped;
-                if (pos > segLen) {
-                    distance += stepDistance - (pos - segLen);
-                    pos = segLen;  // make sure we get exact end point
-                }
-                else {
-                    distance += stepDistance;
-                }
-                double dx = double(cpt->X - prevPt->X);
-                double dy = double(cpt->Y - prevPt->Y);
-                IntPoint segPoint(
-                    long(prevPt->X + dx * pos / segLen),
-                    long(prevPt->Y + dy * pos / segLen)
-                );
-                IntPoint scanPoint(
-                    long(c2.X + scanDistance * cos(minFi + distance * (maxFi - minFi) / interPathLen)),
-                    long(c2.Y + scanDistance * sin(minFi + distance * (maxFi - minFi) / interPathLen))
-                );
-
-                IntPoint intersC2(segPoint.X, segPoint.Y);
-                IntPoint intersC1(segPoint.X, segPoint.Y);
-
-                // there should be intersection with C2
-                if (Line2CircleIntersect(c2, toolRadiusScaled, segPoint, scanPoint, inters)) {
-                    if (inters.size() > 1) {
-                        intersC2.X = long(inters[1].X);
-                        intersC2.Y = long(inters[1].Y);
-                    }
-                    else {
-                        intersC2.X = long(inters[0].X);
-                        intersC2.Y = long(inters[0].Y);
-                    }
-                }
-                else {
-                    pthToSubtract.push_back(segPoint);
-                }
-
-                if (Line2CircleIntersect(c1, toolRadiusScaled, segPoint, scanPoint, inters)) {
-                    if (inters.size() > 1) {
-                        intersC1.X = long(inters[1].X);
-                        intersC1.Y = long(inters[1].Y);
-                    }
-                    else {
-                        intersC1.X = long(inters[0].X);
-                        intersC1.Y = long(inters[0].Y);
-                    }
-                    if (DistanceSqrd(segPoint, intersC2) < DistanceSqrd(segPoint, intersC1)) {
-                        pthToSubtract.push_back(intersC2);
-                    }
-                    else {
-                        pthToSubtract.push_back(intersC1);
-                    }
-                }
-                else {  // add the segpoint if no intersection with C1
-                    pthToSubtract.push_back(segPoint);
-                }
-            }
-            prevPt = cpt;
-        }
-
-        pthToSubtract.push_back(lpc2);  // add last point
-        pthToSubtract.push_back(c2);
-
-        double segArea = Area(pthToSubtract);
-        double A = (maxFi - minFi) * rsqrd / 2;  // sector area
-        area += A - fabs(segArea);
-        Perf_CalcCutAreaCirc.Stop();
-    }
-    else if (interPaths.size() > 1) {
-        Perf_CalcCutAreaClip.Start();
-        // old way of calculating cut area based on polygon clipping
-        // used in case when there are multiple intersections of tool with cleared poly (very rare
-        // case, but important)
-        // 1. find difference between old and new tool shape
-        Path oldTool;
-        Path newTool;
-        TranslatePath(toolGeometry, oldTool, c1);
-        TranslatePath(toolGeometry, newTool, c2);
-        clip.Clear();
-        clip.AddPath(newTool, PolyType::ptSubject, true);
-        clip.AddPath(oldTool, PolyType::ptClip, true);
-        Paths toolDiff;
-        clip.Execute(ClipType::ctDifference, toolDiff);
-
-        // 2. difference to cleared
-        clip.Clear();
-        clip.AddPaths(toolDiff, PolyType::ptSubject, true);
-        clip.AddPaths(clearedBounded, PolyType::ptClip, true);
-        Paths cutAreaPoly;
-        clip.Execute(ClipType::ctDifference, cutAreaPoly);
-
-        // calculate resulting area
-        area = 0;
-        for (Path& path : cutAreaPoly) {
-            area += fabs(Area(path));
-        }
-        Perf_CalcCutAreaClip.Stop();
-    }
     return area;
 }
 
@@ -1773,17 +1722,15 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
     lastProgressTime = clock();
     stopProcessing = false;
 
-    if (helixRampDiameter < NTOL) {
-        helixRampDiameter = 0.75 * toolDiameter;
+    if (helixRampTargetDiameter < NTOL) {
+        helixRampTargetDiameter = toolDiameter;
     }
-    if (helixRampDiameter > toolDiameter) {
-        helixRampDiameter = toolDiameter;
-    }
-    if (helixRampDiameter < toolDiameter / 8) {
-        helixRampDiameter = toolDiameter / 8;
-    }
+    helixRampTargetDiameter = min(helixRampTargetDiameter, toolDiameter);
+    helixRampMinDiameter = max(helixRampMinDiameter, toolDiameter / 8);
+    helixRampTargetDiameter = max(helixRampTargetDiameter, helixRampMinDiameter);
 
-    helixRampRadiusScaled = long(helixRampDiameter * scaleFactor / 2);
+    helixRampMaxRadiusScaled = long(helixRampTargetDiameter * scaleFactor / 2);
+    helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
     if (finishingProfile) {
         finishPassOffsetScaled = long(stepOverScaled / 10);
     }
@@ -1812,7 +1759,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 #ifdef DEV_MODE
     cout << "optimalCutAreaPD:" << optimalCutAreaPD << " scaleFactor:" << scaleFactor
          << " toolRadiusScaled:" << toolRadiusScaled
-         << " helixRampRadiusScaled:" << helixRampRadiusScaled << endl;
+         << " helixRampMaxRadiusScaled:" << helixRampMaxRadiusScaled << endl;
 #endif
     //******************************
     // Convert input paths to clipper
@@ -1912,8 +1859,8 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     if (opType == OperationType::otProfilingInside || opType == OperationType::otProfilingOutside) {
         double offset = opType == OperationType::otProfilingInside
-            ? -2 * (helixRampRadiusScaled + toolRadiusScaled) - MIN_STEP_CLIPPER
-            : 2 * (helixRampRadiusScaled + toolRadiusScaled) + MIN_STEP_CLIPPER;
+            ? -2 * (helixRampMaxRadiusScaled + toolRadiusScaled) - MIN_STEP_CLIPPER
+            : 2 * (helixRampMaxRadiusScaled + toolRadiusScaled) + MIN_STEP_CLIPPER;
         for (const auto& current : inputPaths) {
             int nesting = getPathNestingLevel(current, inputPaths);
             if (nesting % 2 != 0 && (polyTreeNestingLimit == 0 || nesting <= polyTreeNestingLimit)) {
@@ -1977,7 +1924,8 @@ bool Adaptive2d::FindEntryPoint(
     ClearedArea& clearedArea /*output-initial cleared area by helix*/,
     IntPoint& entryPoint /*output*/,
     IntPoint& toolPos,
-    DoublePoint& toolDir
+    DoublePoint& toolDir,
+    long& helixRadiusScaled
 )
 {
     Paths incOffset;
@@ -2018,13 +1966,12 @@ bool Adaptive2d::FindEntryPoint(
             }
         }
         // check if helix fits
-        if (found) {
-            // make initial polygon cleared by helix ramp
+        const auto checkHelixFit = [&](long testHelixRadiusScaled) {
             clipof.Clear();
             Path p1;
             p1.push_back(entryPoint);
             clipof.AddPath(p1, JoinType::jtRound, EndType::etOpenRound);
-            clipof.Execute(clearedPaths, helixRampRadiusScaled + toolRadiusScaled);
+            clipof.Execute(clearedPaths, (double)(testHelixRadiusScaled + toolRadiusScaled));
             CleanPolygons(clearedPaths);
             // we got first cleared area - check if it is crossing boundary
             clip.Clear();
@@ -2032,11 +1979,32 @@ bool Adaptive2d::FindEntryPoint(
             clip.AddPaths(boundPaths, PolyType::ptClip, true);
             Paths crossing;
             clip.Execute(ClipType::ctDifference, crossing);
-            if (!crossing.empty()) {
-                // helix does not fit to the cutting area
+
+            return crossing.empty();
+        };
+
+        if (found) {
+            // check that helix fits, and make initial polygon cleared by helix ramp
+            if (!checkHelixFit(helixRampMinRadiusScaled)) {
+                // min-size helix does not fit
                 found = false;
             }
             else {
+                // find the largest helix that fits
+                // minSize = largest known fit; maxSize = largest possible fit
+                long minSize = helixRampMinRadiusScaled;
+                long maxSize = helixRampMaxRadiusScaled;
+                while (minSize < maxSize) {
+                    long testSize = (minSize + maxSize + 1) / 2;  // always testSize > minSize
+                    if (checkHelixFit(testSize)) {
+                        minSize = testSize;
+                    }
+                    else {
+                        maxSize = testSize - 1;  // always maxSize >= minSize
+                    }
+                }
+                helixRadiusScaled = minSize;
+                checkHelixFit(helixRadiusScaled);  // set clearedPaths for final size
                 clearedArea.SetClearedPaths(clearedPaths);
             }
         }
@@ -2070,14 +2038,15 @@ bool Adaptive2d::FindEntryPoint(
         hp << entryPoint;
         clipof.AddPath(hp, JoinType::jtRound, EndType::etOpenRound);
         Paths hps;
-        clipof.Execute(hps, helixRampRadiusScaled);
+        clipof.Execute(hps, helixRadiusScaled);
         AddPathsToProgress(progressPaths, hps);
 
-        toolPos = IntPoint(entryPoint.X, entryPoint.Y - helixRampRadiusScaled);
+        toolPos = IntPoint(entryPoint.X, entryPoint.Y - helixRadiusScaled);
         toolDir = DoublePoint(1.0, 0.0);
     }
     return found;
 }
+
 bool Adaptive2d::FindEntryPointOutside(
     TPaths& progressPaths,
     const Paths& toolBoundPaths,
@@ -2780,6 +2749,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
     ClipperOffset clipof;
 
     IntPoint entryPoint;
+    long helixRadiusScaled;
     TPaths progressPaths;
     progressPaths.reserve(10000);
 
@@ -2824,7 +2794,16 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         outsideEntry = true;
     }
     else {
-        if (!FindEntryPoint(progressPaths, toolBoundPaths, boundPaths, cleared, entryPoint, toolPos, toolDir)) {
+        if (!FindEntryPoint(
+                progressPaths,
+                toolBoundPaths,
+                boundPaths,
+                cleared,
+                entryPoint,
+                toolPos,
+                toolDir,
+                helixRadiusScaled
+            )) {
             Perf_ProcessPolyNode.Stop();
             return;
         }
@@ -3079,17 +3058,31 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             if (relDistToBoundary <= 1.0 && passLength > 2 * stepOverFactor
                 && distanceToEngage > 2 * stepOverScaled
                 && distBoundaryPointToEngage > 2 * stepOverScaled) {
-                double wb = 1 - relDistToBoundary;
-                newToolDir = DoublePoint(
-                    newToolDir.X + wb * boundaryDir.X,
-                    newToolDir.Y + wb * boundaryDir.Y
-                );
-                NormalizeV(newToolDir);
-                newToolPos = IntPoint(
-                    long(toolPos.X + newToolDir.X * stepScaled),
-                    long(toolPos.Y + newToolDir.Y * stepScaled)
-                );
-                recalcArea = true;
+
+                // 10 degrees per stepOver? idk, let's try it
+                double maxAngleToBoundary = 10 * std::numbers::pi / 180
+                    * max(1., distanceToBoundary / stepOverScaled);
+
+                // compute current approach angle
+                double cosAngle = newToolDir.X * boundaryDir.X + newToolDir.Y * boundaryDir.Y;
+                DoublePoint bdir = boundaryDir;
+                if (cosAngle < 0) {
+                    // approaching the edge backwards: recompute for flipped boundary edge
+                    bdir = {-bdir.X, -bdir.Y};
+                    cosAngle = -cosAngle;
+                }
+                double angle = acos(min(1., max(0., cosAngle)));
+                if (abs(angle) > maxAngleToBoundary) {
+                    double sign = bdir.X * newToolDir.Y - bdir.Y * newToolDir.X > 0 ? 1 : -1;
+                    double desiredAngle = maxAngleToBoundary * sign;
+                    newToolDir = rotate(bdir, desiredAngle);
+                    NormalizeV(newToolDir);
+                    newToolPos = IntPoint(
+                        long(toolPos.X + newToolDir.X * stepScaled),
+                        long(toolPos.Y + newToolDir.Y * stepScaled)
+                    );
+                    recalcArea = true;
+                }
             }
 
             //**********************************************
@@ -3135,7 +3128,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             prevDistTrend = distanceTrend;
             prevDistFromStart = distFromStart;
 
-            if (area > 0.5 * MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {  // cut is ok - record it
+            if (area > 0) {  // cut is ok - record it
                 noCutDistance = 0;
                 if (toClearPath.empty()) {
                     toClearPath.push_back(toolPos);
@@ -3179,13 +3172,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                 CheckReportProgress(progressPaths);
             }
             else {
-#ifdef DEV_MODE
-                // if(point_index==0) {
-                // 	engage_no_cut_count++;
-                // 	cout<<"Break:no cut #" << engage_no_cut_count << ", bad engage, pass:" << pass
-                // << " over_cut_count:" << over_cut_count << endl;
-                // }
-#endif
                 // cout<<"Break: no cut @" << point_index << endl;
                 if (noCutDistance > stepOverScaled) {
                     break;
@@ -3198,7 +3184,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             cleared.ExpandCleared(toClearPath);
             toClearPath.clear();
         }
-        if (cumulativeCutArea > MIN_CUT_AREA_FACTOR * optimalCutAreaPD) {
+        const double minArea = MIN_CUT_AREA_FACTOR * MIN_STEP_CLIPPER * optimalCutAreaPD;
+        if (cumulativeCutArea > minArea) {
             Path cleaned;
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
             total_output_points += long(cleaned.size());
@@ -3221,14 +3208,21 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
             engage.moveToClosestPoint(newToolPos, stepScaled + 1);
             firstEngagePoint = false;
         }
-        else {
+
+        {
+            // This constant is chosen so that when cutting a small strip (i.e. when
+            // approaching a boundary), the strip size at which the cut is too small to
+            // continue is _also_ too small to be worth starting a new engagement
+            // elsewhere in the strip
+            const double CORRECT_MIN_CUT_VS_ENGAGE = toolRadiusScaled * 1. / MIN_STEP_CLIPPER;
+
             double moveDistance = ENGAGE_SCAN_DISTANCE_FACTOR * stepOverScaled * refinement_factor;
 
             if (!engage.nextEngagePoint(
                     this,
                     cleared,
                     moveDistance,
-                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
+                    ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                     4 * referenceCutArea * stepOverFactor
                 )) {
                 // check if there are any uncleared area left
@@ -3266,7 +3260,7 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
                         this,
                         cleared,
                         moveDistance,
-                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD,
+                        ENGAGE_AREA_THR_FACTOR * optimalCutAreaPD * CORRECT_MIN_CUT_VS_ENGAGE,
                         4 * referenceCutArea * stepOverFactor
                     )) {
                     break;
@@ -3294,7 +3288,8 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         Path finShiftedPath;
 
         bool allCutsAllowed = true;
-        while (!stopProcessing && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath)) {
+        while (!stopProcessing
+               && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath, stepOverScaled)) {
             if (finShiftedPath.empty()) {
                 continue;
             }
@@ -3378,7 +3373,6 @@ void Adaptive2d::ProcessPolyNode(Paths boundPaths, Paths toolBoundPaths)
         Perf_ProcessPolyNode.DumpResults();
         Perf_PointIterations.DumpResults();
         Perf_CalcCutAreaCirc.DumpResults();
-        Perf_CalcCutAreaClip.DumpResults();
         Perf_NextEngagePoint.DumpResults();
         Perf_ExpandCleared.DumpResults();
         Perf_DistanceToBoundary.DumpResults();

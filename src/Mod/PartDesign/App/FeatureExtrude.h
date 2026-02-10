@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -31,6 +33,7 @@
 class gp_Dir;
 class TopoDS_Face;
 class TopoDS_Shape;
+class TopLoc_Location;
 
 namespace PartDesign
 {
@@ -98,7 +101,7 @@ protected:
      * by removing the farthest face from the sketchshape in the direction
      * if farthest is nearest (circular) then return the initial shape
      */
-    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir dir);
+    TopoShape makeShellFromUpToShape(TopoShape shape, TopoShape sketchshape, gp_Dir& dir);
 
     /**
      * Disables settings that are not valid for the current method
@@ -115,7 +118,8 @@ protected:
         gp_Dir dir,
         double offsetVal,
         bool makeFace,
-        const TopoShape& base  // The base shape for context (global CS)
+        const TopoShape& base,      // The base shape for context (global CS)
+        TopLoc_Location& invObjLoc  // MUST be passed. Cannot be re-accessed, see #26677
     );
 };
 

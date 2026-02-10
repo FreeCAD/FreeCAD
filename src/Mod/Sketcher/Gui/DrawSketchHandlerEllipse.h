@@ -71,6 +71,8 @@ using DrawSketchHandlerEllipseBase = DrawSketchControllableHandler<DSHEllipseCon
 
 class DrawSketchHandlerEllipse: public DrawSketchHandlerEllipseBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerEllipse)
+
     friend DSHEllipseController;
     friend DSHEllipseControllerBase;
 
@@ -393,7 +395,7 @@ private:
         auto lprojy = projy.Length();  // Py = b sin t
 
         if (lprojx > firstRadius) {
-            secondRadius = 0.0;
+            secondRadius = lprojy;
         }
         else {
             double t = std::acos(lprojx / firstRadius);

@@ -351,7 +351,7 @@ class Snapper:
 
     def cycleSnapObject(self):
         """Increase the index of the snap object by one."""
-        self.snapObjectIndex = self.snapObjectIndex + 1
+        self.snapObjectIndex += 1
 
     def snapToObject(self, lastpoint, active, constrain, eline, point):
         """Snap to an object."""
@@ -373,6 +373,8 @@ class Snapper:
             or Draft.getType(obj) in UNSNAPPABLES
             or not getattr(obj.ViewObject, "Selectable", True)
         ):
+            # increase snapObjectIndex to find other objects under the cursor:
+            self.snapObjectIndex += 1
             return None
 
         snaps = []
@@ -411,6 +413,8 @@ class Snapper:
                         elif et == "Ellipse":
                             # extra ellipse options
                             snaps.extend(self.snapToCenter(edge))
+                        elif et == "BSplineCurve":
+                            snaps.extend(self.snapToBSplineKnots(edge))
                 elif "Face" in comp:
                     # we are snapping to a face
                     if shape.ShapeType == "Face":
@@ -796,6 +800,17 @@ class Snapper:
                 mp = DraftGeomUtils.findMidpoint(shape)
                 if mp:
                     snaps.append([mp, "midpoint", self.toWP(mp)])
+        return snaps
+
+    def snapToBSplineKnots(self, edge):
+        """Return a list of knot snap locations for a BSpline."""
+        snaps = []
+        if self.isEnabled("Special"):
+            if hasattr(edge, "Curve") and isinstance(edge.Curve, Part.BSplineCurve):
+                knots = edge.Curve.getKnots()
+                for k in knots:
+                    p = edge.Curve.value(k)
+                    snaps.append([p, "special", self.toWP(p)])
         return snaps
 
     def snapToNear(self, shape, point):

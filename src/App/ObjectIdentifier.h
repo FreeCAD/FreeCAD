@@ -27,6 +27,7 @@
 #define APP_PATH_H
 
 #include <bitset>
+#include <climits>
 #include <map>
 #include <limits>
 #include <set>

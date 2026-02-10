@@ -16,6 +16,7 @@ from .models.probe import ToolBitShapeProbe
 from .models.reamer import ToolBitShapeReamer
 from .models.slittingsaw import ToolBitShapeSlittingSaw
 from .models.tap import ToolBitShapeTap
+from .models.taperedballnose import ToolBitShapeTaperedBallNose
 from .models.threadmill import ToolBitShapeThreadMill
 from .models.vbit import ToolBitShapeVBit
 from .models.icon import (
@@ -42,6 +43,7 @@ __all__ = [
     "ToolBitShapeReamer",
     "ToolBitShapeSlittingSaw",
     "ToolBitShapeTap",
+    "ToolBitShapeTaperedBallNose",
     "ToolBitShapeThreadMill",
     "ToolBitShapeVBit",
     "TOOL_BIT_SHAPE_NAMES",

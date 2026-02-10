@@ -261,3 +261,215 @@ class TestArchWall(TestArchBase.TestArchBase):
             delta=1e-6,
             msg="Wall should remain parametric and its volume should change with height.",
         )
+
+    def test_makeWall_baseless_alignment(self):
+        """
+        Tests that Arch.makeWall correctly creates a baseless wall with the
+        specified alignment.
+        """
+        self.printTestMessage("Checking baseless wall alignment from makeWall...")
+
+        # Define the test cases: (Alignment Mode, Expected final Y-center)
+        test_cases = [
+            ("Center", 0.0),
+            ("Left", -100.0),
+            ("Right", 100.0),
+        ]
+
+        for align_mode, expected_y_center in test_cases:
+            with self.subTest(alignment=align_mode):
+                # 1. Arrange & Act: Create a baseless wall using the API call.
+                wall = Arch.makeWall(length=2000, width=200, height=1500, align=align_mode)
+                self.document.recompute()
+
+                # 2. Assert Geometry: Verify the shape is valid.
+                self.assertFalse(
+                    wall.Shape.isNull(), msg=f"[{align_mode}] Shape should not be null."
+                )
+                expected_volume = 2000 * 200 * 1500
+                self.assertAlmostEqual(
+                    wall.Shape.Volume,
+                    expected_volume,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Wall volume is incorrect.",
+                )
+
+                # 3. Assert Placement and Alignment.
+                # The wall's Placement should be at the origin.
+                self.assertTrue(
+                    wall.Placement.Base.isEqual(App.Vector(0, 0, 0), 1e-6),
+                    msg=f"[{align_mode}] Default placement Base should be at the origin.",
+                )
+                self.assertAlmostEqual(
+                    wall.Placement.Rotation.Angle,
+                    0.0,
+                    delta=1e-6,
+                    msg=f"[{align_mode}] Default placement Rotation should be zero.",
+                )
+
+                # The shape's center should be offset according to the alignment.
+                shape_center = wall.Shape.BoundBox.Center
+                expected_center = App.Vector(0, expected_y_center, 750)
+
+                self.assertTrue(
+                    shape_center.isEqual(expected_center, 1e-5),
+                    msg=f"For '{align_mode}' align, wall center {shape_center} does not match expected {expected_center}",
+                )
+
+    def test_baseless_wall_stretch_api(self):
+        """
+        Tests the proxy methods for graphically editing baseless walls:
+        calc_endpoints() and set_from_endpoints().
+        """
+        self.printTestMessage("Checking baseless wall stretch API...")
+
+        # 1. Arrange: Create a baseless wall and then set its placement.
+        initial_placement = App.Placement(
+            App.Vector(1000, 1000, 0), App.Rotation(App.Vector(0, 0, 1), 45)
+        )
+        # Create wall first, then set its placement.
+        wall = Arch.makeWall(length=2000)
+        wall.Placement = initial_placement
+        self.document.recompute()
+
+        # 2. Test calc_endpoints()
+        endpoints = wall.Proxy.calc_endpoints(wall)
+        self.assertEqual(len(endpoints), 2, "calc_endpoints should return two points.")
+
+        # Verify the calculated endpoints against manual calculation
+        half_len_vec_x = App.Vector(1000, 0, 0)
+        rotated_half_vec = initial_placement.Rotation.multVec(half_len_vec_x)
+        expected_p1 = initial_placement.Base - rotated_half_vec
+        expected_p2 = initial_placement.Base + rotated_half_vec
+
+        self.assertTrue(endpoints[0].isEqual(expected_p1, 1e-6), "Start point is incorrect.")
+        self.assertTrue(endpoints[1].isEqual(expected_p2, 1e-6), "End point is incorrect.")
+
+        # 3. Test set_from_endpoints()
+        new_p1 = App.Vector(0, 0, 0)
+        new_p2 = App.Vector(4000, 0, 0)
+        wall.Proxy.set_from_endpoints(wall, [new_p1, new_p2])
+        self.document.recompute()
+
+        # Assert that the wall's properties have been updated correctly
+        self.assertAlmostEqual(
+            wall.Length.Value, 4000.0, delta=1e-6, msg="Length was not updated correctly."
+        )
+
+        expected_center = App.Vector(2000, 0, 0)
+        self.assertTrue(
+            wall.Placement.Base.isEqual(expected_center, 1e-6),
+            "Placement.Base (center) was not updated correctly.",
+        )
+
+        # Check rotation (should now be zero as the new points are on the X-axis)
+        self.assertAlmostEqual(
+            wall.Placement.Rotation.Angle,
+            0.0,
+            delta=1e-6,
+            msg="Placement.Rotation was not updated correctly.",
+        )
+
+    def test_wall_makeblocks(self):
+        """Test the 'MakeBlocks' feature of Arch Wall.
+        This is a regression test for https://github.com/FreeCAD/FreeCAD/issues/26982, and
+        a basic, functional test for the MakeBlocks code path.
+        """
+        operation = "Checking Arch Wall MakeBlocks functional correctness..."
+        self.printTestMessage(operation)
+
+        # Block parameters
+        L, H, W = 1000.0, 600.0, 200.0
+        BL, BH = 400.0, 200.0  # Block Length and Height
+        O1, O2 = 0.0, 200.0  # Row offsets
+
+        # Create base line
+        p1 = App.Vector(0, 0, 0)
+        p2 = App.Vector(L, 0, 0)
+        line = Draft.makeLine(p1, p2)
+        self.document.recompute()
+
+        # Create wall based on line and block parameters
+        wall = Arch.makeWall(line, width=W, height=H)
+        wall.BlockLength = BL
+        wall.BlockHeight = BH
+        wall.Joint = 0  # For test and volume calculation simplicity
+        wall.OffsetFirst = O1
+        wall.OffsetSecond = O2
+
+        def calc_row(row_start):
+            """
+            Simulates the 1D block-segmentation logic for a single horizontal course.
+
+            This helper replicates the "sawing" algorithm found in _Wall.execute:
+            1. It places the first vertical joint at 'row_start'.
+            2. It advances the cutting position by 'BlockLength' (BL).
+            3. It measures the resulting segments between joints.
+            4. It classifies segments equal to 'BL' as 'Entire' and any
+               remainder (at the start or end of the row) as 'Broken'.
+
+            Args:
+                row_start (float): The distance from the start of the wall to the first vertical
+                                   joint.
+
+            Returns:
+                tuple (int, int): A pair of integers (entire_count, broken_count)
+                                  predicted for this specific row.
+            """
+            row_entire, row_broken = 0, 0
+            current_pos = row_start
+            last_pos = 0.0
+
+            # Mimic the logic in ArchWall:
+            # while offset < (Length - Joint): create cut at offset
+            # Perform the cuts and record the resulting segments
+            segments = []
+            while current_pos < L:
+                if current_pos > 0:
+                    segments.append(current_pos - last_pos)
+                    last_pos = current_pos
+                current_pos += BL
+            if last_pos < L:
+                segments.append(L - last_pos)
+
+            # Classify segments
+            for seg_len in segments:
+                if abs(seg_len - BL) < 0.1:  # Threshold for "Entire"
+                    row_entire += 1
+                else:
+                    row_broken += 1
+            return row_entire, row_broken
+
+        # Calculate expectations based on total courses (rows)
+        num_rows = int(H // BH)
+        expected_entire = 0
+        expected_broken = 0
+
+        # Effectively "lay the bricks" in a running bond pattern: alternate offsets per even/odd row
+        for r in range(num_rows):
+            ent, brk = calc_row(O1 if r % 2 == 0 else O2)
+            expected_entire += ent
+            expected_broken += brk
+
+        # Enable the feature, triggering the #26982 bug via the code path in _Wall.execute()
+        wall.MakeBlocks = True
+        self.document.recompute()
+
+        # Regression check: did we crash?
+        self.assertFalse(wall.Shape.isNull(), "Wall shape should not be null")
+
+        # Functional check: compare dynamic calculation to property values
+        self.assertEqual(
+            wall.CountEntire,
+            expected_entire,
+            f"Mismatch in Entire blocks. Expected {expected_entire}, got {wall.CountEntire}",
+        )
+        self.assertEqual(
+            wall.CountBroken,
+            expected_broken,
+            f"Mismatch in Broken blocks. Expected {expected_broken}, got {wall.CountBroken}",
+        )
+
+        # Integrity check: volume correctness
+        expected_vol = L * W * H
+        self.assertAlmostEqual(wall.Shape.Volume, expected_vol, places=3)

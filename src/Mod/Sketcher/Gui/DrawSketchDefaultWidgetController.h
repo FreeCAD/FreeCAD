@@ -95,7 +95,7 @@ private:
 
     SketcherToolDefaultWidget* toolWidget;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::advanced_connection;
 
     Connection connectionParameterTabOrEnterPressed;
     Connection connectionParameterValueChanged;
@@ -378,12 +378,12 @@ private:
     /// Resets the widget
     void resetDefaultWidget()
     {
-        boost::signals2::shared_connection_block parameter_focus_block(
+        fastsignals::shared_connection_block parameter_focus_block(
             connectionParameterTabOrEnterPressed
         );
-        boost::signals2::shared_connection_block parameter_block(connectionParameterValueChanged);
-        boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
-        boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
+        fastsignals::shared_connection_block parameter_block(connectionParameterValueChanged);
+        fastsignals::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
+        fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
 
         nParameter = WidgetParametersT::size(handler->constructionMethod());
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
@@ -403,9 +403,7 @@ private:
 
             if (currentindex != methodint) {
                 // avoid triggering of method change
-                boost::signals2::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged
-                );
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
             }
         }
@@ -454,9 +452,7 @@ private:
             auto actualconstructionmethod = static_cast<int>(handler->constructionMethod());
 
             if (constructionmethod != actualconstructionmethod) {
-                boost::signals2::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged
-                );
+                fastsignals::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
                 toolWidget->setComboboxIndex(WCombobox::FirstCombo, actualconstructionmethod);
             }
         }

@@ -58,7 +58,7 @@ public:
 
     App::PropertyPlacement Placement;
 
-    // boost::signals2::signal<void (const MeasureBase*)> signalGuiInit;
+    // fastsignals::signal<void (const MeasureBase*)> signalGuiInit;
 
     // return PyObject as MeasureBasePy
     PyObject* getPyObject() override;

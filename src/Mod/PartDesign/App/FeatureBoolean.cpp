@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -153,8 +155,6 @@ App::DocumentObjectExecReturn* Boolean::execute()
         }
     }
 
-    result.bakeInTransform();
-
     result = refineShapeIfActive(result);
 
     if (!isSingleSolidRuleSatisfied(result.getShape())) {
@@ -209,10 +209,6 @@ void Boolean::onChanged(const App::Property* prop)
 
     if (strcmp(prop->getName(), "Group") == 0) {
         touch();
-    }
-
-    if (strcmp(prop->getName(), "Shape") == 0) {
-        updatePreviewShape();
     }
 
     Feature::onChanged(prop);

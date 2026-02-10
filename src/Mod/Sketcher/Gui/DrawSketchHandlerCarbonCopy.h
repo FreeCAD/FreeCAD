@@ -132,6 +132,8 @@ public:
 
 class DrawSketchHandlerCarbonCopy: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerCarbonCopy)
+
 public:
     DrawSketchHandlerCarbonCopy() = default;
     ~DrawSketchHandlerCarbonCopy() override

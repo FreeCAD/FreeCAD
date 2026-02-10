@@ -142,7 +142,7 @@ def getCutShapes(
                 shapes.extend(v1.Solids)
                 objectShapes.append((k, v1.Solids))
             else:
-                print("ArchSectionPlane: Fusing Arch objects produced non-solid results")
+                print("ArchSectionPlane: Fusing BIM objects produced non-solid results")
                 shapes.append(v1)
                 objectShapes.append((k, [v1]))
     else:
@@ -404,7 +404,7 @@ def getSVG(
                 mv = pl.multVec(FreeCAD.Vector(0, 0, 1))
                 mv.multiply(source.ViewObject.CutMargin)
                 pl.move(mv)
-            wp.align_to_placement(pl)
+            wp.align_to_rotation(pl.Rotation)
             # wp.inverse()
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)

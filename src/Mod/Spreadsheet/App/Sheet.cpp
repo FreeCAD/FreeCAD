@@ -412,6 +412,17 @@ Cell* Sheet::getCell(CellAddress address)
 }
 
 /**
+ * Get contents of the cell specified by \a address, or 0 if it is not defined
+ *
+ * @returns A CellContent object or 0.
+ */
+
+const Cell* Sheet::getCell(CellAddress address) const
+{
+    return cells.getValue(address);
+}
+
+/**
  * Get cell contents specified by \a address.
  *
  * @param address

@@ -28,13 +28,7 @@
 #include "Exception.h"
 #include "XMLTools.h"
 
-
-#ifndef XERCES_CPP_NAMESPACE_BEGIN
-# define XERCES_CPP_NAMESPACE_QUALIFIER
 using namespace XERCES_CPP_NAMESPACE;
-#else
-XERCES_CPP_NAMESPACE_USE
-#endif
 
 std::unique_ptr<XMLTranscoder> XMLTools::transcoder;  // NOLINT
 
@@ -121,6 +115,44 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
 
     delete[] charSizes;
     return str;
+}
+
+/*!
+ * \brief Escape special XML characters in a string.
+ *
+ * Replaces XML special characters (&, <, >, ", ') with their entity equivalents
+ * (&amp;, &lt;, &gt;, &quot;, &apos;).
+ *
+ * \param input The string to escape
+ * \return The escaped string safe for use in XML content or attributes
+ */
+std::string XMLTools::escapeXml(const std::string& input)
+{
+    std::string output;
+    output.reserve(input.size());
+    for (char ch : input) {
+        switch (ch) {
+            case '&':
+                output.append("&amp;");
+                break;
+            case '<':
+                output.append("&lt;");
+                break;
+            case '>':
+                output.append("&gt;");
+                break;
+            case '"':
+                output.append("&quot;");
+                break;
+            case '\'':
+                output.append("&apos;");
+                break;
+            default:
+                output.push_back(ch);
+                break;
+        }
+    }
+    return output;
 }
 
 void XMLTools::terminate()

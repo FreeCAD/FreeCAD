@@ -69,6 +69,8 @@ using DrawSketchHandlerScaleBase = DrawSketchControllableHandler<DSHScaleControl
 
 class DrawSketchHandlerScale: public DrawSketchHandlerScaleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerScale)
+
     friend DSHScaleController;
     friend DSHScaleControllerBase;
 
@@ -533,6 +535,10 @@ private:
                          && thirdIndex == GeoEnum::GeoUndef) {
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
+                }
+                else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
+                         && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
                 }
                 else if ((cstr->Type == Radius || cstr->Type == Diameter)
                          && firstIndex != GeoEnum::GeoUndef) {

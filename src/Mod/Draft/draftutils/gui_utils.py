@@ -128,13 +128,22 @@ def autogroup(obj):
         if active_group is None:
             # Layer/group does not exist (anymore)
             Gui.draftToolBar.setAutoGroup()  # Change active layer/group in Tray to None.
+        elif utils.get_type(active_group) == "Layer":
+            if not obj in active_group.Group:
+                active_group.Group += [obj]
+            # No return statement here as objects can be in a layer and in
+            # a normal group or group-like BIM object at the same time.
+        elif obj in active_group.InListRecursive:
             return
-        if obj in active_group.InListRecursive:
+        else:
+            if not obj in active_group.Group:
+                if hasattr(active_group, "addObject"):
+                    active_group.addObject(obj)
+                else:
+                    active_group.Group += [obj]
             return
-        if not obj in active_group.Group:
-            active_group.Group += [obj]
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             from nativeifc import ifc_tools
@@ -939,10 +948,21 @@ def get_bbox(obj, debug=False):
     return App.BoundBox(xmin, ymin, zmin, xmax, ymax, zmax)
 
 
-# Code by Yorik van Havre.
+# Code by Yorik van Havre (adapted).
 def find_coin_node(parent, nodetype):
+    if not hasattr(parent, "getNumChildren"):
+        return None
     for i in range(parent.getNumChildren()):
         if isinstance(parent.getChild(i), nodetype):
+            return parent.getChild(i)
+    return None
+
+
+def find_coin_node_by_name(parent, name):
+    if not hasattr(parent, "getNumChildren"):
+        return None
+    for i in range(parent.getNumChildren()):
+        if parent.getChild(i).getName() == name:
             return parent.getChild(i)
     return None
 

@@ -1347,8 +1347,7 @@ with the last used dialog settings</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle
-lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
+      <translation>Toutes les fonctions d'analyse sont cachées dans la vue du modèle lorsque la fenêtre de dialogue des résultats est ouverte.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
@@ -3198,7 +3197,7 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -4172,7 +4171,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Pavé droit</translation>
+      <translation>Boîte</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -6601,7 +6600,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -7750,7 +7749,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../../../femcommands/commands.py" line="838"/>
       <source>Creates a mesh group</source>
-      <translation>Crée un groupe en maillage.</translation>
+      <translation>Regroupe et étiquette les éléments d'un maillage.</translation>
     </message>
   </context>
   <context>

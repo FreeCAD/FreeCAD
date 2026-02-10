@@ -34,11 +34,13 @@
 
 #include <QApplication>
 #include <QFontMetricsF>
+#include <QHelpEvent>
 #include <QListWidget>
 #include <QMenu>
 #include <QMessageBox>
 #include <QScreen>
 #include <QTextStream>
+#include <QToolTip>
 #include <QWindow>
 
 #include <limits>
@@ -628,8 +630,12 @@ ViewProviderSketch::ViewProviderSketch()
 
     VisualLayerList.setValues(std::move(layers));
 
-    // Default values that will be overridden by preferences (if existing)
-    PointSize.setValue(4);
+    ParameterGrp::handle hGrp =
+        App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    const int defaultSketchVertexSize = 4;
+    auto psize = hGrp->GetInt("DefaultShapePointSize", defaultSketchVertexSize);
+
+    PointSize.setValue(psize);
 
     // visibility automation and other parameters: update parameter and property defaults to follow
     // preferences
@@ -834,6 +840,10 @@ void ViewProviderSketch::setSketchMode(SketchMode mode)
 
 bool ViewProviderSketch::keyPressed(bool pressed, int key)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::keyPressed(pressed, key);
+    }
+
     switch (key) {
         case SoKeyboardEvent::ESCAPE: {
             // make the handler quit but not the edit mode
@@ -958,6 +968,9 @@ void ViewProviderSketch::getCoordsOnSketchPlane(const SbVec3f& point, const SbVe
 bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVec2s& cursorPos,
                                             const Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseButtonPressed(Button, pressed, cursorPos, viewer);
+    }
     assert(isInEditMode());
 
     // Calculate 3d point to the mouse position
@@ -1323,11 +1336,11 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
 bool ViewProviderSketch::mouseWheelEvent(int delta, const SbVec2s& cursorPos,
                                          const Gui::View3DInventorViewer* viewer)
 {
-    assert(isInEditMode());
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseWheelEvent(delta, cursorPos, viewer);
+    }
 
-    Q_UNUSED(delta);
-    Q_UNUSED(cursorPos);
-    Q_UNUSED(viewer);
+    assert(isInEditMode());
 
     editCoinManager->drawConstraintIcons();
 
@@ -1435,6 +1448,10 @@ void ViewProviderSketch::toggleWireSelelection(int clickedGeoId)
 
 bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return ViewProvider2DObject::mouseMove(cursorPos, viewer);
+    }
+
     // maximum radius for mouse moves when selecting a geometry before switching to drag mode
     const int dragIgnoredDistance = 3;
 
@@ -2211,7 +2228,7 @@ void ViewProviderSketch::moveAngleConstraint(Sketcher::Constraint* constr, int c
             double arcAngle = (startangle + endangle) / 2.;
             Base::Vector2d arcDirection(std::cos(arcAngle), std::sin(arcAngle));
             Base::Vector2d centerToToPos = toPos - Base::Vector2d(center.x, center.y);
-            constr->LabelDistance = centerToToPos * arcDirection;
+            constr->LabelDistance = factor * centerToToPos * arcDirection;
             return;
         }
         else {
@@ -2296,7 +2313,9 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                         int ConstrId =
                             Sketcher::PropertyConstraintList::getIndexFromConstraintName(shapetype);
                         selection.SelConstraintSet.insert(ConstrId);
-                        editCoinManager->drawConstraintIcons();
+                        if (!selection.selectionBuffering) {
+                            editCoinManager->drawConstraintIcons();
+                        }
                     }
                     updateColor();
                 }
@@ -2397,6 +2416,48 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
 {
     assert(isInEditMode());
 
+    // Event filter to intercept the delayed tooltip event from Qt
+    class ToolTipFilter : public QObject {
+    public:
+        bool eventFilter(QObject *obj, QEvent *event) override {
+            if (event->type() == QEvent::ToolTip) {
+                // When Qt's idle timer fires, this event is sent.
+                // We intercept it to show the tooltip.
+                QHelpEvent *helpEvent = static_cast<QHelpEvent *>(event);
+                QWidget *widget = qobject_cast<QWidget *>(obj);
+                if (widget && !widget->toolTip().isEmpty()) {
+                    QToolTip::showText(helpEvent->globalPos(), widget->toolTip(), widget);
+                    return true; // Mark as handled so default processing doesn't hide it
+                }
+            }
+            return QObject::eventFilter(obj, event);
+        }
+    };
+    static ToolTipFilter filter;
+
+    auto updateToolTip = [this](const QString& text = QString()) {
+        auto* view = qobject_cast<Gui::View3DInventor*>(this->getActiveView());
+        QWidget* widget = view ? view->getViewer()->getGLWidget() : nullptr;
+
+        if (!widget) return;
+
+        if (text.isEmpty()) {
+            // Hide tooltip and cleanup
+            QToolTip::hideText();
+            widget->removeEventFilter(&filter);
+            widget->setToolTip(QString());
+        } else {
+            // 1. Set the tooltip text on the widget.
+            // This arm's Qt's internal timer to fire QEvent::ToolTip after the standard delay.
+            widget->setToolTip(text);
+
+            // 2. Install the filter to catch that event.
+            // We remove it first to ensure we don't install it multiple times.
+            widget->removeEventFilter(&filter);
+            widget->installEventFilter(&filter);
+        }
+    };
+
     if (Point) {
 
         EditModeCoinManager::PreselectionResult result = editCoinManager->detectPreselection(Point);
@@ -2412,6 +2473,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             preselection.blockedPreselection = !accepted;
             if (accepted) {
                 setPreselectPoint(result.PointIndex);
+                updateToolTip(); // Clear tooltip on point selection
 
                 return true;
             }
@@ -2433,6 +2495,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectCurve = result.GeoIndex;
+                updateToolTip(); // Clear tooltip on curve selection
 
                 return true;
             }
@@ -2466,6 +2529,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                     resetPreselectPoint();
                 preselection.PreselectCross =
                     static_cast<Preselection::Axes>(static_cast<int>(result.Cross));
+                updateToolTip(); // Clear tooltip on axis selection
 
                 return true;
             }
@@ -2486,11 +2550,23 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
                     != 0;
 
                 preselection.blockedPreselection = !accepted;
-                // TODO: Should we clear preselections that went through, if one fails?
             }
             if (accepted) {
                 resetPreselectPoint();
                 preselection.PreselectConstraintSet = result.ConstrIndices;
+
+                // Build tooltip text for expressions
+                QString tooltipText;
+                for (int id : result.ConstrIndices) {
+                    if (constraintHasExpression(id)) {
+                        std::string expr = getSketchObject()->getConstraintExpression(id);
+                        if (!expr.empty()) {
+                            tooltipText = QString::fromUtf8("\U0001D453\U0001D465 = ") + QString::fromStdString(expr);
+                            break;
+                        }
+                    }
+                }
+                updateToolTip(tooltipText);
 
                 return true;// Preselection changed
             }
@@ -2505,6 +2581,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
             // we have just left a preselection
             resetPreselectPoint();
             preselection.blockedPreselection = false;
+            updateToolTip(); // Clear tooltip when leaving preselection
 
             return true;
         }
@@ -2516,6 +2593,7 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
              || preselection.blockedPreselection) {
         resetPreselectPoint();
         preselection.blockedPreselection = false;
+        updateToolTip(); // Clear tooltip when no point picked
 
         return true;
     }
@@ -2594,13 +2672,21 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
     if (corners[0].getValue()[0] > corners[1].getValue()[0])
         touchMode = true;
 
-    auto selectVertex = [this](int vertexid) {
-        std::stringstream ss;
-        ss << "Vertex" << vertexid;
-        addSelection2(ss.str());
+    std::vector<std::string> batchSelection;
+    batchSelection.reserve(geomlist.size());
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
     };
 
-    auto selectEdge = [this](int edgeid) {
+    auto selectVertex = [&addConvertedName](int vertexid) {
+        std::stringstream ss;
+        ss << "Vertex" << vertexid;
+        addConvertedName(ss.str());
+    };
+
+    auto selectEdge = [&addConvertedName](int edgeid) {
         std::stringstream ss;
         if (edgeid >= 0) {
             ss << "Edge" << edgeid;
@@ -2608,7 +2694,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
         else {
             ss << "ExternalEdge" << -edgeid - 1;
         }
-        addSelection2(ss.str());
+        addConvertedName(ss.str());
     };
 
     auto selectVertexIfInsideBox = [&polygon, &VertexId, &selectVertex](const Base::Vector3d & point) {
@@ -2650,6 +2736,8 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
             selectEdge(GeoId+1);
         }
     };
+
+    selection.selectionBuffering = true;
 
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
          it != geomlist.end() - 2;
@@ -2753,17 +2841,29 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     Base::Vector3d pnt0 = proj(Plm.getPosition());
     if (polygon.Contains(Base::Vector2d(pnt0.x, pnt0.y))) {
-        std::stringstream ss;
-        ss << "RootPoint";
-        addSelection2(ss.str());
+        addConvertedName("RootPoint");
     }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            editDocName.c_str(),
+            editObjName.c_str(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
 }
 
 void ViewProviderSketch::updateColor()
 {
     assert(isInEditMode());
 
-    editCoinManager->updateColor();
+    if (!selection.selectionBuffering) {
+        editCoinManager->updateColor();
+    }
 }
 
 bool ViewProviderSketch::selectAll()
@@ -2809,6 +2909,18 @@ bool ViewProviderSketch::selectAll()
 
     Gui::Selection().clearSelection();
 
+    std::vector<std::string> batchSelection;
+    // Heuristic reservation: Geometry count * 3 (start/end/edge) + Constraint count
+    batchSelection.reserve(
+        sketchObject->Geometry.getValues().size() * 3 + sketchObject->Constraints.getSize()
+    );
+
+    auto addConvertedName = [this, sketchObject, &batchSelection](const std::string& suffix) {
+        std::string finalName = editSubName + sketchObject->convertSubName(suffix);
+        batchSelection.push_back(finalName);
+    };
+
+    selection.selectionBuffering = true;
     if (focusOnElementWidget || noWidgetSelected) {
         int intGeoCount = sketchObject->getHighestCurveIndex() + 1;
         int extGeoCount = sketchObject->getExternalGeometryCount();
@@ -2817,16 +2929,17 @@ bool ViewProviderSketch::selectAll()
 
         int GeoId = 0;
 
-        auto selectVertex = [this](int geoId, Sketcher::PointPos pos) {
+        auto selectVertex = [this, &addConvertedName](int geoId, Sketcher::PointPos pos) {
             int vertexId = this->getSketchObject()->getVertexIndexGeoPos(geoId, pos);
-            addSelection2(fmt::format("Vertex{}", vertexId + 1));
+            addConvertedName(fmt::format("Vertex{}", vertexId + 1));
         };
 
-        auto selectEdge = [this](int GeoId) {
+        auto selectEdge = [&addConvertedName](int GeoId) {
             if (GeoId >= 0) {
-                addSelection2(fmt::format("Edge{}", GeoId + 1));
-            } else {
-                addSelection2(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
+                addConvertedName(fmt::format("Edge{}", GeoId + 1));
+            }
+            else {
+                addConvertedName(fmt::format("ExternalEdge{}", GeoEnum::RefExt - GeoId + 1));
             }
         };
 
@@ -2868,7 +2981,7 @@ bool ViewProviderSketch::selectAll()
         }
 
         if (!focusOnElementWidget) {
-            addSelection2("RootPoint");
+            addConvertedName("RootPoint");
         }
 
         if (hasUnselectedGeometry) {
@@ -2882,9 +2995,21 @@ bool ViewProviderSketch::selectAll()
             if (focusedList && std::ranges::find(ids, i) == ids.end()) {
                 continue;
             }
-            addSelection2(fmt::format("Constraint{}", i + 1));
+            addConvertedName(fmt::format("Constraint{}", i + 1));
         }
     }
+
+    if (!batchSelection.empty()) {
+        Gui::Selection().addSelections(
+            editDocName.c_str(),
+            editObjName.c_str(),
+            batchSelection
+        );
+    }
+
+    selection.selectionBuffering = false;
+    editCoinManager->drawConstraintIcons();
+    updateColor();
 
     return true;
 }
@@ -3143,6 +3268,11 @@ void ViewProviderSketch::drawEditMarkers(const std::vector<Base::Vector2d>& Edit
 }
 
 void ViewProviderSketch::updateData(const App::Property* prop) {
+    if (std::string(prop->getName()) != "ShapeMaterial") {
+        // We don't want material to override the colors of sketches.
+        ViewProvider2DObject::updateData(prop);
+    }
+
     if (prop == &getSketchObject()->InternalShape) {
         const auto& shape = getSketchObject()->InternalShape.getValue();
         setupCoinGeometry(shape,
@@ -3154,43 +3284,6 @@ void ViewProviderSketch::updateData(const App::Property* prop) {
     if (prop != &getSketchObject()->Constraints) {
         signalElementsChanged();
     }
-
-    // clang-format on
-    // update placement changes while in edit mode
-    if (isInEditMode() && prop) {
-        // check if the changed property is `placement` or `attachmentoffset`
-        if (strcmp(prop->getName(), "Placement") == 0
-            || strcmp(prop->getName(), "AttachmentOffset") == 0) {
-
-#ifdef FC_DEBUG
-            Base::Console().warning("updating editing transform!\n");
-#endif
-            // recalculate the placement matrix
-            Sketcher::SketchObject* sketchObj = getSketchObject();
-            if (sketchObj) {
-                // use globalPlacement for both attached and unattached sketches
-                Base::Placement plm = sketchObj->Placement.getValue();
-
-#ifdef FC_DEBUG
-                // log what is actually being set
-                Base::Console().warning(
-                    "Placement: pos=(%f,%f,%f)\n",
-                    plm.getPosition().x,
-                    plm.getPosition().y,
-                    plm.getPosition().z
-                );
-#endif
-
-                // update the document's editing transform
-                getDocument()->setEditingTransform(plm.toMatrix());
-            }
-        }
-    }
-    if (std::string(prop->getName()) != "ShapeMaterial") {
-        // We don't want material to override the colors of sketches.
-        ViewProvider2DObject::updateData(prop);
-    }
-    // clang-format off
 }
 
 void ViewProviderSketch::slotSolverUpdate()
@@ -3218,6 +3311,23 @@ void ViewProviderSketch::slotSolverUpdate()
             draw(false, true);
 
         signalConstraintsChanged();
+    }
+}
+
+void ViewProviderSketch::slotConstraintAdded(Sketcher::Constraint* constraint)
+{
+    if (!constraint) {
+        return;
+    }
+
+    // Auto-scale label distance for dimensional constraints
+    if (constraint->Type == Distance || constraint->Type == DistanceX || constraint->Type == DistanceY) {
+        // If label distance is default (10.0), scale it based on view.
+        // We use a small epsilon for float comparison.
+        if (std::abs(constraint->LabelDistance - 10.f) < 1e-5) {
+            float scale = getScaleFactor();
+            constraint->LabelDistance = 2.f * scale;
+        }
     }
 }
 
@@ -3377,7 +3487,10 @@ void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const 
 
 bool ViewProviderSketch::setEdit(int ModNum)
 {
-    Q_UNUSED(ModNum)
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::setEdit(ModNum);
+    }
+
     // When double-clicking on the item for this sketch the
     // object unsets and sets its edit mode without closing
     // the task panel
@@ -3433,9 +3546,6 @@ bool ViewProviderSketch::setEdit(int ModNum)
     setGridOrientation(plm.getPosition(), plm.getRotation());
     addNodeToRoot(gridnode);
     setGridEnabled(true);
-
-    // update the documents stored transform
-    getDocument()->setEditingTransform(plm.toMatrix());
 
     // create the container for the additional edit data
     assert(!isInEditMode());
@@ -3512,6 +3622,8 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     //NOLINTBEGIN
+    connectConstraintAdded = getSketchObject()->signalConstraintAdded.connect(
+        std::bind(&ViewProviderSketch::slotConstraintAdded, this, sp::_1));
     connectUndoDocument = getDocument()->signalUndoDocument.connect(
         std::bind(&ViewProviderSketch::slotUndoDocument, this, sp::_1));
     connectRedoDocument = getDocument()->signalRedoDocument.connect(
@@ -3540,9 +3652,9 @@ bool ViewProviderSketch::setEdit(int ModNum)
         viewProviderParameters.recalculateInitialSolutionWhileDragging);
 
     // intercept del key press from main app
-    listener = new ShortcutListener(this);
+    listener = std::make_unique<ShortcutListener>(this);
 
-    Gui::getMainWindow()->installEventFilter(listener);
+    Gui::getMainWindow()->installEventFilter(listener.get());
 
     Workbench::enterEditMode();
 
@@ -3686,7 +3798,9 @@ void ViewProviderSketch::UpdateSolverInformation()
 
 void ViewProviderSketch::unsetEdit(int ModNum)
 {
-    Q_UNUSED(ModNum);
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::unsetEdit(ModNum);
+    }
 
     setGridEnabled(false);
     auto gridnode = getGridNode();
@@ -3695,8 +3809,8 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     Workbench::leaveEditMode();
 
     if (listener) {
-        Gui::getMainWindow()->removeEventFilter(listener);
-        delete listener;
+        Gui::getMainWindow()->removeEventFilter(listener.get());
+        listener.reset();
     }
 
     if (isInEditMode()) {
@@ -3726,6 +3840,7 @@ void ViewProviderSketch::unsetEdit(int ModNum)
     connectUndoDocument.disconnect();
     connectRedoDocument.disconnect();
     connectSolverUpdate.disconnect();
+    connectConstraintAdded.disconnect();
 
     // when pressing ESC make sure to close the dialog
     Gui::Control().closeDialog();
@@ -3755,7 +3870,10 @@ void ViewProviderSketch::unsetEdit(int ModNum)
 
 void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int ModNum)
 {
-    Q_UNUSED(ModNum);
+    if (ModNum != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::setEditViewer(viewer, ModNum);
+    }
+
     Base::PyGILStateLocker lock;
     // visibility automation: save camera
     if (!this->TempoVis.getValue().isNone()) {
@@ -3855,6 +3973,10 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
 
 void ViewProviderSketch::unsetEditViewer(Gui::View3DInventorViewer* viewer)
 {
+    if (getEditingMode() != ViewProviderSketch::Default) {
+        return PartGui::ViewProvider2DObject::unsetEditViewer(viewer);
+    }
+
     auto dataPtr = static_cast<VPRender*>(cameraSensor.getData());
     delete dataPtr;
     cameraSensor.setData(nullptr);

@@ -84,6 +84,8 @@ public:
 
 class DrawSketchHandlerTrimming: public DrawSketchHandler
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerTrimming)
+
 public:
     DrawSketchHandlerTrimming() = default;
     ~DrawSketchHandlerTrimming() override

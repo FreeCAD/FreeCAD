@@ -720,7 +720,7 @@ class StockFromExistingEdit(StockEdit):
 
                 # stockName has index suffix (since cloned), label has no index
                 # => ridgid string comparison fails
-                # Instead of ridgid string comparsion use partial (needle in haystack)
+                # Instead of ridgid string comparison use partial (needle in haystack)
                 # string comparison
                 # if label == stockName: # ridgid string comparison
                 if label in stockName:  # partial string comparison
@@ -1149,7 +1149,9 @@ class TaskPanel:
         toolbit = selector.get_selected_tool()
         toolbit.attach_to_doc(FreeCAD.ActiveDocument)
         toolNum = self.obj.Proxy.nextToolNumber()
-        tc = PathToolControllerGui.Create(name=toolbit.label, tool=toolbit.obj, toolNumber=toolNum)
+        tc = PathToolControllerGui.Create(
+            name=f"TC: {toolbit.label}", tool=toolbit.obj, toolNumber=toolNum
+        )
         self.obj.Proxy.addToolController(tc)
 
         FreeCAD.ActiveDocument.recompute()

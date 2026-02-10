@@ -29,7 +29,7 @@
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>
 #include <QMetaObject>
-#include <boost/signals2.hpp>
+#include <fastsignals/signal.h>
 #include <memory>
 
 #include <Base/Parameter.h>
@@ -451,6 +451,7 @@ private:
         std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
         std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
         std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
+        bool selectionBuffering {false};
     };
     //@}
 
@@ -580,6 +581,10 @@ public:
         return Mode;
     }
 
+    /// returns whether the sketch is in edit mode.
+    bool isInEditMode() const;
+    //@}
+
     // create right click context menu based on selection in the 3D view
     void generateContextMenu();
 
@@ -703,19 +708,19 @@ public:
     /** @name Signals for controlling information in Task dialogs */
     //@{
     /// signals if the constraints list has changed
-    boost::signals2::signal<void()> signalConstraintsChanged;
+    fastsignals::signal<void()> signalConstraintsChanged;
     /// signals if the sketch has been set up
-    boost::signals2::signal<
+    fastsignals::signal<
         void(const QString& state, const QString& msg, const QString& url, const QString& linkText)>
         signalSetUp;
     /// signals if the elements list has changed
-    boost::signals2::signal<void()> signalElementsChanged;
+    fastsignals::signal<void()> signalElementsChanged;
     //@}
 
     /** @name Register slot for signal */
     //@{
     template<typename F>
-    boost::signals2::connection registerToolChanged(F&& f)
+    fastsignals::connection registerToolChanged(F&& f)
     {
         return signalToolChanged.connect(std::forward<F>(f));
     }
@@ -768,6 +773,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -855,14 +861,10 @@ private:
     );
     void moveAngleConstraint(Sketcher::Constraint*, int constNum, const Base::Vector2d& toPos);
 
-    /// returns whether the sketch is in edit mode.
-    bool isInEditMode() const;
-    //@}
-
     /** @name signals*/
     //@{
     /// signals a tool change
-    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    fastsignals::signal<void(const std::string& toolname)> signalToolChanged;
     //@}
 
     void slotToolWidgetChanged(QWidget* newwidget);
@@ -968,9 +970,10 @@ private:
     //@}
 
 private:
-    boost::signals2::connection connectUndoDocument;
-    boost::signals2::connection connectRedoDocument;
-    boost::signals2::connection connectSolverUpdate;
+    fastsignals::connection connectUndoDocument;
+    fastsignals::connection connectRedoDocument;
+    fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
@@ -992,7 +995,7 @@ private:
     Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
     Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
-    ShortcutListener* listener;
+    std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 
@@ -1004,7 +1007,7 @@ private:
 
     ViewProviderParameters viewProviderParameters;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectionToolWidget;
 
     SoNodeSensor cameraSensor;

@@ -744,7 +744,6 @@ class ObjectJob:
     def setCenterOfRotation(self, center):
         if center != self.obj.Path.Center:
             self.obj.Path.Center = center
-            self.obj.Operations.Path.Center = center
             for op in self.allOperations():
                 op.Path.Center = center
 
