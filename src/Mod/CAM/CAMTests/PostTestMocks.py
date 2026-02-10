@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2025 sliptonic <shopinthewoods@gmail.com>               *
 # *                                                                         *

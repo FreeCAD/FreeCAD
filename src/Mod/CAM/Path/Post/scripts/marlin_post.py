@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # *****************************************************************************
 # *                                                                           *
@@ -6,8 +7,6 @@
 # *   (c) Gauthier Briere - 2018, 2019                                        *
 # *   (c) Schildkroet - 2019-2020                                             *
 # *   (c) Gary L Hasson - 2020                                                *
-# *                                                                           *
-# *   This file is part of the FreeCAD CAx development system.                *
 # *                                                                           *
 # *   This program is free software; you can redistribute it and/or modify    *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)      *

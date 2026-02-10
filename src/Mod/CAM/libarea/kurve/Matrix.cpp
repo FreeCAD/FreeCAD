@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 //                    3d geometry classes - implements some 3d stuff

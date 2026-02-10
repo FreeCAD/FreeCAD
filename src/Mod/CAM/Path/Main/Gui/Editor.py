@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 from PySide.QtWidgets import QWidget, QPlainTextEdit
 from PySide.QtGui import QPainter, QFont
 from PySide.QtCore import Qt, QRect, QSize
