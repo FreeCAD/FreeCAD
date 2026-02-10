@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 """Utitily function for Dice3DS.
 
 Defines some routines for calculating normals and transforming points.

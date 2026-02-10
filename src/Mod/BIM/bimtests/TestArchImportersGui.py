@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 import FreeCAD as App
 from bimtests.TestArchBaseGui import TestArchBaseGui
 
