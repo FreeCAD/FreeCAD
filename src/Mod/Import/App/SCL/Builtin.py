@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Copyright (c) 2011-2012, Thomas Paviot (tpaviot@gmail.com)
 # All rights reserved.
