@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Copyright (c) 2025 The FreeCAD Project
 
 """This script generates a standalone Python parser from the ArchSql.lark grammar."""
