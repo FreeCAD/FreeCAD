@@ -1517,9 +1517,9 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
         return;
     }
 
-    auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("ObjectToGround"));
-    if (propObj) {
-        auto* groundedObj = propObj->getValue();
+    ;
+    if (auto* prop = joint->getPropertyByName<App::PropertyLink>("ObjectToGround")) {
+        auto* groundedObj = prop->getValue();
 
         isolatedJoint = joint;
         isolatedJointVisibilityBackup = joint->Visibility.getValue();
@@ -1530,10 +1530,8 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
         return;
     }
 
-    AssemblyObject* assembly = getObject<AssemblyObject>();
-
-    App::DocumentObject* part1 = getMovingPartFromRef(assembly, joint, "Reference1");
-    App::DocumentObject* part2 = getMovingPartFromRef(assembly, joint, "Reference2");
+    App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
+    App::DocumentObject* part2 = getMovingPartFromRef(joint, "Reference2");
     if (!part1 || !part2) {
         return;
     }
