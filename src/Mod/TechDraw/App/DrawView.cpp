@@ -99,7 +99,7 @@ DrawView::DrawView():
 
     ScaleType.setEnums(ScaleTypeEnums);
     ADD_PROPERTY_TYPE(ScaleType, (prefScaleType()), group, App::Prop_Output, "Scale Type");
-    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Scale factor of the view. Scale factors like 1:100 can be written as =1/100");
+    ADD_PROPERTY_TYPE(Scale, (prefScale()), group, App::Prop_None, "Numeric scale factor for the view. Type = to enter formulaic input.");
     Scale.setConstraints(&scaleRange);
 
     ADD_PROPERTY_TYPE(Caption, (""), group, App::Prop_Output, "Short text about the view");
