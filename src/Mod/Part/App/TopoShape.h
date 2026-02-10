@@ -1192,7 +1192,7 @@ public:
      * @param base: the base shape
      * @param axis: the revolving axis
      * @param d: rotation angle in degree
-     * @param face_maker: optional type name of the the maker used to make a
+     * @param face_maker: optional type name of the maker used to make a
      *                    face from basis shape
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -1214,7 +1214,7 @@ public:
      *
      * @param axis: the revolving axis
      * @param d: rotation angle in degree
-     * @param face_maker: optional type name of the the maker used to make a
+     * @param face_maker: optional type name of the maker used to make a
      *                    face from basis shape
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -1237,7 +1237,7 @@ public:
      * @param base: the basis shape (solid)
      * @param profile: the shape to be revolved
      * @param axis: the revolving axis
-     * @param face_maker: optional type name of the the maker used to make a
+     * @param face_maker: optional type name of the maker used to make a
      *                    face from basis shape
      * @param supportface:  the bottom face for the revolution, or null
      * @param uptoface:  the upper limit face for the revolution, or null
@@ -1263,7 +1263,7 @@ public:
     /** Make revolved shell around a basis shape
      *
      * @param axis: the revolving axis
-     * @param face_maker: optional type name of the the maker used to make a
+     * @param face_maker: optional type name of the maker used to make a
      *                    face from basis shape
      * @param supportface:  the bottom face for the revolution, or null
      * @param uptoface:  the upper limit face for the revolution, or null
@@ -2719,7 +2719,7 @@ public:
      *
      * @param shapes: input shapes of any type. The function will automatically
      *                discover connected and closed edges to be used as the
-     *                boundary of the the new face. Any other vertex, edge,
+     *                boundary of the new face. Any other vertex, edge,
      *                and/or face will be used as constraints to fine tune the
      *                surface generation.
      * @param params: @sa BRepFillingParams
