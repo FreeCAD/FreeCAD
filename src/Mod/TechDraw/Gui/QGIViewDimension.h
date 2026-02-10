@@ -89,6 +89,7 @@ public:
     bool getGroupSelection() override;
     void setGroupSelection(bool isSelected) override;
     virtual QGIDatumLabel* getDatumLabel() const { return datumLabel; }
+    std::optional<double> getCachedAngleArcRadius() const { return m_cachedAngleArcRadius; }
 
     void setNormalColorAll();
     TechDraw::DrawViewDimension* getDimFeat() { return dvDimension; }
@@ -220,6 +221,8 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
+
+    mutable std::optional<double> m_cachedAngleArcRadius;
 
     // needs Phase2 of autocorrect to be useful
     // QGCustomSvg* m_refFlag;

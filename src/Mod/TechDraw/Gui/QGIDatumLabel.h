@@ -127,6 +127,9 @@ private:
     DragState m_dragState;
 
 private:
+    static inline Base::Vector2d fromQtApp(const Base::Vector3d &vec3) { return {vec3.x, -vec3.y}; }
+    static inline Base::Vector2d to2D(const Base::Vector3d& v) { return {v.x, v.y}; }
+   
 };
 
 }  // namespace TechDrawGui
