@@ -732,9 +732,7 @@ void TreeWidgetItemDelegate::setModelData(
 
         if (auto* prop = obj->getPropertyByName<App::PropertyLink>("LinkedObject")) {
             App::DocumentObject* linked = prop->getValue();
-
-            // Only reconstruct if we are actually linked
-            if (linked) {
+            if (linked && linked != obj) {
                 std::string currentLabel = obj->Label.getValue();
                 std::string base, oldInst;
 
