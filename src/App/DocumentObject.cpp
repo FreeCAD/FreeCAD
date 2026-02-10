@@ -891,7 +891,7 @@ void DocumentObject::onChanged(const Property* prop)
     if (prop == &Label && _pDoc && oldLabel != Label.getStrValue()) {
         _pDoc->signalRelabelObject(*this);
 
-        for (auto* obj : getInList()) {
+        for (auto* obj : getInListRecursive()) {
             obj->onParentLabelChanged(this);
         }
     }
@@ -1617,5 +1617,3 @@ App::PropertyPlacement* DocumentObject::getPlacementProperty() const
 
     return getPropertyByName<App::PropertyPlacement>("Placement");
 }
-
-
