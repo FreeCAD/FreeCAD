@@ -59,8 +59,11 @@ float SoScreenSpaceScale::calculateScaleFactor(SoAction* action)
     float scale = vv.getWorldToScreenScale(referencePoint, 1.0f);
     scale /= float(vp_size[0]);
 
-    finalScale.setValue(scale * referenceSize.getValue());
-    return finalScale.getValue();
+    float newScale = scale * referenceSize.getValue();
+    if (finalScale.getValue() != newScale) {
+        finalScale.setValue(newScale);
+    }
+    return newScale;
 }
 
 SoScreenSpaceScale::SoScreenSpaceScale()
