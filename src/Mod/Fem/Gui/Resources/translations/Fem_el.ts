@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="1124"/>
       <source>Local Coordinate System</source>
-      <translation type="unfinished">Local Coordinate System</translation>
+      <translation>Τοπικό Σύστημα Συντεταγμένων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1125"/>
@@ -1433,7 +1433,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="98"/>
       <source>Errors</source>
-      <translation type="unfinished">Errors</translation>
+      <translation>Σφάλματα</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="99"/>
@@ -4822,7 +4822,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="80"/>
       <source>Constraint type</source>
-      <translation type="unfinished">Constraint type</translation>
+      <translation>Τύπος περιορισμού</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="90"/>
@@ -7402,7 +7402,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
@@ -7420,7 +7420,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="3019"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>Fem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="3020"/>
@@ -8020,7 +8020,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="14"/>
       <source>Solver Elmer Control</source>
-      <translation type="unfinished">Solver Elmer Control</translation>
+      <translation>Έλεγχος Επιλυτή Elmer</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="20"/>
@@ -8045,12 +8045,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="74"/>
       <source>Solver Parameters</source>
-      <translation type="unfinished">Solver Parameters</translation>
+      <translation>Παράμετροι Επίλυσης</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="82"/>
       <source>Simulation type</source>
-      <translation type="unfinished">Simulation type</translation>
+      <translation>Τύπος προσομοίωσης</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="122"/>

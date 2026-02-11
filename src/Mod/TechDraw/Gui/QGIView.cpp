@@ -277,7 +277,7 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto feature = getViewObject();
+    DrawView* feature = getViewObject();
     if (!feature) {
         return;
     }
@@ -286,14 +286,18 @@ void QGIView::snapPosition(QPointF& newPosition)
         return;
     }
 
-    auto dvp = freecad_cast<DrawViewPart*>(feature);
+    auto* dvp = freecad_cast<DrawViewPart*>(feature);
     if (dvp  &&
         !dvp->hasGeometry()) {
         // too early. wait for updates to finish.
         return;
     }
 
-    auto vpPage = getViewProviderPage(feature);
+    ViewProviderPage* vpPage = getViewProviderPage(feature);
+    if (!vpPage) {
+        // too early. not added to page yet?
+        return;
+    }
 
     QGSPage* scenePage = vpPage->getQGSPage();
     if (!scenePage) {
@@ -577,12 +581,7 @@ QGIViewClip* QGIView::getClipGroup()
 
 void QGIView::updateView(bool forceUpdate)
 {
-            //allow/prevent dragging
-    if (getViewObject()->isLocked()) {
-        setFlag(QGraphicsItem::ItemIsMovable, false);
-    } else {
-        setFlag(QGraphicsItem::ItemIsMovable, true);
-    }
+    setMovableFlag();
 
     if (getViewObject() && forceUpdate) {
         setPosition(Rez::guiX(getViewObject()->X.getValue()),
@@ -1138,6 +1137,15 @@ bool QGIView::isExporting() const
     }
 
     return scenePage->getExportingAny();
+}
+
+void QGIView::setMovableFlag()
+{
+    if (getViewObject()->isLocked()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+    } else {
+        setFlag(QGraphicsItem::ItemIsMovable, true);
+    }
 }
 
 //! Retrieves objects of type T with given indexes

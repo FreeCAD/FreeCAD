@@ -267,9 +267,9 @@ private:
         std::unique_ptr<Exporter> exporter;
         if (exportFormat == MeshIO::AMF) {
             std::map<std::string, std::string> meta;
-            meta["cad"] = App::Application::Config()["ExeName"] + " "
+            meta["cad"] = App::Application::getExecutableName() + " "
                 + App::Application::Config()["ExeVersion"];
-            meta[App::Application::Config()["ExeName"] + "-buildRevisionHash"]
+            meta[App::Application::getExecutableName() + "-buildRevisionHash"]
                 = App::Application::Config()["BuildRevisionHash"];
 
             exporter = std::make_unique<ExporterAMF>(outputFileName, meta, exportAmfCompressed);

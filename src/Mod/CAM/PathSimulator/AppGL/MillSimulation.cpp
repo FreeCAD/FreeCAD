@@ -89,11 +89,11 @@ void MillSimulation::SimNext()
     }
 }
 
-void MillSimulation::InitSimulation(float quality, qreal devicePixelRatio)
+void MillSimulation::InitSimulation(float quality)
 {
     ClearMillPathSegments();
     millPathLine.Clear();
-    simDisplay.applySSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
+    mViewSSAO = guiDisplay.IsChecked(eGuiItemAmbientOclusion);
 
     mDestMotion = mZeroPos;
     // gDestPos = curMillOperation->startPos;
@@ -121,7 +121,7 @@ void MillSimulation::InitSimulation(float quality, qreal devicePixelRatio)
     }
     mNPathSteps = (int)MillPathSegments.size();
     millPathLine.GenerateModel();
-    InitDisplay(quality, devicePixelRatio);
+    InitDisplay(quality);
 }
 
 EndMill* MillSimulation::GetTool(int toolId)
@@ -161,6 +161,11 @@ void MillSimulation::AddTool(const std::vector<float>& toolProfile, int toolid, 
     RemoveTool(toolid);
     EndMill* tool = new EndMill(toolProfile, toolid, diameter);
     mToolTable.push_back(tool);
+}
+
+bool MillSimulation::ToolExists(int toolid)
+{
+    return GetTool(toolid) != nullptr;
 }
 
 void MillSimulation::GlsimStart()
@@ -340,7 +345,7 @@ void MillSimulation::RenderTool()
 
 void MillSimulation::RenderPath()
 {
-    if (!guiDisplay.IsChecked(eGuiItemPath)) {
+    if (!mViewPath) {
         return;
     }
     simDisplay.SetupLinePathPass(mPathStep, false);
@@ -378,10 +383,10 @@ void MillSimulation::Render()
         RenderBaseShape();
         RenderPath();
         simDisplay.updateDisplay = false;
-        simDisplay.RenderResult(true);
+        simDisplay.RenderResult(true, mViewSSAO);
     }
     else {
-        simDisplay.RenderResult(false);
+        simDisplay.RenderResult(false, mViewSSAO);
     }
 
     /*   if (mDebug > 0) {
@@ -446,7 +451,6 @@ void MillSimulation::HandleKeyPress(int key)
     }
     else if (key == 'K') {
         mDebug2++;
-        gDebug = mNPathSteps - mDebug2;
     }
     else {
         guiDisplay.HandleKeyPress(key);
@@ -502,11 +506,12 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
             break;
 
         case eGuiItemPath:
+            mViewPath = checked;
             simDisplay.updateDisplay = true;
             break;
 
         case eGuiItemAmbientOclusion:
-            simDisplay.applySSAO = checked;
+            mViewSSAO = checked;
             simDisplay.updateDisplay = true;
             break;
 
@@ -529,15 +534,19 @@ void MillSimulation::HandleGuiAction(eGuiItems actionItem, bool checked)
 }
 
 
-void MillSimulation::InitDisplay(float quality, qreal devicePixelRatio)
+void MillSimulation::InitDisplay(float quality)
 {
     // generate tools
     for (unsigned int i = 0; i < mToolTable.size(); i++) {
         mToolTable[i]->GenerateDisplayLists(quality);
     }
 
+    // Make sure the next call to UpdateWindowScale will not return early.
+    mWidth = -1;
+    mHeight = -1;
+
     // init 3d display
-    simDisplay.InitGL(devicePixelRatio);
+    simDisplay.InitGL();
 
     // init gui elements
     guiDisplay.InitGui();
@@ -549,13 +558,16 @@ void MillSimulation::SetBoxStock(float x, float y, float z, float l, float w, fl
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
-void MillSimulation::SetArbitraryStock(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+void MillSimulation::SetArbitraryStock(
+    const std::vector<Vertex>& verts,
+    const std::vector<GLushort>& indices
+)
 {
     mStockObject.GenerateSolid(verts, indices);
     simDisplay.ScaleViewToStock(&mStockObject);
 }
 
-void MillSimulation::SetBaseObject(std::vector<Vertex>& verts, std::vector<GLushort>& indices)
+void MillSimulation::SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices)
 {
     mBaseShape.GenerateSolid(verts, indices);
 }
@@ -639,13 +651,16 @@ void MillSimulation::Zoom(float factor)
 
 void MillSimulation::UpdateWindowScale(int width, int height)
 {
-    if (width == gWindowSizeW && height == gWindowSizeH) {
+    if (width == mWidth && height == mHeight) {
         return;
     }
-    gWindowSizeW = width;
-    gWindowSizeH = height;
-    simDisplay.UpdateWindowScale();
-    guiDisplay.UpdateWindowScale();
+
+    mWidth = width;
+    mHeight = height;
+
+    simDisplay.UpdateWindowScale(width, height);
+    guiDisplay.UpdateWindowScale(width, height);
+
     simDisplay.updateDisplay = true;
 }
 
@@ -674,6 +689,28 @@ void MillSimulation::SetSimulationStage(float stage)
     simDisplay.updateDisplay = true;
     mSingleStep = true;
     CalcSegmentPositions();
+}
+
+void MillSimulation::SetState(const MillSimulationState& state)
+{
+    mSimPlaying = state.mSimPlaying;
+    mSingleStep = state.mSingleStep;
+    guiDisplay.UpdatePlayState(mSimPlaying);
+
+    const float stage = (float)state.mCurStep / state.mNTotalSteps;
+    SetSimulationStage(stage);
+
+    mSimSpeed = state.mSimSpeed;
+    guiDisplay.UpdateSimSpeed(mSimSpeed);
+
+    mViewItems = state.mViewItems;
+    mViewPath = state.mViewPath;
+    mViewSSAO = state.mViewSSAO;
+}
+
+const MillSimulationState& MillSimulation::GetState() const
+{
+    return *this;
 }
 
 }  // namespace MillSim

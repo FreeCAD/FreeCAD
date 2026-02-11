@@ -894,7 +894,7 @@ class ArchReferenceTaskPanel:
         self.obj = obj
         self.filename = None
         self.form = QtGui.QWidget()
-        self.form.setWindowTitle(translate("Arch", "External reference"))
+        self.form.setWindowTitle(translate("Arch", "External Reference"))
         layout = QtGui.QVBoxLayout(self.form)
         label1 = QtGui.QLabel(translate("Arch", "External file") + ":")
         layout.addWidget(label1)
@@ -976,7 +976,7 @@ class ArchReferenceTaskPanel:
             filters += " *.ifc"
         filters = translate("Arch", "Reference files") + " (" + filters + ")"
         f = QtGui.QFileDialog.getOpenFileName(
-            self.form, translate("Arch", "Choose reference file"), loc, filters
+            self.form, translate("Arch", "Choose Reference File"), loc, filters
         )
         if f:
             self.filename = f[0]

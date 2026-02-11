@@ -756,6 +756,7 @@ class ObjectProfile(PathAreaOp.ObjectOp):
 
         # Cut model(selected edges) from extended edges boundbox
         cutArea = extBndboxEXT.cut(base.Shape)
+        cutArea.tessellate(tolerance)
         self._addDebugObject("CutArea", cutArea)
 
         # Get top and bottom faces of cut area (CA), and combine faces when necessary

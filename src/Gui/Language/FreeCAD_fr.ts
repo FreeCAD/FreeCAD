@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Énumération</translation>
     </message>
@@ -925,7 +925,7 @@ entraîner une perte de données !</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Ajouter une propriété</translation>
     </message>
@@ -955,37 +955,37 @@ entraîner une perte de données !</translation>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Nom de groupe invalide</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Nom de type invalide</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Nom de propriété invalide « %1 »</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>La propriété « %1 » existe déjà.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>« %1 » est une constante.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>« %1 » est une unité.</translation>
     </message>
@@ -5044,7 +5044,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
@@ -5269,7 +5269,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -8585,12 +8585,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ouvrir le navigateur système.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Mémoire insuffisante</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Mémoire insuffisante pour afficher les données.</translation>
     </message>
@@ -8730,12 +8730,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'importer tous les liens</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Ajouter une propriété</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Impossible d'ajouter la propriété à "%1" : %2</translation>
     </message>
@@ -9055,7 +9055,7 @@ imbriqués). Voulez-vous tous les supprimer de manière récursive ?</translatio
       <translation>Non autorisé :</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Sélection non autorisée par filtre</translation>
     </message>
@@ -10635,7 +10635,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
@@ -12384,7 +12384,7 @@ activée ou désactivée.</translation>
       <location filename="../TaskTransform.ui" line="600"/>
       <location filename="../TaskTransform.ui" line="613"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
   </context>
   <context>
@@ -13469,7 +13469,8 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation>Crée un conteneur polyvalent permettant de regrouper des objets afin qu'ils agissent comme une unité dans la vue 3D. Il est destiné à organiser les objets qui ont une TopoShape de Part, comme les primitives de Part, les corps de PartDesign et d'autres pièces.</translation>
+      <translation>Crée un conteneur polyvalent permettant de regrouper des objets afin qu'ils agissent comme une unité dans la vue 3D. Il est destiné à
+organiser les objets qui ont une TopoShape de Part, comme les primitives de Part, les corps de PartDesign et d'autres pièces.</translation>
     </message>
   </context>
   <context>
@@ -13482,8 +13483,8 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="122"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation>Crée un groupe, qui est un conteneur polyvalent permettant de regrouper des objets dans l'arborescence, quel que soit leur type de données.
-Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.</translation>
+      <translation>Crée un groupe, conteneur polyvalent permettant de regrouper des objets dans l'arborescence, quel que soit leur type de données. Il s'agit
+d'un simple dossier permettant d'organiser les objets dans un modèle.</translation>
     </message>
   </context>
   <context>
@@ -14324,7 +14325,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14332,7 +14333,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14534,12 +14535,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Oui</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Non</translation>
     </message>

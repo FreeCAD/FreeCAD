@@ -20,11 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-
-// inclusion of the generated files (generated out of PythonWorkbenchPy.pyi)
+// generated out of PythonWorkbench.pyi
 #include "PythonWorkbenchPy.h"
 #include "PythonWorkbenchPy.cpp"
-
 
 using namespace Gui;
 

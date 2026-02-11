@@ -458,6 +458,7 @@ SET(Tools_Bit_SRCS
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
     Tools/Bit/90degree_Vbit.fctb
+    Tools/Bit/M8x1.25_Tap.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
 )
@@ -585,6 +586,7 @@ SET(Tests_SRCS
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     CAMTests/Tools/Library/test-path-tool-bit-library-00.fctl
     CAMTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd
+    CAMTests/TestToolBitRecomputeState.py
 )
 
 SET(Tests_Fixtures

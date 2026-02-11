@@ -645,7 +645,7 @@ void ToolBarManager::setupToolBarIconSize()
 {
     int s = toolBarIconSize();
     getMainWindow()->setIconSize(QSize(s, s));
-    // Most of the the toolbar will have explicit icon size, so the above call
+    // Most of the toolbar will have explicit icon size, so the above call
     // to QMainWindow::setIconSize() will have no effect. We need to explicitly
     // change the icon size.
     QList<QToolBar*> bars = getMainWindow()->findChildren<QToolBar*>();

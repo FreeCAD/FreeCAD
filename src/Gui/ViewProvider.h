@@ -458,6 +458,11 @@ public:
     {
         return true;
     }
+    /** Tell if the tree item should be auto collapsed*/
+    bool isAutoCollapseOnDeactivation() const
+    {
+        return autoCollapseOnDeactivation;
+    }
 
     /** @name Signals of the view provider */
     //@{
@@ -732,6 +737,7 @@ protected:
     /// The root separator for annotations
     SoSeparator* pcAnnotation {nullptr};
     ViewProviderPy* pyViewObject {nullptr};
+    bool autoCollapseOnDeactivation {true};
     std::string overrideMode;
     std::bitset<32> StatusBits;
     /// whether visibility can toggled

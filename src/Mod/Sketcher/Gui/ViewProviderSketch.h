@@ -773,6 +773,7 @@ protected:
     void slotUndoDocument(const Gui::Document&);
     void slotRedoDocument(const Gui::Document&);
     void slotSolverUpdate();
+    void slotConstraintAdded(Sketcher::Constraint* constraint);
     void forceUpdateData();
     //@}
 
@@ -980,6 +981,7 @@ private:
     fastsignals::connection connectUndoDocument;
     fastsignals::connection connectRedoDocument;
     fastsignals::connection connectSolverUpdate;
+    fastsignals::connection connectConstraintAdded;
 
     QMetaObject::Connection screenChangeConnection;
 
@@ -1001,7 +1003,7 @@ private:
     Gui::CoinPtr<SoSketchFaces> pcSketchFaces;
     Gui::CoinPtr<SoToggleSwitch> pcSketchFacesToggle;
 
-    ShortcutListener* listener;
+    std::unique_ptr<ShortcutListener> listener;
 
     std::unique_ptr<EditModeCoinManager> editCoinManager;
 
