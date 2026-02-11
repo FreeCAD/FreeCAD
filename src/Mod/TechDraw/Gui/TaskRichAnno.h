@@ -132,7 +132,7 @@ private:
     bool m_syncLock;
     MDIViewPage* m_view;
     MRichTextEdit* m_toolbar;
-    QWidget* m_viewport;
+    QWidget* m_viewport {nullptr};
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
