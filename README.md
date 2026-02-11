@@ -56,18 +56,8 @@ Other options are described on the [wiki Download page](https://wiki.freecad.org
 Compiling
 ---------
 
-The recommended way to build FreeCAD is with [pixi](https://pixi.sh/), which
-sets up an isolated build environment with all dependencies on any platform.
 See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
-for full instructions.
-
-Quick start with pixi:
-
-```sh
-pixi run configure
-pixi run build
-pixi run freecad
-```
+for build instructions.
 
 
 Reporting Issues
