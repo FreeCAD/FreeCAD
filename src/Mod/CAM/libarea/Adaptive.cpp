@@ -2689,36 +2689,102 @@ void Adaptive2d::AddPathToProgress(TPaths& progressPaths, const Path pth, Motion
     }
 }
 
-Paths OpenPathDifference(Clipper& clip, Path& subject, const Paths& obj)
+// performs the intersection of the closed path (subject) and the area (obj), preserving
+// orientation and (closed-path) connectivity
+Paths PathIntersectArea(Clipper& clip, Path& subject, const Paths& obj, ofstream& fout)
 {
+    subject.push_back(subject[0]);  // close path explicitly before treating it as open
+
     // init z-data: p[i].z = 2 * i + 1, and new points are the average of their neighbors
     // this ensures new points have unique z but come between the points they're made from
     for (int i = 0; i < subject.size(); i++) {
         subject[i].Z = i * 2 + 1;
     }
-    clip.ZFillFunction([](IntPoint& e1b, IntPoint& e1t, IntPoint& e2b, IntPoint& e2t, IntPoint& p) {
+    auto zfill = [](IntPoint& e1b, IntPoint& e1t, IntPoint& e2b, IntPoint& e2t, IntPoint& p) {
         if (e1b.Z != 0 && e1t.Z != 0) {
             p.Z = (e1b.Z + e1t.Z) / 2;
         }
         else if (e2b.Z != 0 && e2t.Z != 0) {
             p.Z = (e2b.Z + e2t.Z) / 2;
         }
-    });
+    };
+    clip.ZFillFunction(zfill);
 
-    PolyTree outTree;
+    PolyTree diffTree;
+    Paths diff;
     clip.Clear();
     clip.AddPath(subject, PolyType::ptSubject, false);
     clip.AddPaths(obj, PolyType::ptClip, true);
-    clip.Execute(ClipType::ctIntersection, outTree);
+    clip.Execute(ClipType::ctIntersection, diffTree);
     clip.ZFillFunction(0);
+    OpenPathsFromPolyTree(diffTree, diff);
 
-    Paths result;
-    OpenPathsFromPolyTree(outTree, result);
-    for (Path& p : result) {
-        // restore orientation
-        if (p[0].Z > p[p.size() - 1].Z) {
-            ReversePath(p);
+    // restore orientation
+    for (Path& p : diff) {
+        bool needsReverse = false;
+        if (p.size() >= 2) {
+            if (p[0].Z + 1 != p[1].Z && p[0].Z + 2 != p[1].Z) {
+                ReversePath(p);
+            }
         }
+    }
+
+    // collect result, joining any path that goes through the end point
+    const int zstart = 1;
+    const int zend = subject.size() * 2 - 1;
+    std::optional<Path> start, end;
+    Paths result;
+    for (Path& p : diff) {
+        if (p[0].Z == zstart) {
+            start = {p};
+        }
+        else if (p.back().Z == zend) {
+            end = {p};
+        }
+        else {
+            result.push_back(p);
+        }
+    }
+    if (start && end) {
+        Path joined = *end;
+        // append points from start, skipping the first, which is a repeat
+        for (int i = 1; i < start->size(); i++) {
+            joined.push_back((*start)[i]);
+        }
+        result.push_back(joined);
+    }
+    else {
+        if (start) {
+            result.push_back(*start);
+        }
+        if (end) {
+            result.push_back(*end);
+        }
+    }
+
+    // debug
+    fout << "Subject: [" << endl;
+    for (IntPoint& p : subject) {
+        fout << "\t(" << p.X << ", " << p.Y << ", " << p.Z << ")" << endl;
+    }
+    fout << "]" << endl;
+
+    fout << "Diff:" << endl;
+    for (Path& path : diff) {
+        fout << "[" << endl;
+        for (IntPoint& p : path) {
+            fout << "\t(" << p.X << ", " << p.Y << ", " << p.Z << ")" << endl;
+        }
+        fout << "]" << endl;
+    }
+
+    fout << "Result:" << endl;
+    for (Path& path : result) {
+        fout << "[" << endl;
+        for (IntPoint& p : path) {
+            fout << "\t(" << p.X << ", " << p.Y << ", " << p.Z << ")" << endl;
+        }
+        fout << "]" << endl;
     }
 
     return result;
@@ -3137,8 +3203,31 @@ void Adaptive2d::ProcessPolyNode(
 
         // clip engage candidates with tool bounds
         for (Path& engagePath : engagePaths) {
-            engagePath.push_back(engagePath[0]);
-            Paths openPaths = OpenPathDifference(clip, engagePath, toolBoundPaths);
+            // rotate the closed path so it starts with the closest point
+            // this is useful because if the path does not get clipped, any point on
+            // the path is a valid start location (not just the first) but we want to
+            // test against the closest one
+            Path rotated;
+            if (!prevPos) {
+                rotated = engagePath;
+            }
+            else {
+                int iClosest = 0;
+                double dsqClosest = __DBL_MAX__;
+                for (int i = 0; i < engagePath.size(); i++) {
+                    double dsq = DistanceSqrd(*prevPos, engagePath[i]);
+                    if (dsq < dsqClosest) {
+                        dsqClosest = dsq;
+                        iClosest = i;
+                    }
+                }
+
+                for (int i = 0; i < engagePath.size(); i++) {
+                    rotated.push_back(engagePath[(i + iClosest) % engagePath.size()]);
+                }
+            }
+
+            Paths openPaths = PathIntersectArea(clip, rotated, toolBoundPaths, fout);
 
             for (Path& open : openPaths) {
                 bool added = false;
@@ -3175,7 +3264,8 @@ void Adaptive2d::ProcessPolyNode(
                     if (toolDir) {
                         addEngagePoint(p, *toolDir);
                         added = true;
-                        fout << "Open path: [";
+                        fout << "Open path adds point: (" << p.X << ", " << p.Y << ", " << p.Z
+                             << ") [";
                         for (IntPoint p : open) {
                             fout << "(" << p.X << "," << p.Y << ")_";
                         }
@@ -3199,7 +3289,8 @@ void Adaptive2d::ProcessPolyNode(
                     NormalizeV(dir);
                     addEngagePoint(p1, dir);
 
-                    fout << "Open path: [";
+                    fout << "Open path fallback adds point: (" << p1.X << ", " << p1.Y << ", "
+                         << p1.Z << ") [";
                     for (IntPoint p : open) {
                         fout << "(" << p.X << "," << p.Y << ")_";
                     }
@@ -3255,18 +3346,30 @@ void Adaptive2d::ProcessPolyNode(
                 );
 
                 double cost_mm = 0;
+                std::optional<DPoint> prev = prevPos
+                    ? std::optional<DPoint> {{prevPos->X / (double)scaleFactor, prevPos->Y / (double)scaleFactor}}
+                    : std::optional<DPoint> {};
                 for (TPath tp : link) {
+                    fout << "TP type " << tp.first << " ";
                     if (tp.first == MotionType::mtLinkNotClear) {
+                        fout << "retraction 10000 ";
                         cost_mm += 10000;  // prioritize links that don't require retraction
                     }
-                    for (int i = 1; i < tp.second.size(); i++) {
-                        DPoint prev = tp.second[i - 1];
+                    for (int i = 0; i < tp.second.size(); i++) {
                         DPoint cur = tp.second[i];
-                        double dx = cur.first - prev.first;
-                        double dy = cur.second = prev.second;
-                        cost_mm += sqrt(dx * dx + dy * dy);
+                        if (prev) {
+                            double dx = cur.first - prev->first;
+                            double dy = cur.second - prev->second;
+                            double dist = sqrt(dx * dx + dy * dy);
+                            fout << "+ " << dist << " ";
+                            cost_mm += dist;
+                        }
+                        prev = {cur};
                     }
+                    fout << endl;
                 }
+                fout << "Cost heuristic " << std::get<double>(ep) << " and actual " << cost_mm
+                     << endl;
 
                 if (cost_mm < bestCost) {
                     bestCost = cost_mm;
