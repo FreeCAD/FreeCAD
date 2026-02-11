@@ -116,6 +116,10 @@ public:
      */
     bool loadDocument();
     /**
+     * If the project starts with a Document.xml file it's considered as valid.
+     */
+    bool isValid() const;
+    /**
      * Return the meta data of the loaded document.
      */
     Metadata getMetadata() const;
@@ -200,6 +204,7 @@ public:
     bool replaceProjectFile(const std::string& name, bool keepfile = false);
 
 private:
+    Metadata parseMetadata() const;
     void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<std::string>&) const;
     void findFiles(XERCES_CPP_NAMESPACE::DOMNode*, std::list<PropertyFile>&) const;
 
