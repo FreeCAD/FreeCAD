@@ -295,7 +295,7 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    TaskAssemblyMessages* taskSolver;
+    TaskAssemblyMessages* taskSolver {nullptr};
 
     QMetaObject::Connection workbenchConnection;
     fastsignals::connection connectActivatedVP;
