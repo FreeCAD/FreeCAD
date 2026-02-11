@@ -188,6 +188,7 @@ TaskMeasure::TaskMeasure()
 
     QFormLayout* formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
+    formLayout->setVerticalSpacing(4);
     // Note: How can the split between columns be kept in the middle?
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
@@ -198,8 +199,14 @@ TaskMeasure::TaskMeasure()
     formLayout->addRow(QLatin1String(), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
     formLayout->addRow(showDeltaLabel, showDelta);
-    formLayout->addRow(tr("Result:"), valueResult);
-    formLayout->addRow(tr("Unit:"), unitSwitch);
+    formLayout->setAlignment(showDelta, Qt::AlignVCenter | Qt::AlignLeft);
+
+    auto* resultLayout = new QHBoxLayout();
+    resultLayout->setSpacing(0);
+    resultLayout->addWidget(valueResult, 65);
+    resultLayout->addStretch(5);
+    resultLayout->addWidget(unitSwitch, 30);
+    formLayout->addRow(tr("Result:"), resultLayout);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -404,6 +411,7 @@ void TaskMeasure::tryUpdate()
 
 void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
 {
+    const QString previousUnit = unitSwitch->currentText();
     QStringList units;
 
     if (measureType->identifier == "LENGTH" || measureType->identifier == "DISTANCE"
@@ -433,6 +441,12 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
     unitSwitch->clear();
     if (!units.isEmpty()) {
         unitSwitch->addItems(units);
+        if (!previousUnit.isEmpty()) {
+            int unitIndex = unitSwitch->findText(previousUnit);
+            if (unitIndex >= 0) {
+                unitSwitch->setCurrentIndex(unitIndex);
+            }
+        }
     }
 
     connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
