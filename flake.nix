@@ -95,7 +95,7 @@
               echo "  cmake --build build -j\$(nproc)"
               echo ""
               echo "Run:"
-              echo "  ./build/bin/FreeCAD"
+              echo "  ./run.sh"
             '';
           };
         }
