@@ -367,15 +367,6 @@ void ViewProviderAssembly::unsetEdit(int mode)
     ViewProviderPart::unsetEdit(mode);
 }
 
-void ViewProviderAssembly::removeTaskSolver()
-{
-    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-    if (taskView) {
-        // Waiting for the solver to support reporting information.
-        taskView->removeContextualPanel(taskSolver);
-    }
-}
-
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
 {
     if (name && strcmp(name, ASSEMBLYKEY) == 0) {
