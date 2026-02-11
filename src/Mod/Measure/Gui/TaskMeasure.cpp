@@ -46,12 +46,12 @@
 #include <QMenu>
 #include <QShortcut>
 #include <QToolTip>
+#include <QSignalBlocker>
 
 #include <Base/Quantity.h>
 #include <array>
 
 using namespace MeasureGui;
-using namespace Base;
 
 namespace
 {
@@ -360,21 +360,9 @@ void TaskMeasure::tryUpdate()
 
 
     if (!measureType) {
-        // Disconnect to prevent spurious signals
-        disconnect(
-            unitSwitch,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskMeasure::onUnitChanged
-        );
+        QSignalBlocker unitSwitchBlocker(unitSwitch);
         unitSwitch->clear();
         unitSwitch->addItem(QLatin1String("-"));
-        connect(
-            unitSwitch,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskMeasure::onUnitChanged
-        );
         mLastUnitSelection = QLatin1String("-");
 
         // Reset measure object
@@ -436,17 +424,12 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
         units.clear();
     }
 
-    // disconnect before modifying the list
-    disconnect(
-        unitSwitch,
-        qOverload<int>(&QComboBox::currentIndexChanged),
-        this,
-        &TaskMeasure::onUnitChanged
-    );
+    QSignalBlocker unitSwitchBlocker(unitSwitch);
 
     unitSwitch->clear();
     if (!units.isEmpty()) {
         unitSwitch->addItems(units);
+        // If unit from the same category was previously selected keep it
         if (!previousUnit.isEmpty()) {
             int unitIndex = unitSwitch->findText(previousUnit);
             if (unitIndex >= 0) {
@@ -455,7 +438,6 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
         }
     }
 
-    connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
 }
 
 void TaskMeasure::setUnitFromResultString()
@@ -478,20 +460,8 @@ void TaskMeasure::setUnitFromResultString()
 
     int unitIndex = unitSwitch->findText(unitFromResult);
     if (unitIndex >= 0) {
-        // Disconnect to avoid triggering onUnitChanged for default selection
-        disconnect(
-            unitSwitch,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskMeasure::onUnitChanged
-        );
+        QSignalBlocker unitSwitchBlocker(unitSwitch);
         unitSwitch->setCurrentIndex(unitIndex);
-        connect(
-            unitSwitch,
-            qOverload<int>(&QComboBox::currentIndexChanged),
-            this,
-            &TaskMeasure::onUnitChanged
-        );
 
         mLastUnitSelection = unitFromResult;
     }
