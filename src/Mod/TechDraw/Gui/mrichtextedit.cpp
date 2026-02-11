@@ -58,7 +58,7 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QWidget(parent) {
+MRichTextEdit::MRichTextEdit(QWidget *parent, QString textIn) : QFrame(parent) {
     setupUi(this);
 
     f_fontsize->setEditable(true);
