@@ -141,8 +141,12 @@ void ActionGroup::processHide()
     {
         myDummy->hide();
         myHeader->setFold(false);
-        setFixedHeight(myHeader->height() + separatorHeight);
-        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        // When collapsed, set fixed height to just the header
+        // Use Maximum vertical policy so collapsed boxes stack at top
+        setMinimumHeight(myHeader->height() + separatorHeight);
+        setMaximumHeight(myHeader->height() + separatorHeight);
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+        updateGeometry();
         return;
     }
 
@@ -161,9 +165,11 @@ void ActionGroup::processShow()
         m_foldPixmap = QPixmap();
         myGroup->show();
         myHeader->setFold(true);
-        setFixedHeight(m_fullHeight + myHeader->height() + separatorHeight);
-        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        // Release the fixed height so the group can size to its content
+        setMinimumHeight(0);
         setMaximumHeight(QWIDGETSIZE_MAX);
+        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        updateGeometry();
         return;
     }
 
