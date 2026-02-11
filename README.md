@@ -74,7 +74,7 @@ development shell with all dependencies:
 nix develop
 cmake -B build -G Ninja -DFREECAD_QT_VERSION=6
 cmake --build build -j$(nproc)
-./build/bin/FreeCAD
+./run.sh
 ```
 
 
