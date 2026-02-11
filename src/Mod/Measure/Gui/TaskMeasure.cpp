@@ -119,7 +119,7 @@ TaskMeasure::TaskMeasure()
 
     showDelta = new QCheckBox();
     showDelta->setChecked(delta);
-    showDeltaLabel = new QLabel(tr("Show Delta:"));
+    showDeltaLabel = new QLabel(tr("Show Delta"));
 #if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
     connect(showDelta, &QCheckBox::checkStateChanged, this, &TaskMeasure::showDeltaChanged);
 #else
@@ -188,7 +188,7 @@ TaskMeasure::TaskMeasure()
 
     QFormLayout* formLayout = new QFormLayout();
     formLayout->setHorizontalSpacing(10);
-    formLayout->setVerticalSpacing(4);
+    formLayout->setVerticalSpacing(6);
     // Note: How can the split between columns be kept in the middle?
     // formLayout->setFieldGrowthPolicy(QFormLayout::FieldGrowthPolicy::ExpandingFieldsGrow);
     formLayout->setFormAlignment(Qt::AlignCenter);
@@ -197,16 +197,22 @@ TaskMeasure::TaskMeasure()
     settingsLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding));
     settingsLayout->addWidget(mSettings);
     formLayout->addRow(QLatin1String(), settingsLayout);
-    formLayout->addRow(tr("Mode:"), modeSwitch);
+    formLayout->addRow(tr("Mode"), modeSwitch);
+
+    auto* deltaLayout = new QHBoxLayout();
+    deltaLayout->setContentsMargins(0, 0, 0, 0);
+    deltaLayout->setSpacing(8);
+    deltaLayout->addWidget(showDelta, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    deltaLayout->addWidget(showDeltaLabel, 0, Qt::AlignVCenter | Qt::AlignLeft);
+    deltaLayout->addStretch(1);
+
 
     auto* resultLayout = new QHBoxLayout();
-    resultLayout->setSpacing(0);
+    resultLayout->setSpacing(8);
     resultLayout->addWidget(valueResult, 65);
-    resultLayout->addStretch(5);
     resultLayout->addWidget(unitSwitch, 30);
-    formLayout->addRow(tr("Result:"), resultLayout);
-    formLayout->addRow(showDeltaLabel, showDelta);
-    formLayout->setAlignment(showDelta, Qt::AlignVCenter | Qt::AlignLeft);
+    formLayout->addRow(tr("Result"), resultLayout);
+    formLayout->addRow(deltaLayout);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
