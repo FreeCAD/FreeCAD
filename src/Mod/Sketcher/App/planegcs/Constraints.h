@@ -205,7 +205,7 @@ public:
     virtual double maxStep(MAP_pD_D& dir, double lim = 1.);
 
     // Evaluates the value of the constraint and assigns it to
-    // the value parameter, called on driving constraints to
+    // the value parameter, called on driven constraints to
     // find the parameter of interest without solving
     // Note: not implemented for constraints which do not have a value
     virtual void evaluate()
