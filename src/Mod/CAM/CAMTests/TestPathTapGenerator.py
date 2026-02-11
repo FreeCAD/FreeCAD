@@ -51,6 +51,7 @@ class TestPathTapGenerator(PathTestUtils.PathTestBase):
         self.assertTrue(command.Parameters["X"] == 0)
         self.assertTrue(command.Parameters["Y"] == 0)
         self.assertTrue(command.Parameters["Z"] == 0)
+        self.assertTrue(command.Annotations["rigid"] == "False")
 
         # repeat must be > 0
         args = {"edge": e, "repeat": 0}
