@@ -2,7 +2,7 @@
 
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
- *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *                         *
+ *   Copyright (c) 2013 Jürgen Riegel (FreeCAD@juergen-riegel.net)         *  *
  *                                                                         *
  *   FreeCAD is free software: you can redistribute it and/or modify it    *
  *   under the terms of the GNU Lesser General Public License as           *
