@@ -88,11 +88,24 @@
               [ -n "$_pyside6_dir" ] && export CMAKE_PREFIX_PATH="$_pyside6_dir:$CMAKE_PREFIX_PATH"
               [ -n "$_shiboken6_dir" ] && export CMAKE_PREFIX_PATH="$_shiboken6_dir:$CMAKE_PREFIX_PATH"
 
+              # Ensure Nix libraries are found before system libraries
+              # (system /usr/lib may contain older Qt, minimal BLAS, etc.)
+              export LD_LIBRARY_PATH="${pkgs.qt6.qtbase}/lib:${pkgs.qt6.qtsvg}/lib:${pkgs.qt6.qttools}/lib:${pkgs.openblas}/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+
+              # Host OpenGL drivers (needed for non-NixOS systems)
+              # Appended at the END so Nix libraries take priority
+              for dir in /usr/lib/x86_64-linux-gnu /usr/lib64 /usr/lib; do
+                if [ -e "$dir/libGL.so.1" ]; then
+                  export LD_LIBRARY_PATH="''${LD_LIBRARY_PATH:+$LD_LIBRARY_PATH:}$dir"
+                  break
+                fi
+              done
+
               echo "FreeCAD development environment loaded"
               echo ""
               echo "Build:"
               echo "  cmake -B build -G Ninja -DFREECAD_QT_VERSION=6"
-              echo "  cmake --build build -j\$(nproc)"
+              echo "  cmake --build <build filesystem path>"
               echo ""
               echo "Run:"
               echo "  ./run.sh"
