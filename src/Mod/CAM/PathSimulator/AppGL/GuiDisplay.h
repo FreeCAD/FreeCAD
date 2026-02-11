@@ -58,7 +58,7 @@ enum eGuiItems
     eGuiItemMax  // this element must be the last item always
 };
 
-struct GuiItem
+struct DefaultGuiItem
 {
     eGuiItems name;
     unsigned int vbo, vao;
@@ -66,32 +66,31 @@ struct GuiItem
     int actionKey;   // action key when item pressed
     bool hidden {};  // is item hidden
     unsigned int flags {};
+};
+
+class GuiDisplay;
+
+class GuiItem: public DefaultGuiItem
+{
+public:
+    explicit GuiItem(const DefaultGuiItem& item, GuiDisplay& d);
+
+    int posx();
+    int posy();
+    void setPosx(int x);
+    void setPosy(int y);
+
+public:
     bool mouseOver {};
     TextureItem texItem {};
     QString toolTip {};
 
-    int posx()
-    {
-        return sx >= 0 ? sx : gWindowSizeW + sx;
-    }
-    int posy()
-    {
-        return sy >= 0 ? sy : gWindowSizeH + sy;
-    }
-    void setPosx(int x)
-    {
-        sx = sx >= 0 ? x : x - gWindowSizeW;
-    }
-    void setPosy(int y)
-    {
-        sy = sy >= 0 ? y : y - gWindowSizeH;
-    }
+    GuiDisplay& display;
 };
 
 #define GUIITEM_CHECKABLE 0x01
 #define GUIITEM_CHECKED 0x02
 #define GUIITEM_STRETCHED 0x04
-
 
 struct Vertex2D
 {
@@ -102,7 +101,8 @@ struct Vertex2D
 class GuiDisplay
 {
 public:
-    // GuiDisplay() {};
+    GuiDisplay();
+
     bool InitGui();
     void ResetGui();
     void Render(float progress);
@@ -110,15 +110,15 @@ public:
     void HandleActionItem(GuiItem* guiItem);
     void MousePressed(int button, bool isPressed, bool isRunning);
     void MouseDrag(int buttons, int dx, int dy);
-    void SetMillSimulator(MillSimulation* millSim)
-    {
-        mMillSim = millSim;
-    }
+    void SetMillSimulator(MillSimulation* millSim);
     void UpdatePlayState(bool isRunning);
     void UpdateSimSpeed(int speed);
     void HandleKeyPress(int key);
     bool IsChecked(eGuiItems item);
-    void UpdateWindowScale();
+    void UpdateWindowScale(int width, int height);
+
+    int width() const;
+    int height() const;
 
 public:
     bool guiInitiated = false;
@@ -130,6 +130,11 @@ private:
     void DestroyGlItem(GuiItem* guiItem);
     void RenderItem(int itemId);
     void SetupTooltips();
+
+    std::vector<GuiItem> mItems;
+
+    int mWidth = -1;
+    int mHeight = -1;
 
     vec3 mStdColor = {0.8f, 0.8f, 0.4f};
     vec3 mToggleColor = {0.9f, 0.6f, 0.2f};

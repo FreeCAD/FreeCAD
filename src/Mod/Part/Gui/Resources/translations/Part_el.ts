@@ -4356,17 +4356,17 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Η Κατεύθυνση της πορείας ως προς τον άξονα X (δεξιά/αριστερά)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Η κατεύθυνση της πορείας ως προς τον άξονα Y (εμπρός / πίσω)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Η κατεύθυνση της πορείας ως προς τον άξονα Z (πάνω / κάτω)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -6821,7 +6821,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Επίπεδο Αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
@@ -6839,7 +6839,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Γραμμή Αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2610"/>
@@ -6857,7 +6857,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2642"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Σημείο αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2643"/>

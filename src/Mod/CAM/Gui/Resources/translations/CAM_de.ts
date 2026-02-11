@@ -5719,7 +5719,7 @@ Die Eigenschaft KeepToolDown verwenden, um dies zu ändern</translation>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="106"/>
       <source>Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial</source>
-      <translation>Ausgangsmaterialeigenschaften sind veraltet. Materialeigenschaft entfernen. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisenEntfernen</translation>
+      <translation>Die Eigenschaft Stock Material ist veraltet. Die Eigenschaft Material wird entfernt. Bitte das native Materialsystem verwenden, um ein ShapeMaterial zuzuweisen</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Stock.py" line="599"/>

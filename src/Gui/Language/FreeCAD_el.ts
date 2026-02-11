@@ -265,7 +265,7 @@
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="61"/>
       <source>Flip Y/Z</source>
-      <translation>Αντιστρέψτε Υ/Ζ</translation>
+      <translation>Αναστροφή Y/Z</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgCustomizeSpNavSettings.ui" line="22"/>
@@ -329,13 +329,13 @@
       <location filename="../Dialogs/DlgExpressionInput.ui" line="183"/>
       <source>Store the expression in a newly created property in the selected Variable Set.
 The property of this object will refer to the property of the Variable Set.</source>
-      <translation type="unfinished">Store the expression in a newly created property in the selected Variable Set.
-The property of this object will refer to the property of the Variable Set.</translation>
+      <translation>Αποθήκευση της έκφρασης σε μια νέα ιδιότητα μέσα στο επιλεγμένο Σύνολο Μεταβλητών. 
+Η ιδιότητα αυτού του αντικειμένου θα αναφέρεται πλέον στην ιδιότητα του Συνόλου Μεταβλητών.</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="187"/>
       <source>Store in Variable Set...</source>
-      <translation type="unfinished">Store in Variable Set...</translation>
+      <translation>Αποθήκευση στο Σύνολο Μεταβλητών...</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="260"/>
@@ -345,7 +345,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="284"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Σύνολο Μεταβλητών</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.ui" line="301"/>
@@ -381,7 +381,7 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="288"/>
       <source>&amp;Default</source>
-      <translation type="unfinished">&amp;Default</translation>
+      <translation>&amp;Προεπιλογή</translation>
     </message>
     <message>
       <location filename="../Application.h" line="289"/>
@@ -391,12 +391,12 @@ The property of this object will refer to the property of the Variable Set.</tra
     <message>
       <location filename="../Application.h" line="297"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Μετασχηματισμός</translation>
     </message>
     <message>
       <location filename="../Application.h" line="306"/>
       <source>Cu&amp;tting</source>
-      <translation type="unfinished">Cu&amp;tting</translation>
+      <translation>Αποκοπή</translation>
     </message>
     <message>
       <location filename="../Application.h" line="315"/>
@@ -1408,7 +1408,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Μετακίνηση Πάνω</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
@@ -1418,7 +1418,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Μετακίνηση Κάτω</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
@@ -12264,7 +12264,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1758"/>
       <source>Trans&amp;form</source>
-      <translation type="unfinished">Trans&amp;form</translation>
+      <translation>Μετασχηματισμός</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1759"/>
@@ -13514,7 +13514,7 @@ Proceed?</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="193"/>
       <source>Variable Set</source>
-      <translation type="unfinished">Variable Set</translation>
+      <translation>Σύνολο Μεταβλητών</translation>
     </message>
     <message>
       <location filename="../CommandStructure.cpp" line="195"/>
@@ -14348,7 +14348,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14356,7 +14356,7 @@ This makes the docked panel stay transparent at all times.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation type="unfinished">Exact Match</translation>
     </message>
@@ -14433,27 +14433,27 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="510"/>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="924"/>
       <source>the name cannot be empty</source>
-      <translation type="unfinished">the name cannot be empty</translation>
+      <translation>το όνομα δεν μπορεί να είναι κενό</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="520"/>
       <source>%1 is a unit</source>
-      <translation type="unfinished">%1 is a unit</translation>
+      <translation>%1 είναι μια μονάδα</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="525"/>
       <source>%1 is a constant</source>
-      <translation type="unfinished">%1 is a constant</translation>
+      <translation>Το %1 είναι μια σταθερά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="531"/>
       <source>%1 already exists</source>
-      <translation type="unfinished">%1 already exists</translation>
+      <translation>%1 υπάρχει ήδη</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgExpressionInput.cpp" line="920"/>
       <source>Invalid group name: %1</source>
-      <translation type="unfinished">Invalid group name: %1</translation>
+      <translation>Μη έγκυρο όνομα ομάδας: %1</translation>
     </message>
   </context>
   <context>
@@ -14461,12 +14461,12 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="62"/>
       <source>Generic</source>
-      <translation type="unfinished">Generic</translation>
+      <translation>Γενικά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="65"/>
       <source>Numeric</source>
-      <translation type="unfinished">Numeric</translation>
+      <translation>Αριθμητικά</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="68"/>
@@ -14479,7 +14479,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="281"/>
       <source>New parameter...</source>
-      <translation type="unfinished">New parameter...</translation>
+      <translation>Νέα παράμετρος...</translation>
     </message>
   </context>
   <context>
@@ -14487,12 +14487,12 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="355"/>
       <source>All Theme Editor Parameters</source>
-      <translation type="unfinished">All Theme Editor Parameters</translation>
+      <translation>Όλες οι παράμετροι του επεξεργαστή θέματος</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="425"/>
       <source>Root</source>
-      <translation type="unfinished">Root</translation>
+      <translation>Ρίζα</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="500"/>
@@ -14502,7 +14502,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="502"/>
       <source>Expression</source>
-      <translation type="unfinished">Expression</translation>
+      <translation>Έκφραση</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
@@ -14521,7 +14521,7 @@ This makes the docked panel stay transparent at all times.</translation>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="881"/>
       <location filename="../Dialogs/DlgToolbarsImp.cpp" line="890"/>
       <source>Toolbox Bars</source>
-      <translation type="unfinished">Toolbox Bars</translation>
+      <translation>Γραμμές Εργαλειοθηκών</translation>
     </message>
   </context>
   <context>
@@ -14534,7 +14534,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="425"/>
       <source>Press middle+right click</source>
-      <translation type="unfinished">Press middle+right click</translation>
+      <translation>Πατήστε μεσαίο+δεξί κλικ</translation>
     </message>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="427"/>
@@ -14544,7 +14544,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../Navigation/SiemensNXNavigationStyle.cpp" line="429"/>
       <source>Scroll mouse wheel</source>
-      <translation type="unfinished">Scroll mouse wheel</translation>
+      <translation>Κύλιση ρόδας ποντικιού</translation>
     </message>
   </context>
   <context>
@@ -14552,7 +14552,7 @@ This makes the docked panel stay transparent at all times.</translation>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="4615"/>
       <source>Changes the linked object</source>
-      <translation type="unfinished">Changes the linked object</translation>
+      <translation>Αλλάζει το συνδεδεμένο αντικείμενο</translation>
     </message>
   </context>
   <context>

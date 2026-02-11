@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <vector>
 
@@ -5666,9 +5667,10 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         {{Sketcher::Horizontal, GeoEnum::GeoUndef},
          {Sketcher::Vertical, GeoEnum::GeoUndef}};
 
-    int cindex = 0;
+    size_t cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
-        if (i != changeConstraintIndices[cindex].first) {
+        if (cindex >= changeConstraintIndices.size()
+        || i != changeConstraintIndices[cindex].first) {
             newconstrVals.push_back(constrvals[i]);
             continue;
         }
