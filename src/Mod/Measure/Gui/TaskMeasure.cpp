@@ -722,9 +722,7 @@ void TaskMeasure::onUnitChanged(int index)
     const QString currentUnit = unitSwitch->itemText(index);
     const auto dash = QLatin1String("-");
 
-    if (currentUnit != mLastUnitSelection &&
-        (mLastUnitSelection != dash || currentUnit != dash))
-    {
+    if (currentUnit != mLastUnitSelection && (mLastUnitSelection != dash || currentUnit != dash)) {
         updateResultWithUnit();
     }
 
