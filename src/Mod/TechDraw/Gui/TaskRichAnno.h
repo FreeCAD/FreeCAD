@@ -103,6 +103,7 @@ protected Q_SLOTS:
     void onViewPositionChanged(const QPointF& scenePos);
 
 private:
+    void removeViewFilter();
     void enterPlacementMode();
     void createAndSetupAnnotation(const QPointF* scenePos = nullptr);
     void createAnnoIfNotAlready();
@@ -131,6 +132,7 @@ private:
     bool m_syncLock;
     MDIViewPage* m_view;
     MRichTextEdit* m_toolbar;
+    QWidget* m_viewport;
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
