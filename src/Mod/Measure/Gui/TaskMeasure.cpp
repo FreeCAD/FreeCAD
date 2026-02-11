@@ -437,7 +437,6 @@ void TaskMeasure::updateUnitDropdown(const App::MeasureType* measureType)
             }
         }
     }
-
 }
 
 void TaskMeasure::setUnitFromResultString()
