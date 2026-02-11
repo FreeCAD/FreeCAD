@@ -39,9 +39,12 @@
 #include <Inventor/bundles/SoMaterialBundle.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/elements/SoCoordinateElement.h>
+#include <Inventor/elements/SoDepthBufferElement.h>
+#include <Inventor/elements/SoLazyElement.h>
 #include <Inventor/elements/SoPointSizeElement.h>
 #include <Inventor/errors/SoDebugError.h>
 #include <Inventor/misc/SoState.h>
+#include <Inventor/nodes/SoIndexedPointSet.h>
 
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
@@ -54,6 +57,53 @@ using namespace PartGui;
 
 SO_NODE_SOURCE(SoBrepPointSet)
 
+static void renderOverlayPoints(
+    SoGLRenderAction* action,
+    SoIndexedPointSet* pointSet,
+    const int32_t* indices,
+    int numIndices,
+    const SbColor& color
+)
+{
+    if (!action || !pointSet || !indices || numIndices <= 0) {
+        return;
+    }
+
+    std::vector<int32_t> pointIndices;
+    pointIndices.reserve(static_cast<size_t>(numIndices) + 1);
+
+    for (int i = 0; i < numIndices; i++) {
+        const int32_t idx = indices[i];
+        if (idx >= 0) {
+            pointIndices.push_back(idx);
+        }
+    }
+    pointIndices.push_back(-1);
+
+    if (pointIndices.size() <= 1) {
+        return;
+    }
+
+    auto state = action->getState();
+    state->push();
+
+    SoDepthBufferElement::set(state, FALSE, FALSE, SoDepthBufferElement::ALWAYS, SbVec2f(0.0f, 1.0f));
+
+    SoLazyElement::setEmissive(state, &color);
+    uint32_t packedColor = color.getPackedValue(0.0);
+    SoLazyElement::setPacked(state, pointSet, 1, &packedColor, false);
+
+    float ps = SoPointSizeElement::get(state);
+    if (ps < 4.0f) {
+        SoPointSizeElement::set(state, pointSet, 4.0f);
+    }
+
+    pointSet->coordIndex.setValues(0, static_cast<int>(pointIndices.size()), pointIndices.data());
+    pointSet->GLRender(action);
+
+    state->pop();
+}
+
 void SoBrepPointSet::initClass()
 {
     SO_NODE_INIT_CLASS(SoBrepPointSet, SoPointSet, "PointSet");
@@ -64,6 +114,23 @@ SoBrepPointSet::SoBrepPointSet()
     , selContext2(std::make_shared<SelContext>())
 {
     SO_NODE_CONSTRUCTOR(SoBrepPointSet);
+    SO_NODE_ADD_FIELD(highlightCoordIndex, (0));
+    SO_NODE_ADD_FIELD(selectionCoordIndex, (0));
+    SO_NODE_ADD_FIELD(highlightColor, (SbColor(1.0f, 0.0f, 0.0f)));
+    SO_NODE_ADD_FIELD(selectionColor, (SbColor(0.0f, 0.6f, 0.0f)));
+
+    highlightCoordIndex.setNum(0);
+    selectionCoordIndex.setNum(0);
+    overlayPointSet = new SoIndexedPointSet;
+    overlayPointSet->ref();
+}
+
+SoBrepPointSet::~SoBrepPointSet()
+{
+    if (overlayPointSet) {
+        overlayPointSet->unref();
+        overlayPointSet = nullptr;
+    }
 }
 
 void SoBrepPointSet::GLRender(SoGLRenderAction* action)
@@ -178,6 +245,28 @@ void SoBrepPointSet::GLRender(SoGLRenderAction* action)
         renderHighlight(action, ctx);
     }
     // #endif
+
+    // Optional overlay rendering for deterministic tests (and programmatic usage).
+    const int hlNum = highlightCoordIndex.getNum();
+    if (hlNum > 0) {
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            highlightCoordIndex.getValues(0),
+            hlNum,
+            highlightColor.getValue()
+        );
+    }
+    const int selNum = selectionCoordIndex.getNum();
+    if (selNum > 0) {
+        renderOverlayPoints(
+            action,
+            overlayPointSet,
+            selectionCoordIndex.getValues(0),
+            selNum,
+            selectionColor.getValue()
+        );
+    }
 }
 
 void SoBrepPointSet::GLRenderBelowPath(SoGLRenderAction* action)

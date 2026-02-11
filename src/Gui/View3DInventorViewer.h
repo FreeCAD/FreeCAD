@@ -66,6 +66,7 @@ class QSurfaceFormat;
 class SoTranslation;
 class SoTransform;
 class SoText2;
+class SoAnnotation;
 
 class SoSeparator;
 class SoShapeHints;
@@ -557,6 +558,7 @@ private:
 
 private:
     NaviCube* naviCube;
+    SoAnnotation* naviCubeAnnotation;
     std::set<ViewProvider*> _ViewProviderSet;
     std::map<SoSeparator*, ViewProvider*> _ViewProviderMap;
     std::list<GLGraphicsItem*> graphicsItems;

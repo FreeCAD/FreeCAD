@@ -25,6 +25,8 @@
 #ifndef PARTGUI_SOBREPEDGESET_H
 #define PARTGUI_SOBREPEDGESET_H
 
+#include <Inventor/fields/SoMFInt32.h>
+#include <Inventor/fields/SoSFColor.h>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
 #include <vector>
@@ -56,8 +58,13 @@ public:
         viewProvider = vp;
     }
 
+    SoMFInt32 highlightCoordIndex;
+    SoMFInt32 selectionCoordIndex;
+    SoSFColor highlightColor;
+    SoSFColor selectionColor;
+
 protected:
-    ~SoBrepEdgeSet() override = default;
+    ~SoBrepEdgeSet() override;
     void GLRender(SoGLRenderAction* action) override;
     void GLRenderBelowPath(SoGLRenderAction* action) override;
     void doAction(SoAction* action) override;
@@ -89,6 +96,7 @@ private:
     SelContextPtr selContext2;
     Gui::SoFCSelectionCounter selCounter;
     uint32_t packedColor {0};
+    SoIndexedLineSet* overlayLineSet {nullptr};
 
     // backreference to viewprovider that owns this node
     ViewProviderPartExt* viewProvider = nullptr;
