@@ -38,7 +38,7 @@
 /**
  * @brief A simple rich-text editor
  */
-class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
+class MRichTextEdit : public QFrame, protected Ui::MRichTextEdit {
     Q_OBJECT
 
 public:
