@@ -418,6 +418,11 @@ QPointF QGISectionLine::getArrowPosition(Base::Vector3d arrowDir, QPointF refPoi
     return QPointF(refPoint + offsetVec);
 }
 
+void QGISectionLine::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+}
+
 void QGISectionLine::setFont(QFont f, double fsize)
 {
     m_symFont = f;
