@@ -50,6 +50,7 @@
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
+#include "QGIArrow.h"
 #include "QGICMark.h"
 #include "QGICenterLine.h"
 #include "QGIEdge.h"
@@ -774,7 +775,9 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         }
 
         double fontSize = Preferences::dimFontSizeMM();
+        double arrowSize = QGIArrow::getPrefArrowSize();
         sectionLine->setFont(getFont(), fontSize);
+        sectionLine->setArrowSize(arrowSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(-viewPart->Rotation.getValue());
         sectionLine->draw();
@@ -853,7 +856,9 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
 
     double fontSize = Preferences::dimFontSizeMM();
+    double arrowSize = QGIArrow::getPrefArrowSize();
     sectionLine->setFont(getFont(), fontSize);
+    sectionLine->setArrowSize(arrowSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
     sectionLine->setRotation(-viewPart->Rotation.getValue());
     sectionLine->draw();
