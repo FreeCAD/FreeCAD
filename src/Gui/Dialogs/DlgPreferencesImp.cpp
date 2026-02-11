@@ -1698,6 +1698,12 @@ void PreferencesSearchController::searchWidgetType(
 
         // search throughout combobox items
         if constexpr (std::is_same_v<WidgetType, QComboBox>) {
+
+            // check if widget is marked with "doNotSearch" aka. do not search
+            QVariant doNotSearch = widget->property("doNotSearch");
+            if (doNotSearch.isValid() && doNotSearch.toBool()) {
+                return;  // skip search items in this combobox
+            }
             for (int i = 0; i < widget->count(); ++i) {
                 QString itemText = widget->itemText(i);
                 if (!itemText.isEmpty()) {
