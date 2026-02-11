@@ -995,10 +995,13 @@ void Document::Save(Base::Writer& writer) const
 
     writer.incInd();
 
-    // NOTE: DO NOT save the main string hasher as separate file, because it is
-    // required by many objects, which assume the string hasher is fully
-    // restored.
-    d->Hasher->setPersistenceFileName(nullptr);
+    // NOTE: This differs from LS3 Code. Persisting this table
+    //       forces the assertion in Writer.addFile(...): assert(!isForceXML()); to be removed
+    //       see: https://github.com/FreeCAD/FreeCAD/issues/27489
+    //
+    // Original code in LS3:
+    //       d->Hasher->setPersistenceFileName(0);
+    d->Hasher->setPersistenceFileName("StringHasher.Table");
 
     for (const auto o : d->objectArray) {
         o->beforeSave();
