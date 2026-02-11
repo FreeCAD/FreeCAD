@@ -73,7 +73,7 @@ development shell with all dependencies:
 ```sh
 nix develop
 cmake -B build -G Ninja -DFREECAD_QT_VERSION=6
-cmake --build build -j$(nproc)
+cmake --build build <build filesystem path>
 ./run.sh
 ```
 
