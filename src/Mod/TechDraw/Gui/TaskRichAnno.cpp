@@ -158,7 +158,12 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
     // Don't create the feature or the toolbar yet. Enter placement mode instead.
     QGVPage* graphicsView = m_vpp->getQGVPage();
     if (graphicsView) {
-        graphicsView->viewport()->installEventFilter(this);
+        // Avoid double installation
+        if (m_viewport) {
+            m_viewport->removeEventFilter(this);
+        }
+        m_viewport = graphicsView->viewport();
+        m_viewport->installEventFilter(this);
     }
 
     enterPlacementMode();
@@ -168,6 +173,8 @@ TaskRichAnno::TaskRichAnno(TechDraw::DrawView* baseFeat,
 
 TaskRichAnno::~TaskRichAnno()
 {
+    removeViewFilter();
+    
     if (m_toolbar) {
         m_toolbar->close();  // This will delete
         m_toolbar = nullptr;
@@ -278,7 +285,11 @@ void TaskRichAnno::finishSetup()
 
     if (graphicsView) {
         // Install the event filter on the viewport, which receives the mouse events.
-        graphicsView->viewport()->installEventFilter(this);
+        if (m_viewport) {
+            m_viewport->removeEventFilter(this);
+        }
+        m_viewport = graphicsView->viewport();
+        m_viewport->installEventFilter(this);
     }
 
     QTimer::singleShot(0, m_qgiAnno, &QGIRichAnno::updateLayout);
@@ -521,8 +532,16 @@ void TaskRichAnno::focusOutEvent(QFocusEvent* event)
 
 bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
 {
+    if (!m_view || !m_view->getViewProviderPage() || !m_viewport) {
+        return QWidget::eventFilter(watched, event);
+    }
+
     QGVPage* graphicsView = m_view->getViewProviderPage()->getQGVPage();
-    if (watched == graphicsView->viewport()) {
+    if (!graphicsView) {
+        return QWidget::eventFilter(watched, event);
+    }
+    
+    if (watched == m_viewport) {
         if (event->type() == QEvent::Enter) {
             if (!m_placementMode && m_qgiAnno) {
                 refocusAnnotation();
@@ -568,6 +587,14 @@ bool TaskRichAnno::eventFilter(QObject* watched, QEvent* event)
 
     // For all other events, pass them on to the default handler.
     return QWidget::eventFilter(watched, event);
+}
+
+void TaskRichAnno::removeViewFilter()
+{
+    if (m_viewport) {
+        m_viewport->removeEventFilter(this);
+        m_viewport = nullptr;
+    }
 }
 
 //******************************************************************************
@@ -799,11 +826,7 @@ bool TaskRichAnno::accept()
         return false;
     }
 
-    if (m_view) {
-        if (auto* gv = m_view->getViewProviderPage()->getQGVPage()) {
-            gv->viewport()->removeEventFilter(this);
-        }
-    }
+    removeViewFilter();
 
     if (m_qgiAnno) {
         m_qgiAnno->setEditMode(false);
@@ -826,6 +849,8 @@ bool TaskRichAnno::reject()
     if (m_qgiAnno) {
         m_qgiAnno->setEditMode(false);
     }
+    
+    removeViewFilter();
 
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
