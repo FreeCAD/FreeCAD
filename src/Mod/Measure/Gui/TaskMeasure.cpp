@@ -72,12 +72,12 @@ constexpr std::array areaUnitLabels {"mm²", "cm²", "m²", "km²", "in²", "ft�
 template<std::size_t N>
 QStringList toQStringList(const std::array<const char*, N>& strings)
 {
-    QList<QString> labels;
-    labels.reserve(N);
-    for (const auto& str : strings) {
-        labels.append(QString::fromUtf8(str));
+    QStringList result;
+    result.reserve(N);
+    for (const char* s : strings) {
+        result.append(QString::fromUtf8(s));
     }
-    return QStringList(labels.begin(), labels.end());
+    return result;
 }
 
 QString extractUnitFromResultString(const QString& resultString)
@@ -719,12 +719,12 @@ void TaskMeasure::onModeChanged(int index)
 
 void TaskMeasure::onUnitChanged(int index)
 {
-    QString currentUnit = unitSwitch->itemText(index);
+    const QString currentUnit = unitSwitch->itemText(index);
+    const auto dash = QLatin1String("-");
 
-    if (mLastUnitSelection != QLatin1String("-") && currentUnit != mLastUnitSelection) {
-        updateResultWithUnit();
-    }
-    else if (mLastUnitSelection == QLatin1String("-") && currentUnit != QLatin1String("-")) {
+    if (currentUnit != mLastUnitSelection &&
+        (mLastUnitSelection != dash || currentUnit != dash))
+    {
         updateResultWithUnit();
     }
 
