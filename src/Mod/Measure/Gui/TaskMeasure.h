@@ -106,6 +106,7 @@ private:
     void enableAnnotateButton(bool state);
     void createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
+    void setDeltaPossible(bool possible);
     void initViewObject(Measure::MeasureBase* measure);
     void updateResultWithUnit();
 

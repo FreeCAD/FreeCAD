@@ -198,8 +198,6 @@ TaskMeasure::TaskMeasure()
     settingsLayout->addWidget(mSettings);
     formLayout->addRow(QLatin1String(), settingsLayout);
     formLayout->addRow(tr("Mode:"), modeSwitch);
-    formLayout->addRow(showDeltaLabel, showDelta);
-    formLayout->setAlignment(showDelta, Qt::AlignVCenter | Qt::AlignLeft);
 
     auto* resultLayout = new QHBoxLayout();
     resultLayout->setSpacing(0);
@@ -207,6 +205,8 @@ TaskMeasure::TaskMeasure()
     resultLayout->addStretch(5);
     resultLayout->addWidget(unitSwitch, 30);
     formLayout->addRow(tr("Result:"), resultLayout);
+    formLayout->addRow(showDeltaLabel, showDelta);
+    formLayout->setAlignment(showDelta, Qt::AlignVCenter | Qt::AlignLeft);
     layout->addLayout(formLayout);
 
     Content.emplace_back(taskbox);
@@ -541,6 +541,7 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
+    setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
         viewObject->update(prop);
@@ -715,6 +716,12 @@ void TaskMeasure::onObjectDeleted(const App::DocumentObject& obj)
     if (&obj == _mMeasureObject) {
         _mMeasureObject = nullptr;
     }
+}
+
+void TaskMeasure::setDeltaPossible(bool possible)
+{
+    showDelta->setVisible(possible);
+    showDeltaLabel->setVisible(possible);
 }
 
 void TaskMeasure::onModeChanged(int index)
