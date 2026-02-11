@@ -541,7 +541,6 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
-    setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
         viewObject->update(prop);
@@ -716,12 +715,6 @@ void TaskMeasure::onObjectDeleted(const App::DocumentObject& obj)
     if (&obj == _mMeasureObject) {
         _mMeasureObject = nullptr;
     }
-}
-
-void TaskMeasure::setDeltaPossible(bool possible)
-{
-    showDelta->setVisible(possible);
-    showDeltaLabel->setVisible(possible);
 }
 
 void TaskMeasure::onModeChanged(int index)
