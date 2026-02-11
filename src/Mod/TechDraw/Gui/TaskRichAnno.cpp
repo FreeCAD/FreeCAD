@@ -195,6 +195,7 @@ void TaskRichAnno::finishSetup()
     
     m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
+    m_toolbar->setProperty("floating", true);
 
     // --- Step 2: Perform the "hide text area" trick ---
     QTextEdit* textEditChild = m_toolbar->findChild<QTextEdit*>();
@@ -616,6 +617,9 @@ void TaskRichAnno::createAndSetupAnnotation(const QPointF* scenePos)
     // Re-enable the UI
     ui->gbFrame->setEnabled(true);
     ui->dsbMaxWidth->setEnabled(true);
+
+    // Select the new annotation object so that the frame is shown
+    Gui::Selection().addSelection(m_annoFeat->getDocument()->getName(), m_annoFeat->getNameInDocument());
 
     refocusAnnotation();  // Give focus to the new annotation
 
