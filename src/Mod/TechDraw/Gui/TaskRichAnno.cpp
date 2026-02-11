@@ -193,7 +193,7 @@ void TaskRichAnno::finishSetup()
         return;
     }
     
-    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint);
+    m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
 
     // --- Step 2: Perform the "hide text area" trick ---
