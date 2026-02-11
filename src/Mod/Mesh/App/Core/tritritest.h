@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: MIT
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // clang-format off
 /* Triangle/triangle intersection test routine,
