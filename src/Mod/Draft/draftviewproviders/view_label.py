@@ -204,7 +204,6 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         self.text_wld.string.setValues(_list)
         self.text_scr.string.setValues(_list)
-        self.onChanged(vobj, "DisplayMode")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed."""
@@ -239,13 +238,11 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 if vobj.Justification == "Right":
                     vobj.Justification = "Left"
 
-            self.onChanged(
-                obj.ViewObject, "DisplayMode"
-            )  # Property to trigger update_label and update_frame.
-            # We could have used a different property.
+            self.onChanged(vobj, "DisplayMode")  # trigger update_label and update_frame.
 
         elif prop == "Text" and obj.Text:
             self.update_text(obj, vobj)
+            self.onChanged(vobj, "DisplayMode")  # idem
 
     def onChanged(self, vobj, prop):
         """Execute when a view property is changed."""
@@ -281,6 +278,10 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
         elif prop == "MaxChars" and "MaxChars" in properties:
             self.update_text(obj, vobj)
+            if can_update_label:
+                self.update_label(obj, vobj)
+            if can_update_frame:
+                self.update_frame(obj, vobj)
 
         elif prop == "ScaleMultiplier" and "ScaleMultiplier" in properties:
             if "ArrowSizeStart" in properties:
