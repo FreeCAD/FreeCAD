@@ -921,7 +921,7 @@ QToolBar::separator:vertical {
   margin: 5px;
   background-color: @GeneralBorderColor;
 }
- 
+
 MRichTextEdit[floating="true"] {
   border: 1px solid @GeneralBorderColor;
   border-radius: 2px;
