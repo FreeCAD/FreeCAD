@@ -120,6 +120,22 @@ def wiredetect(obj, edge):
     return None
 
 
+def wiresdetect(obj, edges):
+    """Returns all edges from all horizontal wires which includes the edges."""
+
+    ehashList = [e.hashCode() for e in edges]
+    wires = []
+    for wire in obj.Shape.Wires:
+        if not Path.Geom.isRoughly(wire.BoundBox.ZLength, 0):
+            continue
+        if any(e.hashCode() in ehashList for e in wire.Edges):
+            wires.append(wire)
+    if wires:
+        return [e for w in wires for e in w.Edges]
+
+    return None
+
+
 def horizontalEdgeLoop(obj, edge):
     """Returns a loop of edges in the horizontal plane that includes one edge"""
 
