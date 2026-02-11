@@ -56,14 +56,18 @@ Other options are described on the [wiki Download page](https://wiki.freecad.org
 Compiling
 ---------
 
-FreeCAD requires several dependencies to correctly compile for development and
-production builds. The following pages contain updated build instructions for
-their respective platforms:
+The recommended way to build FreeCAD is with [pixi](https://pixi.sh/), which
+sets up an isolated build environment with all dependencies on any platform.
+See the [Developers Handbook – Getting Started](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
+for full instructions.
 
-- [Linux](https://wiki.freecad.org/Compile_on_Linux)
-- [Windows](https://wiki.freecad.org/Compile_on_Windows)
-- [macOS](https://wiki.freecad.org/Compile_on_MacOS)
-- [MinGW](https://wiki.freecad.org/Compile_on_MinGW)
+Quick start with pixi:
+
+```sh
+pixi run configure
+pixi run build
+pixi run freecad
+```
 
 
 Reporting Issues
