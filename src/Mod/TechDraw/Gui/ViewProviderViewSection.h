@@ -51,6 +51,10 @@ public:
     App::PropertyColor  GeomHatchColor;
     App::PropertyFloat  WeightPattern;
 
+    App::PropertyFont   SectionLineFont;
+    App::PropertyLength SectionLineFontsize;
+    App::PropertyLength SectionLineArrowsize;
+
     void updateData(const App::Property*) override;
     void onChanged(const App::Property *prop) override;
     bool setEdit(int ModNum) override;
