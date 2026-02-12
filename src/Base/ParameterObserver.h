@@ -268,6 +268,11 @@ protected:
             str << "Wrong cast of parameter " << key << '\n';
             throw Base::TypeError(str.str());
         }
+        catch (const std::exception&) {
+            std::stringstream str;
+            str << "Unknown parameter " << key << '\n';
+            throw Base::IndexError(str.str());
+        }
     }
     template<typename T>
     T getValue(const char* key) const
@@ -296,6 +301,11 @@ protected:
             std::stringstream str;
             str << "Wrong cast of parameter " << key << '\n';
             throw Base::TypeError(str.str());
+        }
+        catch (const std::exception&) {
+            std::stringstream str;
+            str << "Unknown parameter " << key << '\n';
+            throw Base::IndexError(str.str());
         }
     }
 };
