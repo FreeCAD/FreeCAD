@@ -34,6 +34,7 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "SheetModel.h"
 #include "App/Range.h"
@@ -61,15 +62,11 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     );
     // NOLINTEND
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    aliasBgColor = QColor(
-        QString::fromStdString(hGrp->GetASCII("AliasedCellBackgroundColor", "#feff9e"))
-    );
-    textFgColor = QColor(QString::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
-    positiveFgColor = QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
-    negativeFgColor = QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
+    auto param = SheetParameter::instance();
+    aliasBgColor = QColor(QString::fromStdString(param->getAliasedCellBackgroundColor()));
+    textFgColor = QColor(QString::fromStdString(param->getTextColor()));
+    positiveFgColor = QColor(QString::fromStdString(param->getPositiveNumberColor()));
+    negativeFgColor = QColor(QString::fromStdString(param->getNegativeNumberColor()));
 }
 
 SheetModel::~SheetModel()
@@ -172,16 +169,12 @@ QString encodeColumn(int column)
     return res;
 }
 
-QVariant formatCellDisplay(QString value, const Cell* cell)
+QVariant formatCellDisplay(const QString& value, const Cell* cell)
 {
+    auto param = SheetParameter::instance();
     std::string alias;
-    static auto hGrpSpreadsheet = App::GetApplication().GetUserParameter().GetGroup(
-        "BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    if (cell->getAlias(alias) && hGrpSpreadsheet->GetBool("showAliasName", false)) {
-        QString formatStr = QString::fromStdString(
-            hGrpSpreadsheet->GetASCII("DisplayAliasFormatString", "%V = %A")
-        );
+    if (cell->getAlias(alias) && param->getShowAliasName()) {
+        QString formatStr = QString::fromStdString(param->getDisplayAliasFormatString());
         if (formatStr.contains(QLatin1String("%V")) || formatStr.contains(QLatin1String("%A"))) {
             formatStr.replace(QLatin1String("%A"), QString::fromStdString(alias));
             formatStr.replace(QLatin1String("%V"), value);

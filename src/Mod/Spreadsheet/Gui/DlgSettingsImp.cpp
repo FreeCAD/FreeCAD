@@ -24,6 +24,7 @@
 
 
 #include <Gui/Application.h>
+#include <Mod/Spreadsheet/App/SheetParameter.h>
 
 #include "DlgSettingsImp.h"
 #include "ui_DlgSettings.h"
@@ -47,15 +48,12 @@ DlgSettingsImp::~DlgSettingsImp() = default;
 
 void DlgSettingsImp::saveSettings()
 {
-
     /** use whatever the user has entered here
      *  we'll check for validity during import/export
      */
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
+    auto param = Spreadsheet::SheetParameter::instance();
     QString delimiter = ui->delimiterComboBox->currentText();
-    hGrp->SetASCII("ImportExportDelimiter", delimiter.toStdString().c_str());
+    param->setImportExportDelimiter(delimiter.toStdString());
     ui->quoteCharLineEdit->onSave();
     ui->escapeCharLineEdit->onSave();
     ui->formatString->onSave();
@@ -69,10 +67,8 @@ void DlgSettingsImp::loadSettings()
      *  we'll recognize a few tokens: comma, semicolon, tab, and \t
      */
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    QString delimiter = QString::fromStdString(hGrp->GetASCII("ImportExportDelimiter", "tab"));
+    auto param = Spreadsheet::SheetParameter::instance();
+    QString delimiter = QString::fromStdString(param->getImportExportDelimiter());
     int idx = ui->delimiterComboBox->findText(delimiter, Qt::MatchFixedString);
     if (idx != -1) {
         ui->delimiterComboBox->setCurrentIndex(idx);

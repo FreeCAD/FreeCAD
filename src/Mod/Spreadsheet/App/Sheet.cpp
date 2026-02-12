@@ -51,6 +51,7 @@
 
 #include "Sheet.h"
 #include "SheetObserver.h"
+#include "SheetParameter.h"
 #include "SheetPy.h"
 
 
@@ -162,12 +163,10 @@ void Sheet::clearAll()
 bool Sheet::getCharsFromPrefs(char& delim, char& quote, char& escape, std::string& errMsg)
 {
     bool isValid = true;
-    ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
-    );
-    QString delimiter = QString::fromStdString(group->GetASCII("ImportExportDelimiter", "tab"));
-    QString quoteChar = QString::fromStdString(group->GetASCII("ImportExportQuoteCharacter", "\""));
-    QString escapeChar = QString::fromStdString(group->GetASCII("ImportExportEscapeCharacter", "\\"));
+    auto param = SheetParameter::instance();
+    QString delimiter = QString::fromStdString(param->getImportExportDelimiter());
+    QString quoteChar = QString::fromStdString(param->getImportExportQuoteCharacter());
+    QString escapeChar = QString::fromStdString(param->getImportExportEscapeCharacter());
 
     delim = delimiter.size() == 1 ? delimiter[0].toLatin1() : '\0';
     if (delimiter.compare(QLatin1String("tab"), Qt::CaseInsensitive) == 0
