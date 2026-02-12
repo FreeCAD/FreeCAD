@@ -165,26 +165,32 @@ bool SheetView::onMsg(const char* pMsg, const char**)
 {
     if (strcmp("Undo", pMsg) == 0) {
         getGuiDocument()->undo(1);
-        App::Document* doc = getAppDocument();
-        if (doc) {
-            doc->recompute();
-        }
         return true;
     }
     else if (strcmp("Redo", pMsg) == 0) {
         getGuiDocument()->redo(1);
-        App::Document* doc = getAppDocument();
-        if (doc) {
-            doc->recompute();
-        }
         return true;
     }
     else if (strcmp("Save", pMsg) == 0) {
         getGuiDocument()->save();
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+        if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
         return true;
     }
     else if (strcmp("SaveAs", pMsg) == 0) {
-        getGuiDocument()->saveAs();
+        getGuiDocument()->save();
+        ParameterGrp::handle group = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Spreadsheet"
+        );
+        QString trigger = QString::fromStdString(group->GetASCII("RecomputeTrigger", "interactions"));
+        if (trigger.compare(QLatin1String("onSave"), Qt::CaseInsensitive) == 0) {
+            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        }
         return true;
     }
     else if (strcmp("Std_Delete", pMsg) == 0) {
@@ -196,7 +202,6 @@ bool SheetView::onMsg(const char* pMsg, const char**)
                 FCMD_OBJ_CMD(sheet, "clear('" << i->rangeString() << "')");
             }
             Gui::Command::commitCommand();
-            Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         }
         return true;
     }

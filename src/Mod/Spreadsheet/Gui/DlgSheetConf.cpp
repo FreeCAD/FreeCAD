@@ -283,7 +283,6 @@ void DlgSheetConf::accept()
             from.row() + 2
         );
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
         Gui::Command::commitCommand();
         QDialog::accept();
     }
@@ -340,7 +339,7 @@ void DlgSheetConf::onDiscard()
             }
         }
 
-        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+
         Gui::Command::commitCommand();
         QDialog::accept();
     }

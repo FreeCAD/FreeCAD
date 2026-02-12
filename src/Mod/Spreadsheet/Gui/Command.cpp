@@ -92,7 +92,6 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
                     }
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -148,7 +147,6 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
                     address.c_str()
                 );
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -314,7 +312,6 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -371,7 +368,6 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -428,7 +424,6 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -485,7 +480,6 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -542,7 +536,6 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -599,7 +592,6 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
                     );
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -684,7 +676,6 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                     }
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -769,7 +760,6 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                     }
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
@@ -854,7 +844,6 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                     }
                 }
                 Gui::Command::commitCommand();
-                Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
             }
         }
     }
