@@ -67,7 +67,11 @@ std::string UnitsSchema::translate(const Quantity& quant, double& factor, std::s
 
     const auto value = quant.getValue();
     auto isSuitable = [&](const UnitTranslationSpec& row) {
-        return row.threshold > value || row.threshold == 0;  // zero indicates default
+        // Shrink threshold slightly so values at exact threshold boundaries
+        // (e.g. "1 S/m" = 1e-9 at threshold 1e-9) fall through to the next unit.
+        constexpr double relEps = 1e-12;
+        return row.threshold * (1.0 - relEps) > value
+            || row.threshold == 0;  // zero indicates default
     };
 
     auto unitSpecs = spec.translationSpecs.at(unitName);
