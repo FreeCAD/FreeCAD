@@ -26,6 +26,7 @@
 
 #include "fastsignals/connection.h"
 #include <QAbstractTableModel>
+#include <boost/signals2.hpp>
 
 #include <App/Range.h>
 
@@ -72,6 +73,9 @@ private:
     QColor textFgColor;
     QColor positiveFgColor;
     QColor negativeFgColor;
+
+    int maxRowCount = 16384;
+    int maxColumnCount = 26 + 26 * 26;
 };
 
 }  // namespace SpreadsheetGui
