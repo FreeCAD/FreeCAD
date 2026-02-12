@@ -127,6 +127,7 @@ class AssemblyWorkbench(Workbench):
 
     def ContextMenu(self, recipient):
         import UtilsAssembly
+
         assembly = UtilsAssembly.activeAssembly()
         if assembly is None:
             return
