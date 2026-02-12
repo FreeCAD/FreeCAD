@@ -599,21 +599,22 @@ void ActionGroup::onActivated(QAction* act)
  */
 void ActionGroup::onHovered(QAction* act)
 {
-    const auto topLevelWidgets = QApplication::topLevelWidgets();
+    if (!act) {
+        return;
+    }
+
+    // Try to get the menu directly from the action's associated objects.
+    // This avoids traversing the widget tree with findChildren, which can
+    // crash if called during widget destruction when synthetic enter/leave
+    // events are processed.
     QMenu* foundMenu = nullptr;
-
-    for (QWidget* widget : topLevelWidgets) {
-        QList<QMenu*> menus = widget->findChildren<QMenu*>();
-
-        for (QMenu* menu : menus) {
-            if (menu->isVisible() && menu->actions().contains(act)) {
+    const auto associatedObjects = act->associatedObjects();
+    for (QObject* obj : associatedObjects) {
+        if (auto* menu = qobject_cast<QMenu*>(obj)) {
+            if (menu->isVisible()) {
                 foundMenu = menu;
                 break;
             }
-        }
-
-        if (foundMenu) {
-            break;
         }
     }
 
