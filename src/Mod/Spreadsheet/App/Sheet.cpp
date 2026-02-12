@@ -1492,6 +1492,17 @@ void Sheet::setAlignment(CellAddress address, int alignment)
 }
 
 /**
+ * @brief Set alignment of content in cells part of \a range to \a alignment.
+ * @param range Range of cells
+ * @param alignment New alignment
+ */
+
+void Sheet::setAlignment(App::Range range, int alignment)
+{
+    cells.setAlignment(range, alignment);
+}
+
+/**
  * @brief Set style of cell at \a address to \a style.
  * @param address Address of cell
  * @param style New style
@@ -1503,6 +1514,17 @@ void Sheet::setStyle(CellAddress address, const std::set<std::string>& style)
 }
 
 /**
+ * @brief Set style of cells of \a range to \a style.
+ * @param range Range of cells
+ * @param style New style
+ */
+
+void Sheet::setStyle(Range range, const std::set<std::string>& style)
+{
+    cells.setStyle(range, style);
+}
+
+/**
  * @brief Set foreground (text color) of cell at address \a address to \a color.
  * @param address Address of cell
  * @param color New color
@@ -1511,6 +1533,17 @@ void Sheet::setStyle(CellAddress address, const std::set<std::string>& style)
 void Sheet::setForeground(CellAddress address, const Color& color)
 {
     cells.setForeground(address, color);
+}
+
+/**
+ * @brief Set foreground (text color) of cells part of \a range to \a color.
+ * @param range Range of cells
+ * @param alignment New color
+ */
+
+void Sheet::setForeground(App::Range range, const Color& color)
+{
+    cells.setForeground(range, color);
 }
 
 /**
@@ -1535,6 +1568,17 @@ void Sheet::setBackground(CellAddress address, const Color& color)
 }
 
 /**
+ * @brief Set background color of cells part of \a range to \a color.
+ * @param range Range of cells
+ * @param alignment New color
+ */
+
+void Sheet::setBackground(App::Range range, const Color& color)
+{
+    cells.setBackground(range, color);
+}
+
+/**
  * @brief Clears background color of cell at address \a address.
  * @param address Address of cell
  */
@@ -1556,6 +1600,17 @@ void Sheet::setDisplayUnit(CellAddress address, const std::string& unit)
 }
 
 /**
+ * @brief Set display unit for cells part of \a range to \a unit.
+ * @param range Range of cells
+ * @param unit New unit
+ */
+
+void Sheet::setDisplayUnit(App::Range range, const std::string& unit)
+{
+    cells.setDisplayUnit(range, unit);
+}
+
+/**
  * @brief Set computed unit for cell at address \a address to \a unit.
  * @param address Address of cell
  * @param unit New unit.
@@ -1564,6 +1619,17 @@ void Sheet::setDisplayUnit(CellAddress address, const std::string& unit)
 void Sheet::setComputedUnit(CellAddress address, const Base::Unit& unit)
 {
     cells.setComputedUnit(address, unit);
+}
+
+/**
+ * @brief Set computed unit for cells part of \a range to \a unit.
+ * @param address Address of cell
+ * @param unit New unit.
+ */
+
+void Sheet::setComputedUnit(App::Range range, const Base::Unit& unit)
+{
+    cells.setComputedUnit(range, unit);
 }
 
 /**
