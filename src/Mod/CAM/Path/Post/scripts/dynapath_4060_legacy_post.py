@@ -180,8 +180,6 @@ def processArguments(argstring):
         if args.no_show_editor:
             SHOW_EDITOR = False
             print("Show editor = %r" % (SHOW_EDITOR))
-        if args.precision is not None:
-            PRECISION = int(args.precision)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
         if args.postamble is not None:
@@ -191,6 +189,8 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 3
+        if args.precision is not None:
+            PRECISION = int(args.precision)
         if args.modal:
             MODAL = True
             print("Command duplicates suppressed")
