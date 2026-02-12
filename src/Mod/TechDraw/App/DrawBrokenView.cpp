@@ -204,7 +204,10 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir0 = DU::closestBasisOriented(moveDir0);
     auto halfSpace0 = makeHalfSpace(breakPoints.first, moveDir0, breakPoints.second);
 
-    FCBRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
+    // FCBRepAlgoAPI_Cut gets upset about cutting non-solids?? "XXX is not a solid" from Boolean::execute().
+    // We are cutting Compounds and that is valid in BRepAlgoAPI_Cut, but maybe not in FCBRepAlgoAPI_Cut?
+    // See sample file here: https://github.com/FreeCAD/FreeCAD/issues/27414
+    BRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
     if (!mkCut0.IsDone() || mkCut0.Shape().IsNull()) {
         Base::Console().warning("Failed to make first cut for break %s.\n", breakObj.Label.getValue());
         return {};
@@ -219,7 +222,8 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir1 = DU::closestBasisOriented(moveDir1);
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
 
-    FCBRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
+    // see mkCut0 above
+    BRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
     if (!mkCut1.IsDone()|| mkCut1.Shape().IsNull()) {
         Base::Console().warning("Failed to make second cut for break %s.\n", breakObj.Label.getValue());
         return {};
