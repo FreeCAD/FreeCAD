@@ -41,6 +41,8 @@ void SheetParameter::setup()
     addParameter("showAliasName", Bool {false});
     addParameter("SwitchToWB", Bool {true});
     addParameter("DefaultZoomLevel", Int {100});
+    addParameter("MaximumRowCount", Int {1024});
+    addParameter("MaximumColumnCount", Int {26});
     // NOLINTEND
 }
 
@@ -68,6 +70,8 @@ FC_PARAM_GETSET_IMP(SheetParameter, PositiveNumberColor, std::string)          /
 FC_PARAM_GETSET_IMP(SheetParameter, NegativeNumberColor, std::string)          // NOLINT
 FC_PARAM_GETSET_IMP(SheetParameter, DisplayAliasFormatString, std::string)     // NOLINT
 FC_PARAM_GETSET_IMP(SheetParameter, DefaultZoomLevel, long)
+FC_PARAM_GETSET_IMP(SheetParameter, MaximumRowCount, long)
+FC_PARAM_GETSET_IMP(SheetParameter, MaximumColumnCount, long)
 
 bool SheetParameter::getShowAliasName() const
 {

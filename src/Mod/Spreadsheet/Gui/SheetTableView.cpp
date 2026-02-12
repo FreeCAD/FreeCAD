@@ -52,6 +52,7 @@
 #include "DlgSheetConf.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
+#include "SheetModel.h"
 
 
 using namespace SpreadsheetGui;
@@ -992,6 +993,17 @@ void SheetTableView::ModifyBlockSelection(int targetRow, int targetCol)
         model()->index(targetRow, targetCol),
         QItemSelectionModel::Current
     );
+}
+
+void SheetTableView::selectAll()
+{
+    // disallow to select all cells if too many
+    const int maxRows = 2048;
+    const int maxCols = 26;
+    auto sheetModel = qobject_cast<SheetModel*>(model());
+    if (sheetModel->rowCount() <= maxRows && sheetModel->columnCount() <= maxCols) {
+        QTableView::selectAll();
+    }
 }
 
 void SheetTableView::mergeCells()

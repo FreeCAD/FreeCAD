@@ -74,6 +74,12 @@ public:
     long getDefaultZoomLevel() const;
     void setDefaultZoomLevel(long);
 
+    long getMaximumRowCount() const;
+    void setMaximumRowCount(long);
+
+    long getMaximumColumnCount() const;
+    void setMaximumColumnCount(long);
+
 private:
     void setup();
 };

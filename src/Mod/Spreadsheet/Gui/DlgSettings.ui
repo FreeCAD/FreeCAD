@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>392</width>
-    <height>282</height>
+    <width>452</width>
+    <height>394</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,100 +19,7 @@
   <property name="windowTitle">
    <string>Spreadsheet</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_2">
-   <item row="1" column="0">
-    <widget class="QGroupBox" name="groupBox1">
-     <property name="title">
-      <string>Display Settings</string>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="1" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxShowAlias">
-        <property name="toolTip">
-         <string>Uses the custom presentation to display cell string</string>
-        </property>
-        <property name="text">
-         <string>Show alias in cell with format</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>showAliasName</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Spreadsheet</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <widget class="Gui::PrefSpinBox" name="dZLSpinBox">
-        <property name="toolTip">
-         <string>Defines a default zoom level for table view from 60% to 160%</string>
-        </property>
-        <property name="suffix">
-         <string>%</string>
-        </property>
-        <property name="minimum">
-         <number>60</number>
-        </property>
-        <property name="maximum">
-         <number>160</number>
-        </property>
-        <property name="singleStep">
-         <number>10</number>
-        </property>
-        <property name="value">
-         <number>100</number>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultZoomLevel</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Spreadsheet</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QLabel" name="dZLLabel">
-        <property name="text">
-         <string>Default zoom level</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="Gui::PrefLineEdit" name="formatString">
-        <property name="toolTip">
-         <string>The format of the custom cell string presentation.
-Defaults to: %V = %A
-
-%A - alias name
-%V - cell value</string>
-        </property>
-        <property name="text">
-         <string notr="true">%V = %A</string>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DisplayAliasFormatString</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Spreadsheet</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <spacer name="horizontalSpacer1">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>40</width>
-          <height>20</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-     </layout>
-    </widget>
-   </item>
+  <layout class="QGridLayout" name="gridLayout_4">
    <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
@@ -243,7 +150,129 @@ Defaults to: %V = %A
      </layout>
     </widget>
    </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>Cells</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="1" column="1">
+       <widget class="QComboBox" name="comboBoxColumns"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>Maximum number of columns</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="comboBoxRows"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Maximum numbers of rows</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="2" column="0">
+    <widget class="QGroupBox" name="groupBox1">
+     <property name="title">
+      <string>Display Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="1" column="0">
+       <widget class="Gui::PrefCheckBox" name="checkBoxShowAlias">
+        <property name="toolTip">
+         <string>If checked, use the custom presentation to display cell string.</string>
+        </property>
+        <property name="text">
+         <string>Show alias in cell with format</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>showAliasName</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="Gui::PrefSpinBox" name="dZLSpinBox">
+        <property name="toolTip">
+         <string>Set a zoom level for table view from 60% to 160%.</string>
+        </property>
+        <property name="suffix">
+         <string>%</string>
+        </property>
+        <property name="minimum">
+         <number>60</number>
+        </property>
+        <property name="maximum">
+         <number>160</number>
+        </property>
+        <property name="singleStep">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>100</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultZoomLevel</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="dZLLabel">
+        <property name="text">
+         <string>Default zoom level:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="Gui::PrefLineEdit" name="formatString">
+        <property name="toolTip">
+         <string>The format of the custom cell string presentation.
+Defaults to: %V = %A
+
+%A - alias name
+%V - cell value</string>
+        </property>
+        <property name="text">
+         <string notr="true">%V = %A</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DisplayAliasFormatString</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Spreadsheet</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <spacer name="horizontalSpacer1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -261,6 +290,11 @@ Defaults to: %V = %A
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>
   <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
    <header>Gui/PrefWidgets.h</header>
@@ -268,11 +302,6 @@ Defaults to: %V = %A
   <customwidget>
    <class>Gui::PrefComboBox</class>
    <extends>QComboBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -285,6 +314,8 @@ Defaults to: %V = %A
   <tabstop>delimiterComboBox</tabstop>
   <tabstop>quoteCharLineEdit</tabstop>
   <tabstop>escapeCharLineEdit</tabstop>
+  <tabstop>comboBoxRows</tabstop>
+  <tabstop>comboBoxColumns</tabstop>
   <tabstop>dZLSpinBox</tabstop>
   <tabstop>checkBoxShowAlias</tabstop>
   <tabstop>formatString</tabstop>
