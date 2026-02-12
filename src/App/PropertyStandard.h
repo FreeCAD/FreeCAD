@@ -89,16 +89,20 @@ public:
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
     const boost::any getPathValue(const App::ObjectIdentifier& /*path*/) const override
     {
-        return _lValue;
+        auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
+        return self._lValue;
     }
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 protected:

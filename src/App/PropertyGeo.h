@@ -112,11 +112,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == dynamic_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == dynamic_cast<decltype(&self)>(&other)->getValue();
     }
 
 private:

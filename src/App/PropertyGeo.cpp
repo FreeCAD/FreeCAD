@@ -67,34 +67,44 @@ PropertyVector::~PropertyVector() = default;
 
 void PropertyVector::setValue(const Base::Vector3d& vec)
 {
-    aboutToSetValue();
-    _cVec = vec;
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyVector>(*this);
+
+    self.aboutToSetValue();
+    self._cVec = vec;
+    self.hasSetValue();
 }
 
 void PropertyVector::setValue(double x, double y, double z)
 {
-    aboutToSetValue();
-    _cVec.Set(x, y, z);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyVector>(*this);
+
+    self.aboutToSetValue();
+    self._cVec.Set(x, y, z);
+    self.hasSetValue();
 }
 
 const Base::Vector3d& PropertyVector::getValue() const
 {
-    return _cVec;
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+    return self._cVec;
 }
 
 PyObject* PropertyVector::getPyObject()
 {
-    return new Base::VectorPy(_cVec);
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+    return new Base::VectorPy(self._cVec);
 }
 
 void PropertyVector::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyVector>(*this);
+
     if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
         Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
-        setValue(*val);
+        self.setValue(*val);
     }
     else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
         PyObject* item {};
@@ -132,7 +142,7 @@ void PropertyVector::setPyObject(PyObject* value)
         else {
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         }
-        setValue(cVec);
+        self.setValue(cVec);
     }
     else {
         std::string error = std::string("type must be 'Vector' or tuple of three floats, not ");
@@ -143,56 +153,68 @@ void PropertyVector::setPyObject(PyObject* value)
 
 void PropertyVector::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
     // clang-format off
     writer.Stream() << writer.ind()
                     << "<PropertyVector"
-                    << " valueX=\"" << _cVec.x << "\""
-                    << " valueY=\"" << _cVec.y << "\""
-                    << " valueZ=\"" << _cVec.z << "\""
+                    << " valueX=\"" << self._cVec.x << "\""
+                    << " valueY=\"" << self._cVec.y << "\""
+                    << " valueZ=\"" << self._cVec.z << "\""
                     << "/>\n";
     // clang-format on
 }
 
 void PropertyVector::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyVector>(*this);
+
     // read my Element
     reader.readElement("PropertyVector");
     // get the value of my Attribute
-    aboutToSetValue();
-    _cVec.x = reader.getAttribute<double>("valueX");
-    _cVec.y = reader.getAttribute<double>("valueY");
-    _cVec.z = reader.getAttribute<double>("valueZ");
-    hasSetValue();
+    self.aboutToSetValue();
+    self._cVec.x = reader.getAttribute<double>("valueX");
+    self._cVec.y = reader.getAttribute<double>("valueY");
+    self._cVec.z = reader.getAttribute<double>("valueZ");
+    self.hasSetValue();
 }
 
 
 Property* PropertyVector::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
     PropertyVector* p = new PropertyVector();
-    p->_cVec = _cVec;
+    p->_cVec = self._cVec;
     return p;
 }
 
 void PropertyVector::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyVector>(*this);
+
+    self.aboutToSetValue();
+    self._cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
+    self.hasSetValue();
 }
 
 void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 {
-    paths.push_back(ObjectIdentifier(*this)
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+    paths.push_back(ObjectIdentifier(self)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(*this)
+    paths.push_back(ObjectIdentifier(self)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(*this)
+    paths.push_back(ObjectIdentifier(self)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) const
 {
-    Base::Unit unit = getUnit();
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+    Base::Unit unit = self.getUnit();
     if (unit != Unit::One) {
         std::string p = path.getSubPathStr();
         if (p == ".x" || p == ".y" || p == ".z") {
@@ -205,20 +227,22 @@ const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) cons
 
 bool PropertyVector::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
 {
-    Base::Unit unit = getUnit();
+    auto& self = propGetterSelf<const App::PropertyVector>(*this);
+
+    Base::Unit unit = self.getUnit();
     if (unit == Unit::One) {
         return false;
     }
 
     std::string p = path.getSubPathStr();
     if (p == ".x") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().x, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().x, unit)));
     }
     else if (p == ".y") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().y, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().y, unit)));
     }
     else if (p == ".z") {
-        res = Py::asObject(new QuantityPy(new Quantity(getValue().z, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().z, unit)));
     }
     else {
         return false;

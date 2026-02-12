@@ -83,27 +83,35 @@ PropertyInteger::~PropertyInteger() = default;
 
 void PropertyInteger::setValue(long lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyInteger>(*this);
+
+    self.aboutToSetValue();
+    self._lValue = lValue;
+    self.hasSetValue();
 }
 
 long PropertyInteger::getValue() const
 {
-    return _lValue;
+    auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
+    return self._lValue;
 }
 
 PyObject* PropertyInteger::getPyObject()
 {
-    return Py_BuildValue("l", _lValue);
+    auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
+    return Py_BuildValue("l", self._lValue);
 }
 
 void PropertyInteger::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyInteger>(*this);
+
     if (PyLong_Check(value)) {
-        aboutToSetValue();
-        _lValue = PyLong_AsLong(value);
-        hasSetValue();
+        self.aboutToSetValue();
+        self._lValue = PyLong_AsLong(value);
+        self.hasSetValue();
     }
     else {
         std::string error = std::string("type must be int, not ");
@@ -114,49 +122,59 @@ void PropertyInteger::setPyObject(PyObject* value)
 
 void PropertyInteger::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" << _lValue << "\"/>" << std::endl;
+    auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
+    writer.Stream() << writer.ind() << "<Integer value=\"" << self._lValue << "\"/>" << std::endl;
 }
 
 void PropertyInteger::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyInteger>(*this);
+
     // read my Element
     reader.readElement("Integer");
     // get the value of my Attribute
-    setValue(reader.getAttribute<long>("value"));
+    self.setValue(reader.getAttribute<long>("value"));
 }
 
 Property* PropertyInteger::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyInteger>(*this);
+
     PropertyInteger* p = new PropertyInteger();
-    p->_lValue = _lValue;
+    p->_lValue = self._lValue;
     return p;
 }
 
 void PropertyInteger::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyInteger>(*this);
+
+    self.aboutToSetValue();
+    self._lValue = dynamic_cast<const PropertyInteger&>(from)._lValue;
+    self.hasSetValue();
 }
 
 void PropertyInteger::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    verifyPath(path);
+    auto& self = propSetterSelf<App::PropertyInteger>(*this);
+
+    self.verifyPath(path);
 
     if (value.type() == typeid(long)) {
-        setValue(boost::any_cast<long>(value));
+        self.setValue(boost::any_cast<long>(value));
     }
     else if (value.type() == typeid(int)) {
-        setValue(boost::any_cast<int>(value));
+        self.setValue(boost::any_cast<int>(value));
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::math::round(boost::any_cast<double>(value)));
+        self.setValue(boost::math::round(boost::any_cast<double>(value)));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::math::round(boost::any_cast<float>(value)));
+        self.setValue(boost::math::round(boost::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
+        self.setValue(boost::math::round(boost::any_cast<Quantity>(value).getValue()));
     }
     else {
         throw bad_cast();
