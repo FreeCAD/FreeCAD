@@ -519,6 +519,7 @@ SET(Tests_SRCS
     CAMTests/TestGenericPost.py
     CAMTests/TestGrblPost.py
     CAMTests/TestGrblLegacyPost.py
+    CAMTests/TestDynapath4060Post.py
     CAMTests/TestLinuxCNCPost.py
     CAMTests/TestLinkingGenerator.py
     CAMTests/TestMachine.py
@@ -577,6 +578,7 @@ SET(Tests_SRCS
     CAMTests/TestPathVcarve.py
     CAMTests/TestPathVoronoi.py
     CAMTests/TestGrblLegacyPost.py
+    CAMTests/TestDynapath4060Post.py
     CAMTests/TestLinuxCNCLegacyPost.py
     CAMTests/TestDressupPost.py
     CAMTests/TestTestPost.py
