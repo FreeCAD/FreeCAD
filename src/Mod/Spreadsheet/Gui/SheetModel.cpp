@@ -115,7 +115,7 @@ bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
 
 bool SheetModel::removeRows(int row, int count, const QModelIndex& parent)
 {
-    if (count > rows) {
+    if (count >= rows) {
         // Prevent the header from disappearing
         return false;
     }
@@ -128,7 +128,7 @@ bool SheetModel::removeRows(int row, int count, const QModelIndex& parent)
 
 bool SheetModel::removeColumns(int column, int count, const QModelIndex& parent)
 {
-    if (count > cols) {
+    if (count >= cols) {
         // Prevent the header from disappearing
         return false;
     }
