@@ -173,7 +173,12 @@ TopoDS_Shape DrawBrokenView::breakShape(const TopoDS_Shape& shapeToBreak) const
     auto breaksAll = Breaks.getValues();
     TopoDS_Shape updatedShape = shapeToBreak;
     for (auto& item : breaksAll) {
+        TopoDS_Shape previousShape = updatedShape;
         updatedShape = apply1Break(*item, updatedShape);
+        if (updatedShape.IsNull()) {
+            Base::Console().warning("Failed to apply break %s\n", item->Label.getValue());
+            updatedShape = previousShape;
+        }
     }
     return updatedShape;
 }
@@ -198,20 +203,26 @@ TopoDS_Shape DrawBrokenView::apply1Break(const App::DocumentObject& breakObj, co
     moveDir0.Normalize();
     moveDir0 = DU::closestBasisOriented(moveDir0);
     auto halfSpace0 = makeHalfSpace(breakPoints.first, moveDir0, breakPoints.second);
+
     FCBRepAlgoAPI_Cut mkCut0(inShape, halfSpace0);
-    if (!mkCut0.IsDone()) {
-        Base::Console().message("DBV::apply1Break - cut0 failed\n");
+    if (!mkCut0.IsDone() || mkCut0.Shape().IsNull()) {
+        Base::Console().warning("Failed to make first cut for break %s.\n", breakObj.Label.getValue());
+        return {};
     }
+
     TopoDS_Shape cut0 = mkCut0.Shape();
+
     // make a halfspace that is positioned at the second breakpoint and extends
     // in the direction of the first point
     Base::Vector3d moveDir1 = breakPoints.first - breakPoints.second;
     moveDir1.Normalize();
     moveDir1 = DU::closestBasisOriented(moveDir1);
     auto halfSpace1 = makeHalfSpace(breakPoints.second, moveDir1, breakPoints.first);
+
     FCBRepAlgoAPI_Cut mkCut1(inShape, halfSpace1);
-    if (!mkCut1.IsDone()) {
-        Base::Console().message("DBV::apply1Break - cut1 failed\n");
+    if (!mkCut1.IsDone()|| mkCut1.Shape().IsNull()) {
+        Base::Console().warning("Failed to make second cut for break %s.\n", breakObj.Label.getValue());
+        return {};
     }
     TopoDS_Shape cut1 = mkCut1.Shape();
 
