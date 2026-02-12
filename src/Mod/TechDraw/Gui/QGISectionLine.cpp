@@ -206,8 +206,10 @@ void QGISectionLine::makeSymbols()
 void QGISectionLine::makeSymbolsTrad()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
-    m_symFont.setPixelSize(fontSize);
+    if (m_symSize >= 0.0) {
+        int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
+        m_symFont.setPixelSize(fontSize);
+    }
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
@@ -236,8 +238,10 @@ void QGISectionLine::makeSymbolsTrad()
 void QGISectionLine::makeSymbolsISO()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
-    m_symFont.setPixelSize(fontSize);
+    if (m_symSize >= 0.0) {
+        int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
+        m_symFont.setPixelSize(fontSize);
+    }
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
@@ -421,6 +425,12 @@ QPointF QGISectionLine::getArrowPosition(Base::Vector3d arrowDir, QPointF refPoi
 void QGISectionLine::setArrowSize(double arrowSize)
 {
     m_arrowSize = arrowSize;
+}
+
+void QGISectionLine::setFont(QFont f)
+{
+    m_symFont = f;
+    m_symSize = -1.0;
 }
 
 void QGISectionLine::setFont(QFont f, double fsize)
