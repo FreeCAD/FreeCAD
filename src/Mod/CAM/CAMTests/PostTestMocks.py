@@ -60,6 +60,11 @@ class MockToolController:
         return []
 
 
+class MockDocument:
+    def __init__(self, label):
+        self.Label = label
+
+
 class MockOperation:
     """Mock Operation object for testing postprocessors."""
 
@@ -68,6 +73,7 @@ class MockOperation:
         self.Label = label or name
         self.Active = active
         self.ToolController = tool_controller
+        self.Document = MockDocument(label="mocklabel")
 
         # Create an empty path by default
         self.Path = Path.Path()
