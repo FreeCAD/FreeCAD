@@ -2182,6 +2182,19 @@ bool Adaptive2d::ResolveLinkPath(
     Path& output
 )
 {
+    // Future work: reimplement this function with a modified version of the
+    // algorithm from https://annas-archive.li/scidb/10.1002/net.3230140304/
+    // 1) offset cleared area by tool radius, to effectively reduce the tool to a point
+    // 2) actually further offset by whatever distance we want G0 to be from stock
+    // 3) if start/end are outside that area, generate straight-line paths to them
+    // 4) perform delaunay triangulation with clipper 2 (needs upgraded clipper!)
+    // 5) do shortest path search along the triangulation from start to end,
+    // producing a triangle strip (exact details tbd)
+    // 6) finish the shortest path algorithm as specified in the paper
+    // The result is O(n log n) shortest path (up to selection of the
+    // appropriate triangle strip), which should be an improvement in both run
+    // time and result over our current algorithm
+
     vector<pair<IntPoint, IntPoint>> queue;
     queue.emplace_back(startPoint, endPoint);
     Path checkPath;
