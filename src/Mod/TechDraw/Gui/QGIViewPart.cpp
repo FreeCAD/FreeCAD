@@ -780,9 +780,15 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
             sectionLine->setShowLine(false);
         }
 
-        double fontSize = Preferences::dimFontSizeMM();
-        double arrowSize = QGIArrow::getPrefArrowSize();
-        sectionLine->setFont(getFont(), fontSize);
+        auto font = sectionVp->SectionLineFont.getValue();
+        auto fontSize = sectionVp->SectionLineFontsize.getValue();
+        auto arrowSize = sectionVp->SectionLineArrowsize.getValue();
+
+        QFont symFont;
+        symFont.setFamily(QString::fromUtf8(font));
+        symFont.setPixelSize(exactFontSize(font, std::max(1.0, fontSize)));
+
+        sectionLine->setFont(symFont);
         sectionLine->setArrowSize(arrowSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
         sectionLine->setRotation(-viewPart->Rotation.getValue());
@@ -865,9 +871,15 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         sectionLine->setShowLine(false);
     }
 
-    double fontSize = Preferences::dimFontSizeMM();
-    double arrowSize = QGIArrow::getPrefArrowSize();
-    sectionLine->setFont(getFont(), fontSize);
+    auto font = sectionVp->SectionLineFont.getValue();
+    auto fontSize = sectionVp->SectionLineFontsize.getValue();
+    auto arrowSize = sectionVp->SectionLineArrowsize.getValue();
+
+    QFont symFont;
+    symFont.setFamily(QString::fromUtf8(font));
+    symFont.setPixelSize(exactFontSize(font, std::max(1.0, fontSize)));
+
+    sectionLine->setFont(symFont);
     sectionLine->setArrowSize(arrowSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
     sectionLine->setRotation(-viewPart->Rotation.getValue());
