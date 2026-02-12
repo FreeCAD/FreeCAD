@@ -67,6 +67,9 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     textFgColor = QColor(QString::fromStdString(param->getTextColor()));
     positiveFgColor = QColor(QString::fromStdString(param->getPositiveNumberColor()));
     negativeFgColor = QColor(QString::fromStdString(param->getNegativeNumberColor()));
+
+    maxRowCount = int(param->getMaximumRowCount());
+    maxColumnCount = int(param->getMaximumColumnCount());
 }
 
 SheetModel::~SheetModel()

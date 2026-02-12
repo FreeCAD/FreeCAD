@@ -39,6 +39,16 @@ DlgSettingsImp::DlgSettingsImp(QWidget* parent)
     , ui(new Ui_DlgSettings)
 {
     ui->setupUi(this);
+    ui->dZLSpinBox->setDisabled(true);
+
+    for (int row : {256, 512, 1024, 2048, 4096, 8192, 16384}) {
+        ui->comboBoxRows->addItem(QString::number(row), QVariant(row));
+    }
+
+    const int maxColumn1 = 26;
+    const int maxColumn2 = 26 + 26 * 26;
+    ui->comboBoxColumns->addItem(QStringLiteral("A-Z"), QVariant(maxColumn1));
+    ui->comboBoxColumns->addItem(QStringLiteral("A-Z, AA-ZZ"), QVariant(maxColumn2));
 }
 
 /**
@@ -59,6 +69,15 @@ void DlgSettingsImp::saveSettings()
     ui->formatString->onSave();
     ui->dZLSpinBox->onSave();
     ui->checkBoxShowAlias->onSave();
+
+    QVariant cols = ui->comboBoxColumns->itemData(ui->comboBoxColumns->currentIndex());
+    if (cols.isValid()) {
+        param->setMaximumColumnCount(cols.toInt());
+    }
+    QVariant rows = ui->comboBoxRows->itemData(ui->comboBoxRows->currentIndex());
+    if (rows.isValid()) {
+        param->setMaximumRowCount(rows.toInt());
+    }
 }
 
 void DlgSettingsImp::loadSettings()
@@ -96,6 +115,15 @@ void DlgSettingsImp::loadSettings()
     ui->formatString->onRestore();
     ui->dZLSpinBox->onRestore();
     ui->checkBoxShowAlias->onRestore();
+
+    int indexC = ui->comboBoxColumns->findData(QVariant(int(param->getMaximumColumnCount())));
+    if (indexC >= 0) {
+        ui->comboBoxColumns->setCurrentIndex(indexC);
+    }
+    int indexR = ui->comboBoxRows->findData(QVariant(int(param->getMaximumRowCount())));
+    if (indexR >= 0) {
+        ui->comboBoxRows->setCurrentIndex(indexR);
+    }
 }
 
 /**
