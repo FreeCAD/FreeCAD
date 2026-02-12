@@ -32,6 +32,8 @@
 #include "Property.h"
 #include "ObjectIdentifier.h"
 #include "PropertyContainer.h"
+#include "DocumentObject.h"
+#include "Expression.h"
 
 
 using namespace App;
@@ -159,6 +161,52 @@ const char* Property::getDocumentation() const
 void Property::setContainer(PropertyContainer* father)
 {
     this->father = father;
+}
+
+Property* Property::createPropertyContext(const char* name,
+                                          DocumentObject* obj, DocumentObject* objContext) const
+{
+    Property* prop = objContext->addDynamicProperty(getTypeId().getName(), name,
+                                                    getGroup(), getDocumentation());
+    std::unique_ptr<App::Property> pcopy(Copy());
+    prop->Paste(*pcopy);
+
+    auto renameObjIds = [objContext, name](const auto& expressions) {
+        for (const auto& [oldObjId, expression] : expressions) {
+            if (oldObjId.getPropertyName() == name) {
+                ObjectIdentifier newObjId(oldObjId);
+                newObjId.setDocumentObjectName(objContext);
+                std::shared_ptr<Expression> copiedExpr(expression->copy());
+                objContext->setExpression(newObjId, copiedExpr);
+            }
+        }
+    };
+
+    renameObjIds(obj->ExpressionEngine.getExpressions());
+    objContext->ExpressionEngine.execute(PropertyExpressionEngine::ExecuteNonOutput);
+
+    return prop;
+}
+
+Property* Property::getContextProperty(CreatePropOption option) const
+{
+    PropertyContainer* container = getContainer();
+    if (container == nullptr) { return nullptr; }
+
+    auto obj = freecad_cast<DocumentObject*>(container);
+    if (obj == nullptr) {return nullptr; }
+
+    DocumentObject* objContext = obj->getContext();
+    if (objContext == nullptr) { return nullptr; }
+
+    const char* name = getName();
+    Property* prop = objContext->getPropertyByName(name);
+
+    if (prop == nullptr && option == CreatePropOption::Create) {
+        return createPropertyContext(name, obj, objContext);
+    }
+
+    return prop;
 }
 
 void Property::setPathValue(const ObjectIdentifier& path, const boost::any& value)

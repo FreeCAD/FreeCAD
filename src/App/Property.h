@@ -32,6 +32,9 @@
 #include <fastsignals/signal.h>
 #include <bitset>
 #include <string>
+#include <utility>
+#include <functional>
+#include <type_traits>
 #include <FCGlobal.h>
 
 #include "ElementNamingUtils.h"
@@ -45,6 +48,12 @@ namespace App
 
 class PropertyContainer;
 class ObjectIdentifier;
+class DocumentObject;
+
+enum class CreatePropOption {
+    Create,
+    DoNotCreate
+};
 
 /**
  * @brief %Base class of all properties.
@@ -587,6 +596,20 @@ protected:
      */
     std::string getFileName(const char* postfix = nullptr, const char* prefix = nullptr) const;
 
+    App::Property* getContextProperty(CreatePropOption option = CreatePropOption::DoNotCreate) const;
+
+    template<class PropertyType>
+    PropertyType& propSetterSelf(PropertyType& self) const
+    {
+        return contextAwareSelf<PropertyType>(self, CreatePropOption::Create);
+    }
+
+    template<class PropertyType>
+    PropertyType& propGetterSelf(PropertyType& self) const
+    {
+        return contextAwareSelf<PropertyType>(self);
+    }
+
 public:
     /**
      * @brief The copy constructor is deleted to prevent copying.
@@ -601,6 +624,21 @@ public:
 private:
     // Sync status with Property_Type
     void syncType(unsigned type);
+
+    Property* createPropertyContext(const char* name, DocumentObject* obj, DocumentObject* objContext) const;
+
+    template<class PropertyType>
+    PropertyType& contextAwareSelf(PropertyType& self, CreatePropOption option = CreatePropOption::DoNotCreate) const
+    {
+        App::Property* prop = getContextProperty(option);
+        if (prop != nullptr) {
+            if (auto propWithType = freecad_cast<PropertyType*>(prop)) {
+                return *propWithType;
+            }
+            throw Base::RuntimeError("Cannot cast context property to required type");
+        }
+        return self;
+    }
 
 private:
     PropertyContainer* father {nullptr};
