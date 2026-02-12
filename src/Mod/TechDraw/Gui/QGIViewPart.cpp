@@ -64,6 +64,7 @@
 #include "ViewProviderGeomHatch.h"
 #include "ViewProviderHatch.h"
 #include "ViewProviderViewPart.h"
+#include "ViewProviderViewSection.h"
 #include "ZVALUE.h"
 #include "PathBuilder.h"
 #include "QGIBreakLine.h"
@@ -710,8 +711,13 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if (!viewSection->hasGeometry())
         return;
 
-    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
     if (!vp) {
+        return;
+    }
+
+    auto sectionVp = static_cast<ViewProviderViewSection*>(getViewProvider(viewSection));
+    if (!sectionVp) {
         return;
     }
 
@@ -793,8 +799,12 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         return;
     if (!viewSection)
         return;
-    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(viewPart));
     if (!vp) {
+        return;
+    }
+    auto sectionVp = static_cast<ViewProviderViewSection*>(getViewProvider(viewSection));
+    if (!sectionVp) {
         return;
     }
 
