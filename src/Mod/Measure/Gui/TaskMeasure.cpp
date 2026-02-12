@@ -482,7 +482,7 @@ void TaskMeasure::updateResultWithUnit()
         double convertedValue = resultQty.getValueAs(targetUnit);
 
         QString formattedValue;
-        // 4 decimal places, if between -1 and 1 4 signfnificant digits
+        // 4 decimal places, if between -1 and 1: 4 significant digits
         if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
             formattedValue = QString::number(convertedValue, 'g', 4);
         }
