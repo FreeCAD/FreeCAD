@@ -34,6 +34,7 @@
 #include <Quantity_ColorRGBA.hxx>
 #include <TDocStd_Document.hxx>
 #include <TopoDS_Shape.hxx>
+#include <Standard_Version.hxx>
 #include <XCAFDoc_ColorTool.hxx>
 #include <XCAFDoc_ShapeTool.hxx>
 
@@ -53,6 +54,24 @@ namespace Part
 {
 class Feature;
 }
+
+#if (OCC_VERSION_MAJOR < 7 || (OCC_VERSION_MAJOR == 7 && OCC_VERSION_MINOR < 8))
+// Older versions of OCCT do not provide this template specialization so we provide it here.
+// On the other hand, newer versions do not have TopoDS_Shape::HashCode() so we can't always use
+// this code in a custom hash class explicitly passed to the unordered_map template.
+namespace std
+{
+template<>
+struct hash<TopoDS_Shape>
+{
+    size_t operator()(const TopoDS_Shape& theShape) const noexcept
+    {
+        return theShape.HashCode(std::numeric_limits<size_t>::max());
+    }
+};
+}  // namespace std
+#endif
+
 
 namespace Import
 {
