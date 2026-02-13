@@ -39,7 +39,6 @@ PROPERTY_SOURCE(FemGui::ViewProviderSolver, Gui::ViewProviderDocumentObject)
 
 ViewProviderSolver::ViewProviderSolver()
 {
-    setToggleVisibility(ToggleVisibilityMode::NoToggleVisibility);
     sPixmap = "FEM_SolverStandard";
 }
 
