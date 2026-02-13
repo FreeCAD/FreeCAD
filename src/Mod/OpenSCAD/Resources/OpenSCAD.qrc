@@ -19,7 +19,7 @@
         <file>icons/OpenSCADWorkbench.svg</file>
         <file>ui/openscadprefs-base.ui</file>
         <file>translations/OpenSCAD_tr.qm</file>
-        <file>translations/OpenSCAD_sv-SE.qm</file>
+        <file>translations/OpenSCAD_sv.qm</file>
         <file>translations/OpenSCAD_de.qm</file>
         <file>translations/OpenSCAD_pl.qm</file>
         <file>translations/OpenSCAD_fi.qm</file>
