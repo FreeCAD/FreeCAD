@@ -145,6 +145,7 @@ private:
             std::string escFont = escapeForPython(font);
             bool isHeight = constructionMethod() == ConstructionMethod::Height;
             const char* constrBoolStr = isConstructionMode() ? "True" : "False";
+            const char* heightBoolStr = isHeight ? "True" : "False";
 
             // Add the 'Text' Constraint (Empty)
             // We initialize the constraint containing ONLY the handle (element 0).
@@ -156,7 +157,7 @@ private:
                 handleId,
                 escText.c_str(),
                 escFont.c_str(),
-                isHeight ? "True" : "False"
+                heightBoolStr
             );
 
             // Generate Text Geometry by calling setTextAndFont on the new constraint.
@@ -165,10 +166,11 @@ private:
             Gui::cmdAppObjectArgs(
                 getSketchObject(),
                 "setTextAndFont(len(App.ActiveDocument.getObject('%s').Constraints)-1, '%s', '%s', "
-                "%s)",
+                "%s, %s)",
                 getSketchObject()->getNameInDocument(),
                 escText.c_str(),
                 escFont.c_str(),
+                heightBoolStr,
                 constrBoolStr
             );
 
@@ -383,7 +385,10 @@ void DSHTextController::configureToolWidget()
 
         // 3. Set a sensible default font
         QString defaultFontName;
-        if (fontNames.contains(QString::fromUtf8("DejaVu Sans"), Qt::CaseInsensitive)) {
+        if (fontNames.contains(QString::fromUtf8("osifont-lgpl3fe"), Qt::CaseInsensitive)) {
+            defaultFontName = QString::fromUtf8("osifont-lgpl3fe");
+        }
+        else if (fontNames.contains(QString::fromUtf8("DejaVu Sans"), Qt::CaseInsensitive)) {
             defaultFontName = QString::fromUtf8("DejaVu Sans");
         }
         else if (fontNames.contains(QString::fromUtf8("Arial"), Qt::CaseInsensitive)) {

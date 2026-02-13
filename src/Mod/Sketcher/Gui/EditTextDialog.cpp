@@ -53,6 +53,9 @@ EditTextDialog::EditTextDialog(ViewProviderSketch* viewProvider, int constraintI
     // Initialize Text
     ui->lineEdit_text->setText(QString::fromStdString(constraint->getText()));
 
+    ui->radioButton_height->setChecked(constraint->getIsTextHeight());
+    ui->radioButton_width->setChecked(!constraint->getIsTextHeight());
+
     // Initialize Font
     populateFontList();
     QString currentFontName = findFontNameFromPath(QString::fromStdString(constraint->getFont()));
@@ -87,11 +90,13 @@ void EditTextDialog::on_buttonBox_accepted()
     std::string newText = ui->lineEdit_text->text().toStdString();
     QString selectedFontName = ui->comboBox_font->currentText();
     std::string newFontPath = fontPathMap.value(selectedFontName).toStdString();
+    bool newIsHeight = ui->radioButton_height->isChecked();
 
     const Sketcher::Constraint* constraint = sketch->Constraints[constrIndex];
 
     // Check if anything changed
-    if (newText == constraint->getText() && newFontPath == constraint->getFont()) {
+    if (newText == constraint->getText() && newFontPath == constraint->getFont()
+        && newIsHeight == constraint->getIsTextHeight()) {
         return;  // Nothing to do
     }
 
@@ -99,7 +104,25 @@ void EditTextDialog::on_buttonBox_accepted()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify sketch text constraint"));
 
     try {
-        Gui::cmdAppObjectArgs(sketch, "setTextAndFont(%i, '%s', '%s')", constrIndex, newText, newFontPath);
+        // Find if it was construction geometry to preserve that state
+        int firstTextGeoId = constraint->getGeoId(1);
+        bool isConstruction = false;
+        if (firstTextGeoId != Sketcher::GeoEnum::GeoUndef) {
+            isConstruction = Sketcher::GeometryFacade::getConstruction(
+                sketch->getGeometry(firstTextGeoId)
+            );
+        }
+
+        // Send the updated 5-parameter call to Python
+        Gui::cmdAppObjectArgs(
+            sketch,
+            "setTextAndFont(%i, '%s', '%s', %s, %s)",
+            constrIndex,
+            newText.c_str(),
+            newFontPath.c_str(),
+            newIsHeight ? "True" : "False",
+            isConstruction ? "True" : "False"
+        );
 
         Gui::Command::commitCommand();
     }

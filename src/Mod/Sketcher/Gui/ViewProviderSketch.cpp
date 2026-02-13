@@ -1341,9 +1341,32 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
-        // We cannot do toggleWireSelelection directly here because the released event with
-        //STATUS_NONE return false which clears the selection.
-        setSketchMode(STATUS_SELECT_Wire);
+        int geoId = preselection.PreselectCurve;
+        Sketcher::SketchObject* sketch = getSketchObject();
+
+        // Check if the preselected edge is the handle of a Text constraint
+        int textConstrId = -1;
+        const auto& constraints = sketch->Constraints.getValues();
+        for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
+            if (constraints[i]->Type == Sketcher::Text && constraints[i]->hasElement(0)) {
+                if (constraints[i]->getGeoId(0) == geoId) {
+                    textConstrId = i;
+                    break;
+                }
+            }
+        }
+
+        if (textConstrId != -1) {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
+            EditTextDialog editTextDialog(this, textConstrId);
+            editTextDialog.exec();
+            setSketchMode(STATUS_NONE);
+        }
+        else {
+            // We cannot do toggleWireSelelection directly here because the released event with
+            //STATUS_NONE return false which clears the selection.
+            setSketchMode(STATUS_SELECT_Wire);
+        }
     }
     else if (preselection.isCrossPreselected()) {
         Base::Console().log("double click cross:%d\n",
@@ -2448,6 +2471,16 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
         else if (result.GeoIndex != -1
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
+
+            // If the picked edge is part of a text/group, treat the handle as the preselected item
+            int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
+            if (handleId != result.GeoIndex) {
+                if (handleId == preselection.PreselectCurve) {
+                    return false;
+                }
+                result.GeoIndex = handleId;
+            }
+
             std::stringstream ss;
             if (result.GeoIndex >= 0)
                 ss << "Edge" << result.GeoIndex + 1;

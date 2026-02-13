@@ -905,7 +905,7 @@ double SketchObject::getDatum(int ConstrId) const
     return this->Constraints[ConstrId]->getValue();
 }
 
-int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isConstruction)
+int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string& newFont, bool isHeight, bool isConstruction)
 {
 ;    // no need to check input data validity as this is an sketchobject managed operation.
     Base::StateLocker lock(managedoperation, true);
@@ -925,9 +925,9 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     }
 
     // First we replace the old geometries by the new text.
-    const bool isHeight = constr->getIsTextHeight();
     const std::string oldText = constr->getText();
     const std::string oldFont = constr->getFont();
+    const bool oldIsHeight = constr->getIsTextHeight();
     int handleGeoId = constr->getGeoId(0);
     int firstTextGeoId = constr->getGeoId(1);
     bool hasExistingText = firstTextGeoId != GeoEnum::GeoUndef;
@@ -1011,6 +1011,7 @@ int SketchObject::setTextAndFont(int ConstrId, std::string& newText, std::string
     if (err) {
         constr->setText(oldText);
         constr->setFont(oldFont);
+        constr->setIsTextHeight(oldIsHeight);
     }
 
     return err;

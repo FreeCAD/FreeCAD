@@ -754,6 +754,10 @@ ConstraintFilterList::ConstraintFilterList(QWidget* parent)
         it->setCheckState(isChecked ? Qt::Checked : Qt::Unchecked);
         filterState = filterState >> 1;// shift right to get rid of the used bit.
     }
+
+    // Text constraint filter is hidden from the user
+    item(static_cast<int>(ConstraintFilter::FilterValue::Text))->setHidden(true);
+
     languageChange();
 
     setPartiallyChecked();

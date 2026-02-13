@@ -1008,6 +1008,11 @@ QMap<QString, QString> SketcherGui::findAvailableFontFiles()
     QMap<QString, QString> fontMap;
     QStringList fontPaths;
 
+    // 0. Include FreeCAD bundled fonts
+    fontPaths << QString::fromStdString(
+        App::Application::getResourceDir() + "Mod/TechDraw/Resources/fonts/"
+    );
+
 #if defined(Q_OS_WIN)
     fontPaths << QString::fromUtf8("C:/Windows/Fonts");
 #elif defined(Q_OS_MACOS)

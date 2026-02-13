@@ -5685,7 +5685,7 @@ void Sketch::applyGroupTransformations()
         Base::Matrix4D T2;  // Identity
         T2[0][3] = postSolveFrame.startPoint.x;
         T2[1][3] = postSolveFrame.startPoint.y;
-        T2[2][3] = postSolveFrame.startPoint.z;
+        T2[2][3] = 0;
 
         // 5. Combine the matrices in the correct order: T_final = T2 * R * S * T1
         Base::Matrix4D transform = T2 * R * S * T1;
