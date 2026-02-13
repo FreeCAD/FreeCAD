@@ -2037,8 +2037,11 @@ void processEdge(const TopoDS_Edge& edge,
                 p2.Transform(trsf);
             }
 
-            Base::Vector3d P1(p1.X(), p1.Y(), 0);
-            Base::Vector3d P2(p2.X(), p2.Y(), 0);
+            // The bounding box has no expansion in Y direction.
+            // Due to possible rounding errors force the same y
+            // value for both points. This fixes issue 25720
+            Base::Vector3d P1(p1.X(), (p1.Y() + p2.Y()) / 2.0, 0);
+            Base::Vector3d P2(p2.X(), (p1.Y() + p2.Y()) / 2.0, 0);
 
             // check for degenerated case when the line is collapsed to a point
             if (p1.SquareDistance(p2) < Precision::SquareConfusion()) {
