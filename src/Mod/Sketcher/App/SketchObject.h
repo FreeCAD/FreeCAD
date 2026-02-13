@@ -358,6 +358,7 @@ public:
         int ConstrId,
         std::string& newText,
         std::string& newFont,
+        bool isHeight,
         bool isConstruction = false
     );
     /// set the driving status of this constraint and solve

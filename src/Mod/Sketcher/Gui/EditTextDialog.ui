@@ -36,6 +36,24 @@
      <item row="1" column="1">
       <widget class="QComboBox" name="comboBox_font"/>
      </item>
+     <item row="2" column="0" colspan="2">
+      <layout class="QHBoxLayout" name="layoutType">
+       <item>
+        <widget class="QRadioButton" name="radioButton_height">
+         <property name="text">
+          <string>Height</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="radioButton_width">
+         <property name="text">
+         <string>Width</string>
+         </property>
+        </widget>
+       </item>
+     </layout>
+    </item>
     </layout>
    </item>
    <item>

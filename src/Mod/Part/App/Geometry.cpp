@@ -7507,7 +7507,7 @@ void transformAndConvertToGeometry(
     double baseHeight = ymax - ymin;
 
     // This transform will move the geometry's bottom-left corner to the origin (0,0,0)
-    gp_Vec initialTranslationVec(-xmin, -ymin, -zmin);
+    gp_Vec initialTranslationVec(-xmin, -ymin, 0.0);
 
     // 2. Determine scale and rotation
     double angle;
@@ -7536,7 +7536,7 @@ void transformAndConvertToGeometry(
     gp_Trsf rotateTrsf;
     rotateTrsf.SetRotation(gp::XOY().Axis(), angle);
     gp_Trsf finalTranslate;
-    finalTranslate.SetTranslation(gp_Vec(p1.x, p1.y, p1.z));
+    finalTranslate.SetTranslation(gp_Vec(p1.x, p1.y, 0.0));
     gp_Trsf finalTrsf = finalTranslate * rotateTrsf * scaleTrsf * initialTranslate;
 
     // 4. Apply transformation and convert to Sketcher geometry
