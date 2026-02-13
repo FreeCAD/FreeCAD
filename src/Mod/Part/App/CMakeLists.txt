@@ -16,6 +16,7 @@ target_include_directories(
     SYSTEM
     PUBLIC
     ${OCC_INCLUDE_DIR}
+    ${EIGEN3_INCLUDE_DIR}
 )
 
 set(Part_LIBS
