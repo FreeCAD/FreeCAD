@@ -69,15 +69,11 @@ public:
 private:
     // Fields
     SoSFFloat fieldAngle;  // radians.
+    SoSFFloat sectorArcRotation;
 
     SbMatrix getMatrix();
-    bool findCommonEdge(
-        const App::DocumentObject* obj1,
-        const std::string& subName1,
-        const App::DocumentObject* obj2,
-        const std::string& subName2,
-        gp_Pnt& outOrigin
-    );
+
+    void onLabelMoved() override;
 };
 
 

@@ -102,53 +102,6 @@ gp_Lin getLine(gp_Vec& vec, gp_Vec& origin)
     return gp_Lin(tempOrigin, gp_Dir(vec));
 }
 
-bool ViewProviderMeasureAngle::findCommonEdge(
-    const App::DocumentObject* obj1,
-    const std::string& subName1,
-    const App::DocumentObject* obj2,
-    const std::string& subName2,
-    gp_Pnt& outOrigin
-)
-{
-    if (!obj1 || !obj2) {
-        return false;
-    }
-    try {
-        TopoDS_Shape s1
-            = Part::Feature::getShape(obj1, Part::ShapeOption::NeedSubElement, subName1.c_str());
-        TopoDS_Shape s2
-            = Part::Feature::getShape(obj2, Part::ShapeOption::NeedSubElement, subName2.c_str());
-        if (s1.IsNull() || s2.IsNull()) {
-            return false;
-        }
-
-        TopExp_Explorer exp1(s1, TopAbs_EDGE);
-        TopExp_Explorer exp2(s2, TopAbs_EDGE);
-        while (exp1.More()) {
-            auto ed1 = TopoDS::Edge(exp1.Current());
-            exp2.Init(s2, TopAbs_EDGE);
-            while (exp2.More()) {
-                auto ed2 = TopoDS::Edge(exp2.Current());
-                if (ed1.IsSame(ed2)) {
-                    // calculate outOrigin from the common edge
-                    TopoDS_Vertex v1, v2;
-                    TopExp::Vertices(ed1, v1, v2);
-                    outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
-                    return true;
-                }
-                exp2.Next();
-            }
-            exp1.Next();
-        }
-
-        // No common edge found
-        return false;
-    }
-    catch (...) {
-        Base::Console().warning("Cannot find common edge\n");
-        return false;
-    }
-}
 
 SbMatrix ViewProviderMeasureAngle::getMatrix()
 {
@@ -255,24 +208,18 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         dimensionOriginPoint.SetCoord(0, 0, 0);
         bool originFound = false;
         gp_Vec thirdPoint;
+        gp_Vec adjustedVector1;
+        gp_Vec adjustedVector2;
+        measurement->getDirections(adjustedVector1, adjustedVector2);
 
-        std::vector<std::string> sub1 = measurement->Element1.getSubValues();
-        std::vector<std::string> sub2 = measurement->Element2.getSubValues();
-        bool isFaceSelection
-            = (!sub1.empty() && sub1[0].find("Face") != std::string::npos && !sub2.empty()
-               && sub2[0].find("Face") != std::string::npos);
+        bool isFaceSelection = measurement->isFaceFace();
+        bool isEdgeSelection = measurement->isEdgeEdge();
 
         if (isFaceSelection) {
-            originFound = findCommonEdge(
-                measurement->Element1.getValue(),
-                sub1[0],
-                measurement->Element2.getValue(),
-                sub2[0],
-                dimensionOriginPoint
-            );
-            if (originFound) {
-                thirdPoint = gp_Vec(dimensionOriginPoint.XYZ()) + vector2.Normalized();
-            }
+            originFound = measurement->hasCommonEdge(dimensionOriginPoint);
+        }
+        else if (isEdgeSelection) {
+            originFound = measurement->hasCommonVertex(dimensionOriginPoint);
         }
 
         if (!originFound) {
@@ -305,17 +252,17 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
                 double legOne = (extrema2Vector - originVector).Magnitude();
                 if (legOne > Precision::Confusion() && radiusCalc > legOne) {
                     double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
-                    gp_Vec projectionVector(vector2);
+                    gp_Vec projectionVector(adjustedVector2);
                     projectionVector.Normalize();
                     projectionVector *= legTwo;
                     thirdPoint = extrema2Vector + projectionVector;
                 }
                 else {
-                    thirdPoint = originVector + vector2.Normalized();
+                    thirdPoint = originVector + adjustedVector2.Normalized();
                 }
             }
             else {
-                thirdPoint = originVector + vector2.Normalized();
+                thirdPoint = originVector + adjustedVector2.Normalized();
             }
         }
 
@@ -324,10 +271,17 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec zAxis;
         gp_Vec yAxis;
 
+        // need to review this but works
         if (originFound) {
-            zAxis = vector1.Crossed(vector2);
-            if (zAxis.Magnitude() < Precision::Confusion()) {
-                zAxis = xAxis.Crossed(vector1);
+            if (isEdgeSelection) {
+                xAxis = adjustedVector1.Normalized();
+            }
+
+            if (isFaceSelection) {
+                zAxis = adjustedVector1.Crossed(adjustedVector2);
+            }
+            else {
+                zAxis = adjustedVector2.Crossed(adjustedVector1);
             }
             zAxis.Normalize();
             yAxis = zAxis.Crossed(xAxis).Normalized();
@@ -371,8 +325,24 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureAngle, MeasureGui::ViewProviderMe
 ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 {
     sPixmap = "Measurement-Angle";
+    // Visuals node
+    auto pVisualsSep = new SoSeparator();
 
-    // Primary Arc
+    // Primary Arc with rotation transform (sector rotation)
+    auto pArcVisCalc = new SoComposeRotation();
+    pArcVisCalc->axis.setValue(0, 0, 1);
+    pArcVisCalc->angle.connectFrom(&sectorArcRotation);
+
+    auto pArcTransform = new SoTransform();
+    pArcTransform->rotation.connectFrom(&pArcVisCalc->rotation);
+    pVisualsSep->addChild(pArcTransform);
+
+    pLineSeparator->addChild(pVisualsSep);
+
+
+    auto pArcGeomNode = new SoSeparator();
+
+    // ========================== ARC ==========================
     Gui::ArcEngine* arcEngine = new Gui::ArcEngine();
     arcEngine->angle.connectFrom(&fieldAngle);
 
@@ -384,13 +354,13 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     SoCoordinate3* coordinates = new SoCoordinate3();
     coordinates->point.connectFrom(&arcEngine->points);
+    pArcGeomNode->addChild(coordinates);
 
     SoLineSet* lineSet = new SoLineSet();
-    lineSet->vertexProperty.setValue(coordinates);
     lineSet->numVertices.connectFrom(&arcEngine->pointCount);
     lineSet->startIndex.setValue(0);
 
-    pLineSeparator->addChild(lineSet);
+    pArcGeomNode->addChild(lineSet);
 
     // Secondary Arc, from midpoint to label
     auto engineAngle = new SoCalculator();
@@ -424,9 +394,14 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     lineSetSecondary->numVertices.connectFrom(&arcEngineSecondary->pointCount);
     lineSetSecondary->startIndex.setValue(0);
 
-    pLineSeparatorSecondary->addChild(lineSetSecondary);
+    pArcGeomNode->addChild(lineSetSecondary);
+    pVisualsSep->addChild(pArcGeomNode);
 
-    // Arrow for arc
+
+    // ========================== ARROWS ==========================
+
+    auto pArrowGeomNode = new SoSeparator();
+    // single arrow for arc
     auto pArrowNode = new SoSeparator();
 
     auto pLightModel = new SoLightModel();
@@ -469,13 +444,13 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     auto pLeftArrowTrans = new SoTransform();
     pLeftArrowSep->addChild(pLeftArrowTrans);
     pLeftArrowSep->addChild(pArrowNode);
-    pLineSeparator->addChild(pLeftArrowSep);
+    pArrowGeomNode->addChild(pLeftArrowSep);
 
     auto pRightArrowSep = new SoSeparator();
     auto pRightArrowTrans = new SoTransform();
     pRightArrowSep->addChild(pRightArrowTrans);
     pRightArrowSep->addChild(pArrowNode);
-    pLineSeparator->addChild(pRightArrowSep);
+    pArrowGeomNode->addChild(pRightArrowSep);
 
     pLeftArrowTrans->rotation.setValue(SbRotation(SbVec3f(0, 0, 1), std::numbers::pi));
 
@@ -484,6 +459,10 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     rightRotCalc->angle.connectFrom(&fieldAngle);
     pRightArrowTrans->rotation.connectFrom(&rightRotCalc->rotation);
 
+    pVisualsSep->addChild(pArrowGeomNode);
+
+
+    // ========================== Normals ==========================
 
     // normal for faces
     auto pNormalsSeparator = new SoSeparator();
@@ -532,7 +511,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pNormalsSeparator->addChild(pNormalsCoords);
     pNormalsSeparator->addChild(pNormalsLines);
 
-    pLineSeparator->addChild(pNormalsSeparator);
+    pVisualsSep->addChild(pNormalsSeparator);
 }
 
 void ViewProviderMeasureAngle::redrawAnnotation()
@@ -575,4 +554,34 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 {
     (void)measureObject;
     setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
+}
+
+void ViewProviderMeasureAngle::onLabelMoved()
+{
+    SbVec3f trans = pDragger->translation.getValue();
+
+    // The 4 sectors are defined by the two intersecting lines
+    float measuredAngle = fieldAngle.getValue();
+
+    // Get dragger angle in local coordinate system
+    float draggerAngle = std::atan2(trans[1], trans[0]);
+    if (draggerAngle < 0) {
+        draggerAngle += 2.0f * M_PI;
+    }
+
+    float theta = measuredAngle;
+    if (theta > M_PI) {
+        theta = 2.0f * M_PI - theta;
+    }
+
+    // sector 1: between 0 and θ
+    if (draggerAngle >= 0 && draggerAngle < theta) {
+        Base::Console().warning("sector 1\n");
+        sectorArcRotation.setValue(0);
+    }
+    // sector 3: between π and π+θ
+    else if (draggerAngle >= M_PI && draggerAngle < M_PI + theta) {
+        Base::Console().warning("sector 3\n");
+        sectorArcRotation.setValue(M_PI);
+    }
 }

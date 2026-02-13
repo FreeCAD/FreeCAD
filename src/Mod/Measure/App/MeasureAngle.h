@@ -91,6 +91,12 @@ public:
     gp_Vec location1();
     gp_Vec location2();
 
+    bool isFaceFace();
+    bool isEdgeEdge();
+    bool hasCommonEdge(gp_Pnt& commonVertex);
+    bool hasCommonVertex(gp_Pnt& commonVertex);
+    bool getDirections(gp_Vec& vec1, gp_Vec& vec2);
+
 private:
     void onChanged(const App::Property* prop) override;
 };

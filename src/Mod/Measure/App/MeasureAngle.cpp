@@ -28,8 +28,16 @@
 #include <App/MeasureManager.h>
 #include <Base/Tools.h>
 #include <Base/Precision.h>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Vertex.hxx>
+#include <TopExp.hxx>
+#include <BRep_Tool.hxx>
 
 #include "MeasureAngle.h"
+#include "Mod/Part/App/PartFeature.h"
 
 using namespace Measure;
 
@@ -211,6 +219,159 @@ gp_Vec MeasureAngle::location2()
     return {temp.x, temp.y, temp.z};
 }
 
+bool MeasureAngle::isFaceFace()
+{
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        Element1.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element1.getSubValues().at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        Element2.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element2.getSubValues().at(0).c_str()
+    );
+    return (
+        !s1.IsNull() && s1.ShapeType() == TopAbs_FACE && !s2.IsNull() && s2.ShapeType() == TopAbs_FACE
+    );
+}
+
+bool MeasureAngle::isEdgeEdge()
+{
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        Element1.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element1.getSubValues().at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        Element2.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element2.getSubValues().at(0).c_str()
+    );
+    return (
+        !s1.IsNull() && s1.ShapeType() == TopAbs_EDGE && !s2.IsNull() && s2.ShapeType() == TopAbs_EDGE
+    );
+}
+
+bool MeasureAngle::hasCommonEdge(gp_Pnt& outOrigin)
+{
+    if (!Element1.getValue() || !Element2.getValue()) {
+        return false;
+    }
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        Element1.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element1.getSubValues().at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        Element2.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element2.getSubValues().at(0).c_str()
+    );
+    if (s1.IsNull() || s2.IsNull()) {
+        return false;
+    }
+
+    TopExp_Explorer exp1(s1, TopAbs_EDGE);
+    TopExp_Explorer exp2(s2, TopAbs_EDGE);
+    while (exp1.More()) {
+        auto ed1 = TopoDS::Edge(exp1.Current());
+        exp2.Init(s2, TopAbs_EDGE);
+        while (exp2.More()) {
+            auto ed2 = TopoDS::Edge(exp2.Current());
+            if (ed1.IsSame(ed2)) {
+                // calculate outOrigin from the common edge
+                TopoDS_Vertex v1, v2;
+                TopExp::Vertices(ed1, v1, v2);
+                outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
+                return true;
+            }
+            exp2.Next();
+        }
+        exp1.Next();
+    }
+
+    // No common edge found
+    return false;
+}
+
+bool MeasureAngle::hasCommonVertex(gp_Pnt& commonVertex)
+{
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        Element1.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element1.getSubValues().at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        Element2.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element2.getSubValues().at(0).c_str()
+    );
+
+    if (s1.IsNull() || s2.IsNull()) {
+        return false;
+    }
+
+    if (s1.ShapeType() != TopAbs_EDGE || s2.ShapeType() != TopAbs_EDGE) {
+        return false;
+    }
+
+    TopoDS_Edge e1 = TopoDS::Edge(s1);
+    TopoDS_Edge e2 = TopoDS::Edge(s2);
+    TopoDS_Vertex common;
+
+    if (TopExp::CommonVertex(e1, e2, common)) {
+        commonVertex = BRep_Tool::Pnt(common);
+        return true;
+    }
+
+    return false;
+}
+
+bool MeasureAngle::getDirections(gp_Vec& dir1, gp_Vec& dir2)
+{
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        Element1.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element1.getSubValues().at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        Element2.getValue(),
+        Part::ShapeOption::NeedSubElement,
+        Element2.getSubValues().at(0).c_str()
+    );
+
+    if (s1.IsNull() || s2.IsNull()) {
+        return false;
+    }
+
+    dir1 = vector1();
+    dir2 = vector2();
+
+    // For edges with a common vertex, we need to orient the vectors
+    // so they point away from the common vertex
+    if (isEdgeEdge()) {
+        gp_Pnt commonPt;
+        if (hasCommonVertex(commonPt)) {
+            gp_Vec loc1 = location1();
+            gp_Vec loc2 = location2();
+
+            gp_Vec toCommon1 = gp_Vec(commonPt.XYZ()) - loc1;
+            gp_Vec toCommon2 = gp_Vec(commonPt.XYZ()) - loc2;
+
+            // If the direction vector points toward the common vertex, flip it
+            if (dir1.Dot(toCommon1) > 0) {
+                dir1 = -dir1;
+            }
+            if (dir2.Dot(toCommon2) > 0) {
+                dir2 = -dir2;
+            }
+        }
+    }
+
+    return true;
+}
+
 App::DocumentObjectExecReturn* MeasureAngle::execute()
 {
     App::DocumentObject* ob1 = Element1.getValue();
@@ -232,8 +393,29 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
 
     Base::Vector3d vec2;
     getVec(*ob2, subs2.at(0), vec2);
+    double angleRad;
+    gp_Vec dir1, dir2;
+    getDirections(dir1, dir2);
+    // need to review this but now this works
+    if (isFaceFace()) {
 
-    Angle.setValue(Base::toDegrees(M_PI - vec1.GetAngle(vec2)));
+        angleRad = M_PI - vec1.GetAngle(vec2);
+    }
+    else if (isEdgeEdge()) {
+        gp_Pnt commonPt;
+        if (hasCommonVertex(commonPt)) {
+
+            angleRad = dir1.Angle(dir2);
+        }
+        else {
+            angleRad = vec1.GetAngle(vec2);
+        }
+    }
+    else {
+        angleRad = vec1.GetAngle(vec2);
+    }
+    Angle.setValue(Base::toDegrees(angleRad));
+
 
     return DocumentObject::StdReturn;
 }
