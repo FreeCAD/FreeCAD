@@ -1990,8 +1990,23 @@ void processEdge(const TopoDS_Edge& edge,
         auto shape = Part::TopoShape(edge);
         bool planar = shape.findPlane(plane);
 
+        // The workaround of PR 19700 causes a regression with issue 25720.
+        // Although the idea seems to be correct it's numerically not stable enough.
+        // Theoretically the optimal bounding box of the transformed edge should have no
+        // expansion in Y direction but practially it does and the expansion is much
+        // higher than Precision::Confusion(). Due to these inaccuracies the computed
+        // line segment differs too much from the expected projected edge and may lead
+        // to further problems like observed in issue 25720.
+        // Alternative idea (in processEdge2):
+        // Usually OCC creates a B-spline from the projected edge. If it has a degree of
+        // 1 it can be directly translated into a line segment. If it has a higher degree
+        // then it must be checked if all control points are collinear. This can be easily
+        // done with the covariance matrix:
+        // * if the rank is 0 then it degenerates to a point
+        // * if the rank is 1 then it's a line segment
+
         // Check if the edge is planar and plane is perpendicular to the projection plane
-        if (planar && plane.Axis().IsNormal(sketchPlane.Axis(), Precision::Angular())) {
+        if (false && planar && plane.Axis().IsNormal(sketchPlane.Axis(), Precision::Angular())) {
             // Project an edge to a line. Only works if the edge is planar and its plane is
             // perpendicular to the projection plane. OCC has trouble handling
             // BSpline projection to a straight line. Although it does correctly projects
