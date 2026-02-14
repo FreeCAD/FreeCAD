@@ -1056,7 +1056,6 @@ void MeshGeomFacet::SubSample(float fStep, std::vector<Base::Vector3f>& rclPoint
             float w = (bx * py) / fDetABC;
 
             if ((u >= 0.0F) && (v >= 0.0F) && (w >= 0.0F) && ((u + v) < 1.0F)) {
-                // rclPoints.push_back(CBase::Vector3f(u*A + v*B + w*C));
                 Base::Vector3f clV = A + (px * clVecABNorm) + (py * clVecHNorm);
                 clPoints.push_back(clV);
             }
