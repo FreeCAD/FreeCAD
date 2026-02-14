@@ -478,7 +478,9 @@ void TaskMeasure::updateResultWithUnit()
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
         // Parse unit string like "1 mm" to get the target quantity
-        Base::Quantity targetUnit = Base::Quantity::parse((QLatin1String("1 ") + currentUnit).toStdString());
+        Base::Quantity targetUnit = Base::Quantity::parse(
+            (QLatin1String("1 ") + currentUnit).toStdString()
+        );
         double convertedValue = resultQty.getValueAs(targetUnit);
 
         QString formattedValue;
