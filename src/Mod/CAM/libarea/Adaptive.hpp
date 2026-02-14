@@ -262,8 +262,8 @@ private:
 
     const double MIN_CUT_AREA_FACTOR = 0.1;  // used for filtering out of insignificant cuts
 
-    const double CLEAN_PATH_TOLERANCE = 1.41;            // should be >1
-    const double FINISHING_CLEAN_PATH_TOLERANCE = 1.41;  // should be >1
+    const double CLEAN_PATH_TOLERANCE = 1.415;            // should be >sqrt(2)
+    const double FINISHING_CLEAN_PATH_TOLERANCE = 1.415;  // should be >sqrt(2)
 
     const long PASSES_LIMIT = __LONG_MAX__;              // limit used while debugging
     const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;     // limit used while debugging

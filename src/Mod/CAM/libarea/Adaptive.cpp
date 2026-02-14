@@ -1874,33 +1874,6 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
-            // Skip finishing passes that are already fully cleared
-            {
-                Paths actualFinishingPass;
-                for (Path fp : finishingPass) {
-                    Paths fpClearedPlus, fpClearedMinus;
-                    clipof.Clear();
-                    clipof.AddPath(fp, JoinType::jtRound, EndType::etClosedPolygon);
-                    // 3 = number of offsets in computing fpCleared > max error in boundary
-                    // Subtracting 3 ensures that rounding in fpCleared is guaranteed to
-                    // shrink it. This is important for successfully filtering out fpCleared
-                    // that should be fully covered by initialClearPaths
-                    clipof.Execute(fpClearedPlus, toolRadiusScaled - 3);
-                    clipof.Execute(fpClearedMinus, -(toolRadiusScaled - 3));
-
-                    Paths difference;
-                    clip.Clear();
-                    clip.AddPaths(fpClearedPlus, PolyType::ptSubject, true);
-                    clip.AddPaths(fpClearedMinus, PolyType::ptSubject, true);
-                    clip.AddPaths(initialClearedPaths, PolyType::ptClip, true);
-                    clip.Execute(ClipType::ctDifference, difference);
-                    if (difference.size() > 0) {
-                        actualFinishingPass.push_back(fp);
-                    }
-                }
-                finishingPass = actualFinishingPass;
-            }
-
             // 9) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
             ProcessPolyNode(boundPath, toolBounds, finishingPass, initialClearedPaths);
         }
@@ -2464,6 +2437,7 @@ TPaths Adaptive2d::FindLinkPath(
                 beaconOffset = linkDistance / 2;
             }
 
+            // plan the lead out
             double sDistToBounds = DistancePointToPathsSqrd(
                 toolBoundPaths,
                 startPoint,
@@ -2472,35 +2446,72 @@ TPaths Adaptive2d::FindLinkPath(
                 clpSegmentIndex,
                 clpParameter
             );
-            DoublePoint startDir = (!prevDir || sDistToBounds < beaconOffset)
-                ? GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex)
-                : *prevDir;
 
-            DoublePoint endDir = pathDir;
+            DoublePoint startBoundaryDir
+                = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+            DoublePoint startDir = prevDir ? *prevDir : startBoundaryDir;
+            if (sDistToBounds > beaconOffset) {
+                startBoundaryDir = startDir;  // if boundary is far away, use beacon to leave the path
+            }
+            DoublePoint startBeaconDir
+                = {startDir.X - startBoundaryDir.Y, startDir.Y + startBoundaryDir.X};
 
             IntPoint startBeacon(
-                startPoint.X - beaconOffset * (startDir.Y - startDir.X),
-                startPoint.Y + beaconOffset * (startDir.X + startDir.Y)
+                startPoint.X + beaconOffset * startBeaconDir.X,
+                startPoint.Y + beaconOffset * startBeaconDir.Y
             );
-            IntPoint endBeacon(
-                endPoint.X - beaconOffset * (endDir.X + endDir.Y),
-                endPoint.Y + beaconOffset * (endDir.X - endDir.Y)
-            );
+
             Path leadOutPath;
             MakeLeadPath(false, startPoint, startDir, startBeacon, cleared, toolBoundPaths, leadOutPath);
+            cout << "MakeLeadOut:" << endl;
+            cout << "\tstartDir (" << startDir.X << ", " << startDir.Y << ")" << endl;
+            cout << "\tstartBoundaryDir (" << startBoundaryDir.X << ", " << startBoundaryDir.Y
+                 << ")" << endl;
+            cout << "\tstartBeaconDir (" << startBeaconDir.X << ", " << startBeaconDir.Y << ")"
+                 << endl;
+            for (auto& p : leadOutPath) {
+                cout << "\t(" << p.X << "," << p.Y << ")" << endl;
+            }
+            cout << endl;
+
+            // plan the lead in, as a reverse-direction lead out
+            double eDistToBounds = DistancePointToPathsSqrd(
+                toolBoundPaths,
+                endPoint,
+                clp,
+                clpPathIndex,
+                clpSegmentIndex,
+                clpParameter
+            );
+
+            DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
+
+            DoublePoint endBoundaryDir
+                = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+            if (eDistToBounds > beaconOffset) {
+                endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
+            }
+            DoublePoint endBeaconDir = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
+
+            IntPoint endBeacon(
+                endPoint.X + beaconOffset * endBeaconDir.X,
+                endPoint.Y + beaconOffset * endBeaconDir.Y
+            );
 
             Path leadInPath;
-            MakeLeadPath(
-                true,
-                endPoint,
-                DoublePoint(-endDir.X, -endDir.Y),
-                endBeacon,
-                cleared,
-                toolBoundPaths,
-                leadInPath
-            );
+            MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath);
             ReversePath(leadInPath);
+            cout << "MakeLeadIn:" << endl;
+            cout << "\trevEndDir (" << revEndDir.X << ", " << revEndDir.Y << ")" << endl;
+            cout << "\tendBoundaryDir (" << endBoundaryDir.X << ", " << endBoundaryDir.Y << ")"
+                 << endl;
+            cout << "\tendBeaconDir (" << endBeaconDir.X << ", " << endBeaconDir.Y << ")" << endl;
+            for (auto& p : leadInPath) {
+                cout << "\t(" << p.X << "," << p.Y << ")" << endl;
+            }
+            cout << endl;
 
+            // Compute linking path
             Path linkPath;
             MotionType linkType = MotionType::mtCutting;
 
@@ -3624,6 +3635,15 @@ void Adaptive2d::ProcessPolyNode(
             CleanPath(passToolPath, cleaned, CLEAN_PATH_TOLERANCE);
             total_output_points += long(cleaned.size());
             AppendToolPath(output, cleaned, linkPath);
+            for (TPath lp : linkPath) {
+                if (lp.first == MotionType::mtCutting || lp.first == MotionType::mtLinkClear) {
+                    Path scaledP;
+                    for (auto& p : lp.second) {
+                        scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                    }
+                    cleared.ExpandCleared(scaledP);
+                }
+            }
             CheckReportProgress(progressPaths);
             bad_engage_count = 0;
             fout << "Accepted pass, area " << cumulativeCutArea << "\n\n";
@@ -3680,6 +3700,23 @@ void Adaptive2d::ProcessPolyNode(
         clipof.Clear();
         clipof.AddPaths(finishingPaths, JoinType::jtRound, EndType::etClosedPolygon);
         clipof.Execute(toolBoundPaths, -1);
+
+        // fix orientation of toolBoundPaths
+        for (Path& p : toolBoundPaths) {
+            DistancePointToPathsSqrd(finishingPaths, p[0], clp, clpPathIndex, clpSegmentIndex, clpParameter);
+            if (Orientation(p) != Orientation(finishingPaths[clpPathIndex])) {
+                ReversePath(p);
+            }
+            cout << "TBP: [" << endl;
+            for (auto a : p) {
+                cout << "\t(" << a.X << ", " << a.Y << ")" << endl;
+            }
+            cout << "] paired with finishing pass: [" << endl;
+            for (auto a : finishingPaths[clpPathIndex]) {
+                cout << "\t(" << a.X << ", " << a.Y << ")" << endl;
+            }
+            cout << "]" << endl << endl;
+        }
 
         IntPoint lastPoint = toolPos;
         Path finShiftedPath;
@@ -3746,7 +3783,11 @@ void Adaptive2d::ProcessPolyNode(
                 }
             }
 
-            // make sure it's closed
+            // make sure it's closed, but don't ruin the final direction
+            if (sqrt(DistanceSqrd(finCleaned.front(), finCleaned.back()))
+                < FINISHING_CLEAN_PATH_TOLERANCE) {
+                finCleaned.pop_back();
+            }
             finCleaned.push_back(finCleaned.front());
             TPaths linkPath = FindLinkPath(
                 toolPos,
@@ -3756,11 +3797,25 @@ void Adaptive2d::ProcessPolyNode(
                 cleared,
                 toolBoundPaths
             );
+            cout << "Appending cleaned finishing pass: [" << endl;
+            for (auto a : finCleaned) {
+                cout << "\t(" << a.X << ", " << a.Y << ")" << endl;
+            }
+            cout << "]" << endl << endl;
             AppendToolPath(output, finCleaned, linkPath);
             toolPos = finCleaned.back();
             toolDir = GetPathDirectionV(finCleaned, finCleaned.size() - 1);
 
             cleared.ExpandCleared(finCleaned);
+            for (TPath lp : linkPath) {
+                if (lp.first == MotionType::mtCutting) {
+                    Path scaledP;
+                    for (auto& p : lp.second) {
+                        scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                    }
+                    cleared.ExpandCleared(scaledP);
+                }
+            }
 
             if (!finCleaned.empty()) {
                 lastPoint.X = finCleaned.back().X;
