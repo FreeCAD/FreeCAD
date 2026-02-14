@@ -250,7 +250,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
 
     Gui::MenuItem* elec = new Gui::MenuItem;
     elec->setCommand("&Electromagnetic Boundary Conditions");
-    *elec << "FEM_ConstraintElectrostaticPotential"
+    *elec << "FEM_ConstraintElectromagnetic"
           << "FEM_ConstraintCurrentDensity"
           << "FEM_ConstraintMagnetization"
           << "FEM_ConstraintElectricChargeDensity";
