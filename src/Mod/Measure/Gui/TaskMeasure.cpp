@@ -175,7 +175,7 @@ TaskMeasure::TaskMeasure()
     connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
     unitSwitch = new QComboBox();
-    unitSwitch->addItem("-");
+    unitSwitch->addItem(QLatin1String("-"));
     connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
 
 
@@ -478,7 +478,9 @@ void TaskMeasure::updateResultWithUnit()
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
         // Parse unit string like "1 mm" to get the target quantity
-        Base::Quantity targetUnit = Base::Quantity::parse(("1 " + currentUnit).toStdString());
+        Base::Quantity targetUnit = Base::Quantity::parse(
+            (QLatin1String("1 ") + currentUnit).toStdString()
+        );
         double convertedValue = resultQty.getValueAs(targetUnit);
 
         QString formattedValue;
@@ -490,7 +492,7 @@ void TaskMeasure::updateResultWithUnit()
             formattedValue = QString::number(convertedValue, 'f', 4);
         }
 
-        QString formattedResult = formattedValue + " " + currentUnit;
+        QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
         valueResult->setText(formattedResult);
     }
     else {
