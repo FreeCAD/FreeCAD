@@ -371,6 +371,11 @@ TEST_F(ParameterManagerTest, QssFormattingGenericTuple)
     EXPECT_EQ(manager.replacePlaceholders("@{(1px, 2px)}"), "1px 2px");
 }
 
+TEST_F(ParameterManagerTest, QssFormattingInsetsTuple)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{padding(10px, 5px)}"), "10px 5px 10px 5px");
+}
+
 // --- @{expression} substitution tests ---
 
 TEST_F(ParameterManagerTest, InlineExpressionSimple)
@@ -379,10 +384,35 @@ TEST_F(ParameterManagerTest, InlineExpressionSimple)
     EXPECT_EQ(result, "padding: 10px");
 }
 
+TEST_F(ParameterManagerTest, InlineExpressionFunctionCall)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px, 5px)}");
+    EXPECT_EQ(result, "padding: 10px 5px 10px 5px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionWithParameterReference)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"InlineBase", "8px"}},
+        ParameterSource::Metadata {"Inline Source"}
+    );
+    manager.addSource(source.get());
+    sources.push_back(std::move(source));
+
+    auto result = manager.replacePlaceholders("padding: @{padding(@InlineBase)}");
+    EXPECT_EQ(result, "padding: 8px 8px 8px 8px");
+}
+
 TEST_F(ParameterManagerTest, InlineExpressionArithmetic)
 {
     auto result = manager.replacePlaceholders("margin: @{@BaseSize * 2}");
     EXPECT_EQ(result, "margin: 32px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionMixedWithToken)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px)}; color: @PrimaryColor;");
+    EXPECT_EQ(result, "padding: 10px 10px 10px 10px; color: #ff0000;");
 }
 
 TEST_F(ParameterManagerTest, InlineExpressionInvalidLogsWarning)
