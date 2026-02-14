@@ -160,20 +160,13 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     supportface.move(invObjLoc);
 
-    if (method == RevolMethod::ToFirst
-        || (method == RevolMethod::ToLast && revolMode == Part::RevolMode::FuseWithBase)) {
+    if (method == RevolMethod::ToFirst || method == RevolMethod::ToLast) {
         TopoShape upToFace;
         gp_Ax1 axis(pnt, dir);
         if (Reversed.getValue()) {
             axis.Reverse();
         }
-        getUpToFace(
-            upToFace,
-            base,
-            sketchshape,
-            method == RevolMethod::ToFirst ? "UpToFirst" : "UpToLast",
-            axis
-        );
+        getUpToFace(upToFace, base, sketchshape, stringFromMethod(method), axis);
         result = tryToRevolveToFace(upToFace, pnt, dir, base, supportface, sketchshape, revolMode);
     }
     else if (method == RevolMethod::ToFace) {
@@ -308,6 +301,41 @@ void Revolved::updateAxis()
 
     Base.setValue(base);
     Axis.setValue(dir);
+}
+
+// clang-format off
+static constexpr auto numMethods {6};
+static constexpr std::array<std::tuple<std::string_view, Revolved::RevolMethod>, numMethods>
+revolMethods {{
+    {"Angle",      Revolved::RevolMethod::Angle},
+    {"UpToLast",   Revolved::RevolMethod::ToLast},
+    {"ThroughAll", Revolved::RevolMethod::ThroughAll},
+    {"UpToFirst",  Revolved::RevolMethod::ToFirst},
+    {"UpToFace",   Revolved::RevolMethod::ToFace},
+    {"TwoAngles",  Revolved::RevolMethod::TwoAngles},
+}};
+// clang-format on
+
+Revolved::RevolMethod Revolved::methodFromString(const std::string& methodStr)
+{
+    for (const auto& [str, type] : revolMethods) {
+        if (str == methodStr) {
+            return type;
+        }
+    }
+
+    throw Base::ValueError("Revolved: No such method");
+}
+
+std::string Revolved::stringFromMethod(Revolved::RevolMethod methodType)
+{
+    for (const auto& [str, type] : revolMethods) {
+        if (type == methodType) {
+            return std::string(str);
+        }
+    }
+
+    throw Base::ValueError("Revolved: No such method");
 }
 
 void Revolved::generateRevolution(

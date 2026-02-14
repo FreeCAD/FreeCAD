@@ -99,6 +99,9 @@ private:
     /// updates Axis from ReferenceAxis
     void updateAxis();
 
+    RevolMethod methodFromString(const std::string& methodStr);
+    std::string stringFromMethod(RevolMethod methodType);
+
     virtual TopoShape makeShape(const TopoShape& base, const TopoShape& revolve) const = 0;
     virtual bool suggestReversedAngle(double angle) const = 0;
 
