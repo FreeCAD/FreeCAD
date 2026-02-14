@@ -1019,9 +1019,7 @@ class _SolverCalculixContextManager:
             "{}.MatrixSolverType = {}".format(self.cli_name, ccx_prefs.GetInt("Solver", 0))
         )
         FreeCADGui.doCommand(
-            "{}.BeamShellResultOutput3D = {}".format(
-                self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True)
-            )
+            "{}.Output3d = {}".format(self.cli_name, ccx_prefs.GetBool("BeamShellOutput", True))
         )
         FreeCADGui.doCommand(
             '{}.GeometricalNonlinearity = "{}"'.format(
