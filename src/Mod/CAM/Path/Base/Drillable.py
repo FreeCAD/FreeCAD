@@ -21,7 +21,7 @@ def checkForBlindHole(baseshape, selectedFace):
     circularFaces = [
         f
         for f in baseshape.Faces
-        if len(f.OuterWire.Edges) == 1 and type(f.OuterWire.Edges[0].Curve) == Part.Circle
+        if len(f.OuterWire.Edges) == 1 and isinstance(f.OuterWire.Edges[0].Curve, Part.Circle)
     ]
 
     circularFaceEdges = [f.OuterWire.Edges[0] for f in circularFaces]
@@ -99,7 +99,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     bottomface = checkForBlindHole(obj, candidate)
     Path.Log.track("candidate is a blind hole")
 
-    if bottomface is not None and matchVector:  # blind holes only drillable at exact vector
+    if bottomface and matchVector:  # blind holes only drillable at exact vector
         result = compareVecs(bottomface.normalAt(0, 0), vector, exact=True)
         Path.Log.track(result)
         return result
@@ -121,19 +121,18 @@ def isDrillableFace(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
-    if not type(candidate.Surface) == Part.Plane:
+    if not isinstance(candidate.Surface, Part.Plane):
         Path.Log.debug("Drilling on non-planar faces not supported")
         return False
 
-    if (
-        len(candidate.Edges) == 1 and type(candidate.Edges[0].Curve) == Part.Circle
-    ):  # Regular circular face
+    if len(candidate.Edges) == 1 and isinstance(candidate.Edges[0].Curve, Part.Circle):
+        # Regular circular face
         Path.Log.debug("Face is circular - 1 edge")
         edge = candidate.Edges[0]
     elif (
         len(candidate.Edges) == 2
-        and type(candidate.Edges[0].Curve) == Part.Circle
-        and type(candidate.Edges[1].Curve) == Part.Circle
+        and isinstance(candidate.Edges[0].Curve, Part.Circle)
+        and isinstance(candidate.Edges[1].Curve, Part.Circle)
     ):  # process a donut
         Path.Log.debug("Face is a donut - 2 edges")
         e1 = candidate.Edges[0]
@@ -225,7 +224,7 @@ def isDrillable(obj, candidate, tooldiameter=None, vector=App.Vector(0, 0, 1), a
         )
     )
 
-    if list == type(obj):
+    if isinstance(obj, list):
         for shape in obj:
             if isDrillable(shape, candidate, tooldiameter, vector):
                 return (True, shape)
