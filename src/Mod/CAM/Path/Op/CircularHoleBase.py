@@ -207,12 +207,12 @@ class ObjectOp(PathOp.ObjectOp):
             return
 
         matchvector = None if job.JobType == "Multiaxis" else FreeCAD.Vector(0, 0, 1)
-        tooldiameter = obj.ToolController.Tool.Diameter
+        tooldiameter = obj.ToolController.Tool.Diameter.Value
 
         features = []
         for base in self.model:
             features.extend(
-                Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
+                Drillable.getDrillableTargets(base, toolDiameter=tooldiameter, vector=matchvector)
             )
         obj.Base = features
         obj.Disabled = []

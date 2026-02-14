@@ -256,5 +256,5 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
         results = Drillable.getDrillableTargets(self.obj, vector=None)
         self.assertEqual(len(results), 20)
 
-        results = Drillable.getDrillableTargets(self.obj, ToolDiameter=20, vector=None)
+        results = Drillable.getDrillableTargets(self.obj, toolDiameter=20, vector=None)
         self.assertEqual(len(results), 5)
