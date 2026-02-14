@@ -76,10 +76,11 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
-
+#include <Gui/Control.h>
 #include <Mod/Measure/App/Preferences.h>
 
 #include "SoScreenSpaceScale.h"
+#include "TaskMeasure.h"
 #include "ViewProviderMeasureAngle.h"
 
 #include <TopoDS.hxx>
@@ -325,6 +326,9 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureAngle, MeasureGui::ViewProviderMe
 ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 {
     sPixmap = "Measurement-Angle";
+    const char* agroup = "Appearance";
+    ADD_PROPERTY_TYPE(IsFlipped, (false), agroup, App::Prop_None, "Is flipped(vertically opposite)");
+
     // Visuals node
     auto pVisualsSep = new SoSeparator();
 
@@ -366,8 +370,11 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     auto engineAngle = new SoCalculator();
     engineAngle->A.connectFrom(&arcEngine->midpoint);
     engineAngle->B.connectFrom(&pLabelTranslation->translation);
+    engineAngle->c.connectFrom(&isArcFlipped);
+    // as for now we just have two sector so this trick works
     engineAngle->expression.setValue(
-        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
+        "tA=normalize(A); tB=(c>0)?-normalize(B):normalize(B); "
+        "oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
     );
 
     Gui::ArcEngine* arcEngineSecondary = new Gui::ArcEngine();
@@ -536,6 +543,10 @@ void ViewProviderMeasureAngle::redrawAnnotation()
 
     // Set Label
     setLabelValue(static_cast<Measure::MeasureBase*>(pcObject)->getResultString());
+
+    bool flipped = IsFlipped.getValue();
+    isArcFlipped.setValue(flipped);
+    sectorArcRotation.setValue(flipped ? M_PI : 0.0f);
 }
 
 
@@ -558,6 +569,10 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 
 void ViewProviderMeasureAngle::onLabelMoved()
 {
+    if (!Gui::Control().activeDialog()
+        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
+        return;
+    }
     SbVec3f trans = pDragger->translation.getValue();
 
     // The 4 sectors are defined by the two intersecting lines
@@ -576,12 +591,23 @@ void ViewProviderMeasureAngle::onLabelMoved()
 
     // sector 1: between 0 and θ
     if (draggerAngle >= 0 && draggerAngle < theta) {
-        Base::Console().warning("sector 1\n");
         sectorArcRotation.setValue(0);
+        IsFlipped.setValue(false);
     }
     // sector 3: between π and π+θ
     else if (draggerAngle >= M_PI && draggerAngle < M_PI + theta) {
-        Base::Console().warning("sector 3\n");
         sectorArcRotation.setValue(M_PI);
+        IsFlipped.setValue(true);
     }
+}
+
+void ViewProviderMeasureAngle::onChanged(const App::Property* prop)
+{
+    if (prop == &IsFlipped) {
+        bool flipped = IsFlipped.getValue();
+        isArcFlipped.setValue(flipped);
+        sectorArcRotation.setValue(flipped ? M_PI : 0);
+    }
+
+    ViewProviderMeasureBase::onChanged(prop);
 }

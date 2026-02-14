@@ -58,6 +58,7 @@ class MeasureGuiExport ViewProviderMeasureAngle: public MeasureGui::ViewProvider
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureAngle);
 
 public:
+    App::PropertyBool IsFlipped;
     /// Constructor
     ViewProviderMeasureAngle();
 
@@ -75,10 +76,12 @@ private:
     // Fields
     SoSFFloat fieldAngle;  // radians.
     SoSFFloat sectorArcRotation;
+    SoSFBool isArcFlipped;
 
     SbMatrix getMatrix();
 
     void onLabelMoved() override;
+    void onChanged(const App::Property* prop) override;
 };
 
 
