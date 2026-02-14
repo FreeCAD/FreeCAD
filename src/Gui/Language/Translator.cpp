@@ -151,7 +151,7 @@ public:
             }
         }
         else if (reason == "SubstituteDecimalSeparator") {
-            bool value = hGrp->GetBool("SubstituteDecimal");
+            bool value = hGrp->GetBool("SubstituteDecimalSeparator");
             client->enableDecimalPointConversion(value);
         }
     }

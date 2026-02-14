@@ -7937,7 +7937,7 @@ beyond the dimension line</translation>
       <location filename="../../InitGui.py" line="156"/>
       <location filename="../../InitGui.py" line="159"/>
       <source>Draft</source>
-      <translation>Pescaj</translation>
+      <translation>Ciornă</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="237"/>

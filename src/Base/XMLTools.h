@@ -47,6 +47,7 @@ class BaseExport XMLTools
 public:
     static std::string toStdString(const XMLCh* const toTranscode);
     static std::basic_string<XMLCh> toXMLString(const char* const fromTranscode);
+    static std::string escapeXml(const std::string& input);
     static void initialize();
     static void terminate();
 

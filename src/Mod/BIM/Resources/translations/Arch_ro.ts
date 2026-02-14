@@ -9081,7 +9081,7 @@ Crearea de construcții a fost întreruptă.</translation>
     <message>
       <location filename="../../InitGui.py" line="480"/>
       <source>Draft</source>
-      <translation>Pescaj</translation>
+      <translation>Ciornă</translation>
     </message>
     <message>
       <location filename="../../InitGui.py" line="712"/>
