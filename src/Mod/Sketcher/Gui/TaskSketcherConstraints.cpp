@@ -946,7 +946,7 @@ TaskSketcherConstraints::TaskSketcherConstraints(ViewProviderSketch* sketchView)
     {
         QSignalBlocker block(this);
         action1->setChecked(sketchView->Autoconstraints.getValue());
-        action2->setChecked(hGrp->GetBool("AutoRemoveRedundants", false));
+        action2->setChecked(hGrp->GetBool("AutoRemoveRedundants", true));
         action3->setChecked(hGrp->GetBool("VisualisationTrackingFilter", false));
         action4->setChecked(hGrp->GetBool("ExtendedConstraintInformation", false));
         action5->setChecked(hGrp->GetBool("HideInternalAlignment", false));
@@ -1128,7 +1128,7 @@ void TaskSketcherConstraints::onSettingsAutoRemoveRedundantChanged(bool value)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
 
-    if (hGrp->GetBool("AutoRemoveRedundants", false) != value) {
+    if (hGrp->GetBool("AutoRemoveRedundants", true) != value) {
         hGrp->SetBool("AutoRemoveRedundants", value);
     }
 }
