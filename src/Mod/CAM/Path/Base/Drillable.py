@@ -50,25 +50,6 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
         "\n match tool diameter {} \n match vector {}".format(matchToolDiameter, matchVector)
     )
 
-    def raisedFeature(obj, candidate):
-        # check if the cylindrical 'lids' are inside the base
-        # object.  This eliminates extruded circles but allows
-        # actual holes.
-
-        startLidCenter = App.Vector(
-            candidate.BoundBox.Center.x,
-            candidate.BoundBox.Center.y,
-            candidate.BoundBox.ZMax,
-        )
-
-        endLidCenter = App.Vector(
-            candidate.BoundBox.Center.x,
-            candidate.BoundBox.Center.y,
-            candidate.BoundBox.ZMin,
-        )
-
-        return obj.isInside(startLidCenter, 1e-6, False) or obj.isInside(endLidCenter, 1e-6, False)
-
     def getSeam(candidate):
         # Finds the vertical seam edge in a cylinder
 
@@ -85,7 +66,7 @@ def isDrillableCylinder(obj, candidate, tooldiameter=None, vector=App.Vector(0, 
     if len(candidate.Edges) != 3:
         raise TypeError("cylinder does not have 3 edges.  Not supported yet")
 
-    if raisedFeature(obj, candidate):
+    if obj.isInside(candidate.BoundBox.Center, Path.Geom.Tolerance, False):
         Path.Log.debug("The cylindrical face is a raised feature")
         return False
 
