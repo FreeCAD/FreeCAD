@@ -183,6 +183,15 @@ protected:
         gp_Dir& dir
     );
 
+    /// Find a valid face to revolve up to
+    static void getUpToFace(
+        TopoShape& upToFace,
+        const TopoShape& support,
+        const TopoShape& sketchshape,
+        const std::string& method,
+        const gp_Ax1& axis
+    );
+
     /// Add an offset to the face
     static void addOffsetToFace(TopoShape& upToFace, const gp_Dir& dir, double offset);
 

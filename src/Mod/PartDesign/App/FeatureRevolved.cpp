@@ -160,13 +160,26 @@ App::DocumentObjectExecReturn* Revolved::tryExecuteRevolved(Part::RevolMode revo
 
     supportface.move(invObjLoc);
 
-    if (method == RevolMethod::ToFirst) {
-        // TODO: Implement finding the first face this revolution would intersect with
-        return new App::DocumentObjectExecReturn("Up to first is not yet supported");
+    if (method == RevolMethod::ToFirst || method == RevolMethod::ToLast) {
+        TopoShape upToFace;
+        gp_Ax1 axis(pnt, dir);
+        if (Reversed.getValue()) {
+            axis.Reverse();
+        }
+        getUpToFace(
+            upToFace,
+            base,
+            sketchshape,
+            method == RevolMethod::ToFirst ? "UpToFirst" : "UpToLast",
+            axis
+        );
+        result = tryToRevolveToFace(upToFace, pnt, dir, base, supportface, sketchshape, revolMode);
     }
-
-    if (method == RevolMethod::ToFace) {
-        result = tryToRevolveToFace(invObjLoc, pnt, dir, base, supportface, sketchshape, revolMode);
+    else if (method == RevolMethod::ToFace) {
+        TopoShape upToFace;
+        getUpToFaceFromLinkSub(upToFace, UpToFace);
+        upToFace.move(invObjLoc);
+        result = tryToRevolveToFace(upToFace, pnt, dir, base, supportface, sketchshape, revolMode);
     }
     else {
         bool midplane = Midplane.getValue();
@@ -210,7 +223,7 @@ void Revolved::setResult(const TopoShape& base, const TopoShape& revolved)
 }
 
 TopoShape Revolved::tryToRevolveToFace(
-    const TopLoc_Location& invObjLoc,
+    const TopoShape& upToFace,
     gp_Pnt pnt,
     gp_Dir dir,
     TopoShape& base,
@@ -219,10 +232,6 @@ TopoShape Revolved::tryToRevolveToFace(
     Part::RevolMode revolMode
 ) const
 {
-    TopoShape upToFace;
-    getUpToFaceFromLinkSub(upToFace, UpToFace);
-    upToFace.move(invObjLoc);
-
     if (Reversed.getValue()) {
         dir.Reverse();
     }

@@ -86,7 +86,7 @@ private:
     TopoShape tryGetBaseShape() const;
     TopoShape tryGetSupportShape() const;
     TopoShape tryToRevolveToFace(
-        const TopLoc_Location& invObjLoc,
+        const TopoShape& upToFace,
         gp_Pnt pnt,
         gp_Dir dir,
         TopoShape& base,
