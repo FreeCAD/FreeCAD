@@ -190,7 +190,7 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # constraint initial temperature
     con_inittemp = ObjectsFem.makeConstraintInitialTemperature(doc, "ConstraintInitialTemperature")
-    con_inittemp.initialTemperature = 273.0
+    con_inittemp.InitialTemperature = 273.0
     analysis.addObject(con_inittemp)
 
     # constraint temperature
