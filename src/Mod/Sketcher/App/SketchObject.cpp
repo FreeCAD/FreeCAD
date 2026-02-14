@@ -11639,20 +11639,28 @@ std::vector<Data::IndexedName>
 SketchObject::getHigherElements(const char *element, bool silent) const
 {
     std::vector<Data::IndexedName> res;
+    // App::ObjEditing is not in main yet. Only in LinkStage.
+    // It is not a problem yet because getHigherElements is still unused.
+    // see https://github.com/FreeCAD/FreeCAD/issues/20753
+    if (false /*testStatus(App::ObjEditing)*/) {
         if (boost::istarts_with(element, "vertex")) {
             int n = 0;
             int index = atoi(element+6);
             for (auto cstr : Constraints.getValues()) {
                 ++n;
-                if (cstr->Type != Sketcher::Coincident)
+                if (cstr->Type != Sketcher::Coincident) {
                     continue;
-                if(cstr->First >= 0 && index == getSolvedSketch().getPointId(cstr->First, cstr->FirstPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
-                if(cstr->Second >= 0 && index == getSolvedSketch().getPointId(cstr->Second, cstr->SecondPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                }
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? cstr->Second : cstr->First;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
+                        res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                };
             }
         }
         return res;
+    }
 
     auto getNames = [this, &silent, &res](const char *element) {
         bool internal = boost::starts_with(element, internalPrefix());
