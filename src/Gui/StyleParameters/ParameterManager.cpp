@@ -27,6 +27,7 @@
 #include <QFile>
 #include <fstream>
 #include <yaml-cpp/yaml.h>
+#include <fmt/ranges.h>
 
 #include <QRegularExpression>
 #include <QString>
@@ -40,6 +41,32 @@ FC_LOG_LEVEL_INIT("Gui", true, true)
 
 namespace Gui::StyleParameters
 {
+
+namespace
+{
+
+/// Formats a Value for QSS output.
+/// Tuples become space-separated values (e.g. "10px 5px 10px 5px"),
+/// all other types delegate to toString().
+std::string toQss(const Value& value)
+{
+    if (value.holds<Tuple>()) {
+        const auto& tuple = value.get<Tuple>();
+
+        std::vector<std::string> parts;
+        parts.reserve(tuple.elements.size());
+
+        for (const auto& [name, elem] : tuple.elements) {
+            parts.push_back(toQss(*elem));
+        }
+
+        return fmt::format("{}", fmt::join(parts, " "));
+    }
+
+    return value.toString();
+}
+
+}  // namespace
 
 ParameterSource::ParameterSource(const Metadata& metadata)
     : metadata(metadata)
@@ -252,7 +279,8 @@ std::string ParameterManager::replacePlaceholders(
     ResolveContext context
 ) const
 {
-    static const QRegularExpression regex(QStringLiteral("@(\\w+)"));
+    // Matches @TokenName (group 1) or @{expression} (group 2)
+    static const QRegularExpression regex(QStringLiteral("@(?:(\\w+)|\\{([^}]*)\\})"));
 
     auto substituteWithCallback =
         [](const QRegularExpression& regex,
@@ -285,17 +313,35 @@ std::string ParameterManager::replacePlaceholders(
     return substituteWithCallback(
         regex,
         QString::fromStdString(expression),
-        [&](const QRegularExpressionMatch& match) {
-            auto tokenName = match.captured(1).toStdString();
-            auto tokenValue = resolve(tokenName, context);
+        [&](const QRegularExpressionMatch& match) -> QString {
+            // Group 1: @TokenName
+            if (!match.captured(1).isEmpty()) {
+                auto tokenName = match.captured(1).toStdString();
+                auto tokenValue = resolve(tokenName, context);
 
-            if (!tokenValue) {
-                Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
-                return QStringLiteral("");
+                if (!tokenValue) {
+                    Base::Console().warning("Requested non-existent style parameter token '%s'.\n", tokenName);
+                    return QStringLiteral("");
+                }
+
+                context.visited.erase(tokenName);
+                return QString::fromStdString(toQss(*tokenValue));
             }
 
-            context.visited.erase(tokenName);
-            return QString::fromStdString(tokenValue->toString());
+            // Group 2: @{expression}
+            auto exprBody = match.captured(2).toStdString();
+            try {
+                Value result = evaluate(exprBody, context);
+                return QString::fromStdString(toQss(result));
+            }
+            catch (Base::Exception& e) {
+                Base::Console().warning(
+                    "Failed to evaluate inline expression '@{%s}': %s\n",
+                    exprBody,
+                    e.what()
+                );
+                return QStringLiteral("");
+            }
     }
     ).toStdString();
     // clang-format on

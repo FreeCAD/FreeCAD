@@ -189,7 +189,7 @@ struct GuiExport Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     /**
      * Converts the object into its string representation.
      *
-     * @return A string representation of the object that can later be used in QSS.
+     * @return A human-readable string representation of the object (debug/display format).
      */
     std::string toString() const;
 

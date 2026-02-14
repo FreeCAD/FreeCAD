@@ -353,3 +353,83 @@ TEST_F(ParameterManagerTest, ResolveParameterDefinitionDefault)
     EXPECT_DOUBLE_EQ(result.value, 16);
     EXPECT_EQ(result.unit, "px");
 }
+
+// --- QSS formatting tests (via replacePlaceholders) ---
+
+TEST_F(ParameterManagerTest, QssFormattingNumeric)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{16px}"), "16px");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingColor)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{#ff0000}"), "#ff0000");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingGenericTuple)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{(1px, 2px)}"), "1px 2px");
+}
+
+TEST_F(ParameterManagerTest, QssFormattingInsetsTuple)
+{
+    EXPECT_EQ(manager.replacePlaceholders("@{padding(10px, 5px)}"), "10px 5px 10px 5px");
+}
+
+// --- @{expression} substitution tests ---
+
+TEST_F(ParameterManagerTest, InlineExpressionSimple)
+{
+    auto result = manager.replacePlaceholders("padding: @{10px}");
+    EXPECT_EQ(result, "padding: 10px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionFunctionCall)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px, 5px)}");
+    EXPECT_EQ(result, "padding: 10px 5px 10px 5px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionWithParameterReference)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"InlineBase", "8px"}},
+        ParameterSource::Metadata {"Inline Source"}
+    );
+    manager.addSource(source.get());
+    sources.push_back(std::move(source));
+
+    auto result = manager.replacePlaceholders("padding: @{padding(@InlineBase)}");
+    EXPECT_EQ(result, "padding: 8px 8px 8px 8px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionArithmetic)
+{
+    auto result = manager.replacePlaceholders("margin: @{@BaseSize * 2}");
+    EXPECT_EQ(result, "margin: 32px");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionMixedWithToken)
+{
+    auto result = manager.replacePlaceholders("padding: @{padding(10px)}; color: @PrimaryColor;");
+    EXPECT_EQ(result, "padding: 10px 10px 10px 10px; color: #ff0000;");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionInvalidLogsWarning)
+{
+    auto result = manager.replacePlaceholders("padding: @{!!!invalid}");
+    EXPECT_EQ(result, "padding: ");
+}
+
+TEST_F(ParameterManagerTest, InlineExpressionMultiple)
+{
+    auto result = manager.replacePlaceholders("@{@BaseSize} @{@BaseSize * 2}");
+    EXPECT_EQ(result, "16px 32px");
+}
+
+TEST_F(ParameterManagerTest, ExistingTokenUsesToQss)
+{
+    // @TokenName for non-tuple types should still work identically
+    auto result = manager.replacePlaceholders("size: @BaseSize; color: @PrimaryColor;");
+    EXPECT_EQ(result, "size: 16px; color: #ff0000;");
+}
