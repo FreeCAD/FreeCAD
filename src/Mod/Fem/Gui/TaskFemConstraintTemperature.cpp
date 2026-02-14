@@ -85,9 +85,9 @@ TaskFemConstraintTemperature::TaskFemConstraintTemperature(
     ui->qsb_temperature->bind(pcConstraint->Temperature);
     ui->qsb_temperature->setUnit(pcConstraint->Temperature.getUnit());
 
-    ui->qsb_cflux->setValue(pcConstraint->CFlux.getQuantityValue());
-    ui->qsb_cflux->bind(pcConstraint->CFlux);
-    ui->qsb_cflux->setUnit(pcConstraint->CFlux.getUnit());
+    ui->qsb_cflux->setValue(pcConstraint->ConcentratedHeatFlux.getQuantityValue());
+    ui->qsb_cflux->bind(pcConstraint->ConcentratedHeatFlux);
+    ui->qsb_cflux->setUnit(pcConstraint->ConcentratedHeatFlux.getUnit());
 
     ui->lw_references->clear();
     for (std::size_t i = 0; i < Objects.size(); i++) {
@@ -165,7 +165,7 @@ void TaskFemConstraintTemperature::onCFluxChanged(double)
     std::string name = ConstraintView->getObject()->getNameInDocument();
     Gui::Command::doCommand(
         Gui::Command::Doc,
-        "App.ActiveDocument.%s.CFlux = \"%s\"",
+        "App.ActiveDocument.%s.ConcentratedHeatFlux = \"%s\"",
         name.c_str(),
         get_cflux().c_str()
     );
@@ -182,7 +182,7 @@ void TaskFemConstraintTemperature::onConstrTypeChanged(int item)
         ui->lbl_temperature->setVisible(true);
         ui->lbl_cflux->setVisible(false);
     }
-    else if (strcmp(type, "CFlux") == 0) {
+    else if (strcmp(type, "Flux") == 0) {
         ui->qsb_cflux->setVisible(true);
         ui->qsb_temperature->setVisible(false);
         ui->lbl_cflux->setVisible(true);
@@ -393,10 +393,10 @@ bool TaskDlgFemConstraintTemperature::accept()
                 parameterTemperature->get_temperature().c_str()
             );
         }
-        else if (type == "CFlux") {
+        else if (type == "Flux") {
             Gui::Command::doCommand(
                 Gui::Command::Doc,
-                "App.ActiveDocument.%s.CFlux = \"%s\"",
+                "App.ActiveDocument.%s.ConcentratedHeatFlux = \"%s\"",
                 name.c_str(),
                 parameterTemperature->get_cflux().c_str()
             );

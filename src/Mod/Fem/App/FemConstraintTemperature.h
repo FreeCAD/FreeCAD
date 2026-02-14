@@ -45,7 +45,7 @@ public:
 
     // Temperature parameters
     App::PropertyTemperature Temperature;
-    App::PropertyPower CFlux;
+    App::PropertyPower ConcentratedHeatFlux;
     App::PropertyEnumeration ConstraintType;
 
 
@@ -60,6 +60,11 @@ protected:
         Base::XMLReader& reader,
         const char* TypeName,
         App::Property* prop
+    ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
     ) override;
     void onChanged(const App::Property* prop) override;
 };

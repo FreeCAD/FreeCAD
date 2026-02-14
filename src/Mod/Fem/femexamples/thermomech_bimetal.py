@@ -197,13 +197,13 @@ def setup(doc=None, solvertype="ccxtools", test_mode=False):
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureHot")
     con_temp.References = [(geom_obj, "Face5"), (geom_obj, "Face11")]
     con_temp.Temperature = 373.0
-    con_temp.CFlux = 0.0
+    con_temp.ConcentratedHeatFlux = 0.0
     analysis.addObject(con_temp)
 
     con_temp = ObjectsFem.makeConstraintTemperature(doc, "ConstraintTemperatureNormal")
     con_temp.References = [(geom_obj, "Face1"), (geom_obj, "Face7")]
     con_temp.Temperature = 273.0
-    con_temp.CFlux = 0.0
+    con_temp.ConcentratedHeatFlux = 0.0
     analysis.addObject(con_temp)
 
     # mesh
