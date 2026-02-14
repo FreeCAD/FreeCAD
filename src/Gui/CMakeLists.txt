@@ -1399,6 +1399,7 @@ SET(FreeCADGui_SRCS
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
     StyleParameters/Insets.h
+    StyleParameters/Corners.h
 )
 
 SET(FreeCADGui_SRCS
