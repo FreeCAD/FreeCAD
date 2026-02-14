@@ -395,7 +395,9 @@ class Component(ArchIFC.IfcProduct):
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if self.ensureBase(obj) is False:
+            # This will fall through if the Component object has no base, allowing the base shapeto
+            # be cleared
             return
 
         # Only proceed if a Base object is linked and contains valid geometry.
@@ -415,6 +417,10 @@ class Component(ArchIFC.IfcProduct):
             # the Arch Component.
             final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
             self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
+        else:
+            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
+            # is not updated when the base is removed.
+            obj.Shape = Part.Shape()
 
     def dumps(self):
         return None
@@ -1281,6 +1287,8 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
+        # TODO: this method has a third undocumented state: None, which is returned if the object
+        # has no Base. This should either be fixed if unintended, or documented if intended.
 
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):
