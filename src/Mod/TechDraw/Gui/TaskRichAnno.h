@@ -131,8 +131,9 @@ private:
     QGIRichAnno* m_qgiAnno;
     bool m_syncLock;
     MDIViewPage* m_view;
-    MRichTextEdit* m_toolbar;
-    QWidget* m_viewport {nullptr};
+
+    QPointer<MRichTextEdit> m_toolbar {nullptr};
+    QPointer<QWidget> m_viewport {nullptr};
 };
 
 class TaskDlgRichAnno : public Gui::TaskView::TaskDialog
