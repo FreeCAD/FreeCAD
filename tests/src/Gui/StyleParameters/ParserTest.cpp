@@ -25,6 +25,7 @@
 
 #include <Gui/Utilities.h>
 
+#include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/Parser.h>
 #include <Gui/StyleParameters/ParameterManager.h>
 
@@ -1476,4 +1477,305 @@ TEST_F(ArgumentParserTest, TypedGetMissingName)
     auto resolved = ArgumentParser {{"x"}}.resolve(args);
 
     EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
+}
+
+// Insets / shorthand constructor tests
+
+TEST_F(ParserTest, PaddingShorthand1Arg)
+{
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 10.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand2Args)
+{
+    Parser parser("padding(10px, 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand3Args)
+{
+    Parser parser("padding(10px, 5px, 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingShorthand4Args)
+{
+    Parser parser("padding(10px, 5px, 20px, 15px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 15.0);
+}
+
+TEST_F(ParserTest, PaddingNamedVerticalHorizontal)
+{
+    Parser parser("padding(vertical: 10px, horizontal: 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 5.0);
+}
+
+TEST_F(ParserTest, PaddingNamedExplicitSides)
+{
+    Parser parser("padding(top: 1px, right: 2px, bottom: 3px, left: 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 2.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 3.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 4.0);
+}
+
+TEST_F(ParserTest, PaddingMixedNamedOverride)
+{
+    // Start with uniform 10px, then override top
+    Parser parser("padding(10px, top: 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 10.0);
+}
+
+TEST_F(ParserTest, MarginsFunction)
+{
+    Parser parser("margins(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Margins);
+}
+
+TEST_F(ParserTest, InsetsConvertsTupleArgToTargetKind)
+{
+    // padding(margins(...)) should re-tag the margins tuple as padding
+    Parser parser("padding(margins(1px, 2px, 3px, 4px))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("right").value, 2.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom").value, 3.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 4.0);
+}
+
+TEST_F(ParserTest, InsetsConvertsGenericTupleArg)
+{
+    Parser parser("padding((top: 5px, right: 10px, bottom: 15px, left: 20px))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("left").value, 20.0);
+}
+
+TEST_F(ParserTest, BorderThicknessFunction)
+{
+    Parser parser("border_thickness(1px, 2px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::BorderThickness);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 1.0);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("right").value, 2.0);
+}
+
+// Kind propagation through arithmetic
+
+TEST_F(ParserTest, KindPreservedThroughAdd)
+{
+    Parser parser("padding(10px) + padding(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 15.0);
+}
+
+TEST_F(ParserTest, KindPreservedThroughScalarMultiply)
+{
+    Parser parser("padding(10px) * 2");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 20.0);
+}
+
+TEST_F(ParserTest, KindPreservedThroughNegate)
+{
+    Parser parser("-padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, -10.0);
+}
+
+TEST_F(ParserTest, KindMismatchError)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("padding(10px) + margins(5px)");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, TypedKindPlusGenericKeepsKind)
+{
+    Parser parser("padding(10px) + (top: 5px, right: 5px, bottom: 5px, left: 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Padding);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top").value, 15.0);
+}
+
+// Insets C++ wrapper tests
+
+TEST_F(ParserTest, InsetsPaddingWrapper)
+{
+    Parser parser("padding(1px, 2px, 3px, 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Padding padding(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(padding.top().value, 1.0);
+    EXPECT_DOUBLE_EQ(padding.right().value, 2.0);
+    EXPECT_DOUBLE_EQ(padding.bottom().value, 3.0);
+    EXPECT_DOUBLE_EQ(padding.left().value, 4.0);
+    EXPECT_DOUBLE_EQ(padding.horizontal().value, 6.0);
+    EXPECT_DOUBLE_EQ(padding.vertical().value, 4.0);
+}
+
+TEST_F(ParserTest, InsetsWrongKindThrows)
+{
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    EXPECT_THROW(Margins(result.get<Tuple>()), Base::TypeError);
+}
+
+// Typed resolve via ParameterManager
+
+TEST_F(ParserTest, ResolveTypedPadding)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"TestPadding", "padding(1px, 2px, 3px, 4px)"}},
+        ParameterSource::Metadata {"Insets Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    // Construct a default Padding for the definition
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto zero = std::make_shared<const Value>(Numeric {0, "px"});
+    defaultTuple.elements.push_back({"top", zero});
+    defaultTuple.elements.push_back({"right", zero});
+    defaultTuple.elements.push_back({"bottom", zero});
+    defaultTuple.elements.push_back({"left", zero});
+
+    ParameterDefinition<Padding> def {.name = "TestPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 2.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 3.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 4.0);
+}
+
+TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnWrongKind)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"TestMargins", "margins(10px)"}},
+        ParameterSource::Metadata {"Insets Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto five = std::make_shared<const Value>(Numeric {5, "px"});
+    defaultTuple.elements.push_back({"top", five});
+    defaultTuple.elements.push_back({"right", five});
+    defaultTuple.elements.push_back({"bottom", five});
+    defaultTuple.elements.push_back({"left", five});
+
+    ParameterDefinition<Padding> def {.name = "TestMargins", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    // Should return the default because kind mismatch
+    EXPECT_DOUBLE_EQ(resolved.top().value, 5.0);
+}
+
+TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnMissing)
+{
+    Gui::StyleParameters::ParameterManager mgr;
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto seven = std::make_shared<const Value>(Numeric {7, "px"});
+    defaultTuple.elements.push_back({"top", seven});
+    defaultTuple.elements.push_back({"right", seven});
+    defaultTuple.elements.push_back({"bottom", seven});
+    defaultTuple.elements.push_back({"left", seven});
+
+    ParameterDefinition<Padding> def {.name = "NonExistent", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 7.0);
 }

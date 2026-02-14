@@ -99,6 +99,36 @@ private:
 struct Value;
 
 /**
+ * @brief Identifies the semantic kind of a tuple.
+ *
+ * Generic tuples have no special meaning. Typed kinds (Padding, Margins, BorderThickness)
+ * carry structural identity: they are always 4-element (top, right, bottom, left) insets
+ * created via CSS-like shorthand functions.
+ */
+enum class TupleKind : std::uint8_t
+{
+    Generic,
+    Padding,
+    Margins,
+    BorderThickness,
+};
+
+constexpr const char* tupleKindName(TupleKind kind)
+{
+    switch (kind) {
+        case TupleKind::Generic:
+            return "Generic";
+        case TupleKind::Padding:
+            return "Padding";
+        case TupleKind::Margins:
+            return "Margins";
+        case TupleKind::BorderThickness:
+            return "BorderThickness";
+    }
+    return "<unknown>";
+}
+
+/**
  * @brief Represents a tuple of named or unnamed values.
  *
  * Tuples group related values into a single parameter using `(key: val1, val2)` syntax.
@@ -112,6 +142,7 @@ struct GuiExport Tuple
         std::shared_ptr<const Value> value;
     };
 
+    TupleKind kind = TupleKind::Generic;
     std::vector<Element> elements;
 
     /**

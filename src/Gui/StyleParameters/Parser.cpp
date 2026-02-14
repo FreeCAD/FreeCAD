@@ -91,10 +91,85 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         );
     };
 
+    const auto makeInsets = [&args](TupleKind kind) -> Value {
+        // If the single positional argument is already a tuple, re-tag it
+        std::vector<const Value*> positional;
+        for (const auto& elem : args.elements) {
+            if (!elem.name) {
+                positional.push_back(elem.value.get());
+            }
+        }
+
+        if (positional.size() == 1 && positional[0]->holds<Tuple>()) {
+            Tuple converted = positional[0]->get<Tuple>();
+            converted.kind = kind;
+            return converted;
+        }
+
+        // Expand CSS-like shorthand from positional args
+        auto [top, right, bottom, left] = [&]() -> std::array<const Value*, 4> {
+            switch (positional.size()) {
+                case 0:
+                    return {nullptr, nullptr, nullptr, nullptr};
+                case 1:
+                    return {positional[0], positional[0], positional[0], positional[0]};
+                case 2:
+                    return {positional[0], positional[1], positional[0], positional[1]};
+                case 3:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[1]};
+                case 4:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[3]};
+                default:
+                    THROWM(Base::ExpressionError, "Insets functions accept 1-4 positional arguments");
+            }
+        }();
+
+        // Group names override positional
+        if (const Value* vertical = args.find("vertical")) {
+            top = bottom = vertical;
+        }
+        if (const Value* horizontal = args.find("horizontal")) {
+            right = left = horizontal;
+        }
+
+        // Explicit side names override everything
+        if (const Value* found = args.find("top")) {
+            top = found;
+        }
+        if (const Value* found = args.find("right")) {
+            right = found;
+        }
+        if (const Value* found = args.find("bottom")) {
+            bottom = found;
+        }
+        if (const Value* found = args.find("left")) {
+            left = found;
+        }
+
+        if (!top || !right || !bottom || !left) {
+            THROWM(Base::ExpressionError, "Insets function requires all four sides to be specified");
+        }
+
+        auto makeElement = [](const char* name, const Value& val) {
+            return Tuple::Element {std::string(name), std::make_shared<const Value>(val)};
+        };
+
+        Tuple result;
+        result.kind = kind;
+        result.elements.push_back(makeElement("top", *top));
+        result.elements.push_back(makeElement("right", *right));
+        result.elements.push_back(makeElement("bottom", *bottom));
+        result.elements.push_back(makeElement("left", *left));
+        return result;
+    };
+
     std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
         {"blend", blend},
+        {"padding", [&]() { return makeInsets(TupleKind::Padding); }},
+        {"margins", [&]() { return makeInsets(TupleKind::Margins); }},
+        {"border_thickness", [&]() { return makeInsets(TupleKind::BorderThickness); }},
     };
 
     if (functions.contains(functionName)) {
@@ -392,7 +467,7 @@ std::unique_ptr<Expr> Parser::parseFunctionCall()
 {
     skipWhitespace();
     size_t start = pos;
-    while (pos < input.size() && isalnum(input[pos])) {
+    while (pos < input.size() && (isalnum(input[pos]) || input[pos] == '_')) {
         ++pos;
     }
     std::string functionName = input.substr(start, pos - start);

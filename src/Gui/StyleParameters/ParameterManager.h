@@ -430,6 +430,21 @@ public:
      * @return The resolved value
      */
     template<typename T>
+        requires std::is_constructible_v<T, const Tuple&>
+    T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
+    {
+        auto value = resolve(definition.name, std::move(context));
+
+        if (!value || !value->template holds<Tuple>()
+            || value->template get<Tuple>().kind != T::kind()) {
+            return definition.defaultValue;
+        }
+
+        return T(value->template get<Tuple>());
+    }
+
+    template<typename T>
+        requires(!std::is_constructible_v<T, const Tuple&>)
     T resolve(const ParameterDefinition<T>& definition, ResolveContext context = {}) const
     {
         auto value = resolve(definition.name, std::move(context));
