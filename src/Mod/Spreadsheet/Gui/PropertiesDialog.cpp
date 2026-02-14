@@ -58,7 +58,7 @@ QString reservedAliasTooltip()
         "H = henry, L = liter. Try 'myM', 'LenM', 'Sec' etc. instead."
     );
 }
-}
+}  // namespace
 
 PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ranges, QWidget* parent)
     : QDialog(parent)

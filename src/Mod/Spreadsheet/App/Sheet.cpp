@@ -1600,8 +1600,7 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
 
 bool Sheet::isReservedAliasName(const std::string& candidate) const
 {
-    return ExpressionParser::isTokenAUnit(candidate)
-        || ExpressionParser::isTokenAConstant(candidate);
+    return ExpressionParser::isTokenAUnit(candidate) || ExpressionParser::isTokenAConstant(candidate);
 }
 
 /**
