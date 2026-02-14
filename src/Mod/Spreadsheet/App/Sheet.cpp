@@ -1568,6 +1568,15 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
         cells.setAlias(address, alias);
     }
     else {
+        if (isReservedAliasName(alias)) {
+            std::ostringstream message;
+            message << "Cannot set alias '" << alias
+                    << "': name conflicts with built-in unit/constant "
+                       "(m=meters, s=seconds, e=Euler, A=amperes, T=tesla, "
+                       "G=gauss/giga, H=henry, L=liter).";
+            FC_ERR(message.str());
+            throw Base::ValueError(message.str().c_str());
+        }
         throw Base::ValueError("Invalid alias");
     }
 }
@@ -1587,6 +1596,12 @@ std::string Sheet::getAddressFromAlias(const std::string& alias) const
         return cell->getAddress().toString();
     }
     return {};
+}
+
+bool Sheet::isReservedAliasName(const std::string& candidate) const
+{
+    return ExpressionParser::isTokenAUnit(candidate)
+        || ExpressionParser::isTokenAConstant(candidate);
 }
 
 /**

@@ -28,6 +28,7 @@
 #include <App/Range.h>
 #include <Base/Tools.h>
 #include <Gui/CommandT.h>
+#include <QCoreApplication>
 
 #include "PropertiesDialog.h"
 #include "ui_PropertiesDialog.h"
@@ -36,6 +37,28 @@
 using namespace App;
 using namespace Spreadsheet;
 using namespace SpreadsheetGui;
+
+namespace
+{
+QString aliasHelpTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Refer to cell by alias, for example\n"
+        "Spreadsheet.my_alias_name instead of Spreadsheet.B1"
+    );
+}
+
+QString reservedAliasTooltip()
+{
+    return QCoreApplication::translate(
+        "PropertiesDialog",
+        "Cannot use a unit/constant name as alias. Reserved examples: m = meters, "
+        "s = seconds, e = Euler's number, A = amperes, T = tesla, G = gauss/giga, "
+        "H = henry, L = liter. Try 'myM', 'LenM', 'Sec' etc. instead."
+    );
+}
+}
 
 PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ranges, QWidget* parent)
     : QDialog(parent)
@@ -147,9 +170,11 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
 
     // Alias
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
+    ui->aliasStatus->setVisible(false);
+    ui->alias->setToolTip(aliasHelpTooltip());
+    aliasChanged(ui->alias->text());
 
     ui->tabWidget->setCurrentIndex(0);
-    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
 void PropertiesDialog::foregroundColorChanged(const QColor& color)
@@ -249,12 +274,32 @@ void PropertiesDialog::displayUnitChanged(const QString& text)
 void PropertiesDialog::aliasChanged(const QString& text)
 {
     QPalette palette = ui->alias->palette();
+    const std::string aliasText = text.toStdString();
+    QString tooltip = aliasHelpTooltip();
+    QString statusText;
 
-    aliasOk = text.isEmpty() || sheet->isValidAlias(text.toStdString());
+    aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
+    if (!text.isEmpty() && !aliasOk) {
+        if (sheet->isReservedAliasName(aliasText)) {
+            tooltip = reservedAliasTooltip();
+            statusText = tr("Invalid: reserved unit or constant name");
+        }
+        else if (!sheet->getAddressFromAlias(aliasText).empty()) {
+            tooltip = tr("Alias already defined.");
+            statusText = tr("Invalid: alias already exists");
+        }
+        else {
+            tooltip = tr("Alias contains invalid characters!");
+            statusText = tr("Invalid alias");
+        }
+    }
 
-    alias = aliasOk ? text.toStdString() : "";
+    alias = aliasOk ? aliasText : "";
     palette.setColor(QPalette::Text, aliasOk ? Qt::black : Qt::red);
     ui->alias->setPalette(palette);
+    ui->alias->setToolTip(tooltip);
+    ui->aliasStatus->setText(statusText);
+    ui->aliasStatus->setVisible(!statusText.isEmpty());
     ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(displayUnitOk && aliasOk);
 }
 
