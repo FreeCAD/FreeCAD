@@ -163,7 +163,9 @@ bool PropertySheet::isValidAlias(const std::string& candidate)
     }
 
     /* Check to make sure it doesn't clash with a reserved name */
-    if (owner && owner->isReservedAliasName(candidate)) {
+    if ((owner && owner->isReservedAliasName(candidate))
+        || (!owner && (ExpressionParser::isTokenAUnit(candidate)
+                       || ExpressionParser::isTokenAConstant(candidate)))) {
         return false;
     }
 
