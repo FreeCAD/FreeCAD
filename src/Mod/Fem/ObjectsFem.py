@@ -146,17 +146,17 @@ def makeConstraintElectricChargeDensity(doc, name="ElectricChargeDensity"):
     return obj
 
 
-def makeConstraintElectrostaticPotential(doc, name="ConstraintElectrostaticPotential"):
-    """makeConstraintElectrostaticPotential(document, [name]):
-    makes a Fem ElectrostaticPotential object"""
+def makeConstraintElectromagnetic(doc, name="ConstraintElectromagnetic"):
+    """makeConstraintElectromagnetic(document, [name]):
+    makes a Fem Electromagnetic object"""
     obj = doc.addObject("Fem::ConstraintPython", name)
-    from femobjects import constraint_electrostaticpotential
+    from femobjects import constraint_electromagnetic
 
-    constraint_electrostaticpotential.ConstraintElectrostaticPotential(obj)
+    constraint_electromagnetic.ConstraintElectromagnetic(obj)
     if FreeCAD.GuiUp:
-        from femviewprovider import view_constraint_electrostaticpotential
+        from femviewprovider import view_constraint_electromagnetic
 
-        view_constraint_electrostaticpotential.VPConstraintElectroStaticPotential(obj.ViewObject)
+        view_constraint_electromagnetic.VPConstraintElectromagnetic(obj.ViewObject)
     return obj
 
 
