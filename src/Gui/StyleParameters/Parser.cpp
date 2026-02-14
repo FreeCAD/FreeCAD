@@ -163,6 +163,70 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return result;
     };
 
+    const auto makeCorners = [&args]() -> Value {
+        // If the single positional argument is already a tuple, re-tag it
+        std::vector<const Value*> positional;
+        for (const auto& elem : args.elements) {
+            if (!elem.name) {
+                positional.push_back(elem.value.get());
+            }
+        }
+
+        if (positional.size() == 1 && positional[0]->holds<Tuple>()) {
+            Tuple converted = positional[0]->get<Tuple>();
+            converted.kind = TupleKind::Corners;
+            return converted;
+        }
+
+        // Expand CSS border-radius shorthand (diagonal pairing)
+        auto [topLeft, topRight, bottomRight, bottomLeft] = [&]() -> std::array<const Value*, 4> {
+            switch (positional.size()) {
+                case 0:
+                    return {nullptr, nullptr, nullptr, nullptr};
+                case 1:
+                    return {positional[0], positional[0], positional[0], positional[0]};
+                case 2:
+                    return {positional[0], positional[1], positional[0], positional[1]};
+                case 3:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[1]};
+                case 4:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[3]};
+                default:
+                    THROWM(Base::ExpressionError, "border_radius accepts 1-4 positional arguments");
+            }
+        }();
+
+        // Explicit corner names override positional
+        if (const Value* found = args.find("top_left")) {
+            topLeft = found;
+        }
+        if (const Value* found = args.find("top_right")) {
+            topRight = found;
+        }
+        if (const Value* found = args.find("bottom_right")) {
+            bottomRight = found;
+        }
+        if (const Value* found = args.find("bottom_left")) {
+            bottomLeft = found;
+        }
+
+        if (!topLeft || !topRight || !bottomRight || !bottomLeft) {
+            THROWM(Base::ExpressionError, "border_radius requires all four corners to be specified");
+        }
+
+        auto makeElement = [](const char* name, const Value& val) {
+            return Tuple::Element {std::string(name), std::make_shared<const Value>(val)};
+        };
+
+        Tuple result;
+        result.kind = TupleKind::Corners;
+        result.elements.push_back(makeElement("top_left", *topLeft));
+        result.elements.push_back(makeElement("top_right", *topRight));
+        result.elements.push_back(makeElement("bottom_right", *bottomRight));
+        result.elements.push_back(makeElement("bottom_left", *bottomLeft));
+        return result;
+    };
+
     std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
@@ -170,6 +234,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         {"padding", [&]() { return makeInsets(TupleKind::Padding); }},
         {"margins", [&]() { return makeInsets(TupleKind::Margins); }},
         {"border_thickness", [&]() { return makeInsets(TupleKind::BorderThickness); }},
+        {"border_radius", makeCorners},
     };
 
     if (functions.contains(functionName)) {

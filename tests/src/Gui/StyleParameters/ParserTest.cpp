@@ -25,6 +25,7 @@
 
 #include <Gui/Utilities.h>
 
+#include <Gui/StyleParameters/Corners.h>
 #include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/Parser.h>
 #include <Gui/StyleParameters/ParameterManager.h>
@@ -1778,4 +1779,166 @@ TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnMissing)
     auto resolved = mgr.resolve(def);
 
     EXPECT_DOUBLE_EQ(resolved.top().value, 7.0);
+}
+
+// Corners / border_radius tests
+
+TEST_F(ParserTest, BorderRadiusShorthand1Arg)
+{
+    Parser parser("border_radius(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 10.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand2Args)
+{
+    // 2 values: top-left/bottom-right, top-right/bottom-left (diagonal pairing)
+    Parser parser("border_radius(10px, 5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 5.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand3Args)
+{
+    // 3 values: top-left, top-right/bottom-left, bottom-right
+    Parser parser("border_radius(10px, 5px, 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 5.0);
+}
+
+TEST_F(ParserTest, BorderRadiusShorthand4Args)
+{
+    Parser parser("border_radius(10px, 5px, 20px, 15px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 5.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 15.0);
+}
+
+TEST_F(ParserTest, BorderRadiusNamedOverride)
+{
+    Parser parser("border_radius(10px, top_left: 20px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 20.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 10.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_left").value, 10.0);
+}
+
+TEST_F(ParserTest, BorderRadiusConvertsTupleArg)
+{
+    // Single tuple argument gets re-tagged
+    Parser parser(
+        "border_radius((top_left: 1px, top_right: 2px, bottom_right: 3px, bottom_left: 4px))"
+    );
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("top_left").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("bottom_right").value, 3.0);
+}
+
+TEST_F(ParserTest, BorderRadiusKindPreservedThroughArithmetic)
+{
+    Parser parser("border_radius(10px) + border_radius(5px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().kind, TupleKind::Corners);
+    EXPECT_DOUBLE_EQ(result.get<Tuple>().get<Numeric>("top_left").value, 15.0);
+}
+
+TEST_F(ParserTest, BorderRadiusKindMismatchWithInsetsThrows)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("border_radius(10px) + padding(5px)");
+            auto expr = parser.parse();
+            expr->evaluate({&manager, {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, CornersWrapper)
+{
+    Parser parser("border_radius(1px, 2px, 3px, 4px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    Corners radii(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(radii.topLeft().value, 1.0);
+    EXPECT_DOUBLE_EQ(radii.topRight().value, 2.0);
+    EXPECT_DOUBLE_EQ(radii.bottomRight().value, 3.0);
+    EXPECT_DOUBLE_EQ(radii.bottomLeft().value, 4.0);
+}
+
+TEST_F(ParserTest, CornersWrongKindThrows)
+{
+    Parser parser("padding(10px)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({&manager, {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    EXPECT_THROW(Corners(result.get<Tuple>()), Base::TypeError);
+}
+
+TEST_F(ParserTest, ResolveTypedCorners)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"TestRadius", "border_radius(1px, 2px, 3px, 4px)"}},
+        ParameterSource::Metadata {"Corners Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Corners;
+    auto zero = std::make_shared<const Value>(Numeric {0, "px"});
+    defaultTuple.elements.push_back({"top_left", zero});
+    defaultTuple.elements.push_back({"top_right", zero});
+    defaultTuple.elements.push_back({"bottom_right", zero});
+    defaultTuple.elements.push_back({"bottom_left", zero});
+
+    ParameterDefinition<Corners> def {.name = "TestRadius", .defaultValue = Corners(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.topLeft().value, 1.0);
+    EXPECT_DOUBLE_EQ(resolved.topRight().value, 2.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomRight().value, 3.0);
+    EXPECT_DOUBLE_EQ(resolved.bottomLeft().value, 4.0);
 }
