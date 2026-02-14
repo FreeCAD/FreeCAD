@@ -251,10 +251,10 @@ class TestPathDrillable(PathTestUtils.PathTestBase):
     def test20(self):
         """Test getDrillableTargets"""
         results = Drillable.getDrillableTargets(self.obj)
-        self.assertEqual(len(results), 15)
+        self.assertEqual(len(results), 16)
 
         results = Drillable.getDrillableTargets(self.obj, vector=None)
-        self.assertEqual(len(results), 20)
+        self.assertEqual(len(results), 21)
 
         results = Drillable.getDrillableTargets(self.obj, toolDiameter=20, vector=None)
         self.assertEqual(len(results), 5)

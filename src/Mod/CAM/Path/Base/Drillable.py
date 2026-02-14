@@ -277,6 +277,7 @@ def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
     shape = obj.Shape
     drillables = []
     candidates = []  # simple holes
+    candidatesExtra = []  # non regular holes
 
     for face in shape.Faces:
         if not isinstance(face.Surface, Part.Cylinder):
@@ -287,8 +288,30 @@ def getDrillableTargets(obj, toolDiameter=None, vector=App.Vector(0, 0, 1)):
                 continue
         if face.Volume > 0:  # hole should have negative volume
             continue
-        if len(face.Edges) == 3:
+        if len(face.Edges) > 3:
+            candidatesExtra.append(face)
+        else:
             candidates.append(face)
+
+    while candidatesExtra:
+        faces = [candidatesExtra.pop()]
+        center = faces[0].Surface.Center
+        for face in candidatesExtra:
+            # search faces with identical center point
+            if Path.Geom.pointsCoincide(face.Surface.Center, center):
+                faces.append(face)
+
+        # check if faces creates a closed area
+        fzMin = min(e.BoundBox.ZMin for f in faces for e in f.Edges)
+        bottomEdges = [
+            e for f in faces for e in f.Edges if Path.Geom.isRoughly(e.BoundBox.ZMax, fzMin)
+        ]
+        if bottomEdges:
+            wire = Part.Wire(Part.__sortEdges__(bottomEdges))
+            if wire and wire.isClosed():
+                candidates.append(faces[0])
+                for face in faces[1:]:
+                    candidatesExtra.remove(face)
 
     circularFaces = []  # faces which can a bottom of hole
     for face in shape.Faces:
