@@ -112,8 +112,8 @@ class Heatwriter:
                     if obj.ConstraintType == "Temperature":
                         temperature = float(obj.Temperature.getValueAs("K"))
                         self.write.boundary(name, "Temperature", temperature)
-                    elif obj.ConstraintType == "CFlux":
-                        flux = float(obj.CFlux.getValueAs("W"))
+                    elif obj.ConstraintType == "Flux":
+                        flux = float(obj.ConcentratedHeatFlux.getValueAs("W"))
                         # CFLUX is the flux per mesh node
                         flux = flux / NumberOfNodes
                         self.write.boundary(name, "Temperature Load", flux)
