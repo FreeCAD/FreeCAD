@@ -14,6 +14,7 @@
 #include "DocumentObject.h"
 
 #include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/io/ios_state.hpp>
 
