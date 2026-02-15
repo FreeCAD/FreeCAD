@@ -349,17 +349,12 @@ class ViewProvider(object):
                         if selected_obj and hasattr(selected_obj, "Shape"):
                             # Get the face
                             face = selected_obj.Shape.getElement(sub)
-
-                            # Extract the normal vector
-                            # For planar faces, use the surface axis
-                            if hasattr(face.Surface, "Axis"):
-                                normal = face.Surface.Axis
-                            else:
-                                # For non-planar faces, use center of mass normal
-                                u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
-                                v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
-                                normal = face.normalAt(u_mid, v_mid)
-
+                            
+                            # Extract the normal vector at the center of the face
+                            u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
+                            v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
+                            normal = face.normalAt(u_mid, v_mid)
+                            
                             # Normalize the vector
                             normal.normalize()
 

@@ -78,6 +78,41 @@ class PathNoTCException(Exception):
         super().__init__("No Tool Controller found")
 
 
+class _TransformedShapeProxy:
+    """Lightweight proxy that wraps a FreeCAD document object and intercepts
+    ``.Shape`` access to return a pre-transformed copy.
+
+    Every other attribute (``Name``, ``Label``, ``isDerivedFrom``, ``Placement``,
+    etc.) is delegated transparently to the wrapped object.
+
+    This is used by the 3+2 positioning logic so that child operations see
+    Z-up geometry without the base class ever writing to a FreeCAD property
+    (which would trigger cascading recomputes).
+    """
+
+    __slots__ = ("_real_obj", "_transformed_shape")
+
+    def __init__(self, real_obj, transformed_shape):
+        object.__setattr__(self, "_real_obj", real_obj)
+        object.__setattr__(self, "_transformed_shape", transformed_shape)
+
+    @property
+    def Shape(self):
+        return object.__getattribute__(self, "_transformed_shape")
+
+    def __getattr__(self, name):
+        return getattr(object.__getattribute__(self, "_real_obj"), name)
+
+    def __eq__(self, other):
+        real = object.__getattribute__(self, "_real_obj")
+        if isinstance(other, _TransformedShapeProxy):
+            return real == object.__getattribute__(other, "_real_obj")
+        return real == other
+
+    def __hash__(self):
+        return hash(object.__getattribute__(self, "_real_obj"))
+
+
 class ObjectOp(object):
     """
     Base class for proxy objects of all Path operations.
@@ -605,6 +640,89 @@ class ObjectOp(object):
         See documentation of execute() for a list of base functionality provided.
         Should be overwritten by subclasses."""
         pass
+
+    def baseShapes(self, obj):
+        """baseShapes(obj) ... yield (base, subs) tuples for the operation's
+        base geometry.
+
+        When a 3+2 geometry rotation is active (``self._geom_transform_matrix``
+        is set), each *base* object is wrapped in a
+        :class:`_TransformedShapeProxy` whose ``.Shape`` returns the
+        pre-transformed (Z-up) copy.  Sub-element names are unchanged —
+        ``proxy.Shape.getElement("Face3")`` returns the transformed Face3.
+
+        When no rotation is active this is equivalent to iterating
+        ``obj.Base`` directly.
+
+        Operations that want 3+2 support should use::
+
+            for base, subs in self.baseShapes(obj):
+                shape = base.Shape.getElement(sub)
+                ...
+
+        instead of ``for base, subs in obj.Base:``.
+        """
+        matrix = getattr(self, "_geom_transform_matrix", None)
+        Path.Log.debug(f"baseShapes called, transform active: {matrix is not None}")
+        if matrix is None:
+            Path.Log.debug(f"  No transform, yielding {len(obj.Base)} base items directly")
+            yield from obj.Base
+            return
+
+        # Cache proxies so the same base object is wrapped only once
+        proxy_cache = {}
+        for base_obj, subs in obj.Base:
+            key = id(base_obj)
+            if key not in proxy_cache:
+                if hasattr(base_obj, "Shape") and base_obj.Shape:
+                    transformed = base_obj.Shape.copy().transformShape(matrix, True, False)
+                    
+                    # Convert BSplines back to circles/arcs when possible
+                    # This preserves geometry types for operations like Deburr
+                    fixed_edges = []
+                    for edge in transformed.Edges:
+                        if hasattr(edge, 'Curve') and type(edge.Curve).__name__ == 'BSplineCurve':
+                            try:
+                                # Try to convert BSpline back to arc/circle
+                                arc = edge.Curve.toArc()
+                                if arc:
+                                    # Create new edge with the converted curve
+                                    new_edge = Part.Edge(arc)
+                                    fixed_edges.append(new_edge)
+                                    continue
+                            except:
+                                pass  # Keep as BSpline if conversion fails
+                        fixed_edges.append(edge)
+                    
+                    # Rebuild shape with fixed edges
+                    if len(fixed_edges) != len(transformed.Edges):
+                        # Create a compound of the fixed edges
+                        shape = Part.makeCompound(fixed_edges)
+                        Path.Log.debug(f"  Created compound with {len(fixed_edges)} fixed edges")
+                    else:
+                        shape = transformed
+                        Path.Log.debug(f"  Using original transformed shape with {len(transformed.Edges)} edges")
+                    
+                    # Validate the shape before creating proxy
+                    Path.Log.debug(f"  Final shape type: {type(shape).__name__}")
+                    if hasattr(shape, 'ShapeType'):
+                        Path.Log.debug(f"  Shape type: {shape.ShapeType}")
+                    if hasattr(shape, 'isNull') and shape.isNull():
+                        Path.Log.warning(f"  Transformed shape is null, using original")
+                        shape = base_obj.Shape
+                    elif hasattr(shape, 'Volume') and shape.Volume < 1e-9:
+                        Path.Log.debug(f"  Transformed shape has very small volume: {shape.Volume}")
+                    
+                    # Check if we have faces
+                    if hasattr(shape, 'Faces'):
+                        Path.Log.debug(f"  Shape has {len(shape.Faces)} faces")
+                        if len(shape.Faces) == 0:
+                            Path.Log.warning(f"  Transformed shape has no faces!")
+                    
+                    proxy_cache[key] = _TransformedShapeProxy(base_obj, shape)
+                else:
+                    proxy_cache[key] = base_obj
+            yield proxy_cache[key], subs
 
     def opRejectAddBase(self, obj, base, sub):
         """opRejectAddBase(base, sub) ... if op returns True the addition of the feature is prevented.
