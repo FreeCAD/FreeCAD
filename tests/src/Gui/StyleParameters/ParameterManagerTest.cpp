@@ -433,3 +433,33 @@ TEST_F(ParameterManagerTest, ExistingTokenUsesToQss)
     auto result = manager.replacePlaceholders("size: @BaseSize; color: @PrimaryColor;");
     EXPECT_EQ(result, "size: 16px; color: #ff0000;");
 }
+
+TEST_F(ParameterManagerTest, QssFormattingLinearGradient)
+{
+    auto result = manager.replacePlaceholders("background: @{linear_gradient(#ff0000, #0000ff)}");
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingLinearGradientCustomGeometry)
+{
+    auto result = manager.replacePlaceholders(
+        "background: @{linear_gradient(x1: 0, y1: 0, x2: 1, y2: 0, #ff0000, #0000ff)}"
+    );
+    EXPECT_EQ(
+        result,
+        "background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}
+
+TEST_F(ParameterManagerTest, QssFormattingRadialGradient)
+{
+    auto result = manager.replacePlaceholders("background: @{radial_gradient(#ff0000, #0000ff)}");
+    EXPECT_EQ(
+        result,
+        "background: qradialgradient(cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.5, "
+        "stop:0 #ff0000, stop:1 #0000ff)"
+    );
+}

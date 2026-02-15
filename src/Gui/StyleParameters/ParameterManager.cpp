@@ -45,13 +45,49 @@ namespace Gui::StyleParameters
 namespace
 {
 
+/// Formats a gradient tuple as QSS qlineargradient() or qradialgradient().
+std::string gradientToQss(const Tuple& tuple, const auto& formatValue)
+{
+    const char* functionName = tuple.kind == TupleKind::LinearGradient ? "qlineargradient"
+                                                                       : "qradialgradient";
+
+    std::vector<std::string> parts;
+
+    // Geometry params (all named elements except "stops")
+    for (const auto& [name, value] : tuple.elements) {
+        if (!name || *name == "stops") {
+            continue;
+        }
+        parts.push_back(fmt::format("{}:{}", *name, formatValue(*value)));
+    }
+
+    // Stops
+    const auto* stopsValue = tuple.find("stops");
+    if (stopsValue && stopsValue->holds<Tuple>()) {
+        const auto& stopsTuple = stopsValue->get<Tuple>();
+        for (size_t index = 0; index < stopsTuple.size(); ++index) {
+            const auto& stopEntry = stopsTuple.at(index).get<Tuple>();
+            parts.push_back(
+                fmt::format("stop:{} {}", formatValue(stopEntry.at(0)), formatValue(stopEntry.at(1)))
+            );
+        }
+    }
+
+    return fmt::format("{}({})", functionName, fmt::join(parts, ", "));
+}
+
 /// Formats a Value for QSS output.
-/// Tuples become space-separated values (e.g. "10px 5px 10px 5px"),
-/// all other types delegate to toString().
+/// Gradient tuples use qlineargradient()/qradialgradient() syntax.
+/// Other tuples become space-separated values (e.g. "10px 5px 10px 5px").
+/// All other types delegate to toString().
 std::string toQss(const Value& value)
 {
     if (value.holds<Tuple>()) {
         const auto& tuple = value.get<Tuple>();
+
+        if (tuple.kind == TupleKind::LinearGradient || tuple.kind == TupleKind::RadialGradient) {
+            return gradientToQss(tuple, [](const Value& val) { return toQss(val); });
+        }
 
         std::vector<std::string> parts;
         parts.reserve(tuple.elements.size());

@@ -26,6 +26,7 @@
 #include <Gui/Utilities.h>
 
 #include <Gui/StyleParameters/Corners.h>
+#include <Gui/StyleParameters/Gradient.h>
 #include <Gui/StyleParameters/Insets.h>
 #include <Gui/StyleParameters/Parser.h>
 #include <Gui/StyleParameters/ParameterManager.h>
@@ -2033,4 +2034,289 @@ TEST_F(ParserTest, ResolveTypedCorners)
     EXPECT_DOUBLE_EQ(resolved.topRight().value, 2.0);
     EXPECT_DOUBLE_EQ(resolved.bottomRight().value, 3.0);
     EXPECT_DOUBLE_EQ(resolved.bottomLeft().value, 4.0);
+}
+
+// Gradient tests
+
+TEST_F(ParserTest, LinearGradientMinimal)
+{
+    Parser parser("linear_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    // Default geometry: top to bottom
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x2").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y2").value, 1.0);
+
+    // Stops gathered in named "stops" element
+    const auto* stopsValue = tuple.find("stops");
+    ASSERT_NE(stopsValue, nullptr);
+    ASSERT_TRUE(stopsValue->holds<Tuple>());
+    const auto& stopsTuple = stopsValue->get<Tuple>();
+    EXPECT_EQ(stopsTuple.size(), 2);
+
+    // First stop: position 0, red
+    const auto& firstStop = stopsTuple.at(0).get<Tuple>();
+    EXPECT_DOUBLE_EQ(firstStop.at(0).get<Numeric>().value, 0.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().r, 1.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().g, 0.0);
+    EXPECT_DOUBLE_EQ(firstStop.at(1).get<Base::Color>().b, 0.0);
+
+    // Second stop: position 1, blue
+    const auto& secondStop = stopsTuple.at(1).get<Tuple>();
+    EXPECT_DOUBLE_EQ(secondStop.at(0).get<Numeric>().value, 1.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().r, 0.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().g, 0.0);
+    EXPECT_DOUBLE_EQ(secondStop.at(1).get<Base::Color>().b, 1.0);
+}
+
+TEST_F(ParserTest, LinearGradientExplicitStops)
+{
+    Parser parser("linear_gradient((0, #ff0000), (0.5, #00ff00), (1, #0000ff))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 3);
+
+    EXPECT_DOUBLE_EQ(stopsTuple.at(0).get<Tuple>().at(0).get<Numeric>().value, 0.0);
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(0).get<Numeric>().value, 0.5);
+    EXPECT_DOUBLE_EQ(stopsTuple.at(2).get<Tuple>().at(0).get<Numeric>().value, 1.0);
+
+    // Middle stop is green
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(1).get<Base::Color>().g, 1.0);
+}
+
+TEST_F(ParserTest, LinearGradientCustomGeometry)
+{
+    Parser parser("linear_gradient(x1: 0, y1: 0, x2: 1, y2: 0, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    // Custom geometry: left to right
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y1").value, 0.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("x2").value, 1.0);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("y2").value, 0.0);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 2);
+}
+
+TEST_F(ParserTest, LinearGradientMixedStops)
+{
+    // Bare color + explicit (position, color) tuples
+    Parser parser("linear_gradient(#ff0000, (0.5, #00ff00), #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    const auto& stopsTuple = result.get<Tuple>().get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 3);
+
+    // Bare #ff0000 at index 0 → position 0/2 = 0.0
+    EXPECT_DOUBLE_EQ(stopsTuple.at(0).get<Tuple>().at(0).get<Numeric>().value, 0.0);
+    // Explicit (0.5, #00ff00)
+    EXPECT_DOUBLE_EQ(stopsTuple.at(1).get<Tuple>().at(0).get<Numeric>().value, 0.5);
+    // Bare #0000ff at index 2 → position 2/2 = 1.0
+    EXPECT_DOUBLE_EQ(stopsTuple.at(2).get<Tuple>().at(0).get<Numeric>().value, 1.0);
+}
+
+TEST_F(ParserTest, RadialGradientMinimal)
+{
+    Parser parser("radial_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::RadialGradient);
+
+    // Default geometry
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cx").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cy").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("radius").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.5);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.5);
+
+    const auto& stopsTuple = tuple.get<Tuple>("stops");
+    EXPECT_EQ(stopsTuple.size(), 2);
+}
+
+TEST_F(ParserTest, RadialGradientCustomGeometry)
+{
+    Parser parser("radial_gradient(cx: 0.3, cy: 0.3, radius: 0.8, (0, #ff0000), (1, #0000ff))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cx").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("cy").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("radius").value, 0.8);
+    // fx/fy default to cx/cy when not specified
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.3);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.3);
+}
+
+TEST_F(ParserTest, RadialGradientExplicitFocalPoint)
+{
+    Parser parser("radial_gradient(cx: 0.5, cy: 0.5, fx: 0.2, fy: 0.8, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fx").value, 0.2);
+    EXPECT_DOUBLE_EQ(tuple.get<Numeric>("fy").value, 0.8);
+}
+
+TEST_F(ParserTest, GradientTooFewStops)
+{
+    EXPECT_THROW(
+        {
+            Parser parser("linear_gradient(#ff0000)");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+
+    EXPECT_THROW(
+        {
+            Parser parser("radial_gradient()");
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}
+
+TEST_F(ParserTest, GradientKindMismatchThrows)
+{
+    // Build a RadialGradient tuple, then try to wrap it as LinearGradient
+    Parser parser("radial_gradient(#ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    EXPECT_THROW(LinearGradient(result.get<Tuple>()), Base::TypeError);
+}
+
+TEST_F(ParserTest, GradientWrapper)
+{
+    Parser parser("linear_gradient(x1: 0.1, y1: 0.2, x2: 0.3, y2: 0.4, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    LinearGradient gradient(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(gradient.x1(), 0.1);
+    EXPECT_DOUBLE_EQ(gradient.y1(), 0.2);
+    EXPECT_DOUBLE_EQ(gradient.x2(), 0.3);
+    EXPECT_DOUBLE_EQ(gradient.y2(), 0.4);
+
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[0].color.r, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].color.b, 1.0);
+}
+
+TEST_F(ParserTest, RadialGradientWrapper)
+{
+    Parser parser("radial_gradient(cx: 0.3, cy: 0.4, radius: 0.7, fx: 0.1, fy: 0.2, #ff0000, #0000ff)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+
+    RadialGradient gradient(result.get<Tuple>());
+    EXPECT_DOUBLE_EQ(gradient.cx(), 0.3);
+    EXPECT_DOUBLE_EQ(gradient.cy(), 0.4);
+    EXPECT_DOUBLE_EQ(gradient.radius(), 0.7);
+    EXPECT_DOUBLE_EQ(gradient.fx(), 0.1);
+    EXPECT_DOUBLE_EQ(gradient.fy(), 0.2);
+
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+}
+
+TEST_F(ParserTest, GradientStopsAccessibleViaMemberAccess)
+{
+    Parser parser("linear_gradient(#ff0000, #0000ff).stops");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Tuple>());
+    EXPECT_EQ(result.get<Tuple>().size(), 2);
+}
+
+TEST_F(ParserTest, ResolveTypedLinearGradient)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {
+            {.name = "TestGradient", .value = "linear_gradient(#ff0000, #00ff00, #0000ff)"}
+        },
+        ParameterSource::Metadata {.name = "Gradient Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    // Build a default LinearGradient tuple
+    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = ""});
+    auto one = std::make_shared<const Value>(Numeric {.value = 1, .unit = ""});
+    Tuple defaultStopsTuple;
+    {
+        Tuple stop0;
+        stop0.elements.push_back({.name = std::nullopt, .value = zero});
+        stop0.elements.push_back(
+            {.name = std::nullopt, .value = std::make_shared<const Value>(Base::Color(0, 0, 0))}
+        );
+        Tuple stop1;
+        stop1.elements.push_back({.name = std::nullopt, .value = one});
+        stop1.elements.push_back(
+            {.name = std::nullopt, .value = std::make_shared<const Value>(Base::Color(1, 1, 1))}
+        );
+        defaultStopsTuple.elements.push_back(
+            {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(stop0))}
+        );
+        defaultStopsTuple.elements.push_back(
+            {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(stop1))}
+        );
+    }
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::LinearGradient;
+    defaultTuple.elements.push_back({.name = std::string("x1"), .value = zero});
+    defaultTuple.elements.push_back({.name = std::string("y1"), .value = zero});
+    defaultTuple.elements.push_back({.name = std::string("x2"), .value = zero});
+    defaultTuple.elements.push_back({.name = std::string("y2"), .value = one});
+    defaultTuple.elements.push_back(
+        {.name = std::string("stops"),
+         .value = std::make_shared<const Value>(std::move(defaultStopsTuple))}
+    );
+
+    ParameterDefinition<LinearGradient> def {
+        .name = "TestGradient",
+        .defaultValue = LinearGradient(defaultTuple),
+    };
+    auto resolved = mgr.resolve(def);
+
+    auto stops = resolved.colorStops();
+    ASSERT_EQ(stops.size(), 3);
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 0.5);
+    EXPECT_DOUBLE_EQ(stops[2].position.value, 1.0);
+    EXPECT_DOUBLE_EQ(stops[1].color.g, 1.0);  // middle stop is green
 }
