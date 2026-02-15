@@ -1569,13 +1569,7 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
     }
     else {
         if (isReservedAliasName(alias)) {
-            std::ostringstream message;
-            message << "Cannot set alias '" << alias
-                    << "': name conflicts with built-in unit/constant "
-                       "(m=meters, s=seconds, e=Euler, A=amperes, T=tesla, "
-                       "G=gauss/giga, H=henry, L=liter).";
-            FC_ERR(message.str());
-            throw Base::ValueError(message.str().c_str());
+            throw Base::ValueError("Invalid alias: name conflicts with a reserved name");
         }
         throw Base::ValueError("Invalid alias");
     }

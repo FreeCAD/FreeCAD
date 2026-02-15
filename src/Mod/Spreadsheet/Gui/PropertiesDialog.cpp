@@ -23,6 +23,8 @@
  ***************************************************************************/
 
 
+#include <cctype>
+
 #include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/Range.h>
@@ -40,6 +42,27 @@ using namespace SpreadsheetGui;
 
 namespace
 {
+bool hasValidAliasSyntax(const std::string& candidate)
+{
+    if (candidate.empty()) {
+        return false;
+    }
+
+    const unsigned char first = static_cast<unsigned char>(candidate[0]);
+    if (!std::isalpha(first)) {
+        return false;
+    }
+
+    for (char ch : candidate) {
+        const unsigned char uch = static_cast<unsigned char>(ch);
+        if (!(std::isalnum(uch) || ch == '_')) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 QString aliasHelpTooltip()
 {
     return QCoreApplication::translate(
@@ -280,7 +303,15 @@ void PropertiesDialog::aliasChanged(const QString& text)
 
     aliasOk = text.isEmpty() || sheet->isValidAlias(aliasText);
     if (!text.isEmpty() && !aliasOk) {
-        if (sheet->isReservedAliasName(aliasText)) {
+        if (ExpressionParser::isTokenAUnit(aliasText)) {
+            tooltip = tr("Alias conflicts with a reserved unit token used by expressions.");
+            statusText = tr("Invalid: reserved unit token");
+        }
+        else if (ExpressionParser::isTokenAConstant(aliasText)) {
+            tooltip = tr("Alias conflicts with a reserved constant token used by expressions.");
+            statusText = tr("Invalid: reserved constant token");
+        }
+        else if (sheet->isReservedAliasName(aliasText)) {
             tooltip = reservedAliasTooltip();
             statusText = tr("Invalid: reserved unit or constant name");
         }
@@ -288,8 +319,20 @@ void PropertiesDialog::aliasChanged(const QString& text)
             tooltip = tr("Alias already defined.");
             statusText = tr("Invalid: alias already exists");
         }
+        else if (sheet->getCells()->isValidCellAddressName(aliasText)) {
+            tooltip = tr("Alias cannot look like a cell address such as A1 or C12.");
+            statusText = tr("Invalid: alias matches cell address pattern");
+        }
+        else if (sheet->getPropertyByName(aliasText.c_str())) {
+            tooltip = tr("Alias conflicts with an existing spreadsheet property name.");
+            statusText = tr("Invalid: conflicts with existing property name");
+        }
+        else if (!hasValidAliasSyntax(aliasText)) {
+            tooltip = tr("Alias must start with a letter and contain only letters, digits, and '_'.");
+            statusText = tr("Invalid: bad alias syntax");
+        }
         else {
-            tooltip = tr("Alias contains invalid characters!");
+            tooltip = tr("Alias is not valid in this spreadsheet context.");
             statusText = tr("Invalid alias");
         }
     }
