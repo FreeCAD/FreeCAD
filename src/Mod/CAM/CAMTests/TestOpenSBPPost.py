@@ -216,19 +216,21 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             z = "0" * 3
 
         fmt = lambda v: format(v, f"0.{len(z)}f")
+        speed_precision = 2 if inches else 1
+        speed_fmt = lambda v: format(v, f"0.{speed_precision}f")
 
         # remember we are x/s and freecad is x/min (usually)
         speeds = []
         if comments:
             speeds.append( "'set speeds: TC: Default Tool" )
         if inches:
-            speeds.append( f"MS,{fmt(FeedSpeed/60/25.4)},{fmt(FeedSpeed/2/60/25.4)}" )
+            speeds.append( f"MS,{speed_fmt(FeedSpeed/60/25.4)},{speed_fmt(FeedSpeed/2/60/25.4)}" )
             if JS is None:
-                speeds.append( f"JS,{fmt(RapidSpeed/60/25.4)},{fmt(RapidSpeed/2/60/25.4)}" )
+                speeds.append( f"JS,{speed_fmt(RapidSpeed/60/25.4)},{speed_fmt(RapidSpeed/2/60/25.4)}" )
         else:
-            speeds.append( f"MS,{fmt(FeedSpeed/60)},{fmt(FeedSpeed/2/60)}" )
+            speeds.append( f"MS,{speed_fmt(FeedSpeed/60)},{speed_fmt(FeedSpeed/2/60)}" )
             if JS is None:
-                speeds.append( f"JS,{fmt(RapidSpeed/60)},{fmt(RapidSpeed/2/60)}" )
+                speeds.append( f"JS,{speed_fmt(RapidSpeed/60)},{speed_fmt(RapidSpeed/2/60)}" )
 
         if noHorizRapid and comments:
             speeds.append( "'no HorizRapid" )
@@ -238,7 +240,7 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
             speeds.append(JS)
 
         speeds = "\n".join(speeds)
-        print(f"T### speeds---{speeds}---")
+        #print(f"T### speeds---{speeds}---")
 
         def ifcomments(text):
             if not comments:
@@ -340,7 +342,7 @@ AfterWrongUnits:
         setup_sheet.HorizRapid = Units.Quantity(0.0, "mm/min")
         self.doc.recompute()
         self.compare_multi(None, "--no-header --no-show-editor", 
-            self.wrap("", JS="JS,,17.500", noHorizRapid=True, noVertRapid=False, comments=True )
+            self.wrap("", JS="JS,,17.5", noHorizRapid=True, noVertRapid=False, comments=True )
         )
 
         # 0's for both rapid:
@@ -409,9 +411,9 @@ AfterWrongUnits:
         # default is metric-mm (internal default)
         self.compare_multi(
             f"G1 F{f} X10 Y20 Z30",  # simple cut
-            "--no-header --no-comments --no-show-editor --metric --no-abort-on-unknown",
+            "--no-header --no-comments --no-show-editor --metric",
             self.wrap(
-                """MS,6.972,9.354
+                """VS,7.0,9.4
 M3,10.000,20.000,30.000
 """
             ),
@@ -421,7 +423,7 @@ M3,10.000,20.000,30.000
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --precision=2 --no-show-editor",
             self.wrap(
-                """MS,6.97,9.35
+                """VS,7.0,9.4
 M3,10.00,20.00,30.00
 """
             ),
@@ -431,7 +433,7 @@ M3,10.00,20.00,30.00
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --inches --no-show-editor",
             self.wrap(
-                """MS,0.2745,0.3683
+                """VS,0.27,0.37
 M3,0.3937,0.7874,1.1811
 """,
                 "inches",
@@ -441,7 +443,7 @@ M3,0.3937,0.7874,1.1811
             f"G1 F{f} X10 Y20 Z30",
             "--no-header --no-comments --inches --precision=2 --no-show-editor",
             self.wrap(
-                """MS,0.27,0.37
+                """VS,0.27,0.37
 M3,0.39,0.79,1.18
 """,
                 "inches",
@@ -451,15 +453,14 @@ M3,0.39,0.79,1.18
     def test020(self):
         """Test single axis vs speed"""
 
-        f = f"{FeedSpeed / 60.0:0.3f}"  # mm/s
+        f = f"{FeedSpeed / 60.0:0.1f}"  # mm/s
 
         # one axis: X
         self.compare_multi(
             f"G1 F{f} X10",
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
-                f"""MS,{f}
-MX,10.000
+                f"""MX,10.000
 """
             ),
         )
@@ -469,8 +470,7 @@ MX,10.000
             f"G1 F{f} Y10",
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
-                f"""MS,{f}
-M2,,10.000
+                f"""M2,,10.000
 """
             ),
         )
@@ -480,7 +480,7 @@ M2,,10.000
             f"G1 F{f} Z10",
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
-                f"""MS,,{f}
+                f"""VS,,{f}
 M3,,,10.000
 """
             ),
@@ -492,16 +492,15 @@ M3,,,10.000
             f"G1 F{f} X10 Y0 Z0",
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
-                f"""MS,{f}
-M3,10.000,0.000,0.000
+                f"""M3,10.000,0.000,0.000
 """
             ),
         )
 
-    def test025(self):
+    def test024(self):
         """Test negative directions for speed"""
 
-        f = f"{FeedSpeed / 60.0:0.3f}"  # mm/s
+        f = f"{FeedSpeed / 60.0:0.1f}"  # mm/s
 
         # each axis
         self.compare_multi(
@@ -512,11 +511,9 @@ M3,10.000,0.000,0.000
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
                 f"""J3,10.000,10.000,10.000
-MS,{f}
 MX,1.000
-MS,{f}
 M2,,1.000
-MS,,{f}
+VS,,{f}
 M3,,,1.000
 """
             ),
@@ -529,7 +526,6 @@ M3,,,1.000
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
                 f"""J3,10.000,10.000,10.000
-MS,{f}
 M2,1.000,1.000
 """
             ),
@@ -542,7 +538,7 @@ M2,1.000,1.000
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
                 """J3,10.000,10.000,10.000
-MS,9.526,6.736
+VS,9.6,6.8
 M3,1.000,1.000,1.000
 """
             ),
@@ -555,7 +551,7 @@ M3,1.000,1.000,1.000
             "--no-header --no-comments --metric --no-show-editor",
             self.wrap(
                 """J3,10.000,10.000,10.000
-MS,9.149,7.240
+VS,9.2,7.3
 M3,-2.000,-3.000,-4.000
 """
             ),
@@ -571,7 +567,7 @@ M3,-2.000,-3.000,-4.000
             self.wrap(
                 "",
                 preamble="""J3,,,50.000
-MS,700.000
+VS,700.0
 MX,20.000
 """,
             ),
@@ -586,7 +582,7 @@ MX,20.000
             self.wrap(
                 "",
                 postamble="""J3,,,55.000
-MS,700.000
+VS,700.0
 MX,22.000
 """,
             ),
@@ -629,7 +625,7 @@ MX,22.000
             "--no-header --no-comments --no-show-editor",
             # note no second MS, because no delta-position
             self.wrap(
-                """MS,6.972,9.354
+                """VS,7.0,9.4
 M3,10.000,20.000,30.000
 M3,10.000,20.000,30.000
 """
@@ -638,13 +634,30 @@ M3,10.000,20.000,30.000
         self.compare_multi(
             c,
             c,
-            "--no-header --no-comments --modal --speed-modal --no-show-editor",
+            "--no-header --no-comments --modal --no-show-editor",
             self.wrap(
-                """MS,6.972,9.354
+                """VS,7.0,9.4
 M3,10.000,20.000,30.000
 """
             ),
         )
+
+        self.compare_multi(
+            "G0 X49.845909 Y51.846232 Z54.000000",
+            "G1 F38.100000 X49.845909 Y51.846232 Z51.000000",
+            "G1 F38.100000 X49.487210 Y51.781909 Z50.828879",
+            "G1 F38.100000 X49.147952 Y51.648842 Z50.657758",
+            "--no-header --no-comments --modal --axis-modal --no-show-editor",
+            self.wrap("""J3,49.846,51.846,54.000
+VS,,38.1
+M3,,,51.000
+VS,34.5,16.2
+M3,49.487,51.782,50.829
+M3,49.148,51.649,50.658
+"""
+            ),
+        )
+
 
     def test070(self):
         """Suppress the axis coordinate if the same as previous"""
@@ -708,14 +721,14 @@ J3,,,31.000
 'Change tool to #1: T1, 1/8" two flute002
 'First change tool, should already be #1: T1, 1/8" two flute002
 &ToolName="T1 1/8 two flute002"
-MS,11.667,5.833
-JS,35.000,17.500
+VS,11.7,5.8
+JS,35.0,17.5
 &Tool=2
 'Change tool to #2: T3, Fly Cutter
 PAUSE
 &ToolName="T3 Fly Cutter"
-MS,11.667,5.833
-JS,35.000,17.500
+VS,11.7,5.8
+JS,35.0,17.5
 TR,3000
 C6
 PAUSE 3
@@ -723,8 +736,8 @@ PAUSE 3
 'Change tool to #3: T2, 1/8" two flute003
 PAUSE
 &ToolName="T2 1/8 two flute003"
-MS,11.667,5.833
-JS,35.000,17.500
+VS,11.7,5.8
+JS,35.0,17.5
 """,
             )
         self.assertTrue("2nd tool can't be done," in str(context.exception))
@@ -735,14 +748,14 @@ C7
 &Tool=1
 &ToolName="T1 1/8 two flute002"
 C9
-MS,11.667,5.833
-JS,35.000,17.500
+MS,11.7,5.8
+JS,35.0,17.5
 C7
 &Tool=2
 &ToolName="T3 Fly Cutter"
 C9
-MS,11.667,5.833
-JS,35.000,17.500
+MS,11.7,5.8
+JS,35.0,17.5
 TR,3000
 C6
 PAUSE {}
@@ -750,8 +763,8 @@ C7
 &Tool=3
 &ToolName="T2 1/8 two flute003"
 C9
-MS,11.667,5.833
-JS,35.000,17.500
+MS,11.7,5.8
+JS,35.0,17.5
 GOTO AfterWrongUnits
 WrongUnits:
   if %(25) = 0 THEN &shopbot_which="inches"
@@ -792,7 +805,7 @@ AfterWrongUnits:
             f"G1 F{FeedSpeed} X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --no-show-editor",
             self.wrap(
-                """MS,211.058,283.164
+                """VS,211.1,283.2
 M5,10.000,20.000,30.000,40.000,50.000
 """
             ),
@@ -802,7 +815,7 @@ M5,10.000,20.000,30.000,40.000,50.000
             f"G1 F{FeedSpeed} X10 Y20 Z30 A40 B50",
             "--no-header --no-comments --inches --no-show-editor",
             self.wrap(
-                """MS,0.3788,0.5082
+                """VS,0.38,0.51
 M5,0.3937,0.7874,1.1811,40.0000,50.0000
 """,
                 "inches",
@@ -835,7 +848,7 @@ M5,0.3937,0.7874,1.1811,40.0000,50.0000
             f"G1 F{FeedSpeed} X10 Y20 Z30 A89 B89",
             "--no-header --no-comments --no-show-editor",
             self.wrap(
-                """MS,119.204,159.928
+                """VS,119.2,159.9
 M5,10.000,20.000,30.000,89.000,89.000
 """
             ),
@@ -844,7 +857,7 @@ M5,10.000,20.000,30.000,89.000,89.000
             f"G1 F{FeedSpeed} X10 Y20 Z30 A89 B89",
             "--no-header --no-comments --inches --no-show-editor",
             self.wrap(
-                """MS,0.1927,0.2586
+                """VS,0.19,0.26
 M5,0.3937,0.7874,1.1811,89.0000,89.0000
 """,
                 "inches",
@@ -937,7 +950,7 @@ M5,0.3937,0.7874,1.1811,89.0000,89.0000
             f"G1 F{FeedSpeed} X10 Y20 Z30 A-40 B-50",
             "--no-header --no-comments --no-show-editor",
             self.wrap(
-                """MS,211.058,283.164
+                """VS,211.1,283.2
 M5,10.000,20.000,30.000,-40.000,-50.000
 """
             ),
@@ -946,7 +959,7 @@ M5,10.000,20.000,30.000,-40.000,-50.000
             f"G1 F{FeedSpeed} X10 Y20 Z30 A-40 B-50",
             "--no-header --no-comments --inches --no-show-editor",
             self.wrap(
-                """MS,0.3788,0.5082
+                """VS,0.38,0.51
 M5,0.3937,0.7874,1.1811,-40.0000,-50.0000
 """,
                 "inches",
@@ -1021,21 +1034,6 @@ J3,1.000,2.000,3.000
                 ),
             )
 
-    def test220(self):
-        """Test native-pre/postamble"""
-
-        self.compare_multi(
-            "(none)",
-            "--no-comments --postamble 'G0 X1 Y2 Z3' --native-postamble 'verbatim-post' --preamble 'G0 X4 Y5 Z6' --native-preamble 'verbatim-pre' --no-header --no-show-editor",
-            self.wrap(
-                """J3,1.000,2.000,3.000
-verbatim-post
-""",
-                preamble="J3,4.000,5.000,6.000\n",
-                nativepre="verbatim-pre\n",
-            ),
-        )
-
     def test240(self):
         """Test relative & --modal
         We don't do relative, we'd have to track position
@@ -1088,13 +1086,13 @@ J3,10.000,20.000,30.000
             "--no-header --no-comments --no-show-editor",
             self.wrap(
                 """J3,,,5.000
-MS,137.749,686.313
+VS,137.7,686.3
 CG,,10.000,20.000,1.000,2.000,T,1,35.000,,,,3,1,0 ' Z40.000
 J3,,,5.010
-MS,223.515,556.813
+VS,223.5,556.8
 CG,,10.000,20.000,1.000,2.000,T,1,35.000,,,,3,1,0 ' Z40.010
 J3,,,5.020
-MS,500.000
+VS,500.0
 CG,,50.000,60.020,1.000,2.000,T,1,0.000,,,,0,1,0 ' Z5.020
 """
             ),
@@ -1154,19 +1152,16 @@ PAUSE
                 """J3,0.000,0.000,5.000
 '(G73 X1.00000 Y2.00000 Z0.00000 R5.00000 Q1.50000 F123.00000)
 J2,1.000,2.000
-MS,,123.000
+VS,,123.0
 M3,,,3.500
 J3,,,3.750
 J3,,,3.575
-MS,,123.000
 M3,,,2.000
 J3,,,2.250
 J3,,,2.075
-MS,,123.000
 M3,,,0.500
 J3,,,0.750
 J3,,,0.575
-MS,,123.000
 M3,,,0.000
 J3,,,5.000
 """,
@@ -1190,42 +1185,26 @@ PRINT "Hello"
         )
 
     def test310(self):
-        """--speed-modal"""
+        """speed-modal"""
         self.compare_multi(
             "G0 X10 Y10 Z10",
             "G1 F100 X100",
             "G1 F100 X200",
             "G1 F100 Z100",
             "G1 F100 Z200",
-            "--speed-modal --no-header --no-comments --no-show-editor",
+            "--no-header --no-comments --no-show-editor",
             self.wrap(
                 """J3,10.000,10.000,10.000
-MS,100.000
+VS,100.0
 MX,100.000
 MX,200.000
-MS,,100.000
+VS,,100.0
 M3,,,100.000
 M3,,,200.000
 """
             ),
         )
 
-        self.compare_multi(
-            "G1 Z3.83000 F42.33333",
-            "G2 X26.58500 Y25.00000 I-1.12076 J-1.12076 K0.00000",
-            "G1 Y-25.00000",
-            "G2 X25.00000 Y-26.58500 I-1.58500 J0.00000 K0.00000",
-            "--o2 --no-header --no-comments --no-show-editor",
-            self.wrap(
-                """MS,,42.333
-M3,,,3.830
-MS,42.333
-CG,,26.585,25.000,-1.121,-1.121,T,1,0.000,,,,0,1,0 ' Z3.830
-M2,,-25.000
-CG,,25.000,-26.585,-1.585,0.000,T,1,0.000,,,,0,1,0 ' Z3.830
-"""
-            ),
-        )
 
     def test320(self):
         """--axis-modal"""
@@ -1238,7 +1217,7 @@ CG,,25.000,-26.585,-1.585,0.000,T,1,0.000,,,,0,1,0 ' Z3.830
             "G0 F100 X101 Y102 Z103",  # dz
             "G0 F100 X104 Y105 Z103",  # dxy
             "G0 F100 X106 Y105 Z107",  # dxz
-            "--axis-modal --speed-modal --no-header --no-comments --no-show-editor",
+            "--axis-modal --no-header --no-comments --no-show-editor",
             self.wrap(
                 """J3,10.000,10.000,10.000
 JX,100.000
@@ -1289,7 +1268,7 @@ J3,10.000,10.000,10.000
         )
 
     def test350(self):
-        """--skip-unknown"""
+        """--allow-unknown"""
 
         with self.assertRaises(NotImplementedError) as context:
             self.compare_multi("G111", "--no-show-editor", self.wrap("throws"))
@@ -1297,7 +1276,7 @@ J3,10.000,10.000,10.000
 
         self.compare_multi(
             "G111",
-            "--skip-unknown G111,G777 --no-show-editor --no-comments --no-header",
+            "--allow-unknown G111,G777 --no-show-editor --no-comments --no-header",
             self.wrap(""),
         )
 
