@@ -36,7 +36,7 @@ class QUrl;
 class QMdiSubWindow;
 
 #if defined(BUILD_QTTESTING)
-# include "QtTesting/QtTestUtility.h"
+#include "QtTesting/QtTestUtility.h"
 #endif
 
 namespace App

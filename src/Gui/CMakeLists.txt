@@ -1383,15 +1383,19 @@ SOURCE_GROUP("Selection" FILES ${Selection_SRCS})
 
 # The QtTesting sources
 if(BUILD_QTTESTING)
+    generate_from_py(QtTesting/QtTestUtility)
+
     SET(QtTesting_CPP_SRCS
         CommandQtTest.cpp
         QtTesting/QtTestUtility.cpp
+        QtTesting/QtTestUtilityPyImp.cpp
         QtTesting/XMLEventObserver.cpp
         QtTesting/XMLEventSource.cpp
     )
     SET(QtTesting_SRCS
         ${QtTesting_CPP_SRCS}
         QtTesting/QtTestUtility.h
+        QtTesting/QtTestUtility.pyi
         QtTesting/XMLEventObserver.h
         QtTesting/XMLEventSource.h
     )

@@ -29,14 +29,21 @@
 #include <Base/Console.h>
 
 #include "QtTestUtility.h"
+#include "XMLEventObserver.h"
+#include "XMLEventSource.h"
 
 using namespace QtTesting;
 
+TYPESYSTEM_SOURCE(QtTesting::QtTestUtility, Base::BaseClass)
+
 QtTestUtility::QtTestUtility(QObject* parent)
-    : pqTestUtility(parent)
+    : pqTestUtility (parent)
 {
     addCustomTranslators();
     addCustomEventPlayers();
+
+    addEventObserver(QStringLiteral("xml"), new QtTesting::XMLEventObserver(this));
+    addEventSource(QStringLiteral("xml"), new QtTesting::XMLEventSource(this));
 }
 
 void QtTestUtility::addWidgetEventTranslator(pqWidgetEventTranslator* translator)

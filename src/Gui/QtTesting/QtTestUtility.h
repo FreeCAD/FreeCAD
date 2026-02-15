@@ -27,15 +27,17 @@
 
 #include <pqTestUtility.h>
 
+#include <Base/BaseClass.h>
+
 class pqWidgetEventPlayer;
 class pqWidgetEventTranslator;
 
 namespace QtTesting
 {
 
-class QtTestUtility: public pqTestUtility
+class QtTestingExport QtTestUtility: public pqTestUtility, public Base::BaseClass
 {
-    Q_OBJECT
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     QtTestUtility(QObject* parent = 0);

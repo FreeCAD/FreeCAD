@@ -65,9 +65,7 @@
 #endif
 
 #if defined(BUILD_QTTESTING)
-# include "QtTesting/QtTestUtility.h"
-# include "QtTesting/XMLEventObserver.h"
-# include "QtTesting/XMLEventSource.h"
+#include "QtTesting/QtTestUtility.h"
 #endif
 
 #include <algorithm>
@@ -502,8 +500,6 @@ MainWindow::MainWindow(QWidget* parent, Qt::WindowFlags f)
 
 #if defined(BUILD_QTTESTING)
     qtTestUtility = std::make_unique<QtTesting::QtTestUtility>(this);
-    qtTestUtility->addEventObserver(QStringLiteral("xml"), new QtTesting::XMLEventObserver(this));
-    qtTestUtility->addEventSource(QStringLiteral("xml"), new QtTesting::XMLEventSource(this));
 #endif
 
     statusBar()->showMessage(tr("Ready"), 2001);

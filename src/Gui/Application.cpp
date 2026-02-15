@@ -151,6 +151,11 @@
 # include <tracy/Tracy.hpp>
 #endif
 
+#if defined(BUILD_QTTESTING)
+#include <QtTesting/QtTestUtility.h>
+#include <QtTesting/QtTestUtilityPy.h>
+#endif
+
 using namespace Gui;
 using namespace Gui::DockWnd;
 using namespace std;
@@ -625,6 +630,10 @@ Application::Application(bool GUIenabled)
                                     module,
                                     "ViewProviderGeometryObject");
         Base::Interpreter().addType(&ViewProviderLinkPy::Type, module, "ViewProviderLink");
+
+#if defined(BUILD_QTTESTING)
+        Base::Interpreter().addType(&QtTesting::QtTestUtilityPy::Type, module, "QtTestUtility");
+#endif
     }
 
     Base::PyGILStateLocker lock;
@@ -2370,6 +2379,10 @@ void Application::initTypes()
     Gui::PythonBaseWorkbench                    ::init();
     Gui::PythonBlankWorkbench                   ::init();
     Gui::PythonWorkbench                        ::init();
+
+#if defined(BUILD_QTTESTING)
+    QtTesting::QtTestUtility                    ::init();
+#endif
 
     // register transaction type
     new App::TransactionProducer<TransactionViewProvider>
