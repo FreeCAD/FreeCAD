@@ -69,8 +69,9 @@ Visible = dict[str, bool]
 nl = "\n"  # particularly useful in a f-string
 PreventGuiTimeout = 1  # seconds
 
-SpeedPrecisions = { "G20" : 2, "G21" : 1 } # for in/sec, for mm/sec
-MinSpeeds = { "G20" : 0.05 , "G21" : 1.3 } # for in/sec, for mm/sec
+SpeedPrecisions = {"G20": 2, "G21": 1}  # for in/sec, for mm/sec
+MinSpeeds = {"G20": 0.05, "G21": 1.3}  # for in/sec, for mm/sec
+
 
 class Opensbp(PostProcessor):
     """For ShopBot (or other opensbp controllers), this is a CAM postprocessor.
@@ -101,7 +102,7 @@ class Opensbp(PostProcessor):
     """
 
     def __init__(
-        self, 
+        self,
         job,
         tooltip=translate("CAM", "see property below"),
         tooltipargs=[""],
@@ -184,8 +185,8 @@ class Opensbp(PostProcessor):
                 "ALLOW_UNKNOWN": [],  # --allow-unknown
                 "last_command": None,
                 "first_probe": True,
-                "SPEED_PRECISION" : 2, # updated at process_arguments
-                "MIN_SPEED" : 0.05, # updated at process_arguments
+                "SPEED_PRECISION": 2,  # updated at process_arguments
+                "MIN_SPEED": 0.05,  # updated at process_arguments
             }
         )
         # FIXME: should be done by PostProcessor, isn't there yet in 1.0.
@@ -231,7 +232,7 @@ class Opensbp(PostProcessor):
                     "tlo",
                     "translate_drill",
                     "line-numbers",
-                    "gcode-comments", # FIXME: doesn't hide "our" arguments
+                    "gcode-comments",  # FIXME: doesn't hide "our" arguments
                 )
             }
         )
@@ -267,9 +268,7 @@ class Opensbp(PostProcessor):
             action="store_true",
             help="turns on optimizations that wouldn't break if you interrupt the execution and did some command manually: --no-comments --no-header",
         )  # no such optimizations at this time
-        _parser.add_argument(
-            "--o2", action="store_true", help="turns on --modal --axis-modal"
-        )
+        _parser.add_argument("--o2", action="store_true", help="turns on --modal --axis-modal")
 
         _parser.add_argument(
             "--o3",
@@ -306,7 +305,7 @@ class Opensbp(PostProcessor):
         _parser.add_argument(
             "--gcode-comments",
             action=argparse.BooleanOptionalAction,
-            #help="Add the original gcode as a comment, for debugging",
+            # help="Add the original gcode as a comment, for debugging",
             help=argparse.SUPPRESS,
             default=False,
         )
@@ -338,8 +337,8 @@ class Opensbp(PostProcessor):
             self.values["UNIT_SPEED_FORMAT"] = (
                 "mm/s" if self.values["UNIT_FORMAT"] == "mm" else "in/s"
             )
-            self.values["SPEED_PRECISION"] = SpeedPrecisions[ self.values["UNITS"] ]
-            self.values["MIN_SPEED"] = MinSpeeds[ self.values["UNITS"] ]
+            self.values["SPEED_PRECISION"] = SpeedPrecisions[self.values["UNITS"]]
+            self.values["MIN_SPEED"] = MinSpeeds[self.values["UNITS"]]
 
             if args.allow_unknown:
                 self.values["SUPPRESS_COMMANDS"].extend(
@@ -563,8 +562,8 @@ class ToOpenSBP:
         # xyzf etc state
         self.current_location = {p: None for p in self.post.values["PARAMETER_ORDER"]}
         # for our speed-modal
-        self.current_location['ms'] = [ "","" ]
-        self.current_location['js'] = [ "","" ]
+        self.current_location["ms"] = ["", ""]
+        self.current_location["js"] = ["", ""]
         self.end_location = [None for x in self.PositionAxis]
 
         self.set_units = None  # flag and memory of the first time we see a G20/G21 set-units
@@ -657,9 +656,9 @@ class ToOpenSBP:
                 rez = ""
             else:
                 # handle that gcode
-                #print(f"### path_command is {path_command.__class__.__name__} {path_command}")
+                # print(f"### path_command is {path_command.__class__.__name__} {path_command}")
                 rez = self.dispatch(path_command)
-                #print(f"### translated: {rez.rstrip()}")
+                # print(f"### translated: {rez.rstrip()}")
 
             # append to buffer
             native += rez
@@ -757,7 +756,7 @@ class ToOpenSBP:
             message = f"gcode not handled at {self.location(path_command)}"
             if (
                 self.post.arguments.abort_on_unknown
-                #FIXME: cf SUPPRESS_UNKNOWN
+                # FIXME: cf SUPPRESS_UNKNOWN
                 and command not in self.post.values["ALLOW_UNKNOWN"]
             ):
                 FreeCAD.Console.PrintError(message + "\n")
@@ -899,21 +898,30 @@ SkipProbeSubRoutines:"""
 
     @gcode("M06")
     def t_toolchange(self, path_command):
-        tool_number = int(path_command.Parameters['T'])
+        tool_number = int(path_command.Parameters["T"])
 
         # check for tool actually existing
-        tool_controller = next((x for x in self.post._job.Tools.Group if x.ToolNumber == tool_number), None)
+        tool_controller = next(
+            (x for x in self.post._job.Tools.Group if x.ToolNumber == tool_number), None
+        )
         if not tool_controller:
             # HACK: at least till 1.1, nothing enforces tool-numbers in the job to be unique
             #   and "Tn" doesn't have to match a ToolNumber
             #   we'll do a compatibility hack ONLY if all tools == 1
-            if all(  x.ToolNumber == 1 for x in self.post._job.Tools.Group ) and len(self.post._job.Tools.Group) >= tool_number:
+            if (
+                all(x.ToolNumber == 1 for x in self.post._job.Tools.Group)
+                and len(self.post._job.Tools.Group) >= tool_number
+            ):
                 tool_controller = self.post._job.Tools.Group[tool_number - 1]
-                FreeCAD.Console.PrintWarning(f"Job <{self.post._job.Label}> doesn't have unique tool-numbers? at {self.location(path_command)}")
+                FreeCAD.Console.PrintWarning(
+                    f"Job <{self.post._job.Label}> doesn't have unique tool-numbers? at {self.location(path_command)}"
+                )
             else:
-                raise ValueError(f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}. Do tools have unique tool-numbers?")
+                raise ValueError(
+                    f"Toolchange with non-existent tool_number {tool_number} at {self.location(path_command)}. Do tools have unique tool-numbers?"
+                )
 
-        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}" # not sure if we want both .Label's, just trying to help the operator
+        tool_name = f"{tool_controller.Label}, {tool_controller.Tool.Label}"  # not sure if we want both .Label's, just trying to help the operator
         safe_tool_name = re.sub(r"[^A-Za-z0-9/_ .-]", "", tool_name)
 
         rez = []
@@ -992,7 +1000,7 @@ SkipProbeSubRoutines:"""
         rez += speed_command
 
         native_command = "J" if path_command.Name == "G00" else "M"
-        #print(f"  ### is a '{native_command}'")
+        # print(f"  ### is a '{native_command}'")
 
         # nb, we don't have to do anything for --axis-modal, handled by common stuff earlier!
 
@@ -1210,7 +1218,7 @@ SkipProbeSubRoutines:"""
         rez += "ON INPUT(&my_ZzeroInput, 1) GOSUB CaptureZPos" + nl
 
         g = f"G01 F{speed} {axis}"
-        rez += self.t_move( Path.Command(g) )
+        rez += self.t_move(Path.Command(g))
 
         # and check for fail to contact
         rez += "IF &hit = 0 THEN GOTO FailedToTouch\n"
@@ -1325,7 +1333,7 @@ SkipProbeSubRoutines:"""
             f = path_command.Parameters.get("F", None)
             if f is None:
                 f = self.current_location["F"]
-                #print(f"  ### no f, last= '{f}'")
+                # print(f"  ### no f, last= '{f}'")
 
             if f is None:
                 # No F and no previous, which is not good. default to machine's feed speeds.
@@ -1352,8 +1360,8 @@ SkipProbeSubRoutines:"""
                     speeds = [
                         ((f * d / distance) if distance != 0 else 0) for d in distances_for_speed
                     ]
-                    #print(f"  ### speed w/xyz {speeds}")
-            #print(f"  ### speeds  {speeds}")
+                    # print(f"  ### speed w/xyz {speeds}")
+            # print(f"  ### speeds  {speeds}")
 
         min_speed = self.post.values["MIN_SPEED"]
 
@@ -1380,7 +1388,7 @@ SkipProbeSubRoutines:"""
 
             non_elided = copy(speeds)
 
-            if True: # speed-modal always true
+            if True:  # speed-modal always true
                 # compare to previous 'ms' speeds, so we can skip 'MS' if nothing changes
                 for i, new_speed in enumerate(speeds):
                     old_speed = self.current_location[which_speed.lower()][i]
@@ -1391,12 +1399,12 @@ SkipProbeSubRoutines:"""
             self.current_location["ms"] = non_elided
 
         # cleans up trailing , when trailing speeds elided
-        if which_speed == 'MS':
+        if which_speed == "MS":
             cmd = f"VS,{','.join(speeds)}".rstrip(",")
-        elif which_speed == 'JS':
+        elif which_speed == "JS":
             # again, shouldn't get here in this version of the code
             cmd = f"VS,,,,,{','.join(speeds)}".rstrip(",")
-        
+
         # If there is no speed to set (e.g. the move ends up as delta-0), no MS needed
         if cmd == "VS":
             cmd = ""
@@ -1418,13 +1426,11 @@ SkipProbeSubRoutines:"""
             "js": [],  # xy,z
         }
 
-        def append_speed( which_speed, which_speed_key):
-            with_units = getattr(tool_controller, which_speed )
+        def append_speed(which_speed, which_speed_key):
+            with_units = getattr(tool_controller, which_speed)
             speed = float(with_units.getValueAs(self.post.values["UNIT_SPEED_FORMAT"]))
 
-            if abs(speed) >= 0.5 * 10 ** (
-                -self.post.values["SPEED_PRECISION"]
-            ):  # i.e. not zero
+            if abs(speed) >= 0.5 * 10 ** (-self.post.values["SPEED_PRECISION"]):  # i.e. not zero
 
                 formatted = format(speed, f'.{self.post.values["SPEED_PRECISION"]}f')
 
@@ -1435,7 +1441,7 @@ SkipProbeSubRoutines:"""
                     f"ToolController <{self.post._job.Label}>.<{tool_controller.Label}> did not set {which_speed} speed, set the HorizFeed and VertFeed. ( for {self.location(path_command)} )\n"
                 )
                 speeds[which_speed_key].append("")
-                if which_speed.endswith('Rapid'):
+                if which_speed.endswith("Rapid"):
                     warn_rapid.append(which_speed)
                 return self.comment(f"no {which_speed}", force=True)
 
@@ -1443,11 +1449,11 @@ SkipProbeSubRoutines:"""
 
         # tool's speeds -> speeds[ 'ms' & 'js' ]
         for which_speed_key, which_speed_properties in {
-            'ms' : [ 'HorizFeed', 'VertFeed' ],
-            'js' : [ 'HorizRapid', 'VertRapid' ],
-            }.items():
-            for which_speed in which_speed_properties: # by property for warning messages
-                comment = append_speed( which_speed, which_speed_key )
+            "ms": ["HorizFeed", "VertFeed"],
+            "js": ["HorizRapid", "VertRapid"],
+        }.items():
+            for which_speed in which_speed_properties:  # by property for warning messages
+                comment = append_speed(which_speed, which_speed_key)
                 if comment is not None:
                     native += comment
 
@@ -1456,8 +1462,8 @@ SkipProbeSubRoutines:"""
 
             # add to command-stream
             command_prefix = which_speed_key.upper()
-            command = (f"{command_prefix}," + ",".join(speeds[which_speed_key])).rstrip(',')
-            if command != command_prefix: # has actual speeds
+            command = (f"{command_prefix}," + ",".join(speeds[which_speed_key])).rstrip(",")
+            if command != command_prefix:  # has actual speeds
                 native += command + "\n"
 
         # fixme: where to get A&B values?

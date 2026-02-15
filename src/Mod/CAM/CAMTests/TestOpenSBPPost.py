@@ -199,8 +199,9 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         header=False,
         precision=None,
         postfix="",
-        JS=None, # set to explicit command that isn't our test default
-        noHorizRapid=False, noVertRapid=False, # which "no" comment is expected
+        JS=None,  # set to explicit command that isn't our test default
+        noHorizRapid=False,
+        noVertRapid=False,  # which "no" comment is expected
     ):
         # compare_multi helper
         # wraps the expected path-gcode in std prefix, postfix, no-header
@@ -222,25 +223,27 @@ class TestOpenSBPPost(PathTestUtils.PathTestBase):
         # remember we are x/s and freecad is x/min (usually)
         speeds = []
         if comments:
-            speeds.append( "'set speeds: TC: Default Tool" )
+            speeds.append("'set speeds: TC: Default Tool")
         if inches:
-            speeds.append( f"MS,{speed_fmt(FeedSpeed/60/25.4)},{speed_fmt(FeedSpeed/2/60/25.4)}" )
+            speeds.append(f"MS,{speed_fmt(FeedSpeed/60/25.4)},{speed_fmt(FeedSpeed/2/60/25.4)}")
             if JS is None:
-                speeds.append( f"JS,{speed_fmt(RapidSpeed/60/25.4)},{speed_fmt(RapidSpeed/2/60/25.4)}" )
+                speeds.append(
+                    f"JS,{speed_fmt(RapidSpeed/60/25.4)},{speed_fmt(RapidSpeed/2/60/25.4)}"
+                )
         else:
-            speeds.append( f"MS,{speed_fmt(FeedSpeed/60)},{speed_fmt(FeedSpeed/2/60)}" )
+            speeds.append(f"MS,{speed_fmt(FeedSpeed/60)},{speed_fmt(FeedSpeed/2/60)}")
             if JS is None:
-                speeds.append( f"JS,{speed_fmt(RapidSpeed/60)},{speed_fmt(RapidSpeed/2/60)}" )
+                speeds.append(f"JS,{speed_fmt(RapidSpeed/60)},{speed_fmt(RapidSpeed/2/60)}")
 
         if noHorizRapid and comments:
-            speeds.append( "'no HorizRapid" )
+            speeds.append("'no HorizRapid")
         if noVertRapid and comments:
-            speeds.append( "'no VertRapid" )
-        if JS is not None and JS != '': # '' means skip
+            speeds.append("'no VertRapid")
+        if JS is not None and JS != "":  # '' means skip
             speeds.append(JS)
 
         speeds = "\n".join(speeds)
-        #print(f"T### speeds---{speeds}---")
+        # print(f"T### speeds---{speeds}---")
 
         def ifcomments(text):
             if not comments:
@@ -333,16 +336,18 @@ AfterWrongUnits:
 
     def test005(self):
         """Test native-rapid
-            default should skip the jog-speed setting.
-            --no-native-rapid-fallback should cause an error.
+        default should skip the jog-speed setting.
+        --no-native-rapid-fallback should cause an error.
         """
-        setup_sheet = self.job.SetupSheet 
+        setup_sheet = self.job.SetupSheet
 
         # 0's only for horizrapid
         setup_sheet.HorizRapid = Units.Quantity(0.0, "mm/min")
         self.doc.recompute()
-        self.compare_multi(None, "--no-header --no-show-editor", 
-            self.wrap("", JS="JS,,17.5", noHorizRapid=True, noVertRapid=False, comments=True )
+        self.compare_multi(
+            None,
+            "--no-header --no-show-editor",
+            self.wrap("", JS="JS,,17.5", noHorizRapid=True, noVertRapid=False, comments=True),
         )
 
         # 0's for both rapid:
@@ -350,14 +355,17 @@ AfterWrongUnits:
         setup_sheet.VertRapid = Units.Quantity(0.0, "mm/min")
         self.doc.recompute()
         # nb: can't test --no-comments, because "noHorizRapid" is always inserted, and .wrap doesn't know that
-        self.compare_multi(None, "--no-header --no-show-editor", 
-            self.wrap("", JS="", noHorizRapid=True, noVertRapid=True, comments=True )
+        self.compare_multi(
+            None,
+            "--no-header --no-show-editor",
+            self.wrap("", JS="", noHorizRapid=True, noVertRapid=True, comments=True),
         )
 
         with self.assertRaises(ValueError) as context:
-            self.compare_multi(None, "--no-header --no-show-editor --no-native-rapid-fallback", "should raise")
+            self.compare_multi(
+                None, "--no-header --no-show-editor --no-native-rapid-fallback", "should raise"
+            )
         self.assertTrue("did not set" in str(context.exception))
-
 
     def test010(self):
         """Test command Generation.
@@ -648,7 +656,8 @@ M3,10.000,20.000,30.000
             "G1 F38.100000 X49.487210 Y51.781909 Z50.828879",
             "G1 F38.100000 X49.147952 Y51.648842 Z50.657758",
             "--no-header --no-comments --modal --axis-modal --no-show-editor",
-            self.wrap("""J3,49.846,51.846,54.000
+            self.wrap(
+                """J3,49.846,51.846,54.000
 VS,,38.1
 M3,,,51.000
 VS,34.5,16.2
@@ -657,7 +666,6 @@ M3,49.148,51.649,50.658
 """
             ),
         )
-
 
     def test070(self):
         """Suppress the axis coordinate if the same as previous"""
@@ -1204,7 +1212,6 @@ M3,,,200.000
 """
             ),
         )
-
 
     def test320(self):
         """--axis-modal"""
