@@ -135,11 +135,11 @@ public:
     // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter AutoRelabelNew
-    static const bool & getAutoRelabelNew();
-    static const bool & defaultAutoRelabelNew();
+    static const bool& getAutoRelabelNew();
+    static const bool& defaultAutoRelabelNew();
     static void removeAutoRelabelNew();
-    static void setAutoRelabelNew(const bool &v);
-    static const char *docAutoRelabelNew();
+    static void setAutoRelabelNew(const bool& v);
+    static const char* docAutoRelabelNew();
     static void onAutoRelabelNewChanged();
     //@}
 
