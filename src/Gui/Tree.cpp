@@ -3430,7 +3430,10 @@ void TreeWidget::onUpdateStatus()
         if (!docItem) {
             continue;
         }
-        for (auto id : v.second) {
+
+        std::vector<App::DocumentObject*> sels;
+        for (auto j = 0; j < v.second.size(); j++) {
+            auto id = v.second[j];
             auto obj = doc->getObjectByID(id);
             if (!obj) {
                 continue;
@@ -3442,12 +3445,23 @@ void TreeWidget::onUpdateStatus()
                 continue;
             }
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
-            if (vpd) {
-                docItem->createNewItem(*vpd);
+
+            if (!vpd) {
+                continue;
             }
-            else {
-                RelabelQueue.insert(obj);
+
+            docItem->createNewItem(*vpd);
+                        
+            if (j != v.second.size() - 1) {
+                continue;
             }
+
+            // Select the newest item
+            sels.push_back(obj);
+            Selection().clearSelection();
+            Selection().setSelection(gdoc->getDocument()->getName(), sels);
+
+            tryOfferRelabel(obj, docItem);
         }
     }
 
