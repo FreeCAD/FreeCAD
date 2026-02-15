@@ -23,6 +23,7 @@
 
 #include "Parser.h"
 #include "Corners.h"
+#include "Gradient.h"
 #include "Insets.h"
 #include "ParameterManager.h"
 
@@ -101,6 +102,8 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         {"margins", [&args]() -> Value { return Margins(args).tuple(); }},
         {"border_thickness", [&args]() -> Value { return BorderThickness(args).tuple(); }},
         {"border_radius", [&args]() -> Value { return Corners(args).tuple(); }},
+        {"linear_gradient", [&args]() -> Value { return LinearGradient(args).tuple(); }},
+        {"radial_gradient", [&args]() -> Value { return RadialGradient(args).tuple(); }},
     };
 
     if (functions.contains(functionName)) {
