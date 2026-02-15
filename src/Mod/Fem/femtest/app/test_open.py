@@ -109,9 +109,13 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import Proxy
+        from femobjects.constraint_electromagnetic import ConstraintElectromagnetic
 
         remove(file_path)
         self.assertEqual(Proxy, self.document.Flux.Proxy.__class__)
+        self.assertEqual(
+            ConstraintElectromagnetic, self.document.ConstraintElectromagnetic.Proxy.__class__
+        )
 
     # ********************************************************************************************
     def test_femobjects_open_de9b3fb438(self):
@@ -136,8 +140,13 @@ class TestObjectOpen(unittest.TestCase):
 
         # standard name changed
         from femsolver.elmer.equations.flux import Proxy
+        from femobjects.constraint_electromagnetic import ConstraintElectromagnetic
 
         self.assertEqual(Proxy, self.document.Fluxsolver.Proxy.__class__)
+        self.assertEqual(
+            ConstraintElectromagnetic,
+            self.document.ConstraintElectrostaticPotential.Proxy.__class__,
+        )
 
     # ********************************************************************************************
     def compare_cpp_objs(self, doc):
@@ -169,12 +178,6 @@ class TestObjectOpen(unittest.TestCase):
         self.assertEqual(
             "Fem::ConstraintCurrentDensity",
             type_of_obj(ObjectsFem.makeConstraintCurrentDensity(doc)),
-        )
-
-        from femobjects.constraint_electrostaticpotential import ConstraintElectrostaticPotential
-
-        self.assertEqual(
-            ConstraintElectrostaticPotential, doc.ConstraintElectrostaticPotential.Proxy.__class__
         )
 
         from femobjects.constraint_flowvelocity import ConstraintFlowVelocity
