@@ -216,11 +216,9 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         bool isFaceSelection = measurement->isFaceFace();
         bool isEdgeSelection = measurement->isEdgeEdge();
 
-        if (isFaceSelection) {
-            originFound = measurement->hasCommonEdge(dimensionOriginPoint);
-        }
-        else if (isEdgeSelection) {
-            originFound = measurement->hasCommonVertex(dimensionOriginPoint);
+        if (isFaceSelection || isEdgeSelection) {
+            // will get imaginary or real origin dont matter here
+            originFound = measurement->getOrigin(dimensionOriginPoint);
         }
 
         if (!originFound) {
@@ -491,20 +489,28 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     tipCalc->b.connectFrom(&fieldAngle);
 
     // oC is used as the local origin
-    tipCalc->expression.setValue(
-        "oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0); oC = vec3f(0,0,0)"
-    );
+    tipCalc->expression.setValue("oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0);");
 
     // set arrow position
     pLeftArrowTrans->translation.connectFrom(&tipCalc->oA);
     pRightArrowTrans->translation.connectFrom(&tipCalc->oB);
 
+    // Calculator normal start points
+    auto pNormalsStartPointCalc = new SoCalculator();
+    pNormalsStartPointCalc->A.connectFrom(&normalStartPoint1);
+    pNormalsStartPointCalc->B.connectFrom(&normalStartPoint2);
+    pNormalsStartPointCalc->c.connectFrom(&sectorArcRotation);
+    pNormalsStartPointCalc->expression.setValue(
+        "oA = (c > 0) ? vec3f(-A[0], -A[1], A[2]) : A; "
+        "oB = (c > 0) ? vec3f(-B[0], -B[1], B[2]) : B"
+    );
+
     auto normalsConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
 
-    normalsConcat->input[0]->connectFrom(&tipCalc->oC);
+    normalsConcat->input[0]->connectFrom(&pNormalsStartPointCalc->oA);
     normalsConcat->input[1]->connectFrom(&tipCalc->oA);
 
-    normalsConcat->input[2]->connectFrom(&tipCalc->oC);
+    normalsConcat->input[2]->connectFrom(&pNormalsStartPointCalc->oB);
     normalsConcat->input[3]->connectFrom(&tipCalc->oB);
 
     pNormalsCoords->point.connectFrom(normalsConcat->output);
@@ -523,7 +529,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
 void ViewProviderMeasureAngle::redrawAnnotation()
 {
-    auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
+    auto obj = getMeasureAngle();
     double angleDeg = obj->Angle.getValue();
     this->fieldAngle = Base::toRadians(angleDeg);
 
@@ -532,13 +538,35 @@ void ViewProviderMeasureAngle::redrawAnnotation()
     ArrowRadius.setValue(Measure::Preferences::defaultArrowRadius());
 
     // Set matrix
+    SbMatrix matrix;
     try {
-        SbMatrix matrix = getMatrix();
+        matrix = getMatrix();
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
         Base::Console().error("Error in ViewProviderMeasureAngle::redrawAnnotation: %s\n", e.what());
         return;
+    }
+
+    // imaginary origin case
+    if (obj->isImgOrigin()) {
+        gp_Vec loc1 = obj->location1();
+        gp_Vec loc2 = obj->location2();
+        SbMatrix invMatrix = matrix.inverse();
+        SbVec3f globalLoc1(loc1.X(), loc1.Y(), loc1.Z());
+        SbVec3f globalLoc2(loc2.X(), loc2.Y(), loc2.Z());
+
+        SbVec3f localLoc1, localLoc2;
+        invMatrix.multVecMatrix(globalLoc1, localLoc1);
+        invMatrix.multVecMatrix(globalLoc2, localLoc2);
+
+
+        normalStartPoint1.setValue(localLoc1);
+        normalStartPoint2.setValue(localLoc2);
+    }
+    else {
+        normalStartPoint1.setValue(0, 0, 0);
+        normalStartPoint2.setValue(0, 0, 0);
     }
 
     // Set Label
@@ -563,7 +591,30 @@ Measure::MeasureAngle* ViewProviderMeasureAngle::getMeasureAngle()
 
 void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureObject)
 {
-    (void)measureObject;
+    // for imgOrigin, the initial radius is set to the center of the two obj
+    auto obj = getMeasureAngle();
+    if (obj->isImgOrigin()) {
+        gp_Vec loc1 = obj->location1();
+        gp_Vec loc2 = obj->location2();
+        if (loc1.Magnitude() < Precision::Confusion() || loc2.Magnitude() < Precision::Confusion()) {
+            return;
+        }
+
+        SbMatrix invMatrix = getMatrix().inverse();
+
+        SbVec3f globalLoc1(loc1.X(), loc1.Y(), loc1.Z());
+        SbVec3f globalLoc2(loc2.X(), loc2.Y(), loc2.Z());
+
+        SbVec3f localLoc1, localLoc2;
+        invMatrix.multVecMatrix(globalLoc1, localLoc1);
+        invMatrix.multVecMatrix(globalLoc2, localLoc2);
+
+        // arc radius = distance to the center of the two edge locations
+        SbVec3f center = (localLoc1 + localLoc2) / 2.0f;
+        setLabelTranslation(center);
+        return;
+    }
+
     setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
 }
 
