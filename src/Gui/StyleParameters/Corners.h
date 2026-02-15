@@ -144,7 +144,10 @@ public:
         }
 
         auto makeElement = [](const char* name, const Value& val) {
-            return Tuple::Element {std::string(name), std::make_shared<const Value>(val)};
+            return Tuple::Element {
+                .name = std::string(name),
+                .value = std::make_shared<const Value>(val)
+            };
         };
 
         Tuple result;
