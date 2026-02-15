@@ -2366,13 +2366,7 @@ class ComponentTaskPanel:
 
         margins = self.tree.contentsMargins()
         frame = self.tree.frameWidth() * 2
-        total_height = (
-            frame
-            + margins.top()
-            + margins.bottom()
-            + (rows * row_height)
-            + 2
-        )
+        total_height = frame + margins.top() + margins.bottom() + (rows * row_height) + 2
         self.tree.setFixedHeight(total_height)
 
     def _onTreeGeometryChanged(self, item):
