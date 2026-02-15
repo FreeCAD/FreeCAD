@@ -227,6 +227,17 @@ class ObjectOp(object):
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
 
+        obj.addProperty(
+            "App::PropertyVector",
+            "Workplane",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.",
+            ),
+        )
+        obj.Workplane = FreeCAD.Vector(0, 0, 1)
+
         # Add attachment extension to enable attaching operations to geometry
         # This allows operations to automatically position/orient based on attached faces
         # Only add to real objects, not OpPrototypes
@@ -519,6 +530,18 @@ class ObjectOp(object):
                     setattr(obj, n[0], n[1])
             obj.CollisionAvoidanceStrategy = "Clearance Height"
             self.applyExpression(obj, "CollisionClearance", "OpToolDiameter")
+
+        if not hasattr(obj, "Workplane"):
+            obj.addProperty(
+                "App::PropertyVector",
+                "Workplane",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "The orientation of the tool for this operation. Default is (0, 0, 1) for standard Z-up milling.",
+                ),
+            )
+            obj.Workplane = FreeCAD.Vector(0, 0, 1)
 
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
@@ -879,10 +902,6 @@ class ObjectOp(object):
 
         result = self.opExecute(obj)
 
-        if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
-            # Let's finish by rapid to clearance...just for safety
-            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
-
         # Add block delete annotations if enabled
         if hasattr(obj, "BlockDelete") and obj.BlockDelete:
             for command in self.commandlist:
@@ -925,7 +944,21 @@ class ObjectOp(object):
                     coolant_off = Path.Command("M9", {})
                     self.commandlist.insert(last_feed_index + 1, coolant_off)
 
+        if self.commandlist and (FeatureHeights & self.opFeatures(obj)):
+            # Let's finish by rapid to clearance...just for safety
+            self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
+
         path = Path.Path(self.commandlist)
+
+        # Set backplot placement if geometry rotation was applied
+        if hasattr(self, '_geometry_rotation'):
+            # Inverse of geometry rotation → places toolpath back in world frame
+            obj.Placement = FreeCAD.Placement(
+                FreeCAD.Vector(0, 0, 0),
+                self._geometry_rotation.inverted()
+            )
+            # Clean up temporary attribute
+            delattr(self, '_geometry_rotation')
 
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
