@@ -41,11 +41,6 @@
        </item>
        <item>
         <property name="text">
-         <string>Automatic TSP</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
          <string>Manual</string>
         </property>
        </item>
