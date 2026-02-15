@@ -37,7 +37,7 @@ using namespace QtTesting;
 TYPESYSTEM_SOURCE(QtTesting::QtTestUtility, Base::BaseClass)
 
 QtTestUtility::QtTestUtility(QObject* parent)
-    : pqTestUtility (parent)
+    : pqTestUtility(parent)
 {
     addCustomTranslators();
     addCustomEventPlayers();

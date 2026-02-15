@@ -152,8 +152,8 @@
 #endif
 
 #if defined(BUILD_QTTESTING)
-#include <QtTesting/QtTestUtility.h>
-#include <QtTesting/QtTestUtilityPy.h>
+# include <QtTesting/QtTestUtility.h>
+# include <QtTesting/QtTestUtilityPy.h>
 #endif
 
 using namespace Gui;
