@@ -435,12 +435,19 @@ public:
     {
         auto value = resolve(definition.name, std::move(context));
 
-        if (!value || !value->template holds<Tuple>()
-            || value->template get<Tuple>().kind != T::kind()) {
+        if (!value || !value->template holds<Tuple>()) {
             return definition.defaultValue;
         }
 
-        return T(value->template get<Tuple>());
+        const auto& tuple = value->template get<Tuple>();
+
+        // Reject tuples with a different typed kind (e.g., Margins when expecting Padding).
+        // Generic and matching kinds are accepted — the constructor handles expansion.
+        if (tuple.kind != TupleKind::Generic && tuple.kind != T::kind()) {
+            return definition.defaultValue;
+        }
+
+        return T(tuple);
     }
 
     template<typename T>

@@ -24,6 +24,8 @@
 #ifndef STYLEPARAMETERS_CORNERS_H
 #define STYLEPARAMETERS_CORNERS_H
 
+#include <array>
+
 #include <Base/Exception.h>
 #include <fmt/format.h>
 
@@ -46,6 +48,10 @@ public:
     explicit Corners(Tuple tuple)
         : tuple_(std::move(tuple))
     {
+        if (tuple_.kind == TupleKind::Generic) {
+            tuple_ = expand(tuple_);
+            tuple_.kind = TupleKind::Corners;
+        }
         if (tuple_.kind != TupleKind::Corners) {
             THROWM(
                 Base::TypeError,
@@ -78,6 +84,75 @@ public:
     static constexpr TupleKind kind()
     {
         return TupleKind::Corners;
+    }
+
+    /**
+     * @brief Expands a tuple using CSS border-radius shorthand rules.
+     *
+     * Uses diagonal pairing (2 values = top-left/bottom-right paired),
+     * and explicit corner name overrides. Returns a normalized 4-element
+     * tuple with Generic kind — caller sets the target kind.
+     */
+    static Tuple expand(const Tuple& args)
+    {
+        std::vector<const Value*> positional;
+        for (const auto& elem : args.elements) {
+            if (!elem.name) {
+                positional.push_back(elem.value.get());
+            }
+        }
+
+        // Single tuple argument: pass through for re-tagging (e.g., border_radius(@existingTuple))
+        if (positional.size() == 1 && positional[0]->holds<Tuple>()) {
+            return positional[0]->get<Tuple>();
+        }
+
+        // CSS border-radius shorthand: diagonal pairing
+        auto [topLeft, topRight, bottomRight, bottomLeft] = [&]() -> std::array<const Value*, 4> {
+            switch (positional.size()) {
+                case 0:
+                    return {nullptr, nullptr, nullptr, nullptr};
+                case 1:
+                    return {positional[0], positional[0], positional[0], positional[0]};
+                case 2:
+                    return {positional[0], positional[1], positional[0], positional[1]};
+                case 3:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[1]};
+                case 4:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[3]};
+                default:
+                    THROWM(Base::ExpressionError, "Corners accept 1-4 positional arguments");
+            }
+        }();
+
+        // Explicit corner names override positional
+        if (const Value* found = args.find("top_left")) {
+            topLeft = found;
+        }
+        if (const Value* found = args.find("top_right")) {
+            topRight = found;
+        }
+        if (const Value* found = args.find("bottom_right")) {
+            bottomRight = found;
+        }
+        if (const Value* found = args.find("bottom_left")) {
+            bottomLeft = found;
+        }
+
+        if (!topLeft || !topRight || !bottomRight || !bottomLeft) {
+            THROWM(Base::ExpressionError, "Corners require all four corners to be specified");
+        }
+
+        auto makeElement = [](const char* name, const Value& val) {
+            return Tuple::Element {std::string(name), std::make_shared<const Value>(val)};
+        };
+
+        Tuple result;
+        result.elements.push_back(makeElement("top_left", *topLeft));
+        result.elements.push_back(makeElement("top_right", *topRight));
+        result.elements.push_back(makeElement("bottom_right", *bottomRight));
+        result.elements.push_back(makeElement("bottom_left", *bottomLeft));
+        return result;
     }
 
     const Tuple& tuple() const

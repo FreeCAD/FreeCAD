@@ -1738,6 +1738,87 @@ TEST_F(ParserTest, ResolveTypedPadding)
     EXPECT_DOUBLE_EQ(resolved.left().value, 4.0);
 }
 
+TEST_F(ParserTest, ResolveGenericTupleAsPadding)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"ButtonPadding", "(top: 10px, right: 5px, bottom: 10px, left: 20px)"}},
+        ParameterSource::Metadata {"Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto zero = std::make_shared<const Value>(Numeric {0, "px"});
+    defaultTuple.elements.push_back({"top", zero});
+    defaultTuple.elements.push_back({"right", zero});
+    defaultTuple.elements.push_back({"bottom", zero});
+    defaultTuple.elements.push_back({"left", zero});
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 20.0);
+}
+
+TEST_F(ParserTest, ResolveGenericTupleWithGroupNames)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"ButtonPadding", "(horizontal: 10px, vertical: 20px)"}},
+        ParameterSource::Metadata {"Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto zero = std::make_shared<const Value>(Numeric {0, "px"});
+    defaultTuple.elements.push_back({"top", zero});
+    defaultTuple.elements.push_back({"right", zero});
+    defaultTuple.elements.push_back({"bottom", zero});
+    defaultTuple.elements.push_back({"left", zero});
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 20.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 20.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 10.0);
+}
+
+TEST_F(ParserTest, ResolveGenericTupleWithPositionalShorthand)
+{
+    auto source = std::make_unique<InMemoryParameterSource>(
+        std::list<Parameter> {{"ButtonPadding", "(10px, 5px)"}},
+        ParameterSource::Metadata {"Generic Source"}
+    );
+
+    Gui::StyleParameters::ParameterManager mgr;
+    mgr.addSource(source.get());
+
+    Tuple defaultTuple;
+    defaultTuple.kind = TupleKind::Padding;
+    auto zero = std::make_shared<const Value>(Numeric {0, "px"});
+    defaultTuple.elements.push_back({"top", zero});
+    defaultTuple.elements.push_back({"right", zero});
+    defaultTuple.elements.push_back({"bottom", zero});
+    defaultTuple.elements.push_back({"left", zero});
+
+    ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
+    auto resolved = mgr.resolve(def);
+
+    EXPECT_DOUBLE_EQ(resolved.top().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.right().value, 5.0);
+    EXPECT_DOUBLE_EQ(resolved.bottom().value, 10.0);
+    EXPECT_DOUBLE_EQ(resolved.left().value, 5.0);
+}
+
 TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnWrongKind)
 {
     auto source = std::make_unique<InMemoryParameterSource>(

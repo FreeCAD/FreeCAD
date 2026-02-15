@@ -24,6 +24,8 @@
 #ifndef STYLEPARAMETERS_INSETS_H
 #define STYLEPARAMETERS_INSETS_H
 
+#include <array>
+
 #include <Base/Exception.h>
 #include <fmt/format.h>
 
@@ -77,10 +79,91 @@ public:
         return tuple_;
     }
 
+    /**
+     * @brief Expands a tuple using CSS box-model shorthand rules.
+     *
+     * Handles positional shorthand (1-4 args), group names (vertical, horizontal),
+     * and explicit side overrides (top, right, bottom, left). Returns a normalized
+     * 4-element tuple with Generic kind — caller sets the target kind.
+     */
+    static Tuple expand(const Tuple& args)
+    {
+        std::vector<const Value*> positional;
+        for (const auto& elem : args.elements) {
+            if (!elem.name) {
+                positional.push_back(elem.value.get());
+            }
+        }
+
+        // Single tuple argument: pass through for re-tagging (e.g., padding(@existingTuple))
+        if (positional.size() == 1 && positional[0]->holds<Tuple>()) {
+            return positional[0]->get<Tuple>();
+        }
+
+        // CSS box-model shorthand: top, right, bottom, left
+        auto [top, right, bottom, left] = [&]() -> std::array<const Value*, 4> {
+            switch (positional.size()) {
+                case 0:
+                    return {nullptr, nullptr, nullptr, nullptr};
+                case 1:
+                    return {positional[0], positional[0], positional[0], positional[0]};
+                case 2:
+                    return {positional[0], positional[1], positional[0], positional[1]};
+                case 3:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[1]};
+                case 4:  // NOLINT(*-magic-numbers)
+                    return {positional[0], positional[1], positional[2], positional[3]};
+                default:
+                    THROWM(Base::ExpressionError, "Insets accept 1-4 positional arguments");
+            }
+        }();
+
+        // Group names override positional
+        if (const Value* vertical = args.find("vertical")) {
+            top = bottom = vertical;
+        }
+        if (const Value* horizontal = args.find("horizontal")) {
+            right = left = horizontal;
+        }
+
+        // Explicit side names override everything
+        if (const Value* found = args.find("top")) {
+            top = found;
+        }
+        if (const Value* found = args.find("right")) {
+            right = found;
+        }
+        if (const Value* found = args.find("bottom")) {
+            bottom = found;
+        }
+        if (const Value* found = args.find("left")) {
+            left = found;
+        }
+
+        if (!top || !right || !bottom || !left) {
+            THROWM(Base::ExpressionError, "Insets require all four sides to be specified");
+        }
+
+        auto makeElement = [](const char* name, const Value& val) {
+            return Tuple::Element {std::string(name), std::make_shared<const Value>(val)};
+        };
+
+        Tuple result;
+        result.elements.push_back(makeElement("top", *top));
+        result.elements.push_back(makeElement("right", *right));
+        result.elements.push_back(makeElement("bottom", *bottom));
+        result.elements.push_back(makeElement("left", *left));
+        return result;
+    }
+
 protected:
     Insets(Tuple tuple, TupleKind expected)
         : tuple_(std::move(tuple))
     {
+        if (tuple_.kind == TupleKind::Generic) {
+            tuple_ = expand(tuple_);
+            tuple_.kind = expected;
+        }
         if (tuple_.kind != expected) {
             THROWM(
                 Base::TypeError,
