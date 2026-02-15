@@ -28,6 +28,7 @@ import Path
 import Path.Op.Gui.Base as PathOpGui
 import PathGui
 
+from Path.Base.Gui.Util import NaturalSortTableWidgetItem
 from PySide import QtCore, QtGui
 
 __title__ = "Base for Circular Hole based operations' UI"
@@ -183,7 +184,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         if hasattr(self, "obj") and hasattr(self.obj, "SortingMode"):
             self.obj.SortingMode = text
             # Enable/disable sorting and drag-drop based on SortingMode
-            auto_mode = text in ("Automatic", "Automatic TSP")
+            auto_mode = text == "Automatic"
 
             if auto_mode:
                 self.form.baseList.setSortingEnabled(True)
@@ -212,19 +213,20 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         self.form.baseList.blockSignals(True)
         self.form.baseList.clearContents()
         self.form.baseList.setRowCount(0)
-        auto_mode = obj.SortingMode in ("Automatic", "Automatic TSP")
+        auto_mode = obj.SortingMode == "Automatic"
 
         for base, subs in obj.Base:
             for sub in subs:
                 self.form.baseList.insertRow(self.form.baseList.rowCount())
 
                 order_number = self.form.baseList.rowCount()
-                order_item = QtGui.QTableWidgetItem(str(order_number))
+                order_item = QtGui.QTableWidgetItem()
+                order_item.setData(QtCore.Qt.DisplayRole, order_number)
                 order_item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
                 order_item.setFlags(order_item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
                 self.form.baseList.setItem(self.form.baseList.rowCount() - 1, COL_ORDER, order_item)
 
-                item = QtGui.QTableWidgetItem("%s.%s" % (base.Label, sub))
+                item = NaturalSortTableWidgetItem("%s.%s" % (base.Label, sub))
                 item.setFlags(
                     (item.flags() | QtCore.Qt.ItemIsUserCheckable) & ~QtCore.Qt.ItemIsEditable
                 )
@@ -248,8 +250,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                 dia = obj.Proxy.holeDiameter(obj, base, sub)
                 diameterQty = FreeCAD.Units.Quantity(dia, FreeCAD.Units.Length)
                 displayString = diameterQty.getUserPreferred("Length")[0]
-                item = QtGui.QTableWidgetItem()
-                item.setData(QtCore.Qt.DisplayRole, displayString)
+                item = NaturalSortTableWidgetItem(displayString)
                 item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsEditable)
                 item.setFlags(item.flags() & ~QtCore.Qt.ItemIsDropEnabled)
@@ -349,7 +350,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         for row in range(table.rowCount()):
             item = table.item(row, COL_ORDER)
             if item:
-                item.setText(str(row + 1))
+                item.setData(QtCore.Qt.DisplayRole, row + 1)
         self.updateBase()
         self.filterBaseList(self.form.lineEdit.text())  # Reapply filter after
         FreeCAD.ActiveDocument.recompute()
@@ -394,11 +395,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         # Force a complete UI refresh
         self.form.baseList.viewport().update()
         # If in Automatic mode, make sure sorting is actually applied
-        if (
-            self.obj
-            and hasattr(self.obj, "SortingMode")
-            and (self.obj.SortingMode in ("Automatic", "Automatic TSP"))
-        ):
+        if getattr(self.obj, "SortingMode", None) == "Automatic":
             # Force immediate sort
             self.form.baseList.sortItems(column, order)
 
@@ -499,7 +496,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
             for idx, (order, items) in enumerate(rows):
                 self.form.baseList.insertRow(idx)
                 # Set consecutive order numbers
-                items[0].setText(str(idx + 1))
+                items[0].setData(QtCore.Qt.DisplayRole, idx + 1)
                 for col, item in enumerate(items):
                     if item:
                         self.form.baseList.setItem(idx, col, item)
