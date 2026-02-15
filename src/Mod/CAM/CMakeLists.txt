@@ -579,6 +579,7 @@ SET(Tests_SRCS
     CAMTests/TestPostMCodes.py
     CAMTests/TestSnapmakerPost.py
     CAMTests/TestPostToolProcessing.py
+    CAMTests/TestSVGPost.py
     CAMTests/TestTSPSolver.py
     CAMTests/TestGcodeProcessingUtils.py
     CAMTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
