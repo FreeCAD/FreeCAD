@@ -93,11 +93,20 @@ public:
 
     bool isFaceFace();
     bool isEdgeEdge();
-    bool hasCommonEdge(gp_Pnt& commonVertex);
-    bool hasCommonVertex(gp_Pnt& commonVertex);
+    bool isImgOrigin();
+    bool getOrigin(gp_Pnt& outOrigin);  // get origin of the angle
     bool getDirections(gp_Vec& vec1, gp_Vec& vec2);
 
 private:
+    gp_Vec direction1;
+    gp_Vec direction2;
+    gp_Pnt outOrigin;
+    // if no common vertex/edge found, use imaginary origin by extending
+    bool _isImgOrigin;
+
+    bool setDirections();
+    bool hasCommonEdge();
+    bool hasCommonVertex();
     void onChanged(const App::Property* prop) override;
 };
 

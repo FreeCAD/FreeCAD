@@ -72,6 +72,8 @@ private:
     SoSFFloat fieldAngle;  // radians.
     SoSFFloat sectorArcRotation;
     SoSFBool isArcFlipped;
+    SoSFVec3f normalStartPoint1;  // start point for normal line 1
+    SoSFVec3f normalStartPoint2;  // start point for normal line 2
 
     SbMatrix getMatrix();
 
