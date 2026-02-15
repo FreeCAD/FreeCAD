@@ -30,12 +30,9 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <memory>
+#include <functional>
 
-#include <boost/multi_index_container.hpp>
-#include <boost/multi_index/hashed_index.hpp>
-#include <boost/multi_index/sequenced_index.hpp>
-#include <boost/multi_index/member.hpp>
-#include <boost/multi_index/mem_fun.hpp>
 #include <FCGlobal.h>
 
 
@@ -51,27 +48,10 @@ namespace App
 class Property;
 class PropertyContainer;
 
-namespace bmi = boost::multi_index;
-
-struct CStringHasher
+struct AppExport CStringHasher
 {
-    inline std::size_t operator()(const char* s) const
-    {
-        if (!s) {
-            return 0;
-        }
-        return boost::hash_range(s, s + std::strlen(s));
-    }
-    inline bool operator()(const char* a, const char* b) const
-    {
-        if (!a) {
-            return !b;
-        }
-        if (!b) {
-            return false;
-        }
-        return std::strcmp(a, b) == 0;
-    }
+    std::size_t operator()(const char* s) const;
+    bool operator()(const char* a, const char* b) const;
 };
 
 /** This class implements an interface to add properties at run-time to an object
@@ -161,10 +141,7 @@ public:
     void clear();
 
     /// Get property count
-    size_t size() const
-    {
-        return props.size();
-    }
+    size_t size() const;
 
     void save(const Property* prop, Base::Writer& writer) const;
 
@@ -218,14 +195,8 @@ private:
     std::string getUniquePropertyName(const PropertyContainer& pc, const char* Name) const;
 
 private:
-    bmi::multi_index_container<
-        PropData,
-        bmi::indexed_by<
-            bmi::hashed_unique<bmi::const_mem_fun<PropData, const char*, &PropData::getName>,
-                               CStringHasher,
-                               CStringHasher>,
-            bmi::hashed_unique<bmi::member<PropData, Property*, &PropData::property>>>>
-        props;
+    struct Impl;
+    std::unique_ptr<Impl> impl;
 };
 
 }  // namespace App

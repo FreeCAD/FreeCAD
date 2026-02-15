@@ -39,6 +39,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <boost/regex.hpp>
 #include <random>
