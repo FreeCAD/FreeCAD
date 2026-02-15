@@ -2450,7 +2450,6 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
     Base::FileInfo fi(out.str());
     Base::ofstream lock(fi);
 
-    // In case the file_lock cannot be created start FreeCAD without IPC support.
 #if !defined(FC_OS_WIN32) || (BOOST_VERSION < 107600)
     std::string filename = out.str();
 #else
@@ -2475,17 +2474,21 @@ void tryRunEventLoop(GUISingleApplication& mainApp)
             fi.deleteFile();
         }
         else {
-            Base::Console().warning(
+            Base::Console().error(
                 "Failed to create a file lock for the IPC.\n"
-                "The application will be terminated\n"
+                "The application will be terminated.\n"
+                "Attempted lock file: %s",
+                fi.filePath().c_str()
             );
         }
     }
     catch (const boost::interprocess::interprocess_exception& e) {
         QString msg = QString::fromLocal8Bit(e.what());
-        Base::Console().warning(
-            "Failed to create a file lock for the IPC: %s\n",
-            msg.toUtf8().constData()
+        Base::Console().error(
+            "Failed to create a file lock for the IPC: %s\n"
+            "Attempted lock file: %s\n",
+            msg.toUtf8().constData(),
+            fi.filePath().c_str()
         );
     }
 }
