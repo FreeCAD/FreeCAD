@@ -865,4 +865,3 @@ std::string ViewProviderDocumentObject::getFullName() const
     }
     return std::string("?");
 }
-
