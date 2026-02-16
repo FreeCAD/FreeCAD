@@ -3032,8 +3032,7 @@ void ConstraintC2CDistance::evaluate()
     double dy = *c1.center.y - *c2.center.y;
     double cdist = std::sqrt(dx * dx + dy * dy);
 
-    double bigradius = (*c1.rad >= *c2.rad) ? *c1.rad : *c2.rad;
-    double smallradius = (*c1.rad >= *c2.rad) ? *c2.rad : *c1.rad;
+    auto [smallradius, bigradius] = std::minmax(*c1.rad, *c2.rad);
 
     if (cdist > bigradius && cdist > smallradius) {
         *distance() = cdist - bigradius - smallradius;
