@@ -34,6 +34,11 @@
 #include "Interpreter.h"
 #include "Tools.h"
 
+#ifdef FC_OS_WIN32
+# include <windows.h>
+# include <stdexcept>
+#endif
+
 namespace
 {
 constexpr auto underscore = static_cast<UChar32>(U'_');
@@ -126,6 +131,35 @@ std::string Base::Tools::narrow(const std::wstring& str)
     }
     return stm.str();
 }
+
+#ifdef FC_OS_WIN32
+std::string Base::Tools::wstringToString(const std::wstring& str)
+{
+    if (str.empty()) {
+        return {};
+    }
+    // Use a two-pass WideCharToMultiByte approach, which is the official recommendation as of this
+    // writing (2026).
+    int neededSize
+        = WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, str.data(), -1, nullptr, 0, nullptr, nullptr);
+    char* CharString = new char[static_cast<size_t>(neededSize)];
+    WideCharToMultiByte(
+        CP_UTF8,
+        WC_ERR_INVALID_CHARS,
+        str.data(),
+        -1,
+        CharString,
+        neededSize,
+        nullptr,
+        nullptr
+    );
+    std::string String(CharString);
+    delete[] CharString;
+    CharString = NULL;
+    return String;
+}
+#endif
+
 
 std::string Base::Tools::escapedUnicodeFromUtf8(const char* s)
 {
