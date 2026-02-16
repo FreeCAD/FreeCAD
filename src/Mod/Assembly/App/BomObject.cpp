@@ -257,8 +257,8 @@ void BomObject::addObjectChildrenToBom(
             row++;
         }
         else if ((child->isDerivedFrom<AssemblyObject>() && detailSubAssemblies.getValue())
-            || (!child->isDerivedFrom<AssemblyObject>() && child->isDerivedFrom<App::Part>()
-                && detailParts.getValue())) {
+                 || (!child->isDerivedFrom<AssemblyObject>() && child->isDerivedFrom<App::Part>()
+                     && detailParts.getValue())) {
             addObjectChildrenToBom(child->getOutList(), row, sub_index);
         }
     }
