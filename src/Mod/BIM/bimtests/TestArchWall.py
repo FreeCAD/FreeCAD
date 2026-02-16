@@ -485,8 +485,7 @@ class TestArchWall(TestArchBase.TestArchBase):
         line.Placement.Base = App.Vector(5000, 0, 0)
         self.document.recompute()
 
-        # Create the wall. Initially, wall.Placement is (0,0,0) because its position is derived from
-        # its Base object.
+        # Create the wall. Initially, wall.Placement is (0,0,0).
         wall = Arch.makeWall(line, width=200, height=3000)
         self.document.recompute()
 
