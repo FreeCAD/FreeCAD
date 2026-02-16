@@ -422,9 +422,7 @@ void TaskMeasure::invoke()
         };
     }
     else {
-        hints = {
-            {tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
-        };
+        hints = {{tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
     }
     Gui::getMainWindow()->showHints(hints);
 }
@@ -619,9 +617,7 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
         };
     }
     else {
-        hints = {
-            {tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
-        };
+        hints = {{tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
     }
     Gui::getMainWindow()->showHints(hints);
 }
