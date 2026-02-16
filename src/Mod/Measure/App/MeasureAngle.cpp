@@ -258,6 +258,25 @@ bool MeasureAngle::isEdgeEdge()
     );
 }
 
+bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2)
+{
+    TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
+    TopExp::Vertices(e1, v1_1, v1_2);
+    TopExp::Vertices(e2, v2_1, v2_2);
+
+    gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
+    gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
+    gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
+    gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
+
+    double tol = Precision::Confusion();
+    bool matchStartStart = p1_1.IsEqual(p2_1, tol) && p1_2.IsEqual(p2_2, tol);
+    bool matchStartEnd = p1_1.IsEqual(p2_2, tol) && p1_2.IsEqual(p2_1, tol);
+
+    return matchStartStart || matchStartEnd;
+}
+
+
 bool MeasureAngle::hasCommonEdge()
 {
     if (!Element1.getValue() || !Element2.getValue()) {
@@ -284,7 +303,7 @@ bool MeasureAngle::hasCommonEdge()
         exp2.Init(s2, TopAbs_EDGE);
         while (exp2.More()) {
             auto ed2 = TopoDS::Edge(exp2.Current());
-            if (ed1.IsSame(ed2)) {
+            if (ed1.IsSame(ed2) || isGeometricalSame(ed1, ed2)) {
                 // calculate outOrigin from the common edge
                 TopoDS_Vertex v1, v2;
                 TopExp::Vertices(ed1, v1, v2);
