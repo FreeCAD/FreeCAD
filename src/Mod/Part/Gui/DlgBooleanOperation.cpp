@@ -89,7 +89,8 @@ void adjustTreeHeightToContent(QTreeWidget* tree, int minRows = 4, int maxRows =
         rowHeight = tree->fontMetrics().height() + 6;
     }
 
-    const int headerHeight = tree->header() && !tree->header()->isHidden() ? tree->header()->height() : 0;
+    const int headerHeight = tree->header() && !tree->header()->isHidden() ? tree->header()->height()
+                                                                           : 0;
     const int frame = 2 * tree->frameWidth();
     const int totalHeight = frame + headerHeight + visibleRows * rowHeight + 2;
 
@@ -112,7 +113,7 @@ void adjustWidgetHeightToContent(QWidget* widget)
     widget->setMaximumHeight(totalHeight);
     widget->updateGeometry();
 }
-}
+}  // namespace
 
 class BooleanOperationItem: public QTreeWidgetItem
 {
