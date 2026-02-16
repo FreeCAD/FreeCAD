@@ -550,7 +550,11 @@ class _Window(ArchComponent.Component):
                             # Direction: Vertex 0 -> Vertex 1
                             travel = ev2.sub(ev1)
                             if opening:
-                                transdata = [travel.multiply(opening)]
+                                # Limit travel to 70% of the sliding track to keep the door visible
+                                # and its handle accessible
+                                dist = travel.Length * 0.7
+                                travel.normalize()
+                                transdata = [travel.multiply(dist * opening)]
                             # 2D Symbol: Line from current position indicating movement
                             # ISO 7519: arrow or line. Use line for simplicity.
                             ssymbols.append(Part.LineSegment(ev1, ev2).toShape())
@@ -558,7 +562,11 @@ class _Window(ArchComponent.Component):
                             # Direction: Vertex 1 -> Vertex 0
                             travel = ev1.sub(ev2)
                             if opening:
-                                transdata = [travel.multiply(opening)]
+                                # Limit travel to 70% of the sliding track to keep the door visible
+                                # and its handle accessible
+                                dist = travel.Length * 0.7
+                                travel.normalize()
+                                transdata = [travel.multiply(dist * opening)]
                             # 2D Symbol
                             ssymbols.append(Part.LineSegment(ev2, ev1).toShape())
                 exv = FreeCAD.Vector()
