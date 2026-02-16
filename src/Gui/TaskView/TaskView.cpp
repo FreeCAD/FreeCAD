@@ -97,7 +97,7 @@ void setTaskContentVerticalPolicy(QWidget* widget, QSizePolicy::Policy policy)
 
     setVerticalPolicy(widget, policy);
 }
-}
+}  // namespace
 
 
 //**************************************************************************
