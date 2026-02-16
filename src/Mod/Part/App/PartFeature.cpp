@@ -1987,9 +1987,8 @@ void FilletBase::onUpdateElementReference(const App::Property* prop)
             FC_WARN("fillet edge count mismatch in object " << getFullName());
             break;
         }
-        int idx = 0;
-        sscanf(subs[i].c_str(), "Edge%d", &idx);
-        if (idx) {
+        int idx = Data::indexOfElement(subs[i], "Edge");
+        if (idx != 0) {
             values[i].edgeid = idx;
         }
         else {
