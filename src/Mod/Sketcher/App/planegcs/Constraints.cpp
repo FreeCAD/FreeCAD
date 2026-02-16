@@ -3221,12 +3221,7 @@ void ConstraintP2CDistance::evaluate()
     double h, dh;
     h = value(dh, nullptr);
 
-    if (h < *circle.rad) {
-        *distance() = *circle.rad - h;
-    }
-    else {
-        *distance() = h - *circle.rad;
-    }
+    *distance() = (h < *circle.rad) ? *circle.rad - h : h - *circle.rad;
 }
 
 // --------------------------------------------------------
