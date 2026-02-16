@@ -2064,7 +2064,7 @@ protected:
         // Remove redundant coincident points from the selection
         // This ensures box-selecting a junction of multiple lines is treated as 1 point.
         filterCoincidentPoints();
-        
+
         // See if the selection is valid
         bool selAllowed = makeAppropriateConstraint(Base::Vector2d(0.,0.));
 
