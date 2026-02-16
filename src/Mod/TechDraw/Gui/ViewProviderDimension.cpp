@@ -30,6 +30,7 @@
 
 #include <QMessageBox>
 
+#include <Base/ProgramVersion.h>
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <App/DocumentObject.h>
@@ -361,7 +362,7 @@ void ViewProviderDimension::finishRestoring()
 void ViewProviderDimension::fixTextSize()
 {
     App::Document* ourDoc = getDocument()->getDocument();
-    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
         return;
     }
 
@@ -376,7 +377,7 @@ void ViewProviderDimension::fixTextSize()
 void ViewProviderDimension::fixArrowSize()
 {
     App::Document* ourDoc = getDocument()->getDocument();
-    if (checkMiniumumDocumentVersion(ourDoc, 1, 1)) {
+    if (checkMinimumDocumentVersion(ourDoc, Base::Version::v1_1)) {
         return;
     }
 
