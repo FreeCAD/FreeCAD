@@ -1420,12 +1420,10 @@ class _ArchWindowTaskPanel:
         if self.obj:
 
             FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
-            self.widthWidget.setProperty("unit", self.obj.Width.getUserPreferred()[2])
-            self.widthWidget.setProperty("rawValue", self.obj.Width.Value)
+            self.widthWidget.setProperty("value", self.obj.Width)
 
             FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
-            self.heightWidget.setProperty("unit", self.obj.Height.getUserPreferred()[2])
-            self.heightWidget.setProperty("rawValue", self.obj.Height.Value)
+            self.heightWidget.setProperty("value", self.obj.Height)
 
             FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
             # Opening is a scalar property, as opposed to a quantity property. It appears to have
@@ -1730,8 +1728,8 @@ class _ArchWindowTaskPanel:
 
     def accept(self):
         if self.obj:
-            self.obj.Width = self.widthWidget.property("rawValue")
-            self.obj.Height = self.heightWidget.property("rawValue")
+            self.obj.Width = self.widthWidget.property("value")
+            self.obj.Height = self.heightWidget.property("value")
             self.obj.Opening = self.openingWidget.property("value")
         self.basepanel.obj = self.obj
         return self.basepanel.accept()
