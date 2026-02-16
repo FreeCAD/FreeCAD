@@ -141,10 +141,12 @@ public:
                 setPositionText(onSketchPos, text);
             }
 
-            if (denom > Precision::Confusion() && b > Precision::Confusion())
+            if (denom > Precision::Confusion() && b > Precision::Confusion()) {
                 drawEdit(EditCurve);
-            else
+            }
+            else {
                 drawEdit(std::vector<Base::Vector2d>());
+            }
 
             seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
@@ -222,8 +224,8 @@ public:
             EditCurve.resize(2);
             Mode = SelectMode::Second;
         }
-        else if (Mode == SelectMode::Second && 
-            (centerPoint - onSketchPos).Length() > Precision::Confusion()) {
+        else if (Mode == SelectMode::Second
+                 && (centerPoint - onSketchPos).Length() > Precision::Confusion()) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
             EditCurve.resize(33);
@@ -447,9 +449,10 @@ private:
         double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
         double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
 
-        //a should not have to be bigger than b, see: 
-        //https://dev.opencascade.org/doc/refman/html/class_geom___hyperbola.html#details
-        //[...]The value of the major radius (on the major axis) can be less than the value of the minor radius (on the minor axis).
+        // a should not have to be bigger than b, see:
+        // https://dev.opencascade.org/doc/refman/html/class_geom___hyperbola.html#details
+        //[...]The value of the major radius (on the major axis) can be less than the value of the
+        //minor radius (on the minor axis).
 
         return denom > Precision::Confusion() && b > Precision::Confusion() && a >= b;
     }
