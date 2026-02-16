@@ -193,7 +193,7 @@ public:
             "makeLeader(parent - DrawViewPart, points - [Vector], startSymbol - int, endSymbol - int) - Creates a leader line attached to parent. Points are in page coordinates with (0, 0) at lowerleft.s"
         );
         add_varargs_method("nearestFraction", &Module::nearestFraction,
-        "nearestFraction(float) - returns the numeration and denominator of the nearest fraction as a tuple."
+        "nearestFraction(float) - returns the numerator and denominator of the nearest fraction as a tuple."
         );
 
         initialize("This is a module for making drawings"); // register with Python
