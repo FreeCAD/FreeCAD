@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation>Test unitaire de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation>Sélectionner le nom du test </translation>
+      <translation>Sélectionner un nom de test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation>Échecs </translation>
+      <translation>Échecs</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation>Restant </translation>
+      <translation>Restant</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation>Échecs et Erreurs</translation>
+      <translation>Échecs et erreurs</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>

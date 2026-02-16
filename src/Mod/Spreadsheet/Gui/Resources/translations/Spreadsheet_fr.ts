@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation>Aligne le contenu de la cellule en bas</translation>
+      <translation>Aligne le contenu de la cellule en bas.</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation>Aligne le contenu des cellules sur le centre horizontal</translation>
+      <translation>Aligne le contenu des cellules sur le centre horizontal.</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Aligns cell contents to the left</source>
-      <translation>Aligne le contenu de la cellule à gauche</translation>
+      <translation>Aligne le contenu de la cellule à gauche.</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Aligns cell contents to the right</source>
-      <translation>Aligne le contenu de la cellule à droite</translation>
+      <translation>Aligne le contenu de la cellule à droite.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Aligns cell contents to the top</source>
-      <translation>Aligne le contenu de la cellule en haut</translation>
+      <translation>Aligne le contenu de la cellule en haut.</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation>Aligne le contenu des cellules sur le centre vertical</translation>
+      <translation>Aligne le contenu des cellules sur le centre vertical.</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation>&amp;Exporter la feuille de calcul</translation>
+      <translation>&amp;Exporter une feuille de calcul</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation>Exporte la feuille de calcul vers un fichier CSV</translation>
+      <translation>Exporte la feuille de calcul vers un fichier CSV.</translation>
     </message>
   </context>
   <context>
@@ -160,7 +160,7 @@
     <message>
       <location filename="../../Command.cpp" line="188"/>
       <source>Imports a CSV file into a new spreadsheet</source>
-      <translation>Importe un fichier CSV dans une nouvelle feuille de calcul</translation>
+      <translation>Importe un fichier CSV dans une nouvelle feuille de calcul.</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="63"/>
       <source>Merges the selected cells</source>
-      <translation>Fusionne les cellules sélectionnées</translation>
+      <translation>Fusionne les cellules sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -196,7 +196,7 @@
     <message>
       <location filename="../../Command.cpp" line="884"/>
       <source>Sets an alias for the selected cell</source>
-      <translation>Définit un alias pour la cellule sélectionnée</translation>
+      <translation>Définit un alias pour la cellule sélectionnée.</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation>Met le texte des cellules sélectionnées en gras</translation>
+      <translation>Met le texte des cellules sélectionnées en gras.</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation>Met le texte des cellules sélectionnées en italique</translation>
+      <translation>Met le texte des cellules sélectionnées en italique.</translation>
     </message>
   </context>
   <context>
@@ -268,7 +268,7 @@
     <message>
       <location filename="../../Command.cpp" line="799"/>
       <source>Underlines the text in the selected cells</source>
-      <translation>Souligne le texte dans les cellules sélectionnées</translation>
+      <translation>Souligne le texte dans les cellules sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -430,7 +430,7 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation>Vers les cellules</translation>
+      <translation>Vers des cellules</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
@@ -731,12 +731,12 @@ Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
       <location filename="../../Workbench.cpp" line="121"/>
       <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the background color of cells</source>
-      <translation>Définit la couleur d'arrière-plan des cellules</translation>
+      <translation>Définit la couleur de l'arrière-plan des cellules</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="122"/>
       <source>Sets the spreadsheet cells background color</source>
-      <translation>Définit la couleur d'arrière-plan de la feuille de calcul des cellules</translation>
+      <translation>Définit la couleur de l'arrière-plan de la feuille de calcul des cellules</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="815"/>
@@ -902,7 +902,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 
 Continue?</source>
       <translation>Le nombre de cellules source et cible ne correspond pas. Une liaison partielle peut tout de même fonctionner.
-Voulez-vous continuer ?</translation>
+Faut-il continuer ?</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="284"/>
@@ -1035,14 +1035,14 @@ caractère est autorisé.</translation>
       <source>Insert %n Row(s) Below</source>
       <translation>
         <numerusform>Insérer %n ligne(s) en dessous</numerusform>
-        <numerusform>Insérer %n ligne(s) en dessous</numerusform>
+        <numerusform>Insérer %n lignes en dessous</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Insert %n Non-Contiguous Rows</source>
       <translation>
-        <numerusform>Insérer %n lignes non contiguës</numerusform>
+        <numerusform>Insérer %n ligne non contiguë</numerusform>
         <numerusform>Insérer %n lignes non contiguës</numerusform>
       </translation>
     </message>
@@ -1050,7 +1050,7 @@ caractère est autorisé.</translation>
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Remove Rows</source>
       <translation>
-        <numerusform>Supprimer des lignes</numerusform>
+        <numerusform>Supprimer une ligne</numerusform>
         <numerusform>Supprimer des lignes</numerusform>
       </translation>
     </message>
@@ -1058,23 +1058,23 @@ caractère est autorisé.</translation>
       <location filename="../../SheetTableView.cpp" line="167"/>
       <source>Insert %n Column(s) Left</source>
       <translation>
-        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
-        <numerusform>Insérer %n colonne(s) à gauche</numerusform>
+        <numerusform>Insérer %n colonne à gauche</numerusform>
+        <numerusform>Insérer %n colonnes à gauche</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Insert %n Column(s) Right</source>
       <translation>
-        <numerusform>Insérer %n colonne(s) à droite</numerusform>
-        <numerusform>Insérer %n colonne(s) à droite</numerusform>
+        <numerusform>Insérer %n colonne à droite</numerusform>
+        <numerusform>Insérer %n colonnes à droite</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
       <translation>
-        <numerusform>Insérer %n colonnes non contiguës</numerusform>
+        <numerusform>Insérer %n colonne non contiguë</numerusform>
         <numerusform>Insérer %n colonnes non contiguës</numerusform>
       </translation>
     </message>
@@ -1082,8 +1082,8 @@ caractère est autorisé.</translation>
       <location filename="../../SheetTableView.cpp" line="181"/>
       <source>Remove Column(s)</source>
       <translation>
-        <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
-        <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
+        <numerusform>Supprimer une colonne</numerusform>
+        <numerusform>Supprimer des colonnes</numerusform>
       </translation>
     </message>
     <message>
@@ -1209,7 +1209,7 @@ caractère est autorisé.</translation>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="349"/>
       <source>Unsetup Configuration Table</source>
-      <translation>Désinstallation de la table de configuration</translation>
+      <translation>Désinstaller la table de configuration</translation>
     </message>
   </context>
 </TS>

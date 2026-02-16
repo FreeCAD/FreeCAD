@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1483"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>最後に選択された点を参照位置としてジオメトリの単純コピーを作成</translation>
+      <translation>最後に選択された点を参照位置としてジオメトリーの単純コピーを作成</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@ as mirroring reference</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1582"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>最後に選択された点を参照位置としてジオメトリを移動</translation>
+      <translation>最後に選択された点を参照位置としてジオメトリーを移動</translation>
     </message>
   </context>
   <context>
@@ -747,7 +747,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
-      <translation>外部ジオメトリを追加</translation>
+      <translation>外部ジオメトリーを追加</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="177"/>
@@ -898,7 +898,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="147"/>
       <source>Rotate geometries</source>
-      <translation>ジオメトリを回転</translation>
+      <translation>ジオメトリーを回転</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="129"/>
@@ -908,12 +908,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="120"/>
       <source>Translate geometries</source>
-      <translation>ジオメトリを移動</translation>
+      <translation>ジオメトリーを移動</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="136"/>
       <source>Symmetry geometries</source>
-      <translation>対称ジオメトリ</translation>
+      <translation>対称ジオメトリー</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="460"/>
@@ -5108,7 +5108,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="34"/>
       <source>Creating line</source>
-      <translation>線分を作成</translation>
+      <translation>作成中の線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="41"/>
@@ -5263,7 +5263,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
       <source>Fully constrained sketch</source>
-      <translation>スケッチが完全拘束されました。</translation>
+      <translation>完全拘束されたスケッチ</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="650"/>
@@ -5273,7 +5273,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="670"/>
       <source>Invalid sketch</source>
-      <translation>スケッチが無効です</translation>
+      <translation>無効なスケッチ</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>

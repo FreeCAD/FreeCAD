@@ -1148,7 +1148,7 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="303"/>
