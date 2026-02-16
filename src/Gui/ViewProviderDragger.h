@@ -83,7 +83,6 @@ public:
     /** @name Edit methods */
     //@{
     bool doubleClicked() override;
-    void setupContextMenu(QMenu*, QObject*, const char*) override;
     void updateData(const App::Property*) override;
 
     ViewProvider* startEditing(int ModNum = 0) override;
