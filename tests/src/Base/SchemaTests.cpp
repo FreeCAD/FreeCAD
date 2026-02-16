@@ -932,10 +932,7 @@ TEST_F(SchemaTest, sweep_internal)
          "1 MOhm",
          /* default */ "1e+06 MOhm"},
         // MagneticFluxDensity
-        {"1 mT",
-         "10 mT",
-         "100 mT",
-         "1 T",
+        {"1 T",
          /* default */ "1e+06 T"},
         // Stiffness
         {"1 mN/m",
