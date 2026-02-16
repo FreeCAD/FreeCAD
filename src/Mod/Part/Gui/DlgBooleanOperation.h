@@ -91,7 +91,7 @@ public:
     }
     bool needsFullSpace() const override
     {
-        return true;
+        return false;
     }
 
 private:
