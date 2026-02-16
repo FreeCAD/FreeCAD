@@ -26,6 +26,7 @@
 
 #include <algorithm>
 #include <functional>
+#include <ranges>
 #include <vector>
 
 #include <Base/Exception.h>
@@ -74,8 +75,8 @@ public:
     {
         std::vector<ColorStop> result;
         const auto& stopsTuple = stops();
-        for (size_t index = 0; index < stopsTuple.size(); ++index) {
-            const auto& stopEntry = stopsTuple.at(index).get<Tuple>();
+        for (const auto& stop : stopsTuple.elements) {
+            const auto& stopEntry = stop.value->get<Tuple>();
             result.push_back({
                 .position = stopEntry.at(0).get<Numeric>(),
                 .color = stopEntry.at(1).get<Base::Color>(),
@@ -100,31 +101,39 @@ public:
         const std::function<Base::Color(const Base::Color&)>& transform
     )
     {
+        auto makeStopTuple = [](Numeric position, Base::Color color) {
+            return Tuple({
+                Tuple::Element::unnamed(position),
+                Tuple::Element::unnamed(color),
+            });
+        };
+
+        auto transformStop = [&](const Tuple::Element& stop) {
+            const auto& stopEntry = stop.value->get<Tuple>();
+            return Tuple::Element::unnamed(makeStopTuple(
+                stopEntry.at(0).get<Numeric>(),
+                transform(stopEntry.at(1).get<Base::Color>())
+            ));
+        };
+
+        auto transformElement = [&](const Tuple::Element& element) -> Tuple::Element {
+            if (element.name != "stops") {
+                return element;
+            }
+
+            const auto& stopsTuple = element.value->get<Tuple>();
+            Tuple transformedStops;
+            std::ranges::transform(
+                stopsTuple.elements,
+                std::back_inserter(transformedStops.elements),
+                transformStop
+            );
+            return Tuple::Element::named("stops", std::move(transformedStops));
+        };
+
         Tuple result;
         result.kind = gradient.kind;
-
-        for (const auto& element : gradient.elements) {
-            if (element.name == "stops") {
-                const auto& stopsTuple = element.value->get<Tuple>();
-                Tuple transformedStops;
-
-                for (const auto& stop : stopsTuple.elements) {
-                    const auto& stopEntry = stop.value->get<Tuple>();
-                    transformedStops.elements.push_back(
-                        Tuple::Element::unnamed(Tuple({
-                            Tuple::Element::unnamed(stopEntry.at(0).get<Numeric>()),
-                            Tuple::Element::unnamed(transform(stopEntry.at(1).get<Base::Color>())),
-                        }))
-                    );
-                }
-
-                result.elements.push_back(Tuple::Element::named("stops", std::move(transformedStops)));
-            }
-            else {
-                result.elements.push_back(element);  // copy geometry as-is
-            }
-        }
-
+        std::ranges::transform(gradient.elements, std::back_inserter(result.elements), transformElement);
         return result;
     }
 

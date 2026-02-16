@@ -2308,3 +2308,120 @@ TEST_F(ParserTest, ResolveTypedLinearGradient)
     EXPECT_DOUBLE_EQ(stops[2].position.value, 1.0);
     EXPECT_DOUBLE_EQ(stops[1].color.g, 1.0);  // middle stop is green
 }
+
+// Gradient color function tests
+
+TEST_F(ParserTest, LightenGradient)
+{
+    Parser parser("lighten(linear_gradient(#ff0000, #0000ff), 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // Each stop should be lighter than the original
+    auto originalRed = QColor(0xff, 0x00, 0x00);
+    auto originalBlue = QColor(0x00, 0x00, 0xff);
+    EXPECT_GT(stops[0].color.asValue<QColor>().lightness(), originalRed.lightness());
+    EXPECT_GT(stops[1].color.asValue<QColor>().lightness(), originalBlue.lightness());
+
+    // Positions should be preserved
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+}
+
+TEST_F(ParserTest, DarkenGradient)
+{
+    Parser parser("darken(radial_gradient(#ff0000, #00ff00), 20)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::RadialGradient);
+
+    RadialGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // Each stop should be darker than the original
+    auto originalRed = QColor(0xff, 0x00, 0x00);
+    auto originalGreen = QColor(0x00, 0xff, 0x00);
+    EXPECT_LT(stops[0].color.asValue<QColor>().lightness(), originalRed.lightness());
+    EXPECT_LT(stops[1].color.asValue<QColor>().lightness(), originalGreen.lightness());
+
+    // Geometry should be preserved
+    EXPECT_DOUBLE_EQ(gradient.cx(), 0.5);
+    EXPECT_DOUBLE_EQ(gradient.cy(), 0.5);
+    EXPECT_DOUBLE_EQ(gradient.radius(), 0.5);
+}
+
+TEST_F(ParserTest, BlendGradientWithColor)
+{
+    Parser parser("blend(linear_gradient(#ff0000, #0000ff), #000000, 50)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // 50% blend of red with black should be ~half red
+    EXPECT_NEAR(stops[0].color.r, 0.5, 0.02);
+    EXPECT_NEAR(stops[0].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[0].color.b, 0.0, 0.02);
+
+    // 50% blend of blue with black should be ~half blue
+    EXPECT_NEAR(stops[1].color.r, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.b, 0.5, 0.02);
+}
+
+TEST_F(ParserTest, BlendColorWithGradient)
+{
+    Parser parser("blend(#000000, linear_gradient(#ff0000, #0000ff), 50)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    // 50% blend of black with red should be ~half red
+    EXPECT_NEAR(stops[0].color.r, 0.5, 0.02);
+    EXPECT_NEAR(stops[0].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[0].color.b, 0.0, 0.02);
+
+    // 50% blend of black with blue should be ~half blue
+    EXPECT_NEAR(stops[1].color.r, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.g, 0.0, 0.02);
+    EXPECT_NEAR(stops[1].color.b, 0.5, 0.02);
+}
+
+TEST_F(ParserTest, BlendTwoGradientsThrows)
+{
+    EXPECT_THROW(
+        {
+            Parser parser(
+                "blend(linear_gradient(#ff0000, #0000ff), linear_gradient(#00ff00, #ffff00), 50)"
+            );
+            auto expr = parser.parse();
+            expr->evaluate({.manager = &manager, .context = {}});
+        },
+        Base::ExpressionError
+    );
+}

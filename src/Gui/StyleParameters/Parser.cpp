@@ -60,8 +60,6 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
     const auto lightenOrDarken = [this, &args]() -> Value {
         auto resolved = ArgumentParser {{"color"}, {"amount"}}.resolve(args);
 
-        auto color = resolved.get<Base::Color>("color").asValue<QColor>();
-
         // In Qt if you want to make color 20% darker or lighter, you need to pass 120 as the value
         // we, however, want users to pass only the relative difference, hence we need to add the
         // 100 required by Qt.
@@ -69,29 +67,61 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         // NOLINTNEXTLINE(*-magic-numbers)
         auto amount = 100 + static_cast<int>(resolved.get<Numeric>("amount").value);
 
-        if (functionName == "lighten") {
-            return Base::Color::fromValue(color.lighter(amount));
+        const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
+            auto qcolor = color.asValue<QColor>();
+            if (functionName == "lighten") {
+                return Base::Color::fromValue(qcolor.lighter(amount));
+            }
+            return Base::Color::fromValue(qcolor.darker(amount));
+        };
+
+        const Value* colorValue = resolved.find("color");
+        if (colorValue->holds<Tuple>()) {
+            return Gradient::mapStopColors(colorValue->get<Tuple>(), applyToColor);
         }
 
-        if (functionName == "darken") {
-            return Base::Color::fromValue(color.darker(amount));
-        }
-
-        return {};
+        return applyToColor(resolved.get<Base::Color>("color"));
     };
 
     const auto blend = [&args]() -> Value {
         auto resolved = ArgumentParser {{"from"}, {"to"}, {"amount"}}.resolve(args);
 
-        auto firstColor = resolved.get<Base::Color>("from");
-        auto secondColor = resolved.get<Base::Color>("to");
         auto amount = Base::fromPercent(static_cast<long>(resolved.get<Numeric>("amount").value));
 
-        return Base::Color(
-            (1 - amount) * firstColor.r + amount * secondColor.r,
-            (1 - amount) * firstColor.g + amount * secondColor.g,
-            (1 - amount) * firstColor.b + amount * secondColor.b
-        );
+        const auto blendColors =
+            [amount](const Base::Color& first, const Base::Color& second) -> Base::Color {
+            return Base::Color(
+                (1 - amount) * first.r + amount * second.r,
+                (1 - amount) * first.g + amount * second.g,
+                (1 - amount) * first.b + amount * second.b
+            );
+        };
+
+        const Value* fromValue = resolved.find("from");
+        const Value* toValue = resolved.find("to");
+
+        bool fromIsGradient = fromValue->holds<Tuple>();
+        bool toIsGradient = toValue->holds<Tuple>();
+
+        if (fromIsGradient && toIsGradient) {
+            THROWM(Base::ExpressionError, "Cannot blend two gradients");
+        }
+
+        if (fromIsGradient) {
+            const auto& targetColor = toValue->get<Base::Color>();
+            return Gradient::mapStopColors(fromValue->get<Tuple>(), [&](const Base::Color& stopColor) {
+                return blendColors(stopColor, targetColor);
+            });
+        }
+
+        if (toIsGradient) {
+            const auto& sourceColor = fromValue->get<Base::Color>();
+            return Gradient::mapStopColors(toValue->get<Tuple>(), [&](const Base::Color& stopColor) {
+                return blendColors(sourceColor, stopColor);
+            });
+        }
+
+        return blendColors(fromValue->get<Base::Color>(), toValue->get<Base::Color>());
     };
 
     std::map<std::string, std::function<Value()>> functions = {
