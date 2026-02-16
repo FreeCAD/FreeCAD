@@ -317,6 +317,25 @@ size_t Tuple::size() const
     return elements.size();
 }
 
+Tuple::Element Tuple::Element::named(std::string name, Value val)
+{
+    return {.name = std::move(name), .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Element Tuple::Element::unnamed(Value val)
+{
+    return {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(val))};
+}
+
+Tuple::Tuple(std::initializer_list<Element> elements)
+    : elements(elements)
+{}
+
+Tuple::Tuple(std::initializer_list<Element> elements, TupleKind kind)
+    : kind(kind)
+    , elements(elements)
+{}
+
 ArgumentParser::ArgumentParser(std::initializer_list<ParamDef> params)
     : params_(params)
 {}

@@ -144,19 +144,12 @@ public:
             THROWM(Base::ExpressionError, "Insets require all four sides to be specified");
         }
 
-        auto makeElement = [](const char* name, const Value& val) {
-            return Tuple::Element {
-                .name = std::string(name),
-                .value = std::make_shared<const Value>(val)
-            };
-        };
-
-        Tuple result;
-        result.elements.push_back(makeElement("top", *top));
-        result.elements.push_back(makeElement("right", *right));
-        result.elements.push_back(makeElement("bottom", *bottom));
-        result.elements.push_back(makeElement("left", *left));
-        return result;
+        return Tuple({
+            Tuple::Element::named("top", *top),
+            Tuple::Element::named("right", *right),
+            Tuple::Element::named("bottom", *bottom),
+            Tuple::Element::named("left", *left),
+        });
     }
 
 protected:

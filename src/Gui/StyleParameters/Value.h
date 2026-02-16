@@ -149,7 +149,17 @@ struct GuiExport Tuple
     {
         std::optional<std::string> name;
         std::shared_ptr<const Value> value;
+
+        /// Creates a named element, wrapping val in a shared_ptr.
+        static Element named(std::string name, Value val);
+
+        /// Creates an unnamed element, wrapping val in a shared_ptr.
+        static Element unnamed(Value val);
     };
+
+    Tuple() = default;
+    Tuple(std::initializer_list<Element> elements);
+    Tuple(std::initializer_list<Element> elements, TupleKind kind);
 
     TupleKind kind = TupleKind::Generic;
     std::vector<Element> elements;
