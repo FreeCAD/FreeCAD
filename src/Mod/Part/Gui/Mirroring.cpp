@@ -88,16 +88,15 @@ void adjustTreeHeightToContent(QTreeWidget* tree, int minRows = 2, int maxRows =
         rowHeight = tree->fontMetrics().height() + 6;
     }
 
-    const int headerHeight = tree->header() && !tree->header()->isHidden()
-        ? tree->header()->height()
-        : 0;
+    const int headerHeight = tree->header() && !tree->header()->isHidden() ? tree->header()->height()
+                                                                           : 0;
     const int frame = 2 * tree->frameWidth();
     const int totalHeight = frame + headerHeight + visibleRows * rowHeight + 2;
 
     tree->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
     tree->setFixedHeight(totalHeight);
 }
-}
+}  // namespace
 
 class MirrorPlaneSelection: public Gui::SelectionFilterGate
 {
