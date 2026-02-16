@@ -281,7 +281,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             guiDoc = Gui.getDocument(doc.Name)
             process_objects(guiDoc.TreeRootObjects, docItem)
-            self.form.partList.expandAll()
+            self.form.partList.collapseAll()
 
         self.adjustTreeWidgetSize()
 
