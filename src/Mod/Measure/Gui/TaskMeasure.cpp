@@ -37,6 +37,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/InputHint.h>
+
+using enum InputHint::UserInput;
 
 #include <QFormLayout>
 #include <QVBoxLayout>
@@ -379,7 +382,7 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 void TaskMeasure::closeDialog()
 {
     Gui::Control().closeDialog();
-    Gui::getMainWindow()->showMessage(QString());
+    Gui::getMainWindow()->hideHints();
 }
 
 
@@ -412,14 +415,18 @@ void TaskMeasure::invoke()
     update();
 
     bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
-    QString msg;
+    std::list<InputHint> hints;
     if (greedy) {
-        msg = tr("Select objects. Ctrl to start new measurement. Shift to invert auto-save.");
+        hints = {
+            {tr("%1 start new measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
     }
     else {
-        msg = tr("Select objects. Ctrl to add to measurement. Shift to invert auto-save.");
+        hints = {
+            {tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
     }
-    Gui::getMainWindow()->showMessage(msg);
+    Gui::getMainWindow()->showHints(hints);
 }
 
 bool TaskMeasure::apply()
@@ -605,14 +612,18 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
     }
     settings.endGroup();
 
-    QString msg;
+    std::list<InputHint> hints;
     if (checked) {
-        msg = tr("Select objects. Ctrl to start new measurement. Shift to invert auto-save.");
+        hints = {
+            {tr("%1 start new measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
     }
     else {
-        msg = tr("Select objects. Ctrl to add to measurement. Shift to invert auto-save.");
+        hints = {
+            {tr("%1 add to measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
     }
-    Gui::getMainWindow()->showMessage(msg);
+    Gui::getMainWindow()->showHints(hints);
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)
