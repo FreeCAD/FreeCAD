@@ -1503,20 +1503,8 @@ Gui--PropertyEditor--PropertyEditor {
 QFrame[class="panel"] {}
 QSint--ActionGroup {
 /* if not reset, it might create problems with QPushButtons and other elements */
-/* if not reset, it might create problems with QPushButtons and other elements */
   border-radius: @InputFieldBorderRadius;
 }
-
-/* QSint--ActionGroup QGroupBox {
-  border: 1px solid @GeneralBorderColor;
-  background-color: @ButtonTopBackgroundColor;
-  padding-bottom: 3px;
-} */
-
-/* QSint--ActionGroup QGroupBox::title {
-  top: -18px;
-  left: 3px;
-} */
 
 /* Separator line */
 QSint--ActionGroup QFrame[height="1"],
@@ -1574,8 +1562,6 @@ QSint--ActionGroup QFrame[class="content"] {
   border-bottom-right-radius: 3px;
 }
 
-/* Fixs for tabs inside Task Panel */
-
 /* Fix for buttons with icons that showed cropped (still not happy with result) */
 QSint--ActionGroup QFrame[class="content"] > QWidget > QPushButton {
   padding: 2px;/* bigger padding crops text and icons... */
@@ -1601,9 +1587,8 @@ QSint--ActionGroup QFrame[class="content"] QToolButton {
   text-align: center;
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor,stop:1 @ButtonBottomBackgroundColor );
   border: 1px solid @GeneralBorderColor;
-  padding: 1px 1px;/* different than regular QPushButton */
-/* different than regular QPushButton */
-  min-height: 16px;/* same as QTabBar QPushButton min-width */
+  padding: 1px 1px; /* different than regular QPushButton */
+  min-height: 16px; /* same as QTabBar QPushButton min-width */
   border-radius: @InputFieldBorderRadius;
 }
 

@@ -49,39 +49,11 @@ public:
      */
     void removeWidget(QWidget *w);
 
-    /**
-     * @brief Adds a spacer to bottom of the ActionPanel.
-     * @param s The width of the spacer..
-     */
-    void addStretch(int s = 0);
+    /// Adds a spacer to bottom of the ActionPanel.
+    void addStretch();
 
-    /**
-     * @brief Removes the spacer from the ActionPanel  (if one was added).
-     */
+    /// Removes the spacer from the ActionPanel  (if one was added).
     void removeStretch();
-
-    /**
-     * @brief Creates and adds an empty ActionGroup (without a header) to the panel.
-     * @return The newly created ActionGroup.
-     */
-    ActionGroup* createGroup();
-
-    /**
-     * @brief Creates and adds an ActionGroup (with a header) to the panel.
-     * @param title The title of the group's header.
-     * @param expandable If `true` (default), the group can be expanded/collapsed.
-     * @return The newly created ActionGroup.
-     */
-    ActionGroup* createGroup(const QString &title, bool expandable = true);
-
-    /**
-     * @brief Creates and adds an ActionGroup (with a header) to the panel.
-     * @param icon The icon for the group's header.
-     * @param title The title of the group's header.
-     * @param expandable If `true` (default), the group can be expanded/collapsed.
-     * @return The newly created ActionGroup.
-     */
-    ActionGroup* createGroup(const QPixmap &icon, const QString &title, bool expandable = true);
 
     /**
      * @brief Sets the color scheme for the panel and its child groups.
@@ -97,10 +69,10 @@ public:
     QSize minimumSizeHint() const override;
 
 protected:
-    /** @brief The color scheme used by the panel. */
+    /// The color scheme used by the panel.
     ActionPanelScheme *myScheme;
 
-    /** @brief The spacer used for bottom spacing. */
+    /// The spacer used for bottom spacing.
     QSpacerItem *mySpacer;
 };
 

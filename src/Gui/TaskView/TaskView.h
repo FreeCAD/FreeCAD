@@ -26,6 +26,7 @@
 #define GUI_TASKVIEW_TASKVIEW_H
 
 #include <vector>
+#include <QLabel>
 #include <QScrollArea>
 
 #include <Base/Parameter.h>
@@ -63,20 +64,6 @@ class GuiExport TaskContent {
         //~TaskContent();
 };
 
-class GuiExport TaskGroup: public QSint::ActionBox, public TaskContent
-{
-    Q_OBJECT
-
-public:
-    explicit TaskGroup(QWidget* parent = nullptr);
-    explicit TaskGroup(const QString& headerText, QWidget* parent = nullptr);
-    explicit TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent = nullptr);
-    ~TaskGroup() override;
-
-protected:
-    void actionEvent(QActionEvent*) override;
-};
-
 /// Father class of content with header and Icon
 class GuiExport TaskBox: public QSint::ActionGroup, public TaskContent
 {
@@ -105,7 +92,6 @@ public:
         bool expandable = true,
         QWidget* parent = nullptr
     );
-    QSize minimumSizeHint() const override;
 
     ~TaskBox() override;
     void hideGroupBox();
@@ -117,16 +103,6 @@ protected:
 
 private:
     bool wasShown;
-};
-
-class GuiExport TaskPanel: public QSint::ActionPanel
-{
-    Q_OBJECT
-
-public:
-    explicit TaskPanel(QWidget* parent = nullptr);
-    ~TaskPanel() override;
-    QSize minimumSizeHint() const override;
 };
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!

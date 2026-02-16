@@ -84,29 +84,6 @@ QBoxLayout* ActionGroup::groupLayout()
     return myGroup->groupLayout();
 }
 
-ActionLabel* ActionGroup::addAction(QAction *action, bool addToLayout, bool addStretch)
-{
-    if (!action) return nullptr;
-
-    auto *label = new ActionLabel(action, this);
-    myGroup->addActionLabel(label, addToLayout, addStretch);
-
-    return label;
-}
-
-ActionLabel* ActionGroup::addActionLabel(ActionLabel *label, bool addToLayout, bool addStretch)
-{
-    if (!label) return nullptr;
-
-    myGroup->addActionLabel(label, addToLayout, addStretch);
-    return label;
-}
-
-bool ActionGroup::addWidget(QWidget *widget, bool addToLayout, bool addStretch)
-{
-    return myGroup->addWidget(widget, addToLayout, addStretch);
-}
-
 void ActionGroup::showHide()
 {
     if (m_foldStep || !myHeader->expandable()) return;
@@ -205,31 +182,6 @@ void ActionGroup::paintEvent(QPaintEvent *event)
     }
 }
 
-bool ActionGroup::isExpandable() const
-{
-    return myHeader->expandable();
-}
-
-void ActionGroup::setExpandable(bool expandable)
-{
-    myHeader->setExpandable(expandable);
-}
-
-bool ActionGroup::hasHeader() const
-{
-    return myHeader->isVisible();
-}
-
-void ActionGroup::setHeader(bool enable)
-{
-    myHeader->setVisible(enable);
-}
-
-QString ActionGroup::headerText() const
-{
-    return myHeader->myTitle->text();
-}
-
 void ActionGroup::setHeaderText(const QString &headerText)
 {
     myHeader->myTitle->setText(headerText);
@@ -242,7 +194,8 @@ void ActionGroup::setHeaderIcon(const QPixmap &icon)
 
 QSize ActionGroup::minimumSizeHint() const
 {
-    return {200, 65};
+    QSize s = QWidget::minimumSizeHint();
+    return {qMax(s.width(), 200), qMax(s.height(), 65)};
 }
 
 } // namespace
