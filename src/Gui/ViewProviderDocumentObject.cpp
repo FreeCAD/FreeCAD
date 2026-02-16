@@ -821,7 +821,7 @@ Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
     std::string _subname;
     const char* nextsub;
     const char* dot = 0;
-    if (Data::ComplexGeoData::isMappedElement(subname) || (dot = strchr(subname, '.')) == 0) {
+    if (Data::isMappedElement(subname) || (dot = strchr(subname, '.')) == 0) {
         return ViewProvider::_getBoundingBox(subname, &smat, false, viewer, depth + 1);
     }
 
@@ -865,3 +865,4 @@ std::string ViewProviderDocumentObject::getFullName() const
     }
     return std::string("?");
 }
+
