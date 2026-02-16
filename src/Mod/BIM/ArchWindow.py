@@ -1104,7 +1104,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             )
             menu.addAction(actionInvertOpening)
 
-        if len(hingeIdxs) == 1:
+        # Check if this is a sliding window/door
+        parts_str = "".join(vobj.Object.WindowParts)
+        is_sliding = "Mode9" in parts_str or "Mode10" in parts_str
+
+        if len(hingeIdxs) == 1 and not is_sliding:
             actionInvertHinge = QtGui.QAction(
                 QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
                 translate("Arch", "Invert Hinge Position"),
@@ -1114,17 +1118,6 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 actionInvertHinge, QtCore.SIGNAL("triggered()"), self.invertHinge
             )
             menu.addAction(actionInvertHinge)
-
-        # Check if this is a sliding window/door
-        parts_str = "".join(vobj.Object.WindowParts)
-        if "Mode9" in parts_str or "Mode10" in parts_str:
-            actionInvertSlide = QtGui.QAction(
-                QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
-                translate("Arch", "Invert Sliding Direction"),
-                menu,
-            )
-            actionInvertSlide.triggered.connect(self.invertSlide)
-            menu.addAction(actionInvertSlide)
 
         super().contextMenuAddToggleSubcomponents(menu)
 
@@ -1160,26 +1153,21 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         # the same side of the wall
         self.invertOpening()
 
-    def invertSlide(self):
-        """Swaps the direction of a sliding door/window"""
-        pairs = [["Mode9", "Mode10"]]
-        self.invertPairs(pairs)
-
     def invertPairs(self, pairs):
         """scans the WindowParts of this window and swaps the two elements of each pair, if found"""
 
         if hasattr(self, "Object"):
             windowparts = self.Object.WindowParts
             nparts = []
+
+            # Build a bidirectional pair lookup map
+            swap_map = {p[0]: p[1] for p in pairs}
+            swap_map.update({p[1]: p[0] for p in pairs})
+
             for part in windowparts:
-                for pair in pairs:
-                    if pair[0] in part:
-                        part = part.replace(pair[0], pair[1])
-                        break
-                    elif pair[1] in part:
-                        part = part.replace(pair[1], pair[0])
-                        break
-                nparts.append(part)
+                # Split to tokens to ensure exact matching (e.g. avoid Mode1 matching inside Mode10)
+                new_tokens = [swap_map.get(t, t) for t in part.split(",")]
+                nparts.append(",".join(new_tokens))
             if nparts != self.Object.WindowParts:
                 self.Object.WindowParts = nparts
                 FreeCAD.ActiveDocument.recompute()
