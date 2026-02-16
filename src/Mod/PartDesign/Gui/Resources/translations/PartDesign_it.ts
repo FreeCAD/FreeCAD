@@ -3516,12 +3516,12 @@ Per i documenti legacy con oggetti Part Design privi di corpo, utilizzare la fun
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto corpo nel documento.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>La funzione non è in una parte</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Per poter utilizzare questa funzione essa deve appartenere a un oggetto parte del documento.</translation>
     </message>

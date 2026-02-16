@@ -5243,7 +5243,7 @@ Valeur par défaut : true</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="425"/>
       <source>Check is running…</source>
-      <translation>La vérification est en cours d'exécution de…</translation>
+      <translation>La vérification est en cours d'exécution…</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="454"/>
@@ -5639,8 +5639,7 @@ in the 3D view for the sweep path.</source>
       <location filename="../../Command.cpp" line="528"/>
       <source>The use of non-solids for boolean operations may lead to unexpected results.
 Continue?</source>
-      <translation>L'utilisation de non-solides pour les opérations booléennes peut entraîner des résultats inattendus.
-Voulez-vous continuer ?</translation>
+      <translation>L'utilisation de non-solides pour les opérations booléennes peut entraîner des résultats inattendus. Voulez-vous continuer ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="411"/>
@@ -5976,12 +5975,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="305"/>
       <source>Edit Fillet</source>
-      <translation>Éditer le congé</translation>
+      <translation>Éditer un congé</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="426"/>
       <source>Edit Chamfer</source>
-      <translation>Éditer le chanfrein</translation>
+      <translation>Éditer un chanfrein</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirror.cpp" line="566"/>
@@ -6031,12 +6030,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="71"/>
       <source>Delete %1 content?</source>
-      <translation>Supprimer le contenu %1 ?</translation>
+      <translation>Faut-il supprimer le contenu %1 ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="72"/>
       <source>The %1 '%2' has %3. Do you want to delete them as well?</source>
-      <translation>Le %1 « %2 » contient %3. Voulez-vous également les supprimer ?</translation>
+      <translation>Le %1 « %2 » contient %3. Faut-il également les supprimer ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="236"/>
@@ -6077,7 +6076,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
-      <translation>Supprimer le contenu composé ?</translation>
+      <translation>Faut-il supprimer le contenu composé ?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCompound.cpp" line="77"/>
@@ -6507,7 +6506,7 @@ Si un deuxième objet est sélectionné, il sera utilisé comme référence, par
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="152"/>
       <source>Is closed</source>
-      <translation>Est fermé</translation>
+      <translation>La forme est-elle fermée</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="159"/>
@@ -7060,7 +7059,7 @@ contrainte de coïncidence entre les sommets des courbes là où il est prévu d
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Ring facemaker</source>
-      <translation>Créateur de face avec anneau</translation>
+      <translation>Générateur d'anneaux</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>

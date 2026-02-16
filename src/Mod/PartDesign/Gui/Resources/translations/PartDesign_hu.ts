@@ -3521,12 +3521,12 @@ Az örökölt dokumentumok esetében, amelyek Alkatrész tervezés objektumokat 
       <translation>Tulajdonság használatához szükséges, hogy az egy test objektumhoz tartozzon a dokumentumban.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Tulajdonság nem egy részben van</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Tulajdonság használatához szükséges, hogy az egy alkatrész objektumhoz tartozzon a dokumentumban.</translation>
     </message>
@@ -3675,7 +3675,7 @@ Viszont később is bármikor áttelepítheti a 'AlkatrészTervező -&gt; Áttel
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="65"/>
       <source>Edit Loft</source>
-      <translation>LOFT 3D szerkesztése</translation>
+      <translation>Rendezze a formázást kihúzással</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>

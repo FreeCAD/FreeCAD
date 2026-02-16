@@ -3521,12 +3521,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>ამ თვისების გამოსაყენებლად ის დოკუმენტში სხეულის ობიექტს უნდა ეკუთვნოდეს.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>თვისება არ წარმოადგენს ნაწილს</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>ამ თვისების გამოსაყენებლად ის დოკუმენტში ნაწლის ობიექტს უნდა ეკუთვნოდეს.</translation>
     </message>

@@ -29,12 +29,12 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Contact Constraint</source>
-      <translation type="unfinished">Contact Constraint</translation>
+      <translation>Kontakt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Creates a contact constraint between faces</source>
-      <translation type="unfinished">Creates a contact constraint between faces</translation>
+      <translation>Opretter en relation som fastholder kontakten mellem flader</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="594"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation>Opretter en kraft som virker på en geometrisk enhed</translation>
+      <translation>Opretter en kraft som virker på en geometri</translation>
     </message>
   </context>
   <context>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="656"/>
       <source>Gear Constraint</source>
-      <translation type="unfinished">Gear Constraint</translation>
+      <translation>Tandhjulsforbindelse</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="657"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>Opretter en relation svarende til en tandhjulsforbindelse</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="777"/>
       <source>Initial Temperature</source>
-      <translation type="unfinished">Initial Temperature</translation>
+      <translation>Starttemperatur</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="778"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
+      <translation>Opretter en starttemperatur for et emne</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="955"/>
       <source>Spring Boundary Condition</source>
-      <translation type="unfinished">Spring Boundary Condition</translation>
+      <translation>Fjederpåvirkning</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Creates a spring boundary condition on a face</source>
-      <translation type="unfinished">Creates a spring boundary condition on a face</translation>
+      <translation>Opretter en fjederpåvirkning på en flade</translation>
     </message>
   </context>
   <context>
@@ -2717,12 +2717,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="29"/>
       <source>Basic Properties</source>
-      <translation type="unfinished">Basic Properties</translation>
+      <translation>Grundlæggende egenskaber</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="14"/>
       <source>FEM Material</source>
-      <translation type="unfinished">FEM Material</translation>
+      <translation>FEM materiale</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="40"/>
@@ -2742,12 +2742,12 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="142"/>
       <source>Poisson ratio</source>
-      <translation type="unfinished">Poisson ratio</translation>
+      <translation>Poissons forhold</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="263"/>
       <source>Thermal conductivity</source>
-      <translation type="unfinished">Thermal conductivity</translation>
+      <translation>Varmeledningsevne</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="303"/>
@@ -2762,7 +2762,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="386"/>
       <source>Specific heat capacity</source>
-      <translation type="unfinished">Specific heat capacity</translation>
+      <translation>Specifik varmekapacitet</translation>
     </message>
     <message>
       <location filename="../ui/Material.ui" line="190"/>
@@ -2782,7 +2782,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../ui/Material.ui" line="346"/>
       <source>Reference temperature for thermal expansion</source>
-      <translation type="unfinished">Reference temperature for thermal expansion</translation>
+      <translation>Referencetemperatur for termisk udvidelse</translation>
     </message>
   </context>
   <context>
@@ -2860,13 +2860,13 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="308"/>
       <location filename="../ui/InitialPressure.ui" line="20"/>
       <source>Pressure</source>
-      <translation type="unfinished">Pressure</translation>
+      <translation>Tryk</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="245"/>
       <location filename="../ui/ElementFluid1D.ui" line="315"/>
       <source>0 MPa</source>
-      <translation type="unfinished">0 MPa</translation>
+      <translation>0 MPa</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="260"/>
@@ -2883,7 +2883,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="278"/>
       <location filename="../ui/ElementFluid1D.ui" line="348"/>
       <source>0 kg/s</source>
-      <translation type="unfinished">0 kg/s</translation>
+      <translation>0 kg/s</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="297"/>
@@ -3280,12 +3280,12 @@ Note: has no effect if a solid was selected</translation>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="104"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="141"/>
       <source>Outer diameter</source>
-      <translation type="unfinished">Outer diameter</translation>
+      <translation>Yderdiameter</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry2D.ui" line="37"/>
@@ -3331,7 +3331,7 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="73"/>
       <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>Formula</source>
-      <translation type="unfinished">Formula</translation>
+      <translation>Formel</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
@@ -3341,25 +3341,25 @@ Note: has no effect if a solid was selected</translation>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
       <source>Unspecified</source>
-      <translation type="unfinished">Unspecified</translation>
+      <translation>Uspecificeret</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
       <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity X</source>
-      <translation type="unfinished">Velocity X</translation>
+      <translation>Hastighed X</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
       <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity Y</source>
-      <translation type="unfinished">Velocity Y</translation>
+      <translation>Hastighed Y</translation>
     </message>
     <message>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
       <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity Z</source>
-      <translation type="unfinished">Velocity Z</translation>
+      <translation>Hastighed Z</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3829,7 +3829,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="170"/>
       <source>Histogram</source>
-      <translation type="unfinished">Histogram</translation>
+      <translation>Histogram</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="14"/>
@@ -3889,7 +3889,7 @@ with harmonic/oscillating driving current</translation>
     <message>
       <location filename="../ui/ResultShow.ui" line="237"/>
       <source>Show</source>
-      <translation type="unfinished">Show</translation>
+      <translation>Vis</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="312"/>
@@ -4456,17 +4456,17 @@ generated by the flow
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="245"/>
       <source>Rotation X</source>
-      <translation type="unfinished">Rotation X</translation>
+      <translation>Rotation X</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="264"/>
       <source>Rotation Y</source>
-      <translation type="unfinished">Rotation Y</translation>
+      <translation>Rotation Y</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="283"/>
       <source>Rotation Z</source>
-      <translation type="unfinished">Rotation Z</translation>
+      <translation>Rotation Z</translation>
     </message>
   </context>
   <context>
@@ -4791,7 +4791,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select geometry of type: Face</source>
-      <translation type="unfinished">Select geometry of type: Face</translation>
+      <translation>Vælg geometrier af typen: Flade</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="98"/>
@@ -5254,7 +5254,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>&amp;FEM</source>
-      <translation type="unfinished">&amp;FEM</translation>
+      <translation>&amp;FEM</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
@@ -5269,12 +5269,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materialer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>&amp;Materials</source>
-      <translation type="unfinished">&amp;Materials</translation>
+      <translation>&amp;Materialer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
@@ -5490,7 +5490,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="569"/>
       <source>Opens the FreeCAD material editor</source>
-      <translation type="unfinished">Opens the FreeCAD material editor</translation>
+      <translation>Åbner FreeCAD's materialehåndtering</translation>
     </message>
   </context>
   <context>
@@ -5498,12 +5498,12 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="662"/>
       <source>Reinforced Material (Concrete)</source>
-      <translation type="unfinished">Reinforced Material (Concrete)</translation>
+      <translation>Armeret materiale (beton)</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="666"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
-      <translation type="unfinished">Creates a material for reinforced matrix material such as concrete</translation>
+      <translation>Opretter et bindemateriale til et armeret materiale, f.eks. beton</translation>
     </message>
   </context>
   <context>
@@ -5687,7 +5687,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="311"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>Afbryd</translation>
     </message>
   </context>
   <context>
@@ -6651,7 +6651,7 @@ No matching module was found in the current Python path.</translation>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
       <source>Select geometry of type: </source>
-      <translation type="unfinished">Select geometry of type: </translation>
+      <translation>Vælg geometrier af typen: </translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.cpp" line="277"/>
@@ -7122,17 +7122,17 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
       <source>FEM Material Reinforcement</source>
-      <translation type="unfinished">FEM Material Reinforcement</translation>
+      <translation>FEM Armeringsmateriale</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="29"/>
       <source>Matrix Material</source>
-      <translation type="unfinished">Matrix Material</translation>
+      <translation>Bindemateriale</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="61"/>
       <source>Reinforcement Material</source>
-      <translation type="unfinished">Reinforcement Material</translation>
+      <translation>Armeringsmateriale</translation>
     </message>
   </context>
   <context>
@@ -7342,7 +7342,7 @@ Leave blank to use default Python executable</translation>
       <location filename="../ui/TaskPostLineplot.ui" line="47"/>
       <location filename="../ui/TaskPostLineplot.ui" line="57"/>
       <source>Show</source>
-      <translation type="unfinished">Show</translation>
+      <translation>Vis</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="138"/>
@@ -7359,7 +7359,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="169"/>
       <source>X Axis</source>
-      <translation type="unfinished">X Axis</translation>
+      <translation>X-akse</translation>
     </message>
     <message>
       <location filename="../ui/TaskPostHistogram.ui" line="179"/>
@@ -7403,7 +7403,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Fem</source>
-      <translation type="unfinished">Fem</translation>
+      <translation>FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
@@ -7689,12 +7689,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="582"/>
       <source>Fluid Material</source>
-      <translation type="unfinished">Fluid Material</translation>
+      <translation>Fluid</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="583"/>
       <source>Creates a fluid material</source>
-      <translation type="unfinished">Creates a fluid material</translation>
+      <translation>Opretter en fluid</translation>
     </message>
   </context>
   <context>
@@ -7702,12 +7702,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="595"/>
       <source>Non-Linear Mechanical Material</source>
-      <translation type="unfinished">Non-Linear Mechanical Material</translation>
+      <translation>Ikke-lineært elastisk materiale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="598"/>
       <source>Creates a non-linear mechanical material</source>
-      <translation type="unfinished">Creates a non-linear mechanical material</translation>
+      <translation>Opretter et ikke-lineært elastisk materiale</translation>
     </message>
   </context>
   <context>
@@ -7715,12 +7715,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="676"/>
       <source>Solid Material</source>
-      <translation type="unfinished">Solid Material</translation>
+      <translation>Lineært elastisk materiale</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="678"/>
       <source>Creates a solid material</source>
-      <translation type="unfinished">Creates a solid material</translation>
+      <translation>Opretter et lineært elastisk materiale</translation>
     </message>
   </context>
   <context>
@@ -7780,12 +7780,12 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="929"/>
       <source>Purge Results</source>
-      <translation type="unfinished">Purge Results</translation>
+      <translation>Forkast resultater</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="933"/>
       <source>Purges all results from the active analysis</source>
-      <translation type="unfinished">Purges all results from the active analysis</translation>
+      <translation>Forkaster alle resultater fra den aktive analyse</translation>
     </message>
   </context>
   <context>

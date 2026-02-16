@@ -178,7 +178,7 @@
     <message>
       <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Centerline Faces</source>
-      <translation>Ligne centrale à des faces</translation>
+      <translation>Ligne centrale à une/des face(s)</translation>
     </message>
   </context>
   <context>
@@ -1172,7 +1172,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1386"/>
       <source>Adds a cosmetic circle to 3 selected vertices</source>
-      <translation>Ajoute une cercle cosmétique à 3 sommets sélectionnés</translation>
+      <translation>Ajoute un cercle cosmétique à 3 sommets sélectionnés.</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="1517"/>
@@ -1797,7 +1797,7 @@ Un clic gauche sur un espace vide valide la cote en cours. Un clic droit ou la t
     <message>
       <location filename="../../Command.cpp" line="1053"/>
       <source>Projection Group</source>
-      <translation>Groupe de projections</translation>
+      <translation>Groupe de projection</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1054"/>
@@ -3380,7 +3380,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="1492"/>
       <source>View does not belong to a clip</source>
-      <translation>La vue n'appartient pas au rognage.</translation>
+      <translation>La vue n'appartient pas à un rognage.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1554"/>
@@ -3410,7 +3410,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
     <message>
       <location filename="../../Command.cpp" line="1755"/>
       <source>Select exactly one spreadsheet object</source>
-      <translation>Sélectionner un seul objet de l'atelier Spreadsheet</translation>
+      <translation>Sélectionner un seul objet spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1834"/>
@@ -3970,7 +3970,7 @@ Si aucun objet n'est sélectionné, un navigateur de fichiers s'ouvre pour séle
       <location filename="../../ViewProviderDimension.cpp" line="136"/>
       <location filename="../../ViewProviderBalloon.cpp" line="86"/>
       <source>Edit %1</source>
-      <translation>Modifier %1</translation>
+      <translation>Éditer %1</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="109"/>
@@ -4366,8 +4366,7 @@ détaillées ou les lignes de repère suivantes se casseraient :</translation>
       <location filename="../../ViewProviderProjGroup.cpp" line="153"/>
       <source>The projection group is not empty, therefore
 the following referencing objects might be lost:</source>
-      <translation>Le groupe de projection n'est pas vide et donc les objets
-de référence suivants pourraient être perdus :</translation>
+      <translation>Le groupe de projection n'est pas vide et donc les objets de référence suivants pourraient être perdus :</translation>
     </message>
     <message>
       <location filename="../../ViewProviderTemplate.cpp" line="198"/>
@@ -4421,7 +4420,7 @@ it has a tile weld that would become broken.</source>
     <message>
       <location filename="../../TaskActiveView.ui" line="149"/>
       <source>No background</source>
-      <translation>Pas d'arrière-plan</translation>
+      <translation>Arrière-plan transparent</translation>
     </message>
     <message>
       <location filename="../../TaskActiveView.ui" line="162"/>
@@ -7873,7 +7872,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLinkDim.ui" line="67"/>
       <source>Feature1</source>
-      <translation>Caractéristique1</translation>
+      <translation>Propriété1</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="87"/>
@@ -7883,7 +7882,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskLinkDim.ui" line="107"/>
       <source>Feature2</source>
-      <translation>Caractéristique2</translation>
+      <translation>Propriété2</translation>
     </message>
     <message>
       <location filename="../../TaskLinkDim.ui" line="127"/>
@@ -7911,7 +7910,7 @@ Vous pouvez sélectionner d'autres points pour obtenir des segments de ligne.</t
     <message>
       <location filename="../../TaskProjGroup.ui" line="26"/>
       <source>Projection Group</source>
-      <translation>Groupe de projections</translation>
+      <translation>Groupe de projection</translation>
     </message>
     <message>
       <location filename="../../TaskProjGroup.ui" line="76"/>

@@ -3519,12 +3519,12 @@ Za starije dokumente s objektima Part Designa kojima nedostaje tijelo, upotrijeb
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu tijela u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Element nije u dijelu</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Da biste mogli koristiti ovu značajku ona mora pripadati objektu dio u dokumentu.</translation>
     </message>

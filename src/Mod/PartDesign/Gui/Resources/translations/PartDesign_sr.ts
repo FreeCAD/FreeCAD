@@ -3521,12 +3521,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Да би користио овај типски облик, он мора да припада телу у документу.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Типски облик није унутар дела</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Да би користио овај типски облик, он мора да припада делу у документу.</translation>
     </message>
