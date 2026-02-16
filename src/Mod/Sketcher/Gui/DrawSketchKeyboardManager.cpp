@@ -126,4 +126,3 @@ int DrawSketchKeyboardManager::timeOut()
 
 
 #include "moc_DrawSketchKeyboardManager.cpp"
-
