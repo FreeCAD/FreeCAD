@@ -32,6 +32,7 @@
 #include <QToolBar>
 #include <QToolButton>
 #include <QToolTip>
+#include <QRegularExpression>
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -582,16 +583,26 @@ void ActionGroup::onToggled(bool check)
  */
 void ActionGroup::onActivated(QAction* act)
 {
+    int index = groupAction()->actions().indexOf(act);
+    this->setIcon(act->icon());
     if (_rememberLast) {
-        int index = groupAction()->actions().indexOf(act);
-
-        this->setIcon(act->icon());
         if (!this->_isMode) {
             this->action()->setToolTip(act->toolTip());
         }
         this->setProperty("defaultAction", QVariant(index));
-        command()->invoke(index, Command::TriggerChildAction);
     }
+    else {
+        // for Std_RecentMacros and Std_RecentFiles
+        if (!this->_isMode) {
+            QString str = act->text();
+            // remove index from toolTip text
+            str = str.remove(QRegularExpression(QString::fromUtf8("^&?[0-9]+ ")));
+            this->setToolTip(act->toolTip(), str);
+        }
+        // recent index is always 0
+        this->setProperty("defaultAction", QVariant(0));
+    }
+    command()->invoke(index, Command::TriggerChildAction);
 }
 
 /**
