@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (C) 2015 Alexander Golubev (Fat-Zer) <fatzer2@gmail.com>    *
  *                                                                         *
@@ -1033,6 +1035,11 @@ void CmdPartDesignMoveFeatureInTree::activated(int iMsg)
         App::DatumElement::getClassTypeId()
     );
     features.insert(features.end(), datums.begin(), datums.end());
+
+    std::vector<App::DocumentObject*> lcs = getSelection().getObjectsOfType(
+        App::LocalCoordinateSystem::getClassTypeId()
+    );
+    features.insert(features.end(), lcs.begin(), lcs.end());
 
     if (features.empty()) {
         return;

@@ -115,7 +115,7 @@
       <location filename="../../AttacherTexts.cpp" line="863"/>
       <source>Solid</source>
       <comment>Attacher reference type</comment>
-      <translation>Твердое тело</translation>
+      <translation>Тело</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="864"/>
@@ -314,7 +314,7 @@
       <location filename="../../AttacherTexts.cpp" line="577"/>
       <source>Line that is an axis of osculating circle of curved edge. Optional vertex defines where.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation>Линия, являющаяся осью охватывающей окружности изогнутого ребра. Дополнительная вершина определяет местоположение.</translation>
+      <translation>Линия, являющаяся осью окружности, охватывающей изгиб ребра. Опциональное указание вершины определяет местоположение.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="586"/>
@@ -5566,20 +5566,20 @@ in the 3D view for the sweep path.</source>
       <translation>Редактировать %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="245"/>
+      <location filename="../../AppPartGui.cpp" line="252"/>
       <source>Part and Part Design workbench</source>
       <translation>Верстак Деталь и Проектная Деталь</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="246"/>
-      <location filename="../../AppPartGui.cpp" line="247"/>
-      <location filename="../../AppPartGui.cpp" line="248"/>
+      <location filename="../../AppPartGui.cpp" line="253"/>
+      <location filename="../../AppPartGui.cpp" line="254"/>
+      <location filename="../../AppPartGui.cpp" line="255"/>
       <source>Part/Part Design</source>
       <translation>Деталь/Проектная Деталь</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="249"/>
-      <location filename="../../AppPartGui.cpp" line="250"/>
+      <location filename="../../AppPartGui.cpp" line="256"/>
+      <location filename="../../AppPartGui.cpp" line="257"/>
       <source>Import-Export</source>
       <translation>Импорт/экспорт</translation>
     </message>
@@ -6051,12 +6051,12 @@ Continue?</source>
       <translation>Пересечение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="75"/>
+      <location filename="../../ViewProviderCompound.cpp" line="76"/>
       <source>Delete compound content?</source>
       <translation>Удалить содержимое составного объекта?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderCompound.cpp" line="76"/>
+      <location filename="../../ViewProviderCompound.cpp" line="77"/>
       <source>The compound '%1' has %2 child objects. Do you want to delete them as well?</source>
       <translation>У составного объекта "%1" есть дочерние объекты %2. Вы тоже хотите их удалить?</translation>
     </message>
@@ -6676,12 +6676,12 @@ Overlapping volumes of the shapes will be removed.</source>
   <context>
     <name>Part::FaceMakerExtrusion</name>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="415"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="421"/>
       <source>Part Extrude facemaker</source>
       <translation>Грани выдавливанием</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrusion.cpp" line="420"/>
+      <location filename="../../../App/FeatureExtrusion.cpp" line="426"/>
       <source>Supports making faces with holes, does not support nesting.</source>
       <translation>Поддерживает создание граней с отверстиями, вложения не поддерживаются.</translation>
     </message>

@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <vector>
 
@@ -2304,6 +2305,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
         }
 
         addGeometryState(cnew);
+
+        signalConstraintAdded(cnew);
     }
 
     this->Constraints.setValues(std::move(newVals));
@@ -2376,6 +2379,8 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
         AutoLockTangencyAndPerpty(constNew);
 
     addGeometryState(constNew);
+
+    signalConstraintAdded(constNew);
 
     newVals.push_back(constNew);// add new constraint at the back
 
@@ -3356,7 +3361,8 @@ void createNewConstraintsForTrim(
     const std::vector<const Part::Geometry*> newGeos,
     std::vector<int>& idsOfOldConstraints,
     std::vector<Constraint*>& newConstraints,
-    std::set<int, std::greater<>>& geoIdsToBeDeleted
+    std::set<int, std::greater<>>& geoIdsToBeDeleted,
+    std::map<Constraint*, int>& newToOldConstraintMap
 )
 {
     const auto& allConstraints = obj->Constraints.getValues();
@@ -3381,6 +3387,7 @@ void createNewConstraintsForTrim(
                 PointPos::end
             )) {
             newConstraints.push_back(newConstr.release());
+            newToOldConstraintMap[newConstraints.back()] = oldConstrId;  // Map new to old
             isPoint1ConstrainedOnGeoId1 = true;
             continue;
         }
@@ -3394,6 +3401,7 @@ void createNewConstraintsForTrim(
                 PointPos::start
             )) {
             newConstraints.push_back(newConstr.release());
+            newToOldConstraintMap[newConstraints.back()] = oldConstrId;  // Map new to old
             isPoint2ConstrainedOnGeoId2 = true;
             continue;
         }
@@ -3403,7 +3411,12 @@ void createNewConstraintsForTrim(
             continue;
         }
         // constraint has not yet been changed
+        size_t sizeBefore = newConstraints.size();
         obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints);
+        // Map all newly added derived constraints to the old ID
+        for (size_t i = sizeBefore; i < newConstraints.size(); ++i) {
+            newToOldConstraintMap[newConstraints[i]] = oldConstrId;
+        }
     }
 
     // Add point-on-object/coincidence constraints with the newly exposed points.
@@ -3513,6 +3526,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
     std::vector<const Part::Geometry*> newGeosAsConsts;
+    std::map<Constraint*, int> newToOldConstraintMap;
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
@@ -3575,7 +3589,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         newGeosAsConsts,
         idsOfOldConstraints,
         newConstraints,
-        geoIdsToBeDeleted
+        geoIdsToBeDeleted,
+        newToOldConstraintMap
     );
 
     //******************* Step D => Replacing geometries and constraints
@@ -3593,6 +3608,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         newConstr->SecondPos = Sketcher::PointPos::none;
         addConstraint(std::move(newConstr));
     };
+
+    std::map<Constraint*, std::shared_ptr<App::Expression>> exprBackup;
+    for (auto const& [newConstr, oldId] : newToOldConstraintMap) {
+        if (oldId >= 0 && oldId < (int)allConstraints.size()) {
+            auto exprInfo = getExpression(Constraints.createPath(oldId));
+            if (exprInfo.expression) {
+                exprBackup[newConstr] = std::shared_ptr<App::Expression>(exprInfo.expression->copy());
+            }
+        }
+    }
 
     delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoFlag);
 
@@ -3647,7 +3672,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return constr->Type == ConstraintType::None;
     });
     delGeometries(geoIdsToBeDeleted.begin(), geoIdsToBeDeleted.end());
-    addConstraints(newConstraints);
+
+    int lastAddedIndex = addConstraints(newConstraints);
+    int firstAddedIndex = lastAddedIndex - (int)newConstraints.size() + 1;
+
+    // Restore expressions
+    for (int i = 0; i < (int)newConstraints.size(); ++firstAddedIndex, ++i) {
+        auto it = exprBackup.find(newConstraints[i]);
+        if (it != exprBackup.end()) {
+            setExpression(Constraints.createPath(firstAddedIndex), it->second);
+        }
+    }
 
     if (noRecomputes) {
         solve();
@@ -4207,6 +4242,15 @@ bool SketchObject::isExternalAllowed(App::Document* pDoc, App::DocumentObject* p
     // planes
     Part::BodyBase* body_this = Part::BodyBase::findBodyOf(this);
     Part::BodyBase* body_obj = Part::BodyBase::findBodyOf(pObj);
+
+    // DatumElements in an LCS, get body from the parent LCS
+    if (!body_obj && pObj->isDerivedFrom<App::DatumElement>()) {
+        auto* datum = static_cast<const App::DatumElement*>(pObj);
+        if (auto* lcs = datum->getLCS()) {
+            body_obj = Part::BodyBase::findBodyOf(lcs);
+        }
+    }
+
     App::Part* part_this = App::Part::getPartOfObject(this);
     App::Part* part_obj = App::Part::getPartOfObject(pObj);
     if (part_this == part_obj) {// either in the same part, or in the root of document
@@ -4377,7 +4421,7 @@ int SketchObject::addSymmetric(
     bool refIsAxisAligned = refGeoId == Sketcher::GeoEnum::VAxis
         || refGeoId == Sketcher::GeoEnum::HAxis || !refIsLine
         || std::ranges::any_of(constrvals, [&refGeoId](auto* constr) {
-                                return constr->First == refGeoId
+                                return constr->getElement(0).GeoId == refGeoId
                                     && (constr->Type == Sketcher::Vertical
                                         || constr->Type == Sketcher::Horizontal);
                             });
@@ -4385,12 +4429,27 @@ int SketchObject::addSymmetric(
     std::vector<Part::Geometry*> symgeos
         = getSymmetric(geoIdList, geoIdMap, isStartEndInverted, refGeoId, refPosId);
 
+    // Perturb geometry to avoid numerical singularities in the solver (Jacobian Rank).
+    // If geometry is "perfect", the solver cannot distinguish between the derivative
+    // of a Symmetry constraint and an Equal constraint, flagging one as redundant.
+    // see https://github.com/FreeCAD/FreeCAD/issues/13551
+    // This does not happen with other arcs types.
+    if (addSymmetryConstraints) {
+        for (auto* geo : symgeos) {
+            if (auto* arc = dynamic_cast<Part::GeomArcOfCircle*>(geo)) {
+                double start, end;
+                arc->getRange(start, end, true);
+                arc->setRange(start + Precision::Angular(), end, true);
+            }
+        }
+    }
+
     {
         addGeometry(symgeos);
 
         for (auto* constr : constrvals) {
             // we look in the map, because we might have skipped internal alignment geometry
-            auto firstIt = geoIdMap.find(constr->First);
+            auto firstIt = geoIdMap.find(constr->getElement(0).GeoId);
 
             if (firstIt == geoIdMap.end()) {
                 continue;
@@ -4403,7 +4462,8 @@ int SketchObject::addSymmetric(
                 continue;
             }
 
-            if (constr->Second == GeoEnum::GeoUndef /*&& constr->Third == GeoEnum::GeoUndef*/) {
+            if (constr->getElement(1).GeoId == GeoEnum::GeoUndef  //
+                /*&& constr->getElement(2).GeoId == GeoEnum::GeoUndef*/) {
                 if (refIsAxisAligned
                     && (constr->Type == Sketcher::DistanceX || constr->Type == Sketcher::DistanceY)) {
                     // In this case we want to keep the Vertical, Horizontal constraints.
@@ -4423,14 +4483,16 @@ int SketchObject::addSymmetric(
                 }
                 Constraint* constNew = constr->copy();
                 constNew->Name = "";
-                constNew->First = firstIt->second;
+                GeoElementId rep = constr->getElement(0);
+                rep.GeoId = firstIt->second;
+                constNew->setElement(0, rep);
                 newconstrVals.push_back(constNew);
 
                 continue;
             }
 
             // other geoids intervene in this constraint
-            auto secondIt = geoIdMap.find(constr->Second);
+            auto secondIt = geoIdMap.find(constr->getElement(1).GeoId);
 
             if (secondIt == geoIdMap.end()) {
                 continue;
@@ -4438,22 +4500,19 @@ int SketchObject::addSymmetric(
 
             // Second is also in the list
 
-            auto flipStartEndIfRelevant = [&isStartEndInverted](
-                                              int geoId,
-                                              const Sketcher::PointPos posId,
-                                              Sketcher::PointPos& posIdNew
-                                          ) {
-                if (isStartEndInverted[geoId]) {
-                    if (posId == Sketcher::PointPos::start) {
-                        posIdNew = Sketcher::PointPos::end;
+            auto flipStartEndIfRelevant =
+                [&isStartEndInverted](GeoElementId geId, Sketcher::PointPos& posIdNew) {
+                    if (isStartEndInverted[geId.GeoId]) {
+                        if (geId.Pos == Sketcher::PointPos::start) {
+                            posIdNew = Sketcher::PointPos::end;
+                        }
+                        else if (geId.Pos == Sketcher::PointPos::end) {
+                            posIdNew = Sketcher::PointPos::start;
+                        }
                     }
-                    else if (posId == Sketcher::PointPos::end) {
-                        posIdNew = Sketcher::PointPos::start;
-                    }
-                }
-            };
+                };
 
-            if (constr->Third == GeoEnum::GeoUndef) {
+            if (constr->getElement(2).GeoId == GeoEnum::GeoUndef) {
                 if (!(constr->Type == Sketcher::Coincident        //
                       || constr->Type == Sketcher::Perpendicular  //
                       || constr->Type == Sketcher::Parallel       //
@@ -4468,10 +4527,14 @@ int SketchObject::addSymmetric(
 
                 Constraint* constNew = constr->copy();
                 constNew->Name = "";
-                constNew->First = firstIt->second;
-                constNew->Second = secondIt->second;
-                flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
-                flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
+                auto rep0 = constNew->getElement(0);
+                auto rep1 = constNew->getElement(1);
+                rep0.GeoId = firstIt->second;
+                rep1.GeoId = secondIt->second;
+                flipStartEndIfRelevant(constr->getElement(0), rep0.Pos);
+                flipStartEndIfRelevant(constr->getElement(1), rep1.Pos);
+                constNew->setElement(0, rep0);
+                constNew->setElement(1, rep1);
 
                 if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
                     AutoLockTangencyAndPerpty(constNew, true);
@@ -4486,7 +4549,7 @@ int SketchObject::addSymmetric(
             }
 
             // three GeoIds intervene in constraint
-            auto thirdIt = geoIdMap.find(constr->Third);
+            auto thirdIt = geoIdMap.find(constr->getElement(2).GeoId);
 
             if (thirdIt == geoIdMap.end()) {
                 continue;
@@ -4495,12 +4558,18 @@ int SketchObject::addSymmetric(
             // Third is also in the list
             Constraint* constNew = constr->copy();
             constNew->Name = "";
-            constNew->First = firstIt->second;
-            constNew->Second = secondIt->second;
-            constNew->Third = thirdIt->second;
-            flipStartEndIfRelevant(constr->First, constr->FirstPos, constNew->FirstPos);
-            flipStartEndIfRelevant(constr->Second, constr->SecondPos, constNew->SecondPos);
-            flipStartEndIfRelevant(constr->Third, constr->ThirdPos, constNew->ThirdPos);
+            auto rep0 = constNew->getElement(0);
+            auto rep1 = constNew->getElement(1);
+            auto rep2 = constNew->getElement(2);
+            rep0.GeoId = firstIt->second;
+            rep1.GeoId = secondIt->second;
+            rep2.GeoId = thirdIt->second;
+            flipStartEndIfRelevant(constr->getElement(0), rep0.Pos);
+            flipStartEndIfRelevant(constr->getElement(1), rep1.Pos);
+            flipStartEndIfRelevant(constr->getElement(2), rep2.Pos);
+            constNew->setElement(0, rep0);
+            constNew->setElement(1, rep1);
+            constNew->setElement(2, rep2);
             newconstrVals.push_back(constNew);
         }
 
@@ -4521,19 +4590,16 @@ int SketchObject::addSymmetric(
             [&](int first, int second, Sketcher::PointPos firstPos, Sketcher::PointPos secondPos) {
                 auto* symConstr = new Constraint();
                 symConstr->Type = Symmetric;
-                symConstr->First = first;
-                symConstr->Second = second;
-                symConstr->Third = refGeoId;
-                symConstr->FirstPos = firstPos;
-                symConstr->SecondPos = secondPos;
-                symConstr->ThirdPos = refPosId;
+                symConstr->setElement(0, GeoElementId {first, firstPos});
+                symConstr->setElement(1, GeoElementId {second, secondPos});
+                symConstr->setElement(2, GeoElementId {refGeoId, refPosId});
                 newconstrVals.push_back(symConstr);
             };
         auto createEqualityConstr = [&](int first, int second) {
             auto* symConstr = new Constraint();
             symConstr->Type = Equal;
-            symConstr->First = first;
-            symConstr->Second = second;
+            symConstr->setElement(0, GeoElementId {first});
+            symConstr->setElement(1, GeoElementId {second});
             newconstrVals.push_back(symConstr);
         };
 
@@ -4591,6 +4657,10 @@ int SketchObject::addSymmetric(
             }
             // Note bspline has symmetric by the internal aligned circles.
         }
+
+        if (newconstrVals.size() > constrvals.size()) {
+            Constraints.setValues(std::move(newconstrVals));
+        }
     }
 
     // we delayed update, so trigger it now.
@@ -4625,9 +4695,10 @@ std::vector<Part::Geometry*> SketchObject::getSymmetric(
         // only add if the corresponding geometry it defines is also in the list.
         const auto& constraints = Constraints.getValues();
         auto constrIt = std::ranges::find_if(constraints, [&geoId](auto* c) {
-            return c->Type == Sketcher::InternalAlignment && c->First == geoId;
+            return c->Type == Sketcher::InternalAlignment && c->getElement(0).GeoId == geoId;
         });
-        int definedGeo = (constrIt == constraints.end()) ? GeoEnum::GeoUndef : (*constrIt)->Second;
+        int definedGeo = (constrIt == constraints.end()) ? GeoEnum::GeoUndef
+                                                         : (*constrIt)->getElement(1).GeoId;
         // Return true if definedGeo is in geoIdList, false otherwise
         return std::ranges::find(geoIdList, definedGeo) != geoIdList.end();
     };
@@ -5626,9 +5697,10 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         {{Sketcher::Horizontal, GeoEnum::GeoUndef},
          {Sketcher::Vertical, GeoEnum::GeoUndef}};
 
-    int cindex = 0;
+    size_t cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
-        if (i != changeConstraintIndices[cindex].first) {
+        if (cindex >= changeConstraintIndices.size()
+        || i != changeConstraintIndices[cindex].first) {
             newconstrVals.push_back(constrvals[i]);
             continue;
         }
@@ -9257,22 +9329,27 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
         try {
             TopoDS_Shape refSubShape;
 
-            if (Obj->isDerivedFrom<Part::Datum>()) {
-                auto* datum = static_cast<const Part::Datum*>(Obj);
+            // Handles LCS ,resolve to actual datum object
+            const App::DocumentObject* resolvedObj = Obj;
+            if (Obj->isDerivedFrom<App::LocalCoordinateSystem>() && !SubElement.empty()) {
+                auto* lcs = static_cast<const App::LocalCoordinateSystem*>(Obj);
+                // get the datum element by name
+                App::DatumElement* datum = lcs->getDatumElement(SubElement.c_str());
+                if (datum) {
+                    resolvedObj = datum;
+                }
+            }
+
+            if (auto* datum = freecad_cast<const Part::Datum*>(resolvedObj)) {
                 refSubShape = datum->getShape();
             }
-            else if (Obj->isDerivedFrom<Part::Feature>()) {
-                auto* refObj = static_cast<const Part::Feature*>(Obj);
+            else if (auto* refObj = freecad_cast<const Part::Feature*>(resolvedObj)) {
                 const Part::TopoShape& refShape = refObj->Shape.getShape();
                 refSubShape = refShape.getSubShape(SubElement.c_str());
             }
-            else if (Obj->isDerivedFrom<App::Plane>()) {
-                auto* pl = static_cast<const App::Plane*>(Obj);
-                Base::Placement plm = pl->Placement.getValue();
-                Base::Vector3d base = plm.getPosition();
-                Base::Rotation rot = plm.getRotation();
-                Base::Vector3d normal(0, 0, 1);
-                rot.multVec(normal, normal);
+            else if (auto* pl = freecad_cast<const App::Plane*>(resolvedObj)) {
+                Base::Vector3d base = pl->getBasePoint();
+                Base::Vector3d normal = pl->getDirection();
                 gp_Pln plane(gp_Pnt(base.x, base.y, base.z), gp_Dir(normal.x, normal.y, normal.z));
                 BRepBuilderAPI_MakeFace fBuilder(plane);
                 if (!fBuilder.IsDone())
@@ -9282,8 +9359,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Face f = TopoDS::Face(fBuilder.Shape());
                 refSubShape = f;
             }
-            else if (Obj->isDerivedFrom<Part::DatumLine>()) {
-                auto* line = static_cast<const Part::DatumLine*>(Obj);
+            else if (auto* line = freecad_cast<const Part::DatumLine*>(resolvedObj)) {
                 Base::Placement plm = line->Placement.getValue();
                 Base::Vector3d base = plm.getPosition();
                 Base::Vector3d dir = line->getDirection();
@@ -9297,8 +9373,7 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
                 refSubShape = e;
             }
-            else if (Obj->isDerivedFrom<Part::DatumPoint>()) {
-                auto* point = static_cast<const Part::DatumPoint*>(Obj);
+            else if (auto* point = freecad_cast<const Part::DatumPoint*>(resolvedObj)) {
                 Base::Placement plm = point->Placement.getValue();
                 Base::Vector3d base = plm.getPosition();
                 gp_Pnt p(base.x, base.y, base.z);
@@ -9306,6 +9381,31 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
                 if (!eBuilder.IsDone()) {
                     throw Base::RuntimeError(
                         "Sketcher: addExternal(): Failed to build vertex from Part::DatumPoint");
+                }
+
+                TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
+                refSubShape = v;
+            }
+            else if (auto* line = freecad_cast<const App::Line*>(resolvedObj)) {
+                Base::Vector3d base = line->getBasePoint();
+                Base::Vector3d dir = line->getDirection();
+                gp_Lin l(gp_Pnt(base.x, base.y, base.z), gp_Dir(dir.x, dir.y, dir.z));
+                BRepBuilderAPI_MakeEdge eBuilder(l);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build edge from App::Line");
+                }
+
+                TopoDS_Edge e = TopoDS::Edge(eBuilder.Shape());
+                refSubShape = e;
+            }
+            else if (auto* point = freecad_cast<const App::Point*>(resolvedObj)) {
+                Base::Vector3d base = point->getBasePoint();
+                gp_Pnt p(base.x, base.y, base.z);
+                BRepBuilderAPI_MakeVertex eBuilder(p);
+                if (!eBuilder.IsDone()) {
+                    throw Base::RuntimeError(
+                        "Sketcher: addExternal(): Failed to build vertex from App::Point");
                 }
 
                 TopoDS_Vertex v = TopoDS::Vertex(eBuilder.Shape());
@@ -11569,20 +11669,28 @@ std::vector<Data::IndexedName>
 SketchObject::getHigherElements(const char *element, bool silent) const
 {
     std::vector<Data::IndexedName> res;
+    // App::ObjEditing is not in main yet. Only in LinkStage.
+    // It is not a problem yet because getHigherElements is still unused.
+    // see https://github.com/FreeCAD/FreeCAD/issues/20753
+    if (false /*testStatus(App::ObjEditing)*/) {
         if (boost::istarts_with(element, "vertex")) {
             int n = 0;
             int index = atoi(element+6);
             for (auto cstr : Constraints.getValues()) {
                 ++n;
-                if (cstr->Type != Sketcher::Coincident)
+                if (cstr->Type != Sketcher::Coincident) {
                     continue;
-                if(cstr->First >= 0 && index == getSolvedSketch().getPointId(cstr->First, cstr->FirstPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
-                if(cstr->Second >= 0 && index == getSolvedSketch().getPointId(cstr->Second, cstr->SecondPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                }
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? cstr->Second : cstr->First;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
+                        res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                };
             }
         }
         return res;
+    }
 
     auto getNames = [this, &silent, &res](const char *element) {
         bool internal = boost::starts_with(element, internalPrefix());

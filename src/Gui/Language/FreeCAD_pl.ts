@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Wyliczenia</translation>
     </message>
@@ -141,7 +141,7 @@
       <translation>Przełącz elementy szyku</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Edytuj obraz</translation>
@@ -925,7 +925,7 @@ podczas kliknięcia lewym lub prawym przyciskiem i przesuwaj kursor w górę lub
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Dodaj właściwość</translation>
     </message>
@@ -955,37 +955,37 @@ podczas kliknięcia lewym lub prawym przyciskiem i przesuwaj kursor w górę lub
       <translation>Nazwa</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Nieprawidłowa nazwa grupy</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Nieprawidłowa nazwa typu</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Nieprawidłowa nazwa właściwości:"%1"</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>Właściwość "%" już istnieje</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>"%1" jest stałą</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>"%1" jest jednostką</translation>
     </message>
@@ -8008,14 +8008,14 @@ Sprawdź widok raportu, aby uzyskać więcej informacji.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>W tym systemie działa OpenGL w wersji %1.%2. 
 FreeCAD wymaga OpenGL 2.0 lub nowszego. 
 W razie potrzeby zaktualizuj sterownik i / lub kartę graficzną.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Nieprawidłowa wersja OpenGL</translation>
     </message>
@@ -8422,7 +8422,7 @@ Kontynuować?</translation>
 Powiadomienia są pomijane!</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1412"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8431,44 +8431,44 @@ Powiadomienia są pomijane!</translation>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1413"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation>Czy na pewno chcesz kontynuować?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1439"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation>Sprawdź widok raportu, aby uzyskać więcej informacji …</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1443"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation>Ścieżka fizyczna:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1444"/>
       <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation>Dokument:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1445"/>
       <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Ścieżka:</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1463"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation>Identyczna fizyczna ścieżka</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1475"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1476"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8481,109 +8481,109 @@ Would you like to save the file with a different name?</source>
 Czy chcesz zapisać plik pod inną nazwą?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1490"/>
-      <location filename="../Document.cpp" line="1648"/>
-      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1655"/>
+      <location filename="../Document.cpp" line="1757"/>
       <source>Saving aborted</source>
       <translation>Zapisywanie przerwane</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1536"/>
+      <location filename="../Document.cpp" line="1543"/>
       <source>Save dependent files</source>
       <translation>Zapisz zależne pliki</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1537"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Plik zawiera zewnętrzne zależności. Czy chcesz zapisać również zależne pliki?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
-      <location filename="../Document.cpp" line="1641"/>
+      <location filename="../Document.cpp" line="1590"/>
+      <location filename="../Document.cpp" line="1648"/>
       <source>Saving document failed</source>
       <translation>Zapisywanie dokumentu nie powiodło się</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
       <translation>Zapisz dokument pod nową nazwą pliku …</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1725"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Zapisz kopię dokumentu pod nową nazwą pliku …</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1607"/>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1614"/>
+      <location filename="../Document.cpp" line="1737"/>
       <source>Save %1 Document</source>
       <translation>Zapis dokumentu %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1609"/>
+      <location filename="../Document.cpp" line="1616"/>
       <source>Document</source>
       <translation>Dokument</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1663"/>
-      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1670"/>
+      <location filename="../Document.cpp" line="1720"/>
       <source>Failed to save document</source>
       <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1664"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Dokumenty zawierają zależności kołowe. Czy nadal chcesz je zapisać?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1739"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Dokument %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2406"/>
+      <location filename="../Document.cpp" line="2413"/>
       <source>Document not closable</source>
       <translation>Dokument nie może zostać zamknięty</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2407"/>
+      <location filename="../Document.cpp" line="2414"/>
       <source>The document is not closable for the moment.</source>
       <translation>Nie można zamknąć dokumentu w tym momencie.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2447"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Nie udało się zapisać dokumentu '%1'. 
 Czy chcesz przerwać zamykanie?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2449"/>
+      <location filename="../Document.cpp" line="2456"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>Zapisywanie dokumentu nie powiodło się. 
 Czy chcesz przerwać zamykanie?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2461"/>
       <source>Unable to save document</source>
       <translation>Nie udało się zapisać dokumentu</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
       <translation>Cofnij</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
       <translation>Ponów</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2814"/>
+      <location filename="../Document.cpp" line="2821"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>W następujących dokumentach zgrupowane są operacje z innymi poprzedzającymi je operacjami</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2819"/>
+      <location filename="../Document.cpp" line="2826"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8651,12 +8651,12 @@ Wybierz "Przerwij", aby zrezygnować</translation>
       <translation>Nie można otworzyć przeglądarki systemowej.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Przekroczono limit pamięci</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Za mało dostępnej pamięci, aby wyświetlić dane.</translation>
     </message>
@@ -8797,12 +8797,12 @@ Przerwać zamykanie dokumentów?</translation>
       <translation>Nie udało się zaimportować wszystkich powiązań</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Dodaj właściwość</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Nie udało się dodać właściwości do '%1': %2</translation>
     </message>
@@ -9126,7 +9126,7 @@ Czy chcesz usunąć je wszystkie rekurencyjnie?</translation>
       <translation>Niedozwolone:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Wybór niedozwolony przez filtr</translation>
     </message>
@@ -14432,7 +14432,7 @@ Dzięki temu zadokowany panel pozostanie przezroczysty przez cały czas.</transl
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Dokładne dopasowanie</translation>
     </message>
@@ -14440,7 +14440,7 @@ Dzięki temu zadokowany panel pozostanie przezroczysty przez cały czas.</transl
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Dokładne dopasowanie</translation>
     </message>
@@ -14643,12 +14643,12 @@ ESC, aby zakończyć</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Tak</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Nie</translation>
     </message>

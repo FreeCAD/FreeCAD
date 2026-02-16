@@ -1147,7 +1147,7 @@ se moverá al centro de la vista.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="181"/>
       <source>Point color</source>
-      <translation>Color de Punto(s)</translation>
+      <translation>Color del punto</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="192"/>
@@ -1745,7 +1745,7 @@ definiciones de patrones para ser añadido a los patrones estándar</translation
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="560"/>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -2169,7 +2169,7 @@ Este valor es la longitud máxima del segmento.</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="92"/>
       <source>Allow FreeCAD to automatically download and update the DXF libraries</source>
-      <translation>Permitir que FreeCAD descargue y actualize automáticamente las librerías DXF</translation>
+      <translation>Permitir a FreeCAD descargar y actualizar automáticamente las bibliotecas DXF</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="279"/>
@@ -2177,12 +2177,12 @@ Este valor es la longitud máxima del segmento.</translation>
       <translation>Importar</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
       <translation>Todos los objetos que contengan caras se exportarán como mallas 3D con múltiples caras</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="636"/>
+      <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Project exported objects along current view direction</source>
       <translation>Proyectar los objetos exportados a lo largo de la direccion de la vista actual</translation>
     </message>
@@ -2258,7 +2258,7 @@ un archivo DXF.</translation>
       <source>If checked, FreeCAD is allowed to download and update the Python libraries
 required by the legacy importer. This can also be done manually by installing
 the 'dxf_library' addon from the Addon Manager.</source>
-      <translation>Si está marcado, FreeCAD puede descargar y actualizar las librerías de Python
+      <translation>Si está marcado, FreeCAD puede descargar y actualizar las bibliotecas de Python
 requeridas por el importador de legado. Esto también se puede hacer manualmente instalando
 el complemento "dxf_library" desde el Administrador de complementos.</translation>
     </message>
@@ -2297,10 +2297,9 @@ workbench. </translation>
 definitions are imported as reusable objects (Part Compounds) and instances
 become `App::Link` objects, maintaining the block structure. Best for
 script-based post-processing and Part workbench integration.</source>
-      <translation type="unfinished">Creates parametric Part objects (e.g., Part::Line, Part::Circle). Block
-definitions are imported as reusable objects (Part Compounds) and instances
-become `App::Link` objects, maintaining the block structure. Best for
-script-based post-processing and Part workbench integration.</translation>
+      <translation>Crea objetos paramétricos de Pieza (por ejemplo, Parte::Línea, Parte::Círculo). Las definiciones de bloques se importan como objetos reutilizables (Compuestos de Pieza) y las instancias se convierten en objetos App::Link, conservando la estructura de bloque. Es la opción ideal para el posprocesado basado en scripts y la integración con el banco de trabajo Pieza (Part).
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="151"/>
@@ -2325,14 +2324,12 @@ importadas como objetos reutilizables (componentes de partes) y las instancias s
       <source>Merges all geometry per layer into a single, non-editable shape. Block
 structures are not preserved; their geometry becomes part of the layer's
 shape. Best for importing and viewing very large files with maximum performance.</source>
-      <translation type="unfinished">Merges all geometry per layer into a single, non-editable shape. Block
-structures are not preserved; their geometry becomes part of the layer's
-shape. Best for importing and viewing very large files with maximum performance.</translation>
+      <translation>Fusiona toda la geometría por capa en una única forma no editable. Las estructuras de bloque no se conservan; su geometría pasa a formar parte de la forma de la capa. Es la opción ideal para importar y visualizar archivos muy grandes con el máximo rendimiento.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="202"/>
       <source>Fused Part shapes (lowest fidelity, fastest)</source>
-      <translation type="unfinished">Fused Part shapes (lowest fidelity, fastest)</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="224"/>
@@ -2363,7 +2360,7 @@ en pies: 304.8</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="304"/>
       <source>If checked, point entities will be imported</source>
-      <translation type="unfinished">If checked, point entities will be imported</translation>
+      <translation>Si está marcada, las entidades de punto se importarán</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="307"/>
@@ -2374,20 +2371,20 @@ en pies: 304.8</translation>
       <location filename="../ui/preferences-dxf.ui" line="323"/>
       <source>If checked, entities from the paper space will also be imported. By default,
 only model space is imported</source>
-      <translation type="unfinished">If checked, entities from the paper space will also be imported. By default,
-only model space is imported</translation>
+      <translation>Si está marcada, también se importarán las entidades del espacio papel. Por defecto, solo se importa el espacio modelo.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="327"/>
       <source>Paper space objects</source>
-      <translation type="unfinished">Paper space objects</translation>
+      <translation>Objetos del espacio papel.
+
+</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="340"/>
       <source>If checked, anonymous blocks (whose names begin with *) will also be imported.
 These are often used for hatches and dimensions</source>
-      <translation type="unfinished">If checked, anonymous blocks (whose names begin with *) will also be imported.
-These are often used for hatches and dimensions</translation>
+      <translation>Si está marcada, también se importarán los bloques anónimos (cuyos nombres comienzan con *). Estos se utilizan frecuentemente para sombreado (hatches) y cotas.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="344"/>
@@ -2404,7 +2401,7 @@ These are often used for hatches and dimensions</translation>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="364"/>
       <source>Hatch boundaries</source>
-      <translation type="unfinished">Hatch boundaries</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../ui/preferences-dxf.ui" line="379"/>
@@ -2463,33 +2460,33 @@ en lugar de Borrador u objetos de partes. Esto anula la configuración 'Importar
       <translation>Opciones de exportación</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
       <translation type="unfinished">Maximum spline segment</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="554"/>
+      <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
       <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="589"/>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>Exportar objetos 3D como mallas policara</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="606"/>
+      <location filename="../ui/preferences-dxf.ui" line="603"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>Las vistas en TechDraw se exportarán como bloques. Esto podría fallar con plantillas posteriores a DXF R12.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="610"/>
+      <location filename="../ui/preferences-dxf.ui" line="607"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>Exportar vistas TechDraw como bloques</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="633"/>
+      <location filename="../ui/preferences-dxf.ui" line="630"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>Los objetos exportados serán proyectados para reflejar la dirección actual de la vista</translation>
     </message>
@@ -3087,78 +3084,78 @@ si coinciden con el eje X, Y o Z del sistema global de coordenadas</translation>
       <translation>Limpiar</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="891"/>
+      <location filename="../../WorkingPlane.py" line="906"/>
       <location filename="../../draftmake/make_sketch.py" line="121"/>
       <location filename="../../draftmake/make_sketch.py" line="137"/>
       <source>All shapes must be coplanar</source>
       <translation>Todas las formas deben ser coplanares</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="898"/>
+      <location filename="../../WorkingPlane.py" line="913"/>
       <source>Selected shapes must define a plane</source>
       <translation>Las formas seleccionadas deben definir un plano</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="984"/>
-      <location filename="../../WorkingPlane.py" line="1560"/>
-      <location filename="../../WorkingPlane.py" line="1561"/>
+      <location filename="../../WorkingPlane.py" line="999"/>
+      <location filename="../../WorkingPlane.py" line="1575"/>
+      <location filename="../../WorkingPlane.py" line="1576"/>
       <source>Top</source>
       <translation>Planta</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="996"/>
-      <location filename="../../WorkingPlane.py" line="1582"/>
-      <location filename="../../WorkingPlane.py" line="1583"/>
+      <location filename="../../WorkingPlane.py" line="1011"/>
+      <location filename="../../WorkingPlane.py" line="1597"/>
+      <location filename="../../WorkingPlane.py" line="1598"/>
       <source>Front</source>
       <translation>Alzado</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1015"/>
-      <location filename="../../WorkingPlane.py" line="1604"/>
-      <location filename="../../WorkingPlane.py" line="1605"/>
+      <location filename="../../WorkingPlane.py" line="1030"/>
+      <location filename="../../WorkingPlane.py" line="1619"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>Side</source>
       <translation>Lado</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1238"/>
-      <location filename="../../WorkingPlane.py" line="1538"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
+      <location filename="../../WorkingPlane.py" line="1253"/>
+      <location filename="../../WorkingPlane.py" line="1553"/>
+      <location filename="../../WorkingPlane.py" line="1554"/>
       <source>Auto</source>
       <translation>Automático</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1239"/>
+      <location filename="../../WorkingPlane.py" line="1254"/>
       <source>Current working plane: Auto</source>
       <translation>Plano de trabajo actual: automático</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1721"/>
+      <location filename="../../WorkingPlane.py" line="1736"/>
       <source>Current working plane:</source>
       <translation>Plano de trabajo actual:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1316"/>
-      <location filename="../../WorkingPlane.py" line="1345"/>
+      <location filename="../../WorkingPlane.py" line="1331"/>
+      <location filename="../../WorkingPlane.py" line="1360"/>
       <source>Selected shapes do not define a plane</source>
       <translation>Las formas seleccionadas no definen un plano</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1685"/>
+      <location filename="../../WorkingPlane.py" line="1700"/>
       <source>No previous working plane</source>
       <translation>Ningún plano de trabajo anterior</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1696"/>
+      <location filename="../../WorkingPlane.py" line="1711"/>
       <source>No next working plane</source>
       <translation>No hay siguiente plano de trabajo</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1725"/>
+      <location filename="../../WorkingPlane.py" line="1740"/>
       <source>Axes:</source>
       <translation>Ejes:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1732"/>
+      <location filename="../../WorkingPlane.py" line="1747"/>
       <source>Position:</source>
       <translation>Posición:</translation>
     </message>
@@ -3303,12 +3300,12 @@ Desmarque para usar el sistema de coordenadas del plano de trabajo</translation>
       <translation>Termina la operación actual de dibujo o edición</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1886"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation>Modificar objetos</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation>Elementos de Facebinder</translation>
     </message>
@@ -3502,17 +3499,17 @@ No disponible si la preferencia "Usar parte primitiva" está habilitada</transla
       <translation>Autogrupo:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>Caras</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>Añadir</translation>
     </message>
@@ -3577,10 +3574,10 @@ or try saving to a lower DWG version.</source>
 Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni caracteres no ingleses, o intente guardar a una versión DWG menor.</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1351"/>
-      <location filename="../../WorkingPlane.py" line="1352"/>
-      <location filename="../../WorkingPlane.py" line="1631"/>
-      <location filename="../../WorkingPlane.py" line="1632"/>
+      <location filename="../../WorkingPlane.py" line="1366"/>
+      <location filename="../../WorkingPlane.py" line="1367"/>
+      <location filename="../../WorkingPlane.py" line="1646"/>
+      <location filename="../../WorkingPlane.py" line="1647"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="67"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="82"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
@@ -3637,43 +3634,43 @@ Intente mover el archivo DWG a un directorio cuyo camino no contenga espacios ni
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>No hay documento activo. Abortando.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Entrada incorrecta: el objeto {} no se encuentra en el documento.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Imposible insertar un nuevo objeto en una parte escalada</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Símbolo no implementado. Usando un símbolo por defecto.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>imagen nula</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>filename no existe en el sistema ni en el archivo de recursos</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>imposible cargar la textura</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>No tiene 'ViewObject.RootNode'.</translation>
     </message>
@@ -4641,7 +4638,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="211"/>
       <source>Zero scale factor not allowed</source>
-      <translation type="unfinished">Zero scale factor not allowed</translation>
+      <translation>No se permite un factor de escala de cero</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_scale.py" line="224"/>
@@ -4750,12 +4747,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="98"/>
       <source>Cannot clone objects without a shape, aborting</source>
-      <translation type="unfinished">Cannot clone objects without a shape, aborting</translation>
+      <translation>No se puede clonar objetos sin una forma, abortando</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_clone.py" line="102"/>
       <source>Cannot clone objects without a shape, skipping them</source>
-      <translation type="unfinished">Cannot clone objects without a shape, skipping them</translation>
+      <translation>No se puede clonar objetos sin una forma, ignorándolos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_downgrade.py" line="75"/>
@@ -4816,7 +4813,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="175"/>
       <source>Number of elements must be at least 2</source>
-      <translation type="unfinished">Number of elements must be at least 2</translation>
+      <translation>El número de elementos debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
@@ -4869,12 +4866,12 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
       <source>Number of elements must be at least 1</source>
-      <translation type="unfinished">Number of elements must be at least 1</translation>
+      <translation>El número de elementos debe ser al menos 1</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
-      <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
+      <translation>En el modo lineal, se debe seleccionar al menos 1 eje</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
@@ -4990,7 +4987,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
       <source>Number of layers must be at least 2</source>
-      <translation type="unfinished">Number of layers must be at least 2</translation>
+      <translation>El número de capas debe ser al menos 2</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
@@ -5002,7 +4999,7 @@ The final angle will be the base angle plus this amount.</translation>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
       <source>Tangential distance cannot be 0</source>
-      <translation type="unfinished">Tangential distance cannot be 0</translation>
+      <translation>La distancia tangencial no puede ser 0</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_circulararray.py" line="211"/>
@@ -6218,7 +6215,7 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <source>Download of DXF libraries failed.
 Please install the DXF Library addon manually
 from menu Tools → Addon Manager</source>
-      <translation>La descarga de las librerías DXF falló.
+      <translation>La descarga de las bibliotecas DXF falló.
 Por favor instale el complemento de la biblioteca de DXF manualmente
 desde el menú Herramientas → Administrador de complementos</translation>
     </message>
@@ -7951,7 +7948,7 @@ más allá de la línea de cota</translation>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="81"/>
       <source>Annotation Styles</source>
-      <translation type="unfinished">Annotation Styles</translation>
+      <translation>Estilos de anotación</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_annotationstyleeditor.py" line="85"/>
@@ -8610,12 +8607,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="50"/>
       <source>Apply Current Style</source>
-      <translation type="unfinished">Apply Current Style</translation>
+      <translation>Aplicar estilo actual</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_styles.py" line="53"/>
       <source>Applies the current style to the selected objects and groups</source>
-      <translation type="unfinished">Applies the current style to the selected objects and groups</translation>
+      <translation>Aplica el estilo actual a los objetos y grupos seleccionados</translation>
     </message>
   </context>
   <context>
@@ -8623,12 +8620,12 @@ La dirección de proyección inicial es la opuesta a la dirección de la vista a
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="65"/>
       <source>Highlight Subelements</source>
-      <translation type="unfinished">Highlight Subelements</translation>
+      <translation>Resaltar subelementos</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_subelements.py" line="69"/>
       <source>Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</source>
-      <translation type="unfinished">Highlights the subelements of the selected objects, to be able to move, rotate, and scale them</translation>
+      <translation>Resalta los subelementos de los objetos seleccionados, para poder moverlos, rotarlos y escalarlos</translation>
     </message>
   </context>
   <context>

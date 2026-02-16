@@ -27,7 +27,7 @@
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2989"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="345"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="376"/>
       <source>Enum</source>
       <translation>Énumération</translation>
     </message>
@@ -141,7 +141,7 @@
       <translation>Activer/désactiver des éléments du réseau</translation>
     </message>
     <message>
-      <location filename="../TaskView/TaskImage.cpp" line="256"/>
+      <location filename="../TaskView/TaskImage.cpp" line="260"/>
       <location filename="../TaskView/TaskOrientation.cpp" line="66"/>
       <source>Edit image</source>
       <translation>Modifier une image</translation>
@@ -925,7 +925,7 @@ entraîner une perte de données !</translation>
     <name>Gui::Dialog::DlgAddProperty</name>
     <message>
       <location filename="../Dialogs/DlgAddProperty.ui" line="14"/>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="509"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="574"/>
       <source>Add Property</source>
       <translation>Ajouter une propriété</translation>
     </message>
@@ -955,37 +955,37 @@ entraîner une perte de données !</translation>
       <translation>Nom</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="537"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
       <source>Add</source>
       <translation>Ajouter</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="599"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="664"/>
       <source>Invalid group name</source>
       <translation>Nom de groupe invalide</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="602"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="667"/>
       <source>Invalid type name</source>
       <translation>Nom de type invalide</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="608"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="673"/>
       <source>Invalid property name '%1'</source>
       <translation>Nom de propriété invalide « %1 »</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="611"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="676"/>
       <source>Property '%1' already exists</source>
       <translation>La propriété « %1 » existe déjà.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="614"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="679"/>
       <source>'%1' is a constant</source>
       <translation>« %1 » est une constante.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="617"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="682"/>
       <source>'%1' is a unit</source>
       <translation>« %1 » est une unité.</translation>
     </message>
@@ -1855,7 +1855,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
       <source>Duplicate Macro</source>
-      <translation>Dupliquer la macro</translation>
+      <translation>Dupliquer une macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
@@ -2885,8 +2885,7 @@ mais une réponse plus lente à tout changement de scène.</translation>
 The specified value is a factor that will be multiplied with the
 bounding box size of the 3D object that is currently displayed.</source>
       <translation>Distance entre les yeux utilisée pour les projections stéréoscopiques.
-La valeur spécifiée est un facteur qui sera multiplié avec la taille de la
-boîte englobante de l'objet 3D affichée.</translation>
+La valeur spécifiée est un facteur qui sera multiplié avec la taille de la boîte englobante de l'objet 3D affichée.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="502"/>
@@ -3264,7 +3263,7 @@ en plus de la barre de couleur</translation>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="90"/>
       <source>Document save compression level
 (0 = none, 9 = highest, 7 = default)</source>
-      <translation>Enregistrer le niveau de compression du document
+      <translation>Niveau de compression de sauvegarde des documents
 (0 = aucune, 9 = la plus élevée, 7 = par défaut)</translation>
     </message>
     <message>
@@ -3335,7 +3334,7 @@ en plus de la barre de couleur</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="165"/>
       <source>Maximum undo/redo steps</source>
-      <translation>Nombre maximum de fonctions Annuler/Rétablir</translation>
+      <translation>Nombre maximum de fois Annuler/Rétablir</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="172"/>
@@ -3351,7 +3350,7 @@ This feature may slightly increase recomputation time.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="281"/>
       <source>Add thumbnail to project file when saving</source>
-      <translation>Ajouter une vignette au fichier de projet lors de l'enregistrement</translation>
+      <translation>Ajouter une vignette aux fichiers des projets lors de l'enregistrement</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="320"/>
@@ -3378,12 +3377,12 @@ automatically run a file recovery when it is started</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="451"/>
       <source>Add program icon to the generated thumbnail</source>
-      <translation>Ajouter une icône du programme à la vignette générée</translation>
+      <translation>Ajouter une icône du programme aux vignettes générées</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="472"/>
       <source>Save auto-recovery information every</source>
-      <translation>Enregistrer les informations de récupération automatique tous les</translation>
+      <translation>Enregistrer les informations de récupération automatique toutes les</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="529"/>
@@ -3465,12 +3464,12 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
       <source>Company</source>
-      <translation>Société</translation>
+      <translation>Entreprise</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
       <source>Default company name to use for new files</source>
-      <translation>Société par défaut à utiliser pour les nouveaux fichiers</translation>
+      <translation>Nom par défaut de l'entreprise à utiliser pour les nouveaux fichiers</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="683"/>
@@ -3612,7 +3611,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="35"/>
       <source>Image Dimensions</source>
-      <translation>Tailles de l'image</translation>
+      <translation>Dimensions de l'image</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgSettingsImage.ui" line="73"/>
@@ -4205,7 +4204,7 @@ désactivée par ce paramètre.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="421"/>
       <source>Lists the mouse button configs for each chosen navigation setting.
 Select a set and then press the button to view said configurations.</source>
-      <translation>Répertorie les configurations des boutons de la souris pour chaque paramètre de navigation sélectionné. Sélectionner un jeu, puis appuyez
+      <translation>Répertorie les configurations des boutons de la souris pour chaque paramètre de navigation sélectionné. Sélectionner un jeu, puis appuyer
 sur le bouton pour afficher les configurations correspondantes.</translation>
     </message>
     <message>
@@ -4243,7 +4242,7 @@ Un pas du zoom de "1" signifie un facteur de 7.5 pour chaque pas de zoom.</trans
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="724"/>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Désactiver l’inclinaison par geste de l’écran tactile</translation>
+      <translation>Désactiver le geste d'inclinaison lors de zoom par pincement</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="211"/>
@@ -4450,7 +4449,7 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="221"/>
       <source>Record selection in tree view in order to go back/forward using navigation button</source>
-      <translation>Enregistrer la sélection dans l'arborescence pour revenir/avancer par le bouton de navigation</translation>
+      <translation>Enregistrer la sélection dans l'arborescence pour pouvoir avancer/revenir par les boutons de navigation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="234"/>
@@ -4575,7 +4574,7 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="361"/>
       <source>Active container object</source>
-      <translation>Conteneur actif</translation>
+      <translation>Conteneurs actifs</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="374"/>
@@ -4605,7 +4604,7 @@ la sélection de petits éléments.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="328"/>
       <source>Object being edited</source>
-      <translation>Objet en cours de modification</translation>
+      <translation>Objets en cours de modification</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="150"/>
@@ -5045,7 +5044,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../MouseButtons.ui" line="68"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="88"/>
@@ -5270,7 +5269,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="231"/>
@@ -5715,7 +5714,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="680"/>
       <source>Duplicate Subshape</source>
-      <translation>Dupliquer la sous-forme</translation>
+      <translation>Dupliquer une sous-forme</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="656"/>
@@ -7955,12 +7954,12 @@ Check the report view for more details.</source>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="359"/>
+      <location filename="../StartupProcess.cpp" line="372"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Ce système utilise OpenGL %1.%2. FreeCAD nécessite OpenGL 2.0 ou supérieur. Mettre à jour le pilote graphique et/ou la carte graphique si nécessaire.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="370"/>
+      <location filename="../StartupProcess.cpp" line="383"/>
       <source>Invalid OpenGL Version</source>
       <translation>Version d'OpenGL non valide</translation>
     </message>
@@ -8359,7 +8358,7 @@ Continue?</source>
       <translation>Trop de notifications non intrusives ouvertes. Des notifications sont omises !</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1412"/>
+      <location filename="../Document.cpp" line="1419"/>
       <source>Identical physical path detected. It may cause unwanted overwrite of existing document!
 
 </source>
@@ -8368,44 +8367,44 @@ Continue?</source>
 </translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1413"/>
+      <location filename="../Document.cpp" line="1420"/>
       <source>Are you sure you want to continue?</source>
       <translation>Êtes-vous sûr de vouloir continuer ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1439"/>
+      <location filename="../Document.cpp" line="1446"/>
       <source>Check report view for more…</source>
       <translation>Consulter la vue rapport pour plus de…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1443"/>
+      <location filename="../Document.cpp" line="1450"/>
       <source>Physical path:</source>
       <translation>Chemin d'accès physique :</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1444"/>
       <location filename="../Document.cpp" line="1451"/>
+      <location filename="../Document.cpp" line="1458"/>
       <source>Document:</source>
       <translation>Document :</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1445"/>
       <location filename="../Document.cpp" line="1452"/>
+      <location filename="../Document.cpp" line="1459"/>
       <source>Path:</source>
       <translation>Chemin d'accès :</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1463"/>
+      <location filename="../Document.cpp" line="1470"/>
       <source>Identical physical path</source>
       <translation>Chemin d'accès physique identique</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1475"/>
+      <location filename="../Document.cpp" line="1482"/>
       <source>Could not save document</source>
       <translation>Impossible d'enregistrer le document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1476"/>
+      <location filename="../Document.cpp" line="1483"/>
       <source>There was an issue trying to save the file. This may be because some of the parent folders do not exist, or you do not have sufficient permissions, or for other reasons. Error details:
 
 "%1"
@@ -8418,107 +8417,107 @@ Would you like to save the file with a different name?</source>
 Voulez-vous enregistrer le fichier avec un nom différent ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1490"/>
-      <location filename="../Document.cpp" line="1648"/>
-      <location filename="../Document.cpp" line="1750"/>
+      <location filename="../Document.cpp" line="1497"/>
+      <location filename="../Document.cpp" line="1655"/>
+      <location filename="../Document.cpp" line="1757"/>
       <source>Saving aborted</source>
       <translation>Sauvegarde interrompue</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1536"/>
+      <location filename="../Document.cpp" line="1543"/>
       <source>Save dependent files</source>
       <translation>Enregistrer les fichiers dépendants</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1537"/>
+      <location filename="../Document.cpp" line="1544"/>
       <source>The file contains external dependencies. Do you want to save the dependent files, too?</source>
       <translation>Le fichier contient des dépendances externes. Voulez-vous également enregistrer les fichiers dépendants ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1583"/>
-      <location filename="../Document.cpp" line="1641"/>
+      <location filename="../Document.cpp" line="1590"/>
+      <location filename="../Document.cpp" line="1648"/>
       <source>Saving document failed</source>
       <translation>L'enregistrement du document a échoué</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1598"/>
+      <location filename="../Document.cpp" line="1605"/>
       <source>Save document under new filename…</source>
       <translation>Enregistrer le document sous le nouveau nom de fichier…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1725"/>
+      <location filename="../Document.cpp" line="1732"/>
       <source>Save a copy of the document under new filename…</source>
       <translation>Enregistrer une copie du document sous le nouveau nom de fichier…</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1607"/>
-      <location filename="../Document.cpp" line="1730"/>
+      <location filename="../Document.cpp" line="1614"/>
+      <location filename="../Document.cpp" line="1737"/>
       <source>Save %1 Document</source>
       <translation>Enregistrer le document %1</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1609"/>
+      <location filename="../Document.cpp" line="1616"/>
       <source>Document</source>
       <translation>Document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1663"/>
-      <location filename="../Document.cpp" line="1713"/>
+      <location filename="../Document.cpp" line="1670"/>
+      <location filename="../Document.cpp" line="1720"/>
       <source>Failed to save document</source>
       <translation>Impossible d'enregistrer le document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1664"/>
+      <location filename="../Document.cpp" line="1671"/>
       <source>Documents contains cyclic dependencies. Do you still want to save them?</source>
       <translation>Les documents contiennent des dépendances cycliques. Voulez-vous les enregistrer ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="1732"/>
+      <location filename="../Document.cpp" line="1739"/>
       <source>%1 document (*.FCStd)</source>
       <translation>Document %1 (*.FCStd)</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2406"/>
+      <location filename="../Document.cpp" line="2413"/>
       <source>Document not closable</source>
       <translation>Impossible de fermer le document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2407"/>
+      <location filename="../Document.cpp" line="2414"/>
       <source>The document is not closable for the moment.</source>
       <translation>Le document ne peut pas être fermé pour le moment.</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2447"/>
+      <location filename="../Document.cpp" line="2454"/>
       <source>Failed to save document '%1'. Would you like to cancel the closure?</source>
       <translation>Le document "%1"n'a pas été enregistré. Voulez-vous annuler la fermeture ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2449"/>
+      <location filename="../Document.cpp" line="2456"/>
       <source>Document saving failed. Would you like to cancel the closure?</source>
       <translation>L'enregistrement du document a échoué. Voulez-vous annuler la fermeture ?</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2454"/>
+      <location filename="../Document.cpp" line="2461"/>
       <source>Unable to save document</source>
       <translation>Impossible d'enregistrer le document</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Undo</source>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2811"/>
+      <location filename="../Document.cpp" line="2818"/>
       <source>Redo</source>
       <translation>Rétablir</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2814"/>
+      <location filename="../Document.cpp" line="2821"/>
       <source>There are grouped transactions in the following documents with other preceding transactions</source>
       <translation>Il y a des opérations regroupées dans les documents suivants avec d'autres opérations précédentes</translation>
     </message>
     <message>
-      <location filename="../Document.cpp" line="2819"/>
+      <location filename="../Document.cpp" line="2826"/>
       <source>Choose 'Yes' to roll back all preceding transactions.
 Choose 'No' to roll back in the active document only.
 Choose 'Abort' to abort</source>
@@ -8586,12 +8585,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ouvrir le navigateur système.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2555"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Mémoire insuffisante</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2556"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Mémoire insuffisante pour afficher les données.</translation>
     </message>
@@ -8731,12 +8730,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'importer tous les liens</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="926"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="977"/>
       <source>Add property</source>
       <translation>Ajouter une propriété</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgAddProperty.cpp" line="927"/>
+      <location filename="../Dialogs/DlgAddProperty.cpp" line="978"/>
       <source>Failed to add property to '%1': %2</source>
       <translation>Impossible d'ajouter la propriété à "%1" : %2</translation>
     </message>
@@ -9034,18 +9033,18 @@ sera perdue.</translation>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="259"/>
       <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation>Le groupe « %1 » contient %2 objet(s). Voulez-vous également les supprimer ?</translation>
+      <translation>Le groupe « %1 » contient %2 objet(s). Faut-il également les supprimer ?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="265"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
-      <translation>Le groupe « %1 » contient %2 enfants directs et %3 descendants au total (y compris les groupes
-imbriqués). Voulez-vous tous les supprimer de manière récursive ?</translation>
+      <translation>Le groupe « %1 » contient %2 enfants directs et %3 descendants au total (y compris les groupes imbriqués). Faut-il tous les supprimer de
+manière récursive ?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="276"/>
       <source>Delete group contents recursively?</source>
-      <translation>Supprimer le contenu du groupe de manière récursive ?</translation>
+      <translation>Faut-il supprimer le contenu du groupe de manière récursive ?</translation>
     </message>
   </context>
   <context>
@@ -9056,7 +9055,7 @@ imbriqués). Voulez-vous tous les supprimer de manière récursive ?</translatio
       <translation>Non autorisé :</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Sélection non autorisée par filtre</translation>
     </message>
@@ -10323,7 +10322,8 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Durée maximale d'affichage des notifications (sauf si l'on clique sur les boutons de la souris). Cela contrôle également le moment où les notifications de l'utilisateur seront supprimées si le paramètre "Supprimer automatiquement les notifications utilisateurs" est coché.</translation>
+      <translation>Durée maximale d'affichage des notifications (sauf si les boutons de la souris sont cliqués). Cela contrôle également le moment où les
+notifications de l'utilisateur seront supprimées si le paramètre « Supprimer automatiquement les notifications utilisateur » est coché.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
@@ -10540,7 +10540,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="173"/>
       <source>Remember active workbench by tab</source>
-      <translation>Mémoriser l'atelier actif par onglet</translation>
+      <translation>Mémoriser l'atelier actif de chaque onglet</translation>
     </message>
   </context>
   <context>
@@ -10636,7 +10636,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="140"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
@@ -10651,7 +10651,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="194"/>
       <source>Width</source>
-      <translation>Épaisseur</translation>
+      <translation>Largeur</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="214"/>
@@ -12385,7 +12385,7 @@ activée ou désactivée.</translation>
       <location filename="../TaskTransform.ui" line="600"/>
       <location filename="../TaskTransform.ui" line="613"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
   </context>
   <context>
@@ -12984,7 +12984,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1282"/>
       <source>Duplicate Selecti&amp;on</source>
-      <translation>Dupliquer la &amp;sélection</translation>
+      <translation>Dupliquer une &amp;sélection</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1283"/>
@@ -13470,7 +13470,8 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="50"/>
       <source>Creates a part, which is a general-purpose container to group objects so they act as a unit in the 3D view. It is intended to arrange objects that have a part TopoShape, like part primitives, Part Design bodies, and other parts.</source>
-      <translation>Crée un conteneur polyvalent permettant de regrouper des objets afin qu'ils agissent comme une unité dans la vue 3D. Il est destiné à organiser les objets qui ont une TopoShape de Part, comme les primitives de Part, les corps de PartDesign et d'autres pièces.</translation>
+      <translation>Crée un conteneur polyvalent permettant de regrouper des objets afin qu'ils agissent comme une unité dans la vue 3D. Il est destiné à
+organiser les objets qui ont une TopoShape de Part, comme les primitives de Part, les corps de PartDesign et d'autres pièces.</translation>
     </message>
   </context>
   <context>
@@ -13483,8 +13484,8 @@ d'assemblages complexes.</translation>
     <message>
       <location filename="../CommandStructure.cpp" line="122"/>
       <source>Creates a group, which is a general-purpose container to group objects in the tree view, regardless of their data type. It is a simple folder to organize the objects in a model.</source>
-      <translation>Crée un groupe, qui est un conteneur polyvalent permettant de regrouper des objets dans l'arborescence, quel que soit leur type de données.
-Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.</translation>
+      <translation>Crée un groupe, conteneur polyvalent permettant de regrouper des objets dans l'arborescence, quel que soit leur type de données. Il s'agit
+d'un simple dossier permettant d'organiser les objets dans un modèle.</translation>
     </message>
   </context>
   <context>
@@ -14069,7 +14070,7 @@ Il s'agit d'un simple dossier permettant d'organiser les objets dans un modèle.
     <message>
       <location filename="../CommandView.cpp" line="3717"/>
       <source>Records the selection in the tree view in order to go back/forward using the navigation buttons</source>
-      <translation>Enregistre la sélection dans l'arborescence afin de pouvoir revenir en arrière/avancer à l'aide des boutons de navigation.</translation>
+      <translation>Enregistre la sélection dans l'arborescence pour pouvoir avancer/revenir par les boutons de navigation.</translation>
     </message>
   </context>
   <context>
@@ -14325,7 +14326,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14333,7 +14334,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14535,12 +14536,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Oui</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Non</translation>
     </message>

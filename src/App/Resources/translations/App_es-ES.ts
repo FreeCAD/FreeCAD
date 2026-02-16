@@ -35,9 +35,9 @@ It is recommended that the user right-click the root of the document and select 
 The user should then click the Refresh button in the main toolbar.
 </source>
       <translation>
-Es recomendado que el usuario haga clic derecho en la raíz del documento y seleccione la opción de "Marcar para recalcular".
+Se recomienda que el usuario haga clic derecho en la raíz del documento y seleccione la opción de "Marcar para recalcular".
 
-El usuario deberá hacer clic en el botón de actualizar en la barra de herramientas.
+El usuario deberá hacer clic en el botón "Actualizar" en la barra de herramientas.
 </translation>
     </message>
   </context>

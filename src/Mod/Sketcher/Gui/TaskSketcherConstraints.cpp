@@ -107,6 +107,88 @@ public:
     }
     ~ConstraintItem() override
     {}
+
+    QString getName() const
+    {
+        const Sketcher::Constraint* constraint = sketch->Constraints[ConstraintNbr];
+
+        if (!constraint->Name.empty()) {
+            return QString::fromStdString(constraint->Name);
+        }
+
+        QString type;
+        switch (constraint->Type) {
+            case Sketcher::Horizontal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Horizontal");
+                break;
+            case Sketcher::Vertical:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Vertical");
+                break;
+            case Sketcher::Coincident:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Coincident");
+                break;
+            case Sketcher::PointOnObject:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "PointOnObject");
+                break;
+            case Sketcher::Parallel:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Parallel");
+                break;
+            case Sketcher::Perpendicular:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Perpendicular");
+                break;
+            case Sketcher::Tangent:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Tangent");
+                break;
+            case Sketcher::Equal:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Equal");
+                break;
+            case Sketcher::Symmetric:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Symmetric");
+                break;
+            case Sketcher::Block:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Lock");
+                break;
+            case Sketcher::Distance:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Distance");
+                break;
+            case Sketcher::DistanceX:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceX");
+                break;
+            case Sketcher::DistanceY:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "DistanceY");
+                break;
+            case Sketcher::Radius:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Radius");
+                break;
+            case Sketcher::Diameter:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Diameter");
+                break;
+            case Sketcher::Angle:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Angle");
+                break;
+            case Sketcher::Weight:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Weight");
+                break;
+            case Sketcher::SnellsLaw:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Snell");
+                break;
+            case Sketcher::InternalAlignment:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Alignment");
+                break;
+            /*case Sketcher::Group:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Group");
+                break;
+            case Sketcher::Text:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Text");
+                break;*/
+            default:
+                type = QCoreApplication::translate("SketcherGui::ConstraintView", "Constraint");
+                break;
+        }
+
+        return QStringLiteral("%1-%2").arg(ConstraintNbr + 1).arg(type);
+    }
+
     void setData(int role, const QVariant& value) override
     {
         if (role == Qt::EditRole)
@@ -137,9 +219,7 @@ public:
                                                                         ConstraintNbr));
         }
         else if (role == Qt::DisplayRole) {
-            QString name =
-                QString::fromStdString(Sketcher::PropertyConstraintList::getConstraintName(
-                    constraint->Name, ConstraintNbr));
+            QString name = getName();
 
             switch (constraint->Type) {
                 case Sketcher::Horizontal:

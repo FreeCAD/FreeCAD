@@ -391,16 +391,36 @@ class Component(ArchIFC.IfcProduct):
         obj: <App::FeaturePython>
             The component object.
         """
+        import Part
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if self.ensureBase(obj) is False:
+            # This will fall through if the Component object has no base, allowing the base shapeto
+            # be cleared
             return
-        if obj.Base:
-            shape = self.spread(obj, obj.Base.Shape)
-            if obj.Additions or obj.Subtractions:
-                shape = self.processSubShapes(obj, shape)
-            obj.Shape = shape
+
+        # Only proceed if a Base object is linked and contains valid geometry.
+        if obj.Base and hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
+            # the original source.
+            base_shape = Part.Shape(obj.Base.Shape)
+
+            # Reset the shape's internal placement to Identity. This strips the placement
+            # inherited from the Base object, ensuring the geometry is centered at (0,0,0) for
+            # Boolean operations in processSubShapes. This also prevents the shape's placement from
+            # overwriting the Component's own Placement property during assignment in applyShape.
+            base_shape.Placement = FreeCAD.Placement()
+
+            # Localize the CSG shapes: pass the object's placement to processSubShapes, so that the
+            # placements of any additions and subtractions are also localized to the local origin of
+            # the Arch Component.
+            final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
+            self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
+        else:
+            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
+            # is not updated when the base is removed.
+            obj.Shape = Part.Shape()
 
     def dumps(self):
         return None
@@ -1267,6 +1287,8 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
+        # TODO: this method has a third undocumented state: None, which is returned if the object
+        # has no Base. This should either be fixed if unintended, or documented if intended.
 
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):
@@ -1341,12 +1363,20 @@ class AreaCalculator:
         for prop in ["VerticalArea", "HorizontalArea", "PerimeterLength"]:
             setattr(self.obj, prop, 0)
 
-    def isFaceVertical(self, face):
+    def isFaceVertical(self, face, face_index=None):
         """Determine if a face is vertical.
 
         A face is considered vertical if:
         - Its normal vector forms an angle close to 90 degrees with the Z-axis.
         - The projected face has an area of zero.
+
+        Parameters
+        ----------
+        face : Part.Face
+            The face object to be checked.
+        face_index : str, optional
+            The face's 1-based index identifier, used for debugging error messages.
+            Defaults to None.
 
         Notes
         -----
@@ -1359,6 +1389,8 @@ class AreaCalculator:
         import Part
         import DraftGeomUtils
         import TechDraw
+
+        face_name = f" Face{face_index}" if face_index is not None else ""
 
         if face.Surface.TypeId == "Part::GeomCylinder":
             angle = face.Surface.Axis.getAngle(FreeCAD.Vector(0, 0, 1))
@@ -1380,7 +1412,7 @@ class AreaCalculator:
                     projectedArea = Part.Face(wires).Area
             except Part.OCCError:
                 FreeCAD.Console.PrintWarning(
-                    translate("Arch", f"Could not project face from {self.obj.Label}\n")
+                    translate("Arch", f"Could not project face{face_name} from {self.obj.Label}\n")
                 )
                 return False
 
@@ -1391,7 +1423,7 @@ class AreaCalculator:
             FreeCAD.Console.PrintWarning(
                 translate(
                     "Arch",
-                    f"Could not determine if a face from {self.obj.Label}"
+                    f"Could not determine if face{face_name} from {self.obj.Label}"
                     " is vertical: normalAt() failed\n",
                 )
             )
@@ -1429,8 +1461,8 @@ class AreaCalculator:
         horizontalAreaFaces = []
 
         # Compute vertical area and collect faces to be projected for the horizontal area
-        for face in self.obj.Shape.Faces:
-            if self.isFaceVertical(face):
+        for i, face in enumerate(self.obj.Shape.Faces, start=1):
+            if self.isFaceVertical(face, face_index=i):
                 verticalArea += face.Area
             else:
                 horizontalAreaFaces.append(face)
@@ -1459,6 +1491,15 @@ class AreaCalculator:
         import Part
         import TechDraw
         import DraftGeomUtils
+
+        # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
+        # See also Draft/draftobjects/hatch.py.
+        param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/debug")
+        if "allowCrazyEdge" not in param_grp.GetBools():
+            old_allow_crazy_edge = None
+        else:
+            old_allow_crazy_edge = param_grp.GetBool("allowCrazyEdge")
+        param_grp.SetBool("allowCrazyEdge", True)
 
         direction = FreeCAD.Vector(0, 0, 1)
         projectedFaces = []
@@ -1496,6 +1537,11 @@ class AreaCalculator:
                 )
                 self.resetAreas()
                 return
+
+        if old_allow_crazy_edge is None:
+            param_grp.RemBool("allowCrazyEdge")
+        else:
+            param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
 
         if projectedFaces:
             fusedFace = projectedFaces.pop()
@@ -2068,6 +2114,10 @@ class ComponentTaskPanel:
     """
 
     def __init__(self):
+        """
+        Initializes the task panel. The transaction context is implicitly opened by the C++ layer
+        when entering edit mode.
+        """
         # the panel has a tree widget that contains categories
         # for the subcomponents, such as additions, subtractions.
         # the categories are shown only if they are not empty.
@@ -2152,6 +2202,8 @@ class ComponentTaskPanel:
         )
         self.update()
 
+        self.doc = FreeCAD.ActiveDocument
+
     def isAllowedAlterSelection(self):
         """Indicate whether this task dialog allows other commands to modify
         the selection while it is open.
@@ -2177,9 +2229,9 @@ class ComponentTaskPanel:
         return True
 
     def getStandardButtons(self):
-        """Add the standard ok button."""
+        """Add the standard Ok/Cancel buttons."""
 
-        return QtGui.QDialogButtonBox.Ok
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
         """This method is run as the callback when the user selects an item in the tree.
@@ -2295,6 +2347,7 @@ class ComponentTaskPanel:
                     mod = a
             for o in FreeCADGui.Selection.getSelection():
                 addToComponent(self.obj, o, mod)
+            self.obj.recompute()
         self.update()
 
     def removeElement(self):
@@ -2316,15 +2369,26 @@ class ComponentTaskPanel:
             # Fallback for older proxies that might not have the method
             removeFromComponent(self.obj, element_to_remove)
 
+        self.obj.recompute()
         self.update()
 
     def accept(self):
         """This method runs as a callback when the user selects the ok button.
 
         Recomputes the document, and leave edit mode.
-        """
 
+        The transaction is implicitly committed by the C++ layer during resetEdit.
+        """
         FreeCAD.ActiveDocument.recompute()
+        FreeCADGui.ActiveDocument.resetEdit()
+        return True
+
+    def reject(self):
+        """
+        Aborts the edit session. An explicit abort is required to prevent the C++ layer from
+        committing changes during resetEdit.
+        """
+        self.doc.abortTransaction()
         FreeCADGui.ActiveDocument.resetEdit()
         return True
 

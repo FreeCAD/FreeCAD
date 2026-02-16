@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -104,19 +106,6 @@ void ViewProviderTransformed::updatePreview()
 
     try {
         if (auto feature = getObject<PartDesign::Transformed>()) {
-            const Part::Feature* supportFeature = feature->getBaseObject();
-            const Part::TopoShape& supportShape = supportFeature->Shape.getShape();
-
-            if (supportShape.isNull()) {
-                return;
-            }
-
-            Base::Matrix4D invertedSupportMatrix;
-            Part::TopoShape::convertToMatrix(
-                supportShape.getShape().Location().Transformation().Inverted(),
-                invertedSupportMatrix
-            );
-
             auto originals = feature->getOriginals();
             auto transforms = feature->getTransformations(originals);
 
@@ -133,7 +122,7 @@ void ViewProviderTransformed::updatePreview()
                 auto sep = new SoSeparator;
 
                 auto transformNode = new SoTransform;
-                transformNode->setMatrix(convert(transformMatrix * invertedSupportMatrix));
+                transformNode->setMatrix(convert(transformMatrix));
 
                 sep->addChild(transformNode);
                 sep->addChild(pcPreviewShape);

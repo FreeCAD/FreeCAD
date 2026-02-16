@@ -946,7 +946,7 @@ so that self intersection is avoided.</source>
       <translation>复制零件设计对象</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation>移动特征到实体中</translation>
     </message>
@@ -1422,12 +1422,12 @@ If zero, it is equal to Radius2</source>
       <translation>交集</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation>布尔参数</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
@@ -1542,17 +1542,17 @@ If zero, it is equal to Radius2</source>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>空的实体列表</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>实体列表不能空</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>布尔值： 接受： 输入错误</translation>
     </message>
@@ -3103,27 +3103,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation>向后移动特征…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>从列表中选择特征</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation>移动尖端</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
       <translation>将尖端设置为最后一个特征？</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>被移动特征出现在当前设置的结算位置之后。</translation>
     </message>
@@ -3402,8 +3402,8 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>选择错误</translation>
     </message>
@@ -3430,27 +3430,27 @@ This may lead to unexpected results.</source>
       <translation>没有其他实体可以移动</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>无法移动实体的基础特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
       <translation>从同一实体上选择一个或多个特征。</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>实体的起始</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>依赖冲突</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3520,12 +3520,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>要使用此特征, 它需隶属于文档中的实体对象。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>特征不在零件内</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>要使用此特征, 它需隶属于文档中的零件对象。</translation>
     </message>
@@ -4424,12 +4424,12 @@ over 90: larger hole radius at the bottom</source>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>链接对象不是 PartDesign 功能</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>提示形状为空</translation>
     </message>
@@ -4466,7 +4466,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
@@ -4475,9 +4475,9 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation>结果有多个实体：在活动实体中启用“允许复合”</translation>
     </message>
@@ -4492,22 +4492,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>不支持的布尔操作</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation>无法创建总长度为零的垫片。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>无法创建总长度为零的口袋。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation>未生成任何拉伸几何体。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation>结果融合的拉伸为 null。</translation>
     </message>
@@ -4515,7 +4515,7 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>结果形状不是实体</translation>
     </message>
@@ -4587,19 +4587,19 @@ over 90: larger hole radius at the bottom</source>
   - 选中的草图不属于活动实体。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>无法获取轮廓形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>创建失败，方向与草图的法线矢量正交</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>从草图创建面失败</translation>
     </message>
@@ -4839,7 +4839,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
       <translation>拉伸：创建外壳失败</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>无法从草图立建面。
@@ -5079,7 +5079,7 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>参考坐标轴无效</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>与基本特征联合失败</translation>
     </message>
@@ -5094,17 +5094,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
       <translation>没有与变换特征链接的原始特征。</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>无法变换无效的支持形状</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>添加/减料的特性形状为空</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>只能变换增料和减料特征</translation>
     </message>

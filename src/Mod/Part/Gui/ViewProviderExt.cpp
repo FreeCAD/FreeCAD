@@ -759,7 +759,7 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
 
     if (!element || !element[0]) {
         auto color = ShapeAppearance.getDiffuseColor();
-        color.setTransparency(Base::fromPercent(Transparency.getValue()));
+        color.setTransparency(ShapeAppearance.getTransparency());
         ret["Face"] = color;
         ret["Edge"] = LineColor.getValue();
         ret["Vertex"] = PointColor.getValue();
@@ -773,18 +773,16 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
             color.setTransparency(Base::fromPercent(Transparency.getValue()));
             bool singleColor = true;
             for (int i = 0; i < size; ++i) {
-                Base::Color faceColor = ShapeAppearance.getDiffuseColor(i);
-                faceColor.setTransparency(ShapeAppearance.getTransparency(i));
-                if (faceColor != color) {
-                    ret[std::string(element, 4) + std::to_string(i + 1)] = faceColor;
+                auto color_i = ShapeAppearance.getDiffuseColor(i);
+                color_i.setTransparency(ShapeAppearance.getTransparency(i));
+                if (color_i != color) {
+                    ret[std::string(element, 4) + std::to_string(i + 1)] = color_i;
                 }
-                Base::Color firstFaceColor = ShapeAppearance.getDiffuseColor(0);
-                firstFaceColor.setTransparency(ShapeAppearance.getTransparency(0));
-                singleColor = singleColor && (faceColor == firstFaceColor);
+                singleColor = singleColor && color == color_i;
             }
             if (size > 0 && singleColor) {
                 color = ShapeAppearance.getDiffuseColor(0);
-                color.setTransparency(ShapeAppearance.getTransparency(0));
+                color.setTransparency(ShapeAppearance.getTransparency());
                 ret.clear();
             }
             ret["Face"] = color;
@@ -792,13 +790,17 @@ std::map<std::string, Base::Color> ViewProviderPartExt::getElementColors(const c
         else {
             int idx = atoi(element + 4);
             if (idx > 0 && idx <= size) {
-                ret[element] = ShapeAppearance.getDiffuseColor(idx - 1);
+                auto color_i = ShapeAppearance.getDiffuseColor(idx - 1);
+                color_i.setTransparency(ShapeAppearance.getTransparency(idx - 1));
+                ret[element] = color_i;
             }
             else {
-                ret[element] = ShapeAppearance.getDiffuseColor();
+                auto color_i = ShapeAppearance.getDiffuseColor();
+                color_i.setTransparency(ShapeAppearance.getTransparency());
+                ret[element] = color_i;
             }
             if (size == 1) {
-                ret[element].setTransparency(Base::fromPercent(Transparency.getValue()));
+                ret[element].setTransparency(ShapeAppearance.getTransparency());
             }
         }
     }
@@ -1467,6 +1469,12 @@ void ViewProviderPartExt::setupCoinGeometry(
 
 void ViewProviderPartExt::updateVisual()
 {
+    TopoDS_Shape shape = getRenderedShape().getShape();
+
+    if (lastRenderedShape.IsPartner(shape)) {
+        return;
+    }
+
     Gui::SoUpdateVBOAction action;
     action.apply(this->faceset);
 
@@ -1483,10 +1491,8 @@ void ViewProviderPartExt::updateVisual()
     haction.apply(this->nodeset);
 
     try {
-        TopoDS_Shape cShape = getRenderedShape().getShape();
-
         setupCoinGeometry(
-            cShape,
+            shape,
             coords,
             faceset,
             norm,
@@ -1496,6 +1502,8 @@ void ViewProviderPartExt::updateVisual()
             AngularDeflection.getValue(),
             NormalsFromUV
         );
+
+        lastRenderedShape = shape;
 
         VisualTouched = false;
     }

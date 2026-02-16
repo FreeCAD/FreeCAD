@@ -646,15 +646,15 @@ void CmdTechDrawCenterLineGroup::languageChange()
     QList<QAction*> a = pcAction->actions();
 
     QAction* arc1 = a[0];
-    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline Faces"));
+    arc1->setText(QApplication::translate("CmdTechDrawCenterLineGroup", "Centerline on Face"));
     arc1->setToolTip(QApplication::translate("TechDraw_FaceCenterLine", "Adds a centerline to selected faces"));
     arc1->setStatusTip(arc1->toolTip());
     QAction* arc2 = a[1];
-    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline 2 Lines"));
+    arc2->setText(QApplication::translate("Cmd2LineCenterLine", "Centerline Between 2 Lines"));
     arc2->setToolTip(QApplication::translate("TechDraw_2LineCenterLine", "Adds a centerline between 2 selected lines"));
     arc2->setStatusTip(arc2->toolTip());
     QAction* arc3 = a[2];
-    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline 2 Points"));
+    arc3->setText(QApplication::translate("Cmd2PointCenterLine", "Centerline Between 2 Points"));
     arc3->setToolTip(QApplication::translate("TechDraw_2PointCenterLine", "Adds a centerline between 2 selected points"));
     arc3->setStatusTip(arc3->toolTip());
 }
@@ -676,7 +676,7 @@ CmdTechDrawFaceCenterLine::CmdTechDrawFaceCenterLine()
 {
     sAppModule      = "TechDraw";
     sGroup          = QT_TR_NOOP("TechDraw");
-    sMenuText       = QT_TR_NOOP("Centerline Between 2 Faces");
+    sMenuText       = QT_TR_NOOP("Centerline on Face");
     sToolTipText    = QT_TR_NOOP("Adds a centerline to selected faces");
     sWhatsThis      = "TechDraw_FaceCenterLine";
     sStatusTip      = sToolTipText;

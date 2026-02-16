@@ -3197,7 +3197,7 @@ Remarque : n'a pas d'effet si un solide a été sélectionné.</translation>
     <message>
       <location filename="../ui/ElementRotation1D.ui" line="89"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../ui/MeshBoundaryLayer.ui" line="14"/>
@@ -4332,7 +4332,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Sélectionner une géométrie maître de type : face. Cliquer sur Ajouter ou Supprimer</translation>
+      <translation>Sélectionner une géométrie maîtresse de type : face. Cliquer sur Ajouter ou Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>
@@ -6600,7 +6600,7 @@ No matching module was found in the current Python path.</source>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="442"/>
       <source>Rotation</source>
-      <translation>Rotation</translation>
+      <translation>Angle de rotation</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintRigidBody.ui" line="499"/>
@@ -7749,7 +7749,7 @@ Laisser ce champ vide pour utiliser l'exécutable de Python par défaut.</transl
     <message>
       <location filename="../../../femcommands/commands.py" line="838"/>
       <source>Creates a mesh group</source>
-      <translation>Crée un groupe en maillage.</translation>
+      <translation>Regroupe et étiquette les éléments d'un maillage.</translation>
     </message>
   </context>
   <context>

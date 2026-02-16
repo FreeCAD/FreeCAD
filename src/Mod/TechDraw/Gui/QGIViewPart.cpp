@@ -44,6 +44,8 @@
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
 #include <Mod/TechDraw/App/DrawBrokenView.h>
+#include <Mod/TechDraw/App/DrawProjGroup.h>
+#include <Mod/TechDraw/App/DrawProjGroupItem.h>
 
 #include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
@@ -65,6 +67,7 @@
 #include "PathBuilder.h"
 #include "QGIBreakLine.h"
 #include "QGSPage.h"
+#include "QGIProjGroup.h"
 
 using namespace TechDraw;
 using namespace TechDrawGui;
@@ -220,18 +223,23 @@ QPainterPath QGIViewPart::drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const
     double rot = getViewObject()->Rotation.getValue();
     return m_pathBuilder->geomToPainterPath(baseGeom, rot);
 }
+
 void QGIViewPart::updateView(bool update)
 {
-    // Base::Console().message("QGIVP::updateView() - %s\n", getViewObject()->getNameInDocument());
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
-    if (!viewPart)
+    if (!viewPart) {
         return;
-    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
-    if (!vp)
-        return;
+    }
 
-    if (update)
+    auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
+    if (!vp) {
+        return;
+    }
+
+    if (update) {
         draw();
+    }
+
     QGIView::updateView(update);
 }
 
@@ -470,6 +478,7 @@ void QGIViewPart::drawAllVertexes()
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
+    ViewProviderPage* vpPage = vp->getViewProviderPage();
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
 
     const std::vector<TechDraw::VertexPtr>& verts = dvp->getVertexGeometry();
@@ -485,7 +494,8 @@ void QGIViewPart::drawAllVertexes()
             cmItem->setZValue(ZVALUE::VERTEX);
             bool showMark =
                 ( (!isExporting() && vp->ArcCenterMarks.getValue()) ||
-                  (isExporting() && Preferences::printCenterMarks()) );
+                  (isExporting() && Preferences::printCenterMarks()) ||
+                  (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
             cmItem->setVisible(showMark);
         } else {
             //regular Vertex
@@ -498,7 +508,8 @@ void QGIViewPart::drawAllVertexes()
                 item->setRadius(getVertexSize());
                 item->setPrettyNormal();
                 item->setZValue(ZVALUE::VERTEX);
-                item->setVisible(m_isHovered || isSelected());
+                item->setVisible(m_isHovered || isSelected() ||
+                (vpPage->getFrameState() && PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual));
             }
         }
     }
@@ -1353,6 +1364,13 @@ void QGIViewPart::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
         return;
     }
 
+    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
+    ViewProviderPage* vpPage = vp->getViewProviderPage();
+    if (vpPage->getFrameState() &&
+        PreferencesGui::getViewFrameMode() == ViewFrameMode::Manual) {
+        return;
+    }
+
     bool hideCenters = hideCenterMarks();
 
     for (auto& child : childItems()) {
@@ -1416,4 +1434,37 @@ bool QGIViewPart::hideCenterMarks() const
 
     return true;
 }
+
+void QGIViewPart::setMovableFlag()
+{
+    auto* dvp(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (TechDraw::DrawView::isProjGroupItem(dvp)) {
+        setMovableFlagProjGroupItem();
+        return;
+    }
+    QGIView::setMovableFlag();
+}
+
+void QGIViewPart::setMovableFlagProjGroupItem()
+{
+    auto* dpgi(dynamic_cast<TechDraw::DrawProjGroupItem*>(getViewObject()));
+    if (!dpgi) {
+        return;
+    }
+
+    if (dpgi->isLocked()) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+        return;
+    }
+
+    bool isAutoDist{dpgi->getPGroup()->AutoDistribute.getValue()};
+    if (isAutoDist) {
+        setFlag(QGraphicsItem::ItemIsMovable, false);
+        return;
+    }
+
+    // not locked, not autoDistribute
+    setFlag(QGraphicsItem::ItemIsMovable, true);
+}
+
 

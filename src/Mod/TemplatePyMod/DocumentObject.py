@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
 
-# FreeCAD module providing base classes for document objects and view provider  
+# FreeCAD module providing base classes for document objects and view provider
 # (c) 2011 Werner Mayer LGPL
 
 import FreeCAD
@@ -57,9 +57,9 @@ class DocumentObject(object):
                     self.init()
                     self.initialised = True
         self.propertyChanged(prop)
-    def addProperty(self,typ,name='',group='',doc='',attr=0,readonly=False,hidden=False):
+    def addProperty(self,typ,name='',group='',doc='',attr=0,readonly=False,hidden=False,locked=True):
         "adds a new property to this object"
-        return self.__object__.addProperty(typ,name,group,doc,attr,readonly,hidden)
+        return self.__object__.addProperty(typ,name,group,doc,attr,readonly,hidden,locked)
     def supportedProperties(self):
         "lists the property types supported by this object"
         return self.__object__.supportedProperties()
@@ -181,9 +181,9 @@ class ViewProvider(object):
     #    return []
     #def setDisplayMode(self,mode):
     #    return mode
-    def addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False):
+    def addProperty(self,type,name='',group='',doc='',attr=0,readonly=False,hidden=False,locked=True):
         "adds a new property to this object"
-        self.__vobject__.addProperty(type,name,group,doc,attr,readonly,hidden)
+        self.__vobject__.addProperty(type,name,group,doc,attr,readonly,hidden,locked)
     def update(self):
         "this method is executed whenever any of the properties of this ViewProvider changes"
         self.__vobject__.update()
@@ -279,9 +279,9 @@ class Box(DocumentObject):
 
     #-----------------------------INIT----------------------------------------
     def init(self):
-        self.addProperty("App::PropertyLength","Length","Box","Length of the box", locked=True).Length=1.0
-        self.addProperty("App::PropertyLength","Width","Box","Width of the box", locked=True).Width=1.0
-        self.addProperty("App::PropertyLength","Height","Box", "Height of the box", locked=True).Height=1.0
+        self.addProperty("App::PropertyLength","Length","Box","Length of the box").Length=1.0
+        self.addProperty("App::PropertyLength","Width","Box","Width of the box").Width=1.0
+        self.addProperty("App::PropertyLength","Height","Box", "Height of the box").Height=1.0
 
     #-----------------------------BEHAVIOR------------------------------------
     def propertyChanged(self,prop):

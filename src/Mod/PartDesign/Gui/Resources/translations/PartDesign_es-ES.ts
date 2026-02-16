@@ -947,7 +947,7 @@ para que se evite la auto intersección.</translation>
       <translation type="unfinished">Duplicate a Part Design object</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation type="unfinished">Move a feature inside body</translation>
     </message>
@@ -1423,12 +1423,12 @@ If zero, it is equal to Radius2</translation>
       <translation>Común</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="50"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="51"/>
       <source>Boolean Parameters</source>
       <translation>Parámetros booleanos</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="81"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="82"/>
       <source>Remove</source>
       <translation>Quitar</translation>
     </message>
@@ -1543,17 +1543,17 @@ If zero, it is equal to Radius2</translation>
   <context>
     <name>PartDesignGui::TaskDlgBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>Empty body list</source>
       <translation>Lista de cuerpos vacía</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="380"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="384"/>
       <source>The body list cannot be empty</source>
       <translation>La lista de cuerpos no puede estar vacía</translation>
     </message>
     <message>
-      <location filename="../../TaskBooleanParameters.cpp" line="395"/>
+      <location filename="../../TaskBooleanParameters.cpp" line="399"/>
       <source>Boolean: Accept: Input error</source>
       <translation>Booleano: Aceptar: error de entrada</translation>
     </message>
@@ -3104,27 +3104,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation type="unfinished">Move Feature After…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>Seleccionar una función desde la lista</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation type="unfinished">Move Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
       <translation type="unfinished">Set tip to last feature?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>La característica movida aparece después de la punta configurada en ese momento.</translation>
     </message>
@@ -3399,8 +3399,8 @@ This may lead to unexpected results.</source>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>Error de selección</translation>
     </message>
@@ -3427,27 +3427,27 @@ This may lead to unexpected results.</source>
       <translation>No hay otros cuerpos para mover a</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Imposible mover la operación base de un cuerpo.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
       <translation>Seleccione una o más características del mismo cuerpo.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>Principio del cuerpo</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>Violación de dependencias</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3517,12 +3517,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Para poder utilizar esta operación debe pertenecer a un objeto del cuerpo en el documento.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Función no está en una pieza</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Para poder usar esta operación debe pertenecer a una pieza objeto en el documento.</translation>
     </message>
@@ -4422,12 +4422,12 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
   <context>
     <name>Exception</name>
     <message>
-      <location filename="../../../App/Body.cpp" line="402"/>
+      <location filename="../../../App/Body.cpp" line="403"/>
       <source>Linked object is not a PartDesign feature</source>
       <translation>El objeto enlazado no es una característica del diseño de piezas</translation>
     </message>
     <message>
-      <location filename="../../../App/Body.cpp" line="411"/>
+      <location filename="../../../App/Body.cpp" line="412"/>
       <source>Tip shape is empty</source>
       <translation>La forma de la punta está vacía</translation>
     </message>
@@ -4464,7 +4464,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
     <message>
       <location filename="../../../App/FeatureChamfer.cpp" line="192"/>
       <location filename="../../../App/FeatureDraft.cpp" line="332"/>
-      <location filename="../../../App/FeatureBoolean.cpp" line="161"/>
+      <location filename="../../../App/FeatureBoolean.cpp" line="159"/>
       <location filename="../../../App/FeatureFillet.cpp" line="140"/>
       <location filename="../../../App/FeatureHole.cpp" line="2067"/>
       <location filename="../../../App/FeatureLoft.cpp" line="331"/>
@@ -4473,9 +4473,9 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
       <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
       <location filename="../../../App/FeatureGroove.cpp" line="254"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="759"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="775"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="788"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
       <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
     </message>
@@ -4490,22 +4490,22 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <translation>Operación booleana no soportada</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="346"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
       <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
       <translation>No se puede crear un vaciado con una longitud total de cero.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="690"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
       <translation type="unfinished">No extrusion geometry was generated.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="714"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
       <translation type="unfinished">Resulting fused extrusion is null.</translation>
     </message>
@@ -4513,7 +4513,7 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
       <location filename="../../../App/FeaturePipe.cpp" line="521"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="139"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="750"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="764"/>
       <source>Resulting shape is not a solid</source>
       <translation>La forma resultante no es un sólido</translation>
     </message>
@@ -4585,19 +4585,19 @@ más de 90: radio de agujero más grande en la parte inferior</translation>
   - el croquis seleccionado no pertenece al Cuerpo activo.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="395"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
       <source>Failed to obtain profile shape</source>
       <translation>Error al obtener la forma del perfil</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="449"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="454"/>
       <source>Creation failed because direction is orthogonal to sketch's normal vector</source>
       <translation>La creación ha fallado porque la dirección es ortogonal al vector normal del croquis</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureRevolution.cpp" line="176"/>
       <location filename="../../../App/FeatureGroove.cpp" line="154"/>
-      <location filename="../../../App/FeatureExtrude.cpp" line="472"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="477"/>
       <source>Creating a face from sketch failed</source>
       <translation>Error al crear una cara a partir del croquis</translation>
     </message>
@@ -4838,7 +4838,7 @@ No se permite la intersección de entidades de croquis ni múltiples caras en un
       <translation>Proyección aditiva: Error al crear el cascarón</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="803"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="817"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>No se pudo crear la cara a partir del croquis.
@@ -5078,7 +5078,7 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
       <translation>El eje de referencia es inválido</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureExtrude.cpp" line="742"/>
+      <location filename="../../../App/FeatureExtrude.cpp" line="756"/>
       <source>Fusion with base feature failed</source>
       <translation>Falló la fusión con la función base</translation>
     </message>
@@ -5093,17 +5093,17 @@ No se permiten interceptar entidades de croquis o múltiples caras en un croquis
       <translation>No hay originales vinculados a la característica transformada.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="326"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
       <source>Cannot transform invalid support shape</source>
       <translation>No se puede transformar la forma de soporte no válida</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="377"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="397"/>
       <source>Shape of additive/subtractive feature is empty</source>
       <translation>La forma de la característica aditiva/sustractiva está vacía</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureTransformed.cpp" line="368"/>
+      <location filename="../../../App/FeatureTransformed.cpp" line="388"/>
       <source>Only additive and subtractive features can be transformed</source>
       <translation>Sólo las características aditivas y sustractivas pueden ser transformadas</translation>
     </message>

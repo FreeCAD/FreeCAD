@@ -147,6 +147,7 @@ SoDatumLabel::SoDatumLabel()
     SO_NODE_ADD_FIELD(textColor, (SbVec3f(1.0F, 1.0F, 1.0F)));
     SO_NODE_ADD_FIELD(pnts, (SbVec3f(.0F, .0F, .0F)));
     SO_NODE_ADD_FIELD(norm, (SbVec3f(.0F, .0F, 1.F)));
+    SO_NODE_ADD_FIELD(strikethrough, (false));
 
     SO_NODE_ADD_FIELD(name, ("Helvetica"));
     SO_NODE_ADD_FIELD(size, (10.F));
@@ -191,6 +192,7 @@ void SoDatumLabel::drawImage()
     QFont font(QString::fromLatin1(name.getValue(), -1), size.getValue());
     QFontMetrics fm(font);
     QString str = QString::fromUtf8(s[0].getString());
+    QRect rect = fm.boundingRect(str);
 
     int w = Gui::QtTools::horizontalAdvance(fm, str);
     int h = fm.height();
@@ -214,9 +216,13 @@ void SoDatumLabel::drawImage()
         painter.setRenderHint(QPainter::Antialiasing);
     }
 
-    painter.setPen(front);
+    painter.setPen(QPen(front, 2));
     painter.setFont(font);
-    painter.drawText(0, 0, w, h, Qt::AlignLeft, str);
+    painter.drawText(0, fm.ascent() + rect.y(), w, rect.height(), Qt::AlignLeft, str);
+    if (strikethrough.getValue()) {
+        int strikepos = fm.ascent() - fm.strikeOutPos();
+        painter.drawLine(0, strikepos, w, strikepos);
+    }
     painter.end();
 
     Gui::BitmapFactory().convert(image, this->image);

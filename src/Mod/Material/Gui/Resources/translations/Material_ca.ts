@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="176"/>
       <source>Inspect the material properties of the selected object</source>
-      <translation>Inspecciona les propietats del material de l'objecte seleccionat</translation>
+      <translation>Inspeccionar les propietats del material de l'objecte seleccionat</translation>
     </message>
   </context>
   <context>
@@ -78,18 +78,18 @@
       <location filename="../../Array3D.cpp" line="263"/>
       <location filename="../../Array3D.cpp" line="335"/>
       <source>Confirm Delete</source>
-      <translation>Confirma la Supressió</translation>
+      <translation>Confirma la supressió</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="265"/>
       <location filename="../../Array3D.cpp" line="337"/>
       <source>Delete the row?</source>
-      <translation>Suprimir la fila?</translation>
+      <translation>Voleu suprimir la fila?</translation>
     </message>
     <message>
       <location filename="../../Array3D.cpp" line="267"/>
       <source>Removing this will also remove all 2D contents.</source>
-      <translation>En suprimir-ho, també s'eliminarà tots els continguts en 2D.</translation>
+      <translation>En suprimir-ho, també s'eliminarà tots els continguts 2D.</translation>
     </message>
   </context>
   <context>
@@ -390,7 +390,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation>Sub directori: </translation>
+      <translation>Subdirectori: </translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
@@ -1167,13 +1167,13 @@ Si no es marca, s'ordenaran pel seu nom.</translation>
       <location filename="../../ListEdit.cpp" line="142"/>
       <location filename="../../MaterialSave.cpp" line="565"/>
       <source>Confirm Delete</source>
-      <translation>Confirma la Supressió</translation>
+      <translation>Confirma la supressió</translation>
     </message>
     <message>
       <location filename="../../Array2D.cpp" line="172"/>
       <location filename="../../ListEdit.cpp" line="144"/>
       <source>Delete the row?</source>
-      <translation>Suprimir la fila?</translation>
+      <translation>Voleu suprimir la fila?</translation>
     </message>
   </context>
   <context>

@@ -1948,7 +1948,7 @@ that "MAXKOI" needs to be increased.</translation>
       <location filename="../../TaskFemConstraintContact.cpp" line="143"/>
       <location filename="../../TaskFemConstraintContact.cpp" line="147"/>
       <source>click Add or Remove</source>
-      <translation type="unfinished">click Add or Remove</translation>
+      <translation>klik op Toevoegen of Verwijderen</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="146"/>
