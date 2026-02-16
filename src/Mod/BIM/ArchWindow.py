@@ -1493,11 +1493,15 @@ class _ArchWindowTaskPanel:
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
+            has_movement = False
+            is_sliding = False
             for wp in self.obj.WindowParts:
                 if ("Edge" in wp) and ("Mode" in wp):
-                    self.invertOpeningButton.setEnabled(True)
-                    self.invertHingeButton.setEnabled(True)
-                    break
+                    has_movement = True
+                    if "Mode9" in wp or "Mode10" in wp:
+                        is_sliding = True
+            self.invertOpeningButton.setEnabled(has_movement)
+            self.invertHingeButton.setEnabled(has_movement and not is_sliding)
 
     def addElement(self):
         "opens the component creation dialog"
@@ -1722,7 +1726,7 @@ class _ArchWindowTaskPanel:
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Frame depth", None))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
-        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
+        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge/Track", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
         self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame property", None))
         self.addp4.setToolTip(
