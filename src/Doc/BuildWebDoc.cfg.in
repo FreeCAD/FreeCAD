@@ -1426,7 +1426,9 @@ HTML_EXTRA_STYLESHEET  = @CMAKE_CURRENT_SOURCE_DIR@/templates/customdoxygen.css
 # files will be copied as-is; there are no commands or markers available.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/templates/doxy-boot.js
+HTML_EXTRA_FILES       = @CMAKE_CURRENT_SOURCE_DIR@/templates/doxy-boot.js \
+		         @CMAKE_CURRENT_SOURCE_DIR@/templates/Roboto-Regular.woff2 \
+			 @CMAKE_CURRENT_SOURCE_DIR@/templates/FiraSans-Regular.woff2
 
 # The HTML_COLORSTYLE tag can be used to specify if the generated HTML output
 # should be rendered with a dark or light theme.
