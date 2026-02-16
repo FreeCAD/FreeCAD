@@ -1212,7 +1212,7 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (!isInEditMode() && !singleAssembly) {
         return;
     }
-    
+
     // Joint components isolation
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         auto selection = Gui::Selection().getSelection();
@@ -1505,7 +1505,7 @@ void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, Is
     if (!joint || isolatedJoint == joint) {
         return;
     }
-    
+
     clearIsolate();
 
     App::DocumentObject* part1 = getMovingPartFromRef(joint, "Reference1");
