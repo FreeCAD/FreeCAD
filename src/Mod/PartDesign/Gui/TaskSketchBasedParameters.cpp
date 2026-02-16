@@ -352,4 +352,3 @@ bool TaskDlgSketchBasedParameters::reject()
 }
 
 #include "moc_TaskSketchBasedParameters.cpp"
-
