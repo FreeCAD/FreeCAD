@@ -631,7 +631,7 @@ StdWorkbench::~StdWorkbench() = default;
 void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 {
     auto sels = Gui::Selection().getSelection();
-    
+
     if (strcmp(recipient, "View") == 0) {
         createLinkMenu(item);
         *item << "Separator";
@@ -1352,4 +1352,3 @@ void PythonWorkbench::createMainWindowPopupMenu(MenuItem* item) const
     StdWorkbench wb;
     wb.createMainWindowPopupMenu(item);
 }
-
