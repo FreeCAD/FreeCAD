@@ -126,19 +126,12 @@ public:
 
         static const Value zero = Numeric{0.0, ""};
 
-        auto makeElement = [](const char* name, const Value& val) {
-            return Tuple::Element {
-                .name = std::string(name),
-                .value = std::make_shared<const Value>(val)
-            };
-        };
-
-        Tuple result;
-        result.elements.push_back(makeElement("top_left", *topLeft));
-        result.elements.push_back(makeElement("top_right", *topRight));
-        result.elements.push_back(makeElement("bottom_right", *bottomRight));
-        result.elements.push_back(makeElement("bottom_left", *bottomLeft));
-        return result;
+        return Tuple({
+            Tuple::Element::named("top_left",     topLeft     ? *topLeft     : zero),
+            Tuple::Element::named("top_right",    topRight    ? *topRight    : zero),
+            Tuple::Element::named("bottom_right", bottomRight ? *bottomRight : zero),
+            Tuple::Element::named("bottom_left",  bottomLeft  ? *bottomLeft  : zero),
+        });
     }
 
     const Tuple& tuple() const

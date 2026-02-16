@@ -1290,28 +1290,13 @@ TEST_F(ParserTest, TupleNestedScalarMultiply)
 
 class ArgumentParserTest: public ::testing::Test
 {
-    struct NameValuePair
-    {
-        std::optional<std::string> name;
-        Value value;
-    };
-
-protected:
-    static Tuple makeTuple(std::vector<NameValuePair> elements)
-    {
-        Tuple tuple;
-        for (auto& [name, value] : elements) {
-            tuple.elements.emplace_back(name, std::make_shared<const Value>(std::move(value)));
-        }
-        return tuple;
-    }
 };
 
 TEST_F(ArgumentParserTest, AllPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1323,9 +1308,9 @@ TEST_F(ArgumentParserTest, AllPositional)
 
 TEST_F(ArgumentParserTest, AllNamed)
 {
-    auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("x", Numeric {.value = 10, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1335,9 +1320,9 @@ TEST_F(ArgumentParserTest, AllNamed)
 
 TEST_F(ArgumentParserTest, AllNamedReversedOrder)
 {
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 20, .unit = ""}},
-        {.name = std::string("x"), .value = Numeric {.value = 10, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 20, .unit = ""}),
+        Tuple::Element::named("x", Numeric {.value = 10, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1348,9 +1333,9 @@ TEST_F(ArgumentParserTest, AllNamedReversedOrder)
 TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
 {
     // f(1, y: 2) with signature (x, y)
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1361,9 +1346,9 @@ TEST_F(ArgumentParserTest, MixedPositionalThenNamed)
 TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 {
     // f(y: 2, 1) with signature (x, y) — positional 1 fills unclaimed x
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1373,8 +1358,8 @@ TEST_F(ArgumentParserTest, NamedThenPositionalFillsRemainingSlot)
 
 TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1387,9 +1372,9 @@ TEST_F(ArgumentParserTest, DefaultValueUsedWhenMissing)
 
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1401,9 +1386,9 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByPositional)
 
 TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
     });
     auto resolved = ArgumentParser {
         {.name = "x"},
@@ -1415,9 +1400,9 @@ TEST_F(ArgumentParserTest, DefaultValueOverriddenByName)
 
 TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
 {
-    auto args = makeTuple({
-        {.name = std::string("y"), .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("y", Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "x"}, {.name = "y"}}.resolve(args);
 
@@ -1428,9 +1413,9 @@ TEST_F(ArgumentParserTest, ResolvedTupleHasCorrectOrder)
 
 TEST_F(ArgumentParserTest, MixedTypes)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Base::Color(1.0, 0.0, 0.0)),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1440,8 +1425,8 @@ TEST_F(ArgumentParserTest, MixedTypes)
 
 TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 {
-    auto args = makeTuple({
-        {.name = std::string("unknown"), .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("unknown", Numeric {.value = 1, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1449,9 +1434,9 @@ TEST_F(ArgumentParserTest, ErrorOnUnknownName)
 
 TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 {
-    auto args = makeTuple({
-        {.name = std::string("x"), .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::string("x"), .value = Numeric {.value = 2, .unit = ""}},
+    Tuple args({
+        Tuple::Element::named("x", Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::named("x", Numeric {.value = 2, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1459,8 +1444,8 @@ TEST_F(ArgumentParserTest, ErrorOnDuplicateName)
 
 TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1468,10 +1453,10 @@ TEST_F(ArgumentParserTest, ErrorOnMissingRequired)
 
 TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 1, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 2, .unit = ""}},
-        {.name = std::nullopt, .value = Numeric {.value = 3, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 2, .unit = ""}),
+        Tuple::Element::unnamed(Numeric {.value = 3, .unit = ""}),
     });
     ArgumentParser parser {{"x"}, {"y"}};
     EXPECT_THROW(parser.resolve(args), Base::ExpressionError);
@@ -1479,9 +1464,9 @@ TEST_F(ArgumentParserTest, ErrorOnExcessPositional)
 
 TEST_F(ArgumentParserTest, TypedGetSuccess)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Base::Color(1.0, 0.0, 0.0)},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Base::Color(1.0, 0.0, 0.0)),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1492,9 +1477,9 @@ TEST_F(ArgumentParserTest, TypedGetSuccess)
 
 TEST_F(ArgumentParserTest, TypedGetWrongType)
 {
-    auto args = makeTuple({
-        {.name = std::nullopt, .value = Numeric {.value = 10, .unit = "px"}},
-        {.name = std::nullopt, .value = Numeric {.value = 20, .unit = ""}},
+    Tuple args({
+        Tuple::Element::unnamed(Numeric {.value = 10, .unit = "px"}),
+        Tuple::Element::unnamed(Numeric {.value = 20, .unit = ""}),
     });
     auto resolved = ArgumentParser {{.name = "color"}, {.name = "amount"}}.resolve(args);
 
@@ -1503,7 +1488,7 @@ TEST_F(ArgumentParserTest, TypedGetWrongType)
 
 TEST_F(ArgumentParserTest, TypedGetMissingName)
 {
-    auto args = makeTuple({{.name = std::nullopt, .value = Numeric {.value = 10, .unit = ""}}});
+    Tuple args({Tuple::Element::unnamed(Numeric {.value = 10, .unit = ""})});
     auto resolved = ArgumentParser {{.name = "x"}}.resolve(args);
 
     EXPECT_THROW(resolved.get<Numeric>("nonexistent"), Base::ExpressionError);
@@ -1756,13 +1741,15 @@ TEST_F(ParserTest, ResolveTypedPadding)
     mgr.addSource(source.get());
 
     // Construct a default Padding for the definition
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = zero});
-    defaultTuple.elements.push_back({.name = "right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom", .value = zero});
-    defaultTuple.elements.push_back({.name = "left", .value = zero});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "TestPadding", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -1785,13 +1772,15 @@ TEST_F(ParserTest, ResolveGenericTupleAsPadding)
     Gui::StyleParameters::ParameterManager mgr;
     mgr.addSource(source.get());
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = zero});
-    defaultTuple.elements.push_back({.name = "right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom", .value = zero});
-    defaultTuple.elements.push_back({.name = "left", .value = zero});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -1812,13 +1801,15 @@ TEST_F(ParserTest, ResolveGenericTupleWithGroupNames)
     Gui::StyleParameters::ParameterManager mgr;
     mgr.addSource(source.get());
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = zero});
-    defaultTuple.elements.push_back({.name = "right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom", .value = zero});
-    defaultTuple.elements.push_back({.name = "left", .value = zero});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -1839,13 +1830,15 @@ TEST_F(ParserTest, ResolveGenericTupleWithPositionalShorthand)
     Gui::StyleParameters::ParameterManager mgr;
     mgr.addSource(source.get());
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = zero});
-    defaultTuple.elements.push_back({.name = "right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom", .value = zero});
-    defaultTuple.elements.push_back({.name = "left", .value = zero});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "ButtonPadding", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -1868,13 +1861,15 @@ TEST_F(ParserTest, ResolveTypedPaddingFromMarginsToken)
     Gui::StyleParameters::ParameterManager mgr;
     mgr.addSource(source.get());
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto five = std::make_shared<const Value>(Numeric {.value = 5, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = five});
-    defaultTuple.elements.push_back({.name = "right", .value = five});
-    defaultTuple.elements.push_back({.name = "bottom", .value = five});
-    defaultTuple.elements.push_back({.name = "left", .value = five});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 5, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 5, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "TestMargins", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -1887,13 +1882,15 @@ TEST_F(ParserTest, ResolveTypedPaddingFallsBackOnMissing)
 {
     Gui::StyleParameters::ParameterManager mgr;
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Padding;
-    auto seven = std::make_shared<const Value>(Numeric {.value = 7, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top", .value = seven});
-    defaultTuple.elements.push_back({.name = "right", .value = seven});
-    defaultTuple.elements.push_back({.name = "bottom", .value = seven});
-    defaultTuple.elements.push_back({.name = "left", .value = seven});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("right", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("bottom", Numeric {.value = 7, .unit = "px"}),
+            Tuple::Element::named("left", Numeric {.value = 7, .unit = "px"}),
+        },
+        TupleKind::Padding
+    );
 
     ParameterDefinition<Padding> def {.name = "NonExistent", .defaultValue = Padding(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -2052,13 +2049,15 @@ TEST_F(ParserTest, ResolveTypedCorners)
     Gui::StyleParameters::ParameterManager mgr;
     mgr.addSource(source.get());
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::Corners;
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = "px"});
-    defaultTuple.elements.push_back({.name = "top_left", .value = zero});
-    defaultTuple.elements.push_back({.name = "top_right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom_right", .value = zero});
-    defaultTuple.elements.push_back({.name = "bottom_left", .value = zero});
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("top_left", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("top_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_right", Numeric {.value = 0, .unit = "px"}),
+            Tuple::Element::named("bottom_left", Numeric {.value = 0, .unit = "px"}),
+        },
+        TupleKind::Corners
+    );
 
     ParameterDefinition<Corners> def {.name = "TestRadius", .defaultValue = Corners(defaultTuple)};
     auto resolved = mgr.resolve(def);
@@ -2307,37 +2306,26 @@ TEST_F(ParserTest, ResolveTypedLinearGradient)
     mgr.addSource(source.get());
 
     // Build a default LinearGradient tuple
-    auto zero = std::make_shared<const Value>(Numeric {.value = 0, .unit = ""});
-    auto one = std::make_shared<const Value>(Numeric {.value = 1, .unit = ""});
-    Tuple defaultStopsTuple;
-    {
-        Tuple stop0;
-        stop0.elements.push_back({.name = std::nullopt, .value = zero});
-        stop0.elements.push_back(
-            {.name = std::nullopt, .value = std::make_shared<const Value>(Base::Color(0, 0, 0))}
-        );
-        Tuple stop1;
-        stop1.elements.push_back({.name = std::nullopt, .value = one});
-        stop1.elements.push_back(
-            {.name = std::nullopt, .value = std::make_shared<const Value>(Base::Color(1, 1, 1))}
-        );
-        defaultStopsTuple.elements.push_back(
-            {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(stop0))}
-        );
-        defaultStopsTuple.elements.push_back(
-            {.name = std::nullopt, .value = std::make_shared<const Value>(std::move(stop1))}
-        );
-    }
+    Tuple defaultStopsTuple({
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(0, 0, 0)),
+        })),
+        Tuple::Element::unnamed(Tuple({
+            Tuple::Element::unnamed(Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::unnamed(Base::Color(1, 1, 1)),
+        })),
+    });
 
-    Tuple defaultTuple;
-    defaultTuple.kind = TupleKind::LinearGradient;
-    defaultTuple.elements.push_back({.name = std::string("x1"), .value = zero});
-    defaultTuple.elements.push_back({.name = std::string("y1"), .value = zero});
-    defaultTuple.elements.push_back({.name = std::string("x2"), .value = zero});
-    defaultTuple.elements.push_back({.name = std::string("y2"), .value = one});
-    defaultTuple.elements.push_back(
-        {.name = std::string("stops"),
-         .value = std::make_shared<const Value>(std::move(defaultStopsTuple))}
+    Tuple defaultTuple(
+        {
+            Tuple::Element::named("x1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y1", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("x2", Numeric {.value = 0, .unit = ""}),
+            Tuple::Element::named("y2", Numeric {.value = 1, .unit = ""}),
+            Tuple::Element::named("stops", std::move(defaultStopsTuple)),
+        },
+        TupleKind::LinearGradient
     );
 
     ParameterDefinition<LinearGradient> def {

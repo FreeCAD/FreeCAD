@@ -24,6 +24,7 @@
 #pragma once
 
 #include <algorithm>
+#include <functional>
 #include <vector>
 
 #include <Base/Exception.h>
@@ -87,6 +88,53 @@ public:
         return tuple_;
     }
 
+    /**
+     * @brief Returns true if the tuple holds a linear or radial gradient.
+     */
+    static bool isGradient(const Tuple& tuple)
+    {
+        return tuple.kind == TupleKind::LinearGradient || tuple.kind == TupleKind::RadialGradient;
+    }
+
+    /**
+     * @brief Applies a color transform to every stop in a gradient tuple.
+     *
+     * Returns a copy of the gradient with the same geometry and stop positions,
+     * but with each stop's color replaced by transform(color).
+     */
+    static Tuple mapStopColors(
+        const Tuple& gradient,
+        const std::function<Base::Color(const Base::Color&)>& transform
+    )
+    {
+        Tuple result;
+        result.kind = gradient.kind;
+
+        for (const auto& element : gradient.elements) {
+            if (element.name == "stops") {
+                const auto& stopsTuple = element.value->get<Tuple>();
+                Tuple transformedStops;
+
+                for (const auto& stop : stopsTuple.elements) {
+                    const auto& stopEntry = stop.value->get<Tuple>();
+                    transformedStops.elements.push_back(
+                        Tuple::Element::unnamed(Tuple({
+                            Tuple::Element::unnamed(stopEntry.at(0).get<Numeric>()),
+                            Tuple::Element::unnamed(transform(stopEntry.at(1).get<Base::Color>())),
+                        }))
+                    );
+                }
+
+                result.elements.push_back(Tuple::Element::named("stops", std::move(transformedStops)));
+            }
+            else {
+                result.elements.push_back(element);  // copy geometry as-is
+            }
+        }
+
+        return result;
+    }
+
 protected:
     Gradient(Tuple tuple, TupleKind expected)
         : tuple_(std::move(tuple))
@@ -130,12 +178,8 @@ protected:
      */
     static Tuple::Element makeGeometryElement(const char* name, double defaultValue, const Tuple& args)
     {
-        const Value* found = args.find(name);
-        double value = found ? found->get<Numeric>().value : defaultValue;
-        return Tuple::Element {
-            .name = std::string(name),
-            .value = std::make_shared<const Value>(Numeric {.value = value, .unit = ""}),
-        };
+        double value = numericOrDefault(args.find(name), name, defaultValue);
+        return Tuple::Element::named(name, Numeric {.value = value, .unit = ""});
     }
 
     /**
@@ -213,25 +257,14 @@ protected:
         // Build stops tuple
         Tuple stopsTuple;
         for (const auto& stop : rawStops) {
-            Tuple stopEntry;
-            stopEntry.elements.push_back({
-                .name = std::nullopt,
-                .value = std::make_shared<const Value>(Numeric {.value = *stop.position, .unit = ""}),
+            Tuple stopEntry({
+                Tuple::Element::unnamed(Numeric {.value = *stop.position, .unit = ""}),
+                Tuple::Element::unnamed(stop.color),
             });
-            stopEntry.elements.push_back({
-                .name = std::nullopt,
-                .value = std::make_shared<const Value>(stop.color),
-            });
-            stopsTuple.elements.push_back({
-                .name = std::nullopt,
-                .value = std::make_shared<const Value>(std::move(stopEntry)),
-            });
+            stopsTuple.elements.push_back(Tuple::Element::unnamed(std::move(stopEntry)));
         }
 
-        return Tuple::Element {
-            .name = std::string("stops"),
-            .value = std::make_shared<const Value>(std::move(stopsTuple)),
-        };
+        return Tuple::Element::named("stops", std::move(stopsTuple));
     }
 
     Tuple tuple_;
@@ -278,14 +311,16 @@ public:
 private:
     static Tuple expand(const Tuple& args)
     {
-        Tuple result;
-        result.kind = TupleKind::LinearGradient;
-        result.elements.push_back(makeGeometryElement("x1", 0.0, args));
-        result.elements.push_back(makeGeometryElement("y1", 0.0, args));
-        result.elements.push_back(makeGeometryElement("x2", 0.0, args));
-        result.elements.push_back(makeGeometryElement("y2", 1.0, args));
-        result.elements.push_back(buildStopsElement(args));
-        return result;
+        return Tuple(
+            {
+                makeGeometryElement("x1", 0.0, args),
+                makeGeometryElement("y1", 0.0, args),
+                makeGeometryElement("x2", 0.0, args),
+                makeGeometryElement("y2", 1.0, args),
+                buildStopsElement(args),
+            },
+            TupleKind::LinearGradient
+        );
     }
 };
 
@@ -344,21 +379,17 @@ private:
         double fxValue = numericOrDefault(args.find("fx"), "fx", cxValue);
         double fyValue = numericOrDefault(args.find("fy"), "fy", cyValue);
 
-        Tuple result;
-        result.kind = TupleKind::RadialGradient;
-        result.elements.push_back(makeGeometryElement("cx", defaultCenter, args));
-        result.elements.push_back(makeGeometryElement("cy", defaultCenter, args));
-        result.elements.push_back(makeGeometryElement("radius", defaultRadius, args));
-        result.elements.push_back({
-            .name = std::string("fx"),
-            .value = std::make_shared<const Value>(Numeric {.value = fxValue, .unit = ""}),
-        });
-        result.elements.push_back({
-            .name = std::string("fy"),
-            .value = std::make_shared<const Value>(Numeric {.value = fyValue, .unit = ""}),
-        });
-        result.elements.push_back(buildStopsElement(args));
-        return result;
+        return Tuple(
+            {
+                makeGeometryElement("cx", defaultCenter, args),
+                makeGeometryElement("cy", defaultCenter, args),
+                makeGeometryElement("radius", defaultRadius, args),
+                Tuple::Element::named("fx", Numeric {.value = fxValue, .unit = ""}),
+                Tuple::Element::named("fy", Numeric {.value = fyValue, .unit = ""}),
+                buildStopsElement(args),
+            },
+            TupleKind::RadialGradient
+        );
     }
 };
 
