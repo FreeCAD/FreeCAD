@@ -1173,7 +1173,7 @@ class _ArchWindowTaskPanel:
         self.heightWidget = loader.createWidget("Gui::QuantitySpinBox")
         optLayout.addRow(QtGui.QApplication.translate("Arch", "Height", None), self.heightWidget)
 
-        self.openingWidget = loader.createWidget("Gui::QuantitySpinBox")
+        self.openingWidget = loader.createWidget("Gui::IntSpinBox")
         optLayout.addRow(QtGui.QApplication.translate("Arch", "Opening", None), self.openingWidget)
 
         self.baseform = QtGui.QWidget()
@@ -1433,9 +1433,9 @@ class _ArchWindowTaskPanel:
             # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
             # the property to these, so it must be reading them from metadata, but they might not
             # be queryable via Python.
-            self.openingWidget.setProperty("minimum", 0.0)
-            self.openingWidget.setProperty("maximum", 100.0)
-            self.openingWidget.setProperty("rawValue", self.obj.Opening)
+            self.openingWidget.setProperty("minimum", 0)
+            self.openingWidget.setProperty("maximum", 100)
+            self.openingWidget.setProperty("value", self.obj.Opening)
 
             if self.obj.Base:
                 item = QtGui.QTreeWidgetItem(self.tree)
@@ -1732,7 +1732,7 @@ class _ArchWindowTaskPanel:
         if self.obj:
             self.obj.Width = self.widthWidget.property("rawValue")
             self.obj.Height = self.heightWidget.property("rawValue")
-            self.obj.Opening = int(self.openingWidget.property("rawValue"))
+            self.obj.Opening = self.openingWidget.property("value")
         self.basepanel.obj = self.obj
         return self.basepanel.accept()
 
