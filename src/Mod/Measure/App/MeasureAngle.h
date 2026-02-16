@@ -26,6 +26,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <TopoDS_Edge.hxx>
 #include <gp_Vec.hxx>
 
 #include <App/PropertyGeo.h>
@@ -106,6 +107,7 @@ private:
     bool setDirections();
     bool hasCommonEdge();
     bool hasCommonVertex();
+    bool isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2);
     void onChanged(const App::Property* prop) override;
 };
 
