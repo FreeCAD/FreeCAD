@@ -439,14 +439,6 @@ public:
         return _elementMap->setElementName(element, name, masterTag, sid, overwrite);
     }
 
-    /** Check if the name starts with elementMapPrefix()
-     *
-     * @param name: input name
-     * @return Returns the name stripped with elementMapPrefix(), or 0 if not
-     * start with the prefix
-     */
-    static const char* isMappedElement(const char* name);
-
     /// Check if there is an element map.
     bool hasElementMap() const
     {
