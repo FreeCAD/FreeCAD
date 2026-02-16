@@ -174,6 +174,10 @@ inline T fmod(T numerator, T denominator)
 }
 
 // copied from boost::hash_combine.
+// Copyright 2005-2014 Daniel James.
+// Copyright 2021, 2022, 2025 Peter Dimov.
+// Distributed under the Boost Software License, Version 1.0.
+// https://www.boost.org/LICENSE_1_0.txt
 template<class S, class T>
 inline void hash_combine(S& seed, const T& v)
 {
@@ -439,3 +443,4 @@ Overloads(Ts...) -> Overloads<Ts...>;
 
 
 #endif  // SRC_BASE_TOOLS_H_
+
