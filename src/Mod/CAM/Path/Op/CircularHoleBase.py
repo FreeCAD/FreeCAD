@@ -92,20 +92,16 @@ class ObjectOp(PathOp.ObjectOp):
         """holeDiameter(obj, base, sub) ... returns the diameter of the specified hole."""
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return 0
 
-            if shape.ShapeType == "Edge" and type(shape.Curve) == Part.Circle:
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return shape.Curve.Radius * 2
 
-            if shape.ShapeType == "Face":
-                for i in range(len(shape.Edges)):
-                    if (
-                        type(shape.Edges[i].Curve) == Part.Circle
-                        and shape.Edges[i].Curve.Radius * 2 < shape.BoundBox.XLength * 1.1
-                        and shape.Edges[i].Curve.Radius * 2 > shape.BoundBox.XLength * 0.9
-                    ):
-                        return shape.Edges[i].Curve.Radius * 2
+            if isinstance(shape, Part.Face):
+                for edge in shape.Edges:
+                    if isinstance(edge.Curve, Part.Circle):
+                        return edge.Curve.Radius * 2
 
             # for all other shapes the diameter is just the dimension in X.
             # This may be inaccurate as the BoundBox is calculated on the tessellated geometry
