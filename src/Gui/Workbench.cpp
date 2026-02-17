@@ -648,7 +648,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
               << "Std_DrawStyle" << StdViews << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
-        if (sels.size() > 0) {
+        if (!sels.empty()) {
             *item << "Separator" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
@@ -656,7 +656,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         }
     }
     else if (strcmp(recipient, "Tree") == 0) {
-        if (sels.size() > 0) {
+        if (!sels.empty()) {
             *item << "Std_ToggleFreeze" << "Separator"
                   << "Std_ToggleVisibility" << "Std_ShowSelection"
                   << "Std_HideSelection"
@@ -1352,3 +1352,4 @@ void PythonWorkbench::createMainWindowPopupMenu(MenuItem* item) const
     StdWorkbench wb;
     wb.createMainWindowPopupMenu(item);
 }
+
