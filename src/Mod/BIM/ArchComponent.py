@@ -2357,8 +2357,7 @@ class ComponentTaskPanel:
         for i in range(self.tree.topLevelItemCount()):
             rows += count_visible_rows(self.tree.topLevelItem(i))
 
-        if rows <= 0:
-            rows = 1
+        visible_rows = min(max(rows, 1), 6)
 
         row_height = self.tree.sizeHintForRow(0)
         if row_height <= 0:
@@ -2366,7 +2365,7 @@ class ComponentTaskPanel:
 
         margins = self.tree.contentsMargins()
         frame = self.tree.frameWidth() * 2
-        total_height = frame + margins.top() + margins.bottom() + (rows * row_height) + 2
+        total_height = frame + margins.top() + margins.bottom() + (visible_rows * row_height) + 2
         self.tree.setFixedHeight(total_height)
 
     def _onTreeGeometryChanged(self, item):
