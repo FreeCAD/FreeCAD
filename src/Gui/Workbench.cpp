@@ -1352,4 +1352,3 @@ void PythonWorkbench::createMainWindowPopupMenu(MenuItem* item) const
     StdWorkbench wb;
     wb.createMainWindowPopupMenu(item);
 }
-
