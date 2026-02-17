@@ -54,8 +54,8 @@ def getParamRefine():
     )
 
 
-def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
-    """cmdCreateToleranceSetFeature(name, minTolerance, maxTolerance): generalized implementation of GUI commands."""
+def cmdCreateToleranceSetFeature(name, MinTolerance=1e-7, MaxTolerance=0):
+    """cmdCreateToleranceSetFeature(name, MinTolerance, MaxTolerance): generalized implementation of GUI commands."""
     sel = FreeCADGui.Selection.getSelectionEx()
 
     FreeCAD.ActiveDocument.openTransaction("Create ToleranceSet")
@@ -63,8 +63,8 @@ def cmdCreateToleranceSetFeature(name, minTolerance=1e-7, maxTolerance=0):
     FreeCADGui.doCommand(
         "j = BOPTools.ToleranceFeatures.makeToleranceSet(name='{name}')".format(name=name)
     )
-    FreeCADGui.doCommand("j.minTolerance = {minTolerance}".format(minTolerance=minTolerance))
-    FreeCADGui.doCommand("j.maxTolerance = {maxTolerance}".format(maxTolerance=maxTolerance))
+    FreeCADGui.doCommand("j.MinTolerance = {MinTolerance}".format(MinTolerance=MinTolerance))
+    FreeCADGui.doCommand("j.MaxTolerance = {MaxTolerance}".format(MaxTolerance=MaxTolerance))
     FreeCADGui.doCommand(
         "j.Objects = {sel}".format(
             sel="[" + ", ".join(["App.ActiveDocument." + so.Object.Name for so in sel]) + "]"
@@ -142,27 +142,27 @@ class FeatureToleranceSet:
             locked=True,
         )
         obj.addProperty(
-            "App::PropertyLength", "minTolerance", "ToleranceSet", "0.1 nm", locked=True
+            "App::PropertyLength", "MinTolerance", "ToleranceSet", "0.1 nm", locked=True
         )
-        obj.addProperty("App::PropertyLength", "maxTolerance", "ToleranceSet", "0", locked=True)
+        obj.addProperty("App::PropertyLength", "MaxTolerance", "ToleranceSet", "0", locked=True)
         obj.Refine = getParamRefine()
 
         obj.Proxy = self
         self.Type = "FeatureToleranceSet"
 
     def onDocumentRestored(self, obj):
-        if not hasattr(obj, "maxTolerance"):
-            obj.addProperty("App::PropertyLength", "maxTolerance", "ToleranceSet", "0", locked=True)
+        if not hasattr(obj, "MaxTolerance"):
+            obj.addProperty("App::PropertyLength", "MaxTolerance", "ToleranceSet", "0", locked=True)
 
     def execute(self, selfobj):
         shapes = []
         for obj in selfobj.Objects:
             sh = obj.Shape.copy(True, False)
-            sh.limitTolerance(selfobj.minTolerance, selfobj.maxTolerance)
+            sh.limitTolerance(selfobj.MinTolerance, selfobj.MaxTolerance)
             if selfobj.Refine:
-                sh.fix(selfobj.minTolerance, selfobj.minTolerance, selfobj.maxTolerance)
+                sh.fix(selfobj.MinTolerance, selfobj.MinTolerance, selfobj.MaxTolerance)
                 sh = sh.removeSplitter()
-                sh.fix(selfobj.minTolerance, selfobj.minTolerance, selfobj.maxTolerance)
+                sh.fix(selfobj.MinTolerance, selfobj.MinTolerance, selfobj.MaxTolerance)
             shapes.append(sh)
 
         if len(shapes) > 1:
