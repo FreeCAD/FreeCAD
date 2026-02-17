@@ -39,6 +39,7 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoConcatenate.h>
@@ -275,7 +276,6 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
             if (isEdgeSelection) {
                 xAxis = adjustedVector1.Normalized();
             }
-
             if (isFaceSelection) {
                 zAxis = adjustedVector1.Crossed(adjustedVector2);
             }
@@ -470,18 +470,17 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     // ========================== Normals ==========================
 
     // normal for faces
-    auto pNormalsSeparator = new SoSeparator();
+    auto pNormalsSwitch = new SoSwitch();
+    pNormalsSwitch->whichChild.connectFrom(&visualMode);
+
+    auto pNormalsStandardSep = new SoSeparator();
 
     auto pNormalsCoords = new SoCoordinate3();
     auto pNormalsLines = new SoLineSet();
 
-    auto pNormalsStyle = new SoDrawStyle();
-    pNormalsStyle->style.setValue(SoDrawStyle::LINES);
-    pNormalsStyle->lineWidth.setValue(1.0f);
-    pNormalsStyle->linePattern.setValue(0xF0F0);
-
-    auto pNormalsColor = new SoBaseColor();
-    pNormalsColor->rgb.setValue(0, 0, 1);
+    auto pNormalsStandardStyle = new SoDrawStyle();
+    pNormalsStandardStyle->style.setValue(SoDrawStyle::LINES);
+    pNormalsStandardStyle->lineWidth.setValue(0.8f);
 
     // Arrowtip for normal lines
     auto tipCalc = new SoCalculator();
@@ -519,12 +518,73 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pNormalsLines->numVertices.set1Value(0, 2);
     pNormalsLines->numVertices.set1Value(1, 2);
 
-    pNormalsSeparator->addChild(pNormalsStyle);
-    pNormalsSeparator->addChild(pNormalsColor);
-    pNormalsSeparator->addChild(pNormalsCoords);
-    pNormalsSeparator->addChild(pNormalsLines);
+    pNormalsStandardSep->addChild(pArcTransform);
+    pNormalsStandardSep->addChild(pNormalsStandardStyle);
+    pNormalsStandardSep->addChild(pNormalsCoords);
+    pNormalsStandardSep->addChild(pNormalsLines);
 
-    pVisualsSep->addChild(pNormalsSeparator);
+    pNormalsSwitch->addChild(pNormalsStandardSep);
+
+
+    auto pNormalsImgSep = new SoSeparator();
+    auto pNormalsStyle = new SoDrawStyle();
+    pNormalsStyle->style.setValue(SoDrawStyle::LINES);
+    pNormalsStyle->lineWidth.setValue(1.0f);
+    pNormalsStyle->linePattern.setValue(0xF0F0);
+    auto pNormalsColor = new SoBaseColor();
+    pNormalsColor->rgb.setValue(0, 0, 1);
+
+    pNormalsImgSep->addChild(pNormalsStyle);
+    pNormalsImgSep->addChild(pNormalsColor);
+
+    auto pNormalsImgCoords = new SoCoordinate3();
+    auto pNormalsImgLines = new SoLineSet();
+
+    auto pNormalsImgConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    auto pAxisCalc = new SoCalculator();
+    pAxisCalc->A.connectFrom(&element1Location);
+    pAxisCalc->B.connectFrom(&element2Location);
+    pAxisCalc->expression.setValue(
+        "oA = vec3f(0, 0, 0); "
+        "oB = vec3f(A[0], A[1], 0); "
+        "oC = vec3f(B[0], B[1], 0)"
+    );
+    auto pNormalsRotPointCalc = new SoCalculator();
+    pNormalsRotPointCalc->A.connectFrom(&tipCalc->oA);
+    pNormalsRotPointCalc->B.connectFrom(&tipCalc->oB);
+    pNormalsRotPointCalc->c.connectFrom(&sectorArcRotation);
+    pNormalsRotPointCalc->expression.setValue(
+        "oA = (c > 0) ? -A : A; "
+        "oB = (c > 0) ? -B : B"
+    );
+
+    pNormalsImgConcat->input[0]->connectFrom(&pNormalsRotPointCalc->oA);
+    pNormalsImgConcat->input[1]->connectFrom(&pAxisCalc->oB);
+
+    pNormalsImgConcat->input[2]->connectFrom(&pAxisCalc->oB);
+    pNormalsImgConcat->input[3]->connectFrom(&element1Location);
+
+    pNormalsImgConcat->input[4]->connectFrom(&pNormalsRotPointCalc->oB);
+    pNormalsImgConcat->input[5]->connectFrom(&pAxisCalc->oC);
+
+    pNormalsImgConcat->input[6]->connectFrom(&pAxisCalc->oC);
+    pNormalsImgConcat->input[7]->connectFrom(&element2Location);
+
+    pNormalsImgCoords->point.connectFrom(pNormalsImgConcat->output);
+
+    pNormalsImgLines->numVertices.setNum(4);
+    pNormalsImgLines->numVertices.set1Value(0, 2);
+    pNormalsImgLines->numVertices.set1Value(1, 2);
+    pNormalsImgLines->numVertices.set1Value(2, 2);
+    pNormalsImgLines->numVertices.set1Value(3, 2);
+
+    pNormalsImgSep->addChild(pNormalsImgCoords);
+    pNormalsImgSep->addChild(pNormalsImgLines);
+
+    pNormalsSwitch->addChild(pNormalsImgSep);
+
+    pLineSeparator->addChild(pNormalsSwitch);
 }
 
 void ViewProviderMeasureAngle::redrawAnnotation()
@@ -560,14 +620,16 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         invMatrix.multVecMatrix(globalLoc1, localLoc1);
         invMatrix.multVecMatrix(globalLoc2, localLoc2);
 
+        visualMode.setValue(1);
 
-        normalStartPoint1.setValue(localLoc1);
-        normalStartPoint2.setValue(localLoc2);
+        element1Location.setValue(localLoc1);
+        element2Location.setValue(localLoc2);
     }
     else {
-        normalStartPoint1.setValue(0, 0, 0);
-        normalStartPoint2.setValue(0, 0, 0);
+        visualMode.setValue(0);
     }
+    normalStartPoint1.setValue(0, 0, 0);
+    normalStartPoint2.setValue(0, 0, 0);
 
     // Set Label
     setLabelValue(static_cast<Measure::MeasureBase*>(pcObject)->getResultString());
@@ -611,6 +673,7 @@ void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureO
 
         // arc radius = distance to the center of the two edge locations
         SbVec3f center = (localLoc1 + localLoc2) / 2.0f;
+        center[2] = 0.0f;
         setLabelTranslation(center);
         return;
     }
@@ -643,12 +706,12 @@ void ViewProviderMeasureAngle::onLabelMoved()
     // sector 1: between 0 and θ
     if (draggerAngle >= 0 && draggerAngle < theta) {
         sectorArcRotation.setValue(0);
-        IsFlipped.setValue(false);
+        isArcFlipped.setValue(false);
     }
     // sector 3: between π and π+θ
     else if (draggerAngle >= M_PI && draggerAngle < M_PI + theta) {
         sectorArcRotation.setValue(M_PI);
-        IsFlipped.setValue(true);
+        isArcFlipped.setValue(true);
     }
 }
 
