@@ -34,6 +34,8 @@
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
 
+#include <Base/Placement.h>
+
 namespace MassPropertiesGui {
 
 class TaskMassProperties : public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
@@ -45,7 +47,7 @@ public:
     void modifyStandardButtons(QDialogButtonBox* box) override;
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
-        return QDialogButtonBox::Ok | QDialogButtonBox::Abort;
+        return QDialogButtonBox::Apply | QDialogButtonBox::Abort | QDialogButtonBox::Reset;
     }
 
     void invoke();
@@ -56,8 +58,8 @@ public:
     void update(const Gui::SelectionChanges& msg);
     void tryupdate();
 
-    void createDatum(double x, double y, double z, const std::string& name);
-    void createLCS();
+    void createDatum(double x, double y, double z, const std::string& name, bool removeExisting = true);
+    void createLCS(std::string name, bool removeExisting = true);
 
     void onCogDatumButtonPressed();
     void onCovDatumButtonPressed();
@@ -67,10 +69,10 @@ public:
     void updateInertiaVisibility();
 
 private:
-    void setupShortcuts(QWidget* parent);
     void quit();
-    bool hasSelection() const;
-    void clearFields();
+    void removeTemporaryObjects();
+    void clearUiFields();
+    void saveResult();
 
     QListWidget* listWidget = nullptr;
     QLineEdit* customEdit = nullptr;
@@ -110,6 +112,13 @@ private:
     bool selectingCustomCoordSystem = false;
     bool isUpdating = false;
     int unitsSchemaIndex = -1;
+
+    Base::Placement currentDatumPlacement;
+    bool hasCurrentDatumPlacement = false;
+
+    Gui::SelectionSingleton::SelectionStyle previousSelectionStyle
+        = Gui::SelectionSingleton::SelectionStyle::NormalSelection;
+    bool selectionStyleChanged = false;
 
 };
 

@@ -618,6 +618,9 @@ inline const UnitsSchemaSpec s7
         { "Area", {
             { 0               , "in^2"     , in * in           }}
         },
+        { "Density", {
+            { 0               , "lb/in^3"  , lb / (in * in * in)}}
+        },
         { "Volume", {
             { 0               , "in^3"     , in * in * in      }}
         },
@@ -659,7 +662,8 @@ inline const UnitsSchemaSpec s9
         { "Area"     , {{ 0   , "ft^2"  , ft * ft                  }}},
         { "Volume"   , {{ 0   , "ft^3"  , ft * ft * ft             }}},
         { "Mass"     , {{ 0   , "lb"    , lb                       }}},
-        { "Inertia"  , {{ 0   , "lb*ft^2", lb * ft * ft              }}},
+        { "Inertia"  , {{ 0   , "lb*ft^2", lb * ft * ft            }}},
+        { "Density"  , {{ 0   , "lb/ft^3", lb / (ft * ft * ft)     }}},
         { "Pressure" , {{ 0   , "psi"   , psi                      }}},
         { "Stiffness", {{ 0   , "lbf/in", lbf / in * 1000          }}},
         { "Velocity" , {{ 0   , "mph"   , mi / 3600                }}},
