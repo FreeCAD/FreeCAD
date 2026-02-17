@@ -95,6 +95,8 @@ public:
     App::PropertyColor LineColor;
     App::PropertyMaterial LineMaterial;
     App::PropertyColorList LineColorArray;
+    // Color mapping from element history
+    App::PropertyBool MapFaceColor;
 
     void attach(App::DocumentObject*) override;
     void setDisplayMode(const char* ModeName) override;
@@ -214,6 +216,8 @@ protected:
     void onChanged(const App::Property* prop) override;
     bool loadParameter();
     void updateVisual();
+    /// Apply colors mapped from source element history
+    void applyMappedColors();
     void handleChangedPropertyName(
         Base::XMLReader& reader,
         const char* TypeName,
@@ -245,6 +249,7 @@ private:
     Gui::ViewProviderFaceTexture texture;
     // settings stuff
     int forceUpdateCount;
+    int mapColorRetryCount = 0;  // Counter for color mapping retries during file restore
     static App::PropertyFloatConstraint::Constraints sizeRange;
     static App::PropertyFloatConstraint::Constraints tessRange;
     static App::PropertyQuantityConstraint::Constraints angDeflectionRange;
