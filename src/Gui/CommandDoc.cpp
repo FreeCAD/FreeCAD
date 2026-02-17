@@ -1474,16 +1474,9 @@ void StdCmdDelete::activated(int iMsg)
             }
         }
         if (!handledInEditDeletion) {
-            bool shouldResetEdit = false;
-            if (vpedit) {
-                for (const auto& sel : sels) {
-                    if (sel.getObject() == vpedit->getObject()) {
-                        shouldResetEdit = true;
-                        break;
-                    }
-                }
-            }
-            if (shouldResetEdit) {
+            if (vpedit && std::ranges::any_of(sels, [&](const auto& sel) {
+                    return sel.getObject() == vpedit->getObject();
+                })) {
                 editDoc->resetEdit();
                 vpedit = nullptr;
             }
