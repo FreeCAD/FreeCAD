@@ -1681,6 +1681,18 @@ bool GeomBSplineCurve::join(const Handle(Geom_BoundedCurve) & other)
     return true;
 }
 
+std::tuple<GeomBSplineCurvePtr, GeomBSplineCurvePtr> GeomBSplineCurve::split(double u, double tol) const
+{
+    Handle(Geom_BSplineCurve) curveL
+        = GeomConvert::SplitBSplineCurve(myCurve, myCurve->FirstParameter(), u, tol, true);
+    Handle(Geom_BSplineCurve) curveR
+        = GeomConvert::SplitBSplineCurve(myCurve, u, myCurve->LastParameter(), tol, true);
+    return std::make_tuple(
+        std::make_shared<GeomBSplineCurve>(curveL),
+        std::make_shared<GeomBSplineCurve>(curveR)
+    );
+}
+
 void GeomBSplineCurve::interpolate(const std::vector<gp_Pnt>& p, Standard_Boolean periodic)
 {
     if (p.size() < 2) {
