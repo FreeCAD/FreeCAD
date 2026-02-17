@@ -480,6 +480,9 @@ void EditModeGeometryCoinManager::updateGeometryColor(
                 }
                 else if (isExternal) {
                     auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+                    if (!geom) {
+                        continue;
+                    }
                     auto egf = ExternalGeometryFacade::getFacade(geom->clone());
                     auto ref = egf->getRef();
                     if (egf->testFlag(ExternalGeometryExtension::Missing)) {

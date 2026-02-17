@@ -2749,6 +2749,10 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
 
     selection.selectionBuffering = true;
 
+    if (geomlist.size() < 2) {
+        return;
+    }
+
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
          it != geomlist.end() - 2;
          ++it, ++GeoId) {
@@ -2955,6 +2959,10 @@ bool ViewProviderSketch::selectAll()
 
         bool hasUnselectedGeometry = false;
 
+        if (geomlist.size() < 2) {
+            return false;
+        }
+
         for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin();
              it != geomlist.end() - 2; // -2 to exclude H_Axis and V_Axis
              ++it, ++GeoId) {
@@ -3072,6 +3080,10 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
     // 3. When referring to actual geometry, the modified pointers are short lived, as they are
     // destroyed after drawing
     auto& tempGeo = geolistfacade.geomlist;
+
+    if (tempGeo.size() < 2) {
+        return;
+    }
 
     int GeoId = 0;
     for (auto it = tempGeo.begin(); it != tempGeo.end() - 2; ++it, GeoId++) {
@@ -3208,7 +3220,9 @@ void ViewProviderSketch::draw(bool temp /*=false*/, bool rebuildinformationoverl
     auto geolistfacade = temp ? getSolvedSketch().extractGeoListFacade() :// with memory allocation
         getSketchObject()->getGeoListFacade();// without memory allocation
 
-    assert(int(geolistfacade.geomlist.size()) >= 2);
+    if (int(geolistfacade.geomlist.size()) < 2) {
+        return;
+    }
 
     // ============== Prepare geometry for representation ==================================
 

@@ -187,10 +187,17 @@ void EditModeGeometryCoinConverter::convert(const Sketcher::GeoListFacade& geoli
         }
     };
 
+    if (geolistfacade.geomlist.size() < 2) {
+        return;
+    }
+
     for (size_t i = 0; i < geolistfacade.geomlist.size() - 2; i++) {
 
         const auto GeoId = geolistfacade.getGeoIdFromGeomListIndex(i);
         const auto geom = geolistfacade.getGeometryFacadeFromGeoId(GeoId);
+        if (!geom) {
+            continue;
+        }
         const auto type = geom->getGeometry()->getTypeId();
 
         int layerId = getSafeGeomLayerId(geom);

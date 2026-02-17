@@ -96,21 +96,18 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
 template<typename T>
 const Part::Geometry* GeoListModel<T>::getGeometryFromGeoId(const std::vector<T>& geometrylist, int geoId)
 {
+    auto index = geoId >= 0 ? static_cast<size_t>(geoId)
+                             : geometrylist.size() + geoId;
+
+    if (index >= geometrylist.size()) {
+        return nullptr;
+    }
+
     if constexpr (std::is_same<T, GeometryPtr>()) {
-        if (geoId >= 0) {
-            return geometrylist[geoId];
-        }
-        else {
-            return geometrylist[geometrylist.size() + geoId];
-        }
+        return geometrylist[index];
     }
     else if constexpr (std::is_same<T, GeometryFacadeUniquePtr>()) {
-        if (geoId >= 0) {
-            return geometrylist[geoId]->getGeometry();
-        }
-        else {
-            return geometrylist[geometrylist.size() + geoId]->getGeometry();
-        }
+        return geometrylist[index]->getGeometry();
     }
 }
 
@@ -120,21 +117,18 @@ const Sketcher::GeometryFacade* GeoListModel<T>::getGeometryFacadeFromGeoId(
     int geoId
 )
 {
+    auto index = geoId >= 0 ? static_cast<size_t>(geoId)
+                             : geometrylist.size() + geoId;
+
+    if (index >= geometrylist.size()) {
+        return nullptr;
+    }
+
     if constexpr (std::is_same<T, GeometryPtr>()) {
-        if (geoId >= 0) {
-            return GeometryFacade::getFacade(geometrylist[geoId]).release();
-        }
-        else {
-            return GeometryFacade::getFacade(geometrylist[geometrylist.size() + geoId]).release();
-        }
+        return GeometryFacade::getFacade(geometrylist[index]).release();
     }
     else if constexpr (std::is_same<T, GeometryFacadeUniquePtr>()) {
-        if (geoId >= 0) {
-            return geometrylist[geoId].get();
-        }
-        else {
-            return geometrylist[geometrylist.size() + geoId].get();
-        }
+        return geometrylist[index].get();
     }
 }
 
