@@ -4,10 +4,9 @@ SET(Examples_Files
     draft_test_objects.FCStd
     EngineBlock.FCStd
     PartDesignExample.FCStd
+    BIMExample.FCStd
     FEMExample.FCStd
     AssemblyExample.FCStd
-    BIMExample.FCStd
-    BIMWindowType.FCStd
     ArchDetail.FCStd
     FCPAT.pat
     osifont.license
