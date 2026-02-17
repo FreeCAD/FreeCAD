@@ -1214,8 +1214,8 @@ bool QuantitySpinBox::tryHandleVariableAssignment(const QString& text)
 
                 const Base::Unit targetUnit = d->unit;
                 Base::Quantity resolvedQuantity = number->getQuantity();
-                const bool needsUnitPromotion
-                    = resolvedQuantity.isDimensionless() && targetUnit != Base::Unit::One;
+                const bool needsUnitPromotion = resolvedQuantity.isDimensionless()
+                    && targetUnit != Base::Unit::One;
                 if (needsUnitPromotion) {
                     resolvedQuantity.setUnit(targetUnit);
                 }
@@ -1324,8 +1324,8 @@ bool QuantitySpinBox::tryHandleRawExpression(const QString& text)
 
                 const Base::Unit targetUnit = d->unit;
                 Base::Quantity resolvedQuantity = number->getQuantity();
-                const bool needsUnitPromotion
-                    = resolvedQuantity.isDimensionless() && targetUnit != Base::Unit::One;
+                const bool needsUnitPromotion = resolvedQuantity.isDimensionless()
+                    && targetUnit != Base::Unit::One;
                 if (needsUnitPromotion) {
                     resolvedQuantity.setUnit(targetUnit);
                 }

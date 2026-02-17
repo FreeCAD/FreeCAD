@@ -187,17 +187,12 @@ private Q_SLOTS:
         auto* object = doc->addObject("App::DocumentObjectGroup", "__qsb_bound_obj");
         QVERIFY(object != nullptr);
 
-        auto* property = object->addDynamicProperty(
-            "App::PropertyLength",
-            "DrivenLength",
-            "Base",
-            "test"
-        );
+        auto* property
+            = object->addDynamicProperty("App::PropertyLength", "DrivenLength", "Base", "test");
         QVERIFY(property != nullptr);
 
         const QString boundPath = QString::fromLatin1(object->getNameInDocument())
-            + QLatin1Char('.')
-            + QString::fromLatin1(property->getName());
+            + QLatin1Char('.') + QString::fromLatin1(property->getName());
         qsb->setBoundToByName(boundPath);
         QVERIFY(qsb->isBound());
 
