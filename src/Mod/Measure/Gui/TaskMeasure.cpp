@@ -191,8 +191,12 @@ TaskMeasure::TaskMeasure()
     valueResult->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     valueResult->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     valueResult->setLineWrapMode(QPlainTextEdit::NoWrap);
-    valueResult->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
-    valueResult->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
+    valueResult->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    QFontMetrics fm(valueResult->font());
+    int documentMargins = 8;  
+    int singleLineHeight = fm.lineSpacing() + valueResult->contentsMargins().top() + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    valueResult->setMaximumHeight(singleLineHeight * 5);  
+    valueResult->setMinimumHeight(singleLineHeight);
 
     // Main layout
     QBoxLayout* layout = taskbox->groupLayout();
@@ -351,6 +355,7 @@ void TaskMeasure::tryUpdate()
     }
 
     valueResult->setPlainText(QString::asprintf("-"));
+    adjustResultEditorHeight();
 
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
@@ -505,6 +510,7 @@ void TaskMeasure::updateResultWithUnit()
         Base::Quantity resultQty;
         if (!buildQuantity(valuePart, unitPart, resultQty)) {
             valueResult->setPlainText(resultString);
+            adjustResultEditorHeight();
             return;
         }
 
@@ -527,6 +533,17 @@ void TaskMeasure::updateResultWithUnit()
     else {
         valueResult->setPlainText(resultString);
     }
+    
+    adjustResultEditorHeight();
+}
+
+void TaskMeasure::adjustResultEditorHeight()
+{
+    QFontMetrics fm(valueResult->font());
+    int lineCount = valueResult->document()->blockCount();
+    int documentMargins = 8;
+    int contentHeight = fm.lineSpacing() * lineCount + valueResult->contentsMargins().top() + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    valueResult->setFixedHeight(contentHeight);
 }
 
 QString TaskMeasure::normalizeUnit(const QString& unit) const
@@ -690,7 +707,6 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
-    setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
         viewObject->update(prop);

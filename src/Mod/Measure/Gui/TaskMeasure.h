@@ -116,6 +116,7 @@ private:
     bool parseCoordinateLine(const QString& line, QString& axisLabel, QString& valueText, QString& unitText) const;
     QString extractPreferredUnitFromResult(const QString& resultString) const;
     QString convertCoordinateResultUnits(const QString& resultString, const QString& targetUnit) const;
+    void adjustResultEditorHeight();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;
