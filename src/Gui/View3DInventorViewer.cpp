@@ -2678,16 +2678,16 @@ void View3DInventorViewer::setSeekMode(bool on)
     );
 }
 
-SbVec3f View3DInventorViewer::getCenterPointOnFocalPlane() const
+SbVec3f View3DInventorViewer::getFocalPoint() const
 {
-    SoCamera* cam = getSoRenderManager()->getCamera();
-    if (!cam) {
+    const SoCamera* camera = getCamera();
+    if (!camera) {
         return {0., 0., 0.};
     }
 
     SbVec3f direction;
-    cam->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
-    return cam->position.getValue() + cam->focalDistance.getValue() * direction;
+    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), direction);
+    return camera->position.getValue() + camera->focalDistance.getValue() * direction;
 }
 
 float View3DInventorViewer::getMaxDimension() const

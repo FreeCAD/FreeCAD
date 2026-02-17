@@ -507,7 +507,7 @@ public:
 
     void getDimensions(float& fHeight, float& fWidth) const;
     float getMaxDimension() const;
-    SbVec3f getCenterPointOnFocalPlane() const;
+    SbVec3f getFocalPoint() const;
 
     NavigationStyle* navigationStyle() const;
 
