@@ -68,21 +68,14 @@ struct ShapeHasher
     {
         return a.IsSame(b);
     }
-    template<class T>
-    static inline void hash_combine(std::size_t& seed, const T& v)
-    {
-        // copied from boost::hash_combine
-        std::hash<T> hasher;
-        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
     inline size_t operator()(const std::pair<TopoShape, TopoShape>& s) const
     {
 #if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
-        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
+        Base::hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
 #else
         size_t res = s.first.getShape().HashCode(std::numeric_limits<int>::max());
-        hash_combine(res, s.second.getShape().HashCode(std::numeric_limits<int>::max()));
+        Base::hash_combine(res, s.second.getShape().HashCode(std::numeric_limits<int>::max()));
 #endif
         return res;
     }
@@ -90,10 +83,10 @@ struct ShapeHasher
     {
 #if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first);
-        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
+        Base::hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
 #else
         size_t res = s.first.HashCode(std::numeric_limits<int>::max());
-        hash_combine(res, s.second.HashCode(std::numeric_limits<int>::max()));
+        Base::hash_combine(res, s.second.HashCode(std::numeric_limits<int>::max()));
 #endif
         return res;
     }

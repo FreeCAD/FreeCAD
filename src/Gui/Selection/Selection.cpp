@@ -205,6 +205,22 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getCompleteSelection
     return getSelection("*", resolve);
 }
 
+std::vector<App::SubObjectT> SelectionSingleton::getSelectionT(
+    const char* pDocName,
+    ResolveMode resolve,
+    bool single
+) const
+{
+    auto sels = getSelection(pDocName, resolve, single);
+    std::vector<App::SubObjectT> res;
+    res.reserve(sels.size());
+    for (auto& sel : sels) {
+        res.emplace_back(sel.pObject, sel.SubName);
+    }
+    return res;
+}
+
+
 std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(
     const char* pDocName,
     ResolveMode resolve,

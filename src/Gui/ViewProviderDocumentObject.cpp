@@ -43,6 +43,7 @@
 #include "MDIView.h"
 #include "SoFCUnifiedSelection.h"
 #include "Tree.h"
+#include "ViewParams.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderExtension.h"
 #include "TaskView/TaskAppearance.h"
@@ -757,6 +758,81 @@ void ViewProviderDocumentObject::onPropertyStatusChanged(const App::Property& pr
     if (!App::Document::isAnyRestoring() && pcObject && pcObject->getDocument()) {
         pcObject->getDocument()->signalChangePropertyEditor(*pcObject->getDocument(), prop);
     }
+}
+
+Base::BoundBox3d ViewProviderDocumentObject::_getBoundingBox(
+    const char* subname,
+    const Base::Matrix4D* mat,
+    bool transform,
+    const View3DInventorViewer* viewer,
+    int depth
+) const
+{
+    if (!viewer) {
+        viewer = getActiveViewer();
+        if (!viewer) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_ERR("no view");
+            }
+            return Base::BoundBox3d();
+        }
+    }
+
+    App::DocumentObject* obj = getObject();
+    if (!subname || !subname[0] || !obj) {
+        if (obj) {
+            auto subs = obj->getSubObjects(App::DocumentObject::GS_SELECT);
+            if (subs.size()) {
+                Base::BoundBox3d box;
+                for (std::string& sub : subs) {
+                    Base::Matrix4D smat;
+                    if (mat) {
+                        smat = *mat;
+                    }
+                    int vis = obj->isElementVisible(sub.c_str());
+                    if (!vis) {
+                        continue;
+                    }
+                    auto sobj = obj->getSubObject(sub.c_str(), 0, &smat, transform, depth + 1);
+                    auto vp = Application::Instance->getViewProvider(sobj);
+                    if (!vp) {
+                        continue;
+                    }
+                    if (vis < 0 && !sobj->Visibility.getValue()) {
+                        continue;
+                    }
+                    auto sbox = vp->getBoundingBox(nullptr, &smat, false, viewer, depth + 1);
+                    if (sbox.IsValid()) {
+                        box.Add(sbox);
+                    }
+                }
+                return box;
+            }
+        }
+
+        return ViewProvider::_getBoundingBox(0, mat, transform, viewer, depth);
+    }
+
+    Base::Matrix4D smat;
+    if (mat) {
+        smat = *mat;
+    }
+
+    std::string _subname;
+    const char* nextsub;
+    const char* dot = 0;
+    if (Data::isMappedElement(subname) || (dot = strchr(subname, '.')) == 0) {
+        return ViewProvider::_getBoundingBox(subname, &smat, false, viewer, depth + 1);
+    }
+
+    nextsub = Data::findElementName(dot + 1);
+
+    auto sobj = getObject()->getSubObject(subname, 0, &smat, transform, depth);
+    auto vp = Application::Instance->getViewProvider(sobj);
+    if (!vp) {
+        return Base::BoundBox3d();
+    }
+    return vp->getBoundingBox(nextsub, &smat, false, viewer, depth + 1);
 }
 
 ViewProviderDocumentObject* ViewProviderDocumentObject::getLinkedViewProvider(

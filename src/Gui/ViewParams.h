@@ -76,7 +76,17 @@ public:
     FC_VIEW_PARAM(DatumScale, double, Float, 100.0) \
     FC_VIEW_PARAM(DatumPlaneSize, double, Float, 62.0) \
     FC_VIEW_PARAM(DatumLineSize, double, Float, 70.0) \
-    FC_VIEW_PARAM(DatumTemporaryScaleFactor, double, Float, 2.0)
+    FC_VIEW_PARAM(DatumTemporaryScaleFactor, double, Float, 2.0) \
+    FC_VIEW_PARAM(ViewSelectionExtend, bool, Bool, false) \
+    FC_VIEW_PARAM(ViewSelectionExtendFactor, double, Float, 0.5) \
+    FC_VIEW_PARAM(SelectionLineThicken, double, Float, 1.0) \
+    FC_VIEW_PARAM(SelectionLineMaxWidth, double, Float, 4.0) \
+    FC_VIEW_PARAM(SelectionBBoxLineWidth, double, Float, 3.0) \
+    FC_VIEW_PARAM(MaxViewSelections, int, Int, 100) \
+    FC_VIEW_PARAM(SelectionColor, unsigned long, Unsigned, 0x1cad1cff) \
+    FC_VIEW_PARAM(UseTightBoundingBox, bool, Bool, true) \
+    FC_VIEW_PARAM(UseBoundingBoxCache, bool, Bool, true) \
+    FC_VIEW_PARAM(RenderProjectedBBox, bool, Bool, true)
 
 #undef FC_VIEW_PARAM
 #define FC_VIEW_PARAM(_name, _ctype, _type, _def) \

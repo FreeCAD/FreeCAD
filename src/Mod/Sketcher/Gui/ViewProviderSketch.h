@@ -792,6 +792,14 @@ protected:
     bool getElementPicked(const SoPickedPoint* pp, std::string& subname) const override;
     bool getDetailPath(const char* subname, SoFullPath* pPath, bool append, SoDetail*& det) const override;
 
+    Base::BoundBox3d _getBoundingBox(
+        const char* subname = nullptr,
+        const Base::Matrix4D* mat = nullptr,
+        bool transform = true,
+        const Gui::View3DInventorViewer* viewer = nullptr,
+        int depth = 0
+    ) const override;
+
 private:
     /// function to handle OCCT BSpline weight calculation singularities and representation
     void scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGeometry(

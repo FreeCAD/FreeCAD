@@ -1114,6 +1114,7 @@ void Document::slotChangedObject(const App::DocumentObject& Obj, const App::Prop
 {
     ViewProvider* viewProvider = getViewProvider(&Obj);
     if (viewProvider) {
+        ViewProvider::clearBoundingBoxCache();
         try {
             viewProvider->update(&Prop);
             if (d->_editingViewer && d->_editingObject && d->_editViewProviderParent

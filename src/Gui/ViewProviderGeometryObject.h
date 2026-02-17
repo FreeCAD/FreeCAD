@@ -33,6 +33,7 @@ class SoSwitch;
 class SoSensor;
 class SbVec2s;
 class SoBaseColor;
+class SoNodeSensor;
 
 namespace Gui
 {
@@ -49,6 +50,8 @@ class View3DInventorViewer;
 class GuiExport ViewProviderGeometryObject: public ViewProviderDragger
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderGeometryObject);
+
+    typedef ViewProviderDragger inherited;
 
 public:
     /// constructor.
@@ -105,6 +108,8 @@ protected:
     void setSelectable(bool Selectable = true);
 
     virtual unsigned long getBoundColor() const;
+    void updateBoundingBox();
+    void addBoundSwitch();
 
     void handleChangedPropertyName(
         Base::XMLReader& reader,
@@ -122,6 +127,7 @@ protected:
     SoSwitch* pcBoundSwitch {nullptr};
     SoBaseColor* pcBoundColor {nullptr};
     SoPickStyle* pickStyle {nullptr};
+    SoNodeSensor* pcSwitchSensor {nullptr};
 
     App::Material materialAppearance;
 };
