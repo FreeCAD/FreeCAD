@@ -44,7 +44,7 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 180
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.01, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.01, tool, True)
         self.assertRoughly(0.01, depth)
         self.assertRoughly(9, offset)
         self.assertFalse(info)
@@ -52,7 +52,7 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         # legacy tools - no problem, same result
         tool.CuttingEdgeAngle = 0
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.01, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.01, tool, True)
         self.assertRoughly(0.01, depth)
         self.assertRoughly(9, offset)
         self.assertFalse(info)
@@ -63,12 +63,12 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0
         tool.CuttingEdgeAngle = 90
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0, tool, True)
         self.assertRoughly(1, depth)
         self.assertRoughly(0, offset)
         self.assertFalse(info)
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.2, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.2, tool, True)
         self.assertRoughly(1.2, depth)
         self.assertRoughly(0.2, offset)
         self.assertFalse(info)
@@ -79,12 +79,12 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0.3
         tool.CuttingEdgeAngle = 90
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0, tool, True)
         self.assertRoughly(1, depth)
         self.assertRoughly(0.3, offset)
         self.assertFalse(info)
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(2, 0.2, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(2, 0.2, tool, True)
         self.assertRoughly(2.2, depth)
         self.assertRoughly(0.5, offset)
         self.assertFalse(info)
@@ -95,12 +95,12 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0.1
         tool.CuttingEdgeAngle = 60
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
         self.assertRoughly(2.232051, depth)
         self.assertRoughly(0.388675, offset)
         self.assertFalse(info)
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
         self.assertRoughly(6.196153, depth)
         self.assertRoughly(0.677350, offset)
         self.assertFalse(info)
@@ -111,12 +111,12 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
         tool.FlatRadius = 0.1
         tool.CuttingEdgeAngle = 30
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.5, tool, True)
         self.assertRoughly(4.232051, depth)
         self.assertRoughly(0.233975, offset)
         self.assertFalse(info)
 
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(3, 1, tool, True)
         self.assertRoughly(12.196155, depth)
         self.assertRoughly(0.367949, offset)
         self.assertFalse(info)
@@ -129,15 +129,15 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
                 self.Diameter = dia
 
         tool = FakeEndmill(10)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, True)
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(0.1, depth)
         self.assertRoughly(4, offset)
         self.assertTrue(info)
@@ -151,15 +151,15 @@ class TestPathOpDeburr(PathTestUtils.PathTestBase):
                 self.CuttingEdgeAngle = angle
 
         tool = FakePointyBit(10, 90)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, True)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, True)
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)
-        (depth, offset, __, info) = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
+        depth, offset, __, info = PathDeburr.toolDepthAndOffset(1, 0.1, tool, not info)
         self.assertRoughly(1.1, depth)
         self.assertRoughly(0.1, offset)
         self.assertTrue(info)

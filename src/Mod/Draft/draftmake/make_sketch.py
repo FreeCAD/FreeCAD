@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Sketch objects from Draft objects."""
+
 ## @package make_sketch
 # \ingroup draftmake
 # \brief Provides functions to create Sketch objects from Draft objects.

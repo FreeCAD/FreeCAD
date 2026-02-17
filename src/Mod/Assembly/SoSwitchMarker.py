@@ -25,7 +25,6 @@ import math
 
 import FreeCAD as App
 
-
 if App.GuiUp:
     import FreeCADGui as Gui
 

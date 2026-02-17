@@ -30,7 +30,6 @@ import PathScripts.PathUtils as PathUtils
 import math
 import time
 
-
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
 

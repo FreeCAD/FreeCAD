@@ -59,7 +59,6 @@ from importers import exportIFCHelper
 from importers import exportIFCStructuralTools
 from importers.importIFCHelper import dd2dms
 
-
 PARAMS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/BIM")
 
 # Templates and other definitions ****

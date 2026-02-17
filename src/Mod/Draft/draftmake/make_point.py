@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides functions to create Point objects."""
+
 ## @package make_point
 # \ingroup draftmake
 # \brief Provides functions to create Point objects.

@@ -24,6 +24,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the Facebinder object."""
+
 ## @package facebinder
 # \ingroup draftobjects
 # \brief Provides the object code for the Facebinder object.

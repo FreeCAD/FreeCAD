@@ -28,6 +28,7 @@
 It just creates a `Part::Mirroring` object, and sets the appropriate
 `Source` and `Normal` properties.
 """
+
 ## @package mirror
 # \ingroup draftfunctions
 # \brief Provides functions to produce a mirrored object.

@@ -28,6 +28,7 @@
 """
 The base classes for post processors in the CAM workbench.
 """
+
 import argparse
 import importlib.util
 import os
@@ -183,7 +184,7 @@ class PostProcessor:
 
         Path.Log.debug("Exporting the job")
 
-        (flag, args) = self.process_arguments()
+        flag, args = self.process_arguments()
         #
         # If the flag is True, then continue postprocessing the 'postables'.
         #
@@ -261,7 +262,7 @@ class PostProcessor:
         args: ParserArgs
         flag: bool
 
-        (flag, args) = PostUtilsArguments.process_shared_arguments(
+        flag, args = PostUtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.all_visible, "-"
         )
         #

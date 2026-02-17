@@ -32,7 +32,6 @@ import PathGui
 import PathScripts.PathUtils as PathUtils
 from PySide import QtCore, QtGui
 
-
 __title__ = "CAM Vcarve Operation UI"
 __author__ = "sliptonic (Brad Collette)"
 __url__ = "https://www.freecad.org"

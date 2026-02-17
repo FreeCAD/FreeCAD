@@ -480,7 +480,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
         self, filename: str = "-"
     ) -> Tuple[bool, str | argparse.Namespace]:
         """Process any arguments to the postprocessor."""
-        (flag, args) = Path.Post.UtilsArguments.process_shared_arguments(
+        flag, args = Path.Post.UtilsArguments.process_shared_arguments(
             self.values, self.parser, self._job.PostProcessorArgs, self.visible_parser, filename
         )
         if flag:  # process extra arguments only if flag is True
@@ -834,7 +834,7 @@ class Snapmaker(Path.Post.Processor.PostProcessor):
 
     def export(self, filename: str | pathlib.Path = "-"):
         """process gcode and export"""
-        (flag, args) = self.snapmaker_process_arguments()
+        flag, args = self.snapmaker_process_arguments()
         if flag:
             return self.snapmaker_process_postables(filename)
         if args is None:

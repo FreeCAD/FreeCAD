@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides support functions to edit Arch objects."""
+
 ## @package gui_edit_arch_objects
 # \ingroup draftguitools
 # \brief Provides support functions to edit Arch objects.

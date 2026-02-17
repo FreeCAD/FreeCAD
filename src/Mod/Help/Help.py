@@ -59,7 +59,6 @@ import urllib.request
 import urllib.error
 import FreeCAD
 
-
 translate = FreeCAD.Qt.translate
 QT_TRANSLATE_NOOP = FreeCAD.Qt.QT_TRANSLATE_NOOP
 

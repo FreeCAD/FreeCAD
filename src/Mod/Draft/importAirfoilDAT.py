@@ -10,6 +10,7 @@ Airfoil (.dat) file importer
 
 This module provides support for importing airfoil .dat files.
 """
+
 # Check code with
 # flake8 --ignore=E226,E266,E401,W503
 

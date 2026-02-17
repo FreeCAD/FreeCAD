@@ -40,7 +40,6 @@ from .importToolsFem import get_FemMeshObjectOrder
 from .importToolsFem import get_FemMeshObjectMeshGroups
 from .importToolsFem import get_MaxDimElementFromList
 
-
 ENCODING_ASCII = "ASCII"
 ENCODING_HDF5 = "HDF5"
 
@@ -126,12 +125,12 @@ def write_fenics_mesh_codim_xdmf(
     """
     writeout_element_dimension = mesh_dimension - codim
 
-    (num_topo, name_topo, dim_topo) = (0, "", 0)
+    num_topo, name_topo, dim_topo = (0, "", 0)
     for num, name, dim in element_types:
         if writeout_element_dimension == dim:
-            (num_topo, name_topo, dim_topo) = (num, name, dim)
+            num_topo, name_topo, dim_topo = (num, name, dim)
 
-    (topology_type, nodes_per_element) = FreeCAD_to_Fenics_XDMF_dict[(name_topo, element_order)]
+    topology_type, nodes_per_element = FreeCAD_to_Fenics_XDMF_dict[(name_topo, element_order)]
 
     topologynode.set("TopologyType", topology_type)
     topologynode.set("NumberOfElements", str(num_topo))
@@ -178,7 +177,7 @@ def write_fenics_mesh_scalar_cellfunctions(
     attributenode.set("Center", "Cell")
     attributenode.set("Name", name)
 
-    (num_cells, num_dims) = np.shape(cell_array)
+    num_cells, num_dims = np.shape(cell_array)
 
     if encoding == ENCODING_ASCII:
         dataitem = ET.SubElement(
@@ -239,7 +238,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
     elements_in_mesh = get_FemMeshObjectElementTypes(fem_mesh_obj)
     Console.PrintMessage(f"Elements appearing in mesh: {str(elements_in_mesh)}\n")
     celltype_in_mesh = get_MaxDimElementFromList(elements_in_mesh)
-    (num_cells, cellname_fc, dim_cell) = celltype_in_mesh
+    num_cells, cellname_fc, dim_cell = celltype_in_mesh
 
     root = ET.Element("Xdmf", Version="3.0")
     domain = ET.SubElement(root, "Domain")
@@ -294,7 +293,7 @@ def write_fenics_mesh_xdmf(fem_mesh_obj, outputfile, group_values_dict={}, encod
         mesh_function_attribute = ET.SubElement(mesh_function_grid, "Attribute")
 
         elem_dict = {}
-        (elem_mark_group, elem_mark_default) = group_values_dict.get(g, (1, 0))
+        elem_mark_group, elem_mark_default = group_values_dict.get(g, (1, 0))
 
         # TODO: is it better to save all groups each at once or collect all codim equal
         # groups to put them into one function?

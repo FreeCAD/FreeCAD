@@ -23,6 +23,7 @@
 # *                                                                         *
 # ***************************************************************************
 """Provides the object code for the BSpline object."""
+
 ## @package bspline
 # \ingroup draftobjects
 # \brief Provides the object code for the BSpline object.
