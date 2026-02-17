@@ -1127,7 +1127,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     this->contextItem = itemAt(e->pos());
     bool isDocItem = this->contextItem && this->contextItem->type() == DocumentType;
     bool isObjItem = this->contextItem && this->contextItem->type() == ObjectType;
-    
+
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("Tree", &view);
@@ -1194,7 +1194,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
             contextMenu.addAction(this->createGroupAction);
         }
         contextMenu.addSeparator();
-        
+
         // add a submenu to active a document if two or more exist
         std::vector<App::Document*> docs = App::GetApplication().getDocuments();
         if (docs.size() >= 2) {
