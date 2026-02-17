@@ -697,10 +697,9 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->createGroupAction, &QAction::triggered, this, &TreeWidget::onCreateGroup);
 
     this->relabelObjectAction = new QAction(this);
-#ifndef Q_OS_MAC
     this->relabelObjectAction->setShortcut(Qt::Key_F2);
-#endif
     connect(this->relabelObjectAction, &QAction::triggered, this, &TreeWidget::onRelabelObject);
+    this->addAction(this->relabelObjectAction);  // For shortcut to work reliably (i.e. even on macos)
 
     this->finishEditingAction = new QAction(this);
     connect(this->finishEditingAction, &QAction::triggered, this, &TreeWidget::onFinishEditing);
@@ -1379,10 +1378,15 @@ void TreeWidget::onCreateGroup()
 
 void TreeWidget::onRelabelObject()
 {
-    QTreeWidgetItem* item = currentItem();
-    if (item) {
-        editItem(item);
+    QList<QTreeWidgetItem*> items = this->selectedItems();
+    if (items.empty()) {
+        return;
     }
+    if (items.size() != 1) {
+        QMessageBox::warning(this, tr("Error"), tr("Cannot rename multiple items. Please choose one."));
+        return;
+    }
+    editItem(items.front());
 }
 
 void TreeWidget::onStartEditing()
