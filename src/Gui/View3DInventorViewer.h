@@ -444,7 +444,20 @@ public:
         bool moveToCenter = false
     ) const;
     void setCameraType(SoType type) override;
-    void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
+
+    /**
+     * Moves the camera to a given orientation and position. If isAnimationEnabled() returns
+     * \a true the reorientation and repositioning is animated and the animation is returned,
+     * otherwise its directly set.
+     */
+    std::shared_ptr<NavigationAnimation> moveCameraTo(
+        const SbRotation& orientation,
+        const SbVec3f& rotationCenter,
+        const SbVec3f& position,
+        int duration = -1,
+        bool wait = false
+    ) const;
+
     /**
      * Zooms the viewport to the size of the bounding box.
      */

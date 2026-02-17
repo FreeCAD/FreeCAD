@@ -3382,25 +3382,33 @@ void View3DInventorViewer::setCameraType(SoType type)
     lightRotation->rotation.connectFrom(&cam->orientation);
 }
 
-void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
+std::shared_ptr<NavigationAnimation> View3DInventorViewer::moveCameraTo(
+    const SbRotation& orientation,
+    const SbVec3f& rotationCenter,
+    const SbVec3f& position,
+    const int duration,
+    const bool wait
+) const
 {
     SoCamera* camera = getCamera();
     if (!camera) {
-        return;
+        return {};
     }
 
     if (isAnimationEnabled()) {
-        startAnimation(
+        return startAnimation(
             orientation,
-            camera->position.getValue(),
+            rotationCenter,
             position - camera->position.getValue(),
             duration,
-            true
+            wait
         );
     }
 
     camera->orientation.setValue(orientation);
     camera->position.setValue(position);
+
+    return {};
 }
 
 void View3DInventorViewer::animatedViewAll(int steps, int ms)

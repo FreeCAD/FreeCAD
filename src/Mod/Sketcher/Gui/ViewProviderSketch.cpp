@@ -3930,31 +3930,16 @@ void ViewProviderSketch::setEditViewer(Gui::View3DInventorViewer* viewer, int Mo
     else
         editSubName.resize(dot - editSubName.c_str() + 1);
 
-    Base::Placement plm = getEditingPlacement();
-    Base::Rotation tmp(plm.getRotation());
+    const auto camera = viewer->getSoRenderManager()->getCamera();
+    const auto sketchCenter = Base::convertTo<SbVec3f>(getBoundingBox().GetCenter());
+    const auto sketchOrientation = Base::convertTo<SbRotation>(getEditingPlacement().getRotation());
 
-    SbRotation rot((float)tmp[0], (float)tmp[1], (float)tmp[2], (float)tmp[3]);
+    SbVec3f newDirection;
+    sketchOrientation.multVec(SbVec3f(0, 0, -1), newDirection);
 
-    // Will the sketch be visible from the new position (#0000957)?
-    //
-    SoCamera* camera = viewer->getSoRenderManager()->getCamera();
-    SbVec3f curdir;// current view direction
-    camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), curdir);
-    SbVec3f focal = camera->position.getValue() + camera->focalDistance.getValue() * curdir;
+    const auto newPosition = sketchCenter - camera->focalDistance.getValue() * newDirection;
 
-    SbVec3f newdir;// future view direction
-    rot.multVec(SbVec3f(0, 0, -1), newdir);
-    SbVec3f newpos = focal - camera->focalDistance.getValue() * newdir;
-
-    SbVec3f plnpos = Base::convertTo<SbVec3f>(plm.getPosition());
-    double dist = (plnpos - newpos).dot(newdir);
-    if (dist < 0) {
-        float focalLength = camera->focalDistance.getValue() - dist + 5;
-        camera->position = focal - focalLength * curdir;
-        camera->focalDistance.setValue(focalLength);
-    }
-
-    viewer->setCameraOrientation(rot);
+    viewer->moveCameraTo(sketchOrientation, camera->position.getValue(), newPosition);
 
     viewer->setEditing(true);
     viewer->setSelectionEnabled(false);
