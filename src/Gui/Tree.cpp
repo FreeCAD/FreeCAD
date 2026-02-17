@@ -5871,7 +5871,7 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd)
 {
     ViewParentMap parentMap;
     auto pObject = vpd.getObject();
-    if (ObjectMap.find(pObject) == ObjectMap.end()) {
+    if (!ObjectMap.contains(pObject)) {
         return;
     }
 
@@ -5908,7 +5908,9 @@ void DocumentItem::selectAllInstances(const ViewProviderDocumentObject& vpd)
     getTree()->blockSelection(lock);
     if (first) {
         treeWidget()->scrollToItem(first);
-        updateSelection();
+        // updateSelection();  // commented out - it was incorrectly deselecting
+        // ...newly selected items because their qt selection state wasn't
+        // ...yet synchronized when updateItemSelection() checked them
     }
 }
 
