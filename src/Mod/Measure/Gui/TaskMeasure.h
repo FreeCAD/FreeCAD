@@ -112,8 +112,18 @@ private:
     void updateResultWithUnit();
     QString normalizeUnit(const QString& unit) const;
     bool buildQuantity(const QString& valueText, const QString& unitText, Base::Quantity& out) const;
-    bool splitResultValueAndUnit(const QString& resultString, const QString& fallbackUnit, QString& valuePart, QString& unitPart) const;
-    bool parseCoordinateLine(const QString& line, QString& axisLabel, QString& valueText, QString& unitText) const;
+    bool splitResultValueAndUnit(
+        const QString& resultString,
+        const QString& fallbackUnit,
+        QString& valuePart,
+        QString& unitPart
+    ) const;
+    bool parseCoordinateLine(
+        const QString& line,
+        QString& axisLabel,
+        QString& valueText,
+        QString& unitText
+    ) const;
     QString extractPreferredUnitFromResult(const QString& resultString) const;
     QString convertCoordinateResultUnits(const QString& resultString, const QString& targetUnit) const;
     void adjustResultEditorHeight();

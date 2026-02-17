@@ -107,39 +107,35 @@ void initMeasureGroupCleanup()
     }
     initialized = true;
 
-    static fastsignals::scoped_connection deletedConnection =
-        App::GetApplication().signalDeletedObject.connect(
-            [](const App::DocumentObject& obj) {
-                if (!obj.isDerivedFrom(Measure::MeasureBase::getClassTypeId())) {
-                    return;
-                }
+    static fastsignals::scoped_connection deletedConnection
+        = App::GetApplication().signalDeletedObject.connect([](const App::DocumentObject& obj) {
+              if (!obj.isDerivedFrom(Measure::MeasureBase::getClassTypeId())) {
+                  return;
+              }
 
-                auto* doc = obj.getDocument();
-                if (!doc) {
-                    return;
-                }
+              auto* doc = obj.getDocument();
+              if (!doc) {
+                  return;
+              }
 
-                if (App::GetApplication().getActiveTransaction() != nullptr) {
-                    pendingCleanup().emplace_back(
-                        std::make_unique<App::DocumentWeakPtrT>(doc)
-                    );
-                    return;
-                }
+              if (App::GetApplication().getActiveTransaction() != nullptr) {
+                  pendingCleanup().emplace_back(std::make_unique<App::DocumentWeakPtrT>(doc));
+                  return;
+              }
 
-                deleteGroupIfEmpty(doc);
-            }
-        );
+              deleteGroupIfEmpty(doc);
+          });
 
-    static fastsignals::scoped_connection closeTransactionConnection =
-        App::GetApplication().signalCloseTransaction.connect([](bool) {
-            auto& pending = pendingCleanup();
-            for (auto& doc : pending) {
-                if (doc && !doc->expired()) {
-                    deleteGroupIfEmpty(**doc);
-                }
-            }
-            pending.clear();
-        });
+    static fastsignals::scoped_connection closeTransactionConnection
+        = App::GetApplication().signalCloseTransaction.connect([](bool) {
+              auto& pending = pendingCleanup();
+              for (auto& doc : pending) {
+                  if (doc && !doc->expired()) {
+                      deleteGroupIfEmpty(**doc);
+                  }
+              }
+              pending.clear();
+          });
 }
 }  // namespace
 

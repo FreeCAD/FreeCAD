@@ -124,7 +124,9 @@ class MeasureCOM(MeasureBasePython):
             unit = "in"
         elif unit == "'":
             unit = "ft"
-        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
+        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "Decimals", 2
+        )
 
         values = []
         for component in obj.Result:

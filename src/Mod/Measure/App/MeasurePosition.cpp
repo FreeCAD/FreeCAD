@@ -148,8 +148,10 @@ QString MeasurePosition::getResultString()
     QString unit = QString::fromStdString(str_unit);
     QString text;
 
-    QTextStream(&text) << "X: " << QString::number(convertedX, 'f', precision) << " " << unit << Qt::endl
-                       << "Y: " << QString::number(convertedY, 'f', precision) << " " << unit << Qt::endl
+    QTextStream(&text) << "X: " << QString::number(convertedX, 'f', precision) << " " << unit
+                       << Qt::endl
+                       << "Y: " << QString::number(convertedY, 'f', precision) << " " << unit
+                       << Qt::endl
                        << "Z: " << QString::number(convertedZ, 'f', precision) << " " << unit;
     return text;
 }

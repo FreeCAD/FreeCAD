@@ -193,9 +193,10 @@ TaskMeasure::TaskMeasure()
     valueResult->setLineWrapMode(QPlainTextEdit::NoWrap);
     valueResult->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     QFontMetrics fm(valueResult->font());
-    int documentMargins = 8;  
-    int singleLineHeight = fm.lineSpacing() + valueResult->contentsMargins().top() + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
-    valueResult->setMaximumHeight(singleLineHeight * 5);  
+    int documentMargins = 8;
+    int singleLineHeight = fm.lineSpacing() + valueResult->contentsMargins().top()
+        + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    valueResult->setMaximumHeight(singleLineHeight * 5);
     valueResult->setMinimumHeight(singleLineHeight);
 
     // Main layout
@@ -533,7 +534,7 @@ void TaskMeasure::updateResultWithUnit()
     else {
         valueResult->setPlainText(resultString);
     }
-    
+
     adjustResultEditorHeight();
 }
 
@@ -542,7 +543,8 @@ void TaskMeasure::adjustResultEditorHeight()
     QFontMetrics fm(valueResult->font());
     int lineCount = valueResult->document()->blockCount();
     int documentMargins = 8;
-    int contentHeight = fm.lineSpacing() * lineCount + valueResult->contentsMargins().top() + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    int contentHeight = fm.lineSpacing() * lineCount + valueResult->contentsMargins().top()
+        + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
     valueResult->setFixedHeight(contentHeight);
 }
 
@@ -572,10 +574,12 @@ bool TaskMeasure::buildQuantity(const QString& valueText, const QString& unitTex
     return true;
 }
 
-bool TaskMeasure::splitResultValueAndUnit(const QString& resultString,
-                                          const QString& fallbackUnit,
-                                          QString& valuePart,
-                                          QString& unitPart) const
+bool TaskMeasure::splitResultValueAndUnit(
+    const QString& resultString,
+    const QString& fallbackUnit,
+    QString& valuePart,
+    QString& unitPart
+) const
 {
     valuePart = resultString;
     unitPart = fallbackUnit;
@@ -612,10 +616,12 @@ bool TaskMeasure::splitResultValueAndUnit(const QString& resultString,
     return !valuePart.isEmpty();
 }
 
-bool TaskMeasure::parseCoordinateLine(const QString& line,
-                                      QString& axisLabel,
-                                      QString& valueText,
-                                      QString& unitText) const
+bool TaskMeasure::parseCoordinateLine(
+    const QString& line,
+    QString& axisLabel,
+    QString& valueText,
+    QString& unitText
+) const
 {
     QString trimmed = line.trimmed();
     int colonIndex = trimmed.indexOf(':');
@@ -653,7 +659,10 @@ QString TaskMeasure::extractPreferredUnitFromResult(const QString& resultString)
     return extractUnitFromResultString(resultString);
 }
 
-QString TaskMeasure::convertCoordinateResultUnits(const QString& resultString, const QString& targetUnit) const
+QString TaskMeasure::convertCoordinateResultUnits(
+    const QString& resultString,
+    const QString& targetUnit
+) const
 {
     Base::Quantity targetQty(1.0, normalizeUnit(targetUnit).toStdString());
     QStringList outputLines;
