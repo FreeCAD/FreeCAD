@@ -27,7 +27,10 @@
 #include <vector>
 #include <string>
 
+#include <Base/Placement.h>
 #include <Base/Vector3D.h>
+
+#include <TopoDS_Shape.hxx>
 
 
 class TopoDS_Shape;
@@ -65,6 +68,17 @@ struct MassPropertiesData {
     double axisInertia;
 };
 
-MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject*>& objects, std::string& mode, App::DocumentObject const* referenceDatum);
+struct MassPropertiesInput {
+    App::DocumentObject* object = nullptr;
+    TopoDS_Shape shape;
+    Base::Placement placement;
+};
+
+MassPropertiesData CalculateMassProperties(
+    const std::vector<MassPropertiesInput>& objects,
+    std::string& mode,
+    App::DocumentObject const* referenceDatum,
+    const Base::Placement* referencePlacement = nullptr
+);
 
 #endif // SHAPE_PROPERTIES_H

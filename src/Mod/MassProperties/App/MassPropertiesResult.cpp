@@ -27,11 +27,12 @@
 #include <App/Datums.h>
 
 #include <Mod/Part/App/PartFeature.h>
-#include <Mod/Part/App/TopoShape.h>
-
+#include <Base/Matrix.h>
 #include <Base/Quantity.h>
 
 #include <TopoDS_Shape.hxx>
+#include <BRepBuilderAPI_Transform.hxx>
+#include <gp_Trsf.hxx>
 #include <GProp_GProps.hxx>
 #include <BRepGProp.hxx>
 #include <GProp_PrincipalProps.hxx>
@@ -47,7 +48,12 @@
 #include <cmath>
 #include <QString>
 
-MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject*>& objects, std::string& mode, const App::DocumentObject* referenceDatum)
+MassPropertiesData CalculateMassProperties(
+    const std::vector<MassPropertiesInput>& objects,
+    std::string& mode,
+    const App::DocumentObject* referenceDatum,
+    const Base::Placement* referencePlacement
+)
 {
     MassPropertiesData data{};
     if (objects.empty())
@@ -60,29 +66,56 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
     double totalVolume = 0.0;
     bool hasShape = false;
 
-    for (App::DocumentObject* obj : objects) {
-        if (!obj)
+    for (const auto& object : objects) {
+        App::DocumentObject* obj = object.object;
+        if (!obj && object.shape.IsNull()) {
             continue;
+        }
 
-        if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        TopoDS_Shape shape = object.shape;
+        if (shape.IsNull()) {
+            if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                continue;
+            }
+            Part::Feature* part = static_cast<Part::Feature*>(obj);
+            shape = part->Shape.getShape().getShape();
+        }
+
+        if (shape.IsNull()) {
             continue;
+        }
 
-        Part::Feature* part = static_cast<Part::Feature*>(obj);
-        const TopoDS_Shape& shape = part->Shape.getShape().getShape();
-
-        if (shape.IsNull())
-            continue;
+        if (!object.placement.isIdentity()) {
+            Base::Matrix4D matrix = object.placement.toMatrix();
+            gp_Trsf trsf;
+            trsf.SetValues(
+                matrix[0][0], matrix[0][1], matrix[0][2], matrix[0][3],
+                matrix[1][0], matrix[1][1], matrix[1][2], matrix[1][3],
+                matrix[2][0], matrix[2][1], matrix[2][2], matrix[2][3]
+            );
+            BRepBuilderAPI_Transform transformer(shape, trsf, true);
+            shape = transformer.Shape();
+        }
 
         double density = 1.0e-6;
 
-        Materials::Material mat = part->ShapeMaterial.getValue();
+        Part::Feature* part = nullptr;
+        if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            part = static_cast<Part::Feature*>(obj);
+        }
+
+        Materials::Material mat;
+        if (part) {
+            mat = part->ShapeMaterial.getValue();
+        }
         if (mat.hasPhysicalProperty(QStringLiteral("Density"))) {
             try {
                 if (mat.getName() == QStringLiteral("Default")) {
                     density = 1.0e-6;
                 }
                 else {
-                    density = mat.getPhysicalQuantity(QStringLiteral("Density")).getValue();
+                    const double densityValue = mat.getPhysicalQuantity(QStringLiteral("Density")).getValue();
+                    density = densityValue / 1.0e9;
                 }
             } catch (...) {}
         }
@@ -112,7 +145,7 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
     data.surfaceArea = globalSurfaceProps.Mass();
 
     if (data.volume > 0.0)
-        data.density = (data.mass / data.volume) * 1.0e9;
+        data.density = data.mass / data.volume;
 
     gp_Pnt cog = globalMassProps.CentreOfMass();
     data.cogX = cog.X();
@@ -187,65 +220,15 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
         data.inertiaJy = axisMoment(data.principalAxisY);
         data.inertiaJz = axisMoment(data.principalAxisZ);
     }
-    else if (mode == "Global") {
-        double dx2 = cog.X() * cog.X();
-        double dy2 = cog.Y() * cog.Y();
-        double dz2 = cog.Z() * cog.Z();
-
-        double cx = cog.X();
-        double cy = cog.Y();
-        double cz = cog.Z();
-
-        data.inertiaJox = inertia(1, 1) + globalMassProps.Mass() * (dy2 + dz2);
-        data.inertiaJoy = inertia(2, 2) + globalMassProps.Mass() * (dx2 + dz2);
-        data.inertiaJoz = inertia(3, 3) + globalMassProps.Mass() * (dx2 + dy2);
-        data.inertiaJxy = inertia(1, 2) - globalMassProps.Mass() * cx * cy;
-        data.inertiaJzx = inertia(1, 3) - globalMassProps.Mass() * cx * cz;
-        data.inertiaJzy = inertia(2, 3) - globalMassProps.Mass() * cy * cz;
-        
-        gp_Mat Iglobal;
-        Iglobal.SetValue(1, 1, data.inertiaJox);
-        Iglobal.SetValue(2, 2, data.inertiaJoy);
-        Iglobal.SetValue(3, 3, data.inertiaJoz);
-
-        Iglobal.SetValue(1, 2, data.inertiaJxy);
-        Iglobal.SetValue(2, 1, data.inertiaJxy);
-        
-        Iglobal.SetValue(1, 3, data.inertiaJzx);
-        Iglobal.SetValue(3, 1, data.inertiaJzx);
-        
-        Iglobal.SetValue(2, 3, data.inertiaJzy);
-        Iglobal.SetValue(3, 2, data.inertiaJzy);
-
-        math_Matrix I(1,3,1,3);
-        for (int r=1;r<=3;r++)
-            for (int c=1;c<=3;c++)
-                I(r,c) = Iglobal.Value(r,c);
-        
-        math_Jacobi jacobi(I);
-        
-        data.inertiaJx = jacobi.Value(1);
-        data.inertiaJy = jacobi.Value(2);
-        data.inertiaJz = jacobi.Value(3);
-
-        math_Vector v1(1, 3);
-        math_Vector v2(1, 3);
-        math_Vector v3(1, 3);
-        
-        jacobi.Vector(1, v1);
-        jacobi.Vector(2, v2);
-        jacobi.Vector(3, v3);
-        
-        data.principalAxisX = Base::Vector3d(v1(1), v1(2), v1(3));
-        data.principalAxisY = Base::Vector3d(v2(1), v2(2), v2(3));
-        data.principalAxisZ = Base::Vector3d(v3(1), v3(2), v3(3));
-    }
     else if (mode == "Custom") {
         if (!referenceDatum) {
             return data;
         }
 
-        auto referenceDatumElement = static_cast<const App::DatumElement*>(referenceDatum);
+        const App::LocalCoordinateSystem* lcs = nullptr;
+        if (auto referenceDatumElement = dynamic_cast<const App::DatumElement*>(referenceDatum)) {
+            lcs = referenceDatumElement->getLCS();
+        }
         
         
         if (referenceDatum->isDerivedFrom<App::Line>()) {
@@ -254,6 +237,14 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
             Base::Vector3d axisOrigin = line->getBasePoint();
             Base::Vector3d axisDir = line->getDirection();
             axisDir.Normalize();
+
+            if (referencePlacement) {
+                Base::Vector3d transformedOrigin;
+                referencePlacement->multVec(axisOrigin, transformedOrigin);
+                axisOrigin = transformedOrigin;
+                axisDir = referencePlacement->getRotation().multVec(axisDir);
+                axisDir.Normalize();
+            }
             
             Base::Vector3d r(cog.X() - axisOrigin.x, cog.Y() - axisOrigin.y, cog.Z() - axisOrigin.z);
             
@@ -274,13 +265,19 @@ MassPropertiesData CalculateMassProperties(const std::vector<App::DocumentObject
             
             return data;
         }
-
-        auto lcs = referenceDatumElement->getLCS();
+        
         if (!lcs) {
-            return data;
+            lcs = dynamic_cast<const App::LocalCoordinateSystem*>(referenceDatum);
+            if (!lcs) {
+                return data;
+            }
         }
+        
 
         Base::Placement placement = lcs->Placement.getValue();
+        if (referencePlacement) {
+            placement = *referencePlacement;
+        }
         Base::Vector3d customOrigin = placement.getPosition();
         
         Base::Matrix4D transform = placement.toMatrix();

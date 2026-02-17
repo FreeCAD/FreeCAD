@@ -23,18 +23,26 @@
 #include "TaskMassProperties.h"
 #include "UnitHelper.h"
 #include "Mod/MassProperties/App/MassPropertiesResult.h"
+#include "Mod/MassProperties/App/MassPropertiesObject.h"
 
 #include <QtWidgets>
+#include <unordered_set>
+#include <sstream>
+#include <iomanip>
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Application.h>
+#include <Gui/Document.h>
+#include <Gui/ViewProviderDocumentObject.h>
 
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Quantity.h>
+#include <Base/Rotation.h>
+#include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
 #include <Base/Vector3D.h>
 
@@ -43,16 +51,25 @@
 #include <App/Document.h>
 #include <App/Datums.h>
 #include <App/Origin.h>
+#include <App/GroupExtension.h>
+#include <App/Link.h>
+#include <App/DocumentObjectGroup.h>
+#include <App/DocumentObserver.h>
+#include <App/GeoFeature.h>
+#include <App/PropertyGeo.h>
+#include <App/PropertyStandard.h>
 
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/PartDesign/App/Body.h>
 
 #include <TopoDS_Compound.hxx>
+#include <TopoDS_Shape.hxx>
 #include <BRep_Builder.hxx>
 
 using namespace MassPropertiesGui;
 
 MassPropertiesData currentInfo;
-std::string currentMode = "Global";
+std::string currentMode = "Center of Gravity";
 App::DocumentObject* currentDatum = nullptr;
 
 TaskMassProperties::TaskMassProperties()
@@ -62,14 +79,20 @@ TaskMassProperties::TaskMassProperties()
     this->setButtonPosition(TaskMassProperties::North);
 
     auto physicalProperties = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("umf-measurement"),
+        Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Physical Properties"),
         true,
         nullptr
     );
-    setupShortcuts(physicalProperties);
+    
+    auto shortcutQuit = new QShortcut(physicalProperties);
+    shortcutQuit->setKey(QKeySequence(QStringLiteral("ESC")));
+    shortcutQuit->setContext(Qt::ApplicationShortcut);
+    connect(shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::quit);
+
     QBoxLayout* physicalLayout = physicalProperties->groupLayout();
     physicalLayout->setContentsMargins(10, 10, 10, 10);
+    physicalLayout->setSpacing(8);
 
     QLabel* objectsLabel = new QLabel(tr("Objects to measure"));
     objectsLabel->setWordWrap(true);
@@ -79,20 +102,18 @@ TaskMassProperties::TaskMassProperties()
     
     listWidget->setMaximumHeight(50);
     physicalLayout->addWidget(listWidget);
+
+    QLabel* referenceLabel = new QLabel(tr("Reference"));
+    physicalLayout->addWidget(referenceLabel);
     
-    QRadioButton *globalRadioButton = new QRadioButton(tr("Global Coordinate system"));
-    globalRadioButton->setChecked(true);
-    QObject::connect(globalRadioButton, &QRadioButton::toggled, [=](bool checked){
-        if (checked) {
-            onCoordinateSystemChanged("Global");
-        }
-    });
     QRadioButton *centerOfGravityRadioButton = new QRadioButton(tr("Center of Gravity"));
+    centerOfGravityRadioButton->setChecked(true);
     QObject::connect(centerOfGravityRadioButton, &QRadioButton::toggled, [=](bool checked){
         if (checked) {
             onCoordinateSystemChanged("Center of Gravity");
         }
     });
+
     QRadioButton *customRadioButton = new QRadioButton(tr("Custom"));
     QObject::connect(customRadioButton, &QRadioButton::toggled, [=](bool checked){
         if (checked) {
@@ -100,11 +121,12 @@ TaskMassProperties::TaskMassProperties()
         }
     });
     QButtonGroup *coordinateSystemGroup = new QButtonGroup(physicalProperties);
-    coordinateSystemGroup->addButton(globalRadioButton);
     coordinateSystemGroup->addButton(centerOfGravityRadioButton);
     coordinateSystemGroup->addButton(customRadioButton);
 
     QFormLayout* customForm = new QFormLayout();
+    customForm->setContentsMargins(0, 0, 0, 0);
+    customForm->setSpacing(6);
 
     customEdit = new QLineEdit();
     customEdit->setReadOnly(true);
@@ -117,7 +139,6 @@ TaskMassProperties::TaskMassProperties()
     customControls->addWidget(customEdit);
     customControls->addWidget(selectButton);
 
-    physicalLayout->addWidget(globalRadioButton);
     physicalLayout->addWidget(centerOfGravityRadioButton);
 
     customForm->addRow(customRadioButton, customControls);
@@ -144,7 +165,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(physicalProperties);
 
     auto basicProperties = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("umf-measurement"),
+        Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Basic Properties"),
         true,
         nullptr
@@ -152,21 +173,24 @@ TaskMassProperties::TaskMassProperties()
 
     QBoxLayout* basicLayout = basicProperties->groupLayout();
     basicLayout->setContentsMargins(10, 10, 10, 10);
+    basicLayout->setSpacing(8);
 
-    QLabel* volumeLabel = new QLabel(tr("Volume: "));
+    QLabel* volumeLabel = new QLabel(tr("Volume "));
     volumeEdit = new QLineEdit();
     volumeEdit->setReadOnly(true);
-    QLabel* massLabel = new QLabel(tr("Mass: "));
+    QLabel* massLabel = new QLabel(tr("Mass "));
     massEdit = new QLineEdit();
     massEdit->setReadOnly(true);
-    QLabel* densityLabel = new QLabel(tr("Density: "));
+    QLabel* densityLabel = new QLabel(tr("Density "));
     densityEdit = new QLineEdit();
     densityEdit->setReadOnly(true);
-    QLabel* surfaceAreaLabel = new QLabel(tr("Surface Area: "));
+    QLabel* surfaceAreaLabel = new QLabel(tr("Surface Area "));
     surfaceAreaEdit = new QLineEdit();
     surfaceAreaEdit->setReadOnly(true);
 
     QFormLayout* basicForm = new QFormLayout();
+    basicForm->setContentsMargins(0, 0, 0, 0);
+    basicForm->setSpacing(6);
     basicForm->addRow(volumeLabel, volumeEdit);
     basicForm->addRow(massLabel, massEdit);
     basicForm->addRow(densityLabel, densityEdit);
@@ -177,7 +201,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(basicProperties);
     
     auto centerOfGravity = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("umf-measurement"),
+        Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Center of Gravity"),
         true,
         nullptr
@@ -185,17 +209,18 @@ TaskMassProperties::TaskMassProperties()
 
     QBoxLayout* cogLayout = centerOfGravity->groupLayout();
     cogLayout->setContentsMargins(10, 10, 10, 10);
+    cogLayout->setSpacing(8);
 
     QHBoxLayout* cogFields = new QHBoxLayout();
     cogFields->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* cogXLabel = new QLabel(QStringLiteral("X:"));
+    QLabel* cogXLabel = new QLabel(QStringLiteral("X "));
     cogXText = new QLineEdit();
     cogXText->setReadOnly(true);
-    QLabel* cogYLabel = new QLabel(QStringLiteral("Y:"));
+    QLabel* cogYLabel = new QLabel(QStringLiteral("Y "));
     cogYText = new QLineEdit();
     cogYText->setReadOnly(true);
-    QLabel* cogZLabel = new QLabel(QStringLiteral("Z:"));
+    QLabel* cogZLabel = new QLabel(QStringLiteral("Z "));
     cogZText = new QLineEdit();
     cogZText->setReadOnly(true);
 
@@ -220,7 +245,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(centerOfGravity);
 
     auto centerOfVolume = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("umf-measurement"),
+        Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Center of Volume"),
         true,
         nullptr
@@ -228,17 +253,18 @@ TaskMassProperties::TaskMassProperties()
 
     QBoxLayout* covLayout = centerOfVolume->groupLayout();
     covLayout->setContentsMargins(10, 10, 10, 10);
+    covLayout->setSpacing(8);
 
     QHBoxLayout* covFields = new QHBoxLayout();
     covFields->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* covXLabel = new QLabel(QStringLiteral("X:"));
+    QLabel* covXLabel = new QLabel(QStringLiteral("X "));
     covXText = new QLineEdit();
     covXText->setReadOnly(true);
-    QLabel* covYLabel = new QLabel(QStringLiteral("Y:"));
+    QLabel* covYLabel = new QLabel(QStringLiteral("Y "));
     covYText = new QLineEdit();
     covYText->setReadOnly(true);
-    QLabel* covZLabel = new QLabel(QStringLiteral("Z:"));
+    QLabel* covZLabel = new QLabel(QStringLiteral("Z "));
     covZText = new QLineEdit();
     covZText->setReadOnly(true);
 
@@ -264,7 +290,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(centerOfVolume);
 
     auto inertiaProperties = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("umf-measurement"),
+        Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Inertia Properties"),
         true,
         nullptr
@@ -272,29 +298,34 @@ TaskMassProperties::TaskMassProperties()
 
     QBoxLayout* inertiaLayout = inertiaProperties->groupLayout();
     inertiaLayout->setContentsMargins(10, 10, 10, 10);
+    inertiaLayout->setSpacing(8);
 
     inertiaMatrixWidget = new QWidget();
+    QLabel* inertiaMatrixLabel = new QLabel(tr("Inertia Matrix"));
+    inertiaLayout->addWidget(inertiaMatrixLabel);
     QGridLayout* inertiaGrid = new QGridLayout(inertiaMatrixWidget);
     inertiaGrid->setContentsMargins(0, 0, 0, 0);
+    inertiaGrid->setHorizontalSpacing(6);
+    inertiaGrid->setVerticalSpacing(6);
 
-    QLabel* inertiaJoxLabel = new QLabel(QStringLiteral("Jox:"));
+    QLabel* inertiaJoxLabel = new QLabel(QStringLiteral("Jox "));
     inertiaJoxText = new QLineEdit(); 
     inertiaJoxText->setReadOnly(true);
-    QLabel* inertiaJxyLabel = new QLabel(QStringLiteral("Jxy:"));
+    QLabel* inertiaJxyLabel = new QLabel(QStringLiteral("Jxy "));
     inertiaJxyText = new QLineEdit(); 
     inertiaJxyText->setReadOnly(true);
-    QLabel* inertiaJzxLabel = new QLabel(QStringLiteral("Jzx:"));
+    QLabel* inertiaJzxLabel = new QLabel(QStringLiteral("Jzx "));
     inertiaJzxText = new QLineEdit(); 
     inertiaJzxText->setReadOnly(true);
 
-    QLabel* inertiaJoyLabel = new QLabel(QStringLiteral("Joy:"));
+    QLabel* inertiaJoyLabel = new QLabel(QStringLiteral("Joy "));
     inertiaJoyText = new QLineEdit(); 
     inertiaJoyText->setReadOnly(true);
-    QLabel* inertiaJzyLabel = new QLabel(QStringLiteral("Jzy:"));
+    QLabel* inertiaJzyLabel = new QLabel(QStringLiteral("Jzy "));
     inertiaJzyText = new QLineEdit(); 
     inertiaJzyText->setReadOnly(true);
 
-    QLabel* inertiaJozLabel = new QLabel(QStringLiteral("Joz:"));
+    QLabel* inertiaJozLabel = new QLabel(QStringLiteral("Joz "));
     inertiaJozText = new QLineEdit(); 
     inertiaJozText->setReadOnly(true);
 
@@ -314,16 +345,26 @@ TaskMassProperties::TaskMassProperties()
     inertiaGrid->addWidget(inertiaJozText, 2, 5);
 
     inertiaLayout->addWidget(inertiaMatrixWidget);
+
+    QFrame* inertiaSeparator = new QFrame(inertiaProperties);
+    inertiaSeparator->setFrameShape(QFrame::HLine);
+    inertiaSeparator->setFrameShadow(QFrame::Sunken);
+    inertiaLayout->addWidget(inertiaSeparator);
+
+    QLabel* inertiaPrincipalLabel = new QLabel(tr("Principal Moments of Inertia"));
+    inertiaLayout->addWidget(inertiaPrincipalLabel);
+    
     inertiaDiagWidget = new QWidget();
     QHBoxLayout* inertiaDiag = new QHBoxLayout(inertiaDiagWidget);
     inertiaDiag->setContentsMargins(0, 0, 0, 0);
-    QLabel* inertiaJxLabel = new QLabel(QStringLiteral("Jx:"));
+    inertiaDiag->setSpacing(6);
+    QLabel* inertiaJxLabel = new QLabel(QStringLiteral("Jx "));
     inertiaJxText = new QLineEdit();
     inertiaJxText->setReadOnly(true);
-    QLabel* inertiaJyLabel = new QLabel(QStringLiteral("Jy:"));
+    QLabel* inertiaJyLabel = new QLabel(QStringLiteral("Jy "));
     inertiaJyText = new QLineEdit(); 
     inertiaJyText->setReadOnly(true);
-    QLabel* inertiaJzLabel = new QLabel(QStringLiteral("Jz:"));
+    QLabel* inertiaJzLabel = new QLabel(QStringLiteral("Jz "));
     inertiaJzText = new QLineEdit(); 
     inertiaJzText->setReadOnly(true);
 
@@ -339,7 +380,7 @@ TaskMassProperties::TaskMassProperties()
     inertiaLayout->addWidget(inertiaDiagWidget);
 
     inertiaLcsWidget = new QWidget();
-    QPushButton* inertiaLCSButton = new QPushButton(tr("Create principal axis LCS"));
+    QPushButton* inertiaLCSButton = new QPushButton(tr("Create principal axes LCS"));
     QObject::connect(inertiaLCSButton, &QPushButton::pressed, this, &TaskMassProperties::onLcsButtonPressed);
     QHBoxLayout* inertiaLCSButtonLayout = new QHBoxLayout(inertiaLcsWidget);
     inertiaLCSButtonLayout->addStretch();
@@ -350,7 +391,7 @@ TaskMassProperties::TaskMassProperties()
     axisInertiaWidget = new QWidget();
     QHBoxLayout* axisDiag = new QHBoxLayout(axisInertiaWidget);
 
-    QLabel* axisLabel = new QLabel(tr("Inertia around axis: "));
+    QLabel* axisLabel = new QLabel(tr("Inertia around axis "));
     axisLabel->setWordWrap(true);
     axisDiag->addWidget(axisLabel);
 
@@ -363,9 +404,11 @@ TaskMassProperties::TaskMassProperties()
 
     Content.emplace_back(inertiaProperties);
 
-    currentMode = "Global";
-
     QTimer::singleShot(0, this, &TaskMassProperties::invoke);
+
+    previousSelectionStyle = Gui::Selection().getSelectionStyle();
+    Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
+    selectionStyleChanged = true;
 
     updateInertiaVisibility();
     update(Gui::SelectionChanges());
@@ -377,11 +420,31 @@ TaskMassProperties::~TaskMassProperties()
 
 void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
 {
-    QPushButton* ok = box->button(QDialogButtonBox::Ok);
-    ok->setVisible(false);
+    QPushButton* okButton = box->button(QDialogButtonBox::Ok);
+    if (okButton) {
+        okButton->setVisible(false);
+    }
 
-    QPushButton* close = box->button(QDialogButtonBox::Abort);
-    close->setText(tr("Close"));
+    QPushButton* closeButton = box->button(QDialogButtonBox::Abort);
+    if (closeButton) {
+        closeButton->setText(tr("Close"));
+    }
+
+    QPushButton* saveButton = box->button(QDialogButtonBox::Apply);
+    if (saveButton) {
+        saveButton->setText(tr("Save"));
+        QObject::connect(saveButton, &QPushButton::released, this, &TaskMassProperties::saveResult);
+    }
+
+    QPushButton* resetButton = box->button(QDialogButtonBox::Reset);
+    if (resetButton) {
+        resetButton->setText(tr("Reset"));
+        QObject::connect(resetButton, &QPushButton::released, [this]() {
+            Gui::Selection().clearSelection();
+            removeTemporaryObjects();
+            clearUiFields();
+        });
+    }
 }
 
 void TaskMassProperties::invoke()
@@ -395,39 +458,90 @@ bool TaskMassProperties::accept()
 
 bool TaskMassProperties::reject()
 {
+    Gui::Selection().setSelectionStyle(previousSelectionStyle);
+    selectionStyleChanged = false;
+    removeTemporaryObjects();
     Gui::Control().closeDialog();
     return true;
 }
 
-void TaskMassProperties::setupShortcuts(QWidget* parent) 
-{
-    auto shortcutQuit = new QShortcut(parent);
-    shortcutQuit->setKey(QKeySequence(QStringLiteral("ESC")));
-    shortcutQuit->setContext(Qt::ApplicationShortcut);
-    connect(shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::quit);
-}
-
 void TaskMassProperties::quit()
 {
-    if (this->hasSelection()) {
-        this->clearFields();
+    if (!Gui::Selection().getSelection().empty()) {
+        Gui::Selection().clearSelection();
+        this->removeTemporaryObjects();
+        this->clearUiFields();
     }
     else {
         this->reject();
     }
 }
 
-bool TaskMassProperties::hasSelection() const
+void TaskMassProperties::removeTemporaryObjects()
 {
-    return !Gui::Selection().getSelection().empty();
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    if (!doc) {
+        return;
+    }
+
+    bool hasObjectsToRemove = false;
+    if (doc->getObject("Center_of_Gravity_Temp")
+        || doc->getObject("Center_of_Volume_Temp")
+        || doc->getObject("Principal_Axes_LCS_Temp")) {
+        hasObjectsToRemove = true;
+    }
+
+    if (!hasObjectsToRemove) {
+        return;
+    }
+
+    doc->openTransaction("Remove temporary datum objects");
+
+    if (doc->getObject("Center_of_Gravity_Temp")) {
+        doc->removeObject("Center_of_Gravity_Temp");
+    }
+    if (doc->getObject("Center_of_Volume_Temp")) {
+        doc->removeObject("Center_of_Volume_Temp");
+    }
+    if (doc->getObject("Principal_Axes_LCS_Temp")) {
+        doc->removeObject("Principal_Axes_LCS_Temp");
+    }
+
+    doc->commitTransaction();
 }
 
-void TaskMassProperties::clearFields()
-{
-    Gui::Selection().clearSelection();
-    tryupdate();
-}
 
+void TaskMassProperties::clearUiFields()
+{
+    listWidget->clear();
+
+    customEdit->clear();
+    volumeEdit->clear();
+    massEdit->clear();
+    densityEdit->clear();
+    surfaceAreaEdit->clear();
+
+    cogXText->clear();
+    cogYText->clear();
+    cogZText->clear();
+
+    covXText->clear();
+    covYText->clear();
+    covZText->clear();
+
+    inertiaJoxText->clear();
+    inertiaJxyText->clear();
+    inertiaJzxText->clear();
+    inertiaJoyText->clear();
+    inertiaJzyText->clear();
+    inertiaJozText->clear();
+
+    inertiaJxText->clear();
+    inertiaJyText->clear();
+    inertiaJzText->clear();
+
+    axisInertiaText->clear();
+}
 
 void TaskMassProperties::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
@@ -457,102 +571,339 @@ void TaskMassProperties::tryupdate()
 {
     if (isUpdating) return;
     
-    auto guiSelection = Gui::Selection().getSelection();
+    auto guiSelection = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
     if (guiSelection.empty()) {
-        listWidget->clear();
-        volumeEdit->clear();
-        massEdit->clear();
-        densityEdit->clear();
-        surfaceAreaEdit->clear();
-        cogXText->clear();
-        cogYText->clear();
-        cogZText->clear();
-        covXText->clear();
-        covYText->clear();
-        covZText->clear();
-        inertiaJoxText->clear();
-        inertiaJxyText->clear();
-        inertiaJzxText->clear();
-        inertiaJoyText->clear();
-        inertiaJzyText->clear();
-        inertiaJozText->clear();
-        inertiaJxText->clear();
-        inertiaJyText->clear();
-        inertiaJzText->clear();
-        axisInertiaText->clear();
         return;
     }
 
-    bool hasSubSelection = false;
-    std::vector<App::DocumentObject*> wholeObjects;
-    
-    for (const auto& sel : guiSelection) {
-        if (sel.SubName && strlen(sel.SubName) > 0) {
-            hasSubSelection = true;
-        }
-        if (sel.pObject) {
-            if (std::find(wholeObjects.begin(), wholeObjects.end(), sel.pObject) == wholeObjects.end()) {
-                wholeObjects.push_back(sel.pObject);
+    if (!selectingCustomCoordSystem) {
+        bool hasElementSelection = false;
+        std::vector<std::pair<App::DocumentObject*, std::string>> promoted;
+        promoted.reserve(guiSelection.size());
+
+        for (const auto& sel : guiSelection) {
+            if (!sel.pObject) {
+                continue;
+            }
+            if (sel.SubName && sel.SubName[0]) {
+                App::SubObjectT sub(sel.pObject, sel.SubName);
+                std::string subNoElement = sub.getSubNameNoElement();
+
+                bool canPromote = !subNoElement.empty() || !sel.pResolvedObject || sel.pResolvedObject == sel.pObject;
+
+                if (canPromote && subNoElement != sel.SubName) {
+                    hasElementSelection = true;
+                }
+                if (canPromote) {
+                    promoted.emplace_back(sel.pObject, subNoElement);
+                }
+                else {
+                    promoted.emplace_back(sel.pObject, sel.SubName);
+                }
+            }
+            else {
+                promoted.emplace_back(sel.pObject, std::string());
             }
         }
-    }
-    
-    if (hasSubSelection) {
-        isUpdating = true;
-        Gui::Selection().clearSelection();
-        for (auto obj : wholeObjects) {
-            if (obj && obj->getDocument()) {
-                Gui::Selection().addSelection(obj->getDocument()->getName(),obj->getNameInDocument());
+
+        if (hasElementSelection) {
+            std::unordered_set<std::string> seen;
+            isUpdating = true;
+            Gui::Selection().clearSelection();
+
+            for (const auto& entry : promoted) {
+                App::DocumentObject* obj = entry.first;
+                if (!obj || !obj->getDocument()) {
+                    continue;
+                }
+
+                const std::string& subName = entry.second;
+                std::string key = obj->getDocument()->getName();
+                key += '|' + obj->getNameInDocument() + '|' + subName;
+
+                if (!seen.insert(key).second) {
+                    continue;
+                }
+
+                if (subName.empty()) {
+                    Gui::Selection().addSelection(obj->getDocument()->getName(), obj->getNameInDocument());
+                }
+                else {
+                    Gui::Selection().addSelection(obj->getDocument()->getName(), obj->getNameInDocument(), subName.c_str());
+                }
             }
+
+            isUpdating = false;
+            tryupdate();
+
+            return;
         }
-        isUpdating = false;
-        tryupdate();
-        return;
     }
 
-    std::vector<App::DocumentObject*> objectsToMeasure;
+    std::vector<MassPropertiesInput> objectsToMeasure;
     App::DocumentObject const* referenceDatum = nullptr;
     
     listWidget->clear();
     
+    auto coordLabel = [](App::DocumentObject* obj) {
+        if (auto* datum = dynamic_cast<App::DatumElement*>(obj)) {
+            if (auto* lcs = datum->getLCS()) {
+                return lcs->getFullLabel();
+            }
+        }
+        if (auto* lcs = dynamic_cast<App::LocalCoordinateSystem*>(obj)) {
+            return lcs->getFullLabel();
+        }
+        if (auto* origin = dynamic_cast<App::Origin*>(obj)) {
+            return origin->getFullLabel();
+        }
+
+        return obj->getFullLabel();
+    };
+
+
+    auto isReferenceObject = [](App::DocumentObject* obj) {
+        if (!obj) {
+            return false;
+        }
+        auto datum = dynamic_cast<App::DatumElement*>(obj);
+        if (datum && datum->getLCS()) {
+            return true;
+        }
+        if (dynamic_cast<App::LocalCoordinateSystem*>(obj)) {
+            return true;
+        }
+        if (dynamic_cast<App::Origin*>(obj)) {
+            return true;
+        }
+        if (obj->getTypeId().getName() == std::string("PartDesign::CoordinateSystem")) {
+            return true;
+        }
+
+        return obj->isDerivedFrom<App::Line>();
+    };
+
+    auto getPlacementFromObject = [](App::DocumentObject* obj) {
+        if (!obj) {
+            return Base::Placement();
+        }
+        auto* baseProp = obj->getPropertyByName("Placement");
+        auto* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
+        if (prop) {
+            return prop->getValue();
+        }
+        return Base::Placement();
+    };
+
+    auto accumulatePlacement = [&](App::DocumentObject* root, const char* subname) {
+        Base::Placement total;
+        std::vector<App::DocumentObject*> chain;
+        if (root) {
+            chain.push_back(root);
+        }
+        if (root && subname && subname[0]) {
+            App::SubObjectT sub(root, subname);
+            std::string subNoElement = sub.getSubNameNoElement();
+            if (!subNoElement.empty()) {
+                App::SubObjectT subObj(root, subNoElement.c_str());
+                auto subList = subObj.getSubObjectList();
+                for (auto* item : subList) {
+                    if (!item) {
+                        continue;
+                    }
+                    if (!chain.empty() && chain.back() == item) {
+                        continue;
+                    }
+                    chain.push_back(item);
+                }
+            }
+        }
+        for (auto* item : chain) {
+            total = total * getPlacementFromObject(item);
+        }
+        return total;
+    };
+
+    auto addMeasuredObject = [&](App::DocumentObject* obj,
+                                 const char* elementName,
+                                 const Base::Placement& placement,
+                                 std::unordered_set<std::string>& measuredKeys) {
+        if (!obj) {
+            return;
+        }
+
+        App::DocumentObject* owner = nullptr;
+        Part::ShapeOptions options = Part::ShapeOption::ResolveLink;
+
+        if (elementName && elementName[0]) {
+            options |= Part::ShapeOption::NeedSubElement;
+        }
+
+        TopoDS_Shape shape = Part::Feature::getShape(obj, options, elementName, nullptr, &owner);
+        if (shape.IsNull()) {
+            return;
+        }
+        App::DocumentObject* materialObj = owner ? owner : obj;
+
+        std::ostringstream keyBuilder;
+        keyBuilder << std::fixed << std::setprecision(9) 
+                   << materialObj->getDocument()->getName() << '|'
+                   << materialObj->getNameInDocument() << '|';
+
+        Base::Matrix4D matrix = placement.toMatrix();
+
+        for (int r = 0; r < 4; ++r) {
+            for (int c = 0; c < 4; ++c) {
+                keyBuilder << matrix[r][c] << ';';
+            }
+        }
+        std::string measuredKey = keyBuilder.str();
+        if (!measuredKeys.insert(measuredKey).second) {
+            return;
+        }
+
+        objectsToMeasure.push_back({materialObj, shape, placement});
+        listWidget->addItem(QString::fromStdString(materialObj->getFullLabel()));
+    };
+
+    std::unordered_set<std::string> measuredKeys;
+    std::unordered_set<App::DocumentObject*> visited;
+
+    auto collectBodies = [&](auto&& self, App::DocumentObject* obj, const Base::Placement& parentPlc) -> void {
+        if (!obj) {
+            return;
+        }
+
+        App::DocumentObject* resolved;
+
+        if (!obj) {
+            resolved = obj;
+        }
+
+        if (obj->isLink()) {
+            resolved = obj->getLinkedObject(true);
+        }
+        else {
+            resolved = obj;
+        }
+
+        if (!resolved) {
+            return;
+        }
+        if (!visited.insert(resolved).second) {
+            return;
+        }
+
+        Base::Placement currentPlc = parentPlc * getPlacementFromObject(obj);
+        if (resolved != obj) {
+            currentPlc = currentPlc * getPlacementFromObject(resolved);
+        }
+
+        if (auto* body = dynamic_cast<PartDesign::Body*>(resolved)) {
+            if (auto* tip = body->Tip.getValue()) {
+                Base::Placement tipPlc = currentPlc * getPlacementFromObject(tip);
+                addMeasuredObject(tip, nullptr, tipPlc, measuredKeys);
+            }
+            return;
+        }
+
+        if (auto* group = resolved->getExtensionByType<App::GroupExtension>(true)) {
+            for (auto* child : group->getObjects()) {
+                self(self, child, currentPlc);
+            }
+        }
+    };
+
+    hasCurrentDatumPlacement = false;
+
     if (selectingCustomCoordSystem) {
         customEdit->clear();
-        for (const auto& selObj : guiSelection) {
-            if (selObj.pObject) {
-                auto datum = dynamic_cast<App::DatumElement*>(selObj.pObject);
-                if (datum && datum->getLCS()) {
-                    customEdit->setText(QString::fromStdString(selObj.pObject->getFullLabel()));
-                    currentDatum = selObj.pObject;
-                    selectingCustomCoordSystem = false;
-                    break;
-                }
-                else if (selObj.pObject->isDerivedFrom<App::Line>()) {
-                    customEdit->setText(QString::fromStdString(selObj.pObject->getFullLabel()));
-                    currentDatum = selObj.pObject;
-                    selectingCustomCoordSystem = false;
-                    break;
-                }
 
+        for (const auto& selObj : guiSelection) {
+            App::DocumentObject* candidate = selObj.pObject;
+
+            if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+                candidate = selObj.pResolvedObject;
+            }
+
+            if (selObj.SubName && selObj.SubName[0]) {
+                App::SubObjectT sub(selObj.pObject, selObj.SubName);
+                
+                if (auto* leaf = sub.getSubObject()) {
+                    candidate = leaf;
+                }
+            }
+
+            if (isReferenceObject(candidate)) {
+                customEdit->setText(QString::fromStdString(coordLabel(candidate)));
+                currentDatum = candidate;
+                currentDatumPlacement = accumulatePlacement(selObj.pObject, selObj.SubName);
+                hasCurrentDatumPlacement = true;
+                selectingCustomCoordSystem = false;
+                break;
             }
         }
     }
     
     for (const auto& selObj : guiSelection) {
         if (selObj.pObject) {
-            std::string typeName = selObj.pObject->getTypeId().getName();
-            auto lcs = dynamic_cast<App::DatumElement*>(selObj.pObject);
-            if ((lcs && lcs->getLCS()) 
-                || typeName == "PartDesign::CoordinateSystem"
-                || selObj.pObject->isDerivedFrom<App::Line>())
-            {
+            if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject")
+                && !(selObj.SubName && selObj.SubName[0])) {
+                collectBodies(collectBodies, selObj.pObject, Base::Placement());
+                continue;
+            }
+
+            App::DocumentObject* candidate = selObj.pObject;
+            if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+                candidate = selObj.pResolvedObject;
+            }
+
+            if (selObj.SubName && selObj.SubName[0]) {
+                App::SubObjectT sub(selObj.pObject, selObj.SubName);
+                if (auto* leaf = sub.getSubObject()) {
+                    candidate = leaf;
+                }
+            }
+
+            if (isReferenceObject(candidate)) {
                 if (currentMode == "Custom" && !selectingCustomCoordSystem) {
+                    currentDatum = candidate;
+                    currentDatumPlacement = accumulatePlacement(selObj.pObject, selObj.SubName);
+                    hasCurrentDatumPlacement = true;
+                    customEdit->setText(QString::fromStdString(coordLabel(candidate)));
                     referenceDatum = currentDatum;
                     break;
                 }
                 continue;
             }
-            listWidget->addItem(QString::fromStdString(selObj.pObject->getFullLabel())); 
-            objectsToMeasure.push_back(selObj.pObject);
+
+            if (selObj.SubName && selObj.SubName[0]) {
+                App::SubObjectT sub(selObj.pObject, selObj.SubName);
+                App::DocumentObject* leaf = nullptr;
+
+                if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+                    leaf = selObj.pResolvedObject;
+                }
+                if (!leaf) {
+                    leaf = sub.getSubObject();
+                }
+                if (!leaf) {
+                    leaf = selObj.pObject;
+                }
+                Base::Placement placement = accumulatePlacement(selObj.pObject, selObj.SubName);
+
+                if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+                    std::string subNoElement = sub.getSubNameNoElement();
+                    if (subNoElement.empty()) {
+                        placement = App::GeoFeature::getGlobalPlacement(selObj.pResolvedObject);
+                    }
+                }
+                addMeasuredObject(leaf, nullptr, placement, measuredKeys);
+            }
+            else {
+                Base::Placement placement = accumulatePlacement(selObj.pObject, nullptr);
+                addMeasuredObject(selObj.pObject, nullptr, placement, measuredKeys);
+            }
         }
     }
 
@@ -565,11 +916,14 @@ void TaskMassProperties::tryupdate()
 
     updateInertiaVisibility();
     
-    MassPropertiesData info = CalculateMassProperties(objectsToMeasure, currentMode, referenceDatum);
+    MassPropertiesData info = CalculateMassProperties(
+        objectsToMeasure,
+        currentMode,
+        referenceDatum,
+        hasCurrentDatumPlacement ? &currentDatumPlacement : nullptr
+    );
 
     currentInfo = info;
-
-    
 
     if (currentMode == "Center of Gravity") {
         info.cogX = 0.0;
@@ -580,28 +934,54 @@ void TaskMassProperties::tryupdate()
         info.covY -= currentInfo.cogY;
         info.covZ -= currentInfo.cogZ;
     }
+    if (currentMode == "Custom" && !referenceDatum) {
+        info.cogX = 0.0;
+        info.cogY = 0.0;
+        info.cogZ = 0.0;
+
+        info.covX = 0.0;
+        info.covY = 0.0;
+        info.covZ = 0.0;
+    }
     else if (currentMode == "Custom" && referenceDatum) {
-        auto datum = const_cast<App::DatumElement*>(dynamic_cast<const App::DatumElement*>(referenceDatum));
-        if (!datum) {
-            return;
-        }
-        else if (datum->getLCS()) {
-            Base::Vector3d originPos = datum->getBasePoint();
+        auto applyOriginOffset = [&](const Base::Vector3d& originPos) {
             info.cogX -= originPos.x;
             info.cogY -= originPos.y;
             info.cogZ -= originPos.z;
-    
+
             info.covX -= originPos.x;
             info.covY -= originPos.y;
             info.covZ -= originPos.z;
+        };
+
+
+        if (!referenceDatum->isDerivedFrom<App::Line>()) {
+            if (hasCurrentDatumPlacement) {
+                applyOriginOffset(currentDatumPlacement.getPosition());
+            }
+            else if (auto datum = dynamic_cast<const App::DatumElement*>(referenceDatum)) {
+                if (datum->getLCS()) {
+                    applyOriginOffset(datum->getBasePoint());
+                }
+            }
+            else if (auto lcs = dynamic_cast<const App::LocalCoordinateSystem*>(referenceDatum)) {
+                applyOriginOffset(lcs->Placement.getValue().getPosition());
+            }
+            else if (auto origin = dynamic_cast<const App::Origin*>(referenceDatum)) {
+                applyOriginOffset(origin->Placement.getValue().getPosition());
+            }
         }
     }
 
 
 
-    auto setText = [&](QLineEdit* edit, double value, const Base::Unit& unit, int precision, const QString& suffix = QString()) {
+    const int decimals = Base::UnitsApi::getDecimals();
+    const int denominator = Base::UnitsApi::getDenominator();
+
+    auto setText = [&](QLineEdit* edit, double value, const Base::Unit& unit, const QString& suffix = QString()) {
         Base::Quantity q {value, unit};
-        Base::QuantityFormat format(Base::QuantityFormat::Fixed, precision);
+        Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
+        format.setDenominator(denominator);
         q.setFormat(format);
 
         const std::string text = UnitHelper::translate(q, unitsSchemaIndex);
@@ -609,29 +989,35 @@ void TaskMassProperties::tryupdate()
         edit->setCursorPosition(0);
     };
 
-    setText(volumeEdit, info.volume, Base::Unit::Volume, 6);
-    setText(massEdit, info.mass, Base::Unit::Mass, 6);
-    setText(surfaceAreaEdit, info.surfaceArea, Base::Unit::Area, 6);
-    setText(densityEdit, info.density, Base::Unit::Density, 2, QLatin1String(" (Avg)"));
+    const QString densitySuffix = objectsToMeasure.size() > 1 ? tr(" (Avg)") : QString();
 
-    setText(cogXText, info.cogX, Base::Unit::Length, 6);
-    setText(cogYText, info.cogY, Base::Unit::Length, 6);
-    setText(cogZText, info.cogZ, Base::Unit::Length, 6);
-    setText(covXText, info.covX, Base::Unit::Length, 6);
-    setText(covYText, info.covY, Base::Unit::Length, 6);
-    setText(covZText, info.covZ, Base::Unit::Length, 6);
+    setText(volumeEdit, info.volume, Base::Unit::Volume);
+    setText(massEdit, info.mass, Base::Unit::Mass);
+    setText(surfaceAreaEdit, info.surfaceArea, Base::Unit::Area);
+    setText(densityEdit, info.density, Base::Unit::Density, densitySuffix);
 
-    setText(inertiaJoxText, info.inertiaJox, Base::Unit::Inertia, 6);
-    setText(inertiaJoyText, info.inertiaJoy, Base::Unit::Inertia, 6);
-    setText(inertiaJozText, info.inertiaJoz, Base::Unit::Inertia, 6);
-    setText(inertiaJxyText, info.inertiaJxy, Base::Unit::Inertia, 6);
-    setText(inertiaJzxText, info.inertiaJzx, Base::Unit::Inertia, 6);
-    setText(inertiaJzyText, info.inertiaJzy, Base::Unit::Inertia, 6);
+    setText(cogXText, info.cogX, Base::Unit::Length);
+    setText(cogYText, info.cogY, Base::Unit::Length);
+    setText(cogZText, info.cogZ, Base::Unit::Length);
+    setText(covXText, info.covX, Base::Unit::Length);
+    setText(covYText, info.covY, Base::Unit::Length);
+    setText(covZText, info.covZ, Base::Unit::Length);
 
-    setText(inertiaJxText, info.inertiaJx, Base::Unit::Inertia, 6);
-    setText(inertiaJyText, info.inertiaJy, Base::Unit::Inertia, 6);
-    setText(inertiaJzText, info.inertiaJz, Base::Unit::Inertia, 6);
-    setText(axisInertiaText, info.axisInertia, Base::Unit::Inertia, 6);
+    setText(inertiaJoxText, info.inertiaJox, Base::Unit::Inertia);
+    setText(inertiaJoyText, info.inertiaJoy, Base::Unit::Inertia);
+    setText(inertiaJozText, info.inertiaJoz, Base::Unit::Inertia);
+    setText(inertiaJxyText, info.inertiaJxy, Base::Unit::Inertia);
+    setText(inertiaJzxText, info.inertiaJzx, Base::Unit::Inertia);
+    setText(inertiaJzyText, info.inertiaJzy, Base::Unit::Inertia);
+
+    setText(inertiaJxText, info.inertiaJx, Base::Unit::Inertia);
+    setText(inertiaJyText, info.inertiaJy, Base::Unit::Inertia);
+    setText(inertiaJzText, info.inertiaJz, Base::Unit::Inertia);
+    setText(axisInertiaText, info.axisInertia, Base::Unit::Inertia);
+
+    createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity_Temp");
+    createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume_Temp");
+    createLCS("Principal_Axes_LCS_Temp");
 }
 
 void TaskMassProperties::updateInertiaVisibility()
@@ -649,17 +1035,21 @@ void TaskMassProperties::updateInertiaVisibility()
     axisInertiaWidget->setVisible(hasAxisSelection);
 }
 
-void TaskMassProperties::createDatum(double x, double y, double z, const std::string& name)
+void TaskMassProperties::createDatum(double x, double y, double z, const std::string& name, bool removeExisting)
 {
     try {
         App::Document* doc = App::GetApplication().getActiveDocument();
         doc->openTransaction("Create Datum Point");
-
+        
         App::DocumentObject* datum = doc->getObject(name.c_str());
-
-        if (!datum) {
-            datum = doc->addObject("Part::DatumPoint", name.c_str());
+        
+        if (removeExisting) {
+            if (datum) {
+                doc->removeObject(name.c_str());
+            }
         }
+
+        datum = doc->addObject("Part::DatumPoint", name.c_str());
         
         App::Property* baseProp = datum->getPropertyByName("Placement");
         App::PropertyPlacement* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
@@ -675,17 +1065,20 @@ void TaskMassProperties::createDatum(double x, double y, double z, const std::st
     }
 }
 
-void TaskMassProperties::createLCS()
+void TaskMassProperties::createLCS(std::string name, bool removeExisting)
 {
     try {
         App::Document* doc = App::GetApplication().getActiveDocument();
         doc->openTransaction("Create LCS");
 
-        App::DocumentObject* LCS = doc->getObject("Principal_Axes_LCS");
+        App::DocumentObject* LCS = doc->getObject(name.c_str());
 
-        if (!LCS) {
-            LCS = doc->addObject("Part::LocalCoordinateSystem", "Principal_Axes_LCS");
+        if (removeExisting) {
+            if (LCS) {
+                doc->removeObject(name.c_str());
+            }
         }
+        LCS = doc->addObject("Part::LocalCoordinateSystem", name.c_str());
         
         App::Property* baseProp = LCS->getPropertyByName("Placement");
         App::PropertyPlacement* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
@@ -727,17 +1120,17 @@ void TaskMassProperties::createLCS()
 
 void TaskMassProperties::onCogDatumButtonPressed()
 {
-    createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity");
+    createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity", false);
 }
 
 void TaskMassProperties::onCovDatumButtonPressed()
 {
-    createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume");
+    createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume", false);
 }
 
 void TaskMassProperties::onLcsButtonPressed()
 {
-    createLCS();
+    createLCS("Principal_Axes_LCS", false);
 }
 
 void TaskMassProperties::onSelectCustomCoordinateSystem()
@@ -750,4 +1143,104 @@ void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
     currentMode = coordSystem;
     updateInertiaVisibility();
     tryupdate();
+}
+
+void TaskMassProperties::saveResult()
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    
+    if (!doc || listWidget->count() == 0) {
+        return;
+    }
+
+    doc->openTransaction("Add Mass Properties");
+
+    MassProperties::Result::init();
+
+    constexpr auto groupName = "Measurements";
+    auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject(groupName));
+    
+    if (!group || !group->isValid()) {
+        group = doc->addObject<App::DocumentObjectGroup>(groupName);
+    }
+
+    auto* obj = doc->addObject("MassProperties::Result", "MassProperties");
+    if (!obj) {
+        doc->abortTransaction();
+        return;
+    }
+
+    obj->Visibility.setValue(true);
+
+    auto setFloat = [&](const char* name, double value) {
+        auto* prop = dynamic_cast<App::PropertyFloat*>(
+            obj->addDynamicProperty("App::PropertyFloat", name, "MassProperties")
+        );
+        if (prop) {
+            prop->setValue(value);
+        }
+    };
+
+    auto setVector = [&](const char* name, const Base::Vector3d& value) {
+        auto* prop = dynamic_cast<App::PropertyVector*>(
+            obj->addDynamicProperty("App::PropertyVector", name, "MassProperties")
+        );
+        if (prop) {
+            prop->setValue(value);
+        }
+    };
+
+    auto setString = [&](const char* name, const std::string& value) {
+        auto* prop = dynamic_cast<App::PropertyString*>(
+            obj->addDynamicProperty("App::PropertyString", name, "MassProperties")
+        );
+        if (prop) {
+            prop->setValue(value);
+        }
+    };
+
+    setString("Mode", currentMode);
+    setFloat("Volume", currentInfo.volume);
+    setFloat("Mass", currentInfo.mass);
+    setFloat("Density", currentInfo.density);
+    setFloat("SurfaceArea", currentInfo.surfaceArea);
+
+    setVector("CenterOfGravity", Base::Vector3d(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ));
+    setVector("CenterOfVolume", Base::Vector3d(currentInfo.covX, currentInfo.covY, currentInfo.covZ));
+
+    if (currentInfo.axisInertia != 0.0) {
+        setFloat("AxisInertia", currentInfo.axisInertia);
+    }
+    else {
+        setFloat("InertiaJox", currentInfo.inertiaJox);
+        setFloat("InertiaJoy", currentInfo.inertiaJoy);
+        setFloat("InertiaJoz", currentInfo.inertiaJoz);
+        setFloat("InertiaJxy", currentInfo.inertiaJxy);
+        setFloat("InertiaJzx", currentInfo.inertiaJzx);
+        setFloat("InertiaJzy", currentInfo.inertiaJzy);
+        setFloat("InertiaJx", currentInfo.inertiaJx);
+        setFloat("InertiaJy", currentInfo.inertiaJy);
+        setFloat("InertiaJz", currentInfo.inertiaJz);
+    }
+    
+    
+
+    setVector("PrincipalAxisX", currentInfo.principalAxisX);
+    setVector("PrincipalAxisY", currentInfo.principalAxisY);
+    setVector("PrincipalAxisZ", currentInfo.principalAxisZ);
+
+    if (group) {
+        group->addObject(obj);
+        group->purgeTouched();
+    }
+
+    if (auto* guiDoc = Gui::Application::Instance->activeDocument()) {
+        if (auto* view = dynamic_cast<Gui::ViewProviderDocumentObject*>(
+                guiDoc->getViewProvider(obj))) {
+            view->setShowable(true);
+            view->show();
+        }
+    }
+
+    doc->commitTransaction();
 }

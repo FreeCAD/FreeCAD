@@ -20,56 +20,29 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include <Gui/Application.h>
+#ifndef MASSPROPERTIES_OBJECT_H
+#define MASSPROPERTIES_OBJECT_H
 
-#include "ViewProviderMassPropertiesResult.h"
+#include <App/DocumentObject.h>
 
-void CreateMassPropertiesCommands();
-
-namespace MassPropertiesGui
+namespace MassProperties
 {
-class Module: public Py::ExtensionModule<Module>
+
+class Result: public App::DocumentObject
 {
+    PROPERTY_HEADER_WITH_OVERRIDE(MassProperties::Result);
+
 public:
-    Module()
-        : Py::ExtensionModule<Module>("MassPropertiesGui")
-    {
-        initialize("This is the MassPropertiesGui module");
-    }
+    Result() = default;
+    ~Result() override = default;
 
-    ~Module() override = default;
+    const char* getViewProviderName() const override
+    {
+        return "MassPropertiesGui::ViewProviderMassPropertiesResult";
+    }
 };
 
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
-}
+}  // namespace MassProperties
 
-} // namespace MassPropertiesGui
-
-PyMOD_INIT_FUNC(MassPropertiesGui)
-{
-    if (!Gui::Application::Instance) {
-        PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(nullptr);
-    }
-
-    try {
-        Base::Interpreter().loadModule("MassProperties");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = MassPropertiesGui::initModule();
-    MassPropertiesGui::ViewProviderMassPropertiesResult::init();
-
-    CreateMassPropertiesCommands();
-
-    PyMOD_Return(mod);
-}
+#endif  // MASSPROPERTIES_OBJECT_H

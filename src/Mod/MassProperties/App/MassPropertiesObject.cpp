@@ -20,56 +20,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#include <Base/Console.h>
-#include <Base/Interpreter.h>
-#include <Base/PyObjectBase.h>
 
-#include <Gui/Application.h>
+#include "MassPropertiesObject.h"
 
-#include "ViewProviderMassPropertiesResult.h"
-
-void CreateMassPropertiesCommands();
-
-namespace MassPropertiesGui
-{
-class Module: public Py::ExtensionModule<Module>
-{
-public:
-    Module()
-        : Py::ExtensionModule<Module>("MassPropertiesGui")
-    {
-        initialize("This is the MassPropertiesGui module");
-    }
-
-    ~Module() override = default;
-};
-
-PyObject* initModule()
-{
-    return Base::Interpreter().addModule(new Module);
-}
-
-} // namespace MassPropertiesGui
-
-PyMOD_INIT_FUNC(MassPropertiesGui)
-{
-    if (!Gui::Application::Instance) {
-        PyErr_SetString(PyExc_ImportError, "Cannot load Gui module in console application.");
-        PyMOD_Return(nullptr);
-    }
-
-    try {
-        Base::Interpreter().loadModule("MassProperties");
-    }
-    catch (const Base::Exception& e) {
-        PyErr_SetString(PyExc_ImportError, e.what());
-        PyMOD_Return(nullptr);
-    }
-
-    PyObject* mod = MassPropertiesGui::initModule();
-    MassPropertiesGui::ViewProviderMassPropertiesResult::init();
-
-    CreateMassPropertiesCommands();
-
-    PyMOD_Return(mod);
-}
+PROPERTY_SOURCE(MassProperties::Result, App::DocumentObject)

@@ -18,6 +18,10 @@ set(MassPropertiesGui_SRCS
     UnitHelper.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesResult.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesResult.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesObject.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../App/MassPropertiesObject.h
+    ViewProviderMassPropertiesResult.cpp
+    ViewProviderMassPropertiesResult.h
 )
 
 add_library(MassPropertiesGui SHARED ${MassPropertiesGui_SRCS})
