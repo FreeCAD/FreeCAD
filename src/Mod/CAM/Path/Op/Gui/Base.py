@@ -685,12 +685,14 @@ class TaskPanelBaseGeometryPage(TaskPanelPage):
 
     def addBaseGeometry(self, selection):
         Path.Log.track(selection)
+        added = False
         for sel in selection:
             # check each selection
             if self.selectionSupportedAsBaseGeometry(sel, False):
+                added = True
                 for sub in sel.SubElementNames:
                     self.obj.Proxy.addBase(self.obj, sel.Object, sub)
-        return False
+        return added
 
     def addBase(self):
         Path.Log.track()
