@@ -97,14 +97,6 @@ QString extractUnitFromResultString(const QString& resultString)
     return QString();
 }
 
-void adjustResultEditorHeight(QPlainTextEdit* editor, const QString& text)
-{
-    int lines = text.count('\n') + 1;
-    int frame = 2 * editor->frameWidth();
-    int docMargin = static_cast<int>(2.0 * editor->document()->documentMargin());
-    int height = lines * editor->fontMetrics().lineSpacing() + frame + docMargin;
-    editor->setFixedHeight(height);
-}
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -199,7 +191,8 @@ TaskMeasure::TaskMeasure()
     valueResult->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     valueResult->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     valueResult->setLineWrapMode(QPlainTextEdit::NoWrap);
-    adjustResultEditorHeight(valueResult, QLatin1String("-"));
+    valueResult->setSizeAdjustPolicy(QAbstractScrollArea::AdjustToContents);
+    valueResult->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     // Main layout
     QBoxLayout* layout = taskbox->groupLayout();
@@ -358,7 +351,6 @@ void TaskMeasure::tryUpdate()
     }
 
     valueResult->setPlainText(QString::asprintf("-"));
-    adjustResultEditorHeight(valueResult, QLatin1String("-"));
 
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
@@ -504,7 +496,6 @@ void TaskMeasure::updateResultWithUnit()
     if (currentUnit != QLatin1String("-") && !resultString.isEmpty() && resultString.contains('\n')) {
         QString converted = convertCoordinateResultUnits(resultString, currentUnit);
         valueResult->setPlainText(converted);
-        adjustResultEditorHeight(valueResult, converted);
     }
     else if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
         QString valuePart;
@@ -514,7 +505,6 @@ void TaskMeasure::updateResultWithUnit()
         Base::Quantity resultQty;
         if (!buildQuantity(valuePart, unitPart, resultQty)) {
             valueResult->setPlainText(resultString);
-            adjustResultEditorHeight(valueResult, resultString);
             return;
         }
 
@@ -533,11 +523,9 @@ void TaskMeasure::updateResultWithUnit()
 
         QString formattedResult = formattedValue + " " + currentUnit;
         valueResult->setPlainText(formattedResult);
-        adjustResultEditorHeight(valueResult, formattedResult);
     }
     else {
         valueResult->setPlainText(resultString);
-        adjustResultEditorHeight(valueResult, resultString);
     }
 }
 
