@@ -2560,6 +2560,12 @@ void Application::initConfig(int argc, char ** argv)
     mConfig["Debug"] = "0";
 #   endif
 
+#ifdef FREECAD_BUILD_TYPE
+    mConfig["CmakeBuildType"] = FREECAD_BUILD_TYPE;
+#else
+    mConfig["CmakeBuildType"] = "";
+#endif
+
     if (!Py_IsInitialized()) {
         // init python
         PyImport_AppendInittab ("FreeCAD", init_freecad_module);
