@@ -10,7 +10,7 @@ requires-pixi = ">=0.48"
 [dependencies]
 blinker = "*"
 calculix = "*"
-ccache = ">=4.12.3,<5"
+ccache = "*"
 cmake = "*"
 coin3d = "*"
 compilers = ">=1.10,<1.11"
