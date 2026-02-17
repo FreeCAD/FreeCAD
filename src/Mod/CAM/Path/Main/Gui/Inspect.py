@@ -97,6 +97,7 @@ class GCodeEditorDialog(QtGui.QDialog):
             self.tool = None
 
         QtGui.QDialog.__init__(self, parent)
+        self.setWindowTitle("CAM Inspect")
         layout = QtGui.QVBoxLayout(self)
 
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
