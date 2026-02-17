@@ -835,6 +835,12 @@ void DSHArcController::addConstraints()
     auto p3 = onViewParameters[OnViewParameter::Third]->getValue();
     auto p4 = onViewParameters[OnViewParameter::Fourth]->getValue();
 
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto p3Expr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto p4Expr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+    auto p5Expr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
+
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto p3set = onViewParameters[OnViewParameter::Third]->isSet;
@@ -847,37 +853,73 @@ void DSHArcController::addConstraints()
         : handler->arcPos1;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, pos1),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, pos1),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintp3radius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
             firstCurve,
             fabs(p3)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
 
     auto constraintp5angle = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
             firstCurve,
             fabs(handler->arcAngle)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p5Expr);
     };
 
     auto constraintp3x = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, handler->arcPos2), GeoElementId::VAxis, p3, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, handler->arcPos2),
+            GeoElementId::VAxis,
+            p3,
+            obj,
+            !p3Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
 
     auto constraintp4y = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, handler->arcPos2), GeoElementId::HAxis, p4, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, handler->arcPos2),
+            GeoElementId::HAxis,
+            p4,
+            obj,
+            !p4Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
     };
 
 

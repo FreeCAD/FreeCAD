@@ -710,6 +710,10 @@ void DSHCircleController::addConstraints()
         auto x0 = onViewParameters[OnViewParameter::First]->getValue();
         auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
 
+        auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+        auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+        auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+
         auto x0set = onViewParameters[OnViewParameter::First]->isSet;
         auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
         auto radiusSet = onViewParameters[OnViewParameter::Third]->isSet;
@@ -717,24 +721,41 @@ void DSHCircleController::addConstraints()
         using namespace Sketcher;
 
         auto constraintx0 = [&]() {
+            int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::mid),
                 GeoElementId::VAxis,
                 x0,
-                handler->sketchgui->getObject()
+                handler->sketchgui->getObject(),
+                !x0Expr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                handler->sketchgui->getObject(),
+                x0Expr
             );
         };
 
         auto constrainty0 = [&]() {
+            int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             ConstraintToAttachment(
                 GeoElementId(firstCurve, PointPos::mid),
                 GeoElementId::HAxis,
                 y0,
-                handler->sketchgui->getObject()
+                handler->sketchgui->getObject(),
+                !y0Expr.empty()
+            );
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                handler->sketchgui->getObject(),
+                y0Expr
             );
         };
 
         auto constraintradius = [&]() {
+            int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
             if (handler->isDiameter) {
                 Gui::cmdAppObjectArgs(
                     handler->sketchgui->getObject(),
@@ -751,6 +772,13 @@ void DSHCircleController::addConstraints()
                     handler->radius
                 );
             }
+
+            applyExpressionToLatestConstraint(
+                handler->getSketchObject(),
+                oldConstraintCount,
+                handler->sketchgui->getObject(),
+                radiusExpr
+            );
 
             const std::vector<Sketcher::Constraint*>& ConStr
                 = handler->sketchgui->getSketchObject()->Constraints.getValues();

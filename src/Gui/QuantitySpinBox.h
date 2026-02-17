@@ -124,6 +124,12 @@ public:
 
     /// Gets the expression as a string
     QString expressionText() const;
+    /// Returns and clears a transient expression typed in an unbound spin box.
+    std::string takeUnboundExpressionText();
+    /// Parses and commits inline assignment/expression text currently in the editor.
+    bool commitInlineExpressionText();
+    /// Commits inline assignment/expression and emits unbound value notifications when needed.
+    bool commitInlineExpressionTextForUi();
     void evaluateExpression();
 
     /// Set the number portion selected
@@ -183,6 +189,9 @@ private:
     QString getUserString(const Base::Quantity& val, double& factor, QString& unitString) const;
     QString getUserString(const Base::Quantity& val) const;
     QSize sizeHintCalculator(int height) const;
+    void emitCommittedUnboundValue();
+    bool tryHandleVariableAssignment(const QString& text);
+    bool tryHandleRawExpression(const QString& text);
 
 Q_SIGNALS:
     /** Gets emitted if the user has entered a VALID input

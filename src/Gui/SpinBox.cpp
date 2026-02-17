@@ -220,8 +220,14 @@ void ExpressionSpinBox::openFormulaDialog()
 bool ExpressionSpinBox::handleKeyEvent(const QString& text)
 {
     if (text == QLatin1String("=") && isBound()) {
-        openFormulaDialog();
-        return true;
+        // Only open the formula dialog if the input is empty.
+        // When there's already text (e.g. user typing "width=42"),
+        // let '=' be inserted as a character.
+        if (!lineedit || lineedit->text().trimmed().isEmpty()) {
+            openFormulaDialog();
+            return true;
+        }
+        return false;  // let '=' be typed into the input
     }
 
     return false;

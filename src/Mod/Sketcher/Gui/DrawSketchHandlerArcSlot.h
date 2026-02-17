@@ -889,6 +889,12 @@ void DSHArcSlotController::addConstraints()
     auto radius = onViewParameters[OnViewParameter::Third]->getValue();
     auto slotRadius = onViewParameters[OnViewParameter::Sixth]->getValue();
 
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto arcAngleExpr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
+    auto slotRadiusExpr = onViewParameters[OnViewParameter::Sixth]->constraintExpression();
+
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto radiusSet = onViewParameters[OnViewParameter::Third]->isSet;
@@ -896,14 +902,31 @@ void DSHArcSlotController::addConstraints()
     auto slotRadiusSet = onViewParameters[OnViewParameter::Sixth]->isSet;
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::mid),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::mid),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintRadius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         if (handler->constructionMethod() == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
             Gui::cmdAppObjectArgs(
                 obj,
@@ -923,18 +946,22 @@ void DSHArcSlotController::addConstraints()
                 fabs(radius)
             );
         }
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, radiusExpr);
     };
 
     auto constraintArcAngle = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
             firstCurve,
             fabs(handler->arcAngle)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, arcAngleExpr);
     };
 
     auto constraintSlotRadius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         if (handler->constructionMethod() == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
             Gui::cmdAppObjectArgs(
                 obj,
@@ -951,6 +978,12 @@ void DSHArcSlotController::addConstraints()
                 fabs(slotRadius)
             );
         }
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            obj,
+            slotRadiusExpr
+        );
     };
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.

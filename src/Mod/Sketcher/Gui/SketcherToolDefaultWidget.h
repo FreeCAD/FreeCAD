@@ -32,6 +32,8 @@
 #include <Gui/Selection/Selection.h>
 #include <fastsignals/signal.h>
 
+#include <string>
+
 
 class QComboBox;
 
