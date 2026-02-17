@@ -20,6 +20,8 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost/unordered_set.hpp>
+
 #include <QApplication>
 #include <QFont>
 

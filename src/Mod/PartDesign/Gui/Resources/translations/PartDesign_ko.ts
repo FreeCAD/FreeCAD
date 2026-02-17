@@ -3514,12 +3514,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>이 도형특징을 사용하기 위해서는, 현재 문서에 있는 몸통 대상체에 속해야 합니다.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>부품 안에 도형특징이 없습니다</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>이 도형특징을 사용하기 위해서는, 현재 문서에 있는 부품에 속해야 합니다.</translation>
     </message>

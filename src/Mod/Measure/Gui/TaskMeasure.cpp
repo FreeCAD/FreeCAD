@@ -181,7 +181,7 @@ TaskMeasure::TaskMeasure()
     connect(modeSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onModeChanged);
 
     unitSwitch = new QComboBox();
-    unitSwitch->addItem("-");
+    unitSwitch->addItem(QLatin1String("-"));
     connect(unitSwitch, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskMeasure::onUnitChanged);
 
 

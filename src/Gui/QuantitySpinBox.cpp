@@ -886,6 +886,7 @@ void QuantitySpinBox::stepBy(int steps)
     }
 
     Quantity quant(val, d->unitStr.toStdString());
+    quant.setFormat(d->quantity.getFormat());
     updateText(quant);
     updateFromCache(true);
     update();

@@ -3518,12 +3518,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Pentru a utiliza această caracteristică, ea trebuie să aparțină unui corp din document</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Caracteristica nu este de la o piesă/Part</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Pentru a utiliza această funcție, ea trebuie să aparțină unei piese din document</translation>
     </message>

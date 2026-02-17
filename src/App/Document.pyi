@@ -198,6 +198,7 @@ class Document(PropertyContainer):
 
         Args:
             type: the type of the document object to create.
+                  Call method supportedTypes() to get a list of possible values.
             name: the optional name of the new object.
             objProxy: the Python binding object to attach to the new document object.
             viewProxy: the Python binding object to attach the view provider of this object.

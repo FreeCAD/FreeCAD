@@ -57,12 +57,6 @@ DlgSettingsFemCcxImp::~DlgSettingsFemCcxImp() = default;
 
 void DlgSettingsFemCcxImp::saveSettings()
 {
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
-    );
-    hGrp->SetInt("Solver", ui->cmb_solver->currentIndex());
-    hGrp->SetInt("AnalysisType", ui->cb_analysis_type->currentIndex());
-
     ui->sb_ccx_numcpu->onSave();  // Number of CPUs
     ui->cmb_solver->onSave();
     ui->cb_ccx_non_lin_geom->onSave();
@@ -91,7 +85,6 @@ void DlgSettingsFemCcxImp::saveSettings()
 
 void DlgSettingsFemCcxImp::loadSettings()
 {
-    ui->sb_ccx_numcpu->onRestore();  // Number of CPUs
     ui->cmb_solver->onRestore();
     ui->cb_ccx_non_lin_geom->onRestore();
     ui->cb_use_iterations_param->onRestore();
@@ -116,22 +109,9 @@ void DlgSettingsFemCcxImp::loadSettings()
     ui->fc_ccx_binary_path->onRestore();
     ui->cb_split_inp_writer->onRestore();
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Fem/Ccx"
-    );
-
     // determine number of CPU threads
-    int processor_count = hGrp->GetInt("AnalysisNumCPUs", QThread::idealThreadCount());
-    ui->sb_ccx_numcpu->setValue(processor_count);
-
-    int index = hGrp->GetInt("Solver", 0);
-    if (index > -1) {
-        ui->cmb_solver->setCurrentIndex(index);
-    }
-    index = hGrp->GetInt("AnalysisType", 0);
-    if (index > -1) {
-        ui->cb_analysis_type->setCurrentIndex(index);
-    }
+    ui->sb_ccx_numcpu->setValue(QThread::idealThreadCount());
+    ui->sb_ccx_numcpu->onRestore();  // Number of CPUs
 }
 
 /**

@@ -926,7 +926,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="841"/>
       <source> Hz</source>
-      <translation type="unfinished"> Hz</translation>
+      <translation> Hz</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="363"/>
@@ -956,7 +956,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="308"/>
       <source>Number of CPUs to use</source>
-      <translation type="unfinished">Number of CPUs to use</translation>
+      <translation>Αριθμός CPU πυρήνων επεξεργαστή για χρήση</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="368"/>
@@ -8055,7 +8055,7 @@ Leave blank to use default Python executable</translation>
     <message>
       <location filename="../ui/SolverElmer.ui" line="122"/>
       <source>Time</source>
-      <translation type="unfinished">Time</translation>
+      <translation>Χρόνος</translation>
     </message>
     <message>
       <location filename="../ui/SolverElmer.ui" line="129"/>
