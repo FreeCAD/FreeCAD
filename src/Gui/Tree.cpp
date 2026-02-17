@@ -1228,8 +1228,6 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         // check that the selection is not across several documents
         bool acrossDocuments = false;
         auto SelectedObjectsList = Selection().getCompleteSelection();
-        // get the object's document as reference
-        App::Document* doc = objitem->object()->getObject()->getDocument();
         for (auto it = SelectedObjectsList.begin(); it != SelectedObjectsList.end(); ++it) {
             if ((*it).pDoc != doc) {
                 acrossDocuments = true;
