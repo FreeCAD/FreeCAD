@@ -673,7 +673,9 @@ QString TaskMeasure::convertCoordinateResultUnits(
         QString valueText;
         QString unitText;
         if (!parseCoordinateLine(line, axisLabel, valueText, unitText)) {
-            outputLines.append(line);
+            if (line.trimmed() != QLatin1String("COM")) {
+                outputLines.append(line);
+            }
             continue;
         }
 
