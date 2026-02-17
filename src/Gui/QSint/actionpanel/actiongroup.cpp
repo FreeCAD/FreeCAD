@@ -141,12 +141,8 @@ void ActionGroup::processHide()
     {
         myDummy->hide();
         myHeader->setFold(false);
-        // When collapsed, set fixed height to just the header
-        // Use Maximum vertical policy so collapsed boxes stack at top
-        setMinimumHeight(myHeader->height() + separatorHeight);
-        setMaximumHeight(myHeader->height() + separatorHeight);
-        setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
-        updateGeometry();
+        // Collapse to header height only.
+        setFixedHeight(myHeader->height() + separatorHeight);
         return;
     }
 
