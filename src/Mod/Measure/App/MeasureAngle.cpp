@@ -279,6 +279,9 @@ bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e
 
 bool MeasureAngle::hasCommonEdge()
 {
+    if (!isFaceFace()) {
+        return false;
+    }
     if (!Element1.getValue() || !Element2.getValue()) {
         return false;
     }
@@ -329,9 +332,10 @@ bool MeasureAngle::hasCommonEdge()
     GeomAPI_IntSS intersector(P1, P2, Precision::Confusion());
     if (intersector.IsDone() && intersector.NbLines() > 0) {
         Handle(Geom_Curve) curve = intersector.Line(1);
-        // Project avg location onto intersection line to find a good origin
-        gp_Pnt center((loc1.X() + loc2.X()) / 2, (loc1.Y() + loc2.Y()) / 2, (loc1.Z() + loc2.Z()) / 2);
-        GeomAPI_ProjectPointOnCurve proj(center, curve);
+
+        gp_Pnt refPnt = loc1.XYZ();
+
+        GeomAPI_ProjectPointOnCurve proj(refPnt, curve);
         if (proj.NbPoints() > 0) {
             outOrigin = proj.Point(1);
             return true;
@@ -344,6 +348,9 @@ bool MeasureAngle::hasCommonEdge()
 
 bool MeasureAngle::hasCommonVertex()
 {
+    if (!isEdgeEdge()) {
+        return false;
+    }
     TopoDS_Shape s1 = Part::Feature::getShape(
         Element1.getValue(),
         Part::ShapeOption::NeedSubElement,
@@ -384,7 +391,7 @@ bool MeasureAngle::hasCommonVertex()
     if (intersector.NbExtrema() > 0) {
         gp_Pnt p1, p2;
         intersector.NearestPoints(p1, p2);
-        outOrigin = gp_Pnt((p1.XYZ() + p2.XYZ()) / 2.0);
+        outOrigin = p1;
         _isImgOrigin = true;
         return true;
     }
@@ -413,23 +420,29 @@ bool MeasureAngle::setDirections()
     direction1 = vector1();
     direction2 = vector2();
 
+    gp_Vec loc1 = location1();
+    gp_Vec loc2 = location2();
+
     // For edges with a common vertex, we need to orient the vectors
     // so they point away from the common vertex
     if (isEdgeEdge()) {
-        if (hasCommonVertex()) {
-            gp_Vec loc1 = location1();
-            gp_Vec loc2 = location2();
 
-            gp_Vec toCommon1 = gp_Vec(outOrigin.XYZ()) - loc1;
-            gp_Vec toCommon2 = gp_Vec(outOrigin.XYZ()) - loc2;
+        if (direction1.Dot(gp_Vec(outOrigin.XYZ()) - loc1) > 0) {
+            direction1 = -direction1;
+        }
+        if (direction2.Dot(gp_Vec(outOrigin.XYZ()) - loc2) > 0) {
+            direction2 = -direction2;
+        }
+    }
+    else if (isFaceFace()) {
 
-            // If the direction vector points toward the common vertex, flip it
-            if (direction1.Dot(toCommon1) > 0) {
-                direction1 = -direction1;
-            }
-            if (direction2.Dot(toCommon2) > 0) {
-                direction2 = -direction2;
-            }
+        gp_Vec between = loc2 - loc1;
+
+        if (direction1.Dot(between) < 0) {
+            direction1 = -direction1;
+        }
+        if (direction2.Dot(between) > 0) {
+            direction2 = -direction2;
         }
     }
 
@@ -476,19 +489,17 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         return new App::DocumentObjectExecReturn("No geometry element picked");
     }
 
+    hasCommonEdge();
+    hasCommonVertex();
     setDirections();
 
     double angleRad = direction1.Angle(direction2);
 
-    if (isFaceFace() && hasCommonEdge()) {
+    if (isFaceFace()) {
         angleRad = M_PI - angleRad;
-    }
-    else if (isEdgeEdge() && hasCommonVertex()) {
-        angleRad = angleRad;
     }
 
     Angle.setValue(Base::toDegrees(angleRad));
-
 
     return DocumentObject::StdReturn;
 }
