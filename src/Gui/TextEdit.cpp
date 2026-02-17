@@ -24,6 +24,8 @@
 #include <QApplication>
 #include <QKeyEvent>
 #include <QPainter>
+#include <QMouseEvent>
+#include <QTextBlock>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QShortcut>
@@ -613,16 +615,88 @@ LineMarker::LineMarker(TextEditor* editor)
     , textEditor(editor)
 {}
 
-LineMarker::~LineMarker() = default;
-
 QSize LineMarker::sizeHint() const
 {
     return {textEditor->lineNumberAreaWidth(), 0};
 }
 
-void LineMarker::paintEvent(QPaintEvent* e)
+void LineMarker::paintEvent(QPaintEvent* event)
 {
-    textEditor->lineNumberAreaPaintEvent(e);
+    textEditor->lineNumberAreaPaintEvent(event);
+}
+
+QTextBlock LineMarker::blockAtPosition(int y) const
+{
+    const QTextCursor cursor = textEditor->cursorForPosition(QPoint(1, y));
+    return cursor.block();
+}
+
+void LineMarker::selectBlocks(int firstLine, int lastLine)
+{
+    if (firstLine > lastLine) {
+        std::swap(firstLine, lastLine);
+    }
+
+    QTextBlock start = textEditor->document()->findBlockByNumber(firstLine);
+    QTextBlock end = textEditor->document()->findBlockByNumber(lastLine);
+
+    if (!start.isValid() || !end.isValid()) {
+        return;
+    }
+
+    QTextCursor cursor(start);
+    cursor.setPosition(end.position(), QTextCursor::KeepAnchor);
+    cursor.movePosition(QTextCursor::EndOfBlock, QTextCursor::KeepAnchor);
+    textEditor->setTextCursor(cursor);
+}
+
+void LineMarker::mousePressEvent(QMouseEvent* event)
+{
+    if (event->button() != Qt::LeftButton) {
+        event->ignore();
+        return;
+    }
+
+    const QTextBlock block = blockAtPosition(event->pos().y());
+    if (!block.isValid()) {
+        return;
+    }
+
+    const int line = block.blockNumber();
+
+    if (event->modifiers() & Qt::ShiftModifier && anchorLine >= 0) {
+        selectBlocks(anchorLine, line);
+    }
+    else {
+        anchorLine = line;
+        selectBlocks(line, line);
+    }
+
+    dragging = true;
+    event->accept();
+}
+
+void LineMarker::mouseMoveEvent(QMouseEvent* event)
+{
+    if (!dragging) {
+        return;
+    }
+
+    const QTextBlock block = blockAtPosition(event->pos().y());
+    if (!block.isValid()) {
+        return;
+    }
+
+    selectBlocks(anchorLine, block.blockNumber());
+}
+
+void LineMarker::mouseReleaseEvent(QMouseEvent* event)
+{
+    if (event->button() == Qt::LeftButton) {
+        dragging = false;
+    }
+
+    event->accept();
 }
 
 // ------------------------------------------------------------------------------
