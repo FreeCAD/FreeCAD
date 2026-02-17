@@ -2,13 +2,11 @@
 <ui version="4.0">
  <class>PartGui::DlgSettingsGeneral</class>
  <widget class="QWidget" name="PartGui::DlgSettingsGeneral">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>550</width>
-    <height>586</height>
-   </rect>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>500</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string>General</string>
@@ -22,8 +20,17 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Automatically check model after boolean operation</string>
+        </property>
+        <property name="toolTip">
+         <string>Validates the geometry (BRep) after every boolean operation to detect errors. Note: This may slow down performance on complex models.</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -38,8 +45,17 @@
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Automatically refine model after boolean operation</string>
+        </property>
+        <property name="toolTip">
+         <string>Automatically cleans up the shape after boolean operations by removing redundant coplanar edges and merging adjacent faces</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -54,8 +70,17 @@
       </item>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Automatically refine model after applying operations</string>
+        </property>
+        <property name="toolTip">
+         <string>Automatically runs a refinement pass after creating Part Design features to remove removable lines and clean up the geometry</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -70,8 +95,17 @@
       </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Allow multiple solids in Part Design bodies by default</string>
+        </property>
+        <property name="toolTip">
+         <string>Sets new bodies to allow multiple disconnected solids (compounds). If unchecked, a body is strictly limited to a single contiguous solid.</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -101,6 +135,12 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Add name of base object</string>
         </property>
@@ -131,6 +171,12 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="text">
            <string>Default profile type for holes</string>
           </property>
@@ -138,6 +184,15 @@
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="comboDefaultProfileTypeForHole">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Specifies which sketch elements (points, circles, or arcs) the Hole tool should automatically detect and use as hole centers</string>
+          </property>
           <property name="currentIndex">
            <number>1</number>
           </property>
@@ -168,6 +223,12 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkSwitchToTask">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>Automatically switch to the task panel when the Part Design workbench is activated</string>
         </property>
@@ -202,8 +263,17 @@
      <layout class="QVBoxLayout" name="verticalLayout_31">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowFinalPreview">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Show final result by default when editing features</string>
+        </property>
+        <property name="toolTip">
+         <string>Displays the fully computed model in the 3D view while editing a feature, allowing you to see the final context rather than just the isolated feature</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>ShowFinal</cstring>
@@ -215,8 +285,17 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowTransparentPreview">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Show transparent preview overlay by default when editing features</string>
+        </property>
+        <property name="toolTip">
+         <string>Overlays a semi-transparent preview of the result while editing features to visualize changes before they are applied</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -231,8 +310,17 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowProfilePreview">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Highlight the profile used to create features</string>
+        </property>
+        <property name="toolTip">
+         <string>Visually highlights the source sketch or geometry used to generate the feature currently being edited</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -272,8 +360,17 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="enableGizmos">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Show interactive draggers when editing features</string>
+        </property>
+        <property name="toolTip">
+         <string>Enables on-screen handles (draggers) in the 3D view, allowing to modify dimensions and parameters of the feature being edited interactively via dragging the mouse</string>
         </property>
         <property name="checked">
          <bool>true</bool>
@@ -288,8 +385,17 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="delayedGizmoUpdate">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="text">
          <string>Disable recompute while dragging</string>
+        </property>
+        <property name="toolTip">
+         <string>Prevents the model from recalculating while manipulating draggers. The shape updates only after release of the mouse button</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>DelayedGizmoUpdate</cstring>
