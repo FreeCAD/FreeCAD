@@ -1150,6 +1150,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     connect(&subMenuGroup, &QActionGroup::triggered, this, &TreeWidget::onActivateDocument);
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
 
+    bool showHidden = false;
     if (isDocItem) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
