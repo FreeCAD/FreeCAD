@@ -292,6 +292,14 @@ void AttachExtension::setAttacher(AttachEngine* pAttacher, bool base)
                      // onChange->changeAttacherType->onChange...
             props.attacherType->setValue(typeName);
         }
+        // Also update the visible AttacherEngine property for non-base attachers
+        // to keep it in sync with AttacherType (fixes issue #15716)
+        if (!base) {
+            const char* enumVal = classToEnum(typeName);
+            if (strcmp(AttacherEngine.getValueAsString(), enumVal) != 0) {
+                AttacherEngine.setValue(enumVal);
+            }
+        }
         updateAttacherVals(base);
     }
     else {
