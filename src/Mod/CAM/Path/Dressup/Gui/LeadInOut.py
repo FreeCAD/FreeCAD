@@ -1410,12 +1410,8 @@ class CommandPathDressupLeadInOut:
         }
 
     def IsActive(self):
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            return False
-        if not selection[0].isDerivedFrom("Path::Feature"):
-            return False
-        baseOp = PathDressup.baseOp(selection[0])
+        op = PathDressup.selection()
+        baseOp = PathDressup.baseOp(op)
         if not hasattr(baseOp, "ClearanceHeight"):
             return False
         if not hasattr(baseOp, "SafeHeight"):
@@ -1427,18 +1423,8 @@ class CommandPathDressupLeadInOut:
 
     def Activated(self):
         # check that the selection contains exactly what we want
-        selection = FreeCADGui.Selection.getSelection()
-        if len(selection) != 1:
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Select one toolpath object") + "\n")
-            return
-        baseObject = selection[0]
-        if not baseObject.isDerivedFrom("Path::Feature"):
-            Path.Log.error(
-                translate("CAM_DressupLeadInOut", "The selected object is not a toolpath") + "\n"
-            )
-            return
-        if baseObject.isDerivedFrom("Path::FeatureCompoundPython"):
-            Path.Log.error(translate("CAM_DressupLeadInOut", "Select a Profile object"))
+        baseOp = PathDressup.selection(verbose=True)
+        if not baseOp:
             return
 
         # everything ok!
@@ -1449,7 +1435,7 @@ class CommandPathDressupLeadInOut:
             'obj = FreeCAD.ActiveDocument.addObject("Path::FeaturePython", "LeadInOutDressup")'
         )
         FreeCADGui.doCommand("dbo = Path.Dressup.Gui.LeadInOut.ObjectDressup(obj)")
-        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + selection[0].Name)
+        FreeCADGui.doCommand("base = FreeCAD.ActiveDocument." + baseOp.Name)
         FreeCADGui.doCommand("job = PathScripts.PathUtils.findParentJob(base)")
         FreeCADGui.doCommand("obj.Base = base")
         FreeCADGui.doCommand("job.Proxy.addOperation(obj, base)")
