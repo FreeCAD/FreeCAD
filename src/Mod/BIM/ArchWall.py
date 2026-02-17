@@ -1667,8 +1667,10 @@ class _Wall(ArchComponent.Component):
                     )
         if not lwidths:
             if obj.OverrideWidth:
-                if obj.Base and obj.Base.isDerivedFrom("Sketcher::SketchObject"
-                    ) and hasattr(ArchSketchObject, "sortSketchWidth"
+                if (
+                    obj.Base
+                    and obj.Base.isDerivedFrom("Sketcher::SketchObject")
+                    and hasattr(ArchSketchObject, "sortSketchWidth")
                 ):
                     lwidths = ArchSketchObject.sortSketchWidth(
                         obj.Base, obj.OverrideWidth, obj.ArchSketchEdges
