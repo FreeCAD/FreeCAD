@@ -25,6 +25,9 @@
 #ifndef APP_LINK_H
 #define APP_LINK_H
 
+#include <boost/preprocessor/seq/for_each.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <unordered_set>
 #include <Base/Parameter.h>
 #include <Base/Bitmask.h>
