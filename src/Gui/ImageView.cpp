@@ -46,6 +46,39 @@
 
 using namespace Gui;
 
+struct SizeCheckInfo
+{
+    bool isSizeError {};
+    int expectedSizeMB {};
+    int qtAllocationSizeMB {};
+};
+
+static SizeCheckInfo checkImageSizeError(const QSize& size)
+{
+    static constexpr uint64_t QT_IMAGE_PIXEL_DEPTH_BYTES = 4;
+    static constexpr uint64_t BYTES_TO_MB = 1024ULL * 1024ULL;
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    int qtAllocationLimitMB = 256;
+#else
+    int qtAllocationLimitMB = QImageReader::allocationLimit();
+#endif
+    uint64_t allocationLimit = qtAllocationLimitMB * BYTES_TO_MB;
+    if (!size.isValid()) {
+        return {};
+    }
+    uint64_t expectedSize = QT_IMAGE_PIXEL_DEPTH_BYTES * static_cast<uint64_t>(size.width())
+        * static_cast<uint64_t>(size.height());
+    if (expectedSize < allocationLimit) {
+        return {};
+    }
+    return SizeCheckInfo {
+        .isSizeError = true,
+        .expectedSizeMB = static_cast<int>(expectedSize / BYTES_TO_MB),
+        .qtAllocationSizeMB = qtAllocationLimitMB
+    };
+}
+
+
 ImageView::ImageView(QWidget* parent)
     : MDIView(nullptr, parent)
     , imageLabel(new QLabel)
@@ -69,13 +102,28 @@ bool ImageView::loadFile(const QString& fileName)
 {
     QImageReader reader(fileName);
     reader.setAutoTransform(true);
+    QSize size = reader.size();  // Note: if we read the size after the failed image read, it is invalid
     QImage image = reader.read();
     if (image.isNull()) {
-        QMessageBox::information(
-            this,
+        QMessageBox msgBox(
+            QMessageBox::Information,
             tr("Failed to load image file"),
-            tr("Cannot load file %1: %2").arg(fileName, reader.errorString())
+            tr("Cannot load file %1: %2").arg(fileName, reader.errorString()),
+            QMessageBox::Ok,
+            this
         );
+        if (SizeCheckInfo sizeCheck = checkImageSizeError(size); sizeCheck.isSizeError) {
+            msgBox.setDetailedText(
+                tr("Loaded image size (%1 x %2 x 4bytes = %3 MB) exceeds "
+                   "the Qt allocation limit "
+                   "of %4 MB. Please reduce image dimensions (note: Qt forces 4 bytes per pixel).")
+                    .arg(size.width())
+                    .arg(size.height())
+                    .arg(sizeCheck.expectedSizeMB)
+                    .arg(sizeCheck.qtAllocationSizeMB)
+            );
+        }
+        msgBox.exec();
         return false;
     }
 
