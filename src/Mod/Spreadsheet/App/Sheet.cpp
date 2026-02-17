@@ -791,7 +791,7 @@ void Sheet::updateProperty(CellAddress key)
 
         if (input) {
             CurrentAddressLock lock(currentRow, currentCol, key);
-            output.reset(input->eval());
+            output = input->eval();
         }
         else {
             std::string s;

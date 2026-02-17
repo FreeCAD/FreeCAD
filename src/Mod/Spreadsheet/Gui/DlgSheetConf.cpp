@@ -112,7 +112,7 @@ App::Property* DlgSheetConf::prepare(
         std::string exprTxt(ui->lineEditProp->text().trimmed().toUtf8().constData());
         ExpressionPtr expr;
         try {
-            expr.reset(App::Expression::parse(sheet, exprTxt));
+            expr = App::Expression::parse(sheet, exprTxt);
         }
         catch (Base::Exception& e) {
             e.reportException();
