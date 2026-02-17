@@ -1153,13 +1153,12 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     if (isDocItem) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
+        showHidden = docitem->showHidden();
 
         // It's better to let user decide whether and how to activate
         // the current document, such as by double-clicking.
         // App::GetApplication().setActiveDocument(doc);
 
-        showHiddenAction->setChecked(docitem->showHidden());
-        contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->openFileLocationAction);
         contextMenu.addAction(this->searchObjectsAction);
         contextMenu.addAction(this->closeDocAction);
@@ -1222,6 +1221,8 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     }
     else if (isObjItem) {
         auto objitem = static_cast<DocumentObjectItem*>(this->contextItem);
+        App::Document* doc = objitem->object()->getObject()->getDocument();
+        showHidden = doc->ShowHidden.getValue();
 
         // check that the selection is not across several documents
         bool acrossDocuments = false;
@@ -1282,12 +1283,11 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     contextMenu.addMenu(&settingsMenu);
 
     if (isObjItem) {
-        auto objitem = static_cast<DocumentObjectItem*>(this->contextItem);
-        App::Document* doc = objitem->object()->getObject()->getDocument();
-        showHiddenAction->setChecked(doc->ShowHidden.getValue());
         settingsMenu.addAction(this->toggleVisibilityInTreeAction);
-        settingsMenu.addAction(this->showHiddenAction);
     }
+
+    showHiddenAction->setChecked(showHidden);
+    settingsMenu.addAction(this->showHiddenAction);
 
     QAction* action = new QAction(tr("Show Description"), this);
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
@@ -6733,3 +6733,4 @@ void DocumentObjectItem::applyExpandedSnapshot(
 }
 
 #include "moc_Tree.cpp"
+
