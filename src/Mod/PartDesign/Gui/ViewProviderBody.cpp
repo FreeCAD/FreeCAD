@@ -197,7 +197,6 @@ bool ViewProviderBody::doubleClicked()
     return true;
 }
 
-
 // TODO To be deleted (2015-09-08, Fat-Zer)
 // void ViewProviderBody::updateTree()
 //{
@@ -517,6 +516,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
         }
     }
 }
+
 bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::DocumentObject* target) const
 {
     if (obj->isDerivedFrom<PartDesign::Feature>()) {
@@ -524,4 +524,53 @@ bool ViewProviderBody::canDragObjectToTarget(App::DocumentObject* obj, App::Docu
     }
 
     return ViewProviderPart::canDragObjectToTarget(obj, target);
+}
+
+void ViewProviderBody::show()
+{
+    // Call the base version first to ensure normal behavior
+    PartGui::ViewProviderPartExt::show();
+
+    auto body = static_cast<PartDesign::Body*>(getObject());
+    if (!body) {
+        return;
+    }
+
+    auto tip = body->Tip.getValue();
+    if (!tip || tip->Visibility.getValue()) {
+        return;
+    }
+
+    auto features = body->Group.getValues();
+    if (features.empty()) {
+        return;
+    }
+
+    bool foundVisible = false;
+    for (auto f : features) {
+        if (!f) {
+            continue;
+        }
+
+        // Retrieve the ViewProvider for this feature
+        auto vp = Gui::Application::Instance->getViewProvider(f);
+        if (!vp) {
+            continue;
+        }
+
+        // Get the class name of the ViewProvider
+        const char* vpType = vp->getTypeId().getName();
+
+        // Only consider PartDesign features
+        if (vp->isDerivedFrom(PartDesignGui::ViewProvider::getClassTypeId())) {
+            if (f->Visibility.getValue()) {
+                foundVisible = true;
+                break;
+            }
+        }
+    }
+
+    if (!foundVisible) {
+        tip->Visibility.setValue(true);
+    }
 }
