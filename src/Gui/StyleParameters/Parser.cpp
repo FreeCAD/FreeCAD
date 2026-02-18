@@ -28,6 +28,7 @@
 #include "ParameterManager.h"
 
 #include <Utilities.h>
+#include <Base/OkLch.h>
 #include <Base/Tools.h>
 
 #include <QColor>
@@ -124,10 +125,93 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return blendColors(fromValue->get<Base::Color>(), toValue->get<Base::Color>());
     };
 
+    const auto lightnessFromNumeric = [](const Numeric& numeric) -> float {
+        if (numeric.unit == "%") {
+            return static_cast<float>(numeric.value / 100.0);
+        }
+        return static_cast<float>(numeric.value);
+    };
+
+    const auto shade = [&args, &lightnessFromNumeric]() -> Value {
+        auto resolved = ArgumentParser {{"color"}, {"lightness"}}.resolve(args);
+        auto targetLightness = lightnessFromNumeric(resolved.get<Numeric>("lightness"));
+
+        const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
+            auto oklch = Base::toOkLch(color);
+            oklch.lightness = targetLightness;
+            return Base::fromOkLch(oklch, color.a);
+        };
+
+        const Value* colorValue = resolved.find("color");
+        if (colorValue->holds<Tuple>()) {
+            return Gradient::mapStopColors(colorValue->get<Tuple>(), applyToColor);
+        }
+
+        return applyToColor(resolved.get<Base::Color>("color"));
+    };
+
+    const auto shades = [&args, &lightnessFromNumeric]() -> Value {
+        auto resolved = ArgumentParser {{"color"}, {"shades"}}.resolve(args);
+        const auto& shadesSpec = resolved.get<Tuple>("shades");
+
+        const auto generateShades = [&](const Base::Color& baseColor) -> Value {
+            auto baseOklch = Base::toOkLch(baseColor);
+
+            Tuple result;
+            for (const auto& element : shadesSpec.elements) {
+                auto targetLightness = lightnessFromNumeric(element.value->get<Numeric>());
+                auto shadeOklch = baseOklch;
+                shadeOklch.lightness = targetLightness;
+                auto shadeColor = Base::fromOkLch(shadeOklch, baseColor.a);
+
+                if (element.name) {
+                    result.elements.push_back(Tuple::Element::named(*element.name, shadeColor));
+                }
+                else {
+                    result.elements.push_back(Tuple::Element::unnamed(shadeColor));
+                }
+            }
+            return result;
+        };
+
+        const Value* colorValue = resolved.find("color");
+        if (colorValue->holds<Tuple>()) {
+            // Gradient: shade each stop color individually
+            const auto& gradientTuple = colorValue->get<Tuple>();
+
+            Tuple result;
+            for (const auto& element : shadesSpec.elements) {
+                auto targetLightness = lightnessFromNumeric(element.value->get<Numeric>());
+                auto shadedGradient = Gradient::mapStopColors(
+                    gradientTuple,
+                    [&](const Base::Color& stopColor) -> Base::Color {
+                        auto oklch = Base::toOkLch(stopColor);
+                        oklch.lightness = targetLightness;
+                        return Base::fromOkLch(oklch, stopColor.a);
+                    }
+                );
+
+                if (element.name) {
+                    result.elements.push_back(
+                        Tuple::Element::named(*element.name, std::move(shadedGradient))
+                    );
+                }
+                else {
+                    result.elements.push_back(Tuple::Element::unnamed(std::move(shadedGradient)));
+                }
+            }
+            return result;
+        }
+
+        return generateShades(resolved.get<Base::Color>("color"));
+    };
+
     std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
         {"blend", blend},
+        {"shade", shade},
+        {"shades", shades},
         {"padding", [&args]() -> Value { return Padding(args).tuple(); }},
         {"margins", [&args]() -> Value { return Margins(args).tuple(); }},
         {"border_thickness", [&args]() -> Value { return BorderThickness(args).tuple(); }},
