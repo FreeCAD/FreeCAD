@@ -223,6 +223,7 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
+    checkQtSvgImageFormatSupport();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
@@ -239,6 +240,14 @@ void StartupPostProcess::execute()
     activateWorkbench();
     checkParameters();
     checkVersionMigration();
+}
+
+void StartupPostProcess::checkQtSvgImageFormatSupport()
+{
+    auto const supportedFormats = QImageReader::supportedImageFormats();
+    if (!supportedFormats.contains("svg")) {
+        Base::Console().warning("Qt SVG image format not supported; missing Qt SVG plugin?\n");
+    }
 }
 
 void StartupPostProcess::setWindowTitle()

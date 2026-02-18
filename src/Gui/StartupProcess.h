@@ -60,6 +60,7 @@ public:
     void execute();
 
 private:
+    void checkQtSvgImageFormatSupport();
     void setWindowTitle();
     void setProcessMessages();
     void setAutoSaving();
