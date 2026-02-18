@@ -28,6 +28,8 @@
 #include "ParameterManager.h"
 
 #include <Utilities.h>
+#include <Base/ColorShading.h>
+#include <Base/OkLch.h>
 #include <Base/Tools.h>
 
 #include <QColor>
@@ -134,13 +136,165 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
             });
         }
 
+        if (!fromValue->holds<Base::Color>()) {
+            THROWM(Base::ExpressionError, "Expected color as from argument");
+        }
+
+        if (!toValue->holds<Base::Color>()) {
+            THROWM(Base::ExpressionError, "Expected color as to argument");
+        }
+
         return blendColors(fromValue->get<Base::Color>(), toValue->get<Base::Color>());
+    };
+
+    const auto asPercent = [](const Numeric& numeric) -> float {
+        if (numeric.unit == "%") {
+            return static_cast<float>(numeric.value / 100.0);
+        }
+        return static_cast<float>(numeric.value);
+    };
+
+    const auto parseShadingParams = [&asPercent](const Tuple& resolved) {
+        return Base::ColorShading::Parameters {
+            .range = asPercent(resolved.get<Numeric>("range")),
+            .minLightness = asPercent(resolved.get<Numeric>("min")),
+            .maxLightness = asPercent(resolved.get<Numeric>("max")),
+            .pivot = asPercent(resolved.get<Numeric>("pivot")),
+            .chromaExponent = asPercent(resolved.get<Numeric>("q")),
+        };
+    };
+
+    const auto applyShade = [](float position,
+                               const Base::Color& color,
+                               const Base::OkLch& oklch,
+                               const Base::ColorShading::Parameters& shadingParams) -> Base::Color {
+        auto shadeOklch = Base::ColorShading::computeShade(position, oklch, shadingParams);
+        if (shadeOklch.lightness == oklch.lightness && shadeOklch.chroma == oklch.chroma) {
+            return color;
+        }
+        return Base::fromOkLch(shadeOklch, color.a);
+    };
+
+    const auto shade = [&args, &asPercent, &parseShadingParams, &applyShade]() -> Value {
+        auto resolved = ArgumentParser {
+            {.name = "color"},
+            {.name = "lightness"},
+            {.name = "range", .defaultValue = Numeric {0.8, ""}},
+            {.name = "min", .defaultValue = Numeric {0.17, ""}},
+            {.name = "max", .defaultValue = Numeric {0.97, ""}},
+            {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
+            {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        }.resolve(args);
+
+        auto position = asPercent(resolved.get<Numeric>("lightness"));
+        auto shadingParams = parseShadingParams(resolved);
+
+        const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
+            auto oklch = Base::toOkLch(color);
+            return applyShade(position, color, oklch, shadingParams);
+        };
+
+        const Value* colorValue = resolved.find("color");
+        if (colorValue->holds<Tuple>()) {
+            return Gradient::mapStopColors(colorValue->get<Tuple>(), applyToColor);
+        }
+
+        return applyToColor(resolved.get<Base::Color>("color"));
+    };
+
+    const auto shades = [&args, &asPercent, &parseShadingParams, &applyShade]() -> Value {
+        auto resolved = ArgumentParser {
+            {.name = "color"},
+            {.name = "shades"},
+            {.name = "range", .defaultValue = Numeric {0.8, ""}},
+            {.name = "min", .defaultValue = Numeric {0.17, ""}},
+            {.name = "max", .defaultValue = Numeric {0.97, ""}},
+            {.name = "pivot", .defaultValue = Numeric {0.5, ""}},
+            {.name = "q", .defaultValue = Numeric {0.1, ""}},
+        }.resolve(args);
+
+        const auto& shadesSpec = resolved.get<Tuple>("shades");
+        auto shadingParams = parseShadingParams(resolved);
+
+        const auto appendElement = [](Tuple& result, const Tuple::Element& spec, Value shadeValue) {
+            if (spec.name) {
+                result.elements.push_back(Tuple::Element::named(*spec.name, std::move(shadeValue)));
+            }
+            else {
+                result.elements.push_back(Tuple::Element::unnamed(std::move(shadeValue)));
+            }
+        };
+
+        const Value* colorValue = resolved.find("color");
+        if (colorValue->holds<Tuple>()) {
+            const auto& gradientTuple = colorValue->get<Tuple>();
+
+            Tuple result;
+            for (const auto& element : shadesSpec.elements) {
+                float position = asPercent(element.value->get<Numeric>());
+                auto shadedGradient = Gradient::mapStopColors(
+                    gradientTuple,
+                    [&](const Base::Color& stopColor) -> Base::Color {
+                        auto oklch = Base::toOkLch(stopColor);
+                        return applyShade(position, stopColor, oklch, shadingParams);
+                    }
+                );
+                appendElement(result, element, std::move(shadedGradient));
+            }
+            return result;
+        }
+
+        const auto& baseColor = resolved.get<Base::Color>("color");
+        auto baseOklch = Base::toOkLch(baseColor);
+
+        Tuple result;
+        for (const auto& element : shadesSpec.elements) {
+            float position = asPercent(element.value->get<Numeric>());
+            auto shadeColor = applyShade(position, baseColor, baseOklch, shadingParams);
+            appendElement(result, element, shadeColor);
+        }
+        return result;
+    };
+
+    const auto contentBox = [&args]() -> Value {
+        if (args.size() < 2) {
+            THROWM(Base::ExpressionError, "content_box requires at least 2 arguments: a size tuple and at least one inset");
+        }
+
+        const Value& sizeValue = args.at(0);
+        Numeric width, height;
+
+        if (sizeValue.holds<Tuple>()) {
+            const auto& sizeTuple = sizeValue.get<Tuple>();
+            width = sizeTuple.get<Numeric>("width");
+            height = sizeTuple.get<Numeric>("height");
+        }
+        else if (sizeValue.holds<Numeric>()) {
+            width = sizeValue.get<Numeric>();
+            height = sizeValue.get<Numeric>();
+        }
+        else {
+            THROWM(Base::TypeError, "content_box: first argument must be a (width, height) size tuple or a Numeric");
+        }
+
+        for (size_t index = 1; index < args.size(); ++index) {
+            const Insets insets(args.at(index));
+            width = width - insets.horizontal();
+            height = height - insets.vertical();
+        }
+
+        return Tuple({
+            Tuple::Element::named("width", width),
+            Tuple::Element::named("height", height),
+        });
     };
 
     std::map<std::string, std::function<Value()>> functions = {
         {"lighten", lightenOrDarken},
         {"darken", lightenOrDarken},
         {"blend", blend},
+        {"shade", shade},
+        {"shades", shades},
         {"padding", [&args]() -> Value { return Padding(args).tuple(); }},
         {"margins", [&args]() -> Value { return Margins(args).tuple(); }},
         {"border_thickness", [&args]() -> Value { return BorderThickness(args).tuple(); }},
