@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include "Base/TimeInfo.h"
 #if defined(__MINGW32__)
 # define WNT  // avoid conflict with GUID
 #endif
@@ -238,8 +239,8 @@ private:
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
             ImportOCAFGui ocaf(hDoc, pcDoc, file.fileNamePure());
             ocaf.setImportOptions(ImportOCAFGui::customImportOptions());
-            FC_TIME_INIT(t);
-            FC_DURATION_DECL_INIT2(d1, d2);
+
+            Base::TimeTracker tracker("Import Step");
 
             if (file.hasExtension({"stp", "step"})) {
 
@@ -342,7 +343,7 @@ private:
                 throw Py::Exception(PyExc_IOError, "no supported file format");
             }
 
-            FC_DURATION_PLUS(d1, t);
+            tracker.checkpoint("File read");
             if (merge != Py_None) {
                 ocaf.setMerge(Base::asBoolean(merge));
             }
@@ -357,10 +358,6 @@ private:
             }
             auto ret = ocaf.loadShapes();
             hApp->Close(hDoc);
-            FC_DURATION_PLUS(d2, t);
-            FC_DURATION_LOG(d1, "file read");
-            FC_DURATION_LOG(d2, "import");
-            FC_DURATION_LOG((d1 + d2), "total");
 
             if (ret) {
                 App::GetApplication().setActiveDocument(pcDoc);
