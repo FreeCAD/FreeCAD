@@ -972,7 +972,9 @@ public:
      */
     virtual void setSize(int newSize, const_reference def)
     {
-        _lValueList.resize(newSize, def);
+        auto& self = this->propSetterSelf(*this);
+
+        self._lValueList.resize(newSize, def);
     }
 
     /**
@@ -986,7 +988,9 @@ public:
      */
     void setSize(int newSize) override
     {
-        _lValueList.resize(newSize);
+        auto& self = this->propSetterSelf(*this);
+
+        self._lValueList.resize(newSize);
     }
 
     /**
@@ -996,7 +1000,9 @@ public:
      */
     int getSize() const override
     {
-        return static_cast<int>(_lValueList.size());
+        auto& self = this->propGetterSelf(*this);
+
+        return static_cast<int>(self._lValueList.size());
     }
 
     /**
@@ -1009,9 +1015,11 @@ public:
      */
     void setValue(const_reference value)
     {
+        auto& self = this->propSetterSelf(*this);
+
         ListT vals;
         vals.resize(1, value);
-        setValues(vals);
+        self.setValues(vals);
     }
 
     /**
@@ -1024,9 +1032,11 @@ public:
      */
     virtual void setValues(const ListT& newValues = ListT())
     {
-        atomic_change guard(*this);
-        this->_touchList.clear();
-        this->_lValueList = newValues;
+        auto& self = this->propSetterSelf(*this);
+
+        atomic_change guard(self);
+        self._touchList.clear();
+        self._lValueList = newValues;
         guard.tryInvoke();
     }
 
@@ -1037,7 +1047,9 @@ public:
      */
     void setValue(const ListT& newValues = ListT())
     {
-        setValues(newValues);
+        auto& self = this->propSetterSelf(*this);
+
+        self.setValues(newValues);
     }
 
     /**
@@ -1047,7 +1059,9 @@ public:
      */
     const ListT& getValues() const
     {
-        return _lValueList;
+        auto& self = this->propGetterSelf(*this);
+
+        return self._lValueList;
     }
 
     /**
@@ -1057,7 +1071,9 @@ public:
      */
     const ListT& getValue() const
     {
-        return getValues();
+        auto& self = this->propGetterSelf(*this);
+
+        return self.getValues();
     }
 
     /**
@@ -1070,7 +1086,9 @@ public:
      */
     const_reference operator[](int idx) const
     {
-        return _lValueList[idx];
+        auto& self = this->propGetterSelf(*this);
+
+        return self._lValueList[idx];
     }
 
     /**
@@ -1081,11 +1099,13 @@ public:
      */
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = this->propGetterSelf(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return this->getTypeId() == other.getTypeId()
-            && this->getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
     /**
@@ -1098,8 +1118,10 @@ public:
      */
     void setPyObject(PyObject* value) override
     {
+        auto& self = this->propSetterSelf(*this);
+
         try {
-            setValue(getPyValue(value));
+            self.setValue(self.getPyValue(value));
             return;
         }
         catch (...) {
@@ -1120,40 +1142,44 @@ public:
      */
     virtual void set1Value(int index, const_reference value)
     {
-        int size = getSize();
+        auto& self = this->propGetterSelf(*this);
+
+        int size = self.getSize();
         if (index < -1 || index > size) {
             throw Base::RuntimeError("index out of bound");
         }
 
-        atomic_change guard(*this);
+        atomic_change guard(self);
         if (index == -1 || index == size) {
             index = size;
-            setSize(index + 1, value);
+            self.setSize(index + 1, value);
         }
         else {
-            _lValueList[index] = value;
+            self._lValueList[index] = value;
         }
-        this->_touchList.insert(index);
+        self._touchList.insert(index);
         guard.tryInvoke();
     }
 
 protected:
     void setPyValues(const std::vector<PyObject*>& vals, const std::vector<int>& indices) override
     {
+        auto& self = this->propGetterSelf(*this);
+
         if (indices.empty()) {
             ListT values {};
             values.reserve(vals.size());
             for (auto* valsContent : vals) {
                 values.push_back(getPyValue(valsContent));
             }
-            setValues(std::move(values));
+            self.setValues(std::move(values));
             return;
         }
         assert(vals.size() == indices.size());
-        atomic_change guard(*this);
+        atomic_change guard(self);
         int i {0};
         for (auto index : indices) {
-            set1Value(index, getPyValue(vals[i]));
+            self.set1Value(index, self.getPyValue(vals[i]));
             i++;
         }
         guard.tryInvoke();
