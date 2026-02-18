@@ -11,6 +11,7 @@ add_executable(Base_tests_run
         FileInfo.cpp
         Handle.cpp
         Matrix.cpp
+        OkLch.cpp
         Parameter.cpp
         Placement.cpp
         Quantity.cpp
