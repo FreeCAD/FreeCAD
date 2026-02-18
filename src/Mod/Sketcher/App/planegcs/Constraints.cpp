@@ -135,7 +135,10 @@ double ConstraintEqual::grad(double* param)
     }
     return scale * deriv;
 }
-
+void ConstraintEqual::evaluate()
+{
+    *param2() = *param1() * ratio;
+}
 
 // --------------------------------------------------------
 // Weighted Linear Combination
@@ -639,10 +642,13 @@ ConstraintType ConstraintDifference::getTypeId()
 {
     return Difference;
 }
-
+double ConstraintDifference::value()
+{
+    return *param2() - *param1();
+}
 double ConstraintDifference::error()
 {
-    return scale * (*param2() - *param1() - *difference());
+    return scale * (value() - *difference());
 }
 
 double ConstraintDifference::grad(double* param)
@@ -658,6 +664,10 @@ double ConstraintDifference::grad(double* param)
         deriv += -1;
     }
     return scale * deriv;
+}
+void ConstraintDifference::evaluate()
+{
+    *difference() = scale * value();
 }
 
 
@@ -679,13 +689,15 @@ ConstraintType ConstraintP2PDistance::getTypeId()
     return P2PDistance;
 }
 
-double ConstraintP2PDistance::error()
+double ConstraintP2PDistance::value()
 {
     double dx = (*p1x() - *p2x());
     double dy = (*p1y() - *p2y());
-    double d = sqrt(dx * dx + dy * dy);
-    double dist = *distance();
-    return scale * (d - dist);
+    return sqrt(dx * dx + dy * dy);
+}
+double ConstraintP2PDistance::error()
+{
+    return scale * (value() - *distance());
 }
 
 double ConstraintP2PDistance::grad(double* param)
@@ -753,6 +765,10 @@ double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
         }
     }
     return lim;
+}
+void ConstraintP2PDistance::evaluate()
+{
+    *distance() = value();
 }
 
 
@@ -834,7 +850,13 @@ double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
     }
     return lim;
 }
+void ConstraintP2PAngle::evaluate()
+{
+    double dx = (*p2x() - *p1x());
+    double dy = (*p2y() - *p1y());
 
+    *angle() = atan2(dy, dx) - da;
+}
 
 // --------------------------------------------------------
 // P2LDistance
@@ -856,16 +878,20 @@ ConstraintType ConstraintP2LDistance::getTypeId()
     return P2LDistance;
 }
 
-double ConstraintP2LDistance::error()
+double ConstraintP2LDistance::value()
 {
     double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
     double y0 = *p0y(), y1 = *p1y(), y2 = *p2y();
-    double dist = *distance();
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
-    double area = std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
-    return scale * (area / d - dist);
+    double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
+    return std::abs(area / d);
+}
+double ConstraintP2LDistance::error()
+{
+    double dist = *distance();
+    return scale * (value() - dist);
 }
 
 double ConstraintP2LDistance::grad(double* param)
@@ -961,6 +987,10 @@ double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
         }
     }
     return lim;
+}
+void ConstraintP2LDistance::evaluate()
+{
+    *distance() = value();
 }
 
 
@@ -1371,6 +1401,24 @@ double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
         }
     }
     return lim;
+}
+double vectorAngleHelper(double x1, double y1, double x2, double y2)
+{
+    double a = atan2(y1, x1);
+    double ca = cos(a);
+    double sa = sin(a);
+    double x = x2 * ca + y2 * sa;
+    double y = -x2 * sa + y2 * ca;
+
+    return atan2(y, x);
+}
+void ConstraintL2LAngle::evaluate()
+{
+    double dx1 = (*l1p2x() - *l1p1x());
+    double dy1 = (*l1p2y() - *l1p1y());
+    double dx2 = (*l2p2x() - *l2p1x());
+    double dy2 = (*l2p2y() - *l2p1y());
+    *angle() = vectorAngleHelper(dx1, dy1, dx2, dy2);
 }
 
 
@@ -2495,6 +2543,13 @@ double ConstraintAngleViaTwoPoints::grad(double* param)
 
     return scale * deriv;
 }
+void ConstraintAngleViaTwoPoints::evaluate()
+{
+    DeriVector2 n1 = crv1->CalculateNormal(poa1);
+    DeriVector2 n2 = crv2->CalculateNormal(poa2);
+
+    *angle() = vectorAngleHelper(n1.x, n1.y, n2.x, n2.y);
+}
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndParam
@@ -2590,6 +2645,14 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
 
     return scale * deriv;
 }
+void ConstraintAngleViaPointAndParam::evaluate()
+{
+    DeriVector2 n1 = crv1->CalculateNormal(cparam());
+    DeriVector2 n2 = crv2->CalculateNormal(poa);
+
+    *angle() = vectorAngleHelper(n1.x, n1.y, n2.x, n2.y);
+}
+
 
 // --------------------------------------------------------
 // ConstraintAngleViaPointAndTwoParams
@@ -2687,6 +2750,13 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
     deriv += ((-n2.dx) * n2.y / pow(n2.length(), 2) + n2.dy * n2.x / pow(n2.length(), 2));
 
     return scale * deriv;
+}
+void ConstraintAngleViaPointAndTwoParams::evaluate()
+{
+    DeriVector2 n1 = crv1->CalculateNormal(cparam1());
+    DeriVector2 n2 = crv2->CalculateNormal(cparam2());
+
+    *angle() = vectorAngleHelper(n1.x, n1.y, n2.x, n2.y);
 }
 
 
@@ -2956,6 +3026,21 @@ void ConstraintC2CDistance::errorgrad(double* err, double* grad, double* param)
         }
     }
 }
+void ConstraintC2CDistance::evaluate()
+{
+    double dx = *c1.center.x - *c2.center.x;
+    double dy = *c1.center.y - *c2.center.y;
+    double cdist = std::sqrt(dx * dx + dy * dy);
+
+    auto [smallradius, bigradius] = std::minmax(*c1.rad, *c2.rad);
+
+    if (cdist > bigradius && cdist > smallradius) {
+        *distance() = cdist - bigradius - smallradius;
+    }
+    else {
+        *distance() = bigradius - smallradius - cdist;
+    }
+}
 
 // --------------------------------------------------------
 // ConstraintC2LDistance
@@ -2986,12 +3071,8 @@ void ConstraintC2LDistance::ReconstructGeomPointers()
     pvecChangedFlag = false;
 }
 
-void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
+double ConstraintC2LDistance::value(double& deriValue, double* param)
 {
-    if (pvecChangedFlag) {
-        ReconstructGeomPointers();
-    }
-
     DeriVector2 ct(circle.center, param);
     DeriVector2 p1(line.p1, param);
     DeriVector2 p2(line.p2, param);
@@ -3019,7 +3100,18 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
     // and a positive value makes it decrease.
     darea = std::signbit(area) ? -darea : darea;
 
-    double dh = (darea - h * dlength) / length;
+    deriValue = (darea - h * dlength) / length;
+
+    return h;
+}
+void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
+{
+    if (pvecChangedFlag) {
+        ReconstructGeomPointers();
+    }
+
+    double h, dh;
+    h = value(dh, param);
 
     if (err) {
         if (h < *circle.rad) {
@@ -3041,6 +3133,18 @@ void ConstraintC2LDistance::errorgrad(double* err, double* grad, double* param)
         else {
             *grad = -dh;
         }
+    }
+}
+void ConstraintC2LDistance::evaluate()
+{
+    double h, dh;
+    h = value(dh, nullptr);
+
+    if (h < *circle.rad) {
+        *distance() = *circle.rad - h;
+    }
+    else {
+        *distance() = h - *circle.rad;
     }
 }
 
@@ -3073,18 +3177,22 @@ void ConstraintP2CDistance::ReconstructGeomPointers()
     pvecChangedFlag = false;
 }
 
+double ConstraintP2CDistance::value(double& deriValue, double* param)
+{
+    DeriVector2 ct(circle.center, param);
+    DeriVector2 p(pt, param);
+    DeriVector2 v_length = ct.subtr(p);
+
+    return v_length.length(deriValue);
+}
 void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
 {
     if (pvecChangedFlag) {
         ReconstructGeomPointers();
     }
 
-    DeriVector2 ct(circle.center, param);
-    DeriVector2 p(pt, param);
-    DeriVector2 v_length = ct.subtr(p);
-
-    double dlength;
-    double length = v_length.length(dlength);
+    double length, dlength;
+    length = value(dlength, param);
 
     if (err) {
         *err = *circle.rad + *distance() - length;
@@ -3106,6 +3214,13 @@ void ConstraintP2CDistance::errorgrad(double* err, double* grad, double* param)
             *grad = -dlength;
         }
     }
+}
+void ConstraintP2CDistance::evaluate()
+{
+    double h, dh;
+    h = value(dh, nullptr);
+
+    *distance() = (h < *circle.rad) ? *circle.rad - h : h - *circle.rad;
 }
 
 // --------------------------------------------------------
@@ -3134,6 +3249,19 @@ ConstraintType ConstraintArcLength::getTypeId()
     return ArcLength;
 }
 
+void ConstraintArcLength::normalizedAngles(double& start, double& end) const
+{
+    end = *arc.endAngle;
+    start = *arc.startAngle;
+
+    // Assume positive angles and CCW arc
+    while (start < 0.) {
+        start += 2. * std::numbers::pi;
+    }
+    while (end < start) {
+        end += 2. * std::numbers::pi;
+    }
+}
 void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
 {
     if (pvecChangedFlag) {
@@ -3141,21 +3269,14 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
     }
 
     double rad = *arc.rad;
-    double endA = *arc.endAngle;
-    double startA = *arc.startAngle;
-    // Assume positive angles and CCW arc
-    while (startA < 0.) {
-        startA += 2. * std::numbers::pi;
-    }
-    while (endA < startA) {
-        endA += 2. * std::numbers::pi;
-    }
+    double startA, endA;
+    normalizedAngles(startA, endA);
+
     if (err) {
         *err = rad * (endA - startA) - *distance();
     }
     else if (grad) {
         if (param == distance()) {
-            // if constraint is not driving it varies on distance().
             *grad = -1.;
         }
         else {
@@ -3165,6 +3286,12 @@ void ConstraintArcLength::errorgrad(double* err, double* grad, double* param)
             *grad = rad * (dEndA - dStartA) + dRad * (endA - startA);
         }
     }
+}
+void ConstraintArcLength::evaluate()
+{
+    double startA, endA;
+    normalizedAngles(startA, endA);
+    *distance() = (endA - startA) * *arc.rad;
 }
 
 }  // namespace GCS
