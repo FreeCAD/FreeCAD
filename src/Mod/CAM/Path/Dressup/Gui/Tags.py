@@ -275,7 +275,7 @@ class PathDressupTagTaskPanel:
 
     def setFields(self):
         self.updateTagsView()
-        self.form.sbCount.setValue(len(self.Positions))
+        self.form.sbCount.setValue(int(len(self.Positions) / self.obj.Proxy.amountClosedWires))
         self.form.ifHeight.setText(
             FreeCAD.Units.Quantity(self.obj.Height, FreeCAD.Units.Length).UserString
         )
@@ -295,9 +295,11 @@ class PathDressupTagTaskPanel:
         self.whenCountChanged()
 
         if self.obj.Proxy.supportsTagGeneration(self.obj):
+            print("Automatic Replace Enabled")
             self.form.sbCount.valueChanged.connect(self.whenCountChanged)
             self.form.pbGenerate.clicked.connect(self.generateNewTags)
         else:
+            print("Automatic Replace Disabled")
             self.form.cbTagGeneration.setEnabled(False)
 
         enableCopy = False
