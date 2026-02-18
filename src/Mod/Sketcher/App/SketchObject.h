@@ -1117,6 +1117,13 @@ protected:
         Sketcher::PointPos thirdPos = Sketcher::PointPos::none
     );
 
+    // sets the constraint's orientation flag
+    // if applicable using the geometric state
+    // if reset is set to false, the function
+    // will return early when the constraint
+    // already has an orientation
+    void setOrientation(Constraint* constr, bool reset);
+
 public:
     // FIXME: These may not need to be public. Decide before merging.
     std::unique_ptr<Constraint> getConstraintAfterDeletingGeo(

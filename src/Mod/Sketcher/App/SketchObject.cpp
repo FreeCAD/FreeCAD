@@ -110,6 +110,7 @@
 
 #include "GeoEnum.h"
 #include "SketchObject.h"
+#include "Constraint.h"
 #include "SketchObjectPy.h"
 #include "SolverGeometryExtension.h"
 #include "ExternalGeometryFacade.h"
@@ -922,6 +923,7 @@ int SketchObject::setDriving(int ConstrId, bool isdriving)
     std::vector<Constraint*> newVals(vals);
     newVals[ConstrId] = newVals[ConstrId]->clone();
     newVals[ConstrId]->isDriving = isdriving;
+    setOrientation(newVals[ConstrId], newVals[ConstrId]->isDriving);
 
     this->Constraints.setValues(std::move(newVals));
 
@@ -984,6 +986,8 @@ int SketchObject::setActive(int ConstrId, bool isactive)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = isactive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -1021,6 +1025,8 @@ int SketchObject::toggleActive(int ConstrId)
     // clone the changed Constraint
     Constraint* constNew = vals[ConstrId]->clone();
     constNew->isActive = !constNew->isActive;
+    setOrientation(constNew, constNew->isActive);
+
     newVals[ConstrId] = constNew;
     this->Constraints.setValues(std::move(newVals));
 
@@ -2304,6 +2310,8 @@ int SketchObject::addConstraints(const std::vector<Constraint*>& ConstraintList)
             AutoLockTangencyAndPerpty(cnew);
         }
 
+        setOrientation(cnew, false);
+
         addGeometryState(cnew);
 
         signalConstraintAdded(cnew);
@@ -2375,8 +2383,10 @@ int SketchObject::addConstraint(std::unique_ptr<Constraint> constraint)
 
     Constraint* constNew = constraint.release();
 
-    if (constNew->Type == Tangent || constNew->Type == Perpendicular)
+    if (constNew->Type == Tangent || constNew->Type == Perpendicular) {
         AutoLockTangencyAndPerpty(constNew);
+    }
+    setOrientation(constNew, false);
 
     addGeometryState(constNew);
 
@@ -3055,6 +3065,35 @@ void SketchObject::addConstraint(Sketcher::ConstraintType constrType, int firstG
         constrType, firstGeoId, firstPos, secondGeoId, secondPos, thirdGeoId, thirdPos);
 
     this->addConstraint(std::move(newConstr));
+}
+void SketchObject::setOrientation(Constraint* constr, bool reset)
+{
+    if (constr->Type != Distance || (!reset && constr->Orientation != ConstraintOrientation::None)) {
+        return;
+    }
+
+    if (constr->FirstPos == PointPos::none || constr->Second == GeoEnum::GeoUndef) {
+        return;
+    }
+
+    const Part::Geometry* secGeo = getGeometry(constr->Second);
+    if (!secGeo->is<Part::GeomLineSegment>()) {
+        return; // circle-point distance
+    }
+
+    auto* geoLine = static_cast<const Part::GeomLineSegment*>(secGeo);
+
+    // line
+    Base::Vector3d A = geoLine->getStartPoint();
+    Base::Vector3d B = geoLine->getEndPoint();
+
+    // point to line distance, circle to line distance
+    Base::Vector3d C = getPoint(constr->First, constr->FirstPos);
+
+    bool ccw = B.x * C.y - B.y*C.x - A.x*C.y + A.y*C.x + A.x*B.y - A.y*B.x > 0.0;
+
+    constr->Orientation = ccw ? ConstraintOrientation::CounterClockwise
+                              : ConstraintOrientation::Clockwise;
 }
 
 std::unique_ptr<Constraint>
@@ -11133,8 +11172,17 @@ void SketchObject::migrateSketch()
         }
     }
 
-    /* parabola axis as internal geometry */
+    // Migrate point-line and circle-line distance from abs to signed
     auto constraints = Constraints.getValues();
+    for (auto& constr : constraints) {
+        setOrientation(constr, false);
+    }
+
+    Constraints.setValues(std::move(constraints));
+
+
+    /* parabola axis as internal geometry */
+    constraints = Constraints.getValues();
     auto geometries = getInternalGeometry();
 
     bool parabolaFound = std::ranges::any_of(geometries, &Part::Geometry::is<Part::GeomArcOfParabola>);
