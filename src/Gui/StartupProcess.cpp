@@ -223,10 +223,10 @@ void StartupPostProcess::setLoadFromPythonModule(bool value)
 
 void StartupPostProcess::execute()
 {
-    checkQtSvgImageFormatSupport();
     setWindowTitle();
     setProcessMessages();
     setAutoSaving();
+    checkQtSvgImageFormatSupport();
     setToolBarIconSize();
     setWheelEventFilter();
     setLocale();
@@ -240,14 +240,6 @@ void StartupPostProcess::execute()
     activateWorkbench();
     checkParameters();
     checkVersionMigration();
-}
-
-void StartupPostProcess::checkQtSvgImageFormatSupport()
-{
-    auto const supportedFormats = QImageReader::supportedImageFormats();
-    if (!supportedFormats.contains("svg")) {
-        Base::Console().warning("Qt SVG image format not supported; missing Qt SVG plugin?\n");
-    }
 }
 
 void StartupPostProcess::setWindowTitle()
@@ -278,6 +270,14 @@ void StartupPostProcess::setAutoSaving()
 
     AutoSaver::instance()->setTimeout(timeout * 60000);  // NOLINT
     AutoSaver::instance()->setCompressed(hDocGrp->GetBool("AutoSaveCompressed", true));
+}
+
+void StartupPostProcess::checkQtSvgImageFormatSupport()
+{
+    auto const supportedFormats = QImageReader::supportedImageFormats();
+    if (!supportedFormats.contains("svg")) {
+        Base::Console().warning("Qt SVG image format not supported; missing Qt SVG plugin?\n");
+    }
 }
 
 void StartupPostProcess::setToolBarIconSize()
