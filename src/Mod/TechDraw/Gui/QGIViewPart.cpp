@@ -393,7 +393,7 @@ void QGIViewPart::drawAllEdges()
 
     const TechDraw::BaseGeomPtrVector& geoms = dvp->getEdgeGeometry();
     TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
-    QGIEdge* item;
+    QGIEdge* item{};
     for (int iEdge = 0; itGeom != geoms.end(); itGeom++, iEdge++) {
         bool showItem = true;
         if (!showThisEdge(*itGeom)) {
@@ -444,8 +444,11 @@ void QGIViewPart::drawAllEdges()
                     item->setZValue(ZVALUE::HIDEDGE);
                 } else {
                     // unformatted visible line, draw as continuous line
-                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
-                    item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                    // "smooth" edges should use the "thin" width as used for hidden lines.
+                    double width = (*itGeom)->getClassOfEdge() == EdgeClass::SMOOTH ?
+                                            vp->HiddenWidth.getValue() : vp->LineWidth.getValue();
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, width));
+                    item->setWidth(Rez::guiX(width));
                 }
             }
         }
