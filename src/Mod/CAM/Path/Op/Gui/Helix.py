@@ -67,8 +67,8 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
             obj.CutMode = str(self.form.cutMode.currentData())
         if obj.StartSide != str(self.form.startSide.currentData()):
             obj.StartSide = str(self.form.startSide.currentData())
-        if obj.StepOver != self.form.stepOverPercent.value():
-            obj.StepOver = self.form.stepOverPercent.value()
+        if obj.StepOver != self.form.stepOver.value():
+            obj.StepOver = self.form.stepOver.value()
         PathGuiUtil.updateInputField(obj, "OffsetExtra", self.form.extraOffset)
 
         self.updateToolController(obj, self.form.toolController)
@@ -78,7 +78,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """setFields(obj) ... transfers obj's property values to UI"""
         Path.Log.track()
 
-        self.form.stepOverPercent.setValue(obj.StepOver)
+        self.form.stepOver.setValue(obj.StepOver)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
         self.selectInComboBox(obj.StartSide, self.form.startSide)
 
@@ -93,7 +93,7 @@ class TaskPanelOpPage(PathCircularHoleBaseGui.TaskPanelOpPage):
         """getSignalsForUpdate(obj) ... return list of signals for updating obj"""
         signals = []
 
-        signals.append(self.form.stepOverPercent.editingFinished)
+        signals.append(self.form.stepOver.editingFinished)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.startSide.currentIndexChanged)
