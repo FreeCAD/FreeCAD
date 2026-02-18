@@ -452,9 +452,9 @@ class ObjectDressup:
         if direction == "CW":
             output = -output
 
-        if cmdName == "G2" and direction == "CCW":
+        if cmdName in Path.Geom.CmdMoveCW and direction == "CCW":
             output = -output
-        elif cmdName == "G3" and direction == "CW":
+        elif cmdName in Path.Geom.CmdMoveCCW and direction == "CW":
             output = -output
 
         return output
@@ -469,32 +469,32 @@ class ObjectDressup:
 
         if first or (distance > obj.RetractThreshold):
             # move to clearance height
-            commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": self.clearanceHeight}))
+            commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": self.clearanceHeight}))
 
             # move to mill position at clearance height
-            commands.append(PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y}))
+            commands.append(PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y}))
 
             # move vertical down to mill position
             if obj.RapidPlunge:
                 # move to mill position rapidly
-                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": pos.z}))
+                commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": pos.z}))
             else:
                 # move to mill position in two steps
-                commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": self.safeHeight}))
+                commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": self.safeHeight}))
                 commands.append(
-                    PathLanguage.MoveStraight(None, "G01", {"Z": pos.z, "F": self.vertFeed})
+                    PathLanguage.MoveStraight(None, "G1", {"Z": pos.z, "F": self.vertFeed})
                 )
 
         else:
             # move to next mill position by short path
             if obj.RapidPlunge:
                 commands.append(
-                    PathLanguage.MoveStraight(None, "G00", {"X": pos.x, "Y": pos.y, "Z": pos.z})
+                    PathLanguage.MoveStraight(None, "G0", {"X": pos.x, "Y": pos.y, "Z": pos.z})
                 )
             else:
                 commands.append(
                     PathLanguage.MoveStraight(
-                        None, "G01", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": self.vertFeed}
+                        None, "G1", {"X": pos.x, "Y": pos.y, "Z": pos.z, "F": self.vertFeed}
                     )
                 )
 
@@ -504,7 +504,7 @@ class ObjectDressup:
     def getTravelEnd(self, obj):
         commands = []
         z = self.clearanceHeight
-        commands.append(PathLanguage.MoveStraight(None, "G00", {"Z": z}))
+        commands.append(PathLanguage.MoveStraight(None, "G0", {"Z": z}))
 
         return commands
 
@@ -532,7 +532,7 @@ class ObjectDressup:
     # Create arc in XY plane with manually set G2|G3
     def createArcMoveN(self, obj, begin, end, offset, cmdName):
         param = {"X": end.x, "Y": end.y, "I": offset.x, "J": offset.y, "F": self.horizFeed}
-        if cmdName == "G2":
+        if cmdName in Path.Geom.CmdMoveCW:
             command = PathLanguage.MoveArcCW(begin, cmdName, param)
         else:
             command = PathLanguage.MoveArcCCW(begin, cmdName, param)
@@ -756,7 +756,7 @@ class ObjectDressup:
         else:
             # exclude any lead-in commands
             param = {"X": begin.x, "Y": begin.y, "Z": begin.z, "F": self.horizFeed}
-            travelToStart = [PathLanguage.MoveStraight(None, "G01", param)]
+            travelToStart = [PathLanguage.MoveStraight(None, "G1", param)]
 
         lead = travelToStart + lead
 
