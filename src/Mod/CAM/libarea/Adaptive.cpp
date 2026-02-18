@@ -2411,36 +2411,35 @@ TPaths Adaptive2d::FindLinkPath(
     TPaths result;
 
     IntPoint endPoint(pathStart);
-    // if there is a previous path - need to resolve linking move to new path
-    if (prevPoint) {
-        IntPoint startPoint(*prevPoint);
 
-        // first we try to cut through the linking move for short distances
-        bool linkFound = false;
-        double linkDistance = sqrt(DistanceSqrd(startPoint, endPoint));
-        if (linkDistance < NTOL) {
-            linkFound = true;
+    // first we try to cut through the linking move for short distances
+    bool linkFound = false;
+    double linkDistance = prevPoint ? sqrt(DistanceSqrd(*prevPoint, endPoint)) : stepOverScaled;
+    if (linkDistance < NTOL) {
+        linkFound = true;
+    }
+
+    if (!linkFound) {
+        size_t clpPathIndex;
+        size_t clpSegmentIndex;
+        double clpParameter;
+        IntPoint clp;
+
+        double beaconOffset = stepOverScaled;
+        if (beaconOffset > linkDistance) {
+            beaconOffset = linkDistance;
         }
 
-        if (!linkFound) {
-            size_t clpPathIndex;
-            size_t clpSegmentIndex;
-            double clpParameter;
-            IntPoint clp;
+        if (beaconOffset > linkDistance / 2) {
+            beaconOffset = linkDistance / 2;
+        }
 
-            double beaconOffset = stepOverScaled;
-            if (beaconOffset > linkDistance) {
-                beaconOffset = linkDistance;
-            }
-
-            if (beaconOffset > linkDistance / 2) {
-                beaconOffset = linkDistance / 2;
-            }
-
-            // plan the lead out
+        // plan the lead out
+        Path leadOutPath;
+        if (prevPoint) {
             double sDistToBounds = DistancePointToPathsSqrd(
                 toolBoundPaths,
-                startPoint,
+                *prevPoint,
                 clp,
                 clpPathIndex,
                 clpSegmentIndex,
@@ -2457,12 +2456,11 @@ TPaths Adaptive2d::FindLinkPath(
                 = {startDir.X - startBoundaryDir.Y, startDir.Y + startBoundaryDir.X};
 
             IntPoint startBeacon(
-                startPoint.X + beaconOffset * startBeaconDir.X,
-                startPoint.Y + beaconOffset * startBeaconDir.Y
+                prevPoint->X + beaconOffset * startBeaconDir.X,
+                prevPoint->Y + beaconOffset * startBeaconDir.Y
             );
 
-            Path leadOutPath;
-            MakeLeadPath(false, startPoint, startDir, startBeacon, cleared, toolBoundPaths, leadOutPath);
+            MakeLeadPath(false, *prevPoint, startDir, startBeacon, cleared, toolBoundPaths, leadOutPath);
             cout << "MakeLeadOut:" << endl;
             cout << "\tstartDir (" << startDir.X << ", " << startDir.Y << ")" << endl;
             cout << "\tstartBoundaryDir (" << startBoundaryDir.X << ", " << startBoundaryDir.Y
@@ -2473,48 +2471,48 @@ TPaths Adaptive2d::FindLinkPath(
                 cout << "\t(" << p.X << "," << p.Y << ")" << endl;
             }
             cout << endl;
+        }
 
-            // plan the lead in, as a reverse-direction lead out
-            double eDistToBounds = DistancePointToPathsSqrd(
-                toolBoundPaths,
-                endPoint,
-                clp,
-                clpPathIndex,
-                clpSegmentIndex,
-                clpParameter
-            );
+        // plan the lead in, as a reverse-direction lead out
+        double eDistToBounds = DistancePointToPathsSqrd(
+            toolBoundPaths,
+            endPoint,
+            clp,
+            clpPathIndex,
+            clpSegmentIndex,
+            clpParameter
+        );
 
-            DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
+        DoublePoint revEndDir = {-pathDir.X, -pathDir.Y};
 
-            DoublePoint endBoundaryDir
-                = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
-            if (eDistToBounds > beaconOffset) {
-                endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
-            }
-            DoublePoint endBeaconDir = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
+        DoublePoint endBoundaryDir = GetPathDirectionV(toolBoundPaths[clpPathIndex], clpSegmentIndex);
+        if (eDistToBounds > beaconOffset) {
+            endBoundaryDir = pathDir;  // if boundary is far away, use beacon to leave the path
+        }
+        DoublePoint endBeaconDir = {revEndDir.X - endBoundaryDir.Y, revEndDir.Y + endBoundaryDir.X};
 
-            IntPoint endBeacon(
-                endPoint.X + beaconOffset * endBeaconDir.X,
-                endPoint.Y + beaconOffset * endBeaconDir.Y
-            );
+        IntPoint endBeacon(
+            endPoint.X + beaconOffset * endBeaconDir.X,
+            endPoint.Y + beaconOffset * endBeaconDir.Y
+        );
 
-            Path leadInPath;
-            MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath);
-            ReversePath(leadInPath);
-            cout << "MakeLeadIn:" << endl;
-            cout << "\trevEndDir (" << revEndDir.X << ", " << revEndDir.Y << ")" << endl;
-            cout << "\tendBoundaryDir (" << endBoundaryDir.X << ", " << endBoundaryDir.Y << ")"
-                 << endl;
-            cout << "\tendBeaconDir (" << endBeaconDir.X << ", " << endBeaconDir.Y << ")" << endl;
-            for (auto& p : leadInPath) {
-                cout << "\t(" << p.X << "," << p.Y << ")" << endl;
-            }
-            cout << endl;
+        Path leadInPath;
+        MakeLeadPath(true, endPoint, revEndDir, endBeacon, cleared, toolBoundPaths, leadInPath);
+        ReversePath(leadInPath);
+        cout << "MakeLeadIn:" << endl;
+        cout << "\trevEndDir (" << revEndDir.X << ", " << revEndDir.Y << ")" << endl;
+        cout << "\tendBoundaryDir (" << endBoundaryDir.X << ", " << endBoundaryDir.Y << ")" << endl;
+        cout << "\tendBeaconDir (" << endBeaconDir.X << ", " << endBeaconDir.Y << ")" << endl;
+        for (auto& p : leadInPath) {
+            cout << "\t(" << p.X << "," << p.Y << ")" << endl;
+        }
+        cout << endl;
 
-            // Compute linking path
-            Path linkPath;
-            MotionType linkType = MotionType::mtCutting;
+        // Compute linking path
+        Path linkPath;
+        MotionType linkType = MotionType::mtCutting;
 
+        if (prevPoint) {
             if (ResolveLinkPath(leadOutPath.back(), leadInPath.front(), cleared, linkPath)) {
                 linkType = MotionType::mtLinkClear;
                 double remainingLeadInExtension = stepOverScaled / 2;
@@ -2577,21 +2575,23 @@ TPaths Adaptive2d::FindLinkPath(
                 linkPath.push_back(leadOutPath.back());
                 linkPath.push_back(leadInPath.front());
             }
+        }
 
-            /* paths smoothing*/
-            Paths linkPaths;
-            linkPaths.push_back(leadOutPath);
-            linkPaths.push_back(linkPath);
-            linkPaths.push_back(leadInPath);
+        /* paths smoothing*/
+        Paths linkPaths;
+        linkPaths.push_back(leadOutPath);
+        linkPaths.push_back(linkPath);
+        linkPaths.push_back(leadInPath);
 
-            if (linkType == MotionType::mtLinkClear) {
-                SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
-            }
+        if (linkType == MotionType::mtLinkClear) {
+            SmoothPaths(linkPaths, 0.1 * stepOverScaled, 1, 4);
+        }
 
-            leadOutPath = linkPaths[0];
-            linkPath = linkPaths[1];
-            leadInPath = linkPaths[2];
+        leadOutPath = linkPaths[0];
+        linkPath = linkPaths[1];
+        leadInPath = linkPaths[2];
 
+        if (prevPoint) {
             // add lead-out move
             TPath linkPath1;
             linkPath1.first = MotionType::mtCutting;
@@ -2607,18 +2607,18 @@ TPaths Adaptive2d::FindLinkPath(
                 linkPath2.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
             }
             result.push_back(linkPath2);
-
-            // add lead-in move
-            TPath linkPath3;
-            linkPath3.first = MotionType::mtCutting;
-            for (const auto& pt : leadInPath) {
-                linkPath3.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
-            }
-
-            result.push_back(linkPath3);
-
-            linkFound = true;
         }
+
+        // add lead-in move
+        TPath linkPath3;
+        linkPath3.first = MotionType::mtCutting;
+        for (const auto& pt : leadInPath) {
+            linkPath3.second.emplace_back(double(pt.X) / scaleFactor, double(pt.Y) / scaleFactor);
+        }
+
+        result.push_back(linkPath3);
+
+        linkFound = true;
     }
 
     Perf_AppendToolPath.Stop();
@@ -2859,7 +2859,6 @@ void Adaptive2d::ProcessPolyNode(
 
     IntPoint toolPos;
     DoublePoint toolDir;
-    bool reengageEntry = false;
 
     // Initialize cleared area from previously cleared paths
     ClearedArea cleared(toolRadiusScaled);
@@ -3454,14 +3453,19 @@ void Adaptive2d::ProcessPolyNode(
         return result;
     };
 
+    AdaptiveOutput output;
     std::optional<std::tuple<IntPoint, DoublePoint, TPaths>> engagePoint = getEngagePoint({}, {});
     TPaths linkPath;
     if (engagePoint) {
-        reengageEntry = true;
         toolPos = std::get<IntPoint>(*engagePoint);
         toolDir = std::get<DoublePoint>(*engagePoint);
         linkPath = std::get<TPaths>(*engagePoint);
-        entryPoint = toolPos;
+        entryPoint = linkPath.size() > 0
+            ? IntPoint {linkPath[0].second[0].first * scaleFactor, linkPath[0].second[0].second * scaleFactor}
+            : toolPos;
+        cout << "link path size " << linkPath.size() << endl;
+        output.StartPoint
+            = DPoint(double(entryPoint.X) / scaleFactor, double(entryPoint.Y) / scaleFactor);
     }
     else {
         // Engagement failed; instead helix down
@@ -3471,21 +3475,18 @@ void Adaptive2d::ProcessPolyNode(
             Perf_ProcessPolyNode.Stop();
             return;
         }
-        reengageEntry = false;
+        output.StartPoint = DPoint(double(toolPos.X) / scaleFactor, double(toolPos.Y) / scaleFactor);
     }
 
-    AdaptiveOutput output;
     output.ReturnMotionType = 0;
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
-    IntPoint startPoint = toolPos;
-    output.StartPoint = DPoint(double(startPoint.X) / scaleFactor, double(startPoint.Y) / scaleFactor);
     DoublePoint lastExpandToolDir = toolDir;
 
     cout << "Entry point: (" << entryPoint.X << "," << entryPoint.Y << ") Start point: ("
-         << startPoint.X << "," << startPoint.Y << ")" << endl;
+         << toolPos.X << "," << toolPos.Y << ")" << endl;
     fout << "Entry point: (" << entryPoint.X << "," << entryPoint.Y << ") Start point: ("
-         << startPoint.X << "," << startPoint.Y << ")" << endl;
+         << toolPos.X << "," << toolPos.Y << ")" << endl;
 
     //*******************************
     // LOOP - PASSES
@@ -3571,17 +3572,6 @@ void Adaptive2d::ProcessPolyNode(
 
                 // append to toolpaths
                 if (passToolPath.empty()) {
-                    // in outside entry first successful cut defines the "helix center" and start
-                    // point in this case helix diameter is 0 (straight line downwards)
-                    if (output.AdaptivePaths.empty() && reengageEntry) {
-                        entryPoint = toolPos;
-                        output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
-                        output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
-                        output.StartPoint = DPoint(
-                            double(entryPoint.X) / scaleFactor,
-                            double(entryPoint.Y) / scaleFactor
-                        );
-                    }
                     passToolPath.push_back(toolPos);
                 }
                 passToolPath.push_back(itResult.newToolPos);
