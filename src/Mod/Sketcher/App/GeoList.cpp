@@ -96,8 +96,7 @@ int GeoListModel<T>::getGeoIdFromGeomListIndex(int index) const
 template<typename T>
 const Part::Geometry* GeoListModel<T>::getGeometryFromGeoId(const std::vector<T>& geometrylist, int geoId)
 {
-    auto index = geoId >= 0 ? static_cast<size_t>(geoId)
-                             : geometrylist.size() + geoId;
+    auto index = geoId >= 0 ? static_cast<size_t>(geoId) : geometrylist.size() + geoId;
 
     if (index >= geometrylist.size()) {
         return nullptr;
@@ -117,8 +116,7 @@ const Sketcher::GeometryFacade* GeoListModel<T>::getGeometryFacadeFromGeoId(
     int geoId
 )
 {
-    auto index = geoId >= 0 ? static_cast<size_t>(geoId)
-                             : geometrylist.size() + geoId;
+    auto index = geoId >= 0 ? static_cast<size_t>(geoId) : geometrylist.size() + geoId;
 
     if (index >= geometrylist.size()) {
         return nullptr;
