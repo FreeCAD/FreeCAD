@@ -1599,13 +1599,9 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
     else {
         switch (classifyReservedAliasName(alias)) {
             case ReservedAliasToken::Unit:
-                throw Base::ValueError(
-                    "Invalid alias: name conflicts with a reserved unit token"
-                );
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved unit token");
             case ReservedAliasToken::Constant:
-                throw Base::ValueError(
-                    "Invalid alias: name conflicts with a reserved constant token"
-                );
+                throw Base::ValueError("Invalid alias: name conflicts with a reserved constant token");
             case ReservedAliasToken::UnitAndConstant:
                 throw Base::ValueError(
                     "Invalid alias: name conflicts with reserved unit and constant tokens"
