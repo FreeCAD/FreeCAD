@@ -201,12 +201,6 @@ bool candidateForRewriting(const MatchFinder::MatchResult& result)
         return false;
     }
 
-    // For now
-    if (parent->getQualifiedNameAsString() != "App::PropertyInteger"
-        && parent->getQualifiedNameAsString() != "App::PropertyVector") {
-        return false;
-    }
-
     if (PropertyMethodsToIgnore.contains(method->getNameAsString())) {
         return false;
     }
@@ -479,7 +473,10 @@ public:
                 unless(isImplicit()),
                 unless(cxxConstructorDecl()),
                 unless(cxxDestructorDecl()),
-                ofClass(cxxRecordDecl(isDerivedFrom("App::Property")))
+                ofClass(cxxRecordDecl(
+                    isDerivedFrom(hasName("::App::Property")),
+                    unless(hasName("::App::PropertyListsT"))
+                ))
             )
                 .bind(AccessorLabel),
             callback.get()
