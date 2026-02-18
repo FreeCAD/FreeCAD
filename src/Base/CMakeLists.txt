@@ -191,6 +191,7 @@ SET(FreeCADBase_CPP_SRCS
     Console.cpp
     ConsoleObserver.cpp
     Color.cpp
+    OkLch.cpp
     CoordinateSystem.cpp
     CoordinateSystemPyImp.cpp
     Debugger.cpp
@@ -263,6 +264,7 @@ SET(FreeCADBase_HPP_SRCS
     ConsoleObserver.h
     Converter.h
     Color.h
+    OkLch.h
     CoordinateSystem.h
     Debugger.h
     DualNumber.h
