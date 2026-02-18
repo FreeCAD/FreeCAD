@@ -1078,10 +1078,40 @@ const SelectionChanges& SelectionSingleton::getPreselection() const
 void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
 {
     if (ActiveGate) {
-        rmvSelectionGate();
+        // check if the current active gate is a toolbar SelectionFilterGate.
+        // if it is save its filter string so we can both compose it with the new
+        // gate and restore it later.
+        if (savedFilterStr.empty()) {
+            auto* filterGate = dynamic_cast<SelectionFilterGate*>(ActiveGate);
+            if (filterGate && filterGate->getSelectionFilter()) {
+                savedFilterStr = filterGate->getSelectionFilter()->getFilter();
+                savedGateResolve = gateResolve;
+            }
+        }
+        // also check if it's a CompoundSelectionGate wrapping a toolbar filter
+        // (nested tool calls). in that case we already have savedFilterStr from
+        // the first call, so just delete the current compound gate.
+        delete ActiveGate;
+        ActiveGate = nullptr;
+        restoredGate = nullptr;
+
+        Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        if (doc) {
+            Gui::MDIView* mdi = doc->getActiveView();
+            if (mdi) {
+                mdi->restoreOverrideCursor();
+            }
+        }
     }
 
-    ActiveGate = gate;
+    // if we have a saved toolbar filter, wrap the new gate in a CompoundSelectionGate
+    // so the toolbar filter constrains what the tool can select.
+    if (!savedFilterStr.empty()) {
+        ActiveGate = new CompoundSelectionGate(gate, savedFilterStr);
+    }
+    else {
+        ActiveGate = gate;
+    }
     gateResolve = resolve;
 }
 
@@ -1089,20 +1119,41 @@ void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode 
 void SelectionSingleton::rmvSelectionGate()
 {
     if (ActiveGate) {
+        // don't remove a gate that was just restored from saved state.
+        // this protects against task panel destructors calling rmvSelectionGate()
+        // a second time after setSelectionMode(none) already triggered restore.
+        if (ActiveGate == restoredGate) {
+            return;
+        }
+
         delete ActiveGate;
         ActiveGate = nullptr;
 
         Gui::Document* doc = Gui::Application::Instance->activeDocument();
         if (doc) {
-            // if a document is about to be closed it has no MDI view any more
             Gui::MDIView* mdi = doc->getActiveView();
             if (mdi) {
                 mdi->restoreOverrideCursor();
             }
         }
     }
+
+    // restore previously saved toolbar filter
+    if (!savedFilterStr.empty()) {
+        ActiveGate = new SelectionFilterGate(savedFilterStr.c_str());
+        gateResolve = savedGateResolve;
+        savedFilterStr.clear();
+        // gateWasRestored = true;
+        restoredGate = ActiveGate;
+    }
 }
 
+void SelectionSingleton::rmvAllSelectionGates()
+{
+    savedFilterStr.clear();
+    restoredGate = nullptr;
+    rmvSelectionGate();
+}
 
 App::Document* SelectionSingleton::getDocument(const char* pDocName) const
 {
@@ -2194,7 +2245,10 @@ SelectionSingleton::SelectionSingleton()
  * A destructor.
  * A more elaborate description of the destructor.
  */
-SelectionSingleton::~SelectionSingleton() = default;
+SelectionSingleton::~SelectionSingleton()
+{
+    savedFilterStr.clear();
+}
 
 SelectionSingleton* SelectionSingleton::_pcSingleton = nullptr;
 
