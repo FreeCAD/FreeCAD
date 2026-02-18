@@ -31,7 +31,7 @@
 #include <TopTools_HSequenceOfShape.hxx>
 #include <QKeyEvent>
 #include <QMessageBox>
-
+#include <QString>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -48,6 +48,8 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/MDIView.h>
+#include "Utils.h"
 
 #include <Mod/Part/App/Part2DObject.h>
 
@@ -483,6 +485,7 @@ void DlgExtrusion::accept()
     };
 }
 
+
 void DlgExtrusion::apply()
 {
     try {
@@ -528,7 +531,10 @@ void DlgExtrusion::apply()
 
                 continue;
             }
-
+            if (sourceObj->isDerivedFrom<App::Part>()) {
+                FC_WARN("Cannot extrude a Part. Select a Sketch or Shape.");
+                return;
+            }
             std::string name;
             name = sourceObj->getDocument()->getUniqueObjectName("Extrude").c_str();
             if (addBaseName) {
@@ -537,10 +543,16 @@ void DlgExtrusion::apply()
                 // label = QStringLiteral("%1_Extrude").arg((*it)->text(0));
             }
 
-            FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
-            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
+            Gui::Command::doCommand(
+                Gui::Command::Doc,
+                "obj = App.ActiveDocument.addObject('Part::Extrusion','%s')",
+                name.c_str()
+            );
 
+            auto newObj = sourceObj->getDocument()->getObject(name.c_str());
             this->writeParametersToFeature(*newObj, sourceObj);
+
+            Gui::Command::runCommand(Gui::Command::Doc, PartGui::getAutoGroupCommandStr(false).toUtf8());
 
             if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
                 Gui::Command::copyVisual(newObj, "ShapeAppearance", sourceObj);

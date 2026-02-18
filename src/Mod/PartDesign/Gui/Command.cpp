@@ -44,6 +44,7 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Selection/SelectionObject.h>
+#include <Gui/MDIView.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
 #include <Mod/PartDesign/App/FeatureBoolean.h>
@@ -395,12 +396,78 @@ CmdPartDesignSubShapeBinder::CmdPartDesignSubShapeBinder()
     sPixmap = "PartDesign_SubShapeBinder";
 }
 
+
+namespace
+{
+
+using ObjSet = std::set<App::DocumentObject*>;
+// Pure validation helper (no hidden deps).
+// Validates 'container' against the binding set to avoid cycles or self-inclusion.
+static bool checkContainer(App::DocumentObject* container, const ObjSet& valueSet)
+{
+    if (!container) {
+        return false;
+    }
+
+    if (valueSet.count(container)) {
+        return false;
+    }
+
+    auto inlist = container->getInListEx(true);
+    for (auto obj : valueSet) {
+        if (inlist.count(obj)) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+// Centralized container lookup with explicit parameters (no hidden deps).
+// Writes: container, parent, parentSub. Returns void; container==nullptr if none.
+static void findContainerForNewSubShapeBinder(
+    App::Document* doc,
+    const ObjSet& valueSet,
+    App::DocumentObject*& container,
+    App::DocumentObject*& parent,
+    std::string& parentSub
+)
+{
+    container = nullptr;
+    if (!doc) {
+        parent = nullptr;
+        parentSub.clear();
+        return;
+    }
+
+    auto* view = Gui::Application::Instance ? Gui::Application::Instance->activeView() : nullptr;
+
+    // Try active Body first
+    if (view) {
+        if (auto* body = view->getActiveObject<PartDesign::Body*>(PDBODYKEY, &parent, &parentSub)) {
+            if (checkContainer(body, valueSet)) {
+                container = body;
+                return;
+            }
+        }
+        // Then active Part
+        if (auto* part = view->getActiveObject<App::Part*>(PARTKEY, &parent, &parentSub)) {
+            if (checkContainer(part, valueSet)) {
+                container = part;
+                return;
+            }
+        }
+    }
+}
+}  // anonymous namespace
+
 void CmdPartDesignSubShapeBinder::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
 
     App::DocumentObject* parent = nullptr;
     std::string parentSub;
+    std::set<App::DocumentObject*> valueSet;
     std::map<App::DocumentObject*, std::vector<std::string>> values;
     for (auto& sel : Gui::Selection().getCompleteSelection(Gui::ResolveMode::NoResolve)) {
         if (!sel.pObject) {
@@ -409,32 +476,49 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
         auto& subs = values[sel.pObject];
         if (sel.SubName && sel.SubName[0]) {
             subs.emplace_back(sel.SubName);
+            valueSet.insert(sel.pObject->getSubObject(sel.SubName));
+        }
+        else {
+            valueSet.insert(sel.pObject);
         }
     }
 
-    std::string FeatName;
-    PartDesign::Body* pcActiveBody = PartDesignGui::getBody(false, true, true, &parent, &parentSub);
-    FeatName = getUniqueObjectName("Binder", pcActiveBody);
-    if (parent) {
+    PartDesign::Body* pcActiveBody = nullptr;
+    App::Part* pcActivePart = nullptr;
+
+    App::DocumentObject* targetContainer = nullptr;
+    findContainerForNewSubShapeBinder(getDocument(), valueSet, targetContainer, parent, parentSub);
+
+    if (targetContainer && parent) {
         decltype(values) links;
         for (auto& v : values) {
             App::DocumentObject* obj = v.first;
-            if (obj != parent) {
-                auto& subs = links[obj];
-                subs.insert(subs.end(), v.second.begin(), v.second.end());
+            if (v.second.empty()) {
+                links.emplace(obj, v.second);
                 continue;
             }
             for (auto& sub : v.second) {
                 auto link = obj;
                 auto linkSub = parentSub;
                 parent->resolveRelativeLink(linkSub, link, sub);
-                if (link && link != pcActiveBody) {
+                if (link) {
                     links[link].push_back(sub);
                 }
             }
         }
         values = std::move(links);
     }
+
+    // Identify concrete type for naming/creation convenience
+    pcActiveBody = dynamic_cast<PartDesign::Body*>(targetContainer);
+    if (!pcActiveBody) {
+        pcActivePart = dynamic_cast<App::Part*>(targetContainer);
+    }
+
+    std::string FeatName = Gui::Command::getUniqueObjectName(
+        "Binder",
+        pcActiveBody ? static_cast<App::DocumentObject*>(pcActiveBody) : pcActivePart
+    );
 
     PartDesign::SubShapeBinder* binder = nullptr;
     try {
@@ -454,6 +538,12 @@ void CmdPartDesignSubShapeBinder::activated(int iMsg)
             binder = dynamic_cast<PartDesign::SubShapeBinder*>(
                 App::GetApplication().getActiveDocument()->getObject(FeatName.c_str())
             );
+            if (pcActivePart) {
+                Gui::cmdAppObject(
+                    pcActivePart,
+                    std::ostringstream() << "addObject(" << Gui::Command::getObjectCmd(binder) << ")"
+                );
+            }
         }
         if (!binder) {
             return;
