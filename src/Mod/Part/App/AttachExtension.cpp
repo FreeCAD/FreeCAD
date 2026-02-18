@@ -24,6 +24,7 @@
 
 
 #include <Base/Console.h>
+#include <Base/ProgramVersion.h>
 #include <Base/Tools.h>
 
 #include <App/Document.h>
@@ -522,12 +523,8 @@ void AttachExtension::handleLegacyTangentPlaneOrientation()
     }
 
     // check stored document program version (applies to v1.0 and earlier only)
-    int major, minor;
-    if (sscanf(getExtendedObject()->getDocument()->getProgramVersion(), "%d.%d", &major, &minor)
-        != 2) {
-        return;
-    }
-    if (major > 1 || (major == 1 && minor > 0)) {
+    if (Base::getVersion(getExtendedObject()->getDocument()->getProgramVersion())
+        > Base::Version::v1_0) {
         return;
     }
 
