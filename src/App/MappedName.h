@@ -56,6 +56,9 @@ namespace Data
  * separately, they can be accessed via calls to size(), operator[], etc. as
  * though they were a single array.
  */
+
+using MappedNameDataTree = std::vector<std::vector<std::vector<std::string>>>;
+
 class AppExport MappedName
 {
 public:
@@ -494,6 +497,12 @@ public:
                 this->data.append(dataToAppend, size);
             }
             else {
+                const char* constData = this->postfix.constData();
+
+                if (strlen(constData) > 0 && constData[strlen(constData) - 1] != '|') {
+                    this->postfix.append('|', 1);
+                }
+
                 this->postfix.append(dataToAppend, size);
             }
         }
@@ -1160,23 +1169,27 @@ public:
         return usedHistoryAlgorithm;
     };
 
-    App::HistoryAlgorithm setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
         usedHistoryAlgorithm = newAlgorithm;
-        
-        return usedHistoryAlgorithm;
     };
+
+    std::vector<std::string> toSections() const;
+
+    MappedNameDataTree getNameDataTree() const;
+
+    static std::vector<std::string> splitToSections(const std::string data, const char deliminator = '|');
+
+    static std::string escapeString(const std::string stringToEscape);
 
     static std::string makeSection(std::vector<std::string> referenceIDs = { },
                                    std::vector<MappedName> referenceNames = { },
                                    int iterationTag = 0,
-                                   std::string opCode = "MKR",
+                                   const char* opCode = "MKR",
                                    int index = 0,
                                    char elementType = 'E',
                                    int duplicateCount = 0,
                                    std::string mapperInfo = "_");
     
-    static std::string escapeString(const std::string stringToEscape);
-
 private:
     QByteArray data;
     QByteArray postfix;

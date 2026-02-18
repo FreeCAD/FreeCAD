@@ -222,43 +222,101 @@ void Part::FaceMaker::postBuild()
         ++index;
         TopoShape wire = face.splitWires();
         wire.mapSubElement(face);
-        std::set<ElementName> edgeNames;
-        int count = wire.countSubShapes(TopAbs_EDGE);
-        for (int index2 = 1; index2 <= count; ++index2) {
-            Data::ElementIDRefs sids;
-            Data::MappedName name
-                = face.getMappedName(Data::IndexedName::fromConst("Edge", index2), false, &sids);
-            if (!name) {
+
+        if (this->myTopoShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+            std::set<ElementName> edgeNames;
+            int count = wire.countSubShapes(TopAbs_EDGE);
+            for (int index2 = 1; index2 <= count; ++index2) {
+                Data::ElementIDRefs sids;
+                Data::MappedName name
+                    = face.getMappedName(Data::IndexedName::fromConst("Edge", index2), false, &sids);
+                if (!name) {
+                    continue;
+                }
+                edgeNames.emplace(wire.getElementHistory(name), name, sids);
+            }
+            if (edgeNames.empty()) {
                 continue;
             }
-            edgeNames.emplace(wire.getElementHistory(name), name, sids);
-        }
-        if (edgeNames.empty()) {
-            continue;
-        }
 
-        std::vector<Data::MappedName> names;
-        Data::ElementIDRefs sids;
-        // To avoid name collision, we keep track of any used names to make sure
-        // to use at least 'minElementNames' number of unused element names to
-        // generate the face name.
-        int nameCount = 0;
-        for (const auto& e : edgeNames) {
-            names.push_back(e.name);
-            sids += e.sids;
-            if (namesUsed.insert(e.name).second) {
-                if (++nameCount >= minElementNames) {
-                    break;
+            std::vector<Data::MappedName> names;
+            Data::ElementIDRefs sids;
+            // To avoid name collision, we keep track of any used names to make sure
+            // to use at least 'minElementNames' number of unused element names to
+            // generate the face name.
+            int nameCount = 0;
+            for (const auto& e : edgeNames) {
+                names.push_back(e.name);
+                sids += e.sids;
+                if (namesUsed.insert(e.name).second) {
+                    if (++nameCount >= minElementNames) {
+                        break;
+                    }
                 }
             }
-        }
-        this->myTopoShape.setElementComboName(
-            Data::IndexedName::fromConst("Face", index),
-            names,
-            op,
-            nullptr,
-            &sids
-        );
+            this->myTopoShape.setElementComboName(
+                Data::IndexedName::fromConst("Face", index),
+                names,
+                op,
+                nullptr,
+                &sids
+            );
+        } else if (this->myTopoShape.getHistoryAlgorithm() == App::HistoryAlgorithm::V2) {
+            std::vector<Data::MappedName> edgeNames;
+            std::vector<std::string> edgeIDs;
+            
+            int count = wire.countSubShapes(TopAbs_EDGE);
+            for (int edgeIndex = 1; edgeIndex <= count; ++edgeIndex) {
+                Data::MappedName name
+                    = face.getMappedName(Data::IndexedName::fromConst("Edge", edgeIndex), false);
+                
+                if (!name) {
+                    continue;
+                }
+
+                Data::MappedNameDataTree tree = name.getNameDataTree();
+
+                if (tree.size() == 1 && tree[0][7][0] == "SRC") {
+                    std::stringstream ss;
+
+                    for (const auto &id : tree[0][0]) {
+                        if (id != "_") {
+                            ss << id;
+                            ss << ":";
+                            ss << tree[0][2][0];
+
+                            std::string index = tree[0][4][0];
+                            
+                            if (index != "_" && index != "0") {
+                                ss << ":";
+                                ss << index;
+                            }
+
+                            edgeIDs.push_back(ss.str());
+
+                            ss.str("");
+                        }
+                    }
+                } else {
+                    edgeNames.push_back(name);
+                }
+            }
+
+            if (edgeNames.empty() && edgeIDs.empty()) continue;
+
+            std::string faceString = Data::MappedName::makeSection(edgeIDs,
+                                                                   edgeNames,
+                                                                   this->myTopoShape.Tag,
+                                                                   op,
+                                                                   0,
+                                                                   'F',
+                                                                   0,
+                                                                   "_");
+            
+            this->myTopoShape.setElementName(Data::IndexedName::fromConst("Face", index),
+                                             Data::MappedName(faceString, this->myTopoShape.getHistoryAlgorithm()),
+                                             this->myTopoShape.Tag);
+        } 
     }
     this->myTopoShape.initCache(true);
     this->Done();

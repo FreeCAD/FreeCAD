@@ -90,6 +90,7 @@
 #include <App/FeaturePythonPyImp.h>
 #include <App/IndexedName.h>
 #include <App/MappedName.h>
+#include <Mod/Part/App/TopoShapeOpCode.h>
 #include <App/ObjectIdentifier.h>
 #include <App/Datums.h>
 #include <App/Part.h>
@@ -344,11 +345,11 @@ void SketchObject::buildShape()
             builtName = Data::MappedName::makeSection({name},
                                                       {},
                                                       tag,
-                                                      "SKT",
+                                                      Part::OpCodes::Sketch,
                                                       0,
                                                       'V',
                                                       0,
-                                                      "_");
+                                                      "SRC");
         } else {
             // unimplemented algorithm, do not touch the name.
         }
@@ -11823,11 +11824,11 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
         builtName = Data::MappedName::makeSection({name},
                                                   {},
                                                   getID(),
-                                                  "SKT",
+                                                  Part::OpCodes::Sketch,
                                                   0,
                                                   'E',
                                                   0,
-                                                  "_");
+                                                  "SRC");
     }
     // Originally in ComplexGeoData::setElementName
     // LinkStable/src/App/ComplexGeoData.cpp#L1631
@@ -11854,11 +11855,11 @@ Part::TopoShape SketchObject::getEdge(const Part::Geometry *geo, const char *nam
                     builtVertexName = Data::MappedName::makeSection({ss.str()},
                                                                     {},
                                                                     getID(),
-                                                                    "SKT",
+                                                                    Part::OpCodes::Sketch,
                                                                     0,
                                                                     'V',
                                                                     0,
-                                                                    "_");
+                                                                    "SRC");
                 }
                 shape.setElementName(Data::IndexedName::fromConst("Vertex", i),
                                      builtVertexName,0L);

@@ -312,6 +312,10 @@ public:
         return usedHistoryAlgorithm;
     }
 
+    void setHistoryAlgorithm(App::HistoryAlgorithm newAlgorithm) {
+        usedHistoryAlgorithm = newAlgorithm;
+    }
+
 
 private:
     /** Serialize this map

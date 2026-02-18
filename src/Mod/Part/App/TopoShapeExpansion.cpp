@@ -23,6 +23,7 @@
  ***************************************************************************/
 
 #include <cmath>
+#include <cctype>
 #include <limits>
 
 #ifndef _Standard_Version_HeaderFile
@@ -986,9 +987,11 @@ void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool force
                     }
                 }
                 ss.str("");
-
-                ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
-                elementMap()->setElementName(element, name, Tag, &sids);
+                
+                if (other.getHistoryAlgorithm() == App::HistoryAlgorithm::V1) {
+                    ensureElementMap()->encodeElementName(shapetype[0], name, ss, &sids, Tag, op, other.Tag);
+                }
+                ensureElementMap()->setElementName(element, name, Tag, &sids);
             }
         }
     }
