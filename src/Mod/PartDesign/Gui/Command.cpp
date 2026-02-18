@@ -557,45 +557,6 @@ void CmdPartDesignClone::activated(int iMsg)
         copyVisual(cloneObj, "DisplayMode", obj);
         commitCommand();
     }
-
-    // As suggested in https://forum.freecad.org/viewtopic.php?f=3&t=25265&p=198547#p207336
-    // put the clone into its own new body.
-    // This also fixes bug #3447 because the clone is a PD feature and thus
-    // requires a body where it is part of.
-
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Clone"));
-
-    auto objCmd = getObjectCmd(obj);
-    std::string cloneName = getUniqueObjectName("Clone", obj);
-    std::string bodyName = getUniqueObjectName("Body", obj);
-
-    // Create body and clone
-    Gui::cmdAppDocument(obj, std::stringstream() << "addObject('PartDesign::Body','" << bodyName << "')");
-    Gui::cmdAppDocument(
-        obj,
-        std::stringstream() << "addObject('PartDesign::FeatureBase','" << cloneName << "')"
-    );
-
-    auto bodyObj = obj->getDocument()->getObject(bodyName.c_str());
-    auto cloneObj = obj->getDocument()->getObject(cloneName.c_str());
-
-    // In the first step set the group link and tip of the body
-    Gui::cmdAppObject(bodyObj, std::stringstream() << "Group = [" << getObjectCmd(cloneObj) << "]");
-    Gui::cmdAppObject(bodyObj, std::stringstream() << "Tip = " << getObjectCmd(cloneObj));
-
-    // In the second step set the link of the base feature
-    Gui::cmdAppObject(cloneObj, std::stringstream() << "BaseFeature = " << objCmd);
-    Gui::cmdAppObject(cloneObj, std::stringstream() << "Placement = " << objCmd << ".Placement");
-    Gui::cmdAppObject(cloneObj, std::stringstream() << "setEditorMode('Placement', 0)");
-
-    updateActive();
-    copyVisual(cloneObj, "ShapeAppearance", obj);
-    copyVisual(cloneObj, "LineColor", obj);
-    copyVisual(cloneObj, "PointColor", obj);
-    copyVisual(cloneObj, "Transparency", obj);
-    copyVisual(cloneObj, "DisplayMode", obj);
-
-    commitCommand();
 }
 
 bool CmdPartDesignClone::isActive()
