@@ -1589,6 +1589,7 @@ void Sheet::setAlias(CellAddress address, const std::string& alias)
             throw Base::ValueError("Alias already defined");
         }
     }
+
     else if (alias.empty()) {  // Empty?
         cells.setAlias(address, "");
     }
