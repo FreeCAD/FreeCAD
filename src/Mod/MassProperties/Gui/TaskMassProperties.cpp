@@ -40,6 +40,7 @@
 #include <Base/Console.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
+#include <Base/Precision.h>
 #include <Base/Quantity.h>
 #include <Base/Rotation.h>
 #include <Base/UnitsApi.h>
@@ -58,6 +59,7 @@
 #include <App/GeoFeature.h>
 #include <App/PropertyGeo.h>
 #include <App/PropertyStandard.h>
+#include <App/PropertyUnits.h>
 
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/PartDesign/App/Body.h>
@@ -979,6 +981,9 @@ void TaskMassProperties::tryupdate()
     const int denominator = Base::UnitsApi::getDenominator();
 
     auto setText = [&](QLineEdit* edit, double value, const Base::Unit& unit, const QString& suffix = QString()) {
+        if (value < Base::Precision::Confusion() && value > -Base::Precision::Confusion()) {
+            value = 0.0;
+        }
         Base::Quantity q {value, unit};
         Base::QuantityFormat format(Base::QuantityFormat::Fixed, decimals);
         format.setDenominator(denominator);
@@ -1172,16 +1177,25 @@ void TaskMassProperties::saveResult()
 
     obj->Visibility.setValue(true);
 
-    auto setFloat = [&](const char* name, double value) {
-        auto* prop = dynamic_cast<App::PropertyFloat*>(
-            obj->addDynamicProperty("App::PropertyFloat", name, "MassProperties")
+    auto setQuantity = [&](const char* name, double value, const Base::Unit& unit) {
+        if (value < Base::Precision::Confusion() && value > -Base::Precision::Confusion()) {
+            value = 0.0;
+        }
+        auto* prop = dynamic_cast<App::PropertyQuantity*>(
+            obj->addDynamicProperty("App::PropertyQuantity", name, "MassProperties")
         );
         if (prop) {
+            prop->setUnit(unit);
             prop->setValue(value);
         }
     };
 
-    auto setVector = [&](const char* name, const Base::Vector3d& value) {
+    auto setVector = [&](const char* name, Base::Vector3d& value) {
+        for (int i = 0; i < 3; ++i) {
+            if (value[i] < Base::Precision::Confusion() && value[i] > -Base::Precision::Confusion()) {
+                value[i] = 0.0;
+            }
+        }
         auto* prop = dynamic_cast<App::PropertyVector*>(
             obj->addDynamicProperty("App::PropertyVector", name, "MassProperties")
         );
@@ -1200,27 +1214,32 @@ void TaskMassProperties::saveResult()
     };
 
     setString("Mode", currentMode);
-    setFloat("Volume", currentInfo.volume);
-    setFloat("Mass", currentInfo.mass);
-    setFloat("Density", currentInfo.density);
-    setFloat("SurfaceArea", currentInfo.surfaceArea);
 
-    setVector("CenterOfGravity", Base::Vector3d(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ));
-    setVector("CenterOfVolume", Base::Vector3d(currentInfo.covX, currentInfo.covY, currentInfo.covZ));
+    setQuantity("Volume", currentInfo.volume, Base::Unit::Volume);
+    setQuantity("Mass", currentInfo.mass, Base::Unit::Mass);
+    setQuantity("Density", currentInfo.density, Base::Unit::Density);
+    setQuantity("SurfaceArea", currentInfo.surfaceArea, Base::Unit::Area);
+
+    setQuantity("CenterOfGravityX", currentInfo.cogX, Base::Unit::Length);
+    setQuantity("CenterOfGravityY", currentInfo.cogY, Base::Unit::Length);
+    setQuantity("CenterOfGravityZ", currentInfo.cogZ, Base::Unit::Length);
+    setQuantity("CenterOfVolumeX", currentInfo.covX, Base::Unit::Length);
+    setQuantity("CenterOfVolumeY", currentInfo.covY, Base::Unit::Length);
+    setQuantity("CenterOfVolumeZ", currentInfo.covZ, Base::Unit::Length);
 
     if (currentInfo.axisInertia != 0.0) {
-        setFloat("AxisInertia", currentInfo.axisInertia);
+        setQuantity("AxisInertia", currentInfo.axisInertia, Base::Unit::Inertia);
     }
     else {
-        setFloat("InertiaJox", currentInfo.inertiaJox);
-        setFloat("InertiaJoy", currentInfo.inertiaJoy);
-        setFloat("InertiaJoz", currentInfo.inertiaJoz);
-        setFloat("InertiaJxy", currentInfo.inertiaJxy);
-        setFloat("InertiaJzx", currentInfo.inertiaJzx);
-        setFloat("InertiaJzy", currentInfo.inertiaJzy);
-        setFloat("InertiaJx", currentInfo.inertiaJx);
-        setFloat("InertiaJy", currentInfo.inertiaJy);
-        setFloat("InertiaJz", currentInfo.inertiaJz);
+        setQuantity("InertiaJox", currentInfo.inertiaJox, Base::Unit::Inertia);
+        setQuantity("InertiaJoy", currentInfo.inertiaJoy, Base::Unit::Inertia);
+        setQuantity("InertiaJoz", currentInfo.inertiaJoz, Base::Unit::Inertia);
+        setQuantity("InertiaJxy", currentInfo.inertiaJxy, Base::Unit::Inertia);
+        setQuantity("InertiaJzx", currentInfo.inertiaJzx, Base::Unit::Inertia);
+        setQuantity("InertiaJzy", currentInfo.inertiaJzy, Base::Unit::Inertia);
+        setQuantity("InertiaJx", currentInfo.inertiaJx, Base::Unit::Inertia);
+        setQuantity("InertiaJy", currentInfo.inertiaJy, Base::Unit::Inertia);
+        setQuantity("InertiaJz", currentInfo.inertiaJz, Base::Unit::Inertia);
     }
     
     
