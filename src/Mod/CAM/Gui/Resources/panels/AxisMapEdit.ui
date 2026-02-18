@@ -78,6 +78,20 @@
      </item>
     </widget>
    </item>
+   <item row="2" column="0">
+     <widget class="QLabel" name="lblInvert">
+       <property name="text">
+         <string>Invert</string>
+       </property>
+     </widget>
+   </item>
+   <item row="2" column="2" colspan="2">
+     <widget class="QComboBox" name="invert">
+       <property name="toolTip">
+         <string>Invert rotary axis direction</string>
+       </property>
+     </widget>
+   </item>
   <item row="3" column="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
