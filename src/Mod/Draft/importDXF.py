@@ -480,29 +480,50 @@ def getACI(ob, text=False):
         It returns 256 (`BYLAYER`) if `ob` is inside a Draft Layer,
         and the layer's `OverrideChildren` view property is `True`.
     """
-    if not gui:
-        return 0
+    _ensure_helpers_initialized()
+
+    # Check which exporter is active
+    if not dxfUseLegacyExporter:
+        try:
+            import ImportGui
+
+            # Delegate to the C++ implementation
+            return ImportGui.getDXFAci(ob, text)
+        except Exception as e:
+            # Fallback if C++ call fails for any reason
+            FCC.PrintError(f"Call to C++ ACI color helper failed: {e}\n")
+            return 0
     else:
-        # detect if we need to set "BYLAYER"
-        for parent in ob.InList:
-            if Draft.getType(parent) == "Layer":
-                if ob in parent.Group:
-                    if hasattr(parent, "ViewObject") and hasattr(
-                        parent.ViewObject, "OverrideChildren"
-                    ):
-                        if parent.ViewObject.OverrideChildren:
-                            return 256  # BYLAYER
-        if text:
-            col = ob.ViewObject.TextColor
+        if dxfColorMap is None:
+            # The legacy path is responsible for loading its own libraries
+            getDXFlibs()
+            if dxfColorMap is None:
+                FCC.PrintError("Legacy DXF libraries (dxfColorMap) could not be loaded.\n")
+                return 0
+
+        if not gui:
+            return 0
         else:
-            col = ob.ViewObject.LineColor
-        aci = [0, 442]
-        for i in range(255, -1, -1):
-            ref = dxfColorMap.color_map[i]
-            dist = (ref[0] - col[0]) ** 2 + (ref[1] - col[1]) ** 2 + (ref[2] - col[2]) ** 2
-            if dist <= aci[1]:
-                aci = [i, dist]
-        return aci[0]
+            # detect if we need to set "BYLAYER"
+            for parent in ob.InList:
+                if Draft.getType(parent) == "Layer":
+                    if ob in parent.Group:
+                        if hasattr(parent, "ViewObject") and hasattr(
+                            parent.ViewObject, "OverrideChildren"
+                        ):
+                            if parent.ViewObject.OverrideChildren:
+                                return 256  # BYLAYER
+            if text:
+                col = ob.ViewObject.TextColor
+            else:
+                col = ob.ViewObject.LineColor
+            aci = [0, 442]
+            for i in range(255, -1, -1):
+                ref = dxfColorMap.color_map[i]
+                dist = (ref[0] - col[0]) ** 2 + (ref[1] - col[1]) ** 2 + (ref[2] - col[2]) ** 2
+                if dist <= aci[1]:
+                    aci = [i, dist]
+            return aci[0]
 
 
 def rawValue(entity, code):
@@ -623,6 +644,7 @@ def getGroupColor(dxfobj, index=False):
     -----
     Use local variables, not global variables.
     """
+    _ensure_helpers_initialized()
     name = dxfobj.layer
     for table in drawing.tables.get_type("table"):
         if table.name == "layer":
@@ -3113,6 +3135,7 @@ def getSplineSegs(edge):
         If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
+    _ensure_helpers_initialized()
     seglength = params.get_param("maxsegmentlength")
     points = []
     if seglength == 0:
@@ -3694,14 +3717,25 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     Use local variables, not global variables.
     """
     readPreferences()
-    if not dxfUseLegacyExporter:
-        import Import
 
-        version = 14
-        if nospline:
-            version = 12
-        Import.writeDXFObject(objectslist, filename, version, lwPoly)
+    if not dxfUseLegacyExporter:
+        version = 12 if nospline else 14
+
+        # Get a handle to the current module (importDXF)
+        import sys
+
+        helpers = sys.modules[__name__]
+
+        if gui:
+            import ImportGui as DxfExporterModule
+        else:
+            import Import as DxfExporterModule
+
+        DxfExporterModule.exportDxf(
+            obj=objectslist, name=filename, version=version, lwPoly=lwPoly, helpers=helpers
+        )
         return
+
     getDXFlibs()
     if dxfLibrary:
         global exportList
@@ -5081,3 +5115,410 @@ class DxfDraftPostProcessor:
 
         self.doc.recompute()
         FCC.PrintMessage("--- Draft post-processing finished. ---\n")
+
+
+# #####################################################################
+# ## C++ Exporter Helper Functions
+# #####################################################################
+
+
+def _write_text_entities(obj, writer_proxy):
+    """Writes DXF TEXT entities for an Annotation object."""
+    height = 3.5  # Default height in mm
+    scale_multiplier = 1.0
+    justification = 0  # 0 = Left
+
+    if hasattr(obj, "ViewObject"):
+        vobj = obj.ViewObject
+        height = float(getattr(vobj, "FontSize", height))
+        scale_multiplier = float(getattr(vobj, "ScaleMultiplier", scale_multiplier))
+
+        justify_map = {"Left": 0, "Center": 1, "Right": 2}
+        justification = justify_map.get(getattr(vobj, "Justification", "Left"), justification)
+
+    # Base position and rotation
+    placement = obj.Placement
+    rotation = placement.Rotation.Angle * 180 / math.pi
+    final_height = height * scale_multiplier
+
+    # Handle multi-line text by adjusting position for each line
+    for i, text_line in enumerate(obj.Text):
+        # Y-offset for subsequent lines. DXF text origin is bottom-left.
+        # FreeCAD's text position is top-left, so we adjust.
+        # A line height of 1.2 * font size is a reasonable approximation.
+        y_offset = -final_height * 1.2 * i
+
+        # Create a vector for the offset and rotate it
+        offset_vec = FreeCAD.Vector(0, y_offset, 0)
+        rotated_offset = placement.Rotation.multVec(offset_vec)
+
+        pos = placement.Base + rotated_offset
+
+        # The second alignment point is needed for certain justifications
+        # For simplicity, we can often reuse the insertion point
+        p1 = (pos.x, pos.y, pos.z)
+        p2 = p1  # Simplification for now
+
+        # The legacy exporter used the 0.8 scaling factor for height, most probably
+        # to approximate the visual height of the text. This is retained here for consistency.
+        writer_proxy.addText(text_line, p1, p2, final_height * 0.8, justification, rotation)
+
+
+def _write_dimension_entity(obj, writer_proxy):
+    """
+    Internal helper to extract data for a DXF DIMENSION entity.
+    Called from C++. Returns a tuple of data.
+    """
+    # Using properties directly
+    p1 = obj.Start
+    p2 = obj.End
+    dim_line_pt = obj.Dimline
+
+    # The text is implicitly calculated by the DIMENSION entity in DXF,
+    # but we can provide an override. "<>" is the code for the measurement.
+    dim_text_override = "<>"
+
+    # Determine dimension type (simplified)
+    # 0=Aligned, 1=Horizontal, 2=Vertical in our C++ writer
+    # A more robust check would analyze the vectors, but this is a start.
+    if abs(p1.x - p2.x) < 1e-7:
+        dim_type = 2  # Vertical
+    elif abs(p1.y - p2.y) < 1e-7:
+        dim_type = 1  # Horizontal
+    else:
+        dim_type = 0  # Aligned
+
+    # Package the data to be returned to C++
+    text_mid_point = (dim_line_pt.x, dim_line_pt.y, dim_line_pt.z)
+    p1_tuple = (p1.x, p1.y, p1.z)
+    p2_tuple = (p2.x, p2.y, p2.z)
+
+    font_size = 3.5  # Default fallback
+    if hasattr(obj, "ViewObject"):
+        font_size = float(obj.ViewObject.FontSize)
+
+    writer_proxy.writeLinearDim(
+        text_mid_point, dim_line_pt, p1_tuple, p2_tuple, dim_text_override, dim_type, font_size
+    )
+
+
+def _export_techdraw_page(page, writer_proxy):
+    """
+    Internal helper for the C++ exporter to handle TechDraw::DrawPage objects.
+    """
+    # This logic is adapted from the legacy exportPage function
+    import TechDraw
+
+    # First, define all views as blocks
+    for view in page.Views:
+        view_name = view.Name
+        # All block definitions are relative to (0,0,0)
+        base_point = (0.0, 0.0, 0.0)
+
+        writer_proxy.writeBlock(view_name, base_point)
+
+        # Set layer and color for the geometry inside the block
+        # Blocks typically define geometry on layer "0" with color BYBLOCK
+        writer_proxy.setLayerName("0")
+        writer_proxy.setColor(0)  # 0 = BYBLOCK
+
+        # Project the source shapes for this view
+        if hasattr(TechDraw, "projectToDXF"):  # Check for modern TechDraw API
+            for source_obj in view.Source:
+                # projectToDXF returns a TopoShape, which we can export
+                projected_shape = TechDraw.projectToDXF(source_obj.Shape, view.Direction)
+                if projected_shape:
+                    writer_proxy.exportShape(projected_shape)
+        # Note: Add handlers for Draft, Arch views if needed, similar to legacy exporter
+
+        writer_proxy.writeEndBlock(view_name)
+
+    # Second, insert all the created blocks into the model space
+    for view in page.Views:
+        # Set the layer and color for the INSERT entity itself
+        layer_name = getGroup(view)  # Use the view's layer
+        aci_color = 256  # 256 = BYLAYER for inserts
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get placement info
+        insertion_point = (view.X, view.Y, 0.0)
+        scale = view.Scale
+        rotation = view.Rotation
+
+        writer_proxy.writeInsert(view.Name, insertion_point, scale, rotation)
+
+    FreeCAD.Console.PrintMessage(f"Exported TechDraw page '{page.Label}' to DXF.\n")
+
+
+def _write_arch_axis_entities(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::AxisSystem object.
+    This is called by the master dispatcher.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # Set the layer and color for all parts of this object
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj)
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # 1. Export the axis lines
+        axis_data = obj.Proxy.getAxisData(obj)
+        if not axis_data:
+            return
+
+        for axis_line in axis_data:
+            start_point = axis_line[0]
+            end_point = axis_line[1]
+            writer_proxy.addLine(start_point, end_point)
+
+        # 2. Export the text labels and bubbles
+        vobj = obj.ViewObject
+        if hasattr(vobj, "Proxy"):
+            font_size = float(vobj.FontSize)
+
+            for text_info in vobj.Proxy.getTextData():
+                text_string = text_info[0]
+                pos = text_info[1] + FreeCAD.Vector(0, -font_size / 2, 0)
+                p1 = (pos.x, pos.y, pos.z)
+                p2 = p1
+                writer_proxy.addText(text_string, p1, p2, font_size * 0.8, 1)
+
+            for shape in vobj.Proxy.getShapeData():
+                writer_proxy.exportShape(shape)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch AxisSystem {obj.Name}: {e}\n")
+
+
+def _write_arch_space_entities(obj, writer_proxy):
+    """
+    Specific helper to export an Arch::Space object.
+    Exports the space's label and area as text.
+    """
+    if not hasattr(obj, "ViewObject"):
+        return
+
+    try:
+        # This logic is adapted from the legacy exporter
+        vobj = obj.ViewObject
+        if not hasattr(vobj, "Proxy"):
+            return
+
+        # Set layer and color
+        layer_name = getGroup(obj)
+        aci_color = getACI(obj, text=True)  # Get text color
+        writer_proxy.setLayerName(layer_name)
+        writer_proxy.setColor(aci_color)
+
+        # Get all the text data from the Space's ViewObject proxy
+        rotation = obj.Placement.Rotation.Angle * 180.0 / math.pi
+        text1 = "".join(vobj.Proxy.text1.string.getValues())
+        text2 = "".join(vobj.Proxy.text2.string.getValues())
+        h1 = vobj.FirstLine.Value
+        h2 = vobj.FontSize.Value
+
+        # Calculate text positions
+        p2 = obj.Placement.multVec(vobj.Proxy.coords.translation.getValue())
+        lspc = obj.Placement.multVec(vobj.Proxy.header.translation.getValue())
+        p1 = p2 + lspc
+
+        # Write the first line of text (e.g., "Room")
+        writer_proxy.addText(text1, (p1.x, p1.y, p1.z), (p1.x, p1.y, p1.z), h1 * 0.8, 1, rotation)
+
+        # Write the second line of text (e.g., "12.34 m2")
+        if text2:
+            ofs = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, -lspc.Length, 0))
+            p2_pos = p1 + ofs
+            writer_proxy.addText(
+                text2,
+                (p2_pos.x, p2_pos.y, p2_pos.z),
+                (p2_pos.x, p2_pos.y, p2_pos.z),
+                h2 * 0.8,
+                1,
+                rotation,
+            )
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch Space {obj.Name}: {e}\n")
+
+
+def _write_arch_panel_cut_entities(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelCut objects.
+    Exports the panel's outline and cuts on specific layers.
+    """
+    if not hasattr(obj, "Proxy") or not hasattr(obj.Proxy, "outline"):
+        return
+
+    try:
+        # The outline shape is stored in the object's proxy
+        outline_shape = obj.Proxy.outline.copy()
+        outline_shape.Placement = obj.Placement.multiply(outline_shape.Placement)
+
+        # In a Panel, the outline is the largest wire, inner shapes are cuts.
+        # This logic finds the main outline and separates it from the cutouts.
+        outline_wire = None
+        cut_wires = []
+        max_diag = 0
+
+        if len(outline_shape.Wires) > 0:
+            for w in outline_shape.Wires:
+                if w.BoundBox.DiagonalLength > max_diag:
+                    max_diag = w.BoundBox.DiagonalLength
+                    if outline_wire:
+                        cut_wires.append(outline_wire)
+                    outline_wire = w
+                else:
+                    cut_wires.append(w)
+
+        # Export the main outline on the "Outlines" layer in blue
+        if outline_wire:
+            writer_proxy.setLayerName("Outlines")
+            writer_proxy.setColor(5)  # ACI color 5 = blue
+            writer_proxy.exportShape(outline_wire)
+
+        # Export the cutouts on the "Cuts" layer in cyan
+        if cut_wires:
+            writer_proxy.setLayerName("Cuts")
+            writer_proxy.setColor(4)  # ACI color 4 = cyan
+            for cut in cut_wires:
+                writer_proxy.exportShape(cut)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelCut {obj.Name}: {e}\n")
+
+
+def _write_arch_panel_sheet_entities(obj, writer_proxy):
+    """
+    Specific helper for Arch::PanelSheet objects.
+    Exports the sheet's border and tag, then processes its child PanelCut objects.
+    """
+    if not hasattr(obj, "Proxy"):
+        return
+
+    try:
+        # Execute the object if needed to generate its geometry
+        if not hasattr(obj.Proxy, "sheetborder"):
+            obj.Proxy.execute(obj)
+
+        # 1. Export the sheet's own border geometry
+        if hasattr(obj.Proxy, "sheetborder") and obj.Proxy.sheetborder:
+            border_shape = obj.Proxy.sheetborder.copy()
+            border_shape.Placement = obj.Placement
+            writer_proxy.setLayerName("Sheets")
+            writer_proxy.setColor(1)  # ACI color 1 = red
+            writer_proxy.exportShape(border_shape)
+
+        # 2. Export the sheet's tag
+        if hasattr(obj.Proxy, "sheettag") and obj.Proxy.sheettag:
+            tag_shape = obj.Proxy.sheettag.copy()
+            tag_shape.Placement = obj.Placement.multiply(tag_shape.Placement)
+            writer_proxy.setLayerName("SheetTags")
+            writer_proxy.setColor(1)  # ACI color 1 = red
+            writer_proxy.exportShape(tag_shape)
+
+        # 3. Process all child objects of the PanelSheet
+        for child in obj.Group:
+            if Draft.getType(child) == "PanelCut":
+                # Call the existing handler for PanelCut objects
+                _export_arch_panel_cut(child, writer_proxy)
+            elif child.isDerivedFrom("Part::Feature"):
+                # Handle other generic Part features within the sheet
+                layer_name = getGroup(child)
+                aci_color = getACI(child)
+                writer_proxy.setLayerName(layer_name)
+                writer_proxy.setColor(aci_color)
+
+                shape_copy = child.Shape.copy()
+                shape_copy.Placement = obj.Placement.multiply(shape_copy.Placement)
+                writer_proxy.exportShape(shape_copy)
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting Arch PanelSheet {obj.Name}: {e}\n")
+
+
+def _write_generic_shape_entity(obj, writer_proxy):
+    """
+    Handles the export of any object with a .Shape property.
+    This includes Part::Feature, Sketcher::Sketch, etc.
+    It also handles the projection and meshing options.
+    """
+    shape_to_export = obj.Shape
+
+    # Check for sketches, which need special handling to be flattened
+    if Draft.getType(obj) == "Sketch":
+        # This assumes a helper exists to correctly get a flat shape from a sketch
+        # In a real implementation, we might need Sketcher.getExportShape(obj)
+        pass  # For now, we just use the default shape
+
+    # The projection/meshing options are checked in C++, but we could
+    # also check them here if needed. The C++ check is more efficient.
+    # The C++ side will have already processed the projection if the option was set.
+
+    writer_proxy.exportShape(shape_to_export)
+
+
+def _export_object(obj, writer_proxy):
+    """
+    Master dispatcher for all objects. Called once per object from C++.
+    It identifies the object type and calls the appropriate writing logic.
+    """
+    # 1. Set Layer and Color for the object
+    # For text-based objects (Annotations, Dimensions), we get the text color
+    is_text_obj = hasattr(obj, "ViewObject") and hasattr(obj.ViewObject, "TextColor")
+    layer_name = getGroup(obj)
+    aci_color = getACI(obj, text=is_text_obj)
+    writer_proxy.setLayerName(layer_name)
+    writer_proxy.setColor(aci_color)
+
+    # 2. Get the object's type
+    obj_type = Draft.getType(obj)
+
+    # 3. Dispatch to the correct handler
+    try:
+        if obj_type in ("Text", "DraftText", "Annotation"):
+            _write_text_entities(obj, writer_proxy)
+        elif obj_type in ("Dimension", "LinearDimension", "AngularDimension"):
+            # TODO: This currently only handles linear dimensions. A full implementation
+            # would need to inspect obj_type again here and dispatch to a specific
+            # writer function (e.g., _write_angular_dimension_entity).
+            _write_dimension_entity(obj, writer_proxy)
+        elif obj_type == "AxisSystem":
+            _write_arch_axis_entities(obj, writer_proxy)
+        elif obj_type == "Space":
+            _write_arch_space_entities(obj, writer_proxy)
+        elif obj_type == "PanelCut":
+            _write_arch_panel_cut_entities(obj, writer_proxy)
+        elif obj_type == "PanelSheet":
+            _write_arch_panel_sheet_entities(obj, writer_proxy)
+        elif hasattr(obj, "Shape") and obj.Shape.isValid():
+            # This is the fallback for any other object with a valid Shape property
+            _write_generic_shape_entity(obj, writer_proxy)
+        else:
+            # Object has no shape and no special handler, so we skip it.
+            pass
+
+    except Exception as e:
+        FreeCAD.Console.PrintError(f"Error exporting object {obj.Name} of type {obj_type}: {e}\n")
+
+
+def _ensure_helpers_initialized():
+    """
+    Initializes global resources needed by helper functions (getACI, getGroup)
+    when they are called from either the legacy or the C++ exporter.
+    This function is idempotent and safe to call multiple times.
+    """
+    # 1. Load preferences if they haven't been loaded yet.
+    # We check for a variable that is guaranteed to be set by readPreferences.
+    if "dxfUseLegacyExporter" not in globals():
+        readPreferences()
+
+    # 2. If using the legacy exporter, ensure its libraries are loaded.
+    # This is not needed for the new C++ exporter.
+    if dxfUseLegacyExporter and (dxfColorMap is None):
+        getDXFlibs()
