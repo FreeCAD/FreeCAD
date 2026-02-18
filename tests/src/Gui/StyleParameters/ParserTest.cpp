@@ -23,6 +23,7 @@
 
 #include <gtest/gtest.h>
 
+#include <Base/OkLch.h>
 #include <Gui/Utilities.h>
 
 #include <Gui/StyleParameters/Corners.h>
@@ -1106,6 +1107,42 @@ TEST_F(ParserTest, TupleScalarMultiplyScalarFirst)
     EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
     EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 4.0);
     EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
+}
+
+TEST_F(ParserTest, TupleScalarMultiplyUnitOnScalar)
+{
+    Parser parser("4px * (1, 2, 3, 4)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 4.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 8.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 12.0);
+    EXPECT_EQ(tuple.at(2).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(3).get<Numeric>().value, 16.0);
+    EXPECT_EQ(tuple.at(3).get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, TupleScalarDivideUnitOnTuple)
+{
+    Parser parser("(10px, 20px) / 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 5.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 10.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
 }
 
 TEST_F(ParserTest, TupleScalarDivide)
@@ -2494,4 +2531,243 @@ TEST_F(ParserTest, CoalesceSkipsMultipleUndefined)
     auto result = expr->evaluate({.manager = &manager, .context = {}});
     ASSERT_TRUE(result.holds<Numeric>());
     EXPECT_DOUBLE_EQ(result.get<Numeric>().value, 5.0);
+}
+
+// Shade function tests
+
+TEST_F(ParserTest, ShadeBasicColor)
+{
+    // Position 0.8 = darker than anchor (0.5), so result should be darker than original
+    Parser parser("shade(#ff0000, 0.8)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
+
+    // Hue should be approximately preserved
+    EXPECT_NEAR(shadedOklch.hue, originalOklch.hue, 5.0f);
+}
+
+TEST_F(ParserTest, ShadeWithPercentage)
+{
+    // 80% = position 0.8, same as shade(#ff0000, 0.8)
+    Parser parser("shade(#ff0000, 80%)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadeAnchorReturnsOriginal)
+{
+    // Position 0.5 = anchor, color should be returned unchanged
+    Parser parser("shade(#E01B24, 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    // NOLINTNEXTLINE(*-magic-numbers)
+    Base::Color original(0xE0 / 255.0F, 0x1B / 255.0F, 0x24 / 255.0F);
+    auto shaded = result.get<Base::Color>();
+    EXPECT_NEAR(shaded.r, original.r, 0.01f);
+    EXPECT_NEAR(shaded.g, original.g, 0.01f);
+    EXPECT_NEAR(shaded.b, original.b, 0.01f);
+}
+
+TEST_F(ParserTest, ShadeLighterPosition)
+{
+    // Position 0.2 = lighter than anchor, result should be lighter than original
+    Parser parser("shade(#ff0000, 0.2)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    auto shaded = result.get<Base::Color>();
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_GT(shadedOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadeGradient)
+{
+    // Position 0.5 = anchor, gradient stops should be unchanged
+    Parser parser("shade(linear_gradient(#ff0000, #0000ff), 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.kind, TupleKind::LinearGradient);
+
+    LinearGradient gradient(tuple);
+    auto stops = gradient.colorStops();
+    ASSERT_EQ(stops.size(), 2);
+
+    auto originalRedOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    auto originalBlueOklch = Base::toOkLch(Base::Color(0.0f, 0.0f, 1.0f));
+    auto firstOklch = Base::toOkLch(stops[0].color);
+    auto secondOklch = Base::toOkLch(stops[1].color);
+    EXPECT_NEAR(firstOklch.lightness, originalRedOklch.lightness, 0.01f);
+    EXPECT_NEAR(secondOklch.lightness, originalBlueOklch.lightness, 0.01f);
+
+    // Positions should be preserved
+    EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
+    EXPECT_DOUBLE_EQ(stops[1].position.value, 1.0);
+}
+
+TEST_F(ParserTest, ShadesLighterAndDarker)
+{
+    // Position 0.1 = lighter than anchor, 0.9 = darker than anchor
+    Parser parser("shades(#ff0000, (light: 0.1, dark: 0.9))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto originalOklch = Base::toOkLch(Base::Color(1.0F, 0.0F, 0.0F));
+
+    // "light" shade should be lighter than anchor
+    const auto* lightValue = tuple.find("light");
+    ASSERT_NE(lightValue, nullptr);
+    ASSERT_TRUE(lightValue->holds<Base::Color>());
+    auto lightOklch = Base::toOkLch(lightValue->get<Base::Color>());
+    EXPECT_GT(lightOklch.lightness, originalOklch.lightness);
+
+    // "dark" shade should be darker than anchor
+    const auto* darkValue = tuple.find("dark");
+    ASSERT_NE(darkValue, nullptr);
+    ASSERT_TRUE(darkValue->holds<Base::Color>());
+    auto darkOklch = Base::toOkLch(darkValue->get<Base::Color>());
+    EXPECT_LT(darkOklch.lightness, originalOklch.lightness);
+}
+
+TEST_F(ParserTest, ShadesAnchorExactMatch)
+{
+    // Position 0.5 should produce the exact input color
+    // NOLINTNEXTLINE(*-magic-numbers)
+    Base::Color input(0xE0 / 255.0F, 0x1B / 255.0F, 0x24 / 255.0F);
+
+    Parser parser("shades(#E01B24, (500: 50%))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 1);
+
+    auto* shade500 = tuple.find("500");
+    ASSERT_NE(shade500, nullptr);
+    auto color = shade500->get<Base::Color>();
+    EXPECT_NEAR(color.r, input.r, 0.001F);
+    EXPECT_NEAR(color.g, input.g, 0.001F);
+    EXPECT_NEAR(color.b, input.b, 0.001F);
+}
+
+TEST_F(ParserTest, ShadesMonotonicLightness)
+{
+    // Lightness must strictly decrease from 050 to 900 — no duplicate shades
+    Parser parser(
+        "shades(#E01B24, "
+        "(050: 5%, 100: 10%, 200: 20%, 300: 30%, 400: 40%, "
+        "500: 50%, 600: 60%, 700: 70%, 800: 80%, 900: 90%))"
+    );
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 10);
+
+    std::vector<std::string> steps
+        = {"050", "100", "200", "300", "400", "500", "600", "700", "800", "900"};
+    float previousLightness = 1.0F;
+    for (const auto& step : steps) {
+        auto* value = tuple.find(step);
+        ASSERT_NE(value, nullptr) << "Missing step " << step;
+        auto oklch = Base::toOkLch(value->get<Base::Color>());
+        EXPECT_LT(oklch.lightness, previousLightness)
+            << "Step " << step << " should be darker than previous";
+        previousLightness = oklch.lightness;
+    }
+
+    // Lightest should not be pure white, darkest should not be pure black
+    auto lightest = Base::toOkLch(tuple.find("050")->get<Base::Color>());
+    auto darkest = Base::toOkLch(tuple.find("900")->get<Base::Color>());
+    EXPECT_LT(lightest.lightness, 0.99F);
+    EXPECT_GT(darkest.lightness, 0.10F);
+}
+
+TEST_F(ParserTest, ShadesPreservesHue)
+{
+    Parser parser("shades(#ff0000, (a: 10%, b: 50%, c: 90%))");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 3);
+
+    auto originalOklch = Base::toOkLch(Base::Color(1.0F, 0.0F, 0.0F));
+
+    for (const auto& element : tuple.elements) {
+        ASSERT_TRUE(element.value->holds<Base::Color>());
+        auto shadeOklch = Base::toOkLch(element.value->get<Base::Color>());
+        // At extreme lightness, chroma can be very low making hue unreliable
+        if (shadeOklch.chroma > 0.01F) {
+            EXPECT_NEAR(shadeOklch.hue, originalOklch.hue, 5.0F);
+        }
+    }
+}
+
+TEST_F(ParserTest, ShadesCustomRange)
+{
+    // A narrower range should produce less variation in lightness
+    Parser parser("shades(#E01B24, (light: 5%, dark: 95%), range: 40%)");
+    auto expr = parser.parse();
+    auto narrowResult = expr->evaluate({.manager = &manager, .context = {}});
+
+    Parser wideParser("shades(#E01B24, (light: 5%, dark: 95%), range: 80%)");
+    auto wideExpr = wideParser.parse();
+    auto wideResult = wideExpr->evaluate({.manager = &manager, .context = {}});
+
+    const auto& narrowTuple = narrowResult.get<Tuple>();
+    const auto& wideTuple = wideResult.get<Tuple>();
+
+    auto narrowLight = Base::toOkLch(narrowTuple.find("light")->get<Base::Color>());
+    auto narrowDark = Base::toOkLch(narrowTuple.find("dark")->get<Base::Color>());
+    float narrowSpan = narrowLight.lightness - narrowDark.lightness;
+
+    auto wideLight = Base::toOkLch(wideTuple.find("light")->get<Base::Color>());
+    auto wideDark = Base::toOkLch(wideTuple.find("dark")->get<Base::Color>());
+    float wideSpan = wideLight.lightness - wideDark.lightness;
+
+    EXPECT_LT(narrowSpan, wideSpan);
+}
+
+TEST_F(ParserTest, ShadesCustomMinMax)
+{
+    // Custom min/max should clamp the lightness range
+    Parser parser("shades(#E01B24, (light: 5%, dark: 95%), min: 20%, max: 90%)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+
+    ASSERT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+
+    auto lightOklch = Base::toOkLch(tuple.find("light")->get<Base::Color>());
+    auto darkOklch = Base::toOkLch(tuple.find("dark")->get<Base::Color>());
+
+    // Lightness should stay within the specified bounds (with some tolerance for OKLCH conversion)
+    EXPECT_LE(lightOklch.lightness, 0.91F);
+    EXPECT_GE(darkOklch.lightness, 0.19F);
 }
