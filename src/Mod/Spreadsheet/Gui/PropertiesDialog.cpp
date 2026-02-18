@@ -195,7 +195,6 @@ PropertiesDialog::PropertiesDialog(Sheet* _sheet, const std::vector<Range>& _ran
     connect(ui->alias, &QLineEdit::textEdited, this, &PropertiesDialog::aliasChanged);
     ui->aliasStatus->setVisible(false);
     ui->alias->setToolTip(aliasHelpTooltip());
-    aliasChanged(ui->alias->text());
 
     ui->tabWidget->setCurrentIndex(0);
 }
