@@ -879,10 +879,7 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         if mode != 0:
             return None
 
-        taskd = SpaceTaskPanel()
-        taskd.obj = self.Object
-        taskd.update()
-        taskd.updateBoundaries()
+        taskd = SpaceTaskPanel(vobj.Object)
         FreeCADGui.Control.showDialog(taskd)
         return True
 
@@ -914,38 +911,60 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
         return ArchComponent.ViewProviderComponent.setDisplayMode(self, mode)
 
 
-class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
-    "A modified version of the Arch component task panel"
+class SpaceTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+    """A modified version of the Arch component task panel for Spaces"""
 
-    def __init__(self):
+    def __init__(self, obj):
+        # Define generic Space options
+        property_definitions = [
+            {"prop": "SpaceType", "label": translate("Arch", "Space Type")},
+            {"prop": "Text", "label": translate("Arch", "Text")},
+            {"prop": "FinishFloor", "label": translate("Arch", "Finish Floor")},
+            {"prop": "FinishWalls", "label": translate("Arch", "Finish Walls")},
+            {"prop": "FinishCeiling", "label": translate("Arch", "Finish Ceiling")},
+        ]
 
-        ArchComponent.ComponentTaskPanel.__init__(self)
-        self.editButton = QtGui.QPushButton(self.form)
-        self.editButton.setObjectName("editButton")
+        # Initialize parent (creates self.options_widget and self.baseform)
+        super().__init__(obj, property_definitions)
+
+        # Create a separate task box for Space-specific tools
+        self.space_tools_widget = QtGui.QWidget()
+        self.space_tools_widget.setWindowTitle(translate("Arch", "Space Tools"))
+        layout = QtGui.QVBoxLayout(self.space_tools_widget)
+
+        self.editButton = QtGui.QPushButton(self.space_tools_widget)
         self.editButton.setIcon(QtGui.QIcon(":/icons/Draft_Edit.svg"))
-        self.grid.addWidget(self.editButton, 4, 0, 1, 2)
-        self.editButton.setText(QtGui.QApplication.translate("Arch", "Set text position", None))
-        QtCore.QObject.connect(self.editButton, QtCore.SIGNAL("clicked()"), self.setTextPos)
-        boundLabel = QtGui.QLabel(self.form)
-        self.grid.addWidget(boundLabel, 5, 0, 1, 2)
-        boundLabel.setText(QtGui.QApplication.translate("Arch", "Space boundaries", None))
-        self.boundList = QtGui.QListWidget(self.form)
-        self.grid.addWidget(self.boundList, 6, 0, 1, 2)
-        self.addCompButton = QtGui.QPushButton(self.form)
-        self.addCompButton.setObjectName("addCompButton")
+        self.editButton.setText(translate("Arch", "Set text position"))
+        self.editButton.clicked.connect(self.setTextPos)
+        layout.addWidget(self.editButton)
+
+        layout.addWidget(QtGui.QLabel(translate("Arch", "Space boundaries")))
+
+        self.boundList = QtGui.QListWidget(self.space_tools_widget)
+        layout.addWidget(self.boundList)
+
+        btnLayout = QtGui.QHBoxLayout()
+        self.addCompButton = QtGui.QPushButton(self.space_tools_widget)
         self.addCompButton.setIcon(QtGui.QIcon(":/icons/Arch_Add.svg"))
-        self.grid.addWidget(self.addCompButton, 7, 0, 1, 1)
-        self.addCompButton.setText(QtGui.QApplication.translate("Arch", "Add", None))
-        QtCore.QObject.connect(self.addCompButton, QtCore.SIGNAL("clicked()"), self.addBoundary)
-        self.delCompButton = QtGui.QPushButton(self.form)
-        self.delCompButton.setObjectName("delCompButton")
+        self.addCompButton.setText(translate("Arch", "Add"))
+        self.addCompButton.clicked.connect(self.addBoundary)
+
+        self.delCompButton = QtGui.QPushButton(self.space_tools_widget)
         self.delCompButton.setIcon(QtGui.QIcon(":/icons/Arch_Remove.svg"))
-        self.grid.addWidget(self.delCompButton, 7, 1, 1, 1)
-        self.delCompButton.setText(QtGui.QApplication.translate("Arch", "Remove", None))
-        QtCore.QObject.connect(self.delCompButton, QtCore.SIGNAL("clicked()"), self.delBoundary)
+        self.delCompButton.setText(translate("Arch", "Remove"))
+        self.delCompButton.clicked.connect(self.delBoundary)
+
+        btnLayout.addWidget(self.addCompButton)
+        btnLayout.addWidget(self.delCompButton)
+        layout.addLayout(btnLayout)
+
+        # Insert the tools box between Options and Components
+        # self.form is currently [options_widget, baseform]
+        self.form.insert(1, self.space_tools_widget)
+
+        self.updateBoundaries()
 
     def updateBoundaries(self):
-
         self.boundList.clear()
         if self.obj:
             for b in self.obj.Boundaries:
@@ -957,18 +976,15 @@ class SpaceTaskPanel(ArchComponent.ComponentTaskPanel):
                 self.boundList.addItem(it)
 
     def setTextPos(self):
-
         FreeCADGui.runCommand("Draft_Edit")
 
     def addBoundary(self):
-
         if self.obj:
             if FreeCADGui.Selection.getSelectionEx():
                 self.obj.Proxy.addSubobjects(self.obj, FreeCADGui.Selection.getSelectionEx())
                 self.updateBoundaries()
 
     def delBoundary(self):
-
         if self.boundList.currentRow() >= 0:
             it = self.boundList.item(self.boundList.currentRow())
             if it and self.obj:
