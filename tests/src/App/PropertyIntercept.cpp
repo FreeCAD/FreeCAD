@@ -24,6 +24,7 @@
 
 #include "Base/Interpreter.h"
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -112,6 +113,32 @@ Base::Vector3d evalPythonVector(const std::string& command)
     return result;
 }
 
+std::vector<long> evalPythonIntList(const std::string& command)
+{
+    Py_Initialize();
+    Base::PyGILStateLocker lock;
+
+    std::vector<long> result;
+    Py::Object pyResult = Base::Interpreter().runStringObject(command.c_str());
+    PyObject* p = pyResult.ptr();
+
+    if (PyList_Check(p)) {
+        for (Py_ssize_t i = 0; i < PyList_Size(p); ++i) {
+            Py::Object item = Py::Object(PyList_GetItem(p, i));
+            try {
+                Py::Int f(item);
+                result.push_back(f.as_long());
+            }
+            catch (Py::Exception& e) {
+                Py::Object obj = e.errorValue();
+                std::cerr << obj.str() << '\n';
+            }
+        }
+    }
+
+    return result;
+}
+
 // Whether getting and setting an integer property works correctly with contexts
 TEST_F(PropertyIntercept, testIntegerGetSet)
 {
@@ -132,7 +159,7 @@ TEST_F(PropertyIntercept, testIntegerGetSet)
     getVarSet()->pushContext(context);
     value = prop->getValue();
 
-    // Assert - Value should be the same as no context is set
+    // Assert - Value should be the same as there are no writes given the context
     ASSERT_EQ(value, 1);
 
     // Act - Set value given a context
@@ -586,5 +613,233 @@ TEST_F(PropertyIntercept, testVectorPythonGetSetVectorDoubleContext)
     // Assert - Value should be the original value
     assertVector(value, 1.0, 2.0, 3.0);
 }
+
+// Whether using the operator and setting one value works.
+TEST_F(PropertyIntercept, testIntegerListGetOperatorSetOneValue)
+{
+    // Arrange
+    auto* prop = freecad_cast<App::PropertyIntegerList*>(
+        getVarSet()->addDynamicProperty("App::PropertyIntegerList", "Variable", "Variables")
+    );
+
+    // Act - Initialize
+    prop->setValue(1);
+
+    // Assert
+    ASSERT_EQ(prop->getSize(), 1);
+    ASSERT_EQ((*prop)[0], 1);
+
+    // Act - Add a context
+    auto* context = freecad_cast<App::VarSet*>(getDoc()->addObject("App::VarSet", "Context"));
+    getVarSet()->pushContext(context);
+
+    // Assert - Value should be the same as there are no writes given the context
+    ASSERT_EQ(prop->getSize(), 1);
+    ASSERT_EQ((*prop)[0], 1);
+
+    // Act - Set value given a context
+    prop->setValue(2);
+
+    // Assert - Value should be the context value
+    ASSERT_EQ(prop->getSize(), 1);
+    ASSERT_EQ((*prop)[0], 2);
+
+    // Act - Remove context
+    getVarSet()->popContext();
+
+    // Assert - Value should be the original value
+    ASSERT_EQ(prop->getSize(), 1);
+    ASSERT_EQ((*prop)[0], 1);
+}
+
+void assertListEqual(const App::PropertyIntegerList* prop, const std::vector<long>& expected)
+{
+    ASSERT_EQ(prop->getSize(), expected.size());
+    for (size_t i = 0; i < expected.size(); ++i) {
+        ASSERT_EQ((*prop)[i], expected[i]);
+    }
+}
+
+
+// Whether setting the size of an integer list property works
+TEST_F(PropertyIntercept, testIntegerListSetSize)
+{
+    // Arrange
+    auto* prop = freecad_cast<App::PropertyIntegerList*>(
+        getVarSet()->addDynamicProperty("App::PropertyIntegerList", "Variable", "Variables")
+    );
+
+    // Act - Initialize
+    prop->setSize(3, 1);
+
+    // Assert
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 1, 1});
+
+    // Act - Add a context
+    auto* context = freecad_cast<App::VarSet*>(getDoc()->addObject("App::VarSet", "Context"));
+    getVarSet()->pushContext(context);
+
+    // Assert - Value should be the same as there are no writes given the context
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 1, 1});
+
+    // Act - Set value given a context
+    prop->setSize(4, 2);
+
+    // Assert - Value should be the context value
+    ASSERT_EQ(prop->getSize(), 4);
+    assertListEqual(prop, {1, 1, 1, 2});
+
+    // Act - Remove context
+    getVarSet()->popContext();
+
+    // Assert - Value should be the original value
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 1, 1});
+}
+
+// Whether setting the size of an integer list property works
+TEST_F(PropertyIntercept, testIntegerListSetValues)
+{
+    // Arrange
+    auto* prop = freecad_cast<App::PropertyIntegerList*>(
+        getVarSet()->addDynamicProperty("App::PropertyIntegerList", "Variable", "Variables")
+    );
+
+    // Act - Initialize
+    prop->setValues({1, 2, 3});
+
+    // Assert
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 2, 3});
+
+    // Act - Add a context
+    auto* context = freecad_cast<App::VarSet*>(getDoc()->addObject("App::VarSet", "Context"));
+    getVarSet()->pushContext(context);
+
+    // Assert - Value should be the same as there are no writes given the context
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 2, 3});
+
+    // Act - Set value given a context
+    prop->setValues({4, 5, 6, 7});
+
+    // Assert - Value should be the context value
+    ASSERT_EQ(prop->getSize(), 4);
+    assertListEqual(prop, {4, 5, 6, 7});
+
+    // Act - Remove context
+    getVarSet()->popContext();
+
+    // Assert - Value should be the original value
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 2, 3});
+}
+
+// Whether setting an integer list property works in Python
+TEST_F(PropertyIntercept, testIntegerListPython)
+{
+    // Arrange
+    getVarSet()->addDynamicProperty("App::PropertyIntegerList", "Variable", "Variables");
+
+    const std::string getVarCmd = "App.ActiveDocument.getObject('VarSet').Variable";
+    const std::string getLenCmd = "len(" + getVarCmd + ")";
+
+
+    // Act - Initialize
+    Base::Interpreter().runString("App.ActiveDocument.getObject('VarSet').Variable = [1, 2, 3]");
+    long size = evalPythonInt(getLenCmd);
+    auto values = evalPythonIntList(getVarCmd);
+
+    // Assert
+    ASSERT_EQ(size, 3);
+    ASSERT_THAT(values, ::testing::ElementsAre(1, 2, 3));
+
+    // Act - Add a context
+    auto* context = freecad_cast<App::VarSet*>(getDoc()->addObject("App::VarSet", "Context"));
+    getVarSet()->pushContext(context);
+    size = evalPythonInt(getLenCmd);
+    values = evalPythonIntList(getVarCmd);
+
+    // Assert - Value should be the same as there are no writes given the context
+    ASSERT_EQ(size, 3);
+    ASSERT_THAT(values, ::testing::ElementsAre(1, 2, 3));
+
+    // Act - Set value given a context
+    Base::Interpreter().runString("App.ActiveDocument.getObject('VarSet').Variable = [4, 5, 6, 7]");
+    size = evalPythonInt(getLenCmd);
+    values = evalPythonIntList(getVarCmd);
+
+    // Assert - Value should be the context value
+    ASSERT_EQ(size, 4);
+    ASSERT_THAT(values, ::testing::ElementsAre(4, 5, 6, 7));
+
+    // Act - Remove context
+    getVarSet()->popContext();
+    size = evalPythonInt(getLenCmd);
+    values = evalPythonIntList(getVarCmd);
+
+    // Assert - Value should be the original value
+    ASSERT_EQ(size, 3);
+    ASSERT_THAT(values, ::testing::ElementsAre(1, 2, 3));
+}
+
+// Whether setting the size of an integer list property works
+TEST_F(PropertyIntercept, testIntegerListTouchList)
+{
+    // Arrange
+    auto* prop = freecad_cast<App::PropertyIntegerList*>(
+        getVarSet()->addDynamicProperty("App::PropertyIntegerList", "Variable", "Variables")
+    );
+    prop->setValues({1, 2, 3});
+
+    // Act - Initialize
+    prop->set1Value(1, 10);
+    std::set<int> touchList = prop->getTouchList();
+
+    // Assert
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 10, 3});
+    ASSERT_THAT(touchList, testing::UnorderedElementsAre(1));
+
+    // Act - Clear touch list
+    prop->clearTouchList();
+    touchList = prop->getTouchList();
+
+    // Assert
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 10, 3});
+    ASSERT_THAT(touchList, testing::IsEmpty());
+
+
+    // Act - Add a context
+    auto* context = freecad_cast<App::VarSet*>(getDoc()->addObject("App::VarSet", "Context"));
+    getVarSet()->pushContext(context);
+
+    // Assert - Value should be the same as there are no writes given the context
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 10, 3});
+    ASSERT_THAT(touchList, testing::IsEmpty());
+
+    // Act - Set value given a context
+    prop->set1Value(2, 20);
+    touchList = prop->getTouchList();
+
+    // Assert - Value should be the context value
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 10, 20});
+    ASSERT_THAT(touchList, testing::UnorderedElementsAre(2));
+
+    // Act - Remove context
+    getVarSet()->popContext();
+    touchList = prop->getTouchList();
+
+    // Assert - Value should be the original value
+    ASSERT_EQ(prop->getSize(), 3);
+    assertListEqual(prop, {1, 10, 3});
+    ASSERT_THAT(touchList, testing::IsEmpty());
+}
+
 
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
