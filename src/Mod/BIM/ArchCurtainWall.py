@@ -719,6 +719,32 @@ class CurtainWall(ArchComponent.Component):
             return -proj.Length
 
 
+class CurtainWallTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+    """A task panel for Curtain Walls using the generic options box"""
+
+    def __init__(self, obj):
+        property_definitions = [
+            {"prop": "VerticalSections", "label": translate("Arch", "Vertical Sections")},
+            {"prop": "HorizontalSections", "label": translate("Arch", "Horizontal Sections")},
+            {"prop": "VerticalMullionWidth", "label": translate("Arch", "Vertical Mullion Width")},
+            {
+                "prop": "VerticalMullionHeight",
+                "label": translate("Arch", "Vertical Mullion Height"),
+            },
+            {
+                "prop": "HorizontalMullionWidth",
+                "label": translate("Arch", "Horizontal Mullion Width"),
+            },
+            {
+                "prop": "HorizontalMullionHeight",
+                "label": translate("Arch", "Horizontal Mullion Height"),
+            },
+            {"prop": "PanelThickness", "label": translate("Arch", "Panel Thickness")},
+            {"prop": "Refine", "label": translate("Arch", "Refine")},
+        ]
+        super().__init__(obj, property_definitions)
+
+
 class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
     "A View Provider for the CurtainWall object"
 
@@ -793,3 +819,11 @@ class ViewProviderCurtainWall(ArchComponent.ViewProviderComponent):
                     colors.append(panelcolor)
         if self.areDifferentColors(colors, obj.ViewObject.DiffuseColor) or force:
             obj.ViewObject.DiffuseColor = colors
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        taskd = CurtainWallTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
