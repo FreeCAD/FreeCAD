@@ -2762,4 +2762,3 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
 
     return 0;
 }
-
