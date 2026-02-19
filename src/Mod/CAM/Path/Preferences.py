@@ -279,9 +279,12 @@ def searchPathsPost():
 
 def defaultJobTemplate():
     template = preferences().GetString(DefaultJobTemplate)
-    if "xml" not in template:
-        return template
-    return ""
+
+    # before b4d0428 .xml files were used as templates, ignore very old settings
+    if os.path.splitext(template)[1] == ".xml":
+        return ""
+
+    return template
 
 
 def setJobDefaults(jobTemplate, geometryTolerance, curveAccuracy):
