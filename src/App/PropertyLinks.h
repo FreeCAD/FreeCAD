@@ -794,6 +794,20 @@ public:
 
         self._setPyObject(obj);
     }
+
+    const std::set<int>& getTouchList() const override
+    {
+        auto& self = propGetterSelf<const App::PropertyLinkListBase>(*this);
+
+        return self._touchList;
+    }
+
+    void clearTouchList() override
+    {
+        auto& self = propSetterSelf<App::PropertyLinkListBase>(*this);
+
+        self._touchList.clear();
+    }
 };
 
 class AppExport PropertyLinkList

@@ -830,16 +830,10 @@ public:
      *
      * @return A set of touched elements.
      */
-    const std::set<int>& getTouchList() const
-    {
-        return _touchList;
-    }
+    virtual const std::set<int>& getTouchList() const = 0;
 
     /// Clear the list of touched elements.
-    void clearTouchList()
-    {
-        _touchList.clear();
-    }
+    virtual void clearTouchList() = 0;
 
 protected:
     /**
@@ -886,19 +880,25 @@ class AppExport PropertyLists: public Property, public PropertyListsBase
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    /**
-     * @brief Set the values of the property list with a Python object.
-     *
-     * The Python object is expected to be a dictionary or something that looks
-     * like a sequence of values, for example a list or tuple, or an iterable.
-     *
-     * @param[in] obj The Python object to set the values from.
-     */
     void setPyObject(PyObject* obj) override
     {
         auto& self = propSetterSelf<App::PropertyLists>(*this);
 
         self._setPyObject(obj);
+    }
+
+    const std::set<int>& getTouchList() const override
+    {
+        auto& self = propGetterSelf<const App::PropertyLists>(*this);
+
+        return self._touchList;
+    }
+
+    void clearTouchList() override
+    {
+        auto& self = propSetterSelf<App::PropertyLists>(*this);
+
+        self._touchList.clear();
     }
 
     /**
