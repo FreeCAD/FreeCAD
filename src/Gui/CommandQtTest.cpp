@@ -106,17 +106,9 @@ void StdCmdQtTestPlayback::activated(int iMsg)
     Q_UNUSED(iMsg);
 
     auto mainWindow = getMainWindow();
-    QString filename = QFileDialog::getOpenFileName(
-        mainWindow,
-        QStringLiteral("Test File Name"),
-        QString(),
-        QStringLiteral("XML Files (*.xml)")
-    );
-    if (!filename.isEmpty()) {
-        Base::Console().log("Play back file '%s'\n", filename.toStdString().c_str());
-        auto& testUtility = mainWindow->getTestUtility();
-        testUtility.playTests(filename);
-    }
+    QApplication::setActiveWindow(mainWindow);
+    auto& testUtility = mainWindow->getTestUtility();
+    testUtility.openPlayerDialog();
 }
 
 bool StdCmdQtTestPlayback::isActive()

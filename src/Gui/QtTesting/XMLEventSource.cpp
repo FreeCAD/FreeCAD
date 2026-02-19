@@ -89,6 +89,17 @@ int XMLEventSource::getNextEvent(QString& widget, QString& command, QString& arg
     if (xmlStream->atEnd()) {
         return DONE;
     }
+
+    // Check for the "property" attribute to determine if this is a CHECK_EVENT or an ACTION_EVENT
+    auto property = xmlStream->attributes().value(QStringLiteral("property")).toString();
+    if (!property.isEmpty()) {
+        eventType = pqEventTypes::CHECK_EVENT;
+        widget = xmlStream->attributes().value(QStringLiteral("widget")).toString();
+        command = property;
+        arguments = xmlStream->attributes().value(QStringLiteral("arguments")).toString();
+        return SUCCESS;
+    }
+
     eventType = pqEventTypes::ACTION_EVENT;
     widget = xmlStream->attributes().value(QStringLiteral("widget")).toString();
     command = xmlStream->attributes().value(QStringLiteral("command")).toString();

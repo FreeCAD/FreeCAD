@@ -2284,6 +2284,9 @@ static void init_resources()
     Q_INIT_RESOURCE(resource);
     Q_INIT_RESOURCE(translation);
     Q_INIT_RESOURCE(FreeCAD_translation);
+#if defined(BUILD_QTTESTING)
+    Q_INIT_RESOURCE(QtTesting);
+#endif
 }
 
 void Application::initApplication()
