@@ -11043,7 +11043,7 @@ void SketchObject::onSketchRestore()
         migrateSketch();
 
         updateGeometryRefs();
-        
+
         fixCorruptedExternalGeo();
 
         if(ExternalGeo.getSize()<=2) {
@@ -12423,4 +12423,3 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
-
