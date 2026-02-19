@@ -7727,6 +7727,12 @@ void SketchObject::delExternalPrivate(const std::set<long>& ids, bool removeRef)
             continue;
         }
 
+        // PROTECTION: Never delete array index 0 or 1 (H_Axis and V_Axis)
+        if (it->second < 2) {
+            Base::Console().warning("trying to delete axis!!\n");
+            continue;
+        }
+
         auto egf = ExternalGeometryFacade::getFacade(ExternalGeo[it->second]);
         if (removeRef && egf->getRef().size()) {
             refs.insert(egf->getRef());
@@ -7772,6 +7778,7 @@ void SketchObject::delExternalPrivate(const std::set<long>& ids, bool removeRef)
         solverNeedsUpdate = true;
         Constraints.setValues(std::move(newConstraints));
         acceptGeometry();  // This may need to be refactored into OnChanged for ExternalGeometry.
+        return;
     }
 
     std::vector<std::string> newSubs;
@@ -12399,3 +12406,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
