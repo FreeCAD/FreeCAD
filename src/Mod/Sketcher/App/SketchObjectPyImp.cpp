@@ -683,6 +683,41 @@ PyObject* SketchObjectPy::delExternal(PyObject* args)
     Py_Return;
 }
 
+PyObject* SketchObjectPy::delExternals(PyObject* args)
+{
+    PyObject* pcObj;
+    // We don't usually need noSolve for external geometry as it doesn't
+    // change the DOF, but we can include it for consistency.
+    if (!PyArg_ParseTuple(args, "O", &pcObj)) {
+        return nullptr;
+    }
+
+    if (PyObject_TypeCheck(pcObj, &(PyList_Type)) || PyObject_TypeCheck(pcObj, &(PyTuple_Type))) {
+        std::vector<int> extGeoIdList;
+        Py::Sequence list(pcObj);
+        for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+            if (PyLong_Check((*it).ptr())) {
+                extGeoIdList.push_back(PyLong_AsLong((*it).ptr()));
+            }
+        }
+
+        // Assuming SketchObject.cpp has a delExternals method.
+        // If it doesn't, we loop inside the App-side logic within a single transaction.
+        if (this->getSketchObjectPtr()->delExternal(extGeoIdList)) {
+            std::stringstream str;
+            str << "Not able to delete external geometries";
+            PyErr_SetString(PyExc_ValueError, str.str().c_str());
+            return nullptr;
+        }
+
+        Py_Return;
+    }
+
+    std::string error = std::string("type must be list of External GeoIds, not ");
+    error += pcObj->ob_type->tp_name;
+    throw Py::TypeError(error);
+}
+
 PyObject* SketchObjectPy::delConstraintOnPoint(PyObject* args)
 {
     int Index, pos = -1;
@@ -2731,3 +2766,4 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
 
     return 0;
 }
+
