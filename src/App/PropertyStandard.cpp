@@ -1517,14 +1517,12 @@ void PropertyFloatList::Save(Base::Writer& writer) const
 
 void PropertyFloatList::Restore(Base::XMLReader& reader)
 {
-    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
-
     reader.readElement("FloatList");
     string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(), &self);
+        reader.addFile(file.c_str(), this);
     }
 }
 
@@ -1694,9 +1692,7 @@ void PropertyString::setPyObject(PyObject* value)
 
 void PropertyString::Save(Base::Writer& writer) const
 {
-    auto& self = propGetterSelf<const App::PropertyString>(*this);
-
-    auto verifyXMLString = [&self](std::string& input) {
+    auto verifyXMLString = [this](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
             Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
@@ -1705,14 +1701,14 @@ void PropertyString::Save(Base::Writer& writer) const
         return output;
     };
     std::string val;
-    auto obj = freecad_cast<DocumentObject*>(self.getContainer());
+    auto obj = freecad_cast<DocumentObject*>(getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == &self) {
+    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
         if (obj->allowDuplicateLabel()) {
             writer.Stream() << "restore=\"1\" ";
         }
-        else if (self._cValue == obj->getNameInDocument()) {
+        else if (_cValue == obj->getNameInDocument()) {
             writer.Stream() << "restore=\"0\" ";
             val = encodeAttribute(obj->getExportName());
             val = verifyXMLString(val);
@@ -1720,7 +1716,7 @@ void PropertyString::Save(Base::Writer& writer) const
         }
     }
     if (!exported) {
-        val = encodeAttribute(self._cValue);
+        val = encodeAttribute(_cValue);
         val = verifyXMLString(val);
     }
     writer.Stream() << "value=\"" << val << "\"/>" << std::endl;
@@ -2768,8 +2764,6 @@ PyObject* PropertyColorList::getPyObject()
 
 Base::Color PropertyColorList::getPyValue(PyObject* item) const
 {
-    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
-
     PropertyColor col;
     col.setPyObject(item);
     return col.getValue();
@@ -3753,8 +3747,6 @@ std::vector<float> PropertyMaterialList::getTransparencies() const
 
 Material PropertyMaterialList::getPyValue(PyObject* value) const
 {
-    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
-
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         return *static_cast<MaterialPy*>(value)->getMaterialPtr();
     }
@@ -3822,8 +3814,6 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
 
 void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string& value) const
 {
-    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
-
     uint32_t uCt = (uint32_t)value.size();
     str << uCt;
     str.write(value.c_str(), uCt);
@@ -3932,8 +3922,6 @@ void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials) c
 
 void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
 {
-    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
-
     uint32_t uCt {};
     str >> uCt;
 
