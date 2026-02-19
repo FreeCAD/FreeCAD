@@ -108,6 +108,11 @@ static bool isSelectionCheckBoxesEnabled()
     return TreeParams::getCheckBoxesSelection();
 }
 
+static bool isAutoRelabelNewEnabled()
+{
+    return TreeParams::getAutoRelabelNew();
+}
+
 void TreeParams::onItemBackgroundChanged()
 {
     if (getItemBackground()) {
@@ -3426,7 +3431,10 @@ void TreeWidget::onUpdateStatus()
         if (!docItem) {
             continue;
         }
-        for (auto id : v.second) {
+
+        std::vector<App::DocumentObject*> sels;
+        for (auto j = 0; j < v.second.size(); j++) {
+            auto id = v.second[j];
             auto obj = doc->getObjectByID(id);
             if (!obj) {
                 continue;
@@ -3438,9 +3446,23 @@ void TreeWidget::onUpdateStatus()
                 continue;
             }
             auto vpd = freecad_cast<ViewProviderDocumentObject*>(gdoc->getViewProvider(obj));
-            if (vpd) {
-                docItem->createNewItem(*vpd);
+
+            if (!vpd) {
+                continue;
             }
+
+            docItem->createNewItem(*vpd);
+
+            if (j != v.second.size() - 1) {
+                continue;
+            }
+
+            // Select the newest item
+            sels.push_back(obj);
+            Selection().clearSelection();
+            Selection().setSelection(gdoc->getDocument()->getName(), sels);
+
+            tryOfferRelabel(obj, docItem);
         }
     }
 
@@ -3585,9 +3607,36 @@ void TreeWidget::onUpdateStatus()
     }
 
     updateGeometries();
+
+
     statusTimer->stop();
 
     FC_LOG("done update status");
+}
+
+void TreeWidget::tryOfferRelabel(App::DocumentObject* obj, DocumentItem* docItem)
+{
+    if (!isAutoRelabelNewEnabled()) {
+        return;
+    }
+
+    auto it = docItem->ObjectMap.find(obj);
+    if (it == docItem->ObjectMap.end()) {
+        return;
+    }
+
+    auto data = it->second;
+    QTreeWidgetItem* item = data->rootItem ? data->rootItem
+                                           : (!data->items.empty() ? *data->items.begin() : nullptr);
+
+    if (!item) {
+        return;
+    }
+
+    // Make sure any labels already in edit are closed
+    closeEditor(viewport()->findChild<QLineEdit*>(), QAbstractItemDelegate::RevertModelCache);
+
+    QTimer::singleShot(200, this, [this, item]() { editItem(item); });
 }
 
 void TreeWidget::onItemEntered(QTreeWidgetItem* item)
