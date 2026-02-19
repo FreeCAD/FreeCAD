@@ -225,10 +225,12 @@ const std::filesystem::path& PropertyPath::getValue() const
 
 PyObject* PropertyPath::getPyObject()
 {
+    auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
 #if (BOOST_FILESYSTEM_VERSION == 2)
-    std::string str = _cValue.native_file_string();
+    std::string str = self._cValue.native_file_string();
 #else
-    std::string str = _cValue.string();
+    std::string str = self._cValue.string();
 #endif
 
     // Returns a new reference, don't increment it!
