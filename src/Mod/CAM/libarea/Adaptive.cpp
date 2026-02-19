@@ -2339,28 +2339,28 @@ bool Adaptive2d::MakeLeadPath(
     const IntPoint& startPoint,
     const DoublePoint& startDir,
     IntPoint beaconPoint,
-    ClearedArea& clearedArea,
+    ClearedArea& clearedAreaOriginal,
     const Paths& toolBoundPaths,
     Path& output
 )
 {
+    output.push_back(startPoint);
     double stepSize = 0.2 * stepOverScaled + 1;
+
+    // make a copy of clearedArea to update as the path progresses (for lead out only)
+    ClearedArea clearedArea(toolRadiusScaled);
+    clearedArea.SetClearedPaths(clearedAreaOriginal.GetCleared());
 
     // compute acceptable tool end locations
     ClipperOffset clipof;
     clipof.Clear();
     Paths cleared;
     clipof.AddPaths(clearedArea.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
-    clipof.Execute(cleared, -toolRadiusScaled);
+    clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
 
-    // compute acceptable beacon locations
-    clipof.Clear();
-    Paths beaconArea;
-    clipof.AddPaths(clearedArea.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
-    clipof.Execute(beaconArea, -(toolRadiusScaled + stepSize));
-    if (beaconArea.size() == 0) {
+    // move the beacon to an acceptable location if necessary
+    if (cleared.size() == 0) {
         (*fout) << "MakeLeadPath (in? " << leadIn << ") No valid beacon locations!!" << endl;
-        output.push_back(startPoint);
         return false;
     }
 
@@ -2368,13 +2368,12 @@ bool Adaptive2d::MakeLeadPath(
             << ") dir (" << startDir.X << ", " << startDir.Y << ") beacon (" << beaconPoint.X
             << ", " << beaconPoint.Y << ")" << endl;
 
-    // move beacon to an acceptable location if necessary
-    if (getPathNestingLevel({beaconPoint}, beaconArea) % 2 == 0) {
+    if (getPathNestingLevel({beaconPoint}, cleared) % 2 == 0) {
         IntPoint clp;  // to store closest point
         size_t clpPathIndex;
         size_t clpSegmentIndex;
         double clpParameter;
-        DistancePointToPathsSqrd(beaconArea, beaconPoint, clp, clpPathIndex, clpSegmentIndex, clpParameter);
+        DistancePointToPathsSqrd(cleared, beaconPoint, clp, clpPathIndex, clpSegmentIndex, clpParameter);
         beaconPoint = clp;
         (*fout) << "Moved beacon point to (" << beaconPoint.X << ", " << beaconPoint.Y << ")" << endl;
     }
@@ -2385,8 +2384,9 @@ bool Adaptive2d::MakeLeadPath(
     (*fout) << "beaconDir (" << targetDir.X << ", " << targetDir.Y << ")" << endl;
 
     double distanceToBeacon = sqrt(DistanceSqrd(startPoint, beaconPoint));
-    double minExitLength = min(stepOverScaled, distanceToBeacon / 2);
-    double maxLength = max(distanceToBeacon * 2, stepSize * 8.5);
+    double minExitLength = min(toolRadiusScaled / 5., min(stepOverScaled, distanceToBeacon / 2));
+    double maxLength = max(distanceToBeacon * 2, stepSize * 10);
+    std::optional<double> clearedStartLen;
     DoublePoint nextDir = startDir;
     IntPoint nextPoint
         = IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
@@ -2394,12 +2394,21 @@ bool Adaptive2d::MakeLeadPath(
     double adaptFactor = 0.4;
     double alfa = std::numbers::pi / 64;
     double pathLen = 0;
-    checkPath.push_back(nextPoint);
+    checkPath.push_back(currentPoint);
     for (int i = 0; i < 10000; i++) {
         if (IsAllowedToCutTrough(currentPoint, nextPoint, clearedArea, toolBoundPaths)) {
-            if (output.empty()) {
-                output.push_back(currentPoint);
+            if (!leadIn) {
+                // For lead out paths, update/recompute the cleared area
+                checkPath.push_back(nextPoint);
+                clearedArea.ExpandCleared(checkPath);
+                checkPath.clear();
+                checkPath.push_back(nextPoint);
+
+                clipof.Clear();
+                clipof.AddPaths(clearedArea.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
+                clipof.Execute(cleared, -(toolRadiusScaled + stepSize));
             }
+
             output.push_back(nextPoint);
             currentPoint = nextPoint;
             pathLen += stepSize;
@@ -2413,10 +2422,20 @@ bool Adaptive2d::MakeLeadPath(
             );
             NormalizeV(nextDir);
 
-            // if currentPoint is clear and path is long enough, exit with success
-            if (getPathNestingLevel({currentPoint}, cleared) % 2 == 1 && pathLen > minExitLength) {
-                (*fout) << "Success" << endl;
-                return true;
+            // check if cleared
+            if (getPathNestingLevel({currentPoint}, cleared) % 2 == 1) {
+                if (!clearedStartLen) {
+                    clearedStartLen = {pathLen};
+                }
+
+                // if the path is long enough, exit with success
+                if (pathLen > minExitLength && pathLen - *clearedStartLen > MIN_STEP_CLIPPER) {
+                    (*fout) << "Success" << endl;
+                    return true;
+                }
+            }
+            else {
+                clearedStartLen = {};
             }
 
             // if traveled too far without getting to a clear area, exit with failure
@@ -2435,9 +2454,6 @@ bool Adaptive2d::MakeLeadPath(
             = IntPoint(currentPoint.X + nextDir.X * stepSize, currentPoint.Y + nextDir.Y * stepSize);
     }
 
-    if (output.empty()) {
-        output.push_back(startPoint);
-    }
     (*fout) << "Failed: iterations" << endl;
     return false;
 }
@@ -3471,7 +3487,12 @@ void Adaptive2d::ProcessPolyNode(
                     fout << endl;
                 }
                 fout << "Cost heuristic " << std::get<double>(ep) << " and actual " << cost_mm
-                     << endl;
+                     << " for (" << std::get<IntPoint>(ep).X << ", " << std::get<IntPoint>(ep).Y
+                     << ")";
+                if (prevPos) {
+                    fout << " from (" << prev->first << ", " << prev->second << ")";
+                }
+                fout << endl;
 
                 if (cost_mm < bestCost) {
                     bestCost = cost_mm;
@@ -3723,6 +3744,24 @@ void Adaptive2d::ProcessPolyNode(
             cout << "Rejected pass, too little area " << cumulativeCutArea << "\n\n";
             bad_engage_count++;
         }
+
+        fout << endl << "Previously cleared:" << endl;
+        for (Path& path : clearedBeforePass.GetCleared()) {
+            fout << path.size() << " points [";
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")  ";
+            }
+            fout << "]" << endl;
+        }
+        fout << endl << "Now cleared:" << endl;
+        for (Path& path : cleared.GetCleared()) {
+            fout << path.size() << " points [";
+            for (IntPoint& p : path) {
+                fout << "(" << p.X << ", " << p.Y << ")  ";
+            }
+            fout << "]" << endl;
+        }
+        fout << endl;
 
         if (bad_engage_count > 10000) {
             cerr << "Break (next valid engage point not found)." << endl;
