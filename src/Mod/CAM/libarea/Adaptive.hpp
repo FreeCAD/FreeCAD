@@ -162,13 +162,18 @@ private:
     );
     TPaths FindLinkPath(
         const std::optional<IntPoint>& prevPoint,
-        const std::optional<DoublePoint>& prevDir,
         const IntPoint& pathStart,
         const DoublePoint& pathDir,
         ClearedArea& cleared,
         const Paths& toolBoundPaths
     );
-    void AppendToolPath(AdaptiveOutput& output, const Path& passToolPath, TPaths& linkPath);
+    std::optional<std::pair<IntPoint, DoublePoint>> AppendToolPath(
+        AdaptiveOutput& output,
+        const Path& passToolPath,
+        TPaths& linkPath,
+        ClearedArea& cleared,
+        const Paths& toolBoundPaths
+    );
     bool IsClearPath(const Path& path, ClearedArea& clearedArea, double safetyDistanceScaled = 0);
     bool IsAllowedToCutTrough(
         const IntPoint& p1,
@@ -182,7 +187,7 @@ private:
         bool leadIn,
         const IntPoint& startPoint,
         const DoublePoint& startDir,
-        const IntPoint& beaconPoint,
+        IntPoint beaconPoint,
         ClearedArea& clearedArea,
         const Paths& toolBoundPaths,
         Path& output
