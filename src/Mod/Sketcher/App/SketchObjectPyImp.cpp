@@ -686,8 +686,6 @@ PyObject* SketchObjectPy::delExternal(PyObject* args)
 PyObject* SketchObjectPy::delExternals(PyObject* args)
 {
     PyObject* pcObj;
-    // We don't usually need noSolve for external geometry as it doesn't
-    // change the DOF, but we can include it for consistency.
     if (!PyArg_ParseTuple(args, "O", &pcObj)) {
         return nullptr;
     }
@@ -701,8 +699,6 @@ PyObject* SketchObjectPy::delExternals(PyObject* args)
             }
         }
 
-        // Assuming SketchObject.cpp has a delExternals method.
-        // If it doesn't, we loop inside the App-side logic within a single transaction.
         if (this->getSketchObjectPtr()->delExternal(extGeoIdList)) {
             std::stringstream str;
             str << "Not able to delete external geometries";
@@ -2766,3 +2762,4 @@ int SketchObjectPy::setCustomAttributes(const char* attr, PyObject* obj)
 
     return 0;
 }
+
