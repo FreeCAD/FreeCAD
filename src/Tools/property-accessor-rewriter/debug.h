@@ -31,7 +31,7 @@
 #include <clang/AST/Stmt.h>
 
 #define DEBUG_TYPE "property-accessor-rewriter"
-#define DEBUG true
+#define DEBUG false
 
 #include <llvm/Support/Debug.h>
 #include <llvm/Support/raw_ostream.h>
