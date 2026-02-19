@@ -1692,6 +1692,8 @@ void PropertyString::setPyObject(PyObject* value)
 
 void PropertyString::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
     auto verifyXMLString = [](std::string& input) {
         const std::string output = validateXMLString(input);
         if (output != input) {
@@ -1701,14 +1703,14 @@ void PropertyString::Save(Base::Writer& writer) const
         return output;
     };
     std::string val;
-    auto obj = freecad_cast<DocumentObject*>(getContainer());
+    auto obj = freecad_cast<DocumentObject*>(self.getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
+    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == &self) {
         if (obj->allowDuplicateLabel()) {
             writer.Stream() << "restore=\"1\" ";
         }
-        else if (_cValue == obj->getNameInDocument()) {
+        else if (self._cValue == obj->getNameInDocument()) {
             writer.Stream() << "restore=\"0\" ";
             val = encodeAttribute(obj->getExportName());
             val = verifyXMLString(val);
@@ -1716,7 +1718,7 @@ void PropertyString::Save(Base::Writer& writer) const
         }
     }
     if (!exported) {
-        val = encodeAttribute(_cValue);
+        val = encodeAttribute(self._cValue);
         val = verifyXMLString(val);
     }
     writer.Stream() << "value=\"" << val << "\"/>" << std::endl;
