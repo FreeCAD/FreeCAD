@@ -10,6 +10,20 @@ macro(InitializeFreeCADBuildOptions)
     option(FREECAD_USE_EXTERNAL_KDL "Use system installed orocos-kdl instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_FMT "Use system installed fmt library if available instead of fetching the source." ON)
     option(FREECAD_USE_EXTERNAL_ONDSELSOLVER "Use system installed OndselSolver instead of git submodule." OFF)
+
+    if(FREECAD_USE_EXTERNAL_ONDSELSOLVER)
+        message(FATAL_ERROR
+" --------------------------------------------------------
+ The cmake configuration variable FREECAD_USE_EXTERNAL_ONDSELSOLVER is obsolete.
+ 
+ The external OndselSolver library https://github.com/ondsel-development/ondselsolver has been archived.
+ FreeCAD has since integrated the external project as a git submodule.
+ 
+ Run `git submodule status` to check if your freecad git repo has the submodule setup.
+ --------------------------------------------------------"
+        )
+    endif()
+
     option(FREECAD_USE_EXTERNAL_E57FORMAT "Use system installed libE57Format instead of the bundled." OFF)
     option(FREECAD_USE_EXTERNAL_GTEST "Use system installed Google Test and Google Mock" OFF)
     option(FREECAD_USE_FREETYPE "Builds the features using FreeType libs" ON)
