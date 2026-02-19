@@ -183,20 +183,20 @@ void ZoomableView::updateView(void)
     /* QGraphicsView has hardcoded margins therefore we have to avoid fitInView
      * Find more information at https://bugreports.qt.io/browse/QTBUG-42331 */
 
-    const qreal scale_factor = static_cast<qreal>(m_zoomLevel) / 100.0,
-                new_w = static_cast<qreal>(viewport()->rect().width()) / scale_factor,
-                new_h = static_cast<qreal>(viewport()->rect().height()) / scale_factor;
+    const qreal scale_factor = static_cast<qreal>(m_zoomLevel) / 100.0;
+    const qreal new_w = static_cast<qreal>(viewport()->rect().width()) / scale_factor;
+    const qreal new_h = static_cast<qreal>(viewport()->rect().height()) / scale_factor;
 
-    const QRectF new_geometry {0.0, 0.0, new_w, new_h};
+    const QRectF new_geometry_f {0.0, 0.0, new_w, new_h};
+    const QRect new_geometry = new_geometry_f.toRect();
 
-    const QRect old_geometry {stv->geometry()};
-    stv->setGeometry(1, 1, old_geometry.width() - 1, old_geometry.height() - 1);
+    stv->setGeometry(1, 1, new_geometry.width() - 1, new_geometry.height() - 1);
 
     resetTransform();
-    qpw->setGeometry(new_geometry);
-    setSceneRect(new_geometry);
+    qpw->setGeometry(new_geometry_f);
+    setSceneRect(new_geometry_f);
     scale(scale_factor, scale_factor);
-    centerOn(new_geometry.center());
+    centerOn(new_geometry_f.center());
 }
 
 void ZoomableView::focusOutEvent(QFocusEvent* event)
