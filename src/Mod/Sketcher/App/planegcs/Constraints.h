@@ -701,6 +701,7 @@ private:
 public:
     ConstraintPerpendicular(Line& l1, Line& l2);
     ConstraintPerpendicular(Point& l1p1, Point& l1p2, Point& l2p1, Point& l2p2);
+    ConstraintPerpendicular(Point& l1p1, Point& l1p2, Line& l2);
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
     ConstraintPerpendicular()
     {}
