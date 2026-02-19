@@ -1692,8 +1692,8 @@ void PropertyString::setPyObject(PyObject* value)
 
 void PropertyString::Save(Base::Writer& writer) const
 {
-    auto verifyXMLString = [this](std::string& input) {
-        const std::string output = this->validateXMLString(input);
+    auto verifyXMLString = [](std::string& input) {
+        const std::string output = validateXMLString(input);
         if (output != input) {
             Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
                                     input, output);
