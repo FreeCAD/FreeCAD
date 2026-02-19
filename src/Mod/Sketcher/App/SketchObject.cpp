@@ -7729,7 +7729,7 @@ void SketchObject::delExternalPrivate(const std::set<long>& ids, bool removeRef)
 
         // PROTECTION: Never delete array index 0 or 1 (H_Axis and V_Axis)
         if (it->second < 2) {
-            Base::Console().warning("trying to delete axis!!\n");
+            Base::Console().error("SketchObject::delExternal trying to remove axis, please report.\n");
             continue;
         }
 
