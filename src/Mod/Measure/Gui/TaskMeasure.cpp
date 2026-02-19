@@ -613,7 +613,7 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
     std::list<InputHint> hints;
     if (checked) {
         hints = {
-            {tr("%1 start new measurement, %2 invert auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+            {tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
         };
     }
     else {
