@@ -62,9 +62,9 @@ using namespace Base;
 
 namespace
 {
-bool extractColumnARow(const std::string& address, int& row)
+bool extractParameterRow(const std::string& address, int& row)
 {
-    if (address.size() < 2 || address[0] != 'A') {
+    if (address.size() < 2 || (address[0] != 'A' && address[0] != 'B')) {
         return false;
     }
 
@@ -74,17 +74,27 @@ bool extractColumnARow(const std::string& address, int& row)
         }
     }
 
-    // "A123" -> 123
+    // "A123"/"B123" -> 123
     row = std::stoi(address.substr(1));
     return row > 0;
 }
 
-std::string getNextFreeVariableCellAddress(const std::vector<std::string>& usedCells)
+std::string getParameterAliasCellAddressForRow(int row)
+{
+    return "A" + std::to_string(row);
+}
+
+std::string getParameterValueCellAddressForRow(int row)
+{
+    return "B" + std::to_string(row);
+}
+
+std::string getNextFreeParameterValueCellAddress(const std::vector<std::string>& usedCells)
 {
     std::set<int> usedRows;
     for (const auto& cell : usedCells) {
         int row = 0;
-        if (extractColumnARow(cell, row)) {
+        if (extractParameterRow(cell, row)) {
             usedRows.insert(row);
         }
     }
@@ -95,7 +105,7 @@ std::string getNextFreeVariableCellAddress(const std::vector<std::string>& usedC
         ++row;
     }
 
-    return "A" + std::to_string(row);
+    return getParameterValueCellAddressForRow(row);
 }
 
 constexpr const char* kParametersSheetName = "Parameters";
@@ -1147,27 +1157,57 @@ bool QuantitySpinBox::tryHandleVariableAssignment(const QString& text)
         readParameterSheetState(doc, nameStd, existingAddr, usedCells);
 
         bool aliasAlreadyExists = !existingAddr.empty();
-        std::string cellAddr = aliasAlreadyExists ? existingAddr
-                                                  : getNextFreeVariableCellAddress(usedCells);
+        int row = 0;
+        if (aliasAlreadyExists) {
+            if (!extractParameterRow(existingAddr, row)) {
+                return false;
+            }
+        }
+        else {
+            const std::string nextValueCellAddr = getNextFreeParameterValueCellAddress(usedCells);
+            if (!extractParameterRow(nextValueCellAddr, row)) {
+                return false;
+            }
+        }
+
+        const std::string valueCellAddr = getParameterValueCellAddressForRow(row);
+        const std::string aliasCellAddr = getParameterAliasCellAddressForRow(row);
 
         std::string escapedContent = Base::Tools::escapeQuotesFromString(cellContent);
         Base::Interpreter().runStringArg(
             "App.getDocument('%s').getObject('%s').set('%s', '%s')",
             escapedDocName.c_str(),
             sheetName,
-            cellAddr.c_str(),
+            valueCellAddr.c_str(),
             escapedContent.c_str()
         );
 
-        if (!aliasAlreadyExists) {
+        if (aliasAlreadyExists && existingAddr != valueCellAddr) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').setAlias('%s', '')",
+                escapedDocName.c_str(),
+                sheetName,
+                existingAddr.c_str()
+            );
+        }
+
+        if (!aliasAlreadyExists || existingAddr != valueCellAddr) {
             Base::Interpreter().runStringArg(
                 "App.getDocument('%s').getObject('%s').setAlias('%s', '%s')",
                 escapedDocName.c_str(),
                 sheetName,
-                cellAddr.c_str(),
+                valueCellAddr.c_str(),
                 nameStd.c_str()
             );
         }
+
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').set('%s', '%s')",
+            escapedDocName.c_str(),
+            sheetName,
+            aliasCellAddr.c_str(),
+            nameStd.c_str()
+        );
 
         // Recompute the spreadsheet to evaluate the cell
         Base::Interpreter().runStringArg(

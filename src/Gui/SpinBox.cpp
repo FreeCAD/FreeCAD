@@ -21,16 +21,25 @@
  ***************************************************************************/
 
 #include <limits>
+#include <cmath>
+#include <set>
+#include <cctype>
+#include <QFocusEvent>
 #include <QKeyEvent>
 #include <QLineEdit>
+#include <QRegularExpression>
 #include <QStyle>
 #include <QStyleOptionSpinBox>
 #include <QStylePainter>
 
 #include <boost/math/special_functions/round.hpp>
 
+#include <App/Application.h>
+#include <App/Document.h>
 #include <App/ExpressionParser.h>
 #include <App/PropertyUnits.h>
+#include <Base/Interpreter.h>
+#include <Base/Tools.h>
 
 #include "SpinBox.h"
 #include "Command.h"
@@ -42,6 +51,161 @@
 using namespace Gui;
 using namespace App;
 using namespace Base;
+
+namespace
+{
+bool extractParameterRow(const std::string& address, int& row)
+{
+    if (address.size() < 2 || (address[0] != 'A' && address[0] != 'B')) {
+        return false;
+    }
+
+    for (size_t i = 1; i < address.size(); ++i) {
+        if (!std::isdigit(static_cast<unsigned char>(address[i]))) {
+            return false;
+        }
+    }
+
+    row = std::stoi(address.substr(1));
+    return row > 0;
+}
+
+std::string getParameterAliasCellAddressForRow(int row)
+{
+    return "A" + std::to_string(row);
+}
+
+std::string getParameterValueCellAddressForRow(int row)
+{
+    return "B" + std::to_string(row);
+}
+
+std::string getNextFreeParameterValueCellAddress(const std::vector<std::string>& usedCells)
+{
+    std::set<int> usedRows;
+    for (const auto& cell : usedCells) {
+        int row = 0;
+        if (extractParameterRow(cell, row)) {
+            usedRows.insert(row);
+        }
+    }
+
+    int row = 1;
+    while (usedRows.find(row) != usedRows.end()) {
+        ++row;
+    }
+
+    return getParameterValueCellAddressForRow(row);
+}
+
+constexpr const char* kParametersSheetName = "Parameters";
+
+void readParameterSheetState(
+    App::Document* doc,
+    const std::string& alias,
+    std::string& existingAddress,
+    std::vector<std::string>& usedCells
+)
+{
+    if (!doc) {
+        return;
+    }
+
+    Base::PyGILStateLocker lock;
+    PyObject* freecadMod = PyImport_ImportModule("FreeCAD");
+    if (!freecadMod) {
+        PyErr_Clear();
+        return;
+    }
+
+    PyObject* pyDoc = PyObject_CallMethod(freecadMod, "getDocument", "s", doc->getName());
+    if (!pyDoc) {
+        PyErr_Clear();
+        Py_DECREF(freecadMod);
+        return;
+    }
+
+    PyObject* pySheet = PyObject_CallMethod(pyDoc, "getObject", "s", kParametersSheetName);
+    if (!pySheet || pySheet == Py_None) {
+        PyErr_Clear();
+        Py_XDECREF(pySheet);
+        Py_DECREF(pyDoc);
+        Py_DECREF(freecadMod);
+        return;
+    }
+
+    if (!alias.empty()) {
+        PyObject* aliasResult = PyObject_CallMethod(pySheet, "getCellFromAlias", "s", alias.c_str());
+        if (aliasResult && PyUnicode_Check(aliasResult)) {
+            const char* address = PyUnicode_AsUTF8(aliasResult);
+            if (address) {
+                existingAddress = address;
+            }
+        }
+        Py_XDECREF(aliasResult);
+        PyErr_Clear();
+    }
+
+    PyObject* usedCellsResult = PyObject_CallMethod(pySheet, "getUsedCells", nullptr);
+    if (usedCellsResult) {
+        PyObject* iter = PyObject_GetIter(usedCellsResult);
+        if (iter) {
+            while (PyObject* item = PyIter_Next(iter)) {
+                if (PyUnicode_Check(item)) {
+                    const char* cellAddress = PyUnicode_AsUTF8(item);
+                    if (cellAddress) {
+                        usedCells.emplace_back(cellAddress);
+                    }
+                }
+                Py_DECREF(item);
+            }
+            Py_DECREF(iter);
+        }
+    }
+
+    Py_XDECREF(usedCellsResult);
+    PyErr_Clear();
+
+    Py_DECREF(pySheet);
+    Py_DECREF(pyDoc);
+    Py_DECREF(freecadMod);
+}
+
+QString trimTrailingStatementDelimiter(QString text)
+{
+    text = text.trimmed();
+
+    while (text.endsWith(QLatin1Char(';'))) {
+        text.chop(1);
+        text = text.trimmed();
+    }
+
+    return text;
+}
+
+bool looksLikeExpressionInput(const QString& input)
+{
+    const QString trimmed = input.trimmed();
+    if (trimmed.isEmpty()) {
+        return false;
+    }
+
+    bool isUnsigned = false;
+    trimmed.toUInt(&isUnsigned);
+    if (isUnsigned) {
+        return false;
+    }
+
+    if (trimmed.contains(QStringLiteral("<<"))) {
+        return true;
+    }
+
+    static const QRegularExpression expressionChars(
+        QStringLiteral(R"([A-Za-z_=+\-*/^().,;])")
+    );
+    return expressionChars.match(trimmed).hasMatch();
+}
+}  // namespace
 
 ExpressionSpinBox::ExpressionSpinBox(QAbstractSpinBox* sb)
     : spinbox(sb)
@@ -389,7 +553,12 @@ void UIntSpinBox::setRange(uint minVal, uint maxVal)
 
 QValidator::State UIntSpinBox::validate(QString& input, int& pos) const
 {
-    return d->mValidator->validate(input, pos);
+    QValidator::State state = d->mValidator->validate(input, pos);
+    if (state == QValidator::Invalid && looksLikeExpressionInput(input)) {
+        return QValidator::Intermediate;
+    }
+
+    return state;
 }
 
 uint UIntSpinBox::value() const
@@ -461,6 +630,279 @@ void UIntSpinBox::updateValidator()
     d->mValidator->setRange(this->minimum(), this->maximum());
 }
 
+bool UIntSpinBox::tryHandleRawExpression(const QString& text)
+{
+    QString expressionText = text.trimmed();
+    if (expressionText.isEmpty()) {
+        return false;
+    }
+
+    bool isUnsigned = false;
+    expressionText.toUInt(&isUnsigned);
+    if (isUnsigned) {
+        return false;
+    }
+
+    if (expressionText.startsWith(QLatin1Char('='))) {
+        expressionText = expressionText.mid(1).trimmed();
+    }
+    expressionText = trimTrailingStatementDelimiter(expressionText);
+    if (expressionText.isEmpty()) {
+        return false;
+    }
+
+    App::DocumentObject* contextObj = nullptr;
+    if (isBound()) {
+        contextObj = getPath().getDocumentObject();
+    }
+
+    if (!contextObj) {
+        auto* doc = App::GetApplication().getActiveDocument();
+        if (doc && !doc->getObjects().empty()) {
+            contextObj = doc->getObjects().front();
+        }
+    }
+
+    std::shared_ptr<App::Expression> expr;
+    try {
+        expr.reset(App::ExpressionParser::parse(contextObj, expressionText.toUtf8().constData()));
+    }
+    catch (...) {
+        return false;
+    }
+
+    if (!expr) {
+        return false;
+    }
+
+    try {
+        std::unique_ptr<App::Expression> result(expr->eval());
+        auto* number = freecad_cast<App::NumberExpression*>(result.get());
+        if (!number) {
+            return false;
+        }
+
+        double roundedValue = boost::math::round(number->getValue());
+        if (!std::isfinite(roundedValue) || roundedValue < 0.0
+            || roundedValue > static_cast<double>(std::numeric_limits<unsigned>::max())) {
+            return false;
+        }
+
+        auto valueAsUInt = static_cast<unsigned>(roundedValue);
+        if (valueAsUInt < minimum() || valueAsUInt > maximum()) {
+            return false;
+        }
+
+        if (isBound()) {
+            setExpression(std::move(expr));
+            updateExpression();
+        }
+        else {
+            setValue(valueAsUInt);
+        }
+
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+bool UIntSpinBox::tryHandleVariableAssignment(const QString& text)
+{
+    static const QRegularExpression varAssignRegex(
+        QStringLiteral(R"(^([a-zA-Z_][a-zA-Z0-9_]*)\s*=(?!=)\s*(.+)$)")
+    );
+
+    QRegularExpressionMatch match = varAssignRegex.match(text.trimmed());
+    if (!match.hasMatch()) {
+        return false;
+    }
+
+    QString varName = match.captured(1);
+    QString valueExpr = trimTrailingStatementDelimiter(match.captured(2));
+    if (varName.isEmpty() || valueExpr.isEmpty()) {
+        return false;
+    }
+
+    std::string nameStd = varName.toStdString();
+    if (App::ExpressionParser::isTokenAUnit(nameStd)
+        || App::ExpressionParser::isTokenAConstant(nameStd)) {
+        return false;
+    }
+
+    if (nameStd != Base::Tools::getIdentifier(nameStd)) {
+        return false;
+    }
+
+    App::Document* doc = nullptr;
+    if (isBound()) {
+        if (auto* docObj = getPath().getDocumentObject()) {
+            doc = docObj->getDocument();
+        }
+    }
+
+    if (!doc) {
+        doc = App::GetApplication().getActiveDocument();
+    }
+    if (!doc) {
+        return false;
+    }
+
+    std::string cellContent = valueExpr.toStdString();
+    bool plainUInt = false;
+    valueExpr.toUInt(&plainUInt);
+    if (!plainUInt && !cellContent.empty() && cellContent[0] != '=') {
+        cellContent = "=" + cellContent;
+    }
+
+    try {
+        const std::string escapedDocName = Base::Tools::escapeQuotesFromString(doc->getName());
+
+        App::DocumentObject* sheetObj = doc->getObject(kParametersSheetName);
+        if (!sheetObj) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').addObject('Spreadsheet::Sheet', '%s')",
+                escapedDocName.c_str(),
+                kParametersSheetName
+            );
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').Label = '%s'",
+                escapedDocName.c_str(),
+                kParametersSheetName,
+                kParametersSheetName
+            );
+            sheetObj = doc->getObject(kParametersSheetName);
+        }
+        if (!sheetObj) {
+            return false;
+        }
+
+        std::string existingAddr;
+        std::vector<std::string> usedCells;
+        readParameterSheetState(doc, nameStd, existingAddr, usedCells);
+
+        const bool aliasAlreadyExists = !existingAddr.empty();
+        int row = 0;
+        if (aliasAlreadyExists) {
+            if (!extractParameterRow(existingAddr, row)) {
+                return false;
+            }
+        }
+        else {
+            const std::string nextValueCellAddr = getNextFreeParameterValueCellAddress(usedCells);
+            if (!extractParameterRow(nextValueCellAddr, row)) {
+                return false;
+            }
+        }
+
+        const std::string valueCellAddr = getParameterValueCellAddressForRow(row);
+        const std::string aliasCellAddr = getParameterAliasCellAddressForRow(row);
+
+        const std::string escapedContent = Base::Tools::escapeQuotesFromString(cellContent);
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').set('%s', '%s')",
+            escapedDocName.c_str(),
+            kParametersSheetName,
+            valueCellAddr.c_str(),
+            escapedContent.c_str()
+        );
+
+        if (aliasAlreadyExists && existingAddr != valueCellAddr) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').setAlias('%s', '')",
+                escapedDocName.c_str(),
+                kParametersSheetName,
+                existingAddr.c_str()
+            );
+        }
+
+        if (!aliasAlreadyExists || existingAddr != valueCellAddr) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').setAlias('%s', '%s')",
+                escapedDocName.c_str(),
+                kParametersSheetName,
+                valueCellAddr.c_str(),
+                nameStd.c_str()
+            );
+        }
+
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').set('%s', '%s')",
+            escapedDocName.c_str(),
+            kParametersSheetName,
+            aliasCellAddr.c_str(),
+            nameStd.c_str()
+        );
+
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').recompute()",
+            escapedDocName.c_str(),
+            kParametersSheetName
+        );
+
+        App::DocumentObject* contextObj = nullptr;
+        if (isBound()) {
+            contextObj = getPath().getDocumentObject();
+        }
+        if (!contextObj) {
+            contextObj = doc->getObject(kParametersSheetName);
+        }
+        if (!contextObj && !doc->getObjects().empty()) {
+            contextObj = doc->getObjects().front();
+        }
+        if (!contextObj) {
+            return false;
+        }
+
+        const std::string exprStr = std::string(kParametersSheetName) + "." + nameStd;
+        std::shared_ptr<App::Expression> expr(App::ExpressionParser::parse(contextObj, exprStr.c_str()));
+        if (!expr) {
+            return false;
+        }
+
+        std::unique_ptr<App::Expression> result(expr->eval());
+        auto* number = freecad_cast<App::NumberExpression*>(result.get());
+        if (!number) {
+            return false;
+        }
+
+        double roundedValue = boost::math::round(number->getValue());
+        if (!std::isfinite(roundedValue) || roundedValue < 0.0
+            || roundedValue > static_cast<double>(std::numeric_limits<unsigned>::max())) {
+            return false;
+        }
+
+        auto valueAsUInt = static_cast<unsigned>(roundedValue);
+        if (valueAsUInt < minimum() || valueAsUInt > maximum()) {
+            return false;
+        }
+
+        if (isBound()) {
+            setExpression(std::move(expr));
+            updateExpression();
+        }
+        else {
+            setValue(valueAsUInt);
+        }
+
+        return true;
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+bool UIntSpinBox::commitInlineExpressionTextForUi()
+{
+    if (!lineedit) {
+        return false;
+    }
+
+    const QString input = lineedit->text();
+    return tryHandleVariableAssignment(input) || tryHandleRawExpression(input);
+}
+
 bool UIntSpinBox::apply(const std::string& propName)
 {
     if (!ExpressionBinding::apply(propName)) {
@@ -484,9 +926,26 @@ void UIntSpinBox::resizeEvent(QResizeEvent* event)
 
 void UIntSpinBox::keyPressEvent(QKeyEvent* event)
 {
+    const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (event->text() == QLatin1String("=") && lineedit && lineedit->text().trimmed().isEmpty()) {
+        QAbstractSpinBox::keyPressEvent(event);
+        return;
+    }
+
+    if (isEnter && commitInlineExpressionTextForUi()) {
+        return;
+    }
+
     if (!handleKeyEvent(event->text())) {
         QAbstractSpinBox::keyPressEvent(event);
     }
+}
+
+void UIntSpinBox::focusOutEvent(QFocusEvent* event)
+{
+    commitInlineExpressionTextForUi();
+    QAbstractSpinBox::focusOutEvent(event);
 }
 
 void UIntSpinBox::paintEvent(QPaintEvent*)
