@@ -9190,6 +9190,8 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 {
     Base::StateLocker lock(managedoperation, true); // no need to check input data validity as this is an sketchobject managed operation.
 
+    fixCorruptedExternalGeo();
+
     // Analyze the state of existing external geometries to infer the desired state for new ones.
     // If any geometry from a source link is "defining", we'll treat the whole link as "defining".
     std::map<std::string, bool> linkIsDefiningMap;
@@ -9613,6 +9615,25 @@ void SketchObject::rebuildExternalGeometry(std::optional<ExternalToAdd> extToAdd
 
     if (hasError && this->isRecomputing()) {
         throw Base::RuntimeError("Missing external geometry reference");
+    }
+}
+
+void SketchObject::fixCorruptedExternalGeo()
+{
+    //Make sure the H/V axis are still in ExternalGeo. See 27693
+    bool corrupted = false;
+    if (ExternalGeo.getSize() < 2) {
+        corrupted = true;
+    }
+    else {
+        auto gf0 = GeometryFacade::getFacade(ExternalGeo[0]);
+        auto gf1 = GeometryFacade::getFacade(ExternalGeo[1]);
+        if (gf0->getId() != -1 || gf1->getId() != -2) {
+            corrupted = true;
+        }
+    }
+    if (corrupted) {
+        initExternalGeo();
     }
 }
 
@@ -11022,9 +11043,10 @@ void SketchObject::onSketchRestore()
         migrateSketch();
 
         updateGeometryRefs();
+        
+        fixCorruptedExternalGeo();
+
         if(ExternalGeo.getSize()<=2) {
-            if (ExternalGeo.getSize() < 2)
-                initExternalGeo();
             for(auto &key : externalGeoRef) {
                 long id = getDocument()->getStringHasher()->getID(key.c_str()).value();
                 if(geoLastId < id)
@@ -12401,3 +12423,4 @@ template class SketcherExport FeaturePythonT<Sketcher::SketchObject>;
 }// namespace App
 
 // clang-format on
+
