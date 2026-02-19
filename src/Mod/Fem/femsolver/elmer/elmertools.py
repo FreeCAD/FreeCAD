@@ -27,7 +27,6 @@ __url__ = "https://www.freecad.org"
 
 
 from PySide.QtCore import QProcess, QProcessEnvironment
-import tempfile
 import os
 import re
 import shutil
@@ -38,40 +37,17 @@ from . import writer
 from .. import settings
 
 from femtools import membertools
+from femtools.objecttools import ObjectTools
 
 
-class ElmerTools:
+class ElmerTools(ObjectTools):
 
     name = "Elmer"
 
     def __init__(self, obj):
-        self.obj = obj
-        self.process = QProcess()
+        super().__init__(obj)
         self.model_file = ""
-        self.analysis = obj.getParentGroup()
-        self.fem_param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self._create_working_directory(obj)
         self._result_format = ""
-
-    def _create_working_directory(self, obj):
-        """
-        Create working directory according to preferences
-        """
-        if not os.path.isdir(obj.WorkingDirectory):
-            gen_param = self.fem_param.GetGroup("General")
-            if gen_param.GetBool("UseTempDirectory"):
-                self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseBesideDirectory"):
-                root, ext = os.path.splitext(obj.Document.FileName)
-                if root:
-                    self.obj.WorkingDirectory = os.path.join(root, obj.Label)
-                    os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
-                else:
-                    # file not saved, use temporary
-                    self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseCustomDirectory"):
-                self.obj.WorkingDirectory = gen_param.GetString("CustomDirectoryPath")
-                os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
 
     def prepare(self):
         w = writer.Writer(self.obj, self.obj.WorkingDirectory)
@@ -91,7 +67,7 @@ class ElmerTools:
         p.setWorkingDirectory(self.obj.WorkingDirectory)
         grid_args = ["8", "2", mesh_file, "-out", self.obj.WorkingDirectory]
         p.start(grid_bin, grid_args)
-        p.waitForFinished()
+        p.waitForFinished(-1)
         num_proc = self.fem_param.GetGroup("Elmer").GetInt("NumberOfTasks", 1)
         if num_proc > 1:
             # MPI parallel computing version

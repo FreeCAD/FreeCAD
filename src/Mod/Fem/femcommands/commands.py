@@ -29,9 +29,6 @@ __url__ = "https://www.freecad.org"
 #  \ingroup FEM
 #  \brief FreeCAD FEM command definitions
 
-from PySide import QtCore
-from PySide import QtGui
-
 import FreeCAD
 import FreeCADGui
 from FreeCAD import Qt
@@ -1184,51 +1181,11 @@ class _SolverRun(CommandManager):
         self.tool = None
 
     def Activated(self):
-        if self.selobj.Proxy.Type in ["Fem::SolverCalculiX", "Fem::SolverElmer"]:
-            try:
-                QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
-                self._set_tool()
-                self._conn(self.tool)
-                self.tool.prepare()
-                self.tool.compute()
-            except Exception as e:
-                QtGui.QApplication.restoreOverrideCursor()
-                FreeCAD.Console.PrintError(e)
-                return
+        from femsolver.run import run_fem_solver
 
-        else:
-            from femsolver.run import run_fem_solver
-
-            run_fem_solver(self.selobj)
-            FreeCADGui.Selection.clearSelection()
-            FreeCAD.ActiveDocument.recompute()
-
-    def _set_tool(self):
-        match self.selobj.Proxy.Type:
-            case "Fem::SolverCalculiX":
-                from femsolver.calculix.calculixtools import CalculiXTools
-
-                self.tool = CalculiXTools(self.selobj)
-            case "Fem::SolverElmer":
-                from femsolver.elmer.elmertools import ElmerTools
-
-                self.tool = ElmerTools(self.selobj)
-
-    def _conn(self, tool):
-        QtCore.QObject.connect(
-            tool.process,
-            QtCore.SIGNAL("finished(int, QProcess::ExitStatus)"),
-            self._process_finished,
-        )
-
-    def _process_finished(self, code, status):
-        if status == QtCore.QProcess.ExitStatus.NormalExit and code == 0:
-            self.tool.update_properties()
-            FreeCAD.ActiveDocument.recompute()
-            QtGui.QApplication.restoreOverrideCursor()
-        else:
-            QtGui.QApplication.restoreOverrideCursor()
-            FreeCAD.Console.PrintError("Process finished with errors. Result not updated\n")
+        run_fem_solver(self.selobj)
+        FreeCADGui.Selection.clearSelection()
+        FreeCAD.ActiveDocument.recompute()
 
 
 class _SolverZ88(CommandManager):
