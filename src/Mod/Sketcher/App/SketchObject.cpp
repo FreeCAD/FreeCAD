@@ -7772,33 +7772,28 @@ void SketchObject::delExternalPrivate(const std::set<long>& ids, bool removeRef)
         ++offset;
     }
 
-    if (refs.empty()) {
-        ExternalGeo.setValues(std::move(geos));
-
-        solverNeedsUpdate = true;
-        Constraints.setValues(std::move(newConstraints));
-        acceptGeometry();  // This may need to be refactored into OnChanged for ExternalGeometry.
-        return;
-    }
-
-    std::vector<std::string> newSubs;
-    std::vector<App::DocumentObject*> newObjs;
-    const auto& subs = ExternalGeometry.getSubValues();
-    auto itSub = subs.begin();
-    const auto& objs = ExternalGeometry.getValues();
-    auto itObj = objs.begin();
-    bool touched = false;
-    assert(externalGeoRef.size() == objs.size());
-    assert(externalGeoRef.size() == subs.size());
-    for (auto it = externalGeoRef.begin(); it != externalGeoRef.end(); ++it, ++itObj, ++itSub) {
-        if (refs.count(*it) == 0) {
-            touched = true;
-            newObjs.push_back(*itObj);
-            newSubs.push_back(*itSub);
+    if (!refs.empty()) {
+        std::vector<std::string> newSubs;
+        std::vector<App::DocumentObject*> newObjs;
+        const auto& subs = ExternalGeometry.getSubValues();
+        auto itSub = subs.begin();
+        const auto& objs = ExternalGeometry.getValues();
+        auto itObj = objs.begin();
+        bool touched = false;
+        assert(externalGeoRef.size() == objs.size());
+        assert(externalGeoRef.size() == subs.size());
+        for (auto it = externalGeoRef.begin(); it != externalGeoRef.end(); ++it, ++itObj, ++itSub) {
+            if (refs.find(*it) == refs.end()) {
+                newObjs.push_back(*itObj);
+                newSubs.push_back(*itSub);
+            }
+            else {
+                touched = true;
+            }
         }
-    }
-    if (touched) {
-        ExternalGeometry.setValues(newObjs, newSubs);
+        if (touched) {
+            ExternalGeometry.setValues(newObjs, newSubs);
+        }
     }
 
     ExternalGeo.setValues(std::move(geos));
