@@ -896,7 +896,9 @@ public:
      */
     void setPyObject(PyObject* obj) override
     {
-        _setPyObject(obj);
+        auto& self = propSetterSelf<App::PropertyLists>(*this);
+
+        self._setPyObject(obj);
     }
 
     /**
@@ -910,7 +912,9 @@ public:
      */
     inline void setOrderRelevant(bool on)
     {
-        this->setStatus(Status::Ordered, on);
+        auto& self = propSetterSelf<App::PropertyLists>(*this);
+
+        self.setStatus(Status::Ordered, on);
     }
 
     /**
@@ -920,7 +924,9 @@ public:
      */
     inline bool isOrderRelevant() const
     {
-        return this->testStatus(Status::Ordered);
+        auto& self = propGetterSelf<const App::PropertyLists>(*this);
+
+        return self.testStatus(Status::Ordered);
     }
 };
 

@@ -302,11 +302,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyMatrix>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 private:
@@ -379,11 +381,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyPlacement>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
     static const Placement Null;

@@ -150,11 +150,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 protected:
@@ -237,11 +239,15 @@ public:
 
     const char* getEditorName() const override
     {
-        return _editorTypeName.c_str();
+        auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+        return self._editorTypeName.c_str();
     }
     void setEditorName(const char* name)
     {
-        _editorTypeName = name;
+        auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+        self._editorTypeName = name;
     }
 
     PyObject* getPyObject() override;
@@ -260,11 +266,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getEnum() == static_cast<decltype(this)>(&other)->getEnum();
+        return self.getTypeId() == other.getTypeId()
+            && self.getEnum() == static_cast<decltype(&self)>(&other)->getEnum();
     }
 
 private:
@@ -434,13 +442,17 @@ public:
 
     void addValue(long value)
     {
-        _lValueSet.insert(value);
+        auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
+        self._lValueSet.insert(value);
     }
     void setValues(const std::set<long>& values);
 
     const std::set<long>& getValues() const
     {
-        return _lValueSet;
+        auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
+        return self._lValueSet;
     }
 
     PyObject* getPyObject() override;
@@ -455,11 +467,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValues() == static_cast<decltype(this)>(&other)->getValues();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValues() == static_cast<decltype(&self)>(&other)->getValues();
     }
 
 private:
@@ -501,12 +515,16 @@ public:
 
     void set1Value(const std::string& key, const std::string& value)
     {
-        _lValueList.operator[](key) = value;
+        auto& self = propSetterSelf<App::PropertyMap>(*this);
+
+        self._lValueList.operator[](key) = value;
     }
 
     const std::map<std::string, std::string>& getValues() const
     {
-        return _lValueList;
+        auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
+        return self._lValueList;
     }
 
     // virtual const char* getEditorName(void) const { return
@@ -525,11 +543,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValues() == static_cast<decltype(this)>(&other)->getValues();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValues() == static_cast<decltype(&self)>(&other)->getValues();
     }
 
 private:
@@ -588,11 +608,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 protected:
@@ -765,11 +787,15 @@ public:
     const char* getValue() const;
     const std::string& getStrValue() const
     {
-        return _cValue;
+        auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+        return self._cValue;
     }
     bool isEmpty()
     {
-        return _cValue.empty();
+        auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+        return self._cValue.empty();
     }
 
     const char* getEditorName() const override
@@ -791,11 +817,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getStrValue() == static_cast<decltype(this)>(&other)->getStrValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getStrValue() == static_cast<decltype(&self)>(&other)->getStrValue();
     }
 
 protected:
@@ -843,11 +871,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && _uuid.getValue() == static_cast<decltype(this)>(&other)->_uuid.getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self._uuid.getValue() == static_cast<decltype(&self)>(&other)->_uuid.getValue();
     }
 
 private:
@@ -871,11 +901,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyFont>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 };
 
@@ -966,11 +998,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyBool>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 private:
@@ -1055,11 +1089,13 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyColor>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 private:
@@ -1167,16 +1203,20 @@ public:
 
     unsigned int getMemSize() const override
     {
-        return sizeof(_cMat);
+        auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+        return sizeof(self._cMat);
     }
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue();
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
     }
 
 private:
@@ -1333,7 +1373,9 @@ public:
 
     std::shared_ptr<Base::Persistence> getObject() const
     {
-        return _pObject;
+        auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
+        return self._pObject;
     }
 
 protected:

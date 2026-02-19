@@ -206,21 +206,27 @@ PropertyPath::~PropertyPath() = default;
 
 void PropertyPath::setValue(const std::filesystem::path& Path)
 {
-    aboutToSetValue();
-    _cValue = Path;
+    auto& self = propSetterSelf<App::PropertyPath>(*this);
+
+    self.aboutToSetValue();
+    self._cValue = Path;
     hasSetValue();
 }
 
 void PropertyPath::setValue(const char* Path)
 {
-    aboutToSetValue();
-    _cValue = std::filesystem::path(Path);
+    auto& self = propSetterSelf<App::PropertyPath>(*this);
+
+    self.aboutToSetValue();
+    self._cValue = std::filesystem::path(Path);
     hasSetValue();
 }
 
 const std::filesystem::path& PropertyPath::getValue() const
 {
-    return _cValue;
+    auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
+    return self._cValue;
 }
 
 PyObject* PropertyPath::getPyObject()
@@ -243,6 +249,8 @@ PyObject* PropertyPath::getPyObject()
 
 void PropertyPath::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyPath>(*this);
+
     std::string path;
     if (PyUnicode_Check(value)) {
         path = PyUnicode_AsUTF8(value);
@@ -254,41 +262,51 @@ void PropertyPath::setPyObject(PyObject* value)
     }
 
     // assign the path
-    setValue(path.c_str());
+    self.setValue(path.c_str());
 }
 
 
 void PropertyPath::Save(Base::Writer& writer) const
 {
-    std::string val = encodeAttribute(_cValue.string());
+    auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
+    std::string val = encodeAttribute(self._cValue.string());
     writer.Stream() << writer.ind() << "<Path value=\"" << val << "\"/>" << std::endl;
 }
 
 void PropertyPath::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyPath>(*this);
+
     // read my Element
     reader.readElement("Path");
     // get the value of my Attribute
-    setValue(reader.getAttribute<const char*>("value"));
+    self.setValue(reader.getAttribute<const char*>("value"));
 }
 
 Property* PropertyPath::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
     PropertyPath* p = new PropertyPath();
-    p->_cValue = _cValue;
+    p->_cValue = self._cValue;
     return p;
 }
 
 void PropertyPath::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _cValue = dynamic_cast<const PropertyPath&>(from)._cValue;
+    auto& self = propSetterSelf<App::PropertyPath>(*this);
+
+    self.aboutToSetValue();
+    self._cValue = dynamic_cast<const PropertyPath&>(from)._cValue;
     hasSetValue();
 }
 
 unsigned int PropertyPath::getMemSize() const
 {
-    return static_cast<unsigned int>(_cValue.string().size());
+    auto& self = propGetterSelf<const App::PropertyPath>(*this);
+
+    return static_cast<unsigned int>(self._cValue.string().size());
 }
 
 //**************************************************************************
@@ -316,112 +334,142 @@ PropertyEnumeration::~PropertyEnumeration() = default;
 
 void PropertyEnumeration::setEnums(const char** plEnums)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
+    bool notify = !boost::starts_with(self.getFullName(), "?");
     if (notify) {
-        aboutToSetValue();
+        self.aboutToSetValue();
     }
-    _enum.setEnums(plEnums);
+    self._enum.setEnums(plEnums);
     if (notify) {
-        hasSetValue();
+        self.hasSetValue();
     }
 }
 
 void PropertyEnumeration::setEnums(const std::vector<std::string>& Enums)
 {
-    setEnumVector(Enums);
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+    self.setEnumVector(Enums);
 }
 
 void PropertyEnumeration::setValue(const char* value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+    self.aboutToSetValue();
+    self._enum.setValue(value);
+    self.hasSetValue();
 }
 
 void PropertyEnumeration::setValue(long value)
 {
-    aboutToSetValue();
-    _enum.setValue(value);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+    self.aboutToSetValue();
+    self._enum.setValue(value);
+    self.hasSetValue();
 }
 
 void PropertyEnumeration::setValue(const Enumeration& source)
 {
-    aboutToSetValue();
-    _enum = source;
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+    self.aboutToSetValue();
+    self._enum = source;
     hasSetValue();
 }
 
 long PropertyEnumeration::getValue() const
 {
-    return _enum.getInt();
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.getInt();
 }
 
 bool PropertyEnumeration::isValue(const char* value) const
 {
-    return _enum.isValue(value);
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.isValue(value);
 }
 
 bool PropertyEnumeration::isPartOf(const char* value) const
 {
-    return _enum.contains(value);
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.contains(value);
 }
 
 const char* PropertyEnumeration::getValueAsString() const
 {
-    if (!_enum.isValid()) {
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    if (!self._enum.isValid()) {
         throw Base::RuntimeError("Cannot get value from invalid enumeration");
     }
-    return _enum.getCStr();
+    return self._enum.getCStr();
 }
 
 const Enumeration& PropertyEnumeration::getEnum() const
 {
-    return _enum;
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum;
 }
 
 std::vector<std::string> PropertyEnumeration::getEnumVector() const
 {
-    return _enum.getEnumVector();
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.getEnumVector();
 }
 
 void PropertyEnumeration::setEnumVector(const std::vector<std::string>& values)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     // For backward compatibility, if the property container is not attached to
     // any document (i.e. its full name starts with '?'), do not notify, or
     // else existing code may crash.
-    bool notify = !boost::starts_with(getFullName(), "?");
+    bool notify = !boost::starts_with(self.getFullName(), "?");
     if (notify) {
-        aboutToSetValue();
+        self.aboutToSetValue();
     }
-    _enum.setEnums(values);
+    self._enum.setEnums(values);
     if (notify) {
-        hasSetValue();
+        self.hasSetValue();
     }
 }
 
 bool PropertyEnumeration::hasEnums() const
 {
-    return _enum.hasEnums();
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.hasEnums();
 }
 
 bool PropertyEnumeration::isValid() const
 {
-    return _enum.isValid();
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return self._enum.isValid();
 }
 
 void PropertyEnumeration::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Integer value=\"" << _enum.getInt() << "\"";
-    if (_enum.isCustom()) {
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    writer.Stream() << writer.ind() << "<Integer value=\"" << self._enum.getInt() << "\"";
+    if (self._enum.isCustom()) {
         writer.Stream() << " CustomEnum=\"true\"";
     }
     writer.Stream() << "/>" << std::endl;
-    if (_enum.isCustom()) {
-        std::vector<std::string> items = getEnumVector();
+    if (self._enum.isCustom()) {
+        std::vector<std::string> items = self.getEnumVector();
         writer.Stream() << writer.ind() << "<CustomEnumList count=\"" << items.size() << "\">"
                         << endl;
         writer.incInd();
@@ -436,12 +484,14 @@ void PropertyEnumeration::Save(Base::Writer& writer) const
 
 void PropertyEnumeration::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     // read my Element
     reader.readElement("Integer");
     // get the value of my Attribute
     long val = reader.getAttribute<long>("value");
 
-    aboutToSetValue();
+    self.aboutToSetValue();
 
     if (reader.hasAttribute("CustomEnum")) {
         reader.readElement("CustomEnumList");
@@ -455,49 +505,53 @@ void PropertyEnumeration::Restore(Base::XMLReader& reader)
 
         reader.readEndElement("CustomEnumList");
 
-        _enum.setEnums(values);
+        self._enum.setEnums(values);
     }
 
     if (val < 0) {
         // If the enum is empty at this stage do not print a warning
-        if (_enum.hasEnums()) {
+        if (self._enum.hasEnums()) {
             Base::Console().developerWarning(std::string("PropertyEnumeration"),
                                              "Enumeration index %d is out of range, ignore it\n",
                                              val);
         }
-        val = getValue();
+        val = self.getValue();
     }
 
-    _enum.setValue(val);
-    hasSetValue();
+    self._enum.setValue(val);
+    self.hasSetValue();
 }
 
 PyObject* PropertyEnumeration::getPyObject()
 {
-    if (!_enum.isValid()) {
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    if (!self._enum.isValid()) {
         Py_Return;
     }
 
-    return Py_BuildValue("s", getValueAsString());
+    return Py_BuildValue("s", self.getValueAsString());
 }
 
 void PropertyEnumeration::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     if (PyLong_Check(value)) {
         long val = PyLong_AsLong(value);
-        if (_enum.isValid()) {
-            aboutToSetValue();
-            _enum.setValue(val, true);
-            hasSetValue();
+        if (self._enum.isValid()) {
+            self.aboutToSetValue();
+            self._enum.setValue(val, true);
+            self.hasSetValue();
         }
         return;
     }
     else if (PyUnicode_Check(value)) {
         std::string str = PyUnicode_AsUTF8(value);
-        if (_enum.contains(str.c_str())) {
-            aboutToSetValue();
-            _enum.setValue(str);
-            hasSetValue();
+        if (self._enum.contains(str.c_str())) {
+            self.aboutToSetValue();
+            self._enum.setValue(str);
+            self.hasSetValue();
         }
         else {
             FC_THROWM(Base::ValueError,
@@ -527,12 +581,12 @@ void PropertyEnumeration::setPyObject(PyObject* value)
                 values[i] = Py::Object(seq[i].ptr()).as_string();
             }
 
-            aboutToSetValue();
-            _enum.setEnums(values);
+            self.aboutToSetValue();
+            self._enum.setEnums(values);
             if (idx >= 0) {
-                _enum.setValue(idx, true);
+                self._enum.setValue(idx, true);
             }
-            hasSetValue();
+            self.hasSetValue();
             return;
         }
         catch (Py::Exception&) {
@@ -549,83 +603,95 @@ void PropertyEnumeration::setPyObject(PyObject* value)
 
 Property* PropertyEnumeration::Copy() const
 {
-    return new PropertyEnumeration(_enum);
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
+    return new PropertyEnumeration(self._enum);
 }
 
 void PropertyEnumeration::Paste(const Property& from)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     const PropertyEnumeration& prop = dynamic_cast<const PropertyEnumeration&>(from);
-    setValue(prop._enum);
+    self.setValue(prop._enum);
 }
 
 void PropertyEnumeration::setPathValue(const ObjectIdentifier&, const boost::any& value)
 {
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
     if (value.type() == typeid(int)) {
-        setValue(boost::any_cast<int>(value));
+        self.setValue(boost::any_cast<int>(value));
     }
     else if (value.type() == typeid(long)) {
-        setValue(boost::any_cast<long>(value));
+        self.setValue(boost::any_cast<long>(value));
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::any_cast<double>(value));
+        self.setValue(boost::any_cast<double>(value));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::any_cast<float>(value));
+        self.setValue(boost::any_cast<float>(value));
     }
     else if (value.type() == typeid(short)) {
-        setValue(boost::any_cast<short>(value));
+        self.setValue(boost::any_cast<short>(value));
     }
     else if (value.type() == typeid(std::string)) {
-        setValue(boost::any_cast<std::string>(value).c_str());
+        self.setValue(boost::any_cast<std::string>(value).c_str());
     }
     else if (value.type() == typeid(char*)) {
-        setValue(boost::any_cast<char*>(value));
+        self.setValue(boost::any_cast<char*>(value));
     }
     else if (value.type() == typeid(const char*)) {
-        setValue(boost::any_cast<const char*>(value));
+        self.setValue(boost::any_cast<const char*>(value));
     }
     else {
         Base::PyGILStateLocker lock;
         Py::Object pyValue = pyObjectFromAny(value);
-        setPyObject(pyValue.ptr());
+        self.setPyObject(pyValue.ptr());
     }
 }
 
 bool PropertyEnumeration::setPyPathValue(const ObjectIdentifier&, const Py::Object& value)
 {
-    setPyObject(value.ptr());
+    auto& self = propSetterSelf<App::PropertyEnumeration>(*this);
+
+    self.setPyObject(value.ptr());
     return true;
 }
 
 const boost::any PropertyEnumeration::getPathValue(const ObjectIdentifier& path) const
 {
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
         Py::Object res;
-        getPyPathValue(path, res);
+        self.getPyPathValue(path, res);
         return pyObjectToAny(res, false);
     }
     else if (p == ".String") {
-        auto v = getValueAsString();
+        auto v = self.getValueAsString();
         return std::string(v ? v : "");
     }
     else {
-        return getValue();
+        return self.getValue();
     }
 }
 
 bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Object& r) const
 {
+    auto& self = propGetterSelf<const App::PropertyEnumeration>(*this);
+
     std::string p = path.getSubPathStr();
     if (p == ".Enum" || p == ".All") {
         Base::PyGILStateLocker lock;
-        auto maxEnumValue = _enum.maxValue();
+        auto maxEnumValue = self._enum.maxValue();
         if (maxEnumValue < 0) {
             return false;  // The enum is invalid
         }
         Py::Tuple res(maxEnumValue + 1);
-        std::vector<std::string> enums = _enum.getEnumVector();
+        std::vector<std::string> enums = self._enum.getEnumVector();
         PropertyString tmp;
         for (int i = 0; i < int(enums.size()); ++i) {
             tmp.setValue(enums[i]);
@@ -637,16 +703,16 @@ bool PropertyEnumeration::getPyPathValue(const ObjectIdentifier& path, Py::Objec
         else {
             Py::Tuple tuple(2);
             tuple.setItem(0, res);
-            tuple.setItem(1, Py::Long(getValue()));
+            tuple.setItem(1, Py::Long(self.getValue()));
             r = tuple;
         }
     }
     else if (p == ".String") {
-        auto v = getValueAsString();
+        auto v = self.getValueAsString();
         r = Py::String(v ? v : "");
     }
     else {
-        r = Py::Long(getValue());
+        r = Py::Long(self.getValue());
     }
     return true;
 }
@@ -673,24 +739,30 @@ PropertyIntegerConstraint::~PropertyIntegerConstraint()
 
 void PropertyIntegerConstraint::setConstraints(const Constraints* sConstrain)
 {
-    if (_ConstStruct != sConstrain) {
-        if (_ConstStruct && _ConstStruct->isDeletable()) {
-            delete _ConstStruct;
+    auto& self = propSetterSelf<App::PropertyIntegerConstraint>(*this);
+
+    if (self._ConstStruct != sConstrain) {
+        if (self._ConstStruct && self._ConstStruct->isDeletable()) {
+            delete self._ConstStruct;
         }
     }
 
-    _ConstStruct = sConstrain;
+    self._ConstStruct = sConstrain;
 }
 
 const PropertyIntegerConstraint::Constraints* PropertyIntegerConstraint::getConstraints() const
 {
-    return _ConstStruct;
+    auto& self = propGetterSelf<const App::PropertyIntegerConstraint>(*this);
+
+    return self._ConstStruct;
 }
 
 long PropertyIntegerConstraint::getMinimum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->LowerBound;
+    auto& self = propGetterSelf<const App::PropertyIntegerConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->LowerBound;
     }
     // return the min of int, not long
     return std::numeric_limits<int>::lowest();
@@ -698,8 +770,10 @@ long PropertyIntegerConstraint::getMinimum() const
 
 long PropertyIntegerConstraint::getMaximum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->UpperBound;
+    auto& self = propGetterSelf<const App::PropertyIntegerConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->UpperBound;
     }
     // return the max of int, not long
     return std::numeric_limits<int>::max();
@@ -707,27 +781,31 @@ long PropertyIntegerConstraint::getMaximum() const
 
 long PropertyIntegerConstraint::getStepSize() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->StepSize;
+    auto& self = propGetterSelf<const App::PropertyIntegerConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->StepSize;
     }
     return 1;
 }
 
 void PropertyIntegerConstraint::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyIntegerConstraint>(*this);
+
     if (PyLong_Check(value)) {
         long temp = PyLong_AsLong(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
+        if (self._ConstStruct) {
+            if (temp > self._ConstStruct->UpperBound) {
+                temp = self._ConstStruct->UpperBound;
             }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
+            else if (temp < self._ConstStruct->LowerBound) {
+                temp = self._ConstStruct->LowerBound;
             }
         }
 
-        aboutToSetValue();
-        _lValue = temp;
+        self.aboutToSetValue();
+        self._lValue = temp;
         hasSetValue();
     }
     else {
@@ -785,7 +863,7 @@ void PropertyIntegerConstraint::setPyObject(PyObject* value)
         setConstraints(c);
 
         aboutToSetValue();
-        _lValue = valConstr[0];
+        self._lValue = valConstr[0];
         hasSetValue();
     }
 }
@@ -830,9 +908,11 @@ PropertyIntegerList::~PropertyIntegerList() = default;
 
 PyObject* PropertyIntegerList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
-    for (int i = 0; i < getSize(); i++) {
-        PyList_SetItem(list, i, PyLong_FromLong(_lValueList[i]));
+    auto& self = propGetterSelf<const App::PropertyIntegerList>(*this);
+
+    PyObject* list = PyList_New(self.getSize());
+    for (int i = 0; i < self.getSize(); i++) {
+        PyList_SetItem(list, i, PyLong_FromLong(self._lValueList[i]));
     }
     return list;
 }
@@ -849,10 +929,12 @@ long PropertyIntegerList::getPyValue(PyObject* item) const
 
 void PropertyIntegerList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerList count=\"" << getSize() << "\">" << endl;
+    auto& self = propGetterSelf<const App::PropertyIntegerList>(*this);
+
+    writer.Stream() << writer.ind() << "<IntegerList count=\"" << self.getSize() << "\">" << endl;
     writer.incInd();
-    for (int i = 0; i < getSize(); i++) {
-        writer.Stream() << writer.ind() << "<I v=\"" << _lValueList[i] << "\"/>" << endl;
+    for (int i = 0; i < self.getSize(); i++) {
+        writer.Stream() << writer.ind() << "<I v=\"" << self._lValueList[i] << "\"/>" << endl;
     };
     writer.decInd();
     writer.Stream() << writer.ind() << "</IntegerList>" << endl;
@@ -860,6 +942,8 @@ void PropertyIntegerList::Save(Base::Writer& writer) const
 
 void PropertyIntegerList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyIntegerList>(*this);
+
     // read my Element
     reader.readElement("IntegerList");
     // get the value of my Attribute
@@ -874,24 +958,30 @@ void PropertyIntegerList::Restore(Base::XMLReader& reader)
     reader.readEndElement("IntegerList");
 
     // assignment
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyIntegerList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyIntegerList>(*this);
+
     PropertyIntegerList* p = new PropertyIntegerList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyIntegerList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyIntegerList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyIntegerList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyIntegerList&>(from)._lValueList);
 }
 
 unsigned int PropertyIntegerList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(long));
+    auto& self = propGetterSelf<const App::PropertyIntegerList>(*this);
+
+    return static_cast<unsigned int>(self._lValueList.size() * sizeof(long));
 }
 
 
@@ -916,23 +1006,29 @@ PropertyIntegerSet::~PropertyIntegerSet() = default;
 
 void PropertyIntegerSet::setValue(long lValue)
 {
-    aboutToSetValue();
-    _lValueSet.clear();
-    _lValueSet.insert(lValue);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
+    self.aboutToSetValue();
+    self._lValueSet.clear();
+    self._lValueSet.insert(lValue);
+    self.hasSetValue();
 }
 
 void PropertyIntegerSet::setValues(const std::set<long>& values)
 {
-    aboutToSetValue();
-    _lValueSet = values;
+    auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
+    self.aboutToSetValue();
+    self._lValueSet = values;
     hasSetValue();
 }
 
 PyObject* PropertyIntegerSet::getPyObject()
 {
+    auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
     PyObject* set = PySet_New(nullptr);
-    for (long it : _lValueSet) {
+    for (long it : self._lValueSet) {
         PySet_Add(set, PyLong_FromLong(it));
     }
     return set;
@@ -940,6 +1036,8 @@ PyObject* PropertyIntegerSet::getPyObject()
 
 void PropertyIntegerSet::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
     if (PySequence_Check(value)) {
 
         Py::Sequence sequence(value);
@@ -956,10 +1054,10 @@ void PropertyIntegerSet::setPyObject(PyObject* value)
             values.insert(PyLong_AsLong(item.ptr()));
         }
 
-        setValues(values);
+        self.setValues(values);
     }
     else if (PyLong_Check(value)) {
-        setValue(PyLong_AsLong(value));
+        self.setValue(PyLong_AsLong(value));
     }
     else {
         std::string error = std::string("type must be int or list of int, not ");
@@ -970,9 +1068,11 @@ void PropertyIntegerSet::setPyObject(PyObject* value)
 
 void PropertyIntegerSet::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<IntegerSet count=\"" << _lValueSet.size() << "\">" << endl;
+    auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
+    writer.Stream() << writer.ind() << "<IntegerSet count=\"" << self._lValueSet.size() << "\">" << endl;
     writer.incInd();
-    for (long it : _lValueSet) {
+    for (long it : self._lValueSet) {
         writer.Stream() << writer.ind() << "<I v=\"" << it << "\"/>" << endl;
     };
     writer.decInd();
@@ -981,6 +1081,8 @@ void PropertyIntegerSet::Save(Base::Writer& writer) const
 
 void PropertyIntegerSet::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
     // read my Element
     reader.readElement("IntegerSet");
     // get the value of my Attribute
@@ -995,26 +1097,32 @@ void PropertyIntegerSet::Restore(Base::XMLReader& reader)
     reader.readEndElement("IntegerSet");
 
     // assignment
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyIntegerSet::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
     PropertyIntegerSet* p = new PropertyIntegerSet();
-    p->_lValueSet = _lValueSet;
+    p->_lValueSet = self._lValueSet;
     return p;
 }
 
 void PropertyIntegerSet::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValueSet = dynamic_cast<const PropertyIntegerSet&>(from)._lValueSet;
+    auto& self = propSetterSelf<App::PropertyIntegerSet>(*this);
+
+    self.aboutToSetValue();
+    self._lValueSet = dynamic_cast<const PropertyIntegerSet&>(from)._lValueSet;
     hasSetValue();
 }
 
 unsigned int PropertyIntegerSet::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueSet.size() * sizeof(long));
+    auto& self = propGetterSelf<const App::PropertyIntegerSet>(*this);
+
+    return static_cast<unsigned int>(self._lValueSet.size() * sizeof(long));
 }
 
 
@@ -1041,31 +1149,39 @@ PropertyFloat::~PropertyFloat() = default;
 
 void PropertyFloat::setValue(double lValue)
 {
-    aboutToSetValue();
-    _dValue = lValue;
+    auto& self = propSetterSelf<App::PropertyFloat>(*this);
+
+    self.aboutToSetValue();
+    self._dValue = lValue;
     hasSetValue();
 }
 
 double PropertyFloat::getValue() const
 {
-    return _dValue;
+    auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
+    return self._dValue;
 }
 
 PyObject* PropertyFloat::getPyObject()
 {
-    return Py_BuildValue("d", _dValue);
+    auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
+    return Py_BuildValue("d", self._dValue);
 }
 
 void PropertyFloat::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyFloat>(*this);
+
     if (PyFloat_Check(value)) {
-        aboutToSetValue();
-        _dValue = PyFloat_AsDouble(value);
+        self.aboutToSetValue();
+        self._dValue = PyFloat_AsDouble(value);
         hasSetValue();
     }
     else if (PyLong_Check(value)) {
         aboutToSetValue();
-        _dValue = PyLong_AsLong(value);
+        self._dValue = PyLong_AsLong(value);
         hasSetValue();
     }
     else {
@@ -1077,52 +1193,62 @@ void PropertyFloat::setPyObject(PyObject* value)
 
 void PropertyFloat::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Float value=\"" << _dValue << "\"/>" << std::endl;
+    auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
+    writer.Stream() << writer.ind() << "<Float value=\"" << self._dValue << "\"/>" << std::endl;
 }
 
 void PropertyFloat::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyFloat>(*this);
+
     // read my Element
     reader.readElement("Float");
     // get the value of my Attribute
-    setValue(reader.getAttribute<double>("value"));
+    self.setValue(reader.getAttribute<double>("value"));
 }
 
 Property* PropertyFloat::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
     PropertyFloat* p = new PropertyFloat();
-    p->_dValue = _dValue;
+    p->_dValue = self._dValue;
     return p;
 }
 
 void PropertyFloat::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
+    auto& self = propSetterSelf<App::PropertyFloat>(*this);
+
+    self.aboutToSetValue();
+    self._dValue = dynamic_cast<const PropertyFloat&>(from)._dValue;
     hasSetValue();
 }
 
 void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    verifyPath(path);
+    auto& self = propSetterSelf<App::PropertyFloat>(*this);
+
+    self.verifyPath(path);
 
     if (value.type() == typeid(long)) {
-        setValue(boost::any_cast<long>(value));
+        self.setValue(boost::any_cast<long>(value));
     }
     else if (value.type() == typeid(unsigned long)) {
-        setValue(boost::any_cast<unsigned long>(value));
+        self.setValue(boost::any_cast<unsigned long>(value));
     }
     else if (value.type() == typeid(int)) {
-        setValue(boost::any_cast<int>(value));
+        self.setValue(boost::any_cast<int>(value));
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::any_cast<double>(value));
+        self.setValue(boost::any_cast<double>(value));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::any_cast<float>(value));
+        self.setValue(boost::any_cast<float>(value));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue((boost::any_cast<Quantity>(value)).getValue());
+        self.setValue((boost::any_cast<Quantity>(value)).getValue());
     }
     else {
         throw bad_cast();
@@ -1131,8 +1257,10 @@ void PropertyFloat::setPathValue(const ObjectIdentifier& path, const boost::any&
 
 const boost::any PropertyFloat::getPathValue(const ObjectIdentifier& path) const
 {
-    verifyPath(path);
-    return _dValue;
+    auto& self = propGetterSelf<const App::PropertyFloat>(*this);
+
+    self.verifyPath(path);
+    return self._dValue;
 }
 
 //**************************************************************************
@@ -1157,73 +1285,85 @@ PropertyFloatConstraint::~PropertyFloatConstraint()
 
 void PropertyFloatConstraint::setConstraints(const Constraints* sConstrain)
 {
-    if (_ConstStruct != sConstrain) {
-        if (_ConstStruct && _ConstStruct->isDeletable()) {
-            delete _ConstStruct;
+    auto& self = propSetterSelf<App::PropertyFloatConstraint>(*this);
+
+    if (self._ConstStruct != sConstrain) {
+        if (self._ConstStruct && self._ConstStruct->isDeletable()) {
+            delete self._ConstStruct;
         }
     }
-    _ConstStruct = sConstrain;
+    self._ConstStruct = sConstrain;
 }
 
 const PropertyFloatConstraint::Constraints* PropertyFloatConstraint::getConstraints() const
 {
-    return _ConstStruct;
+    auto& self = propGetterSelf<const App::PropertyFloatConstraint>(*this);
+
+    return self._ConstStruct;
 }
 
 double PropertyFloatConstraint::getMinimum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->LowerBound;
+    auto& self = propGetterSelf<const App::PropertyFloatConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->LowerBound;
     }
     return std::numeric_limits<double>::lowest();
 }
 
 double PropertyFloatConstraint::getMaximum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->UpperBound;
+    auto& self = propGetterSelf<const App::PropertyFloatConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->UpperBound;
     }
     return std::numeric_limits<double>::max();
 }
 
 double PropertyFloatConstraint::getStepSize() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->StepSize;
+    auto& self = propGetterSelf<const App::PropertyFloatConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->StepSize;
     }
     return 1.0;
 }
 
 void PropertyFloatConstraint::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyFloatConstraint>(*this);
+
     if (PyFloat_Check(value)) {
         double temp = PyFloat_AsDouble(value);
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
+        if (self._ConstStruct) {
+            if (temp > self._ConstStruct->UpperBound) {
+                temp = self._ConstStruct->UpperBound;
             }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
+            else if (temp < self._ConstStruct->LowerBound) {
+                temp = self._ConstStruct->LowerBound;
             }
         }
 
-        aboutToSetValue();
-        _dValue = temp;
+        self.aboutToSetValue();
+        self._dValue = temp;
         hasSetValue();
     }
     else if (PyLong_Check(value)) {
         double temp = static_cast<double>(PyLong_AsLong(value));
-        if (_ConstStruct) {
-            if (temp > _ConstStruct->UpperBound) {
-                temp = _ConstStruct->UpperBound;
+        if (self._ConstStruct) {
+            if (temp > self._ConstStruct->UpperBound) {
+                temp = self._ConstStruct->UpperBound;
             }
-            else if (temp < _ConstStruct->LowerBound) {
-                temp = _ConstStruct->LowerBound;
+            else if (temp < self._ConstStruct->LowerBound) {
+                temp = self._ConstStruct->LowerBound;
             }
         }
 
         aboutToSetValue();
-        _dValue = temp;
+        self._dValue = temp;
         hasSetValue();
     }
     else {
@@ -1287,7 +1427,7 @@ void PropertyFloatConstraint::setPyObject(PyObject* value)
         setConstraints(c);
 
         aboutToSetValue();
-        _dValue = valConstr[0];
+        self._dValue = valConstr[0];
         hasSetValue();
     }
 }
@@ -1331,9 +1471,11 @@ PropertyFloatList::~PropertyFloatList() = default;
 
 PyObject* PropertyFloatList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
-    for (int i = 0; i < getSize(); i++) {
-        PyList_SetItem(list, i, PyFloat_FromDouble(_lValueList[i]));
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
+    PyObject* list = PyList_New(self.getSize());
+    for (int i = 0; i < self.getSize(); i++) {
+        PyList_SetItem(list, i, PyFloat_FromDouble(self._lValueList[i]));
     }
     return list;
 }
@@ -1355,45 +1497,51 @@ double PropertyFloatList::getPyValue(PyObject* item) const
 
 void PropertyFloatList::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
     if (writer.isForceXML()) {
-        writer.Stream() << writer.ind() << "<FloatList count=\"" << getSize() << "\">" << endl;
+        writer.Stream() << writer.ind() << "<FloatList count=\"" << self.getSize() << "\">" << endl;
         writer.incInd();
-        for (int i = 0; i < getSize(); i++) {
-            writer.Stream() << writer.ind() << "<F v=\"" << _lValueList[i] << "\"/>" << endl;
+        for (int i = 0; i < self.getSize(); i++) {
+            writer.Stream() << writer.ind() << "<F v=\"" << self._lValueList[i] << "\"/>" << endl;
         };
         writer.decInd();
         writer.Stream() << writer.ind() << "</FloatList>" << endl;
     }
     else {
         writer.Stream() << writer.ind() << "<FloatList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
+                        << (self.getSize() ? writer.addFile(self.getName(), &self) : "") << "\"/>"
                         << std::endl;
     }
 }
 
 void PropertyFloatList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
     reader.readElement("FloatList");
     string file(reader.getAttribute<const char*>("file"));
 
     if (!file.empty()) {
         // initiate a file read
-        reader.addFile(file.c_str(), this);
+        reader.addFile(file.c_str(), &self);
     }
 }
 
 void PropertyFloatList::SaveDocFile(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
     Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
+    uint32_t uCt = (uint32_t)self.getSize();
     str << uCt;
-    if (!isSinglePrecision()) {
-        for (double it : _lValueList) {
+    if (!self.isSinglePrecision()) {
+        for (double it : self._lValueList) {
             str << it;
         }
     }
     else {
-        for (double it : _lValueList) {
+        for (double it : self._lValueList) {
             float v = static_cast<float>(it);
             str << v;
         }
@@ -1402,11 +1550,13 @@ void PropertyFloatList::SaveDocFile(Base::Writer& writer) const
 
 void PropertyFloatList::RestoreDocFile(Base::Reader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyFloatList>(*this);
+
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
     std::vector<double> values(uCt);
-    if (!isSinglePrecision()) {
+    if (!self.isSinglePrecision()) {
         for (double& it : values) {
             str >> it;
         }
@@ -1418,24 +1568,30 @@ void PropertyFloatList::RestoreDocFile(Base::Reader& reader)
             it = val;
         }
     }
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyFloatList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
     PropertyFloatList* p = new PropertyFloatList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyFloatList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyFloatList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyFloatList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyFloatList&>(from)._lValueList);
 }
 
 unsigned int PropertyFloatList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(double));
+    auto& self = propGetterSelf<const App::PropertyFloatList>(*this);
+
+    return static_cast<unsigned int>(self._lValueList.size() * sizeof(double));
 }
 
 //**************************************************************************
@@ -1451,22 +1607,24 @@ PropertyString::~PropertyString() = default;
 
 void PropertyString::setValue(const char* newValue)
 {
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
     if (!newValue) {
         return;
     }
 
-    if (_cValue == newValue) {
+    if (self._cValue == newValue) {
         return;
     }
 
     std::vector<std::pair<Property*, std::unique_ptr<Property>>> propChanges;
     std::string newValueStr = newValue;
-    auto obj = freecad_cast<DocumentObject*>(getContainer());
+    auto obj = freecad_cast<DocumentObject*>(self.getContainer());
     bool commit = false;
 
-    if (obj && this == &obj->Label) {
+    if (obj && &self == &obj->Label) {
         propChanges = obj->onProposedLabelChange(newValueStr);
-        if (_cValue == newValueStr) {
+        if (self._cValue == newValueStr) {
             // OnProposedLabelChange has changed the new value to what the current value is
             return;
         }
@@ -1478,8 +1636,8 @@ void PropertyString::setValue(const char* newValue)
         }
     }
 
-    aboutToSetValue();
-    _cValue = newValueStr;
+    self.aboutToSetValue();
+    self._cValue = newValueStr;
     hasSetValue();
 
     for (auto& change : propChanges) {
@@ -1493,17 +1651,23 @@ void PropertyString::setValue(const char* newValue)
 
 void PropertyString::setValue(const std::string& sString)
 {
-    setValue(sString.c_str());
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
+    self.setValue(sString.c_str());
 }
 
 const char* PropertyString::getValue() const
 {
-    return _cValue.c_str();
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+    return self._cValue.c_str();
 }
 
 PyObject* PropertyString::getPyObject()
 {
-    PyObject* p = PyUnicode_DecodeUTF8(_cValue.c_str(), _cValue.size(), nullptr);
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+    PyObject* p = PyUnicode_DecodeUTF8(self._cValue.c_str(), self._cValue.size(), nullptr);
     if (!p) {
         throw Base::UnicodeError("UTF8 conversion failure at PropertyString::getPyObject()");
     }
@@ -1512,6 +1676,8 @@ PyObject* PropertyString::getPyObject()
 
 void PropertyString::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
     std::string string;
     if (PyUnicode_Check(value)) {
         string = PyUnicode_AsUTF8(value);
@@ -1523,12 +1689,14 @@ void PropertyString::setPyObject(PyObject* value)
     }
 
     // assign the string
-    setValue(string);
+    self.setValue(string);
 }
 
 void PropertyString::Save(Base::Writer& writer) const
 {
-    auto verifyXMLString = [this](std::string& input) {
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+    auto verifyXMLString = [&self](std::string& input) {
         const std::string output = this->validateXMLString(input);
         if (output != input) {
             Base::Console().warning("XML output: Validate invalid string:\n'%s'\n'%s'\n",
@@ -1537,14 +1705,14 @@ void PropertyString::Save(Base::Writer& writer) const
         return output;
     };
     std::string val;
-    auto obj = freecad_cast<DocumentObject*>(getContainer());
+    auto obj = freecad_cast<DocumentObject*>(self.getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == this) {
+    if (obj && obj->isAttachedToDocument() && obj->isExporting() && &obj->Label == &self) {
         if (obj->allowDuplicateLabel()) {
             writer.Stream() << "restore=\"1\" ";
         }
-        else if (_cValue == obj->getNameInDocument()) {
+        else if (self._cValue == obj->getNameInDocument()) {
             writer.Stream() << "restore=\"0\" ";
             val = encodeAttribute(obj->getExportName());
             val = verifyXMLString(val);
@@ -1552,7 +1720,7 @@ void PropertyString::Save(Base::Writer& writer) const
         }
     }
     if (!exported) {
-        val = encodeAttribute(_cValue);
+        val = encodeAttribute(self._cValue);
         val = verifyXMLString(val);
     }
     writer.Stream() << "value=\"" << val << "\"/>" << std::endl;
@@ -1560,16 +1728,18 @@ void PropertyString::Save(Base::Writer& writer) const
 
 void PropertyString::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
     // read my Element
     reader.readElement("String");
     // get the value of my Attribute
-    auto obj = freecad_cast<DocumentObject*>(getContainer());
-    if (obj && &obj->Label == this) {
+    auto obj = freecad_cast<DocumentObject*>(self.getContainer());
+    if (obj && &obj->Label == &self) {
         if (reader.hasAttribute("restore")) {
             int restore = reader.getAttribute<long>("restore");
             if (restore == 1) {
-                aboutToSetValue();
-                _cValue = reader.getAttribute<const char*>("value");
+                self.aboutToSetValue();
+                self._cValue = reader.getAttribute<const char*>("value");
                 hasSetValue();
             }
             else {
@@ -1587,55 +1757,65 @@ void PropertyString::Restore(Base::XMLReader& reader)
 
 Property* PropertyString::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
     PropertyString* p = new PropertyString();
-    p->_cValue = _cValue;
+    p->_cValue = self._cValue;
     return p;
 }
 
 void PropertyString::Paste(const Property& from)
 {
-    setValue(dynamic_cast<const PropertyString&>(from)._cValue);
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
+    self.setValue(dynamic_cast<const PropertyString&>(from)._cValue);
 }
 
 unsigned int PropertyString::getMemSize() const
 {
-    return static_cast<unsigned int>(_cValue.size());
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+    return static_cast<unsigned int>(self._cValue.size());
 }
 
 void PropertyString::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    verifyPath(path);
+    auto& self = propSetterSelf<App::PropertyString>(*this);
+
+    self.verifyPath(path);
     if (value.type() == typeid(bool)) {
-        setValue(boost::any_cast<bool>(value) ? "True" : "False");
+        self.setValue(boost::any_cast<bool>(value) ? "True" : "False");
     }
     else if (value.type() == typeid(int)) {
-        setValue(std::to_string(boost::any_cast<int>(value)));
+        self.setValue(std::to_string(boost::any_cast<int>(value)));
     }
     else if (value.type() == typeid(long)) {
-        setValue(std::to_string(boost::any_cast<long>(value)));
+        self.setValue(std::to_string(boost::any_cast<long>(value)));
     }
     else if (value.type() == typeid(double)) {
-        setValue(std::to_string(App::any_cast<double>(value)));
+        self.setValue(std::to_string(App::any_cast<double>(value)));
     }
     else if (value.type() == typeid(float)) {
-        setValue(std::to_string(App::any_cast<float>(value)));
+        self.setValue(std::to_string(App::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
+        self.setValue(boost::any_cast<Quantity>(value).getUserString().c_str());
     }
     else if (value.type() == typeid(std::string)) {
-        setValue(boost::any_cast<const std::string &>(value));
+        self.setValue(boost::any_cast<const std::string &>(value));
     }
     else {
         Base::PyGILStateLocker lock;
-        setValue(pyObjectFromAny(value).as_string());
+        self.setValue(pyObjectFromAny(value).as_string());
     }
 }
 
 const boost::any PropertyString::getPathValue(const ObjectIdentifier& path) const
 {
-    verifyPath(path);
-    return _cValue;
+    auto& self = propGetterSelf<const App::PropertyString>(*this);
+
+    self.verifyPath(path);
+    return self._cValue;
 }
 
 //**************************************************************************
@@ -1651,45 +1831,59 @@ PropertyUUID::~PropertyUUID() = default;
 
 void PropertyUUID::setValue(const Base::Uuid& id)
 {
-    aboutToSetValue();
-    _uuid = id;
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
+    self.aboutToSetValue();
+    self._uuid = id;
     hasSetValue();
 }
 
 void PropertyUUID::setValue(const char* sString)
 {
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
     if (sString) {
-        aboutToSetValue();
-        _uuid.setValue(sString);
-        hasSetValue();
+        self.aboutToSetValue();
+        self._uuid.setValue(sString);
+        self.hasSetValue();
     }
 }
 
 void PropertyUUID::setValue(const std::string& sString)
 {
-    aboutToSetValue();
-    _uuid.setValue(sString);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
+    self.aboutToSetValue();
+    self._uuid.setValue(sString);
+    self.hasSetValue();
 }
 
 const std::string& PropertyUUID::getValueStr() const
 {
-    return _uuid.getValue();
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+    return self._uuid.getValue();
 }
 
 const Base::Uuid& PropertyUUID::getValue() const
 {
-    return _uuid;
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+    return self._uuid;
 }
 
 PyObject* PropertyUUID::getPyObject()
 {
-    PyObject* p = PyUnicode_FromString(_uuid.getValue().c_str());
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+    PyObject* p = PyUnicode_FromString(self._uuid.getValue().c_str());
     return p;
 }
 
 void PropertyUUID::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
     std::string string;
     if (PyUnicode_Check(value)) {
         string = PyUnicode_AsUTF8(value);
@@ -1704,7 +1898,7 @@ void PropertyUUID::setPyObject(PyObject* value)
         // assign the string
         Base::Uuid uid;
         uid.setValue(string);
-        setValue(uid);
+        self.setValue(uid);
     }
     catch (const std::exception& e) {
         throw Base::RuntimeError(e.what());
@@ -1713,34 +1907,44 @@ void PropertyUUID::setPyObject(PyObject* value)
 
 void PropertyUUID::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Uuid value=\"" << _uuid.getValue() << "\"/>" << std::endl;
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+    writer.Stream() << writer.ind() << "<Uuid value=\"" << self._uuid.getValue() << "\"/>" << std::endl;
 }
 
 void PropertyUUID::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
     // read my Element
     reader.readElement("Uuid");
     // get the value of my Attribute
-    setValue(reader.getAttribute<const char*>("value"));
+    self.setValue(reader.getAttribute<const char*>("value"));
 }
 
 Property* PropertyUUID::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
     PropertyUUID* p = new PropertyUUID();
-    p->_uuid = _uuid;
+    p->_uuid = self._uuid;
     return p;
 }
 
 void PropertyUUID::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _uuid = dynamic_cast<const PropertyUUID&>(from)._uuid;
+    auto& self = propSetterSelf<App::PropertyUUID>(*this);
+
+    self.aboutToSetValue();
+    self._uuid = dynamic_cast<const PropertyUUID&>(from)._uuid;
     hasSetValue();
 }
 
 unsigned int PropertyUUID::getMemSize() const
 {
-    return static_cast<unsigned int>(sizeof(_uuid));
+    auto& self = propGetterSelf<const App::PropertyUUID>(*this);
+
+    return static_cast<unsigned int>(sizeof(self._uuid));
 }
 
 //**************************************************************************
@@ -1768,21 +1972,25 @@ PropertyStringList::~PropertyStringList() = default;
 
 void PropertyStringList::setValues(const std::list<std::string>& lValue)
 {
+    auto& self = propSetterSelf<App::PropertyStringList>(*this);
+
     std::vector<std::string> vals;
     vals.reserve(lValue.size());
     for (const auto& v : lValue) {
         vals.push_back(v);
     }
-    setValues(vals);
+    self.setValues(vals);
 }
 
 PyObject* PropertyStringList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
+    auto& self = propGetterSelf<const App::PropertyStringList>(*this);
 
-    for (int i = 0; i < getSize(); i++) {
+    PyObject* list = PyList_New(self.getSize());
+
+    for (int i = 0; i < self.getSize(); i++) {
         PyObject* item =
-            PyUnicode_DecodeUTF8(_lValueList[i].c_str(), _lValueList[i].size(), nullptr);
+            PyUnicode_DecodeUTF8(self._lValueList[i].c_str(), self._lValueList[i].size(), nullptr);
         if (!item) {
             Py_DECREF(list);
             throw Base::UnicodeError(
@@ -1813,19 +2021,23 @@ std::string PropertyStringList::getPyValue(PyObject* item) const
 
 unsigned int PropertyStringList::getMemSize() const
 {
+    auto& self = propGetterSelf<const App::PropertyStringList>(*this);
+
     size_t size = 0;
-    for (int i = 0; i < getSize(); i++) {
-        size += _lValueList[i].size();
+    for (int i = 0; i < self.getSize(); i++) {
+        size += self._lValueList[i].size();
     }
     return static_cast<unsigned int>(size);
 }
 
 void PropertyStringList::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<StringList count=\"" << getSize() << "\">" << endl;
+    auto& self = propGetterSelf<const App::PropertyStringList>(*this);
+
+    writer.Stream() << writer.ind() << "<StringList count=\"" << self.getSize() << "\">" << endl;
     writer.incInd();
-    for (int i = 0; i < getSize(); i++) {
-        std::string val = encodeAttribute(_lValueList[i]);
+    for (int i = 0; i < self.getSize(); i++) {
+        std::string val = encodeAttribute(self._lValueList[i]);
         writer.Stream() << writer.ind() << "<String value=\"" << val << "\"/>" << endl;
     }
     writer.decInd();
@@ -1834,6 +2046,8 @@ void PropertyStringList::Save(Base::Writer& writer) const
 
 void PropertyStringList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyStringList>(*this);
+
     // read my Element
     reader.readElement("StringList");
     // get the value of my Attribute
@@ -1848,19 +2062,23 @@ void PropertyStringList::Restore(Base::XMLReader& reader)
     reader.readEndElement("StringList");
 
     // assignment
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyStringList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyStringList>(*this);
+
     PropertyStringList* p = new PropertyStringList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyStringList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyStringList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyStringList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyStringList&>(from)._lValueList);
 }
 
 
@@ -1880,28 +2098,36 @@ PropertyMap::~PropertyMap() = default;
 
 int PropertyMap::getSize() const
 {
-    return static_cast<int>(_lValueList.size());
+    auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
+    return static_cast<int>(self._lValueList.size());
 }
 
 void PropertyMap::setValue(const std::string& key, const std::string& value)
 {
-    aboutToSetValue();
-    _lValueList[key] = value;
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
+    self.aboutToSetValue();
+    self._lValueList[key] = value;
+    self.hasSetValue();
 }
 
 void PropertyMap::setValues(const std::map<std::string, std::string>& map)
 {
-    aboutToSetValue();
-    _lValueList = map;
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
+    self.aboutToSetValue();
+    self._lValueList = map;
     hasSetValue();
 }
 
 const std::string& PropertyMap::operator[](const std::string& key) const
 {
+    auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
     static std::string empty;
-    auto it = _lValueList.find(key);
-    if (it != _lValueList.end()) {
+    auto it = self._lValueList.find(key);
+    if (it != self._lValueList.end()) {
         return it->second;
     }
     return empty;
@@ -1909,9 +2135,11 @@ const std::string& PropertyMap::operator[](const std::string& key) const
 
 PyObject* PropertyMap::getPyObject()
 {
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
     PyObject* dict = PyDict_New();
 
-    for (auto it = _lValueList.begin(); it != _lValueList.end(); ++it) {
+    for (auto it = self._lValueList.begin(); it != self._lValueList.end(); ++it) {
         PyObject* item = PyUnicode_DecodeUTF8(it->second.c_str(), it->second.size(), nullptr);
         if (!item) {
             Py_DECREF(dict);
@@ -1926,6 +2154,8 @@ PyObject* PropertyMap::getPyObject()
 
 void PropertyMap::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
     if (PyMapping_Check(value)) {
         std::map<std::string, std::string> values;
         // get key and item list
@@ -1961,7 +2191,7 @@ void PropertyMap::setPyObject(PyObject* value)
         Py_XDECREF(itemList);
         Py_XDECREF(keyList);
 
-        setValues(values);
+        self.setValues(values);
     }
     else {
         std::string error("type must be a dict or object with mapping protocol, not ");
@@ -1972,8 +2202,10 @@ void PropertyMap::setPyObject(PyObject* value)
 
 unsigned int PropertyMap::getMemSize() const
 {
+    auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
     size_t size = 0;
-    for (const auto& it : _lValueList) {
+    for (const auto& it : self._lValueList) {
         size += it.second.size();
         size += it.first.size();
     }
@@ -1982,9 +2214,11 @@ unsigned int PropertyMap::getMemSize() const
 
 void PropertyMap::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<Map count=\"" << getSize() << "\">" << endl;
+    auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
+    writer.Stream() << writer.ind() << "<Map count=\"" << self.getSize() << "\">" << endl;
     writer.incInd();
-    for (const auto& it : _lValueList) {
+    for (const auto& it : self._lValueList) {
         writer.Stream() << writer.ind() << "<Item key=\"" << encodeAttribute(it.first)
                         << "\" value=\"" << encodeAttribute(it.second) << "\"/>" << endl;
     }
@@ -1995,6 +2229,8 @@ void PropertyMap::Save(Base::Writer& writer) const
 
 void PropertyMap::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
     // read my Element
     reader.readElement("Map");
     // get the value of my Attribute
@@ -2009,20 +2245,24 @@ void PropertyMap::Restore(Base::XMLReader& reader)
     reader.readEndElement("Map");
 
     // assignment
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyMap::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyMap>(*this);
+
     PropertyMap* p = new PropertyMap();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyMap::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValueList = dynamic_cast<const PropertyMap&>(from)._lValueList;
+    auto& self = propSetterSelf<App::PropertyMap>(*this);
+
+    self.aboutToSetValue();
+    self._lValueList = dynamic_cast<const PropertyMap&>(from)._lValueList;
     hasSetValue();
 }
 
@@ -2049,25 +2289,33 @@ PropertyBool::~PropertyBool() = default;
 
 void PropertyBool::setValue(bool lValue)
 {
-    aboutToSetValue();
-    _lValue = lValue;
+    auto& self = propSetterSelf<App::PropertyBool>(*this);
+
+    self.aboutToSetValue();
+    self._lValue = lValue;
     hasSetValue();
 }
 
 bool PropertyBool::getValue() const
 {
-    return _lValue;
+    auto& self = propGetterSelf<const App::PropertyBool>(*this);
+
+    return self._lValue;
 }
 
 PyObject* PropertyBool::getPyObject()
 {
-    return PyBool_FromLong(_lValue ? 1 : 0);
+    auto& self = propGetterSelf<const App::PropertyBool>(*this);
+
+    return PyBool_FromLong(self._lValue ? 1 : 0);
 }
 
 void PropertyBool::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyBool>(*this);
+
     if (PyBool_Check(value) || PyLong_Check(value)) {
-        setValue(Base::asBoolean(value));
+        self.setValue(Base::asBoolean(value));
     }
     else {
         std::string error = std::string("type must be bool, not ");
@@ -2078,8 +2326,10 @@ void PropertyBool::setPyObject(PyObject* value)
 
 void PropertyBool::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyBool>(*this);
+
     writer.Stream() << writer.ind() << "<Bool value=\"";
-    if (_lValue) {
+    if (self._lValue) {
         writer.Stream() << "true" << "\"/>";
     }
     else {
@@ -2090,49 +2340,57 @@ void PropertyBool::Save(Base::Writer& writer) const
 
 void PropertyBool::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyBool>(*this);
+
     // read my Element
     reader.readElement("Bool");
     // get the value of my Attribute
     string b = reader.getAttribute<const char*>("value");
-    (b == "true") ? setValue(true) : setValue(false);
+    (b == "true") ? self.setValue(true) : self.setValue(false);
 }
 
 
 Property* PropertyBool::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyBool>(*this);
+
     PropertyBool* p = new PropertyBool();
-    p->_lValue = _lValue;
+    p->_lValue = self._lValue;
     return p;
 }
 
 void PropertyBool::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
+    auto& self = propSetterSelf<App::PropertyBool>(*this);
+
+    self.aboutToSetValue();
+    self._lValue = dynamic_cast<const PropertyBool&>(from)._lValue;
     hasSetValue();
 }
 
 void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& value)
 {
-    verifyPath(path);
+    auto& self = propSetterSelf<App::PropertyBool>(*this);
+
+    self.verifyPath(path);
 
     if (value.type() == typeid(bool)) {
-        setValue(boost::any_cast<bool>(value));
+        self.setValue(boost::any_cast<bool>(value));
     }
     else if (value.type() == typeid(int)) {
-        setValue(boost::any_cast<int>(value) != 0);
+        self.setValue(boost::any_cast<int>(value) != 0);
     }
     else if (value.type() == typeid(long)) {
-        setValue(boost::any_cast<long>(value) != 0);
+        self.setValue(boost::any_cast<long>(value) != 0);
     }
     else if (value.type() == typeid(double)) {
-        setValue(boost::math::round(boost::any_cast<double>(value)));
+        self.setValue(boost::math::round(boost::any_cast<double>(value)));
     }
     else if (value.type() == typeid(float)) {
-        setValue(boost::math::round(boost::any_cast<float>(value)));
+        self.setValue(boost::math::round(boost::any_cast<float>(value)));
     }
     else if (value.type() == typeid(Quantity)) {
-        setValue(boost::any_cast<Quantity>(value).getValue() != 0);
+        self.setValue(boost::any_cast<Quantity>(value).getValue() != 0);
     }
     else {
         throw bad_cast();
@@ -2141,9 +2399,11 @@ void PropertyBool::setPathValue(const ObjectIdentifier& path, const boost::any& 
 
 const boost::any PropertyBool::getPathValue(const ObjectIdentifier& path) const
 {
-    verifyPath(path);
+    auto& self = propGetterSelf<const App::PropertyBool>(*this);
 
-    return _lValue;
+    self.verifyPath(path);
+
+    return self._lValue;
 }
 
 //**************************************************************************
@@ -2166,9 +2426,11 @@ PropertyBoolList::~PropertyBoolList() = default;
 
 PyObject* PropertyBoolList::getPyObject()
 {
-    PyObject* tuple = PyTuple_New(getSize());
-    for (int i = 0; i < getSize(); i++) {
-        bool v = _lValueList[i];
+    auto& self = propGetterSelf<const App::PropertyBoolList>(*this);
+
+    PyObject* tuple = PyTuple_New(self.getSize());
+    for (int i = 0; i < self.getSize(); i++) {
+        bool v = self._lValueList[i];
         if (v) {
             PyTuple_SetItem(tuple, i, PyBool_FromLong(1));
         }
@@ -2181,12 +2443,14 @@ PyObject* PropertyBoolList::getPyObject()
 
 void PropertyBoolList::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyBoolList>(*this);
+
     // string is also a sequence and must be treated differently
     std::string str;
     if (PyUnicode_Check(value)) {
         str = PyUnicode_AsUTF8(value);
         boost::dynamic_bitset<> values(str);
-        setValues(values);
+        self.setValues(values);
     }
     else {
         inherited::setPyObject(value);
@@ -2210,38 +2474,48 @@ bool PropertyBoolList::getPyValue(PyObject* item) const
 
 void PropertyBoolList::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyBoolList>(*this);
+
     writer.Stream() << writer.ind() << "<BoolList value=\"";
     std::string bitset;
-    boost::to_string(_lValueList, bitset);
+    boost::to_string(self._lValueList, bitset);
     writer.Stream() << bitset << "\"/>";
     writer.Stream() << std::endl;
 }
 
 void PropertyBoolList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyBoolList>(*this);
+
     // read my Element
     reader.readElement("BoolList");
     // get the value of my Attribute
     string str = reader.getAttribute<const char*>("value");
     boost::dynamic_bitset<> bitset(str);
-    setValues(bitset);
+    self.setValues(bitset);
 }
 
 Property* PropertyBoolList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyBoolList>(*this);
+
     PropertyBoolList* p = new PropertyBoolList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyBoolList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyBoolList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyBoolList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyBoolList&>(from)._lValueList);
 }
 
 unsigned int PropertyBoolList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size());
+    auto& self = propGetterSelf<const App::PropertyBoolList>(*this);
+
+    return static_cast<unsigned int>(self._lValueList.size());
 }
 
 //**************************************************************************
@@ -2282,37 +2556,47 @@ PropertyColor::~PropertyColor() = default;
 
 void PropertyColor::setValue(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cCol = col;
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
+    self.aboutToSetValue();
+    self._cCol = col;
     hasSetValue();
 }
 
 void PropertyColor::setValue(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cCol.setPackedValue(rgba);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
+    self.aboutToSetValue();
+    self._cCol.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyColor::setValue(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cCol.set(r, g, b, a);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
+    self.aboutToSetValue();
+    self._cCol.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 const Base::Color& PropertyColor::getValue() const
 {
-    return _cCol;
+    auto& self = propGetterSelf<const App::PropertyColor>(*this);
+
+    return self._cCol;
 }
 
 PyObject* PropertyColor::getPyObject()
 {
+    auto& self = propGetterSelf<const App::PropertyColor>(*this);
+
     PyObject* rgba = PyTuple_New(4);
-    PyObject* r = PyFloat_FromDouble(_cCol.r);
-    PyObject* g = PyFloat_FromDouble(_cCol.g);
-    PyObject* b = PyFloat_FromDouble(_cCol.b);
-    PyObject* a = PyFloat_FromDouble(_cCol.a);
+    PyObject* r = PyFloat_FromDouble(self._cCol.r);
+    PyObject* g = PyFloat_FromDouble(self._cCol.g);
+    PyObject* b = PyFloat_FromDouble(self._cCol.b);
+    PyObject* a = PyFloat_FromDouble(self._cCol.a);
 
     PyTuple_SetItem(rgba, 0, r);
     PyTuple_SetItem(rgba, 1, g);
@@ -2324,6 +2608,8 @@ PyObject* PropertyColor::getPyObject()
 
 void PropertyColor::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
     Base::Color cCol;
     if (PyTuple_Check(value) && (PyTuple_Size(value) == 3 || PyTuple_Size(value) == 4)) {
         PyObject* item;
@@ -2394,17 +2680,21 @@ void PropertyColor::setPyObject(PyObject* value)
         throw Base::TypeError(error);
     }
 
-    setValue(cCol);
+    self.setValue(cCol);
 }
 
 void PropertyColor::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<PropertyColor value=\"" << _cCol.getPackedValue() << "\"/>"
+    auto& self = propGetterSelf<const App::PropertyColor>(*this);
+
+    writer.Stream() << writer.ind() << "<PropertyColor value=\"" << self._cCol.getPackedValue() << "\"/>"
                     << endl;
 }
 
 void PropertyColor::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
     // read my Element
     reader.readElement("PropertyColor");
     // get the value of my Attribute
@@ -2415,20 +2705,24 @@ void PropertyColor::Restore(Base::XMLReader& reader)
         unsigned long alpha = alphaMax - (rgba & alphaMax);
         rgba = rgba - (rgba & alphaMax) + alpha;
     }
-    setValue(rgba);
+    self.setValue(rgba);
 }
 
 Property* PropertyColor::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyColor>(*this);
+
     PropertyColor* p = new PropertyColor();
-    p->_cCol = _cCol;
+    p->_cCol = self._cCol;
     return p;
 }
 
 void PropertyColor::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _cCol = dynamic_cast<const PropertyColor&>(from)._cCol;
+    auto& self = propSetterSelf<App::PropertyColor>(*this);
+
+    self.aboutToSetValue();
+    self._cCol = dynamic_cast<const PropertyColor&>(from)._cCol;
     hasSetValue();
 }
 
@@ -2450,14 +2744,16 @@ PropertyColorList::~PropertyColorList() = default;
 
 PyObject* PropertyColorList::getPyObject()
 {
-    PyObject* list = PyList_New(getSize());
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
 
-    for (int i = 0; i < getSize(); i++) {
+    PyObject* list = PyList_New(self.getSize());
+
+    for (int i = 0; i < self.getSize(); i++) {
         PyObject* rgba = PyTuple_New(4);
-        PyObject* r = PyFloat_FromDouble(_lValueList[i].r);
-        PyObject* g = PyFloat_FromDouble(_lValueList[i].g);
-        PyObject* b = PyFloat_FromDouble(_lValueList[i].b);
-        PyObject* a = PyFloat_FromDouble(_lValueList[i].a);
+        PyObject* r = PyFloat_FromDouble(self._lValueList[i].r);
+        PyObject* g = PyFloat_FromDouble(self._lValueList[i].g);
+        PyObject* b = PyFloat_FromDouble(self._lValueList[i].b);
+        PyObject* a = PyFloat_FromDouble(self._lValueList[i].a);
 
         PyTuple_SetItem(rgba, 0, r);
         PyTuple_SetItem(rgba, 1, g);
@@ -2472,6 +2768,8 @@ PyObject* PropertyColorList::getPyObject()
 
 Base::Color PropertyColorList::getPyValue(PyObject* item) const
 {
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
+
     PropertyColor col;
     col.setPyObject(item);
     return col.getValue();
@@ -2479,40 +2777,48 @@ Base::Color PropertyColorList::getPyValue(PyObject* item) const
 
 void PropertyColorList::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
+
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<ColorList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\"/>"
+                        << (self.getSize() ? writer.addFile(self.getName(), &self) : "") << "\"/>"
                         << std::endl;
     }
 }
 
 void PropertyColorList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyColorList>(*this);
+
     reader.readElement("ColorList");
     if (reader.hasAttribute("file")) {
         std::string file(reader.getAttribute<const char*>("file"));
 
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(), this);
+            reader.addFile(file.c_str(), &self);
         }
 
-        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
+        self.requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
 void PropertyColorList::SaveDocFile(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
+
     Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
+    uint32_t uCt = (uint32_t)self.getSize();
     str << uCt;
-    for (auto it : _lValueList) {
+    for (auto it : self._lValueList) {
         str << it.getPackedValue();
     }
 }
 
 void PropertyColorList::RestoreDocFile(Base::Reader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyColorList>(*this);
+
     Base::InputStream str(reader);
     uint32_t uCt = 0;
     str >> uCt;
@@ -2522,29 +2828,35 @@ void PropertyColorList::RestoreDocFile(Base::Reader& reader)
         str >> value;
         it.setPackedValue(value);
     }
-    if (requiresAlphaConversion) {
+    if (self.requiresAlphaConversion) {
         for (auto& it : values) {
             it.a = 1.0F - it.a;
         }
     }
-    setValues(values);
+    self.setValues(values);
 }
 
 Property* PropertyColorList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
+
     PropertyColorList* p = new PropertyColorList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyColorList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyColorList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyColorList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyColorList&>(from)._lValueList);
 }
 
 unsigned int PropertyColorList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Base::Color));
+    auto& self = propGetterSelf<const App::PropertyColorList>(*this);
+
+    return static_cast<unsigned int>(self._lValueList.size() * sizeof(Base::Color));
 }
 
 //**************************************************************************
@@ -2560,221 +2872,281 @@ PropertyMaterial::~PropertyMaterial() = default;
 
 void PropertyMaterial::setValue(const Material& mat)
 {
-    aboutToSetValue();
-    _cMat = mat;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat = mat;
     hasSetValue();
 }
 
 void PropertyMaterial::setValue(const Base::Color& col)
 {
-    setDiffuseColor(col);
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.setDiffuseColor(col);
 }
 
 void PropertyMaterial::setValue(float r, float g, float b, float a)
 {
-    setDiffuseColor(r, g, b, a);
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.setDiffuseColor(r, g, b, a);
 }
 
 void PropertyMaterial::setValue(uint32_t rgba)
 {
-    setDiffuseColor(rgba);
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.setDiffuseColor(rgba);
 }
 
 const Material& PropertyMaterial::getValue() const
 {
-    return _cMat;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat;
 }
 
 void PropertyMaterial::setAmbientColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cMat.ambientColor = col;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.ambientColor = col;
     hasSetValue();
 }
 
 void PropertyMaterial::setAmbientColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cMat.ambientColor.set(r, g, b, a);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.ambientColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setAmbientColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cMat.ambientColor.setPackedValue(rgba);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.ambientColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setDiffuseColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cMat.diffuseColor = col;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.diffuseColor = col;
     hasSetValue();
 }
 
 void PropertyMaterial::setDiffuseColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cMat.diffuseColor.set(r, g, b, a);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.diffuseColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setDiffuseColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cMat.diffuseColor.setPackedValue(rgba);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.diffuseColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setSpecularColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cMat.specularColor = col;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.specularColor = col;
     hasSetValue();
 }
 
 void PropertyMaterial::setSpecularColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cMat.specularColor.set(r, g, b, a);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.specularColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setSpecularColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cMat.specularColor.setPackedValue(rgba);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.specularColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setEmissiveColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    _cMat.emissiveColor = col;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.emissiveColor = col;
     hasSetValue();
 }
 
 void PropertyMaterial::setEmissiveColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    _cMat.emissiveColor.set(r, g, b, a);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.emissiveColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setEmissiveColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    _cMat.emissiveColor.setPackedValue(rgba);
-    hasSetValue();
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.emissiveColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterial::setShininess(float val)
 {
-    aboutToSetValue();
-    _cMat.shininess = val;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.shininess = val;
     hasSetValue();
 }
 
 void PropertyMaterial::setTransparency(float val)
 {
-    aboutToSetValue();
-    _cMat.transparency = val;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat.transparency = val;
     hasSetValue();
 }
 
 const Base::Color& PropertyMaterial::getAmbientColor() const
 {
-    return _cMat.ambientColor;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.ambientColor;
 }
 
 const Base::Color& PropertyMaterial::getDiffuseColor() const
 {
-    return _cMat.diffuseColor;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.diffuseColor;
 }
 
 const Base::Color& PropertyMaterial::getSpecularColor() const
 {
-    return _cMat.specularColor;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.specularColor;
 }
 
 const Base::Color& PropertyMaterial::getEmissiveColor() const
 {
-    return _cMat.emissiveColor;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.emissiveColor;
 }
 
 double PropertyMaterial::getShininess() const
 {
-    return _cMat.shininess;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.shininess;
 }
 
 double PropertyMaterial::getTransparency() const
 {
-    return _cMat.transparency;
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return self._cMat.transparency;
 }
 
 PyObject* PropertyMaterial::getPyObject()
 {
-    return new MaterialPy(new Material(_cMat));
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    return new MaterialPy(new Material(self._cMat));
 }
 
 void PropertyMaterial::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
-        setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
+        self.setValue(*static_cast<MaterialPy*>(value)->getMaterialPtr());
     }
     else {
-        setValue(MaterialPy::toColor(value));
+        self.setValue(MaterialPy::toColor(value));
     }
 }
 
 void PropertyMaterial::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
     // clang-format off
     writer.Stream() << writer.ind()
-                    << "<PropertyMaterial ambientColor=\"" << _cMat.ambientColor.getPackedValue()
-                    << "\" diffuseColor=\"" << _cMat.diffuseColor.getPackedValue()
-                    << "\" specularColor=\"" << _cMat.specularColor.getPackedValue()
-                    << "\" emissiveColor=\"" << _cMat.emissiveColor.getPackedValue()
-                    << "\" shininess=\"" << _cMat.shininess
-                    << "\" transparency=\"" << _cMat.transparency
-                    << "\" image=\"" << _cMat.image
-                    << "\" imagePath=\"" << _cMat.imagePath
-                    << "\" uuid=\"" << _cMat.uuid
+                    << "<PropertyMaterial ambientColor=\"" << self._cMat.ambientColor.getPackedValue()
+                    << "\" diffuseColor=\"" << self._cMat.diffuseColor.getPackedValue()
+                    << "\" specularColor=\"" << self._cMat.specularColor.getPackedValue()
+                    << "\" emissiveColor=\"" << self._cMat.emissiveColor.getPackedValue()
+                    << "\" shininess=\"" << self._cMat.shininess
+                    << "\" transparency=\"" << self._cMat.transparency
+                    << "\" image=\"" << self._cMat.image
+                    << "\" imagePath=\"" << self._cMat.imagePath
+                    << "\" uuid=\"" << self._cMat.uuid
                     << "\"/>" << std::endl;
     // clang-format on
 }
 
 void PropertyMaterial::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
     // read my Element
     reader.readElement("PropertyMaterial");
     // get the value of my Attribute
-    aboutToSetValue();
-    _cMat.ambientColor.setPackedValue(reader.getAttribute<unsigned long>("ambientColor"));
-    _cMat.diffuseColor.setPackedValue(reader.getAttribute<unsigned long>("diffuseColor"));
-    _cMat.specularColor.setPackedValue(reader.getAttribute<unsigned long>("specularColor"));
-    _cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
-    _cMat.shininess = (float)reader.getAttribute<double>("shininess");
-    _cMat.transparency = (float)reader.getAttribute<double>("transparency");
+    self.aboutToSetValue();
+    self._cMat.ambientColor.setPackedValue(reader.getAttribute<unsigned long>("ambientColor"));
+    self._cMat.diffuseColor.setPackedValue(reader.getAttribute<unsigned long>("diffuseColor"));
+    self._cMat.specularColor.setPackedValue(reader.getAttribute<unsigned long>("specularColor"));
+    self._cMat.emissiveColor.setPackedValue(reader.getAttribute<unsigned long>("emissiveColor"));
+    self._cMat.shininess = (float)reader.getAttribute<double>("shininess");
+    self._cMat.transparency = (float)reader.getAttribute<double>("transparency");
     if (readerRequiresAlphaConversion(reader)) {
-        convertAlphaInMaterial(_cMat);
+        convertAlphaInMaterial(self._cMat);
     }
     if (reader.hasAttribute("image")) {
-        _cMat.image = reader.getAttribute<const char*>("image");
+        self._cMat.image = reader.getAttribute<const char*>("image");
     }
     if (reader.hasAttribute("imagePath")) {
-        _cMat.imagePath = reader.getAttribute<const char*>("imagePath");
+        self._cMat.imagePath = reader.getAttribute<const char*>("imagePath");
     }
     if (reader.hasAttribute("uuid")) {
-        _cMat.uuid = reader.getAttribute<const char*>("uuid");
+        self._cMat.uuid = reader.getAttribute<const char*>("uuid");
     }
     hasSetValue();
 }
 
 const char* PropertyMaterial::getEditorName() const
 {
-    if (testStatus(MaterialEdit)) {
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
+    if (self.testStatus(MaterialEdit)) {
         return "Gui::PropertyEditor::PropertyMaterialItem";
     }
     return "";
@@ -2782,15 +3154,19 @@ const char* PropertyMaterial::getEditorName() const
 
 Property* PropertyMaterial::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterial>(*this);
+
     PropertyMaterial* p = new PropertyMaterial();
-    p->_cMat = _cMat;
+    p->_cMat = self._cMat;
     return p;
 }
 
 void PropertyMaterial::Paste(const Property& from)
 {
-    aboutToSetValue();
-    _cMat = dynamic_cast<const PropertyMaterial&>(from)._cMat;
+    auto& self = propSetterSelf<App::PropertyMaterial>(*this);
+
+    self.aboutToSetValue();
+    self._cMat = dynamic_cast<const PropertyMaterial&>(from)._cMat;
     hasSetValue();
 }
 
@@ -2815,22 +3191,26 @@ PropertyMaterialList::~PropertyMaterialList() = default;
 
 void PropertyMaterialList::setValues(const std::vector<App::Material>& newValues)
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     if (!newValues.empty()) {
         PropertyListsT<Material>::setValues(newValues);
     }
     else {
-        aboutToSetValue();
-        setSize(1);
-        hasSetValue();
+        self.aboutToSetValue();
+        self.setSize(1);
+        self.hasSetValue();
     }
 }
 
 PyObject* PropertyMaterialList::getPyObject()
 {
-    Py::Tuple tuple(getSize());
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
 
-    for (int i = 0; i < getSize(); i++) {
-        tuple.setItem(i, Py::asObject(new MaterialPy(new Material(_lValueList[i]))));
+    Py::Tuple tuple(self.getSize());
+
+    for (int i = 0; i < self.getSize(); i++) {
+        tuple.setItem(i, Py::asObject(new MaterialPy(new Material(self._lValueList[i]))));
     }
 
     return Py::new_reference_to(tuple);
@@ -2838,7 +3218,9 @@ PyObject* PropertyMaterialList::getPyObject()
 
 void PropertyMaterialList::verifyIndex(int index) const
 {
-    int size = getSize();
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    int size = self.getSize();
     if (index < -1 || index > size) {
         throw Base::RuntimeError("index out of bound");
     }
@@ -2846,18 +3228,22 @@ void PropertyMaterialList::verifyIndex(int index) const
 
 void PropertyMaterialList::setMinimumSizeOne()
 {
-    int size = getSize();
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    int size = self.getSize();
     if (size < 1) {
-        setSize(1);
+        self.setSize(1);
     }
 }
 
 int PropertyMaterialList::resizeByOneIfNeeded(int index)
 {
-    int size = getSize();
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    int size = self.getSize();
     if (index == -1 || index == size) {
         index = size;
-        setSize(size + 1);
+        self.setSize(size + 1);
     }
 
     return index;
@@ -2865,356 +3251,432 @@ int PropertyMaterialList::resizeByOneIfNeeded(int index)
 
 void PropertyMaterialList::setValue()
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     Material empty;
-    setValue(empty);
+    self.setValue(empty);
 }
 
 void PropertyMaterialList::setValue(const Material& mat)
 {
-    aboutToSetValue();
-    setSize(1);
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setSize(1);
+    for (auto& material : self._lValueList) {
         material = mat;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setValue(int index, const Material& mat)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index] = mat;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index] = mat;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.ambientColor = col;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.ambientColor.set(r, g, b, a);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.ambientColor.setPackedValue(rgba);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(int index, const Base::Color& col)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].ambientColor = col;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].ambientColor = col;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(int index, float r, float g, float b, float a)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].ambientColor.set(r, g, b, a);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].ambientColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setAmbientColor(int index, uint32_t rgba)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].ambientColor.setPackedValue(rgba);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].ambientColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.diffuseColor = col;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.diffuseColor.set(r, g, b, a);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.diffuseColor.setPackedValue(rgba);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(int index, const Base::Color& col)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].diffuseColor = col;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].diffuseColor = col;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(int index, float r, float g, float b, float a)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].diffuseColor.set(r, g, b, a);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].diffuseColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColor(int index, uint32_t rgba)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].diffuseColor.setPackedValue(rgba);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].diffuseColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setDiffuseColors(const std::vector<Base::Color>& colors)
 {
-    aboutToSetValue();
-    setSize(colors.size(), _lValueList[0]);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setSize(colors.size(), self._lValueList[0]);
 
     for (std::size_t i = 0; i < colors.size(); i++) {
-        _lValueList[i].diffuseColor = colors[i];
+        self._lValueList[i].diffuseColor = colors[i];
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.specularColor = col;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.specularColor.set(r, g, b, a);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.specularColor.setPackedValue(rgba);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(int index, const Base::Color& col)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].specularColor = col;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].specularColor = col;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(int index, float r, float g, float b, float a)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].specularColor.set(r, g, b, a);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].specularColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setSpecularColor(int index, uint32_t rgba)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].specularColor.setPackedValue(rgba);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].specularColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(const Base::Color& col)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.emissiveColor = col;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(float r, float g, float b, float a)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.emissiveColor.set(r, g, b, a);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(uint32_t rgba)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.emissiveColor.setPackedValue(rgba);
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(int index, const Base::Color& col)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].emissiveColor = col;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].emissiveColor = col;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(int index, float r, float g, float b, float a)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].emissiveColor.set(r, g, b, a);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].emissiveColor.set(r, g, b, a);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setEmissiveColor(int index, uint32_t rgba)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].emissiveColor.setPackedValue(rgba);
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].emissiveColor.setPackedValue(rgba);
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setShininess(float val)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.shininess = val;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setShininess(int index, float val)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].shininess = val;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].shininess = val;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setTransparency(float val)
 {
-    aboutToSetValue();
-    setMinimumSizeOne();
-    for (auto& material : _lValueList) {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setMinimumSizeOne();
+    for (auto& material : self._lValueList) {
         material.transparency = val;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setTransparency(int index, float val)
 {
-    verifyIndex(index);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
 
-    aboutToSetValue();
-    index = resizeByOneIfNeeded(index);
-    _lValueList[index].transparency = val;
-    hasSetValue();
+    self.verifyIndex(index);
+
+    self.aboutToSetValue();
+    index = self.resizeByOneIfNeeded(index);
+    self._lValueList[index].transparency = val;
+    self.hasSetValue();
 }
 
 void PropertyMaterialList::setTransparencies(const std::vector<float>& transparencies)
 {
-    aboutToSetValue();
-    setSize(transparencies.size(), _lValueList[0]);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.aboutToSetValue();
+    self.setSize(transparencies.size(), self._lValueList[0]);
 
     for (std::size_t i = 0; i < transparencies.size(); i++) {
-        _lValueList[i].transparency = transparencies[i];
+        self._lValueList[i].transparency = transparencies[i];
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 const Base::Color& PropertyMaterialList::getAmbientColor() const
 {
-    return _lValueList[0].ambientColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].ambientColor;
 }
 
 const Base::Color& PropertyMaterialList::getAmbientColor(int index) const
 {
-    return _lValueList[index].ambientColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].ambientColor;
 }
 
 const Base::Color& PropertyMaterialList::getDiffuseColor() const
 {
-    return _lValueList[0].diffuseColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].diffuseColor;
 }
 
 const Base::Color& PropertyMaterialList::getDiffuseColor(int index) const
 {
-    return _lValueList[index].diffuseColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].diffuseColor;
 }
 
 std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     std::vector<Base::Color> list;
-    for (auto& material : _lValueList) {
+    for (auto& material : self._lValueList) {
         list.push_back(material.diffuseColor);
     }
 
@@ -3223,48 +3685,66 @@ std::vector<Base::Color> PropertyMaterialList::getDiffuseColors() const
 
 const Base::Color& PropertyMaterialList::getSpecularColor() const
 {
-    return _lValueList[0].specularColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].specularColor;
 }
 
 const Base::Color& PropertyMaterialList::getSpecularColor(int index) const
 {
-    return _lValueList[index].specularColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].specularColor;
 }
 
 const Base::Color& PropertyMaterialList::getEmissiveColor() const
 {
-    return _lValueList[0].emissiveColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].emissiveColor;
 }
 
 const Base::Color& PropertyMaterialList::getEmissiveColor(int index) const
 {
-    return _lValueList[index].emissiveColor;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].emissiveColor;
 }
 
 float PropertyMaterialList::getShininess() const
 {
-    return _lValueList[0].shininess;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].shininess;
 }
 
 float PropertyMaterialList::getShininess(int index) const
 {
-    return _lValueList[index].shininess;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].shininess;
 }
 
 float PropertyMaterialList::getTransparency() const
 {
-    return _lValueList[0].transparency;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[0].transparency;
 }
 
 float PropertyMaterialList::getTransparency(int index) const
 {
-    return _lValueList[index].transparency;
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return self._lValueList[index].transparency;
 }
 
 std::vector<float> PropertyMaterialList::getTransparencies() const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     std::vector<float> list;
-    for (auto& material : _lValueList) {
+    for (auto& material : self._lValueList) {
         list.push_back(material.transparency);
     }
 
@@ -3273,6 +3753,8 @@ std::vector<float> PropertyMaterialList::getTransparencies() const
 
 Material PropertyMaterialList::getPyValue(PyObject* value) const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     if (PyObject_TypeCheck(value, &(MaterialPy::Type))) {
         return *static_cast<MaterialPy*>(value)->getMaterialPtr();
     }
@@ -3285,37 +3767,43 @@ Material PropertyMaterialList::getPyValue(PyObject* value) const
 
 void PropertyMaterialList::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     if (!writer.isForceXML()) {
         writer.Stream() << writer.ind() << "<MaterialList file=\""
-                        << (getSize() ? writer.addFile(getName(), this) : "") << "\""
+                        << (self.getSize() ? writer.addFile(self.getName(), &self) : "") << "\""
                         << " version=\"3\"/>" << std::endl;
     }
 }
 
 void PropertyMaterialList::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     reader.readElement("MaterialList");
     if (reader.hasAttribute("file")) {
         std::string file(reader.getAttribute<const char*>("file"));
         if (reader.hasAttribute("version")) {
-            formatVersion = static_cast<Format>(reader.getAttribute<long>("version"));
+            self.formatVersion = static_cast<Format>(reader.getAttribute<long>("version"));
         }
 
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(), this);
+            reader.addFile(file.c_str(), &self);
         }
 
-        requiresAlphaConversion = readerRequiresAlphaConversion(reader);
+        self.requiresAlphaConversion = readerRequiresAlphaConversion(reader);
     }
 }
 
 void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     Base::OutputStream str(writer.Stream());
-    uint32_t uCt = (uint32_t)getSize();
+    uint32_t uCt = (uint32_t)self.getSize();
     str << uCt;
-    for (const auto& it : _lValueList) {
+    for (const auto& it : self._lValueList) {
         str << it.ambientColor.getPackedValue();
         str << it.diffuseColor.getPackedValue();
         str << it.specularColor.getPackedValue();
@@ -3325,15 +3813,17 @@ void PropertyMaterialList::SaveDocFile(Base::Writer& writer) const
     }
 
     // Apply the latest changes last for backwards compatibility
-    for (const auto& it : _lValueList) {
-        writeString(str, it.image);
-        writeString(str, it.imagePath);
-        writeString(str, it.uuid);
+    for (const auto& it : self._lValueList) {
+        self.writeString(str, it.image);
+        self.writeString(str, it.imagePath);
+        self.writeString(str, it.uuid);
     }
 }
 
 void PropertyMaterialList::writeString(Base::OutputStream& str, const std::string& value) const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     uint32_t uCt = (uint32_t)value.size();
     str << uCt;
     str.write(value.c_str(), uCt);
@@ -3341,16 +3831,18 @@ void PropertyMaterialList::writeString(Base::OutputStream& str, const std::strin
 
 void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     Base::InputStream str(reader);
-    if (formatVersion == Version_2) {
+    if (self.formatVersion == Version_2) {
         // V2 is same as V0
         uint32_t count = 0;
         str >> count;
-        RestoreDocFileV0(count, reader);
+        self.RestoreDocFileV0(count, reader);
     }
-    else if (formatVersion == Version_3) {
+    else if (self.formatVersion == Version_3) {
         // Default to the latest
-        RestoreDocFileV3(reader);
+        self.RestoreDocFileV3(reader);
     }
     else {
         int32_t version;
@@ -3361,17 +3853,19 @@ void PropertyMaterialList::RestoreDocFile(Base::Reader& reader)
             // in a future release once dev files are migrated.
             uint32_t count = 0;
             str >> count;
-            RestoreDocFileV0(count, reader);
+            self.RestoreDocFileV0(count, reader);
         }
         else {
             uint32_t uCt = static_cast<uint32_t>(version);
-            RestoreDocFileV0(uCt, reader);
+            self.RestoreDocFileV0(uCt, reader);
         }
     }
 }
 
 void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     Base::InputStream str(reader);
     std::vector<Material> values(count);
     uint32_t value {};  // must be 32 bit long
@@ -3390,12 +3884,14 @@ void PropertyMaterialList::RestoreDocFileV0(uint32_t count, Base::Reader& reader
         str >> valueF;
         it.transparency = valueF;
     }
-    convertAlpha(values);
-    setValues(values);
+    self.convertAlpha(values);
+    self.setValues(values);
 }
 
 void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
     Base::InputStream str(reader);
     uint32_t count = 0;
     str >> count;
@@ -3417,23 +3913,27 @@ void PropertyMaterialList::RestoreDocFileV3(Base::Reader& reader)
         it.transparency = valueF;
     }
     for (auto& it : values) {
-        readString(str, it.image);
-        readString(str, it.imagePath);
-        readString(str, it.uuid);
+        self.readString(str, it.image);
+        self.readString(str, it.imagePath);
+        self.readString(str, it.uuid);
     }
-    convertAlpha(values);
-    setValues(values);
+    self.convertAlpha(values);
+    self.setValues(values);
 }
 
 void PropertyMaterialList::convertAlpha(std::vector<App::Material>& materials) const
 {
-    if (requiresAlphaConversion) {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    if (self.requiresAlphaConversion) {
         std::ranges::for_each(materials, convertAlphaInMaterial);
     }
 }
 
 void PropertyMaterialList::readString(Base::InputStream& str, std::string& value)
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     uint32_t uCt {};
     str >> uCt;
 
@@ -3444,7 +3944,9 @@ void PropertyMaterialList::readString(Base::InputStream& str, std::string& value
 
 const char* PropertyMaterialList::getEditorName() const
 {
-    if (testStatus(NoMaterialListEdit)) {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    if (self.testStatus(NoMaterialListEdit)) {
         return "";
     }
     return "Gui::PropertyEditor::PropertyMaterialListItem";
@@ -3452,19 +3954,25 @@ const char* PropertyMaterialList::getEditorName() const
 
 Property* PropertyMaterialList::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
     PropertyMaterialList* p = new PropertyMaterialList();
-    p->_lValueList = _lValueList;
+    p->_lValueList = self._lValueList;
     return p;
 }
 
 void PropertyMaterialList::Paste(const Property& from)
 {
-    setValues(dynamic_cast<const PropertyMaterialList&>(from)._lValueList);
+    auto& self = propSetterSelf<App::PropertyMaterialList>(*this);
+
+    self.setValues(dynamic_cast<const PropertyMaterialList&>(from)._lValueList);
 }
 
 unsigned int PropertyMaterialList::getMemSize() const
 {
-    return static_cast<unsigned int>(_lValueList.size() * sizeof(Material));
+    auto& self = propGetterSelf<const App::PropertyMaterialList>(*this);
+
+    return static_cast<unsigned int>(self._lValueList.size() * sizeof(Material));
 }
 
 //**************************************************************************
@@ -3475,19 +3983,23 @@ TYPESYSTEM_SOURCE(App::PropertyPersistentObject, App::PropertyString)
 
 PyObject* PropertyPersistentObject::getPyObject()
 {
-    if (_pObject) {
-        return _pObject->getPyObject();
+    auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
+    if (self._pObject) {
+        return self._pObject->getPyObject();
     }
     return inherited::getPyObject();
 }
 
 void PropertyPersistentObject::Save(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
     inherited::Save(writer);
     writer.Stream() << writer.ind() << "<PersistentObject>" << std::endl;
-    if (_pObject) {
+    if (self._pObject) {
         writer.incInd();
-        _pObject->Save(writer);
+        self._pObject->Save(writer);
         writer.decInd();
     }
     writer.Stream() << writer.ind() << "</PersistentObject>" << std::endl;
@@ -3495,58 +4007,68 @@ void PropertyPersistentObject::Save(Base::Writer& writer) const
 
 void PropertyPersistentObject::Restore(Base::XMLReader& reader)
 {
+    auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
     inherited::Restore(reader);
     reader.readElement("PersistentObject");
-    if (_pObject) {
-        _pObject->Restore(reader);
+    if (self._pObject) {
+        self._pObject->Restore(reader);
     }
     reader.readEndElement("PersistentObject");
 }
 
 Property* PropertyPersistentObject::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
     auto* p = new PropertyPersistentObject();
-    p->_cValue = _cValue;
-    p->_pObject = _pObject;
+    p->_cValue = self._cValue;
+    p->_pObject = self._pObject;
     return p;
 }
 
 void PropertyPersistentObject::Paste(const Property& from)
 {
+    auto& self = propSetterSelf<App::PropertyPersistentObject>(*this);
+
     const auto& prop = dynamic_cast<const PropertyPersistentObject&>(from);
-    if (_cValue != prop._cValue || _pObject != prop._pObject) {
-        aboutToSetValue();
-        _cValue = prop._cValue;
-        _pObject = prop._pObject;
+    if (self._cValue != prop._cValue || self._pObject != prop._pObject) {
+        self.aboutToSetValue();
+        self._cValue = prop._cValue;
+        self._pObject = prop._pObject;
         hasSetValue();
     }
 }
 
 unsigned int PropertyPersistentObject::getMemSize() const
 {
+    auto& self = propGetterSelf<const App::PropertyPersistentObject>(*this);
+
     auto size = inherited::getMemSize();
-    if (_pObject) {
-        size += _pObject->getMemSize();
+    if (self._pObject) {
+        size += self._pObject->getMemSize();
     }
     return size;
 }
 
 void PropertyPersistentObject::setValue(const char* type)
 {
+    auto& self = propSetterSelf<App::PropertyPersistentObject>(*this);
+
     if (!Base::Tools::isNullOrEmpty(type)) {
         Base::Type t = Base::Type::getTypeIfDerivedFrom(type, Persistence::getClassTypeId());
         if (t.isBad()) {
             throw Base::TypeError("Invalid type or type must be derived from Base::Persistence");
         }
-        if (_pObject && _pObject->getTypeId() == t) {
+        if (self._pObject && self._pObject->getTypeId() == t) {
             return;
         }
     }
-    aboutToSetValue();
-    _pObject.reset();
-    _cValue = type;
+    self.aboutToSetValue();
+    self._pObject.reset();
+    self._cValue = type;
     if (type[0]) {
-        _pObject.reset(static_cast<Base::Persistence*>(Base::Type::createInstanceByName(type)));
+        self._pObject.reset(static_cast<Base::Persistence*>(Base::Type::createInstanceByName(type)));
     }
     hasSetValue();
 }

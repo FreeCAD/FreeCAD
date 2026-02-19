@@ -168,7 +168,9 @@ public:
     /* Expression validator */
     void setValidator(ValidatorFunc f)
     {
-        validator = f;
+        auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+        self.validator = f;
     }
 
     std::string validateExpression(const App::ObjectIdentifier& path,

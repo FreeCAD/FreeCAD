@@ -283,8 +283,10 @@ public:
     /// Helper function to return all linked objects of this property
     std::vector<App::DocumentObject*> linkedObjects(bool all = false) const
     {
+        auto& self = propGetterSelf<const App::PropertyLinkBase>(*this);
+
         std::vector<App::DocumentObject*> ret;
-        getLinks(ret, all);
+        self.getLinks(ret, all);
         return ret;
     }
 
@@ -292,8 +294,10 @@ public:
     template<class T>
     void getLinkedObjects(T& inserter, bool all = false) const
     {
+        auto& self = propGetterSelf<const App::PropertyLinkBase>(*this);
+
         std::vector<App::DocumentObject*> ret;
-        getLinks(ret, all);
+        self.getLinks(ret, all);
         std::copy(ret.begin(), ret.end(), inserter);
     }
 
@@ -302,9 +306,11 @@ public:
                            bool newStyle = true,
                            bool all = false) const
     {
+        auto& self = propGetterSelf<const App::PropertyLinkBase>(*this);
+
         std::vector<App::DocumentObject*> ret;
         std::vector<std::string> subs;
-        getLinks(ret, all, &subs, newStyle);
+        self.getLinks(ret, all, &subs, newStyle);
         assert(ret.size() == subs.size());
         int i = 0;
         for (auto obj : ret) {
@@ -316,8 +322,10 @@ public:
     std::map<App::DocumentObject*, std::vector<std::string>> linkedElements(bool newStyle = true,
                                                                             bool all = false) const
     {
+        auto& self = propGetterSelf<const App::PropertyLinkBase>(*this);
+
         std::map<App::DocumentObject*, std::vector<std::string>> ret;
-        getLinkedElements(ret, newStyle, all);
+        self.getLinkedElements(ret, newStyle, all);
         return ret;
     }
     //@}
@@ -606,7 +614,9 @@ public:
     };
     inline bool testFlag(int flag) const
     {
-        return _Flags.test((std::size_t)flag);
+        auto& self = propGetterSelf<const App::PropertyLinkBase>(*this);
+
+        return self._Flags.test((std::size_t)flag);
     }
 
     virtual void setAllowPartial(bool enable)
@@ -628,7 +638,9 @@ protected:
     std::bitset<32> _Flags;
     inline void setFlag(int flag, bool value = true)
     {
-        _Flags.set((std::size_t)flag, value);
+        auto& self = propSetterSelf<App::PropertyLinkBase>(*this);
+
+        self._Flags.set((std::size_t)flag, value);
     }
 
     void _getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
@@ -686,7 +698,9 @@ public:
     template<typename _type>
     inline _type getValue() const
     {
-        return _pcLink ? dynamic_cast<_type>(_pcLink) : 0;
+        auto& self = propGetterSelf<const App::PropertyLink>(*this);
+
+        return self._pcLink ? dynamic_cast<_type>(self._pcLink) : 0;
     }
 
     PyObject* getPyObject() override;
@@ -776,7 +790,9 @@ class AppExport PropertyLinkListBase: public PropertyLinkBase, public PropertyLi
 public:
     void setPyObject(PyObject* obj) override
     {
-        _setPyObject(obj);
+        auto& self = propSetterSelf<App::PropertyLinkListBase>(*this);
+
+        self._setPyObject(obj);
     }
 };
 
@@ -935,7 +951,9 @@ public:
     /// return the list of sub elements with mapped names
     const std::vector<ShadowSub>& getShadowSubs() const
     {
-        return _ShadowSubList;
+        auto& self = propGetterSelf<const App::PropertyLinkSub>(*this);
+
+        return self._ShadowSubList;
     }
 
     std::vector<std::string> getSubValues(bool newStyle) const;
@@ -952,7 +970,9 @@ public:
     template<typename _type>
     inline _type getValue() const
     {
-        return _pcLinkSub ? dynamic_cast<_type>(_pcLinkSub) : 0;
+        auto& self = propGetterSelf<const App::PropertyLinkSub>(*this);
+
+        return self._pcLinkSub ? dynamic_cast<_type>(self._pcLinkSub) : 0;
     }
 
     PyObject* getPyObject() override;
@@ -1104,7 +1124,9 @@ public:
 
     const std::vector<DocumentObject*>& getValues() const
     {
-        return _lValueList;
+        auto& self = propGetterSelf<const App::PropertyLinkSubList>(*this);
+
+        return self._lValueList;
     }
 
     const std::string getPyReprString() const;
@@ -1119,14 +1141,18 @@ public:
 
     const std::vector<std::string>& getSubValues() const
     {
-        return _lSubList;
+        auto& self = propGetterSelf<const App::PropertyLinkSubList>(*this);
+
+        return self._lSubList;
     }
 
     std::vector<std::string> getSubValues(bool newStyle) const;
 
     const std::vector<ShadowSub>& getShadowSubs() const
     {
-        return _ShadowSubList;
+        auto& self = propGetterSelf<const App::PropertyLinkSubList>(*this);
+
+        return self._ShadowSubList;
     }
 
     /**
@@ -1254,7 +1280,9 @@ public:
 
     PropertyLinkBase* parent() const
     {
-        return parentProp;
+        auto& self = propGetterSelf<const App::PropertyXLink>(*this);
+
+        return self.parentProp;
     }
 
     void afterRestore() override;
@@ -1284,7 +1312,9 @@ public:
 
     bool hasSubName() const
     {
-        return !_SubList.empty();
+        auto& self = propGetterSelf<const App::PropertyXLink>(*this);
+
+        return !self._SubList.empty();
     }
 
     App::Document* getDocument() const;
@@ -1346,11 +1376,15 @@ public:
 
     const std::vector<std::string>& getSubValues() const
     {
-        return _SubList;
+        auto& self = propGetterSelf<const App::PropertyXLink>(*this);
+
+        return self._SubList;
     }
     const std::vector<ShadowSub>& getShadowSubs() const
     {
-        return _ShadowSubList;
+        auto& self = propGetterSelf<const App::PropertyXLink>(*this);
+
+        return self._ShadowSubList;
     }
     std::vector<std::string> getSubValues(bool newStyle) const;
     std::vector<std::string> getSubValuesStartsWith(const char*, bool newStyle = false) const;
@@ -1359,7 +1393,9 @@ public:
 
     const char* getFilePath() const
     {
-        return filePath.c_str();
+        auto& self = propGetterSelf<const App::PropertyXLink>(*this);
+
+        return self.filePath.c_str();
     }
 
     virtual bool upgrade(Base::XMLReader& reader, const char* typeName);
@@ -1496,7 +1532,9 @@ public:
 
     const std::list<PropertyXLinkSub>& getSubListValues() const
     {
-        return _Links;
+        auto& self = propGetterSelf<const App::PropertyXLinkSubList>(*this);
+
+        return self._Links;
     }
 
     PyObject* getPyObject() override;
