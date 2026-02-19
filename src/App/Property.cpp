@@ -166,9 +166,9 @@ void Property::setContainer(PropertyContainer* father)
 Property* Property::createPropertyContext(const char* name,
                                           DocumentObject* obj, DocumentObject* objContext) const
 {
+    std::unique_ptr<App::Property> pcopy(Copy());
     Property* prop = objContext->addDynamicProperty(getTypeId().getName(), name,
                                                     getGroup(), getDocumentation());
-    std::unique_ptr<App::Property> pcopy(Copy());
     prop->Paste(*pcopy);
 
     auto renameObjIds = [objContext, name](const auto& expressions) {
