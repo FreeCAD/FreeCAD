@@ -51,6 +51,8 @@ public:
 
 protected Q_SLOTS:
     void onLicenseTypeChanged(int index);
+    void onCountBackupFilesChanged(int state);
+    void onSaveBackupFilesChanged(int state);
 
 protected:
     void changeEvent(QEvent* e) override;
