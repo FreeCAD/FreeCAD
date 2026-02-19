@@ -45,7 +45,7 @@ class AccelLineEdit;
 
 namespace Dialog
 {
-class Ui_DlgCustomKeyboard;
+class Ui_DlgSettingsKeyboard;
 
 /** Shows an overview of all available commands of all groups and modules.
  * You can customize your workbenches just by drag&dropping any commands
@@ -54,13 +54,16 @@ class Ui_DlgCustomKeyboard;
  * customize your own toolbars or commandbars.
  * \author Werner Mayer
  */
-class DlgCustomKeyboardImp: public CustomizeActionPage
+class DlgCustomKeyboardImp: public PreferencePage
 {
     Q_OBJECT
 
 public:
     explicit DlgCustomKeyboardImp(QWidget* parent = nullptr);
     ~DlgCustomKeyboardImp() override;
+
+    void saveSettings() override;
+    void loadSettings() override;
 
     /** Public helper function for handling command widgets
      *
@@ -119,18 +122,13 @@ protected:
     void onButtonResetAllClicked();
     void onEditShortcutTextChanged(const QKeySequence&);
 
-protected Q_SLOTS:
-    void onAddMacroAction(const QByteArray&) override;
-    void onRemoveMacroAction(const QByteArray&) override;
-    void onModifyMacroAction(const QByteArray&) override;
-
 protected:
     void showEvent(QShowEvent* e) override;
     void changeEvent(QEvent* e) override;
     void setShortcutOfCurrentAction(const QString&);
 
 private:
-    std::unique_ptr<Ui_DlgCustomKeyboard> ui;
+    std::unique_ptr<Ui_DlgSettingsKeyboard> ui;
     bool firstShow;
     fastsignals::scoped_connection conn;
 };
