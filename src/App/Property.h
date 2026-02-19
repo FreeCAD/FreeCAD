@@ -1148,7 +1148,7 @@ public:
      */
     virtual void set1Value(int index, const_reference value)
     {
-        auto& self = this->propGetterSelf(*this);
+        auto& self = this->propSetterSelf(*this);
 
         int size = self.getSize();
         if (index < -1 || index > size) {
