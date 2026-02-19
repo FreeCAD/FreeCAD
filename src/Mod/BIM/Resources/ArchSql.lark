@@ -1,0 +1,116 @@
+// SPDX-License-Identifier: MIT
+//
+// Copyright (c) 2019 Daniel Furtlehner (furti)
+// Copyright (c) 2025 The FreeCAD Project
+//
+// This file is a derivative work of the sql_grammar.peg file from the
+// FreeCAD-Reporting workbench (https://github.com/furti/FreeCAD-Reporting).
+// As per the terms of the original MIT license, this derivative work is also
+// licensed under the MIT license.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, to be subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
+// Main Rule
+start: statement
+statement: SELECT columns from_clause where_clause? group_by_clause? order_by_clause? ";"*
+
+// Clauses
+// Allow FROM to accept either a simple reference (e.g., 'document')
+// or a function invocation that returns a set (e.g., CHILDREN(SELECT ...)).
+from_clause: FROM from_source
+from_source: CNAME | from_function
+from_function: CNAME "(" statement ("," operand)? ")"
+where_clause: WHERE boolean_expression
+group_by_clause: GROUP BY member_access ("," member_access)*
+order_by_clause: ORDER BY member_access ("," member_access)* (ASC | DESC)?
+columns: (column ("," column)*)
+column: (ASTERISK | operand) as_clause?
+as_clause: AS (literal | CNAME)
+// Arithmetic Expression Parsing with Operator Precedence
+expr: term (ADD term | SUB term)*          // Lowest precedence: Addition/Subtraction
+term: member_access (MUL member_access | DIV member_access)* // Next precedence: Multiplication/Division
+member_access: primary ("." (CNAME | function))* // Explicitly allow a function after a dot
+primary: function | CNAME | literal | NUMBER | NULL | "(" expr ")" // The fundamental building blocks
+
+//  'operand' is an alias for a full arithmetic expression.
+operand: expr
+
+// Boolean Logic
+boolean_expression: boolean_or
+boolean_or: boolean_or OR boolean_and -> boolean_expression_recursive
+            | boolean_and
+boolean_and: boolean_and AND boolean_term -> boolean_expression_recursive
+            | boolean_term
+boolean_term: boolean_comparison | in_expression | "(" boolean_expression ")"
+boolean_comparison: operand comparison_operator operand
+in_expression: member_access IN "(" literal ("," literal)* ")"
+
+// Comparison Operator
+comparison_operator: eq_op | neq_op | gt_op | lt_op | gte_op | lte_op | is_not_op | is_op | like_op
+eq_op: "="
+neq_op: "!="
+gt_op: ">"
+lt_op: "<"
+gte_op: ">="
+lte_op: "<="
+is_not_op: IS NOT
+is_op: IS
+like_op: LIKE
+
+// Basic Tokens
+literal: STRING
+
+// Functions
+function: CNAME "(" function_args? ")"
+function_args: ASTERISK | (operand ("," operand)*)
+
+// Terminal Definitions
+SELECT: "SELECT"i
+FROM:   "FROM"i
+WHERE:  "WHERE"i
+AS:     "AS"i
+OR:     "OR"i
+AND:    "AND"i
+IS:     "IS"i
+NOT:    "NOT"i
+IN:     "IN"i
+LIKE:   "LIKE"i
+GROUP:  "GROUP"i
+BY:     "BY"i
+ORDER:  "ORDER"i
+ASC:    "ASC"i
+DESC:   "DESC"i
+ADD:    "+"
+SUB:    "-"
+MUL:    "*"
+DIV:    "/"
+ASTERISK.2: "*" // Higher priority
+NULL.2:   "NULL"i
+STRING : /"[^"]*"|'[^']*'/
+CNAME: /[a-zA-Z_][\w\.]*/ // An identifier cannot start with a digit, allows unicode via \w
+NUMBER.2: /[0-9]+(\.[0-9]+)?/ // Higher priority
+%import common.WS
+
+// Define comment terminals. The regex for multi-line is non-greedy.
+SINGLE_LINE_COMMENT: /--[^\n]*/
+MULTI_LINE_COMMENT: /\/\*[\s\S]*?\*\//
+
+%ignore WS
+%ignore SINGLE_LINE_COMMENT
+%ignore MULTI_LINE_COMMENT

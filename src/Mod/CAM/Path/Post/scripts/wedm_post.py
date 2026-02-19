@@ -48,6 +48,17 @@ import wedm_post
 wedm_post.export(object,"/path/to/file.ncc","")
 """
 
+# Preamble text will appear at the beginning of the GCODE output file.
+PREAMBLE = """G17 G54 G40 G49 G80 G90
+"""
+
+
+# Postamble text will appear following the last operation.
+POSTAMBLE = """M05
+G17 G54 G90 G80 G40
+M2
+"""
+
 now = datetime.datetime.now()
 
 parser = argparse.ArgumentParser(prog="wedm", add_help=False)
@@ -71,11 +82,15 @@ parser.add_argument("--precision", default="3", help="number of digits of precis
 parser.add_argument("--fixed-length", default="0", help="use fixed length coordinates, default=0")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17 G54 G40 G49 G80 G90\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17 G54 G90 G80 G40\\nM2\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--inches", action="store_true", help="Convert output for US imperial mode (G20)"
@@ -143,17 +158,6 @@ MACHINE_NAME = "Wire EDM"
 CORNER_MIN = {"x": 0, "y": 0, "z": 0}
 CORNER_MAX = {"x": 500, "y": 300, "z": 300}
 PRECISION = 3
-
-# Preamble text will appear at the beginning of the GCODE output file.
-PREAMBLE = """G17 G54 G40 G49 G80 G90
-"""
-
-
-# Postamble text will appear following the last operation.
-POSTAMBLE = """M05
-G17 G54 G90 G80 G40
-M2
-"""
 
 # Pre operation text will be inserted before every operation
 PRE_OPERATION = """"""
@@ -356,7 +360,7 @@ def export(objectslist, filename, argstring):
             print("Skipping editor since output is greater than 100kb")
         else:
             dia = PostUtils.GCodeEditorDialog()
-            dia.editor.setText(gcode)
+            dia.editor.setPlainText(gcode)
             result = dia.exec_()
             if result:
                 final = dia.editor.toPlainText()

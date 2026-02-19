@@ -1,0 +1,20 @@
+/*
+ * This is a file with default QSS styles that will be preincluded for all themes. It should cover only the styles for
+ * our own controls and not alter visuals of stuff like buttons etc. This is created so we can use QSS to add color
+ * to links or control certain aspects of program looks that should be shared across all styles, including classic.
+ */
+
+/* Gui::SplitButton --------------------------------------------------------- */
+
+Gui--SplitButton QToolButton[splitRole="menu"] {
+    width: 24px;
+    margin: 0;
+    padding: 0;
+    min-height: 0px;
+    max-height: none;
+}
+
+Gui--SplitButton QToolButton::menu-indicator {
+    image: none;
+    border-image: none;
+}

@@ -1,4 +1,6 @@
 %{
+/* SPDX-License-Identifier: LGPL-2.1-or-later */
+
 /***************************************************************************
  *   Copyright (c) 2010 Jürgen Riegel <FreeCAD@juergen-riegel.net>         *
  *   Copyright (c) 2015 Eivind Kvedalen <eivind@kvedalen.name>             *
@@ -289,6 +291,7 @@ EXPO    [eE][-+]?[0-9]+
 "C"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Coulomb;             yylval.quantity.unitStr = yytext; return UNIT; // Coulomb (A*s)
 
 "T"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Tesla;               yylval.quantity.unitStr = yytext; return UNIT; // Tesla (kg/s^2/A)
+"mT"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::MilliTesla;          yylval.quantity.unitStr = yytext; return UNIT; // milli Tesla
 "G"                          COUNTCHARS; yylval.quantity.scaler  = Quantity::Gauss;               yylval.quantity.unitStr = yytext; return UNIT; // Gauss (1 G = 1e-4 T)
 
 "Wb"                         COUNTCHARS; yylval.quantity.scaler  = Quantity::Weber;               yylval.quantity.unitStr = yytext; return UNIT; // Weber (kg*m^2/s^2/A)

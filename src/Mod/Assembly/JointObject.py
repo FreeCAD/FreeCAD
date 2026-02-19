@@ -96,8 +96,6 @@ JointUsingDistance2 = [
 ]
 
 JointNoNegativeDistance = [
-    "RackPinion",
-    "Screw",
     "Gears",
     "Belt",
 ]
@@ -203,16 +201,11 @@ class Joint:
         self.migrationScript4(joint)
         self.migrationScript5(joint)
         self.migrationScript6(joint)
+        self.migrationScript7(joint)
 
         # First Joint Connector
         if not hasattr(joint, "Reference1"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference1",
-                "Joint Connector 1",
-                QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
-                locked=True,
-            )
+            self.addReference1Property(joint)
 
         if not hasattr(joint, "Placement1"):
             joint.addProperty(
@@ -252,13 +245,7 @@ class Joint:
 
         # Second Joint Connector
         if not hasattr(joint, "Reference2"):
-            joint.addProperty(
-                "App::PropertyXLinkSubHidden",
-                "Reference2",
-                "Joint Connector 2",
-                QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
-                locked=True,
-            )
+            self.addReference2Property(joint)
 
         if not hasattr(joint, "Placement2"):
             joint.addProperty(
@@ -374,6 +361,24 @@ class Joint:
         joint.setPropertyStatus("Distance2", "AllowNegativeValues")
         joint.setPropertyStatus("LengthMin", "AllowNegativeValues")
         joint.setPropertyStatus("LengthMax", "AllowNegativeValues")
+
+    def addReference1Property(self, joint):
+        joint.addProperty(
+            "App::PropertyXLinkSub",
+            "Reference1",
+            "Joint Connector 1",
+            QT_TRANSLATE_NOOP("App::Property", "The first reference of the joint"),
+            locked=True,
+        )
+
+    def addReference2Property(self, joint):
+        joint.addProperty(
+            "App::PropertyXLinkSub",
+            "Reference2",
+            "Joint Connector 2",
+            QT_TRANSLATE_NOOP("App::Property", "The second reference of the joint"),
+            locked=True,
+        )
 
     def addAngleProperty(self, joint):
         joint.addProperty(
@@ -683,6 +688,54 @@ class Joint:
             self.addAngleMaxProperty(joint)
             joint.AngleMax = old_value
 
+    def migrationScript7(self, joint):
+        """
+        Migrates PropertyXLinkSubHidden (Assembly-rooted) to PropertyXLinkSub (Component-rooted).
+        """
+
+        def migrate_prop(prop_name, add_method, assembly):
+            if not hasattr(joint, prop_name):
+                return
+
+            # Only migrate if it's the old type
+            if joint.getTypeIdOfProperty(prop_name) != "App::PropertyXLinkSubHidden":
+                return
+
+            old_ref = getattr(joint, prop_name)
+
+            joint.setPropertyStatus(prop_name, "-LockDynamic")
+            joint.removeProperty(prop_name)
+
+            add_method(joint)
+
+            if old_ref:
+                root = old_ref[0]
+                old_subs = old_ref[1]
+                if old_subs:
+                    comp, first_new_sub = UtilsAssembly.getComponentReference(
+                        assembly, root, old_subs[0]
+                    )
+
+                    if comp:
+                        new_subs = [first_new_sub]
+
+                        # We can deduce the prefix length from the difference
+                        # between old and new of the first item.
+                        prefix_len = len(old_subs[0]) - len(first_new_sub)
+
+                        for i in range(1, len(old_subs)):
+                            sub = old_subs[i]
+                            if len(sub) >= prefix_len:
+                                new_subs.append(sub[prefix_len:])
+                            else:
+                                new_subs.append(sub)
+
+                        setattr(joint, prop_name, [comp, new_subs])
+
+        assembly = self.getAssembly(joint)
+        migrate_prop("Reference1", self.addReference1Property, assembly)
+        migrate_prop("Reference2", self.addReference2Property, assembly)
+
     def dumps(self):
         return None
 
@@ -774,6 +827,8 @@ class Joint:
         ):
             raise Exception(errStr + "Reference2")
 
+        self.updateJCSPlacements(joint)
+
     def setJointConnectors(self, joint, refs):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
         assembly = self.getAssembly(joint)
@@ -814,6 +869,14 @@ class Joint:
         if not joint.Detach2:
             joint.Placement2 = self.findPlacement(joint, joint.Reference2, 1)
 
+        self.redrawJointPlacements(joint)
+
+    def redrawJointPlacements(self, joint):
+        if joint.ViewObject:
+            proxy = joint.ViewObject.Proxy
+            if proxy:
+                proxy.redrawJointPlacements(joint)
+
     """
     So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
     - obj is usually a App::Link to a PartDesign::Body, or primitive, fasteners. But can also be directly the object.1
@@ -852,8 +915,8 @@ class Joint:
         if reverse:
             sameDir = not sameDir
 
-        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
-        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+        part1 = UtilsAssembly.getMovingPart(joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(joint.Reference2)
 
         if not part1 or not part2:
             return False
@@ -917,7 +980,8 @@ class Joint:
                     part.Placement = plc
             self.partsMovedByPresolved = {}
 
-            joint.Placement1 = joint.Placement1  # Make sure plc1 is redrawn
+            if joint.ViewObject:
+                joint.ViewObject.Proxy.redrawJointPlacements(joint)
 
     def preventParallel(self, joint):
         # Angle and perpendicular joints in the solver cannot handle the situation where both JCS are Parallel
@@ -927,8 +991,8 @@ class Joint:
 
         assembly = self.getAssembly(joint)
 
-        part1 = UtilsAssembly.getMovingPart(assembly, joint.Reference1)
-        part2 = UtilsAssembly.getMovingPart(assembly, joint.Reference2)
+        part1 = UtilsAssembly.getMovingPart(joint.Reference1)
+        part2 = UtilsAssembly.getMovingPart(joint.Reference2)
 
         isAssembly = assembly.Type == "Assembly"
         if isAssembly:
@@ -1001,24 +1065,25 @@ class ViewProviderJoint:
 
     def updateData(self, joint, prop):
         """If a property of the handled feature has changed we have the chance to handle this here"""
-        # joint is the handled feature, prop is the name of the property that has changed
-        if prop == "Placement1":
-            if hasattr(joint, "Reference1") and joint.Reference1:
-                plc = joint.Placement1
-                self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
+        if prop == "Placement1" and hasattr(joint, "Reference1"):
+            self.redrawJointPlacement(self.switch_JCS1, joint.Placement1, joint.Reference1)
 
-                self.switch_JCS1.set_marker_placement(plc, joint.Reference1)
-            else:
-                self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
+        if prop == "Placement2" and hasattr(joint, "Reference2"):
+            self.redrawJointPlacement(self.switch_JCS2, joint.Placement2, joint.Reference2)
 
-        if prop == "Placement2":
-            if hasattr(joint, "Reference2") and joint.Reference2:
-                plc = joint.Placement2
-                self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
+    def redrawJointPlacements(self, joint):
+        if not hasattr(joint, "Reference1") or not hasattr(joint, "Reference2"):
+            return
 
-                self.switch_JCS2.set_marker_placement(plc, joint.Reference2)
-            else:
-                self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
+        self.redrawJointPlacement(self.switch_JCS1, joint.Placement1, joint.Reference1)
+        self.redrawJointPlacement(self.switch_JCS2, joint.Placement2, joint.Reference2)
+
+    def redrawJointPlacement(self, jcs, plc, ref):
+        if ref:
+            jcs.whichChild = coin.SO_SWITCH_ALL
+            jcs.set_marker_placement(plc, ref)
+        else:
+            jcs.whichChild = coin.SO_SWITCH_NONE
 
     def showPreviewJCS(self, visible, placement=None, ref=None):
         if visible:
@@ -1093,7 +1158,7 @@ class ViewProviderJoint:
         assembly = self.app_obj.Proxy.getAssembly(self.app_obj)
         # Assuming Reference1 corresponds to the first part link
         if hasattr(self.app_obj, "Reference1"):
-            part = UtilsAssembly.getMovingPart(assembly, self.app_obj.Reference1)
+            part = UtilsAssembly.getMovingPart(self.app_obj.Reference1)
             if part is not None and not assembly.isPartConnected(part):
                 overlays[Gui.IconPosition.BottomLeft] = "Part_Detached"
 
@@ -1146,15 +1211,31 @@ class GroundedJoint:
         joint.Proxy = self
         self.joint = joint
 
+        self.createObjectToGroundProperty(joint, obj_to_ground)
+
+    def createObjectToGroundProperty(self, joint, obj_to_ground):
         joint.addProperty(
-            "App::PropertyLink",
+            "App::PropertyLinkGlobal",
             "ObjectToGround",
             "Ground",
             QT_TRANSLATE_NOOP("App::Property", "The object to ground"),
             locked=True,
         )
-
         joint.ObjectToGround = obj_to_ground
+
+    def onDocumentRestored(self, joint):
+        self.migrationScript(joint)
+
+    def migrationScript(self, joint):
+        if (
+            hasattr(joint, "ObjectToGround")
+            and joint.getTypeIdOfProperty("ObjectToGround") == "App::PropertyLink"
+        ):
+            obj_to_ground = joint.ObjectToGround
+            joint.setPropertyStatus("ObjectToGround", "-LockDynamic")
+            joint.removeProperty("ObjectToGround")
+
+            self.createObjectToGroundProperty(joint, obj_to_ground)
 
     def dumps(self):
         return None
@@ -1533,7 +1614,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.deactivate()
 
-        solveIfAllowed(self.assembly)
         if self.activeType == "Assembly":
             self.joint.Visibility = self.visibilityBackup
         else:
@@ -1542,18 +1622,27 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         cmds = UtilsAssembly.generatePropertySettings(self.joint)
         Gui.doCommand(cmds)
 
+        self.assembly.recompute(True)
+
         App.closeActiveTransaction()
         return True
 
     def reject(self):
         self.deactivate()
         App.closeActiveTransaction(True)
-        if not self.creating:  # update visibility only if we are editing the joint
-            self.joint.Visibility = self.visibilityBackup
+        self.assembly.recompute(True)
         return True
 
     def autoClosedOnTransactionChange(self):
         self.reject()
+
+    def autoClosedOnDeletedDocument(self):
+        global activeTask
+        activeTask = None
+        Gui.Selection.removeSelectionGate()
+        Gui.Selection.removeObserver(self)
+        Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
+        App.closeActiveTransaction(True)
 
     def deactivate(self):
         global activeTask
@@ -1590,8 +1679,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             for sub_name in sel.SubElementNames:
                 # We add sub_name twice because the joints references have element name + vertex name
                 # and in the case of initial selection, both are the same.
-                ref = [sel.Object, [sub_name, sub_name]]
-                moving_part = self.getMovingPart(ref)
+
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    self.assembly, sel.Object, sub_name
+                )
+                if not moving_part:
+                    break
+
+                # Construct the reference using the Component as the root
+                ref = [moving_part, [new_sub, new_sub]]
 
                 # Only objects within the assembly.
                 if moving_part is None:
@@ -1622,9 +1718,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             joint_group = UtilsAssembly.getJointGroup(self.assembly)
             self.joint = joint_group.newObject("App::FeaturePython", "Joint")
             self.joint.Label = self.jointName
+            joint_group.purgeTouched()
+            self.assembly.purgeTouched()
 
         Joint(self.joint, type_index)
         ViewProviderJoint(self.joint.ViewObject)
+        self.joint.purgeTouched()
 
     def onJointTypeChanged(self, index):
         self.jType = JointTypes[self.jForm.jointType.currentIndex()]
@@ -1830,15 +1929,19 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         ref1 = self.joint.Reference1
         ref2 = self.joint.Reference2
 
-        self.refs.append(ref1)
-        self.refs.append(ref2)
+        if UtilsAssembly.isRefValid(ref1, 2):
+            self.refs.append(ref1)
+            sub1 = UtilsAssembly.addTipNameToSub(ref1)
+            Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, sub1)
 
-        Gui.Selection.addSelection(ref1[0].Document.Name, ref1[0].Name, ref1[1][0])
-        Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, ref2[1][0])
+        if UtilsAssembly.isRefValid(ref2, 2):
+            self.refs.append(ref2)
+            sub2 = UtilsAssembly.addTipNameToSub(ref2)
+            Gui.Selection.addSelection(ref2[0].Document.Name, ref2[0].Name, sub2)
 
         self.jForm.angleSpinbox.setProperty("rawValue", self.joint.Angle.Value)
-        self.jForm.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
-        self.jForm.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2)
+        self.jForm.distanceSpinbox.setProperty("rawValue", self.joint.Distance.Value)
+        self.jForm.distanceSpinbox2.setProperty("rawValue", self.joint.Distance2.Value)
         self.jForm.offsetSpinbox.setProperty("rawValue", self.joint.Offset2.Base.z)
         self.jForm.rotationSpinbox.setProperty(
             "rawValue", self.joint.Offset2.Rotation.getYawPitchRoll()[0]
@@ -1848,8 +1951,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.jForm.limitCheckbox2.setChecked(self.joint.EnableLengthMax)
         self.jForm.limitCheckbox3.setChecked(self.joint.EnableAngleMin)
         self.jForm.limitCheckbox4.setChecked(self.joint.EnableAngleMax)
-        self.jForm.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin)
-        self.jForm.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax)
+        self.jForm.limitLenMinSpinbox.setProperty("rawValue", self.joint.LengthMin.Value)
+        self.jForm.limitLenMaxSpinbox.setProperty("rawValue", self.joint.LengthMax.Value)
         self.jForm.limitRotMinSpinbox.setProperty("rawValue", self.joint.AngleMin.Value)
         self.jForm.limitRotMaxSpinbox.setProperty("rawValue", self.joint.AngleMax.Value)
 
@@ -1960,16 +2063,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             row = index.row()
             if row < len(self.refs):
                 ref = self.refs[row]
-
-                ref_id = id(ref)
-                if hasattr(self, "_original_tnp_map") and ref_id in self._original_tnp_map:
-                    # use original TNP string for newly added references
-                    removal_string = self._original_tnp_map[ref_id]
-                else:
-                    # use processed element name for reloaded references
-                    removal_string = ref[1][0]
-
-                Gui.Selection.removeSelection(ref[0], removal_string)
+                sub = UtilsAssembly.addTipNameToSub(ref)
+                Gui.Selection.removeSelection(ref[0], sub)
             else:
                 print(f"Row {row} is out of bounds for refs (length: {len(self.refs)})")
 
@@ -2024,11 +2119,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self._removeSelectedItems(selected_indexes)
 
     def getMovingPart(self, ref):
-        return UtilsAssembly.getMovingPart(self.assembly, ref)
+        return UtilsAssembly.getMovingPart(ref)
 
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
-        original_sub_name = sub_name
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
         # We do not need the full TNP string like :"Part.Body.Pad.;#a:1;:G0;XTR;:Hc94:8,F.Face6"
@@ -2038,7 +2132,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
-        ref = [rootObj, [sub_name]]
+        comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
+        if not comp:
+            # Selection was not valid (not inside assembly or logic failed)
+            Gui.Selection.removeSelection(doc_name, obj_name, sub_name)
+            return
+
+        # Construct the reference using the Component as the root
+        ref = [comp, [new_sub]]
+
         moving_part = self.getMovingPart(ref)
 
         # Check if the addition is acceptable (we are not doing this in selection gate to let user move objects)
@@ -2066,12 +2168,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         # add the vertex name to the reference
         ref = UtilsAssembly.addVertexToReference(ref, vertex_name)
 
-        # store the original TNP string for deletion purposes
-        if hasattr(self, "_original_tnp_map"):
-            self._original_tnp_map[id(ref)] = original_sub_name
-        else:
-            self._original_tnp_map = {id(ref): original_sub_name}
-
         self.refs.append(ref)
         self.updateJoint()
 
@@ -2091,12 +2187,16 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
 
+        comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
+        if not comp:
+            return
+
         for reference in self.refs[:]:
             ref_obj = reference[0]
             ref_element_name = reference[1][0] if len(reference[1]) > 0 else ""
 
             # match both object and processed element name for precise identification
-            if ref_obj == rootObj and ref_element_name == sub_name:
+            if ref_obj == comp and ref_element_name == new_sub:
                 self.refs.remove(reference)
                 break
         else:
@@ -2109,7 +2209,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.presel_ref = None
             return
 
-        self.presel_ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
+        rootObj = App.getDocument(doc_name).getObject(obj_name)
+
+        comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)
+        if not comp:
+            return
+
+        self.presel_ref = [comp, [new_sub]]
 
     def clearSelection(self, doc_name):
         self.refs.clear()

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -2598,7 +2600,6 @@ void CmdPartDesignBoolean::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Boolean", pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody, "newObject('PartDesign::Boolean','" << FeatName << "')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
-    static_cast<PartDesign::Boolean*>(Feat)->UsePlacement.setValue(true);
 
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid

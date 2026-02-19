@@ -96,12 +96,13 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="660"/>
       <source>Trackball Classic</source>
-      <translation type="unfinished">Trackball Classic</translation>
+      <translation>Klasični Trackball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="661"/>
       <source>Rounded Arcball</source>
-      <translation type="unfinished">Rounded Arcball</translation>
+      <translation>
+Zaobljeni Arcball</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="662"/>
@@ -112,7 +113,7 @@
       <location filename="../../NavigationIndicatorGui.py" line="674"/>
       <source>Navigation indicator</source>
       <comment>A context menu action used to show or hide the &apos;Navigation indicator&apos; toolbar widget</comment>
-      <translation type="unfinished">Navigation indicator</translation>
+      <translation>Pokazivač navigacije</translation>
     </message>
   </context>
 </TS>

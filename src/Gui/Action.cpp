@@ -858,6 +858,7 @@ RecentFilesAction::RecentFilesAction(Command* pcCmd, QObject* parent)
 
     //: Empties the list of recent files
     clearRecentFilesListAction.setText(tr("Clear Recent Files"));
+    clearRecentFilesListAction.setIcon(QIcon(QStringLiteral(":/icons/edit-delete.svg")));
     clearRecentFilesListAction.setToolTip({});
     this->groupAction()->addAction(&clearRecentFilesListAction);
 
@@ -937,7 +938,9 @@ void RecentFilesAction::setFiles(const QStringList& files)
     for (int index = 0; index < numRecentFiles; index++) {
         QString numberLabel = numberToLabel(index + 1);
         QFileInfo fi(files[index]);
-        recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel).arg(fi.fileName()));
+        QString fileName {fi.fileName()};
+        fileName.replace(QLatin1Char('&'), QStringLiteral("&&"));
+        recentFiles[index]->setText(QStringLiteral("%1 %2").arg(numberLabel, fileName));
         recentFiles[index]->setStatusTip(tr("Open file %1").arg(files[index]));
         recentFiles[index]->setToolTip(files[index]);  // set the full name that we need later for saving
         recentFiles[index]->setData(QVariant(index));

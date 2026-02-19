@@ -11,12 +11,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="17"/>
       <source>FreeCAD Unit Test</source>
-      <translation>Test unitaire FreeCAD</translation>
+      <translation>Test unitaire de FreeCAD</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="44"/>
       <source>Select test name</source>
-      <translation>Sélectionner le nom du test </translation>
+      <translation>Sélectionner un nom de test</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="96"/>
@@ -71,7 +71,7 @@
     <message>
       <location filename="../../UnitTest.ui" line="205"/>
       <source>Failures</source>
-      <translation>Échecs </translation>
+      <translation>Échecs</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="222"/>
@@ -81,12 +81,12 @@
     <message>
       <location filename="../../UnitTest.ui" line="239"/>
       <source>Remaining</source>
-      <translation>Restant </translation>
+      <translation>Restant</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="259"/>
       <source>Failures and Errors</source>
-      <translation>Échecs et Erreurs</translation>
+      <translation>Échecs et erreurs</translation>
     </message>
     <message>
       <location filename="../../UnitTest.ui" line="275"/>
@@ -102,28 +102,26 @@
   <context>
     <name>TestGui::UnitTestDialog</name>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="163"/>
+      <location filename="../../UnitTestImp.cpp" line="167"/>
       <source>Help</source>
       <translation>Aide</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="164"/>
+      <location filename="../../UnitTestImp.cpp" line="168"/>
       <source>Enter the name of a callable object which, when called, will return a TestCase.
 Click 'start', and the test thus produced will be run.
 
 Double click on an error in the tree view to see more information about it, including the stack trace.</source>
-      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase.
-Cliquer sur "Démarrer" et le test démarrera.
-
-Double-cliquer sur une erreur dans la vue en arborescence pour voir plus d'informations, y compris l'historique de la pile.</translation>
+      <translation>Saisir le nom d'un objet qui, une fois appelé, retournera un événement TestCase. Cliquer sur « Démarrer » pour lancer le test ainsi généré.
+Double-cliquer sur une erreur dans l'arborescence pour voir plus d'informations, y compris l'historique de la pile.</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="177"/>
+      <location filename="../../UnitTestImp.cpp" line="182"/>
       <source>About FreeCAD UnitTest</source>
       <translation>À propos de FreeCAD UnitTest</translation>
     </message>
     <message>
-      <location filename="../../UnitTestImp.cpp" line="178"/>
+      <location filename="../../UnitTestImp.cpp" line="183"/>
       <source>Copyright (c) Werner Mayer
 
 FreeCAD UnitTest is part of FreeCAD and supports writing Unit Tests for ones own modules.</source>

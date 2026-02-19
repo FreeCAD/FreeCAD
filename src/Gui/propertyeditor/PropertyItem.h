@@ -210,6 +210,7 @@ public:
     QString propertyName() const;
     void setPropertyName(const QString& name, const QString& realName = QString());
     void setPropertyValue(const QString&);
+    void setNameToolTipOverride(const QString& tooltip);
     virtual QVariant data(int column, int role) const;
     bool setData(const QVariant& value);
     Qt::ItemFlags flags(int column) const;
@@ -252,6 +253,7 @@ protected:
     int precision;
     bool linked;
     bool expanded;
+    QString nameToolTipOverride;
 
     friend class PropertyItemAttorney;
 };
@@ -272,6 +274,7 @@ class GuiExport PropertyStringItem: public PropertyItem
     ) const override;
     void setEditorData(QWidget* editor, const QVariant& data) const override;
     QVariant editorData(QWidget* editor) const override;
+    QVariant toolTip(const App::Property*) const override;
 
 protected:
     QVariant value(const App::Property*) const override;

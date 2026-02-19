@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -235,6 +237,9 @@ TopoShape ProfileBased::getTopoShapeVerifiedFace(
 
 
                     if (subshape.isNull()) {
+                        if (silent) {
+                            return {};
+                        }
                         FC_THROWM(
                             Base::CADKernelError,
                             "Sub shape not found: " << obj->getFullName() << "." << sub
@@ -622,7 +627,7 @@ TopoShape ProfileBased::getTopoShapeSupportFace() const
     TopoShape shape;
     const Part::Part2DObject* sketch = getVerifiedSketch(true);
     if (!sketch) {
-        shape = getTopoShapeVerifiedFace();
+        shape = getTopoShapeVerifiedFace(true);
     }
     else if (sketch->MapMode.getValue() == Attacher::mmFlatFace
              && sketch->AttachmentSupport.getValue()) {
@@ -1373,6 +1378,10 @@ Base::Vector3d ProfileBased::getProfileNormal() const
     // some reason.
     TopoShape shape = getTopoShapeVerifiedFace(true, true, true);  //, _ProfileBasedVersion.getValue()
                                                                    //<= 0);
+
+    if (shape.isNull()) {
+        return SketchVector;
+    }
 
     gp_Pln pln;
     if (shape.findPlane(pln)) {

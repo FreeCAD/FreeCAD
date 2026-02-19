@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -56,6 +58,8 @@ using DrawSketchHandlerPointBase = DrawSketchControllableHandler<DSHPointControl
 
 class DrawSketchHandlerPoint: public DrawSketchHandlerPointBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerPoint)
+
     // Allow specialisations of controllers access to private members
     friend DSHPointController;
 

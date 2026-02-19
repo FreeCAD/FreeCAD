@@ -47,7 +47,7 @@
     <message>
       <location filename="../ui/dialogLayers.ui" line="50"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>切換可見性</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayers.ui" line="57"/>
@@ -1726,7 +1726,7 @@ pattern definitions to be added to the standard patterns</source>
       <location filename="../ui/preferences-drafttexts.ui" line="653"/>
       <location filename="../ui/preferences-drafttexts.ui" line="682"/>
       <location filename="../ui/preferences-drafttexts.ui" line="711"/>
-      <location filename="../ui/preferences-dxf.ui" line="560"/>
+      <location filename="../ui/preferences-dxf.ui" line="557"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -2159,12 +2159,12 @@ This value is the maximum segment length.</source>
       <translation>匯入</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="586"/>
+      <location filename="../ui/preferences-dxf.ui" line="583"/>
       <source>All objects containing faces will be exported as 3D polyface meshes</source>
       <translation type="unfinished">All objects containing faces will be exported as 3D polyface meshes</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="636"/>
+      <location filename="../ui/preferences-dxf.ui" line="633"/>
       <source>Project exported objects along current view direction</source>
       <translation>沿著目前視圖方向投影匯出的物件</translation>
     </message>
@@ -2446,33 +2446,33 @@ instead of Draft or Part objects. This overrides the 'Import As' setting</transl
       <translation type="unfinished">Export Options</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="544"/>
+      <location filename="../ui/preferences-dxf.ui" line="541"/>
       <source>Maximum spline segment</source>
       <translation type="unfinished">Maximum spline segment</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="554"/>
+      <location filename="../ui/preferences-dxf.ui" line="551"/>
       <source>Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</source>
       <translation type="unfinished">Maximum length of each of the polyline segments. '0' treats the whole spline as a straight segment.</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="589"/>
+      <location filename="../ui/preferences-dxf.ui" line="586"/>
       <source>Export 3D objects as polyface meshes</source>
       <translation>以聚合面網格匯出3D物件</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="606"/>
+      <location filename="../ui/preferences-dxf.ui" line="603"/>
       <source>TechDraw Views will be exported as blocks.
 This might fail for post DXF R12 templates.</source>
       <translation>工程製圖視圖將以區塊匯出。這可能在 DXF R12 之後的模板中失敗。</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="610"/>
+      <location filename="../ui/preferences-dxf.ui" line="607"/>
       <source>Export TechDraw Views as blocks</source>
       <translation>將工程製圖檢視以區塊匯出</translation>
     </message>
     <message>
-      <location filename="../ui/preferences-dxf.ui" line="633"/>
+      <location filename="../ui/preferences-dxf.ui" line="630"/>
       <source>Exported objects will be projected to reflect the current view direction</source>
       <translation>匯出的物件將被投影以反映當前的視圖方向</translation>
     </message>
@@ -3026,7 +3026,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="641"/>
-      <location filename="../../DraftGui.py" line="997"/>
+      <location filename="../../DraftGui.py" line="998"/>
       <source>Continue</source>
       <translation>繼續</translation>
     </message>
@@ -3069,86 +3069,86 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="891"/>
+      <location filename="../../WorkingPlane.py" line="906"/>
       <location filename="../../draftmake/make_sketch.py" line="121"/>
       <location filename="../../draftmake/make_sketch.py" line="137"/>
       <source>All shapes must be coplanar</source>
       <translation type="unfinished">All shapes must be coplanar</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="898"/>
+      <location filename="../../WorkingPlane.py" line="913"/>
       <source>Selected shapes must define a plane</source>
       <translation type="unfinished">Selected shapes must define a plane</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="984"/>
-      <location filename="../../WorkingPlane.py" line="1560"/>
-      <location filename="../../WorkingPlane.py" line="1561"/>
+      <location filename="../../WorkingPlane.py" line="999"/>
+      <location filename="../../WorkingPlane.py" line="1575"/>
+      <location filename="../../WorkingPlane.py" line="1576"/>
       <source>Top</source>
       <translation>上視圖</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="996"/>
-      <location filename="../../WorkingPlane.py" line="1582"/>
-      <location filename="../../WorkingPlane.py" line="1583"/>
+      <location filename="../../WorkingPlane.py" line="1011"/>
+      <location filename="../../WorkingPlane.py" line="1597"/>
+      <location filename="../../WorkingPlane.py" line="1598"/>
       <source>Front</source>
       <translation>前視圖</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1015"/>
-      <location filename="../../WorkingPlane.py" line="1604"/>
-      <location filename="../../WorkingPlane.py" line="1605"/>
+      <location filename="../../WorkingPlane.py" line="1030"/>
+      <location filename="../../WorkingPlane.py" line="1619"/>
+      <location filename="../../WorkingPlane.py" line="1620"/>
       <source>Side</source>
       <translation>側面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1238"/>
-      <location filename="../../WorkingPlane.py" line="1538"/>
-      <location filename="../../WorkingPlane.py" line="1539"/>
+      <location filename="../../WorkingPlane.py" line="1253"/>
+      <location filename="../../WorkingPlane.py" line="1553"/>
+      <location filename="../../WorkingPlane.py" line="1554"/>
       <source>Auto</source>
       <translation>自動</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1239"/>
+      <location filename="../../WorkingPlane.py" line="1254"/>
       <source>Current working plane: Auto</source>
       <translation type="unfinished">Current working plane: Auto</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1721"/>
+      <location filename="../../WorkingPlane.py" line="1736"/>
       <source>Current working plane:</source>
       <translation>目前工作平面：</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1316"/>
-      <location filename="../../WorkingPlane.py" line="1345"/>
+      <location filename="../../WorkingPlane.py" line="1331"/>
+      <location filename="../../WorkingPlane.py" line="1360"/>
       <source>Selected shapes do not define a plane</source>
       <translation>選取的形狀沒有定義出一個平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1685"/>
+      <location filename="../../WorkingPlane.py" line="1700"/>
       <source>No previous working plane</source>
       <translation>沒有前一個工作平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1696"/>
+      <location filename="../../WorkingPlane.py" line="1711"/>
       <source>No next working plane</source>
       <translation>沒有下一個工作平面</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1725"/>
+      <location filename="../../WorkingPlane.py" line="1740"/>
       <source>Axes:</source>
       <translation>軸:</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1732"/>
+      <location filename="../../WorkingPlane.py" line="1747"/>
       <source>Position:</source>
       <translation>位置：</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1663"/>
-      <location filename="../../DraftGui.py" line="1681"/>
+      <location filename="../../DraftGui.py" line="1664"/>
+      <location filename="../../DraftGui.py" line="1682"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>無</translation>
@@ -3196,7 +3196,7 @@ if they match the X, Y or Z axis of the global coordinate system</source>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="602"/>
-      <location filename="../../DraftGui.py" line="980"/>
+      <location filename="../../DraftGui.py" line="981"/>
       <source>Radius</source>
       <translation>半徑</translation>
     </message>
@@ -3216,12 +3216,12 @@ if they match the X, Y or Z axis of the global coordinate system</source>
       <translation type="unfinished">Toggles construction mode</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="934"/>
+      <location filename="../../DraftGui.py" line="935"/>
       <source>Label Type</source>
       <translation type="unfinished">Label Type</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="981"/>
+      <location filename="../../DraftGui.py" line="982"/>
       <source>Radius of Circle</source>
       <translation>圓的半徑</translation>
     </message>
@@ -3284,12 +3284,12 @@ Uncheck to use working plane coordinate system</source>
       <translation>完成目前繪圖或編輯操作</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1885"/>
+      <location filename="../../DraftGui.py" line="1889"/>
       <source>Modify Objects</source>
       <translation type="unfinished">Modify Objects</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2042"/>
+      <location filename="../../DraftGui.py" line="2046"/>
       <source>Facebinder Elements</source>
       <translation type="unfinished">Facebinder Elements</translation>
     </message>
@@ -3382,50 +3382,50 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1669"/>
-      <location filename="../../DraftGui.py" line="1687"/>
+      <location filename="../../DraftGui.py" line="1670"/>
+      <location filename="../../DraftGui.py" line="1688"/>
       <source>Autogroup off</source>
       <translation>關閉自動群組</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="841"/>
+      <location filename="../../DraftGui.py" line="842"/>
       <location filename="../../draftguitools/gui_lines.py" line="71"/>
       <source>Line</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="856"/>
+      <location filename="../../DraftGui.py" line="857"/>
       <source>DWire</source>
       <translation>DWire</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="879"/>
+      <location filename="../../DraftGui.py" line="880"/>
       <source>Circle</source>
       <translation>圓</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="884"/>
+      <location filename="../../DraftGui.py" line="885"/>
       <source>Arc</source>
       <translation>弧</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="889"/>
+      <location filename="../../DraftGui.py" line="890"/>
       <location filename="../../draftguitools/gui_rotate.py" line="286"/>
       <source>Rotate</source>
       <translation>旋轉</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="895"/>
+      <location filename="../../DraftGui.py" line="896"/>
       <source>Point</source>
       <translation>點</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="932"/>
+      <location filename="../../DraftGui.py" line="933"/>
       <source>Label</source>
       <translation>標籤</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="951"/>
+      <location filename="../../DraftGui.py" line="952"/>
       <location filename="../../draftguitools/gui_offset.py" line="243"/>
       <location filename="../../draftguitools/gui_offset.py" line="258"/>
       <location filename="../../draftguitools/gui_offset.py" line="321"/>
@@ -3433,31 +3433,31 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>偏移</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="956"/>
-      <location filename="../../DraftGui.py" line="973"/>
+      <location filename="../../DraftGui.py" line="957"/>
+      <location filename="../../DraftGui.py" line="974"/>
       <location filename="../../draftguitools/gui_trimex.py" line="223"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="957"/>
-      <location filename="../../DraftGui.py" line="974"/>
+      <location filename="../../DraftGui.py" line="958"/>
+      <location filename="../../DraftGui.py" line="975"/>
       <location filename="../../draftguitools/gui_trimex.py" line="224"/>
       <source>Offset distance</source>
       <translation>偏移距離</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="970"/>
+      <location filename="../../DraftGui.py" line="971"/>
       <source>Trimex</source>
       <translation>修剪及延伸</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1053"/>
-      <location filename="../../DraftGui.py" line="1055"/>
+      <location filename="../../DraftGui.py" line="1054"/>
       <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1058"/>
+      <location filename="../../DraftGui.py" line="1057"/>
       <location filename="../../DraftGui.py" line="1059"/>
       <location filename="../../DraftGui.py" line="1060"/>
+      <location filename="../../DraftGui.py" line="1061"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3465,12 +3465,12 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>區域 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1062"/>
       <location filename="../../DraftGui.py" line="1063"/>
       <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1066"/>
+      <location filename="../../DraftGui.py" line="1065"/>
       <location filename="../../DraftGui.py" line="1067"/>
       <location filename="../../DraftGui.py" line="1068"/>
+      <location filename="../../DraftGui.py" line="1069"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3478,22 +3478,22 @@ Not available if the 'Use Part Primitives' preference is enabled</translation>
       <translation>全域 {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1677"/>
+      <location filename="../../DraftGui.py" line="1678"/>
       <source>Autogroup:</source>
       <translation>自動群組：</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2039"/>
+      <location filename="../../DraftGui.py" line="2043"/>
       <source>Faces</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2040"/>
+      <location filename="../../DraftGui.py" line="2044"/>
       <source>Remove</source>
       <translation>移除</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2041"/>
+      <location filename="../../DraftGui.py" line="2045"/>
       <source>Add</source>
       <translation>新增</translation>
     </message>
@@ -3558,10 +3558,10 @@ or try saving to a lower DWG version.</source>
 請將DWG文件移動到不包含空格和非英語字母的目錄路徑，或者嘗試保存為更低版本的DWG文件。</translation>
     </message>
     <message>
-      <location filename="../../WorkingPlane.py" line="1351"/>
-      <location filename="../../WorkingPlane.py" line="1352"/>
-      <location filename="../../WorkingPlane.py" line="1631"/>
-      <location filename="../../WorkingPlane.py" line="1632"/>
+      <location filename="../../WorkingPlane.py" line="1366"/>
+      <location filename="../../WorkingPlane.py" line="1367"/>
+      <location filename="../../WorkingPlane.py" line="1646"/>
+      <location filename="../../WorkingPlane.py" line="1647"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="67"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="82"/>
       <location filename="../../draftutils/init_draft_statusbar.py" line="96"/>
@@ -3618,43 +3618,43 @@ or try saving to a lower DWG version.</source>
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>無活動中文件。中止。</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>錯誤輸入：物件 {} 不在文件中。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>無法將新物件插入到已縮放的零件中</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>符號尚未被實作出來。使用一預設符號。</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>影像為空</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>檔名在系統中或資源檔案中不存在</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>無法載入紋理</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>沒有 'ViewObject.RootNode' 屬性。</translation>
     </message>
@@ -4780,159 +4780,159 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>降級</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="164"/>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="300"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="227"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="403"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="185"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="338"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="171"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="234"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="192"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="343"/>
       <source>Object:</source>
       <translation>物件:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="92"/>
       <source>Polar Array</source>
       <translation type="unfinished">Polar Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="168"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="175"/>
       <source>Number of elements must be at least 2</source>
       <translation type="unfinished">Number of elements must be at least 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="176"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
       <source>The angle is above 360 degrees. It is set to this value to proceed.</source>
       <translation>角度超過了360度。它被設置為這個值以繼續。</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="183"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="190"/>
       <source>The angle is below -360 degrees. It is set to this value to proceed.</source>
       <translation>角度低於 -360 度。它被設置為這個值以繼續。</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="237"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="244"/>
       <source>Create Polar Array</source>
       <translation type="unfinished">Create Polar Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="271"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="374"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="309"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="276"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="376"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="314"/>
       <source>Fuse:</source>
       <translation>融合:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="322"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="327"/>
       <source>Create Link array:</source>
       <translation>建立連結陣列：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="301"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="306"/>
       <source>Number of elements:</source>
       <translation>元件數目：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="302"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="307"/>
       <source>Polar angle:</source>
       <translation>極角：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="305"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="310"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="350"/>
       <source>Center of rotation:</source>
       <translation>旋轉中心點:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="92"/>
       <source>Orthogonal Array</source>
       <translation type="unfinished">Orthogonal Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="219"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
       <source>Number of elements must be at least 1</source>
       <translation type="unfinished">Number of elements must be at least 1</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="237"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="244"/>
       <source>In linear mode, at least 1 axis must be selected</source>
       <translation type="unfinished">In linear mode, at least 1 axis must be selected</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="309"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="316"/>
       <source>Create Orthogonal Array</source>
       <translation type="unfinished">Create Orthogonal Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="284"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="387"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="289"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="389"/>
       <source>Create link array:</source>
       <translation type="unfinished">Create link array:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="405"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="407"/>
       <source>Number of X elements:</source>
       <translation>X 元件的數目：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="408"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="410"/>
       <source>Interval X:</source>
       <translation>間隔 X：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="410"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="412"/>
       <source>Number of Y elements:</source>
       <translation>Y 元件的數目：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="413"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="415"/>
       <source>Interval Y:</source>
       <translation>間隔 Y：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="415"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="417"/>
       <source>Number of Z elements:</source>
       <translation>Z 元件的數目：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="418"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="420"/>
       <source>Interval Z:</source>
       <translation>間隔 Z：</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="434"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="436"/>
       <source>Switch to Ortho Mode</source>
       <translation type="unfinished">Switch to Ortho Mode</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="451"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="489"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="453"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="491"/>
       <source>X-Axis</source>
       <translation>X 軸</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="453"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="491"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="455"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="493"/>
       <source>Y-Axis</source>
       <translation>Y 軸</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="455"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="493"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="457"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="495"/>
       <source>Z-Axis</source>
       <translation>Z 軸</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="457"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="459"/>
       <source>Switch to Linear Mode</source>
       <translation type="unfinished">Switch to Linear Mode</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="528"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="530"/>
       <source>Number of elements</source>
       <translation>元件數目</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="529"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="531"/>
       <source>Interval</source>
       <translation type="unfinished">Interval</translation>
     </message>
@@ -4942,76 +4942,76 @@ The final angle will be the base angle plus this amount.</translation>
       <translation>字串造型產生器</translation>
     </message>
     <message>
-      <location filename="../../draftutils/params.py" line="506"/>
+      <location filename="../../draftutils/params.py" line="505"/>
       <source>Default</source>
       <translation>預設</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="198"/>
       <source>Radial distance is zero. Resulting array may not look correct.</source>
       <translation>徑向距離為零。生成的陣列可能看起來不正確。"</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="193"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="200"/>
       <source>Radial distance is negative. It is made positive to proceed.</source>
       <translation>徑向距離為負數。它被變為正數以繼續進行。</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="85"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="92"/>
       <source>Circular Array</source>
       <translation type="unfinished">Circular Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="156"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="215"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="173"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="222"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="180"/>
       <source>At least 1 element must be selected</source>
       <translation type="unfinished">At least 1 element must be selected</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="177"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
       <source>Number of layers must be at least 2</source>
       <translation type="unfinished">Number of layers must be at least 2</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="163"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="226"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="184"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="170"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="233"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="191"/>
       <source>Selection is not suitable for array</source>
       <translation type="unfinished">Selection is not suitable for array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="197"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
       <source>Tangential distance cannot be 0</source>
       <translation type="unfinished">Tangential distance cannot be 0</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="204"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="211"/>
       <source>Tangential distance is negative. It is made positive to proceed.</source>
       <translation>切線距離為負數。它會被轉為正數以繼續進行。</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="263"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="270"/>
       <source>Create Circular Array</source>
       <translation type="unfinished">Create Circular Array</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="339"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="344"/>
       <source>Radial distance:</source>
       <translation>徑向距離:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="340"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="345"/>
       <source>Tangential distance:</source>
       <translation>切線距離:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="341"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="346"/>
       <source>Number of concentric circles:</source>
       <translation type="unfinished">Number of concentric circles:</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="342"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="347"/>
       <source>Symmetry parameter:</source>
       <translation>對稱參數:</translation>
     </message>
@@ -5984,16 +5984,16 @@ To enabled FreeCAD to download these libraries, answer Yes.</translation>
       <translation>斜率</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="115"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="149"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="122"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="122"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="156"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="129"/>
       <source>True</source>
       <translation>真(True)</translation>
     </message>
     <message>
-      <location filename="../../drafttaskpanels/task_polararray.py" line="119"/>
-      <location filename="../../drafttaskpanels/task_orthoarray.py" line="151"/>
-      <location filename="../../drafttaskpanels/task_circulararray.py" line="126"/>
+      <location filename="../../drafttaskpanels/task_polararray.py" line="126"/>
+      <location filename="../../drafttaskpanels/task_orthoarray.py" line="158"/>
+      <location filename="../../drafttaskpanels/task_circulararray.py" line="133"/>
       <source>False</source>
       <translation>偽(False)</translation>
     </message>

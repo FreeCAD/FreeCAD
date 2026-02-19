@@ -334,7 +334,7 @@ class BIM_Material:
                 # center the dialog over FreeCAD window
                 mw = FreeCADGui.getMainWindow()
                 form.move(mw.frameGeometry().topLeft() + mw.rect().center() - form.rect().center())
-                form.setWindowTitle(translate("BIM", "Select material to merge to"))
+                form.setWindowTitle(translate("BIM", "Select Material to Merge To"))
                 form.setWindowIcon(QtGui.QIcon(":/icons/Arch_Material.svg"))
                 for i in range(self.dlg.matList.count()):
                     oit = self.dlg.matList.item(i)
@@ -545,7 +545,7 @@ class Arch_Material:
         FreeCADGui.Control.closeDialog()
         FreeCADGui.doCommand("mat = Arch.makeMaterial()")
         for obj in sel:
-            if hasattr(obj, "Material"):
+            if hasattr(obj, "Material") and hasattr(obj, "MoveWithHost"):  # 'isComponent' check
                 FreeCADGui.doCommand(
                     'FreeCAD.ActiveDocument.getObject("' + obj.Name + '").Material = mat'
                 )

@@ -1,5 +1,8 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 #***************************************************************************
 #*   Copyright (c) 2001,2002 Jürgen Riegel <juergen.riegel@web.de>         *
+#*   Copyright (c) 2025 Frank Martínez <mnesarco at gmail dot com>         *
 #*                                                                         *
 #*   This file is part of the FreeCAD CAx development system.              *
 #*                                                                         *
@@ -21,409 +24,152 @@
 #*                                                                         *
 #***************************************************************************/
 
-# FreeCAD init module
+# FreeCAD init module - App
 #
 # Gathering all the information to start FreeCAD.
-# This is the second of three init scripts.
-# The third one runs when the gui is up,
+# This is the second of four init scripts:
+# +------+------------------+-----------------------------+
+# | This | Script           | Runs                        |
+# +------+------------------+-----------------------------+
+# |      | CMakeVariables   | always                      |
+# | >>>> | FreeCADInit      | always                      |
+# |      | FreeCADTest      | only if test and not Gui    |
+# |      | FreeCADGuiInit   | only if Gui is up           |
+# +------+------------------+-----------------------------+
 
-# imports the one and only
 import FreeCAD
 
-def removeFromPath(module_name):
-    """removes the module from the sys.path. The entry point for imports
-        will therefore always be FreeCAD.
-        eg.: from FreeCAD.Module.submodule import function"""
-    import sys
-    paths = sys.path
-    for path in paths:
-        if module_name in path:
-            sys.path.remove(path)
-            return
-    Wrn(module_name + " not found in sys.path\n")
-
-def setupSearchPaths(PathExtension):
-    # DLL resolution in Python 3.8 on Windows has changed
-    import sys
-    if sys.platform == 'win32' and hasattr(os, "add_dll_directory"):
-        if "FREECAD_LIBPACK_BIN" in os.environ:
-            os.add_dll_directory(os.environ["FREECAD_LIBPACK_BIN"])
-        if "WINDIR" in os.environ:
-            os.add_dll_directory(os.environ["WINDIR"] + os.sep + "system32")
-        for path in PathExtension:
-            os.add_dll_directory(path)
-
-    PathEnvironment = PathExtension.pop(0) + os.pathsep
-    for path in PathExtension:
-        try:
-            PathEnvironment += path + os.pathsep
-        except UnicodeDecodeError:
-            Wrn('Filter invalid module path: u{}\n'.format(repr(path)))
-
-    # new paths must be prepended to avoid to load a wrong version of a library
-    try:
-        os.environ["PATH"] = PathEnvironment + os.environ["PATH"]
-    except UnicodeEncodeError:
-        Log('UnicodeEncodeError was raised when concatenating unicode string with PATH. Try to replace non-ascii chars...\n')
-        os.environ["PATH"] = PathEnvironment.encode(errors='replace') + os.environ["PATH"]
-        Log('done\n')
-    except KeyError:
-        os.environ["PATH"] = PathEnvironment
-
-FreeCAD._importFromFreeCAD = removeFromPath
-
-
-def InitApplications():
-    # Checking on FreeCAD module path ++++++++++++++++++++++++++++++++++++++++++
-    ModDir = FreeCAD.getHomePath()+'Mod'
-    ModDir = os.path.realpath(ModDir)
-    ExtDir = FreeCAD.getHomePath()+'Ext'
-    ExtDir = os.path.realpath(ExtDir)
-    BinDir = FreeCAD.getHomePath()+'bin'
-    BinDir = os.path.realpath(BinDir)
-    libpaths = []
-    LibDir = FreeCAD.getHomePath()+'lib'
-    LibDir = os.path.realpath(LibDir)
-    if os.path.exists(LibDir):
-        libpaths.append(LibDir)
-    Lib64Dir = FreeCAD.getHomePath()+'lib64'
-    Lib64Dir = os.path.realpath(Lib64Dir)
-    if os.path.exists(Lib64Dir):
-        libpaths.append(Lib64Dir)
-    LibPyDir = FreeCAD.getHomePath()+'lib-py3'
-    LibPyDir = os.path.realpath(LibPyDir)
-    if (os.path.exists(LibPyDir)):
-        libpaths.append(LibPyDir)
-    LibFcDir = FreeCAD.getLibraryDir()
-    LibFcDir = os.path.realpath(LibFcDir)
-    if (os.path.exists(LibFcDir) and not LibFcDir in libpaths):
-        libpaths.append(LibFcDir)
-    AddPath = FreeCAD.ConfigGet("AdditionalModulePaths").split(";") + \
-            FreeCAD.ConfigGet("AdditionalMacroPaths").split(";")
-    HomeMod = FreeCAD.getUserAppDataDir()+"Mod"
-    HomeMod = os.path.realpath(HomeMod)
-    MacroStd = App.getUserMacroDir(False)
-    MacroDir = App.getUserMacroDir(True)
-    MacroMod = os.path.realpath(MacroDir+"/Mod")
-    SystemWideMacroDir = FreeCAD.getHomePath()+'Macro'
-    SystemWideMacroDir = os.path.realpath(SystemWideMacroDir)
-    DisabledAddons = FreeCAD.ConfigGet("DisabledAddons").split(";")
-
-    #print FreeCAD.getHomePath()
-    if os.path.isdir(FreeCAD.getHomePath()+'src\\Tools'):
-        sys.path.append(FreeCAD.getHomePath()+'src\\Tools')
-
-    fallback_mods = {}
-    def update_mod_registry(mod_dict):
-        for mod_name, mod_path in mod_dict.items():
-            if mod_name in fallback_mods:
-                if mod_path not in fallback_mods[mod_name]:
-                    fallback_mods[mod_name].append(mod_path)
-            else:
-                fallback_mods[mod_name] = [mod_path]
-
-    # Searching for module dirs +++++++++++++++++++++++++++++++++++++++++++++++++++
-    # Use dict to handle duplicated module names
-    ModDict = {}
-    if os.path.isdir(ModDir):
-        ModDirs = os.listdir(ModDir)
-        for i in ModDirs: ModDict[i.lower()] = os.path.join(ModDir,i)
-    else:
-        Wrn ("No modules found in " + ModDir + "\n")
-    update_mod_registry(ModDict)
-
-    # Search for additional modules in the home directory
-    if os.path.isdir(HomeMod):
-        HomeMods = os.listdir(HomeMod)
-        for i in HomeMods: ModDict[i.lower()] = os.path.join(HomeMod,i)
-    elif os.path.isdir(os.path.join(os.path.expanduser("~"),".FreeCAD","Mod")):
-        # Check if old location exists
-        Wrn ("User path has changed to " + FreeCAD.getUserAppDataDir() + ". Please move user modules and macros\n")
-    update_mod_registry(ModDict)
-
-    # Search for additional modules in the macro directory
-    if os.path.isdir(MacroMod):
-        MacroMods = os.listdir(MacroMod)
-        for i in MacroMods:
-            key = i.lower()
-            if key not in ModDict: ModDict[key] = os.path.join(MacroMod,i)
-    update_mod_registry(ModDict)
-
-    # Search for additional modules in command line
-    for i in AddPath:
-        if os.path.isdir(i): ModDict[i] = i
-    update_mod_registry(ModDict)
-
-    FreeCAD.__fallback_mods__ = fallback_mods
-    for name, entries in fallback_mods.items():
-        if len(entries) > 1:
-            Msg(f"{len(entries)} entries found for module '{name}': using the one in {entries[-1]}\n")
-
-    #AddModPaths = App.ParamGet("System parameter:AdditionalModulePaths")
-    #Err( AddModPaths)
-    # add also this path so that all modules search for libraries
-    # they depend on first here
-    PathExtension = []
-    PathExtension.append(BinDir)
-
-    # prepend all module paths to Python search path
-    Log('Init:   Searching for modules...\n')
-
-
-    # to have all the module-paths available in FreeCADGuiInit.py:
-    FreeCAD.__ModDirs__ = list(ModDict.values())
-
-    # this allows importing with:
-    # from FreeCAD.Module import package
-    FreeCAD.__path__ = [ModDir] + libpaths + [HomeMod]
-
-    # also add these directories to the sys.path to
-    # not change the old behaviour. once we have moved to
-    # proper python modules this can eventually be removed.
-    sys.path = [ModDir] + libpaths + [ExtDir] + sys.path
-
-    # The AddonManager may install additional Python packages in
-    # these paths:
-    import platform
-    major,minor,_ = platform.python_version_tuple()
-    vendor_path = os.path.join(
-        FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages",f"py{major}{minor}"
-    )
-    if os.path.isdir(vendor_path):
-        sys.path.append(vendor_path)
-
-    additional_packages_path = os.path.join(FreeCAD.getUserAppDataDir(),"AdditionalPythonPackages")
-    if os.path.isdir(additional_packages_path):
-        sys.path.append(additional_packages_path)
-
-    def RunInitPy(Dir):
-        InstallFile = os.path.join(Dir,"Init.py")
-        if (os.path.exists(InstallFile)):
-            try:
-                with open(InstallFile, 'rt', encoding='utf-8') as f:
-                    exec(compile(f.read(), InstallFile, 'exec'))
-            except Exception as inst:
-                Log('Init:      Initializing ' + Dir + '... failed\n')
-                Log('-'*100+'\n')
-                Log(traceback.format_exc())
-                Log('-'*100+'\n')
-                Err('During initialization the error "' + str(inst) + '" occurred in ' + InstallFile + '\n')
-                Err('Please look into the log file for further information\n')
-                mod_name = os.path.normpath(Dir).split(os.path.sep)[-1].lower()
-                if hasattr(FreeCAD,"__failed_mods__"):
-                    FreeCAD.__failed_mods__.append(mod_name)
-                else:
-                    FreeCAD.__failed_mods__ = [mod_name]
-                if mod_name not in FreeCAD.__fallback_mods__:
-                    Err("Could not evaluate module '" + mod_name + "' for fallbacks\n")
-                elif len(FreeCAD.__fallback_mods__[mod_name]) > 1:
-                    new_path = os.path.normpath(FreeCAD.__fallback_mods__[mod_name][-2])
-                    Err(f"A fallback module was found for module '{mod_name}': {new_path}\n")
-                    Err(f"Rename or remove {os.path.normpath(Dir)} to use the fallback module\n")
-            else:
-                Log('Init:      Initializing ' + Dir + '... done\n')
-        else:
-            Log('Init:      Initializing ' + Dir + '(Init.py not found)... ignore\n')
-
-    def processMetadataFile(MetadataFile):
-        meta = FreeCAD.Metadata(MetadataFile)
-        if not meta.supportsCurrentFreeCAD():
-            Msg(f'NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped\n')
-            return None
-        content = meta.Content
-        if "workbench" in content:
-            workbenches = content["workbench"]
-            for workbench in workbenches:
-                if not workbench.supportsCurrentFreeCAD():
-                    Msg(f'NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped\n')
-                    return None
-                subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
-                subdirectory = subdirectory.replace("/",os.path.sep)
-                subdirectory = os.path.join(Dir, subdirectory)
-                #classname = workbench.Classname
-                sys.path.insert(0,subdirectory)
-                PathExtension.append(subdirectory)
-                RunInitPy(subdirectory)
-
-    def tryProcessMetadataFile(MetadataFile):
-        try:
-            processMetadataFile(MetadataFile)
-        except Exception as exc:
-            Err(str(exc))
-
-    def checkIfAddonIsDisabled(Dir):
-        Name = os.path.basename(Dir)
-
-        if Name in DisabledAddons:
-            Msg(f'NOTICE: Addon "{Name}" disabled by presence of "--disable-addon {Name}" argument\n')
-            return True
-
-        stopFileName = "ALL_ADDONS_DISABLED"
-        stopFile = os.path.join(Dir, os.path.pardir, stopFileName)
-        if os.path.exists(stopFile):
-            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
-            return True
-
-        stopFileName = "ADDON_DISABLED"
-        stopFile = os.path.join(Dir, stopFileName)
-        if os.path.exists(stopFile):
-            Msg(f'NOTICE: Addon "{Dir}" disabled by presence of {stopFileName} stopfile\n')
-            return True
-
-        return False
-
-    for Dir in ModDict.values():
-        if Dir not in ['', 'CVS', '__init__.py']:
-            if checkIfAddonIsDisabled(Dir):
-                continue
-            sys.path.insert(0,Dir)
-            PathExtension.append(Dir)
-            MetadataFile = os.path.join(Dir, "package.xml")
-            if os.path.exists(MetadataFile):
-                tryProcessMetadataFile(MetadataFile)
-            else:
-                RunInitPy(Dir)
-
-    extension_modules = []
-
-    try:
-        import pkgutil
-        import importlib
-        import freecad
-        for _, freecad_module_name, freecad_module_ispkg in pkgutil.iter_modules(freecad.__path__, "freecad."):
-            if freecad_module_ispkg:
-                Log('Init: Initializing ' + freecad_module_name + '\n')
-                try:
-                    # Check for a stopfile
-                    stopFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "ADDON_DISABLED")
-                    if os.path.exists(stopFile):
-                        Msg(f'NOTICE: Addon "{freecad_module_name}" disabled by presence of ADDON_DISABLED stopfile\n')
-                        continue
-
-                    # Make sure that package.xml (if present) does not exclude this version of FreeCAD
-                    MetadataFile = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", freecad_module_name[8:], "package.xml")
-                    if os.path.exists(MetadataFile):
-                        meta = FreeCAD.Metadata(MetadataFile)
-                        if not meta.supportsCurrentFreeCAD():
-                            Msg(f'NOTICE: Addon "{freecad_module_name}" does not support this version of FreeCAD, so is being skipped\n')
-                            continue
-
-                    freecad_module = importlib.import_module(freecad_module_name)
-                    extension_modules += [freecad_module_name]
-                    if any (module_name == 'init' for _, module_name, ispkg in pkgutil.iter_modules(freecad_module.__path__)):
-                        importlib.import_module(freecad_module_name + '.init')
-                        Log('Init: Initializing ' + freecad_module_name + '... done\n')
-                    else:
-                        Log('Init: No init module found in ' + freecad_module_name + ', skipping\n')
-                except Exception as inst:
-                    Err('During initialization the error "' + str(inst) + '" occurred in ' + freecad_module_name + '\n')
-                    Err('-'*80+'\n')
-                    Err(traceback.format_exc())
-                    Err('-'*80+'\n')
-                    Log('Init:      Initializing ' + freecad_module_name + '... failed\n')
-                    Log('-'*80+'\n')
-                    Log(traceback.format_exc())
-                    Log('-'*80+'\n')
-    except ImportError as inst:
-        Err('During initialization the error "' + str(inst) + '" occurred\n')
-
-    Log("Using "+ModDir+" as module path!\n")
-    # In certain cases the PathExtension list can contain invalid strings. We concatenate them to a single string
-    # but check that the output is a valid string
-    setupSearchPaths(PathExtension)
-    path = os.environ["PATH"].split(os.pathsep)
-    Log("System path after init:\n")
-    for i in path:
-        Log("   " + i + "\n")
-    # add MacroDir to path (RFE #0000504)
-    sys.path.append(MacroStd)
-    sys.path.append(MacroDir)
-    # add SystemWideMacroDir to path
-    sys.path.append(SystemWideMacroDir)
-    # add special path for MacOSX (bug #0000307)
-    import platform
-    if len(platform.mac_ver()[0]) > 0:
-        sys.path.append(os.path.expanduser('~/Library/Application Support/FreeCAD/Mod'))
-
-# some often used shortcuts (for lazy people like me  ;-)
 App = FreeCAD
-Log = FreeCAD.Console.PrintLog
-Msg = FreeCAD.Console.PrintMessage
-Err = FreeCAD.Console.PrintError
-Wrn = FreeCAD.Console.PrintWarning
-Crt = FreeCAD.Console.PrintCritical
-Ntf = FreeCAD.Console.PrintNotification
-Tnf = FreeCAD.Console.PrintTranslatedNotification
 
-#store the cmake variables
-App.__cmake__ = cmake;
-
-#store unit test names
-App.__unit_test__ = []
-
-Log ('Init: starting App::FreeCADInit.py\n')
+App.Console.PrintLog("Init: starting App::FreeCADInit.py\n")
+App.Console.PrintLog("░░░▀█▀░█▀█░▀█▀░▀█▀░░░█▀█░█▀█░█▀█░░\n")
+App.Console.PrintLog("░░░░█░░█░█░░█░░░█░░░░█▀█░█▀▀░█▀▀░░\n")
+App.Console.PrintLog("░░░▀▀▀░▀░▀░▀▀▀░░▀░░░░▀░▀░▀░░░▀░░░░\n")
 
 try:
-    import sys,os,traceback,inspect
-    from datetime import datetime
+    import sys
+    import os
+    import traceback
+    import inspect
+    from enum import IntEnum  # Leak to globals (backwards compat)
+    from datetime import datetime  # Leak to globals (backwards compat)
+    from pathlib import Path  # Removed manually
+    import dataclasses
+    import collections
+    import collections.abc as coll_abc
+    import platform
+    import types
+    import importlib.resources as resources
+    import importlib
+    import functools
+    import re
+    import pkgutil
 except ImportError:
-    FreeCAD.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
+    App.Console.PrintError("\n\nSeems the python standard libs are not installed, bailing out!\n\n")
     raise
 
-class FCADLogger(object):
-    '''Convenient class for tagged logging.
+# ┌────────────────────────────────────────────────┐
+# │ Logging Frameworks                             │
+# └────────────────────────────────────────────────┘
 
-       Example usage:
-           >>> logger = FreeCAD.Logger('MyModule')
-           >>> logger.info('log test {}',1)
-           24.36053 <MyModule> <input>(1): test log 1
+def __logger(fn):
+    __logger.sep = "\n"
+    def wrapper(text: object, *, sep: str | None = None) -> None:
+        fn(f"{text!s}{__logger.sep if sep is None else sep}")
+    return wrapper
 
-       The default output format is:
-           <timestamp> <tag> <source file>(line number): message
+Log = __logger(App.Console.PrintLog)
+Msg = __logger(App.Console.PrintMessage)
+Err = __logger(App.Console.PrintError)
+Wrn = __logger(App.Console.PrintWarning)
+Crt = __logger(App.Console.PrintCritical)
+Ntf = __logger(App.Console.PrintNotification)
+Tnf = __logger(App.Console.PrintTranslatedNotification)
 
-       The message is formatted using new style Python string formatting, e.g.
-       'test {}'.format(1). It is strongly recommended to not directly use
-       Python string formatting, but pass additional argument indirectly through
-       various logger print function, because the logger can skip string
-       evaluation in case the logging level is disabled. For more options,
-       please consult the docstring of __init__(), catch() and report().
 
-       To set/get logger level:
-           >>> FreeCAD.setLogLevel('MyModule','Trace')
-           >>> FreeCAD.getLogLevel('MyModule')
-           4
+class FCADLogger:
+    """
+    Convenient class for tagged logging.
 
-        There are five predefined logger level, each corresponding to an integer
-        value, as shown below together with the corresponding logger print
-        method,
-            0: Error, Logger.error()
-            1: Warning, Logger.warn()
-            2: Message, Logger.msg() or info()
-            3: Log, Logger.log() or debug()
-            4: Trace, Logger.trace()
+    Example usage:
+        >>> logger = FreeCAD.Logger('MyModule')
+        >>> logger.info('log test {}',1)
+        24.36053 <MyModule> <input>(1): test log 1
 
-        FreeCAD.setLogLevel() supports both text and integer value, which allows
-        you to define your own levels. The level set is persisted to user
-        configuration file.
+    The default output format is:
+        <timestamp> <tag> <source file>(line number): message
 
-        By default any tag has a log level of 2 for release, and 3 for debug
-        build.
-    '''
+    The message is formatted using new style Python string formatting, e.g.
+    'test {}'.format(1). It is strongly recommended to not directly use
+    Python string formatting, but pass additional argument indirectly through
+    various logger print function, because the logger can skip string
+    evaluation in case the logging level is disabled. For more options,
+    please consult the docstring of __init__(), catch() and report().
 
-    _levels = { 'Error':0, 'error':0,
-                'Warning':1, 'warn':1,
-                'Message':2, 'msg':2, 'info':2,
-                'Log':3, 'log':3, 'debug':3,
-                'Trace':4, 'trace':4,}
-    _printer = [
-            FreeCAD.Console.PrintError,
-            FreeCAD.Console.PrintWarning,
-            FreeCAD.Console.PrintMessage,
-            FreeCAD.Console.PrintLog,
-            FreeCAD.Console.PrintLog ]
+    To set/get logger level:
+        >>> FreeCAD.setLogLevel('MyModule','Trace')
+        >>> FreeCAD.getLogLevel('MyModule')
+        4
 
-    def __init__(self, tag, **kargs):
-        '''Construct a logger instance.
+    There are five predefined logger level, each corresponding to an integer
+    value, as shown below together with the corresponding logger print
+    method,
+        0: Error, Logger.error()
+        1: Warning, Logger.warn()
+        2: Message, Logger.msg() or info()
+        3: Log, Logger.log() or debug()
+        4: Trace, Logger.trace()
+
+    FreeCAD.setLogLevel() supports both text and integer value, which allows
+    you to define your own levels. The level set is persisted to user
+    configuration file.
+
+    By default any tag has a log level of 2 for release, and 3 for debug
+    build.
+    """
+
+    _levels = {
+        'Error': 0,
+        'error': 0,
+        'Warning': 1,
+        'warn': 1,
+        'Message': 2,
+        'msg': 2,
+        'info': 2,
+        'Log': 3,
+        'log': 3,
+        'debug': 3,
+        'Trace': 4,
+        'trace': 4,
+    }
+
+    _printer = (
+        App.Console.PrintError,
+        App.Console.PrintWarning,
+        App.Console.PrintMessage,
+        App.Console.PrintLog,
+        App.Console.PrintLog
+    )
+
+    _defaults = (
+        ('printTag', True),
+        ('noUpdateUI', True),
+        ('timing', True),
+        ('lineno', True),
+        ('parent', None),
+        ('title', 'FreeCAD'),
+    )
+
+    printTag: bool
+    noUpdateUI: bool
+    timing: bool
+    lineno: bool
+    parent: "FCADLogger"
+    title: str
+
+    def __init__(self, tag: str, **kwargs) -> None:
+        """
+        Construct a logger instance.
 
         Supported arguments are their default values are,
 
@@ -448,35 +194,38 @@ class FCADLogger(object):
                          check for parent's log level in addition of its own
 
         * title ('FreeCAD'): message box title used by report()
-        '''
+        """
         self.tag = tag
         self.laststamp = datetime.now()
-        for key,default in (('printTag',True),('noUpdateUI',True),
-                ('timing',True),('lineno',True),('parent',None),
-                ('title','FreeCAD')) :
-            setattr(self,key,kargs.get(key,default))
+        for key, default in self._defaults:
+            setattr(self, key, kwargs.get(key, default))
 
-    def _isEnabledFor(self,level):
-        '''Internal function to check for an integer log level.
+    def _isEnabledFor(self, level: int) -> bool:
+        """
+        Internal function to check for an integer log level.
 
-            * level: integer log level
-        '''
-
+        * level: integer log level
+        """
         if self.parent and not self.parent._isEnabledFor(level):
             return False
-        return FreeCAD.getLogLevel(self.tag) >= level
+        return App.getLogLevel(self.tag) >= level
 
-    def isEnabledFor(self,level):
-        '''To check for an integer or text log level.
+    def isEnabledFor(self, level: int | str) -> bool:
+        """
+        To check for an integer or text log level.
 
-            * level: integer or text log level
-        '''
-        if not isinstance(level,int):
+        * level: integer or text log level
+        """
+        if not isinstance(level, int):
             level = self.__class__._levels[level]
         return self._isEnabledFor(level)
 
-    def error(self,msg,*args,**kargs):
-        '''"Error" level log printer
+    def _logger_method(name: str, level: int, level_name: str):  # pylint: disable=no-self-argument
+        """
+        Create level logger.
+        """
+        docstring = f"""
+            "{level_name}" level log printer
 
             * msg: message string. May contain new style Python string formatter.
 
@@ -486,103 +235,49 @@ class FCADLogger(object):
             string formatting, but pass additional arguments here, because the
             printer can skip string evaluation in case the logging level is
             disabled.
-        '''
-        if self._isEnabledFor(0):
-            frame = kargs.pop('frame',0)+1
-            self._log(0,msg,frame,args,kargs)
+            """
 
-    def warn(self,msg,*args,**kargs):
-        '''"Warning" level log printer
+        def log_fn(self, msg: str, *args, **kwargs) -> None:
+            if self._isEnabledFor(level):
+                frame = kwargs.pop('frame', 0) + 1
+                self._log(level, msg, frame, args, kwargs)
 
-            * msg: message string. May contain new style Python string formatter.
+        log_fn.__doc__ = docstring
+        log_fn.__name__ = name
+        return log_fn
 
-            This function accepts additional positional and keyword arguments,
-            which are forward to string.format() to generate the logging
-            message. It is strongly recommended to not directly use Python
-            string formatting, but pass additional arguments here, because the
-            printer can skip string evaluation in case the logging level is
-            disabled.
-        '''
-        if self._isEnabledFor(1):
-            frame = kargs.pop('frame',0)+1
-            self._log(1,msg,frame,args,kargs)
+    def _log(
+            self,
+            level: int,
+            msg: str,
+            frame: int = 0,
+            args: tuple = (),
+            kwargs: dict | None = None,
+        ) -> None:
+        """
+        Internal log printing function.
 
-    def msg(self,msg,*args,**kargs):
-        '''"Message" level log printer
+        * level: integer log level
 
-            * msg: message string. May contain new style Python string formatter.
+        * msg: message, may contain new style string format specifier
 
-            This function accepts additional positional and keyword arguments,
-            which are forward to string.format() to generate the logging
-            message. It is strongly recommended to not directly use Python
-            string formatting, but pass additional arguments here, because the
-            printer can skip string evaluation in case the logging level is
-            disabled.
-        '''
-        if self._isEnabledFor(2):
-            frame = kargs.pop('frame',0)+1
-            self._log(2,msg,frame,args,kargs)
+        * frame (0): the calling frame for printing source file and line
+                        number.  For example, in case you have your own logging
+                        function, and you want to show the callers source
+                        location, then set frame to one.
 
-    info = msg
+        * args: tuple for positional arguments to be passed to
+                string.format()
 
-    def log(self,msg,*args,**kargs):
-        '''"Log" level log printer
-
-            * msg: message string. May contain new style Python string formatter.
-
-            This function accepts additional positional and keyword arguments,
-            which are forward to string.format() to generate the logging
-            message. It is strongly recommended to not directly use Python
-            string formatting, but pass additional arguments here, because the
-            printer can skip string evaluation in case the logging level is
-            disabled.
-        '''
-        if self._isEnabledFor(3):
-            frame = kargs.pop('frame',0)+1
-            self._log(3,msg,frame,args,kargs)
-
-    debug = log
-
-    def trace(self,msg,*args,**kargs):
-        '''"Trace" level log printer
-
-            * msg: message string. May contain new style Python string formatter.
-
-            This function accepts additional positional and keyword arguments,
-            which are forward to string.format() to generate the logging
-            message. It is strongly recommended to not directly use Python
-            string formatting, but pass additional arguments here, because the
-            printer can skip string evaluation in case the logging level is
-            disabled.
-        '''
-        if self._isEnabledFor(4):
-            frame = kargs.pop('frame',0)+1
-            self._log(4,msg,frame,args,kargs)
-
-    def _log(self,level,msg,frame=0,args=(),kargs=None):
-        '''Internal log printing function.
-
-            * level: integer log level
-
-            * msg: message, may contain new style string format specifier
-
-            * frame (0): the calling frame for printing source file and line
-                         number.  For example, in case you have your own logging
-                         function, and you want to show the callers source
-                         location, then set frame to one.
-
-            * args: tuple for positional arguments to be passed to
+        * kwargs: dictionary for keyword arguments to be passed to
                     string.format()
+        """
 
-            * kargs: dictionary for keyword arguments to be passed to
-                     string.format()
-        '''
-
-        if (args or kargs) and isinstance(msg,str):
-            if not kargs:
+        if (args or kwargs) and isinstance(msg, str):
+            if not kwargs:
                 msg = msg.format(*args)
             else:
-                msg = msg.format(*args,**kargs)
+                msg = msg.format(*args, **kwargs)
 
         prefix = ''
 
@@ -605,144 +300,127 @@ class FCADLogger(object):
 
         self.__class__._printer[level]('{}{}\n'.format(prefix,msg))
 
-        if not self.noUpdateUI and FreeCAD.GuiUp:
+        if not self.noUpdateUI and App.GuiUp:
             import FreeCADGui
             try:
                 FreeCADGui.updateGui()
             except Exception:
                 pass
 
-    def _catch(self,level,msg,func,args=None,kargs=None):
-        '''Internal function to log exception of any callable.
+    def _catch_logger_method(name: str, level: int, level_name: str):  # pylint: disable=no-self-argument
+        """
+        Create level catch logger.
+        """
+        docstring = f"""
+            Catch any exception from a function and print as "{level_name}".
 
-            * level: integer log level
-
-            * msg: message string. Unlike _log(), this argument must not contain
-                   any string formatter.
+            * msg: message string. Unlike log printer, this argument must not
+                    contain any string formatter.
 
             * func: a callable object
 
             * args: tuple of positional arguments to be passed to func.
 
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
+            * kwargs: dictionary of keyword arguments to be passed to func.
+            """
+
+        def catch_fn(self, msg: str, func: callable, *args, **kwargs) -> object | None:
+            return self._catch(level, msg, func, args, kwargs)
+
+        catch_fn.__doc__ = docstring
+        catch_fn.__name__ = name
+        return catch_fn
+
+    def _catch(
+            self,
+            level: int,
+            msg: str,
+            func: callable,
+            args: tuple = (),
+            kwargs: dict | None = None,
+        ) -> object | None:
+        """
+        Internal function to log exception of any callable.
+
+        * level: integer log level
+
+        * msg: message string. Unlike _log(), this argument must not contain
+                any string formatter.
+
+        * func: a callable object
+
+        * args: tuple of positional arguments to be passed to func.
+
+        * kwargs: dictionary of keyword arguments to be passed to func.
+        """
         try:
-            if not args:
-                args = []
-            if not kargs:
-                kargs = {}
-            return func(*args,**kargs)
+            if not kwargs:
+                kwargs = {}
+            return func(*args, **kwargs)
         except Exception:
             if self._isEnabledFor(level):
-                self._log(level,msg+'\n'+traceback.format_exc(),frame=2)
+                self._log(level, f"{msg}\n{traceback.format_exc()}", frame=2)
+        return None
 
-    def catch(self,msg,func,*args,**kargs):
-        '''Catch any exception from a function and print as "Error".
+    def report(self, msg: str, func: callable, *args, **kwargs) -> object | None:
+        """
+        Catch any exception report it with a message box.
 
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
+        * msg: message string. Unlike log printer, this argument must not
+                contain any string formatter.
 
-            * func: a callable object
+        * func: a callable object
 
-            * args: tuple of positional arguments to be passed to func.
+        * args: tuple of positional arguments to be passed to func.
 
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        return self._catch(0,msg,func,args,kargs)
+        * kwargs: dictionary of keyword arguments to be passed to func.
+        """
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            self.error(f"{msg}\n{traceback.format_exc()}", frame=1)
+            if App.GuiUp:
+                import FreeCADGui, PySide
+                PySide.QtGui.QMessageBox.critical(
+                    FreeCADGui.getMainWindow(),
+                    self.title,
+                    str(e),
+                )
+        return None
 
-    def catchWarn(self,msg,func,*args,**kargs):
-        '''Catch any exception from a function and print as "Warning".
+    error = _logger_method("error", 0, "Error")
+    warn = _logger_method("warn", 1, "Warning")
+    msg = _logger_method("msg", 2, "Message")
+    log = _logger_method("log", 3, "Log")
+    trace = _logger_method("trace", 4, "Trace")
+    info = msg
+    debug = log
 
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
-
-            * func: a callable object
-
-            * args: tuple of positional arguments to be passed to func.
-
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        return self._catch(1,msg,func,args,kargs)
-
-    def catchMsg(self,msg,func,*args,**kargs):
-        '''Catch any exception from a function and print as "Message".
-
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
-
-            * func: a callable object
-
-            * args: tuple of positional arguments to be passed to func.
-
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        return self._catch(2,msg,func,args,kargs)
-
+    catch = _catch_logger_method("catch", 0, "Error")
+    catchWarn = _catch_logger_method("catchWarn", 1, "Warning")
+    catchMsg = _catch_logger_method("catchMsg", 2, "Message")
+    catchLog = _catch_logger_method("catchLog", 3, "Log")
+    catchTrace = _catch_logger_method("catchTrace", 4, "Trace")
     catchInfo = catchMsg
-
-    def catchLog(self,msg,func,*args,**kargs):
-        '''Catch any exception from a function and print as "Log".
-
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
-
-            * func: a callable object
-
-            * args: tuple of positional arguments to be passed to func.
-
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        return self._catch(3,msg,func,args,kargs)
-
     catchDebug = catchLog
 
-    def catchTrace(self,msg,func,*args,**kargs):
-        '''Catch any exception from a function and print as "Trace".
 
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
+App.Logger = FCADLogger
 
-            * func: a callable object
 
-            * args: tuple of positional arguments to be passed to func.
+# ┌────────────────────────────────────────────────┐
+# │ App definitions                                │
+# └────────────────────────────────────────────────┘
 
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        return self._catch(4,msg,func,args,kargs)
+# store the cmake variables
+# This data comes from generated file src/App/CMakeScript.h and it is
+# injected into globals in a previous stage.
+App.__cmake__ = globals().get("cmake", [])
 
-    def report(self,msg,func,*args,**kargs):
-        '''Catch any exception report it with a message box.
+# store unit test names
+App.__unit_test__ = []
 
-            * msg: message string. Unlike log printer, this argument must not
-                   contain any string formatter.
-
-            * func: a callable object
-
-            * args: tuple of positional arguments to be passed to func.
-
-            * kargs: dictionary of keyword arguments to be passed to func.
-        '''
-        try:
-            return func(*args,**kargs)
-        except Exception as e:
-            self.error(msg+'\n'+traceback.format_exc(),frame=1)
-            if FreeCAD.GuiUp:
-                import FreeCADGui,PySide
-                PySide.QtGui.QMessageBox.critical(
-                        FreeCADGui.getMainWindow(),self.title,str(e))
-
-FreeCAD.Logger = FCADLogger
-
-# init every application by importing Init.py
-try:
-    InitApplications()
-except Exception as e:
-    Err('Error in InitApplications ' + str(e) + '\n')
-    Err('-'*80+'\n')
-    Err(traceback.format_exc())
-    Err('-'*80+'\n')
-
-FreeCAD.addImportType("FreeCAD document (*.FCStd)","FreeCAD")
+App.addImportType("FreeCAD document (*.FCStd)", "FreeCAD")
 
 # set to no gui, is overwritten by InitGui
 App.GuiUp = 0
@@ -953,9 +631,6 @@ App.Units.YieldStrength               = App.Units.Unit(-1,1,-2)
 App.Units.YoungsModulus               = App.Units.Unit(-1,1,-2)
 # fmt: on
 
-# Add an enum for the different unit schemes
-from enum import IntEnum
-
 # The values must match with that of the
 # C++ enum class UnitSystem
 class Scheme(IntEnum):
@@ -1010,25 +685,877 @@ class ReturnType(IntEnum):
 
 App.ReturnType = ReturnType
 
-def TrySetupTabCompletion():
-    """Tries to setup readline-based tab-completion
 
-    Call this function only if you are in a tty-based REPL environment.
+# ┌────────────────────────────────────────────────┐
+# │ Init Framework                                 │
+# └────────────────────────────────────────────────┘
+
+class Transient:
     """
+    Mark the symbol for removal from global scope on cleanup.
+    """
+
+    names = ["Path"]
+
+    def __call__(self, target):
+        Transient.names.append(target.__name__)
+        return target
+
+    @classmethod
+    def cleanup(cls) -> None:
+        # Remove imports
+        # os: kept for backwards compat
+        keep = set(("__builtins__", "FreeCAD", "App", "os", "sys", "traceback", "inspect"))
+        names = [name for name, ref in globals().items() if isinstance(ref, types.ModuleType)]
+        for name in names:
+            if name not in keep:
+                del globals()[name]
+
+        # Remove transient symbols
+        cls.names.extend(("transient", cls.__name__))
+        for name in cls.names:
+            del globals()[name]
+
+
+transient = Transient()
+
+
+@transient
+def call_in_place(fn):
+    """Call the function in place immediately after its definition."""
+    fn()
+    return fn
+
+@transient
+class utils:
+    HLine = "-" * 80
+
+    @staticmethod
+    def str_to_paths(paths: str, delim: str = ";") -> list[Path]:
+        """Convert a delimited string list of paths to a list of Path objects."""
+        items = (item.strip() for item in paths.split(delim))
+        # Filtering out empty paths: This may break backwards compat or not.
+        # If something breaks, just remove the filter to allow empty paths
+        non_empty_paths = filter(bool, items)
+        return list(map(Path, non_empty_paths))
+
+    @staticmethod
+    def env_to_path(name: str) -> Path | None:
+        if path := os.environ.get(name):
+            return Path(path)
+        return None
+
+    @staticmethod
+    def setup_tty_tab_completion():
+        """
+        Tries to setup readline-based tab-completion.
+
+        Call this function only if you are in a tty-based REPL environment.
+        """
+        try:
+            import readline
+            import rlcompleter  # noqa: F401, import required
+            readline.parse_and_bind("tab: complete")
+        except ImportError:
+            # Note: As there is no readline on Windows,
+            #       we just ignore import errors here.
+            pass
+
+
+@transient
+class PathPriority(IntEnum):
+    Ignore = 0
+    FallbackLast = 1
+    FallbackFirst = 2
+    OverrideLast = 3
+    OverrideFirst = 4
+
+@transient
+@dataclasses.dataclass
+class PathSet:
+    """
+    Collection of paths with priority support.
+
+    Items can be inserted at specific priorities and composed in nested levels.
+
+    Structure:
+    [
+        override:(OverrideFirst, *_, OverrideLast),
+        *source,
+        fallback:(FallbackFirst, *_, FallbackLast),
+    ]
+    """
+
+    source: list["Path | PathSet"] = dataclasses.field(default_factory=list)
+    override: collections.deque["Path | PathSet"] = dataclasses.field(default_factory=collections.deque)
+    fallback: collections.deque["Path | PathSet"] = dataclasses.field(default_factory=collections.deque)
+
+    def add(self, item: "Path | PathSet", priority: PathPriority = PathPriority.OverrideLast) -> None:
+        """Add item into the corresponding priority slot."""
+        if isinstance(item, Path):
+            item = item.resolve()
+            if not item.exists():
+                return
+
+        if priority == PathPriority.FallbackLast:
+            self.fallback.append(item)
+        elif priority == PathPriority.OverrideFirst:
+            self.override.appendleft(item)
+        elif priority == PathPriority.OverrideLast:
+            self.override.append(item)
+        elif priority == PathPriority.FallbackFirst:
+            self.fallback.appendleft(item)
+        elif priority == PathPriority.Ignore:
+            pass
+        else:
+            msg = "Invalid path priority"
+            raise ValueError(msg)
+
+    def iter(self) -> coll_abc.Iterable[Path]:
+        """
+        Return iterable in priority order, higher first.
+        """
+        for section in (self.override, self.source, self.fallback):
+            for path in section:
+                if isinstance(path, PathSet):
+                    yield from path.iter()
+                else:
+                    yield path
+
+    def build(self) -> list[Path]:
+        """
+        Build and remove duplicates, keep priority order.
+        """
+        return list(dict.fromkeys(self.iter()))
+
+@transient
+class SearchPaths:
+    """
+    Manages search paths for binaries, libraries and modules.
+
+    The most generic search path is PATH in environment.
+    DLL search path is windows specific.
+    sys.path is for module imports.
+    """
+
+    env_path: PathSet
+    sys_path: PathSet
+    dll_path: PathSet
+
+    def __init__(self):
+        self.env_path = PathSet([Path(p) for p in os.environ.get("PATH", "").split(os.pathsep)])
+        self.sys_path = PathSet(sys.path)
+        self.dll_path = PathSet()
+
+    def add(
+        self,
+        item: Path | PathSet,
+        *,
+        env_path: PathPriority = PathPriority.OverrideLast,
+        sys_path: PathPriority = PathPriority.OverrideFirst,
+        dll_path: PathPriority = PathPriority.OverrideLast
+    ) -> None:
+        """
+        Add item to required namespaces with the specified priority.
+
+        Actual changes are buffered until commit().
+        """
+        self.env_path.add(item, env_path)
+        self.sys_path.add(item, sys_path)
+        self.dll_path.add(item, dll_path)
+
+    def commit(self) -> None:
+        """Apply changes to underlying namespaces and priorities."""
+        os.environ["PATH"] = os.pathsep.join(str(path) for path in self.env_path.build())
+        sys.path = [str(path) for path in self.sys_path.build()]
+
+        if win32 := WindowsPlatform():
+            win32.add_dll_search_paths(self.dll_path.build())
+
+        # Reset
+        self.__init__()
+
+
+@transient
+class Config:
+    AdditionalModulePaths = utils.str_to_paths(App.ConfigGet("AdditionalModulePaths"))
+    AdditionalMacroPaths = utils.str_to_paths(App.ConfigGet("AdditionalMacroPaths"))
+    RunMode: str = App.ConfigGet('RunMode')
+    DisabledAddons: set[str] = set(mod for mod in App.ConfigGet("DisabledAddons").split(";") if mod)
+
+
+@transient
+class WindowsPlatform:
+    """
+    Windows specific hooks.
+    """
+
+    initialized = False
+    enabled = platform.system() == 'Windows' and hasattr(os, "add_dll_directory")
+
+    def __init__(self) -> None:
+        if not WindowsPlatform.enabled or WindowsPlatform.initialized:
+            return
+
+        if lib_pack := utils.env_to_path("FREECAD_LIBPACK_BIN"):
+            os.add_dll_directory(str(lib_pack.resolve()))
+        if win_dir := utils.env_to_path("WINDIR"):
+            system32 = win_dir / "system32"
+            os.add_dll_directory(str(system32.resolve()))
+
+        WindowsPlatform.initialized = True
+
+    def __bool__(self) -> bool:
+        return self.enabled
+
+    def add_dll_search_paths(self, paths: list[Path]) -> None:
+        for path in paths:
+            os.add_dll_directory(str(path.resolve()))
+
+
+@transient
+class DarwinPlatform:
+    """
+    MacOSX specific hooks.
+    """
+
+    enabled = platform.system() == "Darwin" and len(platform.mac_ver()[0]) > 0
+
+    def __bool__(self) -> bool:
+        return self.enabled
+
+    def post(self) -> None:
+        # add special path for MacOSX (bug #0000307): Where is this bug documented?
+        sys.path.append(os.path.expanduser("~/Library/Application Support/FreeCAD/Mod"))
+
+
+class ModState(IntEnum):
+    Unsupported = -3
+    Failed = -2
+    Disabled = -1
+    Discovered = 0
+    Resolved = 1
+    Loaded = 2
+
+
+@transient
+class Mod:
+    """
+    Base Mod.
+
+    There are two types of Mods: Directory based (DirMod) or Module based (ExtMod).
+    """
+
+    ALL_ADDONS_DISABLED = "ALL_ADDONS_DISABLED"
+    ADDON_DISABLED = "ADDON_DISABLED"
+    PACKAGE_XML = "package.xml"
+
+    state: ModState
+
+    @property
+    def kind(self) -> str:
+        """Return the Mod type: 'Dir' or 'Ext'"""
+        return "Ext"
+
+    @property
+    def init_mode(self) -> str:
+        """Return the Mod init mode: 'exec' or 'import' or ''"""
+        return "import"
+
+    @property
+    def metadata(self) -> App.Metadata | None:
+        """Return Metadata from package.xml if any."""
+
+    def check_disabled(self) -> bool:
+        """
+        Mods can be disabled by several methods:
+        - command line argument: --disable-addon <name>
+        - stop file: ALL_ADDONS_DISABLED
+        - stop file: ADDON_DISABLED
+        """
+
+    def process_metadata(self, search_paths: SearchPaths) -> None:
+        """
+        Process package.xml if present to check version compatibility and to scan internal workbenches.
+        """
+
+    def run_init(self) -> None:
+        """
+        Run all required initialization scripts/modules: Init.py, init, __init__.py
+        """
+
+    def supports_freecad_version(self) -> bool:
+        """
+        Check if the Mod supports the current FreeCAD version.
+        """
+        if meta := self.metadata:
+            return meta.supportsCurrentFreeCAD()
+        return True
+
+    def load(self, search_paths: SearchPaths) -> None:
+        """
+        Load the Mod.
+        """
+        try:
+            self.process_metadata(search_paths)
+        except Exception as ex:
+            self.state = ModState.Failed
+            Err(str(ex))
+        else:
+            if self.state == ModState.Resolved:
+                self.run_init()
+                if self.state == ModState.Resolved:
+                    self.state = ModState.Loaded
+
+
+@transient
+class ExtMod(Mod):
+    """
+    Module based Mod (aka extension module).
+
+    This kind of Mods are loaded using python module system, no direct filesystem or
+    compile/execute hacks are used.
+
+    extension modules must be defined in namespace freecad.*, i.e. freecad.MyAddon.
+    """
+
+    name: str  # full module name, i.e.: freecad.MyAddon
+
+    def __init__(self, name: str):
+        self.state = ModState.Resolved
+        self.name = name
+
+    @functools.cached_property
+    def metadata(self) -> App.Metadata | None:
+        with resources.as_file(resources.files(self.name)) as base:
+            metadata = base / self.PACKAGE_XML
+            if metadata.exists():
+                return App.Metadata(str(metadata))
+            metadata = base.parent.parent / self.PACKAGE_XML
+            if metadata.exists():
+                return App.Metadata(str(metadata))
+        return None
+
+    def check_disabled(self) -> bool:
+        with resources.as_file(resources.files(self.name)) as base:
+            return (base / self.ADDON_DISABLED).exists() or (base.parent.parent / self.ADDON_DISABLED).exists()
+
+    def process_metadata(self, _search_paths: SearchPaths) -> None:
+        meta = self.metadata
+        if not meta:
+            return
+
+        if not self.supports_freecad_version():
+            self.state = ModState.Unsupported
+            Msg(f"NOTICE: {self.name} does not support this version of FreeCAD, so is being skipped")
+
+    def _init_error(self, ex: Exception, error_msg: str) -> None:
+        Err(f'During initialization the error "{ex!s}" occurred in {self.name}')
+        Err(utils.HLine)
+        Err(error_msg)
+        Err(utils.HLine)
+        Log(f'Init:      Initializing {self.name}... failed')
+        Err(utils.HLine)
+        Log(error_msg)
+        Err(utils.HLine)
+
+    def run_init(self) -> None:
+        try:
+            module = importlib.import_module(self.name) # Implicit run of __init__.py
+        except Exception as ex:
+            self._init_error(ex, traceback.format_exc())
+            self.state = ModState.Failed
+        else:
+            self.run_secondary_init(module)
+
+    def run_secondary_init(self, module: types.ModuleType) -> None:
+        try:
+            importlib.import_module(f"{module.__name__}.init")
+        except ModuleNotFoundError:
+            pass  # Ok, this module is optional
+        except Exception as ex:
+            self._init_error(ex, traceback.format_exc())
+            self.state = ModState.Failed
+
+
+@transient
+class DirMod(Mod):
+    """
+    Directory based Mod. (aka Standard/Legacy).
+
+    This kind of Mods are scanned from several directories in the system
+    following certain priority. The name part of the path is used
+    as the module name.
+
+    Dir based modules can be overridden if several copies exists in different directories,
+    resolution is based on directory priority.
+    """
+
+    INIT_PY = "Init.py"
+
+    _path: collections.deque[Path]
+
+    def __init__(self, path: Path) -> None:
+        self.state = ModState.Discovered
+        self._path = collections.deque()
+        self._path.append(path)
+
+    @property
+    def kind(self) -> str:
+        return "Dir"
+
+    @property
+    def init_mode(self) -> str:
+        return "exec" if (self.path / self.INIT_PY).exists() else ''
+
+    @property
+    def name(self) -> str:
+        return self.path.name
+
+    @functools.cached_property
+    def metadata(self) -> App.Metadata | None:
+        metadata = self.path / self.PACKAGE_XML
+        if metadata.exists():
+            return App.Metadata(str(metadata))
+        return None
+
+    def process_metadata(self, search_paths: SearchPaths):
+        meta = self.metadata
+        if not meta:
+            return
+
+        if not self.supports_freecad_version():
+            self.state = ModState.Unsupported
+            Msg(f"NOTICE: {meta.Name} does not support this version of FreeCAD, so is being skipped")
+            return
+
+        content = meta.Content
+        if "workbench" in content:
+            workbenches = content["workbench"]
+            for workbench in workbenches:
+                if not workbench.supportsCurrentFreeCAD():
+                    Msg(f"NOTICE: {meta.Name} content item {workbench.Name} does not support this version of FreeCAD, so is being skipped")
+                    continue
+
+                subdirectory = workbench.Name if not workbench.Subdirectory else workbench.Subdirectory
+                subdirectory = re.split(r"[/\\]+", subdirectory)
+                subdirectory = self.path / Path(*subdirectory)
+
+                search_paths.add(
+                    subdirectory,
+                    env_path=PathPriority.OverrideLast,
+                    sys_path=PathPriority.OverrideFirst,
+                    dll_path=PathPriority.FallbackLast,
+                )
+
+    def override_with(self, path: Path) -> None:
+        """
+        Override current path with the one provided.
+        """
+        self._path.appendleft(path)
+
+    @property
+    def path(self) -> Path:
+        """Current (highest priority) path."""
+        return self._path[0]
+
+    @property
+    def alternative_paths(self) -> list[Path]:
+        """Alternative paths in priority order"""
+        return list(self._path)[1:]
+
+    def check_disabled(self) -> bool:
+        name = self.path.name
+
+        if name in Config.DisabledAddons:
+            Msg(f'NOTICE: Addon "{name}" disabled by presence of "--disable-addon {name}" argument')
+            return True
+
+        for flag in (self.ALL_ADDONS_DISABLED, self.ADDON_DISABLED):
+            if (self.path / flag).exists():
+                Msg(f'NOTICE: Addon "{self.path!s}" disabled by presence of {flag} stopfile')
+                return True
+
+        return False
+
+    def resolve(self, search_paths: SearchPaths) -> None:
+        """
+        Add the current path to search paths to make it loadable.
+        """
+        if self.check_disabled():
+            self.state = ModState.Disabled
+            return
+
+        search_paths.add(
+            self.path,
+            env_path=PathPriority.OverrideLast,
+            sys_path=PathPriority.OverrideFirst,
+        )
+
+        self.state = ModState.Resolved
+
+    def run_init(self) -> None:
+        init_py = self.path / self.INIT_PY
+        if not init_py.exists():
+            self.state = ModState.Loaded
+            Log(f"Init:      Initializing {self.path!s} ({self.INIT_PY} not found)... ignore")
+            return
+
+        try:
+            source = init_py.read_text(encoding="utf-8")
+            code = compile(source, init_py, 'exec')
+            exec(code)
+        except Exception as ex:
+            Log(f"Init:      Initializing {self.path!s}... failed")
+            Log(utils.HLine)
+            Log(f"{traceback.format_exc()}")
+            Log(utils.HLine)
+            Err(f"During initialization the error \"{ex!s}\" occurred in {init_py!s}")
+            Err("Please look into the log file for further information")
+            self.state = ModState.Failed
+        else:
+            self.state = ModState.Loaded
+            Log(f"Init:      Initializing {self.path!s}... done")
+
+
+@transient
+class ExtModScanner:
+    """
+    Scan extension Mods from the python import path.
+    """
+
+    mods: list[ExtMod]
+
+    def __init__(self):
+        self.mods = []
+
+    def scan(self):
+        import freecad
+        modules = (m[1] for m in pkgutil.iter_modules(freecad.__path__, "freecad.") if m[2])
+        for module_name in modules:
+            mod = ExtMod(module_name)
+            self.mods.append(mod)
+            if module_name in Config.DisabledAddons:
+                mod.state = ModState.Disabled
+                Msg(f'NOTICE: Addon "{module_name}" disabled by presence of "--disable-addon {module_name}" argument')
+                continue
+            Log(f'Init:      Initializing {module_name}')
+
+    def iter(self) -> coll_abc.Iterable[ExtMod]:
+        return self.mods
+
+
+@transient
+class DirModScanner:
+    """
+    Sacan in the filesystem for Dir based Mods in the valid locations.
+    """
+
+    EXCLUDE: set[str] = set(["", "CVS", "__init__.py"]) # Why?
+    mods: dict[str, DirMod]
+    visited: set[str]
+
+    def __init__(self) -> None:
+        self.mods = {}
+        self.visited = set()
+
+    def iter(self) -> coll_abc.Iterable[DirMod]:
+        """All discovered Mods."""
+        return self.mods.values()
+
+    def dirs(self) -> list[Path]:
+        """Paths of all discovered Mods."""
+        return [mod.path for mod in self.mods.values()]
+
+    def scan_and_override(self, base: Path, *, flat: bool = False, warning: str | None = None) -> None:
+        """
+        Scan in base with higher priority.
+        """
+        if (key := str(base.resolve())) in self.visited:
+            return
+
+        self.visited.add(key)
+
+        if not base.exists():
+            if warning:
+                Wrn(warning)
+            return
+
+        if warning:
+            Wrn(warning)
+
+        if flat:
+            self.mods[str(base)] = DirMod(base)
+            return
+
+        for mod_dir in filter(Path.is_dir, base.iterdir()):
+            name = mod_dir.name.lower()
+            if name in DirModScanner.EXCLUDE:
+                continue
+
+            if mod := self.mods.get(name):
+                mod.override_with(mod_dir)
+                continue
+
+            self.mods[name] = DirMod(mod_dir)
+
+
+# ┌────────────────────────────────────────────────┐
+# │ Init Pipeline Definition                       │
+# └────────────────────────────────────────────────┘
+
+@transient
+class InitPipeline:
+    """
+    Init sequence, setup search paths, scan and load Mods and run platform specific hooks.
+    """
+
+    std_home = Path(App.getHomePath()).resolve()
+    user_home = Path(App.getUserAppDataDir()).resolve()
     try:
-        import readline
-        import rlcompleter
-        readline.parse_and_bind("tab: complete")
-    except ImportError as exc:
-        # Note: As there is no readline on Windows, we just ignore import errors here
-        pass
+        std_lib = Path(App.getLibraryDir()).resolve()
+    except OSError:
+        # The library path is not strictly required, so if the OS itself raises an error when trying
+        # to resolve it, just fall back to something reasonable. See #26864.
+        std_lib = std_home / "lib"
+        Log(f"Resolving library directory '{App.getLibraryDir()}' failed, using fallback '{std_lib}'")
+    dir_mod_scanner = DirModScanner()
+    ext_mod_scanner = ExtModScanner()
+    search_paths = SearchPaths()
 
-# Note: just checking whether stdin is a TTY is not enough, as the GUI is set up only aftert this
-# script has run. And checking only the RunMode is not enough, as we are maybe not interactive.
-if App.ConfigGet('RunMode') == 'Cmd' and hasattr(sys.stdin, 'isatty') and sys.stdin.isatty():
-    TrySetupTabCompletion()
+    def added_python_packages(self) -> PathSet:
+        """
+        Additional python packages installed by AddonManager/pip.
+        """
+        major, minor, _ = platform.python_version_tuple()
+        packages = self.user_home / "AdditionalPythonPackages"
+        vendor_path = packages / f"py{major}{minor}"
+        paths = PathSet()
+        paths.add(vendor_path)
+        paths.add(packages)
+        return paths
 
-# clean up namespace
-del InitApplications, TrySetupTabCompletion
+    def scan(self) -> None:
+        """
+        Scan step, search for standard directories, libraries and Mods.
+        """
+        std_home = self.std_home
+        user_home = self.user_home
+        std_lib = self.std_lib
+        std_mod = std_home / "Mod"
+        std_ext = std_home / "Ext"
+        std_bin = std_home / "bin"
+        user_macro = Path(App.getUserMacroDir(True)).resolve()
+        user_mod = user_home / "Mod"
+        search_paths = self.search_paths
 
-Log ('Init: App::FreeCADInit.py done\n')
+        legacy_user_mod = Path.home() / ".FreeCAD" / "Mod"
+        if legacy_user_mod.exists():
+            Wrn (f"User path has changed to {user_home!s}. Please move user modules and macros")
+
+        # Libraries
+        libraries = PathSet()
+        libraries.add(std_home / "lib")
+        libraries.add(std_home / "lib64")
+        libraries.add(std_home / "lib-py3")
+        libraries.add(std_lib)
+
+        search_paths.add(
+            libraries,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.OverrideLast,
+        )
+
+        # Tools
+        search_paths.add(
+            std_home / "Tools",
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.FallbackLast,
+        )
+
+        # Binaries
+        search_paths.add(
+            std_bin,
+            env_path=PathPriority.OverrideFirst,
+            sys_path=PathPriority.Ignore,
+            dll_path=PathPriority.FallbackLast,
+        )
+
+        # Scan for Directory based Mods
+        # Order is important because of overrides
+        Log("Init:   Searching for modules...")
+        mods = self.dir_mod_scanner
+        mods.scan_and_override(std_mod)
+        mods.scan_and_override(user_mod)
+        mods.scan_and_override(user_macro / "Mod")
+        additional_mods = Config.AdditionalModulePaths + Config.AdditionalMacroPaths
+        for add in additional_mods:
+            mods.scan_and_override(add, flat=True)
+
+        # to have all the module-paths available in FreeCADGuiInit.py:
+        App.__ModDirs__ = [str(d) for d in mods.dirs()]
+
+        # this allows importing with:
+        # from FreeCAD.Module import package
+        import_path = PathSet([libraries])
+        import_path.add(std_mod, PathPriority.OverrideFirst)
+        import_path.add(user_mod, PathPriority.FallbackLast)
+        App.__path__ = [str(path) for path in import_path.build()]
+
+        # also add these directories to the sys.path to
+        # not change the old behavior. once we have moved to
+        # proper python modules this can eventually be removed.
+        search_paths.add(
+            std_mod,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.OverrideFirst,
+        )
+        search_paths.add(
+            std_ext,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.OverrideLast,
+        )
+
+        # Additional installed packages (AddonManager/pip)
+        search_paths.add(
+            self.added_python_packages(),
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.FallbackLast,
+        )
+
+        # Resolve Dir Mods
+        for mod in mods.iter():
+            mod.resolve(search_paths)
+
+    def load_mods(self) -> None:
+        """
+        Load Mods step, load both Dir based and Module based Mods.
+        """
+        module_cache = []
+
+        # Update search paths to make Mods visible to import system.
+        search_paths = self.search_paths
+        search_paths.commit()
+
+        # Dir Mods first
+        for mod in self.dir_mod_scanner.iter():
+            if mod.state == ModState.Resolved:
+                mod.load(search_paths)
+                module_cache.append(mod)
+
+        # Update search paths: may have changed by dir loads
+        search_paths.commit()
+
+        # Finally, Module based Mod are loaded from python path
+        self.ext_mod_scanner.scan()
+        for mod in self.ext_mod_scanner.iter():
+            if mod.state == ModState.Resolved:
+                mod.load(search_paths)
+                module_cache.append(mod)
+
+        # Save to use in FreeCADGuiInit.py
+        App.__ModCache__ = module_cache
+
+    def register_macro_sources(self) -> None:
+        """
+        Add Macro sources to search paths.
+        """
+        std_macro = self.std_home / "Macro"
+        user_macro_default = Path(App.getUserMacroDir(False)).resolve()
+        user_macro = Path(App.getUserMacroDir(True)).resolve()
+
+        # add MacroDir to path (RFE #0000504)
+        self.search_paths.add(
+            user_macro_default,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.FallbackLast,
+        )
+        self.search_paths.add(
+            user_macro,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.FallbackLast,
+        )
+        self.search_paths.add(
+            std_macro,
+            env_path=PathPriority.Ignore,
+            sys_path=PathPriority.FallbackLast,
+        )
+        self.search_paths.commit()
+
+    def post(self) -> None:
+        """
+        Run final steps.
+        """
+        if macosx := DarwinPlatform():
+            macosx.post()
+
+    def setup_tty(self) -> None:
+        # Note: just checking whether stdin is a TTY is not enough, as the GUI is set up only after this
+        # script has run. And checking only the RunMode is not enough, as we are maybe not interactive.
+        if Config.RunMode == 'Cmd' and hasattr(sys.stdin, 'isatty') and sys.stdin.isatty():
+            utils.setup_tty_tab_completion()
+
+    def report(self) -> None:
+        std_mod = self.std_home / "Mod"
+        Log(f"Using {std_mod!s} as module path!")
+
+        Log("System path after init:")
+        for path in os.environ["PATH"].split(os.pathsep):
+            Log(f"   {path}")
+
+        Log("FreeCADInit Mod summary:")
+        output = []
+        output.append(f"+-{'--':-<24}-+-{'----':-<10}-+-{'---':-<6}-+-{'-----':-<48}-")
+        output.append(f"| {'Mod':<24} | {'State':<10} | {'Mode':<6} | {'Source':<48} ")
+        output.append(output[0])
+
+        for mod in self.dir_mod_scanner.iter():
+            output.append(f"| {mod.name:<24.24} | {mod.state.name:<10.10} | {mod.init_mode:<6.6} | {mod.path!s}")
+            for alt in mod.alternative_paths:
+                output.append(f"| {' ':<24.24} | {' ':<10.10} | {' ':<6.6} | {alt!s}")
+
+        for mod in self.ext_mod_scanner.iter():
+            output.append(f"| {mod.name:<24.24} | {mod.state.name:<10.10} | {mod.init_mode:<6.6} | {mod.name}")
+
+        for line in output:
+            Log(line)
+        Log(output[0])
+
+    def run(self) -> None:
+        """
+        Pipeline entry point.
+        """
+        self.scan()
+        self.load_mods()
+        self.register_macro_sources()
+        self.post()
+        self.report()
+        self.setup_tty()
+
+
+# ┌────────────────────────────────────────────────┐
+# │ Init Applications                              │
+# └────────────────────────────────────────────────┘
+
+@transient
+@call_in_place
+def init_applications() -> None:
+    try:
+        InitPipeline().run()
+        Log('Init: App::FreeCADInit.py done')
+    except Exception as ex:
+        Err(f'Error in init_applications {ex!s}')
+        Err(utils.HLine)
+        Err(traceback.format_exc())
+        Err(utils.HLine)
+
+
+# ┌────────────────────────────────────────────────┐
+# │ Cleanup for next scripts                       │
+# └────────────────────────────────────────────────┘
+
+# Reset logger to no extra newline for subsequent scripts (Backwards compat)
+__logger.sep = ""
+
+# Clean global namespace
+transient.cleanup()

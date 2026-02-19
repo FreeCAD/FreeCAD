@@ -70,3 +70,37 @@ class TestArchBase(unittest.TestCase):
         passed as the prepend_text argument
         """
         FreeCAD.Console.PrintMessage(prepend_text + text + end)
+
+    def assertDictContainsSubset(self, subset, main_dict):
+        """Asserts that one dictionary's key-value pairs are contained within another.
+
+        This method iterates through each key-value pair in the `subset`
+        dictionary and verifies two conditions against the `main_dict`:
+        1. The key exists in `main_dict`.
+        2. The value associated with that key in `main_dict` is equal to the
+           value in `subset`.
+
+        Use Case:
+        This assertion is more flexible than `assertDictEqual`. It is ideal for
+        tests where a function or query returns a large dictionary of results,
+        but the test's scope is only to validate a specific, known subset of
+        those results. It allows the test to succeed even if `main_dict`
+        contains extra, irrelevant keys, thus preventing test brittleness.
+
+        Parameters
+        ----------
+        subset : dict
+            The dictionary containing the expected key-value pairs that must
+            be found.
+        main_dict : dict
+            The larger, actual dictionary returned by the code under test,
+            which is checked for the presence of the subset.
+
+        Example:
+        >>> actual_results = {'Wall': 4, 'Structure': 2, 'Window': 1}
+        >>> expected_subset = {'Wall': 4, 'Window': 1}
+        >>> self.assertDictContainsSubset(expected_subset, actual_results)  # This will pass.
+        """
+        for key, value in subset.items():
+            self.assertIn(key, main_dict)
+            self.assertEqual(main_dict[key], value)

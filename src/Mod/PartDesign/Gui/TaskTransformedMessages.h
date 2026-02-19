@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2012 Jürgen Riegel <juergen.riegel@web.de>              *
  *                                                                         *
@@ -27,7 +29,7 @@
 #include <Gui/TaskView/TaskView.h>
 
 class Ui_TaskTransformedMessages;
-using Connection = boost::signals2::connection;
+using Connection = fastsignals::connection;
 
 namespace App
 {

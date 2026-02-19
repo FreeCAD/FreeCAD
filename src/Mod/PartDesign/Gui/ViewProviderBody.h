@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -96,6 +98,9 @@ public:
     {
         return true;
     };
+
+    /// Override to return the color of the tip instead of the body, which doesn't really have color
+    std::map<std::string, Base::Color> getElementColors(const char* element) const override;
 
 protected:
     /// Copy over all visual properties to the child features

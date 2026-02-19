@@ -90,6 +90,9 @@ public:
         return completed;
     }
 
+Q_SIGNALS:
+    void placementUpdated();
+
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
     void onAttachmentOffsetXChanged(double);
@@ -174,7 +177,7 @@ private:
     Attacher::SuggestResult lastSuggestResult;
     bool completed;
 
-    using Connection = boost::signals2::connection;
+    using Connection = fastsignals::connection;
     Connection connectDelObject;
     Connection connectDelDocument;
 

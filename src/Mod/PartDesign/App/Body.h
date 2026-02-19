@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -161,7 +163,7 @@ protected:
     void onDocumentRestored() override;
 
 private:
-    boost::signals2::scoped_connection connection;
+    fastsignals::scoped_connection connection;
     bool showTip = false;
 };
 

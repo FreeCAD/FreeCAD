@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer                                    *
  *                                   <jrheinlaender@users.sourceforge.net> *
@@ -168,7 +170,6 @@ void ViewProviderBoolean::updatePreview()
         }
 
         Part::TopoShape toolShape = feature->Shape.getShape();
-        toolShape.setPlacement(toolShape.getPlacement().inverse() * feature->globalPlacement());
 
         auto pcToolPreview = new PartGui::SoPreviewShape;
         updatePreviewShape(toolShape, pcToolPreview);

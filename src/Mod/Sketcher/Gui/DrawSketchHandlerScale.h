@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2022 Boyer Pierre-Louis <pierrelouis.boyer@gmail.com>   *
  *                                                                         *
@@ -67,6 +69,8 @@ using DrawSketchHandlerScaleBase = DrawSketchControllableHandler<DSHScaleControl
 
 class DrawSketchHandlerScale: public DrawSketchHandlerScaleBase
 {
+    Q_DECLARE_TR_FUNCTIONS(SketcherGui::DrawSketchHandlerScale)
+
     friend DSHScaleController;
     friend DSHScaleControllerBase;
 
@@ -131,6 +135,7 @@ public:
             if (deleteOriginal) {
                 deleteOriginalGeos();
             }
+            int initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
 
             commandAddShapeGeometryAndConstraints();
 
@@ -138,6 +143,7 @@ public:
                 reassignFacadeIds();
             }
 
+            scaleLabels(initialConstraintCount);
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -271,7 +277,15 @@ private:
     }
 
 private:
+    struct LabelToScale
+    {
+        int constrId;
+        float position;
+        float distance;
+    };
+
     std::vector<int> listOfGeoIds;
+    std::vector<LabelToScale> listOfLabelsToScale;
     std::vector<long> listOfFacadeIds;
     Base::Vector2d referencePoint, startPoint, endPoint;
     bool deleteOriginal;
@@ -332,6 +346,27 @@ private:
         }
         catch (const Base::Exception& e) {
             Base::Console().error("%s\n", e.what());
+        }
+    }
+    void scaleLabels(int constraintIndexOffset)
+    {
+        SketchObject* sketch = sketchgui->getSketchObject();
+
+        for (auto toScale : listOfLabelsToScale) {
+            int constrId = toScale.constrId + constraintIndexOffset;
+
+            sketch->setLabelDistance(constrId, toScale.distance * static_cast<float>(scaleFactor));
+
+            // Label position or radii anddiameters represent an angle, so
+            // they should not be scaled
+            Sketcher::ConstraintType type = sketch->Constraints[constrId]->Type;
+            if (type == Sketcher::ConstraintType::Radius
+                || type == Sketcher::ConstraintType::Diameter) {
+                sketch->setLabelPosition(constrId, toScale.position);
+            }
+            else {
+                sketch->setLabelPosition(constrId, toScale.position * static_cast<float>(scaleFactor));
+            }
         }
     }
 
@@ -464,8 +499,8 @@ private:
             }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-
-            for (auto& cstr : vals) {
+            int cstrIndex = 0;
+            for (auto cstr : vals) {
                 if (skipConstraint(cstr)) {
                     continue;
                 }
@@ -475,6 +510,16 @@ private:
                 int thirdIndex = offsetGeoID(cstr->Third, firstCurveCreated);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
+
+                if (firstIndex != GeoEnum::GeoUndef) {
+                    listOfLabelsToScale.push_back(
+                        LabelToScale {
+                            .constrId = cstrIndex,
+                            .position = cstr->LabelPosition,
+                            .distance = cstr->LabelDistance
+                        }
+                    );
+                }
 
                 if ((cstr->Type == Symmetric || cstr->Type == Tangent || cstr->Type == Perpendicular
                      || cstr->Type == Angle)
@@ -492,6 +537,10 @@ private:
                          && thirdIndex == GeoEnum::GeoUndef) {
                     newConstr->First = firstIndex;
                     newConstr->Second = secondIndex;
+                }
+                else if (cstr->Type == Angle && firstIndex != GeoEnum::GeoUndef
+                         && secondIndex == GeoEnum::GeoUndef && thirdIndex == GeoEnum::GeoUndef) {
+                    newConstr->First = firstIndex;
                 }
                 else if ((cstr->Type == Radius || cstr->Type == Diameter)
                          && firstIndex != GeoEnum::GeoUndef) {
@@ -524,6 +573,7 @@ private:
                 }
 
                 ShapeConstraints.push_back(std::move(newConstr));
+                cstrIndex++;
             }
         }
     }

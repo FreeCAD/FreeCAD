@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2013 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -45,8 +47,6 @@ public:
 
     /// The type of the boolean operation
     App::PropertyEnumeration Type;
-
-    App::PropertyBool UsePlacement;
 
     /** @name methods override feature */
     //@{

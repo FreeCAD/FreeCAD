@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -121,6 +123,7 @@ private:
     QWidget* proxy;
     bool selectionFace;
     bool isGroove;
+    double defaultGizmoMultFactor;
 
     /**
      * @brief axesInList is the list of links corresponding to axis combo; must
@@ -137,7 +140,6 @@ private:
     Gui::RadialGizmo* rotationGizmo2 = nullptr;
     void setupGizmos(ViewProvider* vp);
     void setGizmoPositions();
-    void setGizmoVisibility();
 };
 
 class TaskDlgRevolutionParameters: public TaskDlgSketchBasedParameters

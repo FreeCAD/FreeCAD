@@ -102,10 +102,13 @@ class ArchReference:
     def onDocumentRestored(self, obj):
 
         ArchReference.setProperties(self, obj)
-        self.reload = False
         if obj.ReferenceMode == "Lightweight":
+            self.reload = False
             if obj.ViewObject and obj.ViewObject.Proxy:
                 obj.ViewObject.Proxy.loadInventor(obj)
+        else:
+            self.reload = True
+            self.execute(obj)  # sets self.reload to False again
 
     def dumps(self):
 
@@ -144,7 +147,6 @@ class ArchReference:
 
         import Part
 
-        pl = obj.Placement
         filename = self.getFile(obj)
         if filename and self.reload and obj.ReferenceMode in ["Normal", "Transient"]:
             self.parts = self.getPartsList(obj)
@@ -152,6 +154,7 @@ class ArchReference:
                 if filename.lower().endswith(".fcstd"):
                     zdoc = zipfile.ZipFile(filename)
                     if zdoc:
+                        pl = obj.Placement
                         self.shapes = []
                         if obj.Part:
                             if obj.Part in self.parts:
@@ -163,13 +166,15 @@ class ArchReference:
                                     shape = self.cleanShape(shapedata, obj, self.parts[obj.Part][2])
                                     self.shapes.append(shape)
                                     obj.Shape = shape
-                                    if not pl.isIdentity():
-                                        obj.Placement = pl
                                 else:
                                     t = translate("Arch", "Part not found in file")
                                     FreeCAD.Console.PrintError(t + "\n")
                         else:
                             for part in self.parts.values():
+                                if part[3]:
+                                    # Do not include BuildingParts as their
+                                    # shape is just a copy of their group:
+                                    continue
                                 f = zdoc.open(part[1])
                                 shapedata = f.read()
                                 f.close()
@@ -178,6 +183,7 @@ class ArchReference:
                                 self.shapes.append(shape)
                             if self.shapes:
                                 obj.Shape = Part.makeCompound(self.shapes)
+                        obj.Placement = pl
                 elif filename.lower().endswith(".ifc"):
                     ifcfile = self.getIfcFile(filename)
                     if not ifcfile:
@@ -383,6 +389,7 @@ class ArchReference:
             label = None
             part = None
             materials = {}
+            is_buildingpart = False
             writemode = False
             for line in docf:
                 line = line.decode("utf8")
@@ -390,6 +397,8 @@ class ArchReference:
                     n = re.findall(r"name=\"(.*?)\"", line)
                     if n:
                         name = n[0]
+                elif 'class="BuildingPart"' in line:
+                    is_buildingpart = True
                 elif '<Property name="Label"' in line:
                     writemode = True
                 elif writemode and "<String value=" in line:
@@ -415,11 +424,12 @@ class ArchReference:
                     writemode = False
                 elif "</Object>" in line:
                     if name and label and part:
-                        parts[name] = [label, part, materials]
+                        parts[name] = [label, part, materials, is_buildingpart]
                     name = None
                     label = None
                     part = None
                     materials = {}
+                    is_buildingpart = False
                     writemode = False
         return parts
 
@@ -450,7 +460,11 @@ class ArchReference:
             return []
 
         totalcolors = []
-        parts = [obj.Part] if obj.Part else self.parts.keys()
+        if obj.Part:
+            parts = [obj.Part]
+        else:
+            # Do not include BuildingParts as their shape is just a copy of their group:
+            parts = [key for key, val in self.parts.items() if not val[3]]
         lenparts = len(parts)
         for i, part in enumerate(parts):
             lenfaces = len(self.shapes[i].Faces)
@@ -469,7 +483,6 @@ class ArchReference:
         zdoc = zipfile.ZipFile(filename)
         if not "GuiDocument.xml" in zdoc.namelist():
             return []
-        colors = []
         colorfile = None
         with zdoc.open("GuiDocument.xml") as docf:
             writemode1 = False
@@ -479,26 +492,27 @@ class ArchReference:
                 line = line.decode("utf8")
                 if ('<ViewProvider name="' + part + '"') in line:
                     writemode1 = True
+                elif writemode1 and '<ViewProvider name="' in line:
+                    # We have reached the next item:
+                    break
                 elif writemode1 and ('<Property name="DiffuseColor"' in line):
-                    writemode1 = False
                     writemode2 = True
                 elif writemode1 and ('<Property name="ShapeAppearance"' in line):
-                    writemode1 = False
                     writemode3 = True
                 elif writemode2 and ("<ColorList file=" in line):
                     n = re.findall(r"file=\"(.*?)\"", line)
-                    if n:
+                    if n and n[0] and n[0] in zdoc.namelist():
                         colorfile = n[0]
+                        writemode3 = False
                         break
                 elif writemode3 and ("<MaterialList file=" in line):
                     n = re.findall(r"file=\"(.*?)\"", line)
-                    if n:
+                    if n and n[0] and n[0] in zdoc.namelist():
                         colorfile = n[0]
+                        writemode2 = False
                         break
 
-        if not colorfile:
-            return []
-        if not colorfile in zdoc.namelist():
+        if colorfile is None:
             return []
 
         cf = zdoc.open(colorfile)
@@ -508,6 +522,7 @@ class ArchReference:
 
         if writemode2:
             # Old DiffuseColor support:
+            alpha_to_transparency = False
             for i in range(1, int(len(buf) / 4)):
                 # ShapeAppearance material with default v0.21 properties:
                 material = FreeCAD.Material()
@@ -515,8 +530,15 @@ class ArchReference:
                 material.DiffuseColor = color[:3] + (255,)
                 material.Transparency = color[3] / 255.0
                 colors.append(material)
+                if material.Transparency == 1.0:
+                    # Assumption: a face with 100% transparency indicates
+                    # we are actually dealing with alpha values.
+                    alpha_to_transparency = True
+            if alpha_to_transparency:
+                for material in colors:
+                    material.Transparency = 1.0 - material.Transparency
 
-        if writemode3:
+        elif writemode3:
             # File format ShapeAppearance files in FCStd file:
             # - 1st byte: number of faces
             # - Next 3 bytes: zero
@@ -744,6 +766,7 @@ class ViewProviderArchReference:
             FreeCAD.Console.PrintWarning(t + " " + obj.Label + "\n")
             return
         from pivy import coin
+        from draftutils import gui_utils
 
         inputnode = coin.SoInput()
         inputnode.setBuffer(ivstring)
@@ -762,13 +785,9 @@ class ViewProviderArchReference:
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )
@@ -793,16 +812,14 @@ class ViewProviderArchReference:
             return
         if (not hasattr(self, "orig_wireframe")) or (not self.orig_wireframe):
             return
+        from pivy import coin
+        from draftutils import gui_utils
 
         # check node contents
         rootnode = obj.ViewObject.RootNode
-        if rootnode.getNumChildren() < 3:
-            FreeCAD.Console.PrintError(
-                translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
-            )
-            return
-        switch = rootnode.getChild(2)
-        if switch.getNumChildren() != 4:
+        # display mode switch
+        switch = gui_utils.find_coin_node(obj.ViewObject.RootNode, coin.SoSwitch)
+        if switch is None or switch.getNumChildren() != 4:
             FreeCAD.Console.PrintError(
                 translate("Arch", "Invalid root node in") + " " + obj.Label + "\n"
             )
@@ -889,7 +906,7 @@ class ArchReferenceTaskPanel:
         self.obj = obj
         self.filename = None
         self.form = QtGui.QWidget()
-        self.form.setWindowTitle(translate("Arch", "External reference"))
+        self.form.setWindowTitle(translate("Arch", "External Reference"))
         layout = QtGui.QVBoxLayout(self.form)
         label1 = QtGui.QLabel(translate("Arch", "External file") + ":")
         layout.addWidget(label1)
@@ -971,7 +988,7 @@ class ArchReferenceTaskPanel:
             filters += " *.ifc"
         filters = translate("Arch", "Reference files") + " (" + filters + ")"
         f = QtGui.QFileDialog.getOpenFileName(
-            self.form, translate("Arch", "Choose reference file"), loc, filters
+            self.form, translate("Arch", "Choose Reference File"), loc, filters
         )
         if f:
             self.filename = f[0]

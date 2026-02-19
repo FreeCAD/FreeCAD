@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2004 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
@@ -149,7 +151,7 @@ public:
             }
         }
         else if (reason == "SubstituteDecimalSeparator") {
-            bool value = hGrp->GetBool("SubstituteDecimal");
+            bool value = hGrp->GetBool("SubstituteDecimalSeparator");
             client->enableDecimalPointConversion(value);
         }
     }
@@ -227,6 +229,8 @@ Translator::Translator()
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Valencian"             )] = "val-ES";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Vietnamese"            )] = "vi";
     d->mapLanguageTopLevelDomain[QT_TR_NOOP("Malay")] = "ms";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Tamil")] = "ta";
+    d->mapLanguageTopLevelDomain[QT_TR_NOOP("Irish")] = "ga-IE";
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/General");
     auto entries = hGrp->GetASCII("AdditionalLanguageDomainEntries", "");

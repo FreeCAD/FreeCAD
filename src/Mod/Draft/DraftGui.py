@@ -802,11 +802,12 @@ class DraftToolBar:
             self.xValue.setFocus()
             self.xValue.setSelection(0, self.number_length(self.xValue.text()))
 
-    def number_length(self, str):
-        nl = 0
-        for char in str:
-            if char in "0123456789.,-":
-                nl += 1
+    def number_length(self, st):
+        nl = len(st)
+        for char in st[::-1]:
+            if char in "0123456789.,-+/":
+                break
+            nl -= 1
         return nl
 
     def extraLineUi(self):
@@ -1004,6 +1005,14 @@ class DraftToolBar:
             self.state.append(self.xValue.isVisible())
             self.state.append(self.yValue.isVisible())
             self.state.append(self.zValue.isVisible())
+            self.state.append(self.labellength.isVisible())
+            self.state.append(self.labelangle.isVisible())
+            self.state.append(self.pointButton.isVisible())
+            self.state.append(self.lengthValue.isVisible())
+            self.state.append(self.angleValue.isVisible())
+            self.state.append(self.angleLock.isVisible())
+            self.state.append(self.isRelative.isVisible())
+            self.state.append(self.isGlobal.isVisible())
             self.hideXYZ()
         else:
             if self.state:
@@ -1019,6 +1028,22 @@ class DraftToolBar:
                     self.yValue.show()
                 if self.state[5]:
                     self.zValue.show()
+                if self.state[6]:
+                    self.labellength.show()
+                if self.state[7]:
+                    self.labelangle.show()
+                if self.state[8]:
+                    self.pointButton.show()
+                if self.state[9]:
+                    self.lengthValue.show()
+                if self.state[10]:
+                    self.angleValue.show()
+                if self.state[11]:
+                    self.angleLock.show()
+                if self.state[12]:
+                    self.isRelative.show()
+                if self.state[13]:
+                    self.isGlobal.show()
                 self.state = None
 
     def setTitle(self, title, icon="Draft_Draft"):
@@ -1717,7 +1742,10 @@ class DraftToolBar:
             self.mask = val
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.mask = val
-                self.new_point = FreeCADGui.Snapper.constrain(self.new_point, self.get_last_point())
+                if self.new_point is not None:
+                    self.new_point = FreeCADGui.Snapper.constrain(
+                        self.new_point, self.get_last_point()
+                    )
 
     def changeXValue(self, d):
         if self.display_point_active:
@@ -1860,7 +1888,7 @@ class DraftToolBar:
                     "Draft_ShapeString",
                     "Draft_BezCurve",
                 ]
-                self.title = "Create objects"
+                self.title = "Create Objects"
 
             def shouldShow(self):
                 return (FreeCAD.ActiveDocument is not None) and (

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /******************************************************************************
  *   Copyright (c) 2012 Jan Rheinländer <jrheinlaender@users.sourceforge.net> *
  *                                                                            *
@@ -192,9 +194,8 @@ App::DocumentObjectExecReturn* Groove::execute()
                 upToFace.move(invObjLoc);
             }
             else {
-                throw Base::RuntimeError(
-                    "ProfileBased: Revolution up to first/last is not yet supported"
-                );
+                // TODO: Implement finding the first face this revolution would intersect with
+                return new App::DocumentObjectExecReturn("Groove up to first is not yet supported");
             }
 
             if (Reversed.getValue()) {
@@ -384,7 +385,7 @@ void Groove::generateRevolution(
 
         // revolve the face to a solid
         // BRepPrimAPI is the only option that allows use of this shape for patterns.
-        // See https://forum.freecadweb.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
+        // See https://forum.freecad.org/viewtopic.php?f=8&t=70185&p=611673#p611673.
         revol = from;
         revol = revol.makeElementRevolve(revolAx, angleTotal);
         revol.Tag = -getID();

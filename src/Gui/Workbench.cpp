@@ -770,8 +770,9 @@ MenuItem* StdWorkbench::setupMenuBar() const
     }
 #endif
     *tool << "Std_Measure"
-          << "Std_ClarifySelection"
+          << "Std_AnnotationLabel"
           << "Std_UnitsCalculator"
+          << "Std_ClarifySelection"
           << "Separator"
           << "Std_ViewLoadImage"
           << "Std_ViewScreenShot"

@@ -257,11 +257,15 @@ parser.add_argument(
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default="G17\\nG54\\G40\\nG49\\nG90\\nG80\\n"',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE_DEFAULT_NO_COMMENT.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M05\\nG17\\nG54\\nG0\\nG90\\nG80\\nM30\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE_DEFAULT_NO_COMMENT.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument("--inches", action="store_true", help="lengths in [in], G20")
 parser.add_argument("--metric", action="store_true", help="lengths in [mm], G21")
@@ -507,7 +511,7 @@ def export(objectslist, filename, argstring):
     # Show the results
     if SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

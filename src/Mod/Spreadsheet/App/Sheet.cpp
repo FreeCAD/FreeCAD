@@ -34,6 +34,9 @@
 #include <set>
 #include <vector>
 
+#include <boost_graph_adjacency_list.hpp>
+#include <boost/graph/topological_sort.hpp>
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DynamicProperty.h>
@@ -407,6 +410,17 @@ void Sheet::splitCell(CellAddress address)
  */
 
 Cell* Sheet::getCell(CellAddress address)
+{
+    return cells.getValue(address);
+}
+
+/**
+ * Get contents of the cell specified by \a address, or 0 if it is not defined
+ *
+ * @returns A CellContent object or 0.
+ */
+
+const Cell* Sheet::getCell(CellAddress address) const
 {
     return cells.getValue(address);
 }

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2021 Abdullah Tahiri <abdullah.tahiri.yo@gmail.com>     *
  *                                                                         *
@@ -355,7 +357,7 @@ bool SketcherGui::isBsplineKnotOrEndPoint(
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
-    if (geo->is<Part::GeomBSplineCurve>()
+    if (geo && geo->is<Part::GeomBSplineCurve>()
         && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
     }
@@ -504,7 +506,7 @@ bool SketcherGui::isSketchInEdit(Gui::Document* doc)
     if (doc) {
         // checks if a Sketch Viewprovider is in Edit and is in no special mode
         auto* vp = dynamic_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        return (vp != nullptr);
+        return (vp != nullptr && vp->isInEditMode());
     }
     return false;
 }
@@ -748,16 +750,11 @@ void SketcherGui::ConstraintToAttachment(
 void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
 {
     using std::numbers::pi;
-    double angleModPi = std::fmod(angle, pi);
-    double angleModHalfPi = std::fmod(angle, pi / 2);
 
-    if (fabs(angleModPi - pi) < Precision::Confusion()
-        || fabs(angleModPi + pi) < Precision::Confusion()
-        || fabs(angleModPi) < Precision::Confusion()) {
+    if (fabs(std::remainder(angle, pi)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", geoId);
     }
-    else if (fabs(angleModHalfPi - pi / 2) < Precision::Confusion()
-             || fabs(angleModHalfPi + pi / 2) < Precision::Confusion()) {
+    else if (fabs(std::remainder(angle, pi / 2)) < Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", geoId);
     }
     else {

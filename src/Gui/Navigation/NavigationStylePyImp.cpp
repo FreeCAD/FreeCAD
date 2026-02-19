@@ -20,10 +20,9 @@
  *                                                                         *
  ***************************************************************************/
 
-// inclusion of the generated files (generated out of NavigationStylePy.pyi)
+// generated out of NavigationStyle.pyi
 #include "Navigation/NavigationStylePy.h"
 #include "Navigation/NavigationStylePy.cpp"
-
 
 using namespace Gui;
 

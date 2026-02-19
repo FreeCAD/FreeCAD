@@ -52,7 +52,6 @@
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/Interface.h>
 #include <Mod/Part/App/OCAF/ImportExportSettings.h>
-#include <Mod/PartDesign/App/Body.h>
 
 #include "ExportOCAF2.h"
 
@@ -405,19 +404,6 @@ TDF_Label ExportOCAF2::exportObject(
         return {};
     }
 
-    // keep a copy of the original object for naming purposes
-    App::DocumentObject* originalObj = obj;
-
-    if (obj->isDerivedFrom(PartDesign::Body::getClassTypeId())) {
-        PartDesign::Body* body = static_cast<PartDesign::Body*>(obj);
-        App::DocumentObject* tip = body->Tip.getValue();
-        if (tip) {
-            // keep the shape from the body, but use the tip's colors
-            // by replacing obj with tip
-            obj = tip;
-        }
-    }
-
     // sub may contain more than one hierarchy, e.g. Assembly container may use
     // getSubObjects to skip some hierarchy containing constraints and stuff
     // when exporting. We search for extra '.', and set it as prefix if found.
@@ -476,9 +462,7 @@ TDF_Label ExportOCAF2::exportObject(
             else {
                 label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
             }
-
-            // use originalObj to preserve name
-            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+            setupObject(label, name ? parentObj : obj, shape, prefix, name);
             return label;
         }
         auto next = linked->getLinkedObject(false, nullptr, false, depth++);
@@ -505,7 +489,7 @@ TDF_Label ExportOCAF2::exportObject(
             }
 
             label = aShapeTool->AddComponent(parent, shape.getShape(), Standard_False);
-            setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+            setupObject(label, name ? parentObj : obj, shape, prefix, name);
         }
         else {
             // Here means we are exporting a single non-assembly object. We must
@@ -525,7 +509,7 @@ TDF_Label ExportOCAF2::exportObject(
                 shape.setShape(shape.getShape().Located(TopLoc_Location()));
             }
             label = aShapeTool->AddShape(shape.getShape(), Standard_False, Standard_False);
-            auto o = name ? parentObj : originalObj;
+            auto o = name ? parentObj : obj;
             if (o != linked) {
                 setupObject(label, linked, shape, prefix, nullptr, true);
             }
@@ -649,7 +633,7 @@ TDF_Label ExportOCAF2::exportObject(
         // If we are a component, swap in the base shape but keep our location.
         shape.setShape(baseShape.getShape().Located(shape.getShape().Location()));
         label = aShapeTool->AddComponent(parent, label, shape.getShape().Location());
-        setupObject(label, name ? parentObj : originalObj, shape, prefix, name);
+        setupObject(label, name ? parentObj : obj, shape, prefix, name);
     }
     return label;
 }

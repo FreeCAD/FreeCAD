@@ -758,7 +758,7 @@ of that project, no matter if they are expanded or not.</translation>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="60"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Aldatu Ikusgaitasuna</translation>
     </message>
     <message>
       <location filename="../ui/dialogLayersIFC.ui" line="67"/>
@@ -1811,11 +1811,6 @@ of that project, no matter if they are expanded or not.</translation>
       <translation type="unfinished">Online mode</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="206"/>
-      <source>Open the search results inside FreeCAD's web browser instead of the system browser</source>
-      <translation type="unfinished">Open the search results inside FreeCAD's web browser instead of the system browser</translation>
-    </message>
-    <message>
       <location filename="../ui/dialogLibrary.ui" line="14"/>
       <source>Library Browser</source>
       <translation type="unfinished">Library Browser</translation>
@@ -1841,42 +1836,37 @@ of that project, no matter if they are expanded or not.</translation>
       <translation type="unfinished">Allows the library to be fetched online instead of requiring local installation.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="209"/>
-      <source>Search using FreeCAD's web view</source>
-      <translation type="unfinished">Search using FreeCAD's web view</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogLibrary.ui" line="216"/>
+      <location filename="../ui/dialogLibrary.ui" line="206"/>
       <source>Opens a 3D preview of the selected file</source>
       <translation type="unfinished">Opens a 3D preview of the selected file</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="219"/>
+      <location filename="../ui/dialogLibrary.ui" line="209"/>
       <source>Preview model in 3D view</source>
       <translation type="unfinished">Preview model in 3D view</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="229"/>
+      <location filename="../ui/dialogLibrary.ui" line="219"/>
       <source>Show available alternative file formats for library items (STEP, IFC, etc...)</source>
       <translation type="unfinished">Show available alternative file formats for library items (STEP, IFC, etc...)</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="232"/>
+      <location filename="../ui/dialogLibrary.ui" line="222"/>
       <source>Display alternative formats</source>
       <translation type="unfinished">Display alternative formats</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="239"/>
+      <location filename="../ui/dialogLibrary.ui" line="229"/>
       <source>Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</source>
       <translation type="unfinished">Note: STEP and BREP files can be placed at custom location. FCStd and IFC files will be placed where objects are defined in the file.</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="252"/>
+      <location filename="../ui/dialogLibrary.ui" line="242"/>
       <source>Save thumbnails</source>
       <translation>Gorde miniaturak</translation>
     </message>
     <message>
-      <location filename="../ui/dialogLibrary.ui" line="262"/>
+      <location filename="../ui/dialogLibrary.ui" line="252"/>
       <source>Save As…</source>
       <translation type="unfinished">Save As…</translation>
     </message>
@@ -3828,7 +3818,7 @@ The default template is located at:
     <message>
       <location filename="../../ArchStructure.py" line="561"/>
       <location filename="../../bimcommands/BimProfile.py" line="90"/>
-      <location filename="../../bimcommands/BimWindow.py" line="439"/>
+      <location filename="../../bimcommands/BimWindow.py" line="431"/>
       <location filename="../../bimcommands/BimPanel.py" line="184"/>
       <source>Preset</source>
       <translation>Aurrezarpena</translation>
@@ -4133,12 +4123,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>IdRel</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="563"/>
+      <location filename="../../ArchWindowPresets.py" line="554"/>
       <source>Door</source>
       <translation>Atea</translation>
     </message>
     <message>
-      <location filename="../../ArchWindowPresets.py" line="566"/>
+      <location filename="../../ArchWindowPresets.py" line="557"/>
       <source>Opening</source>
       <translation type="unfinished">Opening</translation>
     </message>
@@ -4203,90 +4193,88 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Upgrading</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="170"/>
+      <location filename="../../ArchReference.py" line="171"/>
       <source>Part not found in file</source>
       <translation type="unfinished">Part not found in file</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="192"/>
-      <location filename="../../ArchReference.py" line="237"/>
-      <location filename="../../ArchReference.py" line="433"/>
-      <location filename="../../ArchReference.py" line="868"/>
+      <location filename="../../ArchReference.py" line="194"/>
+      <location filename="../../ArchReference.py" line="239"/>
+      <location filename="../../ArchReference.py" line="435"/>
+      <location filename="../../ArchReference.py" line="873"/>
       <source>NativeIFC not available - unable to process IFC files</source>
       <translation type="unfinished">NativeIFC not available - unable to process IFC files</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="290"/>
+      <location filename="../../ArchReference.py" line="292"/>
       <source>Error removing splitter</source>
       <translation type="unfinished">Error removing splitter</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="700"/>
+      <location filename="../../ArchReference.py" line="710"/>
       <source>Reload reference</source>
       <translation>Birkargatu erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="706"/>
+      <location filename="../../ArchReference.py" line="716"/>
       <source>Open reference</source>
       <translation>Ireki erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="744"/>
+      <location filename="../../ArchReference.py" line="754"/>
       <source>Unable to get lightWeight node for object referenced in</source>
       <translation type="unfinished">Unable to get lightWeight node for object referenced in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="753"/>
-      <location filename="../../ArchReference.py" line="757"/>
+      <location filename="../../ArchReference.py" line="764"/>
+      <location filename="../../ArchReference.py" line="768"/>
       <source>Invalid lightWeight node for object referenced in</source>
       <translation type="unfinished">Invalid lightWeight node for object referenced in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="767"/>
-      <location filename="../../ArchReference.py" line="773"/>
-      <location filename="../../ArchReference.py" line="801"/>
-      <location filename="../../ArchReference.py" line="807"/>
+      <location filename="../../ArchReference.py" line="780"/>
+      <location filename="../../ArchReference.py" line="812"/>
       <source>Invalid root node in</source>
       <translation type="unfinished">Invalid root node in</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="892"/>
+      <location filename="../../ArchReference.py" line="897"/>
       <source>External reference</source>
       <translation>Kanpoko erreferentzia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="894"/>
+      <location filename="../../ArchReference.py" line="899"/>
       <source>External file</source>
       <translation>Kanpoko fitxategia</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="898"/>
+      <location filename="../../ArchReference.py" line="903"/>
       <source>Open</source>
       <translation>Ireki</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="905"/>
+      <location filename="../../ArchReference.py" line="910"/>
       <source>Part to use:</source>
       <translation>Erabiliko den pieza:</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="910"/>
+      <location filename="../../ArchReference.py" line="915"/>
       <source>Choose File</source>
       <translation type="unfinished">Choose File</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="921"/>
-      <location filename="../../ArchReference.py" line="984"/>
+      <location filename="../../ArchReference.py" line="926"/>
+      <location filename="../../ArchReference.py" line="989"/>
       <source>None (Use whole object)</source>
       <translation type="unfinished">None (Use whole object)</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="972"/>
+      <location filename="../../ArchReference.py" line="977"/>
       <source>Reference files</source>
       <translation type="unfinished">Reference files</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="974"/>
+      <location filename="../../ArchReference.py" line="979"/>
       <source>Choose reference file</source>
       <translation type="unfinished">Choose reference file</translation>
     </message>
@@ -4363,7 +4351,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../bimcommands/BimWindow.py" line="109"/>
       <location filename="../../bimcommands/BimWindow.py" line="136"/>
-      <location filename="../../bimcommands/BimWindow.py" line="191"/>
+      <location filename="../../bimcommands/BimWindow.py" line="193"/>
       <source>Create Window</source>
       <translation>Sortu leihoa</translation>
     </message>
@@ -4373,113 +4361,113 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Aukeratu lehendik dagoen objektu baten aurpegi bat edo hautatu aurrezarpen bat</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="241"/>
+      <location filename="../../bimcommands/BimWindow.py" line="243"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Leihoa ez dago zirriborroan oinarrituta. Leihoa ez dago lerrokatuta edo ez da tamainaz aldatu.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="260"/>
+      <location filename="../../bimcommands/BimWindow.py" line="262"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Ez dago zabalerako eta/edo altuerako murrizketarik leiho-zirriborroan. Leihoa ez da tamainaz aldatu.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="263"/>
+      <location filename="../../bimcommands/BimWindow.py" line="265"/>
       <source>No window found. Cannot continue.</source>
       <translation>Ez da leihorik aurkitu. Ezin da jarraitu.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="388"/>
+      <location filename="../../bimcommands/BimWindow.py" line="380"/>
       <source>Window options</source>
       <translation>Leiho-aukerak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="392"/>
+      <location filename="../../bimcommands/BimWindow.py" line="384"/>
       <source>Auto include in host object</source>
       <translation>Auto besteak beste objektu gonbidatua</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimWindow.py" line="401"/>
+      <location filename="../../bimcommands/BimWindow.py" line="393"/>
       <source>Sill height</source>
       <translation>Leiho-barrenaren altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1162"/>
-      <location filename="../../ArchWindow.py" line="1765"/>
+      <location filename="../../ArchWindow.py" line="1078"/>
+      <location filename="../../ArchWindow.py" line="1681"/>
       <source>Invert Opening Direction</source>
       <translation type="unfinished">Invert Opening Direction</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1173"/>
-      <location filename="../../ArchWindow.py" line="1768"/>
+      <location filename="../../ArchWindow.py" line="1089"/>
+      <location filename="../../ArchWindow.py" line="1684"/>
       <source>Invert Hinge Position</source>
       <translation type="unfinished">Invert Hinge Position</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1235"/>
+      <location filename="../../ArchWindow.py" line="1151"/>
       <source>This window has no defined opening</source>
       <translation>Leiho honek ez du irekierarik definituta</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1525"/>
-      <location filename="../../ArchWindow.py" line="1576"/>
+      <location filename="../../ArchWindow.py" line="1441"/>
+      <location filename="../../ArchWindow.py" line="1492"/>
       <source>Get selected edge</source>
       <translation>Hartu hautatutako ertza</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1678"/>
+      <location filename="../../ArchWindow.py" line="1594"/>
       <source>Unable to create component</source>
       <translation>Ezin izan da osagaia sortu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1716"/>
+      <location filename="../../ArchWindow.py" line="1632"/>
       <source>Window elements</source>
       <translation>Leiho-elementuak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1717"/>
+      <location filename="../../ArchWindow.py" line="1633"/>
       <source>Hole wire</source>
       <translation>Zulo-alanbrea</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1724"/>
+      <location filename="../../ArchWindow.py" line="1640"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Ostalari-objektuan zulo bat definitzen duen alanbrearen zenbakia. Zero balioak alanbrerik luzeena hartuko du automatikoki</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1725"/>
+      <location filename="../../ArchWindow.py" line="1641"/>
       <source>Pick Selected</source>
       <translation type="unfinished">Pick Selected</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1731"/>
+      <location filename="../../ArchWindow.py" line="1647"/>
       <source>Create/Update Component</source>
       <translation type="unfinished">Create/Update Component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1735"/>
+      <location filename="../../ArchWindow.py" line="1651"/>
       <source>Create new Component</source>
       <translation type="unfinished">Create new Component</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1739"/>
+      <location filename="../../ArchWindow.py" line="1655"/>
       <source>Frame depth</source>
       <translation type="unfinished">Frame depth</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1750"/>
+      <location filename="../../ArchWindow.py" line="1666"/>
       <source>If this is checked, the window's Frame property value will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the window's Frame property value will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1758"/>
+      <location filename="../../ArchWindow.py" line="1674"/>
       <source>If this is checked, the window's Offset property value will be added to the value entered here</source>
       <translation type="unfinished">If this is checked, the window's Offset property value will be added to the value entered here</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1736"/>
+      <location filename="../../ArchSectionPlane.py" line="1739"/>
       <location filename="../../ArchAxisSystem.py" line="338"/>
-      <location filename="../../ArchComponent.py" line="2343"/>
-      <location filename="../../ArchWindow.py" line="1726"/>
+      <location filename="../../ArchComponent.py" line="2364"/>
+      <location filename="../../ArchWindow.py" line="1642"/>
       <location filename="../../ArchAxis.py" line="955"/>
       <location filename="../../ArchSpace.py" line="944"/>
       <source>Remove</source>
@@ -4487,8 +4475,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="339"/>
-      <location filename="../../ArchComponent.py" line="2344"/>
-      <location filename="../../ArchWindow.py" line="1727"/>
+      <location filename="../../ArchComponent.py" line="2365"/>
+      <location filename="../../ArchWindow.py" line="1643"/>
       <location filename="../../ArchAxis.py" line="956"/>
       <location filename="../../ArchSpace.py" line="938"/>
       <source>Add</source>
@@ -4496,14 +4484,14 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchIFCView.py" line="63"/>
-      <location filename="../../ArchSectionPlane.py" line="1503"/>
+      <location filename="../../ArchSectionPlane.py" line="1506"/>
       <location filename="../../ArchGrid.py" line="384"/>
       <location filename="../../ArchSite.py" line="1294"/>
-      <location filename="../../ArchReference.py" line="695"/>
+      <location filename="../../ArchReference.py" line="705"/>
       <location filename="../../ArchAxisSystem.py" line="222"/>
-      <location filename="../../ArchComponent.py" line="1874"/>
+      <location filename="../../ArchComponent.py" line="1895"/>
       <location filename="../../ArchSchedule.py" line="766"/>
-      <location filename="../../ArchWindow.py" line="1728"/>
+      <location filename="../../ArchWindow.py" line="1644"/>
       <location filename="../../ArchAxis.py" line="788"/>
       <location filename="../../ArchMaterial.py" line="470"/>
       <location filename="../../ArchMaterial.py" line="797"/>
@@ -4511,32 +4499,32 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>Editatu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1732"/>
+      <location filename="../../ArchWindow.py" line="1648"/>
       <source>Base 2D object</source>
       <translation>2D oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1733"/>
-      <location filename="../../ArchWindow.py" line="1738"/>
+      <location filename="../../ArchWindow.py" line="1649"/>
+      <location filename="../../ArchWindow.py" line="1654"/>
       <source>Wires</source>
       <translation>Alanbreak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2351"/>
-      <location filename="../../ArchWindow.py" line="1734"/>
+      <location filename="../../ArchComponent.py" line="2372"/>
+      <location filename="../../ArchWindow.py" line="1650"/>
       <source>Components</source>
       <translation>Osagaiak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1736"/>
+      <location filename="../../ArchWindow.py" line="1652"/>
       <location filename="../../ArchMaterial.py" line="879"/>
       <location filename="../../ArchMaterial.py" line="905"/>
       <source>Name</source>
       <translation>Izena</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2419"/>
-      <location filename="../../ArchWindow.py" line="1737"/>
+      <location filename="../../ArchComponent.py" line="2440"/>
+      <location filename="../../ArchWindow.py" line="1653"/>
       <location filename="../../ArchCommands.py" line="1701"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="478"/>
       <source>Type</source>
@@ -4552,38 +4540,38 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1725"/>
-      <location filename="../../ArchWindow.py" line="1740"/>
+      <location filename="../../ArchWindow.py" line="1656"/>
       <location filename="../../bimcommands/BimWall.py" line="371"/>
       <source>Offset</source>
       <translation>Desplazamendua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1741"/>
+      <location filename="../../ArchWindow.py" line="1657"/>
       <source>Hinge</source>
       <translation>Gontza</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1742"/>
+      <location filename="../../ArchWindow.py" line="1658"/>
       <source>Opening mode</source>
       <translation>Irekitze modua</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1743"/>
+      <location filename="../../ArchWindow.py" line="1659"/>
       <source>+ Frame property</source>
       <translation type="unfinished">+ Frame property</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1751"/>
+      <location filename="../../ArchWindow.py" line="1667"/>
       <source>+ Offset property</source>
       <translation type="unfinished">+ Offset property</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1759"/>
+      <location filename="../../ArchWindow.py" line="1675"/>
       <source>Get Selected Edge</source>
       <translation type="unfinished">Get Selected Edge</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1762"/>
+      <location filename="../../ArchWindow.py" line="1678"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Sakatu hautatutako ertza atzitzeko</translation>
     </message>
@@ -4610,7 +4598,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../Arch.py" line="104"/>
       <location filename="../../ArchAxisSystem.py" line="337"/>
-      <location filename="../../ArchComponent.py" line="2350"/>
+      <location filename="../../ArchComponent.py" line="2371"/>
       <location filename="../../ArchAxis.py" line="954"/>
       <source>Axes</source>
       <translation>Ardatzak</translation>
@@ -4623,8 +4611,8 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importers/importWebGL.py" line="371"/>
       <location filename="../../importers/importJSON.py" line="62"/>
-      <location filename="../../importers/importOBJ.py" line="302"/>
-      <location filename="../../importers/importOBJ.py" line="340"/>
+      <location filename="../../importers/importOBJ.py" line="301"/>
+      <location filename="../../importers/importOBJ.py" line="339"/>
       <source>Successfully written</source>
       <translation>Ongi idatzi da</translation>
     </message>
@@ -5201,7 +5189,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation type="unfinished">Object does not have settable IFC attributes</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2420"/>
+      <location filename="../../ArchComponent.py" line="2441"/>
       <location filename="../../ArchSchedule.py" line="989"/>
       <location filename="../../ArchSchedule.py" line="1014"/>
       <location filename="../../ArchCommands.py" line="1702"/>
@@ -5289,22 +5277,22 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Kurbak dituen forma bat aurkitu da, triangelukatzen</translation>
     </message>
     <message>
-      <location filename="../../importers/importOBJ.py" line="451"/>
+      <location filename="../../importers/importOBJ.py" line="450"/>
       <source>Successfully imported</source>
       <translation>Ongi inportatu da</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1101"/>
+      <location filename="../../ArchComponent.py" line="1100"/>
       <source>Error computing the shape of this object</source>
       <translation>Errorea objektu honen forma kalkulatzean</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1127"/>
+      <location filename="../../ArchComponent.py" line="1126"/>
       <source>has no solid</source>
       <translation>ez du solidorik</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1136"/>
+      <location filename="../../ArchComponent.py" line="1135"/>
       <source>has an invalid shape</source>
       <translation>baliogabeko forma du</translation>
     </message>
@@ -5315,144 +5303,144 @@ Solairuaren sorrera utzi egin da.</translation>
       <location filename="../../ArchPrecast.py" line="605"/>
       <location filename="../../ArchPrecast.py" line="773"/>
       <location filename="../../ArchPrecast.py" line="894"/>
-      <location filename="../../ArchComponent.py" line="1140"/>
+      <location filename="../../ArchComponent.py" line="1139"/>
       <source>has a null shape</source>
       <translation>forma nulua du</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1362"/>
+      <location filename="../../ArchComponent.py" line="1377"/>
       <source>Could not project face from {self.obj.Label}
 </source>
       <translation type="unfinished">Could not project face from {self.obj.Label}
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1377"/>
+      <location filename="../../ArchComponent.py" line="1390"/>
       <source>Could not determine if a face from {self.obj.Label} is vertical: normalAt() failed
 </source>
       <translation type="unfinished">Could not determine if a face from {self.obj.Label} is vertical: normalAt() failed
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1397"/>
-      <source>Could not determine if a face from {self.obj.Label} is horizontal: normalAt() failed
-</source>
-      <translation type="unfinished">Could not determine if a face from {self.obj.Label} is horizontal: normalAt() failed
-</translation>
-    </message>
-    <message>
-      <location filename="../../ArchComponent.py" line="1479"/>
+      <location filename="../../ArchComponent.py" line="1498"/>
       <source>Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </source>
       <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project or make face with normal {face.normalAt(0, 0)}. Area values will be reset to 0.
 </translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2345"/>
+      <location filename="../../ArchComponent.py" line="2366"/>
       <source>Components of This Object</source>
       <translation type="unfinished">Components of This Object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2355"/>
+      <location filename="../../ArchComponent.py" line="2376"/>
       <source>Edit IFC Properties</source>
       <translation type="unfinished">Edit IFC Properties</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2356"/>
+      <location filename="../../ArchComponent.py" line="2377"/>
       <source>Edit Standard Code</source>
       <translation type="unfinished">Edit Standard Code</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1277"/>
+      <location filename="../../ArchComponent.py" line="1276"/>
       <source>Wrong base type</source>
       <translation type="unfinished">Wrong base type</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="1300"/>
-      <location filename="../../ArchComponent.py" line="1881"/>
+      <location filename="../../ArchComponent.py" line="1902"/>
       <source>Toggle Subcomponents</source>
       <translation type="unfinished">Toggle Subcomponents</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2011"/>
+      <location filename="../../ArchComponent.py" line="2032"/>
       <source>Closing Sketch edit</source>
       <translation>Krokisaren edizioa ixten</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2342"/>
+      <location filename="../../ArchComponent.py" line="2363"/>
       <location filename="../../ArchCommands.py" line="287"/>
       <source>Component</source>
       <translation>Osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2035"/>
+      <location filename="../../ArchComponent.py" line="2056"/>
       <source>Select a base object</source>
       <translation type="unfinished">Select a base object</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2346"/>
+      <location filename="../../ArchComponent.py" line="1478"/>
+      <source>Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
+</source>
+      <translation type="unfinished">Error computing areas for {self.obj.Label}: unable to project non-planar faces with holes. Area values will be reset to 0.
+</translation>
+    </message>
+    <message>
+      <location filename="../../ArchComponent.py" line="2367"/>
       <source>Base component</source>
       <translation>Oinarrizko osagaia</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2347"/>
+      <location filename="../../ArchComponent.py" line="2368"/>
       <source>Additions</source>
       <translation>Gehiketak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2348"/>
+      <location filename="../../ArchComponent.py" line="2369"/>
       <source>Subtractions</source>
       <translation>Kenketak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2349"/>
+      <location filename="../../ArchComponent.py" line="2370"/>
       <source>Objects</source>
       <translation>Objektuak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2352"/>
+      <location filename="../../ArchComponent.py" line="2373"/>
       <source>Fixtures</source>
       <translation>Finkapenak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2353"/>
+      <location filename="../../ArchComponent.py" line="2374"/>
       <source>Group</source>
       <translation>Taldea</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2354"/>
+      <location filename="../../ArchComponent.py" line="2375"/>
       <source>Hosts</source>
       <translation>Ostalariak</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2418"/>
+      <location filename="../../ArchComponent.py" line="2439"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="477"/>
       <source>Property</source>
       <translation>Propietatea</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2426"/>
+      <location filename="../../ArchComponent.py" line="2447"/>
       <source>Add property</source>
       <translation>Gehitu propietatea</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2430"/>
+      <location filename="../../ArchComponent.py" line="2451"/>
       <source>Add property set</source>
       <translation type="unfinished">Add property set</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2431"/>
+      <location filename="../../ArchComponent.py" line="2452"/>
       <source>New...</source>
       <translation>Berria...</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2582"/>
+      <location filename="../../ArchComponent.py" line="2603"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="634"/>
       <source>New property</source>
       <translation>Propietate berria</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="2619"/>
+      <location filename="../../ArchComponent.py" line="2640"/>
       <location filename="../../bimcommands/BimIfcProperties.py" line="683"/>
       <source>New property set</source>
       <translation>Propietate multzo berria</translation>
@@ -5484,97 +5472,97 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Sortu ebakidura-planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1508"/>
+      <location filename="../../ArchSectionPlane.py" line="1511"/>
       <source>Toggle Cutview</source>
       <translation>Txandakatu mozte-bista</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1729"/>
+      <location filename="../../ArchSectionPlane.py" line="1732"/>
       <source>Scope</source>
       <translation type="unfinished">Scope</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1732"/>
+      <location filename="../../ArchSectionPlane.py" line="1735"/>
       <source>Placement and Visuals</source>
       <translation type="unfinished">Placement and Visuals</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1735"/>
+      <location filename="../../ArchSectionPlane.py" line="1738"/>
       <source>Objects seen by this section plane</source>
       <translation type="unfinished">Objects seen by this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1741"/>
+      <location filename="../../ArchSectionPlane.py" line="1744"/>
       <source>Removes highlighted objects from the list above</source>
       <translation type="unfinished">Removes highlighted objects from the list above</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1742"/>
+      <location filename="../../ArchSectionPlane.py" line="1745"/>
       <source>Add Selected</source>
       <translation type="unfinished">Add Selected</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1747"/>
+      <location filename="../../ArchSectionPlane.py" line="1750"/>
       <source>Adds selected objects to the scope of this section plane</source>
       <translation type="unfinished">Adds selected objects to the scope of this section plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1748"/>
+      <location filename="../../ArchSectionPlane.py" line="1751"/>
       <source>Cut View</source>
       <translation type="unfinished">Cut View</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1755"/>
+      <location filename="../../ArchSectionPlane.py" line="1758"/>
       <source>Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</source>
       <translation type="unfinished">Creates a live cut in the 3D view, hiding geometry on one side of the plane to see inside your model</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1756"/>
+      <location filename="../../ArchSectionPlane.py" line="1759"/>
       <source>Rotate by 90°</source>
       <translation type="unfinished">Rotate by 90°</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1760"/>
+      <location filename="../../ArchSectionPlane.py" line="1763"/>
       <source>Rotates the plane around its local X-axis</source>
       <translation type="unfinished">Rotates the plane around its local X-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1764"/>
+      <location filename="../../ArchSectionPlane.py" line="1767"/>
       <source>Rotates the plane around its local Y-axis</source>
       <translation type="unfinished">Rotates the plane around its local Y-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1768"/>
+      <location filename="../../ArchSectionPlane.py" line="1771"/>
       <source>Rotates the plane around its local Z-axis</source>
       <translation type="unfinished">Rotates the plane around its local Z-axis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1769"/>
+      <location filename="../../ArchSectionPlane.py" line="1772"/>
       <source>Resize to Fit</source>
       <translation type="unfinished">Resize to Fit</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1775"/>
+      <location filename="../../ArchSectionPlane.py" line="1778"/>
       <source>Recenter Plane</source>
       <translation type="unfinished">Recenter Plane</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1757"/>
+      <location filename="../../ArchSectionPlane.py" line="1760"/>
       <source>Rotate X</source>
       <translation>Biratu X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1761"/>
+      <location filename="../../ArchSectionPlane.py" line="1764"/>
       <source>Rotate Y</source>
       <translation>Biratu Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1765"/>
+      <location filename="../../ArchSectionPlane.py" line="1768"/>
       <source>Rotate Z</source>
       <translation>Biratu Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1774"/>
+      <location filename="../../ArchSectionPlane.py" line="1777"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuekin doitzeko biratzen du</translation>
     </message>
@@ -5584,7 +5572,7 @@ Solairuaren sorrera utzi egin da.</translation>
       <translation>Zentroa</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1780"/>
+      <location filename="../../ArchSectionPlane.py" line="1783"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Planoa goiko zerrendako objektuetan zentratzen du</translation>
     </message>
@@ -5720,7 +5708,7 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Errorea: Ezin izan da aldatu pareta honen oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchWall.py" line="1715"/>
+      <location filename="../../ArchWall.py" line="1755"/>
       <source>Flip Direction</source>
       <translation type="unfinished">Flip Direction</translation>
     </message>
@@ -5908,33 +5896,33 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation type="unfinished">Create 2D View</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1151"/>
+      <location filename="../../ArchBuildingPart.py" line="1155"/>
       <source>Active</source>
       <translation type="unfinished">Active</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1162"/>
+      <location filename="../../ArchBuildingPart.py" line="1166"/>
       <source>Set Working Plane</source>
       <translation>Ezarri laneko planoa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1172"/>
+      <location filename="../../ArchBuildingPart.py" line="1176"/>
       <source>Write Camera Position</source>
       <translation type="unfinished">Write Camera Position</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1178"/>
+      <location filename="../../ArchBuildingPart.py" line="1182"/>
       <source>New Group</source>
       <translation type="unfinished">New Group</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1182"/>
+      <location filename="../../ArchBuildingPart.py" line="1186"/>
       <location filename="../../ArchMaterial.py" line="100"/>
       <source>Reorder Children Alphabetically</source>
       <translation type="unfinished">Reorder Children Alphabetically</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1186"/>
+      <location filename="../../ArchBuildingPart.py" line="1190"/>
       <source>Clone Level Up</source>
       <translation type="unfinished">Clone Level Up</translation>
     </message>
@@ -6158,203 +6146,203 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Eraikin honen mota</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="229"/>
+      <location filename="../../ArchBuildingPart.py" line="230"/>
       <location filename="../../ArchFloor.py" line="236"/>
       <source>The height of this object</source>
       <translation>Objektu honen altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="240"/>
+      <location filename="../../ArchBuildingPart.py" line="241"/>
       <source>If true, the height value propagates to contained objects if the height of those objects is set to 0</source>
       <translation type="unfinished">If true, the height value propagates to contained objects if the height of those objects is set to 0</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="249"/>
+      <location filename="../../ArchBuildingPart.py" line="250"/>
       <source>The level of the (0,0,0) point of this level</source>
       <translation>Maila honetako (0,0,0) puntuaren maila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="257"/>
+      <location filename="../../ArchBuildingPart.py" line="258"/>
       <location filename="../../ArchFloor.py" line="244"/>
       <source>The computed floor area of this floor</source>
       <translation>Solairu honetan kalkulatutako zoru-area</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="265"/>
-      <location filename="../../ArchComponent.py" line="256"/>
+      <location filename="../../ArchBuildingPart.py" line="266"/>
+      <location filename="../../ArchComponent.py" line="258"/>
       <source>An optional description for this component</source>
       <translation>Osagai honen aukerako deskribapen bat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="273"/>
-      <location filename="../../ArchComponent.py" line="264"/>
+      <location filename="../../ArchBuildingPart.py" line="274"/>
+      <location filename="../../ArchComponent.py" line="266"/>
       <source>An optional tag for this component</source>
       <translation>Osagai honentzako aukerako etiketa bat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="281"/>
-      <location filename="../../ArchSectionPlane.py" line="954"/>
+      <location filename="../../ArchBuildingPart.py" line="282"/>
+      <location filename="../../ArchSectionPlane.py" line="957"/>
       <source>The shape of this object</source>
       <translation>Objektu honen forma</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="292"/>
+      <location filename="../../ArchBuildingPart.py" line="293"/>
       <source>This property stores an OpenInventor representation for this object</source>
       <translation type="unfinished">This property stores an OpenInventor representation for this object</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="304"/>
+      <location filename="../../ArchBuildingPart.py" line="305"/>
       <source>If true, only solids will be collected by this object when referenced from other files</source>
       <translation>Egia bada, objektu honek solidoak soilik bilduko ditu beste fitxategi batzuetatik erreferentzia egiten zaionean</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="316"/>
+      <location filename="../../ArchBuildingPart.py" line="317"/>
       <source>A MaterialName:SolidIndexesList map that relates material names with solid indexes to be used when referencing this object from other files</source>
       <translation>Materialen izenak eta objektu honi beste fitxategi batzuetatik erreferentzia egiten zaionean erabiliko diren solido-indizeak erlazionatzen dituen MaterialName:SolidIndexesList mapa bat</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="519"/>
-      <location filename="../../ArchSectionPlane.py" line="1126"/>
+      <location filename="../../ArchBuildingPart.py" line="522"/>
+      <location filename="../../ArchSectionPlane.py" line="1129"/>
       <source>The line width of this object</source>
       <translation>Objektu honen lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="528"/>
+      <location filename="../../ArchBuildingPart.py" line="531"/>
       <source>An optional unit to express levels</source>
       <translation>Mailak adierazteko aukerazko unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="536"/>
+      <location filename="../../ArchBuildingPart.py" line="539"/>
       <source>A transformation to apply to the level mark</source>
       <translation>Mailako markari aplikatuko zaion eraldaketa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="547"/>
+      <location filename="../../ArchBuildingPart.py" line="550"/>
       <source>If true, show the level</source>
       <translation>Egia bada, erakutsi maila</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="556"/>
+      <location filename="../../ArchBuildingPart.py" line="559"/>
       <source>If true, show the unit on the level tag</source>
       <translation>Egia bada, erakutsi mailako etiketaren unitatea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="566"/>
+      <location filename="../../ArchBuildingPart.py" line="569"/>
       <source>If true, display offset will affect the origin mark too</source>
       <translation>Egia bada, pantailaren desplazamenduak jatorriaren markari ere eragingo dio</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="574"/>
+      <location filename="../../ArchBuildingPart.py" line="577"/>
       <source>If true, the object's label is displayed</source>
       <translation>Egia bada, objektuaren etiketa bistaratuko da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="583"/>
+      <location filename="../../ArchBuildingPart.py" line="586"/>
       <source>The font to be used for texts</source>
       <translation>Testuetarako erabiliko den letra-tipoa</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="592"/>
+      <location filename="../../ArchBuildingPart.py" line="595"/>
       <source>The font size of texts</source>
       <translation>Testuen letra-tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="603"/>
+      <location filename="../../ArchBuildingPart.py" line="606"/>
       <source>The individual face colors</source>
       <translation>Aurpegien banakako koloreak</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="616"/>
+      <location filename="../../ArchBuildingPart.py" line="619"/>
       <source>If true, when activated, the working plane will automatically adapt to this level</source>
       <translation>Egia bada, aktibatzen denean, laneko planoa automatikoki egokituko da maila horretara</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="627"/>
+      <location filename="../../ArchBuildingPart.py" line="630"/>
       <source>If set to True, the working plane will be kept on Auto mode</source>
       <translation>Egia ezarri bada, laneko planoa modu automatikoan mantenduko da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="637"/>
+      <location filename="../../ArchBuildingPart.py" line="640"/>
       <source>Camera position data associated with this object</source>
       <translation>Objektu honi lotutako kameraren posizioaren datuak</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="649"/>
+      <location filename="../../ArchBuildingPart.py" line="652"/>
       <source>If set, the view stored in this object will be restored on double-click</source>
       <translation>Ezartzen bada, objektu honetan gordetako bista berrezarriko da klik bikoitza egitean</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="659"/>
+      <location filename="../../ArchBuildingPart.py" line="662"/>
       <source>If True, double-clicking this object in the tree activates it</source>
       <translation>Egia bada, zuhaitzean objektu honen gainean klik bikoitza eginda aktibatu egingo da</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="673"/>
+      <location filename="../../ArchBuildingPart.py" line="676"/>
       <source>If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</source>
       <translation type="unfinished">If this is enabled, the OpenInventor representation of this object will be saved in the FreeCAD file, allowing to reference it in other files in lightweight mode.</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="684"/>
+      <location filename="../../ArchBuildingPart.py" line="687"/>
       <source>A slot to save the OpenInventor representation of this object, if enabled</source>
       <translation type="unfinished">A slot to save the OpenInventor representation of this object, if enabled</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="698"/>
+      <location filename="../../ArchBuildingPart.py" line="701"/>
       <source>If true, show the objects contained in this Building Part will adopt these line, color and transparency settings</source>
       <translation>Egia bada, eraikin-pieza honek dituen objektuek lerro, kolore eta gardentasuneko honako ezarpenak hartuko dituzte</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="706"/>
+      <location filename="../../ArchBuildingPart.py" line="709"/>
       <source>The line width of child objects</source>
       <translation>Objektu haurren lerro-zabalera</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="715"/>
+      <location filename="../../ArchBuildingPart.py" line="718"/>
       <source>The line color of child objects</source>
       <translation>Objektu haurren lerro-kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="724"/>
+      <location filename="../../ArchBuildingPart.py" line="727"/>
       <source>The shape appearance of child objects</source>
       <translation type="unfinished">The shape appearance of child objects</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="733"/>
+      <location filename="../../ArchBuildingPart.py" line="736"/>
       <source>The transparency of child objects</source>
       <translation>Objektu haurren gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="744"/>
+      <location filename="../../ArchBuildingPart.py" line="747"/>
       <source>Cut the view above this level</source>
       <translation>Moztu bista maila honen gainetik</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="754"/>
+      <location filename="../../ArchBuildingPart.py" line="757"/>
       <source>The distance between the level plane and the cut line</source>
       <translation>Maila-planoaren eta mozte-lerroaren arteko distantzia</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="763"/>
+      <location filename="../../ArchBuildingPart.py" line="766"/>
       <source>Turn cutting on when activating this level</source>
       <translation>Aktibatu moztea maila hau aktibatzen denean</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="776"/>
+      <location filename="../../ArchBuildingPart.py" line="779"/>
       <source>The capture box for newly created objects expressed as [XMin,YMin,ZMin,XMax,YMax,ZMax]</source>
       <translation>Sortu berri diren objektuen kaptura-koadroa [XMin,YMin,ZMin,XMax,YMax,ZMax] gisa adierazita</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="784"/>
+      <location filename="../../ArchBuildingPart.py" line="787"/>
       <source>Turns auto group box on/off</source>
       <translation>Talde automatikoen kutxa aktibatzen/desaktibatzen du</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="792"/>
+      <location filename="../../ArchBuildingPart.py" line="795"/>
       <source>Automatically set size from contents</source>
       <translation>Ezarri tamaina automatikoki edukietatik</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="800"/>
+      <location filename="../../ArchBuildingPart.py" line="803"/>
       <source>A margin to use when autosize is turned on</source>
       <translation>Tamaina automatikoa aktibatuta dagoenean erabiliko den marjina</translation>
     </message>
@@ -6513,24 +6501,24 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="656"/>
-      <location filename="../../ArchComponent.py" line="238"/>
+      <location filename="../../ArchComponent.py" line="240"/>
       <source>Other shapes that are appended to this object</source>
       <translation>Objektu honi erantsitako beste forma batzuk</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="666"/>
-      <location filename="../../ArchComponent.py" line="248"/>
+      <location filename="../../ArchComponent.py" line="250"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>Objektu honi kendutako beste forma batzuk</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="275"/>
+      <location filename="../../ArchComponent.py" line="277"/>
       <source>An optional standard (OmniClass, etc…) code for this component</source>
       <translation type="unfinished">An optional standard (OmniClass, etc…) code for this component</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="676"/>
-      <location filename="../../ArchComponent.py" line="331"/>
+      <location filename="../../ArchComponent.py" line="333"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>Objektu honen proiekzioaren area XY planoan</translation>
     </message>
@@ -6751,12 +6739,12 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Fusionatu material bereko objektuak</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="584"/>
+      <location filename="../../ArchReference.py" line="594"/>
       <source>The latest time stamp of the linked file</source>
       <translation>Estekatutako objektuaren azken denbora-marka</translation>
     </message>
     <message>
-      <location filename="../../ArchReference.py" line="590"/>
+      <location filename="../../ArchReference.py" line="600"/>
       <source>If true, the colors from the linked file will be kept updated</source>
       <translation>Egia bada, estekatutako fitxategiarekin koloreak eguneratuta mantenduko dira</translation>
     </message>
@@ -6802,7 +6790,7 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="144"/>
-      <location filename="../../ArchSketchObject.py" line="52"/>
+      <location filename="../../ArchSketchObject.py" line="54"/>
       <source>The objects that host this window</source>
       <translation>Leiho honen ostalaria diren objektuak</translation>
     </message>
@@ -6830,11 +6818,6 @@ Eraikinaren sorrera utzi egin da.</translation>
       <location filename="../../ArchWindow.py" line="191"/>
       <source>The height of this window</source>
       <translation>Leiho honen altuera</translation>
-    </message>
-    <message>
-      <location filename="../../ArchWindow.py" line="332"/>
-      <source>The height of this window's sill</source>
-      <translation type="unfinished">The height of this window's sill</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="199"/>
@@ -6897,7 +6880,7 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Erakutsi garaiera-irekiguneen ikurrak, erabilgarri badaude</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1464"/>
+      <location filename="../../ArchWindow.py" line="1380"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Zuloa definitzen duen alanbrearen zenbakia. 0 balioak automatikoa esan nahi du</translation>
     </message>
@@ -7779,7 +7762,7 @@ Eraikinaren sorrera utzi egin da.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="253"/>
-      <location filename="../../ArchSectionPlane.py" line="946"/>
+      <location filename="../../ArchSectionPlane.py" line="949"/>
       <source>The placement of this object</source>
       <translation>Objektu honen kokapena</translation>
     </message>
@@ -7869,52 +7852,52 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Etiketa bakoitzari aplikatuko zaion transformazio bat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="222"/>
+      <location filename="../../ArchComponent.py" line="224"/>
       <source>The base object this component is built upon</source>
       <translation>Osagai hau eraikitzeko erabili den oinarri-objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="230"/>
+      <location filename="../../ArchComponent.py" line="232"/>
       <source>The object this component is cloning</source>
       <translation>Osagai hau klonatzen ari den objektua</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="283"/>
+      <location filename="../../ArchComponent.py" line="285"/>
       <source>A material for this object</source>
       <translation>Objektu honentzako material bat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="299"/>
+      <location filename="../../ArchComponent.py" line="301"/>
       <source>Specifies if moving this object moves its base instead</source>
       <translation>Objektu hau mugitzeak bere oinarria mugituko duen zehazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="311"/>
+      <location filename="../../ArchComponent.py" line="313"/>
       <source>Specifies if this object must move together when its host is moved</source>
       <translation>Objektuaren ostalaria mugitzen denean objektua ere harekin mugitu behar den adierazten du</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="320"/>
+      <location filename="../../ArchComponent.py" line="322"/>
       <source>The area of all vertical faces of this object</source>
       <translation>Objektu honen aurpegi bertikal guztien area</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="340"/>
+      <location filename="../../ArchComponent.py" line="342"/>
       <source>The perimeter length of the horizontal area</source>
       <translation>Area horizontalaren perimetroaren luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="351"/>
+      <location filename="../../ArchComponent.py" line="353"/>
       <source>An optional higher-resolution mesh or shape for this object</source>
       <translation>Bereizmen handiagoko amaraun edo forma bat, aukerakoa, objektu honentzat</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="362"/>
+      <location filename="../../ArchComponent.py" line="364"/>
       <source>An optional axis or axis system on which this object should be duplicated</source>
       <translation>Aukerako ardatz bat, edo ardatz-sistema bat, objektu hau bikoizteko</translation>
     </message>
     <message>
-      <location filename="../../ArchComponent.py" line="1534"/>
+      <location filename="../../ArchComponent.py" line="1555"/>
       <source>Use the material color as this object's shape color, if available</source>
       <translation>Erabili materialaren kolorea objektu honen formaren kolore gisa, erabilgarri badago</translation>
     </message>
@@ -7994,79 +7977,79 @@ Eraikinaren sorrera utzi egin da.</translation>
       <translation>Armadura-barraren forma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="965"/>
+      <location filename="../../ArchSectionPlane.py" line="968"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Sekzio-plano honek kontuan hartu behar diren objektuak. Hutsik badago, dokumentu osoa hartuko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="976"/>
+      <location filename="../../ArchSectionPlane.py" line="979"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Gezurra bada, solidoak ez direnak ere moztuko dira, eta emaitzak okerrak izan daitezke.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="988"/>
+      <location filename="../../ArchSectionPlane.py" line="991"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Egia bada, emaitzako bistak sekzio-planoaren areara moztuko dira.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="999"/>
+      <location filename="../../ArchSectionPlane.py" line="1002"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Egia bada, objektuen materialaren kolorea mozte-areak betetzeko erabiliko da.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1011"/>
+      <location filename="../../ArchSectionPlane.py" line="1014"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Balio honetaz haratago dagoen geometria moztu egingo da. Ezarri zero mugagabea izan dadin.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1084"/>
+      <location filename="../../ArchSectionPlane.py" line="1087"/>
       <source>The display length of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-luzera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1096"/>
+      <location filename="../../ArchSectionPlane.py" line="1099"/>
       <source>The display height of this section plane</source>
       <translation>Sekzio-plano honen bistaratze-altuera</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1108"/>
+      <location filename="../../ArchSectionPlane.py" line="1111"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Sekzio-plano honen gezien tamaina</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1117"/>
+      <location filename="../../ArchSectionPlane.py" line="1120"/>
       <source>The transparency of this object</source>
       <translation>Objektu honen gardentasuna</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1135"/>
-      <location filename="../../ArchSectionPlane.py" line="1152"/>
+      <location filename="../../ArchSectionPlane.py" line="1138"/>
+      <location filename="../../ArchSectionPlane.py" line="1155"/>
       <source>Show the cut in the 3D view</source>
       <translation>Erakutsi moztea 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1143"/>
+      <location filename="../../ArchSectionPlane.py" line="1146"/>
       <source>The color of this object</source>
       <translation>Objektu honen kolorea</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1163"/>
+      <location filename="../../ArchSectionPlane.py" line="1166"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Mozte-planoaren eta uneko bistaren moztearen arteko distantzia (balio horrek oso txikia izan behar du, baina ez zero)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1172"/>
+      <location filename="../../ArchSectionPlane.py" line="1175"/>
       <source>Show the label in the 3D view</source>
       <translation>Erakutsi etiketa 3D bistan</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1180"/>
+      <location filename="../../ArchSectionPlane.py" line="1183"/>
       <location filename="../../ArchSpace.py" line="579"/>
       <source>The name of the font</source>
       <translation>Letra-tipoaren izena</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1189"/>
+      <location filename="../../ArchSectionPlane.py" line="1192"/>
       <location filename="../../ArchSpace.py" line="597"/>
       <source>The size of the text font</source>
       <translation>Testuaren letra-tamaina</translation>
@@ -8322,7 +8305,7 @@ Eraikinaren sorrera utzi egin da.</translation>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="1246"/>
+      <location filename="../../ArchBuildingPart.py" line="1250"/>
       <source>Writing camera position</source>
       <translation>Kameraren posizioa idazten</translation>
     </message>
@@ -9534,117 +9517,117 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation>Sortu gida-marra</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="189"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="192"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="935"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="939"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="187"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="190"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="921"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="925"/>
       <source>Preview</source>
       <translation>Aurrebista</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="195"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="925"/>
-      <location filename="../../bimcommands/BimLibrary.py" line="928"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="193"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="911"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="914"/>
       <source>Options</source>
       <translation>Aukerak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="349"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="347"/>
       <source>It is not possible to link because the main document is closed.</source>
       <translation type="unfinished">It is not possible to link because the main document is closed.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="309"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="307"/>
       <source>Save the working file before linking.</source>
       <translation type="unfinished">Save the working file before linking.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="502"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="500"/>
       <source>No structure in cache. Refresh required.</source>
       <translation type="unfinished">No structure in cache. Refresh required.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="570"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="562"/>
       <source>It is not possible to insert this object because the document has been closed.</source>
       <translation type="unfinished">It is not possible to insert this object because the document has been closed.</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="616"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="608"/>
       <source>Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</source>
       <translation type="unfinished">Error: Unable to import SAT files - InventorLoader or CadExchanger addon must be installed</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="642"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="634"/>
       <source>Error: Unable to download</source>
       <translation type="unfinished">Error: Unable to download</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="683"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="675"/>
       <source>Insertion point</source>
       <translation type="unfinished">Insertion point</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="686"/>
       <source>Origin</source>
       <translation>Jatorria</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="687"/>
       <source>Top left</source>
       <translation>Goian ezkerrean</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="696"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="688"/>
       <source>Top center</source>
       <translation type="unfinished">Top center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="697"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="689"/>
       <source>Top right</source>
       <translation>Goian eskuinean</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="698"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="690"/>
       <source>Middle left</source>
       <translation type="unfinished">Middle left</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="699"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="691"/>
       <source>Middle center</source>
       <translation type="unfinished">Middle center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="700"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="692"/>
       <source>Middle right</source>
       <translation type="unfinished">Middle right</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="701"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="693"/>
       <source>Bottom left</source>
       <translation>Behean ezkerrean</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="702"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="694"/>
       <source>Bottom center</source>
       <translation type="unfinished">Bottom center</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="703"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="695"/>
       <source>Bottom right</source>
       <translation>Behean eskuinean</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="809"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="801"/>
       <source>Could not fetch library contents</source>
       <translation type="unfinished">Could not fetch library contents</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="813"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="805"/>
       <source>No results fetched from online library</source>
       <translation type="unfinished">No results fetched from online library</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimLibrary.py" line="871"/>
+      <location filename="../../bimcommands/BimLibrary.py" line="863"/>
       <source>Warning, this can take several minutes!</source>
       <translation type="unfinished">Warning, this can take several minutes!</translation>
     </message>
@@ -9898,78 +9881,78 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
       <translation type="unfinished">Tip: The results are best viewed in Wireframe mode (menu Views -&gt; Draw Style -&gt; Wireframe)</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="294"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="295"/>
       <source>Building Layout</source>
       <translation type="unfinished">Building Layout</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="320"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="321"/>
       <source>Building Outline</source>
       <translation type="unfinished">Building Outline</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="339"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="340"/>
       <source>Building Label</source>
       <translation type="unfinished">Building Label</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="349"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="350"/>
       <source>Vertical Axes</source>
       <translation>Ardatz bertikalak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="360"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="361"/>
       <source>Horizontal Axes</source>
       <translation type="unfinished">Horizontal Axes</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="370"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="371"/>
       <source>Axes</source>
       <translation>Ardatzak</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="384"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="385"/>
       <source>Level</source>
       <translation>Maila</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="445"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
       <source>Save Preset</source>
       <translation type="unfinished">Save Preset</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="446"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="447"/>
       <source>Preset name</source>
       <translation type="unfinished">Preset name</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="495"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="496"/>
       <source>User preset</source>
       <translation type="unfinished">User preset</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="785"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="786"/>
       <source>Template successfully loaded into the current document</source>
       <translation type="unfinished">Template successfully loaded into the current document</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="430"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="431"/>
       <location filename="../../nativeifc/ifc_viewproviders.py" line="156"/>
       <source>New Group</source>
       <translation type="unfinished">New Group</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="649"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="650"/>
       <source>Save template file</source>
       <translation type="unfinished">Save template file</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="658"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="659"/>
       <source>Template saved successfully</source>
       <translation type="unfinished">Template saved successfully</translation>
     </message>
     <message>
-      <location filename="../../bimcommands/BimProjectManager.py" line="671"/>
+      <location filename="../../bimcommands/BimProjectManager.py" line="672"/>
       <source>Open template file</source>
       <translation type="unfinished">Open template file</translation>
     </message>
@@ -10101,7 +10084,7 @@ CTRL+PgUp to extend extrusionCTRL+PgDown to shrink extrusionCTRL+/ to switch bet
     <message>
       <location filename="../../bimcommands/BimViews.py" line="93"/>
       <source>Toggle Visibility</source>
-      <translation type="unfinished">Toggle Visibility</translation>
+      <translation>Aldatu Ikusgaitasuna</translation>
     </message>
     <message>
       <location filename="../../bimcommands/BimViews.py" line="95"/>
@@ -11424,6 +11407,11 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <translation type="unfinished">Default author for new files</translation>
     </message>
     <message>
+      <location filename="../ui/dialogSetup.ui" line="636"/>
+      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
+      <translation type="unfinished">&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecad.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</translation>
+    </message>
+    <message>
       <location filename="../ui/dialogSetup.ui" line="176"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;How many small squares between each main line of the grid. Location in preferences: &lt;span style=" font-weight:600;"&gt;Draft &amp;gt; Grid and snapping &amp;gt; Main line every&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
@@ -11544,11 +11532,6 @@ Please check your FreeCAD installation or provide a custom template under menu P
       <location filename="../ui/dialogSetup.ui" line="267"/>
       <source>Geometry color</source>
       <translation type="unfinished">Geometry color</translation>
-    </message>
-    <message>
-      <location filename="../ui/dialogSetup.ui" line="636"/>
-      <source>&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</source>
-      <translation type="unfinished">&lt;b&gt;IfcOpenShell&lt;/b&gt; is missing on your system. IfcOpenShell is needed to import or export IFC files to/from FreeCAD. Check &lt;a href="https://www.freecadweb.org/wiki/Arch_IFC"&gt;this wiki page&lt;/a&gt; to know more, or &lt;a href="#install"&gt;download and install it&lt;/a&gt; directly.&lt;/p&gt;</translation>
     </message>
   </context>
   <context>

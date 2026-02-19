@@ -177,11 +177,14 @@ def isVertical(obj):
             return isVertical(obj.Surface.Direction)
         if isinstance(obj.Surface, Part.SurfaceOfRevolution):
             return isHorizontal(obj.Surface.Direction)
-        if not isinstance(obj.Surface, Part.BSplineSurface):
-            Path.Log.info(
-                translate("PathGeom", "face %s not handled, assuming not vertical")
-                % type(obj.Surface)
-            )
+        if isinstance(obj.Surface, Part.BSplineSurface):
+            # simple face after scale
+            vertEdges = [e for e in obj.Edges if isVertical(e)]
+            return len(vertEdges) == 2 and len(obj.Edges) == 4
+
+        Path.Log.info(
+            translate("PathGeom", "face %s not handled, assuming not vertical") % type(obj.Surface)
+        )
         return None
 
     if obj.ShapeType == "Edge":
@@ -189,14 +192,14 @@ def isVertical(obj):
             return isVertical(obj.Vertexes[1].Point - obj.Vertexes[0].Point)
         if isinstance(obj.Curve, (Part.Circle, Part.Ellipse)):
             return isHorizontal(obj.Curve.Axis)
-        if isinstance(obj.Curve, Part.BezierCurve):
-            # the current assumption is that a bezier curve is vertical if its end points are vertical
+        if isinstance(obj.Curve, (Part.BezierCurve, Part.BSplineCurve)):
+            # the current assumption is that
+            # a curve is vertical if its end points are vertical
             return isVertical(obj.Curve.EndPoint - obj.Curve.StartPoint)
-        if isinstance(obj.Curve, Part.BSplineCurve):
-            Path.Log.info(
-                translate("PathGeom", "edge %s not handled, assuming not vertical")
-                % type(obj.Curve)
-            )
+
+        Path.Log.info(
+            translate("PathGeom", "edge %s not handled, assuming not vertical") % type(obj.Curve)
+        )
         return None
 
     Path.Log.error(translate("PathGeom", "isVertical(%s) not supported") % obj)
@@ -275,13 +278,14 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
-    """cmdsForEdge(edge, flip=False, useHelixForBSpline=True) -> List(Path.Command)
+def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
+    """cmdsForEdge(edge, flip=False) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
     If flip is True the edge is considered to be backwards.
-    If useHelixForBSpline is True an Edge based on a BSplineCurve is considered
-    to represent a helix and results in G2 or G3 command. Otherwise edge has
-    no direct Path.Command mapping and will be approximated by straight segments."""
+    Edge based on a Part.Line is results in G1 command.
+    Horizontal Edge based on a Part.Circle is results in G2 or G3 command.
+    Other edge has no direct Path.Command mapping
+    and will be approximated by straight segments."""
     pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
     params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
     if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
@@ -296,13 +300,11 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
         p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
         p3 = pt
 
-        if hasattr(edge.Curve, "Axis") and (
-            (
-                isinstance(edge.Curve, Part.Circle)
-                and isRoughly(edge.Curve.Axis.x, 0)
-                and isRoughly(edge.Curve.Axis.y, 0)
-            )
-            or (useHelixForBSpline and isinstance(edge.Curve, Part.BSplineCurve))
+        if (
+            hasattr(edge.Curve, "Axis")
+            and isinstance(edge.Curve, Part.Circle)
+            and isRoughly(edge.Curve.Axis.x, 0)
+            and isRoughly(edge.Curve.Axis.y, 0)
         ):
             # This is an arc or a helix and it should be represented by a simple G2/G3 command
             if edge.Curve.Axis.z < 0:
@@ -345,7 +347,7 @@ def cmdsForEdge(edge, flip=False, useHelixForBSpline=True, hSpeed=0, vSpeed=0):
         else:
             # We're dealing with a helix or a more complex shape and it has to get approximated
             # by a number of straight segments
-            points = edge.discretize(Deflection=0.01)
+            points = edge.discretize(Deflection=tol)
             if flip:
                 points = points[::-1]
 

@@ -2238,6 +2238,7 @@ void StdViewLoadImage::activated(int iMsg)
     // Reading an image
     QFileDialog dialog(Gui::getMainWindow());
     dialog.setWindowTitle(QObject::tr("Choose an Image File to Open"));
+    dialog.setDirectory(FileDialog::getWorkingDirectory());
     dialog.setMimeTypeFilters(mimeTypeFilters);
     dialog.selectMimeTypeFilter(QStringLiteral("image/png"));
     dialog.setDefaultSuffix(QStringLiteral("png"));
@@ -3860,7 +3861,6 @@ StdCmdDockOverlayAll::StdCmdDockOverlayAll()
     sToolTipText = QT_TR_NOOP("Toggled overlay mode for all docked panels");
     sWhatsThis = "Std_DockOverlayAll";
     sStatusTip = sToolTipText;
-    sAccel = "F4";
     eType = 0;
 }
 
@@ -3887,7 +3887,6 @@ StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
     );
     sWhatsThis = "Std_DockOverlayTransparentAll";
     sStatusTip = sToolTipText;
-    sAccel = "SHIFT+F4";
     eType = 0;
 }
 
@@ -3911,7 +3910,6 @@ StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
     sToolTipText = QT_TR_NOOP("Toggles overlay mode for the docked window under the cursor");
     sWhatsThis = "Std_DockOverlayToggle";
     sStatusTip = sToolTipText;
-    sAccel = "F3";
     eType = 0;
 }
 
@@ -3938,7 +3936,6 @@ StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
     );
     sWhatsThis = "Std_DockOverlayToggleTransparent";
     sStatusTip = sToolTipText;
-    sAccel = "SHIFT+F3";
     eType = 0;
 }
 
@@ -4238,6 +4235,7 @@ StdCmdClarifySelection::StdCmdClarifySelection()
     sWhatsThis = "Std_ClarifySelection";
     sStatusTip = sToolTipText;
     sAccel = "G, G";
+    sPixmap = "tree-pre-sel";
     eType = NoTransaction | AlterSelection;
 }
 

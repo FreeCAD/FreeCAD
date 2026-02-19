@@ -126,10 +126,24 @@ class ExplodedView:
 
         return positions
 
+    def explodeTemporarily(self, viewObj):
+        self.initialPlcs = UtilsAssembly.saveAssemblyPartsPlacements(self.getAssembly(viewObj))
+        self.applyMoves(viewObj)
+        for move in viewObj.Group:
+            move.Visibility = True
+
     def getAssembly(self, viewObj):
         for obj in viewObj.InList:
             if obj.isDerivedFrom("Assembly::AssemblyObject"):
                 return obj
+        return None
+
+    def _createSafeLine(self, start, end):
+        """Creates a LineSegment shape only if points are not coincident."""
+        from Part import Precision
+
+        if (start - end).Length > Precision.confusion():
+            return LineSegment(start, end).toShape()
         return None
 
     def saveAssemblyAndExplode(self, viewObj):
@@ -140,8 +154,9 @@ class ExplodedView:
         lines = []
 
         for startPos, endPos in self.positions:
-            line = LineSegment(startPos, endPos).toShape()
-            lines.append(line)
+            line = self._createSafeLine(startPos, endPos)
+            if line:
+                lines.append(line)
         if lines:
             return Compound(lines)
 
@@ -152,6 +167,9 @@ class ExplodedView:
             return
 
         UtilsAssembly.restoreAssemblyPartsPlacements(self.getAssembly(viewObj), self.initialPlcs)
+
+        for move in viewObj.Group:
+            move.Visibility = False
 
     def _calculateExplodedPlacements(self, viewObj):
         """
@@ -244,8 +262,9 @@ class ExplodedView:
 
         # Add shapes for the explosion lines
         for start_pos, end_pos in line_positions:
-            line = LineSegment(start_pos, end_pos).toShape()
-            exploded_shapes.append(line)
+            line = self._createSafeLine(start_pos, end_pos)
+            if line:
+                exploded_shapes.append(line)
 
         if exploded_shapes:
             return Compound(exploded_shapes)
@@ -454,6 +473,7 @@ class ExplodedViewStep:
             if move.ViewObject:
                 endPos = UtilsAssembly.getCenterOfBoundingBox([obj], [ref])
                 positions.append([startPos, endPos])
+            obj.purgeTouched()
 
         if move.ViewObject:
             move.ViewObject.Proxy.redrawLines(move, positions)
@@ -552,7 +572,8 @@ class ExplodedViewSelGate:
         self.viewObj = viewObj
 
     def allow(self, doc, obj, sub):
-        if (obj.Name == self.assembly.Name and sub) or self.assembly.hasObject(obj, True):
+        comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, obj, sub)
+        if comp:
             # Objects within the assembly.
             return True
 
@@ -634,6 +655,9 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockSetDragger = False
         self.blockDraggerMove = True
         self.currentStep = None
+        self.radialExplosion = False
+
+        self.viewObj.purgeTouched()
 
     def accept(self):
         self.deactivate()
@@ -646,11 +670,14 @@ class TaskAssemblyCreateView(QtCore.QObject):
             commands = commands + more
         Gui.doCommand(commands[:-1])  # Don't use the last \n
         App.closeActiveTransaction()
+
+        self.viewObj.purgeTouched()
         return True
 
     def reject(self):
         self.deactivate()
         App.closeActiveTransaction(True)
+        App.activeDocument().recompute()
         return True
 
     def deactivate(self):
@@ -698,9 +725,14 @@ class TaskAssemblyCreateView(QtCore.QObject):
                 continue
 
             for sub_name in sel.SubElementNames:
-                ref = [sel.Object, [sub_name]]
+                moving_part, new_sub = UtilsAssembly.getComponentReference(
+                    self.assembly, sel.Object, sub_name
+                )
+                if not moving_part:
+                    continue
+
+                ref = [moving_part, [new_sub]]
                 obj = UtilsAssembly.getObject(ref)
-                moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
                 element_name = UtilsAssembly.getElementName(sub_name)
 
                 # Only objects within the assembly, not the assembly and not elements.
@@ -722,6 +754,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
                     ref[1][0] = UtilsAssembly.truncateSubAtFirst(ref[1][0], obj.Name)
 
                 if not obj in self.selectedObjs and hasattr(obj, "Placement"):
+                    ref = [sel.Object, [sub_name]]
                     self.selectedRefs.append(ref)
                     self.selectedObjs.append(obj)
                     self.selectedObjsInitPlc.append(App.Placement(obj.Placement))
@@ -769,7 +802,7 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.blockSetDragger = False
         self.setDragger()
 
-        self.createExplodedStepObject(1)  # 1 = type_index of "Radial"
+        self.radialExplosion = True
 
     def onAlignTo(self):
         self.alignMode = "Custom"
@@ -828,7 +861,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
         self.viewObj = Gui.doCommandEval("viewObj")
         Gui.doCommandGui("CommandCreateView.ViewProviderExplodedView(viewObj.ViewObject)")
 
-    def createExplodedStepObject(self, moveType_index=0):
+    def createExplodedStepObject(self):
+        moveType_index = 0
+        if self.radialExplosion:
+            self.radialExplosion = False
+            moveType_index = 1  # 1 = type_index of "Radial"
+
         commands = (
             f'assembly = App.ActiveDocument.getObject("{self.assembly.Name}")\n'
             'currentStep = assembly.newObject("App::FeaturePython", "Move")\n'
@@ -976,9 +1014,12 @@ class TaskAssemblyCreateView(QtCore.QObject):
             return
 
         else:
-            ref = [App.getDocument(doc_name).getObject(obj_name), [sub_name]]
+            rootObj = App.getDocument(doc_name).getObject(obj_name)
+            moving_part, new_sub = UtilsAssembly.getComponentReference(
+                self.assembly, rootObj, sub_name
+            )
+            ref = [moving_part, [new_sub]]
             obj = UtilsAssembly.getObject(ref)
-            moving_part = UtilsAssembly.getMovingPart(self.assembly, ref)
 
             if obj is None or moving_part is None:
                 return

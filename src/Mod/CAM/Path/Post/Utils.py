@@ -30,12 +30,16 @@ These are common functions and classes for creating custom post processors.
 
 
 from Path.Base.MachineState import MachineState
+from Path.Main.Gui.Editor import CodeEditor
+from Path.Geom import CmdMoveDrill
+
 from PySide import QtCore, QtGui
+
 import FreeCAD
-import Part
 import Path
 import os
 import re
+
 
 debug = False
 if debug:
@@ -208,29 +212,51 @@ class GCodeHighlighter(QtGui.QSyntaxHighlighter):
 
 
 class GCodeEditorDialog(QtGui.QDialog):
-    def __init__(self, parent=None):
+    def __init__(self, text="", parent=None, refactored=False):
         if parent is None:
             parent = FreeCADGui.getMainWindow()
         QtGui.QDialog.__init__(self, parent)
 
         layout = QtGui.QVBoxLayout(self)
 
-        # nice text editor widget for editing the gcode
-        self.editor = QtGui.QTextEdit()
+        # self.editor = QtGui.QTextEdit()  # without lines enumeration
+        self.editor = CodeEditor()  # with lines enumeration
+
+        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Editor")
         font = QtGui.QFont()
-        font.setFamily("Courier")
+        font.setFamily(p.GetString("Font", "Courier"))
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        font.setPointSize(p.GetInt("FontSize", 10))
         self.editor.setFont(font)
-        self.editor.setText("G01 X55 Y4.5 F300.0")
+        self.editor.setPlainText(text)
         layout.addWidget(self.editor)
 
-        # OK and Cancel buttons
-        self.buttons = QtGui.QDialogButtonBox(
-            QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
-            QtCore.Qt.Horizontal,
-            self,
-        )
+        # buttons depending on the post processor used
+        if refactored:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok
+                | QtGui.QDialogButtonBox.Discard
+                | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
+            # Swap the button text as to not change the old cancel behaviour for the user
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setIcon(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).icon()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Discard).setText(
+                self.buttons.button(QtGui.QDialogButtonBox.Cancel).text()
+            )
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setIcon(QtGui.QIcon())
+            self.buttons.button(QtGui.QDialogButtonBox.Cancel).setText("Abort")
+        else:
+            self.buttons = QtGui.QDialogButtonBox(
+                QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel,
+                QtCore.Qt.Horizontal,
+                self,
+            )
+
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
         layout.addWidget(self.buttons)
 
         # restore placement and size
@@ -245,8 +271,21 @@ class GCodeEditorDialog(QtGui.QDialog):
         if width > 0 and height > 0:
             self.resize(width, height)
 
-        self.buttons.accepted.connect(self.accept)
-        self.buttons.rejected.connect(self.reject)
+        # connect signals
+        self.editor.textChanged.connect(self.text_changed)
+        self.buttons.clicked.connect(self.clicked)
+
+    def text_changed(self):
+        self.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
+
+    def clicked(self, button):
+        match self.buttons.buttonRole(button):
+            case QtGui.QDialogButtonBox.RejectRole:
+                self.done(0)
+            case QtGui.QDialogButtonBox.ApplyRole | QtGui.QDialogButtonBox.AcceptRole:
+                self.done(1)
+            case QtGui.QDialogButtonBox.DestructiveRole:
+                self.done(2)
 
     def done(self, *args, **kwargs):
         params = FreeCAD.ParamGet(self.paramKey)
@@ -303,6 +342,7 @@ def editor(gcode):
 
     dia = GCodeEditorDialog()
     dia.editor.setText(gcode)
+    dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(True)
     gcodeSize = len(dia.editor.toPlainText())
     if gcodeSize <= mhs:
         # because of poor performance, syntax highlighting is
@@ -348,7 +388,7 @@ def splitArcs(path, deflection=None):
     if not isinstance(path, Path.Path):
         raise TypeError("path must be a Path object")
 
-    if deflection is None:
+    if not deflection:
         prefGrp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/CAM")
         deflection = prefGrp.GetFloat("LibAreaCurveAccuracy", 0.01)
 
@@ -373,3 +413,83 @@ def splitArcs(path, deflection=None):
         machine.addCommand(command)
 
     return Path.Path(results)
+
+
+def cannedCycleTerminator(path):
+    """iterate through a Path object and insert G80 commands to terminate canned cycles at the correct time"""
+
+    # Canned cycles terminate if any parameter change other than XY coordinates.
+    # - if Z depth changes
+    # - if feed rate changes
+    # - if retract plane changes
+    # - if retract mode (G98/G99) changes
+
+    result = []
+    cycle_active = False
+    last_cycle_params = {}
+    last_retract_mode = None
+    explicit_retract_mode_set = False
+
+    for command in path.Commands:
+        if (
+            command.Name == "G80"
+        ):  # This shouldn't happen because cycle generators shouldn't be inserting it. Be safe anyway.
+            # G80 is already a cycle terminator, don't terminate before it
+            # Just mark cycle as inactive and pass it through
+            cycle_active = False
+            last_retract_mode = None
+            explicit_retract_mode_set = False
+            result.append(command)
+        elif command.Name in ["G98", "G99"]:
+            # Explicit retract mode in the path - track it
+            if cycle_active and last_retract_mode and command.Name != last_retract_mode:
+                # Mode changed while cycle active - terminate
+                result.append(Path.Command("G80"))
+                cycle_active = False
+            last_retract_mode = command.Name
+            explicit_retract_mode_set = True
+            result.append(command)
+        elif command.Name in CmdMoveDrill:
+            # Check if this cycle has different parameters than the last one
+            current_params = {k: v for k, v in command.Parameters.items() if k not in ["X", "Y"]}
+
+            # Get retract mode from annotations
+            current_retract_mode = command.Annotations.get("RetractMode", "G98")
+
+            # Check if we need to terminate the previous cycle
+            if cycle_active and (
+                current_params != last_cycle_params or current_retract_mode != last_retract_mode
+            ):
+                # Parameters or retract mode changed, terminate previous cycle
+                result.append(Path.Command("G80"))
+                cycle_active = False
+                explicit_retract_mode_set = False
+
+            # Insert retract mode command if starting a new cycle or mode changed
+            # But only if it wasn't already explicitly set in the path
+            if (
+                not cycle_active or current_retract_mode != last_retract_mode
+            ) and not explicit_retract_mode_set:
+                result.append(Path.Command(current_retract_mode))
+
+            # Add the cycle command
+            result.append(command)
+            cycle_active = True
+            last_cycle_params = current_params
+            last_retract_mode = current_retract_mode
+            explicit_retract_mode_set = False  # Reset for next cycle
+        else:
+            # Non-cycle command (not G80 or drill cycle)
+            if cycle_active:
+                # Terminate active cycle
+                result.append(Path.Command("G80"))
+                cycle_active = False
+                last_retract_mode = None
+            explicit_retract_mode_set = False
+            result.append(command)
+
+    # If cycle is still active at the end, terminate it
+    if cycle_active:
+        result.append(Path.Command("G80"))
+
+    return Path.Path(result)

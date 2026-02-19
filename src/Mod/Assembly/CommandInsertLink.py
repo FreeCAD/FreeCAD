@@ -96,6 +96,14 @@ class CommandInsertLink:
         Gui.Control.showDialog(self.panel)
 
 
+class InsertLinkObserver:
+    def __init__(self, callback):
+        self.callback = callback
+
+    def slotDeletedObject(self, obj):
+        self.callback(obj)
+
+
 class TaskAssemblyInsertLink(QtCore.QObject):
     def __init__(self, assembly, view):
         super().__init__()
@@ -133,6 +141,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.buildPartList()
 
         App.setActiveTransaction("Insert Component")
+
+        # Listen for external deletions to keep the list in sync
+        self.docObserver = InsertLinkObserver(self.onObjectDeleted)
+        App.addDocumentObserver(self.docObserver)
 
     def accept(self):
         self.deactivated()
@@ -182,6 +194,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         return True
 
     def deactivated(self):
+        if hasattr(self, "docObserver") and self.docObserver:
+            App.removeDocumentObserver(self.docObserver)
+            self.docObserver = None
+
         pref = Preferences.preferences()
         pref.SetBool("InsertShowOnlyParts", self.form.CheckBox_ShowOnlyParts.isChecked())
         pref.SetBool("InsertRigidSubAssemblies", self.form.CheckBox_RigidSubAsm.isChecked())
@@ -189,6 +205,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
     def buildPartList(self):
         self.form.partList.clear()
+        self.doc_item_map.clear()
 
         docList = App.listDocuments().values()
 
@@ -455,7 +472,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             msgBox.setIcon(QtWidgets.QMessageBox.Question)
 
             yesButton = msgBox.addButton("Yes", QtWidgets.QMessageBox.YesRole)
-            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.NoRole)
+            noButton = msgBox.addButton("No", QtWidgets.QMessageBox.RejectRole)
             yesAlwaysButton = msgBox.addButton("Always", QtWidgets.QMessageBox.YesRole)
             noAlwaysButton = msgBox.addButton("Never", QtWidgets.QMessageBox.NoRole)
 
@@ -478,7 +495,43 @@ class TaskAssemblyInsertLink(QtCore.QObject):
             if len(self.insertionStack) != 1:
                 return
 
-            self.groundedObj = self.insertionStack[0]["addedObject"]
+            targetObj = self.insertionStack[0]["addedObject"]
+
+            # If the object is a flexible AssemblyLink, we should ground its internal 'base' part
+            if targetObj.isDerivedFrom("Assembly::AssemblyLink") and not targetObj.Rigid:
+                linkedAsm = targetObj.LinkedObject
+                if linkedAsm and hasattr(linkedAsm, "Group"):
+                    srcGrounded = None
+                    # Attempt to find the grounded joint in the source assembly
+                    # We look for a joint where JointType is 'Grounded'
+                    for obj in linkedAsm.InListRecursive:
+                        if hasattr(obj, "ObjectToGround"):
+                            srcGrounded = obj.ObjectToGround
+                            break
+
+                    # Search the sub-assembly group for the link pointing to the source grounded object
+                    # Fallback to the first valid part if no grounded joint was found in source
+                    candidate = None
+                    for child in targetObj.Group:
+                        if not candidate and (
+                            child.isDerivedFrom("App::Link") or child.isDerivedFrom("Part::Feature")
+                        ):
+                            candidate = child
+
+                        if (
+                            srcGrounded
+                            and hasattr(child, "LinkedObject")
+                            and child.LinkedObject == srcGrounded
+                        ):
+                            candidate = child
+                            break
+
+                    if not candidate:  # Nothing to ground
+                        return
+
+                    targetObj = candidate
+
+            self.groundedObj = targetObj
             self.groundedJoint = CommandCreateJoint.createGroundedJoint(self.groundedObj)
 
     def increment_counter(self, item):
@@ -563,16 +616,12 @@ class TaskAssemblyInsertLink(QtCore.QObject):
                     stack_item = self.insertionStack[i]
 
                     if stack_item["item"] == item:
-
-                        self.totalTranslation -= stack_item["translation"]
                         obj = stack_item["addedObject"]
-                        if self.groundedObj == obj:
-                            self.groundedJoint.Document.removeObject(self.groundedJoint.Name)
-                        UtilsAssembly.removeObjAndChilds(obj)
 
-                        self.decrement_counter(item)
-                        del self.insertionStack[i]
-                        item.setSelected(False)
+                        # ONLY remove the object from the document.
+                        # The Observer (onObjectDeleted) will handle the rest.
+                        if obj and obj.Document:
+                            UtilsAssembly.removeObjAndChilds(obj)
 
                         return True
             else:
@@ -636,6 +685,41 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         else:
             translation = 10
         return App.Vector(translation, translation, translation)
+
+    def onObjectDeleted(self, obj):
+        """
+        Handles cleanup when an object is deleted (via Right Click OR Tree View).
+        """
+        # Iterate backwards to safely delete
+        for i in reversed(range(len(self.insertionStack))):
+            stack_item = self.insertionStack[i]
+
+            if stack_item["addedObject"] == obj:
+                # 1. Revert translation
+                self.totalTranslation -= stack_item["translation"]
+
+                # 2. Update UI counter
+                item = stack_item["item"]
+                self.decrement_counter(item)
+
+                # 3. Handle Grounded Joint cleanup
+                if self.groundedObj == obj:
+                    if self.groundedJoint:
+                        try:
+                            # Remove the joint if it still exists
+                            if self.groundedJoint.Document:
+                                self.groundedJoint.Document.removeObject(self.groundedJoint.Name)
+                        except Exception:
+                            pass
+                    self.groundedObj = None
+                    self.groundedJoint = None
+
+                # 4. Remove from stack
+                del self.insertionStack[i]
+
+                # 5. Clear selection
+                if item:
+                    item.setSelected(False)
 
 
 if App.GuiUp:

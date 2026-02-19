@@ -115,11 +115,15 @@ parser.add_argument(
 )
 parser.add_argument(
     "--preamble",
-    help='set commands to be issued before the first command, default=""',
+    help='set commands to be issued before the first command, default="'
+    + PREAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument(
     "--postamble",
-    help='set commands to be issued after the last command, default="M5\\n"',
+    help='set commands to be issued after the last command, default="'
+    + POSTAMBLE.replace("\n", "\\n")
+    + '"',
 )
 parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
 parser.add_argument("--inches", action="store_true", help="convert output for US imperial mode")
@@ -312,7 +316,7 @@ def export(objectslist, filename, argstring):
     # show the gCode result dialog
     if FreeCAD.GuiUp and SHOW_EDITOR:
         dia = PostUtils.GCodeEditorDialog()
-        dia.editor.setText(gcode)
+        dia.editor.setPlainText(gcode)
         result = dia.exec_()
         if result:
             final = dia.editor.toPlainText()

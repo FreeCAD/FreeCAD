@@ -155,7 +155,7 @@ private:
     bool updateTexturePreview() const;
     bool updateMaterialPreview() const;
     void updatePreview() const;
-    static QString getColorHash(const QString& colorString, int colorRange = 255);
+    static QString getColorHash(const QString& colorString);
 
     static void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     static void addExpanded(QTreeView* tree,

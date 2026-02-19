@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -70,6 +72,9 @@ protected:
     ) override;
     static const App::PropertyQuantityConstraint::Constraints floatSize;
     static const App::PropertyAngle::Constraints floatAngle;
+
+    bool requiresSizeSwapping(const Base::XMLReader& reader) const;
+    void migrateFlippedProperties(const Base::XMLReader& reader);
 };
 
 }  // namespace PartDesign

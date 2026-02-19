@@ -126,7 +126,11 @@ namespace netgen {
 #endif
   //extern void OCCSetLocalMeshSize(OCCGeometry & geom, Mesh & mesh);
   DLL_HEADER extern MeshingParameters mparam;
-  DLL_HEADER extern volatile multithreadt multithread;
+#if NETGEN_VERSION >= NETGEN_VERSION_STRING(6,2,2601)
+    using ngcore::multithread;
+#else
+    DLL_HEADER extern volatile multithreadt multithread;
+#endif
   DLL_HEADER extern bool merge_solids;
 }
 

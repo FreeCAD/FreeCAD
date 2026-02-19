@@ -4,163 +4,163 @@
   <context>
     <name>CmdCreateSpreadsheet</name>
     <message>
-      <location filename="../../Command.cpp" line="947"/>
+      <location filename="../../Command.cpp" line="954"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="948"/>
+      <location filename="../../Command.cpp" line="955"/>
       <source>&amp;New Spreadsheet</source>
-      <translation type="unfinished">&amp;New Spreadsheet</translation>
+      <translation>&amp;Νέο Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="949"/>
+      <location filename="../../Command.cpp" line="956"/>
       <source>Creates a new spreadsheet</source>
-      <translation type="unfinished">Creates a new spreadsheet</translation>
+      <translation>Δημιουργεί ένα νέο υπολογιστικό φύλλο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignBottom</name>
     <message>
-      <location filename="../../Command.cpp" line="510"/>
+      <location filename="../../Command.cpp" line="513"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="511"/>
+      <location filename="../../Command.cpp" line="514"/>
       <source>Align &amp;Bottom</source>
-      <translation type="unfinished">Align &amp;Bottom</translation>
+      <translation>Στοίχιση &amp;Κάτω</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="512"/>
+      <location filename="../../Command.cpp" line="515"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation type="unfinished">Aligns cell contents to the bottom</translation>
+      <translation>Στοιχίζει τα περιεχόμενα του κελιού στο κάτω μέρος</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="339"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="340"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Align Horizontal &amp;Center</source>
-      <translation type="unfinished">Align Horizontal &amp;Center</translation>
+      <translation>Οριζόντια Στοίχιση στο Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="341"/>
+      <location filename="../../Command.cpp" line="344"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation type="unfinished">Aligns cell contents to the horizontal center</translation>
+      <translation>Στοίχιση των περιεχομένων του κελιού στο οριζόντιο κέντρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignLeft</name>
     <message>
-      <location filename="../../Command.cpp" line="282"/>
+      <location filename="../../Command.cpp" line="285"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="283"/>
+      <location filename="../../Command.cpp" line="286"/>
       <source>Align &amp;Left</source>
-      <translation type="unfinished">Align &amp;Left</translation>
+      <translation>Στοίχιση &amp;Αριστερά</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="284"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Aligns cell contents to the left</source>
-      <translation type="unfinished">Aligns cell contents to the left</translation>
+      <translation>Στοίχιση περιεχομένου κελιών στα αριστερά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignRight</name>
     <message>
-      <location filename="../../Command.cpp" line="396"/>
+      <location filename="../../Command.cpp" line="399"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="397"/>
+      <location filename="../../Command.cpp" line="400"/>
       <source>Align &amp;Right</source>
-      <translation type="unfinished">Align &amp;Right</translation>
+      <translation>Στοίχιση &amp;Δεξιά</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="398"/>
+      <location filename="../../Command.cpp" line="401"/>
       <source>Aligns cell contents to the right</source>
-      <translation type="unfinished">Aligns cell contents to the right</translation>
+      <translation>Στοίχιση περιεχομένου κελιών στα δεξιά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignTop</name>
     <message>
-      <location filename="../../Command.cpp" line="453"/>
+      <location filename="../../Command.cpp" line="456"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="454"/>
+      <location filename="../../Command.cpp" line="457"/>
       <source>Align &amp;Top</source>
-      <translation type="unfinished">Align &amp;Top</translation>
+      <translation>Στοίχιση &amp;Πάνω</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="455"/>
+      <location filename="../../Command.cpp" line="458"/>
       <source>Aligns cell contents to the top</source>
-      <translation type="unfinished">Aligns cell contents to the top</translation>
+      <translation>Στοιχίζει τα περιεχόμενα του κελιού στο πάνω μέρος</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetAlignVCenter</name>
     <message>
-      <location filename="../../Command.cpp" line="567"/>
+      <location filename="../../Command.cpp" line="570"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="568"/>
+      <location filename="../../Command.cpp" line="571"/>
       <source>Align &amp;Vertical Center</source>
-      <translation type="unfinished">Align &amp;Vertical Center</translation>
+      <translation>Στοίχιση στο Κατακόρυφο &amp;Κέντρο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="569"/>
+      <location filename="../../Command.cpp" line="572"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation type="unfinished">Aligns cell contents to the vertical center</translation>
+      <translation>Στοίχιση των περιεχομένων του κελιού στο κατακόρυφο κέντρο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetExport</name>
     <message>
-      <location filename="../../Command.cpp" line="236"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="237"/>
+      <location filename="../../Command.cpp" line="241"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation type="unfinished">&amp;Export Spreadsheet</translation>
+      <translation>&amp;Εξαγωγή Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="238"/>
+      <location filename="../../Command.cpp" line="242"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation type="unfinished">Exports the spreadsheet to a CSV file</translation>
+      <translation>Εξαγωγή του υπολογιστικού φύλλου σε αρχείο CSV</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetImport</name>
     <message>
-      <location filename="../../Command.cpp" line="184"/>
+      <location filename="../../Command.cpp" line="186"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="185"/>
+      <location filename="../../Command.cpp" line="187"/>
       <source>&amp;Import Spreadsheet</source>
-      <translation type="unfinished">&amp;Import Spreadsheet</translation>
+      <translation>&amp;Εισαγωγή Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="186"/>
+      <location filename="../../Command.cpp" line="188"/>
       <source>Imports a CSV file into a new spreadsheet</source>
-      <translation type="unfinished">Imports a CSV file into a new spreadsheet</translation>
+      <translation>Εισαγωγή αρχείου CSV σε νέο υπολογιστικό φύλλο</translation>
     </message>
   </context>
   <context>
@@ -173,30 +173,30 @@
     <message>
       <location filename="../../Command.cpp" line="62"/>
       <source>&amp;Merge Cells</source>
-      <translation type="unfinished">&amp;Merge Cells</translation>
+      <translation>&amp;Συγχώνευση Κελιών</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="63"/>
       <source>Merges the selected cells</source>
-      <translation type="unfinished">Merges the selected cells</translation>
+      <translation>Συγχωνεύει τα επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetSetAlias</name>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="882"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
+      <location filename="../../Command.cpp" line="883"/>
       <source>Set Alias</source>
-      <translation type="unfinished">Set Alias</translation>
+      <translation>Ορισμός Ψευδώνυμου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
+      <location filename="../../Command.cpp" line="884"/>
       <source>Sets an alias for the selected cell</source>
-      <translation type="unfinished">Sets an alias for the selected cell</translation>
+      <translation>Ορίζει ένα ψευδώνυμο για το επιλεγμένο κελί</translation>
     </message>
   </context>
   <context>
@@ -209,66 +209,66 @@
     <message>
       <location filename="../../Command.cpp" line="123"/>
       <source>Sp&amp;lit Cell</source>
-      <translation type="unfinished">Sp&amp;lit Cell</translation>
+      <translation>Δια&amp;χωρισμός Κελιού</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="124"/>
       <source>Splits a previously merged cell</source>
-      <translation type="unfinished">Splits a previously merged cell</translation>
+      <translation>Διαχωρίζει ένα ήδη συγχωνευμένο κελί</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleBold</name>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
+      <location filename="../../Command.cpp" line="627"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="625"/>
+      <location filename="../../Command.cpp" line="628"/>
       <source>&amp;Bold Text</source>
-      <translation type="unfinished">&amp;Bold Text</translation>
+      <translation>&amp;Έντονη Γραφή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="626"/>
+      <location filename="../../Command.cpp" line="629"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation type="unfinished">Sets the text in the selected cells bold</translation>
+      <translation>Ορίζει το κείμενο στα επιλεγμένα κελιά ως έντονο</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleItalic</name>
     <message>
-      <location filename="../../Command.cpp" line="708"/>
+      <location filename="../../Command.cpp" line="712"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="709"/>
+      <location filename="../../Command.cpp" line="713"/>
       <source>&amp;Italic Text</source>
-      <translation type="unfinished">&amp;Italic Text</translation>
+      <translation>&amp;Πλάγια γραφή</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="710"/>
+      <location filename="../../Command.cpp" line="714"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation type="unfinished">Sets the text in the selected cells italic</translation>
+      <translation>Ορίζει το κείμενο στα επιλεγμένα κελιά σε πλάγια γραφή</translation>
     </message>
   </context>
   <context>
     <name>CmdSpreadsheetStyleUnderline</name>
     <message>
-      <location filename="../../Command.cpp" line="792"/>
+      <location filename="../../Command.cpp" line="797"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="793"/>
+      <location filename="../../Command.cpp" line="798"/>
       <source>&amp;Underline Text</source>
-      <translation type="unfinished">&amp;Underline Text</translation>
+      <translation>&amp;Υπογράμμιση Κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
+      <location filename="../../Command.cpp" line="799"/>
       <source>Underlines the text in the selected cells</source>
-      <translation type="unfinished">Underlines the text in the selected cells</translation>
+      <translation>Υπογραμμίζει το κείμενο στα επιλεγμένα κελιά</translation>
     </message>
   </context>
   <context>
@@ -282,82 +282,82 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="83"/>
+      <location filename="../../Command.cpp" line="82"/>
       <source>Merge cells</source>
       <translation>Συγχώνευση κελιών</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="144"/>
+      <location filename="../../Command.cpp" line="143"/>
       <source>Sp&amp;lit cell</source>
       <translation>Διαχωρισμός κελιού</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="305"/>
+      <location filename="../../Command.cpp" line="307"/>
       <source>Left-align cell</source>
       <translation>Αριστερή στοίχιση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="362"/>
+      <location filename="../../Command.cpp" line="364"/>
       <source>Center cell</source>
       <translation>Στοίχιση στο κέντρο</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="419"/>
+      <location filename="../../Command.cpp" line="421"/>
       <source>Right-align cell</source>
       <translation>Δεξιά στοίχιση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
+      <location filename="../../Command.cpp" line="478"/>
       <source>Top-align cell</source>
       <translation>Στοίχιση προς τα πάνω</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="533"/>
+      <location filename="../../Command.cpp" line="535"/>
       <source>Bottom-align cell</source>
       <translation>Στοίχιση προς τα κάτω</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="590"/>
+      <location filename="../../Command.cpp" line="592"/>
       <source>Vertically center cells</source>
       <translation>Κατακόρυφη στοίχιση</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="665"/>
+      <location filename="../../Command.cpp" line="667"/>
       <source>Set bold text</source>
       <translation>Ορισμός έντονου κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="749"/>
+      <location filename="../../Command.cpp" line="752"/>
       <source>Set italic text</source>
       <translation>Ορισμός πλάγιου κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="833"/>
+      <location filename="../../Command.cpp" line="837"/>
       <source>Set underline text</source>
       <translation>Ορισμός υπογράμμισης κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="960"/>
+      <location filename="../../Command.cpp" line="967"/>
       <source>Create Spreadsheet</source>
-      <translation>Δημιουργία υπολογιστικού φύλλου</translation>
+      <translation>Δημιουργία Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../PropertiesDialog.cpp" line="268"/>
+      <location filename="../../PropertiesDialog.cpp" line="269"/>
       <source>Set cell properties</source>
       <translation>Ορισμός ιδιοτήτων κελιού</translation>
     </message>
     <message>
-      <location filename="../../SheetModel.cpp" line="556"/>
+      <location filename="../../SheetModel.cpp" line="573"/>
       <source>Edit cell</source>
       <translation>Επεξεργασία κελιού</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="142"/>
+      <location filename="../../Workbench.cpp" line="147"/>
       <source>Set text color</source>
       <translation>Ορισμός χρώματος κειμένου</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="176"/>
+      <location filename="../../Workbench.cpp" line="182"/>
       <source>Set background color</source>
       <translation>Ορισμός χρώματος φόντου</translation>
     </message>
@@ -365,25 +365,25 @@
       <location filename="../../SheetTableView.cpp" line="347"/>
       <location filename="../../SheetTableView.cpp" line="380"/>
       <source>Insert Rows</source>
-      <translation type="unfinished">Insert Rows</translation>
+      <translation>Εισαγωγή Γραμμών</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="400"/>
-      <location filename="../../SheetTableView.cpp" line="478"/>
+      <location filename="../../SheetTableView.cpp" line="475"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">Remove Rows</translation>
+      <translation>Αφαίρεση Γραμμών</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="422"/>
       <location filename="../../SheetTableView.cpp" line="455"/>
       <source>Insert Columns</source>
-      <translation type="unfinished">Insert Columns</translation>
+      <translation>Εισαγωγή Στηλών</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="192"/>
-      <location filename="../../SheetTableView.cpp" line="682"/>
+      <location filename="../../SpreadsheetView.cpp" line="193"/>
+      <location filename="../../SheetTableView.cpp" line="679"/>
       <source>Clear Cells</source>
-      <translation type="unfinished">Clear Cells</translation>
+      <translation>Εκκαθάριση Κελιών</translation>
     </message>
   </context>
   <context>
@@ -430,16 +430,16 @@ The expression must evaluate to a string of some cell address.</source>
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells</source>
-      <translation type="unfinished">To cells</translation>
+      <translation>Σε κελιά</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="97"/>
       <source>End cell address to bind to.
 Type '=' to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation type="unfinished">End cell address to bind to.
-Type '=' to use an expression.
-The expression must evaluate to a string of some cell address.</translation>
+      <translation>Τελευταίο κελί για σύνδεση.
+Γράψτε '=' για να βάλετε μαθηματικό τύπο.
+Το αποτέλεσμα του τύπου πρέπει να είναι ένα όνομα κελιού (π. χ. A5).</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="110"/>
@@ -449,7 +449,7 @@ The expression must evaluate to a string of some cell address.</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
       <source>Sheet</source>
-      <translation type="unfinished">Sheet</translation>
+      <translation>Φύλλο</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="126"/>
@@ -528,7 +528,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range</source>
-      <translation type="unfinished">Cell range</translation>
+      <translation>Περιοχή κελιών</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
@@ -543,7 +543,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
       <source>Optional property group name</source>
-      <translation type="unfinished">Optional property group name</translation>
+      <translation>Προαιρετικό όνομα ομάδας</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
@@ -566,7 +566,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation type="unfinished">Cell Properties</translation>
+      <translation>Ιδιότητες Κελιού</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -669,68 +669,68 @@ switch the design configuration. The property will be created if not exist.</sou
     <name>QObject</name>
     <message>
       <location filename="../../ViewProviderSpreadsheet.cpp" line="107"/>
-      <location filename="../../Command.cpp" line="196"/>
+      <location filename="../../Command.cpp" line="198"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
       <translation>CSV (*.csv *.CSV);;Όλα (*)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="198"/>
+      <location filename="../../Command.cpp" line="201"/>
       <source>Import file</source>
       <translation>Εισαγωγή αρχείου</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="495"/>
+      <location filename="../../SpreadsheetView.cpp" line="494"/>
       <source>Alias contains invalid characters!</source>
       <translation>Το ψευδώνυμο περιέχει μη έγκυρους χαρακτήρες!</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="501"/>
+      <location filename="../../SpreadsheetView.cpp" line="500"/>
       <source>Refer to cell by alias, for example
 Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Ανατρέξτε στο κελί με το ψευδώνυμο, για παράδειγμα
 Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="150"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="151"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="109"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="110"/>
       <source>Export File</source>
-      <translation type="unfinished">Export File</translation>
+      <translation>Εξαγωγή Αρχείου</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSpreadsheet.cpp" line="134"/>
+      <location filename="../../ViewProviderSpreadsheet.cpp" line="136"/>
       <source>Show Spreadsheet</source>
-      <translation type="unfinished">Show Spreadsheet</translation>
+      <translation>Εμφάνιση Υπολογιστικού Φύλλου</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="94"/>
+      <location filename="../../Workbench.cpp" line="98"/>
       <source>Sets the text color of cells</source>
-      <translation type="unfinished">Sets the text color of cells</translation>
+      <translation>Ορίζει το χρώμα κειμένου των κελιών</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="95"/>
-      <location filename="../../Workbench.cpp" line="96"/>
+      <location filename="../../Workbench.cpp" line="99"/>
+      <location filename="../../Workbench.cpp" line="100"/>
       <source>Sets the text color of spreadsheet cells</source>
-      <translation type="unfinished">Sets the text color of spreadsheet cells</translation>
+      <translation>Ορίζει το χρώμα κειμένου του υπολογιστικού φύλλου</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="114"/>
-      <location filename="../../Workbench.cpp" line="117"/>
+      <location filename="../../Workbench.cpp" line="121"/>
+      <location filename="../../Workbench.cpp" line="123"/>
       <source>Sets the background color of cells</source>
-      <translation type="unfinished">Sets the background color of cells</translation>
+      <translation>Ορίζει το χρώμα φόντου των κελιών</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="116"/>
+      <location filename="../../Workbench.cpp" line="122"/>
       <source>Sets the spreadsheet cells background color</source>
-      <translation type="unfinished">Sets the spreadsheet cells background color</translation>
+      <translation>Ορίζει το χρώμα παρασκηνίου των κελιών του υπολογιστικού φύλλου</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="815"/>
       <source>Copy &amp; Paste Failed</source>
-      <translation type="unfinished">Copy &amp; Paste Failed</translation>
+      <translation>Αποτυχία Αντιγραφής &amp; Επικόλλησης</translation>
     </message>
   </context>
   <context>
@@ -849,12 +849,12 @@ Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     <message>
       <location filename="../../Sheet.ui" line="22"/>
       <source>&amp;Content</source>
-      <translation type="unfinished">&amp;Content</translation>
+      <translation>&amp;Περιεχόμενο</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="39"/>
       <source>&amp;Alias</source>
-      <translation type="unfinished">&amp;Alias</translation>
+      <translation>&amp;Ψευδώνυμο</translation>
     </message>
     <message>
       <location filename="../../Sheet.ui" line="52"/>
@@ -882,35 +882,35 @@ Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
   <context>
     <name>SpreadsheetGui::DlgBindSheet</name>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="224"/>
+      <location filename="../../DlgBindSheet.cpp" line="231"/>
       <source>Bind Cells</source>
-      <translation type="unfinished">Bind Cells</translation>
+      <translation>Σύνδεση Κελιών</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="225"/>
+      <location filename="../../DlgBindSheet.cpp" line="232"/>
       <source>Source and target cell count mismatch. Partial binding may still work.
 
 Continue?</source>
-      <translation type="unfinished">Source and target cell count mismatch. Partial binding may still work.
+      <translation>Ασυμφωνία πλήθους κελιών πηγής και προορισμού. Η μερική σύνδεση ενδέχεται να εξακολουθεί να λειτουργεί.
 
-Continue?</translation>
+Συνέχεια;</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="273"/>
+      <location filename="../../DlgBindSheet.cpp" line="284"/>
       <source>Bind Spreadsheet Cells</source>
       <translation>Δέσμευση Κελιών Φύλλων</translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="274"/>
+      <location filename="../../DlgBindSheet.cpp" line="285"/>
       <source>Error:
 </source>
       <translation>Σφάλμα:
 </translation>
     </message>
     <message>
-      <location filename="../../DlgBindSheet.cpp" line="301"/>
+      <location filename="../../DlgBindSheet.cpp" line="312"/>
       <source>Unbind Cells</source>
-      <translation type="unfinished">Unbind Cells</translation>
+      <translation>Αποσύνδεση Κελιών</translation>
     </message>
   </context>
   <context>
@@ -956,22 +956,22 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
       <source>Uses the custom presentation to display cell string</source>
-      <translation type="unfinished">Uses the custom presentation to display cell string</translation>
+      <translation>Χρήση της προσαρμοσμένης παρουσίασης για την εμφάνιση της συμβολοσειράς του κελιού</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="48"/>
       <source>Defines a default zoom level for table view from 60% to 160%</source>
-      <translation type="unfinished">Defines a default zoom level for table view from 60% to 160%</translation>
+      <translation>Καθορίζει ένα προεπιλεγμένο επίπεδο εστίασης για την προβολή πίνακα, από 60% έως 160%</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="76"/>
       <source>Default zoom level</source>
-      <translation type="unfinished">Default zoom level</translation>
+      <translation>Προεπιλεγμένο επίπεδο εστίασης</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="131"/>
       <source>Delimiter character</source>
-      <translation type="unfinished">Delimiter character</translation>
+      <translation>Χαρακτήρας διαχωρισμού</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="151"/>
@@ -986,7 +986,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="191"/>
       <source>Quote character</source>
-      <translation type="unfinished">Quote character</translation>
+      <translation>Χαρακτήρας εισαγωγικών</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="198"/>
@@ -996,7 +996,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="223"/>
       <source>Escape character</source>
-      <translation type="unfinished">Escape character</translation>
+      <translation>Χαρακτήρας διαφυγής</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="230"/>
@@ -1007,126 +1007,126 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetTableView</name>
     <message>
-      <location filename="../../SheetTableView.cpp" line="201"/>
-      <location filename="../../SheetTableView.cpp" line="664"/>
+      <location filename="../../SheetTableView.cpp" line="197"/>
+      <location filename="../../SheetTableView.cpp" line="661"/>
       <source>Recompute</source>
       <translation>Υπολογίστε ξανά</translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="141"/>
       <source>Insert %n Row(s) Above</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Above</numerusform>
-        <numerusform>Insert %n Row(s) Above</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Γραμμής(ών) Επάνω</numerusform>
+        <numerusform>Εισαγωγή %n Γραμμής Πάνω</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="146"/>
+      <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Row(s) Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Below</numerusform>
-        <numerusform>Insert %n Row(s) Below</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Γραμμής Κάτω</numerusform>
+        <numerusform>Εισαγωγή %n Γραμμής Κάτω</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="151"/>
+      <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Insert %n Non-Contiguous Rows</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Μη Συνεχόμενων Γραμμών</numerusform>
+        <numerusform>Εισαγωγή %n μη συνεχόμενων γραμμών</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="154"/>
+      <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">
-        <numerusform>Remove Rows</numerusform>
-        <numerusform>Remove Rows</numerusform>
+      <translation>
+        <numerusform>Αφαίρεση Γραμμών</numerusform>
+        <numerusform>Αφαίρεση Γραμμής</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="168"/>
+      <location filename="../../SheetTableView.cpp" line="167"/>
       <source>Insert %n Column(s) Left</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Left</numerusform>
-        <numerusform>Insert %n Column(s) Left</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Στήλης(ών) Αριστερά</numerusform>
+        <numerusform>Εισαγωγή %n Στήλης(ων) Αριστερά</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="173"/>
+      <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Insert %n Column(s) Right</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Column(s) Right</numerusform>
-        <numerusform>Insert %n Column(s) Right</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Στήλης(ων) Δεξιά</numerusform>
+        <numerusform>Εισαγωγή %n στήλης δεξιά</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="182"/>
+      <location filename="../../SheetTableView.cpp" line="178"/>
       <source>Insert %n Non-Contiguous Columns</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
-        <numerusform>Insert %n Non-Contiguous Columns</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n Μη Συνεχόμενων Στηλών</numerusform>
+        <numerusform>Εισαγάγετε %n μη συνεχόμενες στήλες</numerusform>
       </translation>
     </message>
     <message numerus="yes">
-      <location filename="../../SheetTableView.cpp" line="185"/>
+      <location filename="../../SheetTableView.cpp" line="181"/>
       <source>Remove Column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove Column(s)</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
+      <translation>
+        <numerusform>Αφαίρεση Στήλης(ών)</numerusform>
+        <numerusform>Αφαίρεση Στηλών</numerusform>
       </translation>
+    </message>
+    <message>
+      <location filename="../../SheetTableView.cpp" line="194"/>
+      <location filename="../../SheetTableView.cpp" line="660"/>
+      <source>Properties…</source>
+      <translation>Ιδιότητες…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="198"/>
-      <location filename="../../SheetTableView.cpp" line="663"/>
-      <source>Properties…</source>
-      <translation type="unfinished">Properties…</translation>
+      <location filename="../../SheetTableView.cpp" line="669"/>
+      <source>Bind…</source>
+      <translation>Σύνδεση…</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="202"/>
-      <location filename="../../SheetTableView.cpp" line="672"/>
-      <source>Bind…</source>
-      <translation type="unfinished">Bind…</translation>
+      <location filename="../../SheetTableView.cpp" line="199"/>
+      <location filename="../../SheetTableView.cpp" line="662"/>
+      <source>Configuration Table…</source>
+      <translation>Πίνακας διαμόρφωσης…</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="203"/>
-      <location filename="../../SheetTableView.cpp" line="665"/>
-      <source>Configuration Table…</source>
-      <translation type="unfinished">Configuration Table…</translation>
-    </message>
-    <message>
-      <location filename="../../SheetTableView.cpp" line="206"/>
-      <location filename="../../SheetTableView.cpp" line="666"/>
+      <location filename="../../SheetTableView.cpp" line="663"/>
       <source>Merge Cells</source>
-      <translation type="unfinished">Merge Cells</translation>
+      <translation>Συγχώνευση Κελιών</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="209"/>
-      <location filename="../../SheetTableView.cpp" line="667"/>
+      <location filename="../../SheetTableView.cpp" line="208"/>
+      <location filename="../../SheetTableView.cpp" line="664"/>
       <source>Split Cell</source>
-      <translation type="unfinished">Split Cell</translation>
+      <translation>Διαχωρισμός Κελιού</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="212"/>
-      <location filename="../../SheetTableView.cpp" line="670"/>
+      <location filename="../../SheetTableView.cpp" line="667"/>
       <source>Cut</source>
       <translation>Περικοπή</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="213"/>
-      <location filename="../../SheetTableView.cpp" line="668"/>
+      <location filename="../../SheetTableView.cpp" line="665"/>
       <source>Copy</source>
       <translation>Αντιγραφή</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="215"/>
-      <location filename="../../SheetTableView.cpp" line="669"/>
+      <location filename="../../SheetTableView.cpp" line="214"/>
+      <location filename="../../SheetTableView.cpp" line="666"/>
       <source>Paste</source>
       <translation>Επικόλληση</translation>
     </message>
     <message>
-      <location filename="../../SheetTableView.cpp" line="217"/>
-      <location filename="../../SheetTableView.cpp" line="671"/>
+      <location filename="../../SheetTableView.cpp" line="215"/>
+      <location filename="../../SheetTableView.cpp" line="668"/>
       <source>Delete</source>
       <translation>Διαγραφή</translation>
     </message>
@@ -1134,12 +1134,12 @@ Defaults to: %V = %A
   <context>
     <name>SpreadsheetGui::SheetView</name>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="303"/>
+      <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
       <translation>Εξαγωγή σε PDF</translation>
     </message>
     <message>
-      <location filename="../../SpreadsheetView.cpp" line="305"/>
+      <location filename="../../SpreadsheetView.cpp" line="303"/>
       <source>PDF file</source>
       <translation>Αρχείο PDF</translation>
     </message>
@@ -1171,7 +1171,7 @@ Defaults to: %V = %A
     <name>Py</name>
     <message>
       <location filename="../../AppSpreadsheetGui.cpp" line="94"/>
-      <location filename="../../AppSpreadsheetGui.cpp" line="112"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="113"/>
       <source>Unnamed</source>
       <translation>Ανώνυμο</translation>
     </message>
@@ -1179,27 +1179,27 @@ Defaults to: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="112"/>
+      <location filename="../../ZoomableView.cpp" line="113"/>
       <source>New zoom level:</source>
       <translation>Νέο επίπεδο εστίασης:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="112"/>
+      <location filename="../../ZoomableView.cpp" line="113"/>
       <source>Zoom Level</source>
-      <translation type="unfinished">Zoom Level</translation>
+      <translation>Επίπεδο Ζουμ</translation>
     </message>
   </context>
   <context>
     <name>SpreadsheetGui::DlgSheetConf</name>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="281"/>
+      <location filename="../../DlgSheetConf.cpp" line="292"/>
       <source>Setup Configuration Table</source>
       <translation>Ρύθμιση Πίνακα Διαμόρφωσης</translation>
     </message>
     <message>
-      <location filename="../../DlgSheetConf.cpp" line="339"/>
+      <location filename="../../DlgSheetConf.cpp" line="349"/>
       <source>Unsetup Configuration Table</source>
-      <translation type="unfinished">Unsetup Configuration Table</translation>
+      <translation>Κατάργηση Πίνακα Διαμόρφωσης</translation>
     </message>
   </context>
 </TS>
