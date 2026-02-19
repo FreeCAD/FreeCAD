@@ -117,6 +117,7 @@ class BIMWorkbench(Workbench):
             "Arch_Space",
             "Separator",
             "Arch_Wall",
+            "BIM_Extend",  # TODO: Alterado
             "Arch_CurtainWall",
             "BIM_Column",
             "BIM_Beam",
