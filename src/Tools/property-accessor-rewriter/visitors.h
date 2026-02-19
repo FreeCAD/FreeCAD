@@ -103,8 +103,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // this->field, field
     bool VisitMemberExpr(const cl::MemberExpr* memberExpr)
     {
-        Debug::out() << "VisitMemberExpr\n";
-        Debug::out() << "  memberExpr: " << Debug::toSourceText(memberExpr, context) << "\n";
+        Debug::out() << "  VisitMemberExpr\n";
+        Debug::out() << "    memberExpr: " << Debug::toSourceText(memberExpr, context) << "\n";
 
         const cl::Decl* memberDecl = memberExpr->getMemberDecl();
         if (!memberDecl) {
@@ -127,7 +127,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         }
 
         fieldMembers.push_back(memberExpr);
-        Debug::out() << "  detected read: field member\n";
+        Debug::out() << "    detected read: field member\n";
 
         return true;
     }
@@ -135,8 +135,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // field = ..., field += ..., this->field = ...,
     bool VisitBinaryOperator(const cl::BinaryOperator* binaryOp)
     {
-        Debug::out() << "VisitBinaryOperator\n";
-        Debug::out() << "  binaryOp: " << Debug::toSourceText(binaryOp, context) << "\n";
+        Debug::out() << "  VisitBinaryOperator\n";
+        Debug::out() << "    binaryOp: " << Debug::toSourceText(binaryOp, context) << "\n";
 
         if (!binaryOp || hasWriteToThisField) {
             return true;
@@ -145,7 +145,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         if ((binaryOp->getOpcode() == cl::BO_Assign || binaryOp->isCompoundAssignmentOp())
             && getRootThisField(binaryOp->getLHS(), methodParent)) {
 
-            Debug::out() << "  detected: write to this field\n";
+            Debug::out() << "    detected: write to this field\n";
             hasWriteToThisField = true;
         }
         return true;
@@ -154,8 +154,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // Overloaded assignment / compound assignment (operator=, operator+=, etc.)
     bool VisitCXXOperatorCallExpr(const cl::CXXOperatorCallExpr* opCall)
     {
-        Debug::out() << "VisitCXXOperatorCallExpr\n";
-        Debug::out() << "  opCall: " << Debug::toSourceText(opCall, context) << "\n";
+        Debug::out() << "  VisitCXXOperatorCallExpr\n";
+        Debug::out() << "    opCall: " << Debug::toSourceText(opCall, context) << "\n";
 
         if (!opCall || hasWriteToThisField) {
             return true;
@@ -185,7 +185,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         if (isWriteOp(op) && opCall->getNumArgs() >= 1
             && getRootThisField(opCall->getArg(0), methodParent)) {
 
-            Debug::out() << "  detected: write to this field\n";
+            Debug::out() << "    detected: write to this field\n";
             hasWriteToThisField = true;
         }
 
@@ -195,8 +195,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // ++field, field++, --field, field--, *this
     bool VisitUnaryOperator(const cl::UnaryOperator* unaryOp)
     {
-        Debug::out() << "VisitUnaryOperator\n";
-        Debug::out() << "  unaryOp: " << Debug::toSourceText(unaryOp, context) << "\n";
+        Debug::out() << "  VisitUnaryOperator\n";
+        Debug::out() << "    unaryOp: " << Debug::toSourceText(unaryOp, context) << "\n";
 
         if (!unaryOp || hasWriteToThisField) {
             return true;
@@ -205,7 +205,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         if (unaryOp->isIncrementDecrementOp()
             && getRootThisField(unaryOp->getSubExpr(), methodParent)) {
 
-            Debug::out() << "  detected: write to this field\n";
+            Debug::out() << "    detected: write to this field\n";
             hasWriteToThisField = true;
         }
 
@@ -221,8 +221,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // this->method(), method()
     bool VisitCXXMemberCallExpr(const cl::CXXMemberCallExpr* memberCall)
     {
-        Debug::out() << "VisitCXXMemberCallExpr\n";
-        Debug::out() << "  memberCall: " << Debug::toSourceText(memberCall, context) << "\n";
+        Debug::out() << "  VisitCXXMemberCallExpr\n";
+        Debug::out() << "    memberCall: " << Debug::toSourceText(memberCall, context) << "\n";
 
         if (!memberCall || hasWriteToThisField) {
             return true;
@@ -245,12 +245,6 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
             return true;
         }
 
-        // Heuristic: non-const member function may mutate the object
-        if (callee->isConst()) {
-            Debug::out() << "  detected: const member call\n";
-            methodMembers.push_back(memberExpr);
-            return true;
-        }
 
         const cl::Expr* obj = memberCall->getImplicitObjectArgument();
         if (!obj) {
@@ -258,9 +252,16 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         }
         obj = ignoreWrappers(obj);
 
-        if (llvm::isa<cl::CXXThisExpr>(obj) || getRootThisField(obj, methodParent)) {
-            Debug::out() << "  detected: non-const member call on this\n";
-            methodMembers.push_back(memberExpr);
+        if (!llvm::isa<cl::CXXThisExpr>(obj) && !getRootThisField(obj, methodParent)) {
+            return true;
+        }
+
+        methodMembers.push_back(memberExpr);
+        if (callee->isConst()) {
+            Debug::out() << "    detected: const member call on this\n";
+        }
+        else {
+            Debug::out() << "    detected: non-const member call on this\n";
             hasWriteToThis = true;
         }
 
@@ -269,14 +270,14 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
 
     bool argHasWriteToThisField(const cl::CallExpr* call, unsigned i, const cl::FunctionDecl* callee) const
     {
-        Debug::out() << "argHasWriteToThisField: arg " << i << " of call to "
+        Debug::out() << "  argHasWriteToThisField: arg " << i << " of call to "
                      << callee->getQualifiedNameAsString() << "\n";
         const cl::Expr* arg = call->getArg(i);
         if (!arg) {
             return false;
         }
 
-        Debug::out() << "  arg: " << Debug::toSourceText(arg, context) << "\n";
+        Debug::out() << "    arg: " << Debug::toSourceText(arg, context) << "\n";
 
         const cl::Expr* argNoWrap = ignoreWrappers(arg);
         bool hasAddressOf = false;
@@ -303,7 +304,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
             if (const auto* refType = typeParamDecl->getAs<cl::LValueReferenceType>();
                 refType && !refType->getPointeeType().isConstQualified()) {
 
-                Debug::out() << "  arg is non-const reference\n";
+                Debug::out() << "    arg is non-const reference\n";
 
                 return true;
             }
@@ -312,7 +313,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
             if (const auto* ptrType = typeParamDecl->getAs<cl::PointerType>();
                 ptrType && !ptrType->getPointeeType().isConstQualified()) {
 
-                Debug::out() << "  arg is non-const pointer\n";
+                Debug::out() << "    arg is non-const pointer\n";
 
                 return true;
             }
@@ -323,8 +324,8 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     // field, method(), this->field, this->method() passed as argument
     bool VisitCallExpr(const cl::CallExpr* call)
     {
-        Debug::out() << "VisitCallExpr\n";
-        Debug::out() << "  call: " << Debug::toSourceText(call, context) << "\n";
+        Debug::out() << "  VisitCallExpr\n";
+        Debug::out() << "    call: " << Debug::toSourceText(call, context) << "\n";
 
         if (!call || hasWriteToThisField) {
             return true;
@@ -338,7 +339,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         for (unsigned i = 0; i < call->getNumArgs(); ++i) {
             if (!hasWriteToThisField && argHasWriteToThisField(call, i, callee)) {
 
-                Debug::out() << "  detected: call argument may write to this field\n";
+                Debug::out() << "    detected: call argument may write to this field\n";
                 hasWriteToThisField = true;
             }
 
@@ -348,7 +349,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
             }
 
             if (isDerefThisExpr(arg)) {
-                Debug::out() << "  argument is deref of this\n";
+                Debug::out() << "    argument is deref of this\n";
                 if (i < callee->getNumParams()) {
                     cl::QualType paramType = callee->getParamDecl(i)->getType();
                     classifyThisBinding(paramType, hasReadFromThis, hasWriteToThis);
@@ -536,16 +537,16 @@ private:
 
     static void classifyThisBinding(cl::QualType paramType, bool& hasReadFromThis, bool& hasWriteToThis)
     {
-        Debug::out() << "  classifyThisBinding\n";
+        Debug::out() << "    classifyThisBinding\n";
         // References
         if (const auto* refType = paramType->getAs<cl::LValueReferenceType>()) {
             cl::QualType pointee = refType->getPointeeType();
             if (pointee.isConstQualified()) {
-                Debug::out() << "  detected: read, because arg is a const reference\n";
+                Debug::out() << "    detected: read, because arg is a const reference\n";
                 hasReadFromThis = true;
             }
             else {
-                Debug::out() << "  detected: write, because arg is non-const reference\n";
+                Debug::out() << "    detected: write, because arg is non-const reference\n";
                 hasWriteToThis = true;
             }
             return;
@@ -555,17 +556,17 @@ private:
         if (const auto* ptrType = paramType->getAs<cl::PointerType>()) {
             cl::QualType pointee = ptrType->getPointeeType();
             if (pointee.isConstQualified()) {
-                Debug::out() << "  detected: read, because arg is a const pointer\n";
+                Debug::out() << "    detected: read, because arg is a const pointer\n";
                 hasReadFromThis = true;
             }
             else {
-                Debug::out() << "  detected: write, because arg is non-const pointer\n";
+                Debug::out() << "    detected: write, because arg is non-const pointer\n";
                 hasWriteToThis = true;
             }
             return;
         }
 
-        Debug::out() << "  detected: read\n";
+        Debug::out() << "    detected: read\n";
         hasReadFromThis = true;
     }
 };

@@ -230,6 +230,8 @@ public:
 
         // checks for null have been done in candidateForRewriting
         const auto* method = result.Nodes.getNodeAs<CXXMethodDecl>(AccessorLabel);
+        Debug::out() << "Processing method: " << method->getQualifiedNameAsString() << "\n";
+
         Stmt* body = method->getBody();
         const CXXRecordDecl* parent = method->getParent();
 
