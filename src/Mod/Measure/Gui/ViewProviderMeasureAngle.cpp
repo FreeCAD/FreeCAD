@@ -221,7 +221,7 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec extrema2Vector(extremaPoint2.XYZ());
         radius = (loc1 - originVector).Magnitude();
         double legOne = (extrema2Vector - originVector).Magnitude();
-        if (legOne > Precision::Confusion()) {
+        if (legOne > Precision::Confusion() && legOne < radius) {
             double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
             gp_Vec projectionVector(vector2);
             projectionVector.Normalize();
@@ -231,6 +231,9 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
             hyp.Normalize();
             gp_Vec otherSide(loc1 - originVector);
             otherSide.Normalize();
+        }
+        else {
+            thirdPoint = originVector + vector2.Normalized() * radius;
         }
 
         gp_Vec xAxis = (loc1 - originVector).Normalized();

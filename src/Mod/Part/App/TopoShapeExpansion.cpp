@@ -81,6 +81,8 @@
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <utility>
 
 #include <OSD_Parallel.hxx>
