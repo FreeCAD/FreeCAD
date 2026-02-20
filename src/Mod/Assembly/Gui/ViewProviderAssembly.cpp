@@ -989,7 +989,7 @@ ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
             return DragMode::Translation;
         }
         auto* obj = getObjFromJointRef(movingJoint, pName.c_str());
-        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(obj, ref);
+        Base::Placement global_plc = App::GeoFeature::getGlobalPlacement(nullptr, ref);
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together

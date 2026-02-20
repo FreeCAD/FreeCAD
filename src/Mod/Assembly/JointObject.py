@@ -2209,6 +2209,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.presel_ref = None
             return
 
+        sub_name = UtilsAssembly.fixBodyExtraFeatureInSub(doc_name, sub_name)
+
         rootObj = App.getDocument(doc_name).getObject(obj_name)
 
         comp, new_sub = UtilsAssembly.getComponentReference(self.assembly, rootObj, sub_name)

@@ -1663,20 +1663,20 @@ std::string AssemblyObject::handleOneSideOfJoint(
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
     // Now we have plc which is the JCS placement, but its relative to the Object, not to the
     // containing Part.
-
-    if (obj->getNameInDocument() != part->getNameInDocument()) {
-
-        auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
-        if (!ref) {
-            return "";
-        }
-
-        Base::Placement obj_global_plc = getGlobalPlacement(obj, ref);
-        plc = obj_global_plc * plc;
-
-        Base::Placement part_global_plc = getGlobalPlacement(part, ref);
-        plc = part_global_plc.inverse() * plc;
+    auto* ref = dynamic_cast<App::PropertyXLinkSub*>(joint->getPropertyByName(propRefName));
+    if (!ref) {
+        return "";
     }
+
+    // This plc adjustment should be necessary only if obj != part. But for some objects like
+    // draft links, we can have obj == part and still need to get global placement to adjust
+    // by the element placement.
+    Base::Placement obj_global_plc = getGlobalPlacement(nullptr, ref);
+    plc = obj_global_plc * plc;
+    // Note part is supposed to be root of ref, so we could use part.Placement directly.
+    Base::Placement part_global_plc = getGlobalPlacement(part, ref);
+    plc = part_global_plc.inverse() * plc;
+
     // check if we need to add an offset in case of bundled parts.
     if (!data.offsetPlc.isIdentity()) {
         plc = data.offsetPlc * plc;
