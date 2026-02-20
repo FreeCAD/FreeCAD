@@ -107,13 +107,15 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && _BaseFileName == static_cast<decltype(this)>(&other)->_BaseFileName
-            && _OriginalName == static_cast<decltype(this)>(&other)->_OriginalName
-            && _cValue == static_cast<decltype(this)>(&other)->_cValue;
+        return self.getTypeId() == other.getTypeId()
+            && self._BaseFileName == static_cast<decltype(&self)>(&other)->_BaseFileName
+            && self._OriginalName == static_cast<decltype(&self)>(&other)->_OriginalName
+            && self._cValue == static_cast<decltype(&self)>(&other)->_cValue;
     }
 
     /** get a temp file name in the transient path of the document.
@@ -126,7 +128,9 @@ public:
 
     bool isEmpty() const
     {
-        return _cValue.empty();
+        auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+        return self._cValue.empty();
     }
 
     void setFilter(std::string filter);

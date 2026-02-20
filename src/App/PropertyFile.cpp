@@ -63,6 +63,8 @@ PropertyFileIncluded::~PropertyFileIncluded()
 
 void PropertyFileIncluded::aboutToSetValue()
 {
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
     // This is a trick to check in Copy() if it is called
     // directly from outside or by the Undo/Redo mechanism.
     // In the latter case it is sufficient to rename the file
@@ -70,15 +72,17 @@ void PropertyFileIncluded::aboutToSetValue()
     // If Copy() is directly called (e.g. to copy the file to
     // another document) a copy of the file needs to be created.
     // This copy will be deleted again in the class destructor.
-    this->StatusBits.set(10);
+    self.StatusBits.set(10);
     Property::aboutToSetValue();
-    this->StatusBits.reset(10);
+    self.StatusBits.reset(10);
 }
 
 std::string PropertyFileIncluded::getDocTransientPath() const
 {
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
     std::string path;
-    PropertyContainer* co = getContainer();
+    PropertyContainer* co = self.getContainer();
     if (co->isDerivedFrom<DocumentObject>()) {
         path = static_cast<DocumentObject*>(co)->getDocument()->TransientDir.getValue();
         std::replace(path.begin(), path.end(), '\\', '/');
@@ -100,26 +104,32 @@ std::string PropertyFileIncluded::getUniqueFileName(const std::string& path,
 
 std::string PropertyFileIncluded::getExchangeTempFile() const
 {
-    return Base::FileInfo::getTempFileName(Base::FileInfo(getValue()).fileName().c_str(),
-                                           getDocTransientPath().c_str());
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    return Base::FileInfo::getTempFileName(Base::FileInfo(self.getValue()).fileName().c_str(),
+                                           self.getDocTransientPath().c_str());
 }
 
 std::string PropertyFileIncluded::getOriginalFileName() const
 {
-    return _OriginalName;
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    return self._OriginalName;
 }
 
 void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 {
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
     if (!Base::Tools::isNullOrEmpty(sFile)) {
-        if (_cValue == sFile) {
+        if (self._cValue == sFile) {
             throw Base::FileSystemError("Not possible to set the same file!");
         }
 
         // keep the path to the original file
-        _OriginalName = sFile;
+        self._OriginalName = sFile;
 
-        std::string pathTrans = getDocTransientPath();
+        std::string pathTrans = self.getDocTransientPath();
         Base::FileInfo file(sFile);
         std::string path = file.dirPath();
         if (!file.exists()) {
@@ -128,10 +138,10 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
             throw Base::FileSystemError(str.str());
         }
 
-        aboutToSetValue();  // undo/redo by moving the file away with temp name
+        self.aboutToSetValue();  // undo/redo by moving the file away with temp name
 
         // remove old file (if not moved by undo)
-        Base::FileInfo value(_cValue);
+        Base::FileInfo value(self._cValue);
         std::string pathAct = value.dirPath();
         if (value.exists()) {
             value.setPermissions(Base::FileInfo::ReadWrite);
@@ -157,17 +167,17 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
                     fi.setFile(str.str());
                 } while (fi.exists());
 
-                _cValue = fi.filePath();
-                _BaseFileName = fi.fileName();
+                self._cValue = fi.filePath();
+                self._BaseFileName = fi.fileName();
             }
             else {
-                _cValue = pathTrans + "/" + sName;
-                _BaseFileName = sName;
+                self._cValue = pathTrans + "/" + sName;
+                self._BaseFileName = sName;
             }
         }
         else if (value.fileName().empty()) {
-            _cValue = pathTrans + "/" + file.fileName();
-            _BaseFileName = file.fileName();
+            self._cValue = pathTrans + "/" + file.fileName();
+            self._BaseFileName = file.fileName();
         }
 
         // The following applies only on files that are inside the transient
@@ -180,21 +190,21 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
 
         // if the file is already in transient dir of the document, just use it
         if (path == pathTrans && file.isWritable()) {
-            bool done = file.renameFile(_cValue.c_str());
+            bool done = file.renameFile(self._cValue.c_str());
             if (!done) {
                 std::stringstream str;
-                str << "Cannot rename file " << file.filePath() << " to " << _cValue;
+                str << "Cannot rename file " << file.filePath() << " to " << self._cValue;
                 throw Base::FileSystemError(str.str());
             }
 
             // make the file read-only
-            Base::FileInfo dst(_cValue);
+            Base::FileInfo dst(self._cValue);
             dst.setPermissions(Base::FileInfo::ReadOnly);
         }
         // otherwise copy from origin location
         else {
             // if file already exists in transient dir make a new unique name
-            Base::FileInfo fi(_cValue);
+            Base::FileInfo fi(self._cValue);
             if (fi.exists()) {
                 // if a file with this name already exists search for a new one
                 std::string dir = fi.dirPath();
@@ -211,34 +221,38 @@ void PropertyFileIncluded::setValue(const char* sFile, const char* sName)
                     fi.setFile(str.str());
                 } while (fi.exists());
 
-                _cValue = fi.filePath();
-                _BaseFileName = fi.fileName();
+                self._cValue = fi.filePath();
+                self._BaseFileName = fi.fileName();
             }
 
-            bool done = file.copyTo(_cValue.c_str());
+            bool done = file.copyTo(self._cValue.c_str());
             if (!done) {
                 std::stringstream str;
-                str << "Cannot copy file from " << file.filePath() << " to " << _cValue;
+                str << "Cannot copy file from " << file.filePath() << " to " << self._cValue;
                 throw Base::FileSystemError(str.str());
             }
 
             // make the file read-only
-            Base::FileInfo dst(_cValue);
+            Base::FileInfo dst(self._cValue);
             dst.setPermissions(Base::FileInfo::ReadOnly);
         }
 
-        hasSetValue();
+        self.hasSetValue();
     }
 }
 
 const char* PropertyFileIncluded::getValue() const
 {
-    return _cValue.c_str();
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    return self._cValue.c_str();
 }
 
 PyObject* PropertyFileIncluded::getPyObject()
 {
-    PyObject* p = PyUnicode_DecodeUTF8(_cValue.c_str(), _cValue.size(), nullptr);
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    PyObject* p = PyUnicode_DecodeUTF8(self._cValue.c_str(), self._cValue.size(), nullptr);
     if (!p) {
         throw Base::UnicodeError("PropertyFileIncluded: UTF-8 conversion failure");
     }
@@ -281,17 +295,19 @@ bool isIOFile(PyObject* file)
 
 void PropertyFileIncluded::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
     if (PyUnicode_Check(value)) {
         std::string string = PyUnicode_AsUTF8(value);
-        setValue(string.c_str());
+        self.setValue(string.c_str());
     }
     else if (PyBytes_Check(value)) {
         std::string string = PyBytes_AsString(value);
-        setValue(string.c_str());
+        self.setValue(string.c_str());
     }
     else if (isIOFile(value)) {
         std::string string = getNameFromFile(value);
-        setValue(string.c_str());
+        self.setValue(string.c_str());
     }
     else if (PyTuple_Check(value)) {
         if (PyTuple_Size(value) != 2) {
@@ -334,16 +350,16 @@ void PropertyFileIncluded::setPyObject(PyObject* value)
             throw Base::TypeError(error);
         }
 
-        setValue(fileStr.c_str(), nameStr.c_str());
+        self.setValue(fileStr.c_str(), nameStr.c_str());
     }
     else if (PyDict_Check(value)) {
         Py::Dict dict(value);
         if (dict.hasKey("filter")) {
-            setFilter(Py::String(dict.getItem("filter")));
+            self.setFilter(Py::String(dict.getItem("filter")));
         }
         if (dict.hasKey("filename")) {
             std::string string = static_cast<std::string>(Py::String(dict.getItem("filename")));
-            setValue(string.c_str());
+            self.setValue(string.c_str());
         }
     }
     else {
@@ -398,17 +414,19 @@ void PropertyFileIncluded::Save(Base::Writer& writer) const
 
 void PropertyFileIncluded::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
     reader.readElement("FileIncluded");
     if (reader.hasAttribute("file")) {
         string file(reader.getAttribute<const char*>("file"));
         if (!file.empty()) {
             // initiate a file read
-            reader.addFile(file.c_str(), this);
+            reader.addFile(file.c_str(), &self);
             // is in the document transient path
-            aboutToSetValue();
-            _cValue = getDocTransientPath() + "/" + file;
-            _BaseFileName = file;
-            hasSetValue();
+            self.aboutToSetValue();
+            self._cValue = self.getDocTransientPath() + "/" + file;
+            self._BaseFileName = file;
+            self.hasSetValue();
         }
     }
     // section is XML stream
@@ -416,26 +434,28 @@ void PropertyFileIncluded::Restore(Base::XMLReader& reader)
         string file(reader.getAttribute<const char*>("data"));
         if (!file.empty()) {
             // is in the document transient path
-            aboutToSetValue();
-            _cValue = getDocTransientPath() + "/" + file;
-            reader.readBinFile(_cValue.c_str());
+            self.aboutToSetValue();
+            self._cValue = self.getDocTransientPath() + "/" + file;
+            reader.readBinFile(self._cValue.c_str());
             reader.readEndElement("FileIncluded");
-            _BaseFileName = file;
+            self._BaseFileName = file;
             // set read-only after restoring the file
-            Base::FileInfo fi(_cValue.c_str());
+            Base::FileInfo fi(self._cValue.c_str());
             fi.setPermissions(Base::FileInfo::ReadOnly);
-            hasSetValue();
+            self.hasSetValue();
         }
     }
 }
 
 void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
 {
-    Base::ifstream from(Base::FileInfo(_cValue.c_str()), std::ios::in | std::ios::binary);
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    Base::ifstream from(Base::FileInfo(self._cValue.c_str()), std::ios::in | std::ios::binary);
     if (!from) {
         std::stringstream str;
         str << "PropertyFileIncluded::SaveDocFile(): "
-            << "File '" << _cValue << "' in transient directory doesn't exist.";
+            << "File '" << self._cValue << "' in transient directory doesn't exist.";
         throw Base::FileSystemError(str.str());
     }
 
@@ -449,7 +469,9 @@ void PropertyFileIncluded::SaveDocFile(Base::Writer& writer) const
 
 void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 {
-    Base::FileInfo fi(_cValue.c_str());
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
+    Base::FileInfo fi(self._cValue.c_str());
     if (fi.exists() && !fi.isWritable()) {
         // This happens when an object is being restored and tries to reference the
         // same file of another object (e.g. for copy&paste of objects inside the same document).
@@ -459,12 +481,12 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
     if (!to) {
         std::stringstream str;
         str << "PropertyFileIncluded::RestoreDocFile(): "
-            << "File '" << _cValue << "' in transient directory cannot be created.";
+            << "File '" << self._cValue << "' in transient directory cannot be created.";
         throw Base::FileSystemError(str.str());
     }
 
     // copy plain data
-    aboutToSetValue();
+    self.aboutToSetValue();
     unsigned char c;
     while (reader.get((char&)c)) {
         to.put((char)c);
@@ -473,21 +495,23 @@ void PropertyFileIncluded::RestoreDocFile(Base::Reader& reader)
 
     // set read-only after restoring the file
     fi.setPermissions(Base::FileInfo::ReadOnly);
-    hasSetValue();
+    self.hasSetValue();
 }
 
 Property* PropertyFileIncluded::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
     std::unique_ptr<PropertyFileIncluded> prop(new PropertyFileIncluded());
 
     // remember the base name
-    prop->_BaseFileName = _BaseFileName;
+    prop->_BaseFileName = self._BaseFileName;
 
-    Base::FileInfo file(_cValue);
+    Base::FileInfo file(self._cValue);
     if (file.exists()) {
         // create a new name in the document transient directory
-        Base::FileInfo newName(getUniqueFileName(file.dirPath(), file.fileName()));
-        if (this->StatusBits.test(10)) {
+        Base::FileInfo newName(self.getUniqueFileName(file.dirPath(), file.fileName()));
+        if (self.StatusBits.test(10)) {
             // rename the file
             bool done = file.renameFile(newName.filePath().c_str());
             if (!done) {
@@ -511,7 +535,7 @@ Property* PropertyFileIncluded::Copy() const
         }
 
         // remember the new name for the Undo
-        Base::Console().log("Copy '%s' to '%s'\n", _cValue.c_str(), newName.filePath().c_str());
+        Base::Console().log("Copy '%s' to '%s'\n", self._cValue.c_str(), newName.filePath().c_str());
         prop->_cValue = newName.filePath().c_str();
 
         // make backup files writable to avoid copying them again on undo/redo
@@ -523,24 +547,26 @@ Property* PropertyFileIncluded::Copy() const
 
 void PropertyFileIncluded::Paste(const Property& from)
 {
-    aboutToSetValue();
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
+    self.aboutToSetValue();
     const PropertyFileIncluded& prop = dynamic_cast<const PropertyFileIncluded&>(from);
     // make sure that source and destination file are different
-    if (_cValue != prop._cValue) {
+    if (self._cValue != prop._cValue) {
         // delete old file (if still there)
-        Base::FileInfo fi(_cValue);
+        Base::FileInfo fi(self._cValue);
         fi.setPermissions(Base::FileInfo::ReadWrite);
         fi.deleteFile();
 
         // get path to destination which can be the transient directory
         // of another document
-        std::string pathTrans = getDocTransientPath();
+        std::string pathTrans = self.getDocTransientPath();
         Base::FileInfo fiSrc(prop._cValue);
         Base::FileInfo fiDst(pathTrans + "/" + prop._BaseFileName);
         std::string path = fiSrc.dirPath();
 
         if (fiSrc.exists()) {
-            fiDst.setFile(getUniqueFileName(fiDst.dirPath(), fiDst.fileName()));
+            fiDst.setFile(self.getUniqueFileName(fiDst.dirPath(), fiDst.fileName()));
 
             // if the file is already in transient dir of the document, just use it
             if (path == pathTrans) {
@@ -564,34 +590,40 @@ void PropertyFileIncluded::Paste(const Property& from)
 
             // set the file again read-only
             fiDst.setPermissions(Base::FileInfo::ReadOnly);
-            _cValue = fiDst.filePath();
+            self._cValue = fiDst.filePath();
         }
         else {
-            _cValue.clear();
+            self._cValue.clear();
         }
 
         // set the base name
-        _BaseFileName = prop._BaseFileName;
+        self._BaseFileName = prop._BaseFileName;
     }
-    hasSetValue();
+    self.hasSetValue();
 }
 
 unsigned int PropertyFileIncluded::getMemSize() const
 {
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
     unsigned int mem = Property::getMemSize();
-    mem += _cValue.size();
-    mem += _BaseFileName.size();
+    mem += self._cValue.size();
+    mem += self._BaseFileName.size();
     return mem;
 }
 
 void PropertyFileIncluded::setFilter(std::string filter)
 {
-    m_filter = std::move(filter);
+    auto& self = propSetterSelf<App::PropertyFileIncluded>(*this);
+
+    self.m_filter = std::move(filter);
 }
 
 std::string PropertyFileIncluded::getFilter() const
 {
-    return m_filter;
+    auto& self = propGetterSelf<const App::PropertyFileIncluded>(*this);
+
+    return self.m_filter;
 }
 
 //**************************************************************************
@@ -609,24 +641,30 @@ PropertyFile::~PropertyFile() = default;
 
 void PropertyFile::setFilter(const std::string f)
 {
-    m_filter = f;
+    auto& self = propSetterSelf<App::PropertyFile>(*this);
+
+    self.m_filter = f;
 }
 
 std::string PropertyFile::getFilter() const
 {
-    return m_filter;
+    auto& self = propGetterSelf<const App::PropertyFile>(*this);
+
+    return self.m_filter;
 }
 
 void PropertyFile::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyFile>(*this);
+
     if (PyDict_Check(value)) {
         Py::Dict dict(value);
         if (dict.hasKey("filter")) {
-            setFilter(Py::String(dict.getItem("filter")));
+            self.setFilter(Py::String(dict.getItem("filter")));
         }
         if (dict.hasKey("filename")) {
             std::string string = static_cast<std::string>(Py::String(dict.getItem("filename")));
-            setValue(string.c_str());
+            self.setValue(string.c_str());
         }
     }
     else {
