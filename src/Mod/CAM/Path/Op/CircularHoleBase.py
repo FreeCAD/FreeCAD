@@ -164,29 +164,24 @@ class ObjectOp(PathOp.ObjectOp):
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
-        def haveLocations(self, obj):
-            if PathOp.FeatureLocations & self.opFeatures(obj):
-                return len(obj.Locations) != 0
-            return False
-
         holes = []
         for base, subs in obj.Base:
             for sub in subs:
                 Path.Log.debug("processing {} in {}".format(sub, base.Name))
-                if self.isHoleEnabled(obj, base, sub):
-                    pos = self.holePosition(obj, base, sub)
-                    if pos:
-                        holes.append(
-                            {
-                                "x": pos.x,
-                                "y": pos.y,
-                                "r": self.holeDiameter(obj, base, sub),
-                            }
-                        )
+                if not self.isHoleEnabled(obj, base, sub):
+                    continue
+                pos = self.holePosition(obj, base, sub)
+                if pos:
+                    diam = self.holeDiameter(obj, base, sub)
+                    for hole in holes:  # check positions repeats
+                        if Path.Geom.pointsCoincide((pos.x, pos.y), (hole["x"], hole["y"])):
+                            hole["d"] = max(hole["d"], diam)  # use max diameter for repeat
+                            break
+                    else:  # is not a repeat, add unique position
+                        holes.append({"x": pos.x, "y": pos.y, "d": diam})
 
-        if haveLocations(self, obj):
-            for location in obj.Locations:
-                holes.append({"x": location.x, "y": location.y, "r": 0})
+        for pos in getattr(obj, "Locations", []):
+            holes.append({"x": pos.x, "y": pos.y, "d": 0})
 
         if len(holes) > 0:
             holes = PathUtils.sort_locations(holes, ["x", "y"])
