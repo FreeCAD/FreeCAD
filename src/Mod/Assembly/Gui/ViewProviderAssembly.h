@@ -25,6 +25,7 @@
 #define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderAssembly_H
 
 #include <QCoreApplication>
+#include <QMetaObject>
 #include <fastsignals/signal.h>
 
 #include <Mod/Assembly/AssemblyGlobal.h>
@@ -256,7 +257,6 @@ public:
 private:
     bool tryMouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
     void tryInitMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer);
-    void removeTaskSolver();
 
     void collectMovableObjects(
         App::DocumentObject* selRoot,
@@ -267,6 +267,9 @@ private:
 
     void slotAboutToOpenTransaction(const std::string& cmdName);
     void slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name);
+
+    void onWorkbenchActivated(const QString& name);
+    void updateTaskPanel(bool show);
 
     struct ComponentState
     {
@@ -292,8 +295,9 @@ private:
         std::set<App::DocumentObject*>& visited
     );
 
-    TaskAssemblyMessages* taskSolver;
+    TaskAssemblyMessages* taskSolver {nullptr};
 
+    QMetaObject::Connection workbenchConnection;
     fastsignals::connection connectActivatedVP;
     fastsignals::connection connectSolverUpdate;
     fastsignals::scoped_connection m_preTransactionConn;
