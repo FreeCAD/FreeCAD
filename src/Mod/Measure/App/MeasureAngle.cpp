@@ -242,22 +242,11 @@ bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e
     return matchStartStart || matchStartEnd;
 }
 
-bool MeasureAngle::setOrigin()
+bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
-    TopoDS_Shape s1 = Part::Feature::getShape(
-        Element1.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element1.getSubValues().at(0).c_str()
-    );
-    TopoDS_Shape s2 = Part::Feature::getShape(
-        Element2.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element2.getSubValues().at(0).c_str()
-    );
     if (s1.IsNull() || s2.IsNull()) {
         return false;
     }
-
     if (mCase == FaceFace) {
         // find common edge
         TopExp_Explorer exp1(s1, TopAbs_EDGE);
@@ -361,7 +350,7 @@ bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
     return true;
 }
 
-bool MeasureAngle::setDirections()
+bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
 
     direction1 = vector1();
@@ -395,16 +384,6 @@ bool MeasureAngle::setDirections()
     else if (mCase == FaceEdge) {
         // here we take the face as deciding factor
         gp_Vec faceNormal;
-        TopoDS_Shape s1 = Part::Feature::getShape(
-            Element1.getValue(),
-            Part::ShapeOption::NeedSubElement,
-            Element1.getSubValues().at(0).c_str()
-        );
-        TopoDS_Shape s2 = Part::Feature::getShape(
-            Element2.getValue(),
-            Part::ShapeOption::NeedSubElement,
-            Element2.getSubValues().at(0).c_str()
-        );
         faceNormal = (s1.ShapeType() == TopAbs_FACE) ? vector1() : vector2();
         if (direction1.Dot(faceNormal) < 0) {
             direction1 = -direction1;
@@ -455,10 +434,18 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         return new App::DocumentObjectExecReturn("No geometry element picked");
     }
 
-    TopoDS_Shape s1
-        = Part::Feature::getShape(ob1, Part::ShapeOption::NeedSubElement, subs1.at(0).c_str());
-    TopoDS_Shape s2
-        = Part::Feature::getShape(ob2, Part::ShapeOption::NeedSubElement, subs2.at(0).c_str());
+    TopoDS_Shape s1 = Part::Feature::getShape(
+        ob1,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        subs1.at(0).c_str()
+    );
+    TopoDS_Shape s2 = Part::Feature::getShape(
+        ob2,
+        Part::ShapeOption::NeedSubElement | Part::ShapeOption::ResolveLink
+            | Part::ShapeOption::Transform,
+        subs2.at(0).c_str()
+    );
     if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
         mCase = FaceFace;
     }
@@ -469,7 +456,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         mCase = FaceEdge;
     }
 
-    if (!setOrigin() || !setDirections()) {
+    if (!setOrigin(s1, s2) || !setDirections(s1, s2)) {
         return new App::DocumentObjectExecReturn("Failed to Set Origin");
     }
 
