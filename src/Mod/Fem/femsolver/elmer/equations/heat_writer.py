@@ -126,8 +126,8 @@ class Heatwriter:
                         temp = obj.AmbientTemp.getValueAs("K").Value
                         self.write.boundary(name, "Heat Transfer Coefficient", film)
                         self.write.boundary(name, "External Temperature", temp)
-                    elif obj.ConstraintType == "DFlux":
-                        flux = obj.DFlux.getValueAs("W/m^2").Value
+                    elif obj.ConstraintType == "Flux":
+                        flux = obj.DistributedHeatFlux.getValueAs("W/m^2").Value
                         self.write.boundary(name, "Heat Flux BC", True)
                         self.write.boundary(name, "Heat Flux", flux)
                 self.write.handled(obj)

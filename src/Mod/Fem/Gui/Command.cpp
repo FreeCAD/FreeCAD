@@ -724,7 +724,7 @@ void CmdFemConstraintHeatflux::activated(int)
         "App.activeDocument().addObject(\"Fem::ConstraintHeatflux\",\"%s\")",
         FeatName.c_str()
     );
-    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"DFlux\"", FeatName.c_str());
+    doCommand(Doc, "App.activeDocument().%s.ConstraintType = \"Flux\"", FeatName.c_str());
     doCommand(
         Doc,
         "App.activeDocument().%s.AmbientTemp = 300.0",
