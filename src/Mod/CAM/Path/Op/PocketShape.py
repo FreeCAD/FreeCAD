@@ -206,7 +206,7 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             self.horiz = []
             self.vert = []
             self.edges = []
-            for base, subList in obj.Base:
+            for base, subList in self.baseShapes(obj):
                 for sub in subList:
                     if sub in avoidFeatures:
                         # skip this sub shape
