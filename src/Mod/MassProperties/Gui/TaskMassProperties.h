@@ -24,12 +24,14 @@
 #define MASSPROPERTIES_TASKMASSPROPERTIES_H
 
 #include <QComboBox>
+#include <QEvent>
 #include <QLabel>
 #include <QLineEdit>
 #include <QListWidget>
 #include <QString>
 #include <QWidget>
 
+#include <Gui/Action.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/Selection/Selection.h>
@@ -67,6 +69,9 @@ public:
     void onCoordinateSystemChanged(std::string coordSystem);
     void onSelectCustomCoordinateSystem();
     void updateInertiaVisibility();
+
+protected:
+    bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
     void quit();
@@ -116,6 +121,8 @@ private:
     Base::Placement currentDatumPlacement;
     bool hasCurrentDatumPlacement = false;
 
+    Gui::Action* deleteAction = nullptr;
+    bool deleteActivated = false;
 };
 
 } // namespace MassPropertiesGui

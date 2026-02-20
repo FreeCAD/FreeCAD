@@ -26,6 +26,7 @@
 #include "Mod/MassProperties/App/MassPropertiesObject.h"
 
 #include <QtCore/QScopedValueRollback>
+#include <QKeyEvent>
 #include <QTimer>
 
 #include <QtWidgets>
@@ -34,6 +35,7 @@
 #include <iomanip>
 
 #include <Gui/BitmapFactory.h>
+#include <Gui/Command.h>
 #include <Gui/Control.h>
 #include <Gui/Selection/Selection.h>
 #include <Gui/Application.h>
@@ -86,6 +88,19 @@ TaskMassProperties::TaskMassProperties()
     currentMode = "Center of Gravity";
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
+
+    qApp->installEventFilter(this);
+
+    if (Gui::Application::Instance) {
+        auto* stdDeleteCommand = Gui::Application::Instance->commandManager().getCommandByName("Std_Delete");
+        if (stdDeleteCommand) {
+            deleteAction = stdDeleteCommand->getAction();
+            if (deleteAction) {
+                deleteActivated = deleteAction->isEnabled();
+                deleteAction->setEnabled(false);
+            }
+        }
+    }
 
     this->setButtonPosition(TaskMassProperties::North);
 
@@ -416,6 +431,25 @@ TaskMassProperties::TaskMassProperties()
 
 TaskMassProperties::~TaskMassProperties()
 {
+    qApp->removeEventFilter(this);
+    if (deleteAction) {
+        deleteAction->setEnabled(deleteActivated);
+    }
+}
+
+bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
+{
+    Q_UNUSED(watched);
+
+    if (event && (event->type() == QEvent::ShortcutOverride || event->type() == QEvent::KeyPress)) {
+        auto* keyEvent = static_cast<QKeyEvent*>(event);
+        if (keyEvent && keyEvent->key() == Qt::Key_Delete) {
+            event->accept();
+            return true;
+        }
+    }
+
+    return Gui::TaskView::TaskDialog::eventFilter(watched, event);
 }
 
 void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
@@ -710,33 +744,41 @@ void TaskMassProperties::tryupdate()
         return Base::Placement();
     };
 
-    auto accumulatePlacement = [&](App::DocumentObject* root, const char* subname) {
-        Base::Placement total;
-        std::vector<App::DocumentObject*> chain;
-        if (root) {
-            chain.push_back(root);
+    auto resolveSelectionPlacement = [&](App::DocumentObject* root, const char* subname, App::DocumentObject* resolvedHint = nullptr) {
+        if (!root) {
+            return Base::Placement();
         }
-        if (root && subname && subname[0]) {
-            App::SubObjectT sub(root, subname);
-            std::string subNoElement = sub.getSubNameNoElement();
-            if (!subNoElement.empty()) {
-                App::SubObjectT subObj(root, subNoElement.c_str());
-                auto subList = subObj.getSubObjectList();
-                for (auto* item : subList) {
-                    if (!item) {
-                        continue;
-                    }
-                    if (!chain.empty() && chain.back() == item) {
-                        continue;
-                    }
-                    chain.push_back(item);
-                }
+
+        if (!subname || !subname[0]) {
+            if (resolvedHint && resolvedHint != root) {
+                return App::GeoFeature::getGlobalPlacement(resolvedHint);
             }
+            return App::GeoFeature::getGlobalPlacement(root);
         }
-        for (auto* item : chain) {
-            total = total * getPlacementFromObject(item);
+
+        App::SubObjectT sub(root, subname);
+        std::string subNoElement = sub.getSubNameNoElement();
+        
+        if (subNoElement.empty()) {
+            if (resolvedHint && resolvedHint != root) {
+                return App::GeoFeature::getGlobalPlacement(resolvedHint);
+            }
+            return App::GeoFeature::getGlobalPlacement(root);
         }
-        return total;
+
+        App::DocumentObject* target = sub.getSubObject();
+        if (!target) {
+            target = resolvedHint;
+        }
+        if (!target) {
+            target = root->getSubObject(subNoElement.c_str());
+        }
+
+        if (!target) {
+            return App::GeoFeature::getGlobalPlacement(root);
+        }
+
+        return App::GeoFeature::getGlobalPlacement(target, root, subNoElement);
     };
 
     auto addMeasuredObject = [&](App::DocumentObject* obj,
@@ -850,7 +892,7 @@ void TaskMassProperties::tryupdate()
             if (isReferenceObject(candidate)) {
                 customEdit->setText(QString::fromStdString(coordLabel(candidate)));
                 currentDatum = candidate;
-                currentDatumPlacement = accumulatePlacement(selObj.pObject, selObj.SubName);
+                currentDatumPlacement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
                 selectingCustomCoordSystem = false;
                 break;
@@ -862,7 +904,7 @@ void TaskMassProperties::tryupdate()
         if (selObj.pObject) {
             if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject")
                 && !(selObj.SubName && selObj.SubName[0])) {
-                Base::Placement rootPlc = accumulatePlacement(selObj.pObject, nullptr);
+                Base::Placement rootPlc = resolveSelectionPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
                 if (auto* group = selObj.pObject->getExtensionByType<App::GroupExtension>(true)) {
                     for (auto* child : group->getObjects()) {
                         collectBodies(collectBodies, child, rootPlc);
@@ -889,7 +931,7 @@ void TaskMassProperties::tryupdate()
             if (isReferenceObject(candidate)) {
                 if (currentMode == "Custom" && !selectingCustomCoordSystem) {
                     currentDatum = candidate;
-                    currentDatumPlacement = accumulatePlacement(selObj.pObject, selObj.SubName);
+                    currentDatumPlacement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                     hasCurrentDatumPlacement = true;
                     customEdit->setText(QString::fromStdString(coordLabel(candidate)));
                     referenceDatum = currentDatum;
@@ -911,18 +953,11 @@ void TaskMassProperties::tryupdate()
                 if (!leaf) {
                     leaf = selObj.pObject;
                 }
-                Base::Placement placement = accumulatePlacement(selObj.pObject, selObj.SubName);
-
-                if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
-                    std::string subNoElement = sub.getSubNameNoElement();
-                    if (subNoElement.empty()) {
-                        placement = App::GeoFeature::getGlobalPlacement(selObj.pResolvedObject);
-                    }
-                }
+                Base::Placement placement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 addMeasuredObject(leaf, nullptr, placement, measuredKeys);
             }
             else {
-                Base::Placement placement = accumulatePlacement(selObj.pObject, nullptr);
+                Base::Placement placement = resolveSelectionPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
                 addMeasuredObject(selObj.pObject, nullptr, placement, measuredKeys);
             }
         }
