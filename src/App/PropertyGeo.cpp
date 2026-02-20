@@ -67,44 +67,34 @@ PropertyVector::~PropertyVector() = default;
 
 void PropertyVector::setValue(const Base::Vector3d& vec)
 {
-    auto& self = propSetterSelf<App::PropertyVector>(*this);
-
-    self.aboutToSetValue();
-    self._cVec = vec;
-    self.hasSetValue();
+    aboutToSetValue();
+    _cVec = vec;
+    hasSetValue();
 }
 
 void PropertyVector::setValue(double x, double y, double z)
 {
-    auto& self = propSetterSelf<App::PropertyVector>(*this);
-
-    self.aboutToSetValue();
-    self._cVec.Set(x, y, z);
-    self.hasSetValue();
+    aboutToSetValue();
+    _cVec.Set(x, y, z);
+    hasSetValue();
 }
 
 const Base::Vector3d& PropertyVector::getValue() const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-    return self._cVec;
+    return _cVec;
 }
 
 PyObject* PropertyVector::getPyObject()
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-    return new Base::VectorPy(self._cVec);
+    return new Base::VectorPy(_cVec);
 }
 
 void PropertyVector::setPyObject(PyObject* value)
 {
-    auto& self = propSetterSelf<App::PropertyVector>(*this);
-
     if (PyObject_TypeCheck(value, &(Base::VectorPy::Type))) {
         Base::VectorPy* pcObject = static_cast<Base::VectorPy*>(value);
         Base::Vector3d* val = pcObject->getVectorPtr();
-        self.setValue(*val);
+        setValue(*val);
     }
     else if (PyTuple_Check(value) && PyTuple_Size(value) == 3) {
         PyObject* item {};
@@ -142,7 +132,7 @@ void PropertyVector::setPyObject(PyObject* value)
         else {
             throw Base::TypeError("Not allowed type used in tuple (float expected)...");
         }
-        self.setValue(cVec);
+        setValue(cVec);
     }
     else {
         std::string error = std::string("type must be 'Vector' or tuple of three floats, not ");
@@ -153,68 +143,56 @@ void PropertyVector::setPyObject(PyObject* value)
 
 void PropertyVector::Save(Base::Writer& writer) const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
     // clang-format off
     writer.Stream() << writer.ind()
                     << "<PropertyVector"
-                    << " valueX=\"" << self._cVec.x << "\""
-                    << " valueY=\"" << self._cVec.y << "\""
-                    << " valueZ=\"" << self._cVec.z << "\""
+                    << " valueX=\"" << _cVec.x << "\""
+                    << " valueY=\"" << _cVec.y << "\""
+                    << " valueZ=\"" << _cVec.z << "\""
                     << "/>\n";
     // clang-format on
 }
 
 void PropertyVector::Restore(Base::XMLReader& reader)
 {
-    auto& self = propSetterSelf<App::PropertyVector>(*this);
-
     // read my Element
     reader.readElement("PropertyVector");
     // get the value of my Attribute
-    self.aboutToSetValue();
-    self._cVec.x = reader.getAttribute<double>("valueX");
-    self._cVec.y = reader.getAttribute<double>("valueY");
-    self._cVec.z = reader.getAttribute<double>("valueZ");
-    self.hasSetValue();
+    aboutToSetValue();
+    _cVec.x = reader.getAttribute<double>("valueX");
+    _cVec.y = reader.getAttribute<double>("valueY");
+    _cVec.z = reader.getAttribute<double>("valueZ");
+    hasSetValue();
 }
 
 
 Property* PropertyVector::Copy() const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
     PropertyVector* p = new PropertyVector();
-    p->_cVec = self._cVec;
+    p->_cVec = _cVec;
     return p;
 }
 
 void PropertyVector::Paste(const Property& from)
 {
-    auto& self = propSetterSelf<App::PropertyVector>(*this);
-
-    self.aboutToSetValue();
-    self._cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
-    self.hasSetValue();
+    aboutToSetValue();
+    _cVec = dynamic_cast<const PropertyVector&>(from)._cVec;
+    hasSetValue();
 }
 
 void PropertyVector::getPaths(std::vector<ObjectIdentifier>& paths) const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-    paths.push_back(ObjectIdentifier(self)
+    paths.push_back(ObjectIdentifier(*this)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("x")));
-    paths.push_back(ObjectIdentifier(self)
+    paths.push_back(ObjectIdentifier(*this)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("y")));
-    paths.push_back(ObjectIdentifier(self)
+    paths.push_back(ObjectIdentifier(*this)
                     << ObjectIdentifier::SimpleComponent(ObjectIdentifier::String("z")));
 }
 
 const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-    Base::Unit unit = self.getUnit();
+    Base::Unit unit = getUnit();
     if (unit != Unit::One) {
         std::string p = path.getSubPathStr();
         if (p == ".x" || p == ".y" || p == ".z") {
@@ -227,22 +205,20 @@ const boost::any PropertyVector::getPathValue(const ObjectIdentifier& path) cons
 
 bool PropertyVector::getPyPathValue(const ObjectIdentifier& path, Py::Object& res) const
 {
-    auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-    Base::Unit unit = self.getUnit();
+    Base::Unit unit = getUnit();
     if (unit == Unit::One) {
         return false;
     }
 
     std::string p = path.getSubPathStr();
     if (p == ".x") {
-        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().x, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().x, unit)));
     }
     else if (p == ".y") {
-        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().y, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().y, unit)));
     }
     else if (p == ".z") {
-        res = Py::asObject(new QuantityPy(new Quantity(self.getValue().z, unit)));
+        res = Py::asObject(new QuantityPy(new Quantity(getValue().z, unit)));
     }
     else {
         return false;
@@ -1324,16 +1300,7 @@ std::string PropertyComplexGeoData::getElementMapVersion(bool) const
     if (!data) {
         return std::string();
     }
-    auto owner = freecad_cast<DocumentObject*>(getContainer());
-    std::ostringstream ss;
-    if (owner && owner->getDocument() && data->hasElementMap() && data->getElementMapSize() && owner->getDocument()->getStringHasher() == data->Hasher) {
-        ss << "1.";
-    }
-    else {
-        ss << "0.";
-    }
-    ss << data->getElementMapVersion();
-    return ss.str();
+    return data->getElementMapVersion();
 }
 
 bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
@@ -1341,18 +1308,6 @@ bool PropertyComplexGeoData::checkElementMapVersion(const char* ver) const
     auto data = getComplexData();
     if (!data) {
         return false;
-    }
-    auto owner = freecad_cast<DocumentObject*>(getContainer());
-    std::ostringstream ss;
-    const char* prefix;
-    if (owner && owner->getDocument() && owner->getDocument()->getStringHasher() == data->Hasher) {
-        prefix = "1.";
-    }
-    else {
-        prefix = "0.";
-    }
-    if (!boost::starts_with(ver, prefix)) {
-        return true;
     }
     return data->checkElementMapVersion(ver + 2);
 }

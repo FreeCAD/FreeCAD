@@ -112,13 +112,11 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        auto& self = propGetterSelf<const App::PropertyVector>(*this);
-
-        if (&other == &self) {
+        if (&other == this) {
             return true;
         }
-        return self.getTypeId() == other.getTypeId()
-            && self.getValue() == dynamic_cast<decltype(&self)>(&other)->getValue();
+        return getTypeId() == other.getTypeId()
+            && getValue() == dynamic_cast<decltype(this)>(&other)->getValue();
     }
 
 private:
@@ -302,13 +300,11 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        auto& self = propGetterSelf<const App::PropertyMatrix>(*this);
-
-        if (&other == &self) {
+        if (&other == this) {
             return true;
         }
-        return self.getTypeId() == other.getTypeId()
-            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
 private:
@@ -381,13 +377,11 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        auto& self = propGetterSelf<const App::PropertyPlacement>(*this);
-
-        if (&other == &self) {
+        if (&other == this) {
             return true;
         }
-        return self.getTypeId() == other.getTypeId()
-            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue();
+        return getTypeId() == other.getTypeId()
+            && getValue() == static_cast<decltype(this)>(&other)->getValue();
     }
 
     static const Placement Null;
