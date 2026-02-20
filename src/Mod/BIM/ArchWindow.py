@@ -630,10 +630,10 @@ class _Window(ArchComponent.Component):
                                 )
                                 shape = shape.cut(self.boxes)
                 if rotdata:
+                    # Apply rotation for hinged parts if it exists
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
-
-                # Apply translation for sliding parts if it exists
-                if transdata:
+                elif transdata:
+                    # Apply translation for sliding parts if it exists
                     shape.translate(transdata[0])
 
                 shapes.append(shape)
