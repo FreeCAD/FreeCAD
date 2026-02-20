@@ -242,21 +242,15 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
             }
 
             gp_Vec originVector(dimensionOriginPoint.XYZ());
-
-            if (linesIntersect) {
-                gp_Vec extrema2Vector(extremaPoint2.XYZ());
-                double radiusCalc = (loc1 - originVector).Magnitude();
-                double legOne = (extrema2Vector - originVector).Magnitude();
-                if (legOne > Precision::Confusion() && radiusCalc > legOne) {
-                    double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
-                    gp_Vec projectionVector(adjustedVector2);
-                    projectionVector.Normalize();
-                    projectionVector *= legTwo;
-                    thirdPoint = extrema2Vector + projectionVector;
-                }
-                else {
-                    thirdPoint = originVector + adjustedVector2.Normalized();
-                }
+            gp_Vec extrema2Vector(extremaPoint2.XYZ());
+            double radiusCalc = (loc1 - originVector).Magnitude();
+            double legOne = (extrema2Vector - originVector).Magnitude();
+            if (linesIntersect && legOne > Precision::Confusion() && radiusCalc > legOne) {
+                double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
+                gp_Vec projectionVector(adjustedVector2);
+                projectionVector.Normalize();
+                projectionVector *= legTwo;
+                thirdPoint = extrema2Vector + projectionVector;
             }
             else {
                 thirdPoint = originVector + adjustedVector2.Normalized();
@@ -524,6 +518,13 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
 
     auto pNormalsImgSep = new SoSeparator();
+
+    auto pNormalsPointingSep = new SoSeparator();
+    auto pNormalsSupportingSep = new SoSeparator();
+    pNormalsImgSep->addChild(pNormalsPointingSep);
+    pNormalsImgSep->addChild(pNormalsSupportingSep);
+
+
     auto pNormalsStyle = new SoDrawStyle();
     pNormalsStyle->style.setValue(SoDrawStyle::LINES);
     pNormalsStyle->lineWidth.setValue(1.0f);
@@ -531,13 +532,21 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     auto pNormalsColor = new SoBaseColor();
     pNormalsColor->rgb.setValue(0, 0, 1);
 
-    pNormalsImgSep->addChild(pNormalsStyle);
-    pNormalsImgSep->addChild(pNormalsColor);
+    pNormalsPointingSep->addChild(pNormalsStyle);
+    pNormalsPointingSep->addChild(pNormalsColor);
 
-    auto pNormalsImgCoords = new SoCoordinate3();
-    auto pNormalsImgLines = new SoLineSet();
+    pNormalsSupportingSep->addChild(pNormalsStandardStyle);
+    pNormalsSupportingSep->addChild(pColor);
 
-    auto pNormalsImgConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+    auto pNormalsImgPointingCoords = new SoCoordinate3();
+    auto pNormalsImgPointingLines = new SoLineSet();
+
+    auto pNormalsImgPointingConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    auto pNormalsImgSupportingCoords = new SoCoordinate3();
+    auto pNormalsImgSupportingLines = new SoLineSet();
+
+    auto pNormalsImgSupportingConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
 
     auto pAxisCalc = new SoCalculator();
     pAxisCalc->A.connectFrom(&element1Location);
@@ -556,28 +565,36 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
         "oB = (c > 0) ? -B : B"
     );
 
-    pNormalsImgConcat->input[0]->connectFrom(&pNormalsRotPointCalc->oA);
-    pNormalsImgConcat->input[1]->connectFrom(&pAxisCalc->oB);
+    pNormalsImgPointingConcat->input[0]->connectFrom(&pAxisCalc->oB);
+    pNormalsImgPointingConcat->input[1]->connectFrom(&element1Location);
 
-    pNormalsImgConcat->input[2]->connectFrom(&pAxisCalc->oB);
-    pNormalsImgConcat->input[3]->connectFrom(&element1Location);
+    pNormalsImgPointingConcat->input[2]->connectFrom(&pAxisCalc->oC);
+    pNormalsImgPointingConcat->input[3]->connectFrom(&element2Location);
 
-    pNormalsImgConcat->input[4]->connectFrom(&pNormalsRotPointCalc->oB);
-    pNormalsImgConcat->input[5]->connectFrom(&pAxisCalc->oC);
+    pNormalsImgPointingCoords->point.connectFrom(pNormalsImgPointingConcat->output);
 
-    pNormalsImgConcat->input[6]->connectFrom(&pAxisCalc->oC);
-    pNormalsImgConcat->input[7]->connectFrom(&element2Location);
+    pNormalsImgPointingLines->numVertices.setNum(4);
+    pNormalsImgPointingLines->numVertices.set1Value(0, 2);
+    pNormalsImgPointingLines->numVertices.set1Value(1, 2);
 
-    pNormalsImgCoords->point.connectFrom(pNormalsImgConcat->output);
+    pNormalsImgSupportingConcat->input[0]->connectFrom(&pNormalsRotPointCalc->oA);
+    pNormalsImgSupportingConcat->input[1]->connectFrom(&pAxisCalc->oB);
 
-    pNormalsImgLines->numVertices.setNum(4);
-    pNormalsImgLines->numVertices.set1Value(0, 2);
-    pNormalsImgLines->numVertices.set1Value(1, 2);
-    pNormalsImgLines->numVertices.set1Value(2, 2);
-    pNormalsImgLines->numVertices.set1Value(3, 2);
+    pNormalsImgSupportingConcat->input[2]->connectFrom(&pNormalsRotPointCalc->oB);
+    pNormalsImgSupportingConcat->input[3]->connectFrom(&pAxisCalc->oC);
 
-    pNormalsImgSep->addChild(pNormalsImgCoords);
-    pNormalsImgSep->addChild(pNormalsImgLines);
+
+    pNormalsImgSupportingCoords->point.connectFrom(pNormalsImgSupportingConcat->output);
+
+    pNormalsImgSupportingLines->numVertices.setNum(2);
+    pNormalsImgSupportingLines->numVertices.set1Value(0, 2);
+    pNormalsImgSupportingLines->numVertices.set1Value(1, 2);
+
+
+    pNormalsPointingSep->addChild(pNormalsImgPointingCoords);
+    pNormalsPointingSep->addChild(pNormalsImgPointingLines);
+    pNormalsSupportingSep->addChild(pNormalsImgSupportingCoords);
+    pNormalsSupportingSep->addChild(pNormalsImgSupportingLines);
 
     pNormalsSwitch->addChild(pNormalsImgSep);
 

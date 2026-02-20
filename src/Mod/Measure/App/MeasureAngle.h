@@ -116,10 +116,9 @@ private:
     // if no common vertex/edge found, use imaginary origin by extending
     bool _isImgOrigin;
 
-    bool setOrigin();
-    bool setDirections();  // not the actual normals adjusted for arc visualization
-    bool hasCommonEdge();
-    bool hasCommonVertex();
+    bool setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2);
+    bool setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2);  // not the actual normals adjusted for
+                                                             // arc visualization
     bool isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2);
     void onChanged(const App::Property* prop) override;
 };
