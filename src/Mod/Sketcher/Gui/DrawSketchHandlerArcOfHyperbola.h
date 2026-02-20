@@ -445,6 +445,7 @@ private:
         double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
         double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
 
+<<<<<<< HEAD
         return denom > Precision::Confusion() && b > Precision::Confusion();
     }
 
