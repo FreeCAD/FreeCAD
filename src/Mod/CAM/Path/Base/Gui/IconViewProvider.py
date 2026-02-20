@@ -21,6 +21,7 @@
 # ***************************************************************************
 
 import FreeCAD
+import FreeCADGui
 import Path
 import importlib
 
@@ -81,12 +82,16 @@ class ViewProvider(object):
             callback(self.obj, self.vobj, edit)
 
     def setEdit(self, vobj=None, mode=0):
-        if 0 == mode:
+        if 1 == mode:
+            FreeCADGui.runCommand("Std_TransformManip")
+            return True
+        elif 0 == mode:
             self._onEditCallback(True)
         return False
 
-    def unsetEdit(self, arg1, arg2):
-        self._onEditCallback(False)
+    def unsetEdit(self, vobj, mode):
+        if 0 == mode:
+            self._onEditCallback(False)
 
     def setupContextMenu(self, vobj, menu):
         Path.Log.track()
