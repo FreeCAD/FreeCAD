@@ -278,43 +278,90 @@ def speedBetweenPoints(p0, p1, hSpeed, vSpeed):
     return speed
 
 
-def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
-    """cmdsForEdge(edge, flip=False) -> List(Path.Command)
+def cmdsForEdge(edge, flip=False, approximation=False, hSpeed=0, vSpeed=0, tol=0.01):
+    """cmdsForEdge(edge, flip=False, approximation=True) -> List(Path.Command)
     Returns a list of Path.Command representing the given edge.
-    If flip is True the edge is considered to be backwards.
-    Edge based on a Part.Line is results in G1 command.
-    Horizontal Edge based on a Part.Circle is results in G2 or G3 command.
-    Other edge has no direct Path.Command mapping
-    and will be approximated by straight segments."""
-    pt = edge.valueAt(edge.LastParameter) if not flip else edge.valueAt(edge.FirstParameter)
-    params = {"X": pt.x, "Y": pt.y, "Z": pt.z}
-    if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
-        if hSpeed > 0 and vSpeed > 0:
-            pt2 = (
-                edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
-            )
-            params.update({"F": speedBetweenPoints(pt, pt2, hSpeed, vSpeed)})
-        commands = [Path.Command("G1", params)]
-    else:
-        p1 = edge.valueAt(edge.FirstParameter) if not flip else edge.valueAt(edge.LastParameter)
-        p2 = edge.valueAt((edge.FirstParameter + edge.LastParameter) / 2)
-        p3 = pt
+
+    If 'flip' is True, the edge is considered to be backwards.
+
+    If 'approximation' is True:
+    - an edge based on BezierCurve, Ellipse, Hyperbola and Parabola
+      will be represented as BSplineCurve;
+    - an edge based on a BSplineCurve will be represented as arcs and lines;
+    - not horizontal edge based on circle will be divided by short arcs
+    - arc with curvature less than tolerance will be represented as simple line
+
+    If 'approximation' is False and edge has no direct Path.Command mapping,
+    edge will be represented as number of short straight segments."""
+
+    edges = []
+    if approximation:
+        # simplify complex shape
+        if isinstance(edge.Curve, (Part.Ellipse, Part.Hyperbola, Part.Parabola)):
+            # convert edge to B-Spline
+            shape = edge.toNurbs()
+            edge = shape.Edges[0]
+        elif isinstance(edge.Curve, Part.BezierCurve):
+            # convert BezierCurve to B-Spline
+            curve = edge.Curve.toBSpline()
+            edge = curve.toShape()
+
+        if isinstance(edge.Curve, Part.BSplineCurve):
+            # convert B-Spline to arcs and lines
+            curves = edge.Curve.toBiArcs(tol)
+            for curve in curves:
+                edge = curve.toShape()
+                if isinstance(edge.Curve, Part.Circle) and not isVertical(edge.Curve.Axis):
+                    edges.extend(splitArcEdge(edge, tol))
+                else:
+                    edges.append(edge)
+        elif isinstance(edge.Curve, Part.Circle) and not isVertical(edge.Curve.Axis):
+            edges.extend(splitArcEdge(edge, tol))
+
+    if not edges:
+        # use original edge if list is empty
+        edges = [edge]
+
+    if flip:
+        edges.reverse()
+
+    commands = []
+    for edge in edges:
+        firstParameter, lastParameter = edge.FirstParameter, edge.LastParameter
+        if flip:
+            firstParameter, lastParameter = lastParameter, firstParameter
+        p1 = edge.valueAt(firstParameter)
+        p2 = edge.valueAt((firstParameter + lastParameter) / 2)
+        p3 = edge.valueAt(lastParameter)
+        params = {"X": p3.x, "Y": p3.y, "Z": p3.z}
 
         if (
-            hasattr(edge.Curve, "Axis")
+            approximation
             and isinstance(edge.Curve, Part.Circle)
-            and isRoughly(edge.Curve.Axis.x, 0)
-            and isRoughly(edge.Curve.Axis.y, 0)
+            and not edge.isClosed()
+            and p2.distanceToPoint(p1 + (p3 - p1) / 2) < tol
         ):
-            # This is an arc or a helix and it should be represented by a simple G2/G3 command
+            # convert arc with curvature less than tolerance to simple line
+            line = Part.LineSegment(p1, p2)
+            edge = line.toShape()
+
+        if isinstance(edge.Curve, (Part.Line, Part.LineSegment)):
+            # convert straight line to G1
+            if hSpeed > 0 and vSpeed > 0:
+                params.update({"F": speedBetweenPoints(p3, p1, hSpeed, vSpeed)})
+            cmd = Path.Command("G1", params)
+            commands.append(cmd)
+
+        elif isinstance(edge.Curve, Part.Circle) and (isVertical(edge.Curve.Axis) or approximation):
+            # convert arc to G2/G3
             if edge.Curve.Axis.z < 0:
-                cmd = "G2" if not flip else "G3"
+                cmdArc = "G2" if not flip else "G3"
             else:
-                cmd = "G3" if not flip else "G2"
+                cmdArc = "G3" if not flip else "G2"
 
             if pointsCoincide(p1, p3):
-                # A full circle
-                offset = edge.Curve.Center - pt
+                # A horizontal full circle
+                offset = edge.Curve.Center - p3
             else:
                 # pd = Part.Circle(xy(p1), xy(p2), xy(p3)).Center
                 # Path.Log.debug(
@@ -336,22 +383,22 @@ def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
                 #    "**** (%.2f, %.2f, %.2f) - (%.2f, %.2f, %.2f)"
                 #    % (pb.x, pb.y, pb.z, pd.x, pd.y, pd.z)
                 # )
+
             # Path.Log.debug("**** (%.2f, %.2f, %.2f)" % (offset.x, offset.y, offset.z))
 
             params.update({"I": offset.x, "J": offset.y, "K": (p3.z - p1.z) / 2})
             # G2/G3 commands are always performed at hSpeed
             if hSpeed > 0:
                 params.update({"F": hSpeed})
-            commands = [Path.Command(cmd, params)]
+            cmd = Path.Command(cmdArc, params)
+            commands.append(cmd)
 
         else:
-            # We're dealing with a helix or a more complex shape and it has to get approximated
-            # by a number of straight segments
+            # shape will be converted to a number of short straight segments
             points = edge.discretize(Deflection=tol)
             if flip:
-                points = points[::-1]
+                points.reverse()
 
-            commands = []
             if points:
                 p0 = points[0]
                 for p in points[1:]:
@@ -362,7 +409,7 @@ def cmdsForEdge(edge, flip=False, hSpeed=0, vSpeed=0, tol=0.01):
                     # print("***** {}".format(cmd))
                     commands.append(cmd)
                     p0 = p
-    # print commands
+
     return commands
 
 
@@ -556,6 +603,46 @@ def splitEdgeAt(edge, pt):
         arc = helixToArc(edge, 0)
         aes = splitArcAt(arc, Vector(pt.x, pt.y, 0))
         return [arcToHelix(aes[0], p1.z, p2.z), arcToHelix(aes[1], p2.z, p3.z)]
+
+
+def splitArcEdge(edge, tol=0.1):
+    """splitArcEdge(edge) -> List(Part.Edge)
+    Returns a list of arc edges, angle each of them not great than 'maxArcAngle'
+    Useful for approximation not horizontal arcs and circles
+    Return a list with original edge, if arc angle less or equal 'maxArcAngle'"""
+
+    def isPrecise(arc):
+        # compare z of several points of arc and G2 move
+        z0 = arc.StartPoint.z
+        z1 = arc.EndPoint.z
+        alpha = math.asin((z1 - z0) / arc.length())
+        points = 5  # check points 1, 2 and 3 (0---1---2---3---4)
+        step = arc.length() / (points - 1)
+        contolPoints = arc.discretize(5)
+        for i, p in enumerate(contolPoints[1:-1], 1):
+            zG = arc.StartPoint.z + i * step * math.sin(alpha)  # z of G2 move
+            if abs(p.z - zG) > 2 * tol:
+                return False
+        return True
+
+    arcAngle = edge.LastParameter - edge.FirstParameter
+    maxnr = 32
+    nr = 1
+    while nr <= maxnr:
+        edges = []
+        firstPar = edge.FirstParameter
+        step = arcAngle / nr
+        for i in range(nr):
+            lastPar = firstPar + step if (i + 1) < nr else edge.LastParameter
+            arc = Part.ArcOfCircle(edge.Curve, firstPar, lastPar)
+            edges.append(arc.toShape())
+            firstPar = lastPar
+            if not isPrecise(arc) and nr < maxnr:
+                nr *= 2
+                break
+        else:
+            break
+    return edges
 
 
 def combineConnectedShapes(shapes):
