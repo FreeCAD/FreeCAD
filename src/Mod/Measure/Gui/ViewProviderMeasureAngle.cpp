@@ -256,9 +256,6 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
                 thirdPoint = originVector + adjustedVector2.Normalized();
             }
         }
-        else {
-            thirdPoint = originVector + vector2.Normalized() * radius;
-        }
 
         gp_Vec originVector(dimensionOriginPoint.XYZ());
         gp_Vec xAxis = (loc1 - originVector).Normalized();
@@ -463,7 +460,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     // ========================== Normals ==========================
 
-    // normal for faces
+    // arc normals standerd
     auto pNormalsSwitch = new SoSwitch();
     pNormalsSwitch->whichChild.connectFrom(&visualMode);
 
@@ -520,6 +517,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pNormalsSwitch->addChild(pNormalsStandardSep);
 
 
+    // arc normal for imgOrigin
     auto pNormalsImgSep = new SoSeparator();
 
     auto pNormalsPointingSep = new SoSeparator();

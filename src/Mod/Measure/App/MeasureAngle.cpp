@@ -224,7 +224,7 @@ gp_Vec MeasureAngle::location2()
     return {temp.x, temp.y, temp.z};
 }
 
-bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2)
+bool MeasureAngle::isGeometricalSameEdge(const TopoDS_Edge& e1, const TopoDS_Edge& e2)
 {
     TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
     TopExp::Vertices(e1, v1_1, v1_2);
@@ -256,12 +256,11 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
             exp2.Init(s2, TopAbs_EDGE);
             while (exp2.More()) {
                 auto ed2 = TopoDS::Edge(exp2.Current());
-                if (ed1.IsSame(ed2) || isGeometricalSame(ed1, ed2)) {
+                if (ed1.IsSame(ed2) || isGeometricalSameEdge(ed1, ed2)) {
                     // calculate outOrigin from the common edge
                     TopoDS_Vertex v1, v2;
                     TopExp::Vertices(ed1, v1, v2);
                     outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
-                    _isImgOrigin = false;
                     return true;
                 }
                 exp2.Next();
@@ -299,7 +298,26 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
         if (TopExp::CommonVertex(e1, e2, common)) {
             outOrigin = BRep_Tool::Pnt(common);
-            _isImgOrigin = false;
+            return true;
+        }
+
+        // get geometricall same vertex
+        TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
+        TopExp::Vertices(e1, v1_1, v1_2);
+        TopExp::Vertices(e2, v2_1, v2_2);
+
+        gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
+        gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
+        gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
+        gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
+
+        double tol = Precision::Confusion();
+        if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
+            outOrigin = p1_1;
+            return true;
+        }
+        if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
+            outOrigin = p1_2;
             return true;
         }
 
@@ -319,7 +337,6 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
             gp_Pnt p1, p2;
             intersector.NearestPoints(p1, p2);
             outOrigin = p1;
-            _isImgOrigin = true;
             return true;
         }
     }
@@ -333,7 +350,6 @@ bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
             gp_Pnt p1, p2;
             intersector.NearestPoints(p1, p2);
             outOrigin = p2;
-            _isImgOrigin = true;
             return true;
         }
     }
