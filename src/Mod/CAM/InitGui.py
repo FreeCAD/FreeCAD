@@ -195,7 +195,7 @@ class CAMWorkbench(Workbench):
         )
         # Tapping command removed - use Drilling operation with Strategy=Tapping instead
         # Old Tapping operations will continue to work but new ones cannot be created
-        
+
         if set(["CAM_Drilling"]).issubset(drillingcmdlist):
             drillingcmdgroup = ["CAM_DrillingTools"]
             FreeCADGui.addCommand(

@@ -1307,7 +1307,8 @@ G0 Z8.000
         # The next couple of lines remove all of the white space.
         # Also strip ANSI color codes that may be present
         import re
-        gcode = re.sub(r'\x1b\[[0-9;]*m', '', gcode)  # Remove ANSI color codes
+
+        gcode = re.sub(r"\x1b\[[0-9;]*m", "", gcode)  # Remove ANSI color codes
         gcode = "".join(gcode.split())
         expected = "".join(expected.split())
         self.assertEqual(gcode, expected)
