@@ -619,11 +619,11 @@ void EditModeGeometryCoinManager::createGeometryRootNodes()
 {
     // stuff for the points ++++++++++++++++++++++++++++++++++++++
     editModeScenegraphNodes.PointsGroup = new SmSwitchboard;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.PointsGroup);
+    editModeScenegraphNodes.ContentRoot->addChild(editModeScenegraphNodes.PointsGroup);
 
     // stuff for the Curves +++++++++++++++++++++++++++++++++++++++
     editModeScenegraphNodes.CurvesGroup = new SmSwitchboard;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.CurvesGroup);
+    editModeScenegraphNodes.ContentRoot->addChild(editModeScenegraphNodes.CurvesGroup);
 }
 
 void EditModeGeometryCoinManager::emptyGeometryRootNodes()

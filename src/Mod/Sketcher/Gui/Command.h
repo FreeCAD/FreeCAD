@@ -70,6 +70,7 @@ private:
     QCheckBox* gridShow;
     QCheckBox* gridAutoSpacing;
     QCheckBox* snapToGrid;
+    QCheckBox* overlaySketch;
     QLabel* sizeLabel;
     Gui::QuantitySpinBox* gridSizeBox;
 };

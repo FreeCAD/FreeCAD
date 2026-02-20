@@ -2903,37 +2903,37 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
     SoMaterialBinding* MtlBind = new SoMaterialBinding;
     MtlBind->setName("ConstraintMaterialBinding");
     MtlBind->value = SoMaterialBinding::OVERALL;
-    editModeScenegraphNodes.EditRoot->addChild(MtlBind);
+    editModeScenegraphNodes.ContentRoot->addChild(MtlBind);
 
     // use small line width for the Constraints
     editModeScenegraphNodes.ConstraintDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.ConstraintDrawStyle->setName("ConstraintDrawStyle");
     editModeScenegraphNodes.ConstraintDrawStyle->lineWidth = 1 * drawingParameters.pixelScalingFactor;
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.ConstraintDrawStyle);
+    editModeScenegraphNodes.ContentRoot->addChild(editModeScenegraphNodes.ConstraintDrawStyle);
 
     // add the group where all the constraints has its SoSeparator
     editModeScenegraphNodes.constrGrpSelect = new SoPickStyle();  // used to toggle constraints
                                                                   // selectability
     editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
+    editModeScenegraphNodes.ContentRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
     setConstraintSelectability();  // Ensure default value;
 
     // disable depth testing for constraint icons so they render ON TOP of geometry lines
     // check issues #25840 and #11603
     SoDepthBuffer* constrDepthOff = new SoDepthBuffer();
     constrDepthOff->test.setValue(false);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOff);
+    editModeScenegraphNodes.ContentRoot->addChild(constrDepthOff);
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
-    editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
+    editModeScenegraphNodes.ContentRoot->addChild(editModeScenegraphNodes.constrGroup);
 
     // re-enable depth testing for the rest of the nodes
     SoDepthBuffer* constrDepthOn = new SoDepthBuffer();
     constrDepthOn->test.setValue(true);
-    editModeScenegraphNodes.EditRoot->addChild(constrDepthOn);
+    editModeScenegraphNodes.ContentRoot->addChild(constrDepthOn);
 
     SoPickStyle* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
-    editModeScenegraphNodes.EditRoot->addChild(ps);
+    editModeScenegraphNodes.ContentRoot->addChild(ps);
 }
