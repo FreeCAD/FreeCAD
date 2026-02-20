@@ -22,10 +22,12 @@
 
 
 #include <Inventor/SbTesselator.h>
+#include <Inventor/events/SoMouseButtonEvent.h>
 #include <QAbstractItemModel>
 #include <QAbstractItemView>
 #include <QItemSelection>
 #include <QItemSelectionModel>
+#include <QApplication>
 
 
 #include <App/DocumentObject.h>
@@ -168,4 +170,26 @@ void ItemViewSelection::applyFrom(const std::vector<App::DocumentObject*> objs)
     }
 
     view->selectionModel()->select(range, QItemSelectionModel::Select);
+}
+
+
+bool DoubleClick::isDoubleClick(const SoMouseButtonEvent* mbe)
+{
+    const SbVec2s cursorPos = mbe->getPosition();
+    const SbTime clickTime = mbe->getTime();
+
+    const float dci = (float)QApplication::doubleClickInterval() / 1000.0F;
+
+    const SbTime timeBetweenClicks = clickTime - prvClickTime;
+    const float distanceBetweenClicks = SbVec2f(cursorPos - prvClickPos).length();
+
+    prvClickTime = clickTime;
+    prvClickPos = cursorPos;
+
+    if (timeBetweenClicks.getValue() < dci && distanceBetweenClicks < DoubleClickRadius) {
+        prvClickPos = SbVec2s(UnreachableX, UnreachableX);
+        return true;
+    }
+
+    return false;
 }
