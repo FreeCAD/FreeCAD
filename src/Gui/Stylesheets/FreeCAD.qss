@@ -2735,3 +2735,48 @@ QComboBox[validationState="error"]:focus {
     border: 1px solid #ff3b30;
     border-image: none;
 }
+
+/*==================================================================================================
+CustomTitleBarWindow
+==================================================================================================*/
+
+#titleBarLogo {
+    border-image: url(:/icons/freecad.svg);
+    min-width: 24px;
+    max-width: 24px;
+    min-height: 24px;
+    max-height: 24px;
+    margin: 8px;  /* logo guidelines requres sufficient clear space */
+
+    /* the svg already has spacing on the sides of the logo */
+    margin-left: 4;
+    margin-right: 4;
+}
+
+QMenuBar[foldable="true"] {
+  background-color: transparent;
+}
+
+WindowDecorationButton {
+    background: transparent;
+    border: none;
+}
+
+WindowDecorationButton:hover {
+    background-color: @AccentHoverColor;
+}
+
+WindowDecorationButton:pressed {
+    background-color: @AccentColor;
+}
+
+/* Generic backend: red close button (Windows-style convention) */
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:hover {
+    background-color: #e81123;
+    color: white;
+}
+
+CustomTitleBarWindow[backend="generic"] WindowDecorationButton#closeButton:pressed {
+    background-color: #c50f1f;
+    color: white;
+}
