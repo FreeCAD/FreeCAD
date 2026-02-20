@@ -1277,14 +1277,16 @@ PropertyExpressionEngine::getExpressions() const
 void PropertyExpressionEngine::setExpressions(
     std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs)
 {
-    AtomicPropertyChange signaller(*this);
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    AtomicPropertyChange signaller(self);
 #ifdef BOOST_NO_CXX11_SMART_PTR
     for (auto& v : exprs) {
-        setValue(v.first, std::shared_ptr<Expression>(v.second.release()));
+        self.setValue(v.first, std::shared_ptr<Expression>(v.second.release()));
     }
 #else
     for (auto& v : exprs) {
-        setValue(v.first, std::move(v.second));
+        self.setValue(v.first, std::move(v.second));
     }
 #endif
 }
