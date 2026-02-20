@@ -1270,4 +1270,3 @@ using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 
 #endif  // SKETCHER_SKETCHOBJECT_H
-
