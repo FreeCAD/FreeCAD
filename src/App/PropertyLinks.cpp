@@ -5464,14 +5464,18 @@ void PropertyXLinkSubList::setPyObject(PyObject* value)
 
 void PropertyXLinkSubList::afterRestore()
 {
-    for (auto& l : _Links) {
+    auto& self = propSetterSelf<App::PropertyXLinkSubList>(*this);
+
+    for (auto& l : self._Links) {
         l.afterRestore();
     }
 }
 
 void PropertyXLinkSubList::onContainerRestored()
 {
-    for (auto& l : _Links) {
+    auto& self = propSetterSelf<App::PropertyXLinkSubList>(*this);
+
+    for (auto& l : self._Links) {
         l.onContainerRestored();
     }
 }
@@ -5480,7 +5484,9 @@ void PropertyXLinkSubList::updateElementReference(DocumentObject* feature,
                                                   bool reverse,
                                                   bool notify)
 {
-    for (auto& l : _Links) {
+    auto& self = propSetterSelf<App::PropertyXLinkSubList>(*this);
+
+    for (auto& l : self._Links) {
         l.updateElementReference(feature, reverse, notify);
     }
 }
