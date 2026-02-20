@@ -30,6 +30,7 @@ from . import manager
 from .ccx_cantilever_faceload import setup as setup_with_faceload
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -38,7 +39,7 @@ def get_information():
         "meshtype": "solid",
         "meshelement": "Hexa20",
         "constraints": ["fixed", "force"],
-        "solvers": ["ccxtools", "elmer", "z88"],
+        "solvers": ["ccxtools", "z88"], # elmer disabled until mesh has groups
         "material": "solid",
         "equations": ["mechanical"],
     }
@@ -84,16 +85,8 @@ def setup(doc=None, solvertype="ccxtools"):
     # load the hexa20 mesh
     from .meshes.mesh_canticcx_hexa20 import create_nodes, create_elements
 
-    new_fem_mesh = Fem.FemMesh()
-    control = create_nodes(new_fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(new_fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
-
-    # overwrite mesh with the hexa20 mesh
-    femmesh_obj.FemMesh = new_fem_mesh
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
+    femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc
