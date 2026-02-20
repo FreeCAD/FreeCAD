@@ -73,6 +73,7 @@ class ViewProvider(object):
         self.vobj = vobj
         self.Object = None
         self.panel = None
+        self.isValid = True
 
     def attach(self, vobj):
         Path.Log.track()
@@ -146,6 +147,7 @@ class ViewProvider(object):
         state["OpIcon"] = self.OpIcon
         state["OpPageModule"] = self.OpPageModule
         state["OpPageClass"] = self.OpPageClass
+        state["isValid"] = self.isValid
         return state
 
     def loads(self, state):
@@ -155,10 +157,13 @@ class ViewProvider(object):
         self.OpIcon = state["OpIcon"]
         self.OpPageModule = state["OpPageModule"]
         self.OpPageClass = state["OpPageClass"]
+        self.isValid = state.get("isValid", True)
 
     def getIcon(self):
         """getIcon() ... the icon used in the object tree"""
-        if self.Object.Active:
+        if not self.isValid:
+            return ":/icons/CAM_Stop.svg"
+        elif self.Object.Active:
             return self.OpIcon
         else:
             return ":/icons/CAM_OpActive.svg"
@@ -1325,7 +1330,7 @@ class TaskPanel(object):
     def panelSetFields(self):
         """panelSetFields() ... invoked to trigger a complete transfer of the model's properties to the UI."""
         Path.Log.track()
-        self.obj.Proxy.sanitizeBase(self.obj)
+        self.obj.Proxy.checkBase(self.obj)
         for page in self.featurePages:
             page.pageSetFields()
 
