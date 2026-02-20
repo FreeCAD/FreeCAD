@@ -146,25 +146,27 @@ void readParameterSheetState(
         PyErr_Clear();
     }
 
-    PyObject* usedCellsResult = PyObject_CallMethod(pySheet, "getUsedCells", nullptr);
-    if (usedCellsResult) {
-        PyObject* iter = PyObject_GetIter(usedCellsResult);
-        if (iter) {
-            while (PyObject* item = PyIter_Next(iter)) {
-                if (PyUnicode_Check(item)) {
-                    const char* cellAddress = PyUnicode_AsUTF8(item);
-                    if (cellAddress) {
-                        usedCells.emplace_back(cellAddress);
+    if (existingAddress.empty()) {
+        PyObject* usedCellsResult = PyObject_CallMethod(pySheet, "getUsedCells", nullptr);
+        if (usedCellsResult) {
+            PyObject* iter = PyObject_GetIter(usedCellsResult);
+            if (iter) {
+                while (PyObject* item = PyIter_Next(iter)) {
+                    if (PyUnicode_Check(item)) {
+                        const char* cellAddress = PyUnicode_AsUTF8(item);
+                        if (cellAddress) {
+                            usedCells.emplace_back(cellAddress);
+                        }
                     }
+                    Py_DECREF(item);
                 }
-                Py_DECREF(item);
+                Py_DECREF(iter);
             }
-            Py_DECREF(iter);
         }
-    }
 
-    Py_XDECREF(usedCellsResult);
-    PyErr_Clear();
+        Py_XDECREF(usedCellsResult);
+        PyErr_Clear();
+    }
 
     Py_DECREF(pySheet);
     Py_DECREF(pyDoc);
@@ -204,6 +206,38 @@ bool looksLikeExpressionInput(const QString& input)
         QStringLiteral(R"([A-Za-z_=+\-*/^().,;])")
     );
     return expressionChars.match(trimmed).hasMatch();
+}
+
+bool evaluateExpressionToUInt(
+    const std::shared_ptr<App::Expression>& expr,
+    unsigned minValue,
+    unsigned maxValue,
+    unsigned& valueAsUInt
+)
+{
+    if (!expr) {
+        return false;
+    }
+
+    std::unique_ptr<App::Expression> result(expr->eval());
+    auto* number = freecad_cast<App::NumberExpression*>(result.get());
+    if (!number) {
+        return false;
+    }
+
+    double roundedValue = boost::math::round(number->getValue());
+    if (!std::isfinite(roundedValue) || roundedValue < 0.0
+        || roundedValue > static_cast<double>(std::numeric_limits<unsigned>::max())) {
+        return false;
+    }
+
+    const auto convertedValue = static_cast<unsigned>(roundedValue);
+    if (convertedValue < minValue || convertedValue > maxValue) {
+        return false;
+    }
+
+    valueAsUInt = convertedValue;
+    return true;
 }
 }  // namespace
 
@@ -676,20 +710,8 @@ bool UIntSpinBox::tryHandleRawExpression(const QString& text)
     }
 
     try {
-        std::unique_ptr<App::Expression> result(expr->eval());
-        auto* number = freecad_cast<App::NumberExpression*>(result.get());
-        if (!number) {
-            return false;
-        }
-
-        double roundedValue = boost::math::round(number->getValue());
-        if (!std::isfinite(roundedValue) || roundedValue < 0.0
-            || roundedValue > static_cast<double>(std::numeric_limits<unsigned>::max())) {
-            return false;
-        }
-
-        auto valueAsUInt = static_cast<unsigned>(roundedValue);
-        if (valueAsUInt < minimum() || valueAsUInt > maximum()) {
+        unsigned valueAsUInt = 0;
+        if (!evaluateExpressionToUInt(expr, minimum(), maximum(), valueAsUInt)) {
             return false;
         }
 
@@ -861,20 +883,8 @@ bool UIntSpinBox::tryHandleVariableAssignment(const QString& text)
             return false;
         }
 
-        std::unique_ptr<App::Expression> result(expr->eval());
-        auto* number = freecad_cast<App::NumberExpression*>(result.get());
-        if (!number) {
-            return false;
-        }
-
-        double roundedValue = boost::math::round(number->getValue());
-        if (!std::isfinite(roundedValue) || roundedValue < 0.0
-            || roundedValue > static_cast<double>(std::numeric_limits<unsigned>::max())) {
-            return false;
-        }
-
-        auto valueAsUInt = static_cast<unsigned>(roundedValue);
-        if (valueAsUInt < minimum() || valueAsUInt > maximum()) {
+        unsigned valueAsUInt = 0;
+        if (!evaluateExpressionToUInt(expr, minimum(), maximum(), valueAsUInt)) {
             return false;
         }
 
