@@ -222,6 +222,21 @@ public:
         : rewriter(rewriter)
     {}
 
+    void report(DiagnosticsEngine& diagEngine, SourceLocation& location, const std::string& message)
+    {
+        unsigned errorID = diagEngine.getCustomDiagID(
+            DiagnosticsEngine::Error,
+            "Failed to properly rewrite property accessor: %0"
+        );
+        DiagnosticBuilder errorBuilder = diagEngine.Report(location, errorID);
+        errorBuilder.AddString(message);
+        // unsigned noteID
+        //     = diagEngine.getCustomDiagID(DiagnosticsEngine::Note, "skipping rewrite of method
+        //     '%0'");
+        // DiagnosticBuilder noteBuilder = diagEngine.Report(method->getLocation(), noteID);
+        // noteBuilder.AddString(method->getQualifiedNameAsString());
+    }
+
     void run(const MatchFinder::MatchResult& result) override
     {
         if (!candidateForRewriting(result)) {
@@ -354,15 +369,32 @@ private:
         ASTContext& ctx
     )
     {
+
+        auto reportInvalidLocation = [&](SourceLocation& loc, const std::string& message) {
+            report(ctx.getDiagnostics(), loc, message);
+        };
+
         for (const auto* thisExpr : collector.thisRefs) {
             if (!shouldRewriteThisToSelfPtr(thisExpr, ctx)) {
                 continue;
             }
 
             SourceLocation begin = thisExpr->getBeginLoc();
-            // thisExpr->getEndLoc() does not yield right result.
-            SourceLocation end
-                = Lexer::getLocForEndOfToken(begin, 0, sourceMgr, langOpts).getLocWithOffset(-1);
+            SourceLocation end = thisExpr->getEndLoc();
+
+            if (begin == end) {
+                // thisExpr->getEndLoc() does not yield right result.
+                end = Lexer::getLocForEndOfToken(begin, 0, sourceMgr, langOpts);
+                if (end.isInvalid()) {
+                    reportInvalidLocation(begin, "Failed to adjust end location for 'this'");
+                    continue;
+                }
+                end = end.getLocWithOffset(-1);  // move back to point to 's' in 'this'
+                if (end.isInvalid()) {
+                    reportInvalidLocation(begin, "Failed to adjust end location for 'this'");
+                    continue;
+                }
+            }
 
             edits.push_back(
                 Edit {.begin = begin, .end = end, .replacement = "&self", .isInsertBefore = false}
