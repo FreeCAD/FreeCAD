@@ -28,11 +28,17 @@
      <property name="title">
       <string>Position</string>
      </property>
+     <property name="toolTip">
+      <string>Set the placement location coordinates</string>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <layout class="QGridLayout" name="gridLayout">
         <item row="0" column="0">
          <widget class="QLabel" name="labelLength2_2">
+          <property name="toolTip">
+           <string>X coordinate of the placement location</string>
+          </property>
           <property name="text">
            <string>X</string>
           </property>
@@ -40,6 +46,9 @@
         </item>
         <item row="0" column="1">
          <widget class="Gui::QuantitySpinBox" name="XPositionQSB">
+          <property name="toolTip">
+           <string>X coordinate of the placement location</string>
+          </property>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
@@ -50,6 +59,9 @@
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelLength2_3">
+          <property name="toolTip">
+           <string>Y coordinate of the placement location</string>
+          </property>
           <property name="text">
            <string>Y</string>
           </property>
@@ -57,6 +69,9 @@
         </item>
         <item row="1" column="1">
          <widget class="Gui::QuantitySpinBox" name="YPositionQSB">
+          <property name="toolTip">
+           <string>Y coordinate of the placement location</string>
+          </property>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
@@ -67,6 +82,9 @@
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelLength2_4">
+          <property name="toolTip">
+           <string>Z coordinate of the placement location</string>
+          </property>
           <property name="text">
            <string>Z</string>
           </property>
@@ -74,6 +92,9 @@
         </item>
         <item row="2" column="1">
          <widget class="Gui::QuantitySpinBox" name="ZPositionQSB">
+          <property name="toolTip">
+           <string>Z coordinate of the placement location</string>
+          </property>
           <property name="keyboardTracking">
            <bool>false</bool>
           </property>
@@ -86,6 +107,9 @@
       </item>
       <item>
        <widget class="QPushButton" name="viewPositionButton">
+        <property name="toolTip">
+         <string>Select a point in the 3D view to set the location automatically</string>
+        </property>
         <property name="text">
          <string>3D View</string>
         </property>
@@ -114,6 +138,9 @@ the sketch plane's normal vector will be used</string>
        <layout class="QGridLayout" name="gridLayout_2">
         <item row="0" column="0">
          <widget class="QLabel" name="labelXSkew">
+          <property name="toolTip">
+           <string>X-component of the rotation axis direction vector</string>
+          </property>
           <property name="text">
            <string>X</string>
           </property>
@@ -143,6 +170,9 @@ the sketch plane's normal vector will be used</string>
         </item>
         <item row="1" column="0">
          <widget class="QLabel" name="labelYSkew">
+          <property name="toolTip">
+           <string>Y-component of the rotation axis direction vector</string>
+          </property>
           <property name="text">
            <string>Y</string>
           </property>
@@ -172,6 +202,9 @@ the sketch plane's normal vector will be used</string>
         </item>
         <item row="2" column="0">
          <widget class="QLabel" name="labelZSkew">
+          <property name="toolTip">
+           <string>Z-component of the rotation axis direction vector</string>
+          </property>
           <property name="text">
            <string>Z</string>
           </property>
@@ -204,6 +237,9 @@ the sketch plane's normal vector will be used</string>
         </item>
         <item row="3" column="0">
          <widget class="QLabel" name="labelLength2">
+          <property name="toolTip">
+           <string>Rotation angle around the specified axis</string>
+          </property>
           <property name="text">
            <string>Angle</string>
           </property>
@@ -211,6 +247,9 @@ the sketch plane's normal vector will be used</string>
         </item>
         <item row="3" column="1">
          <widget class="Gui::QuantitySpinBox" name="AngleQSB">
+          <property name="toolTip">
+           <string>Rotation angle around the specified axis</string>
+          </property>
           <property name="unit" stdset="0">
            <string notr="true"/>
           </property>
