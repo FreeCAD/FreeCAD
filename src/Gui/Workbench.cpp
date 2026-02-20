@@ -802,6 +802,12 @@ MenuItem* StdWorkbench::setupMenuBar() const
            << "Std_MacroStepInto"
            << "Std_ToggleBreakpoint";
 
+#if defined(BUILD_QTTESTING)
+    auto qtTesting = new MenuItem(menuBar);
+    qtTesting->setCommand("QtTesting");
+    *qtTesting << "Std_QtTestRecord" << "Std_QtTestPlayback";
+#endif
+
     // Windows
     auto wnd = new MenuItem(menuBar);
     wnd->setCommand("&Windows");
