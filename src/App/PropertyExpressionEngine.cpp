@@ -129,9 +129,11 @@ unsigned int PropertyExpressionEngine::getMemSize() const
 
 Property* PropertyExpressionEngine::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     PropertyExpressionEngine* engine = new PropertyExpressionEngine();
 
-    for (const auto& it : expressions) {
+    for (const auto& it : self.expressions) {
         ExpressionInfo info;
         if (it.second.expression) {
             info.expression = std::shared_ptr<Expression>(it.second.expression->copy());
@@ -139,16 +141,18 @@ Property* PropertyExpressionEngine::Copy() const
         engine->expressions[it.first] = info;
     }
 
-    engine->validator = validator;
+    engine->validator = self.validator;
 
     return engine;
 }
 
 void PropertyExpressionEngine::hasSetValue()
 {
-    auto* owner = freecad_cast<App::DocumentObject*>(getContainer());
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    auto* owner = freecad_cast<App::DocumentObject*>(self.getContainer());
     if (!owner || !owner->isAttachedToDocument() || owner->isRestoring()
-        || testFlag(LinkDetached)) {
+        || self.testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
         return;
     }
@@ -156,38 +160,38 @@ void PropertyExpressionEngine::hasSetValue()
     std::map<App::DocumentObject*, bool> deps;
     std::map<std::pair<std::string, App::DocumentObject*>, bool> propDeps;
     std::vector<std::string> labels;
-    unregisterElementReference();
-    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
-    for (auto& e : expressions) {
+    self.unregisterElementReference();
+    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(self);
+    for (auto& e : self.expressions) {
         auto expr = e.second.expression;
         if (expr) {
             expr->getDepObjects(deps, &labels, &propDeps);
-            if (!restoring) {
+            if (!self.restoring) {
                 expr->visit(v);
             }
         }
     }
-    registerLabelReferences(std::move(labels));
+    self.registerLabelReferences(std::move(labels));
 
-    updateDeps(std::move(deps), &propDeps);
+    self.updateDeps(std::move(deps), &propDeps);
 
-    if (pimpl) {
-        pimpl->conns.clear();
-        pimpl->propMap.clear();
+    if (self.pimpl) {
+        self.pimpl->conns.clear();
+        self.pimpl->propMap.clear();
     }
     // check if there is any hidden references
     bool hasHidden = false;
-    for (auto& v : _Deps) {
+    for (auto& v : self._Deps) {
         if (v.second) {
             hasHidden = true;
             break;
         }
     }
     if (hasHidden) {
-        if (!pimpl) {
-            pimpl = std::make_unique<Private>();
+        if (!self.pimpl) {
+            self.pimpl = std::make_unique<Private>();
         }
-        for (auto& e : expressions) {
+        for (auto& e : self.expressions) {
             auto expr = e.second.expression;
             if (!expr) {
                 continue;
@@ -202,20 +206,20 @@ void PropertyExpressionEngine::hasSetValue()
                     auto objName = obj->getFullName() + ".";
                     for (auto& propName : vdep.second) {
                         std::string key = objName + propName;
-                        auto& propDeps = pimpl->propMap[key];
+                        auto& propDeps = self.pimpl->propMap[key];
                         if (propDeps.empty()) {
                             // NOLINTBEGIN
                             if (!propName.empty()) {
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(
+                                self.pimpl->conns.emplace_back(obj->signalChanged.connect(
                                     std::bind(&PropertyExpressionEngine::slotChangedProperty,
-                                              this,
+                                              &self,
                                               sp::_1,
                                               sp::_2)));
                             }
                             else {
-                                pimpl->conns.emplace_back(obj->signalChanged.connect(
+                                self.pimpl->conns.emplace_back(obj->signalChanged.connect(
                                     std::bind(&PropertyExpressionEngine::slotChangedObject,
-                                              this,
+                                              &self,
                                               sp::_1,
                                               sp::_2)));
                             }
@@ -233,16 +237,18 @@ void PropertyExpressionEngine::hasSetValue()
 
 void PropertyExpressionEngine::updateHiddenReference(const std::string& key)
 {
-    if (!pimpl) {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    if (!self.pimpl) {
         return;
     }
-    auto it = pimpl->propMap.find(key);
-    if (it == pimpl->propMap.end()) {
+    auto it = self.pimpl->propMap.find(key);
+    if (it == self.pimpl->propMap.end()) {
         return;
     }
     for (auto& var : it->second) {
-        auto it = expressions.find(var);
-        if (it == expressions.end() || it->second.busy) {
+        auto it = self.expressions.find(var);
+        if (it == self.expressions.end() || it->second.busy) {
             continue;
         }
         Property* myProp = var.getProperty();
@@ -277,37 +283,45 @@ void PropertyExpressionEngine::updateHiddenReference(const std::string& key)
 void PropertyExpressionEngine::slotChangedObject(const App::DocumentObject& obj,
                                                  const App::Property&)
 {
-    updateHiddenReference(obj.getFullName());
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    self.updateHiddenReference(obj.getFullName());
 }
 
 void PropertyExpressionEngine::slotChangedProperty(const App::DocumentObject&,
                                                    const App::Property& prop)
 {
-    updateHiddenReference(prop.getFullName());
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    self.updateHiddenReference(prop.getFullName());
 }
 
 void PropertyExpressionEngine::Paste(const Property& from)
 {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
     const PropertyExpressionEngine& fromee = dynamic_cast<const PropertyExpressionEngine&>(from);
 
-    AtomicPropertyChange signaller(*this);
+    AtomicPropertyChange signaller(self);
 
-    expressions.clear();
+    self.expressions.clear();
     for (auto& e : fromee.expressions) {
         ExpressionInfo info;
         if (e.second.expression) {
             info.expression = std::shared_ptr<Expression>(e.second.expression->copy());
         }
-        expressions[e.first] = info;
-        expressionChanged(e.first);
+        self.expressions[e.first] = info;
+        self.expressionChanged(e.first);
     }
-    validator = fromee.validator;
+    self.validator = fromee.validator;
     signaller.tryInvoke();
 }
 
 void PropertyExpressionEngine::Save(Base::Writer& writer) const
 {
-    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" << expressions.size();
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
+    writer.Stream() << writer.ind() << "<ExpressionEngine count=\"" << self.expressions.size();
     if (PropertyExpressionContainer::_XLinks.empty()) {
         writer.Stream() << "\">" << std::endl;
         writer.incInd();
@@ -317,7 +331,7 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
         writer.incInd();
         PropertyExpressionContainer::Save(writer);
     }
-    for (const auto& it : expressions) {
+    for (const auto& it : self.expressions) {
         std::string expression, comment;
         if (it.second.expression) {
             expression = it.second.expression->toString(true);
@@ -338,6 +352,8 @@ void PropertyExpressionEngine::Save(Base::Writer& writer) const
 
 void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
     reader.readElement("ExpressionEngine");
     int count = reader.getAttribute<double>("count");
 
@@ -345,13 +361,13 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
         PropertyExpressionContainer::Restore(reader);
     }
 
-    restoredExpressions = std::make_unique<std::vector<RestoredExpression>>();
-    restoredExpressions->reserve(count);
+    self.restoredExpressions = std::make_unique<std::vector<RestoredExpression>>();
+    self.restoredExpressions->reserve(count);
     for (int i = 0; i < count; ++i) {
 
         reader.readElement("Expression");
-        restoredExpressions->emplace_back();
-        auto& info = restoredExpressions->back();
+        self.restoredExpressions->emplace_back();
+        auto& info = self.restoredExpressions->back();
         info.path = reader.getAttribute<const char*>("path");
         info.expr = reader.getAttribute<const char*>("expression");
         if (reader.hasAttribute("comment")) {
@@ -420,7 +436,9 @@ void PropertyExpressionEngine::buildGraphStructures(
 
 ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& oid) const
 {
-    DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
+    DocumentObject* docObj = freecad_cast<DocumentObject*>(self.getContainer());
 
     // Am I owned by a DocumentObject?
     if (!docObj) {
@@ -435,7 +453,7 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier&
         throw Base::RuntimeError(oid.resolveErrorString().c_str());
     }
 
-    if (ptype || prop->getContainer() != getContainer()) {
+    if (ptype || prop->getContainer() != self.getContainer()) {
         return oid;
     }
 
@@ -455,20 +473,24 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier&
 
 size_t PropertyExpressionEngine::numExpressions() const
 {
-    return expressions.size();
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
+    return self.expressions.size();
 }
 
 void PropertyExpressionEngine::afterRestore()
 {
-    DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
-    if (restoredExpressions && docObj) {
-        Base::FlagToggler<bool> flag(restoring);
-        AtomicPropertyChange signaller(*this);
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    DocumentObject* docObj = freecad_cast<DocumentObject*>(self.getContainer());
+    if (self.restoredExpressions && docObj) {
+        Base::FlagToggler<bool> flag(self.restoring);
+        AtomicPropertyChange signaller(self);
 
         PropertyExpressionContainer::afterRestore();
-        ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
+        ObjectIdentifier::DocumentMapper mapper(self._DocMap);
 
-        for (auto& info : *restoredExpressions) {
+        for (auto& info : *self.restoredExpressions) {
             ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
             if (!info.expr.empty()) {
                 std::shared_ptr<Expression> expression(
@@ -476,20 +498,22 @@ void PropertyExpressionEngine::afterRestore()
                 if (expression) {
                     expression->comment = std::move(info.comment);
                 }
-                setValue(path, expression);
+                self.setValue(path, expression);
             }
         }
         signaller.tryInvoke();
     }
-    restoredExpressions.reset();
+    self.restoredExpressions.reset();
 }
 
 void PropertyExpressionEngine::onContainerRestored()
 {
-    Base::FlagToggler<bool> flag(restoring);
-    unregisterElementReference();
-    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this);
-    for (auto& e : expressions) {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    Base::FlagToggler<bool> flag(self.restoring);
+    self.unregisterElementReference();
+    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(self);
+    for (auto& e : self.expressions) {
         auto expr = e.second.expression;
         if (expr) {
             expr->visit(v);
@@ -505,11 +529,13 @@ void PropertyExpressionEngine::onContainerRestored()
 
 const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier& path) const
 {
-    // Get a canonical path
-    ObjectIdentifier usePath(canonicalPath(path));
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
 
-    auto i = expressions.find(usePath);
-    if (i != expressions.end()) {
+    // Get a canonical path
+    ObjectIdentifier usePath(self.canonicalPath(path));
+
+    auto i = self.expressions.find(usePath);
+    if (i != self.expressions.end()) {
         return i->second;
     }
 
@@ -526,7 +552,9 @@ const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentif
 void PropertyExpressionEngine::setValue(const ObjectIdentifier& path,
                                         std::shared_ptr<Expression> expr)
 {
-    ObjectIdentifier usePath(canonicalPath(path));
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    ObjectIdentifier usePath(self.canonicalPath(path));
     const Property* prop = usePath.getProperty();
 
     // Try to access value; it should trigger an exception if it is not supported, or if the path is
@@ -535,27 +563,27 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier& path,
 
     // Check if the current expression equals the new one and do nothing if so to reduce unneeded
     // computations
-    auto it = expressions.find(usePath);
-    if (it != expressions.end()
+    auto it = self.expressions.find(usePath);
+    if (it != self.expressions.end()
         && (expr == it->second.expression
             || (expr && it->second.expression && expr->isSame(*it->second.expression)))) {
         return;
     }
 
     if (expr) {
-        std::string error = validateExpression(usePath, expr);
+        std::string error = self.validateExpression(usePath, expr);
         if (!error.empty()) {
             throw Base::RuntimeError(error.c_str());
         }
-        AtomicPropertyChange signaller(*this);
-        expressions[usePath] = ExpressionInfo(expr);
-        expressionChanged(usePath);
+        AtomicPropertyChange signaller(self);
+        self.expressions[usePath] = ExpressionInfo(expr);
+        self.expressionChanged(usePath);
         signaller.tryInvoke();
     }
-    else if (it != expressions.end()) {
-        AtomicPropertyChange signaller(*this);
-        expressions.erase(it);
-        expressionChanged(usePath);
+    else if (it != self.expressions.end()) {
+        AtomicPropertyChange signaller(self);
+        self.expressions.erase(it);
+        self.expressionChanged(usePath);
         signaller.tryInvoke();
     }
 }
@@ -597,6 +625,8 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap& exprs,
                                           DiGraph& g,
                                           ExecuteOption option) const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     boost::unordered_map<ObjectIdentifier, int> nodes;
     std::vector<Edge> edges;
 
@@ -619,7 +649,7 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap& exprs,
                 continue;
             }
         }
-        buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
+        self.buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
     }
 
     // Create graph
@@ -652,11 +682,13 @@ void PropertyExpressionEngine::buildGraph(const ExpressionMap& exprs,
 std::vector<App::ObjectIdentifier>
 PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     std::vector<App::ObjectIdentifier> evaluationOrder;
     boost::unordered_map<int, ObjectIdentifier> revNodes;
     DiGraph g;
 
-    buildGraph(expressions, revNodes, g, option);
+    self.buildGraph(self.expressions, revNodes, g, option);
 
     /* Compute evaluation order for expressions */
     std::vector<int> c;
@@ -681,19 +713,21 @@ PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
 DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption option,
                                                                  bool* touched)
 {
-    DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    DocumentObject* docObj = freecad_cast<DocumentObject*>(self.getContainer());
 
     if (!docObj) {
         throw Base::RuntimeError("PropertyExpressionEngine must be owned by a DocumentObject.");
     }
 
-    if (running) {
+    if (self.running) {
         return DocumentObject::StdReturn;
     }
 
     if (option == ExecuteOnRestore) {
         bool found = false;
-        for (auto& e : expressions) {
+        for (auto& e : self.expressions) {
             auto prop = e.first.getProperty();
             if (!prop) {
                 continue;
@@ -731,10 +765,10 @@ DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption o
         bool& _b;
     };
 
-    resetter r(running);
+    resetter r(self.running);
 
     // Compute evaluation order
-    std::vector<App::ObjectIdentifier> evaluationOrder = computeEvaluationOrder(option);
+    std::vector<App::ObjectIdentifier> evaluationOrder = self.computeEvaluationOrder(option);
     std::vector<ObjectIdentifier>::const_iterator it = evaluationOrder.begin();
 
 #ifdef FC_PROPERTYEXPRESSIONENGINE_LOG
@@ -762,7 +796,7 @@ DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption o
         App::any value;
         try {
             // Evaluate expression
-            std::shared_ptr<App::Expression> expression = expressions[*it].expression;
+            std::shared_ptr<App::Expression> expression = self.expressions[*it].expression;
             if (expression) {
                 value = expression->getValueAsAny();
 
@@ -820,13 +854,15 @@ void PropertyExpressionEngine::getPathsToDocumentObject(
     DocumentObject* obj,
     std::vector<App::ObjectIdentifier>& paths) const
 {
-    DocumentObject* owner = freecad_cast<DocumentObject*>(getContainer());
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
+    DocumentObject* owner = freecad_cast<DocumentObject*>(self.getContainer());
 
     if (!owner || owner == obj) {
         return;
     }
 
-    for (auto& v : expressions) {
+    for (auto& v : self.expressions) {
         if (!v.second.expression) {
             continue;
         }
@@ -848,7 +884,9 @@ void PropertyExpressionEngine::getPathsToDocumentObject(
 
 bool PropertyExpressionEngine::depsAreTouched() const
 {
-    for (auto& v : _Deps) {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
+    for (auto& v : self._Deps) {
         // v.second indicates if it is a hidden reference
         if (!v.second && v.first->isTouched()) {
             return true;
@@ -868,11 +906,13 @@ std::string
 PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
                                              std::shared_ptr<const Expression> expr) const
 {
-    std::string error;
-    ObjectIdentifier usePath(canonicalPath(path));
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
 
-    if (validator) {
-        error = validator(usePath, expr);
+    std::string error;
+    ObjectIdentifier usePath(self.canonicalPath(path));
+
+    if (self.validator) {
+        error = self.validator(usePath, expr);
         if (!error.empty()) {
             return error;
         }
@@ -916,7 +956,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
     // Check for internal document object dependencies
 
     // Copy current expressions
-    ExpressionMap newExpressions = expressions;
+    ExpressionMap newExpressions = self.expressions;
 
     // Add expression in question
     std::shared_ptr<Expression> exprClone(expr->copy());
@@ -927,7 +967,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
         boost::unordered_map<int, ObjectIdentifier> revNodes;
         DiGraph g;
 
-        buildGraph(newExpressions, revNodes, g);
+        self.buildGraph(newExpressions, revNodes, g);
     }
     catch (const Base::Exception& e) {
         return e.what();
@@ -944,15 +984,17 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
 void PropertyExpressionEngine::renameExpressions(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
 {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
     ExpressionMap newExpressions;
     std::map<ObjectIdentifier, ObjectIdentifier> canonicalPaths;
 
     /* ensure input map uses canonical paths */
     for (const auto& path : paths) {
-        canonicalPaths[canonicalPath(path.first)] = path.second;
+        canonicalPaths[self.canonicalPath(path.first)] = path.second;
     }
 
-    for (auto i = expressions.begin(); i != expressions.end(); ++i) {
+    for (auto i = self.expressions.begin(); i != self.expressions.end(); ++i) {
         auto j = canonicalPaths.find(i->first);
 
         // Renamed now?
@@ -964,13 +1006,13 @@ void PropertyExpressionEngine::renameExpressions(
         }
     }
 
-    aboutToSetValue();
-    expressions = newExpressions;
-    for (auto i = expressions.begin(); i != expressions.end(); ++i) {
-        expressionChanged(i->first);
+    self.aboutToSetValue();
+    self.expressions = newExpressions;
+    for (auto i = self.expressions.begin(); i != self.expressions.end(); ++i) {
+        self.expressionChanged(i->first);
     }
 
-    hasSetValue();
+    self.hasSetValue();
 }
 
 /**
@@ -981,16 +1023,20 @@ void PropertyExpressionEngine::renameExpressions(
 void PropertyExpressionEngine::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
 {
-    for (const auto& it : expressions) {
-        RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(*this, paths, it.first);
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    for (const auto& it : self.expressions) {
+        RenameObjectIdentifierExpressionVisitor<PropertyExpressionEngine> v(self, paths, it.first);
         it.second.expression->visit(v);
     }
 }
 
 PyObject* PropertyExpressionEngine::getPyObject()
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     Py::List list;
-    for (const auto& it : expressions) {
+    for (const auto& it : self.expressions) {
         Py::Tuple tuple(2);
         tuple.setItem(0, Py::String(it.first.toString()));
         auto expr = it.second.expression;
@@ -1035,12 +1081,14 @@ void PropertyExpressionEngine::breakLink(App::DocumentObject *obj, bool clear) {
 
 bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*>& inList)
 {
-    auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
+    auto owner = dynamic_cast<App::DocumentObject*>(self.getContainer());
     if (!owner) {
         return false;
     }
     bool found = false;
-    for (auto& v : _Deps) {
+    for (auto& v : self._Deps) {
         if (inList.contains(v.first)) {
             found = true;
             break;
@@ -1050,11 +1098,11 @@ bool PropertyExpressionEngine::adjustLink(const std::set<DocumentObject*>& inLis
         return false;
     }
 
-    AtomicPropertyChange signaler(*this);
-    for (auto& v : expressions) {
+    AtomicPropertyChange signaler(self);
+    for (auto& v : self.expressions) {
         try {
             if (v.second.expression && v.second.expression->adjustLinks(inList)) {
-                expressionChanged(v.first);
+                self.expressionChanged(v.first);
             }
         }
         catch (Base::Exception& e) {
@@ -1071,24 +1119,26 @@ void PropertyExpressionEngine::updateElementReference(DocumentObject* feature,
                                                       bool reverse,
                                                       bool notify)
 {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
     (void)notify;
     if (!feature) {
-        unregisterElementReference();
+        self.unregisterElementReference();
     }
-    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(*this, feature, reverse);
-    for (auto& e : expressions) {
+    UpdateElementReferenceExpressionVisitor<PropertyExpressionEngine> v(self, feature, reverse);
+    for (auto& e : self.expressions) {
         if (e.second.expression) {
             e.second.expression->visit(v);
             if (v.changed()) {
-                expressionChanged(e.first);
+                self.expressionChanged(e.first);
                 v.reset();
             }
         }
     }
     if (feature && v.changed()) {
-        auto owner = dynamic_cast<App::DocumentObject*>(getContainer());
+        auto owner = dynamic_cast<App::DocumentObject*>(self.getContainer());
         if (owner) {
-            owner->onUpdateElementReference(this);
+            owner->onUpdateElementReference(&self);
         }
     }
 }
@@ -1101,8 +1151,10 @@ bool PropertyExpressionEngine::referenceChanged() const
 Property* PropertyExpressionEngine::CopyOnImportExternal(
     const std::map<std::string, std::string>& nameMap) const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     std::unique_ptr<PropertyExpressionEngine> engine;
-    for (auto it = expressions.begin(); it != expressions.end(); ++it) {
+    for (auto it = self.expressions.begin(); it != self.expressions.end(); ++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(it->second.expression->importSubNames(nameMap).release());
 #else
@@ -1113,7 +1165,7 @@ Property* PropertyExpressionEngine::CopyOnImportExternal(
         }
         if (!engine) {
             engine = std::make_unique<PropertyExpressionEngine>();
-            for (auto it2 = expressions.begin(); it2 != it; ++it2) {
+            for (auto it2 = self.expressions.begin(); it2 != it; ++it2) {
                 engine->expressions[it2->first] =
                     ExpressionInfo(std::shared_ptr<Expression>(it2->second.expression->copy()));
             }
@@ -1126,7 +1178,7 @@ Property* PropertyExpressionEngine::CopyOnImportExternal(
     if (!engine) {
         return nullptr;
     }
-    engine->validator = validator;
+    engine->validator = self.validator;
     return engine.release();
 }
 
@@ -1134,8 +1186,10 @@ Property* PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject* obj,
                                                       const std::string& ref,
                                                       const char* newLabel) const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     std::unique_ptr<PropertyExpressionEngine> engine;
-    for (auto it = expressions.begin(); it != expressions.end(); ++it) {
+    for (auto it = self.expressions.begin(); it != self.expressions.end(); ++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(
             it->second.expression->updateLabelReference(obj, ref, newLabel).release());
@@ -1148,7 +1202,7 @@ Property* PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject* obj,
         }
         if (!engine) {
             engine = std::make_unique<PropertyExpressionEngine>();
-            for (auto it2 = expressions.begin(); it2 != it; ++it2) {
+            for (auto it2 = self.expressions.begin(); it2 != it; ++it2) {
                 ExpressionInfo info;
                 if (it2->second.expression) {
                     info.expression = std::shared_ptr<Expression>(it2->second.expression->copy());
@@ -1164,7 +1218,7 @@ Property* PropertyExpressionEngine::CopyOnLabelChange(App::DocumentObject* obj,
     if (!engine) {
         return nullptr;
     }
-    engine->validator = validator;
+    engine->validator = self.validator;
     return engine.release();
 }
 
@@ -1172,8 +1226,10 @@ Property* PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject*
                                                       App::DocumentObject* oldObj,
                                                       App::DocumentObject* newObj) const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     std::unique_ptr<PropertyExpressionEngine> engine;
-    for (auto it = expressions.begin(); it != expressions.end(); ++it) {
+    for (auto it = self.expressions.begin(); it != self.expressions.end(); ++it) {
 #ifdef BOOST_NO_CXX11_SMART_PTR
         std::shared_ptr<Expression> expr(
             it->second.expression->replaceObject(parent, oldObj, newObj).release());
@@ -1186,7 +1242,7 @@ Property* PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject*
         }
         if (!engine) {
             engine = std::make_unique<PropertyExpressionEngine>();
-            for (auto it2 = expressions.begin(); it2 != it; ++it2) {
+            for (auto it2 = self.expressions.begin(); it2 != it; ++it2) {
                 ExpressionInfo info;
                 if (it2->second.expression) {
                     info.expression = std::shared_ptr<Expression>(it2->second.expression->copy());
@@ -1202,15 +1258,17 @@ Property* PropertyExpressionEngine::CopyOnLinkReplace(const App::DocumentObject*
     if (!engine) {
         return nullptr;
     }
-    engine->validator = validator;
+    engine->validator = self.validator;
     return engine.release();
 }
 
 std::map<App::ObjectIdentifier, const App::Expression*>
 PropertyExpressionEngine::getExpressions() const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     std::map<App::ObjectIdentifier, const Expression*> res;
-    for (auto& v : expressions) {
+    for (auto& v : self.expressions) {
         res[v.first] = v.second.expression.get();
     }
     return res;
@@ -1233,8 +1291,10 @@ void PropertyExpressionEngine::setExpressions(
 
 void PropertyExpressionEngine::onRelabeledDocument(const App::Document& doc)
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     RelabelDocumentExpressionVisitor v(doc);
-    for (auto& e : expressions) {
+    for (auto& e : self.expressions) {
         if (e.second.expression) {
             e.second.expression->visit(v);
         }
@@ -1243,13 +1303,15 @@ void PropertyExpressionEngine::onRelabeledDocument(const App::Document& doc)
 
 void PropertyExpressionEngine::onRenameDynamicProperty(const App::Property& prop, const char* oldName)
 {
+    auto& self = propSetterSelf<App::PropertyExpressionEngine>(*this);
+
     ObjectIdentifier oldNameId = ObjectIdentifier(prop.getContainer(), std::string(oldName));
     ObjectIdentifier newNameId = ObjectIdentifier(prop);
     const std::map<ObjectIdentifier, ObjectIdentifier> paths = {
         {oldNameId, newNameId},
     };
 
-    renameObjectIdentifiers(paths);
+    self.renameObjectIdentifiers(paths);
 }
 
 void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& identifiers,
@@ -1257,6 +1319,8 @@ void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& id
                                           const char* subname,
                                           bool all) const
 {
+    auto& self = propGetterSelf<const App::PropertyExpressionEngine>(*this);
+
     Expression::DepOption option =
         all ? Expression::DepOption::DepAll : Expression::DepOption::DepNormal;
 
@@ -1264,7 +1328,7 @@ void PropertyExpressionEngine::getLinksTo(std::vector<App::ObjectIdentifier>& id
     auto sobj = objT.getSubObject();
     auto subElement = objT.getOldElementName();
 
-    for (auto& [expressionId, expressionInfo] : expressions) {
+    for (auto& [expressionId, expressionInfo] : self.expressions) {
         const auto& deps = expressionInfo.expression->getDeps(option);
         auto it = deps.find(obj);
         if (it == deps.end()) {
