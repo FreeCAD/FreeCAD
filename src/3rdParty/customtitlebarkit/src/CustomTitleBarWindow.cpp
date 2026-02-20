@@ -261,6 +261,15 @@ void CustomTitleBarWindow::resizeEvent(QResizeEvent *event)
     d->layoutOverlay(this);
 }
 
+bool CustomTitleBarWindow::nativeEvent(const QByteArray &eventType, void *message, qintptr *result)
+{
+    if (d->mode != Mode::Native && d->backend) {
+        if (d->backend->handleNativeEvent(eventType, message, result))
+            return true;
+    }
+    return QMainWindow::nativeEvent(eventType, message, result);
+}
+
 bool CustomTitleBarWindow::eventFilter(QObject *obj, QEvent *event)
 {
     if (d->mode == Mode::Native)
