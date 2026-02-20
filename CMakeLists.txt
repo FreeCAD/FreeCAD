@@ -73,6 +73,11 @@ string(TIMESTAMP PACKAGE_COPYRIGHT_YEAR "%Y")
 set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 set(PACKAGE_STRING "${PROJECT_NAME} ${PACKAGE_VERSION}")
 
+if(APPLE)
+    enable_language(OBJC)
+    enable_language(OBJCXX)
+endif()
+
 # include local modules
 include(CheckCXXCompilerFlag)
 include(AddFileDependencies)
