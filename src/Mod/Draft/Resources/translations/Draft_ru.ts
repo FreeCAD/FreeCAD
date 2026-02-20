@@ -430,7 +430,7 @@ It cannot be zero.</source>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="93"/>
       <source>Number of concentric circles to create, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Количество создаваемых концентрических слоёв, включая копию исходного объекта, должно быть не менее 2.</translation>
+      <translation>Количество создаваемых концентрических окружностей, включая копию исходного объекта, должно быть не менее 2.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="86"/>
@@ -932,7 +932,7 @@ of the buttons above</source>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="133"/>
       <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
-      <translation>Или выберите одну вершину, чтобы переместить текущую рабочую плоскость, не меняя её ориентации. Затем нажмите кнопку ниже.</translation>
+      <translation>Или выберите одну вершину, чтобы переместить текущую рабочую плоскость, не меняя ее ориентации. Затем нажмите кнопку ниже.</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="143"/>

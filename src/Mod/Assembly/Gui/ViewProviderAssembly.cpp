@@ -1216,13 +1216,21 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // onSelectionChanged is called from both Selection.cpp and SelectionObserver.
+    // In the case where you have nested assemblies, that would cause issues. See #27532
+    bool singleAssembly
+        = getDocument()->getDocument()->getObjectsOfType<Assembly::AssemblyObject>().size() == 1;
+    if (!isInEditMode() && !singleAssembly) {
+        return;
+    }
+
     // Joint components isolation
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         auto selection = Gui::Selection().getSelection();
         if (selection.size() == 1) {
             App::DocumentObject* obj = selection[0].pObject;
-            // A simple way to identify a joint is to check for its "JointType" property.
-            if (obj && obj->getPropertyByName("JointType")) {
+            if (obj
+                && (obj->getPropertyByName("JointType") || obj->getPropertyByName("ObjectToGround"))) {
                 isolateJointReferences(obj);
                 return;
             }
@@ -1514,6 +1522,20 @@ void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& iso
 void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, IsolateMode mode)
 {
     if (!joint || isolatedJoint == joint) {
+        return;
+    }
+
+    clearIsolate();
+
+    if (auto* prop = joint->getPropertyByName<App::PropertyLink>("ObjectToGround")) {
+        auto* groundedObj = prop->getValue();
+
+        isolatedJoint = joint;
+        isolatedJointVisibilityBackup = joint->Visibility.getValue();
+        joint->Visibility.setValue(true);
+
+        std::set<App::DocumentObject*> isolateSet = {groundedObj};
+        isolateComponents(isolateSet, mode);
         return;
     }
 

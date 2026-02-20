@@ -3521,12 +3521,12 @@ Ako imaš nasleđeni dokument sa objektima bez tela, da bi ih smestio u Telo kor
       <translation>Da bi koristio ovaj tipski oblik, on mora da pripada telu u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Tipski oblik nije unutar dela</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Da bi koristio ovaj tipski oblik, on mora da pripada delu u dokumentu.</translation>
     </message>

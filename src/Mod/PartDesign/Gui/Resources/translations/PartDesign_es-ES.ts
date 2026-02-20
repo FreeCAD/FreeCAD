@@ -3517,12 +3517,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Para poder utilizar esta operación debe pertenecer a un objeto del cuerpo en el documento.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Función no está en una pieza</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Para poder usar esta operación debe pertenecer a una pieza objeto en el documento.</translation>
     </message>

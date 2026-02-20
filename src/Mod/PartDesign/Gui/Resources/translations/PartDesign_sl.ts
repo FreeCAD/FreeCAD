@@ -3522,12 +3522,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Če želite uporabiti to značilnost, mora pripradati telesu v dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Značilnost ni v delu</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Če želite uporabiti to značilnost, mora pripadati delu v dokumentu.</translation>
     </message>

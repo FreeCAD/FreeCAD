@@ -151,13 +151,7 @@ private:
     );
 
     /// finds a free position for placing a constraint icon
-    Base::Vector3d seekConstraintPosition(
-        const Base::Vector3d& origPos,
-        const Base::Vector3d& norm,
-        const Base::Vector3d& dir,
-        float step,
-        const SoNode* constraint
-    );
+    Base::Vector3d seekConstraintPosition(const Base::Vector3d& norm, float step);
 
     /// Return display string for constraint including hiding units if
     // requested.

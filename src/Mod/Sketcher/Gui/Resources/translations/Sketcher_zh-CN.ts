@@ -746,7 +746,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>分割边</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>添加外部几何体</translation>
     </message>
@@ -956,54 +956,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>你被要求不对多重性节点做任何修改。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>贝赛尔样条几何图形索引(GeoID) 越界</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>提供的几何图形索引 (GeoId) 不是贝赛尔样条</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>结指数超出界限。请注意, 按照 OCC 符号, 第一个节点的索引为1, 而不是0。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>无法重复增加到超过贝塞尔曲线的自由度。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>多重性不能小于0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC 无法在最大公差范围内减少多重性。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>节点不能有零倍数。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>节点多重性不能高于BSpline的程度。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>不能在B样条参数范围之外插入节点。</translation>
     </message>
@@ -4598,17 +4598,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>草图包含部分冗余约束！</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>几何属性的非托管更改导致约束索引无效</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>约束属性的非托管更改导致约束索引无效</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>抛物线已迁移。迁移后的文件将无法在旧版FreeCAD中打开！！
@@ -4628,7 +4628,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4753,7 +4753,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>扩展边缘失败</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>添加外部几何失败</translation>
     </message>
@@ -7559,7 +7559,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 选择外部几何图形</translation>

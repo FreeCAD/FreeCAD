@@ -748,7 +748,7 @@ restriccions invàlides i geometria degenerada</translation>
       <translation>Dividir aresta</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>Afegeix una geometria externa</translation>
     </message>
@@ -958,54 +958,54 @@ restriccions invàlides i geometria degenerada</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Se us ha demanat que no canvieu la multiplicitat del nus.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'índex de geometria B-spline (GeoID) està fora de límits.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>L'índex de geometria (GeoId) proporcionada no és una B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L'índex del nus és fora dels límits. Tingueu en compte que d'acord amb la notació d'OCC, el primer nus té l'índex 1 i no zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicitat no pot augmentar més enllà del grau de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicitat no es pot reduir més enllà de zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC no pot reduir la multiplicitat dins de la tolerància màxima.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>El node no pot tenir multiplicitat zero.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>La multiplicitat de nodes no pot ser superior al grau de la B-Spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>El node no es pot inserir fora de l'interval de paràmetres B-spline.</translation>
     </message>
@@ -4591,17 +4591,17 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <translation>El croquis té restriccions parcialment redundants!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>El canvi no gestionat de la propietat de geometria dona lloc a índexs de restricció no vàlids</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>El canvi no gestionat de la propietat de geometria dona lloc a índexs de restricció no vàlids</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>S'han migrat les paràboles. Els arxius migrats no s'obriran en versions prèvies de FreeCAD!!
@@ -4621,7 +4621,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4746,7 +4746,7 @@ L'espaiat de la quadrícula canvia si esdevé més petit que la mida de píxel e
       <translation>No s'ha pogut estendre la vora</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>No s'ha pogut afegir la geometria externa</translation>
     </message>
@@ -7552,7 +7552,7 @@ Els punts s’han d’establir més a prop que una cinquena part de l'espaiat de
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 tria geometria externa</translation>

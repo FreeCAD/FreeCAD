@@ -3519,12 +3519,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Ezaugarri hau erabili ahal izateko, dokumentuko groputz-objektu batekoa izan behar du.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Elementua ez dago pieza batean</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Ezaugarri hau erabili ahal izateko, dokumentuko pieza-objektu batekoa izan behar du.</translation>
     </message>

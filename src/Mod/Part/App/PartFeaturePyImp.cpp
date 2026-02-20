@@ -37,6 +37,22 @@ using namespace Part;
 // returns a string which represent the object e.g. when printed in python
 std::string PartFeaturePy::representation() const
 {
+    auto* P = getFeaturePtr()->getPropertyByName("Proxy");
+    if (P) {
+        PyObject* Featclass = static_cast<App::PropertyPythonObject*>(P)->getValue().ptr();
+        PyObject* repstr = PyObject_Repr(Featclass);
+        if (repstr) {
+            Py_ssize_t len;
+            std::string ret = fmt::format(
+                "<{} ({})>\n",
+                static_cast<std::string>(getTypeId()),
+                PyUnicode_AsUTF8AndSize(repstr, &len)
+            );
+            Py_DECREF(repstr);
+            return ret;
+        }
+    }
+
     return fmt::format("<{}>", static_cast<std::string>(getTypeId()));
 }
 

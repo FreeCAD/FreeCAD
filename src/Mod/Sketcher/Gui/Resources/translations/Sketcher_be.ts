@@ -745,7 +745,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Падзяліць рабро</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>Дадаць вонкавую геаметрыю</translation>
     </message>
@@ -955,54 +955,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запытваеце аніякіх зменах у кратнасці вузлоў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Ідэнтыфікатар геаметрыі B-сплайна (GeoID) знаходзіцца за межамі дапушчальных значэнняў.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Ідэнтыфікатар геаметрыі (GeoId) не з'яўляецца крывой B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Індэкс вузла знаходзіцца за межамі дапушчальных значэнняў. Звярніце ўвагу, што ў адпаведнасці з назначэннем OCC першы вузел мае індэкс 1, а не 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратнасць не можа быць павялічана звыш ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратнасць не можа быць паменшана ніжэй за 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OpenCASCADE не можа паменшыць кратнасць у межах найбольшай дакладнасці.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Вузел не можа мець нулявую кратнасць.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Кратнасць вузла не можа быць вышэй ступені B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Вузел не можа быць устаўлены за межы дыяпазону наладаў B-сплайна.</translation>
     </message>
@@ -4615,17 +4615,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Эскіз мае часткова залішнія абмежаванні!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Некіраваная змена ўласцівасці геаметрыі прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Некіраваная змена ўласцівасці абмежавання прыводзіць да недапушчальных індэксах абмежаванняў</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Парабалы былі перанесены. Перанесеныя файлы не будуць адчыняцца ў папярэдніх версіях FreeCAD!!
@@ -4645,7 +4645,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4771,7 +4771,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Немагчыма выцягнуць рабро</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>Немагчыма дадаць вонкавую геаметрыю</translation>
     </message>
@@ -7587,7 +7587,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>Выбраць вонкавую геаметрыю %1</translation>

@@ -148,7 +148,7 @@
       <location filename="../../AttacherTexts.cpp" line="737"/>
       <source>Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</source>
       <comment>AttachmentPoint mode tooltip</comment>
-      <translation type="unfinished">Point is put at object's placement position. Works on objects with placements, and ellipse/parabola/hyperbola edges.</translation>
+      <translation>Τοποθετεί ένα σημείο αναφοράς στο κέντρο ενός αντικειμένου ή στην εστία μιας καμπύλης (όπως μια έλλειψη), για να σας βοηθήσει στο σημάδεμα.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="746"/>
@@ -441,7 +441,7 @@
       <location filename="../../AttacherTexts.cpp" line="671"/>
       <source>Intersection of two faces.</source>
       <comment>AttachmentLine mode tooltip</comment>
-      <translation type="unfinished">Intersection of two faces.</translation>
+      <translation>Τομή δύο επιφανειών.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="675"/>
@@ -877,37 +877,37 @@
       <location filename="../../AttacherTexts.cpp" line="170"/>
       <source>Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY-plane to osculating circle of an edge. Optional vertex link defines where.</translation>
+      <translation>Προσαρμόζει την επιφάνεια σχεδίασης (ΧΥ-Κάτοψη) πάνω στην κλίση μιας καμπύλης γραμμής. Αν επιλέξετε και ένα σημείο (κορυφή), το επίπεδο θα τοποθετηθεί ακριβώς εκεί.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="189"/>
       <source>XY-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XY-plane by 3 points</translation>
+      <translation>Κάτοψη-ΧΥ από 3 Σημεία</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="190"/>
       <source>Align XY-plane to pass through three vertices.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XY-plane to pass through three vertices.</translation>
+      <translation>Ευθυγραμμίζει το επίπεδο της Κάτοψης (XY) έτσι ώστε να περνάει ακριβώς μέσα από τρεις κορυφές που θα επιλέξετε.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="198"/>
       <source>XZ-plane by 3 points</source>
       <comment>Attachment3D mode caption</comment>
-      <translation type="unfinished">XZ-plane by 3 points</translation>
+      <translation>Πρόσοψη-XZ από 3 Σημεία</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="199"/>
       <source>Align XZ-plane to pass through 3 points; X axis will pass through two first points.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Align XZ-plane to pass through 3 points; X axis will pass through two first points.</translation>
+      <translation>Ευθυγραμμίζει το επίπεδο της Πρόσοψης (XY) έτσι ώστε να περνάει ακριβώς μέσα από τρεις κορυφές που θα επιλέξετε.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="209"/>
       <source>Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</source>
       <comment>Attachment3D mode tooltip</comment>
-      <translation type="unfinished">Specialty mode for folding polyhedra. Select 4 edges in order: foldable edge, fold line, other fold line, other foldable edge. XY-plane will be aligned to folding the first edge.</translation>
+      <translation>Ειδική λειτουργία για το δίπλωμα σχημάτων (πολυέδρων). Επιλέξτε 4 ακμές με τη σειρά: την ακμή που διπλώνει, τη γραμμή δίπλωσης, τη δεύτερη γραμμή δίπλωσης και την άλλη ακμή. Το επίπεδο σχεδίασης (XY-Κάτοψη) θα ευθυγραμμιστεί με το δίπλωμα της πρώτης ακμής.</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="219"/>
@@ -1714,12 +1714,12 @@
     <message>
       <location filename="../../Command.cpp" line="1257"/>
       <source>Convert to Solid</source>
-      <translation type="unfinished">Convert to Solid</translation>
+      <translation>Μετατροπή σε Στερεό</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1258"/>
       <source>Converts the selected shell or compound to a solid</source>
-      <translation type="unfinished">Converts the selected shell or compound to a solid</translation>
+      <translation>Μετατρέπει το επιλεγμένο άδειο κέλυφος ή την ομάδα σχημάτων σε ένα συμπαγές, στερεό αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -1732,12 +1732,12 @@
     <message>
       <location filename="../../Command.cpp" line="1649"/>
       <source>Mirror</source>
-      <translation type="unfinished">Mirror</translation>
+      <translation>Κατοπτρισμός</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1650"/>
       <source>Mirrors the selected shape</source>
-      <translation type="unfinished">Mirrors the selected shape</translation>
+      <translation>Δημιουργεί το κατοπτρικό είδωλο του επιλεγμένου σχήματος</translation>
     </message>
   </context>
   <context>
@@ -1750,12 +1750,12 @@
     <message>
       <location filename="../../Command.cpp" line="1804"/>
       <source>3D Offset</source>
-      <translation type="unfinished">3D Offset</translation>
+      <translation>3D Τρισδιάστατη Μετατόπιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1805"/>
       <source>Offsets shapes in 3D</source>
-      <translation type="unfinished">Offsets shapes in 3D</translation>
+      <translation>Δημιουργεί ένα παράλληλο αντίγραφο των επιφανειών ενός σχήματος, αυξάνοντας ή μειώνοντας τον όγκο του ομοιόμορφα</translation>
     </message>
   </context>
   <context>
@@ -1768,12 +1768,12 @@
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>2D Offset</source>
-      <translation type="unfinished">2D Offset</translation>
+      <translation>2D Δισδιάστατη Μετατόπιση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1872"/>
       <source>Offsets planar shapes in 2D</source>
-      <translation type="unfinished">Offsets planar shapes in 2D</translation>
+      <translation>Δημιουργεί ένα παράλληλο περίγραμμα γύρω από ένα επίπεδο σχέδιο, κάνοντάς το ομοιόμορφα πιο φαρδύ ή πιο στενό</translation>
     </message>
   </context>
   <context>
@@ -1786,12 +1786,12 @@
     <message>
       <location filename="../../Command.cpp" line="88"/>
       <source>Pick Curve Network</source>
-      <translation type="unfinished">Pick Curve Network</translation>
+      <translation>Επιλογή Δικτύου Καμπυλών</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="89"/>
       <source>Picks a curve network</source>
-      <translation type="unfinished">Picks a curve network</translation>
+      <translation>Σας επιτρέπει να επιλέξετε έναν σκελετό από γραμμές για να δημιουργήσετε αυτόματα μια τεντωμένη επιφάνεια (καμπυλωτή)</translation>
     </message>
   </context>
   <context>
@@ -1804,12 +1804,12 @@
     <message>
       <location filename="../../CommandSimple.cpp" line="143"/>
       <source>Points From Shape</source>
-      <translation type="unfinished">Points From Shape</translation>
+      <translation>Σημεία Από Σχήμα</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="144"/>
       <source>Creates distributed points from the selected shape</source>
-      <translation type="unfinished">Creates distributed points from the selected shape</translation>
+      <translation>Καλύπτει το επιλεγμένο σχήμα με πολλά μικρά σημεία, που απέχουν ομοιόμορφα μεταξύ τους, για να τα χρησιμοποιήσετε ως οδηγούς</translation>
     </message>
   </context>
   <context>
@@ -1827,7 +1827,7 @@
     <message>
       <location filename="../../Command.cpp" line="222"/>
       <source>Creates solid geometric primitives parametrically</source>
-      <translation type="unfinished">Creates solid geometric primitives parametrically</translation>
+      <translation>Δημιουργεί έτοιμα στερεά σχήματα (όπως κύβους, κυλίνδρους ή σφαίρες) των οποίων τις διαστάσεις μπορείτε να αλλάζετε εύκολα απο τις παραμέτρους</translation>
     </message>
   </context>
   <context>
@@ -1840,7 +1840,7 @@
     <message>
       <location filename="../../Command.cpp" line="2438"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Προβολή σε Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2439"/>
@@ -1848,10 +1848,7 @@
 onto a face of another shape.
 The camera view determines the direction
 of the projection.</source>
-      <translation type="unfinished">Projects edges, wires, or faces of one shape
-onto a face of another shape.
-The camera view determines the direction
-of the projection.</translation>
+      <translation>Προβάλλει τις γραμμές ή τις επιφάνειες ενός σχήματος πάνω σε ένα άλλο αντικείμενο, χρησιμοποιώντας την οπτική γωνία της κάμερας ως κατεύθυνση.</translation>
     </message>
   </context>
   <context>
@@ -1864,12 +1861,12 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="386"/>
       <source>Refine Shape</source>
-      <translation type="unfinished">Refine Shape</translation>
+      <translation>Βελτίωση Σχήματος</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="387"/>
       <source>Creates a refined copy of the selected shapes</source>
-      <translation type="unfinished">Creates a refined copy of the selected shapes</translation>
+      <translation>Δημιουργεί ένα "καθαρό" αντίγραφο του σχήματός σας, σβήνοντας τις περιττές γραμμές και ενώσεις για να το κάνει απόλυτα λείο</translation>
     </message>
   </context>
   <context>
@@ -1882,12 +1879,12 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1350"/>
       <source>Reverse Shapes</source>
-      <translation type="unfinished">Reverse Shapes</translation>
+      <translation>Αντιστροφή Σχημάτων</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1351"/>
       <source>Reverses the orientation of the selected shapes</source>
-      <translation type="unfinished">Reverses the orientation of the selected shapes</translation>
+      <translation>Αντιστρέφει την κατεύθυνση των επιφανειών του σχήματος, γυρίζοντας το: "Μέσα" του αντικειμένου προς τα "Έξω"</translation>
     </message>
   </context>
   <context>
@@ -1905,7 +1902,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1566"/>
       <source>Revolves the selected shape</source>
-      <translation type="unfinished">Revolves the selected shape</translation>
+      <translation>Περιστρέφει ένα επίπεδο σχήμα γύρω από έναν άξονα για να δημιουργήσει ένα τρισδιάστατο αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -1918,12 +1915,12 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2186"/>
       <source>Ruled Surface</source>
-      <translation type="unfinished">Ruled Surface</translation>
+      <translation>Ευθειογενής Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2187"/>
       <source>Creates a ruled surface between 2 selected wires</source>
-      <translation type="unfinished">Creates a ruled surface between 2 selected wires</translation>
+      <translation>Παίρνει δύο γραμμές και "χτίζει" ανάμεσά τους μια ίσια επιφάνεια για να τις ενώσει</translation>
     </message>
   </context>
   <context>
@@ -1941,7 +1938,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="998"/>
       <source>Sections 2 selected shapes</source>
-      <translation type="unfinished">Sections 2 selected shapes</translation>
+      <translation>Βρίσκει το σημείο όπου δύο σχήματα τέμνονται και δημιουργεί μια γραμμή στο σημείο που διασταυρώνονται</translation>
     </message>
   </context>
   <context>
@@ -1954,12 +1951,12 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="115"/>
       <source>Shape From Mesh</source>
-      <translation type="unfinished">Shape From Mesh</translation>
+      <translation>Σχήμα Από Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="116"/>
       <source>Creates a shape from the selected mesh</source>
-      <translation type="unfinished">Creates a shape from the selected mesh</translation>
+      <translation>Μετατρέπει ένα "δίχτυ" από τρίγωνα (αρχείο Stl) σε ένα στερεό σχήμα που το FreeCAD μπορεί να αναγνωρίσει και να επεξεργαστεί</translation>
     </message>
   </context>
   <context>
@@ -1972,12 +1969,12 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="240"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>Απλό Αντίγραφο</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
       <source>Creates a simple non-parametric copy of the selected shapes</source>
-      <translation type="unfinished">Creates a simple non-parametric copy of the selected shapes</translation>
+      <translation>Δημιουργεί ένα απλό αντίγραφο του σχήματος, το οποίο "παγώνει" όπως είναι εκείνη τη στιγμή και δεν αλλάζει αν πειράξετε το αρχικό αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -1995,7 +1992,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="57"/>
       <source>Creates a solid cylinder</source>
-      <translation type="unfinished">Creates a solid cylinder</translation>
+      <translation>Δημιουργεί έναν συμπαγή κύλινδρο (σαν ένα κομμάτι σωλήνα ή έναν δίσκο) του οποίου το ύψος και την ακτίνα μπορείτε να αλλάξετε από τις παραμέτρους</translation>
     </message>
   </context>
   <context>
@@ -2015,7 +2012,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="159"/>
       <source>Creates a solid sphere</source>
-      <translation type="unfinished">Creates a solid sphere</translation>
+      <translation>Δημιουργεί μια συμπαγή σφαίρα (σαν μια μπάλα) της οποίας το μέγεθος μπορείτε να ορίσετε αλλάζοντας την ακτίνα από τις παραμέτρους</translation>
     </message>
   </context>
   <context>
@@ -2033,7 +2030,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1776"/>
       <source>Sweeps profiles along a wire</source>
-      <translation type="unfinished">Sweeps profiles along a wire</translation>
+      <translation>Σέρνει ένα σχήμα (προφίλ) κατά μήκος μιας γραμμής-οδηγού για να δημιουργήσει μια τρισδιάστατη διαδρομή, όπως ένας σωλήνας ή μια κουπαστή</translation>
     </message>
   </context>
   <context>
@@ -2051,7 +2048,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="2040"/>
       <source>Removes the selected faces and offsets the remaining shape outward to add thickness</source>
-      <translation type="unfinished">Removes the selected faces and offsets the remaining shape outward to add thickness</translation>
+      <translation>Αφαιρεί τις επιφάνειες που διαλέξατε και δίνει πάχος στις υπόλοιπες, μετατρέποντας ένα συμπαγές αντικείμενο σε μια κούφια θήκη ή ένα κουτί</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2099"/>
@@ -2081,7 +2078,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandParametric.cpp" line="247"/>
       <source>Creates a solid torus</source>
-      <translation type="unfinished">Creates a solid torus</translation>
+      <translation>Δημιουργεί έναν συμπαγή δακτύλιο του οποίου το πάχος και τη διάμετρο μπορείτε να αλλάξετε από τις παραμέτρους</translation>
     </message>
   </context>
   <context>
@@ -2094,12 +2091,12 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="328"/>
       <source>Transformed Copy</source>
-      <translation type="unfinished">Transformed Copy</translation>
+      <translation>Αντίγραφο Τελικής Θέσης</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="329"/>
       <source>Creates a non-parametric copy with transformed placement of the selected shapes</source>
-      <translation type="unfinished">Creates a non-parametric copy with transformed placement of the selected shapes</translation>
+      <translation>Δημιουργεί ένα αυτόνομο αντίγραφο του σχήματος, το οποίο μένει σταθερό στη νέα θέση που το τοποθετήσατε και δεν αλλάζει πια</translation>
     </message>
   </context>
   <context>
@@ -2108,12 +2105,12 @@ of the projection.</translation>
       <location filename="../../Command.cpp" line="144"/>
       <location filename="../../Command.cpp" line="187"/>
       <source>Part Box Create</source>
-      <translation type="unfinished">Part Box Create</translation>
+      <translation>Δημιουργία Κύβου (Κουτιού)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="367"/>
       <source>Part Cut</source>
-      <translation type="unfinished">Part Cut</translation>
+      <translation>Αφαίρεση</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="444"/>
@@ -2138,7 +2135,7 @@ of the projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1101"/>
       <source>Import Part</source>
-      <translation type="unfinished">Import Part</translation>
+      <translation>Εισαγωγή Εξαρτήματος</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1225"/>
@@ -3750,7 +3747,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="14"/>
       <source>Project on Surface</source>
-      <translation type="unfinished">Project on Surface</translation>
+      <translation>Προβολή σε Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="20"/>
@@ -4356,17 +4353,17 @@ will be used or black.</translation>
     <message>
       <location filename="../../Location.ui" line="125"/>
       <source>X-component of direction vector</source>
-      <translation type="unfinished">X-component of direction vector</translation>
+      <translation>Η Κατεύθυνση της πορείας ως προς τον άξονα X (δεξιά/αριστερά)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="154"/>
       <source>Y-component of direction vector</source>
-      <translation type="unfinished">Y-component of direction vector</translation>
+      <translation>Η κατεύθυνση της πορείας ως προς τον άξονα Y (εμπρός / πίσω)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="183"/>
       <source>Z-component of direction vector</source>
-      <translation type="unfinished">Z-component of direction vector</translation>
+      <translation>Η κατεύθυνση της πορείας ως προς τον άξονα Z (πάνω / κάτω)</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -6137,7 +6134,7 @@ Continue?</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="93"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Πατήστε "Συνέχεια" για να δημιουργήσετε το σχήμα παρά το σφάλμα, ή "Ακύρωση" για να σταματήσετε τη διαδικασία.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="94"/>
@@ -6145,7 +6142,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/JoinFeatures.py" line="358"/>
       <location filename="../../../BOPTools/JoinFeatures.py" line="474"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="97"/>
@@ -6182,7 +6179,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="398"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="640"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Πατήστε "Συνέχεια" για να δημιουργήσετε το σχήμα παρά το σφάλμα, ή "Ακύρωση" για να σταματήσετε τη διαδικασία.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="195"/>
@@ -6193,7 +6190,7 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="641"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="693"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="137"/>
@@ -6207,13 +6204,13 @@ Continue?</translation>
       <location filename="../../../BOPTools/SplitFeatures.py" line="244"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="692"/>
       <source>Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</source>
-      <translation type="unfinished">Select at least two objects, or one or more compounds. If only one compound is selected, the compounded shapes will be intersected between each other (otherwise, compounds with self-intersections are invalid).</translation>
+      <translation>Επιλέξτε τουλάχιστον δύο αντικείμενα ή ένα σύμπλεγμα σχημάτων. Αν επιλέξετε ένα σύμπλεγμα, το πρόγραμμα θα βρει το σημείο όπου τα σχήματα μέσα σε αυτό τέμνονται μεταξύ τους.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="465"/>
       <location filename="../../../BOPTools/SplitFeatures.py" line="504"/>
       <source>Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</source>
-      <translation type="unfinished">Select at least two objects. The first one is the object to be sliced; the rest are objects to slice with.</translation>
+      <translation>Επιλέξτε πρώτα το αντικείμενο προς κοπή και μετά τα σχήματα που θα λειτουργήσουν ως μαχαίρια.</translation>
     </message>
   </context>
   <context>
@@ -6221,12 +6218,12 @@ Continue?</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="57"/>
       <source>Compound Filter</source>
-      <translation type="unfinished">Compound Filter</translation>
+      <translation>Σύνθετο Φίλτρο</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="87"/>
       <source>First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</source>
-      <translation type="unfinished">First select a shape that is a compound. If a second object is selected (optional) it will be treated as a stencil.</translation>
+      <translation>Επιλέξτε πρώτα μια ομάδα σχημάτων. Αν επιλέξετε (προαιρετικά) και ένα δεύτερο αντικείμενο, αυτό θα χρησιμοποιηθεί ως "στένσιλ" για να αποτυπώσει το σχήμα του πάνω στην ομάδα.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="67"/>
@@ -6234,26 +6231,24 @@ Continue?</translation>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation type="unfinished">Filters out objects from the selected compound by characteristics like volume,
-area, or length, or by choosing specific items.
-If a second object is selected, it will be used as reference, for example,
-for collision or distance filtering.</translation>
+      <translation>Ξεχωρίζει και κρατάει μόνο τα κομμάτια που θέλετε με βάση τα χαρακτηριστικά τους (όγκος, μήκος κ. α.). 
+Αν επιλεγεί ένα δεύτερο αντικείμενο, αυτό θα χρησιμεύσει ως οδηγός για να κρατηθούν μόνο τα κομμάτια που απέχουν συγκεκριμένη απόσταση ή ακουμπάνε πάνω του.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="88"/>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="134"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="129"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Ο υπολογισμός του αποτελέσματος απέτυχε λόγω κάποιου λάθους:</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="133"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Πατήστε "Συνέχεια" για να δημιουργήσετε το σχήμα παρά το σφάλμα, ή "Ακύρωση" για να σταματήσετε τη διαδικασία.</translation>
     </message>
   </context>
   <context>
@@ -6276,7 +6271,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="75"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
   </context>
   <context>
@@ -6284,22 +6279,22 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="104"/>
       <source>No object named {}</source>
-      <translation type="unfinished">No object named {}</translation>
+      <translation>Δεν βρέθηκε αντικείμενο με το όνομα {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="113"/>
       <source>Failed to parse link (more than one colon encountered)</source>
-      <translation type="unfinished">Failed to parse link (more than one colon encountered)</translation>
+      <translation>Αδυναμία ανάγνωσης συνδέσμου (βρέθηκαν περισσότεροι από ένας χαρακτήρες)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="251"/>
       <source>Object {} is neither movable nor attachable, can't edit attachment</source>
-      <translation type="unfinished">Object {} is neither movable nor attachable, can't edit attachment</translation>
+      <translation>Το αντικείμενο {} δεν είναι μετακινήσιμο ούτε μπορεί να προσαρτηθεί, επομένως η επεξεργασία της προσάρτησης είναι αδύνατη</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="264"/>
       <source>{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</source>
-      <translation type="unfinished">{} is not attachable. The attachment editor can still be used to align the object, but the attachment will not be parametric.</translation>
+      <translation>Το αντικείμενο {} δεν μπορεί να προσαρτηθεί μόνιμα. Μπορείτε να χρησιμοποιήσετε τον επεξεργαστή για να το ευθυγραμμίσετε, αλλά αν μετακινήσετε το αρχικό σχήμα, αυτό δεν θα το ακολουθήσει.</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="266"/>
@@ -6316,47 +6311,47 @@ for collision or distance filtering.</translation>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="354"/>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="401"/>
       <source>Edit attachment of {}</source>
-      <translation type="unfinished">Edit attachment of {}</translation>
+      <translation>Επεξεργασία προσάρτησης του {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="471"/>
       <source>Ignored. Can't attach object to itself!</source>
-      <translation type="unfinished">Ignored. Can't attach object to itself!</translation>
+      <translation>Η ενέργεια αγνοήθηκε. Δεν μπορείτε να προσαρτήσετε ένα αντικείμενο στον ίδιο του τον εαυτό!</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="479"/>
       <source>{} depends on object being attached, can't use it for attachment</source>
-      <translation type="unfinished">{} depends on object being attached, can't use it for attachment</translation>
+      <translation>Το αντικείμενο {} εξαρτάται από αυτό που προσπαθείτε να προσαρτήσετε, επομένως δεν μπορεί να χρησιμοποιηθεί ως σημείο αναφοράς</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="631"/>
       <source>{} (add {})</source>
-      <translation type="unfinished">{} (add {})</translation>
+      <translation>{} (προσθήκη {})</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="635"/>
       <source>{} (add more references)</source>
-      <translation type="unfinished">{} (add more references)</translation>
+      <translation>{} (προσθήκη περισσότερων αναφορών)</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="671"/>
       <source>Reference combinations:</source>
-      <translation type="unfinished">Reference combinations:</translation>
+      <translation>Συνδυασμοί αναφοράς:</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="686"/>
       <source>Reference{}</source>
-      <translation type="unfinished">Reference{}</translation>
+      <translation>Αναφορά{}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="693"/>
       <source>Selecting…</source>
-      <translation type="unfinished">Selecting…</translation>
+      <translation>Πραγματοποιείται επιλογή…</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="722"/>
       <source>Failed to resolve links. {}</source>
-      <translation type="unfinished">Failed to resolve links. {}</translation>
+      <translation>Αδυναμία εύρεσης των συνδέσμων: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="733"/>
@@ -6366,17 +6361,17 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="736"/>
       <source>Attached with mode {}</source>
-      <translation type="unfinished">Attached with mode {}</translation>
+      <translation>Προσαρτήθηκε με τη μέθοδο: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="746"/>
       <source>Error: {}</source>
-      <translation type="unfinished">Error: {}</translation>
+      <translation>Σφάλμα: {}</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="752"/>
       <source>Attachment Offset (in local coordinates):</source>
-      <translation type="unfinished">Attachment Offset (in local coordinates):</translation>
+      <translation>Μετατόπιση Προσάρτησης (σε τοπικές συντεταγμένες):</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="757"/>
@@ -6389,12 +6384,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="31"/>
       <source>Shape type</source>
-      <translation type="unfinished">Shape type</translation>
+      <translation>Τύπος σχήματος</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="33"/>
       <source>Vertices</source>
-      <translation type="unfinished">Vertices</translation>
+      <translation>Κορυφές</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
@@ -6404,7 +6399,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>
       <source>Wires</source>
-      <translation type="unfinished">Wires</translation>
+      <translation>Αλυσίδα Γραμμών (Wires)</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="37"/>
@@ -6424,7 +6419,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="42"/>
       <source>CompSolids</source>
-      <translation type="unfinished">CompSolids</translation>
+      <translation>Σύνθετα Στερεά</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="47"/>
@@ -6464,7 +6459,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="117"/>
       <source>Curve center</source>
-      <translation type="unfinished">Curve center</translation>
+      <translation>Κέντρο καμπύλης</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="124"/>
@@ -6489,12 +6484,12 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="177"/>
       <source>Global center of mass</source>
-      <translation type="unfinished">Global center of mass</translation>
+      <translation>Συνολικό κέντρο μάζας</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="195"/>
       <source>Global placement</source>
-      <translation type="unfinished">Global placement</translation>
+      <translation>Καθολική τοποθέτηση</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="197"/>
@@ -6507,16 +6502,14 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="668"/>
       <source>Boolean XOR</source>
-      <translation type="unfinished">Boolean XOR</translation>
+      <translation>Αποκλειστική Ένωση</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="675"/>
       <source>Performs an 'exclusive OR' boolean operation with two or more selected objects,
 or with the shapes inside a compound.
 Overlapping volumes of the shapes will be removed.</source>
-      <translation type="unfinished">Performs an 'exclusive OR' boolean operation with two or more selected objects,
-or with the shapes inside a compound.
-Overlapping volumes of the shapes will be removed.</translation>
+      <translation>Εκτελεί μια "αποκλειστική ένωση" δύο ή περισσότερων αντικειμένων, όπου τα μέρη που μπλέκονται το ένα μέσα στο άλλο αφαιρούνται, αφήνοντας μόνο ό, τι δεν επικαλύπτεται.</translation>
     </message>
   </context>
   <context>
@@ -6534,42 +6527,42 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X factor</source>
-      <translation type="unfinished">X factor</translation>
+      <translation>Κλίμακα X</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z factor</source>
-      <translation type="unfinished">Z factor</translation>
+      <translation>Κλίμακα Ζ</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Κλιμακώνει το αντικείμενο εξίσου σε όλες τις κατευθύνσεις, χρησιμοποιώντας έναν μόνο αριθμό.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Ομοιόμορφη Κλιμάκωση</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y factor</source>
-      <translation type="unfinished">Y factor</translation>
+      <translation>Κλίμακα Υ</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction</translation>
+      <translation>Ορίστε διαφορετικό συντελεστή κλίμακας για κάθε κύρια κατεύθυνση (X, Y, Z)</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-uniform scaling</source>
-      <translation type="unfinished">Non-uniform scaling</translation>
+      <translation>Μη ομοιόμορφη κλιμάκωση</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shapes to be scaled</source>
-      <translation type="unfinished">Select shapes to be scaled</translation>
+      <translation>Επιλέξτε τα σχήματα που θέλετε να κλιμακώσετε</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6579,19 +6572,19 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>Δεν έχουν επιλεγεί σχήματα για αλλαγή συντελεστή κλιμάκωσης</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="216"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>Το έγγραφο '%1' δεν υπάρχει.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="275"/>
       <location filename="../../DlgScale.cpp" line="283"/>
       <source>Creating scale failed.
 %1</source>
-      <translation type="unfinished">Creating scale failed.
+      <translation>Η δημιουργία κλίμακας απέτυχε.
 %1</translation>
     </message>
   </context>
@@ -6610,7 +6603,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="1478"/>
       <source>Scales the selected shape</source>
-      <translation type="unfinished">Scales the selected shape</translation>
+      <translation>Αλλάζει την κλίμακα του επιλεγμένου σχήματος</translation>
     </message>
   </context>
   <context>
@@ -6618,7 +6611,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMaker.cpp" line="82"/>
       <source>Shape must be a wire, edge or compound. Something else was supplied.</source>
-      <translation type="unfinished">Shape must be a wire, edge or compound. Something else was supplied.</translation>
+      <translation>Το σχήμα πρέπει να είναι γραμμή ή περίγραμμα. Επιλέξατε κάτι άλλο (π. χ. ένα στερεό σώμα) που δεν υποστηρίζεται.</translation>
     </message>
   </context>
   <context>
@@ -6644,7 +6637,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="66"/>
       <source>Supports making planar faces with holes with islands in them</source>
-      <translation type="unfinished">Supports making planar faces with holes with islands in them</translation>
+      <translation>Επιτρέπει τη δημιουργία επίπεδων επιφανειών που έχουν τρύπες, μέσα στις οποίες υπάρχουν ανεξάρτητα κομμάτια υλικού</translation>
     </message>
   </context>
   <context>
@@ -6657,7 +6650,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerCheese.cpp" line="262"/>
       <source>Supports making planar faces with holes, but no islands inside holes</source>
-      <translation type="unfinished">Supports making planar faces with holes, but no islands inside holes</translation>
+      <translation>Επιτρέπει τη δημιουργία επίπεδων επιφανειών με τρύπες, αλλά δεν μπορεί να δημιουργήσει "νησίδες" (ανεξάρτητα κομμάτια) μέσα στις τρύπες αυτές</translation>
     </message>
   </context>
   <context>
@@ -6678,12 +6671,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="14"/>
       <source>Appearance per Face</source>
-      <translation type="unfinished">Appearance per Face</translation>
+      <translation>Εμφάνιση ανά Επιφάνεια</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="20"/>
       <source>Select the faces in the 3D view</source>
-      <translation type="unfinished">Select the faces in the 3D view</translation>
+      <translation>Επιλέξτε τις επιφάνειες κάνοντας κλικ πάνω τους στην τρισδιάστατη οθόνη σχεδίασης</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="41"/>
@@ -6703,22 +6696,22 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="88"/>
       <source>Resets color for all faces of the part</source>
-      <translation type="unfinished">Resets color for all faces of the part</translation>
+      <translation>Επαναφέρει το αρχικό χρώμα σε όλες τις πλευρές του αντικειμένου, ακυρώνοντας τυχόν αλλαγές που είχατε κάνει</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="91"/>
       <source>Set to Default</source>
-      <translation type="unfinished">Set to Default</translation>
+      <translation>Επαναφορά στις Προεπιλογές</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="98"/>
       <source>Allows the selection of multiple faces by dragging a rectangle in the 3D view</source>
-      <translation type="unfinished">Allows the selection of multiple faces by dragging a rectangle in the 3D view</translation>
+      <translation>Σας επιτρέπει να επιλέξετε πολλές επιφάνειες μαζί, σέρνοντας το ποντίκι για να σχηματίσετε ένα ορθογώνιο πλαίσιο γύρω τους</translation>
     </message>
     <message>
       <location filename="../../TaskFaceAppearances.ui" line="101"/>
       <source>Box Selection</source>
-      <translation type="unfinished">Box Selection</translation>
+      <translation>Πλαίσιο Επιλογής</translation>
     </message>
   </context>
   <context>
@@ -6726,17 +6719,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="83"/>
       <source>Computing the result failed with an error:</source>
-      <translation type="unfinished">Computing the result failed with an error:</translation>
+      <translation>Η επεξεργασία απέτυχε λόγω κάποιου λάθους:</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="87"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation type="unfinished">Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</translation>
+      <translation>Πατήστε "Συνέχεια" για να δημιουργήσετε το σχήμα παρά το σφάλμα, ή "Ακύρωση" για να σταματήσετε τη διαδικασία.</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="88"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="91"/>
@@ -6749,22 +6742,22 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="232"/>
       <source>Set Tolerance</source>
-      <translation type="unfinished">Set Tolerance</translation>
+      <translation>Ορισμός Ανοχής</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="237"/>
       <source>Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</source>
-      <translation type="unfinished">Creates a parametric copy of the selected object with all contained tolerances set to at least a certain minimum value</translation>
+      <translation>Δημιουργεί ένα αντίγραφο του αντικειμένου, το οποίο διορθώνει τα μικρά κενά στις ενώσεις του και συνεχίζει να αλλάζει αυτόματα αν αλλάζετε τις παραμέτρους στο αρχικό σχήμα</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="249"/>
       <source>Bad Selection</source>
-      <translation type="unfinished">Bad Selection</translation>
+      <translation>Λανθασμένη Επιλογή</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/ToleranceFeatures.py" line="248"/>
       <source>Select at least one object or compounds</source>
-      <translation type="unfinished">Select at least one object or compounds</translation>
+      <translation>Επιλέξτε τουλάχιστον ένα αντικείμενο ή μια ομάδα σχημάτων για να συνεχίσετε</translation>
     </message>
   </context>
   <context>
@@ -6782,7 +6775,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2539"/>
       <source>Creates a coordinate system that can be attached to other objects</source>
-      <translation type="unfinished">Creates a coordinate system that can be attached to other objects</translation>
+      <translation>Δημιουργεί ένα βοηθητικό σημείο με άξονες (X, Y, Z), το οποίο μπορείτε να "προσαρτήσετε" πάνω σε ένα αντικείμενο για να ορίσετε πού ακριβώς θα τοποθετηθεί κάτι άλλο</translation>
     </message>
   </context>
   <context>
@@ -6800,7 +6793,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2679"/>
       <source>Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum object (coordinate system, plane, line, or point) that can be attached to other objects</translation>
+      <translation>Δημιουργεί ένα βοηθητικό στοιχείο (όπως ένα σημείο, μια γραμμή, ένα επίπεδο ή ένα σύστημα αξόνων) που μπορείτε να "προσαρτήσετε" πάνω σε άλλα αντικείμενα για να σας καθοδηγούν στο σχεδιασμό</translation>
     </message>
   </context>
   <context>
@@ -6808,7 +6801,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/Geometry.cpp" line="6656"/>
       <source>Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</source>
-      <translation type="unfinished">Unable to guess intersection of curves. Try adding a coincident constraint between the vertices of the curves you are intending to fillet.</translation>
+      <translation>Το πρόγραμμα δεν μπορεί να βρει πού ενώνονται οι γραμμές. Βεβαιωθείτε ότι οι άκρες τους συμπίπτουν ακριβώς στο ίδιο σημείο (χρησιμοποιώντας τον περιορισμό "Σύμπτωσης").</translation>
     </message>
   </context>
   <context>
@@ -6821,12 +6814,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2576"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Επίπεδο Αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2577"/>
       <source>Creates a datum plane that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum plane that can be attached to other objects</translation>
+      <translation>Δημιουργεί ένα βοηθητικό "Επίπεδο Αναφοράς" το οποίο μπορείτε να προσαρτήσετε πάνω σε ένα αντικείμενο, ώστε να σχεδιάσετε σε σημεία όπου δεν υπάρχει φυσική επίπεδη πλευρά</translation>
     </message>
   </context>
   <context>
@@ -6839,12 +6832,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2609"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Γραμμή Αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2610"/>
       <source>Creates a datum line that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum line that can be attached to other objects</translation>
+      <translation>Δημιουργεί μια βοηθητική γραμμή την οποία μπορείτε να προσαρτήσετε πάνω σε ένα αντικείμενο, για να τη χρησιμοποιήσετε ως άξονα περιστροφής ή οδηγό ευθυγράμμισης</translation>
     </message>
   </context>
   <context>
@@ -6857,12 +6850,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2642"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Σημείο αναφοράς</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2643"/>
       <source>Creates a datum point that can be attached to other objects</source>
-      <translation type="unfinished">Creates a datum point that can be attached to other objects</translation>
+      <translation>Δημιουργεί ένα βοηθητικό "Σημείο Αναφοράς" το οποίο μπορείτε να προσαρτήσετε πάνω σε ένα αντικείμενο, για να σημαδέψετε μια συγκεκριμένη θέση στον χώρο</translation>
     </message>
   </context>
   <context>
@@ -6875,7 +6868,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../AttachmentEditor/Commands.py" line="95"/>
       <source>Opens the attachment editor to change the attachment of the selected object</source>
-      <translation type="unfinished">Opens the attachment editor to change the attachment of the selected object</translation>
+      <translation>Ανοίγει το παράθυρο ρυθμίσεων για να αλλάξετε τον τρόπο με τον οποίο το επιλεγμένο αντικείμενο είναι προσαρτημένο πάνω σε κάποιο άλλο</translation>
     </message>
   </context>
   <context>
@@ -6883,12 +6876,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="223"/>
       <source>Connect Shapes</source>
-      <translation type="unfinished">Connect Shapes</translation>
+      <translation>Σύνδεση Σχημάτων</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="227"/>
       <source>Fuses shapes, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses shapes, taking care to preserve voids</translation>
+      <translation>Ενώνει τα σχήματα σε ένα ενιαίο σώμα, φροντίζοντας να διατηρηθούν σωστά τυχόν τρύπες ή κενοί χώροι που υπάρχουν στο εσωτερικό τους</translation>
     </message>
   </context>
   <context>
@@ -6896,12 +6889,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="338"/>
       <source>Embed Shapes</source>
-      <translation type="unfinished">Embed Shapes</translation>
+      <translation>Ενσωμάτωση Σχημάτων</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="342"/>
       <source>Fuses one shape into another, taking care to preserve voids</source>
-      <translation type="unfinished">Fuses one shape into another, taking care to preserve voids</translation>
+      <translation>Ενσωματώνει ένα σχήμα μέσα σε ένα άλλο, φροντίζοντας να μην "κλείσουν" οι τρύπες και τα κενά που υπάρχουν στο εσωτερικό τους</translation>
     </message>
   </context>
   <context>
@@ -6909,12 +6902,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="454"/>
       <source>Cutout Shape</source>
-      <translation type="unfinished">Cutout Shape</translation>
+      <translation>Κοπή Σχήματος</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="458"/>
       <source>Creates a cutout in the selected shape to fit another shape</source>
-      <translation type="unfinished">Creates a cutout in the selected shape to fit another shape</translation>
+      <translation>Δημιουργεί μια εσοχή στο επιλεγμένο αντικείμενο, ώστε να χωράει και να "κουμπώνει" ακριβώς μέσα του ένα άλλο σχήμα</translation>
     </message>
   </context>
   <context>
@@ -6922,12 +6915,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="222"/>
       <source>Boolean Fragments</source>
-      <translation type="unfinished">Boolean Fragments</translation>
+      <translation>Θραύσματα Boolean</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="227"/>
       <source>Creates a boolean union which is sliced at the intersections of the selected shapes</source>
-      <translation type="unfinished">Creates a boolean union which is sliced at the intersections of the selected shapes</translation>
+      <translation>Δημιουργεί μια ένωση σχημάτων η οποία όμως είναι "τεμαχισμένη" σε όλα τα σημεία που τα σχήματα διασταυρώνονται, επιτρέποντάς σας να διαχειριστείτε κάθε κομμάτι ξεχωριστά</translation>
     </message>
   </context>
   <context>
@@ -6935,12 +6928,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="443"/>
       <source>Slice to Compound</source>
-      <translation type="unfinished">Slice to Compound</translation>
+      <translation>Τεμαχισμός σε Κομμάτια</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="448"/>
       <source>Slices the selected object by using other objects as cutting tools and storing the results in one compound</source>
-      <translation type="unfinished">Slices the selected object by using other objects as cutting tools and storing the results in one compound</translation>
+      <translation>Χωρίζει το σώμα σας σε επιμέρους κομμάτια χρησιμοποιώντας ένα ή περισσότερα σχήματα ως οδηγούς κοπής, κρατώντας ολόκληρο το αποτέλεσμα οργανωμένο σε μια ομάδα</translation>
     </message>
   </context>
   <context>
@@ -6948,12 +6941,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="482"/>
       <source>Slice Apart</source>
-      <translation type="unfinished">Slice Apart</translation>
+      <translation>Τεμαχισμός και Διαχωρισμός</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="487"/>
       <source>Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</source>
-      <translation type="unfinished">Slices the selected object by other objects, and splits it apart, creating a compound filter for each slide</translation>
+      <translation>Χωρίζει το σώμα σας σε επιμέρους κομμάτια χρησιμοποιώντας έναν οδηγό κοπής και σας επιτρέπει να διαχειριστείτε το κάθε κομμάτι ως αυτόνομο αντικείμενο</translation>
     </message>
   </context>
   <context>
@@ -6961,12 +6954,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../DlgPartBox.ui" line="14"/>
       <source>Box Definition</source>
-      <translation type="unfinished">Box Definition</translation>
+      <translation>Πλαίσιο Επιλογής</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position</source>
-      <translation type="unfinished">Position</translation>
+      <translation>Θέση</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -7014,17 +7007,17 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="14"/>
       <source>Shape From Mesh</source>
-      <translation type="unfinished">Shape From Mesh</translation>
+      <translation>Σχήμα Από Πλέγμα</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="20"/>
       <source>Sew Shape</source>
-      <translation type="unfinished">Sew Shape</translation>
+      <translation>Ράψιμο Σχήματος</translation>
     </message>
     <message>
       <location filename="../../ShapeFromMesh.ui" line="32"/>
       <source>Tolerance for sewing the shape</source>
-      <translation type="unfinished">Tolerance for sewing the shape</translation>
+      <translation>Ανοχή Ραφής: Ορίζει πόσο κοντά πρέπει να βρίσκονται οι άκρες των σχημάτων για να μπορέσει το FreeCAD να τις ενώσει ("ράψει") σε ένα ενιαίο σώμα</translation>
     </message>
   </context>
   <context>
@@ -7032,12 +7025,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="371"/>
       <source>Ring facemaker</source>
-      <translation type="unfinished">Ring facemaker</translation>
+      <translation>Δημιουργία Επιφάνειας Δακτυλίου</translation>
     </message>
     <message>
       <location filename="../../../App/FaceMakerBullseye.cpp" line="376"/>
       <source>Supports making planar faces with holes and holes as faces</source>
-      <translation type="unfinished">Supports making planar faces with holes and holes as faces</translation>
+      <translation>Υποστηρίζει τη δημιουργία επίπεδων επιφανειών με τρύπες, αναγνωρίζοντας τις τρύπες ως κανονικά, ξεχωριστά τμήματα του σχήματος</translation>
     </message>
   </context>
   <context>
@@ -7045,12 +7038,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../Command.cpp" line="2473"/>
       <source>Persiste&amp;nt Section Cut</source>
-      <translation type="unfinished">Persiste&amp;nt Section Cut</translation>
+      <translation>Μόνιμη Τομή</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2474"/>
       <source>Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</source>
-      <translation type="unfinished">Creates a new object as a boolean intersection of all visible shapes and the selected axis planes</translation>
+      <translation>Δημιουργεί ένα νέο αντικείμενο που δείχνει μόνο το σημείο όπου συναντιούνται τα σχήματά σας με τα επίπεδα των αξόνων (X, Y, Z), επιτρέποντάς σας να βλέπετε την τομή τους</translation>
     </message>
   </context>
   <context>
@@ -7058,12 +7051,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection Filter</source>
-      <translation type="unfinished">Selection Filter</translation>
+      <translation>Φίλτρο Επιλογής</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <source>Changes the selection filter</source>
-      <translation type="unfinished">Changes the selection filter</translation>
+      <translation>Αλλάζει το φίλτρο επιλογής</translation>
     </message>
   </context>
   <context>
@@ -7071,12 +7064,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="193"/>
       <source>Vertex Selection</source>
-      <translation type="unfinished">Vertex Selection</translation>
+      <translation>Επιλογή Κορυφών</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="194"/>
       <source>Only allows the selection of vertices</source>
-      <translation type="unfinished">Only allows the selection of vertices</translation>
+      <translation>Ας επιτρέπει να εστιάσετε αποκλειστικά στις γωνίες του σχήματος, κάνοντας την επιλογή τους εύκολη και ακριβή χωρίς να μπερδεύονται οι υπόλοιπες επιφάνειες</translation>
     </message>
   </context>
   <context>
@@ -7084,12 +7077,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="218"/>
       <source>Edge Selection</source>
-      <translation type="unfinished">Edge Selection</translation>
+      <translation>Επιλογή Ακμών</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="219"/>
       <source>Only allows the selection of edges</source>
-      <translation type="unfinished">Only allows the selection of edges</translation>
+      <translation>Σας επιτρέπει να εστιάσετε αποκλειστικά στις γραμμές του περιγράμματος, κάνοντας την επιλογή τους εύκολη χωρίς να μπερδεύονται οι επιφάνειες του αντικειμένου</translation>
     </message>
   </context>
   <context>
@@ -7097,12 +7090,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="243"/>
       <source>Face Selection</source>
-      <translation type="unfinished">Face Selection</translation>
+      <translation>Επιλογή Επιφανειών</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="244"/>
       <source>Only allows the selection of faces</source>
-      <translation type="unfinished">Only allows the selection of faces</translation>
+      <translation>Σας επιτρέπει να εστιάζετε αποκλειστικά στις πλευρές του σχήματος, κάνοντας την επιλογή τους εύκολη χωρίς να "μπλέκονται" οι γραμμές ή οι γωνίες του αντικειμένου</translation>
     </message>
   </context>
   <context>
@@ -7110,12 +7103,12 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../CommandFilter.cpp" line="268"/>
       <source>No Selection Filters</source>
-      <translation type="unfinished">No Selection Filters</translation>
+      <translation>Χωρίς Φίλτρα Επιλογής</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="269"/>
       <source>Clears all selection filters</source>
-      <translation type="unfinished">Clears all selection filters</translation>
+      <translation>Καθαρισμός όλων των φίλτρων επιλογής</translation>
     </message>
   </context>
   <context>
@@ -7149,7 +7142,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="50"/>
       <source>Reverse the direction of the pattern.</source>
-      <translation type="unfinished">Reverse the direction of the pattern.</translation>
+      <translation>Αλλάζει τη μεριά προς την οποία επαναλαμβάνεται το σχήμα σας, "τοποθετώντας" τα αντίγραφα στην αντίθετη κατεύθυνση από την αρχική.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="68"/>
@@ -7159,7 +7152,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="76"/>
       <source>Extent</source>
-      <translation type="unfinished">Extent</translation>
+      <translation>Έκταση</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="81"/>
@@ -7175,7 +7168,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="141"/>
       <source>Add spacing to create spacing patterns.</source>
-      <translation type="unfinished">Add spacing to create spacing patterns.</translation>
+      <translation>Ορίζει την απόσταση ανάμεσα στα αντίγραφα, ώστε να δημιουργηθεί ένα μοτίβο με συγκεκριμένα κενά μεταξύ τους.</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.ui" line="158"/>
@@ -7191,12 +7184,12 @@ Overlapping volumes of the shapes will be removed.</translation>
       <location filename="../../PatternParametersWidget.cpp" line="408"/>
       <location filename="../../PatternParametersWidget.cpp" line="504"/>
       <source>Spacing %1</source>
-      <translation type="unfinished">Spacing %1</translation>
+      <translation>Απόσταση %1</translation>
     </message>
     <message>
       <location filename="../../PatternParametersWidget.cpp" line="424"/>
       <source>Remove this spacing definition.</source>
-      <translation type="unfinished">Remove this spacing definition.</translation>
+      <translation>Κατάργηση Απόστασης: Διαγράφει τη ρύθμιση για το κενό ανάμεσα στα αντικείμενα.</translation>
     </message>
   </context>
   <context>
@@ -7204,7 +7197,7 @@ Overlapping volumes of the shapes will be removed.</translation>
     <message>
       <location filename="../../ViewProviderPreviewExtension.cpp" line="236"/>
       <source>Failure while rendering preview: %1. That usually indicates an error with model.</source>
-      <translation type="unfinished">Failure while rendering preview: %1. That usually indicates an error with model.</translation>
+      <translation>Αδυναμία εμφάνισης της προεπισκόπησης: %1. Αυτό συνήθως σημαίνει ότι υπάρχει κάποιο λάθος στον σχεδιασμό του μοντέλου.</translation>
     </message>
   </context>
 </TS>

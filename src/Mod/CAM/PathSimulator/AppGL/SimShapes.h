@@ -83,9 +83,9 @@ public:
 
 public:
     void Render();
-    void Render(mat4x4 modelMat, mat4x4 normallMat);
+    void Render(const mat4x4& modelMat, const mat4x4& normallMat);
     void FreeResources();
-    void SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer);
+    void SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer);
     void RotateProfile(
         float* profPoints,
         int nPoints,
@@ -120,7 +120,7 @@ public:
     static int lastNumSlices;
 
 protected:
-    void GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int numIndices);
+    void GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int numIndices);
     void CalculateExtrudeBufferSizes(
         int nProfilePoints,
         bool capStart,

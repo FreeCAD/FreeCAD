@@ -748,7 +748,7 @@ invalid constraints, and degenerate geometry</translation>
       <translation>Zatitu ertza</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>Gehitu kanpo-geometria</translation>
     </message>
@@ -958,54 +958,54 @@ invalid constraints, and degenerate geometry</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Adabegi-aniztasunean aldaketarik ez egitea eskatzen ari zara.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation type="unfinished">B-spline Geometry Index (GeoID) is out of bounds.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation type="unfinished">The Geometry Index (GeoId) provided is not a B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Adabegi-indizea mugetatik kanpo dago. Kontuan izan, OCC notazioaren arabera, lehen adabegiaren indize-zenbakiak 1 izan behar duela, ez 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Aniztasuna ezin da handitu Bspline-aren gradutik gora.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Aniztasuna ezin da txikitu zerotik behera.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC-k ezin du aniztasuna txikitu tolerantzia maximoaren barruan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Adabegiak ezin du zero aniztasuna izan.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation type="unfinished">Knot multiplicity cannot be higher than the degree of the B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation type="unfinished">Knot cannot be inserted outside the B-spline parameter range.</translation>
     </message>
@@ -4598,17 +4598,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Krokisak partzialki erredundanteak diren murrizketak ditu!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation type="unfinished">Unmanaged change of Geometry Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation type="unfinished">Unmanaged change of Constraint Property results in invalid constraint indices</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Parabolak migratu dira. Migratutako fitxategiak ezin dira ireki FreeCADen aurreko bertsioetan.</translation>
@@ -4627,7 +4627,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4752,7 +4752,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</t
       <translation>Huts egin du ertza luzatzeak</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>Huts egin du kanpo-geometria gehitzeak</translation>
     </message>
@@ -7558,7 +7558,7 @@ Puntuak sareta-tartearen bosten bat baino hurbilago ezarri behar dira lerro bate
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation type="unfinished">%1 pick external geometry</translation>

@@ -1222,7 +1222,7 @@
     <message>
       <location filename="../../Command.cpp" line="2364"/>
       <source>Appearance per &amp;Face</source>
-      <translation>Aussehen per Fläche</translation>
+      <translation>Aussehen &amp;flächenweise festlegen</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2365"/>

@@ -81,6 +81,8 @@
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
 
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <utility>
 
 #include <OSD_Parallel.hxx>
@@ -2163,10 +2165,7 @@ TopoShape& TopoShape::makeElementEvolve(
     if (profileShape.IsNull() || !BRepBuilderAPI_FindPlane(profileShape).Found()) {
         if (profileShape.IsNull() || profile.countSubShapes(TopAbs_EDGE) > 1
             || !profile.getSubTopoShape(TopAbs_EDGE, 1).isLinearEdge()) {
-            FC_THROWM(
-                Base::CADKernelError,
-                "Expect the the profile to be a planar wire or a face or a line"
-            );
+            FC_THROWM(Base::CADKernelError, "Expect the profile to be a planar wire or a face or a line");
         }
     }
     if (spineShape.ShapeType() == TopAbs_FACE) {
@@ -3642,7 +3641,7 @@ struct MapperPrism: MapperMaker
             TopoShape shape(maker.Shape());
             for (auto& vertex : bottom.getSubShapes(TopAbs_VERTEX)) {
                 for (auto& e : shape.findAncestorsShapes(vertex, TopAbs_EDGE)) {
-                    // Make sure to not visit the the same edge twice.
+                    // Make sure to not visit the same edge twice.
                     // And check only edge that are not found in the bottom profile
                     if (!edgeSet.insert(e).second && !bottom.findShape(e)) {
                         auto otherVertex = TopExp::FirstVertex(TopoDS::Edge(e));
@@ -5327,14 +5326,15 @@ std::vector<Data::MappedName> TopoShape::decodeElementComboName(
 /**
  * Reorient the outer and inner wires of the TopoShape
  *
- * @param inner If this is not a nullptr, then any inner wires processed will be returned in this
- * vector.
- * @param reorient  One of NoReorient, Reorient ( Outer forward, inner reversed ),
- *                  ReorientForward ( all forward ), or ReorientReversed ( all reversed )
+ * @param innerWiresOutput If this is not a nullptr, then any inner wires processed will be returned
+ * in this vector.
+ * @param reorient One of NoReorient, Reorient (Outer forward, inner reversed),
+ *                 ReorientForward (all forward), or ReorientReversed (all reversed)
+ *
  * @return The outer wire, or an empty TopoShape if this isn't a Face, has no Face subShapes, or the
  *         outer wire isn't found.
  */
-TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient reorient) const
+TopoShape TopoShape::splitWires(std::vector<TopoShape>* innerWiresOutput, SplitWireReorient reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
@@ -5348,18 +5348,18 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     // implemented using simple bound box checking. This should be a
     // reliable method, especially so for a planar face.
 
-    TopoDS_Shape tmp;
+    TopoDS_Shape outerWire;
+
     if (shapeType(true) == TopAbs_FACE) {
-        tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
+        outerWire = BRepTools::OuterWire(TopoDS::Face(_Shape));
     }
     else if (countSubShapes(TopAbs_FACE) == 1) {
-        tmp = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
+        outerWire = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
     }
-    if (tmp.IsNull()) {
+
+    if (outerWire.IsNull()) {
         return TopoShape {};
     }
-    const auto& wires = getSubTopoShapes(TopAbs_WIRE);
-    auto it = wires.begin();
 
     TopAbs_Orientation orientOuter, orientInner;
     switch (reorient) {
@@ -5375,55 +5375,51 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
             break;
     }
 
-    auto doReorient = [](TopoShape& s, TopAbs_Orientation orient) {
+    auto reorientIfNecessary = [reorient](TopoShape& shape, TopAbs_Orientation orient) {
+        if (reorient == NoReorient) {
+            return;
+        }
+
         // Special case of single edge wire. Make sure the edge is in the
         // required orientation. This is necessary because BRepFill_OffsetWire
         // has special handling of circular edge offset, which seem to only
         // respect the edge orientation and disregard the wire orientation. The
         // orientation is used to determine whether to shrink or expand.
-        if (s.countSubShapes(TopAbs_EDGE) == 1) {
-            TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
-            if (e.Orientation() == orient) {
-                if (s._Shape.Orientation() == orient) {
+        if (shape.countSubShapes(TopAbs_EDGE) == 1) {
+            TopoDS_Shape edge = shape.getSubShape(TopAbs_EDGE, 1);
+            if (edge.Orientation() == orient) {
+                if (shape._Shape.Orientation() == orient) {
                     return;
                 }
             }
             else {
-                e = e.Oriented(orient);
+                edge = edge.Oriented(orient);
             }
-            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(e));
-            s.setShape(mkWire.Shape(), false);
+
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(edge));
+            shape.setShape(mkWire.Shape(), false);
         }
-        else if (s._Shape.Orientation() != orient) {
-            s.setShape(s._Shape.Oriented(orient), false);
+        else if (shape._Shape.Orientation() != orient) {
+            shape.setShape(shape._Shape.Oriented(orient), false);
         }
     };
 
-    for (; it != wires.end(); ++it) {
-        auto& wire = *it;
-        if (wire.getShape().IsSame(tmp)) {
-            if (inner) {
-                for (++it; it != wires.end(); ++it) {
-                    inner->push_back(*it);
-                    if (reorient) {
-                        doReorient(inner->back(), orientInner);
-                    }
-                }
-            }
-            auto res = wire;
-            if (reorient) {
-                doReorient(res, orientOuter);
-            }
-            return res;
+    TopoShape outerWireResult {};
+
+    for (auto& wire : getSubTopoShapes(TopAbs_WIRE)) {
+        if (wire.getShape().IsSame(outerWire)) {
+            outerWireResult = wire;
+            reorientIfNecessary(outerWireResult, orientOuter);
+            continue;
         }
-        if (inner) {
-            inner->push_back(wire);
-            if (reorient) {
-                doReorient(inner->back(), orientInner);
-            }
+
+        if (innerWiresOutput) {
+            innerWiresOutput->push_back(wire);
+            reorientIfNecessary(innerWiresOutput->back(), orientInner);
         }
     }
-    return TopoShape {};
+
+    return outerWireResult;
 }
 
 bool TopoShape::isLinearEdge() const

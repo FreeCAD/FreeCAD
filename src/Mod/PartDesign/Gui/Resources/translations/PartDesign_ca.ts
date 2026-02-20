@@ -3520,12 +3520,12 @@ Per a documents llegats amb objectes PartDesign que no tinguin cos, utilitzeu la
       <translation>Per utilitzar aquesta característica cal que pertanyen a un objecte del cos del document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>El Perfil no és en una zona</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Per utilitzar aquesta característica cal que pertanyen a un objecte de part del document.</translation>
     </message>

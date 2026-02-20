@@ -39,13 +39,13 @@ public:
 
 public:
     unsigned int shaderId = 0;
-    void UpdateModelMat(mat4x4 transformMat, mat4x4 normalMat);
-    void UpdateProjectionMat(mat4x4 mat);
-    void UpdateViewMat(mat4x4 mat);
-    void UpdateEnvColor(vec3 lightPos, vec3 lightColor, vec3 ambient, float linearity);
+    void UpdateModelMat(const mat4x4& transformMat, const mat4x4& normalMat);
+    void UpdateProjectionMat(const mat4x4& mat);
+    void UpdateViewMat(const mat4x4& mat);
+    void UpdateEnvColor(const vec3& lightPos, const vec3& lightColor, const vec3& ambient, float linearity);
     void UpdateScreenDimension(int width, int height);
-    void UpdateObjColor(vec3 objColor);
-    void UpdateObjColorAlpha(vec4 objColor);
+    void UpdateObjColor(const vec3& objColor);
+    void UpdateObjColorAlpha(const vec4& objColor);
     void UpdateNormalState(bool isInverted);
     void UpdateSsaoActive(bool isInverted);
     void UpdateTextureSlot(int slot);

@@ -391,16 +391,36 @@ class Component(ArchIFC.IfcProduct):
         obj: <App::FeaturePython>
             The component object.
         """
+        import Part
 
         if self.clone(obj):
             return
-        if not self.ensureBase(obj):
+        if self.ensureBase(obj) is False:
+            # This will fall through if the Component object has no base, allowing the base shapeto
+            # be cleared
             return
-        if obj.Base:
-            shape = self.spread(obj, obj.Base.Shape)
-            if obj.Additions or obj.Subtractions:
-                shape = self.processSubShapes(obj, shape)
-            obj.Shape = shape
+
+        # Only proceed if a Base object is linked and contains valid geometry.
+        if obj.Base and hasattr(obj.Base, "Shape") and not obj.Base.Shape.isNull():
+            # Create a standalone shape as a deep copy of the base geometry, to avoid modifying
+            # the original source.
+            base_shape = Part.Shape(obj.Base.Shape)
+
+            # Reset the shape's internal placement to Identity. This strips the placement
+            # inherited from the Base object, ensuring the geometry is centered at (0,0,0) for
+            # Boolean operations in processSubShapes. This also prevents the shape's placement from
+            # overwriting the Component's own Placement property during assignment in applyShape.
+            base_shape.Placement = FreeCAD.Placement()
+
+            # Localize the CSG shapes: pass the object's placement to processSubShapes, so that the
+            # placements of any additions and subtractions are also localized to the local origin of
+            # the Arch Component.
+            final_shape = self.processSubShapes(obj, base_shape, obj.Placement)
+            self.applyShape(obj, final_shape, obj.Placement, allownosolid=True)
+        else:
+            # Clear the shape if the base has been removed. This avoids leaving a stale shape that
+            # is not updated when the base is removed.
+            obj.Shape = Part.Shape()
 
     def dumps(self):
         return None
@@ -1267,6 +1287,8 @@ class Component(ArchIFC.IfcProduct):
     def ensureBase(self, obj):
         """Returns False if the object has a Base but of the wrong type.
         Either returns True"""
+        # TODO: this method has a third undocumented state: None, which is returned if the object
+        # has no Base. This should either be fixed if unintended, or documented if intended.
 
         if getattr(obj, "Base", None):
             if obj.Base.isDerivedFrom("Part::Feature"):

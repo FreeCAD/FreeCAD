@@ -25,6 +25,8 @@
 #ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
 #define SKETCHERGUI_VIEWPROVIDERSKETCH_H
 
+#include <boost/smart_ptr/scoped_ptr.hpp>
+
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
 #include <QCoreApplication>

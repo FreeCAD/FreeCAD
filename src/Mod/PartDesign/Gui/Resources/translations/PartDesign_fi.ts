@@ -3522,12 +3522,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään kappale-objektiin.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Piirre ei kuulu osaan</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Jotta tätä piirrettä voitaisiin käyttää, sen pitäisi kuulua asiakirjaan sisältyvään osa-objektiin.</translation>
     </message>

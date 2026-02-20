@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation type="unfinished">&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Vstavi komponento v trenutno aktiven sestav. To bo ustvarilo dinamično povezavo med deli, telesi, primitivi in sestavi. Pri dodajanju zunanjih komponent poskrbite, da je datoteka &lt;b&gt;odprta v trenutni seji&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Vstavite z levim klikom na seznam.&lt;/li&gt;&lt;li&gt;Odstranite z desnim klikom na seznam.&lt;/li&gt;&lt;li&gt;Za vstavljanje več kopij iste komponente med klikanjem v pogledu držite tipko Shift.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1777"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation type="unfinished">Distance</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Pokvarjena povezava v: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1596"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Izberi 2 elementa iz 2 ločenih delov</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1779"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Polmer 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1781"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Korak navoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1783"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Polmer naklona</translation>
     </message>
@@ -354,7 +354,7 @@
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="541"/>
       <source>In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</source>
-      <translation type="unfinished">In capital are variables that you need to replace with actual values. More details about each example in its tooltip.</translation>
+      <translation>Z velikimi tiskanimi črkami so označene spremenljivke, ki jih je potrebno nadomestiti z dejanskimi vrednostmi. Podrobnejša razlaga vsakega primera je navedena v njegovem namigu.</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="544"/>
@@ -627,7 +627,7 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation type="unfinished">The {order} reference of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1218"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation type="unfinished">The object to ground</translation>
     </message>
@@ -890,63 +890,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation type="unfinished">The object is associated to one or more joints.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation type="unfinished">Do you want to move the object and delete associated joints?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1057"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Premakni del</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
       <source>Empty Assembly</source>
-      <translation type="unfinished">Empty Assembly</translation>
+      <translation>Prazen sestav</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
       <source>Over-constrained:</source>
       <translation type="unfinished">Over-constrained:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
       <source>Partially redundant:</source>
       <translation>Delno čezmerno:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
       <source>Solver failed to converge</source>
       <translation>Reševalniku je zbliževanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
       <source>Under-constrained:</source>
       <translation type="unfinished">Under-constrained:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
@@ -956,7 +956,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
       <source>Fully constrained</source>
       <translation>Polnoomejen</translation>
     </message>
@@ -1186,7 +1186,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="173"/>
       <source>Animation Player</source>
-      <translation type="unfinished">Animation Player</translation>
+      <translation>Predvajalnik animacije</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="212"/>
@@ -1206,7 +1206,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Frame</source>
-      <translation>Posnetek</translation>
+      <translation>Sličica</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
@@ -1244,12 +1244,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="49"/>
       <source>New Assembly</source>
-      <translation type="unfinished">New Assembly</translation>
+      <translation>Nov sestav</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateAssembly.py" line="54"/>
       <source>Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</source>
-      <translation type="unfinished">Creates an assembly object in the current document, or in the current active assembly (if any). Limit of one root assembly per file.</translation>
+      <translation>Ustvari sestavni objekt v trenutnem dokumentu ali znotraj trenutno aktivnega sestava (če obstaja). V datoteki je dovoljen le en korenski sestav.</translation>
     </message>
   </context>
   <context>
@@ -1276,7 +1276,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="77"/>
       <source>Fixed Joint</source>
-      <translation type="unfinished">Fixed Joint</translation>
+      <translation>Toga vez</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="83"/>
@@ -1432,7 +1432,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
-      <translation type="unfinished">Toggle Grounded</translation>
+      <translation>Preklopi usidranje</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateJoint.py" line="437"/>
@@ -1479,7 +1479,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Delno naloženo</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Celotno naložen dokument</translation>
     </message>
@@ -1489,7 +1489,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="38"/>
       <source>Solver messages</source>
-      <translation type="unfinished">Solver messages</translation>
+      <translation>Sporočila reševalnika</translation>
     </message>
     <message>
       <location filename="../../TaskAssemblyMessages.cpp" line="56"/>

@@ -247,7 +247,7 @@
     <message>
       <location filename="../Workbench.cpp" line="583"/>
       <source>Tree View</source>
-      <translation>Vista ad albero</translation>
+      <translation>Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="584"/>
@@ -4572,7 +4572,7 @@ Un valore maggiore facilita la selezione degli elementi, ma potrebbe impedire la
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree View</source>
-      <translation>Vista ad albero</translation>
+      <translation>Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="341"/>
@@ -5474,7 +5474,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="14"/>
       <source>Object Selection</source>
-      <translation>Selezione Oggetto</translation>
+      <translation>Selezione oggetto</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.ui" line="32"/>
@@ -5803,7 +5803,7 @@ Salvare tutte le modifiche?</translation>
     <message>
       <location filename="../EditorView.cpp" line="509"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../EditorView.cpp" line="511"/>
@@ -7433,7 +7433,7 @@ Specificare un'altra directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3766"/>
       <source>Show Items Hidden in Tree View</source>
-      <translation>Mostra gli elementi nascosti nella vista ad albero</translation>
+      <translation>Mostra gli elementi nascosti nella Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3768"/>
@@ -7443,7 +7443,7 @@ Specificare un'altra directory?</translation>
     <message>
       <location filename="../Tree.cpp" line="3771"/>
       <source>Toggle Visibility in Tree View</source>
-      <translation>Attiva/disattiva la visibilità nella vista ad albero</translation>
+      <translation>Attiva/disattiva la visibilità nella Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3776"/>
@@ -7625,7 +7625,7 @@ Specificare un'altra directory?</translation>
     <message>
       <location filename="../View3DInventor.cpp" line="288"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="290"/>
@@ -7840,7 +7840,7 @@ Specificare un'altra directory?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="703"/>
       <source>Tree View</source>
-      <translation>Vista ad albero</translation>
+      <translation>Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="733"/>
@@ -10312,7 +10312,7 @@ Vuoi salvare il documento ora?</translation>
     <message>
       <location filename="../MDIView.cpp" line="286"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="288"/>
@@ -11163,7 +11163,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="254"/>
       <source>Tree View and Property View mode</source>
-      <translation>Modalità Vista ad albero e Vista proprietà</translation>
+      <translation>Modalità Vista ad Albero e Vista proprietà</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="278"/>
@@ -12001,7 +12001,7 @@ the region are non-opaque.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="207"/>
       <source>Tree View</source>
-      <translation>Vista ad albero</translation>
+      <translation>Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="213"/>
@@ -14101,7 +14101,7 @@ Procedere?</translation>
     <message>
       <location filename="../CommandView.cpp" line="3767"/>
       <source>Tree View Actions</source>
-      <translation>Azioni vista ad albero</translation>
+      <translation>Azioni Vista ad Albero</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3768"/>
@@ -14337,7 +14337,7 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Corrispondenza esatta</translation>
     </message>
@@ -14345,7 +14345,7 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Corrispondenza esatta</translation>
     </message>
@@ -14393,7 +14393,7 @@ In questo modo il pannello agganciato rimane sempre trasparente.</translation>
     <message>
       <location filename="../Tree.cpp" line="4180"/>
       <source>Tree View</source>
-      <translation>Vista ad albero</translation>
+      <translation>Vista ad Albero</translation>
     </message>
   </context>
   <context>

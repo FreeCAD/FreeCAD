@@ -101,7 +101,7 @@
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1483"/>
       <source>Creates a simple copy of the geometry taking as reference the last selected point</source>
-      <translation>最後に選択された点を参照位置としてジオメトリの単純コピーを作成</translation>
+      <translation>最後に選択された点を参照位置としてジオメトリーの単純コピーを作成</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@ as mirroring reference</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1582"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>最後に選択された点を参照位置としてジオメトリを移動</translation>
+      <translation>最後に選択された点を参照位置としてジオメトリーを移動</translation>
     </message>
   </context>
   <context>
@@ -745,9 +745,9 @@ invalid constraints, and degenerate geometry</source>
       <translation>エッジを分割</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
-      <translation>外部ジオメトリを追加</translation>
+      <translation>外部ジオメトリーを追加</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSlot.h" line="177"/>
@@ -898,7 +898,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="147"/>
       <source>Rotate geometries</source>
-      <translation>ジオメトリを回転</translation>
+      <translation>ジオメトリーを回転</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerScale.h" line="129"/>
@@ -908,12 +908,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerTranslate.h" line="120"/>
       <source>Translate geometries</source>
-      <translation>ジオメトリを移動</translation>
+      <translation>ジオメトリーを移動</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="136"/>
       <source>Symmetry geometries</source>
-      <translation>対称ジオメトリ</translation>
+      <translation>対称ジオメトリー</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerLineSet.h" line="460"/>
@@ -955,54 +955,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>ノット多重度で変更が起きないように要求しています。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Bスプラインのジオメトリー番号（GeoID）が範囲外です。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>入力されたジオメトリー番号（GeoID）はBスプラインではありません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>ノット・インデックスが境界外です。OCCの記法に従うと最初のノットは1と非ゼロのインデックスを持ちます。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Bスプラインの次数を越えて多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>0を越えて多重度を減らすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCCは最大許容範囲内で多重度を減らすことができまぜん。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>ノットがゼロ多重性を持つことはでいません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Bスプラインの次数を超えてノット多重度を増やすことはできません。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Bスプラインパラメーターの範囲外にノットを挿入することはできません。</translation>
     </message>
@@ -4590,17 +4590,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>スケッチに一部が冗長な拘束があります!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>ジオメトリープロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>拘束プロパティーの管理されていない変更は無効な拘束インデックスを引き起こします。</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>放物線がバージョン変換されました。変換されたファイルは以前のバージョンのFreeCADでは開けません!!
@@ -4620,7 +4620,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4745,7 +4745,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>エッジを延長できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>外部ジオメトリを追加できませんでした。</translation>
     </message>
@@ -5108,7 +5108,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="34"/>
       <source>Creating line</source>
-      <translation>線分を作成</translation>
+      <translation>作成中の線</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="41"/>
@@ -5263,7 +5263,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
       <source>Fully constrained sketch</source>
-      <translation>スケッチが完全拘束されました。</translation>
+      <translation>完全拘束されたスケッチ</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="650"/>
@@ -5273,7 +5273,7 @@ Instead equal constraints are applied between the original objects and their cop
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="670"/>
       <source>Invalid sketch</source>
-      <translation>スケッチが無効です</translation>
+      <translation>無効なスケッチ</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
@@ -7551,7 +7551,7 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 外部ジオメトリーを選択</translation>

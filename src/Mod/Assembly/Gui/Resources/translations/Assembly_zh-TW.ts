@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>距離</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>輸送帶</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="812"/>
       <source>Broken link in: </source>
       <translation>錯誤的連結在： </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>您需要自 2 個分離的零件選擇 2 個元件</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>半徑 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation type="unfinished">Thread pitch</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>螺距半徑</translation>
     </message>
@@ -515,119 +515,119 @@ SLOPE defines the steepness of the transition between 0 and H1 and H2 to 0 about
       <translation>接頭類型</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>連接的第一個參考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation type="unfinished">This is the local coordinate system within Reference1's object that will be used for the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement1 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation type="unfinished">This is the attachment offset of the first connector of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation type="unfinished">This is the local coordinate system within Reference2's object that will be used for the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation type="unfinished">This prevents Placement2 from recomputing, enabling custom positioning of the placement</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation type="unfinished">This is the attachment offset of the second connector of the joint</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>啟用此配合的最小長度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>啟用此配合的最大長度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>啟用此配合的最小角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>啟用此配合的最大角度限制</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>這是關節的接合點，它僅由角度接合點使用。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>這是兩個坐標系統之間長度的最小限制（沿其 Z 軸）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>這是兩個坐標系統之間長度的最大限制（沿其 Z 軸）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>這是兩個坐標系統之間角度的最小限制（沿其 X 軸）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>這是兩個坐標系統之間角度的最大限制（沿其 X 軸）</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>連接的第二個參考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>接頭的第一個物件</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>接頭的第二個物件</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>這是接頭的距離。僅在距離接頭、齒條和齒輪（螺距半徑）、螺絲和齒輪以及皮帶（半徑1）中使用</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>這是配合的第二個距離。僅在齒輪配合中作為第二半徑。</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>配合的第 {order} 參考</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>物件接地</translation>
     </message>
@@ -890,70 +890,70 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>該物件與一個或多個接頭相關聯.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>您要移動物件並刪除關聯的接頭嗎?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>移動零件</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation type="unfinished">ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
       <source>Empty Assembly</source>
       <translation type="unfinished">Empty Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
       <source>Over-constrained:</source>
       <translation>過度拘束：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>Malformed joints:</source>
       <translation type="unfinished">Malformed joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
       <source>Redundant joints:</source>
       <translation type="unfinished">Redundant joints:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
       <source>Partially redundant:</source>
       <translation>部份冗餘：</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
       <source>Solver failed to converge</source>
       <translation>求解器無法收斂</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
       <source>Under-constrained:</source>
       <translation>拘束不足：</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>%n Degrees of Freedom</source>
       <translation type="unfinished">
         <numerusform>%n Degrees of Freedom</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
       <source>Fully constrained</source>
       <translation>完全拘束</translation>
     </message>
@@ -1088,7 +1088,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>連接</translation>
     </message>
@@ -1427,12 +1427,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation type="unfinished">Toggle Grounded</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation type="unfinished">&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</translation>
     </message>
@@ -1476,7 +1476,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation type="unfinished">Partially loaded</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation type="unfinished">Fully load document</translation>
     </message>

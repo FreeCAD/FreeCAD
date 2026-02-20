@@ -69,8 +69,6 @@ public:
     Exporter& operator=(Exporter&&) = delete;
 
 protected:
-    /// Does some simple escaping of characters for XML-type exports
-    static std::string xmlEscape(const std::string& input);
     void throwIfNoPermission(const std::string&);
 
     std::map<const App::DocumentObject*, std::vector<std::string>> subObjectNameCache;

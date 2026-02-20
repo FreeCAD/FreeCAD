@@ -3519,12 +3519,12 @@ För äldre dokument med Part Design-objekt som saknar en kropp kan du använda 
       <translation>För att kunna använda den här funktionen måste den tillhöra ett body-objekt i dokumentet.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Funktionen är inte i en del</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>För att kunna använda den här funktionen måste den tillhöra ett delobjekt i dokumentet.</translation>
     </message>

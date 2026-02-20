@@ -456,7 +456,7 @@ For stock from the base object&apos;s bounding box it means the extra material i
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="112"/>
       <source>Materials</source>
-      <translation type="unfinished">Materials</translation>
+      <translation>Materialer</translation>
     </message>
     <message>
       <location filename="../panels/ToolBitEditor.ui" line="125"/>
@@ -727,7 +727,7 @@ Reset deletes all current items from the list and fills the list with all circul
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="41"/>
       <location filename="../panels/ToolEditor.ui" line="96"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
@@ -9135,7 +9135,7 @@ This will not delete the toolbits contained within it.</translation>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
       <source>Diameter</source>
-      <translation type="unfinished">Diameter</translation>
+      <translation>Diameter</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/shape/models/bullnose.py" line="53"/>

@@ -2007,7 +2007,7 @@ Bitte die Parameter anpassen und erneut versuchen.</translation>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="55"/>
       <source>Helix Parameters</source>
-      <translation>Wendelparameter</translation>
+      <translation>Parameter der Wendel</translation>
     </message>
     <message>
       <location filename="../../TaskHelixParameters.cpp" line="225"/>
@@ -2207,7 +2207,7 @@ Bitte die Parameter anpassen und erneut versuchen.</translation>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="48"/>
       <source>Loft Parameters</source>
-      <translation>Parameter des Lofts</translation>
+      <translation>Parameter der Ausformung</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="72"/>
@@ -3521,12 +3521,12 @@ Für veraltete Dokumente mit Part Design Objekten ohne Körper wird in Part Desi
       <translation>Um diese Funktion verwenden zu können, muss es Teil eines Körpers im Dokument sein.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Objekt ist nicht Teil einer Baugruppe</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Um diese Funktion verwenden zu können, muss es Teil einer Baugruppe im Dokument sein.</translation>
     </message>
@@ -3690,7 +3690,7 @@ Es kann später jederzeit mit 'Part Design -&gt; Migrieren ...' migriert werden.
     <message>
       <location filename="../../ViewProviderPad.cpp" line="43"/>
       <source>Edit Pad</source>
-      <translation>Block bearbeiten</translation>
+      <translation>Aufpolsterung bearbeiten</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="75"/>

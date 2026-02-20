@@ -28,8 +28,6 @@
 #include <memory>
 #include <string>
 
-#include <boost/algorithm/string/predicate.hpp>
-
 #include <QByteArray>
 #include <QHash>
 #include <QVector>
@@ -69,18 +67,7 @@ public:
      * @param[in] size Optional, the length of the name string. If not
      * provided, the string must be null-terminated.
      */
-    explicit MappedName(const char* name, int size = -1)
-        : raw(false)
-    {
-        if (!name) {
-            return;
-        }
-        if (boost::starts_with(name, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX_SIZE;
-        }
-
-        data = size < 0 ? QByteArray(name) : QByteArray(name, size);
-    }
+    explicit MappedName(const char* name, int size = -1);
 
     /**
      * @brief Create a MappedName from a C++ std::string.
@@ -90,17 +77,7 @@ public:
      *
      * @param nameString The new name. A deep copy is made.
      */
-    explicit MappedName(const std::string& nameString)
-        : raw(false)
-    {
-        auto size = nameString.size();
-        const char* name = nameString.c_str();
-        if (boost::starts_with(nameString, ELEMENT_MAP_PREFIX)) {
-            name += ELEMENT_MAP_PREFIX_SIZE;
-            size -= ELEMENT_MAP_PREFIX_SIZE;
-        }
-        data = QByteArray(name, static_cast<int>(size));
-    }
+    explicit MappedName(const std::string& nameString);
 
     /**
      * @brief Create a MappedName from an IndexedName.

@@ -3517,12 +3517,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>為了使用此特徵，它需要屬於文件中的主體物件。</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>特徵不在零件中</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>為了使用此特徵，它需要屬於文件中的一個零件物件。</translation>
     </message>

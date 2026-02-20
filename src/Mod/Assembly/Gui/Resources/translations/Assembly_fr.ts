@@ -135,7 +135,7 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Distance</translation>
     </message>
@@ -175,27 +175,27 @@ s'assurer que le fichier est &lt;b&gt;ouvert dans la session en cours&lt;/b&gt;&
       <translation>Courroie</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="812"/>
       <source>Broken link in: </source>
       <translation>Lien cassé dans : </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Sélectionner 2 éléments dans 2 pièces séparées</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Rayon 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Pas du filetage</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Rayon primitif</translation>
     </message>
@@ -524,120 +524,120 @@ SLOPE définit la pente de la transition entre 0 et H1 et H2 à 0 à T1 et T2 re
       <translation>Le type de liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>La première référence de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Système de coordonnées local dans l'objet Reference1 qui sera utilisé pour la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ceci empêche Placement1 d'être recalculé, ce qui permet un positionnement personnalisé de l'emplacement.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Décalage de la fixation du premier connecteur de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Système de coordonnées locales de l'objet Reference2 qui sera utilisé pour la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ceci empêche Placement2 d'être recalculé, ce qui permet un positionnement personnalisé de l'emplacement.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Décalage de la fixation du second connecteur de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Permet d'activer la limite de longueur minimale de la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Permet d'activer la limite de longueur maximale de la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Permet d'activer la limite minimale de l'angle de la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Permet d'activer la limite maximale de l'angle de la liaison.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Il s'agit de l'angle de la liaison. Il n'est utilisé que par la liaison d'angle.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Limite minimale pour la longueur entre les deux systèmes de coordonnées (suivant leurs axes Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Limite maximale pour la longueur entre les deux systèmes de coordonnées (suivant leurs axes Z)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Limite minimale de l'angle entre les deux systèmes de coordonnées (entre leurs axes X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Limite maximale de l'angle entre les deux systèmes de coordonnées (entre leurs axes X)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>La deuxième référence de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Le premier objet de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Le deuxième objet de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Il s'agit de la distance de la liaison. Elle n'est utilisée que par la liaison distance et la liaison crémaillère (rayon primitif), la liaison
 hélicoïdale et la liaison engrenage et la liaison courroie (rayon1).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Il s'agit de la deuxième distance de la liaison. Elle n'est utilisée que par la liaison engrenage pour enregistrer le deuxième rayon.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>La référence {order} de la liaison</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>L'objet à bloquer</translation>
     </message>
@@ -902,63 +902,63 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>L'objet est associé à une ou plusieurs liaisons.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Voulez-vous déplacer l'objet et supprimer les liaisons associées ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1056"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Déplacer une pièce</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>Fournisseur d'affichage d'Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
       <source>Empty Assembly</source>
       <translation>Assemblage vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>Malformed joints:</source>
       <translation>Liaisons défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
       <source>Redundant joints:</source>
       <translation>Liaisons redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
       <source>Partially redundant:</source>
       <translation>Esquisse avec contraintes partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n degrés de liberté</numerusform>
@@ -966,7 +966,7 @@ Les fichiers sont nommés « runPreDrag.asmt » et « dragging.log » et se trou
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -1112,7 +1112,7 @@ lors du recalcul. Les colonnes « Description » et personnalisées ne sont pas 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Liaisons</translation>
     </message>
@@ -1461,12 +1461,12 @@ Sélectionner les mêmes systèmes de coordonnées que pour les liaisons pivots.
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Activer/désactiver le blocage</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>Active ou désactive le blocage d'une pièce.
 Le blocage d'une pièce immobilise définitivement sa position dans l'assemblage, empêchant tout mouvement ou rotation. Il faut au
@@ -1512,7 +1512,7 @@ moins une pièce à bloquer avant de commencer l'assemblage.</translation>
       <translation>Partiellement chargé</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Document entièrement chargé</translation>
     </message>

@@ -3639,43 +3639,43 @@ Essayez de déplacer le fichier DWG vers un chemin d'accès sans espaces ni cara
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>Aucun document actif. Interruption.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Mauvaise saisie : l'objet {} n'est pas dans le document.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Impossible d'insérer un nouvel objet dans une pièce redimensionnée</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbole non implémenté. Un symbole par défaut est utilisé.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>l'image est vide</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>le nom du fichier n'existe ni dans le système ni dans le fichier source</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>impossible de charger la texture</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>N'a pas de "ViewObject.RootNode".</translation>
     </message>
@@ -6062,7 +6062,7 @@ pour permettre à FreeCAD de télécharger ces bibliothèques. Répondre Oui.</t
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="206"/>
       <source>Edit Scale</source>
-      <translation>Éditer l'échelle</translation>
+      <translation>Éditer une échelle</translation>
     </message>
     <message>
       <location filename="../../drafttaskpanels/task_scale.py" line="104"/>

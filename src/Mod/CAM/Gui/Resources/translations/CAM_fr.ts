@@ -7860,8 +7860,7 @@ Les valeurs seront converties dans l'unité souhaitée lors du post-traitement.<
       <location filename="../../../Path/Tool/library/ui/editor.py" line="411"/>
       <source>Are you sure you want to remove the library &apos;{0}&apos;?
 This will not delete the toolbits contained within it.</source>
-      <translation>Êtes-vous sûr de vouloir supprimer la bibliothèque « {0} » ?
-Cela ne supprimera pas les outils qu'elle contient.</translation>
+      <translation>Faut-il supprimer la bibliothèque « {0} » ? Cela ne supprimera pas les outils qu'elle contient.</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/library/ui/editor.py" line="430"/>
@@ -7952,8 +7951,8 @@ trouvé lors de l'importation de la bibliothèque.</translation>
     <message>
       <location filename="../../../Path/Tool/toolbit/ui/browser.py" line="431"/>
       <source>Are you sure you want to delete the selected toolbit(s)? This is not reversible. The toolbits will be removed from disk and from all libraries that contain them.</source>
-      <translation>Êtes-vous sûr de vouloir supprimer le(s) outil(s) coupant(s) sélectionné(s) ? Ce n'est pas réversible. Les outils seront supprimés
-du disque et de toutes les bibliothèques qui les contiennent.</translation>
+      <translation>Faut-il supprimer le(s) outil(s) coupant(s) sélectionné(s) ? Ce n'est pas réversible. Les outils seront supprimés du disque et de toutes les
+bibliothèques qui les contiennent.</translation>
     </message>
     <message>
       <location filename="../../../PathScripts/PathUtils.py" line="219"/>
@@ -8957,7 +8956,7 @@ du disque et de toutes les bibliothèques qui les contiennent.</translation>
     <message>
       <location filename="../../../Path/Dressup/Array.py" line="197"/>
       <source>Removing ToolController property from {} as base operation&apos;s ToolController is now used.</source>
-      <translation>Suppression de la propriété "Tool Controller" de {} car la propriété "Tool Controller" de l'opération de base est désormais utilisée.</translation>
+      <translation>Suppression de la propriété « Tool Controller » de {} car la propriété « Tool Controller » de l'opération de base est désormais utilisée.</translation>
     </message>
   </context>
   <context>

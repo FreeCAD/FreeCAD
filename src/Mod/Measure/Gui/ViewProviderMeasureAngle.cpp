@@ -256,6 +256,9 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
                 thirdPoint = originVector + adjustedVector2.Normalized();
             }
         }
+        else {
+            thirdPoint = originVector + vector2.Normalized() * radius;
+        }
 
         gp_Vec originVector(dimensionOriginPoint.XYZ());
         gp_Vec xAxis = (loc1 - originVector).Normalized();

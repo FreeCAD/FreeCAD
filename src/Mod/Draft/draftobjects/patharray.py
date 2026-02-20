@@ -604,7 +604,7 @@ def placements_on_path(
     if forceNormal and normalOverride:
         normal = normalOverride
     else:
-        normal = DraftGeomUtils.get_normal(pathwire)
+        normal = DraftGeomUtils.get_shape_normal(pathwire)
         if normal is None:
             normal = App.Vector(0, 0, 1)
 

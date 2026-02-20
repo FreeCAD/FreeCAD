@@ -266,7 +266,7 @@ public:
      * This function sets the value of the property identified by the path.  It
      * is meant to be overridden for subclasses in which the `path` is
      * typically ignored.  The default implementation redirects setting a value
-     * to the the `path` ObjectIdentifier.
+     * to the `path` ObjectIdentifier.
      *
      * @param[in] path The path to the property.
      * @param[in] value The value to set.

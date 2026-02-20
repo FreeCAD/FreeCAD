@@ -504,7 +504,7 @@ This command only works with a mesh object.</source>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
       <source>Edit %1</source>
-      <translation>Modifier %1</translation>
+      <translation>Éditer %1</translation>
     </message>
   </context>
   <context>

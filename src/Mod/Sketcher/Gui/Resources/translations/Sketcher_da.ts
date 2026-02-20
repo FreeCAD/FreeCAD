@@ -748,7 +748,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
       <translation>Del linje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>Tilføj ekstern geometri</translation>
     </message>
@@ -846,7 +846,7 @@ ugyldige relationer og fejlbehæftet geometri</translation>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="708"/>
       <source>Swap constraint names</source>
-      <translation>Skift begrænsningsnavne</translation>
+      <translation>Skift relationsnavne</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.cpp" line="1214"/>
@@ -958,54 +958,54 @@ ugyldige relationer og fejlbehæftet geometri</translation>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6766"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Du beder ikke om en ændring af knude-multipliciteten.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6758"/>
+      <location filename="../../../App/SketchObject.cpp" line="6936"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Splines geometri-index (GeoID) er uden for grænseværdierne.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6775"/>
+      <location filename="../../../App/SketchObject.cpp" line="6952"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Geometriindekset (GeoID) er ikke en spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6787"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Knudeindeks er uden for grænseværdierne. Bemærk, at i overensstemmelse med OCC-notationen, har første knudepunkt indeks 1 og ikke 0.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6803"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Multipliciteten kan ikke forøges til mere end graden af splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6814"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Multipliciteten kan ikke formindskes til mindre end nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6830"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC kan ikke formindske multipliciteten inden for den maksimale tolerance.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6943"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Knuden kan ikke have en multiplicitet på nul.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6965"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Knuders multiplicitet kan ikke være højere end graden af splinen.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="6975"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Knudepunkter kan ikke indsættes uden for splinens parameterområdet.</translation>
     </message>
@@ -2863,7 +2863,7 @@ Du skal forlade og genindtræde i redigeringstilstand før funktionen træder i 
     <message>
       <location filename="../../SketcherSettings.ui" line="338"/>
       <source>On-view-parameters (OVP)</source>
-      <translation type="unfinished">On-view-parameters (OVP)</translation>
+      <translation>On-view-parametre (OVP)</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="145"/>
@@ -2910,10 +2910,10 @@ Denne indstilling er kun for værktøjslinjen. Uanset hvad du vælger, er alle v
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Vælg en visningstilstand for On-View-Parametre:
+'Deaktiveret': On-View-Parametre er fuldstændig deaktiverede.
+'Kun dimensioner': Kun dimensions-parametre er synlige. Disse er de mest nyttige. For eksempel radius af en cirkel.
+'Alle': Både dimensions- og positions-parametre. Positionen er markørerens (x,y) position. For eksempel ved midten af en cirkel.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="198"/>
@@ -3089,7 +3089,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="361"/>
       <source>Visibility Automation</source>
-      <translation type="unfinished">Visibility Automation</translation>
+      <translation>Automatisk visning</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="367"/>
@@ -3099,7 +3099,7 @@ Understøtter alle enhedssystemer undtagen 'US customary' og 'Building US/Euro'.
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="386"/>
       <source>Shows source objects which are used for external geometry in the opened sketch</source>
-      <translation type="unfinished">Shows source objects which are used for external geometry in the opened sketch</translation>
+      <translation>Viser kildeobjekter som bruges til ekstern geometri i den åbnede skitse</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
@@ -3121,12 +3121,12 @@ Virker kun, når "Gendan kameraposition efter redigering" er aktiveret.</transla
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="463"/>
       <source>Opens a sketch in section view mode, showing only objects behind the sketch plane</source>
-      <translation>Åbner en skitse i snitvisningstilstand, der kun viser objekter bag skitseplanet</translation>
+      <translation>Åbner skitser i snitvisningstilstand som kun viser objekter bag skitseplanet</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="466"/>
       <source>Open sketch in section view mode</source>
-      <translation>Åbn skitse i snitvisningstilstand</translation>
+      <translation>Åbn skitser i snitvisningstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="507"/>
@@ -3227,7 +3227,7 @@ Standard er: %N = %V
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="176"/>
       <source>No missing coincidences found</source>
-      <translation>Ingen manglende sammenfald er fundet</translation>
+      <translation>Der blev ikke fundet manglende sammenfald</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="185"/>
@@ -3247,7 +3247,7 @@ Standard er: %N = %V
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="240"/>
       <source>No invalid constraints found</source>
-      <translation>Ingen ugyldige relationer fundet</translation>
+      <translation>Der blev ikke fundet ugyldige relationer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="246"/>
@@ -3257,7 +3257,7 @@ Standard er: %N = %V
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="246"/>
       <source>Invalid constraints found</source>
-      <translation>Ugyldige relationer fundet</translation>
+      <translation>Der blev fundet ugyldige relationer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="287"/>
@@ -3265,7 +3265,7 @@ Standard er: %N = %V
       <location filename="../../TaskSketcherValidation.cpp" line="316"/>
       <location filename="../../TaskSketcherValidation.cpp" line="334"/>
       <source>Reversed external geometry</source>
-      <translation type="unfinished">Reversed external geometry</translation>
+      <translation>Ændret ekstern geometri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="288"/>
@@ -3274,25 +3274,25 @@ Standard er: %N = %V
 %2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
 
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
-      <translation type="unfinished">%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
+      <translation>%1 ændrede eksterne cirkelbuer blev fundet. Deres endepunkter er markeret med cirkler i 3D-visningen.
 
-%2 constraints are linking to the endpoints. The constraints have been listed in the report view (menu View -&gt; Panels -&gt; Report view).
+%2 geometrier er relaterede til endepunkterne. Relatioenrne er oplistet i rapportvisningen (Vis -&gt; Paneler -&gt; Rapportvisning).
 
-Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</translation>
+Klik på "Skift relationer for endepunkter" for at redefinere endepunkterne. Gør det kun én gang for skitser som er oprettet i FreeCAD før v0.15</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="304"/>
       <source>%1 reversed external geometry arcs were found. Their endpoints are encircled in the 3D view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 omvendte eksterne cirkelbuegeometrier blev fundet. Deres endepunkter er markeret i 3D-visningen.
+      <translation>%1 ændrede eksterne cirkelbuer blev fundet. Deres endepunkter er markeret i 3D-visningen.
 
-Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
+Men der blev ikke fundet geometrier der relaterer til endepunkterne.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="317"/>
       <source>No reversed external geometry arcs were found.</source>
-      <translation type="unfinished">No reversed external geometry arcs were found.</translation>
+      <translation>Der blev ikke fundet ændrede eksterne cirkelbuer.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="397"/>
@@ -3343,7 +3343,7 @@ Men der blev ikke fundet relationer, der linker til endepunkterne.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="490"/>
       <source>No degenerated geometry found</source>
-      <translation>Ingen fejlbehæftet geometri fundet</translation>
+      <translation>Der blev ikke fundet fejlbehæftet geometri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="498"/>
@@ -3718,12 +3718,12 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="176"/>
       <source>Reversed External Geometry</source>
-      <translation type="unfinished">Reversed External Geometry</translation>
+      <translation>Ændret ekstern geometri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="195"/>
       <source>Swap Endpoints in Constraints</source>
-      <translation>Byt endepunkter i relationer</translation>
+      <translation>Skift relationer for endepunkter</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
@@ -3758,7 +3758,7 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="182"/>
       <source>Finds reversed external geometries</source>
-      <translation type="unfinished">Finds reversed external geometries</translation>
+      <translation>Finder ændret ekstern geometri</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="192"/>
@@ -3821,7 +3821,7 @@ Dette gøres ved at analysere skitsegeometrierne og relationerne.</translation>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3443"/>
       <source>Invalid Sketch</source>
-      <translation>Ugyldig Skitse</translation>
+      <translation>Ugyldig skitse</translation>
     </message>
     <message>
       <location filename="../../ViewProviderSketch.cpp" line="3444"/>
@@ -4150,7 +4150,7 @@ Detach it from the support?</translation>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="124"/>
       <source>Maximum iterations to find convergence before solver is stopped</source>
-      <translation>Maksimalt antal iterationer for at finde konvergerende løsning, før ligningsløseren stoppes</translation>
+      <translation>Maksimalt antal iterationer for at finde en konvergerende løsning, før løsningsværktøjet stoppes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="189"/>
@@ -4201,7 +4201,7 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="150"/>
       <source>Scales the maximum iteration count based on the sketch size</source>
-      <translation>Skalerer det maksimale antal iterationsantal baseret på skitsestørrelsen</translation>
+      <translation>Tilpasser det maksimale antal iterationer baseret på skitsestørrelsen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="153"/>
@@ -4211,7 +4211,7 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="166"/>
       <source>Scales the maximum iteration count based on the number of parameters</source>
-      <translation type="unfinished">Scales the maximum iteration count based on the number of parameters</translation>
+      <translation>Tilpasser det maksimale antal iterationer baseret på antallet af parametre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="192"/>
@@ -4233,12 +4233,12 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="340"/>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="350"/>
       <source>Maximum number of parameters before switching to sparse QR algorithm</source>
-      <translation type="unfinished">Maximum number of parameters before switching to sparse QR algorithm</translation>
+      <translation>Det maksimalt antal af parametre, før skift til Eigen Sparse QR algoritmen</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="343"/>
       <source>Auto QR threshold</source>
-      <translation type="unfinished">Auto QR threshold</translation>
+      <translation>Automatisk QR tærskelværdi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="382"/>
@@ -4250,29 +4250,29 @@ BFGS beregningsværktøjet bruger Broyden–Fletcher–Goldfarb–Shanno algorit
       <source>During diagnosing the QR rank of matrix is calculated.
 Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
 Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</source>
-      <translation type="unfinished">During diagnosing the QR rank of matrix is calculated.
-Eigen Dense QR is a dense matrix QR with full pivoting; usually slower
-Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</translation>
+      <translation>Ved diagnosticering beregnes QR-rækken for matricen.
+Eigen Dense QR er for fyldte matricer og anvender fuld pivotering. Den er ofte langsomst
+Eigen Sparse QR er optimeret til brug på "sparsomme" matricer. Den er ofte hurtigst</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="404"/>
       <source>Eigen Dense QR</source>
-      <translation type="unfinished">Eigen Dense QR</translation>
+      <translation>Eigen Dense QR</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="409"/>
       <source>Eigen Sparse QR</source>
-      <translation type="unfinished">Eigen Sparse QR</translation>
+      <translation>Eigen Dense QR</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="421"/>
       <source>Pivot threshold</source>
-      <translation type="unfinished">Pivot threshold</translation>
+      <translation>Pivotgrænseværdi</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="428"/>
       <source>During a QR, values under the pivot threshold are treated as zero</source>
-      <translation type="unfinished">During a QR, values under the pivot threshold are treated as zero</translation>
+      <translation>Ved anvendelse af QR-algoritmer, behandles værdier under pivotgrænseværdien som nul</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="431"/>
@@ -4292,7 +4292,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="496"/>
       <source>Maximum number of iterations of the solver used to detect redundant constraints</source>
-      <translation>Maksimalt antal iterationer af løsningsværktøjet der anvendes til at detektere overflødige relationer</translation>
+      <translation>Maksimalt antal iterationer som løsningsværktøjet anvender til at finde overflødige relationer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="499"/>
@@ -4327,7 +4327,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="506"/>
       <source>Same as 'Maximum iterations', but for redundant solving</source>
-      <translation>Samme som 'Maksimalt antal iterationer', men for værktøj for overflødige relationer</translation>
+      <translation>Samme som 'Maksimalt antal iterationer', men for overflødige relationer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="542"/>
@@ -4337,7 +4337,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="565"/>
       <source>Error threshold under which convergence is reached for the solving of redundant constraints</source>
-      <translation type="unfinished">Error threshold under which convergence is reached for the solving of redundant constraints</translation>
+      <translation>Fejltærskel, hvorunder der anses at være opnået konvergens mht. på at finde overflødige relationer</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="568"/>
@@ -4453,7 +4453,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</tran
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Sketcher Edit Tools</source>
-      <translation>Skitseværktøjer</translation>
+      <translation>Redigeringsværktøjer</translation>
     </message>
   </context>
   <context>
@@ -4598,17 +4598,17 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Skitsen indeholder delvist overflødige relationer!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10256"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af geometriske egenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10287"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Uforvaltede ændringer af relationsegenskaber resulterer i ugyldige relationsindeks</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10910"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Der blev overført paraboler. De overførte filer kan ikke åbnes i tidligere versioner af FreeCAD!
@@ -4628,7 +4628,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4753,7 +4753,7 @@ Gitterafstanden ændres, hvis den bliver mindre end den angivne pixelstørrelse.
       <translation>Kunne ikke forlænge linje</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>Kunne ikke tilføje ekstern geometri</translation>
     </message>
@@ -5137,7 +5137,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="107"/>
       <source>Cursor crosshair</source>
-      <translation type="unfinished">Cursor crosshair</translation>
+      <translation>Crosshair markør</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="20"/>
@@ -5147,7 +5147,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="114"/>
       <source>Color of the crosshair cursor</source>
-      <translation type="unfinished">Color of the crosshair cursor</translation>
+      <translation>Farve på crosshair markøren</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="139"/>
@@ -5172,17 +5172,17 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="211"/>
       <source>Color of fully constrained normal geometry in edit mode</source>
-      <translation>Farve på låst normal geometri, i redigeringstilstand</translation>
+      <translation>Farve på låste konturlinjer, i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="237"/>
       <source>Color of normal geometry in edit mode</source>
-      <translation>Farve på normal geometri i redigeringstilstand</translation>
+      <translation>Farve på konturlinjer i redigeringstilstand</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="257"/>
       <source>Line pattern of normal edges</source>
-      <translation>Linjetype for normale linjer</translation>
+      <translation>Linjetype for konturlinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="267"/>
@@ -5222,7 +5222,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="451"/>
       <source>Line pattern of internal aligned edges</source>
-      <translation>Linetype for interne konstruktionslinjer</translation>
+      <translation>Linjetype for interne konstruktionslinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="461"/>
@@ -5262,7 +5262,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="593"/>
       <source>Line pattern of external defining edges</source>
-      <translation>Linetype for eksterne definerende linjer</translation>
+      <translation>Linjetype for eksterne definerende linjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="603"/>
@@ -5272,7 +5272,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="637"/>
       <source>Fully constrained sketch</source>
-      <translation>Fuldstændigt låst skitse</translation>
+      <translation>Fuldstændigt låste linjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="650"/>
@@ -5282,7 +5282,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="670"/>
       <source>Invalid sketch</source>
-      <translation>Ugyldig skitse</translation>
+      <translation>Ugyldig linje</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="706"/>
@@ -5312,7 +5312,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="873"/>
       <source>Colors Outside Sketcher</source>
-      <translation type="unfinished">Colors Outside Sketcher</translation>
+      <translation>Visning af skitser udenfor Sketcher</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="879"/>
@@ -5347,7 +5347,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="198"/>
       <source>Geometry</source>
-      <translation>Geometri</translation>
+      <translation>Konturlinjer</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="171"/>
@@ -5367,7 +5367,7 @@ I stedet anvendes "ens-med" relationer mellem de oprindelige objekter og deres k
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="683"/>
       <source>Color of geometry indicating an invalid sketch</source>
-      <translation>Farve på geometri, der angiver en ugyldig skitse</translation>
+      <translation>Farve på linjer, der angiver/refererer en ugyldig geometri</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsAppearance.ui" line="720"/>
@@ -6774,7 +6774,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1884"/>
       <source>Copies the geometry of another sketch</source>
-      <translation>Kopierer geometrien fra en anden skitse</translation>
+      <translation>Kopierer geometri fra en anden skitse</translation>
     </message>
   </context>
   <context>
@@ -7560,7 +7560,7 @@ Dog kun hvis punktet markeres mindre end en femtedel af linjeafstanden fra en gi
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 vælg ekstern geometri</translation>

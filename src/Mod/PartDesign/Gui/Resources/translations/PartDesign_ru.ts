@@ -316,7 +316,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1959"/>
       <source>PartDesign</source>
-      <translation>ПроектнаяДеталь</translation>
+      <translation>Деталь</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1960"/>
@@ -326,7 +326,7 @@ so that self intersection is avoided.</source>
     <message>
       <location filename="../../Command.cpp" line="1961"/>
       <source>Applies a fillet to the selected edges or faces</source>
-      <translation>Формирует скругление на выбранных рёбрах или гранях</translation>
+      <translation>Скругляет выбранные рёбра или грани</translation>
     </message>
   </context>
   <context>
@@ -3520,12 +3520,12 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <translation>Для использования этой операции/функции, она должна применяться к объекту Тело в документе.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Элемент находится вне детали</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Для использования этой операции/функции, она должна применяться к объекту Деталь в документе.</translation>
     </message>
