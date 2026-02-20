@@ -75,6 +75,7 @@ elseif(WIN32)
     target_sources(customtitlebarkit PRIVATE
         src/platform/win/WinTitleBarBackend.cpp
     )
+    target_link_libraries(customtitlebarkit PRIVATE dwmapi)
 elseif(UNIX)
     target_sources(customtitlebarkit PRIVATE
         src/platform/linux/LinuxTitleBarBackend.cpp
