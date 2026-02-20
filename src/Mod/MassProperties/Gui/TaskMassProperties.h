@@ -116,10 +116,6 @@ private:
     Base::Placement currentDatumPlacement;
     bool hasCurrentDatumPlacement = false;
 
-    Gui::SelectionSingleton::SelectionStyle previousSelectionStyle
-        = Gui::SelectionSingleton::SelectionStyle::NormalSelection;
-    bool selectionStyleChanged = false;
-
 };
 
 } // namespace MassPropertiesGui
