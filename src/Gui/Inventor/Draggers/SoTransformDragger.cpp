@@ -489,7 +489,14 @@ void SoTransformDragger::setUpAutoScale(SoCamera* cameraIn)
         cameraSensor.attach(&localCamera->height);
         SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
         localScaleNode->scaleFactor.disconnect();
-        autoScaleResult.disconnect(&draggerSize);
+        // This check shouldn't be needed but since CAM has its own
+        // ViewProvider classes that implement setEdit but doesn't inherit from
+        // ViewProviderDragger, we need to call Std_TransformManip twice.
+        // This causes setEditViewer to be called twice and Coin throws an error
+        // for trying to disconnect twice.
+        if (autoScaleResult.isConnectedFromField()) {
+            autoScaleResult.disconnect(&draggerSize);
+        }
         cameraCB(this, nullptr);
     }
     else if (cameraIn->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
@@ -498,7 +505,9 @@ void SoTransformDragger::setUpAutoScale(SoCamera* cameraIn)
         cameraSensor.attach(&localCamera->position);
         SoScale* localScaleNode = SO_GET_ANY_PART(this, "scaleNode", SoScale);
         localScaleNode->scaleFactor.disconnect();
-        autoScaleResult.disconnect(&draggerSize);
+        if (autoScaleResult.isConnectedFromField()) {
+            autoScaleResult.disconnect(&draggerSize);
+        }
         cameraCB(this, nullptr);
     }
 }
