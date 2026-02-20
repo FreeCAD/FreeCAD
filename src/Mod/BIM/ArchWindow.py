@@ -546,29 +546,23 @@ class _Window(ArchComponent.Component):
                             vsymbols.append(Part.LineSegment(v4, ev2).toShape())
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
-                        elif omode == 9:  # sliding
-                            # Direction: Vertex 0 -> Vertex 1
-                            travel = ev2.sub(ev1)
+                        elif omode in [9, 10]:  # Sliding or -Sliding
+                            # Determine direction based on mode
+                            p_start, p_end = (ev1, ev2) if omode == 9 else (ev2, ev1)
+
+                            travel = p_end.sub(p_start)
+
                             if opening:
                                 # Limit travel to 70% of the sliding track to keep the door visible
                                 # and its handle accessible
                                 dist = travel.Length * 0.7
                                 travel.normalize()
                                 transdata = [travel.multiply(dist * opening)]
+
                             # 2D Symbol: Line from current position indicating movement
                             # ISO 7519: arrow or line. Use line for simplicity.
-                            ssymbols.append(Part.LineSegment(ev1, ev2).toShape())
-                        elif omode == 10:  # -sliding (inverted)
-                            # Direction: Vertex 1 -> Vertex 0
-                            travel = ev1.sub(ev2)
-                            if opening:
-                                # Limit travel to 70% of the sliding track to keep the door visible
-                                # and its handle accessible
-                                dist = travel.Length * 0.7
-                                travel.normalize()
-                                transdata = [travel.multiply(dist * opening)]
-                            # 2D Symbol
-                            ssymbols.append(Part.LineSegment(ev2, ev1).toShape())
+                            ssymbols.append(Part.LineSegment(p_start, p_end).toShape())
+
                 exv = FreeCAD.Vector()
                 zov = FreeCAD.Vector()
                 V = 0
