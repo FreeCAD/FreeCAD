@@ -355,23 +355,25 @@ void PropertyFileIncluded::setPyObject(PyObject* value)
 
 void PropertyFileIncluded::Save(Base::Writer& writer) const
 {
+    auto& self = propSetterSelf<const App::PropertyFileIncluded>(*this);
+
     // when saving a document under a new file name the transient directory
     // name changes and thus the stored file name doesn't work any more.
-    if (!_cValue.empty() && !Base::FileInfo(_cValue).exists()) {
-        Base::FileInfo fi(getDocTransientPath() + "/" + _BaseFileName);
+    if (!self._cValue.empty() && !Base::FileInfo(self._cValue).exists()) {
+        Base::FileInfo fi(self.getDocTransientPath() + "/" + self._BaseFileName);
         if (fi.exists()) {
-            _cValue = fi.filePath();
+            self._cValue = fi.filePath();
         }
     }
 
     if (writer.isForceXML()) {
-        if (!_cValue.empty()) {
-            Base::FileInfo file(_cValue.c_str());
+        if (!self._cValue.empty()) {
+            Base::FileInfo file(self._cValue.c_str());
             writer.Stream() << writer.ind() << "<FileIncluded data=\"" << file.fileName() << "\">"
                             << std::endl;
             // write the file in the XML stream
             writer.incInd();
-            writer.insertBinFile(_cValue.c_str());
+            writer.insertBinFile(self._cValue.c_str());
             writer.decInd();
             writer.Stream() << writer.ind() << "</FileIncluded>" << endl;
         }
@@ -381,9 +383,9 @@ void PropertyFileIncluded::Save(Base::Writer& writer) const
     }
     else {
         // instead initiate an extra file
-        if (!_cValue.empty()) {
-            Base::FileInfo file(_cValue.c_str());
-            std::string filename = writer.addFile(file.fileName().c_str(), this);
+        if (!self._cValue.empty()) {
+            Base::FileInfo file(self._cValue.c_str());
+            std::string filename = writer.addFile(file.fileName().c_str(), &self);
             filename = encodeAttribute(filename);
             writer.Stream() << writer.ind() << "<FileIncluded file=\"" << filename << "\"/>"
                             << std::endl;
