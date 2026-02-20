@@ -106,13 +106,13 @@
       <item row="5" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_MoveWithHost">
         <property name="toolTip">
-         <string>By default, new objects will have their &quot;Move with host&quot; property set to False, which means they will not move when their host object is moved</string>
+         <string>By default, new objects will have their &quot;Move with host&quot; property set to True, which means they will move when their host object is moved</string>
         </property>
         <property name="text">
          <string>Set &quot;Move with host&quot; property to True by default</string>
         </property>
         <property name="checked">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>MoveWithHost</cstring>

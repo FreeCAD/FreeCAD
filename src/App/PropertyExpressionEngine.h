@@ -28,10 +28,7 @@
 #include <functional>
 #include <set>
 
-#include <boost/unordered/unordered_map.hpp>
 #include <fastsignals/signal.h>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/topological_sort.hpp>
 
 #include <FCConfig.h>
 
@@ -324,7 +321,6 @@ protected:
     void hasSetValue() override;
 
 private:
-    using DiGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS>;
     using Edge = std::pair<int, int>;
 // Note: use std::map instead of unordered_map to keep the binding order stable
 #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(_LIBCPP_VERSION)
@@ -348,31 +344,6 @@ private:
      * @throws Base::RuntimeError if a circular dependency is detected.
      */
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
-
-    /**
-     * @brief Update graph structure with given path and expression.
-     * @param path Path
-     * @param expression Expression to query for dependencies
-     * @param nodes Map with nodes of graph, including dependencies of 'expression'
-     * @param revNodes Reverse map of the nodes, containing only the given paths, without dependencies.
-     * @param edges Edges in graph
-     */
-    void buildGraphStructures(const App::ObjectIdentifier& path,
-                              const std::shared_ptr<Expression> expression,
-                              boost::unordered_map<App::ObjectIdentifier, int>& nodes,
-                              boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
-                              std::vector<Edge>& edges) const;
-    /**
-     * @brief Build a graph of all expressions in \a exprs.
-     * @param exprs Expressions to use in graph
-     * @param revNodes Map from int[nodeid] to ObjectIndentifer.
-     * @param g Graph to update. May contain additional nodes than in revNodes, because of outside
-     * dependencies.
-     */
-    void buildGraph(const ExpressionMap& exprs,
-                    boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
-                    DiGraph& g,
-                    ExecuteOption option = ExecuteAll) const;
 
     void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
     void slotChangedProperty(const App::DocumentObject& obj, const App::Property& prop);

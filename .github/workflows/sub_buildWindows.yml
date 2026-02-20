@@ -111,7 +111,7 @@ jobs:
       - name: Restore compiler cache
         id: cache-restore
         if: always()
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -169,14 +169,14 @@ jobs:
       - name: Save Compiler Cache
         id: cache-save
         if: always()
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

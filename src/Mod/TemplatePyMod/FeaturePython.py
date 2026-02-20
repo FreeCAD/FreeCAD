@@ -96,14 +96,14 @@ class ViewProviderBox:
             "   #######      "};
             """
 
-    def __getstate__(self):
+    def dumps(self):
         ''' When saving the document this object gets stored using Python's cPickle module.
         Since we have some un-pickable here -- the Coin stuff -- we must define this method
         to return a tuple of all pickable objects or None.
         '''
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         ''' When restoring the pickled object from document we have the chance to set some
         internals here. Since no data were pickled nothing needs to be done here.
         '''
@@ -314,10 +314,10 @@ class ViewProviderOctahedron:
             "   #######      "};
             """
  
-    def __getstate__(self):
+    def dumps(self):
         return None
  
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 def makeOctahedron():
@@ -405,14 +405,14 @@ class ViewProviderPoints:
             "   #######      "};
             """
 
-    def __getstate__(self):
+    def dumps(self):
         ''' When saving the document this object gets stored using Python's cPickle module.
         Since we have some un-pickable here -- the Coin stuff -- we must define this method
         to return a tuple of all pickable objects or None.
         '''
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         ''' When restoring the pickled object from document we have the chance to set some
         internals here. Since no data were pickled nothing needs to be done here.
         '''
@@ -498,14 +498,14 @@ class ViewProviderMesh:
             "   #######      "};
             """
 
-    def __getstate__(self):
+    def dumps(self):
         ''' When saving the document this object gets stored using Python's cPickle module.
         Since we have some un-pickable here -- the Coin stuff -- we must define this method
         to return a tuple of all pickable objects or None.
         '''
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         ''' When restoring the pickled object from document we have the chance to set some
         internals here. Since no data were pickled nothing needs to be done here.
         '''
@@ -562,10 +562,10 @@ class ViewProviderMolecule:
             p = fp.getPropertyByName("p2")
             self.trl2.translation=(p.x,p.y,p.z)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
  
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 def makeMolecule():
@@ -612,10 +612,10 @@ class ViewProviderCircleSet:
                 self.coords.point.setValues(pts)
                 self.lines.numVertices.setValues(ver)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
  
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 def makeCircleSet():
@@ -659,10 +659,10 @@ class ViewProviderEnumTest:
     def updateData(self, fp, prop):
         print("prop updated:",prop)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 def makeEnumTest():
@@ -723,3 +723,4 @@ def makeDistanceBolt():
     DistanceBolt(bolt)
     bolt.ViewObject.Proxy=0
     doc.recompute()
+
