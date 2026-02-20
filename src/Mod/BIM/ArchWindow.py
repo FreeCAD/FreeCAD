@@ -547,8 +547,17 @@ class _Window(ArchComponent.Component):
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
                         elif omode in [9, 10]:  # Sliding or -Sliding
-                            # Determine direction based on mode
-                            p_start, p_end = (ev1, ev2) if omode == 9 else (ev2, ev1)
+
+                            # Sort points by coordinate (X, then Y, then Z) to ensure predictable
+                            # direction regardless of edge geometry construction.
+                            pts = [ev1, ev2]
+                            pts.sort(key=lambda p: (round(p.x, 3), round(p.y, 3), round(p.z, 3)))
+
+                            # Mode 9: Slide from Min Coords -> Max Coords
+                            # Mode 10: Slide from Max Coords -> Min Coords
+                            p_start = pts[0] if omode == 9 else pts[1]
+                            p_end = pts[1] if omode == 9 else pts[0]
+
                             travel = p_end.sub(p_start)
 
                             if opening:

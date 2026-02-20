@@ -492,8 +492,8 @@ def makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, plac
             # Use Edge 7 (the top edge of the inner frame) as the track. Edge5 (bottom edge) could
             # be an alternative, but it's difficult to select in the window editor, as the outer
             # frame's bottom edge is drawn on top.
-            # Use Mode 10 (Sliding inv) to counteract Edge 7's Right-to-Left geometry.
-            wp.extend(["Door", "Solid panel", "Wire1,Edge7,Mode10", str(w2), str(o2) + "+V"])
+            # Use Mode 9 (Sliding) to open from left to right.
+            wp.extend(["Door", "Solid panel", "Wire1,Edge7,Mode9", str(w2), str(o2) + "+V"])
 
         elif windowtype == "Glass door":
 
