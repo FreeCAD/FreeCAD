@@ -549,15 +549,15 @@ class _Window(ArchComponent.Component):
                         elif omode in [9, 10]:  # Sliding or -Sliding
                             # Determine direction based on mode
                             p_start, p_end = (ev1, ev2) if omode == 9 else (ev2, ev1)
-
                             travel = p_end.sub(p_start)
 
                             if opening:
-                                # Limit travel to 70% of the sliding track to keep the door visible
-                                # and its handle accessible
-                                dist = travel.Length * 0.7
+                                # Travel is exactly % of width, but clamped to (width - 80mm)
+                                # so the door handle is left exposed at 100% opening.
+                                width = travel.Length
+                                dist = min(width * opening, max(0.0, width - 80.0))
                                 travel.normalize()
-                                transdata = [travel.multiply(dist * opening)]
+                                transdata = [travel.multiply(dist)]
 
                             # 2D Symbol: Line from current position indicating movement
                             # ISO 7519: arrow or line. Use line for simplicity.
