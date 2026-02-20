@@ -488,7 +488,7 @@ def makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, plac
 
         elif windowtype == "Sliding door":
             wp = doorFrame(s, width, height, h1, w1, o1)
-            # Use Wire1 as the inner opening
+            # Use Wire1 (inner frame boundary) as the door leaf profile to be extruded
             # Use Edge 7 (the top edge of the inner frame) as the track. Edge5 (bottom edge) could
             # be an alternative, but it's difficult to select in the window editor, as the outer
             # frame's bottom edge is drawn on top.
