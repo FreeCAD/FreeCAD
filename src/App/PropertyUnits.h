@@ -59,11 +59,15 @@ public:
 
     void setUnit(const Base::Unit& u)
     {
-        _Unit = u;
+        auto& self = propSetterSelf<App::PropertyQuantity>(*this);
+
+        self._Unit = u;
     }
     const Base::Unit& getUnit() const
     {
-        return _Unit;
+        auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+        return self._Unit;
     }
 
     void setValue(double lValue)
@@ -77,11 +81,15 @@ public:
 
     const Base::QuantityFormat& getFormat() const
     {
-        return _Format;
+        auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+        return self._Format;
     }
     void setFormat(const Base::QuantityFormat& fmt)
     {
-        _Format = fmt;
+        auto& self = propSetterSelf<App::PropertyQuantity>(*this);
+
+        self._Format = fmt;
     }
 
     void setPathValue(const App::ObjectIdentifier& path, const boost::any& value) override;
@@ -89,12 +97,14 @@ public:
 
     bool isSame(const Property& other) const override
     {
-        if (&other == this) {
+        auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+        if (&other == &self) {
             return true;
         }
-        return getTypeId() == other.getTypeId()
-            && getValue() == static_cast<decltype(this)>(&other)->getValue()
-            && _Unit == static_cast<decltype(this)>(&other)->_Unit;
+        return self.getTypeId() == other.getTypeId()
+            && self.getValue() == static_cast<decltype(&self)>(&other)->getValue()
+            && self._Unit == static_cast<decltype(&self)>(&other)->_Unit;
     }
 
 protected:

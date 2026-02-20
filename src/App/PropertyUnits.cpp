@@ -48,8 +48,10 @@ TYPESYSTEM_SOURCE(App::PropertyQuantity, App::PropertyFloat)
 
 Base::Quantity PropertyQuantity::getQuantityValue() const
 {
-    Quantity quantity(_dValue, _Unit);
-    quantity.setFormat(_Format);
+    auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+    Quantity quantity(self._dValue, self._Unit);
+    quantity.setFormat(self._Format);
     return quantity;
 }
 
@@ -60,21 +62,25 @@ const char* PropertyQuantity::getEditorName() const
 
 PyObject* PropertyQuantity::getPyObject()
 {
-    return new QuantityPy(new Quantity(_dValue, _Unit));
+    auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+    return new QuantityPy(new Quantity(self._dValue, self._Unit));
 }
 
 Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject* value)
 {
+    auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
     Base::Quantity quant;
 
     if (PyUnicode_Check(value)) {
         quant = Quantity::parse(PyUnicode_AsUTF8(value));
     }
     else if (PyFloat_Check(value)) {
-        quant = Quantity(PyFloat_AsDouble(value), _Unit);
+        quant = Quantity(PyFloat_AsDouble(value), self._Unit);
     }
     else if (PyLong_Check(value)) {
-        quant = Quantity(double(PyLong_AsLong(value)), _Unit);
+        quant = Quantity(double(PyLong_AsLong(value)), self._Unit);
     }
     else if (PyObject_TypeCheck(value, &(QuantityPy::Type))) {
         Base::QuantityPy* pcObject = static_cast<Base::QuantityPy*>(value);
@@ -91,25 +97,27 @@ Base::Quantity PropertyQuantity::createQuantityFromPy(PyObject* value)
 
 void PropertyQuantity::setPyObject(PyObject* value)
 {
+    auto& self = propSetterSelf<App::PropertyQuantity>(*this);
+
     // Set the unit if Unit object supplied, else check the unit
     // and set the value
 
     if (PyObject_TypeCheck(value, &(UnitPy::Type))) {
         Base::UnitPy* pcObject = static_cast<Base::UnitPy*>(value);
         Base::Unit unit = *(pcObject->getUnitPtr());
-        aboutToSetValue();
-        _Unit = unit;
-        hasSetValue();
+        self.aboutToSetValue();
+        self._Unit = unit;
+        self.hasSetValue();
     }
     else {
-        Base::Quantity quant = createQuantityFromPy(value);
+        Base::Quantity quant = self.createQuantityFromPy(value);
 
         if (quant.isDimensionless()) {
             PropertyFloat::setValue(quant.getValue());
             return;
         }
 
-        if (_Unit != quant.getUnit()) {
+        if (self._Unit != quant.getUnit()) {
             throw Base::UnitsMismatchError("Not matching Unit!");
         }
 
@@ -119,19 +127,23 @@ void PropertyQuantity::setPyObject(PyObject* value)
 
 void PropertyQuantity::setPathValue(const ObjectIdentifier& /*path*/, const boost::any& value)
 {
+    auto& self = propSetterSelf<App::PropertyQuantity>(*this);
+
     auto q = App::anyToQuantity(value);
-    aboutToSetValue();
+    self.aboutToSetValue();
     if (!q.isDimensionless()) {
-        _Unit = q.getUnit();
+        self._Unit = q.getUnit();
     }
-    _dValue = q.getValue();
-    setValue(q.getValue());
+    self._dValue = q.getValue();
+    self.setValue(q.getValue());
 }
 
 const boost::any PropertyQuantity::getPathValue(const ObjectIdentifier& /*path*/) const
 {
-    Quantity quantity(_dValue, _Unit);
-    quantity.setFormat(_Format);
+    auto& self = propGetterSelf<const App::PropertyQuantity>(*this);
+
+    Quantity quantity(self._dValue, self._Unit);
+    quantity.setFormat(self._Format);
     return quantity;
 }
 
@@ -144,7 +156,9 @@ TYPESYSTEM_SOURCE(App::PropertyQuantityConstraint, App::PropertyQuantity)
 
 void PropertyQuantityConstraint::setConstraints(const Constraints* sConstrain)
 {
-    _ConstStruct = sConstrain;
+    auto& self = propSetterSelf<App::PropertyQuantityConstraint>(*this);
+
+    self._ConstStruct = sConstrain;
 }
 
 const char* PropertyQuantityConstraint::getEditorName() const
@@ -154,44 +168,54 @@ const char* PropertyQuantityConstraint::getEditorName() const
 
 const PropertyQuantityConstraint::Constraints* PropertyQuantityConstraint::getConstraints() const
 {
-    return _ConstStruct;
+    auto& self = propGetterSelf<const App::PropertyQuantityConstraint>(*this);
+
+    return self._ConstStruct;
 }
 
 double PropertyQuantityConstraint::getMinimum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->LowerBound;
+    auto& self = propGetterSelf<const App::PropertyQuantityConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->LowerBound;
     }
     return std::numeric_limits<double>::min();
 }
 
 double PropertyQuantityConstraint::getMaximum() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->UpperBound;
+    auto& self = propGetterSelf<const App::PropertyQuantityConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->UpperBound;
     }
     return std::numeric_limits<double>::max();
 }
 
 double PropertyQuantityConstraint::getStepSize() const
 {
-    if (_ConstStruct) {
-        return _ConstStruct->StepSize;
+    auto& self = propGetterSelf<const App::PropertyQuantityConstraint>(*this);
+
+    if (self._ConstStruct) {
+        return self._ConstStruct->StepSize;
     }
     return 1.0;
 }
 
 void PropertyQuantityConstraint::setPyObject(PyObject* value)
 {
-    Base::Quantity quant = createQuantityFromPy(value);
+    auto& self = propSetterSelf<App::PropertyQuantityConstraint>(*this);
+
+    Base::Quantity quant = self.createQuantityFromPy(value);
 
     double temp = quant.getValue();
-    if (_ConstStruct) {
-        if (temp > _ConstStruct->UpperBound) {
-            temp = _ConstStruct->UpperBound;
+    if (self._ConstStruct) {
+        if (temp > self._ConstStruct->UpperBound) {
+            temp = self._ConstStruct->UpperBound;
         }
-        else if (temp < _ConstStruct->LowerBound) {
-            temp = _ConstStruct->LowerBound;
+        else if (temp < self._ConstStruct->LowerBound) {
+            temp = self._ConstStruct->LowerBound;
         }
     }
     quant.setValue(temp);
@@ -201,7 +225,7 @@ void PropertyQuantityConstraint::setPyObject(PyObject* value)
         return;
     }
 
-    if (_Unit != quant.getUnit()) {
+    if (self._Unit != quant.getUnit()) {
         throw Base::UnitsMismatchError("Not matching Unit!");
     }
 
@@ -525,7 +549,9 @@ PropertyLength::PropertyLength()
 
 void PropertyLength::enableNegative(bool on)
 {
-    setConstraints(on ? nullptr : &LengthStandard);
+    auto& self = propSetterSelf<App::PropertyLength>(*this);
+
+    self.setConstraints(on ? nullptr : &LengthStandard);
 }
 
 //**************************************************************************
