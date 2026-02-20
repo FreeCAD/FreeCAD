@@ -183,7 +183,7 @@ def create_comment(values: Values, comment_string: str) -> str:
     if values["COMMENT_SYMBOL"] == "(":
         # Sanitize nested parentheses to prevent breaking G-code comment format
         # Replace ( with [ and ) with ] to preserve readability
-        sanitized = comment_string.replace('(', '[').replace(')', ']')
+        sanitized = comment_string.replace("(", "[").replace(")", "]")
         return f"({sanitized})"
     return values["COMMENT_SYMBOL"] + comment_string
 

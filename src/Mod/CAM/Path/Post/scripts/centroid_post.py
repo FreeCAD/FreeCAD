@@ -55,7 +55,7 @@ class Centroid(PostProcessor):
     def get_common_property_schema(cls):
         """Override common properties with Centroid-specific defaults."""
         common_props = super().get_common_property_schema()
-        
+
         # Override defaults for Centroid
         for prop in common_props:
             if prop["name"] == "supports_tool_radius_compensation":
@@ -68,7 +68,7 @@ class Centroid(PostProcessor):
                 prop["default"] = "G90 G80 G40 G49"
             elif prop["name"] == "tool_return":
                 prop["default"] = "M5\nM25\nG49 H0"
-        
+
         return common_props
 
     @classmethod
@@ -106,7 +106,7 @@ class Centroid(PostProcessor):
         # This postprocessor now supports schema-based configuration via:
         # - get_common_property_schema() - defines common properties with Centroid defaults
         # - get_property_schema() - defines Centroid-specific properties (currently none)
-        # 
+        #
         # The machine editor can now configure this postprocessor using the new property system.
         # Future updates should migrate hardcoded values below to use postprocessor_properties.
         #

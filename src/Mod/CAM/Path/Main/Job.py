@@ -538,7 +538,6 @@ class ObjectJob:
                 QT_TRANSLATE_NOOP("App::Property", "The Machine for the Job"),
             )
 
-
         for n in self.propertyEnumerations():
             setattr(obj, n[0], n[1])
 
@@ -713,13 +712,14 @@ class ObjectJob:
         # For now, return None since Machine property doesn't exist yet
         if not hasattr(self.obj, "Machine"):
             return None
-        
+
         machine_name = self.obj.Machine
         if not machine_name:
             return None
-            
+
         try:
             from Machine.models.machine import MachineFactory
+
             return MachineFactory.get_machine(machine_name)
         except Exception as e:
             Path.Log.error(f"Failed to load machine '{machine_name}': {e}")

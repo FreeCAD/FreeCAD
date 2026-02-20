@@ -41,7 +41,7 @@ Values = Dict[str, Any]
 
 
 class Generic(PostProcessor):
-    
+
     @classmethod
     def get_common_property_schema(cls):
         """Return common properties with Generic defaults (uses base defaults)."""
@@ -74,7 +74,7 @@ class Generic(PostProcessor):
         # This postprocessor now supports schema-based configuration via:
         # - get_common_property_schema() - defines common properties with base defaults
         # - get_property_schema() - defines Generic-specific properties (currently none)
-        # 
+        #
         # The machine editor can now configure this postprocessor using the new property system.
         # Future updates should migrate hardcoded values below to use postprocessor_properties.
         #

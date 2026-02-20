@@ -111,9 +111,21 @@ GCODE_RETURN_MODE = GCODE_RETURN_INITIAL + GCODE_RETURN_R
 # =============================================================================
 
 GCODE_FIXTURES = [
-    "G54", "G55", "G56", "G57", "G58", "G59",
-    "G59.1", "G59.2", "G59.3", "G59.4", "G59.5",
-    "G59.6", "G59.7", "G59.8", "G59.9"
+    "G54",
+    "G55",
+    "G56",
+    "G57",
+    "G58",
+    "G59",
+    "G59.1",
+    "G59.2",
+    "G59.3",
+    "G59.4",
+    "G59.5",
+    "G59.6",
+    "G59.7",
+    "G59.8",
+    "G59.9",
 ]
 
 # =============================================================================
@@ -147,37 +159,37 @@ MCODE_COOLANT_OFF = ["M9", "M09"]  # All coolant off
 
 # All supported G-code commands for generic post processor
 GCODE_SUPPORTED = (
-    GCODE_MOVE_RAPID +
-    GCODE_MOVE_STRAIGHT +
-    GCODE_MOVE_ARC +
-    GCODE_DWELL +
-    GCODE_MOVE_DRILL +
-    GCODE_DRILL_EXTENDED +
-    GCODE_CYCLE_CANCEL +
-    GCODE_PROBE +
-    GCODE_ABSOLUTE +
-    GCODE_INCREMENTAL +
-    GCODE_OFFSET +
-    GCODE_FEED_INVERSE_TIME +
-    GCODE_FEED_UNITS_PER_MIN +
-    GCODE_FEED_UNITS_PER_REV +
-    GCODE_SPINDLE_CSS +
-    GCODE_SPINDLE_RPM +
-    GCODE_RETURN_INITIAL +
-    GCODE_RETURN_R +
-    GCODE_TOOL_LENGTH_OFFSET
+    GCODE_MOVE_RAPID
+    + GCODE_MOVE_STRAIGHT
+    + GCODE_MOVE_ARC
+    + GCODE_DWELL
+    + GCODE_MOVE_DRILL
+    + GCODE_DRILL_EXTENDED
+    + GCODE_CYCLE_CANCEL
+    + GCODE_PROBE
+    + GCODE_ABSOLUTE
+    + GCODE_INCREMENTAL
+    + GCODE_OFFSET
+    + GCODE_FEED_INVERSE_TIME
+    + GCODE_FEED_UNITS_PER_MIN
+    + GCODE_FEED_UNITS_PER_REV
+    + GCODE_SPINDLE_CSS
+    + GCODE_SPINDLE_RPM
+    + GCODE_RETURN_INITIAL
+    + GCODE_RETURN_R
+    + GCODE_TOOL_LENGTH_OFFSET
 )
 
 # All supported M-codes for generic post processor
 MCODE_SUPPORTED = (
-    MCODE_STOP +
-    MCODE_OPTIONAL_STOP +
-    MCODE_SPINDLE_CW +
-    MCODE_SPINDLE_CCW +
-    MCODE_TOOL_CHANGE +
-    MCODE_COOLANT_MIST +
-    MCODE_COOLANT_FLOOD +
-    MCODE_COOLANT_OFF
+    MCODE_STOP
+    + MCODE_OPTIONAL_STOP
+    + MCODE_SPINDLE_CW
+    + MCODE_SPINDLE_CCW
+    + MCODE_TOOL_CHANGE
+    + MCODE_COOLANT_MIST
+    + MCODE_COOLANT_FLOOD
+    + MCODE_COOLANT_OFF
 )
 
 # All coolant M-codes
@@ -187,13 +199,13 @@ MCODE_COOLANT = MCODE_COOLANT_MIST + MCODE_COOLANT_FLOOD + MCODE_COOLANT_OFF
 # Non-Conforming Commands (per ADR-002)
 # =============================================================================
 
-# These commands should not be used in operations.  They follow a valid format and 
+# These commands should not be used in operations.  They follow a valid format and
 # will be accepted by the Command system.  They are valid for use in post processing.
 
 GCODE_NON_CONFORMING = (
-    GCODE_CUTTER_COMPENSATION +
-    GCODE_DISTANCE_MODE +
-    GCODE_UNITS +
-    GCODE_RETURN_MODE +
-    GCODE_CYCLE_CANCEL
+    GCODE_CUTTER_COMPENSATION
+    + GCODE_DISTANCE_MODE
+    + GCODE_UNITS
+    + GCODE_RETURN_MODE
+    + GCODE_CYCLE_CANCEL
 )

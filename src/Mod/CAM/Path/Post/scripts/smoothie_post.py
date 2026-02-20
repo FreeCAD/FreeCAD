@@ -163,7 +163,7 @@ M2"""
     def remote_post(self, gcode_sections):
         """Override remote_post to handle SmoothieBoard network upload."""
         # Check if remote posting is enabled and IP address is specified
-        if self.values.get('REMOTE_POST', False) and self.ip_addr:
+        if self.values.get("REMOTE_POST", False) and self.ip_addr:
             # Combine all G-code sections
             gcode = ""
             for section_name, section_gcode in gcode_sections:

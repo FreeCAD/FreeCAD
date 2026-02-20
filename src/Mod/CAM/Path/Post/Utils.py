@@ -100,7 +100,11 @@ class FilenameGenerator:
             )  ## TODO: This should be avoided as it gives the Freecad executable's path in some systems (e.g. Windows)
 
         if self._file_extension_override:
-            ext = f".{self._file_extension_override}" if not self._file_extension_override.startswith('.') else self._file_extension_override
+            ext = (
+                f".{self._file_extension_override}"
+                if not self._file_extension_override.startswith(".")
+                else self._file_extension_override
+            )
         elif not ext:
             ext = ".nc"
 

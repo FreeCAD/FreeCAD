@@ -343,4 +343,3 @@ class TestHeaderBuilder(unittest.TestCase):
         # Check note commands
         self.assertEqual(path.Commands[6].Name, "(Note: Note 1)")
         self.assertEqual(path.Commands[7].Name, "(Note: Note 2)")
-

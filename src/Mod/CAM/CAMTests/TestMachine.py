@@ -109,6 +109,7 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
 
         # Default values - using current field names
         from Machine.models.machine import OutputUnits
+
         self.assertEqual(opts.output_units, OutputUnits.METRIC)
         self.assertEqual(opts.command_space, " ")
         self.assertEqual(opts.comment_symbol, "(")
@@ -140,6 +141,7 @@ class TestOutputOptions(PathTestUtils.PathTestBase):
     def test_custom_initialization(self):
         """Test OutputOptions initialization with custom values"""
         from Machine.models.machine import OutputUnits
+
         opts = OutputOptions(
             output_units=OutputUnits.IMPERIAL,
             command_space="",

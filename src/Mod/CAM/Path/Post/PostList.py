@@ -26,6 +26,7 @@ class _CommandObject:
 
 class _RotationSetupObject:
     """Postable for rotation commands to align workpiece/table for 3+2 axis machining."""
+
     Path = None
     Name = "Rotation"
     InList = []
@@ -61,11 +62,11 @@ def create_fixture_setup(processor: Any, order: int, fixture: str) -> _FixtureSe
 
 def create_rotation_setup(processor: Any, placement: Any) -> _RotationSetupObject:
     """Create a rotation postable to align machine axes with the operation placement.
-    
+
     Args:
         processor: The postprocessor object
         placement: The target placement (FreeCAD.Placement)
-    
+
     Returns:
         _RotationSetupObject with rotation commands, or None if rotation not possible
     """
@@ -73,33 +74,31 @@ def create_rotation_setup(processor: Any, placement: Any) -> _RotationSetupObjec
     robj.Placement = placement
     robj.Label = f"Rotate to {placement}"
     robj.InList.append(processor._job)
-    
+
     # Check if machine has rotary axes
     machine = processor._job.Proxy.getMachine() if processor._job else None
     if not machine or not machine.has_rotary_axes:
-        Path.Log.warning(
-            f"Rotation required but machine does not have rotary axes"
-        )
+        Path.Log.warning(f"Rotation required but machine does not have rotary axes")
         return None
-    
+
     try:
         import Path.Base.Generator.rotation as rotation
-        
+
         # Get rotation limits from machine (default to unlimited if not specified)
         aMin, aMax = -360, 360
         cMin, cMax = -360, 360
-        
+
         if "A" in machine.rotary_axes:
             aMin = machine.rotary_axes["A"].min_limit
             aMax = machine.rotary_axes["A"].max_limit
         if "C" in machine.rotary_axes:
             cMin = machine.rotary_axes["C"].min_limit
             cMax = machine.rotary_axes["C"].max_limit
-        
+
         # Generate rotation commands to align placement with Z
         # Extract the Z-axis (normal vector) from the operation placement
         placement_z_axis = placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-        
+
         # Use compound moves if machine supports it
         rotation_commands = rotation.generate(
             placement_z_axis,
@@ -107,18 +106,16 @@ def create_rotation_setup(processor: Any, placement: Any) -> _RotationSetupObjec
             aMax=aMax,
             cMin=cMin,
             cMax=cMax,
-            compound=machine.compound_moves
+            compound=machine.compound_moves,
         )
-        
+
         robj.Path = Path.Path(rotation_commands)
         Path.Log.debug(f"Created rotation setup: {rotation_commands}")
         return robj
-        
+
     except ValueError as e:
         # No valid rotation solution found within machine limits
-        Path.Log.error(
-            f"Cannot find valid rotation for placement within machine limits: {e}"
-        )
+        Path.Log.error(f"Cannot find valid rotation for placement within machine limits: {e}")
         return None
     except Exception as e:
         Path.Log.error(f"Error calculating placement rotation: {e}")
@@ -138,9 +135,9 @@ def build_postlist_by_fixture(processor: Any, early_tool_prep: bool = False) -> 
         for obj in processor._operations:
             if not PathUtil.activeForOp(obj):
                 continue
-                
+
             # Check if operation placement requires rotation
-            if hasattr(obj, 'Placement') and obj.Placement:
+            if hasattr(obj, "Placement") and obj.Placement:
                 if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
                     # Placement changed - insert rotation postable
                     rotation_obj = create_rotation_setup(processor, obj.Placement)
@@ -148,7 +145,7 @@ def build_postlist_by_fixture(processor: Any, early_tool_prep: bool = False) -> 
                         sublist.append(rotation_obj)
                         current_placement = obj.Placement
                         Path.Log.debug(f"Inserted rotation for {obj.Label}")
-            
+
             tc = PathUtil.toolControllerForOp(obj)
             if tc is not None:
                 if needsTcOp(currTc, tc):
@@ -196,7 +193,7 @@ def build_postlist_by_tool(processor: Any, early_tool_prep: bool = False) -> lis
 
         if tc is None or not needsTcOp(currTc, tc):
             # Check if operation placement requires rotation before adding to curlist
-            if hasattr(obj, 'Placement') and obj.Placement:
+            if hasattr(obj, "Placement") and obj.Placement:
                 if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
                     # Placement changed - insert rotation postable
                     rotation_obj = create_rotation_setup(processor, obj.Placement)
@@ -209,9 +206,9 @@ def build_postlist_by_tool(processor: Any, early_tool_prep: bool = False) -> lis
             commitToPostlist()
 
             sublist = [tc]
-            
+
             # Check if operation placement requires rotation
-            if hasattr(obj, 'Placement') and obj.Placement:
+            if hasattr(obj, "Placement") and obj.Placement:
                 if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
                     # Placement changed - insert rotation postable
                     rotation_obj = create_rotation_setup(processor, obj.Placement)
@@ -219,7 +216,7 @@ def build_postlist_by_tool(processor: Any, early_tool_prep: bool = False) -> lis
                         sublist.append(rotation_obj)
                         current_placement = obj.Placement
                         Path.Log.debug(f"Inserted rotation for {obj.Label}")
-            
+
             curlist = [obj]
             currTc = tc
 
@@ -249,9 +246,9 @@ def build_postlist_by_operation(processor: Any, early_tool_prep: bool = False) -
 
         for index, f in enumerate(wcslist):
             sublist.append(create_fixture_setup(processor, index, f))
-            
+
             # Check if operation placement requires rotation
-            if hasattr(obj, 'Placement') and obj.Placement:
+            if hasattr(obj, "Placement") and obj.Placement:
                 if not obj.Placement.Rotation.isSame(current_placement.Rotation, 1e-6):
                     # Placement changed - insert rotation postable
                     rotation_obj = create_rotation_setup(processor, obj.Placement)
@@ -259,7 +256,7 @@ def build_postlist_by_operation(processor: Any, early_tool_prep: bool = False) -
                         sublist.append(rotation_obj)
                         current_placement = obj.Placement
                         Path.Log.debug(f"Inserted rotation for {obj.Label}")
-            
+
             tc = PathUtil.toolControllerForOp(obj)
             if tc is not None:
                 if processor._job.SplitOutput or needsTcOp(currTc, tc):

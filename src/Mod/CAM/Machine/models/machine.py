@@ -74,7 +74,7 @@ class OutputUnits(Enum):
 
 class AxisRole(Enum):
     """Axis role in kinematic chain."""
-    
+
     TABLE_LINEAR = "table_linear"
     TABLE_ROTARY = "table_rotary"
     HEAD_LINEAR = "head_linear"
@@ -89,7 +89,7 @@ class AxisRole(Enum):
 @dataclass
 class HeaderOptions:
     """Controls what gets included in the G-code header."""
-    
+
     include_date: bool = True
     include_description: bool = True
     include_document_name: bool = True
@@ -103,7 +103,7 @@ class HeaderOptions:
 @dataclass
 class CommentOptions:
     """Controls comment formatting and inclusion."""
-    
+
     enabled: bool = True
     symbol: str = "("
     include_operation_labels: bool = False
@@ -114,7 +114,7 @@ class CommentOptions:
 @dataclass
 class FormattingOptions:
     """Controls line numbering and spacing."""
-    
+
     line_numbers: bool = False
     line_number_start: int = 100
     line_number_prefix: str = "N"
@@ -126,7 +126,7 @@ class FormattingOptions:
 @dataclass
 class PrecisionOptions:
     """Controls numeric precision settings."""
-    
+
     axis: int = 3
     feed: int = 3
     spindle: int = 0
@@ -135,7 +135,7 @@ class PrecisionOptions:
 @dataclass
 class DuplicateOptions:
     """Controls duplicate output (positive framing: True = output duplicates, False = suppress)."""
-    
+
     commands: bool = True  # When False, suppress repeated G/M codes (modal)
     parameters: bool = True  # When False, suppress repeated parameter values (modal)
 
@@ -169,7 +169,9 @@ class ProcessingOptions:
     split_arcs: bool = False
     tool_change: bool = True  # Enable tool change commands
     translate_rapid_moves: bool = False
-    xy_before_z_after_tool_change: bool = False  # Decompose first move after tool change: XY first, then Z
+    xy_before_z_after_tool_change: bool = (
+        False  # Decompose first move after tool change: XY first, then Z
+    )
 
     return_to: Optional[Tuple[float, float, float]] = None  # (x, y, z) or None
 
@@ -182,7 +184,7 @@ class ProcessingOptions:
 @dataclass
 class BaseFrame:
     """Base coordinate frame definition."""
-    
+
     origin: List[float] = field(default_factory=lambda: [0, 0, 0])
     orientation_quaternion: List[float] = field(default_factory=lambda: [0, 0, 0, 1])
 
@@ -190,7 +192,7 @@ class BaseFrame:
 @dataclass
 class Kinematics:
     """Machine kinematics configuration."""
-    
+
     base_frame: BaseFrame = field(default_factory=BaseFrame)
     tcp_supported: bool = False
     dwo_supported: bool = False
@@ -361,64 +363,96 @@ from enum import Enum
 
 class ToolheadType(Enum):
     """Types of toolheads/tools supported by the machine."""
-    ROTARY = "rotary"           # Traditional rotary spindle (router, drill, etc.)
-    LASER = "laser"            # Laser cutting/engraving
-    WATERJET = "waterjet"      # Waterjet cutting
-    PLASMA = "plasma"          # Plasma cutting
 
+    ROTARY = "rotary"  # Traditional rotary spindle (router, drill, etc.)
+    LASER = "laser"  # Laser cutting/engraving
+    WATERJET = "waterjet"  # Waterjet cutting
+    PLASMA = "plasma"  # Plasma cutting
 
 
 @dataclass
 class ToolheadCapabilities:
     """Defines the capabilities of a toolhead based on its type."""
-    
+
     # Motion capabilities
     can_rotate: bool = True
     can_move_z: bool = True
     can_move_xy: bool = False
-    
+
     # Power control
     has_power_control: bool = True
     has_speed_control: bool = True
     has_pulse_control: bool = False  # For lasers
-    
+
     # Coolant/support systems
     uses_coolant: bool = False
-    uses_assist_gas: bool = False    # For plasma/laser
-    uses_water: bool = False          # For waterjet
-    
+    uses_assist_gas: bool = False  # For plasma/laser
+    uses_water: bool = False  # For waterjet
+
     # Special capabilities
     can_turn_on_off: bool = True
     has_probing: bool = False
-    has_auto_focus: bool = False     # For lasers
-    
+    has_auto_focus: bool = False  # For lasers
+
     @classmethod
     def for_type(cls, toolhead_type: "ToolheadType") -> "ToolheadCapabilities":
         """Get default capabilities for a given toolhead type."""
         capabilities = {
             ToolheadType.ROTARY: cls(
-                can_rotate=True, can_move_z=True, can_move_xy=False,
-                has_power_control=True, has_speed_control=True, has_pulse_control=False,
-                uses_coolant=True, uses_assist_gas=False, uses_water=False,
-                can_turn_on_off=True, has_probing=False, has_auto_focus=False
+                can_rotate=True,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=True,
+                has_pulse_control=False,
+                uses_coolant=True,
+                uses_assist_gas=False,
+                uses_water=False,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
             ),
             ToolheadType.LASER: cls(
-                can_rotate=False, can_move_z=True, can_move_xy=False,
-                has_power_control=True, has_speed_control=False, has_pulse_control=True,
-                uses_coolant=False, uses_assist_gas=True, uses_water=False,
-                can_turn_on_off=True, has_probing=False, has_auto_focus=True
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=True,
+                uses_coolant=False,
+                uses_assist_gas=True,
+                uses_water=False,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=True,
             ),
             ToolheadType.WATERJET: cls(
-                can_rotate=False, can_move_z=True, can_move_xy=False,
-                has_power_control=True, has_speed_control=False, has_pulse_control=False,
-                uses_coolant=False, uses_assist_gas=False, uses_water=True,
-                can_turn_on_off=True, has_probing=False, has_auto_focus=False
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=False,
+                uses_coolant=False,
+                uses_assist_gas=False,
+                uses_water=True,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
             ),
             ToolheadType.PLASMA: cls(
-                can_rotate=False, can_move_z=True, can_move_xy=False,
-                has_power_control=True, has_speed_control=False, has_pulse_control=False,
-                uses_coolant=False, uses_assist_gas=True, uses_water=False,
-                can_turn_on_off=True, has_probing=False, has_auto_focus=False
+                can_rotate=False,
+                can_move_z=True,
+                can_move_xy=False,
+                has_power_control=True,
+                has_speed_control=False,
+                has_pulse_control=False,
+                uses_coolant=False,
+                uses_assist_gas=True,
+                uses_water=False,
+                can_turn_on_off=True,
+                has_probing=False,
+                has_auto_focus=False,
             ),
         }
         return capabilities.get(toolhead_type, capabilities[ToolheadType.ROTARY])
@@ -431,29 +465,29 @@ class Toolhead:
     name: str
     toolhead_type: ToolheadType = ToolheadType.ROTARY
     id: Optional[str] = None
-    
+
     # Power and performance specifications
     max_power_kw: float = 0
     max_rpm: float = 0  # Only relevant for rotary toolheads
     min_rpm: float = 0  # Only relevant for rotary toolheads
-    
+
     # Tool change and handling
     tool_change: str = "manual"
-    
+
     # Coolant and support systems
     coolant_flood: bool = False
     coolant_mist: bool = False
     coolant_delay: float = 0.0
-    
+
     # Timing and control
     toolhead_wait: float = 0.0  # seconds to wait after toolhead start
-    
+
     # Type-specific parameters
     laser_wavelength: Optional[float] = None  # nm, for lasers
     laser_focus_range: Optional[Tuple[float, float]] = None  # min/max focus distance
     waterjet_pressure: Optional[float] = None  # bar, for waterjets
     plasma_amperage: Optional[float] = None  # amps, for plasma
-    
+
     # Capabilities (auto-generated based on type)
     capabilities: Optional[ToolheadCapabilities] = None
 
@@ -461,7 +495,7 @@ class Toolhead:
         """Set default values and capabilities"""
         if self.capabilities is None:
             self.capabilities = ToolheadCapabilities.for_type(self.toolhead_type)
-        
+
         # Set type-specific defaults
         if self.toolhead_type == ToolheadType.LASER:
             if self.laser_wavelength is None:
@@ -506,17 +540,17 @@ class Toolhead:
     def spindle_wait(self) -> float:
         """Legacy compatibility property for toolhead_wait."""
         return self.toolhead_wait
-    
+
     @spindle_wait.setter
     def spindle_wait(self, value: float):
         """Legacy compatibility setter for toolhead_wait."""
         self.toolhead_wait = value
-    
+
     @property
     def spindle_type(self) -> ToolheadType:
         """Legacy compatibility property for toolhead_type."""
         return self.toolhead_type
-    
+
     @spindle_type.setter
     def spindle_type(self, value: ToolheadType):
         """Legacy compatibility setter for toolhead_type."""
@@ -536,7 +570,7 @@ class Toolhead:
             "coolant_delay": self.coolant_delay,
             "toolhead_wait": self.toolhead_wait,
         }
-        
+
         # Add type-specific parameters
         if self.laser_wavelength is not None:
             data["laser_wavelength"] = self.laser_wavelength
@@ -546,10 +580,10 @@ class Toolhead:
             data["waterjet_pressure"] = self.waterjet_pressure
         if self.plasma_amperage is not None:
             data["plasma_amperage"] = self.plasma_amperage
-        
+
         if self.id is not None:
             data["id"] = self.id
-            
+
         return data
 
     @classmethod
@@ -558,13 +592,13 @@ class Toolhead:
         # Parse toolhead type
         toolhead_type_str = data.get("toolhead_type", data.get("spindle_type", "rotary"))
         toolhead_type = ToolheadType(toolhead_type_str)
-        
+
         # Parse laser focus range
         laser_focus_range = None
         if "laser_focus_range" in data:
             focus_data = data["laser_focus_range"]
             laser_focus_range = (focus_data[0], focus_data[1])
-        
+
         return cls(
             data["name"],
             toolhead_type,
@@ -793,9 +827,7 @@ class Machine:
         tool_change="manual",
     ):
         """Add a spindle to the configuration"""
-        self.spindles.append(
-            Spindle(name, id, max_power_kw, max_rpm, min_rpm, tool_change)
-        )
+        self.spindles.append(Spindle(name, id, max_power_kw, max_rpm, min_rpm, tool_change))
         return self
 
     def save(self, filepath):
@@ -841,22 +873,22 @@ class Machine:
 
     def get_spindle_by_index(self, index: int) -> Optional[Toolhead]:
         """Get toolhead by index (legacy compatibility method).
-        
+
         Args:
             index: Index of the toolhead to retrieve
-            
+
         Returns:
             Toolhead object if found, None otherwise
         """
         if 0 <= index < len(self.toolheads):
             return self.toolheads[index]
         return None
-    
+
     @property
     def spindles(self) -> List[Toolhead]:
         """Legacy compatibility property for toolheads."""
         return self.toolheads
-    
+
     @spindles.setter
     def spindles(self, value: List[Toolhead]):
         """Legacy compatibility setter for toolheads."""
@@ -966,10 +998,7 @@ class Machine:
                 "parent": axis_obj.parent,
                 "sequence": axis_obj.sequence,
                 "joint": joint,
-                "limits": {
-                    "min": axis_obj.min_limit,
-                    "max": axis_obj.max_limit
-                },
+                "limits": {"min": axis_obj.min_limit, "max": axis_obj.max_limit},
                 "max_velocity": axis_obj.max_velocity,
             }
 
@@ -977,17 +1006,14 @@ class Machine:
         for axis_name, axis_obj in self.rotary_axes.items():
             rot_vec = axis_obj.rotation_vector
             joint = [axis_obj.joint_origin, [rot_vec.x, rot_vec.y, rot_vec.z]]
-            
+
             axes[axis_name] = {
                 "type": "rotary",
                 "role": axis_obj.role.value,
                 "parent": axis_obj.parent,
                 "sequence": axis_obj.sequence,
                 "joint": joint,
-                "limits": {
-                    "min": axis_obj.min_limit,
-                    "max": axis_obj.max_limit
-                },
+                "limits": {"min": axis_obj.min_limit, "max": axis_obj.max_limit},
                 "max_velocity": axis_obj.max_velocity,
                 "solution_preference": axis_obj.solution_preference,
                 "allow_flip": axis_obj.allow_flip,
@@ -1003,11 +1029,11 @@ class Machine:
                 "kinematics": {
                     "base_frame": {
                         "origin": self.kinematics.base_frame.origin,
-                        "orientation_quaternion": self.kinematics.base_frame.orientation_quaternion
+                        "orientation_quaternion": self.kinematics.base_frame.orientation_quaternion,
                     },
                     "tcp_supported": self.kinematics.tcp_supported,
                     "dwo_supported": self.kinematics.dwo_supported,
-                    "notes": self.kinematics.notes
+                    "notes": self.kinematics.notes,
                 },
                 "axes": axes,
                 "toolheads": [toolhead.to_dict() for toolhead in self.toolheads],
@@ -1091,19 +1117,21 @@ class Machine:
 
     def validate_kinematic_chain(self) -> List[str]:
         """Validate the kinematic chain configuration.
-        
+
         Returns:
             List of validation error messages (empty if valid)
         """
         errors = []
-        
+
         # Check for circular dependencies in parent relationships
         all_axes = {**self.linear_axes, **self.rotary_axes}
-        
+
         for axis_name, axis_obj in all_axes.items():
             if axis_obj.parent is not None:
                 if axis_obj.parent not in all_axes:
-                    errors.append(f"Axis {axis_name} references non-existent parent {axis_obj.parent}")
+                    errors.append(
+                        f"Axis {axis_name} references non-existent parent {axis_obj.parent}"
+                    )
                 else:
                     # Check for circular dependencies
                     visited = set()
@@ -1112,70 +1140,72 @@ class Machine:
                         visited.add(current)
                         parent_axis = all_axes.get(current)
                         if parent_axis and parent_axis.parent == axis_name:
-                            errors.append(f"Circular dependency detected: {axis_name} -> {current} -> {axis_name}")
+                            errors.append(
+                                f"Circular dependency detected: {axis_name} -> {current} -> {axis_name}"
+                            )
                             break
                         current = parent_axis.parent if parent_axis else None
-        
+
         # Validate sequence numbers are unique within each chain
         chains = self._get_kinematic_chains()
         for chain_name, chain_axes in chains.items():
             sequences = [axis.sequence for axis in chain_axes]
             if len(sequences) != len(set(sequences)):
                 errors.append(f"Duplicate sequence numbers in chain {chain_name}")
-        
+
         return errors
-    
+
     def _get_kinematic_chains(self) -> Dict[str, List]:
         """Group axes by their kinematic chains.
-        
+
         Returns:
             Dictionary mapping chain names to lists of axes
         """
         chains = {}
         all_axes = {**self.linear_axes, **self.rotary_axes}
-        
+
         # Find root axes (those with no parent)
         root_axes = [name for name, axis in all_axes.items() if axis.parent is None]
-        
+
         for root_name in root_axes:
             chain = []
             visited = set()
-            
+
             def collect_chain(axis_name):
                 if axis_name in visited or axis_name not in all_axes:
                     return
                 visited.add(axis_name)
                 chain.append(all_axes[axis_name])
-                
+
                 # Find children
                 for child_name, child_axis in all_axes.items():
                     if child_axis.parent == axis_name:
                         collect_chain(child_name)
-            
+
             collect_chain(root_name)
             chains[root_name] = chain
-        
+
         return chains
-    
+
     def get_axis_chain(self, axis_name: str) -> List[str]:
         """Get the kinematic chain for a specific axis.
-        
+
         Args:
             axis_name: Name of the axis
-            
+
         Returns:
             List of axis names from root to the specified axis
         """
         all_axes = {**self.linear_axes, **self.rotary_axes}
         chain = []
-        
+
         def build_chain(name):
             if name in all_axes:
                 parent = all_axes[name].parent
                 if parent:
                     build_chain(parent)
                 chain.append(name)
-        
+
         build_chain(axis_name)
         return chain
 
@@ -1254,7 +1284,7 @@ class Machine:
             axis_type = axis_data.get("type", "linear")
             limits = axis_data.get("limits", {})
             joint = axis_data.get("joint", [[0, 0, 0], [0, 0, 0]])
-            
+
             # Handle both old array format [[origin], [axis]] and new object format {"origin": [], "axis": []}
             if isinstance(joint, dict) and "origin" in joint and "axis" in joint:
                 # New object format
@@ -1262,9 +1292,17 @@ class Machine:
                 axis_vector = joint.get("axis", [0, 0, 0])
             elif isinstance(joint, list) and len(joint) >= 2:
                 # Old array format - need to detect which element is which
-                vec0 = FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2]) if len(joint[0]) >= 3 else FreeCAD.Vector(0, 0, 0)
-                vec1 = FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2]) if len(joint[1]) >= 3 else FreeCAD.Vector(0, 0, 0)
-                
+                vec0 = (
+                    FreeCAD.Vector(joint[0][0], joint[0][1], joint[0][2])
+                    if len(joint[0]) >= 3
+                    else FreeCAD.Vector(0, 0, 0)
+                )
+                vec1 = (
+                    FreeCAD.Vector(joint[1][0], joint[1][1], joint[1][2])
+                    if len(joint[1]) >= 3
+                    else FreeCAD.Vector(0, 0, 0)
+                )
+
                 if axis_type == "linear":
                     # For linear axes, check which vector has non-zero magnitude
                     if vec0.Length > 1e-6:  # joint[0] is direction vector (old structure)
@@ -1277,7 +1315,9 @@ class Machine:
                         # Both vectors are zero, use defaults
                         axis_vector = [1, 0, 0]  # Default X-axis
                         joint_origin = [0, 0, 0]
-                        Path.Log.warning(f"Invalid joint data for linear axis {axis_name}, using defaults")
+                        Path.Log.warning(
+                            f"Invalid joint data for linear axis {axis_name}, using defaults"
+                        )
                 else:
                     # For rotary axes, joint[1] is usually the rotation vector
                     if vec1.Length > 1e-6:
@@ -1287,13 +1327,15 @@ class Machine:
                         # Fallback - assume joint[0] is rotation vector
                         axis_vector = [vec0.x, vec0.y, vec0.z]
                         joint_origin = [0, 0, 0]
-                        Path.Log.warning(f"Invalid joint data for rotary axis {axis_name}, using defaults")
+                        Path.Log.warning(
+                            f"Invalid joint data for rotary axis {axis_name}, using defaults"
+                        )
             else:
                 # Malformed joint data - use defaults
                 joint_origin = [0, 0, 0]
                 axis_vector = [1, 0, 0] if axis_type == "linear" else [0, 0, 1]
                 Path.Log.warning(f"Malformed joint data for axis {axis_name}, using defaults")
-            
+
             if axis_type == "linear":
                 # Create linear axis with parsed joint data
                 direction_vec = FreeCAD.Vector(axis_vector[0], axis_vector[1], axis_vector[2])
@@ -1328,7 +1370,7 @@ class Machine:
                 sequence = axis_data.get("sequence", 0)
                 solution_preference = axis_data.get("solution_preference", "shortest")
                 allow_flip = axis_data.get("allow_flip", True)
-                
+
                 # Legacy support for prefer_positive
                 prefer_positive = axis_data.get("prefer_positive", True)
 
@@ -1352,11 +1394,13 @@ class Machine:
         if kinematics_data:
             base_frame_data = kinematics_data.get("base_frame", {})
             config.kinematics.base_frame.origin = base_frame_data.get("origin", [0, 0, 0])
-            config.kinematics.base_frame.orientation_quaternion = base_frame_data.get("orientation_quaternion", [0, 0, 0, 1])
+            config.kinematics.base_frame.orientation_quaternion = base_frame_data.get(
+                "orientation_quaternion", [0, 0, 0, 1]
+            )
             config.kinematics.tcp_supported = kinematics_data.get("tcp_supported", False)
             config.kinematics.dwo_supported = kinematics_data.get("dwo_supported", False)
             config.kinematics.notes = kinematics_data.get("notes", "")
-        
+
         # Determine primary/secondary rotary axes for legacy compatibility
         rotary_axis_names = list(config.rotary_axes.keys())
         rotary_axis_names.sort()  # Sort to get consistent ordering
@@ -1385,7 +1429,9 @@ class Machine:
             config.output.units = (
                 OutputUnits.METRIC if output_units_str == "metric" else OutputUnits.IMPERIAL
             )
-            config.output.output_tool_length_offset = output_data.get("output_tool_length_offset", True)
+            config.output.output_tool_length_offset = output_data.get(
+                "output_tool_length_offset", True
+            )
             config.output.remote_post = output_data.get("remote_post", False)
 
             # Header options
@@ -1404,15 +1450,27 @@ class Machine:
                 config.output.header.include_fixture_list = header_data
             else:
                 # New nested structure - output_header can be in header subsection or main output
-                config.output.output_header = header_data.get("output_header", output_data.get("output_header", True))
+                config.output.output_header = header_data.get(
+                    "output_header", output_data.get("output_header", True)
+                )
                 config.output.header.include_date = header_data.get("include_date", True)
-                config.output.header.include_description = header_data.get("include_description", True)
-                config.output.header.include_document_name = header_data.get("include_document_name", True)
-                config.output.header.include_machine_name = header_data.get("include_machine_name", True)
-                config.output.header.include_project_file = header_data.get("include_project_file", True)
+                config.output.header.include_description = header_data.get(
+                    "include_description", True
+                )
+                config.output.header.include_document_name = header_data.get(
+                    "include_document_name", True
+                )
+                config.output.header.include_machine_name = header_data.get(
+                    "include_machine_name", True
+                )
+                config.output.header.include_project_file = header_data.get(
+                    "include_project_file", True
+                )
                 config.output.header.include_units = header_data.get("include_units", True)
                 config.output.header.include_tool_list = header_data.get("include_tool_list", True)
-                config.output.header.include_fixture_list = header_data.get("include_fixture_list", True)
+                config.output.header.include_fixture_list = header_data.get(
+                    "include_fixture_list", True
+                )
 
             # Comment options
             comments_data = output_data.get("comments", {})
@@ -1428,9 +1486,15 @@ class Machine:
                 # New nested structure
                 config.output.comments.enabled = comments_data.get("enabled", True)
                 config.output.comments.symbol = comments_data.get("symbol", "(")
-                config.output.comments.include_operation_labels = comments_data.get("include_operation_labels", False)
-                config.output.comments.include_blank_lines = comments_data.get("include_blank_lines", True)
-                config.output.comments.output_bcnc_comments = comments_data.get("output_bcnc_comments", False)
+                config.output.comments.include_operation_labels = comments_data.get(
+                    "include_operation_labels", False
+                )
+                config.output.comments.include_blank_lines = comments_data.get(
+                    "include_blank_lines", True
+                )
+                config.output.comments.output_bcnc_comments = comments_data.get(
+                    "output_bcnc_comments", False
+                )
 
             # Formatting options
             formatting_data = output_data.get("formatting", {})
@@ -1438,19 +1502,31 @@ class Machine:
             if "line_numbers" in output_data and not formatting_data:
                 # Old structure: line_numbers was at top level
                 config.output.formatting.line_numbers = output_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = output_data.get("line_number_start", 100)
-                config.output.formatting.line_number_prefix = output_data.get("line_number_prefix", "N")
+                config.output.formatting.line_number_start = output_data.get(
+                    "line_number_start", 100
+                )
+                config.output.formatting.line_number_prefix = output_data.get(
+                    "line_number_prefix", "N"
+                )
                 config.output.formatting.line_increment = output_data.get("line_increment", 10)
                 config.output.formatting.command_space = output_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = output_data.get("end_of_line_chars", "\n")
+                config.output.formatting.end_of_line_chars = output_data.get(
+                    "end_of_line_chars", "\n"
+                )
             else:
                 # New nested structure
                 config.output.formatting.line_numbers = formatting_data.get("line_numbers", False)
-                config.output.formatting.line_number_start = formatting_data.get("line_number_start", 100)
-                config.output.formatting.line_number_prefix = formatting_data.get("line_number_prefix", "N")
+                config.output.formatting.line_number_start = formatting_data.get(
+                    "line_number_start", 100
+                )
+                config.output.formatting.line_number_prefix = formatting_data.get(
+                    "line_number_prefix", "N"
+                )
                 config.output.formatting.line_increment = formatting_data.get("line_increment", 10)
                 config.output.formatting.command_space = formatting_data.get("command_space", " ")
-                config.output.formatting.end_of_line_chars = formatting_data.get("end_of_line_chars", "\n")
+                config.output.formatting.end_of_line_chars = formatting_data.get(
+                    "end_of_line_chars", "\n"
+                )
 
             # Precision options
             precision_data = output_data.get("precision", {})
@@ -1471,8 +1547,12 @@ class Machine:
             # Handle backward compatibility for old flat structure
             if "output_duplicate_parameters" in output_data and not duplicates_data:
                 # Old structure: output_duplicate_parameters was at top level
-                config.output.duplicates.commands = output_data.get("output_duplicate_commands", True)
-                config.output.duplicates.parameters = output_data.get("output_duplicate_parameters", True)
+                config.output.duplicates.commands = output_data.get(
+                    "output_duplicate_commands", True
+                )
+                config.output.duplicates.parameters = output_data.get(
+                    "output_duplicate_parameters", True
+                )
             else:
                 # New nested structure
                 config.output.duplicates.commands = duplicates_data.get("commands", True)

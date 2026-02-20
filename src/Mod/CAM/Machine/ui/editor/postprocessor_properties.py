@@ -33,40 +33,40 @@ class PostProcessorPropertyManager:
     @staticmethod
     def create_property_widget(prop: Dict[str, Any], current_value: Any) -> QtGui.QWidget:
         """Create a widget for a postprocessor property based on its type.
-        
+
         Args:
             prop: Property schema dictionary with keys: name, type, label, default, help, etc.
             current_value: Current value of the property
-            
+
         Returns:
             QWidget configured for the property type, with a value_getter() method
         """
-        prop_type = prop.get('type')
-        
-        if prop_type == 'bool':
+        prop_type = prop.get("type")
+
+        if prop_type == "bool":
             widget = QtGui.QCheckBox()
             widget.setChecked(current_value if current_value is not None else False)
             widget.value_getter = lambda: widget.isChecked()
             return widget
-        
-        elif prop_type == 'int':
+
+        elif prop_type == "int":
             widget = QtGui.QSpinBox()
-            widget.setRange(prop.get('min', -999999), prop.get('max', 999999))
+            widget.setRange(prop.get("min", -999999), prop.get("max", 999999))
             widget.setValue(current_value if current_value is not None else 0)
             widget.value_getter = lambda: widget.value()
             return widget
-        
-        elif prop_type == 'float':
+
+        elif prop_type == "float":
             widget = QtGui.QDoubleSpinBox()
-            widget.setRange(prop.get('min', -999999.0), prop.get('max', 999999.0))
-            widget.setDecimals(prop.get('decimals', 4))
+            widget.setRange(prop.get("min", -999999.0), prop.get("max", 999999.0))
+            widget.setDecimals(prop.get("decimals", 4))
             widget.setValue(current_value if current_value is not None else 0.0)
             widget.value_getter = lambda: widget.value()
             return widget
-        
-        elif prop_type == 'choice':
+
+        elif prop_type == "choice":
             widget = QtGui.QComboBox()
-            choices = prop.get('choices', [])
+            choices = prop.get("choices", [])
             for choice in choices:
                 widget.addItem(str(choice), choice)
             if current_value:
@@ -75,40 +75,42 @@ class PostProcessorPropertyManager:
                     widget.setCurrentIndex(index)
             widget.value_getter = lambda: widget.itemData(widget.currentIndex())
             return widget
-        
-        elif prop_type == 'text':
+
+        elif prop_type == "text":
             widget = QtGui.QPlainTextEdit()
             widget.setMaximumHeight(100)
             widget.setPlainText(current_value if current_value else "")
             widget.value_getter = lambda: widget.toPlainText()
             return widget
-        
-        elif prop_type == 'file':
+
+        elif prop_type == "file":
             # File picker widget
             container = QtGui.QWidget()
             layout = QtGui.QHBoxLayout(container)
             layout.setContentsMargins(0, 0, 0, 0)
-            
+
             line_edit = QtGui.QLineEdit()
             line_edit.setText(current_value if current_value else "")
-            
+
             browse_button = QtGui.QPushButton("...")
             browse_button.setMaximumWidth(30)
-            
+
             def browse_file():
-                filters = prop.get('filters', "All Files (*)")
-                filename, _ = QtGui.QFileDialog.getOpenFileName(container, "Select File", "", filters)
+                filters = prop.get("filters", "All Files (*)")
+                filename, _ = QtGui.QFileDialog.getOpenFileName(
+                    container, "Select File", "", filters
+                )
                 if filename:
                     line_edit.setText(filename)
-            
+
             browse_button.clicked.connect(browse_file)
-            
+
             layout.addWidget(line_edit)
             layout.addWidget(browse_button)
-            
+
             container.value_getter = lambda: line_edit.text()
             return container
-        
+
         else:  # Default to string
             widget = QtGui.QLineEdit()
             widget.setText(str(current_value) if current_value else "")
@@ -116,10 +118,11 @@ class PostProcessorPropertyManager:
             return widget
 
     @staticmethod
-    def connect_property_widget(widget: QtGui.QWidget, prop_name: str, prop_type: str, 
-                                machine, callback=None):
+    def connect_property_widget(
+        widget: QtGui.QWidget, prop_name: str, prop_type: str, machine, callback=None
+    ):
         """Connect a property widget to update the machine configuration.
-        
+
         Args:
             widget: The widget to connect
             prop_name: Name of the property
@@ -127,13 +130,14 @@ class PostProcessorPropertyManager:
             machine: Machine object to update
             callback: Optional callback function to call after update
         """
+
         def update_property():
-            if hasattr(widget, 'value_getter'):
+            if hasattr(widget, "value_getter"):
                 value = widget.value_getter()
                 machine.postprocessor_properties[prop_name] = value
                 if callback:
                     callback(prop_name, value)
-        
+
         # Connect appropriate signal based on widget type
         if isinstance(widget, QtGui.QCheckBox):
             widget.stateChanged.connect(update_property)

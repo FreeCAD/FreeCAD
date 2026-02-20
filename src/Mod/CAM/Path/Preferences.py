@@ -326,7 +326,7 @@ def defaultOutputPolicy():
 
 def showEditorOnPostProcess():
     """Get user preference for showing editor before writing G-code.
-    
+
     Returns:
         bool: True to show editor, False to skip it (default: True)
     """
@@ -336,7 +336,7 @@ def showEditorOnPostProcess():
 
 def setShowEditorOnPostProcess(show: bool):
     """Set user preference for showing editor before writing G-code.
-    
+
     Args:
         show: True to show editor, False to skip it
     """

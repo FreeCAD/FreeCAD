@@ -27,7 +27,17 @@ import json
 from typing import Optional, Dict, Any, get_origin, get_args
 from dataclasses import fields
 from enum import Enum
-from Machine.models.machine import Machine, MachineFactory, LinearAxis, RotaryAxis, Toolhead, ToolheadType, AxisRole, Kinematics, BaseFrame
+from Machine.models.machine import (
+    Machine,
+    MachineFactory,
+    LinearAxis,
+    RotaryAxis,
+    Toolhead,
+    ToolheadType,
+    AxisRole,
+    Kinematics,
+    BaseFrame,
+)
 from Path.Main.Gui.Editor import CodeEditor
 from Path.Post.Processor import PostProcessorFactory
 from Machine.ui.editor.postprocessor_properties import PostProcessorPropertyManager
@@ -90,7 +100,9 @@ class DataclassGUIGenerator:
         "translate_drill_cycles": translate("CAM_MachineEditor", "Translate Drill Cycles"),
         "translate_rapid_moves": translate("CAM_MachineEditor", "Translate Rapid Moves"),
         "split_arcs": translate("CAM_MachineEditor", "Split Arcs"),
-        "xy_before_z_after_tool_change": translate("CAM_MachineEditor", "XY Before Z After Tool Change"),
+        "xy_before_z_after_tool_change": translate(
+            "CAM_MachineEditor", "XY Before Z After Tool Change"
+        ),
         "show_editor": translate("CAM_MachineEditor", "Show Editor After Generation"),
         "list_tools_in_preamble": translate("CAM_MachineEditor", "List Tools in Preamble"),
         "show_machine_units": translate("CAM_MachineEditor", "Show Machine Units"),
@@ -101,7 +113,9 @@ class DataclassGUIGenerator:
         "postprocessor_file_name": translate("CAM_MachineEditor", "Post Processor"),
         "postprocessor_args": translate("CAM_MachineEditor", "Post Processor Arguments"),
         "use_tlo": translate("CAM_MachineEditor", "Use Tool Length Offset"),
-        "output_tool_length_offset": translate("CAM_MachineEditor", "Output Tool Length Offset (G43)"),
+        "output_tool_length_offset": translate(
+            "CAM_MachineEditor", "Output Tool Length Offset (G43)"
+        ),
         "remote_post": translate("CAM_MachineEditor", "Enable Remote Posting"),
         "stop_toolhead_for_tool_change": translate(
             "CAM_MachineEditor", "Stop Toolhead for Tool Change"
@@ -110,7 +124,6 @@ class DataclassGUIGenerator:
         "enable_machine_specific_commands": translate(
             "CAM_MachineEditor", "Enable Machine-Specific Commands"
         ),
-        
         # New nested structure labels
         "units": translate("CAM_MachineEditor", "Output Units"),
         "header": translate("CAM_MachineEditor", "Header Options"),
@@ -119,7 +132,6 @@ class DataclassGUIGenerator:
         "precision": translate("CAM_MachineEditor", "Precision Options"),
         "duplicates": translate("CAM_MachineEditor", "Duplicate Output Options"),
         "output_header": translate("CAM_MachineEditor", "Output Header"),
-        
         # Header field labels
         "include_date": translate("CAM_MachineEditor", "Include Date"),
         "include_description": translate("CAM_MachineEditor", "Include Description"),
@@ -129,14 +141,12 @@ class DataclassGUIGenerator:
         "include_units": translate("CAM_MachineEditor", "Include Units"),
         "include_tool_list": translate("CAM_MachineEditor", "Include Tool List"),
         "include_fixture_list": translate("CAM_MachineEditor", "Include Fixture List"),
-        
         # Comment field labels
         "enabled": translate("CAM_MachineEditor", "Enable Comments"),
         "symbol": translate("CAM_MachineEditor", "Comment Symbol"),
         "include_operation_labels": translate("CAM_MachineEditor", "Include Operation Labels"),
         "include_blank_lines": translate("CAM_MachineEditor", "Include Blank Lines"),
         "output_bcnc_comments": translate("CAM_MachineEditor", "Output bCNC Comments"),
-        
         # Formatting field labels
         "line_numbers": translate("CAM_MachineEditor", "Line Numbers"),
         "line_number_start": translate("CAM_MachineEditor", "Line Number Start"),
@@ -144,16 +154,13 @@ class DataclassGUIGenerator:
         "line_increment": translate("CAM_MachineEditor", "Line Increment"),
         "command_space": translate("CAM_MachineEditor", "Command Space"),
         "end_of_line_chars": translate("CAM_MachineEditor", "End of Line Chars"),
-        
         # Precision field labels
         "axis": translate("CAM_MachineEditor", "Axis Precision"),
         "feed": translate("CAM_MachineEditor", "Feed Precision"),
         "toolhead": translate("CAM_MachineEditor", "Toolhead Precision"),
-        
         # Duplicate field labels
         "commands": translate("CAM_MachineEditor", "Duplicate Commands"),
         "parameters": translate("CAM_MachineEditor", "Duplicate Parameters"),
-        
         # Kinematics field labels
         "kinematics": translate("CAM_MachineEditor", "Kinematics"),
         "base_frame": translate("CAM_MachineEditor", "Base Frame"),
@@ -162,7 +169,6 @@ class DataclassGUIGenerator:
         "tcp_supported": translate("CAM_MachineEditor", "TCP Supported"),
         "dwo_supported": translate("CAM_MachineEditor", "DWO Supported"),
         "notes": translate("CAM_MachineEditor", "Kinematics Notes"),
-        
         # Axis field labels
         "role": translate("CAM_MachineEditor", "Role"),
         "parent": translate("CAM_MachineEditor", "Parent Axis"),
@@ -700,7 +706,7 @@ class MachineEditorDialog(QtGui.QDialog):
         if self.machine and toolhead_index < len(self.machine.toolheads):
             toolhead = self.machine.toolheads[toolhead_index]
             setattr(toolhead, field_name, value)
-            
+
             # Update visibility if toolhead type changed
             if field_name == "toolhead_type":
                 self._update_toolhead_type_visibility(toolhead_index)
@@ -709,30 +715,30 @@ class MachineEditorDialog(QtGui.QDialog):
         """Update visibility of type-specific fields based on toolhead type."""
         if toolhead_index >= len(self.toolhead_edits):
             return
-            
+
         edits = self.toolhead_edits[toolhead_index]
         toolhead_type = edits["type"].itemData(edits["type"].currentIndex())
-        
+
         # Show/hide RPM fields (only for rotary toolheads)
         show_rpm = toolhead_type == ToolheadType.ROTARY
         edits["rpm_widget"].setVisible(show_rpm)
-        
+
         # Show/hide laser fields
         show_laser = toolhead_type == ToolheadType.LASER
         edits["laser_widget"].setVisible(show_laser)
-        
+
         # Show/hide waterjet fields
         show_waterjet = toolhead_type == ToolheadType.WATERJET
         edits["waterjet_widget"].setVisible(show_waterjet)
-        
+
         # Show/hide plasma fields
         show_plasma = toolhead_type == ToolheadType.PLASMA
         edits["plasma_widget"].setVisible(show_plasma)
-        
+
         # Show/hide coolant fields (only for rotary toolheads)
         show_coolant = toolhead_type == ToolheadType.ROTARY
         edits["coolant_widget"].setVisible(show_coolant)
-        
+
         # Hide type-specific group if no type-specific fields are visible
         type_specific_visible = show_rpm or show_laser or show_waterjet or show_plasma
         edits["type_specific_group"].setVisible(type_specific_visible)
@@ -785,7 +791,9 @@ class MachineEditorDialog(QtGui.QDialog):
             toolhead_count = len(self.machine.toolheads)
             should_enable = toolhead_count < 9
             self.add_toolhead_button.setEnabled(should_enable)
-            Path.Log.debug(f"Toolhead button state: count={toolhead_count}, enabled={should_enable}")
+            Path.Log.debug(
+                f"Toolhead button state: count={toolhead_count}, enabled={should_enable}"
+            )
         else:
             self.add_toolhead_button.setEnabled(True)
             Path.Log.debug("Toolhead button state: no machine, enabled=True")
@@ -976,80 +984,106 @@ class MachineEditorDialog(QtGui.QDialog):
         # Kinematics group
         self.kinematics_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Kinematics"))
         kinematics_layout = QtGui.QFormLayout(self.kinematics_group)
-        
+
         # Base frame section
         base_frame_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Base Frame"))
         base_frame_group.setCheckable(True)
         base_frame_group.setChecked(True)  # Ensure it's expanded by default
         base_frame_layout = QtGui.QGridLayout(base_frame_group)
-        
+
         # Origin fields
         base_frame_layout.addWidget(QtGui.QLabel("X:"), 0, 0)
         self.origin_x_spin = QtGui.QDoubleSpinBox()
         self.origin_x_spin.setRange(-9999, 9999)
         self.origin_x_spin.setDecimals(3)
-        self.origin_x_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("origin_x", v))
+        self.origin_x_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("origin_x", v)
+        )
         base_frame_layout.addWidget(self.origin_x_spin, 0, 1)
-        
+
         base_frame_layout.addWidget(QtGui.QLabel("Y:"), 0, 2)
         self.origin_y_spin = QtGui.QDoubleSpinBox()
         self.origin_y_spin.setRange(-9999, 9999)
         self.origin_y_spin.setDecimals(3)
-        self.origin_y_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("origin_y", v))
+        self.origin_y_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("origin_y", v)
+        )
         base_frame_layout.addWidget(self.origin_y_spin, 0, 3)
-        
+
         base_frame_layout.addWidget(QtGui.QLabel("Z:"), 0, 4)
         self.origin_z_spin = QtGui.QDoubleSpinBox()
         self.origin_z_spin.setRange(-9999, 9999)
         self.origin_z_spin.setDecimals(3)
-        self.origin_z_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("origin_z", v))
+        self.origin_z_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("origin_z", v)
+        )
         base_frame_layout.addWidget(self.origin_z_spin, 0, 5)
-        
+
         # Quaternion fields
         base_frame_layout.addWidget(QtGui.QLabel("W:"), 1, 0)
         self.quat_w_spin = QtGui.QDoubleSpinBox()
         self.quat_w_spin.setRange(-1, 1)
         self.quat_w_spin.setDecimals(3)
-        self.quat_w_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("quat_w", v))
+        self.quat_w_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("quat_w", v)
+        )
         base_frame_layout.addWidget(self.quat_w_spin, 1, 1)
-        
+
         base_frame_layout.addWidget(QtGui.QLabel("X:"), 1, 2)
         self.quat_x_spin = QtGui.QDoubleSpinBox()
         self.quat_x_spin.setRange(-1, 1)
         self.quat_x_spin.setDecimals(3)
-        self.quat_x_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("quat_x", v))
+        self.quat_x_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("quat_x", v)
+        )
         base_frame_layout.addWidget(self.quat_x_spin, 1, 3)
-        
+
         base_frame_layout.addWidget(QtGui.QLabel("Y:"), 1, 4)
         self.quat_y_spin = QtGui.QDoubleSpinBox()
         self.quat_y_spin.setRange(-1, 1)
         self.quat_y_spin.setDecimals(3)
-        self.quat_y_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("quat_y", v))
+        self.quat_y_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("quat_y", v)
+        )
         base_frame_layout.addWidget(self.quat_y_spin, 1, 5)
-        
+
         base_frame_layout.addWidget(QtGui.QLabel("Z:"), 1, 6)
         self.quat_z_spin = QtGui.QDoubleSpinBox()
         self.quat_z_spin.setRange(-1, 1)
         self.quat_z_spin.setDecimals(3)
-        self.quat_z_spin.valueChanged.connect(lambda v: self._on_kinematics_field_changed("quat_z", v))
+        self.quat_z_spin.valueChanged.connect(
+            lambda v: self._on_kinematics_field_changed("quat_z", v)
+        )
         base_frame_layout.addWidget(self.quat_z_spin, 1, 7)
-        
+
         kinematics_layout.addRow(base_frame_group)
-        
+
         # TCP/DWO support
         self.tcp_supported_check = QtGui.QCheckBox()
-        self.tcp_supported_check.toggled.connect(lambda v: self._on_kinematics_field_changed("tcp_supported", v))
-        kinematics_layout.addRow(translate("CAM_MachineEditor", "TCP Supported"), self.tcp_supported_check)
-        
+        self.tcp_supported_check.toggled.connect(
+            lambda v: self._on_kinematics_field_changed("tcp_supported", v)
+        )
+        kinematics_layout.addRow(
+            translate("CAM_MachineEditor", "TCP Supported"), self.tcp_supported_check
+        )
+
         self.dwo_supported_check = QtGui.QCheckBox()
-        self.dwo_supported_check.toggled.connect(lambda v: self._on_kinematics_field_changed("dwo_supported", v))
-        kinematics_layout.addRow(translate("CAM_MachineEditor", "DWO Supported"), self.dwo_supported_check)
-        
+        self.dwo_supported_check.toggled.connect(
+            lambda v: self._on_kinematics_field_changed("dwo_supported", v)
+        )
+        kinematics_layout.addRow(
+            translate("CAM_MachineEditor", "DWO Supported"), self.dwo_supported_check
+        )
+
         # Notes
         self.kinematics_notes_edit = QtGui.QLineEdit()
-        self.kinematics_notes_edit.textChanged.connect(lambda: self._on_kinematics_field_changed("notes", self.kinematics_notes_edit.text()))
-        kinematics_layout.addRow(translate("CAM_MachineEditor", "Notes"), self.kinematics_notes_edit)
-        
+        self.kinematics_notes_edit.textChanged.connect(
+            lambda: self._on_kinematics_field_changed("notes", self.kinematics_notes_edit.text())
+        )
+        kinematics_layout.addRow(
+            translate("CAM_MachineEditor", "Notes"), self.kinematics_notes_edit
+        )
+
         layout.addRow(self.kinematics_group)
 
         # Axes group
@@ -1125,7 +1159,7 @@ class MachineEditorDialog(QtGui.QDialog):
         linear_axes = list(self.machine.linear_axes.keys()) if self.machine else []
         rotary_axes = list(self.machine.rotary_axes.keys()) if self.machine else []
         all_axis_names = linear_axes + rotary_axes
-        
+
         # If no axes in machine, try to get from type config
         if not all_axis_names:
             config_axes = config.get("linear", []) + config.get("rotary", [])
@@ -1134,7 +1168,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 return
             # Use config axes for new machines
             all_axis_names = config_axes
-        
+
         # Show axes group since we have axes
         self.axes_group.setVisible(True)
 
@@ -1145,10 +1179,10 @@ class MachineEditorDialog(QtGui.QDialog):
 
             for axis in linear_axes:
                 axis_obj = self.machine.linear_axes[axis]
-                
+
                 # Create grid layout for this axis
                 axis_grid = QtGui.QGridLayout()
-                
+
                 # Role dropdown
                 role_combo = QtGui.QComboBox()
                 for role in AxisRole:
@@ -1158,9 +1192,11 @@ class MachineEditorDialog(QtGui.QDialog):
                 if current_role_index >= 0:
                     role_combo.setCurrentIndex(current_role_index)
                 role_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=role_combo: self._on_axis_role_changed(ax, combo, "linear")
+                    lambda idx, ax=axis, combo=role_combo: self._on_axis_role_changed(
+                        ax, combo, "linear"
+                    )
                 )
-                
+
                 # Parent dropdown
                 parent_combo = QtGui.QComboBox()
                 parent_combo.addItem("None", None)
@@ -1172,9 +1208,11 @@ class MachineEditorDialog(QtGui.QDialog):
                     if parent_index >= 0:
                         parent_combo.setCurrentIndex(parent_index)
                 parent_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=parent_combo: self._on_axis_parent_changed(ax, combo, "linear")
+                    lambda idx, ax=axis, combo=parent_combo: self._on_axis_parent_changed(
+                        ax, combo, "linear"
+                    )
                 )
-                
+
                 # Sequence
                 sequence_spin = QtGui.QSpinBox()
                 sequence_spin.setRange(0, 10)
@@ -1182,7 +1220,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 sequence_spin.valueChanged.connect(
                     lambda value, ax=axis: self._on_axis_sequence_changed(ax, value, "linear")
                 )
-                
+
                 # Direction vector combo
                 direction_combo = QtGui.QComboBox()
                 for label, vector in self.ROTATIONAL_AXIS_OPTIONS:
@@ -1197,9 +1235,11 @@ class MachineEditorDialog(QtGui.QDialog):
                         direction_combo.setCurrentIndex(i)
                         break
                 direction_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=direction_combo: self._on_linear_direction_changed(ax, combo)
+                    lambda idx, ax=axis, combo=direction_combo: self._on_linear_direction_changed(
+                        ax, combo
+                    )
                 )
-                
+
                 # Limits and velocity
                 converted_min = (
                     axis_obj.min_limit if units == "metric" else axis_obj.min_limit / 25.4
@@ -1233,30 +1273,42 @@ class MachineEditorDialog(QtGui.QDialog):
                         edit, suffix, ax, fld
                     )
                 )
-                
+
                 # Joint origin
                 origin_x_spin = QtGui.QDoubleSpinBox()
                 origin_x_spin.setRange(-9999, 9999)
                 origin_x_spin.setDecimals(3)
                 origin_x_spin.setValue(axis_obj.joint_origin[0])
-                
+
                 origin_y_spin = QtGui.QDoubleSpinBox()
                 origin_y_spin.setRange(-9999, 9999)
                 origin_y_spin.setDecimals(3)
                 origin_y_spin.setValue(axis_obj.joint_origin[1])
-                
+
                 origin_z_spin = QtGui.QDoubleSpinBox()
                 origin_z_spin.setRange(-9999, 9999)
                 origin_z_spin.setDecimals(3)
                 origin_z_spin.setValue(axis_obj.joint_origin[2])
-                
+
                 def update_joint_origin(ax, x_val, y_val, z_val):
                     self._on_joint_origin_changed(ax, [x_val, y_val, z_val], "linear")
-                
-                origin_x_spin.valueChanged.connect(lambda v, ax=axis: update_joint_origin(ax, v, origin_y_spin.value(), origin_z_spin.value()))
-                origin_y_spin.valueChanged.connect(lambda v, ax=axis: update_joint_origin(ax, origin_x_spin.value(), v, origin_z_spin.value()))
-                origin_z_spin.valueChanged.connect(lambda v, ax=axis: update_joint_origin(ax, origin_x_spin.value(), origin_y_spin.value(), v))
-                
+
+                origin_x_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_joint_origin(
+                        ax, v, origin_y_spin.value(), origin_z_spin.value()
+                    )
+                )
+                origin_y_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_joint_origin(
+                        ax, origin_x_spin.value(), v, origin_z_spin.value()
+                    )
+                )
+                origin_z_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_joint_origin(
+                        ax, origin_x_spin.value(), origin_y_spin.value(), v
+                    )
+                )
+
                 # Layout the grid
                 axis_grid.addWidget(QtGui.QLabel("Role:"), 0, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(role_combo, 0, 1)
@@ -1266,23 +1318,23 @@ class MachineEditorDialog(QtGui.QDialog):
                 axis_grid.addWidget(sequence_spin, 0, 5)
                 axis_grid.addWidget(QtGui.QLabel("Dir:"), 0, 6, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(direction_combo, 0, 7)
-                
+
                 axis_grid.addWidget(QtGui.QLabel("Min:"), 1, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(min_edit, 1, 1)
                 axis_grid.addWidget(QtGui.QLabel("Max:"), 1, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(max_edit, 1, 3)
                 axis_grid.addWidget(QtGui.QLabel("Vel:"), 1, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(vel_edit, 1, 5)
-                
+
                 axis_grid.addWidget(QtGui.QLabel("Origin:"), 2, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(origin_x_spin, 2, 1)
                 axis_grid.addWidget(origin_y_spin, 2, 2)
                 axis_grid.addWidget(origin_z_spin, 2, 3)
-                
+
                 axis_label = QtGui.QLabel(f"{axis}")
                 axis_label.setMinimumWidth(30)
                 linear_layout.addRow(axis_label, axis_grid)
-                
+
                 self.axis_edits[axis] = {
                     "role": role_combo,
                     "parent": parent_combo,
@@ -1305,10 +1357,10 @@ class MachineEditorDialog(QtGui.QDialog):
 
             for axis in rotary_axes:
                 axis_obj = self.machine.rotary_axes[axis]
-                
+
                 # Create grid layout for this axis
                 axis_grid = QtGui.QGridLayout()
-                
+
                 # Role dropdown
                 role_combo = QtGui.QComboBox()
                 for role in AxisRole:
@@ -1318,9 +1370,11 @@ class MachineEditorDialog(QtGui.QDialog):
                 if current_role_index >= 0:
                     role_combo.setCurrentIndex(current_role_index)
                 role_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=role_combo: self._on_axis_role_changed(ax, combo, "rotary")
+                    lambda idx, ax=axis, combo=role_combo: self._on_axis_role_changed(
+                        ax, combo, "rotary"
+                    )
                 )
-                
+
                 # Parent dropdown
                 parent_combo = QtGui.QComboBox()
                 parent_combo.addItem("None", None)
@@ -1332,9 +1386,11 @@ class MachineEditorDialog(QtGui.QDialog):
                     if parent_index >= 0:
                         parent_combo.setCurrentIndex(parent_index)
                 parent_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=parent_combo: self._on_axis_parent_changed(ax, combo, "rotary")
+                    lambda idx, ax=axis, combo=parent_combo: self._on_axis_parent_changed(
+                        ax, combo, "rotary"
+                    )
                 )
-                
+
                 # Sequence
                 sequence_spin = QtGui.QSpinBox()
                 sequence_spin.setRange(0, 10)
@@ -1342,7 +1398,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 sequence_spin.valueChanged.connect(
                     lambda value, ax=axis: self._on_axis_sequence_changed(ax, value, "rotary")
                 )
-                
+
                 # Limits and velocity
                 min_edit = QtGui.QLineEdit()
                 min_edit.setText(f"{axis_obj.min_limit:.2f}{angle_suffix}")
@@ -1367,7 +1423,7 @@ class MachineEditorDialog(QtGui.QDialog):
                         edit, suffix, ax, fld
                     )
                 )
-                
+
                 # Joint axis combo
                 joint_combo = QtGui.QComboBox()
                 for label, vector in self.ROTATIONAL_AXIS_OPTIONS:
@@ -1382,32 +1438,46 @@ class MachineEditorDialog(QtGui.QDialog):
                         joint_combo.setCurrentIndex(i)
                         break
                 joint_combo.currentIndexChanged.connect(
-                    lambda index, ax=axis, combo=joint_combo: self._on_rotary_joint_changed(ax, combo)
+                    lambda index, ax=axis, combo=joint_combo: self._on_rotary_joint_changed(
+                        ax, combo
+                    )
                 )
-                
+
                 # Joint origin
                 origin_x_spin = QtGui.QDoubleSpinBox()
                 origin_x_spin.setRange(-9999, 9999)
                 origin_x_spin.setDecimals(3)
                 origin_x_spin.setValue(axis_obj.joint_origin[0])
-                
+
                 origin_y_spin = QtGui.QDoubleSpinBox()
                 origin_y_spin.setRange(-9999, 9999)
                 origin_y_spin.setDecimals(3)
                 origin_y_spin.setValue(axis_obj.joint_origin[1])
-                
+
                 origin_z_spin = QtGui.QDoubleSpinBox()
                 origin_z_spin.setRange(-9999, 9999)
                 origin_z_spin.setDecimals(3)
                 origin_z_spin.setValue(axis_obj.joint_origin[2])
-                
+
                 def update_rotary_origin(ax, x_val, y_val, z_val):
                     self._on_joint_origin_changed(ax, [x_val, y_val, z_val], "rotary")
-                
-                origin_x_spin.valueChanged.connect(lambda v, ax=axis: update_rotary_origin(ax, v, origin_y_spin.value(), origin_z_spin.value()))
-                origin_y_spin.valueChanged.connect(lambda v, ax=axis: update_rotary_origin(ax, origin_x_spin.value(), v, origin_z_spin.value()))
-                origin_z_spin.valueChanged.connect(lambda v, ax=axis: update_rotary_origin(ax, origin_x_spin.value(), origin_y_spin.value(), v))
-                
+
+                origin_x_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_rotary_origin(
+                        ax, v, origin_y_spin.value(), origin_z_spin.value()
+                    )
+                )
+                origin_y_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_rotary_origin(
+                        ax, origin_x_spin.value(), v, origin_z_spin.value()
+                    )
+                )
+                origin_z_spin.valueChanged.connect(
+                    lambda v, ax=axis: update_rotary_origin(
+                        ax, origin_x_spin.value(), origin_y_spin.value(), v
+                    )
+                )
+
                 # Solution preference
                 solution_combo = QtGui.QComboBox()
                 solution_combo.addItem("Shortest", "shortest")
@@ -1417,16 +1487,18 @@ class MachineEditorDialog(QtGui.QDialog):
                 if current_solution_index >= 0:
                     solution_combo.setCurrentIndex(current_solution_index)
                 solution_combo.currentIndexChanged.connect(
-                    lambda idx, ax=axis, combo=solution_combo: self._on_solution_preference_changed(ax, combo)
+                    lambda idx, ax=axis, combo=solution_combo: self._on_solution_preference_changed(
+                        ax, combo
+                    )
                 )
-                
+
                 # Allow flip checkbox
                 allow_flip_check = QtGui.QCheckBox()
                 allow_flip_check.setChecked(axis_obj.allow_flip)
                 allow_flip_check.toggled.connect(
                     lambda checked, ax=axis: self._on_allow_flip_changed(ax, checked)
                 )
-                
+
                 # Legacy prefer_positive checkbox
                 prefer_positive_check = QtGui.QCheckBox()
                 prefer_positive_check.setChecked(axis_obj.prefer_positive)
@@ -1435,7 +1507,7 @@ class MachineEditorDialog(QtGui.QDialog):
                         ax, state == QtCore.Qt.Checked
                     )
                 )
-                
+
                 # Layout the grid
                 axis_grid.addWidget(QtGui.QLabel("Role:"), 0, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(role_combo, 0, 1)
@@ -1443,32 +1515,32 @@ class MachineEditorDialog(QtGui.QDialog):
                 axis_grid.addWidget(parent_combo, 0, 3)
                 axis_grid.addWidget(QtGui.QLabel("Seq:"), 0, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(sequence_spin, 0, 5)
-                
+
                 axis_grid.addWidget(QtGui.QLabel("Min:"), 1, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(min_edit, 1, 1)
                 axis_grid.addWidget(QtGui.QLabel("Max:"), 1, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(max_edit, 1, 3)
                 axis_grid.addWidget(QtGui.QLabel("Vel:"), 1, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(vel_edit, 1, 5)
-                
+
                 axis_grid.addWidget(QtGui.QLabel("Joint:"), 2, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(joint_combo, 2, 1)
                 axis_grid.addWidget(QtGui.QLabel("Origin:"), 2, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(origin_x_spin, 2, 3)
                 axis_grid.addWidget(origin_y_spin, 2, 4)
                 axis_grid.addWidget(origin_z_spin, 2, 5)
-                
+
                 axis_grid.addWidget(QtGui.QLabel("Solution:"), 3, 0, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(solution_combo, 3, 1)
                 axis_grid.addWidget(QtGui.QLabel("Flip:"), 3, 2, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(allow_flip_check, 3, 3)
                 axis_grid.addWidget(QtGui.QLabel("Prefer+:"), 3, 4, QtCore.Qt.AlignRight)
                 axis_grid.addWidget(prefer_positive_check, 3, 5)
-                
+
                 axis_label = QtGui.QLabel(f"{axis}")
                 axis_label.setMinimumWidth(30)
                 rotary_layout.addRow(axis_label, axis_grid)
-                
+
                 self.axis_edits[axis] = {
                     "role": role_combo,
                     "parent": parent_combo,
@@ -1499,7 +1571,7 @@ class MachineEditorDialog(QtGui.QDialog):
         """
         initial_count = len(self.machine.toolheads) if self.machine else 0
         Path.Log.debug(f"update_toolheads() called with {initial_count} existing toolheads")
-        
+
         # Clear existing toolhead tabs - this properly disconnects signals
         while self.toolheads_tabs.count() > 0:
             tab = self.toolheads_tabs.widget(0)
@@ -1511,7 +1583,7 @@ class MachineEditorDialog(QtGui.QDialog):
         self.toolhead_edits = []
         count = len(self.machine.toolheads) if self.machine else 1
         Path.Log.debug(f"Target toolhead count: {count}")
-        
+
         # Ensure machine has at least 1 toolhead
         if self.machine:
             # Always ensure at least 1 toolhead, even if current count is 0
@@ -1532,7 +1604,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 )
             while len(self.machine.toolheads) > count:
                 self.machine.toolheads.pop()
-            
+
             Path.Log.debug(f"After toolhead adjustment, count: {len(self.machine.toolheads)}")
 
         for i in range(max(count, 1)):
@@ -1550,12 +1622,12 @@ class MachineEditorDialog(QtGui.QDialog):
             type_combo = QtGui.QComboBox()
             for toolhead_type in ToolheadType:
                 type_combo.addItem(toolhead_type.value.title(), toolhead_type)
-            
+
             if toolhead:
                 index = type_combo.findData(toolhead.toolhead_type)
                 if index >= 0:
                     type_combo.setCurrentIndex(index)
-            
+
             type_combo.currentIndexChanged.connect(
                 lambda idx, toolhead_idx=i, combo=type_combo: self._on_toolhead_field_changed(
                     toolhead_idx, "toolhead_type", combo.itemData(combo.currentIndex())
@@ -1586,16 +1658,16 @@ class MachineEditorDialog(QtGui.QDialog):
                 ("Automatic", "automatic"),
                 ("Probe", "probe"),
                 ("Fixed", "fixed"),
-                ("None", "none")
+                ("None", "none"),
             ]
             for label, value in tool_change_options:
                 tool_change_combo.addItem(label, value)
-            
+
             if toolhead and toolhead.tool_change:
                 index = tool_change_combo.findData(toolhead.tool_change)
                 if index >= 0:
                     tool_change_combo.setCurrentIndex(index)
-            
+
             tool_change_combo.currentIndexChanged.connect(
                 lambda idx, toolhead_idx=i, combo=tool_change_combo: self._on_toolhead_field_changed(
                     toolhead_idx, "tool_change", combo.itemData(combo.currentIndex())
@@ -1615,11 +1687,11 @@ class MachineEditorDialog(QtGui.QDialog):
             # Type-specific fields container
             type_specific_group = QtGui.QGroupBox("Type-Specific Settings")
             type_specific_layout = QtGui.QVBoxLayout(type_specific_group)
-            
+
             # Rotary toolhead fields (RPM)
             rpm_widget = QtGui.QWidget()
             rpm_layout = QtGui.QFormLayout(rpm_widget)
-            
+
             max_rpm_edit = QtGui.QSpinBox()
             max_rpm_edit.setRange(0, 100000)
             max_rpm_edit.setValue(int(toolhead.max_rpm) if toolhead else 24000)
@@ -1627,7 +1699,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "max_rpm", value)
             )
             rpm_layout.addRow("Max RPM", max_rpm_edit)
-            
+
             min_rpm_edit = QtGui.QSpinBox()
             min_rpm_edit.setRange(0, 100000)
             min_rpm_edit.setValue(int(toolhead.min_rpm) if toolhead else 6000)
@@ -1635,72 +1707,88 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "min_rpm", value)
             )
             rpm_layout.addRow("Min RPM", min_rpm_edit)
-            
+
             type_specific_layout.addWidget(rpm_widget)
-            
+
             # Laser toolhead fields
             laser_widget = QtGui.QWidget()
             laser_layout = QtGui.QFormLayout(laser_widget)
-            
+
             wavelength_edit = QtGui.QDoubleSpinBox()
             wavelength_edit.setRange(200, 2000)
             wavelength_edit.setDecimals(1)
-            wavelength_edit.setValue(toolhead.laser_wavelength if toolhead and toolhead.laser_wavelength is not None else 1064.0)
+            wavelength_edit.setValue(
+                toolhead.laser_wavelength
+                if toolhead and toolhead.laser_wavelength is not None
+                else 1064.0
+            )
             wavelength_edit.valueChanged.connect(
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "laser_wavelength", value)
             )
             laser_layout.addRow("Wavelength (nm)", wavelength_edit)
-            
+
             type_specific_layout.addWidget(laser_widget)
-            
+
             # Waterjet toolhead fields
             waterjet_widget = QtGui.QWidget()
             waterjet_layout = QtGui.QFormLayout(waterjet_widget)
-            
+
             pressure_edit = QtGui.QDoubleSpinBox()
             pressure_edit.setRange(0, 10000)
             pressure_edit.setDecimals(0)
-            pressure_edit.setValue(toolhead.waterjet_pressure if toolhead and toolhead.waterjet_pressure is not None else 4000.0)
+            pressure_edit.setValue(
+                toolhead.waterjet_pressure
+                if toolhead and toolhead.waterjet_pressure is not None
+                else 4000.0
+            )
             pressure_edit.valueChanged.connect(
-                lambda value, idx=i: self._on_toolhead_field_changed(idx, "waterjet_pressure", value)
+                lambda value, idx=i: self._on_toolhead_field_changed(
+                    idx, "waterjet_pressure", value
+                )
             )
             waterjet_layout.addRow("Pressure (bar)", pressure_edit)
-            
+
             type_specific_layout.addWidget(waterjet_widget)
-            
+
             # Plasma toolhead fields
             plasma_widget = QtGui.QWidget()
             plasma_layout = QtGui.QFormLayout(plasma_widget)
-            
+
             amperage_edit = QtGui.QDoubleSpinBox()
             amperage_edit.setRange(0, 500)
             amperage_edit.setDecimals(1)
-            amperage_edit.setValue(toolhead.plasma_amperage if toolhead and toolhead.plasma_amperage is not None else 45.0)
+            amperage_edit.setValue(
+                toolhead.plasma_amperage
+                if toolhead and toolhead.plasma_amperage is not None
+                else 45.0
+            )
             amperage_edit.valueChanged.connect(
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "plasma_amperage", value)
             )
             plasma_layout.addRow("Amperage", amperage_edit)
-            
+
             type_specific_layout.addWidget(plasma_widget)
-            
+
             # Coolant fields
             coolant_widget = QtGui.QWidget()
             coolant_layout = QtGui.QFormLayout(coolant_widget)
-            
+
             coolant_flood_check = QtGui.QCheckBox()
             coolant_flood_check.setChecked(toolhead.coolant_flood if toolhead else False)
             coolant_flood_check.toggled.connect(
-                lambda checked, idx=i: self._on_toolhead_field_changed(idx, "coolant_flood", checked)
+                lambda checked, idx=i: self._on_toolhead_field_changed(
+                    idx, "coolant_flood", checked
+                )
             )
             coolant_layout.addRow("Coolant Flood", coolant_flood_check)
-            
+
             coolant_mist_check = QtGui.QCheckBox()
             coolant_mist_check.setChecked(toolhead.coolant_mist if toolhead else False)
             coolant_mist_check.toggled.connect(
                 lambda checked, idx=i: self._on_toolhead_field_changed(idx, "coolant_mist", checked)
             )
             coolant_layout.addRow("Coolant Mist", coolant_mist_check)
-            
+
             coolant_delay_edit = QtGui.QDoubleSpinBox()
             coolant_delay_edit.setRange(0, 60)
             coolant_delay_edit.setDecimals(1)
@@ -1709,7 +1797,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "coolant_delay", value)
             )
             coolant_layout.addRow("Coolant Delay (s)", coolant_delay_edit)
-            
+
             # Wait time field
             wait_edit = QtGui.QDoubleSpinBox()
             wait_edit.setRange(0, 60)
@@ -1719,37 +1807,39 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda value, idx=i: self._on_toolhead_field_changed(idx, "toolhead_wait", value)
             )
             coolant_layout.addRow("Wait Time (s)", wait_edit)
-            
+
             type_specific_layout.addWidget(coolant_widget)
-            
+
             layout.addWidget(type_specific_group)
-            
+
             # Add tab to toolheads tabs
             self.toolheads_tabs.addTab(tab, toolhead.name if toolhead else f"Toolhead {i+1}")
-            
+
             # Store widget references for updates
-            self.toolhead_edits.append({
-                "type": type_combo,
-                "name": name_edit,
-                "id": id_edit,
-                "max_power_kw": max_power_edit,
-                "max_rpm": max_rpm_edit,
-                "min_rpm": min_rpm_edit,
-                "wavelength": wavelength_edit,
-                "pressure": pressure_edit,
-                "amperage": amperage_edit,
-                "coolant_flood": coolant_flood_check,
-                "coolant_mist": coolant_mist_check,
-                "coolant_delay": coolant_delay_edit,
-                "wait": wait_edit,
-                "rpm_widget": rpm_widget,
-                "laser_widget": laser_widget,
-                "waterjet_widget": waterjet_widget,
-                "plasma_widget": plasma_widget,
-                "coolant_widget": coolant_widget,
-                "type_specific_group": type_specific_group,
-            })
-            
+            self.toolhead_edits.append(
+                {
+                    "type": type_combo,
+                    "name": name_edit,
+                    "id": id_edit,
+                    "max_power_kw": max_power_edit,
+                    "max_rpm": max_rpm_edit,
+                    "min_rpm": min_rpm_edit,
+                    "wavelength": wavelength_edit,
+                    "pressure": pressure_edit,
+                    "amperage": amperage_edit,
+                    "coolant_flood": coolant_flood_check,
+                    "coolant_mist": coolant_mist_check,
+                    "coolant_delay": coolant_delay_edit,
+                    "wait": wait_edit,
+                    "rpm_widget": rpm_widget,
+                    "laser_widget": laser_widget,
+                    "waterjet_widget": waterjet_widget,
+                    "plasma_widget": plasma_widget,
+                    "coolant_widget": coolant_widget,
+                    "type_specific_group": type_specific_group,
+                }
+            )
+
             # Update visibility based on initial toolhead type
             self._update_toolhead_type_visibility(i)
 
@@ -1775,7 +1865,7 @@ class MachineEditorDialog(QtGui.QDialog):
             # Main output options
             main_group = QtGui.QGroupBox(translate("CAM_MachineEditor", "Main Options"))
             main_layout = QtGui.QFormLayout(main_group)
-            
+
             # Units
             units_combo = QtGui.QComboBox()
             units_combo.addItem("Metric", "metric")
@@ -1788,7 +1878,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda idx: self._on_output_field_changed("units", units_combo.itemData(idx))
             )
             main_layout.addRow("Units", units_combo)
-            
+
             # Output tool length offset
             tool_length_check = QtGui.QCheckBox()
             tool_length_check.setChecked(self.machine.output.output_tool_length_offset)
@@ -1796,7 +1886,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda checked: self._on_output_field_changed("output_tool_length_offset", checked)
             )
             main_layout.addRow("Output Tool Length Offset (G43)", tool_length_check)
-            
+
             # Output header
             output_header_check = QtGui.QCheckBox()
             output_header_check.setChecked(self.machine.output.output_header)
@@ -1804,7 +1894,7 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda checked: self._on_output_field_changed("output_header", checked)
             )
             main_layout.addRow("Output Header", output_header_check)
-            
+
             # Remote posting
             remote_post_check = QtGui.QCheckBox()
             remote_post_check.setChecked(self.machine.output.remote_post)
@@ -1812,37 +1902,37 @@ class MachineEditorDialog(QtGui.QDialog):
                 lambda checked: self._on_output_field_changed("remote_post", checked)
             )
             main_layout.addRow("Enable Remote Posting", remote_post_check)
-            
+
             layout.addWidget(main_group)
-            
+
             # Header options
             header_group, header_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output.header, "Header Options"
             )
             layout.addWidget(header_group)
             self._connect_widgets_to_machine(header_widgets, "output.header")
-            
+
             # Comment options
             comments_group, comments_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output.comments, "Comment Options"
             )
             layout.addWidget(comments_group)
             self._connect_widgets_to_machine(comments_widgets, "output.comments")
-            
+
             # Formatting options
             formatting_group, formatting_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output.formatting, "Formatting Options"
             )
             layout.addWidget(formatting_group)
             self._connect_widgets_to_machine(formatting_widgets, "output.formatting")
-            
+
             # Precision options
             precision_group, precision_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output.precision, "Precision Options"
             )
             layout.addWidget(precision_group)
             self._connect_widgets_to_machine(precision_widgets, "output.precision")
-            
+
             # Duplicate options
             duplicates_group, duplicates_widgets = DataclassGUIGenerator.create_group_for_dataclass(
                 self.machine.output.duplicates, "Duplicate Output Options"
@@ -1858,6 +1948,7 @@ class MachineEditorDialog(QtGui.QDialog):
             # Special handling for units field - convert string to enum
             if field_name == "units":
                 from Machine.models.machine import OutputUnits
+
                 value = OutputUnits.METRIC if value == "metric" else OutputUnits.IMPERIAL
             setattr(self.machine.output, field_name, value)
 
@@ -1882,26 +1973,29 @@ class MachineEditorDialog(QtGui.QDialog):
         self.post_processor_combo = QtGui.QComboBox()
         self.post_processor_combo.setEditable(False)
         self.postProcessorDefaultTooltip = translate(
-            "CAM_MachineEditor",
-            "Select the postprocessor file for this machine"
+            "CAM_MachineEditor", "Select the postprocessor file for this machine"
         )
         self.post_processor_combo.setToolTip(self.postProcessorDefaultTooltip)
-        
+
         # Populate postprocessor list - only show new-style post processors with property schema support
         Path.Log.info("Machine Editor: Starting postprocessor filtering...")
-        
+
         # Clear any existing items first
         self.post_processor_combo.clear()
-        Path.Log.debug(f"Machine Editor: Cleared combo box (now has {self.post_processor_combo.count()} items)")
-        
+        Path.Log.debug(
+            f"Machine Editor: Cleared combo box (now has {self.post_processor_combo.count()} items)"
+        )
+
         postProcessors = Path.Preferences.allEnabledPostProcessors([""])
         found_generic = False
         total_postprocessors = len(postProcessors)
         new_style_count = 0
-        
-        Path.Log.debug(f"Machine Editor: Filtering {total_postprocessors} postprocessors for new-style architecture")
+
+        Path.Log.debug(
+            f"Machine Editor: Filtering {total_postprocessors} postprocessors for new-style architecture"
+        )
         Path.Log.debug(f"Machine Editor: Postprocessors found: {postProcessors}")
-        
+
         for post in postProcessors:
             Path.Log.debug(f"Machine Editor: Processing postprocessor: {post}")
             if post == "generic_plasma":
@@ -1909,45 +2003,63 @@ class MachineEditorDialog(QtGui.QDialog):
             # Check if this is a new-style post processor by testing for property schema support
             try:
                 processor = PostProcessorFactory.get_post_processor(None, post)
-                Path.Log.debug(f"Machine Editor: Loaded processor for {post}: {processor.__class__.__name__ if processor else 'None'}")
-                
+                Path.Log.debug(
+                    f"Machine Editor: Loaded processor for {post}: {processor.__class__.__name__ if processor else 'None'}"
+                )
+
                 if not processor:
                     Path.Log.debug(f"Machine Editor: Skipped {post} - could not load")
                     continue
-                
+
                 # Skip WrapperPost instances - these are legacy script-based post processors
-                if processor.__class__.__name__ == 'WrapperPost':
+                if processor.__class__.__name__ == "WrapperPost":
                     Path.Log.debug(f"Machine Editor: Skipped WrapperPost (legacy script): {post}")
                     continue
-                
+
                 # Check if it's a PostProcessor subclass (works for both instances and uninitialized objects)
                 from Path.Post.Processor import PostProcessor
+
                 processor_class = processor.__class__
-                
+
                 if not issubclass(processor_class, PostProcessor):
                     Path.Log.debug(f"Machine Editor: Skipped non-PostProcessor subclass: {post}")
                     continue
-                
+
                 # Check for schema methods (these are class methods, so check on the class)
-                has_get_property_schema = hasattr(processor_class, 'get_property_schema') and callable(getattr(processor_class, 'get_property_schema'))
-                has_get_common_property_schema = hasattr(processor_class, 'get_common_property_schema') and callable(getattr(processor_class, 'get_common_property_schema'))
-                
-                Path.Log.debug(f"Machine Editor: {post} - has_get_property_schema: {has_get_property_schema}, has_get_common_property_schema: {has_get_common_property_schema}")
-                
+                has_get_property_schema = hasattr(
+                    processor_class, "get_property_schema"
+                ) and callable(getattr(processor_class, "get_property_schema"))
+                has_get_common_property_schema = hasattr(
+                    processor_class, "get_common_property_schema"
+                ) and callable(getattr(processor_class, "get_common_property_schema"))
+
+                Path.Log.debug(
+                    f"Machine Editor: {post} - has_get_property_schema: {has_get_property_schema}, has_get_common_property_schema: {has_get_common_property_schema}"
+                )
+
                 if has_get_property_schema and has_get_common_property_schema:
-                    
+
                     # Test that the methods actually return meaningful schema data
                     try:
                         common_schema = processor_class.get_common_property_schema()
                         specific_schema = processor_class.get_property_schema()
-                        
-                        Path.Log.debug(f"Machine Editor: {post} - common_schema type: {type(common_schema)}, len: {len(common_schema) if hasattr(common_schema, '__len__') else 'N/A'}")
-                        Path.Log.debug(f"Machine Editor: {post} - specific_schema type: {type(specific_schema)}, len: {len(specific_schema) if hasattr(specific_schema, '__len__') else 'N/A'}")
-                        
+
+                        Path.Log.debug(
+                            f"Machine Editor: {post} - common_schema type: {type(common_schema)}, len: {len(common_schema) if hasattr(common_schema, '__len__') else 'N/A'}"
+                        )
+                        Path.Log.debug(
+                            f"Machine Editor: {post} - specific_schema type: {type(specific_schema)}, len: {len(specific_schema) if hasattr(specific_schema, '__len__') else 'N/A'}"
+                        )
+
                         # New-style post processors should return non-empty lists with proper structure
-                        if (isinstance(common_schema, list) and len(common_schema) > 0 and
-                            isinstance(specific_schema, list) and 
-                            all(isinstance(prop, dict) and 'name' in prop for prop in common_schema)):
+                        if (
+                            isinstance(common_schema, list)
+                            and len(common_schema) > 0
+                            and isinstance(specific_schema, list)
+                            and all(
+                                isinstance(prop, dict) and "name" in prop for prop in common_schema
+                            )
+                        ):
                             # This is a proper new-style post processor
                             self.post_processor_combo.addItem(post)
                             new_style_count += 1
@@ -1955,32 +2067,50 @@ class MachineEditorDialog(QtGui.QDialog):
                             if post == "generic":
                                 found_generic = True
                         else:
-                            Path.Log.debug(f"Machine Editor: Skipped postprocessor with invalid schema: {post}")
-                            Path.Log.debug(f"Machine Editor: {post} - common_schema valid: {isinstance(common_schema, list) and len(common_schema) > 0}")
-                            Path.Log.debug(f"Machine Editor: {post} - specific_schema valid: {isinstance(specific_schema, list)}")
+                            Path.Log.debug(
+                                f"Machine Editor: Skipped postprocessor with invalid schema: {post}"
+                            )
+                            Path.Log.debug(
+                                f"Machine Editor: {post} - common_schema valid: {isinstance(common_schema, list) and len(common_schema) > 0}"
+                            )
+                            Path.Log.debug(
+                                f"Machine Editor: {post} - specific_schema valid: {isinstance(specific_schema, list)}"
+                            )
                             if isinstance(common_schema, list) and len(common_schema) > 0:
-                                prop_names = [prop.get('name', 'NO_NAME') for prop in common_schema[:3]]  # First 3 props
-                                Path.Log.debug(f"Machine Editor: {post} - sample prop names: {prop_names}")
+                                prop_names = [
+                                    prop.get("name", "NO_NAME") for prop in common_schema[:3]
+                                ]  # First 3 props
+                                Path.Log.debug(
+                                    f"Machine Editor: {post} - sample prop names: {prop_names}"
+                                )
                     except Exception as schema_error:
-                        Path.Log.debug(f"Machine Editor: Schema test failed for {post}: {schema_error}")
+                        Path.Log.debug(
+                            f"Machine Editor: Schema test failed for {post}: {schema_error}"
+                        )
                         import traceback
-                        Path.Log.debug(f"Machine Editor: Schema test traceback for {post}: {traceback.format_exc()}")
+
+                        Path.Log.debug(
+                            f"Machine Editor: Schema test traceback for {post}: {traceback.format_exc()}"
+                        )
                 else:
                     Path.Log.debug(f"Machine Editor: Skipped legacy postprocessor: {post}")
             except Exception as e:
                 # Skip post processors that can't be instantiated or don't support new architecture
                 import traceback
+
                 Path.Log.debug(f"Machine Editor: Error loading postprocessor {post}: {e}")
                 Path.Log.debug(f"Machine Editor: Traceback: {traceback.format_exc()}")
                 continue
-        
+
         # Ensure generic post processor is always available as fallback
         if not found_generic:
             self.post_processor_combo.addItem("generic")
             Path.Log.debug("Machine Editor: Added generic postprocessor as fallback")
-        
-        Path.Log.info(f"Machine Editor: Showing {new_style_count} new-style postprocessors (filtered from {total_postprocessors} total)")
-        
+
+        Path.Log.info(
+            f"Machine Editor: Showing {new_style_count} new-style postprocessors (filtered from {total_postprocessors} total)"
+        )
+
         # Connect signals
         self.post_processor_combo.currentIndexChanged.connect(self.updatePostProcessorTooltip)
         self.post_processor_combo.currentIndexChanged.connect(self.updatePostProcessorProperties)
@@ -1989,10 +2119,9 @@ class MachineEditorDialog(QtGui.QDialog):
                 "postprocessor_file_name", self.post_processor_combo.currentText()
             )
         )
-        
+
         selector_layout.addRow(
-            translate("CAM_MachineEditor", "Post Processor:"), 
-            self.post_processor_combo
+            translate("CAM_MachineEditor", "Post Processor:"), self.post_processor_combo
         )
 
         # === Postprocessor Properties ===
@@ -2240,64 +2369,64 @@ class MachineEditorDialog(QtGui.QDialog):
                 item.widget().deleteLater()
             elif item.layout():
                 self.post_properties_layout.removeItem(item)
-        
+
         self.post_properties_widgets.clear()
-        
+
         # Get selected postprocessor
         post_name = str(self.post_processor_combo.currentText())
         if not post_name:
             self.post_properties_group.setVisible(False)
             return
-        
+
         # Try to get the postprocessor class and its property schema
         try:
             processor = self.getPostProcessor(post_name)
             if processor is None:
                 self.post_properties_group.setVisible(False)
                 return
-            
+
             # Get property schema from the processor class
             processor_class = processor.__class__
-            
+
             # Use get_full_property_schema if available (includes common + specific properties)
             # Fall back to get_property_schema for backward compatibility
-            if hasattr(processor_class, 'get_full_property_schema'):
+            if hasattr(processor_class, "get_full_property_schema"):
                 schema = processor_class.get_full_property_schema()
-            elif hasattr(processor_class, 'get_property_schema'):
+            elif hasattr(processor_class, "get_property_schema"):
                 schema = processor_class.get_property_schema()
             else:
                 self.post_properties_group.setVisible(False)
                 return
-            
+
             if not schema:
                 self.post_properties_group.setVisible(False)
                 return
-            
+
             # Create widgets for each property in the schema
             for prop in schema:
-                prop_name = prop.get('name')
-                prop_label = prop.get('label', prop_name)
-                prop_default = prop.get('default')
-                prop_help = prop.get('help', '')
-                prop_type = prop.get('type')
-                
+                prop_name = prop.get("name")
+                prop_label = prop.get("label", prop_name)
+                prop_default = prop.get("default")
+                prop_help = prop.get("help", "")
+                prop_type = prop.get("type")
+
                 # Get current value from machine config or use default
                 current_value = self.machine.postprocessor_properties.get(prop_name, prop_default)
-                
+
                 # Create appropriate widget based on type
                 widget = PostProcessorPropertyManager.create_property_widget(prop, current_value)
                 if widget:
                     widget.setToolTip(prop_help)
                     self.post_properties_layout.addRow(prop_label, widget)
                     self.post_properties_widgets[prop_name] = widget
-                    
+
                     # Connect widget to update machine properties
                     PostProcessorPropertyManager.connect_property_widget(
                         widget, prop_name, prop_type, self.machine
                     )
-            
+
             self.post_properties_group.setVisible(True)
-            
+
         except Exception as e:
             Path.Log.warning(f"Failed to load postprocessor properties for {post_name}: {e}")
             self.post_properties_group.setVisible(False)
@@ -2306,22 +2435,22 @@ class MachineEditorDialog(QtGui.QDialog):
         """Populate kinematics fields from machine object."""
         if not self.machine:
             return
-        
+
         # Base frame origin
         self.origin_x_spin.setValue(self.machine.kinematics.base_frame.origin[0])
         self.origin_y_spin.setValue(self.machine.kinematics.base_frame.origin[1])
         self.origin_z_spin.setValue(self.machine.kinematics.base_frame.origin[2])
-        
+
         # Base frame quaternion
         self.quat_w_spin.setValue(self.machine.kinematics.base_frame.orientation_quaternion[0])
         self.quat_x_spin.setValue(self.machine.kinematics.base_frame.orientation_quaternion[1])
         self.quat_y_spin.setValue(self.machine.kinematics.base_frame.orientation_quaternion[2])
         self.quat_z_spin.setValue(self.machine.kinematics.base_frame.orientation_quaternion[3])
-        
+
         # TCP/DWO support
         self.tcp_supported_check.setChecked(self.machine.kinematics.tcp_supported)
         self.dwo_supported_check.setChecked(self.machine.kinematics.dwo_supported)
-        
+
         # Notes
         self.kinematics_notes_edit.setText(self.machine.kinematics.notes)
 
@@ -2335,7 +2464,7 @@ class MachineEditorDialog(QtGui.QDialog):
         self.manufacturer_edit.setText(machine.manufacturer)
         self.description_edit.setText(machine.description)
         units = machine.configuration_units
-        
+
         # Populate kinematics fields
         self.populate_kinematics_fields()
         self.units_combo.blockSignals(True)
@@ -2361,7 +2490,7 @@ class MachineEditorDialog(QtGui.QDialog):
             else:
                 self.post_processor_combo.setCurrentIndex(0)
             self.post_processor_combo.blockSignals(False)
-            
+
             # Trigger property loading after setting postprocessor
             self.updatePostProcessorTooltip()
             self.updatePostProcessorProperties()
@@ -2369,7 +2498,7 @@ class MachineEditorDialog(QtGui.QDialog):
         # Get units for suffixes in populate
         self.update_toolheads()  # Update toolheads UI
         self._update_toolhead_button_state()
-        
+
         # Update axes to show joint details from loaded machine
         self.update_axes()
 

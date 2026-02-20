@@ -196,11 +196,11 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
-        
+
         # Add attachment extension to enable attaching operations to geometry
         # This allows operations to automatically position/orient based on attached faces
         # Only add to real objects, not OpPrototypes
-        if hasattr(obj, 'hasExtension') and not obj.hasExtension("Part::AttachExtension"):
+        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
             obj.addExtension("Part::AttachExtensionPython")
 
         features = self.opFeatures(obj)
@@ -464,9 +464,9 @@ class ObjectOp(object):
                 "BlockDelete",
                 "Path",
                 QT_TRANSLATE_NOOP(
-                "App::Property", "Enable post processor to add block delete commands"
-            ),
-        )
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
+            )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
             obj.addProperty(
@@ -818,9 +818,9 @@ class ObjectOp(object):
 
         # Update placement from attachment if operation is attached to geometry
         # This must be called before path generation to ensure correct positioning
-        if hasattr(obj, 'positionBySupport'):
+        if hasattr(obj, "positionBySupport"):
             obj.positionBySupport()
-        
+
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
         if obj.Comment:
@@ -839,35 +839,35 @@ class ObjectOp(object):
                     # Calculate rotation commands using the rotation generator
                     try:
                         import Path.Base.Generator.rotation as rotation
-                        
+
                         # Get rotation limits from machine (default to unlimited if not specified)
                         aMin, aMax = -360, 360
                         cMin, cMax = -360, 360
-                        
+
                         if "A" in machine.rotary_axes:
                             aMin = machine.rotary_axes["A"].min_limit
                             aMax = machine.rotary_axes["A"].max_limit
                         if "C" in machine.rotary_axes:
                             cMin = machine.rotary_axes["C"].min_limit
                             cMax = machine.rotary_axes["C"].max_limit
-                        
+
                         # Generate rotation commands to align placement with Z
                         # Extract the Z-axis (normal vector) from the operation placement
                         # The Z-axis of the placement is what needs to be aligned with global Z
                         placement_z_axis = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
-                        
+
                         # Use compound moves if machine supports it
                         rotation_commands = rotation.generate(
-                            placement_z_axis, 
-                            aMin=aMin, 
-                            aMax=aMax, 
-                            cMin=cMin, 
+                            placement_z_axis,
+                            aMin=aMin,
+                            aMax=aMax,
+                            cMin=cMin,
                             cMax=cMax,
                             compound=machine.compound_moves
                         )
-                        
+
                         self.commandlist.extend(rotation_commands)
-                        
+
                     except ValueError as e:
                         # No valid rotation solution found within machine limits
                         Path.Log.error(
@@ -894,42 +894,42 @@ class ObjectOp(object):
         if obj.BlockDelete:
             for command in self.commandlist:
                 annotations = command.Annotations
-                annotations['BlockDelete'] = True
+                annotations["BlockDelete"] = True
                 command.Annotations = annotations
 
         # Add handling of coolant commands.
         # if the coolant mode is not None, add the command to turn it on right before the first non-rapid
         # move in the command list.
         # Add the command to turn it off right after the last non-rapid move in the command list.
-        if hasattr(obj, 'CoolantMode') and obj.CoolantMode != 'None':
+        if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
             # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
             # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
             first_feed_index = None
             last_feed_index = None
-            
+
             for i, cmd in enumerate(self.commandlist):
                 if cmd.Name in Path.Geom.CmdMove:
                     if first_feed_index is None:
                         first_feed_index = i
                     last_feed_index = i
-            
+
             # Insert coolant commands if we found cutting moves
             if first_feed_index is not None:
                 # Insert coolant on command before first cutting move
-                if obj.CoolantMode == 'Flood':
-                    coolant_on = Path.Command('M8', {})
-                elif obj.CoolantMode == 'Mist':
-                    coolant_on = Path.Command('M7', {})
+                if obj.CoolantMode == "Flood":
+                    coolant_on = Path.Command("M8", {})
+                elif obj.CoolantMode == "Mist":
+                    coolant_on = Path.Command("M7", {})
                 else:
                     coolant_on = None
-                
+
                 if coolant_on:
                     self.commandlist.insert(first_feed_index, coolant_on)
                     # Adjust last_feed_index since we inserted a command
                     last_feed_index += 1
-                    
+
                     # Insert coolant off command after last cutting move
-                    coolant_off = Path.Command('M9', {})
+                    coolant_off = Path.Command("M9", {})
                     self.commandlist.insert(last_feed_index + 1, coolant_off)
 
         path = Path.Path(self.commandlist)

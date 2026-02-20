@@ -81,19 +81,20 @@ class ViewProvider(object):
         self.vobj = vobj
         self.Object = vobj.Object
         self.panel = None
-        
+
         # Create workplane visualization (coordinate system)
         from pivy import coin
+
         self.workplane_switch = coin.SoSwitch()
         self.workplane_switch.whichChild = coin.SO_SWITCH_NONE  # Hidden by default
-        
+
         # Create coordinate system visualization
         self.workplane_sep = coin.SoSeparator()
         self.workplane_transform = coin.SoTransform()
-        
+
         # Create three axes (X=red, Y=green, Z=blue)
         axis_length = 50.0  # mm
-        
+
         # X axis (red)
         x_sep = coin.SoSeparator()
         x_mat = coin.SoMaterial()
@@ -105,7 +106,7 @@ class ViewProvider(object):
         x_sep.addChild(x_mat)
         x_sep.addChild(x_coords)
         x_sep.addChild(x_line)
-        
+
         # Y axis (green)
         y_sep = coin.SoSeparator()
         y_mat = coin.SoMaterial()
@@ -117,7 +118,7 @@ class ViewProvider(object):
         y_sep.addChild(y_mat)
         y_sep.addChild(y_coords)
         y_sep.addChild(y_line)
-        
+
         # Z axis (blue)
         z_sep = coin.SoSeparator()
         z_mat = coin.SoMaterial()
@@ -129,55 +130,55 @@ class ViewProvider(object):
         z_sep.addChild(z_mat)
         z_sep.addChild(z_coords)
         z_sep.addChild(z_line)
-        
+
         # Assemble the coordinate system
         self.workplane_sep.addChild(self.workplane_transform)
         self.workplane_sep.addChild(x_sep)
         self.workplane_sep.addChild(y_sep)
         self.workplane_sep.addChild(z_sep)
-        
+
         self.workplane_switch.addChild(self.workplane_sep)
-        
+
         # Add to the scene graph via RootNode (not addDisplayMode)
         vobj.RootNode.addChild(self.workplane_switch)
-        
+
         # Update the visualization
-        self.updateWorkplaneVisualization() 
-        
+        self.updateWorkplaneVisualization()
+
         return
-    
+
     def isSelected(self):
         """Check if this operation is currently selected."""
-        return getattr(self, '_selected', False)
-    
+        return getattr(self, "_selected", False)
+
     def updateWorkplaneVisualization(self):
         """Update the workplane coordinate system visualization based on the operation Placement."""
         # Guard against recursion
-        if getattr(self, '_updating_workplane', False):
+        if getattr(self, "_updating_workplane", False):
             return
-        
-        if not hasattr(self, 'workplane_transform'):
+
+        if not hasattr(self, "workplane_transform"):
             return
-        
-        if not hasattr(self.Object, 'Placement'):
+
+        if not hasattr(self.Object, "Placement"):
             return
-        
+
         try:
             self._updating_workplane = True
-            
+
             placement = self.Object.Placement
             if not placement:
                 return
-            
+
             from pivy import coin
-            
+
             # The visualization should BE the placement, not be relative to it
             # Since this is attached to vobj.RootNode, the operation's Placement
             # already positions the entire scene graph. We just need to show the
             # coordinate system at the origin with identity rotation.
             self.workplane_transform.translation.setValue(0, 0, 0)
             self.workplane_transform.rotation.setValue(0, 0, 0, 1)  # Identity quaternion
-            
+
             # Show/hide based on selection state and rotation
             # Check if rotation angle is non-zero
             rot = placement.Rotation
@@ -212,7 +213,7 @@ class ViewProvider(object):
             # Mark as selected and update workplane visualization
             self._selected = True
             self.updateWorkplaneVisualization()
-            
+
             page = self.getTaskPanelOpPage(vobj.Object)
             page.setTitle(self.OpName)
             page.setIcon(self.OpIcon)
@@ -248,7 +249,7 @@ class ViewProvider(object):
         # Mark as not selected and hide workplane visualization
         self._selected = False
         self.updateWorkplaneVisualization()
-        
+
         if self.panel:
             self.panel.reject(False)
 
@@ -291,14 +292,14 @@ class ViewProvider(object):
     def onChanged(self, vobj, prop):
         """onChanged(vobj, prop) ... callback when a view property changes."""
         pass
-    
+
     def updateData(self, obj, prop):
         """updateData(obj, prop) ... callback whenever a property of the receiver's model is assigned.
         The callback is forwarded to the task panel - in case an editing session is ongoing."""
         # Path.Log.track(obj.Label, prop) # Creates a lot of noise
         if self.panel:
             self.panel.updateData(obj, prop)
-        
+
         # Update workplane visualization when Placement property changes
         if prop == "Placement":
             self.updateWorkplaneVisualization()
@@ -314,7 +315,7 @@ class ViewProvider(object):
         action = QtGui.QAction(translate("PathOp", "Edit"), menu)
         action.triggered.connect(self._editInContextMenuTriggered)
         menu.addAction(action)
-        
+
         # Add "Set Workplane from Face" action
         action = QtGui.QAction(translate("PathOp", "Set Workplane from Face"), menu)
         action.triggered.connect(self._setWorkplaneFromFaceTriggered)
@@ -322,75 +323,73 @@ class ViewProvider(object):
 
     def _editInContextMenuTriggered(self, checked):
         self.setEdit()
-    
+
     def _setWorkplaneFromFaceTriggered(self, checked):
         """Activate face selection mode to set workplane."""
         # Store reference to the operation
         self._workplaneOperation = self.Object
-        
+
         # Create selection observer
         class FaceSelectionObserver:
             def __init__(self, operation, viewprovider):
                 self.operation = operation
                 self.viewprovider = viewprovider
                 self.active = True
-            
+
             def addSelection(self, doc, obj, sub, pnt):
                 """Called when user selects something."""
                 if not self.active:
                     return
-                
+
                 # Check if it's a face
-                if sub and sub.startswith('Face'):
+                if sub and sub.startswith("Face"):
                     try:
                         # Get the face object
                         selected_obj = FreeCAD.ActiveDocument.getObject(obj)
-                        if selected_obj and hasattr(selected_obj, 'Shape'):
+                        if selected_obj and hasattr(selected_obj, "Shape"):
                             # Get the face
                             face = selected_obj.Shape.getElement(sub)
-                            
+
                             # Extract the normal vector
                             # For planar faces, use the surface axis
-                            if hasattr(face.Surface, 'Axis'):
+                            if hasattr(face.Surface, "Axis"):
                                 normal = face.Surface.Axis
                             else:
                                 # For non-planar faces, use center of mass normal
                                 u_mid = (face.ParameterRange[0] + face.ParameterRange[1]) / 2.0
                                 v_mid = (face.ParameterRange[2] + face.ParameterRange[3]) / 2.0
                                 normal = face.normalAt(u_mid, v_mid)
-                            
+
                             # Normalize the vector
                             normal.normalize()
-                            
+
                             # Use attachment engine to set operation placement
                             # AttachmentSupport: tuple of (object, subname)
                             # MapMode: "FlatFace" aligns Z-axis with face normal
                             self.operation.AttachmentSupport = (obj, (subname,))
                             self.operation.MapMode = "FlatFace"
                             FreeCAD.ActiveDocument.recompute()
-                            
+
                             FreeCAD.Console.PrintMessage(
                                 f"Attached {self.operation.Label} to {obj.Label}.{subname}\n"
                             )
-                            
+
                             # Deactivate and remove observer
                             self.active = False
                             FreeCADGui.Selection.removeObserver(self)
-                            
+
                     except Exception as e:
                         FreeCAD.Console.PrintError(f"Error setting workplane: {e}\n")
                         self.active = False
                         FreeCADGui.Selection.removeObserver(self)
-        
+
         # Create and add the observer
         observer = FaceSelectionObserver(self._workplaneOperation, self)
         FreeCADGui.Selection.addObserver(observer)
-        
+
         # Clear current selection and provide user feedback
         FreeCADGui.Selection.clearSelection()
-        FreeCAD.Console.PrintMessage(
-            f"Click on a face to set workplane for {self.Object.Label}\n"
-        )
+        FreeCAD.Console.PrintMessage(f"Click on a face to set workplane for {self.Object.Label}\n")
 
 
 class TaskPanelPage(object):
