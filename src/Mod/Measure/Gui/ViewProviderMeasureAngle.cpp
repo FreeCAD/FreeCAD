@@ -460,7 +460,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     // ========================== Normals ==========================
 
-    // normal for faces
+    // arc normals standerd
     auto pNormalsSwitch = new SoSwitch();
     pNormalsSwitch->whichChild.connectFrom(&visualMode);
 
@@ -517,6 +517,7 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     pNormalsSwitch->addChild(pNormalsStandardSep);
 
 
+    // arc normal for imgOrigin
     auto pNormalsImgSep = new SoSeparator();
 
     auto pNormalsPointingSep = new SoSeparator();
