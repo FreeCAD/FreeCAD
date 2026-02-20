@@ -214,14 +214,11 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
         gp_Vec adjustedVector2;
         measurement->getDirections(adjustedVector1, adjustedVector2);
 
-        bool isFaceSelection = measurement->isFaceFace();
-        bool isEdgeSelection = measurement->isEdgeEdge();
+        auto measurmentCase = measurement->measurementCase();
 
-        if (isFaceSelection || isEdgeSelection) {
-            // will get imaginary or real origin dont matter here
-            originFound = measurement->getOrigin(dimensionOriginPoint);
-        }
+        originFound = measurement->getOrigin(dimensionOriginPoint);
 
+        // need testing before removethis
         if (!originFound) {
             Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
             Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
@@ -273,10 +270,10 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
 
         // need to review this but works
         if (originFound) {
-            if (isEdgeSelection) {
+            if (measurmentCase == MeasureAngle::EdgeEdge) {
                 xAxis = adjustedVector1.Normalized();
             }
-            if (isFaceSelection) {
+            if (measurmentCase == MeasureAngle::FaceFace) {
                 zAxis = adjustedVector1.Crossed(adjustedVector2);
             }
             else {
@@ -713,6 +710,15 @@ void ViewProviderMeasureAngle::onLabelMoved()
         sectorArcRotation.setValue(M_PI);
         isArcFlipped.setValue(true);
     }
+}
+
+void ViewProviderMeasureAngle::onLabelMoveEnd()
+{
+    if (!Gui::Control().activeDialog()
+        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
+        return;
+    }
+    IsFlipped.setValue(isArcFlipped.getValue());
 }
 
 void ViewProviderMeasureAngle::onChanged(const App::Property* prop)

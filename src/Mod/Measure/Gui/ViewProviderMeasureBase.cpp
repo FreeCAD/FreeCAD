@@ -199,6 +199,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     auto dragger = pDragger;
 
     dragger->addValueChangedCallback(draggerChangedCallback, this);
+    dragger->addFinishCallback(draggerFinishedCallback, this);
 
 
     // Use the label node as the transform handle
@@ -233,6 +234,8 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
+    pDragger->removeValueChangedCallback(draggerChangedCallback, this);
+    pDragger->removeFinishCallback(draggerFinishedCallback, this);
     _mVisibilityChangedConnection.disconnect();
     pGlobalSeparator->unref();
     pLabel->unref();
@@ -310,6 +313,14 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
     SbVec3f pos = me->pDragger->translation.getValue();
     me->LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
     me->onLabelMoved();
+}
+
+void ViewProviderMeasureBase::draggerFinishedCallback(void* data, SoDragger*)
+{
+    auto me = static_cast<ViewProviderMeasureBase*>(data);
+    if (me) {
+        me->onLabelMoveEnd();
+    }
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)

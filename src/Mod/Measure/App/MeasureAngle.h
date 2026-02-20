@@ -49,6 +49,13 @@ class MeasureExport MeasureAngle: public Measure::MeasureBaseExtendable<Part::Me
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 
 public:
+    enum MeasurementCase
+    {
+        FaceFace,
+        EdgeEdge,
+        FaceEdge
+    };
+
     /// Constructor
     MeasureAngle();
     ~MeasureAngle() override;
@@ -92,20 +99,25 @@ public:
     gp_Vec location1();
     gp_Vec location2();
 
-    bool isFaceFace();
-    bool isEdgeEdge();
+    MeasurementCase measurementCase() const
+    {
+        return mCase;
+    };
     bool isImgOrigin();
-    bool getOrigin(gp_Pnt& outOrigin);  // get origin of the angle
-    bool getDirections(gp_Vec& vec1, gp_Vec& vec2);
+    bool getOrigin(gp_Pnt& outOrigin);               // get origin of the angle
+    bool getDirections(gp_Vec& vec1, gp_Vec& vec2);  // this is not the normals(its is adjusted for
+                                                     // arc visualization)
 
 private:
     gp_Vec direction1;
     gp_Vec direction2;
     gp_Pnt outOrigin;
+    MeasurementCase mCase;
     // if no common vertex/edge found, use imaginary origin by extending
     bool _isImgOrigin;
 
-    bool setDirections();
+    bool setOrigin();
+    bool setDirections();  // not the actual normals adjusted for arc visualization
     bool hasCommonEdge();
     bool hasCommonVertex();
     bool isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2);

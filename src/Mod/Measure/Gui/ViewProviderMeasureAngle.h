@@ -81,6 +81,7 @@ private:
     SbMatrix getMatrix();
 
     void onLabelMoved() override;
+    void onLabelMoveEnd() override;
     void onChanged(const App::Property* prop) override;
 };
 
