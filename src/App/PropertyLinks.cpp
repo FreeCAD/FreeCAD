@@ -424,6 +424,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                                                bool reverse,
                                                bool notify)
 {
+    auto& self = propSetterSelf<App::PropertyLinkBase>(*this);
+
     if (!obj || !obj->getNameInDocument()) {
         return false;
     }
@@ -455,8 +457,8 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
         return false;
     }
 
-    if (_ElementRefs.insert(geo).second) {
-        _ElementRefMap[geo].insert(this);
+    if (self._ElementRefs.insert(geo).second) {
+        _ElementRefMap[geo].insert(&self);
     }
 
     if (!reverse) {
@@ -495,7 +497,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
                 const auto& newName =
                     elementName.newName.size() ? elementName.newName : elementName.oldName;
                 if (oldName != newName) {
-                    FC_LOG(propertyName(this)
+                    FC_LOG(propertyName(&self)
                            << " auto change element reference " << ret->getFullName() << " "
                            << oldName << " -> " << newName);
                 }
@@ -504,7 +506,7 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
     }
 
     if (notify) {
-        aboutToSetValue();
+        self.aboutToSetValue();
     }
 
     auto updateSub = [&](const std::string& newSub) {
@@ -515,13 +517,13 @@ bool PropertyLinkBase::_updateElementReference(DocumentObject* feature,
     };
 
     if (missing) {
-        FC_WARN(propertyName(this)
+        FC_WARN(propertyName(&self)
                 << " missing element reference " << ret->getFullName() << " "
                 << (elementName.newName.size() ? elementName.newName : elementName.oldName));
         shadow.oldName.swap(elementName.oldName);
     }
     else {
-        FC_TRACE(propertyName(this) << " element reference shadow update " << ret->getFullName()
+        FC_TRACE(propertyName(&self) << " element reference shadow update " << ret->getFullName()
                                     << " " << shadow.newName << " -> " << elementName.newName);
         shadow.swap(elementName);
         if (shadow.newName.size() && Data::hasMappedElementName(sub.c_str())) {
@@ -5860,38 +5862,40 @@ void PropertyXLinkContainer::Save(Base::Writer& writer) const
 
 void PropertyXLinkContainer::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyXLinkContainer>(*this);
+
     reader.readElement("XLinks");
     auto count = reader.getAttribute<unsigned long>("count");
-    _XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
+    self._XLinkRestores = std::make_unique<std::vector<RestoreInfo>>(count);
 
     if (reader.hasAttribute("hidden")) {
         std::istringstream iss(reader.getAttribute<const char*>("hidden"));
         int index;
         while (iss >> index) {
             if (index >= 0 && index < static_cast<int>(count)) {
-                _XLinkRestores->at(index).hidden = true;
+                self._XLinkRestores->at(index).hidden = true;
             }
         }
     }
 
     if (reader.hasAttribute("docs")) {
         auto docCount = reader.getAttribute<unsigned long>("docs");
-        _DocMap.clear();
+        self._DocMap.clear();
         for (unsigned i = 0; i < docCount; ++i) {
             reader.readElement("DocMap");
             auto index = reader.getAttribute<unsigned long>("index");
             if (index >= count) {
-                FC_ERR(propertyName(this) << " invalid document map entry");
+                FC_ERR(propertyName(&self) << " invalid document map entry");
                 continue;
             }
-            auto& info = _XLinkRestores->at(index);
+            auto& info = self._XLinkRestores->at(index);
             info.docName = reader.getAttribute<const char*>("name");
             info.docLabel = reader.getAttribute<const char*>("label");
         }
     }
 
-    for (auto& info : *_XLinkRestores) {
-        info.xlink.reset(createXLink());
+    for (auto& info : *self._XLinkRestores) {
+        info.xlink.reset(self.createXLink());
         if (info.hidden) {
             info.xlink->setScope(LinkScope::Hidden);
         }
