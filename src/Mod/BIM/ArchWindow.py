@@ -568,10 +568,6 @@ class _Window(ArchComponent.Component):
                                 travel.normalize()
                                 transdata = [travel.multiply(dist)]
 
-                            # 2D Symbol: Line from current position indicating movement
-                            # ISO 7519: arrow or line. Use line for simplicity.
-                            ssymbols.append(Part.LineSegment(p_start, p_end).toShape())
-
                 exv = FreeCAD.Vector()
                 zov = FreeCAD.Vector()
                 V = 0
