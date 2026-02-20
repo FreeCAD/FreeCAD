@@ -25,6 +25,9 @@
 #include "Mod/MassProperties/App/MassPropertiesResult.h"
 #include "Mod/MassProperties/App/MassPropertiesObject.h"
 
+#include <QtCore/QScopedValueRollback>
+#include <QTimer>
+
 #include <QtWidgets>
 #include <unordered_set>
 #include <sstream>
@@ -38,6 +41,7 @@
 #include <Gui/ViewProviderDocumentObject.h>
 
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Placement.h>
 #include <Base/Precision.h>
@@ -78,6 +82,11 @@ TaskMassProperties::TaskMassProperties()
     : Gui::SelectionObserver(true)
     , selectingCustomCoordSystem(false)
 {
+    currentInfo = MassPropertiesData {};
+    currentMode = "Center of Gravity";
+    currentDatum = nullptr;
+    hasCurrentDatumPlacement = false;
+
     this->setButtonPosition(TaskMassProperties::North);
 
     auto physicalProperties = new Gui::TaskView::TaskBox(
@@ -101,7 +110,6 @@ TaskMassProperties::TaskMassProperties()
     physicalLayout->addWidget(objectsLabel);
 
     listWidget = new QListWidget();
-    
     listWidget->setMaximumHeight(50);
     physicalLayout->addWidget(listWidget);
 
@@ -126,10 +134,6 @@ TaskMassProperties::TaskMassProperties()
     coordinateSystemGroup->addButton(centerOfGravityRadioButton);
     coordinateSystemGroup->addButton(customRadioButton);
 
-    QFormLayout* customForm = new QFormLayout();
-    customForm->setContentsMargins(0, 0, 0, 0);
-    customForm->setSpacing(6);
-
     customEdit = new QLineEdit();
     customEdit->setReadOnly(true);
     QPushButton* selectButton = new QPushButton(tr("Select..."));
@@ -138,13 +142,13 @@ TaskMassProperties::TaskMassProperties()
 
     QHBoxLayout* customControls = new QHBoxLayout();
     customControls->setContentsMargins(0, 0, 0, 0);
-    customControls->addWidget(customEdit);
+    customControls->setSpacing(6);
+    customControls->addWidget(customRadioButton);
+    customControls->addWidget(customEdit, 1);
     customControls->addWidget(selectButton);
 
     physicalLayout->addWidget(centerOfGravityRadioButton);
-
-    customForm->addRow(customRadioButton, customControls);
-    physicalLayout->addLayout(customForm);
+    physicalLayout->addLayout(customControls);
 
     unitsComboBox = new QComboBox(physicalProperties);
     unitsComboBox->addItem(QString::fromUtf8("mm, kg, kg·mm²"));
@@ -293,7 +297,7 @@ TaskMassProperties::TaskMassProperties()
 
     auto inertiaProperties = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("PropertiesIcon"),
-        tr("Inertia Properties"),
+        tr("Inertia"),
         true,
         nullptr
     );
@@ -406,12 +410,6 @@ TaskMassProperties::TaskMassProperties()
 
     Content.emplace_back(inertiaProperties);
 
-    QTimer::singleShot(0, this, &TaskMassProperties::invoke);
-
-    previousSelectionStyle = Gui::Selection().getSelectionStyle();
-    Gui::Selection().setSelectionStyle(Gui::SelectionSingleton::SelectionStyle::GreedySelection);
-    selectionStyleChanged = true;
-
     updateInertiaVisibility();
     update(Gui::SelectionChanges());
 }
@@ -445,6 +443,7 @@ void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
             Gui::Selection().clearSelection();
             removeTemporaryObjects();
             clearUiFields();
+            listWidget->clear();
         });
     }
 }
@@ -460,8 +459,6 @@ bool TaskMassProperties::accept()
 
 bool TaskMassProperties::reject()
 {
-    Gui::Selection().setSelectionStyle(previousSelectionStyle);
-    selectionStyleChanged = false;
     removeTemporaryObjects();
     Gui::Control().closeDialog();
     return true;
@@ -473,6 +470,14 @@ void TaskMassProperties::quit()
         Gui::Selection().clearSelection();
         this->removeTemporaryObjects();
         this->clearUiFields();
+        listWidget->clear();
+
+        selectingCustomCoordSystem = false;
+        currentDatum = nullptr;
+        hasCurrentDatumPlacement = false;
+        customEdit->clear();
+
+        currentInfo = MassPropertiesData {};
     }
     else {
         this->reject();
@@ -485,28 +490,30 @@ void TaskMassProperties::removeTemporaryObjects()
     if (!doc) {
         return;
     }
+    doc->openTransaction("Remove temporary datum objects");
 
     bool hasObjectsToRemove = false;
-    if (doc->getObject("Center_of_Gravity_Temp")
-        || doc->getObject("Center_of_Volume_Temp")
-        || doc->getObject("Principal_Axes_LCS_Temp")) {
+    if (doc->getObject("Center_of_Gravity")
+        || doc->getObject("Center_of_Volume")
+        || doc->getObject("Principal_Axes_LCS")) {
         hasObjectsToRemove = true;
     }
 
     if (!hasObjectsToRemove) {
+        doc->abortTransaction();
         return;
     }
 
-    doc->openTransaction("Remove temporary datum objects");
+    
 
-    if (doc->getObject("Center_of_Gravity_Temp")) {
-        doc->removeObject("Center_of_Gravity_Temp");
+    if (doc->getObject("Center_of_Gravity")) {
+        doc->removeObject("Center_of_Gravity");
     }
-    if (doc->getObject("Center_of_Volume_Temp")) {
-        doc->removeObject("Center_of_Volume_Temp");
+    if (doc->getObject("Center_of_Volume")) {
+        doc->removeObject("Center_of_Volume");
     }
-    if (doc->getObject("Principal_Axes_LCS_Temp")) {
-        doc->removeObject("Principal_Axes_LCS_Temp");
+    if (doc->getObject("Principal_Axes_LCS")) {
+        doc->removeObject("Principal_Axes_LCS");
     }
 
     doc->commitTransaction();
@@ -515,9 +522,6 @@ void TaskMassProperties::removeTemporaryObjects()
 
 void TaskMassProperties::clearUiFields()
 {
-    listWidget->clear();
-
-    customEdit->clear();
     volumeEdit->clear();
     massEdit->clear();
     densityEdit->clear();
@@ -547,6 +551,8 @@ void TaskMassProperties::clearUiFields()
 
 void TaskMassProperties::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    if (isUpdating) return;
+
     if (msg.Type != Gui::SelectionChanges::AddSelection
         && msg.Type != Gui::SelectionChanges::RmvSelection
         && msg.Type != Gui::SelectionChanges::SetSelection
@@ -563,6 +569,9 @@ void TaskMassProperties::update(const Gui::SelectionChanges& msg)
     try {
         tryupdate();
     }
+    catch (const Base::Exception& e) {
+        Base::Console().error("Mass Properties update failed: %s\n", e.what());
+    }
     catch (const std::exception& e) {
         Base::Console().error("Mass Properties update failed: %s", e.what());
     }
@@ -572,9 +581,13 @@ void TaskMassProperties::update(const Gui::SelectionChanges& msg)
 void TaskMassProperties::tryupdate()
 {
     if (isUpdating) return;
-    
+    QScopedValueRollback<bool> updatingGuard(isUpdating, true);
+
     auto guiSelection = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
     if (guiSelection.empty()) {
+        if (currentMode == "Custom") {
+            clearUiFields();
+        }
         return;
     }
 
@@ -731,7 +744,7 @@ void TaskMassProperties::tryupdate()
                                  const Base::Placement& placement,
                                  std::unordered_set<std::string>& measuredKeys) {
         if (!obj) {
-            return;
+            return false;
         }
 
         App::DocumentObject* owner = nullptr;
@@ -743,14 +756,12 @@ void TaskMassProperties::tryupdate()
 
         TopoDS_Shape shape = Part::Feature::getShape(obj, options, elementName, nullptr, &owner);
         if (shape.IsNull()) {
-            return;
+            return false;
         }
         App::DocumentObject* materialObj = owner ? owner : obj;
 
         std::ostringstream keyBuilder;
-        keyBuilder << std::fixed << std::setprecision(9) 
-                   << materialObj->getDocument()->getName() << '|'
-                   << materialObj->getNameInDocument() << '|';
+        keyBuilder << std::fixed << std::setprecision(9) << materialObj->getDocument()->getName() << '|' << materialObj->getNameInDocument() << '|';
 
         Base::Matrix4D matrix = placement.toMatrix();
 
@@ -761,11 +772,12 @@ void TaskMassProperties::tryupdate()
         }
         std::string measuredKey = keyBuilder.str();
         if (!measuredKeys.insert(measuredKey).second) {
-            return;
+            return true;
         }
 
         objectsToMeasure.push_back({materialObj, shape, placement});
         listWidget->addItem(QString::fromStdString(materialObj->getFullLabel()));
+        return true;
     };
 
     std::unordered_set<std::string> measuredKeys;
@@ -777,11 +789,6 @@ void TaskMassProperties::tryupdate()
         }
 
         App::DocumentObject* resolved;
-
-        if (!obj) {
-            resolved = obj;
-        }
-
         if (obj->isLink()) {
             resolved = obj->getLinkedObject(true);
         }
@@ -792,7 +799,7 @@ void TaskMassProperties::tryupdate()
         if (!resolved) {
             return;
         }
-        if (!visited.insert(resolved).second) {
+        if (!visited.insert(obj).second) {
             return;
         }
 
@@ -809,17 +816,21 @@ void TaskMassProperties::tryupdate()
             return;
         }
 
+        if (addMeasuredObject(resolved, nullptr, currentPlc, measuredKeys)) {
+            return;
+        }
+
         if (auto* group = resolved->getExtensionByType<App::GroupExtension>(true)) {
             for (auto* child : group->getObjects()) {
                 self(self, child, currentPlc);
             }
+            return;
         }
     };
 
     hasCurrentDatumPlacement = false;
 
     if (selectingCustomCoordSystem) {
-        customEdit->clear();
 
         for (const auto& selObj : guiSelection) {
             App::DocumentObject* candidate = selObj.pObject;
@@ -851,7 +862,15 @@ void TaskMassProperties::tryupdate()
         if (selObj.pObject) {
             if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject")
                 && !(selObj.SubName && selObj.SubName[0])) {
-                collectBodies(collectBodies, selObj.pObject, Base::Placement());
+                Base::Placement rootPlc = accumulatePlacement(selObj.pObject, nullptr);
+                if (auto* group = selObj.pObject->getExtensionByType<App::GroupExtension>(true)) {
+                    for (auto* child : group->getObjects()) {
+                        collectBodies(collectBodies, child, rootPlc);
+                    }
+                }
+                else {
+                    collectBodies(collectBodies, selObj.pObject, Base::Placement());
+                }
                 continue;
             }
 
@@ -914,6 +933,11 @@ void TaskMassProperties::tryupdate()
     }
     else {
         customEdit->clear();
+    }
+
+    if (currentMode == "Custom" && !referenceDatum) {
+        this->clearUiFields();
+        return;
     }
 
     updateInertiaVisibility();
@@ -1020,9 +1044,13 @@ void TaskMassProperties::tryupdate()
     setText(inertiaJzText, info.inertiaJz, Base::Unit::Inertia);
     setText(axisInertiaText, info.axisInertia, Base::Unit::Inertia);
 
-    createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity_Temp");
-    createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume_Temp");
-    createLCS("Principal_Axes_LCS_Temp");
+    const auto infoSnapshot = currentInfo;
+    QTimer::singleShot(0, this, [this, infoSnapshot]() {
+        currentInfo = infoSnapshot;
+        createDatum(currentInfo.cogX, currentInfo.cogY, currentInfo.cogZ, "Center_of_Gravity");
+        createDatum(currentInfo.covX, currentInfo.covY, currentInfo.covZ, "Center_of_Volume");
+        createLCS("Principal_Axes_LCS");
+    });
 }
 
 void TaskMassProperties::updateInertiaVisibility()
@@ -1042,6 +1070,8 @@ void TaskMassProperties::updateInertiaVisibility()
 
 void TaskMassProperties::createDatum(double x, double y, double z, const std::string& name, bool removeExisting)
 {
+    if (isUpdating && removeExisting) return;
+
     try {
         App::Document* doc = App::GetApplication().getActiveDocument();
         doc->openTransaction("Create Datum Point");
@@ -1065,6 +1095,9 @@ void TaskMassProperties::createDatum(double x, double y, double z, const std::st
         doc->commitTransaction();
         doc->recompute();
     } 
+    catch (const Base::Exception& e) {
+        Base::Console().error("Datum Creation failed: %s\n", e.what());
+    }
     catch (const std::exception& e) {
         Base::Console().error("Datum Creation failed: %s", e.what());
     }
@@ -1072,6 +1105,8 @@ void TaskMassProperties::createDatum(double x, double y, double z, const std::st
 
 void TaskMassProperties::createLCS(std::string name, bool removeExisting)
 {
+    if (isUpdating && removeExisting) return;
+
     try {
         App::Document* doc = App::GetApplication().getActiveDocument();
         doc->openTransaction("Create LCS");
@@ -1118,6 +1153,9 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
         doc->commitTransaction();
         doc->recompute();
     } 
+    catch (const Base::Exception& e) {
+        Base::Console().error("LCS Creation failed: %s\n", e.what());
+    }
     catch (const std::exception& e) {
         Base::Console().error("LCS Creation failed: %s", e.what());
     }
@@ -1146,6 +1184,12 @@ void TaskMassProperties::onSelectCustomCoordinateSystem()
 void TaskMassProperties::onCoordinateSystemChanged(std::string coordSystem)
 {
     currentMode = coordSystem;
+    if (currentMode != "Custom") {
+        selectingCustomCoordSystem = false;
+        currentDatum = nullptr;
+        hasCurrentDatumPlacement = false;
+        customEdit->clear();
+    }
     updateInertiaVisibility();
     tryupdate();
 }
