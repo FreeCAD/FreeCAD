@@ -2985,6 +2985,7 @@ void Adaptive2d::ProcessPolyNode(
     }
     fout << "\n";
 
+    DoublePoint lastExpandToolDir = toolDir;
 
     const auto iterateNextStep = [&](const IntPoint& toolPos,
                                      const DoublePoint& toolDir,
@@ -3043,6 +3044,7 @@ void Adaptive2d::ProcessPolyNode(
         int iteration;
         double prev_error = __DBL_MAX__;
         bool pointNotInterp;
+        bool foundArea = false;
         IntPoint newToolPos;
         DoublePoint newToolDir;
         for (iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
@@ -3073,6 +3075,54 @@ void Adaptive2d::ProcessPolyNode(
                     fout << "case maximum ";
                     pointNotInterp = true;
                 }
+            }
+            else if (iteration == 3 && !foundArea) {
+                fout << "case nearby ";
+                // Expand cleared area
+                cleared.ExpandCleared(toClearPath);
+                toClearPath.clear();
+                lastExpandToolDir = toolDir;
+
+                // Find nearby uncleared area in the forward direction
+                Paths clearedArea = cleared.GetCleared();
+
+                // 1.5 > sqrt(2) for the constructed triangle to contain possible steps
+                double dist = (stepScaled + toolRadiusScaled) * 1.5;
+                Path triangle = {toolPos};
+                DoublePoint leftAngle = rotate(toolDir, -std::numbers::pi / 4);
+                DoublePoint rightAngle = rotate(toolDir, std::numbers::pi / 4);
+                triangle.push_back({toolPos.X + rightAngle.X * dist, toolPos.Y + rightAngle.Y * dist});
+                triangle.push_back({toolPos.X + leftAngle.X * dist, toolPos.Y + leftAngle.Y * dist});
+
+                clip.Clear();
+                clip.AddPath(triangle, PolyType::ptSubject, true);
+                clip.AddPaths(clearedArea, PolyType::ptClip, true);
+                clip.Execute(ClipType::ctDifference, clearedArea);
+
+                if (clearedArea.size() == 0) {
+                    continue;
+                }
+
+                // Find the closest point on the boundary, and try stepping towards it
+                DistancePointToPathsSqrd(
+                    clearedArea,
+                    toolPos,
+                    clp,
+                    clpPathIndex,
+                    clpSegmentIndex,
+                    clpParameter
+                );
+                double dy = clp.Y - toolPos.Y;
+                double dx = clp.X - toolPos.X;
+                double len = sqrt(dx * dx + dy * dy);
+                angle = asin((dy * toolDir.X - dx * toolDir.Y) / len);
+            }
+            else if (!foundArea) {
+                // if the previous iteration didn't cut area then nothing will; exit early
+                angle = 0;
+                area = 0;
+                areaPD = 0;
+                break;
             }
             else {
                 angle = interp.interpolateAngle();
@@ -3157,6 +3207,9 @@ void Adaptive2d::ProcessPolyNode(
             double conventionalArea = std::get<1>(caRet);
             double fractionConventional = (area == 0) ? 0 : conventionalArea / area;
             isConventional = fractionConventional >= conventionalCutoff;
+            if (area > 0) {
+                foundArea = true;
+            }
 
             areaPD = area / double(stepScaled);  // area per distance
             fout << "addPoint " << areaPD << " " << angle << " ";
@@ -3182,65 +3235,67 @@ void Adaptive2d::ProcessPolyNode(
 
         bool recalcArea = false;
 
-        //**********************************************
-        // CHECK AND RECORD NEW TOOL POS
-        //**********************************************
-        long rotateStep = 0;
-        double rotateIncrement;
-        {
-            double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
-            double toolAngle = atan2(newToolDir.Y, newToolDir.X);
-            double delta = boundaryAngle - toolAngle;
-            if (delta > std::numbers::pi) {
-                delta -= 2 * std::numbers::pi;
+        if (area > 0) {
+            //**********************************************
+            // CHECK AND RECORD NEW TOOL POS
+            //**********************************************
+            long rotateStep = 0;
+            double rotateIncrement;
+            {
+                double boundaryAngle = atan2(boundaryDir.Y, boundaryDir.X);
+                double toolAngle = atan2(newToolDir.Y, newToolDir.X);
+                double delta = boundaryAngle - toolAngle;
+                if (delta > std::numbers::pi) {
+                    delta -= 2 * std::numbers::pi;
+                }
+                if (delta < -std::numbers::pi) {
+                    delta += 2 * std::numbers::pi;
+                }
+                rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
             }
-            if (delta < -std::numbers::pi) {
-                delta += 2 * std::numbers::pi;
+            while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
+                rotateStep++;
+                // if new tool pos. outside boundary rotate until back in
+                recalcArea = true;
+                newToolDir = rotate(newToolDir, rotateIncrement);
+                newToolPos = IntPoint(
+                    long(toolPos.X + newToolDir.X * stepScaled),
+                    long(toolPos.Y + newToolDir.Y * stepScaled)
+                );
+                fout << "\tMoving tool back within boundary..."
+                     << "(" << newToolPos.X << ", " << newToolPos.Y << ")" << "\n";
             }
-            rotateIncrement = (delta > 0 ? 1 : -1) * std::numbers::pi / 90;
-        }
-        while (!IsPointWithinCutRegion(toolBoundPaths, newToolPos) && rotateStep < 180) {
-            rotateStep++;
-            // if new tool pos. outside boundary rotate until back in
-            recalcArea = true;
-            newToolDir = rotate(newToolDir, rotateIncrement);
-            newToolPos = IntPoint(
-                long(toolPos.X + newToolDir.X * stepScaled),
-                long(toolPos.Y + newToolDir.Y * stepScaled)
-            );
-            fout << "\tMoving tool back within boundary..."
-                 << "(" << newToolPos.X << ", " << newToolPos.Y << ")" << "\n";
-        }
-        if (rotateStep >= 180) {
+            if (rotateStep >= 180) {
 #ifdef DEV_MODE
-            if (warnRotate) {
-                cerr << "Warning: unexpected number of rotate iterations." << endl;
-                fout << "Warning: unexpected number of rotate iterations." << endl;
-            }
+                if (warnRotate) {
+                    cerr << "Warning: unexpected number of rotate iterations." << endl;
+                    fout << "Warning: unexpected number of rotate iterations." << endl;
+                }
 #endif
-            out.failed = true;
-        }
+                out.failed = true;
+            }
 
-        if (recalcArea) {
-            const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
-            area = std::get<0>(caRet);
-            areaPD = area / double(stepScaled);  // area per distance
-            double error = areaPD - targetAreaPD;
-            errorFraction = abs(error / optimalCutAreaPD);
+            if (recalcArea) {
+                const auto caRet = CalcCutArea(clip, toolPos, newToolPos, cleared);
+                area = std::get<0>(caRet);
+                areaPD = area / double(stepScaled);  // area per distance
+                double error = areaPD - targetAreaPD;
+                errorFraction = abs(error / optimalCutAreaPD);
 
-            double conventionalArea = std::get<1>(caRet);
-            double fractionConventional = area == 0 ? 0 : conventionalArea / area;
-            isConventional = fractionConventional >= conventionalCutoff;
+                double conventionalArea = std::get<1>(caRet);
+                double fractionConventional = area == 0 ? 0 : conventionalArea / area;
+                isConventional = fractionConventional >= conventionalCutoff;
 
-            fout << "\tRecalc area: " << area << "areaPD " << areaPD << " error " << error
-                 << " conventional? " << isConventional << "\n";
-        }
+                fout << "\tRecalc area: " << area << "areaPD " << areaPD << " error " << error
+                     << " conventional? " << isConventional << "\n";
+            }
 
-        // safety condition
-        if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
-            over_cut_count++;
-            fout << "\tCut area too big!!!" << "\n";
-            out.failed = true;
+            // safety condition
+            if (area > stepScaled * optimalCutAreaPD && areaPD > 2 * optimalCutAreaPD) {
+                over_cut_count++;
+                fout << "\tCut area too big!!!" << "\n";
+                out.failed = true;
+            }
         }
 
         fout << "itResult: area=" << area << " isConventional=" << isConventional
@@ -3581,7 +3636,6 @@ void Adaptive2d::ProcessPolyNode(
     output.ReturnMotionType = 0;
     output.HelixCenterPoint.first = double(entryPoint.X) / scaleFactor;
     output.HelixCenterPoint.second = double(entryPoint.Y) / scaleFactor;
-    DoublePoint lastExpandToolDir = toolDir;
 
     cout << "Entry point: (" << entryPoint.X << "," << entryPoint.Y << ") Start point: ("
          << toolPos.X << "," << toolPos.Y << ")" << endl;
@@ -3661,6 +3715,7 @@ void Adaptive2d::ProcessPolyNode(
                     < cos(std::numbers::pi / 4)) {
                     cleared.ExpandCleared(toClearPath);
                     toClearPath.clear();
+                    lastExpandToolDir = toolDir;
                 }
 
                 if (toClearPath.empty()) {
