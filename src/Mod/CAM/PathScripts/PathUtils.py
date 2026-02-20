@@ -93,57 +93,70 @@ def segments(poly):
 
 
 def loopdetect(obj, edge1, edge2):
-    """Returns a loop of edges that includes the two edges.
+    """Returns a loop of edges from wire that includes the two edges.
     Useful for detecting boundaries of negative space features ie 'holes'
-    If a unique loop is not found, returns None
+    If a unique wire is not found, returns None
     """
 
     Path.Log.track()
-    candidates = []
-    for wire in obj.Shape.Wires:
-        for e in wire.Edges:
-            if e.hashCode() == edge1.hashCode():
-                candidates.append((wire.hashCode(), wire))
-            if e.hashCode() == edge2.hashCode():
-                candidates.append((wire.hashCode(), wire))
-    loop = set([x for x in candidates if candidates.count(x) > 1])  # return the duplicate item
-    if len(loop) != 1:
+    hashList = (edge1.hashCode(), edge2.hashCode())
+    candidates = [w for w in obj.Shape.Wires for e in w.Edges if e.hashCode() in hashList]
+    loop = set([w for w in candidates if candidates.count(w) > 1])  # return the duplicate item
+    if len(loop) == 1:
+        return loop.pop().Edges
+    else:
+        # unique wire not found
         return None
-    loopwire = next(x for x in loop)[1]
-    return loopwire.Edges
 
 
-def wiredetect(obj, edgeName):
-    """Returns all edges from wire which includes the edge."""
-    edge = obj.Shape.getElement(edgeName)
+def wiredetect(obj, edge):
+    """Returns all edges from first wire which includes the edge."""
+
+    ehash = edge.hashCode()
     for wire in obj.Shape.Wires:
-        for e in wire.Edges:
-            if e.hashCode() == edge.hashCode():
-                return wire.Edges
+        if any(e.hashCode() == ehash for e in wire.Edges):
+            return wire.Edges
 
     return None
 
 
-def horizontalEdgeLoop(obj, edge, verbose=False):
+def wiresdetect(obj, edges):
+    """Returns all edges from all horizontal wires which includes the edges."""
+
+    ehashList = [e.hashCode() for e in edges]
+    wires = []
+    for wire in obj.Shape.Wires:
+        if not Path.Geom.isRoughly(wire.BoundBox.ZLength, 0):
+            continue
+        if any(e.hashCode() in ehashList for e in wire.Edges):
+            wires.append(wire)
+    if wires:
+        return [e for w in wires for e in w.Edges]
+
+    return None
+
+
+def horizontalEdgeLoop(obj, edge):
     """Returns a loop of edges in the horizontal plane that includes one edge"""
 
     isHorizontal = Path.Geom.isHorizontal
     isRoughly = Path.Geom.isRoughly
 
-    if not isHorizontal(edge) and verbose:
+    if not isHorizontal(edge):
         # stop if selected edge is not horizontal
         return None
 
-    # Trying to find edges in loop wires from shape
     ehash = edge.hashCode()
-    wires = [w for w in obj.Shape.Wires if any(e.hashCode() == ehash for e in w.Edges)]
-    loops = [
-        w for w in wires if all(isHorizontal(e) for e in w.Edges) and isHorizontal(Part.Face(w))
-    ]
-    if len(loops) > 0:
-        return loops[0].Edges
 
-    # Trying to find edges in loop without wires from shape
+    # Trying to find edges in horizontal wires of shape
+    for wire in obj.Shape.Wires:
+        if not isRoughly(wire.BoundBox.ZLength, 0):
+            # skip not horizontal wire
+            continue
+        if any(edge.hashCode() == ehash for edge in wire.Edges):
+            return wire.Edges
+
+    # Trying to find edges in loop without wires from object shape
 
     # get edges in horizontal plane with selected edge
     candidates = [
@@ -152,12 +165,58 @@ def horizontalEdgeLoop(obj, edge, verbose=False):
         if isHorizontal(e) and isRoughly(e.BoundBox.ZMin, edge.BoundBox.ZMin)
     ]
 
-    # get cluster of edges from which closed wire can be created
-    # this cluster should contain selected edge
+    """Get clusters of edges from which closed wires can be created
+    Desired cluster should contain selected edge
+
+    Do not return edges from Part.sortEdges(),
+    because edges can be flipped with changed hashCode
+
+    getSortedClusters() return edges without changes,
+    but can be unstable and freezes with some shapes"""
+
+    badClusters = Part.sortEdges(candidates)
+
+    # most simple case
+    if len(badClusters) == 1:
+        wire = Part.Wire(badClusters[0])
+        if len(wire.Edges) == len(candidates) and wire.isClosed:
+            return candidates
+
+    # attempt to divide edges from candidates to clusters without Part.sortEdges()
+    candidatesCopy = candidates.copy()
+    goodClusters = []
+    for badCluster in badClusters:
+        goodClusters.append([])
+        badClusterHash = [e.hashCode() for e in badCluster]
+        for edge in reversed(candidatesCopy):
+            # searching edge by hash
+            if edge.hashCode() in badClusterHash:
+                # edge not changed after Part.sortEdges()
+                goodClusters[-1].append(edge)
+                candidatesCopy.remove(edge)
+                continue
+
+            # edge and hash changed, so try to find similar edge
+            for badEdge in badCluster:
+                if Path.Geom.edgesSimilar(badEdge, edge):
+                    goodClusters[-1].append(edge)
+                    candidatesCopy.remove(edge)
+                    break
+
+    if set([len(bc) for bc in badClusters]) == set([len(gc) for gc in goodClusters]):
+        for cluster in goodClusters:
+            wire = Part.Wire(Part.__sortEdges__(cluster))
+            if len(wire.Edges) != len(cluster) or not wire.isClosed():
+                continue
+            if any(e.hashCode() == ehash for e in cluster):
+                return cluster
+
+    Path.Log.warning("Attempt to use method Part.getSortedClusters()")
     for cluster in Part.getSortedClusters(candidates):
-        wire = Part.Wire(cluster)
-        if wire.isClosed() and any(e.hashCode() == ehash for e in cluster):
-            # cluster is found
+        wire = Part.Wire(Part.__sortEdges__(cluster))
+        if len(wire.Edges) != len(cluster) or not wire.isClosed():
+            continue
+        if any(e.hashCode() == ehash for e in cluster):
             return cluster
 
     return None
@@ -174,7 +233,8 @@ def tangentEdgeLoop(obj, edge):
     lastEdge = edge
     lastIndex = -1
     repeatCount = 0
-    while repeatCount < len(obj.Shape.Edges):
+    objEdges = obj.Shape.Edges
+    while repeatCount < len(objEdges):
         repeatCount += 1
 
         lastPoint = lastEdge.Vertexes[lastIndex].Point
@@ -184,7 +244,7 @@ def tangentEdgeLoop(obj, edge):
             # stop because return to start point and loop is closed
             break
 
-        for e in obj.Shape.Edges:
+        for e in objEdges:
             if e.hashCode() in hashes:
                 # this edge is already in loop
                 continue
@@ -216,14 +276,14 @@ def tangentEdgeLoop(obj, edge):
     return None
 
 
-def horizontalFaceLoop(obj, face, faceList=None):
+def horizontalFaceLoop(obj, faces, subNames):
     """horizontalFaceLoop(obj, face, faceList=None) ... returns a list of face names which form the walls of a vertical hole face is a part of.
     All face names listed in faceList must be part of the hole for the solution to be returned."""
 
     isVertical = Path.Geom.isVertical
     isRoughly = Path.Geom.isRoughly
 
-    if not all(isVertical(obj.Shape.getElement(f)) for f in faceList):
+    if not all(isVertical(f) for f in faces):
         # stop if selected faces is not vertical
         Path.Log.warning(
             translate(
@@ -233,57 +293,33 @@ def horizontalFaceLoop(obj, face, faceList=None):
         )
         return None
 
-    cluster = [horizontalEdgeLoop(obj, e) for e in face.Edges]
-
-    # use sorting by Area as simple optimization
-    clusterSorted = sorted(
-        [edges for edges in cluster if edges],
-        key=lambda edges: Part.Face(Part.Wire(Part.sortEdges(edges)[0])).Area,
-    )
-
-    for edges in clusterSorted:
+    objFaces = obj.Shape.Faces
+    horizontalEdgeLoops = [horizontalEdgeLoop(obj, e) for e in faces[0].Edges]
+    for edges in horizontalEdgeLoops:
+        if not edges:
+            continue
         hashes = [e.hashCode() for e in edges]
 
-        # find all faces that share an edges and are vertical
-        faces = [
-            "Face%d" % (i + 1)
-            for i, f in enumerate(obj.Shape.Faces)
-            if any(e.hashCode() in hashes for e in f.Edges) and isVertical(f)
-        ]
+        # find all vertical faces that share an edges
+        names = []
+        for i, f in enumerate(objFaces):
+            if not isVertical(f):
+                continue
+            if any(e.hashCode() in hashes for e in f.Edges):
+                names.append(f"Face{i + 1}")
 
-        if faceList and not all(f in faces for f in faceList):
+        if not names or not all(f in names for f in subNames):
             # not all selected faces in list of candidates faces
             continue
 
-        # verify they form a valid hole by getting the outline and comparing
-        # the resulting XY footprint with that of the faces
-        comp = Part.makeCompound([obj.Shape.getElement(f) for f in faces])
+        # use bottom edges to check that faces creates a closed area
+        candidates = [obj.Shape.getElement(f) for f in names]
+        fzMin = min(face.BoundBox.ZMin for face in candidates)
+        bottomEdges = [e for f in candidates for e in f.Edges if isRoughly(e.BoundBox.ZMax, fzMin)]
+        wire = Part.Wire(Part.__sortEdges__(bottomEdges))
+        if wire.isClosed():
+            return names
 
-        outline = TechDraw.findShapeOutline(comp, 1, Vector(0, 0, 1))
-
-        # findShapeOutline always returns closed wires, by removing the
-        # trace-backs single edge spikes don't contribute to the bound box
-        uniqueEdges = []
-        for edge in outline.Edges:
-            if any(Path.Geom.edgesMatch(edge, e) for e in uniqueEdges):
-                continue
-            uniqueEdges.append(edge)
-
-        w = Part.Wire(uniqueEdges)
-
-        # if the faces really form the walls of a hole then the resulting
-        # wire is still closed and it still has the same footprint
-        bb1 = comp.BoundBox
-        bb2 = w.BoundBox
-        prec = 1  # used low precision because findShapeOutline() is dirty
-        if (
-            w.isClosed()
-            and isRoughly(bb1.XMin, bb2.XMin, prec)
-            and isRoughly(bb1.XMax, bb2.XMax, prec)
-            and isRoughly(bb1.YMin, bb2.YMin, prec)
-            and isRoughly(bb1.YMax, bb2.YMax, prec)
-        ):
-            return faces
     return None
 
 
