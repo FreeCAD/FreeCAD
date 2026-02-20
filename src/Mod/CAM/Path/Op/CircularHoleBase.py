@@ -158,9 +158,6 @@ class ObjectOp(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... processes all Base features and Locations and collects
         them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
-        If no Base geometries and no Locations are present, the job's Base is inspected and all
-        drillable features are added to Base. In this case appropriate values for depths are also
-        calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
