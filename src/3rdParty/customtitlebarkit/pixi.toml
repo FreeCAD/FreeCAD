@@ -1,0 +1,16 @@
+[workspace]
+authors = ["Benjamin Nauck <benjamin@nauck.se>"]
+channels = ["conda-forge"]
+name = "custom_window"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+configure = "cmake -B build -G Ninja -DCMAKE_PREFIX_PATH=$CONDA_PREFIX -DCMAKE_INSTALL_PREFIX=$CONDA_PREFIX"
+build = { cmd = "cmake --build build", depends-on = ["configure"] }
+
+[dependencies]
+qt6-main = ">=6.7"
+cmake = ">=3.21"
+ninja = "*"
+cxx-compiler = "*"
