@@ -137,16 +137,24 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
     {
         Debug::out() << "  VisitBinaryOperator\n";
         Debug::out() << "    binaryOp: " << Debug::toSourceText(binaryOp, context) << "\n";
+        if (Debug::toSourceText(binaryOp, context) == "_nameMap[obj->getNameInDocument()] = i") {
+            Debug::out() << "    found it!\n";
+        }
 
         if (!binaryOp || hasWriteToThisField) {
             return true;
         }
 
-        if ((binaryOp->getOpcode() == cl::BO_Assign || binaryOp->isCompoundAssignmentOp())
-            && getRootThisField(binaryOp->getLHS(), methodParent)) {
-
-            Debug::out() << "    detected: write to this field\n";
-            hasWriteToThisField = true;
+        if (binaryOp->getOpcode() == cl::BO_Assign || binaryOp->isCompoundAssignmentOp()) {
+            if (const auto* root = getRootThisField(binaryOp->getLHS(), methodParent)) {
+                if (root->isMutable()) {
+                    Debug::out() << "    detected: write to mutable field of this, treat as read\n";
+                }
+                else {
+                    Debug::out() << "    detected: write to non-mutable field of this\n";
+                    hasWriteToThisField = true;
+                }
+            }
         }
         return true;
     }
@@ -252,17 +260,28 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         }
         obj = ignoreWrappers(obj);
 
-        if (!llvm::isa<cl::CXXThisExpr>(obj) && !getRootThisField(obj, methodParent)) {
+        const cl::FieldDecl* rootField = nullptr;
+        const bool rootedInThis = llvm::isa<cl::CXXThisExpr>(obj)
+            || (rootField = getRootThisField(obj, methodParent));
+        if (!rootedInThis) {
             return true;
         }
 
         methodMembers.push_back(memberExpr);
-        if (callee->isConst()) {
-            Debug::out() << "    detected: const member call on this\n";
+        if (!callee->isConst()) {
+            const bool writeToMutable = rootField && rootField->isMutable();
+
+            if (writeToMutable) {
+                Debug::out() << "    detected: call to non-const method on mutable field of this, "
+                                "treat as read\n";
+            }
+            else {
+                Debug::out() << "    detected: non-const member call on this\n";
+                hasWriteToThis = true;
+            }
         }
         else {
-            Debug::out() << "    detected: non-const member call on this\n";
-            hasWriteToThis = true;
+            Debug::out() << "    detected: const member call on this\n";
         }
 
         return true;
@@ -291,6 +310,11 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
 
         const cl::FieldDecl* root = getRootThisField(argNoWrap, methodParent);
         if (!root) {
+            return false;
+        }
+
+        if (root->isMutable()) {
+            Debug::out() << "    arg is mutable field of this, treat as read\n";
             return false;
         }
 
@@ -478,9 +502,17 @@ private:
             }
 
             // Handle array subscript: base[idx]  (for built-in arrays / pointers)
-            if (const auto* ASE = dyn_cast<cl::ArraySubscriptExpr>(cur)) {
-                cur = ASE->getBase();
+            if (const auto* arraySubscriptExpr = dyn_cast<cl::ArraySubscriptExpr>(cur)) {
+                cur = arraySubscriptExpr->getBase();
                 continue;
+            }
+
+            // Handle overloaded subscript operator: base[idx]
+            if (const auto* opCallExpr = dyn_cast<cl::CXXOperatorCallExpr>(cur)) {
+                if (opCallExpr->getOperator() == cl::OO_Subscript && opCallExpr->getNumArgs() >= 1) {
+                    cur = opCallExpr->getArg(0);
+                    continue;
+                }
             }
 
             // Other expression kind: stop
