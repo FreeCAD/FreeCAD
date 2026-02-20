@@ -869,7 +869,7 @@ class PathData:
                 t
                 for t in tags
                 if Path.Geom.isRoughly(
-                    0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 0.1
+                    0, Part.Vertex(t.originAt(self.minZ)).distToShape(edge)[0], 1
                 )
             ]
             for t in sorted(
