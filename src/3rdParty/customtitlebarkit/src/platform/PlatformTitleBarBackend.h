@@ -6,6 +6,7 @@
 
 #include <QObject>
 #include <QSize>
+#include <QtGlobal>
 #include <memory>
 
 class QWidget;
@@ -35,6 +36,10 @@ public:
 
     /// Snap a requested height to the nearest valid titlebar height for this platform.
     virtual int snapTitleBarHeight(int requested) const = 0;
+
+    /// Handle native platform events (e.g. WM_NCHITTEST on Windows).
+    /// Return true if the event was handled. Default returns false.
+    virtual bool handleNativeEvent(const QByteArray &eventType, void *message, qintptr *result);
 
     /// Backend name for QSS property selectors (e.g. "mac", "generic").
     virtual QString backendName() const = 0;
