@@ -108,7 +108,8 @@ void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEv
     // shortcuts intercepting the keypresses.
     bool isPrintable = !keyEvent->text().isEmpty() && keyEvent->text().at(0).isPrint();
     bool isEditingKey = keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
-        || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
+        || keyEvent->key() == Qt::Key_Tab
+        || keyEvent->key() == Qt::Key_Backtab
         // double check for backspace as there may be windows/unix inconsistencies
         || keyEvent->key() == Qt::Key_Backspace || keyEvent->matches(QKeySequence::Backspace)
         || keyEvent->matches(QKeySequence::Delete);

@@ -202,9 +202,7 @@ bool looksLikeExpressionInput(const QString& input)
         return true;
     }
 
-    static const QRegularExpression expressionChars(
-        QStringLiteral(R"([A-Za-z_=+\-*/^().,;])")
-    );
+    static const QRegularExpression expressionChars(QStringLiteral(R"([A-Za-z_=+\-*/^().,;])"));
     return expressionChars.match(trimmed).hasMatch();
 }
 
@@ -878,7 +876,9 @@ bool UIntSpinBox::tryHandleVariableAssignment(const QString& text)
         }
 
         const std::string exprStr = std::string(kParametersSheetName) + "." + nameStd;
-        std::shared_ptr<App::Expression> expr(App::ExpressionParser::parse(contextObj, exprStr.c_str()));
+        std::shared_ptr<App::Expression> expr(
+            App::ExpressionParser::parse(contextObj, exprStr.c_str())
+        );
         if (!expr) {
             return false;
         }
