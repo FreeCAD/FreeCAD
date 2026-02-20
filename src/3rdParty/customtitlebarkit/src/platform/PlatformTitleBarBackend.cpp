@@ -9,6 +9,11 @@
 #include "mac/MacGenericBackend.h"
 #endif
 
+bool PlatformTitleBarBackend::handleNativeEvent(const QByteArray &, void *, qintptr *)
+{
+    return false;
+}
+
 QWidget *PlatformTitleBarBackend::createNativeControlsWidget(QWidget *)
 {
     return nullptr;
