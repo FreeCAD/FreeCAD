@@ -239,7 +239,7 @@ class FemExamples(QtGui.QWidget):
         FreeCADGui.doCommand("from femexamples.manager import run_example")
         if solver is not None:
             FreeCADGui.doCommand(
-                f'run_example("{str(example)}", solver="{str(solver)}", run_solver=True)'
+                f'run_example("{str(example)}", solver="{str(solver)}", run_solver=True, blocking=False)'
             )
         else:
             FreeCADGui.doCommand(f'run_example("{str(example)}", run_solver=True)')
