@@ -96,18 +96,14 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
 
         return form
 
-    def updateMinTravel(self, obj, setModel=True):
-        if setModel and obj.MinTravel != self.form.minTravel.isChecked():
-            obj.MinTravel = self.form.minTravel.isChecked()
-
-    def updateZigZagAngle(self, obj, setModel=True):
-        if obj.ClearingPattern in ["Offset"]:
-            self.form.zigZagAngle.setEnabled(False)
+    def updateAngle(self, obj, setModel=True):
+        if obj.ClearingPattern == "Offset":
+            self.form.angle.setEnabled(False)
         else:
-            self.form.zigZagAngle.setEnabled(True)
+            self.form.angle.setEnabled(True)
 
         if setModel:
-            PathGuiUtil.updateInputField(obj, "ZigZagAngle", self.form.zigZagAngle)
+            PathGuiUtil.updateInputField(obj, "Angle", self.form.angle)
 
     def getFields(self, obj):
         """getFields(obj) ... transfers values from UI to obj's properties"""
@@ -121,7 +117,7 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         PathGuiUtil.updateInputField(obj, "ExtraOffset", self.form.extraOffset)
         self.updateToolController(obj, self.form.toolController)
         self.updateCoolant(obj, self.form.coolantController)
-        self.updateZigZagAngle(obj)
+        self.updateAngle(obj)
 
         if obj.UseStartPoint != self.form.useStartPoint.isChecked():
             obj.UseStartPoint = self.form.useStartPoint.isChecked()
@@ -132,8 +128,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureOutline & self.pocketFeatures():
             if obj.UseOutline != self.form.useOutline.isChecked():
                 obj.UseOutline = self.form.useOutline.isChecked()
-
-        self.updateMinTravel(obj)
 
         if FeatureFacing & self.pocketFeatures():
             print(obj.BoundaryShape)
@@ -155,13 +149,8 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         if FeatureOutline & self.pocketFeatures():
             self.form.useOutline.setChecked(obj.UseOutline)
 
-        self.form.zigZagAngle.setText(
-            FreeCAD.Units.Quantity(obj.ZigZagAngle, FreeCAD.Units.Angle).UserString
-        )
-        self.updateZigZagAngle(obj, False)
-
-        self.form.minTravel.setChecked(obj.MinTravel)
-        self.updateMinTravel(obj, False)
+        self.form.angle.setText(FreeCAD.Units.Quantity(obj.Angle, FreeCAD.Units.Angle).UserString)
+        self.updateAngle(obj, False)
 
         self.selectInComboBox(obj.ClearingPattern, self.form.clearingPattern)
         self.selectInComboBox(obj.CutMode, self.form.cutMode)
@@ -179,13 +168,12 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.cutMode.currentIndexChanged)
         signals.append(self.form.clearingPattern.currentIndexChanged)
         signals.append(self.form.stepOverPercent.editingFinished)
-        signals.append(self.form.zigZagAngle.editingFinished)
+        signals.append(self.form.angle.editingFinished)
         signals.append(self.form.toolController.currentIndexChanged)
         signals.append(self.form.extraOffset.editingFinished)
         signals.append(self.form.useStartPoint.clicked)
         signals.append(self.form.useRestMachining.clicked)
         signals.append(self.form.useOutline.clicked)
-        signals.append(self.form.minTravel.clicked)
         signals.append(self.form.coolantController.currentIndexChanged)
 
         if FeatureFacing & self.pocketFeatures():
