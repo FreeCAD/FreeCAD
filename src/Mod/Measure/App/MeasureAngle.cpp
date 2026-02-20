@@ -224,40 +224,6 @@ gp_Vec MeasureAngle::location2()
     return {temp.x, temp.y, temp.z};
 }
 
-bool MeasureAngle::isFaceFace()
-{
-    TopoDS_Shape s1 = Part::Feature::getShape(
-        Element1.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element1.getSubValues().at(0).c_str()
-    );
-    TopoDS_Shape s2 = Part::Feature::getShape(
-        Element2.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element2.getSubValues().at(0).c_str()
-    );
-    return (
-        !s1.IsNull() && s1.ShapeType() == TopAbs_FACE && !s2.IsNull() && s2.ShapeType() == TopAbs_FACE
-    );
-}
-
-bool MeasureAngle::isEdgeEdge()
-{
-    TopoDS_Shape s1 = Part::Feature::getShape(
-        Element1.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element1.getSubValues().at(0).c_str()
-    );
-    TopoDS_Shape s2 = Part::Feature::getShape(
-        Element2.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element2.getSubValues().at(0).c_str()
-    );
-    return (
-        !s1.IsNull() && s1.ShapeType() == TopAbs_EDGE && !s2.IsNull() && s2.ShapeType() == TopAbs_EDGE
-    );
-}
-
 bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e2)
 {
     TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
@@ -276,15 +242,8 @@ bool MeasureAngle::isGeometricalSame(const TopoDS_Edge& e1, const TopoDS_Edge& e
     return matchStartStart || matchStartEnd;
 }
 
-
-bool MeasureAngle::hasCommonEdge()
+bool MeasureAngle::setOrigin()
 {
-    if (!isFaceFace()) {
-        return false;
-    }
-    if (!Element1.getValue() || !Element2.getValue()) {
-        return false;
-    }
     TopoDS_Shape s1 = Part::Feature::getShape(
         Element1.getValue(),
         Part::ShapeOption::NeedSubElement,
@@ -299,123 +258,111 @@ bool MeasureAngle::hasCommonEdge()
         return false;
     }
 
-    TopExp_Explorer exp1(s1, TopAbs_EDGE);
-    TopExp_Explorer exp2(s2, TopAbs_EDGE);
-    while (exp1.More()) {
-        auto ed1 = TopoDS::Edge(exp1.Current());
-        exp2.Init(s2, TopAbs_EDGE);
-        while (exp2.More()) {
-            auto ed2 = TopoDS::Edge(exp2.Current());
-            if (ed1.IsSame(ed2) || isGeometricalSame(ed1, ed2)) {
-                // calculate outOrigin from the common edge
-                TopoDS_Vertex v1, v2;
-                TopExp::Vertices(ed1, v1, v2);
-                outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
-                _isImgOrigin = false;
+    if (mCase == FaceFace) {
+        // find common edge
+        TopExp_Explorer exp1(s1, TopAbs_EDGE);
+        TopExp_Explorer exp2(s2, TopAbs_EDGE);
+        while (exp1.More()) {
+            auto ed1 = TopoDS::Edge(exp1.Current());
+            exp2.Init(s2, TopAbs_EDGE);
+            while (exp2.More()) {
+                auto ed2 = TopoDS::Edge(exp2.Current());
+                if (ed1.IsSame(ed2) || isGeometricalSame(ed1, ed2)) {
+                    // calculate outOrigin from the common edge
+                    TopoDS_Vertex v1, v2;
+                    TopExp::Vertices(ed1, v1, v2);
+                    outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
+                    _isImgOrigin = false;
+                    return true;
+                }
+                exp2.Next();
+            }
+            exp1.Next();
+        }
+
+        _isImgOrigin = true;
+
+        // now try for imaginary origin
+        gp_Vec loc1 = location1();
+        gp_Vec loc2 = location2();
+        gp_Vec vector1 = this->vector1();
+        gp_Vec vector2 = this->vector2();
+
+        Handle(Geom_Plane) P1 = new Geom_Plane(gp_Pln(gp_Pnt(loc1.XYZ()), gp_Dir(vector1)));
+        Handle(Geom_Plane) P2 = new Geom_Plane(gp_Pln(gp_Pnt(loc2.XYZ()), gp_Dir(vector2)));
+        GeomAPI_IntSS intersector(P1, P2, Precision::Confusion());
+        if (intersector.IsDone() && intersector.NbLines() > 0) {
+            Handle(Geom_Curve) curve = intersector.Line(1);
+
+            gp_Pnt refPnt = loc1.XYZ();
+
+            GeomAPI_ProjectPointOnCurve proj(refPnt, curve);
+            if (proj.NbPoints() > 0) {
+                outOrigin = proj.Point(1);
                 return true;
             }
-            exp2.Next();
         }
-        exp1.Next();
     }
+    else if (mCase == EdgeEdge) {
+        TopoDS_Edge e1 = TopoDS::Edge(s1);
+        TopoDS_Edge e2 = TopoDS::Edge(s2);
+        TopoDS_Vertex common;
 
-    _isImgOrigin = true;
+        if (TopExp::CommonVertex(e1, e2, common)) {
+            outOrigin = BRep_Tool::Pnt(common);
+            _isImgOrigin = false;
+            return true;
+        }
 
-    // now try for imaginary origin
-    gp_Vec loc1 = location1();
-    gp_Vec loc2 = location2();
-    gp_Vec vector1 = this->vector1();
-    gp_Vec vector2 = this->vector2();
+        _isImgOrigin = true;
 
-    Handle(Geom_Plane) P1 = new Geom_Plane(gp_Pln(gp_Pnt(loc1.XYZ()), gp_Dir(vector1)));
-    Handle(Geom_Plane) P2 = new Geom_Plane(gp_Pln(gp_Pnt(loc2.XYZ()), gp_Dir(vector2)));
-    GeomAPI_IntSS intersector(P1, P2, Precision::Confusion());
-    if (intersector.IsDone() && intersector.NbLines() > 0) {
-        Handle(Geom_Curve) curve = intersector.Line(1);
+        // now try for imaginary origin
+        gp_Vec loc1 = location1();
+        gp_Vec loc2 = location2();
+        gp_Vec vector1 = this->vector1();
+        gp_Vec vector2 = this->vector2();
 
-        gp_Pnt refPnt = loc1.XYZ();
+        Handle(Geom_Line) line1 = new Geom_Line(loc1.XYZ(), vector1);
+        Handle(Geom_Line) line2 = new Geom_Line(loc2.XYZ(), vector2);
 
-        GeomAPI_ProjectPointOnCurve proj(refPnt, curve);
-        if (proj.NbPoints() > 0) {
-            outOrigin = proj.Point(1);
+        GeomAPI_ExtremaCurveCurve intersector(line1, line2);
+        if (intersector.NbExtrema() > 0) {
+            gp_Pnt p1, p2;
+            intersector.NearestPoints(p1, p2);
+            outOrigin = p1;
+            _isImgOrigin = true;
+            return true;
+        }
+    }
+    else if (mCase == FaceEdge) {
+        _isImgOrigin = true;
+        Handle(Geom_Line) line1 = new Geom_Line(location1().XYZ(), vector1());
+        Handle(Geom_Line) line2 = new Geom_Line(location2().XYZ(), vector2());
+
+        GeomAPI_ExtremaCurveCurve intersector(line1, line2);
+        if (intersector.NbExtrema() > 0) {
+            gp_Pnt p1, p2;
+            intersector.NearestPoints(p1, p2);
+            outOrigin = p2;
+            _isImgOrigin = true;
             return true;
         }
     }
 
+
     // cant reach here
     return false;
 }
 
-bool MeasureAngle::hasCommonVertex()
+
+bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
 {
-    if (!isEdgeEdge()) {
-        return false;
-    }
-    TopoDS_Shape s1 = Part::Feature::getShape(
-        Element1.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element1.getSubValues().at(0).c_str()
-    );
-    TopoDS_Shape s2 = Part::Feature::getShape(
-        Element2.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element2.getSubValues().at(0).c_str()
-    );
-
-    if (s1.IsNull() || s2.IsNull()) {
-        return false;
-    }
-
-    TopoDS_Edge e1 = TopoDS::Edge(s1);
-    TopoDS_Edge e2 = TopoDS::Edge(s2);
-    TopoDS_Vertex common;
-
-    if (TopExp::CommonVertex(e1, e2, common)) {
-        outOrigin = BRep_Tool::Pnt(common);
-        _isImgOrigin = false;
-        return true;
-    }
-
-    _isImgOrigin = true;
-
-    // now try for imaginary origin
-    gp_Vec loc1 = location1();
-    gp_Vec loc2 = location2();
-    gp_Vec vector1 = this->vector1();
-    gp_Vec vector2 = this->vector2();
-
-    Handle(Geom_Line) line1 = new Geom_Line(loc1.XYZ(), vector1);
-    Handle(Geom_Line) line2 = new Geom_Line(loc2.XYZ(), vector2);
-
-    GeomAPI_ExtremaCurveCurve intersector(line1, line2);
-    if (intersector.NbExtrema() > 0) {
-        gp_Pnt p1, p2;
-        intersector.NearestPoints(p1, p2);
-        outOrigin = p1;
-        _isImgOrigin = true;
-        return true;
-    }
-
-    // cant reach here
-    return false;
+    outOrigin = this->outOrigin;
+    return true;
 }
 
 bool MeasureAngle::setDirections()
 {
-    TopoDS_Shape s1 = Part::Feature::getShape(
-        Element1.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element1.getSubValues().at(0).c_str()
-    );
-    TopoDS_Shape s2 = Part::Feature::getShape(
-        Element2.getValue(),
-        Part::ShapeOption::NeedSubElement,
-        Element2.getSubValues().at(0).c_str()
-    );
-
-    if (s1.IsNull() || s2.IsNull()) {
-        return false;
-    }
 
     direction1 = vector1();
     direction2 = vector2();
@@ -425,7 +372,7 @@ bool MeasureAngle::setDirections()
 
     // For edges with a common vertex, we need to orient the vectors
     // so they point away from the common vertex
-    if (isEdgeEdge()) {
+    if (mCase == EdgeEdge) {
 
         if (direction1.Dot(gp_Vec(outOrigin.XYZ()) - loc1) > 0) {
             direction1 = -direction1;
@@ -434,7 +381,7 @@ bool MeasureAngle::setDirections()
             direction2 = -direction2;
         }
     }
-    else if (isFaceFace()) {
+    else if (mCase == FaceFace) {
 
         gp_Vec between = loc2 - loc1;
 
@@ -444,6 +391,31 @@ bool MeasureAngle::setDirections()
         if (direction2.Dot(between) > 0) {
             direction2 = -direction2;
         }
+    }
+    else if (mCase == FaceEdge) {
+        // here we take the face as deciding factor
+        gp_Vec faceNormal;
+        TopoDS_Shape s1 = Part::Feature::getShape(
+            Element1.getValue(),
+            Part::ShapeOption::NeedSubElement,
+            Element1.getSubValues().at(0).c_str()
+        );
+        TopoDS_Shape s2 = Part::Feature::getShape(
+            Element2.getValue(),
+            Part::ShapeOption::NeedSubElement,
+            Element2.getSubValues().at(0).c_str()
+        );
+        faceNormal = (s1.ShapeType() == TopAbs_FACE) ? vector1() : vector2();
+        if (direction1.Dot(faceNormal) < 0) {
+            direction1 = -direction1;
+        }
+        if (direction2.Dot(faceNormal) < 0) {
+            direction2 = -direction2;
+        }
+    }
+    else {
+        // should not reach here
+        return false;
     }
 
     return true;
@@ -457,12 +429,6 @@ bool MeasureAngle::getDirections(gp_Vec& dir1, gp_Vec& dir2)
     dir1 = direction1;
     dir2 = direction2;
 
-    return true;
-}
-
-bool MeasureAngle::getOrigin(gp_Pnt& outOrigin)
-{
-    outOrigin = this->outOrigin;
     return true;
 }
 
@@ -489,13 +455,29 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
         return new App::DocumentObjectExecReturn("No geometry element picked");
     }
 
-    hasCommonEdge();
-    hasCommonVertex();
-    setDirections();
+    TopoDS_Shape s1
+        = Part::Feature::getShape(ob1, Part::ShapeOption::NeedSubElement, subs1.at(0).c_str());
+    TopoDS_Shape s2
+        = Part::Feature::getShape(ob2, Part::ShapeOption::NeedSubElement, subs2.at(0).c_str());
+    if (s1.ShapeType() == TopAbs_FACE && s2.ShapeType() == TopAbs_FACE) {
+        mCase = FaceFace;
+    }
+    else if (s1.ShapeType() == TopAbs_EDGE && s2.ShapeType() == TopAbs_EDGE) {
+        mCase = EdgeEdge;
+    }
+    else {
+        mCase = FaceEdge;
+    }
+
+    if (!setOrigin() || !setDirections()) {
+        return new App::DocumentObjectExecReturn("Failed to Set Origin");
+    }
+
 
     double angleRad = direction1.Angle(direction2);
 
-    if (isFaceFace()) {
+    // because of face normal are perpendicular to face
+    if (mCase == FaceFace) {
         angleRad = M_PI - angleRad;
     }
 
