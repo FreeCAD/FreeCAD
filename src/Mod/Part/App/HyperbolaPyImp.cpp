@@ -97,11 +97,38 @@ int HyperbolaPy::PyInit(PyObject* args, PyObject* kwds)
         Base::Vector3d v1 = static_cast<Base::VectorPy*>(pV1)->value();
         Base::Vector3d v2 = static_cast<Base::VectorPy*>(pV2)->value();
         Base::Vector3d v3 = static_cast<Base::VectorPy*>(pV3)->value();
-        GC_MakeHyperbola me(
-            gp_Pnt(v1.x, v1.y, v1.z),
-            gp_Pnt(v2.x, v2.y, v2.z),
-            gp_Pnt(v3.x, v3.y, v3.z)
-        );
+
+        // remove when gce_MakeHypr::gce_MakeHypr(const gp_Pnt& S1, const gp_Pnt& S2, const gp_Pnt& Center) 
+        // does not have major < minor condition
+
+        gp_Pnt S1(v1.x, v1.y, v1.z);
+        gp_Pnt S2(v2.x, v2.y, v2.z);
+        gp_Pnt Center(v3.x, v3.y, v3.z);
+
+        if (S1.Distance(Center) < gp::Resolution() 
+            || S2.Distance(Center) < gp::Resolution()) {
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(gce_ConfusedPoints));
+            return -1;
+        }
+
+        gp_Dir XAxis(S1.XYZ() - Center.XYZ());
+        gp_Lin centerLine(Center, XAxis);
+        double majorRadius = S1.Distance(Center);
+        double minorRadius = centerLine.Distance(S2);
+        if (minorRadius < gp::Resolution()) {
+            PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(gce_ColinearPoints));
+            return -1;
+        }
+        gp_Dir norm(XAxis.Crossed(gp_Dir(S2.XYZ() - Center.XYZ())));
+        GC_MakeHyperbola me(gp_Ax2(Center, norm, XAxis), majorRadius, minorRadius);
+        
+
+        // then uncomment ths and verify that a hyperbola with major < minor can be successfully created using this code path
+        //GC_MakeHyperbola me(
+        //    gp_Pnt(v1.x, v1.y, v1.z),
+        //    gp_Pnt(v2.x, v2.y, v2.z),
+        //    gp_Pnt(v3.x, v3.y, v3.z)
+        //);
         if (!me.IsDone()) {
             PyErr_SetString(PartExceptionOCCError, gce_ErrorStatusText(me.Status()));
             return -1;

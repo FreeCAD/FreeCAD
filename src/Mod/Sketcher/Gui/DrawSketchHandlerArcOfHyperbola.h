@@ -25,8 +25,6 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 #define SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 
-#include <boost/math/special_functions/fpclassify.hpp>
-
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
@@ -447,11 +445,7 @@ private:
         double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
         double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
 
-        //a should not have to be bigger than b, see: 
-        //https://dev.opencascade.org/doc/refman/html/class_geom___hyperbola.html#details
-        //[...]The value of the major radius (on the major axis) can be less than the value of the minor radius (on the minor axis).
-
-        return denom > Precision::Confusion() && b > Precision::Confusion() && a >= b;
+        return denom > Precision::Confusion() && b > Precision::Confusion();
     }
 
 protected:
