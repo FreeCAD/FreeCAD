@@ -99,7 +99,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
             idx = enums.index(obj.Reference2)
         self.form.geo2Reference.setCurrentIndex(idx)
 
-        self.selectInComboBox(obj.LayerMode, self.form.layerMode)
         self.selectInComboBox(obj.PathOrientation, self.form.pathOrientation)
 
         if obj.ReverseDirection:
@@ -125,9 +124,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         obj.Reference2 = val
         self.geo2Extension.updateProperty()
 
-        val = self.propEnums["LayerMode"][self.form.layerMode.currentIndex()][1]
-        obj.LayerMode = val
-
         val = self.propEnums["PathOrientation"][self.form.pathOrientation.currentIndex()][1]
         obj.PathOrientation = val
 
@@ -143,7 +139,6 @@ class TaskPanelOpPage(PathOpGui.TaskPanelPage):
         signals.append(self.form.geo1Reference.currentIndexChanged)
         signals.append(self.form.geo2Extension.editingFinished)
         signals.append(self.form.geo2Reference.currentIndexChanged)
-        signals.append(self.form.layerMode.currentIndexChanged)
         signals.append(self.form.pathOrientation.currentIndexChanged)
         if hasattr(self.form.reverseDirection, "checkStateChanged"):  # Qt version >= 6.7.0
             signals.append(self.form.reverseDirection.checkStateChanged)
