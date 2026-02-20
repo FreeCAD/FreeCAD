@@ -58,32 +58,42 @@ PropertyPythonObject::~PropertyPythonObject()
 
 void PropertyPythonObject::setValue(const Py::Object& py)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     Base::PyGILStateLocker lock;
-    aboutToSetValue();
-    this->object = py;
-    hasSetValue();
+    self.aboutToSetValue();
+    self.object = py;
+    self.hasSetValue();
 }
 
 Py::Object PropertyPythonObject::getValue() const
 {
-    return object;
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
+    return self.object;
 }
 
 PyObject* PropertyPythonObject::getPyObject()
 {
-    return Py::new_reference_to(this->object);
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
+    return Py::new_reference_to(self.object);
 }
 
 void PropertyPythonObject::setPyObject(PyObject* obj)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     Base::PyGILStateLocker lock;
-    aboutToSetValue();
-    this->object = obj;
-    hasSetValue();
+    self.aboutToSetValue();
+    self.object = obj;
+    self.hasSetValue();
 }
 
 std::string PropertyPythonObject::toString() const
 {
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
     std::string repr;
     Base::PyGILStateLocker lock;
     try {
@@ -93,26 +103,26 @@ std::string PropertyPythonObject::toString() const
         }
         Py::Callable method(pickle.getAttr(std::string("dumps")));
         Py::Object dump;
-        if (this->object.hasAttr("dumps")) {
+        if (self.object.hasAttr("dumps")) {
             Py::Tuple args;
-            Py::Callable state(this->object.getAttr("dumps"));
+            Py::Callable state(self.object.getAttr("dumps"));
             dump = state.apply(args);
         }
         // support add-ons that use the old method names
-        else if (this->object.hasAttr("__getstate__")
+        else if (self.object.hasAttr("__getstate__")
 #if PY_VERSION_HEX >= 0x030b0000
-                 && this->object.getAttr("__getstate__").hasAttr("__func__")
+                 && self.object.getAttr("__getstate__").hasAttr("__func__")
 #endif
         ) {
             Py::Tuple args;
-            Py::Callable state(this->object.getAttr("__getstate__"));
+            Py::Callable state(self.object.getAttr("__getstate__"));
             dump = state.apply(args);
         }
-        else if (this->object.hasAttr("__dict__")) {
-            dump = this->object.getAttr("__dict__");
+        else if (self.object.hasAttr("__dict__")) {
+            dump = self.object.getAttr("__dict__");
         }
         else {
-            dump = this->object;
+            dump = self.object;
         }
 
         Py::Tuple args(1);
@@ -122,7 +132,7 @@ std::string PropertyPythonObject::toString() const
         repr = str.as_std_string("ascii");
     }
     catch (Py::Exception&) {
-        Py::String typestr(this->object.type().str());
+        Py::String typestr(self.object.type().str());
         Base::Console().error("PropertyPythonObject::toString(): failed for %s\n",
                               typestr.as_string().c_str());
         Base::PyException e;  // extract the Python error text
@@ -134,6 +144,8 @@ std::string PropertyPythonObject::toString() const
 
 void PropertyPythonObject::fromString(const std::string& repr)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     Base::PyGILStateLocker lock;
     try {
         if (repr.empty()) {
@@ -148,30 +160,30 @@ void PropertyPythonObject::fromString(const std::string& repr)
         args.setItem(0, Py::String(repr));
         Py::Object res = method.apply(args);
 
-        if (this->object.hasAttr("loads")) {
+        if (self.object.hasAttr("loads")) {
             Py::Tuple args(1);
             args.setItem(0, res);
-            Py::Callable state(this->object.getAttr("loads"));
+            Py::Callable state(self.object.getAttr("loads"));
             state.apply(args);
         }
         // support add-ons that use the old method names
-        else if (this->object.hasAttr("__setstate__")
+        else if (self.object.hasAttr("__setstate__")
 #if PY_VERSION_HEX >= 0x030b0000
-                 && this->object.getAttr("__setstate__").hasAttr("__func__")
+                 && self.object.getAttr("__setstate__").hasAttr("__func__")
 #endif
         ) {
             Py::Tuple args(1);
             args.setItem(0, res);
-            Py::Callable state(this->object.getAttr("__setstate__"));
+            Py::Callable state(self.object.getAttr("__setstate__"));
             state.apply(args);
         }
-        else if (this->object.hasAttr("__dict__")) {
+        else if (self.object.hasAttr("__dict__")) {
             if (!res.isNone()) {
-                this->object.setAttr("__dict__", res);
+                self.object.setAttr("__dict__", res);
             }
         }
         else {
-            this->object = res;
+            self.object = res;
         }
     }
     catch (Py::Exception&) {
@@ -182,6 +194,8 @@ void PropertyPythonObject::fromString(const std::string& repr)
 
 void PropertyPythonObject::loadPickle(const std::string& str)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     // find the custom attributes and restore them
     Base::PyGILStateLocker lock;
     try {
@@ -194,7 +208,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
         while (boost::regex_search(start, end, what, pickle)) {
             std::string key = std::string(what[1].first, what[1].second);
             std::string val = std::string(what[2].first, what[2].second);
-            this->object.setAttr(key, Py::String(val));
+            self.object.setAttr(key, Py::String(val));
             buffer = std::string(what[2].second, end);
             start = buffer.begin();
             end = buffer.end();
@@ -253,16 +267,18 @@ std::string PropertyPythonObject::decodeValue(const std::string& str) const
 
 void PropertyPythonObject::saveObject(Base::Writer& writer) const
 {
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
     Base::PyGILStateLocker lock;
     try {
-        PropertyContainer* parent = this->getContainer();
+        PropertyContainer* parent = self.getContainer();
         if (parent->isDerivedFrom(Base::Type::fromName("App::DocumentObject"))) {
-            if (this->object.hasAttr("__object__")) {
+            if (self.object.hasAttr("__object__")) {
                 writer.Stream() << " object=\"yes\"";
             }
         }
         if (parent->isDerivedFrom(Base::Type::fromName("Gui::ViewProvider"))) {
-            if (this->object.hasAttr("__vobject__")) {
+            if (self.object.hasAttr("__vobject__")) {
                 writer.Stream() << " vobject=\"yes\"";
             }
         }
@@ -274,19 +290,21 @@ void PropertyPythonObject::saveObject(Base::Writer& writer) const
 
 void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     Base::PyGILStateLocker lock;
     try {
-        PropertyContainer* parent = this->getContainer();
+        PropertyContainer* parent = self.getContainer();
         if (reader.hasAttribute("object")) {
             if (strcmp(reader.getAttribute<const char*>("object"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
-                this->object.setAttr("__object__", obj);
+                self.object.setAttr("__object__", obj);
             }
         }
         if (reader.hasAttribute("vobject")) {
             if (strcmp(reader.getAttribute<const char*>("vobject"), "yes") == 0) {
                 Py::Object obj = Py::asObject(parent->getPyObject());
-                this->object.setAttr("__vobject__", obj);
+                self.object.setAttr("__vobject__", obj);
             }
         }
     }
@@ -303,16 +321,18 @@ void PropertyPythonObject::restoreObject(Base::XMLReader& reader)
 
 void PropertyPythonObject::Save(Base::Writer& writer) const
 {
-    std::string repr = this->toString();
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
+    std::string repr = self.toString();
     repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
     std::string val = /*encodeValue*/ (repr);
     writer.Stream() << writer.ind() << "<Python value=\"" << val << R"(" encoded="yes")";
 
     Base::PyGILStateLocker lock;
     try {
-        if (this->object.hasAttr("__module__") && this->object.hasAttr("__class__")) {
-            Py::String mod(this->object.getAttr("__module__"));
-            Py::Object cls(this->object.getAttr("__class__"));
+        if (self.object.hasAttr("__module__") && self.object.hasAttr("__class__")) {
+            Py::String mod(self.object.getAttr("__module__"));
+            Py::Object cls(self.object.getAttr("__class__"));
             if (cls.hasAttr("__name__")) {
                 Py::String name(cls.getAttr("__name__"));
                 writer.Stream() << " module=\"" << (std::string)mod << "\""
@@ -328,16 +348,18 @@ void PropertyPythonObject::Save(Base::Writer& writer) const
         e.reportException();
     }
 
-    saveObject(writer);
+    self.saveObject(writer);
     writer.Stream() << "/>" << std::endl;
 }
 
 void PropertyPythonObject::Restore(Base::XMLReader& reader)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     reader.readElement("Python");
     if (reader.hasAttribute("file")) {
         std::string file(reader.getAttribute<const char*>("file"));
-        reader.addFile(file.c_str(), this);
+        reader.addFile(file.c_str(), &self);
     }
     else {
         bool load_json = false;
@@ -348,7 +370,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
             buffer = Base::base64_decode(buffer);
         }
         else {
-            buffer = decodeValue(buffer);
+            buffer = self.decodeValue(buffer);
         }
 
         Base::PyGILStateLocker lock;
@@ -371,7 +393,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                     throw Py::AttributeError(s.str());
                 }
                 if (PyType_Check(cls)) {
-                    this->object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
+                    self.object = PyType_GenericAlloc((PyTypeObject*)cls, 0);
                 }
                 else {
                     throw Py::TypeError("neither class nor type object");
@@ -385,7 +407,7 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
                 if (mod.isNull()) {
                     throw Py::Exception();
                 }
-                this->object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
+                self.object = PyObject_CallObject(mod.getAttr(type).ptr(), nullptr);
                 load_pickle = true;
                 buffer = std::string(what[2].second, end);
             }
@@ -396,30 +418,32 @@ void PropertyPythonObject::Restore(Base::XMLReader& reader)
         catch (Py::Exception&) {
             Base::PyException e;  // extract the Python error text
             e.reportException();
-            this->object = Py::None();
+            self.object = Py::None();
             load_failed = true;
         }
 
-        aboutToSetValue();
+        self.aboutToSetValue();
         if (load_json) {
-            this->fromString(buffer);
+            self.fromString(buffer);
         }
         else if (load_pickle) {
-            this->loadPickle(buffer);
+            self.loadPickle(buffer);
         }
         else if (!load_failed) {
             Base::Console().warning(
                 "PropertyPythonObject::Restore: unsupported serialisation: %s\n",
                 buffer.c_str());
         }
-        restoreObject(reader);
-        hasSetValue();
+        self.restoreObject(reader);
+        self.hasSetValue();
     }
 }
 
 void PropertyPythonObject::SaveDocFile(Base::Writer& writer) const
 {
-    std::string buffer = this->toString();
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
+    std::string buffer = self.toString();
     for (char it : buffer) {
         writer.Stream().put(it);
     }
@@ -427,14 +451,16 @@ void PropertyPythonObject::SaveDocFile(Base::Writer& writer) const
 
 void PropertyPythonObject::RestoreDocFile(Base::Reader& reader)
 {
-    aboutToSetValue();
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
+    self.aboutToSetValue();
     std::string buffer;
     char ch {};
     while (reader.get(ch)) {
         buffer.push_back(ch);
     }
-    this->fromString(buffer);
-    hasSetValue();
+    self.fromString(buffer);
+    self.hasSetValue();
 }
 
 unsigned int PropertyPythonObject::getMemSize() const
@@ -444,18 +470,22 @@ unsigned int PropertyPythonObject::getMemSize() const
 
 Property* PropertyPythonObject::Copy() const
 {
+    auto& self = propGetterSelf<const App::PropertyPythonObject>(*this);
+
     PropertyPythonObject* p = new PropertyPythonObject();
     Base::PyGILStateLocker lock;
-    p->object = this->object;
+    p->object = self.object;
     return p;
 }
 
 void PropertyPythonObject::Paste(const Property& from)
 {
+    auto& self = propSetterSelf<App::PropertyPythonObject>(*this);
+
     if (from.is<PropertyPythonObject>()) {
         Base::PyGILStateLocker lock;
-        aboutToSetValue();
-        this->object = static_cast<const PropertyPythonObject&>(from).object;
-        hasSetValue();
+        self.aboutToSetValue();
+        self.object = static_cast<const PropertyPythonObject&>(from).object;
+        self.hasSetValue();
     }
 }
