@@ -224,7 +224,7 @@ struct ThisRefCollector: public cl::RecursiveASTVisitor<ThisRefCollector>
         Debug::out() << "  VisitCXXMemberCallExpr\n";
         Debug::out() << "    memberCall: " << Debug::toSourceText(memberCall, context) << "\n";
 
-        if (!memberCall || hasWriteToThisField) {
+        if (!memberCall) {
             return true;
         }
 
