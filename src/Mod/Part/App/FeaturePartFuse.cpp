@@ -143,8 +143,7 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
                     ? obj[0]->Label.getValue()
                     : "shape 1";
                 throw Base::CADKernelError(
-                    (std::string("'") + label + "' is a "
-                     + shapeTypeName(shape.getShape().ShapeType())
+                    (std::string("'") + label + "' is a " + shapeTypeName(shape.getShape().ShapeType())
                      + ", not a Solid. Boolean operations require Solid inputs.")
                         .c_str()
                 );

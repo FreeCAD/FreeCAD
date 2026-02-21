@@ -59,15 +59,24 @@ bool containsSolid(const TopoDS_Shape& shape)
 const char* shapeTypeName(TopAbs_ShapeEnum type)
 {
     switch (type) {
-        case TopAbs_COMPOUND:  return "Compound";
-        case TopAbs_COMPSOLID: return "CompSolid";
-        case TopAbs_SOLID:     return "Solid";
-        case TopAbs_SHELL:     return "Shell";
-        case TopAbs_FACE:      return "Face";
-        case TopAbs_WIRE:      return "Wire";
-        case TopAbs_EDGE:      return "Edge";
-        case TopAbs_VERTEX:    return "Vertex";
-        default:               return "Shape";
+        case TopAbs_COMPOUND:
+            return "Compound";
+        case TopAbs_COMPSOLID:
+            return "CompSolid";
+        case TopAbs_SOLID:
+            return "Solid";
+        case TopAbs_SHELL:
+            return "Shell";
+        case TopAbs_FACE:
+            return "Face";
+        case TopAbs_WIRE:
+            return "Wire";
+        case TopAbs_EDGE:
+            return "Edge";
+        case TopAbs_VERTEX:
+            return "Vertex";
+        default:
+            return "Shape";
     }
 }
 
