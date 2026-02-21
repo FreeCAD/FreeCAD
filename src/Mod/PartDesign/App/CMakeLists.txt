@@ -81,6 +81,8 @@ SET(FeaturesSketchBased_SRCS
     FeaturePad.h
     FeaturePocket.cpp
     FeaturePocket.h
+    FeatureRevolved.cpp
+    FeatureRevolved.h
     FeatureRevolution.cpp
     FeatureRevolution.h
     FeatureGroove.cpp
