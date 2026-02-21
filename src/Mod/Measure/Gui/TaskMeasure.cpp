@@ -47,6 +47,7 @@
 #include <QShortcut>
 #include <QToolTip>
 #include <QSignalBlocker>
+#include <QScrollBar>
 
 #include <Base/Quantity.h>
 #include <array>
@@ -89,8 +90,13 @@ QString extractUnitFromResultString(const QString& resultString)
         return QString::fromStdString(str.substr(lastSpace + 1));
     }
 
+    if (!str.empty() && (str.back() == '"' || str.back() == '\'')) {
+        return QString::fromStdString(std::string(1, str.back()));
+    }
+
     return QString();
 }
+
 }  // namespace
 
 TaskMeasure::TaskMeasure()
@@ -180,8 +186,18 @@ TaskMeasure::TaskMeasure()
 
 
     // Result widget
-    valueResult = new QLineEdit();
+    valueResult = new QPlainTextEdit();
     valueResult->setReadOnly(true);
+    valueResult->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    valueResult->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    valueResult->setLineWrapMode(QPlainTextEdit::NoWrap);
+    valueResult->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    QFontMetrics fm(valueResult->font());
+    int documentMargins = 8;
+    int singleLineHeight = fm.lineSpacing() + valueResult->contentsMargins().top()
+        + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    valueResult->setMaximumHeight(singleLineHeight * 5);
+    valueResult->setMinimumHeight(singleLineHeight);
 
     // Main layout
     QBoxLayout* layout = taskbox->groupLayout();
@@ -339,7 +355,8 @@ void TaskMeasure::tryUpdate()
         }
     }
 
-    valueResult->setText(QString::asprintf("-"));
+    valueResult->setPlainText(QString::asprintf("-"));
+    adjustResultEditorHeight();
 
     std::string mode = explicitMode ? modeSwitch->currentText().toStdString() : "";
 
@@ -451,18 +468,25 @@ void TaskMeasure::setUnitFromResultString()
     }
 
     QString resultString = _mMeasureObject->getResultString();
-    QString unitFromResult = extractUnitFromResultString(resultString);
+    QString unitFromResult = extractPreferredUnitFromResult(resultString);
+    QString normalizedUnitFromResult = normalizeUnit(unitFromResult);
 
     if (unitFromResult.isEmpty()) {
         return;
     }
 
-    int unitIndex = unitSwitch->findText(unitFromResult);
+    int unitIndex = -1;
+    for (int i = 0; i < unitSwitch->count(); ++i) {
+        if (normalizeUnit(unitSwitch->itemText(i)) == normalizedUnitFromResult) {
+            unitIndex = i;
+            break;
+        }
+    }
     if (unitIndex >= 0) {
         QSignalBlocker unitSwitchBlocker(unitSwitch);
         unitSwitch->setCurrentIndex(unitIndex);
 
-        mLastUnitSelection = unitFromResult;
+        mLastUnitSelection = unitSwitch->itemText(unitIndex);
     }
 }
 
@@ -475,12 +499,24 @@ void TaskMeasure::updateResultWithUnit()
     QString resultString = _mMeasureObject->getResultString();
     QString currentUnit = unitSwitch->currentText();
 
-    if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
-        Base::Quantity resultQty = Base::Quantity::parse(resultString.toStdString());
-        // Parse unit string like "1 mm" to get the target quantity
-        Base::Quantity targetUnit = Base::Quantity::parse(
-            (QLatin1String("1 ") + currentUnit).toStdString()
-        );
+    if (currentUnit != QLatin1String("-") && !resultString.isEmpty() && resultString.contains('\n')) {
+        QString converted = convertCoordinateResultUnits(resultString, currentUnit);
+        valueResult->setPlainText(converted);
+    }
+    else if (currentUnit != QLatin1String("-") && !resultString.isEmpty()) {
+        QString valuePart;
+        QString unitPart;
+        splitResultValueAndUnit(resultString, currentUnit, valuePart, unitPart);
+
+        Base::Quantity resultQty;
+        if (!buildQuantity(valuePart, unitPart, resultQty)) {
+            valueResult->setPlainText(resultString);
+            adjustResultEditorHeight();
+            return;
+        }
+
+        QString normalizedCurrentUnit = normalizeUnit(currentUnit);
+        Base::Quantity targetUnit(1.0, normalizedCurrentUnit.toStdString());
         double convertedValue = resultQty.getValueAs(targetUnit);
 
         QString formattedValue;
@@ -492,12 +528,176 @@ void TaskMeasure::updateResultWithUnit()
             formattedValue = QString::number(convertedValue, 'f', 4);
         }
 
-        QString formattedResult = formattedValue + QLatin1String(" ") + currentUnit;
-        valueResult->setText(formattedResult);
+        QString formattedResult = formattedValue + " " + currentUnit;
+        valueResult->setPlainText(formattedResult);
     }
     else {
-        valueResult->setText(resultString);
+        valueResult->setPlainText(resultString);
     }
+
+    adjustResultEditorHeight();
+}
+
+void TaskMeasure::adjustResultEditorHeight()
+{
+    QFontMetrics fm(valueResult->font());
+    int lineCount = valueResult->document()->blockCount();
+    int documentMargins = 8;
+    int contentHeight = fm.lineSpacing() * lineCount + valueResult->contentsMargins().top()
+        + valueResult->contentsMargins().bottom() + (valueResult->frameWidth() * 2) + documentMargins;
+    valueResult->setFixedHeight(contentHeight);
+}
+
+QString TaskMeasure::normalizeUnit(const QString& unit) const
+{
+    QString normalized = unit;
+    normalized.replace(QChar(0x00B2), QLatin1String("^2"));
+    normalized.replace(QChar(0x00B3), QLatin1String("^3"));
+    normalized.replace(QChar(0x00B0), QLatin1String("deg"));
+    if (normalized == QLatin1String("\"")) {
+        normalized = QLatin1String("in");
+    }
+    else if (normalized == QLatin1String("'")) {
+        normalized = QLatin1String("ft");
+    }
+    return normalized;
+}
+
+bool TaskMeasure::buildQuantity(const QString& valueText, const QString& unitText, Base::Quantity& out) const
+{
+    bool ok = false;
+    double value = valueText.toDouble(&ok);
+    if (!ok) {
+        return false;
+    }
+    out = Base::Quantity(value, normalizeUnit(unitText).toStdString());
+    return true;
+}
+
+bool TaskMeasure::splitResultValueAndUnit(
+    const QString& resultString,
+    const QString& fallbackUnit,
+    QString& valuePart,
+    QString& unitPart
+) const
+{
+    valuePart = resultString;
+    unitPart = fallbackUnit;
+
+    int lastSpace = resultString.lastIndexOf(' ');
+    if (lastSpace >= 0 && lastSpace < resultString.size() - 1) {
+        valuePart = resultString.left(lastSpace).trimmed();
+        unitPart = resultString.mid(lastSpace + 1).trimmed();
+    }
+    else if (!resultString.isEmpty()) {
+        QChar lastChar = resultString.back();
+        if (lastChar == QLatin1Char('"') || lastChar == QLatin1Char('\'')) {
+            valuePart = resultString.left(resultString.size() - 1).trimmed();
+            unitPart = QString(lastChar);
+        }
+        else if (lastChar == QChar(0x00B0)) {
+            valuePart = resultString.left(resultString.size() - 1).trimmed();
+            unitPart = QLatin1String("deg");
+        }
+        else if (resultString.endsWith(QLatin1String("deg"))) {
+            valuePart = resultString.left(resultString.size() - 3).trimmed();
+            unitPart = QLatin1String("deg");
+        }
+        else if (resultString.endsWith(QLatin1String("rad"))) {
+            valuePart = resultString.left(resultString.size() - 3).trimmed();
+            unitPart = QLatin1String("rad");
+        }
+        else if (resultString.endsWith(QLatin1String("gon"))) {
+            valuePart = resultString.left(resultString.size() - 3).trimmed();
+            unitPart = QLatin1String("gon");
+        }
+    }
+
+    return !valuePart.isEmpty();
+}
+
+bool TaskMeasure::parseCoordinateLine(
+    const QString& line,
+    QString& axisLabel,
+    QString& valueText,
+    QString& unitText
+) const
+{
+    QString trimmed = line.trimmed();
+    int colonIndex = trimmed.indexOf(':');
+    if (colonIndex <= 0) {
+        return false;
+    }
+
+    axisLabel = trimmed.left(colonIndex + 1).trimmed();
+    QString valueAndUnit = trimmed.mid(colonIndex + 1).trimmed();
+    if (valueAndUnit.isEmpty()) {
+        return false;
+    }
+
+    if (!splitResultValueAndUnit(valueAndUnit, QString(), valueText, unitText)) {
+        return false;
+    }
+
+    return !valueText.isEmpty() && !unitText.isEmpty();
+}
+
+QString TaskMeasure::extractPreferredUnitFromResult(const QString& resultString) const
+{
+    if (resultString.contains('\n')) {
+        const auto lines = resultString.split('\n', Qt::SkipEmptyParts);
+        for (const auto& line : lines) {
+            QString axisLabel;
+            QString valueText;
+            QString unitText;
+            if (parseCoordinateLine(line, axisLabel, valueText, unitText)) {
+                return unitText;
+            }
+        }
+    }
+
+    return extractUnitFromResultString(resultString);
+}
+
+QString TaskMeasure::convertCoordinateResultUnits(
+    const QString& resultString,
+    const QString& targetUnit
+) const
+{
+    Base::Quantity targetQty(1.0, normalizeUnit(targetUnit).toStdString());
+    QStringList outputLines;
+
+    const auto lines = resultString.split('\n', Qt::KeepEmptyParts);
+    for (const auto& line : lines) {
+        QString axisLabel;
+        QString valueText;
+        QString unitText;
+        if (!parseCoordinateLine(line, axisLabel, valueText, unitText)) {
+            if (line.trimmed() != QLatin1String("COM")) {
+                outputLines.append(line);
+            }
+            continue;
+        }
+
+        Base::Quantity sourceQty;
+        if (!buildQuantity(valueText, unitText, sourceQty)) {
+            outputLines.append(line);
+            continue;
+        }
+
+        double convertedValue = sourceQty.getValueAs(targetQty);
+        QString formattedValue;
+        if (std::abs(convertedValue) < 1.0 && convertedValue != 0.0) {
+            formattedValue = QString::number(convertedValue, 'g', 4);
+        }
+        else {
+            formattedValue = QString::number(convertedValue, 'f', 4);
+        }
+
+        outputLines.append(axisLabel + " " + formattedValue + " " + targetUnit);
+    }
+
+    return outputLines.join('\n');
 }
 
 
@@ -518,11 +718,37 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 
     // Set the ShowDelta Property if it exists on the measurements view object
     auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowDelta");
-    setDeltaPossible(prop != nullptr);
     if (prop) {
         prop->setValue(showDelta->isChecked());
         viewObject->update(prop);
     }
+
+    setTreeVisibility(measure, false);
+}
+
+void TaskMeasure::setTreeVisibility(Measure::MeasureBase* measure, bool visible)
+{
+    if (!measure) {
+        return;
+    }
+
+    Gui::Document* guiDoc = Gui::Application::Instance->activeDocument();
+    if (!guiDoc) {
+        return;
+    }
+
+    Gui::ViewProvider* viewObject = guiDoc->getViewProvider(measure);
+    if (!viewObject) {
+        return;
+    }
+
+    auto* prop = viewObject->getPropertyByName<App::PropertyBool>("ShowInTree");
+    if (!prop) {
+        return;
+    }
+
+    prop->setValue(visible);
+    viewObject->update(prop);
 }
 
 
@@ -569,6 +795,7 @@ bool TaskMeasure::apply()
 
 bool TaskMeasure::apply(bool reset)
 {
+    setTreeVisibility(_mMeasureObject, true);
     ensureGroup(_mMeasureObject);
     _mMeasureObject = nullptr;
     if (reset) {

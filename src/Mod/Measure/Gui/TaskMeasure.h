@@ -27,7 +27,7 @@
 #include <qcolumnview.h>
 #include <QString>
 #include <QComboBox>
-#include <QLineEdit>
+#include <QPlainTextEdit>
 #include <QCheckBox>
 
 #include <App/Application.h>
@@ -84,7 +84,7 @@ private:
 
     Measure::MeasureBase* _mMeasureObject = nullptr;
 
-    QLineEdit* valueResult {nullptr};
+    QPlainTextEdit* valueResult {nullptr};
     QComboBox* modeSwitch {nullptr};
     QComboBox* unitSwitch {nullptr};
     QCheckBox* showDelta {nullptr};
@@ -107,8 +107,26 @@ private:
     void createObject(const App::MeasureType* measureType);
     void ensureGroup(Measure::MeasureBase* measurement);
     void setDeltaPossible(bool possible);
+    void setTreeVisibility(Measure::MeasureBase* measure, bool visible);
     void initViewObject(Measure::MeasureBase* measure);
     void updateResultWithUnit();
+    QString normalizeUnit(const QString& unit) const;
+    bool buildQuantity(const QString& valueText, const QString& unitText, Base::Quantity& out) const;
+    bool splitResultValueAndUnit(
+        const QString& resultString,
+        const QString& fallbackUnit,
+        QString& valuePart,
+        QString& unitPart
+    ) const;
+    bool parseCoordinateLine(
+        const QString& line,
+        QString& axisLabel,
+        QString& valueText,
+        QString& unitText
+    ) const;
+    QString extractPreferredUnitFromResult(const QString& resultString) const;
+    QString convertCoordinateResultUnits(const QString& resultString, const QString& targetUnit) const;
+    void adjustResultEditorHeight();
 
     // Stores if the mode is explicitly set by the user or implicitly through the selection
     bool explicitMode = false;

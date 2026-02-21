@@ -118,7 +118,21 @@ class MeasureCOM(MeasureBasePython):
         obj.Element = (o, item["subName"])
 
     def getResultString(self, obj):
-        values = [Units.Quantity(v, Units.Length).getUserPreferred()[0] for v in obj.Result]
+        preferred = Units.Quantity(obj.Result[0], Units.Length).getUserPreferred()
+        unit = preferred[2]
+        if unit == '"':
+            unit = "in"
+        elif unit == "'":
+            unit = "ft"
+        decimals = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt(
+            "Decimals", 2
+        )
+
+        values = []
+        for component in obj.Result:
+            converted = Units.Quantity(component, Units.Length).getValueAs(unit).Value
+            values.append(f"{converted:.{decimals}f} {unit}")
+
         return "COM\nX: {}\nY: {}\nZ: {}".format(*values)
 
     def execute(self, obj):

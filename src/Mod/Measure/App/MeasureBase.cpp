@@ -25,6 +25,8 @@
 
 #include <App/PropertyGeo.h>
 #include <Base/PlacementPy.h>
+#include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 #include <App/FeaturePythonPyImp.h>
 #include <App/DocumentObjectPy.h>
 
@@ -183,9 +185,16 @@ QString MeasureBase::getResultString()
     }
 
     if (prop->isDerivedFrom<App::PropertyQuantity>()) {
-        return QString::fromStdString(
-            static_cast<App::PropertyQuantity*>(prop)->getQuantityValue().getUserString()
-        );
+        auto quantity = static_cast<App::PropertyQuantity*>(prop)->getQuantityValue();
+        if (quantity.getUnit() == Base::Unit::Length) {
+            std::string strUnit = Base::UnitsApi::getBasicLengthUnit();
+            Base::Quantity targetUnit(1.0, strUnit);
+            double converted = quantity.getValueAs(targetUnit);
+            int precision = Base::UnitsApi::getDecimals();
+            QString unit = QString::fromStdString(strUnit);
+            return QString::number(converted, 'f', precision) + QLatin1String(" ") + unit;
+        }
+        return QString::fromStdString(quantity.getUserString());
     }
 
 

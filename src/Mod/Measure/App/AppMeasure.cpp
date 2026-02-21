@@ -25,6 +25,9 @@
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <App/MeasureManager.h>
+#include <App/Application.h>
+#include <App/Document.h>
+#include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 
@@ -70,6 +73,72 @@ public:
 private:
 };
 
+namespace
+{
+constexpr const char* measurementGroupName = "Measurements";
+
+void deleteGroupIfEmpty(App::Document* doc)
+{
+    if (!doc) {
+        return;
+    }
+
+    auto* group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject(measurementGroupName));
+    if (!group) {
+        return;
+    }
+
+    if (group->countObjectsOfType(Measure::MeasureBase::getClassTypeId()) == 0) {
+        doc->removeObject(group->getNameInDocument());
+    }
+}
+
+std::vector<std::unique_ptr<App::DocumentWeakPtrT>>& pendingCleanup()
+{
+    static std::vector<std::unique_ptr<App::DocumentWeakPtrT>> pending;
+    return pending;
+}
+
+void initMeasureGroupCleanup()
+{
+    static bool initialized = false;
+    if (initialized) {
+        return;
+    }
+    initialized = true;
+
+    static fastsignals::scoped_connection deletedConnection
+        = App::GetApplication().signalDeletedObject.connect([](const App::DocumentObject& obj) {
+              if (!obj.isDerivedFrom(Measure::MeasureBase::getClassTypeId())) {
+                  return;
+              }
+
+              auto* doc = obj.getDocument();
+              if (!doc) {
+                  return;
+              }
+
+              if (App::GetApplication().getActiveTransaction() != nullptr) {
+                  pendingCleanup().emplace_back(std::make_unique<App::DocumentWeakPtrT>(doc));
+                  return;
+              }
+
+              deleteGroupIfEmpty(doc);
+          });
+
+    static fastsignals::scoped_connection closeTransactionConnection
+        = App::GetApplication().signalCloseTransaction.connect([](bool) {
+              auto& pending = pendingCleanup();
+              for (auto& doc : pending) {
+                  if (doc && !doc->expired()) {
+                      deleteGroupIfEmpty(**doc);
+                  }
+              }
+              pending.clear();
+          });
+}
+}  // namespace
+
 PyObject* initModule()
 {
     return Base::Interpreter().addModule(new Module);
@@ -109,6 +178,8 @@ PyMOD_INIT_FUNC(Measure)
     Measure::MeasureArea ::init();
     Measure::MeasureDiameter ::init();
     Measure::MeasureRadius ::init();
+
+    initMeasureGroupCleanup();
 
     // Add fundamental umf Measure Types
 

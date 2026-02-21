@@ -58,6 +58,9 @@
 #include <Mod/Measure/App/Preferences.h>
 
 #include "ViewProviderMeasureDistance.h"
+
+#include <Base/Quantity.h>
+#include <Base/UnitsApi.h>
 #include "Gui/Application.h"
 #include <Gui/Command.h>
 #include "Gui/Document.h"
@@ -465,6 +468,16 @@ void ViewProviderMeasureDistance::redrawAnnotation()
         return;
     }
 
+    const std::string strUnit = Base::UnitsApi::getBasicLengthUnit();
+    Base::Quantity targetUnit(1.0, strUnit);
+    const int precision = Base::UnitsApi::getDecimals();
+    auto formatDistance = [&](double value) {
+        Base::Quantity source(value, "mm");
+        double converted = source.getValueAs(targetUnit);
+        QString unit = QString::fromStdString(strUnit);
+        return QString::number(converted, 'f', precision) + " " + unit;
+    };
+
     auto prop1 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position1"));
     auto prop2 = freecad_cast<App::PropertyVector*>(pcObject->getPropertyByName("Position2"));
 
@@ -482,26 +495,26 @@ void ViewProviderMeasureDistance::redrawAnnotation()
     fieldDistance = (vec2 - vec1).Length();
 
     auto propDistance = dynamic_cast<App::PropertyDistance*>(pcObject->getPropertyByName("Distance"));
-    setLabelValue(QString::fromStdString(propDistance->getQuantityValue().getUserString()));
+    setLabelValue(formatDistance(propDistance->getValue()));
 
     // Set delta distance
     auto propDistanceX = static_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceX")
     );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(0))
-        ->text.setValue(("Δx: " + propDistanceX->getQuantityValue().getUserString()).c_str());
+        ->text.setValue(("Δx: " + formatDistance(propDistanceX->getValue())).toStdString().c_str());
 
     auto propDistanceY = static_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceY")
     );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(1))
-        ->text.setValue(("Δy: " + propDistanceY->getQuantityValue().getUserString()).c_str());
+        ->text.setValue(("Δy: " + formatDistance(propDistanceY->getValue())).toStdString().c_str());
 
     auto propDistanceZ = static_cast<App::PropertyDistance*>(
         getMeasureObject()->getPropertyByName("DistanceZ")
     );
     static_cast<DimensionLinear*>(pDeltaDimensionSwitch->getChild(2))
-        ->text.setValue(("Δz: " + propDistanceZ->getQuantityValue().getUserString()).c_str());
+        ->text.setValue(("Δz: " + formatDistance(propDistanceZ->getValue())).toStdString().c_str());
 
     // Set matrix
     SbMatrix matrix = getMatrix();
