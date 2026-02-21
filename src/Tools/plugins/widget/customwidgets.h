@@ -26,6 +26,7 @@
 #ifndef GUI_CUSTOMWIDGETS_H
 #define GUI_CUSTOMWIDGETS_H
 
+#include <QAbstractScrollArea>
 #include <QButtonGroup>
 #include <QCheckBox>
 #include <QComboBox>
@@ -920,6 +921,64 @@ public:
 private:
     QByteArray m_sPrefName;
     QByteArray m_sPrefGrp;
+};
+
+// ------------------------------------------------------------------------------
+
+class TagWidget: public QAbstractScrollArea
+{
+    Q_OBJECT
+
+    Q_PROPERTY(std::vector<QString> tags READ getTags WRITE setTags RESET clear)
+    Q_PROPERTY(bool readOnly MEMBER _readOnly WRITE setReadOnly)
+    Q_PROPERTY(bool unique MEMBER _uniqueTagsOnly WRITE setUnique)
+    Q_PROPERTY(
+        bool restoreCursorPositionOnFocusClick MEMBER _restoreCursorPositionOnFocusClick WRITE
+            setRestoreCursorPositionOnFocusClick
+    )
+    Q_PROPERTY(QMargins pillThickness MEMBER _pillThickness WRITE setPillThickness)
+    Q_PROPERTY(int pillHorizontalSpacing MEMBER _pillHorizontalSpacing WRITE setPillHorizontalSpacing)
+    Q_PROPERTY(int pillVerticalSpacing MEMBER _pillVerticalSpacing WRITE setPillVerticalSpacing)
+    Q_PROPERTY(qreal tagCrossSize MEMBER _tagCrossSize WRITE setTagCrossSize)
+    Q_PROPERTY(int tagCrossSpacing MEMBER _tagCrossSpacing WRITE setTagCrossSpacing)
+    Q_PROPERTY(qreal roundingXRadius MEMBER _roundingXRadius WRITE setRoundingXRadius)
+    Q_PROPERTY(qreal roundingYRadius MEMBER _roundingYRadius WRITE setRoundingYRadius)
+    Q_PROPERTY(QColor tagColor MEMBER _tagColor WRITE setTagColor)
+
+public:
+    TagWidget(QWidget* parent = 0);
+    virtual ~TagWidget();
+
+    void setTags(std::vector<QString> const& tags);
+    std::vector<QString> getTags() const;
+    void clear();
+
+    void setReadOnly(bool readOnly);
+    void setUnique(bool unique);
+    void setRestoreCursorPositionOnFocusClick(bool restore);
+
+    void setPillThickness(const QMargins& thickness);
+    void setPillHorizontalSpacing(int spacing);
+    void setPillVerticalSpacing(int spacing);
+    void setTagCrossSize(qreal size);
+    void setTagCrossSpacing(int spacing);
+    void setRoundingXRadius(qreal radius);
+    void setRoundingYRadius(qreal radius);
+    void setTagColor(const QColor& color);
+
+private:
+    std::vector<QString> m_tags;
+    bool _restoreCursorPositionOnFocusClick {false};
+    bool _readOnly {false};
+    bool _uniqueTagsOnly {true};
+    QMargins _pillThickness = {7, 7, 8, 7};
+    int _pillHorizontalSpacing = 7;
+    int _pillVerticalSpacing = 2;
+    qreal _tagCrossSize = 8;
+    int _tagCrossSpacing = 3;
+    qreal _roundingXRadius = 5;
+    qreal _roundingYRadius = 5;
+    QColor _tagColor {255, 164, 100, 100};
 };
 }  // namespace Gui
 

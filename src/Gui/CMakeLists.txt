@@ -1227,6 +1227,7 @@ SET(Widget_CPP_SRCS
     SpinBox.cpp
     SplashScreen.cpp
     PythonWrapper.cpp
+    TagWidget.cpp
     UiLoader.cpp
     WidgetFactory.cpp
     Widgets.cpp
@@ -1254,6 +1255,7 @@ SET(Widget_HPP_SRCS
     SplashScreen.h
     PythonWrapper.h
     UiLoader.h
+    TagWidget.h
     WidgetFactory.h
     Widgets.h
     Window.h
