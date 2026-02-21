@@ -291,13 +291,6 @@ QWidget* PropertyItemDelegate::createEditor(
     }
 
     auto createEditor = [this, childItem, parent]() {
-        // Can't use a terniary here because the lambdas have different types.
-        if (qobject_cast<PropertyBoolItem*>(childItem)) {
-            // Boolean properties use a checkbox that is basically artificial
-            // (it is not rendered).  Therefore, the callback is handled in
-            // eventFilter()
-            return childItem->createEditor(parent, []() noexcept {});
-        }
         return childItem->createEditor(parent, [this]() {
             const_cast<PropertyItemDelegate*>(this)->valueChanged();  // NOLINT
         });
@@ -330,7 +323,7 @@ QWidget* PropertyItemDelegate::createEditor(
     if (editor && childItem->isReadOnly()) {
         editor->setDisabled(true);
     }
-    else if (editor /*&& this->pressed*/) {
+    else if (editor) {
         // We changed the way editor is activated in PropertyEditor (in response
         // of signal activated and clicked), so now we should grab focus
         // regardless of "pressed" or not (e.g. when activated by keyboard
@@ -357,6 +350,7 @@ void PropertyItemDelegate::valueChanged()
     if (propertyEditor) {
         Base::FlagToggler<> flag(changed);
         Q_EMIT commitData(propertyEditor);
+        // Close editor for combo boxes and checkboxes after committing
         if (qobject_cast<QComboBox*>(propertyEditor) || qobject_cast<QCheckBox*>(propertyEditor)) {
             Q_EMIT closeEditor(propertyEditor);
             return;
