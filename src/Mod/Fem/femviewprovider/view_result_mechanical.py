@@ -89,3 +89,19 @@ class VPResultMechanical(view_base_femconstraint.VPBaseFemConstraint):
             else:
                 return False
         return True
+
+    def onChanged(self, vp, prop):
+        if prop != "Visibility":
+            return
+
+        for child in self.claimChildren():
+            try:
+                if child is None:
+                    continue
+                childViewObject = getattr(child, "ViewObject", None)
+                if childViewObject is None:
+                    continue
+
+                child.ViewObject.Visibility = self.Object.ViewObject.Visibility
+            except Exception:
+                pass
