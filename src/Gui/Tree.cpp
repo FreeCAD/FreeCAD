@@ -847,22 +847,138 @@ const char* TreeWidget::getTreeName() const
     return myName.c_str();
 }
 
-// reimpelement to select only objects in the active document
 void TreeWidget::selectAll()
+{
+    auto& selection = Gui::Selection();
+
+    const QTreeWidgetItem* current = currentItem();
+    if (!current) {
+        auto selItems = selectedItems();
+        if (!selItems.isEmpty()) {
+            current = selItems.back();
+        }
+    }
+
+    if (!current) {
+        inSelectAllOperation = true;
+        clearSelectAllContext();
+        selectAllDocumentLevel();
+        inSelectAllOperation = false;
+        return;
+    }
+
+    // if we already did a group select, the second press expand to document
+    if (lastSelectAllParent != nullptr) {
+        inSelectAllOperation = true;
+        if (TreeParams::getRecordSelection()) {
+            selection.selStackPush();
+        }
+        selection.clearSelection();
+        selectAllDocumentLevel();
+        clearSelectAllContext();
+        inSelectAllOperation = false;
+        return;
+    }
+
+    bool isGrp = false;
+    if (current->type() == ObjectType) {
+        isGrp = (static_cast<const DocumentObjectItem*>(current)->isGroup() != 0);
+    }
+
+    const QTreeWidgetItem* parent = current->parent();
+
+    // if its not a group and got no parent, just select whole document immediately
+    if (!isGrp && (!parent || parent->type() == DocumentType)) {
+        inSelectAllOperation = true;
+        selectAllDocumentLevel();
+        lastSelectAllParent = nullptr;
+        inSelectAllOperation = false;
+        return;
+    }
+
+    const QTreeWidgetItem* targetNode = isGrp ? current : parent;
+
+    inSelectAllOperation = true;
+    lastSelectAllParent = targetNode;
+
+    if (TreeParams::getRecordSelection()) {
+        selection.selStackPush();
+    }
+    selection.clearSelection();
+
+    // if current item is a group, we gotta make sure its selected along with all childs
+    if (isGrp) {
+        const auto* vp = static_cast<const DocumentObjectItem*>(current)->object();
+        if (vp && vp->isSelectable()) {
+            const auto* obj = vp->getObject();
+            if (obj && obj->getDocument()) {
+                selection.addSelection(obj->getDocument()->getName(), obj->getNameInDocument());
+            }
+        }
+    }
+
+    selectGroupItems(targetNode, false);
+
+    inSelectAllOperation = false;
+}
+
+void TreeWidget::selectGroupItems(const QTreeWidgetItem* group, bool recursive)
+{
+    auto& selection = Gui::Selection();
+    if (!group) {
+        return;
+    }
+
+    const int childCount = group->childCount();
+    for (int i = 0; i < childCount; ++i) {
+        QTreeWidgetItem* child = group->child(i);
+        if (child->type() != TreeWidget::ObjectType) {
+            continue;
+        }
+
+        const auto* childItem = static_cast<DocumentObjectItem*>(child);
+        const auto* vp = childItem->object();
+        if (!vp || !vp->isSelectable()) {
+            continue;
+        }
+
+        const auto* obj = vp->getObject();
+        if (!obj || !obj->getDocument()) {
+            continue;
+        }
+
+        selection.addSelection(obj->getDocument()->getName(), obj->getNameInDocument());
+
+        if (recursive && child->childCount() > 0) {
+            selectGroupItems(child, true);
+        }
+    }
+}
+
+void TreeWidget::selectAllDocumentLevel()
 {
     auto gdoc = Application::Instance->getDocument(App::GetApplication().getActiveDocument());
     if (!gdoc) {
         return;
     }
+
     auto itDoc = DocumentMap.find(gdoc);
     if (itDoc == DocumentMap.end()) {
         return;
     }
+
+    auto& selection = Gui::Selection();
     if (TreeParams::getRecordSelection()) {
-        Gui::Selection().selStackPush();
+        selection.selStackPush();
     }
-    Gui::Selection().clearSelection();
-    Gui::Selection().setSelection(gdoc->getDocument()->getName(), gdoc->getDocument()->getObjects());
+    selection.clearSelection();
+    selection.setSelection(gdoc->getDocument()->getName(), gdoc->getDocument()->getObjects());
+}
+
+
+void TreeWidget::clearSelectAllContext()
+{
+    lastSelectAllParent = nullptr;
 }
 
 bool TreeWidget::isObjectShowable(App::DocumentObject* obj)
@@ -3885,6 +4001,10 @@ void TreeWidget::onItemSelectionChanged()
     }
 
     _LastSelectedTreeWidget = this;
+
+    if (!inSelectAllOperation && lastSelectAllParent) {
+        clearSelectAllContext();
+    }
 
     // block tmp. the connection to avoid to notify us ourself
     bool lock = this->blockSelection(true);
