@@ -58,6 +58,7 @@ ViewProviderViewSection::ViewProviderViewSection()
 {
     static const char *fgroup = "Faces";
     static const char *hgroup = "Surface Hatch";
+    static const char *lgroup = "Section Line";
     sPixmap = "TechDraw_TreeSection";
 
     ADD_PROPERTY_TYPE(CutSurfaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
@@ -76,6 +77,13 @@ ViewProviderViewSection::ViewProviderViewSection()
 
     ADD_PROPERTY_TYPE(WeightPattern, (0.1), hgroup, App::Prop_None, "GeomHatch pattern line thickness");
 
+    ADD_PROPERTY_TYPE(SectionLineFont, (Preferences::labelFont().c_str()),
+                      lgroup, App::Prop_None, "The name of the font to use for the section line");
+    ADD_PROPERTY_TYPE(SectionLineFontsize, (Preferences::dimFontSizeMM()),
+                      lgroup, App::Prop_None, "Section line text size in units");
+    ADD_PROPERTY_TYPE(SectionLineArrowsize, (Preferences::dimArrowSize()),
+                      lgroup, App::Prop_None, "Section line arrow size in units");
+
     getParameters();
 
 }
@@ -91,7 +99,10 @@ void ViewProviderViewSection::onChanged(const App::Property* prop)
         prop == &HatchColor      ||
         prop == &GeomHatchColor      ||
         prop == &CutSurfaceColor ||
-        prop == &CutSurfaceTransparency) {
+        prop == &CutSurfaceTransparency ||
+        prop == &SectionLineFont ||
+        prop == &SectionLineFontsize ||
+        prop == &SectionLineArrowsize) {
         updateGraphic();
     }
 

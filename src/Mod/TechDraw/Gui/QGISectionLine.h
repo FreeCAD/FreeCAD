@@ -62,6 +62,8 @@ public:
     void setDirection(double xDir, double yDir);
     void setDirection(Base::Vector3d dir);
     void setArrowDirections(Base::Vector3d dir1, Base::Vector3d dir2);
+    void setArrowSize(double arrowSize);
+    void setFont(QFont f);
     void setFont(QFont f, double fsize);
     void setSectionColor(QColor c);
     void setPathMode(bool mode) { m_pathMode = mode; }

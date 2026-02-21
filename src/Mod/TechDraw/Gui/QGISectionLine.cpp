@@ -141,10 +141,10 @@ void QGISectionLine::makeArrows()
 void QGISectionLine::makeArrowsISO()
 {
     m_arrow1->setStyle(ArrowType::FILLED_ARROW);
-    m_arrow1->setSize(QGIArrow::getPrefArrowSize());
+    m_arrow1->setSize(m_arrowSize);
     m_arrow1->setPos(m_start);
     m_arrow2->setStyle(ArrowType::FILLED_ARROW);
-    m_arrow2->setSize(QGIArrow::getPrefArrowSize());
+    m_arrow2->setSize(m_arrowSize);
     m_arrow2->setPos(m_end);
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {
@@ -165,9 +165,9 @@ void QGISectionLine::makeArrowsISO()
 void QGISectionLine::makeArrowsTrad()
 {
     m_arrow1->setStyle(ArrowType::FILLED_ARROW);
-    m_arrow1->setSize(QGIArrow::getPrefArrowSize());
+    m_arrow1->setSize(m_arrowSize);
     m_arrow2->setStyle(ArrowType::FILLED_ARROW);
-    m_arrow2->setSize(QGIArrow::getPrefArrowSize());
+    m_arrow2->setSize(m_arrowSize);
 
     if (m_arrowMode == SINGLEDIRECTIONMODE) {
         double arrowRotation = getArrowRotation(m_arrowDir);
@@ -206,8 +206,10 @@ void QGISectionLine::makeSymbols()
 void QGISectionLine::makeSymbolsTrad()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
-    m_symFont.setPixelSize(fontSize);
+    if (m_symSize >= 0.0) {
+        int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
+        m_symFont.setPixelSize(fontSize);
+    }
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
@@ -236,8 +238,10 @@ void QGISectionLine::makeSymbolsTrad()
 void QGISectionLine::makeSymbolsISO()
 {
     prepareGeometryChange();
-    int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
-    m_symFont.setPixelSize(fontSize);
+    if (m_symSize >= 0.0) {
+        int fontSize = QGIView::exactFontSize(m_symFont.family().toStdString(), m_symSize);
+        m_symFont.setPixelSize(fontSize);
+    }
     m_symbol1->setFont(m_symFont);
     m_symbol1->setPlainText(QString::fromUtf8(m_symbol));
     m_symbol2->setFont(m_symFont);
@@ -292,7 +296,7 @@ void QGISectionLine::extensionEndsISO()
         offsetDir = normalizeQPointF(offsetDir);
 
         //draw from section line endpoint less arrow length
-        QPointF offsetStart = offsetDir * Rez::guiX(QGIArrow::getPrefArrowSize());
+        QPointF offsetStart = offsetDir * Rez::guiX(m_arrowSize);
         QPointF offsetEnd = m_extLen * offsetDir;
 
         m_beginExt1 = m_start + offsetStart;
@@ -303,14 +307,14 @@ void QGISectionLine::extensionEndsISO()
         //extension lines run in reverse of arrow direction from base of arrowhead for distance m_extLen
         QPointF offsetDir1(-m_arrowDir1.x, m_arrowDir1.y);      //reversed and inverted y
         offsetDir1 = normalizeQPointF(offsetDir1);
-        QPointF offsetStart1 =  offsetDir1 * Rez::guiX(QGIArrow::getPrefArrowSize());
+        QPointF offsetStart1 =  offsetDir1 * Rez::guiX(m_arrowSize);
         QPointF offsetEnd1 = m_extLen * offsetDir1;
         m_beginExt1 = m_start + offsetStart1;
         m_endExt1   = m_start + offsetStart1 + offsetEnd1;
 
         QPointF offsetDir2(-m_arrowDir2.x, m_arrowDir2.y);      //reversed and inverted y
         offsetDir2 = normalizeQPointF(offsetDir2);
-        QPointF offsetStart2 =  offsetDir2 * Rez::guiX(QGIArrow::getPrefArrowSize());
+        QPointF offsetStart2 =  offsetDir2 * Rez::guiX(m_arrowSize);
         QPointF offsetEnd2 = m_extLen * offsetDir2;
         m_beginExt2 = m_end + offsetStart2;
         m_endExt2   = m_end + offsetStart2 + offsetEnd2;
@@ -320,7 +324,7 @@ void QGISectionLine::extensionEndsISO()
 void QGISectionLine::makeChangePointMarks()
 {
 //    Base::Console().message("QGISL::makeChangePointMarks()\n");
-    double segmentLength = 0.50 * QGIArrow::getPrefArrowSize();
+    double segmentLength = 0.50 * m_arrowSize;
     QPen cPointPen;
     //TODO: this should really be 2.0 * thickLineWidth, but we only have one
     //width available (which should be 'thin', for the section line)
@@ -412,10 +416,21 @@ QPointF QGISectionLine::getArrowPosition(Base::Vector3d arrowDir, QPointF refPoi
     QPointF qArrowDir(arrowDir.x, -arrowDir.y);              //remember Y dir is flipped
     qArrowDir = normalizeQPointF(qArrowDir);
 
-    double offsetLength = m_extLen + Rez::guiX(QGIArrow::getPrefArrowSize());
+    double offsetLength = m_extLen + Rez::guiX(m_arrowSize);
     QPointF offsetVec = offsetLength * qArrowDir;
 
     return QPointF(refPoint + offsetVec);
+}
+
+void QGISectionLine::setArrowSize(double arrowSize)
+{
+    m_arrowSize = arrowSize;
+}
+
+void QGISectionLine::setFont(QFont f)
+{
+    m_symFont = f;
+    m_symSize = -1.0;
 }
 
 void QGISectionLine::setFont(QFont f, double fsize)
