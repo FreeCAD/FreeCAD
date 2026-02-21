@@ -63,7 +63,7 @@ private Q_SLOTS:
     void setCellData(QModelIndex index, QString str);
 
 private:
-    void containInView(App::CellAddress address);
+    void containSheetDataInView();
     void cellUpdated(App::CellAddress address);
     void rangeUpdated(const App::Range& range);
 

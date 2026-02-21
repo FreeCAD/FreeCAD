@@ -52,7 +52,7 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     , rows(1000)
     , cols(26)
 {
-    containInView(std::get<1>(sheet->getUsedRange()));
+    containSheetDataInView();
 
     // NOLINTBEGIN
     connections.emplace_back(
@@ -669,8 +669,9 @@ Qt::ItemFlags SheetModel::flags(const QModelIndex& /*index*/) const
     return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
 }
 
-void SheetModel::containInView(App::CellAddress address)
+void SheetModel::containSheetDataInView()
 {
+    CellAddress address = std::get<1>(sheet->getUsedRange());
     if (address.row() >= rows) {
         beginInsertRows(QModelIndex(), rows, address.row());
         rows = address.row() + 1;
@@ -685,17 +686,21 @@ void SheetModel::containInView(App::CellAddress address)
 
 void SheetModel::cellUpdated(CellAddress address)
 {
-    containInView(address);
-    QModelIndex i = index(address.row(), address.col());
-    Q_EMIT dataChanged(i, i);
+    containSheetDataInView();
+    if (address.row() < rows && address.col() < cols) {
+        QModelIndex i = index(address.row(), address.col());
+        Q_EMIT dataChanged(i, i);
+    }
 }
 
 void SheetModel::rangeUpdated(const Range& range)
 {
-    containInView(range.to());
-    QModelIndex i = index(range.from().row(), range.from().col());
-    QModelIndex j = index(range.to().row(), range.to().col());
-    Q_EMIT dataChanged(i, j);
+    containSheetDataInView();
+    if (range.from().row() < rows && range.from().col() < cols) {
+        QModelIndex i = index(range.from().row(), range.from().col());
+        QModelIndex j = index(range.to().row(), range.to().col());
+        Q_EMIT dataChanged(i, j);
+    }
 }
 
 #include "moc_SheetModel.cpp"
