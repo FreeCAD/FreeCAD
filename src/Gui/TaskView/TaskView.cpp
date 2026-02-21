@@ -43,6 +43,7 @@
 #include <Gui/OverlayManager.h>
 
 #include "TaskView.h"
+#include "QSint/actionpanel/actionpanel.h"
 #include "TaskDialog.h"
 #include "TaskEditControl.h"
 #include <Gui/Control.h>
@@ -67,44 +68,6 @@ TaskWidget::TaskWidget(QWidget* parent)
 
 TaskWidget::~TaskWidget() = default;
 
-//**************************************************************************
-//**************************************************************************
-// TaskGroup
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskGroup::TaskGroup(QWidget* parent)
-    : QSint::ActionBox(parent)
-{}
-
-TaskGroup::TaskGroup(const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(headerText, parent)
-{}
-
-TaskGroup::TaskGroup(const QPixmap& icon, const QString& headerText, QWidget* parent)
-    : QSint::ActionBox(icon, headerText, parent)
-{}
-
-TaskGroup::~TaskGroup() = default;
-
-void TaskGroup::actionEvent(QActionEvent* e)
-{
-    QAction* action = e->action();
-    switch (e->type()) {
-        case QEvent::ActionAdded: {
-            this->createItem(action);
-            break;
-        }
-        case QEvent::ActionChanged: {
-            break;
-        }
-        case QEvent::ActionRemoved: {
-            // cannot change anything
-            break;
-        }
-        default:
-            break;
-    }
-}
 
 //**************************************************************************
 //**************************************************************************
@@ -136,21 +99,6 @@ TaskBox::TaskBox(const QPixmap& icon, const QString& title, bool expandable, QWi
     // override vertical size policy because otherwise task dialogs
     // whose needsFullSpace() returns true won't take full space.
     myGroup->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-}
-
-QSize TaskBox::minimumSizeHint() const
-{
-    // ActionGroup returns a size of 200x100 which leads to problems
-    // when there are several task groups in a panel and the first
-    // one is collapsed. In this case the task panel doesn't expand to
-    // the actually required size and all the remaining groups are
-    // squeezed into the available space and thus the widgets in there
-    // often can't be used any more.
-    // To fix this problem minimumSizeHint() is implemented to again
-    // respect the layout's minimum size.
-    QSize s1 = QSint::ActionGroup::minimumSizeHint();
-    QSize s2 = QWidget::minimumSizeHint();
-    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 TaskBox::~TaskBox() = default;
@@ -213,7 +161,7 @@ void TaskBox::actionEvent(QActionEvent* e)
     switch (e->type()) {
         case QEvent::ActionAdded: {
             auto label = new QSint::ActionLabel(action, this);
-            this->addActionLabel(label, true, false);
+            myGroup->addActionLabel(label, true, false);
             break;
         }
         case QEvent::ActionChanged: {
@@ -226,32 +174,6 @@ void TaskBox::actionEvent(QActionEvent* e)
         default:
             break;
     }
-}
-
-//**************************************************************************
-//**************************************************************************
-// TaskPanel
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-TaskPanel::TaskPanel(QWidget* parent)
-    : QSint::ActionPanel(parent)
-{}
-
-TaskPanel::~TaskPanel() = default;
-
-QSize TaskPanel::minimumSizeHint() const
-{
-    // ActionPanel returns a size of 200x150 which leads to problems
-    // when there are several task groups in the panel and the first
-    // one is collapsed. In this case the task panel doesn't expand to
-    // the actually required size and all the remaining groups are
-    // squeezed into the available space and thus the widgets in there
-    // often can't be used any more.
-    // To fix this problem minimumSizeHint() is implemented to again
-    // respect the layout's minimum size.
-    QSize s1 = QSint::ActionPanel::minimumSizeHint();
-    QSize s2 = QWidget::minimumSizeHint();
-    return {qMax(s1.width(), s2.width()), qMax(s1.height(), s2.height())};
 }
 
 
@@ -280,7 +202,7 @@ TaskView::TaskView(QWidget* parent)
     dialogLayout->setSpacing(0);
     mainLayout->addLayout(dialogLayout, 1);
 
-    taskPanel = new TaskPanel(scrollArea);
+    taskPanel = new QSint::ActionPanel(scrollArea);
     QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
@@ -959,14 +881,13 @@ void TaskView::clicked(QAbstractButton* button)
 
 void TaskView::clearActionStyle()
 {
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())->clearActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->clearActionStyle();
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 
 void TaskView::restoreActionStyle()
 {
-    static_cast<QSint::ActionPanelScheme*>(QSint::ActionPanelScheme::defaultScheme())
-        ->restoreActionStyle();
+    QSint::ActionPanelScheme::defaultScheme()->restoreActionStyle();
     taskPanel->setScheme(QSint::ActionPanelScheme::defaultScheme());
 }
 

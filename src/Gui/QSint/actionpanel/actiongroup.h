@@ -31,15 +31,6 @@ class QSINT_EXPORT ActionGroup : public QWidget
 {
     Q_OBJECT
 
-    Q_PROPERTY(bool expandable READ isExpandable WRITE setExpandable NOTIFY expandableChanged)
-    Q_PROPERTY(bool header READ hasHeader WRITE setHeader NOTIFY headerChanged)
-    Q_PROPERTY(QString headerText READ headerText WRITE setHeaderText NOTIFY headerTextChanged)
-
-Q_SIGNALS:
-    void expandableChanged();
-    void headerChanged();
-    void headerTextChanged();
-
 
 public:
     /**
@@ -71,33 +62,6 @@ public:
     ~ActionGroup() override;
 
     /**
-     * @brief Creates and adds an action.
-     * @param action The QAction to add.
-     * @param addToLayout If `true` (default), adds the action to the group's layout.
-     * @param addStretch If `true` (default), aligns the ActionLabel to the left.
-     * @return The newly created ActionLabel.
-     */
-    ActionLabel* addAction(QAction *action, bool addToLayout = true, bool addStretch = true);
-
-    /**
-     * @brief Adds an existing ActionLabel.
-     * @param label The ActionLabel to add.
-     * @param addToLayout If `true` (default), adds the label to the group's layout.
-     * @param addStretch If `true` (default), aligns the ActionLabel to the left.
-     * @return The added ActionLabel.
-     */
-    ActionLabel* addActionLabel(ActionLabel *label, bool addToLayout = true, bool addStretch = true);
-
-    /**
-     * @brief Adds a widget to the group.
-     * @param widget The widget to add.
-     * @param addToLayout If `true` (default), adds the widget to the group's layout.
-     * @param addStretch If `true` (default), aligns the widget to the left.
-     * @return `true` if added successfully.
-     */
-    bool addWidget(QWidget *widget, bool addToLayout = true, bool addStretch = true);
-
-    /**
      * @brief Returns the group's layout.
      * @return The group's layout (QVBoxLayout by default).
      */
@@ -107,36 +71,6 @@ public:
      * @brief Set the style of the widgets
      */
     void setScheme(ActionPanelScheme *scheme);
-
-    /**
-     * @brief Checks if the group is expandable.
-     * @return `true` if the group is expandable, `false` otherwise.
-     */
-    bool isExpandable() const;
-
-    /**
-     * @brief Sets whether the group is expandable.
-     * @param expandable If `true`, the group can be expanded/collapsed.
-     */
-    void setExpandable(bool expandable);
-
-    /**
-     * @brief Checks if the group has a header.
-     * @return `true` if the group has a header, `false` otherwise.
-     */
-    bool hasHeader() const;
-
-    /**
-     * @brief Sets whether the group has a header.
-     * @param enable If `true`, the group will have a header.
-     */
-    void setHeader(bool enable);
-
-    /**
-     * @brief Returns the header text.
-     * @return The header text.
-     */
-    QString headerText() const;
 
     /**
      * @brief Sets the header text.

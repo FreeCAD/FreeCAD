@@ -538,7 +538,7 @@ TaskPanelView::TaskPanelView(QWidget *parent)
 
     // setup standalone ActionGroup
 
-    ui->ActionGroup1->setScheme(QSint::WinXPPanelScheme::defaultScheme());
+    ui->ActionGroup1->setScheme(QSint::ActionPanelScheme::defaultScheme());
 
     ui->ActionGroup1->addWidget(ui->rbDefaultScheme);
     ui->ActionGroup1->addWidget(ui->rbXPBlueScheme);
@@ -583,54 +583,6 @@ TaskPanelView::~TaskPanelView()
 void TaskPanelView::executeAction()
 {
     QMessageBox::about(0, QStringLiteral("Action clicked"), QStringLiteral("Do something here :)"));
-}
-
-void TaskPanelView::on_rbDefaultScheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::ActionPanelScheme::defaultScheme());
-#endif
-}
-
-void TaskPanelView::on_rbXPBlueScheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinXPPanelScheme::defaultScheme());
-#endif
-}
-
-void TaskPanelView::on_rbXPBlue2Scheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinXPPanelScheme2::defaultScheme());
-#endif
-}
-
-void TaskPanelView::on_rbVistaScheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::WinVistaPanelScheme::defaultScheme());
-#endif
-}
-
-void TaskPanelView::on_rbMacScheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::MacPanelScheme::defaultScheme());
-#endif
-}
-
-void TaskPanelView::on_rbAndroidScheme_toggled(bool b)
-{
-#if defined(QSINT_ACTIONPANEL)
-    if (b)
-        static_cast<QSint::ActionPanel *>(actionGroup)->setScheme(QSint::AndroidPanelScheme::defaultScheme());
-#endif
 }
 
 //#include "moc_TaskPanelView.cpp"

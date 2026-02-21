@@ -51,12 +51,6 @@ public:
     virtual ~TaskPanelView();
 
     void executeAction();
-    void on_rbDefaultScheme_toggled(bool b);
-    void on_rbXPBlueScheme_toggled(bool b);
-    void on_rbXPBlue2Scheme_toggled(bool b);
-    void on_rbVistaScheme_toggled(bool b);
-    void on_rbMacScheme_toggled(bool b);
-    void on_rbAndroidScheme_toggled(bool b);
 
 private:
     QWidget* actionGroup;
