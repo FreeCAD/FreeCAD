@@ -284,6 +284,7 @@ public:
      * literal into QT_TR_NOOP() for translatability.
      */
     std::string notAllowedReason;
+    ResolveMode resolveMode;
 };
 
 /** SelectionGateFilterExternal
@@ -415,10 +416,19 @@ public:
     void setPreselectCoord(float x, float y, float z);
     /// returns the present preselection
     const SelectionChanges& getPreselection() const;
-    /// add a SelectionGate to control what is selectable
-    void addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve = ResolveMode::OldStyleElement);
-    /// remove the active SelectionGate
-    void rmvSelectionGate();
+    /// add a SelectionGate to control what is selectable in a document's scope, by default the
+    /// active document is selected
+    // which is usually the intended behavior
+    void addSelectionGate(
+        Gui::SelectionGate* gate,
+        ResolveMode resolve = ResolveMode::OldStyleElement,
+        const char* pDocName = nullptr
+    );
+    /// remove the document's SelectionGate, by default the active document is selected, which is
+    /// usually the intended behavior
+    void rmvSelectionGate(const char* pDocName = nullptr);
+    /// remove the document's SelectionGate (assumes valid pointer)
+    void rmvSelectionGate(App::Document* doc);
 
     int disableCommandLog();
     int enableCommandLog(bool silent = false);
@@ -833,13 +843,15 @@ protected:
 
     static SelectionSingleton* _pcSingleton;
 
+    // each document can have at most 1 selection gate active
+    std::map<App::Document*, Gui::SelectionGate*> docSelectionGate;
+
+    // Preselection helpers - it's a mess
     std::string DocName;
     std::string FeatName;
     std::string SubName;
     float hx, hy, hz;
 
-    Gui::SelectionGate* ActiveGate;
-    ResolveMode gateResolve;
 
     int logDisabled = 0;
     bool logHasSelection = false;
