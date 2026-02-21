@@ -574,18 +574,14 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     setObjectName(propName);
 
     QString display;
-    bool upper = false;
+    // Prevent camel case splitting on numbers in Property Editor
     for (auto&& i : name) {
         if (i.isUpper() && !display.isEmpty()) {
-            // if there is a sequence of capital letters do not insert spaces
-            if (!upper) {
-                QChar last = display.at(display.length() - 1);
-                if (!last.isSpace()) {
-                    display += QLatin1String(" ");
-                }
+            QChar last = display.at(display.length() - 1);
+            if (last.isLower()) {
+                display += QLatin1String(" ");
             }
         }
-        upper = i.isUpper();
         display += i;
     }
 
