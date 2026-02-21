@@ -1123,11 +1123,22 @@ void TreeWidget::_updateStatus(bool delay)
 
 void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
 {
+    // get the current item
+    this->contextItem = itemAt(e->pos());
+    bool isDocItem = this->contextItem && this->contextItem->type() == DocumentType;
+    bool isObjItem = this->contextItem && this->contextItem->type() == ObjectType;
+
     // ask workbenches and view provider, ...
     MenuItem view;
     Gui::Application::Instance->setupContextMenu("Tree", &view);
 
-    view << "Std_Properties" << "Separator" << "Std_Expressions";
+    if (isDocItem) {
+        view << "Std_Expressions";
+    }
+    else {
+        view << "Std_Properties" << "Separator";
+    }
+
     Workbench::createLinkMenu(&view);
 
     QMenu contextMenu;
@@ -1139,19 +1150,16 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     connect(&subMenuGroup, &QActionGroup::triggered, this, &TreeWidget::onActivateDocument);
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
 
-    // get the current item
-    this->contextItem = itemAt(e->pos());
-
-    if (this->contextItem && this->contextItem->type() == DocumentType) {
+    bool showHidden = false;
+    if (isDocItem) {
         auto docitem = static_cast<DocumentItem*>(this->contextItem);
         App::Document* doc = docitem->document()->getDocument();
+        showHidden = docitem->showHidden();
 
         // It's better to let user decide whether and how to activate
         // the current document, such as by double-clicking.
         // App::GetApplication().setActiveDocument(doc);
 
-        showHiddenAction->setChecked(docitem->showHidden());
-        contextMenu.addAction(this->showHiddenAction);
         contextMenu.addAction(this->openFileLocationAction);
         contextMenu.addAction(this->searchObjectsAction);
         contextMenu.addAction(this->closeDocAction);
@@ -1186,25 +1194,46 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
             contextMenu.addAction(this->createGroupAction);
         }
         contextMenu.addSeparator();
+
+        // add a submenu to active a document if two or more exist
+        std::vector<App::Document*> docs = App::GetApplication().getDocuments();
+        if (docs.size() >= 2) {
+            contextMenu.addSeparator();
+            App::Document* activeDoc = App::GetApplication().getActiveDocument();
+            subMenu.setTitle(tr("Activate Document"));
+            contextMenu.addMenu(&subMenu);
+            QAction* active = nullptr;
+            for (auto it = docs.begin(); it != docs.end(); ++it) {
+                QString label = QString::fromUtf8((*it)->Label.getValue());
+                QAction* action = subMenuGroup.addAction(label);
+                action->setCheckable(true);
+                action->setStatusTip(tr("Activate document %1").arg(label));
+                action->setData(QByteArray((*it)->getName()));
+                if (*it == activeDoc) {
+                    active = action;
+                }
+            }
+
+            if (active) {
+                active->setChecked(true);
+            }
+            subMenu.addActions(subMenuGroup.actions());
+        }
     }
-    else if (this->contextItem && this->contextItem->type() == ObjectType) {
+    else if (isObjItem) {
         auto objitem = static_cast<DocumentObjectItem*>(this->contextItem);
+        App::Document* doc = objitem->object()->getObject()->getDocument();
+        showHidden = doc->ShowHidden.getValue();
 
         // check that the selection is not across several documents
         bool acrossDocuments = false;
         auto SelectedObjectsList = Selection().getCompleteSelection();
-        // get the object's document as reference
-        App::Document* doc = objitem->object()->getObject()->getDocument();
         for (auto it = SelectedObjectsList.begin(); it != SelectedObjectsList.end(); ++it) {
             if ((*it).pDoc != doc) {
                 acrossDocuments = true;
                 break;
             }
         }
-
-        showHiddenAction->setChecked(doc->ShowHidden.getValue());
-        contextMenu.addAction(this->showHiddenAction);
-        contextMenu.addAction(this->toggleVisibilityInTreeAction);
 
         if (!acrossDocuments) {  // is only sensible for selections within one document
             if (objitem->object()->getObject()->isDerivedFrom<App::DocumentObjectGroup>()) {
@@ -1246,37 +1275,18 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         }
     }
 
-
-    // add a submenu to active a document if two or more exist
-    std::vector<App::Document*> docs = App::GetApplication().getDocuments();
-    if (docs.size() >= 2) {
-        contextMenu.addSeparator();
-        App::Document* activeDoc = App::GetApplication().getActiveDocument();
-        subMenu.setTitle(tr("Activate Document"));
-        contextMenu.addMenu(&subMenu);
-        QAction* active = nullptr;
-        for (auto it = docs.begin(); it != docs.end(); ++it) {
-            QString label = QString::fromUtf8((*it)->Label.getValue());
-            QAction* action = subMenuGroup.addAction(label);
-            action->setCheckable(true);
-            action->setStatusTip(tr("Activates document %1").arg(label));
-            action->setData(QByteArray((*it)->getName()));
-            if (*it == activeDoc) {
-                active = action;
-            }
-        }
-
-        if (active) {
-            active->setChecked(true);
-        }
-        subMenu.addActions(subMenuGroup.actions());
-    }
-
     // add a submenu to present the settings of the tree.
     QMenu settingsMenu;
-    settingsMenu.setTitle(tr("Tree Settings"));
+    settingsMenu.setTitle(tr("Tree Actions"));
     contextMenu.addSeparator();
     contextMenu.addMenu(&settingsMenu);
+
+    if (isObjItem) {
+        settingsMenu.addAction(this->toggleVisibilityInTreeAction);
+    }
+
+    showHiddenAction->setChecked(showHidden);
+    settingsMenu.addAction(this->showHiddenAction);
 
     QAction* action = new QAction(tr("Show Description"), this);
     QAction* internalNameAction = new QAction(tr("Show Internal Name"), this);
