@@ -79,13 +79,18 @@ jobs:
       changedPythonFiles: ${{ needs.Prepare.outputs.changedPythonFiles }}
       changedPythonLines: ${{ needs.Prepare.outputs.changedPythonLines }}
 
+  AdditionalChecks:
+    needs: [ Prepare ]
+    uses: ./.github/workflows/actions/additionalChecks/added_dependency.yml
+
   WrapUp:
     needs: [
         Prepare,
         Pixi,
         Ubuntu,
         Windows,
-        Lint
+        Lint,
+        AdditionalChecks
       ]
     if: always()
     uses: ./.github/workflows/sub_wrapup.yml

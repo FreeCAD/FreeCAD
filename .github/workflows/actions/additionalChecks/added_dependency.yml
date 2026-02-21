@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
+name: Check for added dependencies
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  check_added_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check for added C++ header file dependencies
+        run: |
+          git fetch origin ${{ github.base_ref }}:${{ github.base_ref }}
+          git diff | python3 .github/workflows/actions/additionalChecks/added_dependency.py
