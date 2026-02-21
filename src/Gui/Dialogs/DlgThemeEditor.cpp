@@ -124,6 +124,24 @@ struct StyleParametersModel::ParameterItem: Item
     QFlags<Qt::ItemFlag> flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsEditable;
 };
 
+struct StyleParametersModel::ValueItem: Item
+{
+    ValueItem(QString name, QString expression, StyleParameters::Value value)
+        : name(std::move(name))
+        , expression(std::move(expression))
+        , value(std::move(value))
+    {}
+
+    bool isHeader() const override
+    {
+        return false;
+    }
+
+    QString name;
+    QString expression;
+    StyleParameters::Value value;
+};
+
 class StyleParametersModel::Node
 {
 public:
@@ -448,6 +466,11 @@ void StyleParametersModel::reset()
     }
 
     endResetModel();
+
+    // Expand tuples. We need to do this in a separate pass because resolution might require
+    // parameters that are not yet added to the model if we do it in a single pass.
+    manager->reload();
+    QtTools::walkTreeModel(this, [this](const QModelIndex& index) { expandTupleIfNeeded(index); });
 }
 
 void StyleParametersModel::flush()
@@ -473,6 +496,46 @@ void StyleParametersModel::flush()
     }
 
     reset();
+}
+
+void StyleParametersModel::expandTupleIfNeeded(const QModelIndex& index)
+{
+    const QModelIndex parent = index.siblingAtColumn(0);
+    if (auto parameterItem = item<ParameterItem>(parent)) {
+        if (const auto& value = manager->resolve(parameterItem->token.name)) {
+            auto* parameterNode = node(parent);
+
+            // Remove all existing children
+            if (parameterNode->childCount() > 0) {
+                beginRemoveRows(parent, 0, parameterNode->childCount() - 1);
+                while (parameterNode->childCount() > 0) {
+                    parameterNode->removeChild(0);
+                }
+                endRemoveRows();
+            }
+
+            if (value->holds<StyleParameters::Tuple>()) {
+                const auto& tuple = value->get<StyleParameters::Tuple>();
+
+                beginInsertRows(parent, 0, static_cast<int>(tuple.size()) - 1);
+                int i = 0;
+                for (const auto& [name, elementValue] : tuple.elements) {
+                    QString nameOrIndex = name ? QString::fromStdString(*name)
+                                               : QStringLiteral("%1").arg(i++);
+                    parameterNode->appendChild(
+                        std::make_unique<Node>(std::make_unique<ValueItem>(
+                            nameOrIndex,
+                            QStringLiteral("@%1.%2")
+                                .arg(QString::fromStdString(parameterItem->token.name))
+                                .arg(nameOrIndex),
+                            *elementValue
+                        ))
+                    );
+                }
+                endInsertRows();
+            }
+        }
+    }
 }
 
 int StyleParametersModel::rowCount(const QModelIndex& index) const
@@ -553,6 +616,29 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
         }
     }
 
+    if (auto tupleElementItem = item<ValueItem>(index)) {
+        if (role == Qt::DisplayRole) {
+            if (index.column() == ParameterName) {
+                return tupleElementItem->name;
+            }
+            if (index.column() == ParameterExpression) {
+                return tupleElementItem->expression;
+            }
+            if (index.column() == ParameterType) {
+                return typeOfTokenValue(tupleElementItem->value);
+            }
+            if (index.column() == ParameterPreview) {
+                return QString::fromStdString(tupleElementItem->value.toString());
+            }
+        }
+
+        if (role == Qt::DecorationRole) {
+            if (index.column() == ParameterPreview && tupleElementItem->value.holds<Base::Color>()) {
+                return colorPreview(tupleElementItem->value.get<Base::Color>().asValue<QColor>());
+            }
+        }
+    }
+
     return {};
 }
 
@@ -612,6 +698,8 @@ bool StyleParametersModel::setData(
 
     this->manager->reload();
 
+    expandTupleIfNeeded(index);
+
     QtTools::walkTreeModel(this, [this](const QModelIndex& index) {
         const QModelIndex previewColumnIndex = index.siblingAtColumn(ParameterPreview);
 
@@ -627,6 +715,10 @@ Qt::ItemFlags StyleParametersModel::flags(const QModelIndex& index) const
         if (index.column() == ParameterName || index.column() == ParameterExpression) {
             return parameterItem->flags | QAbstractItemModel::flags(index);
         }
+    }
+
+    if (item<ValueItem>(index)) {
+        return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
     }
 
     if (isAddPlaceholder(index)) {
