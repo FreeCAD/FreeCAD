@@ -116,6 +116,10 @@ public:
     explicit SelectionFilterGate(SelectionFilter* filter);
     ~SelectionFilterGate() override;
     bool allow(App::Document*, App::DocumentObject*, const char*) override;
+    const SelectionFilter* getSelectionFilter() const
+    {
+        return Filter;
+    }
 
 protected:
     static SelectionFilter* nullPointer()
@@ -128,6 +132,53 @@ protected:
 protected:
     SelectionFilter* Filter;
 };
+
+class GuiExport CompoundSelectionGate: public SelectionGate
+{
+public:
+    /** Construct a compound gate.
+     * @param toolGate: the tool's selection gate (takes ownership)
+     * @param filterStr: the toolbar filter string used to create an
+     *                   internal SelectionFilter for testing
+     */
+    CompoundSelectionGate(SelectionGate* toolGate, const std::string& filterStr)
+        : m_toolGate(toolGate)
+        , m_filter(filterStr.c_str())
+    {}
+
+    ~CompoundSelectionGate() override
+    {
+        delete m_toolGate;
+    }
+
+    bool allow(App::Document* doc, App::DocumentObject* obj, const char* sub) override
+    {
+        // Check the toolbar filter first
+        if (!m_filter.test(obj, sub)) {
+            // notAllowedReason = QT_TR_NOOP("Not allowed by selection filter");
+            notAllowedReason = "Not allowed by selection filter";
+
+            return false;
+        }
+        // Then check the tool's own gate
+        if (!m_toolGate->allow(doc, obj, sub)) {
+            notAllowedReason = m_toolGate->notAllowedReason;
+            return false;
+        }
+        return true;
+    }
+
+    /// Access the underlying tool gate
+    SelectionGate* toolGate() const
+    {
+        return m_toolGate;
+    }
+
+private:
+    SelectionGate* m_toolGate;  // owned
+    SelectionFilter m_filter;   // reconstructed from string
+};
+
 
 /**
  * A wrapper around a Python class that implements the SelectionGate interface
