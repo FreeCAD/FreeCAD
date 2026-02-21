@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Inject compare link into weekly release notes
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         env:
           # Pass manual inputs via env for convenience
           CURRENT_TAG: ${{ github.event.inputs.current_tag }}
