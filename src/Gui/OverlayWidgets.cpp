@@ -181,7 +181,7 @@ OverlayProxyWidget::HitTest OverlayProxyWidget::hitTest(const QPoint& globalPt, 
         }
 
         auto view = getMainWindow()->activeWindow();
-        auto overlayOnHoverAllowed = view && view->onHasMsg("AllowsOverlayOnHover");
+        auto overlayOnHoverAllowed = view && view->onHasMsg("AllowsOverlayReveal");
 
         if (owner->getState() != OverlayTabWidget::State::Hidden && hit == HitTest::HitOuter
             && overlayOnHoverAllowed && OverlayParams::getDockOverlayActivateOnHover()) {

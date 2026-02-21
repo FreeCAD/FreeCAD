@@ -582,6 +582,9 @@ bool View3DInventor::onHasMsg(const char* pMsg) const
     if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
+    if (strcmp("AllowsOverlayReveal", pMsg) == 0) {
+        return true;
+    }
 
     return false;
 }
