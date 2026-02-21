@@ -48,8 +48,10 @@
 #include <Gui/Utilities.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
+#include <Gui/ExpressionBinding.h>
 
 #include <Mod/Part/App/Part2DObject.h>
+#include <Mod/Part/App/FeatureExtrusion.h>
 
 #include "ui_DlgExtrusion.h"
 #include "DlgExtrusion.h"
@@ -151,12 +153,103 @@ DlgExtrusion::DlgExtrusion(QWidget* parent, Qt::WindowFlags fl)
  */
 DlgExtrusion::~DlgExtrusion()
 {
+    for (auto* binding : bindings) {
+        delete binding;
+    }
+    bindings.clear();
+
     if (filter) {
         Gui::Selection().rmvSelectionGate();
         filter = nullptr;
     }
 
     // no need to delete child widgets, Qt does it all for us
+}
+
+void DlgExtrusion::createPreviewObject()
+{
+    App::Document* activeDoc = App::GetApplication().getDocument(this->document.c_str());
+    if (!activeDoc) {
+        return;
+    }
+
+    try {
+        std::vector<App::DocumentObject*> shapes = getShapesToExtrude();
+        if (shapes.empty()) {
+            return;
+        }
+
+        // Create temporary extrusion object
+        std::string name = activeDoc->getUniqueObjectName("Extrude").c_str();
+        Part::Extrusion* obj = static_cast<Part::Extrusion*>(
+            activeDoc->addObject("Part::Extrusion", name.c_str())
+        );
+
+        // Set base
+        obj->Base.setValue(shapes[0]);
+
+        // Set defaults
+        obj->Dir.setValue(Base::Vector3d(0, 0, 1));
+        constexpr double defaultExtrusionLength = 10.0;
+        obj->LengthFwd.setValue(defaultExtrusionLength);
+        obj->LengthRev.setValue(0.0);
+
+        // Setup bindings
+        setupExpressionBindings(obj);
+
+        // Mark as temporary (will be deleted if cancelled)
+        obj->purgeTouched();
+    }
+    catch (...) {
+        // Silently fail - expression support will not be available
+    }
+}
+
+void DlgExtrusion::setupExpressionBindings(Part::Extrusion* obj)
+{
+    if (!obj) {
+        return;
+    }
+
+    extrudeObject = obj;
+
+    // Clear any existing bindings
+    for (auto* binding : bindings) {
+        delete binding;
+    }
+    bindings.clear();
+
+    // Create expression bindings for direction components
+    auto* bindingX = new Gui::ExpressionBinding(ui->dirX);
+    bindingX->bind(obj->Dir.createPath("x"));
+    bindings.push_back(bindingX);
+
+    auto* bindingY = new Gui::ExpressionBinding(ui->dirY);
+    bindingY->bind(obj->Dir.createPath("y"));
+    bindings.push_back(bindingY);
+
+    auto* bindingZ = new Gui::ExpressionBinding(ui->dirZ);
+    bindingZ->bind(obj->Dir.createPath("z"));
+    bindings.push_back(bindingZ);
+
+    // Bind length forward
+    auto* bindingLenFwd = new Gui::ExpressionBinding(ui->spinLenFwd);
+    bindingLenFwd->bind(obj->LengthFwd);
+    bindings.push_back(bindingLenFwd);
+
+    // Bind length reverse
+    auto* bindingLenRev = new Gui::ExpressionBinding(ui->spinLenRev);
+    bindingLenRev->bind(obj->LengthRev);
+    bindings.push_back(bindingLenRev);
+
+    // Bind taper angles
+    auto* bindingTaper = new Gui::ExpressionBinding(ui->spinTaperAngle);
+    bindingTaper->bind(obj->TaperAngle);
+    bindings.push_back(bindingTaper);
+
+    auto* bindingTaperRev = new Gui::ExpressionBinding(ui->spinTaperAngleRev);
+    bindingTaperRev->bind(obj->TaperAngleRev);
+    bindings.push_back(bindingTaperRev);
 }
 
 void DlgExtrusion::setupConnections()
@@ -540,6 +633,13 @@ void DlgExtrusion::apply()
             FCMD_OBJ_DOC_CMD(sourceObj, "addObject('Part::Extrusion','" << name << "')");
             auto newObj = sourceObj->getDocument()->getObject(name.c_str());
 
+            // IMPORTANT: Setup expression bindings BEFORE writing parameters
+            Part::Extrusion* extrudeObj = dynamic_cast<Part::Extrusion*>(newObj);
+            if (extrudeObj) {
+                setupExpressionBindings(extrudeObj);
+            }
+
+            // Write parameters from dialog to the feature (only once!)
             this->writeParametersToFeature(*newObj, sourceObj);
 
             if (!sourceObj->isDerivedFrom<Part::Part2DObject>()) {
