@@ -1,9 +1,11 @@
 /** \page makingdocs Building this source documentation
 
-After running cmake (as per build instructions on the
-<a href="https://freecad.org/wiki/Main_Page">FreeCAD wiki</a>,
-run 'make DevDoc' in your build directory.  HTML documentation
-will be built in doc/SourceDocu/html.
+After running cmake as per build instructions (on the
+[Developers Handbook](https://freecad.github.io/DevelopersHandbook/gettingstarted/)
+or the [FreeCAD wiki](https://freecad.org/wiki/Main_Page)),
+run `cmake --build . --target WebDoc` in your build directory.
+HTML documentation will be built in `doc/WEB/html` or
+`doc/DEV/html` for the `WebDoc` and `DevDoc` targets respectively.
 
 Tips:
  - If you have the "dot" tool from graphviz installed, before
@@ -11,4 +13,3 @@ Tips:
    the source documentation.
 
 */
-

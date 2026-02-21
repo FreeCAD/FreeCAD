@@ -24,19 +24,6 @@ h1, .h1, h2, .h2, h3, .h3{
     border-bottom: 1px solid #EEEEEE;
 }
 
-.adjust-right {
-margin-left: 30px !important;
-font-size: 1.15em !important;
-}
-.navbar{
- background-color: #222;
-}
-table{
-    white-space:pre-wrap !important;
-}
-/*
- ===========================
- */
 
 /* DOXYGEN Code Styles
 ----------------------------------- */
@@ -309,64 +296,24 @@ span.SRScope {
   font-size: 50%;
 }
 
-/* FreeCAD-specific */
-.directory td.entry {
-    max-width: 400px;
+/* FreeCAD-specific overrides. */
+:root {
+  --title-background-color: black;
 }
-pre.fragment {
-    border: none;
-    padding: 0;
-    margin: 0;
-    font-family: roboto;
+#titlearea {
+  padding: 8px;
 }
-.memdoc p {
-    text-align: left;
+#titlearea * {
+  color: white;
 }
-.maincontents {
-    display: none;
+#projectalign {
+  text-align: end;
+  width: 100%;
+  padding-inline-end: 0.5em;
 }
-body {
-    display: flex;
-    min-height: 100vh;
-    flex-direction: column;
-    justify-content: space-between;
+#projectname {
+  font-size: 125%;
 }
-body, table, div, p, dl {
-    font: 400 16px/22px 'Fira Sans' ,sans-serif;
-}
-#main-nav {
-    display: none;
-}
-.navbar {
-    font-family: 'Roboto', sans-serif;
-    text-transform: uppercase;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #222;
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    height: 72px;
-    padding: 0 10px;
-}
-.navbar li {
-    float: left;
-}
-.navbar li a {
-    color: #fff;
-    display: block;
-}
-.navbar logo {
-    height: 140px
-}
-.footer {
-    background-color: #222;
-    padding: 25px 0;
-    color: #eee;
-    text-align: center !important;
-}
-.sm.sm-dox {
-    display: none;
+#projectnumber {
+  font-size: 100%;
 }
