@@ -52,6 +52,10 @@ void Point::ReconstructOnNewPvec(VEC_pD& pvec, int& cnt)
     y = pvec[cnt];
     cnt++;
 }
+bool Point::operator==(const Point& other) const
+{
+    return x == other.x && y == other.y;
+}
 
 //----------------DeriVector2
 DeriVector2::DeriVector2(const Point& p, const double* derivparam)
@@ -125,6 +129,11 @@ DeriVector2 Curve::Value(double /*u*/, double /*du*/, const double* /*derivparam
 
 //----------------Line
 
+Line::Line(Point p1_, Point p2_)
+    : p1(p1_)
+    , p2(p2_)
+{}
+
 DeriVector2 Line::CalculateNormal(const Point& p, const double* derivparam) const
 {
     (void)p;
@@ -174,6 +183,11 @@ Line* Line::Copy()
 
 
 //---------------circle
+
+Circle::Circle(Point center_, double* rad_)
+    : center(center_)
+    , rad(rad_)
+{}
 
 DeriVector2 Circle::CalculateNormal(const Point& p, const double* derivparam) const
 {
@@ -225,6 +239,15 @@ Circle* Circle::Copy()
 }
 
 //------------arc
+
+Arc::Arc(Point center_, double* rad_, Point start_, Point end_, double* startAngle_, double* endAngle_)
+    : Circle(center_, rad_)
+    , startAngle(startAngle_)
+    , endAngle(endAngle_)
+    , start(start_)
+    , end(end_)
+{}
+
 int Arc::PushOwnParams(VEC_pD& pvec)
 {
     int cnt = 0;
