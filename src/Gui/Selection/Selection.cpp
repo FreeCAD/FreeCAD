@@ -62,6 +62,7 @@ using namespace Gui;
 using namespace std;
 namespace sp = std::placeholders;
 
+// TODO-theo-vt remove!
 SelectionGateFilterExternal::SelectionGateFilterExternal(const char* docName, const char* objName)
 {
     if (docName) {
@@ -104,10 +105,6 @@ SelectionObserver::SelectionObserver(const ViewProviderDocumentObject* vp, bool 
     : resolve(resolve)
     , blockedSelection(false)
 {
-    if (vp && vp->getObject() && vp->getObject()->getDocument()) {
-        filterDocName = vp->getObject()->getDocument()->getName();
-        filterObjName = vp->getObject()->getNameInDocument();
-    }
     if (attach) {
         attachSelection();
     }
@@ -149,12 +146,6 @@ void SelectionObserver::attachSelection()
             std::bind(&SelectionObserver::_onSelectionChanged, this, sp::_1)
         );
         // NOLINTEND
-
-        if (!filterDocName.empty()) {
-            Selection().addSelectionGate(
-                new SelectionGateFilterExternal(filterDocName.c_str(), filterObjName.c_str())
-            );
-        }
     }
 }
 
@@ -182,9 +173,6 @@ void SelectionObserver::detachSelection()
 {
     if (connectSelection.connected()) {
         connectSelection.disconnect();
-        if (!filterDocName.empty()) {
-            Selection().rmvSelectionGate();
-        }
     }
 }
 
@@ -827,24 +815,29 @@ int SelectionSingleton::setPreselect(
 )
 {
     if (!pDocName || !pObjectName) {
-        rmvPreselect();
+        rmvPreselect();  // Invalid request
         return 0;
     }
+
     if (!pSubName) {
         pSubName = "";
     }
 
     if (DocName == pDocName && FeatName == pObjectName && SubName == pSubName) {
-        return -1;
+        return -1;  // Already pre-selected
     }
 
     rmvPreselect();
 
-    if (ActiveGate && signal != SelectionChanges::MsgSource::Internal) {
-        App::Document* pDoc = getDocument(pDocName);
-        if (!pDoc || !pObjectName) {
-            return 0;
-        }
+    App::Document* pDoc = getDocument(pDocName);
+    if (!pDoc) {
+        return 0;  // Invalid request
+    }
+    auto foundGate = docSelectionGate.find(pDoc);
+
+    if (foundGate != docSelectionGate.end() && signal != SelectionChanges::MsgSource::Internal) {
+        SelectionGate* gate = foundGate->second;
+
         App::ElementNamePair elementName;
         auto pObject = pDoc->getObject(pObjectName);
         if (!pObject) {
@@ -852,14 +845,14 @@ int SelectionSingleton::setPreselect(
         }
 
         const char* subelement = pSubName;
-        if (gateResolve != ResolveMode::NoResolve) {
+        if (gate->resolveMode != ResolveMode::NoResolve) {
             auto& newElementName = elementName.newName;
             auto& oldElementName = elementName.oldName;
             pObject = App::GeoFeature::resolveElement(pObject, pSubName, elementName);
             if (!pObject) {
                 return 0;
             }
-            if (gateResolve > ResolveMode::OldStyleElement) {
+            if (gate->resolveMode > ResolveMode::OldStyleElement) {
                 subelement = !newElementName.empty() ? newElementName.c_str()
                                                      : oldElementName.c_str();
             }
@@ -867,10 +860,10 @@ int SelectionSingleton::setPreselect(
                 subelement = oldElementName.c_str();
             }
         }
-        if (!ActiveGate->allow(pObject->getDocument(), pObject, subelement)) {
+        if (!gate->allow(pObject->getDocument(), pObject, subelement)) {
             QString msg;
-            if (ActiveGate->notAllowedReason.length() > 0) {
-                msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+            if (gate->notAllowedReason.length() > 0) {
+                msg = QObject::tr(gate->notAllowedReason.c_str());
             }
             else {
                 msg = QCoreApplication::translate("SelectionFilter", "Not allowed:");
@@ -1058,7 +1051,9 @@ void SelectionSingleton::rmvPreselect(bool signal)
     hy = 0;
     hz = 0;
 
-    if (ActiveGate && getMainWindow()) {
+    App::Document* activeDoc = getDocument(nullptr);
+    auto foundGate = docSelectionGate.find(activeDoc);
+    if (foundGate != docSelectionGate.end() && getMainWindow()) {
         Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
         mdi->restoreOverrideCursor();
     }
@@ -1075,32 +1070,41 @@ const SelectionChanges& SelectionSingleton::getPreselection() const
 }
 
 // add a SelectionGate to control what is selectable
-void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve)
+void SelectionSingleton::addSelectionGate(Gui::SelectionGate* gate, ResolveMode resolve, const char* pDocName)
 {
-    if (ActiveGate) {
-        rmvSelectionGate();
+    App::Document* doc = getDocument(pDocName);
+    if (!doc) {
+        return;
     }
+    rmvSelectionGate(doc);
 
-    ActiveGate = gate;
-    gateResolve = resolve;
+    gate->resolveMode = resolve;
+    docSelectionGate[doc] = gate;
 }
 
 // remove the active SelectionGate
-void SelectionSingleton::rmvSelectionGate()
+void SelectionSingleton::rmvSelectionGate(App::Document* doc)
 {
-    if (ActiveGate) {
-        delete ActiveGate;
-        ActiveGate = nullptr;
+    auto foundGate = docSelectionGate.find(doc);
+    if (foundGate != docSelectionGate.end()) {
+        delete foundGate->second;
+        docSelectionGate.erase(foundGate);
 
-        Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        if (doc) {
-            // if a document is about to be closed it has no MDI view any more
-            Gui::MDIView* mdi = doc->getActiveView();
-            if (mdi) {
+        // if a document is about to be closed it has no MDI view any more
+        if (Gui::Document* guiDoc = Gui::Application::Instance->getDocument(doc)) {
+            if (Gui::MDIView* mdi = guiDoc->getActiveView()) {
                 mdi->restoreOverrideCursor();
             }
         }
     }
+}
+void SelectionSingleton::rmvSelectionGate(const char* pDocName)
+{
+    App::Document* doc = getDocument(pDocName);
+    if (!doc) {
+        return;
+    }
+    rmvSelectionGate(doc);
 }
 
 
@@ -1217,16 +1221,26 @@ bool SelectionSingleton::addSelection(
     temp.y = y;
     temp.z = z;
 
+    App::Document* doc = getDocument(pDocName);
+    if (!doc) {
+        return false;
+    }
+    auto foundGate = docSelectionGate.find(doc);
     // check for a Selection Gate
-    if (ActiveGate) {
+    if (foundGate != docSelectionGate.end()) {
+        SelectionGate* gate = foundGate->second;
         const char* subelement = nullptr;
-        auto pObject
-            = getObjectOfType(temp, App::DocumentObject::getClassTypeId(), gateResolve, &subelement);
-        if (!ActiveGate->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
+        auto pObject = getObjectOfType(
+            temp,
+            App::DocumentObject::getClassTypeId(),
+            gate->resolveMode,
+            &subelement
+        );
+        if (!gate->allow(pObject ? pObject->getDocument() : temp.pDoc, pObject, subelement)) {
             if (getMainWindow()) {
                 QString msg;
-                if (ActiveGate->notAllowedReason.length() > 0) {
-                    msg = QObject::tr(ActiveGate->notAllowedReason.c_str());
+                if (gate->notAllowedReason.length() > 0) {
+                    msg = QObject::tr(gate->notAllowedReason.c_str());
                 }
                 else {
                     msg = QCoreApplication::translate(
@@ -1238,7 +1252,7 @@ bool SelectionSingleton::addSelection(
                 Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
                 mdi->setOverrideCursor(Qt::ForbiddenCursor);
             }
-            ActiveGate->notAllowedReason.clear();
+            gate->notAllowedReason.clear();
             QApplication::beep();
             return false;
         }
@@ -2178,8 +2192,7 @@ SelectionSingleton::SelectionSingleton()
     hx = 0;
     hy = 0;
     hz = 0;
-    ActiveGate = nullptr;
-    gateResolve = ResolveMode::OldStyleElement;
+
     // NOLINTBEGIN
     App::GetApplication().signalDeletedObject.connect(
         std::bind(&Gui::SelectionSingleton::slotDeletedObject, this, sp::_1)
@@ -3063,13 +3076,14 @@ PyObject* SelectionSingleton::sAddSelectionGate(PyObject* /*self*/, PyObject* ar
 
 PyObject* SelectionSingleton::sRemoveSelectionGate(PyObject* /*self*/, PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, "")) {
+    const char* pDocName = "";
+    if (!PyArg_ParseTuple(args, "|s", &pDocName)) {
         return nullptr;
     }
 
     PY_TRY
     {
-        Selection().rmvSelectionGate();
+        Selection().rmvSelectionGate(pDocName);
         Py_Return;
     }
     PY_CATCH;
