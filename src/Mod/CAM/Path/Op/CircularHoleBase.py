@@ -158,9 +158,6 @@ class ObjectOp(PathOp.ObjectOp):
     def opExecute(self, obj):
         """opExecute(obj) ... processes all Base features and Locations and collects
         them in a list of positions and radii which is then passed to circularHoleExecute(obj, holes).
-        If no Base geometries and no Locations are present, the job's Base is inspected and all
-        drillable features are added to Base. In this case appropriate values for depths are also
-        calculated and assigned.
         Do not overwrite, implement circularHoleExecute(obj, holes) instead."""
         Path.Log.track()
 
@@ -199,8 +196,9 @@ class ObjectOp(PathOp.ObjectOp):
         Must be overwritten by subclasses."""
         pass
 
-    def findAllHoles(self, obj):
-        """findAllHoles(obj) ... find all holes of all base models and assign as features."""
+    def findAllHoles(self, obj, selectionEx=None):
+        """findAllHoles(obj) ...
+        find all holes of all base or selected models and assign as features."""
         Path.Log.track()
         job = self.getJob(obj)
         if not job:
@@ -210,7 +208,17 @@ class ObjectOp(PathOp.ObjectOp):
         tooldiameter = obj.ToolController.Tool.Diameter
 
         features = []
-        for base in self.model:
+
+        models = [
+            sel.Object
+            for sel in selectionEx
+            if sel.Object.isDerivedFrom("Part::Feature") and not sel.SubObjects
+        ]
+        models = models if models else self.model
+
+        for base in models:
+            if not base.isDerivedFrom("Part::Feature"):
+                continue
             features.extend(
                 Drillable.getDrillableTargets(base, ToolDiameter=tooldiameter, vector=matchvector)
             )

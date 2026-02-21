@@ -53,7 +53,7 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
     DataObject = QtCore.Qt.ItemDataRole.UserRole + 1
     DataObjectSub = QtCore.Qt.ItemDataRole.UserRole + 2
 
-    InitBase = False
+    InitBase = True
 
     def getForm(self):
         """getForm() ... load and return page"""
@@ -169,7 +169,8 @@ class TaskPanelHoleGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
         """resetBase() ... push button callback"""
         self.obj.Base = []
         self.obj.Disabled = []
-        self.obj.Proxy.findAllHoles(self.obj)
+        selectionEx = FreeCADGui.Selection.getSelectionEx()
+        self.obj.Proxy.findAllHoles(self.obj, selectionEx)
 
         self.obj.Proxy.execute(self.obj)
         FreeCAD.ActiveDocument.recompute()
