@@ -363,3 +363,25 @@ else(WIN32)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
+
+if(PARSER_TOOLS_FOUND)
+    bison_target(QuantityParser
+        Quantity.y
+        Quantity.tab.c
+        COMPILE_FLAGS "-l"
+    )
+    flex_target(QuantityScanner
+        Quantity.l
+        Quantity.lex.c
+        COMPILE_FLAGS "-L"
+    )
+    add_flex_bison_dependency(QuantityScanner QuantityParser)
+    add_custom_target(quantity-parser
+        DEPENDS ${BISON_QuantityParser_OUTPUTS} ${FLEX_QuantityScanner_OUTPUTS}
+        COMMAND ${CMAKE_COMMAND}
+            -D DEST_PARSER_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+            -D COPY_PARSER_FILES="Quantity.tab.c Quantity.lex.c"
+            -P ${CMAKE_SOURCE_DIR}/cMake/FreeCAD_Helpers/SetupParser.cmake
+        VERBATIM
+    )
+endif()

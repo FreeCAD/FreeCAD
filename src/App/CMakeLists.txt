@@ -384,3 +384,25 @@ else(WIN32)
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     )
 endif(WIN32)
+
+if(PARSER_TOOLS_FOUND)
+    bison_target(ExpressionParser
+        Expression.y
+        Expression.tab.c
+        COMPILE_FLAGS "-d -l -Wall -Wcounterexamples -Wconflicts-sr"
+    )
+    flex_target(ExpressionScanner
+        Expression.l
+        Expression.lex.c
+        COMPILE_FLAGS "-L"
+    )
+    add_flex_bison_dependency(ExpressionScanner ExpressionParser)
+    add_custom_target(expression-parser
+        DEPENDS ${BISON_ExpressionParser_OUTPUTS} ${FLEX_ExpressionScanner_OUTPUTS}
+        COMMAND ${CMAKE_COMMAND}
+            -D DEST_PARSER_DIR="${CMAKE_CURRENT_SOURCE_DIR}"
+            -D COPY_PARSER_FILES="Expression.tab.h Expression.tab.c Expression.lex.c"
+            -P ${CMAKE_SOURCE_DIR}/cMake/FreeCAD_Helpers/SetupParser.cmake
+        VERBATIM
+    )
+endif()
