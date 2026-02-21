@@ -574,7 +574,7 @@ void PropertyItem::setPropertyName(const QString& name, const QString& realName)
     setObjectName(propName);
 
     QString display;
-    //Prevent camel case splitting on numbers in Property Editor
+    // Prevent camel case splitting on numbers in Property Editor
     for (auto&& i : name) {
         if (i.isUpper() && !display.isEmpty()) {
             QChar last = display.at(display.length() - 1);
