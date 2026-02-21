@@ -74,7 +74,7 @@ protected:
     bool eventFilter(QObject* watched, QEvent* event) override;
 
 private:
-    void quit();
+    void escape();
     void removeTemporaryObjects();
     void clearUiFields();
     void saveResult();
