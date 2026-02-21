@@ -199,7 +199,9 @@ void TaskRichAnno::finishSetup()
             "TaskRichAnno::finishSetup - Critical m_qgiAnno is missing. Aborting setup.\n");
         return;
     }
-    
+
+    m_toolbar->setParent(Gui::getMainWindow());
+
     m_toolbar->setWindowFlags(Qt::Tool | Qt::FramelessWindowHint | Qt::X11BypassWindowManagerHint);
     m_toolbar->setAttribute(Qt::WA_DeleteOnClose);
     m_toolbar->setProperty("floating", true);
