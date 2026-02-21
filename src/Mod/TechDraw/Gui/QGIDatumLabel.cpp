@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QGraphicsSceneMouseEvent>
 
+#include <Base/Tools.h>
 #include <Gui/Application.h>
 #include <Mod/TechDraw/App/DimensionFormatter.h>
 #include <Mod/TechDraw/App/DimensionGeometry.h>
@@ -35,6 +36,8 @@
 #include "QGIViewDimension.h"
 #include "TaskSelectLineAttributes.h"
 #include "ViewProviderDimension.h"
+
+#include <Base/Console.h>
 
 
 #define NORMAL 0
@@ -139,103 +142,259 @@ void QGIDatumLabel::snapPosition(QPointF& pos)
 
     // We only have snap for distances constraints
     std::string type = dim->Type.getValueAsString();
-    if(type != "Distance" && type != "DistanceX" && type != "DistanceY") {
-        return;
-    }
 
-    // 1 - We try to snap the label to its center position.
-    pointPair pp = dim->getLinearPoints();
-    Base::Vector3d p1_3d = Rez::guiX(pp.first());
-    Base::Vector3d p2_3d = Rez::guiX(pp.second());
-    Base::Vector2d p1 = Base::Vector2d(p1_3d.x, p1_3d.y);
-    Base::Vector2d p2 = Base::Vector2d(p2_3d.x, p2_3d.y);
-    if (type == "DistanceX") {
-        p2 = Base::Vector2d(p2.x, p1.y);
-    }
-    else if (type == "DistanceY") {
-        p2 = Base::Vector2d(p1.x, p2.y);
-    }
-    Base::Vector2d mid = (p1 + p2) * 0.5;
-    Base::Vector2d dir = p2 - p1;
-    Base::Vector2d normal = Base::Vector2d(-dir.y, dir.x);
+    if (type == "Distance" || type == "DistanceX" || type == "DistanceY") {
+        // 1 - We try to snap the label to its center position.
+        pointPair pp = dim->getLinearPoints();
+        Base::Vector3d p1_3d = Rez::guiX(pp.first());
+        Base::Vector3d p2_3d = Rez::guiX(pp.second());
+        Base::Vector2d p1 = Base::Vector2d(p1_3d.x, p1_3d.y);
+        Base::Vector2d p2 = Base::Vector2d(p2_3d.x, p2_3d.y);
+        if (type == "DistanceX") {
+            p2 = Base::Vector2d(p2.x, p1.y);
+        }
+        else if (type == "DistanceY") {
+            p2 = Base::Vector2d(p1.x, p2.y);
+        }
+        Base::Vector2d mid = (p1 + p2) * 0.5;
+        Base::Vector2d dir = p2 - p1;
+        Base::Vector2d normal = Base::Vector2d(-dir.y, dir.x);
 
-    Base::Vector2d toCenter = getPosToCenterVec();
+        Base::Vector2d toCenter = getPosToCenterVec();
 
-    Base::Vector2d posV = Base::Vector2d(pos.x(), pos.y()) + toCenter;
+        Base::Vector2d posV = Base::Vector2d(pos.x(), pos.y()) + toCenter;
 
-    Base::Vector2d projPnt;
-    projPnt.ProjectToLine(posV - mid, normal);
-    projPnt = projPnt + mid;
+        Base::Vector2d projPnt;
+        projPnt.ProjectToLine(posV - mid, normal);
+        projPnt = projPnt + mid;
 
-    if ((projPnt - posV).Length() < dimSpacing * snapPercent) {
-        posV = projPnt;
-        pos.setX(posV.x - toCenter.x);
-        pos.setY(posV.y - toCenter.y);
-    }
+        if ((projPnt - posV).Length() < dimSpacing * snapPercent) {
+            posV = projPnt;
+            pos.setX(posV.x - toCenter.x);
+            pos.setY(posV.y - toCenter.y);
+        }
 
-    // 2 - We check for coord/chain dimensions to offer proper snapping
-    auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
-    if (qgiv) {
-        auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
-        if (dvp) {
-            snapPercent = 0.2;
-            std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
-            for (auto& d : dims) {
-                if (d == dim) { continue; }
+        // 2 - We check for coord/chain dimensions to offer proper snapping
+        auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
+        if (qgiv) {
+            auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
+            if (dvp) {
+                snapPercent = 0.2;
+                std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
+                for (auto& d : dims) {
+                    if (d == dim) { continue; }
 
-                std::string typei = d->Type.getValueAsString();
-                if (typei != "Distance" && typei != "DistanceX" && typei != "DistanceY") {
-                    continue;
-                }
+                    std::string typei = d->Type.getValueAsString();
+                    if (typei != "Distance" && typei != "DistanceX" && typei != "DistanceY") {
+                        continue;
+                    }
 
-                pp = d->getLinearPoints();
-                Base::Vector3d ip1_3d = Rez::guiX(pp.first());
-                Base::Vector3d ip2_3d = Rez::guiX(pp.second());
+                    pp = d->getLinearPoints();
+                    Base::Vector3d ip1_3d = Rez::guiX(pp.first());
+                    Base::Vector3d ip2_3d = Rez::guiX(pp.second());
 
-                Base::Vector2d ip1 = Base::Vector2d(ip1_3d.x, ip1_3d.y);
-                Base::Vector2d ip2 = Base::Vector2d(ip2_3d.x, ip2_3d.y);
-                if (typei == "DistanceX") {
-                    ip2 = Base::Vector2d(ip2.x, ip1.y);
-                }
-                else if (typei == "DistanceY") {
-                    ip2 = Base::Vector2d(ip1.x, ip2.y);
-                }
+                    Base::Vector2d ip1 = Base::Vector2d(ip1_3d.x, ip1_3d.y);
+                    Base::Vector2d ip2 = Base::Vector2d(ip2_3d.x, ip2_3d.y);
+                    if (typei == "DistanceX") {
+                        ip2 = Base::Vector2d(ip2.x, ip1.y);
+                    }
+                    else if (typei == "DistanceY") {
+                        ip2 = Base::Vector2d(ip1.x, ip2.y);
+                    }
 
-                Base::Vector2d idir = ip2 - ip1;
+                    Base::Vector2d idir = ip2 - ip1;
 
-                if (fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
-                    //dimensions not parallel
-                    continue;
-                }
+                    if (fabs(dir.x * idir.y - dir.y * idir.x) > Precision::Confusion()) {
+                        //dimensions not parallel
+                        continue;
+                    }
 
-                auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
-                if (!vp) { continue; }
-                auto* qgivDi(dynamic_cast<QGIViewDimension*>(vp->getQView()));
-                if (!qgivDi) { continue; }
-                auto labeli = qgivDi->getDatumLabel();
-                if (!labeli) { continue; }
-                QPointF posi = labeli->pos();
-                Base::Vector2d toCenteri = labeli->getPosToCenterVec();
-                Base::Vector2d posVi = Base::Vector2d(posi.x(), posi.y()) + toCenteri;
+                    auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+                    if (!vp) { continue; }
+                    auto* qgivDi(dynamic_cast<QGIViewDimension*>(vp->getQView()));
+                    if (!qgivDi) { continue; }
+                    auto labeli = qgivDi->getDatumLabel();
+                    if (!labeli) { continue; }
+                    QPointF posi = labeli->pos();
+                    Base::Vector2d toCenteri = labeli->getPosToCenterVec();
+                    Base::Vector2d posVi = Base::Vector2d(posi.x(), posi.y()) + toCenteri;
 
-                Base::Vector2d projPnt2;
-                projPnt2.ProjectToLine(posV - posVi, idir);
-                projPnt2 = projPnt2 + posVi;
+                    Base::Vector2d projPnt2;
+                    projPnt2.ProjectToLine(posV - posVi, idir);
+                    projPnt2 = projPnt2 + posVi;
 
-                if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
-                    posV = projPnt2;
-                    pos.setX(posV.x - toCenter.x);
-                    pos.setY(posV.y - toCenter.y);
-                    break;
-                }
-                else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapPercent) {
-                    posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
-                    pos.setX(posV.x - toCenter.x);
-                    pos.setY(posV.y - toCenter.y);
-                    break;
+                    if ((projPnt2 - posV).Length() < dimSpacing * snapPercent) {
+                        posV = projPnt2;
+                        pos.setX(posV.x - toCenter.x);
+                        pos.setY(posV.y - toCenter.y);
+                        break;
+                    }
+                    else if (fabs((projPnt2 - posV).Length() - fabs(dimSpacing)) < dimSpacing * snapPercent) {
+                        posV = projPnt2 + (posV - projPnt2).Normalize() * dimSpacing;
+                        pos.setX(posV.x - toCenter.x);
+                        pos.setY(posV.y - toCenter.y);
+                        break;
+                    }
                 }
             }
         }
+    }
+    
+    // 3. Radius & Diameter snap
+    else if (type == "Radius" || type == "Diameter") {
+        snapPercent = 0.4; // <- copied from original implementation
+
+        arcPoints arc = dim->getArcPoints();
+        Base::Vector2d rotationCenter = fromQtApp(Rez::guiX(arc.center));
+        double radius = Rez::guiX(arc.radius);
+
+        Base::Vector2d toCenter = getPosToCenterVec();
+        Base::Vector2d labelCenter = Base::Vector2d(pos.x(), pos.y()) + toCenter;
+        double labelRot = Base::toRadians(this->rotation());
+
+        Base::Vector2d radialDir = Base::Vector2d::FromPolar(radius, labelRot).Normalize();
+        Base::Vector2d normal = radialDir.Perpendicular(true);
+
+        // set mid values to snap to
+        Base ::Vector2d mid = rotationCenter; // for type == "Diameter"
+        if (type == "Radius") {mid += (radius / 2.0) * radialDir * ((labelCenter.x <= rotationCenter.x) ? -1 : 1);}
+
+        Base::Vector2d projPnt;
+        projPnt.ProjectToLine(labelCenter - mid, normal);
+        projPnt = projPnt + mid;
+
+        if ((projPnt - labelCenter).Length() < dimSpacing * snapPercent) {
+            labelCenter = projPnt;
+            pos.setX(labelCenter.x - toCenter.x);
+            pos.setY(labelCenter.y - toCenter.y);
+        }
+    }
+    // 3. Angle snap
+    else if (type == "Angle") {
+        snapPercent = 0.4; // <- copied from original implementation
+
+        anglePoints anglePoints = dim->getAnglePoints();
+        bool isInverted = dim->Inverted.getValue();
+
+        // centeral vertex for angle
+        Base::Vector2d angleVertex = to2D(Rez::guiX(anglePoints.vertex()));
+        
+        // get normal direction for angle arc
+        Base::Vector2d firstDimPoint = to2D(Rez::guiX(anglePoints.first()));
+        Base::Vector2d secondDimPoint = to2D(Rez::guiX(anglePoints.second()));
+
+        double endAngle = (secondDimPoint - angleVertex).Angle();
+        double startAngle = (firstDimPoint - angleVertex).Angle();
+        if (isInverted) {
+            std::swap(endAngle, startAngle);
+        }
+
+        Base::Vector2d normalDir = (secondDimPoint - firstDimPoint).Perpendicular(isInverted).Normalize();
+        
+        // get label position & direction
+        Base::Vector2d toCenter = getPosToCenterVec();
+        Base::Vector2d labelCenter = Base::Vector2d(pos.x(), pos.y()) + toCenter;
+        Base::Vector2d labelRadialDir(labelCenter - angleVertex);
+        
+        // find mid-point & check distance from label
+        Base ::Vector2d mid = angleVertex + Base::Vector2d::FromPolar(labelRadialDir.Length(), normalDir.Angle());
+        
+        Base::Vector2d projPnt;
+        projPnt.ProjectToLine(labelCenter - mid, normalDir);
+        projPnt = projPnt + mid;
+
+        if ((projPnt - labelCenter).Length() < dimSpacing * snapPercent) {
+            labelCenter = projPnt;
+            pos.setX(labelCenter.x - toCenter.x);
+            pos.setY(labelCenter.y - toCenter.y);
+        }
+
+        // 4 - Neighbouring Angles Snap
+        auto* qgiv = dynamic_cast<QGIView*>(qgivd->parentItem());
+        if (qgiv) {
+            auto* dvp = dynamic_cast<TechDraw::DrawViewPart*>(qgiv->getViewObject());
+            if (dvp) {
+                snapPercent = 0.2; // <- copied from original implementation
+                std::vector<TechDraw::DrawViewDimension*> dims = dvp->getDimensions();
+                for (auto& d : dims) {
+                    if (d == dim) continue;
+                   
+                    std::string typei = d->Type.getValueAsString();
+                    if (typei != "Angle") continue;
+
+                    // get neighbour angle points
+                    anglePoints = d->getAnglePoints();
+                    bool inv = d->Inverted.getValue();
+
+                    // check for a common origin
+                    Base::Vector2d nbrAngleVertex = to2D(Rez::guiX(anglePoints.vertex()));
+                    //if ((nbrAngleVertex - angleVertex).Length()<Precision::Confusion()) continue;
+                    
+                    // neighbour end & start angles
+                    Base::Vector2d nbrFirDimPoint = to2D(Rez::guiX(anglePoints.first()));
+                    Base::Vector2d nbrSecDimPoint = to2D(Rez::guiX(anglePoints.second()));
+
+                    double nbrEndAngle = (nbrSecDimPoint - nbrAngleVertex).Angle();
+                    double nbrStartAngle = (nbrFirDimPoint - nbrAngleVertex).Angle();
+                    if (inv) { std::swap(nbrEndAngle, nbrStartAngle); }
+
+                    auto* vp = freecad_cast<ViewProviderDimension*>(Gui::Application::Instance->getViewProvider(d));
+                    if (!vp) continue;
+                    
+                    auto* qgivDi(dynamic_cast<QGIViewDimension*>(vp->getQView()));
+                    if (!qgivDi) continue;
+                    
+                    auto labeli = qgivDi->getDatumLabel();
+                    if (!labeli) continue;
+                    
+                    // Cached radii from QGIViewDimension 
+                    const double rNbr = Rez::guiX(qgivDi->getCachedAngleArcRadius().value_or(0.0));
+                    const double rSelf = Rez::guiX(qgivd->getCachedAngleArcRadius().value_or(0.0));
+                    if (rNbr <= 0.0 || rSelf <= 0.0) continue;
+
+                    QPointF posi = labeli->pos();
+                    Base::Vector2d toCenteri = labeli->getPosToCenterVec();
+                    Base::Vector2d nbrLabelCenter = Base::Vector2d(posi.x(), posi.y()) + toCenteri;
+                    Base::Vector2d nbrLabelRadialDir(nbrLabelCenter - nbrAngleVertex);
+
+                    double nbrLen = nbrLabelRadialDir.Length();
+                    double selfLen = labelRadialDir.Length();
+
+                    // Deltas (offsets from respective arcs)
+                    double dNbr = nbrLen - rNbr;
+                    double dSelf = selfLen - rSelf;
+                    dNbr = (dSelf > 0) ? abs(dNbr) : -abs(dNbr);
+                    nbrLen = rNbr + dNbr;
+
+                    bool shouldSnapToNeighbor = (std::fabs(nbrEndAngle - startAngle) < Precision::Angular())
+                        || (std::fabs(nbrStartAngle - endAngle) < Precision::Angular());
+                    bool shouldCascade = (std::fabs(nbrStartAngle - startAngle) < Precision::Angular())
+                        || (std::fabs(nbrEndAngle - endAngle) < Precision::Angular());
+
+                    // CASE A: snapping to nearby neighbors
+                    if (shouldSnapToNeighbor) {
+                        if (std::fabs(nbrLen  - selfLen) < dimSpacing * snapPercent) {
+                            labelCenter = angleVertex + (nbrLen) * labelRadialDir.Normalize();
+                            pos.setX(labelCenter.x - toCenter.x);
+                            pos.setY(labelCenter.y - toCenter.y);
+                        }
+                    }
+                    // CASE B: snapping at a certain distance away
+                    else if (shouldCascade) {
+                        if (std::fabs(std::fabs(nbrLen - selfLen) - dimSpacing) < dimSpacing * snapPercent) 
+                        {
+                            // using 2x dimSpacing to avoid label being cut-off by perv dimension arc
+                            labelCenter = angleVertex + (nbrLen + 2*dimSpacing) * labelRadialDir.Normalize();
+                            pos.setX(labelCenter.x - toCenter.x);
+                            pos.setY(labelCenter.y - toCenter.y);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else {
+        return;
     }
 
 
