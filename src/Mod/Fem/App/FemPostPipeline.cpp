@@ -724,6 +724,13 @@ void FemPostPipeline::renameArrays(const std::map<std::string, std::string>& nam
     Data.touch();
 }
 
+void FemPostPipeline::addArrayFromFunction(const std::map<std::string, std::string>& functions)
+{
+    auto data = Data.getValue();
+    FemVTKTools::addArrayFromFunction(data, functions);
+    Data.setValue(data);
+}
+
 PyObject* FemPostPipeline::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {

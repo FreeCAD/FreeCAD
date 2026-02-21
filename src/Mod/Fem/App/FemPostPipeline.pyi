@@ -95,6 +95,14 @@ class FemPostPipeline(FemPostObject):
         """Change name of data arrays"""
         ...
 
+    def addArrayFromFunction(self, functions: dict[str, str], /) -> None:
+        """
+        Add new arrays as functions of the current fields.
+        The arrays are defined as "func_name": "func" key-value pairs.
+        Field names behave similarly to those in the calculator filter.
+        """
+        ...
+
     def getOutputAlgorithm(self) -> vtkAlgorithm:
         """Returns the pipeline vtk algorithm, which generates the data passed to the pipelines filters.
 

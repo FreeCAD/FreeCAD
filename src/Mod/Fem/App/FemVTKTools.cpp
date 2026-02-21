@@ -32,6 +32,7 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
 
+#include <vtkArrayCalculator.h>
 #include <vtkCellArray.h>
 #include <vtkDataArray.h>
 #include <vtkDataSetReader.h>
@@ -1061,6 +1062,80 @@ void FemVTKTools::exportFreeCADResult(const App::DocumentObject* result, vtkSmar
     }
 
     Base::Console().log("End: Create VTK result data from FreeCAD result data.\n");
+}
+
+void FemVTKTools::addArrayFromFunction(
+    vtkSmartPointer<vtkDataObject>& data,
+    const std::map<std::string, std::string>& functions
+)
+{
+    if (!data) {
+        return;
+    }
+
+    vtkNew<vtkArrayCalculator> calculator;
+    std::vector<vtkDataSet*> fields;
+
+    if (auto dataSet = vtkDataSet::SafeDownCast(data)) {
+        fields.emplace_back(dataSet);
+    }
+    else if (auto blocks = vtkMultiBlockDataSet::SafeDownCast(data)) {
+        for (unsigned int i = 0; i < blocks->GetNumberOfBlocks(); ++i) {
+            if (auto dataSet = vtkDataSet::SafeDownCast(blocks->GetBlock(i))) {
+                fields.emplace_back(dataSet);
+            }
+        }
+    }
+
+    for (auto f : fields) {
+        // clear all variables
+        calculator->RemoveAllVariables();
+        calculator->SetInputData(f);
+        auto pd = calculator->GetDataSetOutput()->GetPointData();
+        auto fpd = f->GetPointData();
+        if (!pd || !fpd) {
+            continue;
+        }
+        // add coordinate variable
+        calculator->AddCoordinateScalarVariable("coordsX", 0);
+        calculator->AddCoordinateScalarVariable("coordsY", 1);
+        calculator->AddCoordinateScalarVariable("coordsZ", 2);
+        calculator->AddCoordinateVectorVariable("coords");
+
+        // add fields
+        for (int i = 0; i < fpd->GetNumberOfArrays(); ++i) {
+            std::string name1 = fpd->GetArrayName(i);
+            std::string name2 = name1;
+            std::replace(name2.begin(), name2.end(), ' ', '_');
+            if (fpd->GetArray(i)->GetNumberOfComponents() == 1) {
+                calculator->AddScalarVariable(name2.c_str(), name1.c_str());
+            }
+            else if (fpd->GetArray(i)->GetNumberOfComponents() == 3) {
+                calculator->AddVectorVariable(name2.c_str(), name1.c_str());
+                // add vector components as scalar variable
+                calculator->AddScalarVariable((name2 + "_X").c_str(), name1.c_str(), 0);
+                calculator->AddScalarVariable((name2 + "_Y").c_str(), name1.c_str(), 1);
+                calculator->AddScalarVariable((name2 + "_Z").c_str(), name1.c_str(), 2);
+            }
+            else if (fpd->GetArray(i)->GetNumberOfComponents() == 6) {
+                // add tensor components as scalar variable
+                calculator->AddScalarVariable((name2 + "_XX").c_str(), name1.c_str(), 0);
+                calculator->AddScalarVariable((name2 + "_YY").c_str(), name1.c_str(), 1);
+                calculator->AddScalarVariable((name2 + "_ZZ").c_str(), name1.c_str(), 2);
+                calculator->AddScalarVariable((name2 + "_XY").c_str(), name1.c_str(), 3);
+                calculator->AddScalarVariable((name2 + "_YZ").c_str(), name1.c_str(), 4);
+                calculator->AddScalarVariable((name2 + "_ZX").c_str(), name1.c_str(), 5);
+            }
+        }
+
+        for (const auto& func : functions) {
+            calculator->SetResultArrayName(func.first.c_str());
+            calculator->SetFunction(func.second.c_str());
+            calculator->Update();
+            auto result = pd->GetAbstractArray(func.first.c_str());
+            f->GetPointData()->AddArray(result);
+        }
+    }
 }
 
 
