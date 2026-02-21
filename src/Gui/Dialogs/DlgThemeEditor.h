@@ -73,6 +73,7 @@ public:
     struct Item;
     struct GroupItem;
     struct ParameterItem;
+    struct ValueItem;
 
     enum Column : std::uint8_t
     {
@@ -94,6 +95,8 @@ public:
 
     void reset();
     void flush() override;
+
+    void expandTupleIfNeeded(const QModelIndex& index);
 
     int rowCount(const QModelIndex& index) const override;
     int columnCount(const QModelIndex& index) const override;
