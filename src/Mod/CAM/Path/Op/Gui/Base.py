@@ -1525,7 +1525,16 @@ class CommandResources:
         self.job = None
 
 
-def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None):
+def SetupOperation(
+    name,
+    objFactory,
+    opPageClass,
+    pixmap,
+    menuText,
+    toolTip,
+    setupProperties=None,
+    commandClass=CommandPathOp,
+):
     """SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, setupProperties=None)
     Creates an instance of CommandPathOp with the given parameters and registers the command with FreeCAD.
     When activated it creates a model with proxy (by invoking objFactory), assigns a view provider to it
@@ -1536,7 +1545,7 @@ def SetupOperation(name, objFactory, opPageClass, pixmap, menuText, toolTip, set
 
     res = CommandResources(name, objFactory, opPageClass, pixmap, menuText, None, toolTip)
 
-    command = CommandPathOp(res)
+    command = commandClass(res)
     FreeCADGui.addCommand("CAM_%s" % name.replace(" ", "_"), command)
 
     if setupProperties is not None:
