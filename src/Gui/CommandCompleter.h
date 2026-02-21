@@ -44,6 +44,9 @@ class GuiExport CommandCompleter: public QCompleter
 public:
     explicit CommandCompleter(QLineEdit* edit, QObject* parent = nullptr);
 
+    /// Enable or disable filtering of inactive commands
+    void setFilterInactive(bool filter);
+
 Q_SIGNALS:
     /// Triggered when a command is selected in the completer
     void commandActivated(const QByteArray& name);
