@@ -51,7 +51,6 @@
 #include <Base/Rotation.h>
 #include <Base/UnitsApi.h>
 #include <Base/Vector3D.h>
-#include <Base/Vector3D.h>
 
 
 #include <App/DocumentObject.h>
@@ -91,11 +90,9 @@ TaskMassProperties::TaskMassProperties()
 
     qApp->installEventFilter(this);
 
-    if (Gui::Application::Instance) {
-        auto* stdDeleteCommand = Gui::Application::Instance->commandManager().getCommandByName("Std_Delete");
-        if (stdDeleteCommand) {
-            deleteAction = stdDeleteCommand->getAction();
-            if (deleteAction) {
+    if (auto* app = Gui::Application::Instance) {
+        if (auto* stdDeleteCommand = app->commandManager().getCommandByName("Std_Delete")) {
+            if ((deleteAction = stdDeleteCommand->getAction())) {
                 deleteActivated = deleteAction->isEnabled();
                 deleteAction->setEnabled(false);
             }
@@ -114,7 +111,7 @@ TaskMassProperties::TaskMassProperties()
     auto shortcutQuit = new QShortcut(physicalProperties);
     shortcutQuit->setKey(QKeySequence(QStringLiteral("ESC")));
     shortcutQuit->setContext(Qt::ApplicationShortcut);
-    connect(shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::quit);
+    connect(shortcutQuit, &QShortcut::activated, this, &TaskMassProperties::escape);
 
     QBoxLayout* physicalLayout = physicalProperties->groupLayout();
     physicalLayout->setContentsMargins(10, 10, 10, 10);
@@ -454,32 +451,21 @@ bool TaskMassProperties::eventFilter(QObject* watched, QEvent* event)
 
 void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
 {
-    QPushButton* okButton = box->button(QDialogButtonBox::Ok);
-    if (okButton) {
-        okButton->setVisible(false);
-    }
-
     QPushButton* closeButton = box->button(QDialogButtonBox::Abort);
-    if (closeButton) {
-        closeButton->setText(tr("Close"));
-    }
+    closeButton->setText(tr("Close"));
 
     QPushButton* saveButton = box->button(QDialogButtonBox::Apply);
-    if (saveButton) {
-        saveButton->setText(tr("Save"));
-        QObject::connect(saveButton, &QPushButton::released, this, &TaskMassProperties::saveResult);
-    }
+    saveButton->setText(tr("Save"));
+    QObject::connect(saveButton, &QPushButton::released, this, &TaskMassProperties::saveResult);
 
     QPushButton* resetButton = box->button(QDialogButtonBox::Reset);
-    if (resetButton) {
-        resetButton->setText(tr("Reset"));
-        QObject::connect(resetButton, &QPushButton::released, [this]() {
-            Gui::Selection().clearSelection();
-            removeTemporaryObjects();
-            clearUiFields();
-            listWidget->clear();
-        });
-    }
+    resetButton->setText(tr("Reset"));
+    QObject::connect(resetButton, &QPushButton::released, [this]() {
+        Gui::Selection().clearSelection();
+        removeTemporaryObjects();
+        clearUiFields();
+        listWidget->clear();
+    });
 }
 
 void TaskMassProperties::invoke()
@@ -498,24 +484,24 @@ bool TaskMassProperties::reject()
     return true;
 }
 
-void TaskMassProperties::quit()
+void TaskMassProperties::escape()
 {
-    if (!Gui::Selection().getSelection().empty()) {
-        Gui::Selection().clearSelection();
-        this->removeTemporaryObjects();
-        this->clearUiFields();
-        listWidget->clear();
-
-        selectingCustomCoordSystem = false;
-        currentDatum = nullptr;
-        hasCurrentDatumPlacement = false;
-        customEdit->clear();
-
-        currentInfo = MassPropertiesData {};
-    }
-    else {
+    if (Gui::Selection().getSelection().empty()) {
         this->reject();
+        return;
     }
+
+    Gui::Selection().clearSelection();
+    this->removeTemporaryObjects();
+    this->clearUiFields();
+    listWidget->clear();
+
+    selectingCustomCoordSystem = false;
+    currentDatum = nullptr;
+    hasCurrentDatumPlacement = false;
+    customEdit->clear();
+
+    currentInfo = MassPropertiesData {};
 }
 
 void TaskMassProperties::removeTemporaryObjects()
@@ -524,21 +510,16 @@ void TaskMassProperties::removeTemporaryObjects()
     if (!doc) {
         return;
     }
-    doc->openTransaction("Remove temporary datum objects");
 
-    bool hasObjectsToRemove = false;
-    if (doc->getObject("Center_of_Gravity")
-        || doc->getObject("Center_of_Volume")
-        || doc->getObject("Principal_Axes_LCS")) {
-        hasObjectsToRemove = true;
-    }
+    const bool hasObjectsToRemove = doc->getObject("Center_of_Gravity") 
+        || doc->getObject("Center_of_Volume") 
+        || doc->getObject("Principal_Axes_LCS");
 
     if (!hasObjectsToRemove) {
-        doc->abortTransaction();
         return;
     }
 
-    
+    doc->openTransaction("Remove temporary datum objects");
 
     if (doc->getObject("Center_of_Gravity")) {
         doc->removeObject("Center_of_Gravity");
@@ -615,9 +596,11 @@ void TaskMassProperties::update(const Gui::SelectionChanges& msg)
 void TaskMassProperties::tryupdate()
 {
     if (isUpdating) return;
+
     QScopedValueRollback<bool> updatingGuard(isUpdating, true);
 
     auto guiSelection = Gui::Selection().getSelection(nullptr, Gui::ResolveMode::NoResolve);
+    
     if (guiSelection.empty()) {
         if (currentMode == "Custom") {
             clearUiFields();
@@ -627,8 +610,8 @@ void TaskMassProperties::tryupdate()
 
     if (!selectingCustomCoordSystem) {
         bool hasElementSelection = false;
-        std::vector<std::pair<App::DocumentObject*, std::string>> promoted;
-        promoted.reserve(guiSelection.size());
+        std::vector<std::pair<App::DocumentObject*, std::string>> selectedObjects;
+        selectedObjects.reserve(guiSelection.size());
 
         for (const auto& sel : guiSelection) {
             if (!sel.pObject) {
@@ -638,20 +621,20 @@ void TaskMassProperties::tryupdate()
                 App::SubObjectT sub(sel.pObject, sel.SubName);
                 std::string subNoElement = sub.getSubNameNoElement();
 
-                bool canPromote = !subNoElement.empty() || !sel.pResolvedObject || sel.pResolvedObject == sel.pObject;
+                bool canPickShape = !subNoElement.empty() || !sel.pResolvedObject || sel.pResolvedObject == sel.pObject;
 
-                if (canPromote && subNoElement != sel.SubName) {
+                if (canPickShape && subNoElement != sel.SubName) {
                     hasElementSelection = true;
                 }
-                if (canPromote) {
-                    promoted.emplace_back(sel.pObject, subNoElement);
+                if (canPickShape) {
+                    selectedObjects.emplace_back(sel.pObject, subNoElement);
                 }
                 else {
-                    promoted.emplace_back(sel.pObject, sel.SubName);
+                    selectedObjects.emplace_back(sel.pObject, sel.SubName);
                 }
             }
             else {
-                promoted.emplace_back(sel.pObject, std::string());
+                selectedObjects.emplace_back(sel.pObject, std::string());
             }
         }
 
@@ -660,13 +643,13 @@ void TaskMassProperties::tryupdate()
             isUpdating = true;
             Gui::Selection().clearSelection();
 
-            for (const auto& entry : promoted) {
-                App::DocumentObject* obj = entry.first;
+            for (const auto& selected : selectedObjects) {
+                App::DocumentObject* obj = selected.first;
                 if (!obj || !obj->getDocument()) {
                     continue;
                 }
 
-                const std::string& subName = entry.second;
+                const std::string& subName = selected.second;
                 std::string key = obj->getDocument()->getName();
                 key += '|' + obj->getNameInDocument() + '|' + subName;
 
@@ -736,22 +719,20 @@ void TaskMassProperties::tryupdate()
         if (!obj) {
             return Base::Placement();
         }
-        auto* baseProp = obj->getPropertyByName("Placement");
-        auto* prop = dynamic_cast<App::PropertyPlacement*>(baseProp);
-        if (prop) {
+        if (auto* prop = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName("Placement"))) {
             return prop->getValue();
         }
         return Base::Placement();
     };
 
-    auto resolveSelectionPlacement = [&](App::DocumentObject* root, const char* subname, App::DocumentObject* resolvedHint = nullptr) {
+    auto getGlobalPlacement = [&](App::DocumentObject* root, const char* subname, App::DocumentObject* resolvedObject = nullptr) {
         if (!root) {
             return Base::Placement();
         }
 
         if (!subname || !subname[0]) {
-            if (resolvedHint && resolvedHint != root) {
-                return App::GeoFeature::getGlobalPlacement(resolvedHint);
+            if (resolvedObject && resolvedObject != root) {
+                return App::GeoFeature::getGlobalPlacement(resolvedObject);
             }
             return App::GeoFeature::getGlobalPlacement(root);
         }
@@ -760,15 +741,15 @@ void TaskMassProperties::tryupdate()
         std::string subNoElement = sub.getSubNameNoElement();
         
         if (subNoElement.empty()) {
-            if (resolvedHint && resolvedHint != root) {
-                return App::GeoFeature::getGlobalPlacement(resolvedHint);
+            if (resolvedObject && resolvedObject != root) {
+                return App::GeoFeature::getGlobalPlacement(resolvedObject);
             }
             return App::GeoFeature::getGlobalPlacement(root);
         }
 
         App::DocumentObject* target = sub.getSubObject();
         if (!target) {
-            target = resolvedHint;
+            target = resolvedObject;
         }
         if (!target) {
             target = root->getSubObject(subNoElement.c_str());
@@ -781,26 +762,24 @@ void TaskMassProperties::tryupdate()
         return App::GeoFeature::getGlobalPlacement(target, root, subNoElement);
     };
 
-    auto addMeasuredObject = [&](App::DocumentObject* obj,
-                                 const char* elementName,
-                                 const Base::Placement& placement,
-                                 std::unordered_set<std::string>& measuredKeys) {
+    auto addObject = [&](App::DocumentObject* obj, const char* elementName, const Base::Placement& placement, std::unordered_set<std::string>& objectKeys) {
         if (!obj) {
             return false;
         }
 
-        App::DocumentObject* owner = nullptr;
+        App::DocumentObject* object = nullptr;
         Part::ShapeOptions options = Part::ShapeOption::ResolveLink;
 
         if (elementName && elementName[0]) {
             options |= Part::ShapeOption::NeedSubElement;
         }
 
-        TopoDS_Shape shape = Part::Feature::getShape(obj, options, elementName, nullptr, &owner);
+        TopoDS_Shape shape = Part::Feature::getShape(obj, options, elementName, nullptr, &object);
+
         if (shape.IsNull()) {
             return false;
         }
-        App::DocumentObject* materialObj = owner ? owner : obj;
+        App::DocumentObject* materialObj = object ? object : obj;
 
         std::ostringstream keyBuilder;
         keyBuilder << std::fixed << std::setprecision(9) << materialObj->getDocument()->getName() << '|' << materialObj->getNameInDocument() << '|';
@@ -812,8 +791,8 @@ void TaskMassProperties::tryupdate()
                 keyBuilder << matrix[r][c] << ';';
             }
         }
-        std::string measuredKey = keyBuilder.str();
-        if (!measuredKeys.insert(measuredKey).second) {
+        std::string objectKey = keyBuilder.str();
+        if (!objectKeys.insert(objectKey).second) {
             return true;
         }
 
@@ -822,10 +801,10 @@ void TaskMassProperties::tryupdate()
         return true;
     };
 
-    std::unordered_set<std::string> measuredKeys;
+    std::unordered_set<std::string> objectKeys;
     std::unordered_set<App::DocumentObject*> visited;
 
-    auto collectBodies = [&](auto&& self, App::DocumentObject* obj, const Base::Placement& parentPlc) -> void {
+    auto collectBodies = [&](auto&& self, App::DocumentObject* obj, const Base::Placement& parentPlacement) -> void {
         if (!obj) {
             return;
         }
@@ -845,26 +824,26 @@ void TaskMassProperties::tryupdate()
             return;
         }
 
-        Base::Placement currentPlc = parentPlc * getPlacementFromObject(obj);
+        Base::Placement currentPlacement = parentPlacement * getPlacementFromObject(obj);
         if (resolved != obj) {
-            currentPlc = currentPlc * getPlacementFromObject(resolved);
+            currentPlacement = currentPlacement * getPlacementFromObject(resolved);
         }
 
         if (auto* body = dynamic_cast<PartDesign::Body*>(resolved)) {
             if (auto* tip = body->Tip.getValue()) {
-                Base::Placement tipPlc = currentPlc * getPlacementFromObject(tip);
-                addMeasuredObject(tip, nullptr, tipPlc, measuredKeys);
+                Base::Placement tipPlacement = currentPlacement * getPlacementFromObject(tip);
+                addObject(tip, nullptr, tipPlacement, objectKeys);
             }
             return;
         }
 
-        if (addMeasuredObject(resolved, nullptr, currentPlc, measuredKeys)) {
+        if (addObject(resolved, nullptr, currentPlacement, objectKeys)) {
             return;
         }
 
         if (auto* group = resolved->getExtensionByType<App::GroupExtension>(true)) {
             for (auto* child : group->getObjects()) {
-                self(self, child, currentPlc);
+                self(self, child, currentPlacement);
             }
             return;
         }
@@ -875,24 +854,24 @@ void TaskMassProperties::tryupdate()
     if (selectingCustomCoordSystem) {
 
         for (const auto& selObj : guiSelection) {
-            App::DocumentObject* candidate = selObj.pObject;
+            App::DocumentObject* coordSystem = selObj.pObject;
 
             if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
-                candidate = selObj.pResolvedObject;
+                coordSystem = selObj.pResolvedObject;
             }
 
             if (selObj.SubName && selObj.SubName[0]) {
                 App::SubObjectT sub(selObj.pObject, selObj.SubName);
                 
                 if (auto* leaf = sub.getSubObject()) {
-                    candidate = leaf;
+                    coordSystem = leaf;
                 }
             }
 
-            if (isReferenceObject(candidate)) {
-                customEdit->setText(QString::fromStdString(coordLabel(candidate)));
-                currentDatum = candidate;
-                currentDatumPlacement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
+            if (isReferenceObject(coordSystem)) {
+                customEdit->setText(QString::fromStdString(coordLabel(coordSystem)));
+                currentDatum = coordSystem;
+                currentDatumPlacement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
                 hasCurrentDatumPlacement = true;
                 selectingCustomCoordSystem = false;
                 break;
@@ -901,65 +880,68 @@ void TaskMassProperties::tryupdate()
     }
     
     for (const auto& selObj : guiSelection) {
-        if (selObj.pObject) {
-            if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject")
-                && !(selObj.SubName && selObj.SubName[0])) {
-                Base::Placement rootPlc = resolveSelectionPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
-                if (auto* group = selObj.pObject->getExtensionByType<App::GroupExtension>(true)) {
-                    for (auto* child : group->getObjects()) {
-                        collectBodies(collectBodies, child, rootPlc);
-                    }
-                }
-                else {
-                    collectBodies(collectBodies, selObj.pObject, Base::Placement());
-                }
-                continue;
-            }
+        if (!selObj.pObject) {
+            continue;
+        }
 
-            App::DocumentObject* candidate = selObj.pObject;
-            if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
-                candidate = selObj.pResolvedObject;
-            }
+        if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject") && !(selObj.SubName && selObj.SubName[0])) {
 
-            if (selObj.SubName && selObj.SubName[0]) {
-                App::SubObjectT sub(selObj.pObject, selObj.SubName);
-                if (auto* leaf = sub.getSubObject()) {
-                    candidate = leaf;
-                }
-            }
+            Base::Placement rootPlacement = getGlobalPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
 
-            if (isReferenceObject(candidate)) {
-                if (currentMode == "Custom" && !selectingCustomCoordSystem) {
-                    currentDatum = candidate;
-                    currentDatumPlacement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
-                    hasCurrentDatumPlacement = true;
-                    customEdit->setText(QString::fromStdString(coordLabel(candidate)));
-                    referenceDatum = currentDatum;
-                    break;
+            if (auto* group = selObj.pObject->getExtensionByType<App::GroupExtension>(true)) {
+                for (auto* child : group->getObjects()) {
+                    collectBodies(collectBodies, child, rootPlacement);
                 }
-                continue;
-            }
-
-            if (selObj.SubName && selObj.SubName[0]) {
-                App::SubObjectT sub(selObj.pObject, selObj.SubName);
-                App::DocumentObject* leaf = nullptr;
-
-                if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
-                    leaf = selObj.pResolvedObject;
-                }
-                if (!leaf) {
-                    leaf = sub.getSubObject();
-                }
-                if (!leaf) {
-                    leaf = selObj.pObject;
-                }
-                Base::Placement placement = resolveSelectionPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
-                addMeasuredObject(leaf, nullptr, placement, measuredKeys);
             }
             else {
-                Base::Placement placement = resolveSelectionPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
-                addMeasuredObject(selObj.pObject, nullptr, placement, measuredKeys);
+                collectBodies(collectBodies, selObj.pObject, Base::Placement());
             }
+            continue;
+        }
+
+        App::DocumentObject* coordSystem = selObj.pObject;
+        if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+            coordSystem = selObj.pResolvedObject;
+        }
+
+        if (selObj.SubName && selObj.SubName[0]) {
+            App::SubObjectT sub(selObj.pObject, selObj.SubName);
+            if (auto* leaf = sub.getSubObject()) {
+                coordSystem = leaf;
+            }
+        }
+
+        if (isReferenceObject(coordSystem)) {
+            if (currentMode == "Custom" && !selectingCustomCoordSystem) {
+                currentDatum = coordSystem;
+                currentDatumPlacement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
+                hasCurrentDatumPlacement = true;
+                customEdit->setText(QString::fromStdString(coordLabel(coordSystem)));
+                referenceDatum = currentDatum;
+                break;
+            }
+            continue;
+        }
+
+        if (selObj.SubName && selObj.SubName[0]) {
+            App::SubObjectT sub(selObj.pObject, selObj.SubName);
+            App::DocumentObject* leaf = nullptr;
+
+            if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
+                leaf = selObj.pResolvedObject;
+            }
+            if (!leaf) {
+                leaf = sub.getSubObject();
+            }
+            if (!leaf) {
+                leaf = selObj.pObject;
+            }
+            Base::Placement placement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
+            addObject(leaf, nullptr, placement, objectKeys);
+        }
+        else {
+            Base::Placement placement = getGlobalPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
+            addObject(selObj.pObject, nullptr, placement, objectKeys);
         }
     }
 
@@ -1034,8 +1016,6 @@ void TaskMassProperties::tryupdate()
         }
     }
 
-
-
     const int decimals = Base::UnitsApi::getDecimals();
     const int denominator = Base::UnitsApi::getDenominator();
 
@@ -1090,16 +1070,11 @@ void TaskMassProperties::tryupdate()
 
 void TaskMassProperties::updateInertiaVisibility()
 {
-    bool hasAxisSelection = false;
-    if (currentMode == "Custom" && currentDatum) {
-        hasAxisSelection = currentDatum->isDerivedFrom<App::Line>();
-    }
+    const bool hasAxisSelection = currentMode == "Custom" && currentDatum && currentDatum->isDerivedFrom<App::Line>();
 
-    bool hideInertia = hasAxisSelection;
-
-    inertiaMatrixWidget->setVisible(!hideInertia);
-    inertiaDiagWidget->setVisible(!hideInertia);
-    inertiaLcsWidget->setVisible(!hideInertia);
+    inertiaMatrixWidget->setVisible(!hasAxisSelection);
+    inertiaDiagWidget->setVisible(!hasAxisSelection);
+    inertiaLcsWidget->setVisible(!hasAxisSelection);
     axisInertiaWidget->setVisible(hasAxisSelection);
 }
 
@@ -1113,10 +1088,8 @@ void TaskMassProperties::createDatum(double x, double y, double z, const std::st
         
         App::DocumentObject* datum = doc->getObject(name.c_str());
         
-        if (removeExisting) {
-            if (datum) {
-                doc->removeObject(name.c_str());
-            }
+        if (removeExisting && datum) {
+            doc->removeObject(name.c_str());
         }
 
         datum = doc->addObject("Part::DatumPoint", name.c_str());
@@ -1148,10 +1121,8 @@ void TaskMassProperties::createLCS(std::string name, bool removeExisting)
 
         App::DocumentObject* LCS = doc->getObject(name.c_str());
 
-        if (removeExisting) {
-            if (LCS) {
-                doc->removeObject(name.c_str());
-            }
+        if (removeExisting && LCS) {
+            doc->removeObject(name.c_str());
         }
         LCS = doc->addObject("Part::LocalCoordinateSystem", name.c_str());
         
@@ -1240,12 +1211,11 @@ void TaskMassProperties::saveResult()
     doc->openTransaction("Add Mass Properties");
 
     MassProperties::Result::init();
-
-    constexpr auto groupName = "Measurements";
-    auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject(groupName));
+    
+    auto group = dynamic_cast<App::DocumentObjectGroup*>(doc->getObject("Measurements"));
     
     if (!group || !group->isValid()) {
-        group = doc->addObject<App::DocumentObjectGroup>(groupName);
+        group = doc->addObject<App::DocumentObjectGroup>("Measurements");
     }
 
     auto* obj = doc->addObject("MassProperties::Result", "MassProperties");
