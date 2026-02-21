@@ -25,7 +25,6 @@
 #define MATERIAL_MODELMANAGEREXTERNAL_H
 
 #include <memory>
-#include <lru/lru.hpp>
 
 #include <Mod/Material/MaterialGlobal.h>
 
