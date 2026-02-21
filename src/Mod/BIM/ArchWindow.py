@@ -547,16 +547,30 @@ class _Window(ArchComponent.Component):
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
                         elif omode in [9, 10]:  # Sliding or -Sliding
+                            # Sort points by coordinate (X, then Y, then Z) to ensure consistent
+                            # sliding direction regardless of edge direction in the base sketch
+                            # Ensure the sliding direction is relative to the door's local
+                            # coordinate system, rather than the global world space.
+                            inv_placement = obj.Base.Placement.inverse()
 
-                            # Sort points by coordinate (X, then Y, then Z) to ensure predictable
-                            # direction regardless of edge geometry construction.
-                            pts = [ev1, ev2]
-                            pts.sort(key=lambda p: (round(p.x, 3), round(p.y, 3), round(p.z, 3)))
+                            # Pair the calculated local vectors with their original global vectors
+                            pts = [
+                                (inv_placement.multVec(ev1), ev1),
+                                (inv_placement.multVec(ev2), ev2),
+                            ]
 
-                            # Mode 9: Slide from Min Coords -> Max Coords
-                            # Mode 10: Slide from Max Coords -> Min Coords
-                            p_start = pts[0] if omode == 9 else pts[1]
-                            p_end = pts[1] if omode == 9 else pts[0]
+                            # Sort by local coordinates
+                            pts.sort(
+                                key=lambda p: (round(p[0].x, 3), round(p[0].y, 3), round(p[0].z, 3))
+                            )
+
+                            global_min = pts[0][1]
+                            global_max = pts[1][1]
+
+                            # Mode 9: Slide Min -> Max. Mode 10: Slide Max -> Min.
+                            p_start, p_end = (
+                                (global_min, global_max) if omode == 9 else (global_max, global_min)
+                            )
 
                             travel = p_end.sub(p_start)
 
@@ -1007,7 +1021,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 # color is an RGBA tuple (0.0-1.0)
                 sapp_mat = (
                     FreeCAD.Material()
-                )  # ShapeAppearance material with default v0.21 properties.
+                )  # ShapeAppearance material with default v0.21 properties.a
                 sapp_mat.DiffuseColor = color[:3] + (1.0,)
                 sapp_mat.Transparency = 1.0 - color[3]
             sapp.extend((sapp_mat,) * len(solids[i].Faces))
