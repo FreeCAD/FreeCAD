@@ -95,7 +95,7 @@ QString extractUnitFromResultString(const QString& resultString)
 
 TaskMeasure::TaskMeasure()
 {
-    this->setButtonPosition(TaskMeasure::South);
+    this->setButtonPosition(TaskMeasure::North);
     auto taskbox = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("umf-measurement"),
         tr("Measurement"),
