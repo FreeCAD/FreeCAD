@@ -231,7 +231,7 @@ treated as shortcut key sequence 'F, F'.</string>
       <item>
        <widget class="QGroupBox" name="groupBox_3">
         <property name="title">
-         <string>Priority list</string>
+         <string>Priority List</string>
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
