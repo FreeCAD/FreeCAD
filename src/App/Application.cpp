@@ -31,7 +31,7 @@
 #  include <sys/types.h>
 # elif defined(__MINGW32__)
 #  undef WINVER
-#  define WINVER 0x502 // needed for SetDllDirectory
+#  define WINVER 0x601 // needed for SetDllDirectory
 #  include <Windows.h>
 # endif
 # include <boost/algorithm/string.hpp>

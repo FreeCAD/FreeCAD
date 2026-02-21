@@ -669,6 +669,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 void StdWorkbench::createMainWindowPopupMenu(MenuItem* item) const
 {
     *item << "Std_ToggleToolBarLock";
+    *item << "Std_DlgToggleTitleToolBarLock";
     *item << "Std_DlgCustomize";
 }
 
