@@ -671,13 +671,13 @@ Qt::ItemFlags SheetModel::flags(const QModelIndex& /*index*/) const
 
 void SheetModel::containInView(App::CellAddress address)
 {
-    if (address.row() + 1 > rows) {
-        beginInsertRows(QModelIndex(), rows, address.row() + 1 - rows);
+    if (address.row() >= rows) {
+        beginInsertRows(QModelIndex(), rows, address.row());
         rows = address.row() + 1;
         endInsertRows();
     }
-    if (address.col() + 1 > cols) {
-        beginInsertColumns(QModelIndex(), cols, address.col() + 1 - cols);
+    if (address.col() >= cols) {
+        beginInsertColumns(QModelIndex(), cols, address.col());
         cols = address.col() + 1;
         endInsertColumns();
     }
