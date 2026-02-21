@@ -24,7 +24,9 @@
 
 import FreeCAD
 
+import Part
 import Path
+import Path.Base.Generator.tapping as tapping
 import CAMTests.PathTestUtils as PathTestUtils
 import CAMTests.PostTestMocks as PostTestMocks
 from Path.Post.Processor import PostProcessorFactory
@@ -199,3 +201,43 @@ class TestLinuxCNCPost(PathTestUtils.PathTestBase):
         lines = gcode.splitlines()
         self.assertEqual(lines[0], "G80 G90")
         self.assertEqual(lines[1], "G64")
+
+    def test_thread_tapping(self):
+        """Test thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=True,
+            pitch=None,
+            spindle_speed=None,
+        )
+        self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
+        self.profile_op.Path = Path.Path(path)
+        gcode = self.post.export()[0][1]
+        lines = gcode.splitlines()
+        self.assertEqual(lines[8], "G84 X0.000 Y0.000 Z0.000 F6000.000 S1 R10.000")
+
+    def test_thread_tapping_links(self):
+        """Test thread tapping."""
+        path = tapping.generate(
+            Part.makeLine(
+                FreeCAD.Vector(0, 0, 10),
+                FreeCAD.Vector(0, 0, 0),
+            ),
+            dwelltime=0.0,
+            repeat=1,
+            retractheight=None,
+            righthand=False,
+            pitch=None,
+            spindle_speed=None,
+        )
+        self.job.PostProcessorArgs = "--no-header --no-comments --no-show-editor"
+        self.profile_op.Path = Path.Path(path)
+        gcode = self.post.export()[0][1]
+        lines = gcode.splitlines()
+        self.assertEqual(lines[8], "G74 X0.000 Y0.000 Z0.000 F6000.000 S1 R10.000")
