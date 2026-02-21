@@ -1021,7 +1021,7 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
                 # color is an RGBA tuple (0.0-1.0)
                 sapp_mat = (
                     FreeCAD.Material()
-                )  # ShapeAppearance material with default v0.21 properties.a
+                )  # ShapeAppearance material with default v0.21 properties.
                 sapp_mat.DiffuseColor = color[:3] + (1.0,)
                 sapp_mat.Transparency = 1.0 - color[3]
             sapp.extend((sapp_mat,) * len(solids[i].Faces))
