@@ -167,20 +167,22 @@ void PropertyItemDelegate::paint(
         const bool expanded = view ? view->isExpanded(indexFirstColumn) : false;
 
         if (!expanded) {
-            // Add your indicator here
-            QStyleOption branchOpt;
-            branchOpt.rect = option.rect.adjusted(4, 0, -4, 0);
-            branchOpt.state = QStyle::State_Children | QStyle::State_Enabled;
+            QStyleOptionViewItem branchOpt(option);
 
-        QStyle* style = option.widget ? option.widget->style() : QApplication::style();
-        style->drawPrimitive(
-            QStyle::PE_IndicatorBranch,
-            &branchOpt,
-            painter,
-            option.widget
-        );
+            branchOpt.state |= QStyle::State_Children;
+            branchOpt.state |= QStyle::State_Closed;
+
+            QStyle* style = option.widget
+                ? option.widget->style()
+                : QApplication::style();
+
+            style->drawPrimitive(
+                QStyle::PE_IndicatorBranch,
+                &branchOpt,
+                painter,
+                option.widget
+            );
         }
-    }
 
     painter->setPen(QPen(color));
     if (index.column() == 1 || !(property && property->isSeparator())) {
