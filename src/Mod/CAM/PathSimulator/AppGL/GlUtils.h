@@ -67,4 +67,3 @@ void GLClearError();
 bool GLLogError();
 
 }  // namespace MillSim
-
