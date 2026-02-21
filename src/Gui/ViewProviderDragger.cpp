@@ -121,14 +121,6 @@ bool ViewProviderDragger::doubleClicked()
     return true;
 }
 
-void ViewProviderDragger::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
-{
-    QIcon iconObject = mergeGreyableOverlayIcons(Gui::BitmapFactory().pixmap("Std_TransformManip.svg"));
-    QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-    act->setData(QVariant((int)ViewProvider::Transform));
-    ViewProviderDocumentObject::setupContextMenu(menu, receiver, member);
-}
-
 ViewProvider* ViewProviderDragger::startEditing(int mode)
 {
     forwardedViewProvider = nullptr;

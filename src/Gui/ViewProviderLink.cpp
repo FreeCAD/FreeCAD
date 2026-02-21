@@ -3167,26 +3167,6 @@ void ViewProviderLink::_setupContextMenu(
         );
     }
 
-    if ((ext->getPlacementProperty() && !ext->getPlacementProperty()->isReadOnly())
-        || (ext->getLinkPlacementProperty() && !ext->getLinkPlacementProperty()->isReadOnly())) {
-        bool found = false;
-        const auto actions = menu->actions();
-        for (auto action : actions) {
-            if (action->data().toInt() == ViewProvider::Transform) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            QIcon iconObject = mergeGreyableOverlayIcons(
-                Gui::BitmapFactory().pixmap("Std_TransformManip.svg")
-            );
-            QAction* act = menu->addAction(iconObject, QObject::tr("Transform"), receiver, member);
-            act->setToolTip(QObject::tr("Transforms the object at the origin of the placement"));
-            act->setData(QVariant((int)ViewProvider::Transform));
-        }
-    }
-
     if (ext->getColoredElementsProperty()) {
         bool found = false;
         const auto actions = menu->actions();
