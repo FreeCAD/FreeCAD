@@ -296,7 +296,7 @@ class CAMSimulation:
                 self.operations.append(op)
                 form.listOperations.addItem(listItem)
         if len(j.Model.OutList) > 0:
-            self.baseShape = j.Model.OutList[0].Shape
+            self.baseShape = Part.makeCompound([o.Shape for o in j.Model.OutList])
         else:
             self.baseShape = None
 

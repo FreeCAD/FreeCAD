@@ -25,69 +25,76 @@
 #ifndef __openglwrapper_h__
 #define __openglwrapper_h__
 
-#include "DlgCAMSimulator.h"
-#define gSimWindow CAMSimulator::DlgCAMSimulator::instance()
-#define glClearColor gSimWindow->glClearColor
-#define glBlendFunc gSimWindow->glBlendFunc
-#define glClear gSimWindow->glClear
-#define glGenBuffers gSimWindow->glGenBuffers
-#define glBindBuffer gSimWindow->glBindBuffer
-#define glBufferData gSimWindow->glBufferData
-#define glGenVertexArrays gSimWindow->glGenVertexArrays
-#define glBindVertexArray gSimWindow->glBindVertexArray
-#define glEnableVertexAttribArray gSimWindow->glEnableVertexAttribArray
-#define glVertexAttribPointer gSimWindow->glVertexAttribPointer
-#define glShaderSource gSimWindow->glShaderSource
-#define glCompileShader gSimWindow->glCompileShader
-#define glDeleteShader gSimWindow->glDeleteShader
-#define glDeleteProgram gSimWindow->glDeleteProgram
-#define glAttachShader gSimWindow->glAttachShader
-#define glLinkProgram gSimWindow->glLinkProgram
-#define glGetProgramiv gSimWindow->glGetProgramiv
-#define glGetUniformLocation gSimWindow->glGetUniformLocation
-#define glGetError gSimWindow->glGetError
-#define glEnable gSimWindow->glEnable
-#define glColorMask gSimWindow->glColorMask
-#define glCullFace gSimWindow->glCullFace
-#define glDepthFunc gSimWindow->glDepthFunc
-#define glStencilFunc gSimWindow->glStencilFunc
-#define glStencilOp gSimWindow->glStencilOp
-#define glDepthMask gSimWindow->glDepthMask
-#define glDisable gSimWindow->glDisable
-#define glMatrixMode gSimWindow->glMatrixMode
-#define glUseProgram gSimWindow->glUseProgram
-#define glDrawElements gSimWindow->glDrawElements
-#define glDeleteVertexArrays gSimWindow->glDeleteVertexArrays
-#define glUniformMatrix4fv gSimWindow->glUniformMatrix4fv
-#define glUniform3fv gSimWindow->glUniform3fv
-#define glUniform1i gSimWindow->glUniform1i
-#define glCreateShader gSimWindow->glCreateShader
-#define glCreateProgram gSimWindow->glCreateProgram
-#define glDeleteBuffers gSimWindow->glDeleteBuffers
-#define glActiveTexture gSimWindow->glActiveTexture
-#define glBindTexture gSimWindow->glBindTexture
-#define glGenTextures gSimWindow->glGenTextures
-#define glTexParameteri gSimWindow->glTexParameteri
-#define glTexImage2D gSimWindow->glTexImage2D
-#define glDeleteTextures gSimWindow->glDeleteTextures
-#define glPolygonOffset gSimWindow->glPolygonOffset
+#include <QOpenGLExtraFunctions>
 
-#define glBindFramebuffer gSimWindow->glBindFramebuffer
-#define glUniform1f gSimWindow->glUniform1f
-#define glGenFramebuffers gSimWindow->glGenFramebuffers
-#define glFramebufferTexture2D gSimWindow->glFramebufferTexture2D
-#define glDrawBuffers gSimWindow->glDrawBuffers
-#define glGenRenderbuffers gSimWindow->glGenRenderbuffers
-#define glBindRenderbuffer gSimWindow->glBindRenderbuffer
-#define glRenderbufferStorage gSimWindow->glRenderbufferStorage
-#define glFramebufferRenderbuffer gSimWindow->glFramebufferRenderbuffer
-#define glCheckFramebufferStatus gSimWindow->glCheckFramebufferStatus
-#define glDeleteFramebuffers gSimWindow->glDeleteFramebuffers
-#define glDeleteRenderbuffers gSimWindow->glDeleteRenderbuffers
-#define glVertexAttribIPointer gSimWindow->glVertexAttribIPointer
-#define glUniform4fv gSimWindow->glUniform4fv
-#define glLineWidth gSimWindow->glLineWidth
-#define glGetShaderiv gSimWindow->glGetShaderiv
-#define glGetShaderInfoLog gSimWindow->glGetShaderInfoLog
+namespace CAMSimulator
+{
+
+extern QOpenGLExtraFunctions gOpenGLFunctions;
+
+#define glClearColor gOpenGLFunctions.glClearColor
+#define glBlendFunc gOpenGLFunctions.glBlendFunc
+#define glClear gOpenGLFunctions.glClear
+#define glGenBuffers gOpenGLFunctions.glGenBuffers
+#define glBindBuffer gOpenGLFunctions.glBindBuffer
+#define glBufferData gOpenGLFunctions.glBufferData
+#define glGenVertexArrays gOpenGLFunctions.glGenVertexArrays
+#define glBindVertexArray gOpenGLFunctions.glBindVertexArray
+#define glEnableVertexAttribArray gOpenGLFunctions.glEnableVertexAttribArray
+#define glVertexAttribPointer gOpenGLFunctions.glVertexAttribPointer
+#define glShaderSource gOpenGLFunctions.glShaderSource
+#define glCompileShader gOpenGLFunctions.glCompileShader
+#define glDeleteShader gOpenGLFunctions.glDeleteShader
+#define glDeleteProgram gOpenGLFunctions.glDeleteProgram
+#define glAttachShader gOpenGLFunctions.glAttachShader
+#define glLinkProgram gOpenGLFunctions.glLinkProgram
+#define glGetProgramiv gOpenGLFunctions.glGetProgramiv
+#define glGetUniformLocation gOpenGLFunctions.glGetUniformLocation
+#define glGetError gOpenGLFunctions.glGetError
+#define glEnable gOpenGLFunctions.glEnable
+#define glColorMask gOpenGLFunctions.glColorMask
+#define glCullFace gOpenGLFunctions.glCullFace
+#define glDepthFunc gOpenGLFunctions.glDepthFunc
+#define glStencilFunc gOpenGLFunctions.glStencilFunc
+#define glStencilOp gOpenGLFunctions.glStencilOp
+#define glDepthMask gOpenGLFunctions.glDepthMask
+#define glDisable gOpenGLFunctions.glDisable
+#define glMatrixMode gOpenGLFunctions.glMatrixMode
+#define glUseProgram gOpenGLFunctions.glUseProgram
+#define glDrawElements gOpenGLFunctions.glDrawElements
+#define glDeleteVertexArrays gOpenGLFunctions.glDeleteVertexArrays
+#define glUniformMatrix4fv gOpenGLFunctions.glUniformMatrix4fv
+#define glUniform3fv gOpenGLFunctions.glUniform3fv
+#define glUniform1i gOpenGLFunctions.glUniform1i
+#define glCreateShader gOpenGLFunctions.glCreateShader
+#define glCreateProgram gOpenGLFunctions.glCreateProgram
+#define glDeleteBuffers gOpenGLFunctions.glDeleteBuffers
+#define glActiveTexture gOpenGLFunctions.glActiveTexture
+#define glBindTexture gOpenGLFunctions.glBindTexture
+#define glGenTextures gOpenGLFunctions.glGenTextures
+#define glTexParameteri gOpenGLFunctions.glTexParameteri
+#define glTexImage2D gOpenGLFunctions.glTexImage2D
+#define glDeleteTextures gOpenGLFunctions.glDeleteTextures
+#define glPolygonOffset gOpenGLFunctions.glPolygonOffset
+
+#define glBindFramebuffer gOpenGLFunctions.glBindFramebuffer
+#define glUniform1f gOpenGLFunctions.glUniform1f
+#define glGenFramebuffers gOpenGLFunctions.glGenFramebuffers
+#define glFramebufferTexture2D gOpenGLFunctions.glFramebufferTexture2D
+#define glDrawBuffers gOpenGLFunctions.glDrawBuffers
+#define glGenRenderbuffers gOpenGLFunctions.glGenRenderbuffers
+#define glBindRenderbuffer gOpenGLFunctions.glBindRenderbuffer
+#define glRenderbufferStorage gOpenGLFunctions.glRenderbufferStorage
+#define glFramebufferRenderbuffer gOpenGLFunctions.glFramebufferRenderbuffer
+#define glCheckFramebufferStatus gOpenGLFunctions.glCheckFramebufferStatus
+#define glDeleteFramebuffers gOpenGLFunctions.glDeleteFramebuffers
+#define glDeleteRenderbuffers gOpenGLFunctions.glDeleteRenderbuffers
+#define glVertexAttribIPointer gOpenGLFunctions.glVertexAttribIPointer
+#define glUniform4fv gOpenGLFunctions.glUniform4fv
+#define glLineWidth gOpenGLFunctions.glLineWidth
+#define glGetShaderiv gOpenGLFunctions.glGetShaderiv
+#define glGetShaderInfoLog gOpenGLFunctions.glGetShaderInfoLog
+
+}  // namespace CAMSimulator
 
 #endif  // !__openglwrapper_h__

@@ -24,8 +24,6 @@ SET(CAMSimulator_SRCS_Module
     DlgCAMSimulator.cpp
     DlgCAMSimulator.h
     PreCompiled.h
-    ViewCAMSimulator.cpp
-    ViewCAMSimulator.h
 )
 
 SET(CAMSimulator_SRCS_Core
@@ -60,6 +58,16 @@ SET(CAMSimulator_SRCS_Core
     Texture.h
     TextureLoader.cpp
     TextureLoader.h
+    ViewCAMSimulator.cpp
+    ViewCAMSimulator.h
+    Dummy3DViewer.cpp
+    Dummy3DViewer.h
+    TopoShapeViewProvider.cpp
+    TopoShapeViewProvider.h
+    CAMSettings.cpp
+    CAMSettings.h
+    View3DSettings.cpp
+    View3DSettings.h
 )
 
 generate_from_py(CAMSim)

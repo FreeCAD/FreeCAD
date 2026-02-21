@@ -3382,6 +3382,74 @@ void View3DInventorViewer::setCameraType(SoType type)
     lightRotation->rotation.connectFrom(&cam->orientation);
 }
 
+bool View3DInventorViewer::setCamera(const char* pCamera)
+{
+    SoCamera* CamViewer = getSoRenderManager()->getCamera();
+    if (!CamViewer) {
+        throw Base::RuntimeError("No camera set so far…");
+    }
+
+    SoInput in;
+    in.setBuffer((void*)pCamera, std::strlen(pCamera));
+
+    SoNode* Cam;
+    SoDB::read(&in, Cam);
+
+    if (!Cam || !Cam->isOfType(SoCamera::getClassTypeId())) {
+        throw Base::RuntimeError("Camera settings failed to read");
+    }
+
+    // this is to make sure to reliably delete the node
+    CoinPtr<SoNode> camPtr(Cam, true);
+
+    // toggle between perspective and orthographic camera
+    if (Cam->getTypeId() != CamViewer->getTypeId()) {
+        setCameraType(Cam->getTypeId());
+        CamViewer = getSoRenderManager()->getCamera();
+    }
+
+    SoPerspectiveCamera* CamViewerP = nullptr;
+    SoOrthographicCamera* CamViewerO = nullptr;
+
+    if (CamViewer->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        CamViewerP = static_cast<SoPerspectiveCamera*>(CamViewer);  // safe downward cast, knows the type
+    }
+    else if (CamViewer->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        CamViewerO = static_cast<SoOrthographicCamera*>(CamViewer);  // safe downward cast, knows
+                                                                     // the type
+    }
+
+    if (Cam->getTypeId() == SoPerspectiveCamera::getClassTypeId()) {
+        if (CamViewerP) {
+            CamViewerP->position = static_cast<SoPerspectiveCamera*>(Cam)->position;
+            CamViewerP->orientation = static_cast<SoPerspectiveCamera*>(Cam)->orientation;
+            CamViewerP->nearDistance = static_cast<SoPerspectiveCamera*>(Cam)->nearDistance;
+            CamViewerP->farDistance = static_cast<SoPerspectiveCamera*>(Cam)->farDistance;
+            CamViewerP->focalDistance = static_cast<SoPerspectiveCamera*>(Cam)->focalDistance;
+        }
+        else {
+            throw Base::TypeError("Camera type mismatch");
+        }
+    }
+    else if (Cam->getTypeId() == SoOrthographicCamera::getClassTypeId()) {
+        if (CamViewerO) {
+            CamViewerO->viewportMapping = static_cast<SoOrthographicCamera*>(Cam)->viewportMapping;
+            CamViewerO->position = static_cast<SoOrthographicCamera*>(Cam)->position;
+            CamViewerO->orientation = static_cast<SoOrthographicCamera*>(Cam)->orientation;
+            CamViewerO->nearDistance = static_cast<SoOrthographicCamera*>(Cam)->nearDistance;
+            CamViewerO->farDistance = static_cast<SoOrthographicCamera*>(Cam)->farDistance;
+            CamViewerO->focalDistance = static_cast<SoOrthographicCamera*>(Cam)->focalDistance;
+            CamViewerO->aspectRatio = static_cast<SoOrthographicCamera*>(Cam)->aspectRatio;
+            CamViewerO->height = static_cast<SoOrthographicCamera*>(Cam)->height;
+        }
+        else {
+            throw Base::TypeError("Camera type mismatch");
+        }
+    }
+
+    return true;
+}
+
 void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
 {
     SoCamera* camera = getCamera();

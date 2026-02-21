@@ -25,6 +25,10 @@
 #ifndef __millsimulation__h__
 #define __millsimulation__h__
 
+#include <sstream>
+#include <vector>
+#include <chrono>
+
 #include "MillMotion.h"
 #include "GCodeParser.h"
 #include "Shader.h"
@@ -33,17 +37,14 @@
 #include "StockObject.h"
 #include "MillPathSegment.h"
 #include "SimDisplay.h"
-#include "GuiDisplay.h"
 #include "MillPathLine.h"
 #include "SolidObject.h"
-#include <sstream>
-#include <vector>
 
 #define VIEWITEM_SIMULATION 1
 #define VIEWITEM_BASE_SHAPE 2
 #define VIEWITEM_MAX 4
 
-namespace MillSim
+namespace CAMSimulator
 {
 
 struct MillSimulationState
@@ -64,13 +65,14 @@ struct MillSimulationState
 
 class MillSimulation: private MillSimulationState
 {
+    typedef std::chrono::steady_clock clock;
+
 public:
     MillSimulation();
     ~MillSimulation();
     void ClearMillPathSegments();
     void Clear();
-    void SimNext();
-    void InitSimulation(float quality);
+    void InitSimulation(float quality, float maxStockDimension);
     void AddTool(EndMill* tool);
     void AddTool(const std::vector<float>& toolProfile, int toolid, float diameter);
     bool ToolExists(int toolid);
@@ -79,24 +81,37 @@ public:
     void RenderPath();
     void RenderBaseShape();
     void Render();
-    void ProcessSim(unsigned int time_ms);
-    void HandleKeyPress(int key);
-    void HandleGuiAction(eGuiItems actionItem, bool checked);
+    void ProcessSim(const clock::duration& elapsed);
+    void SimNext(const clock::duration& elapsed);
+
     bool LoadGCodeFile(const char* fileName);
     bool AddGcodeLine(const char* line);
+
+    void SetPlaying(bool b);
+    void SingleStep();
+    void SetSpeed(int s);
+
     void SetSimulationStage(float stage);
     void SetState(const MillSimulationState& state);
     const MillSimulationState& GetState() const;
+
     void SetBoxStock(float x, float y, float z, float l, float w, float h);
     void SetArbitraryStock(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
+    void SetStockVisible(bool b);
+    bool IsStockVisible() const;
+
     void SetBaseObject(const std::vector<Vertex>& verts, const std::vector<GLushort>& indices);
-    void MouseDrag(int buttons, int dx, int dy);
-    void MouseMove(int px, int py, int modifiers);
-    void MouseScroll(float dy);
-    void MouseHover(int px, int py);
-    void MousePress(int button, bool isPressed, int px, int py);
-    void Zoom(float factor);
+    void SetBaseVisible(bool b);
+    bool IsBaseVisible() const;
+
+    void SetPathVisible(bool b);
+    void EnableSsao(bool b);
+
     void UpdateWindowScale(int width, int height);
+    void UpdateCamera(const SoCamera& camera);
+
+    void SetBackgroundColor(const vec3& c);
+    void SetPathColor(const vec3& normal, const vec3& rapid);
 
 protected:
     void InitDisplay(float quality);
@@ -113,20 +128,13 @@ protected:
     EndMill* GetTool(int tool);
     void RemoveTool(int toolId);
 
-protected:
+    // protected:
+public:
     std::vector<EndMill*> mToolTable;
     GCodeParser mCodeParser;
-    GuiDisplay guiDisplay;
     SimDisplay simDisplay;
     MillPathLine millPathLine;
     std::vector<MillPathSegment*> MillPathSegments;
-    std::ostringstream mFpsStream;
-
-    // clang-format off
-    MillMotion mZeroPos = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=100, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    MillMotion mCurMotion = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=0, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    MillMotion mDestMotion = {.cmd=eNop, .tool=-1, .x=0, .y=0, .z=0, .i=0, .j=0, .k=0, .r=0, .retract_mode='\0', .retract_z=0.0};
-    // clang-format on
 
     int mWidth = -1;
     int mHeight = -1;
@@ -140,15 +148,9 @@ protected:
     vec3 toolColor = {0.5f, 0.4f, 0.3f};
     vec3 baseShapeColor = {0.7f, 0.6f, 0.5f};
 
-    int mDebug = 0;
-    int mDebug1 = 0;
-    int mDebug2 = 12;
-
-    int mLastMouseX = 0, mLastMouseY = 0;
-    int mMouseButtonState = 0;
-    int mLastModifiers = 0;
+    clock::duration mTotalElapsed;
 };
 
-}  // namespace MillSim
+}  // namespace CAMSimulator
 
 #endif
