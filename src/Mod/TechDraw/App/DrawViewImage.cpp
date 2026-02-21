@@ -52,6 +52,8 @@ DrawViewImage::DrawViewImage()
     ADD_PROPERTY_TYPE(Height, (100), vgroup, App::Prop_None, "The height of cropped image");
     ADD_PROPERTY_TYPE(Owner, (nullptr), vgroup, (App::PropertyType)(App::Prop_None),
                       "Feature to which this symbol is attached");
+    ADD_PROPERTY_TYPE(Source, (nullptr), vgroup, App::Prop_None, "3D objects represented in this view");
+    ADD_PROPERTY_TYPE(XSource, (nullptr), vgroup, App::Prop_None, "External 3D objects represented in this view");
 
     ScaleType.setValue("Custom");
     Scale.setStatus(App::Property::Hidden, false);
@@ -104,6 +106,21 @@ void DrawViewImage::setupObject()
 {
     //    Base::Console().message("DVI::setupObject()\n");
     replaceImageIncluded(ImageFile.getValue());
+}
+
+std::vector<App::DocumentObject*> DrawViewImage::get3DObjects() const
+{
+    std::vector<App::DocumentObject*> result;
+    
+    // Get objects from Source property
+    const std::vector<App::DocumentObject*>& sources = Source.getValues();
+    result.insert(result.end(), sources.begin(), sources.end());
+    
+    // Get objects from XSource property
+    const std::vector<App::DocumentObject*>& xsources = XSource.getValues();
+    result.insert(result.end(), xsources.begin(), xsources.end());
+    
+    return result;
 }
 
 // Python Drawing feature ---------------------------------------------------------

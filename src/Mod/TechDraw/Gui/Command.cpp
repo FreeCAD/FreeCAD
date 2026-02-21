@@ -77,7 +77,9 @@
 #include "TaskSectionView.h"
 #include "ViewProviderPage.h"
 #include "ViewProviderDrawingView.h"
+#include "ViewProviderImage.h"
 #include "CommandHelpers.h"
+#include <Mod/Part/App/PartFeature.h>
 
 void execSimpleSection(Gui::Command* cmd);
 void execComplexSection(Gui::Command* cmd);
@@ -1903,6 +1905,109 @@ void CmdTechDrawExportPageDXF::activated(int iMsg)
 bool CmdTechDrawExportPageDXF::isActive() { return DrawGuiUtil::needPage(this); }
 
 //===========================================================================
+// TechDraw_ExportPagePDF
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExportPagePDF)
+
+CmdTechDrawExportPagePDF::CmdTechDrawExportPagePDF() : Command("TechDraw_ExportPagePDF")
+{
+    sGroup = QT_TR_NOOP("File");
+    sMenuText = QT_TR_NOOP("Export Page as PDF");
+    sToolTipText = QT_TR_NOOP("Exports the current page as a PDF");
+    sWhatsThis = "TechDraw_ExportPagePDF";
+    sStatusTip = sToolTipText;
+    sPixmap = "actions/TechDraw_ExportPagePDF";
+}
+
+void CmdTechDrawExportPagePDF::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return;
+    }
+
+    std::vector<App::DocumentObject*> views = page->getViews();
+    bool foundActiveViewWith3DPDFExport = false;
+    
+    for (auto* view : views) {
+        TechDraw::DrawViewImage* imageView = dynamic_cast<TechDraw::DrawViewImage*>(view);
+        if (!imageView) {
+            continue;
+        }
+        
+
+        std::string viewLabel = imageView->getNameInDocument();
+        if (viewLabel.find("ActiveView") != std::string::npos) {
+
+            Gui::Document* guiDoc = Gui::Application::Instance->getDocument(imageView->getDocument());
+            if (guiDoc) {
+                Gui::ViewProvider* vp = guiDoc->getViewProvider(imageView);
+                if (vp) {
+                    auto vpImage = freecad_cast<ViewProviderImage*>(vp);
+                    if (vpImage) {
+                        if (vpImage->Enable3DPDFExport.getValue()) {
+                            foundActiveViewWith3DPDFExport = true;
+                            
+                            // Get 3D objects from the ActiveView's Source property
+                            std::vector<App::DocumentObject*> objects3D = imageView->get3DObjects();
+                            
+                            // Backward compatibility: if no objects in Source property, fall back to document-wide search
+                            if (objects3D.empty()) {
+                                Gui::Document* guiDoc = Gui::Application::Instance->getDocument(page->getDocument());
+                                if (guiDoc) {
+                                    auto allObjects = page->getDocument()->getObjects();
+                                    for (auto* obj : allObjects) {
+                                        App::Property* shapeProp = obj->getPropertyByName("Shape");
+                                        if (shapeProp && (obj->isDerivedFrom(Part::Feature::getClassTypeId()) || 
+                                                         obj->isDerivedFrom(App::GeoFeature::getClassTypeId()))) {
+                                            Gui::ViewProvider* vp = guiDoc->getViewProvider(obj);
+                                            if (vp && vp->isVisible()) {
+                                                objects3D.push_back(obj);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    if (foundActiveViewWith3DPDFExport) {
+
+        doCommand(Gui, "import Export3DPDFGui");
+    
+        Gui::Command* cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_Print3dPdf");
+        
+        if (cmd) {
+            cmd->invoke(0);
+        } else {
+            Base::Console().error("Std_Print3dPdf command not found even after loading Export3DPDFGui\n");
+        }
+    } else {
+        Gui::Command* cmd = Gui::Application::Instance->commandManager().getCommandByName("Std_PrintPdf");
+        
+        if (cmd) {
+            cmd->invoke(0);
+        } else {
+            Base::Console().error("Std_PrintPdf command not found\n");
+        }
+    }
+}
+
+bool CmdTechDrawExportPagePDF::isActive() 
+{ 
+    if (!DrawGuiUtil::needPage(this)) {
+        return false;
+    }
+    return true;
+}
+
+//===========================================================================
 // TechDraw_ProjectShape
 //===========================================================================
 
@@ -1951,6 +2056,7 @@ void CreateTechDrawCommands()
     rcCmdMgr.addCommand(new CmdTechDrawSymbol());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageSVG());
     rcCmdMgr.addCommand(new CmdTechDrawExportPageDXF());
+    rcCmdMgr.addCommand(new CmdTechDrawExportPagePDF());
     rcCmdMgr.addCommand(new CmdTechDrawDraftView());
     rcCmdMgr.addCommand(new CmdTechDrawArchView());
     rcCmdMgr.addCommand(new CmdTechDrawSpreadsheetView());
