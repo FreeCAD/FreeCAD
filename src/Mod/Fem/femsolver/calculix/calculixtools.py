@@ -128,8 +128,8 @@ class CalculiXTools:
 
     def update_properties(self):
         # TODO at the moment, only one .vtm file is assumed
-        self._load_ccxfrd_results()
-        self._load_ccxdat_results()
+        self._load_vtk_results()
+        self._load_dat_results()
 
     def _clear_results(self):
         # result is a 'Result.vtm' file and a 'Result' directory
@@ -147,14 +147,15 @@ class CalculiXTools:
                 # remove .dat file
                 os.remove(path)
 
-    def _load_ccxdat_results(self):
+    def _load_dat_results(self):
         # search dat output
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
         dat = None
         for res in self.obj.Results:
             if res.isDerivedFrom("App::TextDocument"):
                 dat = res
 
-        if not dat:
+        if not dat or keep_result:
             # create dat output
             dat = self.obj.Document.addObject("App::TextDocument", self.obj.Name + "Output")
             self.analysis.addObject(dat)
@@ -170,15 +171,16 @@ class CalculiXTools:
                     dat.Text = file.read()
                 break
 
-    def _load_ccxfrd_results(self):
+    def _load_vtk_results(self):
         # search current pipeline
+        keep_result = self.fem_param.GetGroup("General").GetBool("KeepResultsOnReRun", False)
         pipeline = None
         create = False
         for res in self.obj.Results:
             if res.isDerivedFrom("Fem::FemPostPipeline"):
                 pipeline = res
 
-        if not pipeline:
+        if not pipeline or keep_result:
             # create pipeline
             pipeline = self.obj.Document.addObject("Fem::FemPostPipeline", self.obj.Name + "Result")
             self.analysis.addObject(pipeline)
@@ -202,7 +204,7 @@ class CalculiXTools:
             # default display mode
             pipeline.ViewObject.DisplayMode = "Surface"
             pipeline.ViewObject.SelectionStyle = "BoundBox"
-            pipeline.ViewObject.Field = self.get_default_field(self.obj.AnalysisType)
+            pipeline.ViewObject.Field = self._get_default_field()
 
     def frd_var_conversion(self, analysis_type):
         common = {
@@ -229,14 +231,16 @@ class CalculiXTools:
 
         return common
 
-    def get_default_field(self, analysis_type):
-        match analysis_type:
+    def _get_default_field(self):
+        match self.obj.AnalysisType:
             case "static" | "frequency" | "buckling":
                 return "Displacement"
             case "thermomech":
                 return "Temperature"
             case "electromagnetic":
                 return "Potential"
+            case _:
+                return "None"
 
     def version(self):
         p = QProcess()
