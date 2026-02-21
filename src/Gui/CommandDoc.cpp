@@ -61,6 +61,7 @@
 #include "Placement.h"
 #include "Tools.h"
 #include "Transform.h"
+#include "Tree.h"
 #include "View3DInventor.h"
 #include "View3DInventorViewer.h"
 #include "ViewProvider.h"
@@ -1403,6 +1404,12 @@ void StdCmdSelectAll::activated(int iMsg)
         if (editingVP && editingVP->selectAll()) {
             return;
         }
+    }
+
+    // try to use TreeWidget's own select all cause it handles the grouping stuff
+    if (auto* tree = TreeWidget::instance()) {
+        tree->selectAll();
+        return;
     }
 
     // fallback to doc level select
