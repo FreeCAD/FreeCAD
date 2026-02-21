@@ -39,7 +39,7 @@
 #include <Gui/ViewProvider.h>
 #include <Gui/InputHint.h>
 
-using enum InputHint::UserInput;
+using enum Gui::InputHint::UserInput;
 
 #include <QFormLayout>
 #include <QVBoxLayout>
