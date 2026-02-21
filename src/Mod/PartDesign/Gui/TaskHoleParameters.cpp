@@ -273,6 +273,9 @@ TaskHoleParameters::TaskHoleParameters(ViewProviderHole* HoleView, QWidget* pare
     this->groupLayout()->addWidget(proxy);
 
     setupGizmos(HoleView);
+
+    ui->CustomThreadClearance->setMinimum(pcHole->CustomThreadClearance.getMinimum());
+    ui->CustomThreadClearance->setMaximum(pcHole->CustomThreadClearance.getMaximum());
 }
 
 TaskHoleParameters::~TaskHoleParameters() = default;
