@@ -45,7 +45,7 @@ public:
     // shows solid in the tree
     bool isShow() const override
     {
-        return true;
+        return Visibility.getValue();
     }
 };
 
