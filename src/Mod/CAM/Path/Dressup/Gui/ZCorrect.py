@@ -174,7 +174,7 @@ class ObjectDressup:
                             Path.Log.debug("     curLoc:{}".format(currLocation))
                             newparams = dict(c.Parameters)
                             zval = newparams.get("Z", currLocation["Z"])
-                            if c.Name in Path.Geom.CmdMoveStraight + Path.Geom.CmdMoveArc:
+                            if c.Name in Path.Geom.CmdMoveMill:
                                 curVec = FreeCAD.Vector(
                                     currLocation["X"],
                                     currLocation["Y"],
