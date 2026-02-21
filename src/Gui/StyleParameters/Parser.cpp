@@ -33,6 +33,7 @@
 
 #include <QColor>
 #include <algorithm>
+#include <cmath>
 #include <variant>
 
 namespace Gui::StyleParameters
@@ -151,59 +152,96 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
     };
 
     const auto shades = [&args, &lightnessFromNumeric]() -> Value {
-        auto resolved = ArgumentParser {{"color"}, {"shades"}}.resolve(args);
+        auto resolved = ArgumentParser {
+            {.name = "color"},
+            {.name = "shades"},
+            {.name = "range", .defaultValue = Numeric {0.6, ""}},
+            {.name = "min", .defaultValue = Numeric {0.13, ""}},
+            {.name = "max", .defaultValue = Numeric {0.97, ""}},
+        }.resolve(args);
+
         const auto& shadesSpec = resolved.get<Tuple>("shades");
+        float range = lightnessFromNumeric(resolved.get<Numeric>("range"));
+        float minLightness = lightnessFromNumeric(resolved.get<Numeric>("min"));
+        float maxLightness = lightnessFromNumeric(resolved.get<Numeric>("max"));
 
-        const auto generateShades = [&](const Base::Color& baseColor) -> Value {
-            auto baseOklch = Base::toOkLch(baseColor);
+        constexpr float anchorPosition = 0.5F;
+        constexpr float minExponent = 0.1F;
+        constexpr float maxExponent = 10.0F;
 
-            Tuple result;
-            for (const auto& element : shadesSpec.elements) {
-                auto targetLightness = lightnessFromNumeric(element.value->get<Numeric>());
-                auto shadeOklch = baseOklch;
-                shadeOklch.lightness = targetLightness;
-                auto shadeColor = Base::fromOkLch(shadeOklch, baseColor.a);
+        const auto computeLightnessRange = [&](float anchorLightness) -> std::pair<float, float> {
+            float halfRange = range / 2.0F;
+            float high = std::min(maxLightness, anchorLightness + halfRange);
+            float low = std::max(minLightness, anchorLightness - halfRange);
+            return {high, low};
+        };
 
-                if (element.name) {
-                    result.elements.push_back(Tuple::Element::named(*element.name, shadeColor));
-                }
-                else {
-                    result.elements.push_back(Tuple::Element::unnamed(shadeColor));
-                }
+        const auto computeExponent = [&](float anchorLightness, float high, float low) -> float {
+            float totalRange = high - low;
+            if (totalRange < 1e-6F) {
+                return 1.0F;
             }
-            return result;
+            float ratio = (high - anchorLightness) / totalRange;
+            ratio = std::clamp(ratio, 0.01F, 0.99F);
+            float exponent = std::log(ratio) / std::log(anchorPosition);
+            return std::clamp(exponent, minExponent, maxExponent);
+        };
+
+        const auto lightnessForPosition =
+            [](float position, float exponent, float high, float low) -> float {
+            return high - (high - low) * std::pow(position, exponent);
+        };
+
+        const auto applyShade =
+            [&](float position, const Base::Color& color, const Base::OkLch& oklch) -> Base::Color {
+            if (std::abs(position - anchorPosition) < 1e-3F) {
+                return color;
+            }
+            auto [high, low] = computeLightnessRange(oklch.lightness);
+            float exponent = computeExponent(oklch.lightness, high, low);
+            auto shadeOklch = oklch;
+            shadeOklch.lightness = lightnessForPosition(position, exponent, high, low);
+            return Base::fromOkLch(shadeOklch, color.a);
+        };
+
+        const auto appendElement = [](Tuple& result, const Tuple::Element& spec, Value shadeValue) {
+            if (spec.name) {
+                result.elements.push_back(Tuple::Element::named(*spec.name, std::move(shadeValue)));
+            }
+            else {
+                result.elements.push_back(Tuple::Element::unnamed(std::move(shadeValue)));
+            }
         };
 
         const Value* colorValue = resolved.find("color");
         if (colorValue->holds<Tuple>()) {
-            // Gradient: shade each stop color individually
             const auto& gradientTuple = colorValue->get<Tuple>();
 
             Tuple result;
             for (const auto& element : shadesSpec.elements) {
-                auto targetLightness = lightnessFromNumeric(element.value->get<Numeric>());
+                float position = lightnessFromNumeric(element.value->get<Numeric>());
                 auto shadedGradient = Gradient::mapStopColors(
                     gradientTuple,
                     [&](const Base::Color& stopColor) -> Base::Color {
                         auto oklch = Base::toOkLch(stopColor);
-                        oklch.lightness = targetLightness;
-                        return Base::fromOkLch(oklch, stopColor.a);
+                        return applyShade(position, stopColor, oklch);
                     }
                 );
-
-                if (element.name) {
-                    result.elements.push_back(
-                        Tuple::Element::named(*element.name, std::move(shadedGradient))
-                    );
-                }
-                else {
-                    result.elements.push_back(Tuple::Element::unnamed(std::move(shadedGradient)));
-                }
+                appendElement(result, element, std::move(shadedGradient));
             }
             return result;
         }
 
-        return generateShades(resolved.get<Base::Color>("color"));
+        const auto& baseColor = resolved.get<Base::Color>("color");
+        auto baseOklch = Base::toOkLch(baseColor);
+
+        Tuple result;
+        for (const auto& element : shadesSpec.elements) {
+            float position = lightnessFromNumeric(element.value->get<Numeric>());
+            auto shadeColor = applyShade(position, baseColor, baseOklch);
+            appendElement(result, element, shadeColor);
+        }
+        return result;
     };
 
     std::map<std::string, std::function<Value()>> functions = {
