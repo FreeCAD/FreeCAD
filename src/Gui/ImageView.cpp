@@ -372,6 +372,9 @@ bool ImageView::onHasMsg(const char* pMsg) const
     else if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("AllowsOverlayReveal", pMsg) == 0) {
+        return true;
+    }
 
     return false;
 }
