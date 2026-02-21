@@ -24,10 +24,7 @@
 
 
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
-#include <Inventor/nodes/SoSeparator.h>
-#include <Precision.hxx>
 #include <QMenu>
-
 
 #include <App/Document.h>
 #include <App/Origin.h>
@@ -39,12 +36,8 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-#include <Gui/ViewProviderCoordinateSystem.h>
 #include <Gui/ViewProviderDatum.h>
 #include <Mod/PartDesign/App/Body.h>
-#include <Mod/PartDesign/App/DatumCS.h>
 #include <Mod/PartDesign/App/FeatureSketchBased.h>
 #include <Mod/PartDesign/App/FeatureBase.h>
 #include <Mod/PartDesign/App/ShapeBinder.h>
@@ -52,7 +45,6 @@
 #include "ViewProviderBody.h"
 #include "Utils.h"
 #include "ViewProvider.h"
-#include "ViewProviderDatum.h"
 
 
 using namespace PartDesignGui;
@@ -72,8 +64,7 @@ ViewProviderBody::ViewProviderBody()
     Gui::ViewProviderOriginGroupExtension::initExtension(this);
 }
 
-ViewProviderBody::~ViewProviderBody()
-{}
+ViewProviderBody::~ViewProviderBody() = default;
 
 void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 {
@@ -82,6 +73,66 @@ void ViewProviderBody::attach(App::DocumentObject* pcFeat)
 
     // set default display mode
     onChanged(&DisplayModeBody);
+
+    if (App::Document* doc = pcFeat->getDocument()) {
+        m_RecomputedConn = doc->signalRecomputed.connect(
+            [this](const App::Document& doc, const std::vector<App::DocumentObject*>& recomputedObjs) {
+                this->afterRecompute(doc, recomputedObjs);
+            }
+        );
+    }
+    m_ChangedConn = Gui::Application::Instance->signalChangedObject.connect(
+        [this](const Gui::ViewProvider& vp, const App::Property& prop) {
+            this->onChangedObject(vp, prop);
+        }
+    );
+}
+
+void ViewProviderBody::onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop)
+{
+    static const std::unordered_set<std::string> watchedProps {"Visibility"};
+    if (!watchedProps.contains(prop.getName())) {
+        return;
+    }
+    auto* vpd = dynamic_cast<const Gui::ViewProviderDocumentObject*>(&vp);
+    if (!vpd) {
+        return;
+    }
+    auto* changedObj = vpd->getObject();
+    if (!changedObj) {
+        return;
+    }
+
+    auto* body = this->getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    const auto& features = body->Group.getValues();
+    bool isRelevantChange = (changedObj == body)
+        || (std::ranges::find(features, changedObj) != features.end());
+
+    if (isRelevantChange) {
+        refreshOverlays();
+    }
+}
+
+void ViewProviderBody::afterRecompute(const App::Document& /* doc */, const std::vector<App::DocumentObject*>& /* recomputedObjs */)
+{
+    refreshOverlays();
+}
+
+void ViewProviderBody::refreshOverlays()
+{
+    auto* body = getObject<PartDesign::Body>();
+    if (!body) {
+        return;
+    }
+    for (auto* obj : body->Group.getValues()) {
+        Gui::ViewProvider* vpBase = Gui::Application::Instance->getViewProvider(obj);
+        if (auto* vpPartDesign = dynamic_cast<PartDesignGui::ViewProvider*>(vpBase)) {
+            vpPartDesign->updateOverlay();
+        }
+    }
 }
 
 // TODO on activating the body switch to the "Through" mode (2015-09-05, Fat-Zer)
@@ -311,7 +362,6 @@ void ViewProviderBody::onChanged(const App::Property* prop)
         ShapeAppearance.enableNotify(true);
     }
 }
-
 
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop)
 {

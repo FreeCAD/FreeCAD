@@ -68,5 +68,6 @@
         <file>images/hole_counterdrill_flat.svg</file>
         <file>images/hole_countersink_flat.svg</file>
         <file>images/hole_none_flat.svg</file>
+        <file>images/ThreadOverlay.png</file>
     </qresource>
 </RCC>

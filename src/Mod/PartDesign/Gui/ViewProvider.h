@@ -92,6 +92,12 @@ public:
 
     QIcon mergeColorfulOverlayIcons(const QIcon& orig) const override;
 
+    /// Default implementation is a no-op; derived classes override if needed.
+    /// Called on recompute and when any feature in the Body changes visibility.
+    /// Serves as the entry point for ViewProviders that apply visual overlays
+    /// (e.g. textures, highlights, thread visualization).
+    virtual void updateOverlay() {};
+
 protected:
     void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
     bool setEdit(int ModNum) override;

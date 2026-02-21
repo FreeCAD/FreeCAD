@@ -31,6 +31,7 @@
 #include <Mod/PartDesign/App/Feature.h>
 #include <Gui/ViewProviderOriginGroupExtension.h>
 #include <QCoreApplication>
+#include <fastsignals/signal.h>
 
 class SoGroup;
 class SoSeparator;
@@ -110,8 +111,13 @@ protected:
 
 private:
     static const char* BodyModeEnum[];
-};
 
+    void afterRecompute(const App::Document&, const std::vector<App::DocumentObject*>& recomputedObjs);
+    fastsignals::scoped_connection m_RecomputedConn;
+    void onChangedObject(const Gui::ViewProvider& vp, const App::Property& prop);
+    fastsignals::scoped_connection m_ChangedConn;
+    void refreshOverlays();
+};
 
 }  // namespace PartDesignGui
 

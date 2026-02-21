@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>414</width>
-    <height>945</height>
+    <height>903</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -263,10 +263,10 @@
              <property name="unit" stdset="0">
               <string notr="true">mm</string>
              </property>
-             <property name="minimum">
+             <property name="minimum" stdset="0">
               <double>0.000000000000000</double>
              </property>
-             <property name="singleStep">
+             <property name="singleStep" stdset="0">
               <double>0.100000000000000</double>
              </property>
             </widget>
@@ -312,10 +312,10 @@ the screw's top below the surface</string>
              <property name="unit" stdset="0">
               <string notr="true">mm</string>
              </property>
-             <property name="minimum">
+             <property name="minimum" stdset="0">
               <double>0.000000000000000</double>
              </property>
-             <property name="singleStep">
+             <property name="singleStep" stdset="0">
               <double>0.100000000000000</double>
              </property>
             </widget>
@@ -382,7 +382,7 @@ the screw's top below the surface</string>
               <property name="unit" stdset="0">
                <string notr="true">deg</string>
               </property>
-              <property name="minimum">
+              <property name="minimum" stdset="0">
                <double>0.000000000000000</double>
               </property>
              </widget>
@@ -480,7 +480,7 @@ account for the depth of blind holes</string>
              <property name="unit" stdset="0">
               <string notr="true">deg</string>
              </property>
-             <property name="minimum">
+             <property name="minimum" stdset="0">
               <double>0.000000000000000</double>
              </property>
             </widget>
@@ -579,7 +579,7 @@ account for the depth of blind holes</string>
              <property name="unit" stdset="0">
               <string notr="true">mm</string>
              </property>
-             <property name="minimum">
+             <property name="minimum" stdset="0">
               <double>0.000000000000000</double>
              </property>
             </widget>
@@ -647,7 +647,7 @@ over 90: larger hole radius at the bottom</string>
          <property name="unit" stdset="0">
           <string notr="true">deg</string>
          </property>
-         <property name="minimum">
+         <property name="minimum" stdset="0">
           <double>0.000000000000000</double>
          </property>
         </widget>
@@ -655,16 +655,6 @@ over 90: larger hole radius at the bottom</string>
       </layout>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QLabel" name="labelThreading">
-     <property name="text">
-      <string>&lt;b&gt;Threading&lt;/b&gt;</string>
-     </property>
-     <property name="textFormat">
-      <enum>Qt::TextFormat::RichText</enum>
-     </property>
-    </widget>
    </item>
    <item>
     <layout class="QGridLayout" name="profileLayout" rowstretch="0,0" columnstretch="2,2">
@@ -680,12 +670,12 @@ over 90: larger hole radius at the bottom</string>
        </item>
        <item>
         <property name="text">
-         <string>Tap drill (to be threaded)</string>
+         <string>Tap drill</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Modeled thread</string>
+         <string>Threaded</string>
         </property>
        </item>
       </widget>
@@ -799,24 +789,47 @@ Only available for holes without thread</string>
        <number>6</number>
       </property>
       <item>
-       <widget class="Gui::ElideCheckBox" name="UpdateView">
-        <property name="enabled">
-         <bool>true</bool>
+       <layout class="QHBoxLayout" name="modelThreadLayout">
+        <property name="bottomMargin">
+         <number>0</number>
         </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Live update of changes to the thread
+        <item>
+         <widget class="Gui::ElideCheckBox" name="ModelThread">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Whether the hole gets a modelled thread</string>
+          </property>
+          <property name="text">
+           <string>Model Thread</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="Gui::ElideCheckBox" name="UpdateView">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>Live update of changes to the thread
 Note that the calculation can take some time</string>
-        </property>
-        <property name="text">
-         <string>Update thread view</string>
-        </property>
-       </widget>
+          </property>
+          <property name="text">
+           <string>Update thread view</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QGridLayout" name="classLayout" columnstretch="2,5">
@@ -1083,7 +1096,7 @@ Note that the calculation can take some time</string>
            <property name="unit" stdset="0">
             <string notr="true">mm</string>
            </property>
-           <property name="singleStep">
+           <property name="singleStep" stdset="0">
             <double>0.100000000000000</double>
            </property>
           </widget>
