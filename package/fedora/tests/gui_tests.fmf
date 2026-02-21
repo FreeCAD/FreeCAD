@@ -1,74 +1,74 @@
 /tests:
     /TestAssemblyWorkbench :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestAssemblyWorkbench
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestAssemblyWorkbench
     /TestArch              :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestArch
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestArch
     /TestCAMApp            :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestCAMApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestCAMApp
     /TestDraft             :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestDraft
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestDraft
     /TestFemApp            :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestFemApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestFemApp
     /TestMaterialsApp      :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestMaterialsApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestMaterialsApp
     /MeshTestsApp          :
-        test: xvfb-run  /usr/bin/FreeCAD -t  MeshTestsApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  MeshTestsApp
     /TestPartApp           :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestPartApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestPartApp
     /TestPartDesignApp     :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestPartDesignApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestPartDesignApp
     /TestSketcherApp       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestSketcherApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestSketcherApp
     /TestSpreadsheet       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestSpreadsheet
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestSpreadsheet
     /TestSurfaceApp        :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestSurfaceApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestSurfaceApp
     /TestTechDrawApp       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestTechDrawApp
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestTechDrawApp
     /BaseTests             :
-        test: xvfb-run  /usr/bin/FreeCAD -t  BaseTests
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  BaseTests
     /UnitTests             :
-        test: xvfb-run  /usr/bin/FreeCAD -t  UnitTests
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  UnitTests
     /Document              :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Document
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Document
     /Metadata              :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Metadata
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Metadata
     /StringHasher          :
-        test: xvfb-run  /usr/bin/FreeCAD -t  StringHasher
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  StringHasher
     /UnicodeTests          :
-        test: xvfb-run  /usr/bin/FreeCAD -t  UnicodeTests
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  UnicodeTests
     /TestPythonSyntax      :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestPythonSyntax
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestPythonSyntax
     /TestArchGui           :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestArchGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestArchGui
     /TestCAMGui           :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestCAMGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestCAMGui
     /TestDraftGui          :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestDraftGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestDraftGui
     /TestFemGui            :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestFemGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestFemGui
     /TestImportGui         :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestImportGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestImportGui
     /TestMaterialsGui      :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestMaterialsGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestMaterialsGui
     /TestOpenSCADGui       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestOpenSCADGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestOpenSCADGui
     /TestPartGui           :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestPartGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestPartGui
     /TestPartDesignGui     :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestPartDesignGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestPartDesignGui
     /TestSketcherGui       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestSketcherGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestSketcherGui
     /TestTechDrawGui       :
-        test: xvfb-run  /usr/bin/FreeCAD -t  TestTechDrawGui
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  TestTechDrawGui
     /Workbench             :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Workbench
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Workbench
     /Menu                  :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Menu
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Menu
     /Menu.MenuDeleteCases  :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Menu.MenuDeleteCases
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Menu.MenuDeleteCases
     /Menu.MenuCreateCases  :
-        test: xvfb-run  /usr/bin/FreeCAD -t  Menu.MenuCreateCases
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  Menu.MenuCreateCases
     /GuiDocument           :
-        test: xvfb-run  /usr/bin/FreeCAD -t  GuiDocument
+        test: wlheadless-run -- /usr/bin/FreeCAD  -t  GuiDocument
 

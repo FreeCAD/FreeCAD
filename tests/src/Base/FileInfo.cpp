@@ -2,13 +2,25 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
+#include <random>
+#include <sstream>
+#include <iomanip>
+#include <thread>
 
 class FileInfoTest: public ::testing::Test
 {
 protected:
     FileInfoTest()
     {
-        tmp.setFile(Base::FileInfo::getTempPath() + "fctest");
+        // Generate random directory name for parallel test execution
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, 999999);
+        std::ostringstream oss;
+        oss << "fctest_" << std::this_thread::get_id() << "_" << std::setfill('0') << std::setw(6)
+            << dis(gen);
+
+        tmp.setFile(Base::FileInfo::getTempPath() + oss.str());
         tmp.createDirectory();
 
         file.setFile(tmp.filePath() + "/test.txt");
