@@ -848,7 +848,7 @@ class Component(ArchIFC.IfcProduct):
                                 if Draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
-            elif prop in ["Mesh"]:
+            elif prop in ["Mesh", "HiRes"]:
                 if hasattr(obj, prop):
                     o = getattr(obj, prop)
                     if o:
