@@ -660,6 +660,25 @@ TEST_F(ParserTest, ParseMixedTuple)
     EXPECT_DOUBLE_EQ(std::get<Numeric>(tuple.at(1)).value, 20.0);
 }
 
+// Test named tuple with numeric-starting names (e.g. shade keys like 050, 100)
+TEST_F(ParserTest, ParseNamedTupleWithNumericNames)
+{
+    Parser parser("(050: 0.05, 100: 0.1)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+
+    auto* shade050 = tuple.find("050");
+    ASSERT_NE(shade050, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*shade050).value, 0.05);
+
+    auto* shade100 = tuple.find("100");
+    ASSERT_NE(shade100, nullptr);
+    EXPECT_DOUBLE_EQ(std::get<Numeric>(*shade100).value, 0.1);
+}
+
 // Test single named element is a tuple, not a grouped expression
 TEST_F(ParserTest, ParseSingleNamedElementIsTuple)
 {

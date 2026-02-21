@@ -533,8 +533,8 @@ bool Parser::peekNamedElement()
     size_t saved = pos;
     skipWhitespace();
 
-    // Check for `identifier :` pattern
-    if (pos >= input.size() || !isalpha(input[pos])) {
+    // Check for `identifier :` pattern (identifiers may start with digits, e.g. shade names like 050)
+    if (pos >= input.size() || !isalnum(input[pos])) {
         pos = saved;
         return false;
     }
