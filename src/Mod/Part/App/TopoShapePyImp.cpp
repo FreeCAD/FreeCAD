@@ -926,9 +926,9 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
     }
 
     try {
-        const TopoDS_Shape& model = getTopoShapePtr()->getShape();
+        const TopoShape& model = *getTopoShapePtr();
         const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pcObj)->getTopoShapePtr()->getShape();
-        if (model.IsNull() || shape.IsNull()) {
+        if (model.isNull() || shape.IsNull()) {
             PyErr_SetString(PyExc_ValueError, "Shape is null");
             return nullptr;
         }
@@ -940,22 +940,11 @@ PyObject* TopoShapePy::ancestorsOfType(PyObject* args) const
             return nullptr;
         }
 
-        TopTools_IndexedDataMapOfShapeListOfShape mapOfShapeShape;
-        TopExp::MapShapesAndAncestors(model, shape.ShapeType(), shapetype, mapOfShapeShape);
-        const TopTools_ListOfShape& ancestors = mapOfShapeShape.FindFromKey(shape);
-
+        auto indices = model.findAncestors(shape, shapetype);
         Py::List list;
-        std::set<Standard_Integer> hashes;
-        TopTools_ListIteratorOfListOfShape it(ancestors);
-        for (; it.More(); it.Next()) {
-            // make sure to avoid duplicates
-            Standard_Integer code = ShapeMapHasher {}(it.Value());
-            if (hashes.find(code) == hashes.end()) {
-                list.append(shape2pyshape(it.Value()));
-                hashes.insert(code);
-            }
+        for (auto idx : indices) {
+            list.append(shape2pyshape(model.getSubTopoShape(shapetype, idx)));
         }
-
         return Py::new_reference_to(list);
     }
     catch (Standard_Failure& e) {
