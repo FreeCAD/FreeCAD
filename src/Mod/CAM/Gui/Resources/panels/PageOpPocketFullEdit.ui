@@ -166,14 +166,14 @@ The latter can be used to face of the entire stock area to ensure uniform height
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="zigZagAngle_label">
+       <widget class="QLabel" name="angle_label">
         <property name="text">
          <string>Angle</string>
         </property>
        </widget>
       </item>
       <item row="2" column="1">
-       <widget class="Gui::InputField" name="zigZagAngle">
+       <widget class="Gui::InputField" name="angle">
         <property name="toolTip">
          <string>Angle in which the pattern is applied</string>
         </property>
