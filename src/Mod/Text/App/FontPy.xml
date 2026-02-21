@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
+  <PythonExport
+    Father="DocumentObjectPy"
+    Name="FontPy"
+    Twin="Font"
+    TwinPointer="Font"
+    Include="Mod/Text/App/Font.h"
+    Namespace="Text"
+    FatherInclude="App/DocumentObjectPy.h"
+    FatherNamespace="App"
+    Constructor="true">
+    <Documentation>
+      <Author Licence="LGPL" Name="Martin Rodriguez Reboredo" EMail="yakoyoku@gmail.com" />
+      <UserDocu>Represents a font object</UserDocu>
+    </Documentation>
+    <Attribute Name="Name" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font family name.</UserDocu>
+        </Documentation>
+        <Parameter Name="Name" Type="String"/>
+    </Attribute>
+    <Attribute Name="Source" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Whether the font comes from its family name or a file path either in filesystem or in document.</UserDocu>
+        </Documentation>
+        <Parameter Name="Source" Type="String"/>
+    </Attribute>
+    <Attribute Name="File" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font file location in the filesystem.</UserDocu>
+        </Documentation>
+        <Parameter Name="File" Type="String"/>
+    </Attribute>
+    <Attribute Name="Included" ReadOnly="false">
+        <Documentation>
+            <UserDocu>Font file location in document.</UserDocu>
+        </Documentation>
+        <Parameter Name="Included" Type="String"/>
+    </Attribute>
+  </PythonExport>
+</GenerateModel>
