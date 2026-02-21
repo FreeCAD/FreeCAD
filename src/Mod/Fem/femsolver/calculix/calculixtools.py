@@ -37,42 +37,18 @@ import Fem
 from . import writer
 from .. import settings
 
-# from feminout import importCcxDatResults
 from femmesh import meshsetsgetter
 from femtools import membertools
+from femtools.objecttools import ObjectTools
 
 
-class CalculiXTools:
+class CalculiXTools(ObjectTools):
 
     name = "CalculiX"
 
     def __init__(self, obj):
-        self.obj = obj
-        self.process = QProcess()
+        super().__init__(obj)
         self.model_file = ""
-        self.analysis = obj.getParentGroup()
-        self.fem_param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem")
-        self._create_working_directory(obj)
-
-    def _create_working_directory(self, obj):
-        """
-        Create working directory according to preferences
-        """
-        if not os.path.isdir(obj.WorkingDirectory):
-            gen_param = self.fem_param.GetGroup("General")
-            if gen_param.GetBool("UseTempDirectory"):
-                self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseBesideDirectory"):
-                root, ext = os.path.splitext(obj.Document.FileName)
-                if root:
-                    self.obj.WorkingDirectory = os.path.join(root, obj.Label)
-                    os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
-                else:
-                    # file not saved, use temporary
-                    self.obj.WorkingDirectory = tempfile.mkdtemp(prefix="fem_")
-            elif gen_param.GetBool("UseCustomDirectory"):
-                self.obj.WorkingDirectory = gen_param.GetString("CustomDirectoryPath")
-                os.makedirs(self.obj.WorkingDirectory, exist_ok=True)
 
     def prepare(self):
         from femtools.checksanalysis import check_member_for_solver_calculix

@@ -58,7 +58,7 @@ See forum topic post:
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -69,7 +69,7 @@ def setup(doc=None, solvertype="ccxtools"):
     manager.add_explanation_obj(doc, get_explanation(manager.get_header(get_information())))
 
     # setup box frequency, change solver attributes
-    doc = setup_boxanalysisbase(doc, solvertype)
+    doc = setup_boxanalysisbase(doc, solvertype, test_mode)
     analysis = doc.Analysis
 
     # solver
