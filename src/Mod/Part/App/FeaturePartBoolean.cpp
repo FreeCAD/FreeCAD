@@ -29,6 +29,8 @@
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
 #include <BRepCheck_Analyzer.hxx>
 #include <Standard_Failure.hxx>
+#include <TopExp.hxx>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 #include <App/Application.h>
 #include <Base/Exception.h>
@@ -43,6 +45,32 @@ using namespace Part;
 
 namespace Part
 {
+
+bool containsSolid(const TopoDS_Shape& shape)
+{
+    if (shape.ShapeType() == TopAbs_SOLID) {
+        return true;
+    }
+    TopTools_IndexedMapOfShape map;
+    TopExp::MapShapes(shape, TopAbs_SOLID, map);
+    return !map.IsEmpty();
+}
+
+const char* shapeTypeName(TopAbs_ShapeEnum type)
+{
+    switch (type) {
+        case TopAbs_COMPOUND:  return "Compound";
+        case TopAbs_COMPSOLID: return "CompSolid";
+        case TopAbs_SOLID:     return "Solid";
+        case TopAbs_SHELL:     return "Shell";
+        case TopAbs_FACE:      return "Face";
+        case TopAbs_WIRE:      return "Wire";
+        case TopAbs_EDGE:      return "Edge";
+        case TopAbs_VERTEX:    return "Vertex";
+        default:               return "Shape";
+    }
+}
+
 void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape)
 {
     Base::Reference<ParameterGrp> hGrp = App::GetApplication()
@@ -146,17 +174,26 @@ App::DocumentObjectExecReturn* Boolean::execute()
             throw NullShapeException("Tool shape is null");
         }
 
+        if (!containsSolid(BaseShape)) {
+            return new App::DocumentObjectExecReturn(
+                (std::string("'") + base->Label.getValue() + "' is a "
+                 + shapeTypeName(BaseShape.ShapeType())
+                 + ", not a Solid. Boolean operations require Solid inputs.")
+                    .c_str()
+            );
+        }
+        if (!containsSolid(ToolShape)) {
+            return new App::DocumentObjectExecReturn(
+                (std::string("'") + tool->Label.getValue() + "' is a "
+                 + shapeTypeName(ToolShape.ShapeType())
+                 + ", not a Solid. Boolean operations require Solid inputs.")
+                    .c_str()
+            );
+        }
+
         std::unique_ptr<BRepAlgoAPI_BooleanOperation> mkBool(makeOperation(BaseShape, ToolShape));
         if (!mkBool->IsDone()) {
-            std::stringstream error;
-            error << "Boolean operation failed";
-            if (BaseShape.ShapeType() != TopAbs_SOLID) {
-                error << std::endl << base->Label.getValue() << " is not a solid";
-            }
-            if (ToolShape.ShapeType() != TopAbs_SOLID) {
-                error << std::endl << tool->Label.getValue() << " is not a solid";
-            }
-            return new App::DocumentObjectExecReturn(error.str());
+            return new App::DocumentObjectExecReturn("Boolean operation failed");
         }
         TopoDS_Shape resShape = mkBool->Shape();
         if (resShape.IsNull()) {
