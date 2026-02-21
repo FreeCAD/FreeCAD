@@ -870,7 +870,7 @@ class _MeshNetgenFromShape(CommandManager):
         # if requested by some people add Preference for this
         # mesh_obj_name = sel[0].Name + "_Mesh"
         FreeCADGui.addModule("ObjectsFem")
-        if netgen_prefs.GetBool("UseLegacyNetgen", 1):
+        if netgen_prefs.GetBool("UseLegacyNetgen", 0):
             FreeCADGui.doCommand(
                 "ObjectsFem.makeMeshNetgenLegacy(FreeCAD.ActiveDocument, '" + mesh_obj_name + "')"
             )
