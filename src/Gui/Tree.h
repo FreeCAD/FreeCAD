@@ -104,6 +104,16 @@ public:
     void markItem(const App::DocumentObject* Obj, bool mark);
     void syncView(ViewProviderDocumentObject* vp);
 
+    /**
+     * @brief Selects all selectable objects within the current group or document.
+     *
+
+     * * First press: selects all sibling items of the current selected object
+     * (children of
+     * same parent) or a group and its childs.
+     * Second press: expands selection to the whole
+     * document.
+     */
     void selectAll() override;
 
     const char* getTreeName() const;
@@ -188,6 +198,11 @@ protected:
 
 private:
     void _updateStatus(bool delay = true);
+
+    // Helpers for the two-stage "Select All" feature
+    void selectGroupItems(const QTreeWidgetItem* group, bool recursive);
+    void selectAllDocumentLevel();
+    void clearSelectAllContext();
 
 protected Q_SLOTS:
     void onCreateGroup();
@@ -294,6 +309,12 @@ private:
 
     std::string myName;  // for debugging purpose
     int updateBlocked = 0;
+
+    // State tracking for the two-stage "Select All" operation
+    const QTreeWidgetItem* lastSelectAllParent = nullptr;  // keeps track of the parent context for
+                                                           // the last group select
+    bool inSelectAllOperation = false;  // prevents context from reseting when we change selection
+                                        // in code
 
     friend class DocumentItem;
     friend class DocumentObjectItem;
