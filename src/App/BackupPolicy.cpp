@@ -235,6 +235,22 @@ void BackupPolicy::applyTimeStamp(const std::string& sourcename, const std::stri
                     str << bn << buffer.data();
 
                     fn = str.str();
+
+
+
+
+
+                    std::string sanitizedTime(buffer.data());
+                    for (char &c : sanitizedTime) {
+                    // Check for characters illegal in Windows/Linux/macOS filenames
+                    if (c == ':' || c == '/' || c == '\\' || c == '*' || c == '?' || c == '"' || c == '<' || c == '>' || c == '|') {
+                        c = '-'; // Replace with a safe character
+                    }
+                    str << bn << sanitizedTime; 
+
+
+                    
+
                     bool done = false;
 
                     if ((fn.empty()) || (fn[fn.length() - 1] == ' ')
