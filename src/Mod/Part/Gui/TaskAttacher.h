@@ -89,6 +89,9 @@ public:
         return completed;
     }
 
+Q_SIGNALS:
+    void placementUpdated();
+
 private Q_SLOTS:
     void onAttachmentOffsetChanged(double, int idx);
     void onAttachmentOffsetXChanged(double);

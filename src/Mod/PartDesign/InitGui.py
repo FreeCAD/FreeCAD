@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
+
 # ***************************************************************************
 # *   Copyright (c) 2002,2003 Juergen Riegel <juergen.riegel@web.de>        *
 # *                                                                         *

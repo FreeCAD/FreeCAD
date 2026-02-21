@@ -41,6 +41,9 @@ namespace App
 // included by everyone
 ///////////////////////////////////////////////////////////////////////////////////
 
+/**
+ * @brief %Part of an expression that represents an index or range.
+ */
 struct AppExport Expression::Component
 {
     ObjectIdentifier::Component comp;
@@ -142,6 +145,9 @@ public:
 
     Expression* simplify() const override;
 
+    /**
+     * @brief Negate the stored value.
+     */
     void negate();
 
     bool isInteger(long* v = nullptr) const;
@@ -472,6 +478,19 @@ public:
 
     void setPath(const ObjectIdentifier& path);
 
+    /**
+     * @brief Find the property this expression referse to.
+     *
+     * Unqualified names (i.e the name only without any dots) are resolved in
+     * the owning DocumentObjects.  Qualified names are looked up in the owning
+     * Document, first, by its internal name, then if not found, by the
+     * DocumentObjects' labels.
+     *
+     * @return The Property object if it is derived from either
+     * PropertyInteger, PropertyFloat, or PropertyString.
+     *
+     * @trhows Expression::Exception If the property cannot be resolved.
+     */
     const App::Property* getProperty() const;
 
     void addComponent(Component* component) override;

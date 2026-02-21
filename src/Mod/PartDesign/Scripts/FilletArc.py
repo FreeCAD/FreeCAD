@@ -1,4 +1,5 @@
 #! python
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # (c) 2010 Werner Mayer LGPL
 
 __author__ = "Werner Mayer <wmayer[at]users.sourceforge.net>"

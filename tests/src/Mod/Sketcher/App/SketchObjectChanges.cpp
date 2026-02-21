@@ -20,7 +20,6 @@ TEST_F(SketchObjectTest, testAddExternalIncreasesCount)
     // Arrange
     auto* doc = getObject()->getDocument();
     auto box {doc->addObject("Part::Box")};
-    int numboxes = doc->countObjectsOfType<Part::Box>();
     int numExtPre = getObject()->ExternalGeo.getSize();
     doc->recompute();
 
@@ -74,7 +73,7 @@ TEST_F(SketchObjectTest, testDelExternalReducesCount)
     int numExt = getObject()->ExternalGeo.getSize();
 
     // Act
-    int res = getObject()->delExternal(Sketcher::GeoEnum::RefExt);
+    getObject()->delExternal(Sketcher::GeoEnum::RefExt);
 
     // Assert
     EXPECT_EQ(getObject()->ExternalGeo.getSize(), numExt - 1);

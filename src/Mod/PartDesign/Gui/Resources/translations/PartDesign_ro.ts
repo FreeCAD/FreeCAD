@@ -6,84 +6,84 @@
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="80"/>
       <source>The center point of the helix' start; derived from the reference axis.</source>
-      <translation>Punctul central al helixului, derivat din axa de referință.</translation>
+      <translation>Punctul central al helixului, derivat din axa de referință</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="90"/>
       <source>The helix' direction; derived from the reference axis.</source>
-      <translation>Direcția helix; derivată din axa de referință.</translation>
+      <translation>Direcția helix; derivată din axa de referință</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="97"/>
       <source>The reference axis of the helix.</source>
-      <translation>Axa de referință a helixului.</translation>
+      <translation>Axa de referință a helixului</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="104"/>
       <source>The helix input mode specifies which properties are set by the user.
 Dependent properties are then calculated.</source>
       <translation>Modul de intrare helix specifică ce proprietăți sunt setate de către utilizator.
-Proprietățile dependente sunt apoi calculate.</translation>
+Proprietățile dependente sunt apoi calculate</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="116"/>
       <source>The axial distance between two turns.</source>
-      <translation>Distanţa axială dintre două rânduri.</translation>
+      <translation>Distanţa axială dintre două rânduri</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="123"/>
       <source>The height of the helix' path, not accounting for the extent of the profile.</source>
-      <translation>Înălțimea căii helixului, care nu ține seama de amploarea profilului.</translation>
+      <translation>Înălțimea căii helixului, care nu ține seama de amploarea profilului</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="133"/>
       <source>The number of turns in the helix.</source>
-      <translation>Numărul de rotaţii în helix.</translation>
+      <translation>Numărul de rotaţii în helix</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="141"/>
       <source>The angle of the cone that forms a hull around the helix.
 Non-zero values turn the helix into a conical spiral.
 Positive values make the radius grow, negative shrinks.</source>
-      <translation type="unfinished">The angle of the cone that forms a hull around the helix.
-Non-zero values turn the helix into a conical spiral.
-Positive values make the radius grow, negative shrinks.</translation>
+      <translation>Unghiul conului care formează o carenă în jurul helixului.
+Valorile non-zero transformă helixul într-o spirală conică.
+Valorile pozitive fac ca raza să crească, negativa se micșorează</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="154"/>
       <source>The growth of the helix' radius per turn.
 Non-zero values turn the helix into a conical spiral.</source>
       <translation>Creșterea razei helix pe rând.
-Valorile non-zero transformă helixul într-o spirală conică.</translation>
+Valorile non-zero transformă helixul într-o spirală conică</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="165"/>
       <source>Sets the turning direction to left handed,
 i.e. counter-clockwise when moving along its axis.</source>
       <translation>Setează direcția de întoarcere la stânga,
-adică, în sens invers acelor de ceasornic când se mișcă de-a lungul axei sale.</translation>
+adică, în sens invers acelor de ceasornic când se mișcă de-a lungul axei sale</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="176"/>
       <source>Determines whether the helix points in the opposite direction of the axis.</source>
-      <translation>Determină dacă helixul indică în direcţia opusă a axei.</translation>
+      <translation>Determină dacă helixul indică în direcţia opusă a axei</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="186"/>
       <source>If set, the result will be the intersection of the profile and the preexisting body.</source>
-      <translation>Dacă este setat, rezultatul va fi intersecția profilului și a organismului preexistent.</translation>
+      <translation>Dacă este setat, rezultatul va fi intersecția profilului și a organismului preexistent</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="196"/>
       <source>If false, the tool will propose an initial value for the pitch based on the profile bounding box,
 so that self intersection is avoided.</source>
       <translation>Dacă este fals, instrumentul va propune o valoare inițială pentru pas pe baza casetei de încadrare a profilului,
-astfel încât intersecția de sine să fie evitată.</translation>
+astfel încât intersecția de sine să fie evitată</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="208"/>
       <source>Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</source>
-      <translation type="unfinished">Fusion Tolerance for the Helix, increase if helical shape does not merge nicely with part.</translation>
+      <translation>Toleranța la fuziune pentru Helix, crește dacă forma elicoidală nu se combină frumos cu o componenta</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="106"/>
@@ -98,37 +98,37 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="112"/>
       <source>Module of the gear</source>
-      <translation type="unfinished">Module of the gear</translation>
+      <translation>Modulul roții dințate</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="127"/>
       <source>True=2 curves with each 3 control points, False=1 curve with 4 control points.</source>
-      <translation type="unfinished">True=2 curves with each 3 control points, False=1 curve with 4 control points.</translation>
+      <translation>Adevărate=2 curbe fiecare cu 3 puncte de control, Fals=1 curbă cu 4 puncte de control</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="135"/>
       <source>True=external Gear, False=internal Gear</source>
-      <translation type="unfinished">True=external Gear, False=internal Gear</translation>
+      <translation>Adevărat=dantură exterioară, Fals=dantură interioară</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="144"/>
       <source>The height of the tooth from the pitch circle up to its tip, normalized by the module.</source>
-      <translation>Înălțimea dintelui de la cercul de pas până la vârful lui, normalizată de către modul.</translation>
+      <translation>Înălțimea dintelui de la cercul de pas până la vârful lui, normalizată de către modul</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="153"/>
       <source>The height of the tooth from the pitch circle down to its root, normalized by the module.</source>
-      <translation>Înălțimea dintelui de la cercul de pas până la vârful lui, normalizată de către modul.</translation>
+      <translation>Înălțimea dintelui de la cercul de pas până la vârful lui, normalizată de către modul</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="162"/>
       <source>The radius of the fillet at the root of the tooth, normalized by the module.</source>
-      <translation>Raza fileului de la rădăcina dintelui, normalizată de modul.</translation>
+      <translation>Raza fileului de la rădăcina dintelui, normalizată de modul</translation>
     </message>
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="171"/>
       <source>The distance by which the reference profile is shifted outwards, normalized by the module.</source>
-      <translation>Distanța cu care profilul de referință este transferat în exterior, normalizată prin modul.</translation>
+      <translation>Distanța cu care profilul de referință este transferat în exterior, normalizată prin modul</translation>
     </message>
   </context>
   <context>
@@ -141,12 +141,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1661"/>
       <source>Additive Helix</source>
-      <translation type="unfinished">Additive Helix</translation>
+      <translation>Helix aditiv</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1662"/>
       <source>Sweeps the selected sketch or profile along a helix and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and adds it to the body</translation>
+      <translation>Alunecă schița sau profilul selectat de-a lungul unei elice și îl adaugă la corp</translation>
     </message>
   </context>
   <context>
@@ -159,12 +159,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1562"/>
       <source>Additive Loft</source>
-      <translation type="unfinished">Additive Loft</translation>
+      <translation>Loft aditiv</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Realizează un loft al schiței sau profilului selectat și îl adaugă la corp</translation>
     </message>
   </context>
   <context>
@@ -177,12 +177,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1462"/>
       <source>Additive Pipe</source>
-      <translation type="unfinished">Additive Pipe</translation>
+      <translation>Conductă aditivă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1463"/>
       <source>Sweeps the selected sketch or profile along a path and adds it to the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and adds it to the body</translation>
+      <translation>Alunecă schița sau profilul selectat de-a lungul unei traiectorii și îl adaugă la corp</translation>
     </message>
   </context>
   <context>
@@ -195,12 +195,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="91"/>
       <source>New Body</source>
-      <translation type="unfinished">New Body</translation>
+      <translation>Corp nou</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="92"/>
       <source>Creates a new body and activates it</source>
-      <translation type="unfinished">Creates a new body and activates it</translation>
+      <translation>Creează un corp nou și îl activează</translation>
     </message>
   </context>
   <context>
@@ -218,7 +218,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2578"/>
       <source>Applies boolean operations with the selected objects and the active body</source>
-      <translation type="unfinished">Applies boolean operations with the selected objects and the active body</translation>
+      <translation>Aplică operații booleene între obiectele selectate și corpul activ</translation>
     </message>
   </context>
   <context>
@@ -236,7 +236,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="281"/>
       <source>Creates a new local coordinate system</source>
-      <translation type="unfinished">Creates a new local coordinate system</translation>
+      <translation>Creează un nou sistem de coordonate local</translation>
     </message>
   </context>
   <context>
@@ -254,7 +254,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1989"/>
       <source>Applies a chamfer to the selected edges or faces</source>
-      <translation type="unfinished">Applies a chamfer to the selected edges or faces</translation>
+      <translation>Aplică o teșitură la marginile sau fețele selectate</translation>
     </message>
   </context>
   <context>
@@ -272,7 +272,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="491"/>
       <source>Copies a solid object parametrically as the base feature of a new body</source>
-      <translation type="unfinished">Copies a solid object parametrically as the base feature of a new body</translation>
+      <translation>Copiază un obiect solid, din punct de vedere parametric, ca element de bază al unui nou corp</translation>
     </message>
   </context>
   <context>
@@ -285,12 +285,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2017"/>
       <source>Draft</source>
-      <translation>Pescaj</translation>
+      <translation>Ciornă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2018"/>
       <source>Applies a draft to the selected faces</source>
-      <translation type="unfinished">Applies a draft to the selected faces</translation>
+      <translation>Aplică o ciornă pe fețele selectate</translation>
     </message>
   </context>
   <context>
@@ -303,7 +303,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="756"/>
       <source>Duplicate &amp;Object</source>
-      <translation type="unfinished">Duplicate &amp;Object</translation>
+      <translation>Duplicare Obiect</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="757"/>
@@ -326,7 +326,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1961"/>
       <source>Applies a fillet to the selected edges or faces</source>
-      <translation type="unfinished">Applies a fillet to the selected edges or faces</translation>
+      <translation>Aplică o rotunjire marginilor sau fețelor selectate</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1393"/>
       <source>Revolves the sketch or profile around a line or axis and removes it from the body</source>
-      <translation type="unfinished">Revolves the sketch or profile around a line or axis and removes it from the body</translation>
+      <translation>Rotește schița sau profilul în jurul unei linii sau axe și îl elimină din corp</translation>
     </message>
   </context>
   <context>
@@ -357,12 +357,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1285"/>
       <source>Hole</source>
-      <translation>Gaura</translation>
+      <translation>Gaură</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1287"/>
       <source>Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</source>
-      <translation type="unfinished">Creates holes in the active body at the center points of circles or arcs of the selected sketch or profile</translation>
+      <translation>Creează găuri în corpul activ la punctele centrale ale cercurilor sau arcelor din schița sau profilul selectat</translation>
     </message>
   </context>
   <context>
@@ -375,12 +375,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="220"/>
       <source>Datum Line</source>
-      <translation type="unfinished">Datum Line</translation>
+      <translation>Linie de referință</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="221"/>
       <source>Creates a new datum line</source>
-      <translation type="unfinished">Creates a new datum line</translation>
+      <translation>Creaţi o linie de referință</translation>
     </message>
   </context>
   <context>
@@ -393,12 +393,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2272"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>Model liniar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2273"/>
       <source>Duplicates the selected features or the active body in a linear pattern</source>
-      <translation type="unfinished">Duplicates the selected features or the active body in a linear pattern</translation>
+      <translation>Duplică elementele selectate sau corpul activ într-un model liniar</translation>
     </message>
   </context>
   <context>
@@ -506,7 +506,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2447"/>
       <source>Applies multiple transformations to the selected features or active body</source>
-      <translation type="unfinished">Applies multiple transformations to the selected features or active body</translation>
+      <translation>Aplică multiple transformations to the selected features or active body</translation>
     </message>
   </context>
   <context>
@@ -524,7 +524,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="575"/>
       <source>Creates a new sketch</source>
-      <translation type="unfinished">Creates a new sketch</translation>
+      <translation>Creează a new sketch</translation>
     </message>
   </context>
   <context>
@@ -537,7 +537,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1227"/>
       <source>Pad</source>
-      <translation>Pad</translation>
+      <translation>Adaos</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1228"/>
@@ -555,12 +555,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="190"/>
       <source>Datum Plane</source>
-      <translation type="unfinished">Datum Plane</translation>
+      <translation>Plan de referință</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="191"/>
       <source>Creates a new datum plane</source>
-      <translation type="unfinished">Creates a new datum plane</translation>
+      <translation>Creează un nou plat de referință</translation>
     </message>
   </context>
   <context>
@@ -591,12 +591,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="250"/>
       <source>Datum Point</source>
-      <translation type="unfinished">Datum Point</translation>
+      <translation>Punct de referință</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="251"/>
       <source>Creates a new datum point</source>
-      <translation type="unfinished">Creates a new datum point</translation>
+      <translation>Creează a new datum point</translation>
     </message>
   </context>
   <context>
@@ -609,7 +609,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2341"/>
       <source>Polar Pattern</source>
-      <translation type="unfinished">Polar Pattern</translation>
+      <translation>Model polar</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2342"/>
@@ -632,7 +632,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1331"/>
       <source>Revolves the selected sketch or profile around a line or axis and adds it to the body</source>
-      <translation type="unfinished">Revolves the selected sketch or profile around a line or axis and adds it to the body</translation>
+      <translation>Rotește schița sau profilul selectat în jurul unei linii sau axe și îl adaugă la corp</translation>
     </message>
   </context>
   <context>
@@ -668,7 +668,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="315"/>
       <source>Creates a new shape binder</source>
-      <translation type="unfinished">Creates a new shape binder</translation>
+      <translation>Creează a new shape binder</translation>
     </message>
   </context>
   <context>
@@ -686,7 +686,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="385"/>
       <source>Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</source>
-      <translation type="unfinished">Creates a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents.</translation>
+      <translation>Creează a reference to geometry from one or more objects, allowing it to be used inside or outside a body. It tracks relative placements, supports multiple geometry types (solids, faces, edges, vertices), and can work with objects in the same or external documents</translation>
     </message>
   </context>
   <context>
@@ -704,7 +704,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1746"/>
       <source>Sweeps the selected sketch or profile along a helix and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a helix and removes it from the body</translation>
+      <translation>Mătură schița sau profilul selectat de-a lungul unei elice și îl elimină din corp</translation>
     </message>
   </context>
   <context>
@@ -722,7 +722,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Lofts the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>Realizează un loft schița sau profilul selectat de-a lungul unei traiectorii și îl elimină din corp</translation>
     </message>
   </context>
   <context>
@@ -740,7 +740,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="1513"/>
       <source>Sweeps the selected sketch or profile along a path and removes it from the body</source>
-      <translation type="unfinished">Sweeps the selected sketch or profile along a path and removes it from the body</translation>
+      <translation>Mătură schița sau profilul selectat de-a lungul unei traiectorii și îl elimină din corp</translation>
     </message>
   </context>
   <context>
@@ -758,7 +758,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../Command.cpp" line="2088"/>
       <source>Applies thickness and removes the selected faces</source>
-      <translation type="unfinished">Applies thickness and removes the selected faces</translation>
+      <translation>Aplică thickness and removes the selected faces</translation>
     </message>
   </context>
   <context>
@@ -776,7 +776,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="76"/>
       <source>Creates an additive primitive</source>
-      <translation type="unfinished">Creates an additive primitive</translation>
+      <translation>Creează an additive primitive</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="213"/>
@@ -834,7 +834,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="284"/>
       <source>Creates a subtractive primitive</source>
-      <translation type="unfinished">Creates a subtractive primitive</translation>
+      <translation>Creează a subtractive primitive</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="398"/>
@@ -947,7 +947,7 @@ astfel încât intersecția de sine să fie evitată.</translation>
       <translation type="unfinished">Duplicate a Part Design object</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation type="unfinished">Move a feature inside body</translation>
     </message>
@@ -969,12 +969,12 @@ astfel încât intersecția de sine să fie evitată.</translation>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="298"/>
       <source>Linear Pattern</source>
-      <translation type="unfinished">Linear Pattern</translation>
+      <translation>Model liniar</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="347"/>
       <source>Polar Pattern</source>
-      <translation type="unfinished">Polar Pattern</translation>
+      <translation>Model polar</translation>
     </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.cpp" line="386"/>
@@ -1091,8 +1091,8 @@ astfel încât intersecția de sine să fie evitată.</translation>
       <location filename="../../DlgActiveBody.ui" line="20"/>
       <source>To create a new Part Design object, there must be an active body in the document.
 Select a body from below, or create a new body.</source>
-      <translation type="unfinished">To create a new Part Design object, there must be an active body in the document.
-Select a body from below, or create a new body.</translation>
+      <translation>To create a new Part Design object, there must be an active body in the document.
+Select a body from below, or create a new body</translation>
     </message>
     <message>
       <location filename="../../DlgActiveBody.ui" line="35"/>
@@ -1369,7 +1369,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../DlgReference.ui" line="20"/>
       <source>You selected geometries which are not part of the active body. Please define how to handle those selections. If you do not want those references, cancel the command.</source>
-      <translation>Aţi selectat geometrii care nu fac parte din corpul activ. Vă rugăm să definiți cum să gestionați aceste selecții. Dacă nu doriți aceste referințe, anulați comanda.</translation>
+      <translation>Aţi selectat geometrii care nu fac parte din corpul activ. Vă rugăm să definiți cum să gestionați aceste selecții. Dacă nu doriți aceste referințe, anulați comanda</translation>
     </message>
     <message>
       <location filename="../../DlgReference.ui" line="42"/>
@@ -1392,7 +1392,7 @@ If zero, it is equal to Radius2</translation>
     <message>
       <location filename="../../ReferenceSelection.cpp" line="285"/>
       <source>Selecting this will cause circular dependency.</source>
-      <translation>Această selecție va crea o dependență circulară.</translation>
+      <translation>Această selecție va crea o dependență circulară</translation>
     </message>
   </context>
   <context>
@@ -1578,9 +1578,9 @@ If zero, it is equal to Radius2</translation>
       <source>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
 Please adjust the parameters and try again.</source>
-      <translation type="unfinished">The feature could not be created with the given parameters.
+      <translation>The feature could not be created with the given parameters.
 The geometry may be invalid or the parameters may be incompatible.
-Please adjust the parameters and try again.</translation>
+Please adjust the parameters and try again</translation>
     </message>
     <message>
       <location filename="../../TaskFeatureParameters.cpp" line="235"/>
@@ -1663,7 +1663,7 @@ Please adjust the parameters and try again.</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="322"/>
       <source>Adds all edges to the list box (only when in add selection mode)</source>
-      <translation type="unfinished">Adds all edges to the list box (only when in add selection mode)</translation>
+      <translation>Adaugă all edges to the list box (only when in add selection mode)</translation>
     </message>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="331"/>
@@ -3105,29 +3105,29 @@ măsurată de-a lungul direcției specificate</translation>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation type="unfinished">Move Feature After…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>Selectaţi o funcție din lista</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation type="unfinished">Move Tip</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
       <translation type="unfinished">Set tip to last feature?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
-      <translation>Funcția mutată apare după sfatul setat în prezent.</translation>
+      <translation>Funcția mutată apare după sfatul setat în prezent</translation>
     </message>
   </context>
   <context>
@@ -3140,7 +3140,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="147"/>
       <source>There are no attachment modes that fit selected objects. Select something else.</source>
-      <translation>Nu există nici un mod de fixare care să convină obiectelor selcționate. Selectaţi altceva.</translation>
+      <translation>Nu există nici un mod de fixare care să convină obiectelor selcționate. Selectaţi altceva</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="160"/>
@@ -3201,12 +3201,12 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="992"/>
       <source>Cannot use this command as there is no solid to subtract from.</source>
-      <translation>Nu se poate folosi această comandă deoarece nu există nici un solid din care să se scade.</translation>
+      <translation>Nu se poate folosi această comandă deoarece nu există nici un solid din care să se scade</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="995"/>
       <source>Ensure that the body contains a feature before attempting a subtractive command.</source>
-      <translation>Asigurați-vă că corpul conține o caracteristică înainte de a încerca o comandă substractivă.</translation>
+      <translation>Asigurați-vă că corpul conține o caracteristică înainte de a încerca o comandă substractivă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1019"/>
@@ -3216,7 +3216,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation type="unfinished">There is no active body. Please activate a body before inserting a datum entity.</translation>
+      <translation>There is no active body. Please activate a body before inserting a datum entity</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="467"/>
@@ -3251,7 +3251,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="1822"/>
       <source>Select an edge, face, or body from a single body.</source>
-      <translation>Selectaţi o margine, o faţă sau un corp de pe un singur corp.</translation>
+      <translation>Selectaţi o margine, o faţă sau un corp de pe un singur corp</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1829"/>
@@ -3267,7 +3267,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="1830"/>
       <source>Select an edge, face, or body from an active body.</source>
-      <translation>Selectaţi o margine, o faţă sau un corp de la un corp activ.</translation>
+      <translation>Selectaţi o margine, o faţă sau un corp de la un corp activ</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1022"/>
@@ -3282,12 +3282,12 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>%1 works only on parts.</source>
-      <translation>%1 funcţionează doar pe piese.</translation>
+      <translation>%1 funcţionează doar pe piese</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2192"/>
       <source>Please select only one feature in an active body.</source>
-      <translation>Vă rugăm să selectaţi un singur fisier într-un corp activ.</translation>
+      <translation>Vă rugăm să selectaţi un singur fisier într-un corp activ</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="71"/>
@@ -3297,7 +3297,7 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="72"/>
       <source>Failed to create a part object.</source>
-      <translation>A eșuat crearea unui obiect piesă.</translation>
+      <translation>A eșuat crearea unui obiect piesă</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="125"/>
@@ -3310,41 +3310,41 @@ măsurată de-a lungul direcției specificate</translation>
     <message>
       <location filename="../../CommandBody.cpp" line="126"/>
       <source>A body cannot be based on a Part Design feature.</source>
-      <translation type="unfinished">A body cannot be based on a Part Design feature.</translation>
+      <translation>A body cannot be based on a Part Design feature</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="134"/>
       <source>%1 already belongs to a body and cannot be used as a base feature for another body.</source>
-      <translation type="unfinished">%1 already belongs to a body and cannot be used as a base feature for another body.</translation>
+      <translation>%1 already belongs to a body and cannot be used as a base feature for another body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="150"/>
       <source>Base feature (%1) belongs to other part.</source>
-      <translation>Funcția de bază (%1) aparține unei alte piese.</translation>
+      <translation>Funcția de bază (%1) aparține unei alte piese</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="177"/>
       <source>The selected shape consists of multiple solids.
 This may lead to unexpected results.</source>
-      <translation>Forma selectată constă din mai multe solide. Acest lucru poate duce la rezultate imprevizibile.</translation>
+      <translation>Forma selectată constă din mai multe solide. Acest lucru poate duce la rezultate imprevizibile</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="183"/>
       <source>The selected shape consists of multiple shells.
 This may lead to unexpected results.</source>
-      <translation>Forma selectată constă din mai multe cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
+      <translation>Forma selectată constă din mai multe cochilii. Acest lucru poate duce la rezultate imprevizibile</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="189"/>
       <source>The selected shape consists of only a shell.
 This may lead to unexpected results.</source>
-      <translation>Forma selectată constă dintr-o singură cochilie. Acest lucru poate duce la rezultate imprevizibile.</translation>
+      <translation>Forma selectată constă dintr-o singură cochilie. Acest lucru poate duce la rezultate imprevizibile</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="195"/>
       <source>The selected shape consists of multiple solids or shells.
 This may lead to unexpected results.</source>
-      <translation>Forma selectată este format din mai multe solide sau cochilii. Acest lucru poate duce la rezultate imprevizibile.</translation>
+      <translation>Forma selectată este format din mai multe solide sau cochilii. Acest lucru poate duce la rezultate imprevizibile</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="204"/>
@@ -3354,7 +3354,7 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="216"/>
       <source>Body may be based on no more than one feature.</source>
-      <translation>Corpul se poate baza pe cel mult o caracteristică.</translation>
+      <translation>Corpul se poate baza pe cel mult o caracteristică</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="230"/>
@@ -3369,12 +3369,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="692"/>
       <source>Select exactly one Part Design feature or a body.</source>
-      <translation type="unfinished">Select exactly one Part Design feature or a body.</translation>
+      <translation>Select exactly one Part Design feature or a body</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="700"/>
       <source>Could not determine a body for the selected feature '%s'.</source>
-      <translation type="unfinished">Could not determine a body for the selected feature '%s'.</translation>
+      <translation>Could not determine a body for the selected feature '%s'</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="877"/>
@@ -3389,26 +3389,26 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="422"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation type="unfinished">No Part Design features without body found Nothing to migrate.</translation>
+      <translation>No Part Design features without body found Nothing to migrate</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Vă rugăm să editaţi '%1' şi să redefinească pentru a utiliza un Plan de bază sau de referință ale ca plan de schiţă.</translation>
+      <translation>Vă rugăm să editaţi '%1' şi să redefinească pentru a utiliza un Plan de bază sau de referință ale ca plan de schiţă</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>Eroare de selecție</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="712"/>
       <source>Only a solid feature can be the tip of a body.</source>
-      <translation>Doar o funcție solidă poate fi funcția rezultantă a unui corp.</translation>
+      <translation>Doar o funcție solidă poate fi funcția rezultantă a unui corp</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="846"/>
@@ -3428,27 +3428,27 @@ This may lead to unexpected results.</source>
       <translation>Nu este nici un alt corp spre care să se deplaseze</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
-      <translation>Imposibil de a deplasa caracteristica de bază a unui corp.</translation>
+      <translation>Imposibil de a deplasa caracteristica de bază a unui corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
-      <translation>Selectați una sau mai multe funcții în același corp.</translation>
+      <translation>Selectați una sau mai multe funcții în același corp</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>Începutul corpului</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>Încălcarea dependenței</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3498,14 +3498,14 @@ This may lead to unexpected results.</source>
       <source>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
 For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</source>
-      <translation type="unfinished">To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
+      <translation>To use Part Design, an active body is required in the document. Activate a body (double-click) or create a new one.
 
-For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body.</translation>
+For legacy documents with Part Design objects lacking a body, use the migrate function in Part Design to place them into a body</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="207"/>
       <source>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</source>
-      <translation type="unfinished">To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one.</translation>
+      <translation>To create a new Part Design object, an active body is required in the document. Activate an existing body (double-click) or create a new one</translation>
     </message>
     <message>
       <location filename="../../Utils.cpp" line="273"/>
@@ -3515,17 +3515,17 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
     <message>
       <location filename="../../Utils.cpp" line="274"/>
       <source>In order to use this feature it needs to belong to a body object in the document.</source>
-      <translation>Pentru a utiliza această caracteristică, ea trebuie să aparțină unui corp din document.</translation>
+      <translation>Pentru a utiliza această caracteristică, ea trebuie să aparțină unui corp din document</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Caracteristica nu este de la o piesă/Part</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
-      <translation>Pentru a utiliza această funcție, ea trebuie să aparțină unei piese din document.</translation>
+      <translation>Pentru a utiliza această funcție, ea trebuie să aparțină unei piese din document</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDressUp.cpp" line="62"/>
@@ -3577,8 +3577,8 @@ For legacy documents with Part Design objects lacking a body, use the migrate fu
       <location filename="../../ViewProviderDressUp.cpp" line="92"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation type="unfinished">%1 misses a base feature.
-This feature is broken and cannot be edited.</translation>
+      <translation>%1 misses a base feature.
+This feature is broken and cannot be edited</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="220"/>
@@ -3598,7 +3598,7 @@ This feature is broken and cannot be edited.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="154"/>
       <source>The document "%1" you are editing was designed with an old version of Part Design workbench.</source>
-      <translation type="unfinished">The document "%1" you are editing was designed with an old version of Part Design workbench.</translation>
+      <translation>The document "%1" you are editing was designed with an old version of Part Design workbench</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="161"/>
@@ -3608,7 +3608,7 @@ This feature is broken and cannot be edited.</translation>
     <message>
       <location filename="../../WorkflowManager.cpp" line="166"/>
       <source>The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</source>
-      <translation type="unfinished">The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure.</translation>
+      <translation>The document "%1" seems to be either in the middle of the migration process from legacy Part Design or have a slightly broken structure</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="173"/>
@@ -3622,7 +3622,7 @@ If you refuse to migrate you won't be able to use new PartDesign features like B
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
       <translation>Notă: Dacă alegeți să migrați, nu veți putea edita fișierul cu o versiune FreeCAD mai veche.
 Dacă refuzați să migrați, nu veți putea folosi noile funcții PartDesign, cum ar fi Corpuri și Piese. Ca rezultat, nici nu veți putea folosi piesele dumneavoastră în bancul de lucru de asamblare.
-Deși veți putea migra în orice moment mai târziu cu „Part Design -&gt; Migrate”.</translation>
+Deși veți putea migra în orice moment mai târziu cu „Part Design -&gt; Migrate”</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="189"/>
@@ -4404,7 +4404,7 @@ peste 90: rază mai mare la partea de jos</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="124"/>
       <source>The Plot add-on is not installed. Install it to enable this feature.</source>
-      <translation type="unfinished">The Plot add-on is not installed. Install it to enable this feature.</translation>
+      <translation>The Plot add-on is not installed. Install it to enable this feature</translation>
     </message>
   </context>
   <context>
@@ -4412,7 +4412,7 @@ peste 90: rază mai mare la partea de jos</translation>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="251"/>
       <source>Shaft design wizard...</source>
-      <translation>Asistent pentru proiectarea arborelui...</translation>
+      <translation>Asistent pentru proiectarea arborelui</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="254"/>
@@ -4478,7 +4478,7 @@ peste 90: rază mai mare la partea de jos</translation>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
       <source>Result has multiple solids: enable 'Allow Compound' in the active body.</source>
-      <translation type="unfinished">Result has multiple solids: enable 'Allow Compound' in the active body.</translation>
+      <translation>Result has multiple solids: enable 'Allow Compound' in the active body</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureBoolean.cpp" line="114"/>
@@ -4493,22 +4493,22 @@ peste 90: rază mai mare la partea de jos</translation>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation type="unfinished">Cannot create a pad with a total length of zero.</translation>
+      <translation>Cannot create a pad with a total length of zero</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation type="unfinished">Cannot create a pocket with a total length of zero.</translation>
+      <translation>Cannot create a pocket with a total length of zero</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
       <source>No extrusion geometry was generated.</source>
-      <translation type="unfinished">No extrusion geometry was generated.</translation>
+      <translation>No extrusion geometry was generated</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation type="unfinished">Resulting fused extrusion is null.</translation>
+      <translation>Resulting fused extrusion is null</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
@@ -4562,7 +4562,7 @@ peste 90: rază mai mare la partea de jos</translation>
     <message>
       <location filename="../../../App/FeatureFillet.cpp" line="157"/>
       <source>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</source>
-      <translation type="unfinished">Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius.</translation>
+      <translation>Fillet operation failed. The selected edges may contain geometry that cannot be filleted together. Try filleting edges individually or with a smaller radius</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureGroove.cpp" line="101"/>
@@ -4583,7 +4583,7 @@ peste 90: rază mai mare la partea de jos</translation>
       <translation>Funcția solicitată nu poate fi creată. Motivul poate fi:
   - Corpul activ nu conține o formă de bază, astfel încât să nu existe
   material care să fie eliminat;
-  - schița selectată nu aparține Organismului activ.</translation>
+  - schița selectată nu aparține Organismului activ</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="400"/>
@@ -4625,7 +4625,7 @@ peste 90: rază mai mare la partea de jos</translation>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nu s-a putut crea fața din schiță.
-Entitățile de schiță intersectate dintr-o schiță nu sunt permise.</translation>
+Entitățile de schiță intersectate dintr-o schiță nu sunt permise</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="235"/>
@@ -4800,7 +4800,7 @@ Entitățile de schiță intersectate dintr-o schiță nu sunt permise.</transla
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nu s-a putut crea fața din schiță.
-Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu sunt permise pentru a face un buzunar până la o față.</translation>
+Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu sunt permise pentru a face un buzunar până la o față</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureHole.cpp" line="2245"/>
@@ -4843,7 +4843,7 @@ Elementele de intersectare ale schiței sau multiplele fețe dintr-o schiță nu
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
       <translation>Nu s-a putut crea fața din schiță.
-Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o schiță.</translation>
+Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o schiță</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="203"/>
@@ -4858,7 +4858,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="225"/>
       <source>No auxiliary spine linked.</source>
-      <translation>Nici o coloană vertebrală auxiliară legată.</translation>
+      <translation>Nici o coloană vertebrală auxiliară legată</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="248"/>
@@ -4918,27 +4918,27 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="672"/>
       <source>Invalid element in spine.</source>
-      <translation>Element nevalid în coloana vertebrală.</translation>
+      <translation>Element nevalid în coloana vertebrală</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="677"/>
       <source>Element in spine is neither an edge nor a wire.</source>
-      <translation>Elementul din coloana vertebrală nu este nici margine, nici sârmă.</translation>
+      <translation>Elementul din coloana vertebrală nu este nici margine, nici sârmă</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="698"/>
       <source>Spine is not connected.</source>
-      <translation>Spinul nu este conectat.</translation>
+      <translation>Spinul nu este conectat</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="704"/>
       <source>Spine is neither an edge nor a wire.</source>
-      <translation>Spinul nu este nici margine, nici sârmă.</translation>
+      <translation>Spinul nu este nici margine, nici sârmă</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePipe.cpp" line="709"/>
       <source>Invalid spine.</source>
-      <translation>coloană vertebrală nevalidă.</translation>
+      <translation>coloană vertebrală nevalidă</translation>
     </message>
     <message>
       <location filename="../../../App/FeaturePrimitive.cpp" line="101"/>
@@ -5091,7 +5091,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="106"/>
       <source>No originals linked to the transformed feature.</source>
-      <translation>Nu există originale legate de caracteristica transformată.</translation>
+      <translation>Nu există originale legate de caracteristica transformată</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureTransformed.cpp" line="346"/>
@@ -5124,7 +5124,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../InvoluteGearFeature.py" line="64"/>
       <source>Creates or edits the involute gear definition</source>
-      <translation type="unfinished">Creates or edits the involute gear definition</translation>
+      <translation>Creează or edits the involute gear definition</translation>
     </message>
   </context>
   <context>
@@ -5137,7 +5137,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../SprocketFeature.py" line="67"/>
       <source>Creates or edits the sprocket definition.</source>
-      <translation type="unfinished">Creates or edits the sprocket definition.</translation>
+      <translation>Creează or edits the sprocket definition</translation>
     </message>
   </context>
   <context>
@@ -5181,7 +5181,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../../App/FeatureAddSub.cpp" line="105"/>
       <source>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</source>
-      <translation type="unfinished">Resulting shape is empty. That may indicate that no material will be removed or a problem with the model.</translation>
+      <translation>Resulting shape is empty. That may indicate that no material will be removed or a problem with the model</translation>
     </message>
   </context>
   <context>
@@ -5194,7 +5194,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../Command.cpp" line="2645"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation type="unfinished">Creates a datum object or local coordinate system</translation>
+      <translation>Creează a datum object or local coordinate system</translation>
     </message>
   </context>
   <context>
@@ -5207,7 +5207,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../Command.cpp" line="2680"/>
       <source>Creates a datum object or local coordinate system</source>
-      <translation type="unfinished">Creates a datum object or local coordinate system</translation>
+      <translation>Creează a datum object or local coordinate system</translation>
     </message>
   </context>
   <context>
@@ -5215,42 +5215,42 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../CommandPrimitive.cpp" line="215"/>
       <source>Creates an additive box by its width, height, and length</source>
-      <translation type="unfinished">Creates an additive box by its width, height, and length</translation>
+      <translation>Creează an additive box by its width, height, and length</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="224"/>
       <source>Creates an additive cylinder by its radius, height, and angle</source>
-      <translation type="unfinished">Creates an additive cylinder by its radius, height, and angle</translation>
+      <translation>Creează an additive cylinder by its radius, height, and angle</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="233"/>
       <source>Creates an additive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates an additive sphere by its radius and various angles</translation>
+      <translation>Creează an additive sphere by its radius and various angles</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="242"/>
       <source>Creates an additive cone</source>
-      <translation type="unfinished">Creates an additive cone</translation>
+      <translation>Creează an additive cone</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="248"/>
       <source>Creates an additive ellipsoid</source>
-      <translation type="unfinished">Creates an additive ellipsoid</translation>
+      <translation>Creează an additive ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="254"/>
       <source>Creates an additive torus</source>
-      <translation type="unfinished">Creates an additive torus</translation>
+      <translation>Creează an additive torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="260"/>
       <source>Creates an additive prism</source>
-      <translation type="unfinished">Creates an additive prism</translation>
+      <translation>Creează an additive prism</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="266"/>
       <source>Creates an additive wedge</source>
-      <translation type="unfinished">Creates an additive wedge</translation>
+      <translation>Creează an additive wedge</translation>
     </message>
   </context>
   <context>
@@ -5258,42 +5258,42 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../CommandPrimitive.cpp" line="400"/>
       <source>Creates a subtractive box by its width, height and length</source>
-      <translation type="unfinished">Creates a subtractive box by its width, height and length</translation>
+      <translation>Creează a subtractive box by its width, height and length</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="409"/>
       <source>Creates a subtractive cylinder by its radius, height and angle</source>
-      <translation type="unfinished">Creates a subtractive cylinder by its radius, height and angle</translation>
+      <translation>Creează a subtractive cylinder by its radius, height and angle</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="418"/>
       <source>Creates a subtractive sphere by its radius and various angles</source>
-      <translation type="unfinished">Creates a subtractive sphere by its radius and various angles</translation>
+      <translation>Creează a subtractive sphere by its radius and various angles</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="427"/>
       <source>Creates a subtractive cone</source>
-      <translation type="unfinished">Creates a subtractive cone</translation>
+      <translation>Creează a subtractive cone</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="433"/>
       <source>Creates a subtractive ellipsoid</source>
-      <translation type="unfinished">Creates a subtractive ellipsoid</translation>
+      <translation>Creează a subtractive ellipsoid</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="439"/>
       <source>Creates a subtractive torus</source>
-      <translation type="unfinished">Creates a subtractive torus</translation>
+      <translation>Creează a subtractive torus</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="445"/>
       <source>Creates a subtractive prism</source>
-      <translation type="unfinished">Creates a subtractive prism</translation>
+      <translation>Creează a subtractive prism</translation>
     </message>
     <message>
       <location filename="../../CommandPrimitive.cpp" line="451"/>
       <source>Creates a subtractive wedge</source>
-      <translation type="unfinished">Creates a subtractive wedge</translation>
+      <translation>Creează a subtractive wedge</translation>
     </message>
   </context>
   <context>
@@ -5333,7 +5333,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../ViewProviderBody.cpp" line="122"/>
       <source>Active Body</source>
-      <translation type="unfinished">Active Body</translation>
+      <translation>Corp activ</translation>
     </message>
   </context>
   <context>
@@ -5446,7 +5446,7 @@ Nu sunt permise entități intersectate de schiță sau multiple fețe dintr-o s
     <message>
       <location filename="../../TaskPatternParameters.cpp" line="332"/>
       <source>Invalid selection. Select an edge, planar face, or datum line.</source>
-      <translation type="unfinished">Invalid selection. Select an edge, planar face, or datum line.</translation>
+      <translation>Invalid selection. Select an edge, planar face, or datum line</translation>
     </message>
   </context>
 </TS>

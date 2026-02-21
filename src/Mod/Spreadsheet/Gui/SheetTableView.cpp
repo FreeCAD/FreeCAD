@@ -138,11 +138,11 @@ SheetTableView::SheetTableView(QWidget* parent)
             Q_UNUSED(isContiguous)
             /*: This is shown in the context menu for the vertical header in a spreadsheet.
                 The number refers to how many lines are selected and will be inserted. */
-            auto insertBefore = menu.addAction(tr("Insert %n Row(s) Above", "", selection.size()));
+            auto insertBefore = menu.addAction(tr("Insert %n Rows Above", "", selection.size()));
             connect(insertBefore, &QAction::triggered, this, &SheetTableView::insertRows);
 
             if (max < model()->rowCount() - 1) {
-                auto insertAfter = menu.addAction(tr("Insert %n Row(s) Below", "", selection.size()));
+                auto insertAfter = menu.addAction(tr("Insert %n Rows Below", "", selection.size()));
                 connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertRowsAfter);
             }
         }
@@ -150,7 +150,7 @@ SheetTableView::SheetTableView(QWidget* parent)
             auto insert = menu.addAction(tr("Insert %n Non-Contiguous Rows", "", selection.size()));
             connect(insert, &QAction::triggered, this, &SheetTableView::insertRows);
         }
-        auto remove = menu.addAction(tr("Remove Rows", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove Rows", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeRows);
         menu.exec(QCursor::pos());
     });
@@ -164,13 +164,11 @@ SheetTableView::SheetTableView(QWidget* parent)
             Q_UNUSED(isContiguous)
             /*: This is shown in the context menu for the horizontal header in a spreadsheet.
                 The number refers to how many lines are selected and will be inserted. */
-            auto insertAbove = menu.addAction(tr("Insert %n Column(s) Left", "", selection.size()));
+            auto insertAbove = menu.addAction(tr("Insert %n Columns Left", "", selection.size()));
             connect(insertAbove, &QAction::triggered, this, &SheetTableView::insertColumns);
 
             if (max < model()->columnCount() - 1) {
-                auto insertAfter = menu.addAction(
-                    tr("Insert %n Column(s) Right", "", selection.size())
-                );
+                auto insertAfter = menu.addAction(tr("Insert %n Columns Right", "", selection.size()));
                 connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertColumnsAfter);
             }
         }
@@ -178,7 +176,7 @@ SheetTableView::SheetTableView(QWidget* parent)
             auto insert = menu.addAction(tr("Insert %n Non-Contiguous Columns", "", selection.size()));
             connect(insert, &QAction::triggered, this, &SheetTableView::insertColumns);
         }
-        auto remove = menu.addAction(tr("Remove Column(s)", "", selection.size()));
+        auto remove = menu.addAction(tr("Remove Columns", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
         menu.exec(QCursor::pos());
     });

@@ -65,5 +65,64 @@ private:
     void restart(const QString& message);
 };
 
+
+class GuiExport PathMigrationWorker: public QObject
+{
+    Q_OBJECT
+
+public:
+    PathMigrationWorker(std::string configDir, std::string userAppDir, int major, int minor);
+    void run();
+
+Q_SIGNALS:
+    void finished();
+    void complete();
+    void failed();
+
+protected:
+    /**
+     * @brief Find any occurrence of the original config and userAppDir paths in the new copy of the
+     * config file and replace them with updated versions.
+     */
+    void replaceOccurrencesInPreferences();
+
+    /**
+     * @brief Locate the new user config file
+     *
+     * After it's been moved, this method figures out the path to the new user.cfg file. It does not
+     * verify the existence of the file, just determines where it *should* be.
+     *
+     * @return The path to the new version of user.cfg.
+     */
+    std::filesystem::path locateNewPreferences() const;
+
+    /**
+     * @brief Given an old path, figure out what the new versioned one would be
+     *
+     * @param oldPath  The old path
+     * @return An equivalent new versioned path
+     */
+    std::string generateNewUserAppPathString(const std::string& oldPath) const;
+
+    /**
+     * @brief Replace all occurrences of oldString with newString, modifying contents in place.
+     *
+     * @param[inout] contents The string to do the replacement in
+     * @param[in] oldString The string to search for
+     * @param[in] newString The new string to put in place of oldString
+     */
+    static void replaceInContents(
+        std::string& contents,
+        const std::string& oldString,
+        const std::string& newString
+    );
+
+private:
+    std::string _configDir;
+    std::string _userAppDir;
+    int _major;
+    int _minor;
+};
+
 }  // namespace Dialog
 }  // namespace Gui

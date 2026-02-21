@@ -82,10 +82,11 @@ public:
     DrawPage* findParentPage() const override;
     std::vector<DrawPage*> findAllParentPages() const override;
 
-protected:
-    void onChanged(const App::Property* prop) override;
     bool isLocked() const override;
     bool showLock() const override;
+
+protected:
+    void onChanged(const App::Property* prop) override;
 
 private:
     static const char* TypeEnums[];

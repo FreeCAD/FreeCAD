@@ -34,6 +34,7 @@
 #include <Base/Sequencer.h>
 
 #include "Application.h"
+#include "ApplicationPy.h"
 #include "DocumentPy.h"
 #include "DocumentObserverPython.h"
 #include "DocumentObjectPy.h"
@@ -48,95 +49,95 @@ using namespace App;
 // Python stuff
 
 // Application methods structure
-PyMethodDef Application::Methods[] = {
-    {"ParamGet", (PyCFunction)Application::sGetParam, METH_VARARGS, "Get parameters by path"},
+PyMethodDef ApplicationPy::Methods[] = {
+    {"ParamGet", (PyCFunction)ApplicationPy::sGetParam, METH_VARARGS, "Get parameters by path"},
     {"saveParameter",
-     (PyCFunction)Application::sSaveParameter,
+     (PyCFunction)ApplicationPy::sSaveParameter,
      METH_VARARGS,
      "saveParameter(config='User parameter') -> None\n"
      "Save parameter set to file. The default set is 'User parameter'"},
     {"Version",
-     (PyCFunction)Application::sGetVersion,
+     (PyCFunction)ApplicationPy::sGetVersion,
      METH_VARARGS,
      "Print the version to the output."},
     {"ConfigGet",
-     (PyCFunction)Application::sGetConfig,
+     (PyCFunction)ApplicationPy::sGetConfig,
      METH_VARARGS,
      "ConfigGet(string) -- Get the value for the given key."},
     {"ConfigSet",
-     (PyCFunction)Application::sSetConfig,
+     (PyCFunction)ApplicationPy::sSetConfig,
      METH_VARARGS,
      "ConfigSet(string, string) -- Set the given key to the given value."},
     {"ConfigDump",
-     (PyCFunction)Application::sDumpConfig,
+     (PyCFunction)ApplicationPy::sDumpConfig,
      METH_VARARGS,
      "Dump the configuration to the output."},
     {"addImportType",
-     (PyCFunction)Application::sAddImportType,
+     (PyCFunction)ApplicationPy::sAddImportType,
      METH_VARARGS,
      "Register filetype for import"},
     {"changeImportModule",
-     (PyCFunction)Application::sChangeImportModule,
+     (PyCFunction)ApplicationPy::sChangeImportModule,
      METH_VARARGS,
      "Change the import module name of a registered filetype"},
     {"getImportType",
-     (PyCFunction)Application::sGetImportType,
+     (PyCFunction)ApplicationPy::sGetImportType,
      METH_VARARGS,
      "Get the name of the module that can import the filetype"},
     {"addExportType",
-     (PyCFunction)Application::sAddExportType,
+     (PyCFunction)ApplicationPy::sAddExportType,
      METH_VARARGS,
      "Register filetype for export"},
     {"changeExportModule",
-     (PyCFunction)Application::sChangeExportModule,
+     (PyCFunction)ApplicationPy::sChangeExportModule,
      METH_VARARGS,
      "Change the export module name of a registered filetype"},
     {"getExportType",
-     (PyCFunction)Application::sGetExportType,
+     (PyCFunction)ApplicationPy::sGetExportType,
      METH_VARARGS,
      "Get the name of the module that can export the filetype"},
     {"getResourceDir",
-     (PyCFunction)Application::sGetResourcePath,
+     (PyCFunction)ApplicationPy::sGetResourcePath,
      METH_VARARGS,
      "Get the root directory of all resources"},
     {"getLibraryDir",
-     (PyCFunction)Application::sGetLibraryPath,
+     (PyCFunction)ApplicationPy::sGetLibraryPath,
      METH_VARARGS,
      "Get the directory of all extension modules"},
     {"getTempPath",
-     (PyCFunction)Application::sGetTempPath,
+     (PyCFunction)ApplicationPy::sGetTempPath,
      METH_VARARGS,
      "Get the root directory of cached files"},
     {"getUserCachePath",
-     (PyCFunction)Application::sGetUserCachePath,
+     (PyCFunction)ApplicationPy::sGetUserCachePath,
      METH_VARARGS,
      "Get the root path of cached files"},
     {"getUserConfigDir",
-     (PyCFunction)Application::sGetUserConfigPath,
+     (PyCFunction)ApplicationPy::sGetUserConfigPath,
      METH_VARARGS,
      "Get the root path of user config files"},
     {"getUserAppDataDir",
-     (PyCFunction)Application::sGetUserAppDataPath,
+     (PyCFunction)ApplicationPy::sGetUserAppDataPath,
      METH_VARARGS,
      "Get the root directory of application data"},
     {"getUserMacroDir",
-     (PyCFunction)Application::sGetUserMacroPath,
+     (PyCFunction)ApplicationPy::sGetUserMacroPath,
      METH_VARARGS,
      "getUserMacroDir(bool=False) -> str\n\n"
      "Get the directory of the user's macro directory\n"
      "If parameter is False (the default) it returns the standard path in the"
      "user's home directory, otherwise it returns the user-defined path."},
     {"getHelpDir",
-     (PyCFunction)Application::sGetHelpPath,
+     (PyCFunction)ApplicationPy::sGetHelpPath,
      METH_VARARGS,
      "Get the directory of the documentation"},
     {"getHomePath",
-     (PyCFunction)Application::sGetHomePath,
+     (PyCFunction)ApplicationPy::sGetHomePath,
      METH_VARARGS,
      "Get the home path, i.e. the parent directory of the executable"},
 
     {"loadFile",
-     (PyCFunction)Application::sLoadFile,
+     (PyCFunction)ApplicationPy::sLoadFile,
      METH_VARARGS,
      "loadFile(string=filename,[string=module]) -> None\n\n"
      "Loads an arbitrary file by delegating to the given Python module:\n"
@@ -144,11 +145,11 @@ PyMethodDef Application::Methods[] = {
      "* If more than one module can load a file the first one will be taken.\n"
      "* If no module exists to load the file an exception will be raised."},
     {"open",
-     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(Application::sOpenDocument)),
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(ApplicationPy::sOpenDocument)),
      METH_VARARGS | METH_KEYWORDS,
      "See openDocument(string)"},
     {"openDocument",
-     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(Application::sOpenDocument)),
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(ApplicationPy::sOpenDocument)),
      METH_VARARGS | METH_KEYWORDS,
      "openDocument(filepath,hidden=False,temporary=False) -> object\n"
      "Create a document and load the project file into the document.\n\n"
@@ -157,11 +158,11 @@ PyMethodDef Application::Methods[] = {
      "          In this case the document is kept alive.\n"
      "hidden: whether to hide document 3D view.\n"
      "temporary: whether to hide document in the tree view."},
-    //  {"saveDocument",   (PyCFunction) Application::sSaveDocument, METH_VARARGS,
+    //  {"saveDocument",   (PyCFunction) ApplicationPy::sSaveDocument, METH_VARARGS,
     //   "saveDocument(string) -- Save the document to a file."},
-    //  {"saveDocumentAs", (PyCFunction) Application::sSaveDocumentAs, METH_VARARGS},
+    //  {"saveDocumentAs", (PyCFunction) ApplicationPy::sSaveDocumentAs, METH_VARARGS},
     {"newDocument",
-     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(Application::sNewDocument)),
+     reinterpret_cast<PyCFunction>(reinterpret_cast<void (*)()>(ApplicationPy::sNewDocument)),
      METH_VARARGS | METH_KEYWORDS,
      "newDocument(name, label=None, hidden=False, temp=False) -> object\n"
      "Create a new document with a given name.\n\n"
@@ -170,62 +171,62 @@ PyMethodDef Application::Methods[] = {
      "hidden: whether to hide document 3D view.\n"
      "temp: mark the document as temporary so that it will not be saved"},
     {"closeDocument",
-     (PyCFunction)Application::sCloseDocument,
+     (PyCFunction)ApplicationPy::sCloseDocument,
      METH_VARARGS,
      "closeDocument(string) -> None\n\n"
      "Close the document with a given name."},
     {"activeDocument",
-     (PyCFunction)Application::sActiveDocument,
+     (PyCFunction)ApplicationPy::sActiveDocument,
      METH_VARARGS,
      "activeDocument() -> object or None\n\n"
      "Return the active document or None if there is no one."},
     {"setActiveDocument",
-     (PyCFunction)Application::sSetActiveDocument,
+     (PyCFunction)ApplicationPy::sSetActiveDocument,
      METH_VARARGS,
      "setActiveDocement(string) -> None\n\n"
      "Set the active document by its name."},
     {"getDocument",
-     (PyCFunction)Application::sGetDocument,
+     (PyCFunction)ApplicationPy::sGetDocument,
      METH_VARARGS,
      "getDocument(string) -> object\n\n"
      "Get a document by its name or raise an exception\n"
      "if there is no document with the given name."},
     {"listDocuments",
-     (PyCFunction)Application::sListDocuments,
+     (PyCFunction)ApplicationPy::sListDocuments,
      METH_VARARGS,
      "listDocuments(sort=False) -> list\n\n"
      "Return a list of names of all documents, optionally sort in dependency order."},
     {"addDocumentObserver",
-     (PyCFunction)Application::sAddDocObserver,
+     (PyCFunction)ApplicationPy::sAddDocObserver,
      METH_VARARGS,
      "addDocumentObserver() -> None\n\n"
      "Add an observer to get notified about changes on documents."},
     {"removeDocumentObserver",
-     (PyCFunction)Application::sRemoveDocObserver,
+     (PyCFunction)ApplicationPy::sRemoveDocObserver,
      METH_VARARGS,
      "removeDocumentObserver() -> None\n\n"
      "Remove an added document observer."},
     {"setLogLevel",
-     (PyCFunction)Application::sSetLogLevel,
+     (PyCFunction)ApplicationPy::sSetLogLevel,
      METH_VARARGS,
      "setLogLevel(tag, level) -- Set the log level for a string tag.\n"
      "'level' can either be string 'Log', 'Msg', 'Wrn', 'Error', or an integer value"},
     {"getLogLevel",
-     (PyCFunction)Application::sGetLogLevel,
+     (PyCFunction)ApplicationPy::sGetLogLevel,
      METH_VARARGS,
      "getLogLevel(tag) -- Get the log level of a string tag"},
     {"checkLinkDepth",
-     (PyCFunction)Application::sCheckLinkDepth,
+     (PyCFunction)ApplicationPy::sCheckLinkDepth,
      METH_VARARGS,
      "checkLinkDepth(depth) -- check link recursion depth"},
     {"getLinksTo",
-     (PyCFunction)Application::sGetLinksTo,
+     (PyCFunction)ApplicationPy::sGetLinksTo,
      METH_VARARGS,
      "getLinksTo(obj,options=0,maxCount=0) -- return the objects linked to 'obj'\n\n"
      "options: 1: recursive, 2: check link array. Options can combine.\n"
      "maxCount: to limit the number of links returned\n"},
     {"getDependentObjects",
-     (PyCFunction)Application::sGetDependentObjects,
+     (PyCFunction)ApplicationPy::sGetDependentObjects,
      METH_VARARGS,
      "getDependentObjects(obj|[obj,...], options=0)\n"
      "Return a list of dependent objects including the given objects.\n\n"
@@ -233,7 +234,7 @@ PyMethodDef Application::Methods[] = {
      "         1: to sort the list in topological order.\n"
      "         2: to exclude dependency of Link type object."},
     {"setActiveTransaction",
-     (PyCFunction)Application::sSetActiveTransaction,
+     (PyCFunction)ApplicationPy::sSetActiveTransaction,
      METH_VARARGS,
      "setActiveTransaction(name, persist=False) -- setup active transaction with the given name\n\n"
      "name: the transaction name\n"
@@ -244,21 +245,21 @@ PyMethodDef Application::Methods[] = {
      "active transaction causes any document changes to open a transaction with\n"
      "the given name and ID."},
     {"getActiveTransaction",
-     (PyCFunction)Application::sGetActiveTransaction,
+     (PyCFunction)ApplicationPy::sGetActiveTransaction,
      METH_VARARGS,
      "getActiveTransaction() -> (name,id)\n\n"
      "return the current active transaction name and ID"},
     {"closeActiveTransaction",
-     (PyCFunction)Application::sCloseActiveTransaction,
+     (PyCFunction)ApplicationPy::sCloseActiveTransaction,
      METH_VARARGS,
      "closeActiveTransaction(abort=False) -- commit or abort current active transaction"},
     {"isRestoring",
-     (PyCFunction)Application::sIsRestoring,
+     (PyCFunction)ApplicationPy::sIsRestoring,
      METH_VARARGS,
      "isRestoring() -> bool\n\n"
      "Test if the application is opening some document"},
     {"checkAbort",
-     (PyCFunction)Application::sCheckAbort,
+     (PyCFunction)ApplicationPy::sCheckAbort,
      METH_VARARGS,
      "checkAbort() -- check for user abort in length operation.\n\n"
      "This only works if there is an active sequencer (or ProgressIndicator in Python).\n"
@@ -269,7 +270,7 @@ PyMethodDef Application::Methods[] = {
 };
 
 
-PyObject* Application::sLoadFile(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sLoadFile(PyObject* /*self*/, PyObject* args)
 {
     const char* path;
     const char* doc = "";
@@ -329,7 +330,7 @@ PyObject* Application::sLoadFile(PyObject* /*self*/, PyObject* args)
     }
 }
 
-PyObject* Application::sIsRestoring(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sIsRestoring(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -337,7 +338,7 @@ PyObject* Application::sIsRestoring(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(Py::Boolean(GetApplication().isRestoring()));
 }
 
-PyObject* Application::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+PyObject* ApplicationPy::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObject* kwd)
 {
     char* Name;
     PyObject* hidden = Py_False;
@@ -379,7 +380,7 @@ PyObject* Application::sOpenDocument(PyObject* /*self*/, PyObject* args, PyObjec
     }
 }
 
-PyObject* Application::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject* kwd)
+PyObject* ApplicationPy::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject* kwd)
 {
     char* docName = nullptr;
     char* usrName = nullptr;
@@ -417,7 +418,7 @@ PyObject* Application::sNewDocument(PyObject* /*self*/, PyObject* args, PyObject
     PY_CATCH;
 }
 
-PyObject* Application::sSetActiveDocument(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSetActiveDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr)) {
@@ -435,7 +436,7 @@ PyObject* Application::sSetActiveDocument(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sCloseDocument(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sCloseDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr)) {
@@ -460,7 +461,7 @@ PyObject* Application::sCloseDocument(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sSaveDocument(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSaveDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pDoc;
     if (!PyArg_ParseTuple(args, "s", &pDoc)) {
@@ -482,7 +483,7 @@ PyObject* Application::sSaveDocument(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sActiveDocument(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sActiveDocument(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -498,7 +499,7 @@ PyObject* Application::sActiveDocument(PyObject* /*self*/, PyObject* args)
     }
 }
 
-PyObject* Application::sGetDocument(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetDocument(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr)) {
@@ -514,7 +515,7 @@ PyObject* Application::sGetDocument(PyObject* /*self*/, PyObject* args)
     return doc->getPyObject();
 }
 
-PyObject* Application::sGetParam(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetParam(PyObject* /*self*/, PyObject* args)
 {
     char* pstr = nullptr;
     if (!PyArg_ParseTuple(args, "s", &pstr)) {
@@ -528,7 +529,7 @@ PyObject* Application::sGetParam(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sSaveParameter(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSaveParameter(PyObject* /*self*/, PyObject* args)
 {
     const char* pstr = "User parameter";
     if (!PyArg_ParseTuple(args, "|s", &pstr)) {
@@ -559,7 +560,7 @@ PyObject* Application::sSaveParameter(PyObject* /*self*/, PyObject* args)
 }
 
 
-PyObject* Application::sGetConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetConfig(PyObject* /*self*/, PyObject* args)
 {
     char* pstr;
 
@@ -578,20 +579,20 @@ PyObject* Application::sGetConfig(PyObject* /*self*/, PyObject* args)
     }
 }
 
-PyObject* Application::sDumpConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sDumpConfig(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
 
     PyObject* dict = PyDict_New();
-    for (const auto& It : GetApplication()._mConfig) {
+    for (const auto& It : GetApplication().Config()) {
         PyDict_SetItemString(dict, It.first.c_str(), PyUnicode_FromString(It.second.c_str()));
     }
     return dict;
 }
 
-PyObject* Application::sSetConfig(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSetConfig(PyObject* /*self*/, PyObject* args)
 {
     char *pstr, *pstr2;
 
@@ -599,13 +600,13 @@ PyObject* Application::sSetConfig(PyObject* /*self*/, PyObject* args)
         return nullptr;
     }
 
-    GetApplication()._mConfig[pstr] = pstr2;
+    GetApplication().Config()[pstr] = pstr2;
 
     Py_INCREF(Py_None);
     return Py_None;
 }
 
-PyObject* Application::sGetVersion(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetVersion(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -646,7 +647,7 @@ PyObject* Application::sGetVersion(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(list);
 }
 
-PyObject* Application::sAddImportType(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddImportType(PyObject* /*self*/, PyObject* args)
 {
     char *psKey, *psMod;
 
@@ -659,7 +660,7 @@ PyObject* Application::sAddImportType(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sChangeImportModule(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sChangeImportModule(PyObject* /*self*/, PyObject* args)
 {
     char *key, *oldMod, *newMod;
 
@@ -672,7 +673,7 @@ PyObject* Application::sChangeImportModule(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sGetImportType(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetImportType(PyObject* /*self*/, PyObject* args)
 {
     char* psKey = nullptr;
 
@@ -713,7 +714,7 @@ PyObject* Application::sGetImportType(PyObject* /*self*/, PyObject* args)
     }
 }
 
-PyObject* Application::sAddExportType(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddExportType(PyObject* /*self*/, PyObject* args)
 {
     char *psKey, *psMod;
 
@@ -726,7 +727,7 @@ PyObject* Application::sAddExportType(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sChangeExportModule(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sChangeExportModule(PyObject* /*self*/, PyObject* args)
 {
     char *key, *oldMod, *newMod;
 
@@ -739,7 +740,7 @@ PyObject* Application::sChangeExportModule(PyObject* /*self*/, PyObject* args)
     Py_Return;
 }
 
-PyObject* Application::sGetExportType(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetExportType(PyObject* /*self*/, PyObject* args)
 {
     char* psKey = nullptr;
 
@@ -760,7 +761,7 @@ PyObject* Application::sGetExportType(PyObject* /*self*/, PyObject* args)
         Py::Dict dict;
         std::vector<std::string> types = GetApplication().getExportTypes();
         for (const auto& it : types) {
-            std::vector<std::string> modules = GetApplication().getExportModules(it.c_str());
+            std::vector<std::string> modules = GetApplication().getExportModules(it);
             if (modules.empty()) {
                 dict.setItem(it.c_str(), Py::None());
             }
@@ -780,7 +781,7 @@ PyObject* Application::sGetExportType(PyObject* /*self*/, PyObject* args)
     }
 }
 
-PyObject* Application::sGetResourcePath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetResourcePath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -790,7 +791,7 @@ PyObject* Application::sGetResourcePath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetLibraryPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetLibraryPath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -800,7 +801,7 @@ PyObject* Application::sGetLibraryPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetTempPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetTempPath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -810,7 +811,7 @@ PyObject* Application::sGetTempPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetUserCachePath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserCachePath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -820,7 +821,7 @@ PyObject* Application::sGetUserCachePath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetUserConfigPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserConfigPath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -830,7 +831,7 @@ PyObject* Application::sGetUserConfigPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(datadir);
 }
 
-PyObject* Application::sGetUserAppDataPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserAppDataPath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -840,7 +841,7 @@ PyObject* Application::sGetUserAppDataPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(user_data_dir);
 }
 
-PyObject* Application::sGetUserMacroPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetUserMacroPath(PyObject* /*self*/, PyObject* args)
 {
     PyObject* actual = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &actual)) {
@@ -859,7 +860,7 @@ PyObject* Application::sGetUserMacroPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(user_macro_dir);
 }
 
-PyObject* Application::sGetHelpPath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetHelpPath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -869,7 +870,7 @@ PyObject* Application::sGetHelpPath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(user_macro_dir);
 }
 
-PyObject* Application::sGetHomePath(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetHomePath(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -879,7 +880,7 @@ PyObject* Application::sGetHomePath(PyObject* /*self*/, PyObject* args)
     return Py::new_reference_to(homedir);
 }
 
-PyObject* Application::sListDocuments(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sListDocuments(PyObject* /*self*/, PyObject* args)
 {
     PyObject* sort = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &sort)) {
@@ -911,7 +912,7 @@ PyObject* Application::sListDocuments(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sAddDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sAddDocObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -925,7 +926,7 @@ PyObject* Application::sAddDocObserver(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
 {
     PyObject* o;
     if (!PyArg_ParseTuple(args, "O", &o)) {
@@ -939,7 +940,7 @@ PyObject* Application::sRemoveDocObserver(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sSetLogLevel(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSetLogLevel(PyObject* /*self*/, PyObject* args)
 {
     char* tag;
     PyObject* pcObj;
@@ -1005,7 +1006,7 @@ PyObject* Application::sSetLogLevel(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sGetLogLevel(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetLogLevel(PyObject* /*self*/, PyObject* args)
 {
     char* tag;
     if (!PyArg_ParseTuple(args, "s", &tag)) {
@@ -1017,12 +1018,12 @@ PyObject* Application::sGetLogLevel(PyObject* /*self*/, PyObject* args)
         int l = -1;
         if (strcmp(tag, "Default") == 0) {
 #ifdef FC_DEBUG
-            l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag, -1);
+            l = GetApplication().GetUserParameter().GetGroup("BaseApp/LogLevels")->GetInt(tag, -1);
 #endif
         }
         else if (strcmp(tag, "DebugDefault") == 0) {
 #ifndef FC_DEBUG
-            l = _pcUserParamMngr->GetGroup("BaseApp/LogLevels")->GetInt(tag, -1);
+            l = GetApplication().GetUserParameter().GetGroup("BaseApp/LogLevels")->GetInt(tag, -1);
 #endif
         }
         else {
@@ -1035,7 +1036,7 @@ PyObject* Application::sGetLogLevel(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sCheckLinkDepth(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sCheckLinkDepth(PyObject* /*self*/, PyObject* args)
 {
     short depth = 0;
     if (!PyArg_ParseTuple(args, "h", &depth)) {
@@ -1050,7 +1051,7 @@ PyObject* Application::sCheckLinkDepth(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sGetLinksTo(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetLinksTo(PyObject* /*self*/, PyObject* args)
 {
     PyObject* pyobj = Py_None;
     int options = 0;
@@ -1081,7 +1082,7 @@ PyObject* Application::sGetLinksTo(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sGetDependentObjects(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetDependentObjects(PyObject* /*self*/, PyObject* args)
 {
     PyObject* obj;
     int options = 0;
@@ -1125,7 +1126,7 @@ PyObject* Application::sGetDependentObjects(PyObject* /*self*/, PyObject* args)
 }
 
 
-PyObject* Application::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
 {
     char* name;
     PyObject* persist = Py_False;
@@ -1141,7 +1142,7 @@ PyObject* Application::sSetActiveTransaction(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sGetActiveTransaction(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sGetActiveTransaction(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
@@ -1162,7 +1163,7 @@ PyObject* Application::sGetActiveTransaction(PyObject* /*self*/, PyObject* args)
     PY_CATCH;
 }
 
-PyObject* Application::sCloseActiveTransaction(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sCloseActiveTransaction(PyObject* /*self*/, PyObject* args)
 {
     PyObject* abort = Py_False;
     int id = 0;
@@ -1178,7 +1179,7 @@ PyObject* Application::sCloseActiveTransaction(PyObject* /*self*/, PyObject* arg
     PY_CATCH;
 }
 
-PyObject* Application::sCheckAbort(PyObject* /*self*/, PyObject* args)
+PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
 {
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;

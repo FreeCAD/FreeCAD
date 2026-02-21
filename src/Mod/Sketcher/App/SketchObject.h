@@ -972,6 +972,7 @@ public:
     // Signaled when solver has done update
     fastsignals::signal<void()> signalSolverUpdate;
     fastsignals::signal<void()> signalElementsChanged;
+    fastsignals::signal<void(Constraint*)> signalConstraintAdded;
 
     Part::TopoShape buildInternals(const Part::TopoShape& edges) const;
 

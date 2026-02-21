@@ -38,6 +38,7 @@
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
 #include <Base/Tools.h>
+#include <Base/XMLTools.h>
 #include "Core/Iterator.h"
 #include "Core/IO/Writer3MF.h"
 #include <zipios++/zipoutputstream.h>
@@ -91,17 +92,6 @@ static std::vector<std::string> expandSubObjectNames(
 Exporter::Exporter() = default;
 
 // static
-std::string Exporter::xmlEscape(const std::string& input)
-{
-    std::string out(input);
-    boost::replace_all(out, "&", "&amp;");
-    boost::replace_all(out, "\"", "&quot;");
-    boost::replace_all(out, "'", "&apos;");
-    boost::replace_all(out, "<", "&lt;");
-    boost::replace_all(out, ">", "&gt;");
-    return out;
-}
-
 int Exporter::addObject(App::DocumentObject* obj, float tol)
 {
     int count = 0;
@@ -304,8 +294,7 @@ Exporter3MF::~Exporter3MF()
 
 bool Exporter3MF::addMesh(const char* name, const MeshObject& mesh)
 {
-    boost::ignore_unused(name);
-    bool ok = d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform());
+    bool ok = d->writer3mf.AddMesh(mesh.getKernel(), mesh.getTransform(), name);
     if (ok) {
         for (const auto& it : d->ext) {
             d->writer3mf.AddResource(it->addMesh(mesh));
@@ -421,7 +410,8 @@ bool ExporterAMF::addMesh(const char* name, const MeshObject& mesh)
     Base::SequencerLauncher seq("Saving...", 2 * numFacets + 1);
 
     *outputStreamPtr << "\t<object id=\"" << nextObjectIndex << "\">\n";
-    *outputStreamPtr << "\t\t<metadata type=\"name\">" << xmlEscape(name) << "</metadata>\n";
+    *outputStreamPtr << "\t\t<metadata type=\"name\">" << XMLTools::escapeXml(name)
+                     << "</metadata>\n";
     *outputStreamPtr << "\t\t<mesh>\n"
                      << "\t\t\t<vertices>\n";
 

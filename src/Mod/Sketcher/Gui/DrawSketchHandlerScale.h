@@ -134,6 +134,7 @@ public:
             if (deleteOriginal) {
                 deleteOriginalGeos();
             }
+            int initialConstraintCount = sketchgui->getSketchObject()->Constraints.getSize();
 
             commandAddShapeGeometryAndConstraints();
 
@@ -141,7 +142,7 @@ public:
                 reassignFacadeIds();
             }
 
-            scaleLabels();
+            scaleLabels(initialConstraintCount);
             Gui::Command::commitCommand();
         }
         catch (const Base::Exception& e) {
@@ -346,22 +347,24 @@ private:
             Base::Console().error("%s\n", e.what());
         }
     }
-    void scaleLabels()
+    void scaleLabels(int constraintIndexOffset)
     {
         SketchObject* sketch = sketchgui->getSketchObject();
 
         for (auto toScale : listOfLabelsToScale) {
-            sketch->setLabelDistance(toScale.constrId, toScale.distance * scaleFactor);
+            int constrId = toScale.constrId + constraintIndexOffset;
 
-            // Label position or radii and diameters represent an angle, so
+            sketch->setLabelDistance(constrId, toScale.distance * static_cast<float>(scaleFactor));
+
+            // Label position or radii anddiameters represent an angle, so
             // they should not be scaled
-            Sketcher::ConstraintType type = sketch->Constraints[toScale.constrId]->Type;
+            Sketcher::ConstraintType type = sketch->Constraints[constrId]->Type;
             if (type == Sketcher::ConstraintType::Radius
                 || type == Sketcher::ConstraintType::Diameter) {
-                sketch->setLabelPosition(toScale.constrId, toScale.position);
+                sketch->setLabelPosition(constrId, toScale.position);
             }
             else {
-                sketch->setLabelPosition(toScale.constrId, toScale.position * scaleFactor);
+                sketch->setLabelPosition(constrId, toScale.position * static_cast<float>(scaleFactor));
             }
         }
     }
@@ -495,9 +498,8 @@ private:
             }
 
             const std::vector<Constraint*>& vals = Obj->Constraints.getValues();
-
-            for (size_t i = 0; i < vals.size(); ++i) {
-                auto cstr = vals[i];
+            int cstrIndex = 0;
+            for (auto cstr : vals) {
                 if (skipConstraint(cstr)) {
                     continue;
                 }
@@ -511,7 +513,7 @@ private:
                 if (firstIndex != GeoEnum::GeoUndef) {
                     listOfLabelsToScale.push_back(
                         LabelToScale {
-                            .constrId = static_cast<int>(i),
+                            .constrId = cstrIndex,
                             .position = cstr->LabelPosition,
                             .distance = cstr->LabelDistance
                         }
@@ -570,6 +572,7 @@ private:
                 }
 
                 ShapeConstraints.push_back(std::move(newConstr));
+                cstrIndex++;
             }
         }
     }

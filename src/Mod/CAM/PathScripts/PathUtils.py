@@ -383,8 +383,13 @@ def getEnvelope(partshape, subshape=None, depthparams=None):
     newPlace = FreeCAD.Placement(Vector(0, 0, zShift), sec.Placement.Rotation)
     sec.Placement = newPlace
 
-    # Extrude the section to top of Boundbox or desired height
-    envelopeshape = sec.extrude(Vector(0, 0, eLength))
+    if Path.Geom.isRoughly(eLength, 0):
+        # For 2D operations (e.g. laser cutting) use the section directly without extrusion
+        envelopeshape = sec
+    else:
+        # Extrude the section to top of Boundbox or desired height
+        envelopeshape = sec.extrude(Vector(0, 0, eLength))
+
     if Path.Log.getLevel(Path.Log.thisModule()) == Path.Log.Level.DEBUG:
         removalshape = FreeCAD.ActiveDocument.addObject("Part::Feature", "Envelope")
         removalshape.Shape = envelopeshape
@@ -906,6 +911,9 @@ class depth_params(object):
         with the top (not included).
         all steps are of size 'size' except the one at the bottom which can be
         smaller."""
+
+        if Path.Geom.isRoughly(start, stop):
+            return [stop]
 
         fullsteps = int((start - stop) / size)
         last_step = start - (fullsteps * size)

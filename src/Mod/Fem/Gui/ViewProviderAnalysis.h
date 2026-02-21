@@ -76,6 +76,8 @@ public:
 
     void setupContextMenu(QMenu*, QObject*, const char*) override;
 
+    /// list of all possible display modes
+    std::vector<std::string> getDisplayModes() const override;
     /// shows solid in the tree
     bool isShow() const override
     {

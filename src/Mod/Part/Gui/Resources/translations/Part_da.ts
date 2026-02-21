@@ -4081,7 +4081,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="162"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="175"/>
@@ -6400,7 +6400,7 @@ for collision or distance filtering.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="35"/>
       <source>Edges</source>
-      <translation type="unfinished">Edges</translation>
+      <translation>Kanter</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="36"/>

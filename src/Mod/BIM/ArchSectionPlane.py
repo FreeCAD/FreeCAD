@@ -43,6 +43,7 @@ import Draft
 import DraftVecUtils
 
 from FreeCAD import Vector
+from draftutils import gui_utils
 from draftutils import params
 
 if FreeCAD.GuiUp:
@@ -1216,6 +1217,7 @@ class _ViewProviderSectionPlane:
 
         self.Object = vobj.Object
         self.clip = None
+        self.main_transform = gui_utils.find_coin_node(vobj.RootNode, coin.SoTransform)
         self.mat1 = coin.SoMaterial()
         self.mat2 = coin.SoMaterial()
         self.fcoords = coin.SoCoordinate3()
@@ -1336,8 +1338,6 @@ class _ViewProviderSectionPlane:
     def updateData(self, obj, prop):
         vobj = obj.ViewObject
         if prop in ["Placement"]:
-            # for some reason the text doesn't rotate with the host placement??
-            self.txtcoords.rotation.setValue(obj.Placement.Rotation.Q)
             self.onChanged(vobj, "DisplayLength")
 
             # Defer the clipping plane update until after the current event
@@ -1387,34 +1387,32 @@ class _ViewProviderSectionPlane:
             else:
                 ld = 1
                 hd = 1
-            verts = []
-            fverts = []
-            pl = FreeCAD.Placement(vobj.Object.Placement)
             if hasattr(vobj, "ArrowSize"):
                 l1 = vobj.ArrowSize.Value if vobj.ArrowSize.Value > 0 else 0.1
             else:
                 l1 = 0.1
             l2 = l1 / 3
+            pl = vobj.Object.Placement
+            self.main_transform.translation.setValue(pl.Base)
+            self.main_transform.rotation = coin.SbRotation(pl.Rotation.Q)
+            verts = []
+            fverts = []
             for v in [[-ld, -hd], [ld, -hd], [ld, hd], [-ld, hd]]:
-                p1 = pl.multVec(Vector(v[0], v[1], 0))
-                p2 = pl.multVec(Vector(v[0], v[1], -l1))
-                p3 = pl.multVec(Vector(v[0] - l2, v[1], -l1 + l2))
-                p4 = pl.multVec(Vector(v[0] + l2, v[1], -l1 + l2))
-                p5 = pl.multVec(Vector(v[0], v[1] - l2, -l1 + l2))
-                p6 = pl.multVec(Vector(v[0], v[1] + l2, -l1 + l2))
-                verts.extend([[p1.x, p1.y, p1.z], [p2.x, p2.y, p2.z]])
-                fverts.append([p1.x, p1.y, p1.z])
-                verts.extend(
-                    [[p2.x, p2.y, p2.z], [p3.x, p3.y, p3.z], [p4.x, p4.y, p4.z], [p2.x, p2.y, p2.z]]
-                )
-                verts.extend(
-                    [[p2.x, p2.y, p2.z], [p5.x, p5.y, p5.z], [p6.x, p6.y, p6.z], [p2.x, p2.y, p2.z]]
-                )
-            p7 = pl.multVec(Vector(-ld + l2, -hd + l2, 0))  # text pos
+                p1 = Vector(v[0], v[1], 0)
+                p2 = Vector(v[0], v[1], -l1)
+                p3 = Vector(v[0] - l2, v[1], -l1 + l2)
+                p4 = Vector(v[0] + l2, v[1], -l1 + l2)
+                p5 = Vector(v[0], v[1] - l2, -l1 + l2)
+                p6 = Vector(v[0], v[1] + l2, -l1 + l2)
+                fverts.append(p1)
+                verts.extend([p1, p2])
+                verts.extend([p2, p3, p4, p2])
+                verts.extend([p2, p5, p6, p2])
             verts.extend(fverts + [fverts[0]])
+            p7 = Vector(-ld + l2, -hd + l2, 0)  # text pos
             self.lcoords.point.setValues(verts)
             self.fcoords.point.setValues(fverts)
-            self.txtcoords.translation.setValue([p7.x, p7.y, p7.z])
+            self.txtcoords.translation.setValue(p7)
             # self.txtfont.size = l1
         elif prop == "LineWidth":
             self.drawstyle.lineWidth = vobj.LineWidth

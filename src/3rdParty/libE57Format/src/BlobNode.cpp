@@ -126,10 +126,10 @@ is an error to attempt to attach the BlobNode to a different ImageFile.
 must be true).
 @pre byteCount >= 0
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorInternal All objects in undocumented state
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorInternal All objects in undocumented state (n/c)
 
 @see Node, BlobNode::read, BlobNode::write
 */
@@ -200,7 +200,7 @@ bool BlobNode::isAttached() const
 
 @return The declared size of the blob when it was created.
 
-@throw ::ErrorImageFileNotOpen
+@throw ::ErrorImageFileNotOpen (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see BlobNode::read, BlobNode::write
@@ -233,11 +233,11 @@ zero or more times.
 @pre 0 <= count
 @pre (@a start + @a count) < byteCount()
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorSeekFailed
-@throw ::ErrorReadFailed
-@throw ::ErrorBadChecksum
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorSeekFailed (n/c)
+@throw ::ErrorReadFailed (n/c)
+@throw ::ErrorBadChecksum (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see BlobNode::byteCount, BlobNode::write
@@ -276,14 +276,14 @@ destImageFile().isWritable()).
 @pre 0 <= count
 @pre (@a start + @a count) < byteCount()
 
-@throw ::ErrorBadAPIArgument
-@throw ::ErrorImageFileNotOpen
-@throw ::ErrorFileReadOnly
-@throw ::ErrorNodeUnattached
-@throw ::ErrorSeekFailed
-@throw ::ErrorReadFailed
-@throw ::ErrorWriteFailed
-@throw ::ErrorBadChecksum
+@throw ::ErrorBadAPIArgument (n/c)
+@throw ::ErrorImageFileNotOpen (n/c)
+@throw ::ErrorFileReadOnly (n/c)
+@throw ::ErrorNodeUnattached (n/c)
+@throw ::ErrorSeekFailed (n/c)
+@throw ::ErrorReadFailed (n/c)
+@throw ::ErrorWriteFailed (n/c)
+@throw ::ErrorBadChecksum (n/c)
 @throw ::ErrorInternal All objects in undocumented state
 
 @see BlobNode::byteCount, BlobNode::read
@@ -340,7 +340,7 @@ The handle @a n must be for an underlying BlobNode, otherwise an exception is th
 that need to avoid the exception, use Node::type() to determine the actual type of the @a n before
 downcasting. This function must be explicitly called (c++ compiler cannot insert it automatically).
 
-@throw ::ErrorBadNodeDowncast
+@throw ::ErrorBadNodeDowncast (n/c)
 
 @see Node::type(), BlobNode::operator Node()
 */

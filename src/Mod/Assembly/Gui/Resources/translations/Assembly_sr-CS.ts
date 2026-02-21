@@ -19,12 +19,12 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Ubaci komponentu u aktivni sklop. Ovo napravi veze prema delovima, telima, primitivima i sklopovima. Da bi ubacio spoljne komponente, uveri se da je datoteka &lt;b&gt;otvorena u trenutnoj sesiji&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Ubaci levim klikom miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Ukloni desnim klikom miša na stavke u listi.&lt;/li&gt;&lt;li&gt;</translation>
+      <translation>&lt;p&gt;Ubacuje komponentu u aktivni sklop. Time se kreiraju dinamičke veze ka delovima, telima, primitivima i sklopovima. Da biste ubacili vanjske komponente, uverite se da je fajl &lt;b&gt;otvoren u trenutnoj sesiji&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Ubacite pomoću levog klika miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Izbacite pomoću desnog klika miša na stavke u listi.&lt;/li&gt;&lt;li&gt;Držite SHIFT da biste dodali više instanci komponente dok klikćete na pogled.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
       <source>Component</source>
-      <translation>Deo</translation>
+      <translation>Komponenta</translation>
     </message>
   </context>
   <context>
@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
       <source>Active object</source>
       <translation>Aktivni objekat</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Rastojanje</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Remeni</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="812"/>
       <source>Broken link in: </source>
       <translation>Neispravna veza u: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Potrebno je izabrati 2 elementa sa 2 različita dela</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Poluprečnik 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Korak navoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Podeoni poluprečnik</translation>
     </message>
@@ -333,7 +333,7 @@
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="77"/>
       <source>The assembly document must be saved before inserting a new part.</source>
-      <translation type="unfinished">The assembly document must be saved before inserting a new part.</translation>
+      <translation>Dokument sklopa mora biti sačuvan pre ubacivanja novog dela.</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertNewPart.py" line="80"/>
@@ -515,119 +515,119 @@ SLOPE definiše nagib prelaza između 0 i H1, i H2 do 0 oko vremena = T1 i T2 re
       <translation>Vrsta spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>Prva referenca u spoju</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Ovo je lokalni koordinatni sistem unutar referentnog objekta 1 koji će se koristiti za spoj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ovo sprečava da se ponovo izračunava Položaj1, što omogućava sopstveno pozicioniranje pomoću parametra Položaj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Odmak prvih izabranih elemenata spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Ovo je lokalni koordinatni sistem unutar referentnog objekta 2 koji će se koristiti za spoj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Ovo sprečava da se ponovo izračunava Položaj2, što omogućava sopstveno pozicioniranje pomoću parametra Položaj</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Odmak drugih izabranih elemenata spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Omogući minimalno dužinsko ograničenje spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Omogući maksimalno dužinsko ograničenje spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Omogući minimalno ugaono ograničenje spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Omogući maksimalno ugaono ograničenje spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Ovo je ugao spoja. Koristi se samo kod ugaonog spoja.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Ovo je minimalno dužinsko ograničenje između koordinatnih sistema (uzduž njihovih Z osa)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Ovo je maksimalno dužinsko ograničenje između koordinatnih sistema (uzduž njihovih Z osa)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Ovo je minimalno ugaono ograničenje između koordinatnih sistema (između njihovih X osa)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Ovo je maksimalno ugaono ograničenje između koordinatnih sistema (između njihovih X osa)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>Druga referenca u spoju</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Prvi objekat u spoju</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Drugi objekat u spoju</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Rastojanje spoja. Koristi se kod ravanskog i navojnog spoja, a takođe i kod zupčastog, remenog (poluprečnik) i prenosnog spoja sa zupčastom letvom (poluprečnik koraka)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Ovo je drugo rastojanje spoja. Koristi se samo kod zupčastog spoja da odredi drugi poluprečnik.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>{order} referenci spoja</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>Objekat koji treba napraviti nepokretnim</translation>
     </message>
@@ -889,72 +889,72 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Objektu su pridruženi jedan ili više spojeva.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Da li želiš pomeriti objekat i obrisati pridružene spojeve?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1051"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Pomeri deo</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1596"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
-      <translation type="unfinished">ViewProviderAssembly</translation>
+      <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
       <source>Empty Assembly</source>
       <translation>Prazan sklop</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1618"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
       <source>Over-constrained:</source>
       <translation>Previše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1626"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>Malformed joints:</source>
       <translation>Oštećeni spojevi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1634"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
       <source>Redundant joints:</source>
       <translation>Suvišni spojevi:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1642"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
       <source>Partially redundant:</source>
       <translation>Delimično suviše ograničena skica:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1650"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
       <source>Solver failed to converge</source>
       <translation>Solver nije uspeo da se približi</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1658"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
       <source>Under-constrained:</source>
       <translation>Nedovoljno ograničena skica:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1660"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>%n Stepeni slobode</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+        <numerusform>%n Stepeni slobode</numerusform>
+        <numerusform>%n Stepeni slobode</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1664"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
       <source>Fully constrained</source>
       <translation>Potpuno ograničena skica</translation>
     </message>
@@ -1089,7 +1089,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Spojevi</translation>
     </message>
@@ -1428,12 +1428,12 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Napravi nepokretnim</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>&lt;p&gt;Nepokretni deo.&lt;/p&gt;&lt;p&gt;Pravljenje dela nepokretnim trajno zaključava njegov položaj u sklopu, sprečavajući bilo kakvu translaciju ili rotaciju. Potrebno je imati u sklopu najmanje jedan nepokretan deo pre nego što se on počne sastavljati.</translation>
     </message>
@@ -1477,7 +1477,7 @@ Datoteke se zovu „runPreDrag.asmt“ i „dragging.log“ i nalaze se u podraz
       <translation>Delimično učitan</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Potpuno učitan dokument</translation>
     </message>

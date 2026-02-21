@@ -434,32 +434,32 @@ For stock from the base object&apos;s bounding box it means the extra material i
       <translation>ツールビットパラメータエディター</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="65"/>
+      <location filename="../panels/ToolBitEditor.ui" line="50"/>
       <source>Toolbit</source>
       <translation>ツールビット</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="90"/>
+      <location filename="../panels/ToolBitEditor.ui" line="75"/>
       <source>Notes</source>
       <translation>メモ</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="107"/>
+      <location filename="../panels/ToolBitEditor.ui" line="92"/>
       <source>Coating</source>
       <translation>塗装</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="117"/>
+      <location filename="../panels/ToolBitEditor.ui" line="102"/>
       <source>Hardness</source>
       <translation>硬度</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="127"/>
+      <location filename="../panels/ToolBitEditor.ui" line="112"/>
       <source>Materials</source>
       <translation>材料</translation>
     </message>
     <message>
-      <location filename="../panels/ToolBitEditor.ui" line="140"/>
+      <location filename="../panels/ToolBitEditor.ui" line="125"/>
       <source>Supplier</source>
       <translation>サプライヤー</translation>
     </message>
@@ -4358,7 +4358,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="212"/>
       <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
-      <translation type="unfinished">The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</translation>
+      <translation>ランプドレスアップが有効な場所での深さ。この上ではランプは生成されませんが、モーションコマンドはそのまま渡されます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="71"/>
@@ -4373,7 +4373,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="88"/>
       <source>break segments into smaller segments of this length.</source>
-      <translation type="unfinished">break segments into smaller segments of this length.</translation>
+      <translation>この長さの小さなセグメントにセグメントを分割します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="116"/>
@@ -5034,7 +5034,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="196"/>
       <location filename="../../../Path/Op/PocketBase.py" line="268"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>前の操作ですでに除去されている加工領域をスキップ。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="56"/>
@@ -5122,7 +5122,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="128"/>
       <location filename="../../../Path/Op/Waterline.py" line="204"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary path construction objects when module is in DEBUG mode.</translation>
+      <translation>DEBUGモード時に一時的なパス構築オブジェクトを表示。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="284"/>
@@ -5141,7 +5141,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="123"/>
       <source>Show the temporary toolpath construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary toolpath construction objects when module is in DEBUG mode.</translation>
+      <translation>DEBUGモード時に一時的なツールパス構築オブジェクトを表示。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="131"/>
@@ -5207,7 +5207,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="146"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</translation>
+      <translation>値を小さくすると、より細かく、より正確なメッシュとなります。小さい値にしても、処理時間はそれほど大幅に増加しません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="152"/>
@@ -5333,7 +5333,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="358"/>
       <location filename="../../../Path/Op/Waterline.py" line="402"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
-      <translation type="unfinished">Set the stepover percentage, based on the tool&apos;s diameter.</translation>
+      <translation>ツールの直径に基づいてステップオーバーパーセントを設定。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="367"/>
@@ -5909,22 +5909,22 @@ Use property KeepToolDown to change this</translation>
       <translation type="unfinished">No scan data to convert to G-code.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2675"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2676"/>
       <source>Failed to identify tool for operation.</source>
       <translation type="unfinished">Failed to identify tool for operation.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2685"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2686"/>
       <source>Failed to map selected tool to an OCL tool type.</source>
       <translation>選択したツールをOCLツールタイプにマッピングできませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2697"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2698"/>
       <source>Failed to translate active tool to OCL tool type.</source>
       <translation>アクティブなツールをOCLツールタイプに変換できませんでした。</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/SurfaceSupport.py" line="2709"/>
+      <location filename="../../../Path/Op/SurfaceSupport.py" line="2710"/>
       <source>OCL tool not available. Cannot determine is cutter has tilt available.</source>
       <translation type="unfinished">OCL tool not available. Cannot determine is cutter has tilt available.</translation>
     </message>
@@ -6361,10 +6361,10 @@ Aborting op creation</translation>
  Select one edge to search loop edges in horizontal plane
  Select two edges to search loop edges in wires of the shape
  Select one or more vertical faces to search loop faces which form the walls</source>
-      <translation type="unfinished">Completes the selection of edges that form a loop
- Select one edge to search loop edges in horizontal plane
- Select two edges to search loop edges in wires of the shape
- Select one or more vertical faces to search loop faces which form the walls</translation>
+      <translation>ループになったエッジの選択を実行
+ 1エッジの選択で水平面内のループしたエッジを検索
+ 2エッジの選択でシェイプのワイヤー内のループしたエッジを検索
+ 複数の垂直面の選択でその壁面を作るループした面を検索</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="140"/>
@@ -7651,7 +7651,7 @@ Aborting op creation</translation>
       <translation>SVG ポストプロセッサー</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="60"/>
+      <location filename="../../../Path/Tool/library/serializers/camotics.py" line="67"/>
       <source>Camotics Tool Library</source>
       <translation>CAMoticsツールライブラリ</translation>
     </message>
@@ -7726,7 +7726,7 @@ Aborting op creation</translation>
       <translation type="unfinished">{diameter} {cutting_edge_angle} v-bit, {flutes}-flute</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="63"/>
+      <location filename="../../../Path/Tool/toolbit/serializers/camotics.py" line="69"/>
       <source>Camotics Tool</source>
       <translation>CAMoticsツール</translation>
     </message>
@@ -7906,6 +7906,11 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/toolbit/models/tap.py" line="75"/>
       <source>{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</source>
       <translation type="unfinished">{diameter} {pitch} {rotation} tap, {flutes}-flute, {cutting_edge_length} cutting edge</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/toolbit/models/taperedballnose.py" line="47"/>
+      <source>{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</source>
+      <translation type="unfinished">{diameter} tip, {taper_angle} taper, {flutes}-flute tapered ball nose, {cutting_edge_height} cutting edge</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Adaptive.py" line="555"/>
@@ -8820,12 +8825,12 @@ This will not delete the toolbits contained within it.</source>
   <context>
     <name>CAM_Camotics</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="314"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="315"/>
       <source>CAMotics</source>
       <translation>CAMotics</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Camotics.py" line="316"/>
+      <location filename="../../../Path/Main/Gui/Camotics.py" line="317"/>
       <source>Simulates using CAMotics</source>
       <translation>CAMoticsを使用してシミュレート</translation>
     </message>
@@ -9109,6 +9114,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/custom.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="40"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="41"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="35"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="37"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="37"/>
@@ -9123,6 +9129,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/slittingsaw.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="44"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="45"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="39"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="41"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/endmill.py" line="41"/>
@@ -9137,6 +9144,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="52"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="49"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="43"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="45"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="45"/>
@@ -9154,6 +9162,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="56"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="53"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="47"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="57"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="49"/>
       <location filename="../../../Path/Tool/shape/models/vbit.py" line="53"/>
@@ -9168,6 +9177,7 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/threadmill.py" line="61"/>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="60"/>
       <location filename="../../../Path/Tool/shape/models/chamfer.py" line="57"/>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="51"/>
       <location filename="../../../Path/Tool/shape/models/tap.py" line="53"/>
       <location filename="../../../Path/Tool/shape/models/dovetail.py" line="69"/>
       <location filename="../../../Path/Tool/shape/models/ballend.py" line="53"/>
@@ -9353,6 +9363,21 @@ This will not delete the toolbits contained within it.</source>
       <location filename="../../../Path/Tool/shape/models/radius.py" line="72"/>
       <source>Radius Mill</source>
       <translation type="unfinished">Radius Mill</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="55"/>
+      <source>Included Taper angle</source>
+      <translation type="unfinished">Included Taper angle</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="59"/>
+      <source>Diameter at top of Taper</source>
+      <translation type="unfinished">Diameter at top of Taper</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Tool/shape/models/taperedballnose.py" line="67"/>
+      <source>Tapered Ball Nose</source>
+      <translation type="unfinished">Tapered Ball Nose</translation>
     </message>
   </context>
   <context>

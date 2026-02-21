@@ -3522,12 +3522,12 @@ Gövdesiz Part Design nesneleri içeren eski belgeler için, bunları bir gövde
       <translation>Bu özelliği kullanmak için belgede bir gövde nesnesine ait olması gerekir.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>Özellik bir parçası değil</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Bu özelliği kullanmak için belgedeki bir parçaya ait olması gerekir.</translation>
     </message>

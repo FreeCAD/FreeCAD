@@ -39,6 +39,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <boost/regex.hpp>
 #include <random>
@@ -93,7 +94,6 @@ using Base::Console;
 using Base::streq;
 using Base::Writer;
 using namespace App;
-using namespace std;
 using namespace boost;
 using namespace zipios;
 
@@ -996,7 +996,14 @@ void Document::Save(Base::Writer& writer) const
 
     writer.incInd();
 
+    // NOTE: This differs from LS3 Code. Persisting this table
+    //       forces the assertion in Writer.addFile(...): assert(!isForceXML()); to be removed
+    //       see: https://github.com/FreeCAD/FreeCAD/issues/27489
+    //
+    // Original code in LS3:
+    //       d->Hasher->setPersistenceFileName(0);
     d->Hasher->setPersistenceFileName("StringHasher.Table");
+
     for (const auto o : d->objectArray) {
         o->beforeSave();
     }
@@ -1251,96 +1258,133 @@ constexpr auto fcAttrDepObjName {"Name"};
 constexpr auto fcAttrDepAllowPartial {"AllowPartial"};
 constexpr auto fcElementObjectDep {"Dep"};
 
-void Document::writeObjects(const std::vector<DocumentObject*>& obj,
-                            Base::Writer& writer) const
+void Document::writeObjectDeps(const std::vector<DocumentObject*>& objs,
+                               Base::Writer& writer) const
 {
-    // writing the features types
-    writer.incInd();  // indentation for 'Objects count'
-    writer.Stream() << writer.ind() << "<Objects Count=\"" << obj.size();
-    if (isExporting(nullptr) == 0U) {
-        writer.Stream() << "\" " << fcAttrDependencies << "=\"1";
-    }
-    writer.Stream() << "\">" << '\n';
+    for (auto o : objs) {
+        // clang-format off
+        const auto& outList = o->getOutList(DocumentObject::OutListNoHidden |
+                                            DocumentObject::OutListNoXLinked);
+        // clang-format on
 
-    writer.incInd();  // indentation for 'Object type'
-
-    if (isExporting(nullptr) == 0U) {
-        for (const auto o : obj) {
-            const auto& outList =
-                o->getOutList(DocumentObject::OutListNoHidden | DocumentObject::OutListNoXLinked);
-            writer.Stream() << writer.ind()
-                            << "<" << fcElementObjectDeps << " " << fcAttrDepObjName << "=\""
-                            << o->getNameInDocument() << "\" " << fcAttrDepCount << "=\""
-                            << outList.size();
-            if (outList.empty()) {
-                writer.Stream() << "\"/>" << '\n';
-                continue;
-            }
-            const int partial = o->canLoadPartial();
-            if (partial > 0) {
-                writer.Stream() << "\" " << fcAttrDepAllowPartial << "=\"" << partial;
-            }
-            writer.Stream() << "\">" << '\n';
-            writer.incInd();
-            for (const auto dep : outList) {
-                const auto name = dep ? dep->getNameInDocument() : "";
-                writer.Stream() << writer.ind()
-                                << "<" << fcElementObjectDep << " " << fcAttrDepObjName << "=\""
-                                << (name ? name : "") << "\"/>" << '\n';
-            }
-            writer.decInd();
-            writer.Stream() << writer.ind() << "</" << fcElementObjectDeps << ">" << '\n';
+        auto objName = o->getNameInDocument();
+        writer.Stream() << writer.ind()
+                        << "<" << fcElementObjectDeps
+                        << " " << fcAttrDepObjName << "=\""
+                        << (objName ? objName : "") << "\" "
+                        << fcAttrDepCount << "=\""
+                        << outList.size();
+        if (outList.empty()) {
+            writer.Stream() << "\"/>\n";
+            continue;
         }
+        int partial = o->canLoadPartial();
+        if (partial > 0) {
+            writer.Stream() << "\" " << fcAttrDepAllowPartial << "=\"" << partial;
+        }
+        writer.Stream() << "\">\n";
+        writer.incInd();
+        for (auto dep : outList) {
+            auto depName = dep ? dep->getNameInDocument() : "";
+            writer.Stream() << writer.ind()
+                            << "<" << fcElementObjectDep
+                            << " " << fcAttrDepObjName << "=\""
+                            << (depName ? depName : "") << "\"/>\n";
+        }
+        writer.decInd();
+        writer.Stream() << writer.ind() << "</" << fcElementObjectDeps << ">\n";
     }
+}
 
-    std::vector<DocumentObject*>::const_iterator it;
-    for (it = obj.begin(); it != obj.end(); ++it) {
+void Document::writeObjectType(const std::vector<DocumentObject*>& objs,
+                               Base::Writer& writer) const
+{
+    for (auto it : objs) {
         writer.Stream() << writer.ind() << "<Object "
-                        << "type=\"" << (*it)->getTypeId().getName() << "\" "
-                        << "name=\"" << (*it)->getExportName() << "\" "
-                        << "id=\"" << (*it)->getID() << "\" ";
+                        << "type=\"" << it->getTypeId().getName() << "\" "
+                        << "name=\"" << it->getExportName() << "\" "
+                        << "id=\"" << it->getID() << "\" ";
 
         // Only write out custom view provider types
-        std::string viewType = (*it)->getViewProviderNameStored();
-        if (viewType != (*it)->getViewProviderName()) {
+        std::string viewType = it->getViewProviderNameStored();
+        if (viewType != it->getViewProviderName()) {
             writer.Stream() << "ViewType=\"" << viewType << "\" ";
         }
 
         // See DocumentObjectPy::getState
-        if ((*it)->testStatus(ObjectStatus::Touch)) {
+        if (it->testStatus(ObjectStatus::Touch)) {
             writer.Stream() << "Touched=\"1\" ";
         }
-        if ((*it)->testStatus(ObjectStatus::Error)) {
+        if (it->testStatus(ObjectStatus::Error)) {
             writer.Stream() << "Invalid=\"1\" ";
-            const auto desc = getErrorDescription(*it);
+            auto desc = getErrorDescription(it);
             if (desc) {
                 writer.Stream() << "Error=\"" << Property::encodeAttribute(desc) << "\" ";
             }
         }
-        writer.Stream() << "/>" << '\n';
+        if (it->isFreezed()) {
+            writer.Stream() << "Freeze=\"1\" ";
+        }
+        writer.Stream() << "/>\n";
     }
+}
 
-    writer.decInd();  // indentation for 'Object type'
-    writer.Stream() << writer.ind() << "</Objects>" << '\n';
-
+void Document::writeObjectData(const std::vector<DocumentObject*>& objs,
+                               Base::Writer& writer) const
+{
     // writing the features itself
-    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << obj.size() << "\">" << '\n';
+    writer.Stream() << writer.ind() << "<ObjectData Count=\"" << objs.size() << "\">\n";
 
     writer.incInd();  // indentation for 'Object name'
-    for (it = obj.begin(); it != obj.end(); ++it) {
-        writer.Stream() << writer.ind() << "<Object name=\"" << (*it)->getExportName() << "\"";
-        if ((*it)->hasExtensions()) {
+    for (auto it : objs) {
+        writer.Stream() << writer.ind() << "<Object name=\"" << it->getExportName() << "\"";
+        if (it->hasExtensions()) {
             writer.Stream() << " Extensions=\"True\"";
         }
 
-        writer.Stream() << ">" << '\n';
-        (*it)->Save(writer);
-        writer.Stream() << writer.ind() << "</Object>" << '\n';
+        writer.Stream() << ">\n";
+        it->Save(writer);
+        writer.Stream() << writer.ind() << "</Object>\n";
+    }
+    writer.decInd();  // indentation for 'Object name'
+
+    writer.Stream() << writer.ind() << "</ObjectData>\n";
+}
+
+void Document::writeObjects(const std::vector<DocumentObject*>& objs,
+                            Base::Writer& writer) const
+{
+    std::ostream& str = writer.Stream();
+
+    // writing the features types
+    writer.incInd();  // indentation for 'Objects count'
+    str << writer.ind() << "<Objects Count=\"" << objs.size();
+    if (!isExporting(nullptr)) {
+        str << "\" " << fcAttrDependencies << "=\"1";
+    }
+    str << "\">\n";
+
+    writer.incInd();  // indentation for 'Object type'
+
+    if (!isExporting(nullptr)) {
+        writeObjectDeps(objs, writer);
     }
 
-    writer.decInd();  // indentation for 'Object name'
-    writer.Stream() << writer.ind() << "</ObjectData>" << '\n';
+    writeObjectType(objs, writer);
+
+    writer.decInd();  // indentation for 'Object type'
+    str << writer.ind() << "</Objects>\n";
+
+    writeObjectData(objs, writer);
     writer.decInd();  // indentation for 'Objects count'
+
+    // check for errors
+    if (writer.hasFailed()) {
+        std::cerr << "Output stream is in error state. As a result the "
+                     "Document.xml file may be incomplete.\n";
+        // reset the error flags to try to safe the data files
+        writer.clear();
+    }
 }
 
 struct DepInfo
@@ -1512,6 +1556,11 @@ std::vector<DocumentObject*> Document::readObjects(Base::XMLReader& reader)
                                    reader.getAttribute<bool>("Invalid"));
                     if (obj->isError() && reader.hasAttribute("Error")) {
                         d->addRecomputeLog(reader.getAttribute<const char*>("Error"), obj);
+                    }
+                }
+                if (reader.hasAttribute("Freeze")) {
+                    if (reader.getAttribute<long>("Freeze") != 0) {
+                        obj->freeze();
                     }
                 }
             }
@@ -2036,11 +2085,11 @@ bool Document::afterRestore(const std::vector<DocumentObject*>& objArray, bool c
         return false;
     }
 
-    // some link type property cannot restore link information until other
-    // objects has been restored. For example, PropertyExpressionEngine and
-    // PropertySheet with expression containing label reference. So we add the
-    // Property::afterRestore() interface to let them sort it out. Note, this
-    // API is not called in object dedpenency order, because the order
+    // Some link type properties cannot restore link information until other
+    // objects have been restored. For example, PropertyExpressionEngine and
+    // PropertySheet with expressions containing a label reference. So we add
+    // the Property::afterRestore() interface to let them sort it out. Note,
+    // this API is not called in object dependency order, because the order
     // information is not ready yet.
     std::map<DocumentObject*, std::vector<Property*>> propMap;
     for (auto obj : objArray) {
@@ -2228,7 +2277,7 @@ vector<DocumentObject*> Document::getTouched() const
     return result;
 }
 
-void Document::setClosable(const bool c) // NOLINT
+void Document::setClosable(bool c) // NOLINT
 {
     setStatus(Document::Closable, c);
 }
@@ -2508,7 +2557,7 @@ std::vector<Document*> Document::getDependentDocuments(const bool sort)
 }
 
 std::vector<Document*> Document::getDependentDocuments(std::vector<Document*> docs,
-                                                            const bool sort)
+                                                       const bool sort)
 {
     DependencyList depList;
     std::map<Document*, Vertex> docMap;
@@ -2570,11 +2619,6 @@ std::vector<Document*> Document::getDependentDocuments(std::vector<Document*> do
         ret.push_back(vertexMap[*rIt]);
     }
     return ret;
-}
-
-void Document::_rebuildDependencyList(const std::vector<DocumentObject*>& objs)
-{
-    (void)objs;
 }
 
 /**
@@ -2821,10 +2865,10 @@ int Document::recompute(const std::vector<DocumentObject*>& objs,
 std::vector<DocumentObject*>
 DocumentP::partialTopologicalSort(const std::vector<DocumentObject*>& objects)
 {
-    vector<DocumentObject*> ret;
+    std::vector<DocumentObject*> ret;
     ret.reserve(objects.size());
     // pairs of input and output degree
-    map<DocumentObject*, std::pair<int, int>> countMap;
+    std::map<DocumentObject*, std::pair<int, int>> countMap;
 
     for (auto objectIt : objects) {
         // we need inlist with unique entries
@@ -2850,7 +2894,7 @@ DocumentP::partialTopologicalSort(const std::vector<DocumentObject*>& objects)
         // try input degree
         auto degInIt = find_if(countMap.begin(),
                                countMap.end(),
-                               [](pair<DocumentObject*, pair<int, int>> vertex) -> bool {
+                               [](std::pair<DocumentObject*, std::pair<int, int>> vertex) -> bool {
                                    return vertex.second.first == 0;
                                });
 
@@ -2885,11 +2929,11 @@ DocumentP::partialTopologicalSort(const std::vector<DocumentObject*>& objects)
     while (removeVertex) {
         removeVertex = false;
 
-        auto degOutIt = find_if(countMap.begin(),
-                                countMap.end(),
-                                [](pair<DocumentObject*, pair<int, int>> vertex) -> bool {
-                                    return vertex.second.second == 0;
-                                });
+        auto degOutIt = std::find_if(countMap.begin(),
+                                     countMap.end(),
+                                     [](std::pair<DocumentObject*, std::pair<int, int>> vertex) -> bool {
+                                         return vertex.second.second == 0;
+                                     });
 
         if (degOutIt != countMap.end()) {
             removeVertex = true;
@@ -2928,9 +2972,9 @@ DocumentP::topologicalSort(const std::vector<DocumentObject*>& objects) const
 {
     // topological sort algorithm described here:
     // https://de.wikipedia.org/wiki/Topologische_Sortierung#Algorithmus_f.C3.BCr_das_Topologische_Sortieren
-    vector<DocumentObject*> ret;
+    std::vector<DocumentObject*> ret;
     ret.reserve(objects.size());
-    map<DocumentObject*, int> countMap;
+    std::map<DocumentObject*, int> countMap;
 
     for (auto objectIt : objects) {
         // We now support externally linked objects
@@ -2946,14 +2990,14 @@ DocumentP::topologicalSort(const std::vector<DocumentObject*>& objects) const
         countMap[objectIt] = in.size();
     }
 
-    auto rootObjeIt = find_if(countMap.begin(),
-                              countMap.end(),
-                              [](pair<DocumentObject*, int> count) -> bool {
-                                  return count.second == 0;
-                              });
+    auto rootObjeIt = std::find_if(countMap.begin(),
+                                   countMap.end(),
+                                   [](std::pair<DocumentObject*, int> count) -> bool {
+                                       return count.second == 0;
+                                   });
 
     if (rootObjeIt == countMap.end()) {
-        cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << '\n';
+        std::cerr << "Document::topologicalSort: cyclic dependency detected (no root object)" << '\n';
         return ret;
     }
 
@@ -2975,7 +3019,7 @@ DocumentP::topologicalSort(const std::vector<DocumentObject*>& objects) const
 
         rootObjeIt = find_if(countMap.begin(),
                              countMap.end(),
-                             [](pair<DocumentObject*, int> count) -> bool {
+                             [](std::pair<DocumentObject*, int> count) -> bool {
                                  return count.second == 0;
                              });
     }
@@ -3098,7 +3142,7 @@ DocumentObject* Document::addObject(const char* sType,
                AddObjectOption::SetNewStatus
                    | (isPartial ? AddObjectOption::SetPartialStatus : AddObjectOption::UnsetPartialStatus)
                    | (isNew ? AddObjectOption::DoSetup : AddObjectOption::None)
-                   | AddObjectOption::ActivateObject, 
+                   | AddObjectOption::ActivateObject,
                viewType);
 
     // return the Object
@@ -3144,15 +3188,15 @@ Document::addObjects(const char* sType, const std::vector<std::string>& objectNa
     return objects;
 }
 
-void Document::addObject(DocumentObject* pcObject, const char* pObjectName)
+void Document::addObject(DocumentObject* obj, const char* name)
 {
-    if (pcObject->getDocument()) {
+    if (obj->getDocument()) {
         throw Base::RuntimeError("Document object is already added to a document");
     }
 
-    pcObject->setDocument(this);
+    obj->setDocument(this);
 
-    _addObject(pcObject, pObjectName, AddObjectOption::SetNewStatus | AddObjectOption::ActivateObject);
+    _addObject(obj, name, AddObjectOption::SetNewStatus | AddObjectOption::ActivateObject);
 }
 
 void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, AddObjectOptions options, const char* viewType)
@@ -3165,7 +3209,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     else {
         ObjectName = getUniqueObjectName(pcObject->getTypeId().getName());
     }
- 
+
     // insert in the name map
     d->objectMap[ObjectName] = pcObject;
     d->objectNameManager.addExactName(ObjectName);
@@ -3181,7 +3225,7 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     }
     d->objectIdMap[pcObject->_Id] = pcObject;
     d->objectArray.push_back(pcObject);
-     
+
      // do no transactions if we do a rollback!
     if (!d->rollback) {
         // Undo stuff
@@ -3200,9 +3244,9 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     if (!isPerformingTransaction() && options.testFlag(AddObjectOption::DoSetup)) {
         pcObject->setupObject();
     }
- 
+
     if (options.testFlag(AddObjectOption::SetNewStatus)) {
-        pcObject->setStatus(ObjectStatus::New, true);    
+        pcObject->setStatus(ObjectStatus::New, true);
     }
     if (options.testFlag(AddObjectOption::SetPartialStatus) || options.testFlag(AddObjectOption::UnsetPartialStatus)) {
         pcObject->setStatus(ObjectStatus::PartialObject, options.testFlag(AddObjectOption::SetPartialStatus));
@@ -3214,15 +3258,15 @@ void Document::_addObject(DocumentObject* pcObject, const char* pObjectName, Add
     pcObject->_pcViewProviderName = viewType ? viewType : "";
 
     signalNewObject(*pcObject);
- 
+
     // do no transactions if we do a rollback!
     if (!d->rollback && d->activeUndoTransaction) {
         signalTransactionAppend(*pcObject, d->activeUndoTransaction);
     }
- 
+
     if (options.testFlag(AddObjectOption::ActivateObject)) {
         d->activeObject = pcObject;
-        signalActivatedObject(*pcObject);    
+        signalActivatedObject(*pcObject);
     }
 }
 
@@ -3259,7 +3303,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         FC_ERR("Cannot delete " << pcObject->getFullName() << " while recomputing");
         return;
     }
-    
+
     TransactionLocker tlock;
 
     _checkTransaction(pcObject, nullptr, __LINE__);
@@ -3269,7 +3313,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         FC_ERR("Internal error, could not find " << pcObject->getFullName() << " to remove");
     }
 
-    if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility) 
+    if (options.testFlag(RemoveObjectOption::PreserveChildrenVisibility)
         && !d->rollback && d->activeUndoTransaction && pcObject->hasChildElement()) {
         // Preserve link group sub object global visibilities. Normally those
         // claimed object should be hidden in global coordinate space. However,
@@ -3277,7 +3321,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
         // children, which may now in the global space. When the parent is
         // undeleted, having its children shown in both the local and global
         // coordinate space is very confusing. Hence, we preserve the visibility
-        // here        
+        // here
         for (auto& sub : pcObject->getSubObjects()) {
             if (sub.empty()) {
                 continue;
@@ -3324,7 +3368,7 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
     }
 
     std::unique_ptr<DocumentObject> tobedestroyed;
-    if ((options.testFlag(RemoveObjectOption::MayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction) 
+    if ((options.testFlag(RemoveObjectOption::MayDestroyOutOfTransaction) && !d->rollback && !d->activeUndoTransaction)
         || (options.testFlag(RemoveObjectOption::DestroyOnRollback) && d->rollback)) {
         // if not saved in undo -> delete object later
         std::unique_ptr<DocumentObject> delobj(pos->second);
@@ -3340,13 +3384,13 @@ void Document::_removeObject(DocumentObject* pcObject, RemoveObjectOptions optio
             break;
         }
     }
-    
+
     // In case the object gets deleted the pointer must be nullified
     if (tobedestroyed) {
         tobedestroyed->pcNameInDocument = nullptr;
     }
 
-    // Erase last to avoid invalidating pcObject->pcNameInDocument 
+    // Erase last to avoid invalidating pcObject->pcNameInDocument
     // when it is still needed in Transaction::addObjectNew
     d->objectMap.erase(pos);
 }

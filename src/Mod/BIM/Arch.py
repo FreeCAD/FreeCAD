@@ -2231,9 +2231,14 @@ def debaseWall(wall):
         return False
 
     doc = wall.Document
-    doc.openTransaction(f"Debase Wall: {wall.Label}")
 
     try:
+        # Record the current global placements of all children that move with the host.
+        # ArchComponent.onChanged will attempt to shift them when the wall's placement is updated
+        # below.
+        children = wall.Proxy.getMovableChildren(wall)
+        child_placements = {child: child.Placement.copy() for child in children}
+
         # --- Calculation of the final placement ---
         base_obj = wall.Base
         base_edge = base_obj.Shape.Edges[0]
@@ -2280,6 +2285,11 @@ def debaseWall(wall):
         # 1. Apply the final placement first.
         wall.Placement = final_placement
 
+        # Restore original placements to counteract the shift from onChanged.
+        # This keeps all hosted elements stationary in world space.
+        for child, original_placement in child_placements.items():
+            child.Placement = original_placement
+
         # 2. Now, remove the base. The recompute triggered by this change
         #    will already have the correct placement to work with.
         wall.Base = None
@@ -2296,11 +2306,8 @@ def debaseWall(wall):
         doc.recompute()
 
     except Exception as e:
-        doc.abortTransaction()
         FreeCAD.Console.PrintError(f"Error debasing wall '{wall.Label}': {e}\n")
         return False
-    finally:
-        doc.commitTransaction()
 
     return True
 

@@ -1,0 +1,55 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2026 Joe Da Silva <digital@joescat.com>                 *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'ToughnessArrays'
+  UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+  URL: ''
+  Description: "Temperature arrays for Metal Toughness Properties"
+  DOI: ''
+  PlasticTriaxialProperties:
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      ImpactCharpy:
+        DisplayName: "Impact Charpy"
+        Type: 'Quantity'
+        Units: 'J'
+        URL: 'https://en.wikipedia.org/wiki/Charpy_impact_test'
+        Description: >
+          Charpy impact test is a high strain rate test which determines
+          the amount of energy absorbed by a material during fracture.
+          Category: Fracture Mechanics, Material testing.
+      NotchTensileStrength:
+        DisplayName: "Notch Tensile Strength"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: 'https://en.wikipedia.org/wiki/Notch_tensile_strength'
+        Description: >
+          Notch Tensile strength (NTS) of a material is the value given
+          by performing a Standard Tensile Strength Test using a notched
+          specimen of the material.

@@ -955,6 +955,7 @@ void PropertyEditor::removeProperties(const std::unordered_set<App::Property*>& 
 void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 {
     QMenu menu;
+    menu.setToolTipsVisible(true);
     auto contextIndex = currentIndex();
 
     std::unordered_set<App::Property*> props = acquireSelectedProperties();
@@ -976,10 +977,21 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
 
     // rename property group
     if (!props.empty() && std::all_of(props.begin(), props.end(), [](auto prop) {
-            return prop->testStatus(App::Property::PropDynamic)
-                && !boost::starts_with(prop->getName(), prop->getGroup());
+            return prop->testStatus(App::Property::PropDynamic);
         })) {
-        menu.addAction(tr("Rename Property Group"))->setData(QVariant(MA_EditPropGroup));
+        QAction* renameGroupAction = menu.addAction(tr("Rename Property Group"));
+        renameGroupAction->setData(QVariant(MA_EditPropGroup));
+
+        // Check if any property name starts with its group name
+        bool hasGroupPrefix = std::any_of(props.begin(), props.end(), [](auto prop) {
+            return boost::starts_with(prop->getName(), prop->getGroup());
+        });
+
+        if (hasGroupPrefix) {
+            renameGroupAction->setEnabled(false);
+            renameGroupAction
+                ->setToolTip(tr("Cannot rename group: one or more properties have names that start with the group name"));
+        }
     }
 
     // rename property

@@ -54,8 +54,8 @@ struct MillMotion
     float x, y, z;
     float i, j, k;
     float r;
-    char retract_mode;
-    float retract_z;
+    char retract_mode = 0;
+    float retract_z = NAN;
 };
 
 static inline void MotionPosToVec(vec3 vec, const MillMotion* motion)

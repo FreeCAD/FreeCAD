@@ -32,32 +32,6 @@
 #include "Server.h"
 
 
-// See http://docs.python.org/2/library/socketserver.html
-/*
-import socket
-import threading
-
-
-ip = "127.0.0.1"
-port = 54880
-
-def client(ip, port, message):
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((ip, port))
-    try:
-        sock.sendall(message)
-        response = sock.recv(1024)
-        print ("Received: {}".format(response))
-    finally:
-        sock.close()
-
-
-
-client(ip, port, b"print ('Hello World')")
-client(ip, port, b"import FreeCAD\nFreeCAD.newDocument()")
-
-*/
-
 namespace Web
 {
 class Module: public Py::ExtensionModule<Module>

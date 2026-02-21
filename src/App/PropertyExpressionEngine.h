@@ -27,10 +27,7 @@
 #include <functional>
 #include <set>
 
-#include <boost/unordered/unordered_map.hpp>
 #include <fastsignals/signal.h>
-#include <boost_graph_adjacency_list.hpp>
-#include <boost/graph/topological_sort.hpp>
 
 #include <FCConfig.h>
 
@@ -60,11 +57,46 @@ public:
     PropertyExpressionContainer();
     ~PropertyExpressionContainer() override;
 
+    /**
+     * @brief Get the expressions map.
+     *
+     * This function returns a mapping from object identifier to expression.
+     * The object identifier specifies the property in the document object that
+     * the expression is bound to.
+     *
+     * @return The map of ObjectIdentifier to Expression pointers.
+     */
     virtual std::map<App::ObjectIdentifier, const App::Expression*> getExpressions() const = 0;
+
+    /**
+     * @brief Set the expressions map.
+     *
+     * This function sets the mapping from object identifier to expression.
+     * The object identifier specifies the property in the document object that
+     * the expression is bound to.
+     *
+     * @param[in] exprs The new map of ObjectIdentifier to Expression pointers.
+     */
     virtual void setExpressions(std::map<App::ObjectIdentifier, App::ExpressionPtr>&& exprs) = 0;
 
 protected:
+    /**
+     * @brief Handle document relabeling.
+     *
+     * Update the expressions in response to a document being relabeled.
+     *
+     * @param[in] doc The document that was relabeled.
+     */
     virtual void onRelabeledDocument(const App::Document& doc) = 0;
+
+    /**
+     * @brief Handle dynamic property renaming.
+     *
+     * Update the expressions in response to a dynamic property being renamed.
+     *
+     * @param[in] prop The property that was renamed.
+     * @param[in] oldName The old name of the property.
+     */
     virtual void onRenameDynamicProperty(const App::Property& prop, const char* oldName) = 0;
 
 private:
@@ -72,6 +104,18 @@ private:
     static void slotRenameDynamicProperty(const App::Property& prop, const char* oldName);
 };
 
+
+/**
+ * @brief The class that manages expressions that target a property in a
+ * document object.
+ * @ingroup ExpressionFramework
+ *
+ * This class manages a set of expressions that are bound to properties in
+ * document objects.  It provides functionality to evaluate the expressions,
+ * handle dependencies between expressions, and update the properties they
+ * are bound to.  For a high-level overview of the %Expression framework see
+ * topic @ref ExpressionFramework "Expression Framework".
+ */
 class AppExport PropertyExpressionEngine
     : public App::PropertyExpressionContainer,
       private App::AtomicPropertyChangeInterface<PropertyExpressionEngine>
@@ -97,9 +141,8 @@ public:
                                                     std::shared_ptr<const App::Expression> expr)>;
 
     /**
-     * @brief The ExpressionInfo struct encapsulates an expression.
+     * @brief This struct encapsulates an expression.
      */
-
     struct ExpressionInfo
     {
         std::shared_ptr<App::Expression> expression; /**< The actual expression tree */
@@ -127,8 +170,8 @@ public:
     void onRelabeledDocument(const App::Document& doc) override;
     void onRenameDynamicProperty(const App::Property& prop, const char* oldName) override;
 
-    void setValue()
-    {}  // Dummy
+    /// Dummy setValue to satisfy a macro.
+    void setValue() {}
 
     Property* Copy() const override;
 
@@ -138,8 +181,30 @@ public:
 
     void Restore(Base::XMLReader& reader) override;
 
+    /**
+     * @brief Set a given expression to @a path.
+     *
+     * Note that the "value" in this context is an expression.  This means that
+     * this function does not evaluate the expression and updates the property
+     * that @a path points to.  It merely registers the expression to be used
+     * when evaluating the property later.
+     *
+     * @param[in] path The path that the expression is targeting.
+     * @param[in] expr The new expression.
+     */
     void setValue(const App::ObjectIdentifier& path, std::shared_ptr<App::Expression> expr);
 
+    /**
+     * @brief Get the expression for @a path.
+     *
+     * Note that the "value" in this context is an expression.  This means that
+     * this function does not return the evaluated value of the property that
+     * @a path points to.  It merely returns the registered expression.
+     *
+     * @param[in] path ObjectIndentifier to query for.
+     *
+     * @return The expression for @a path, or empty boost::any if not found.
+     */
     const boost::any getPathValue(const App::ObjectIdentifier& path) const override;
 
     /// Execute options
@@ -154,32 +219,86 @@ public:
         /// Execute on document restore
         ExecuteOnRestore,
     };
-    /** Evaluate the expressions
+
+    /**
+     * @brief Evaluate the expressions.
      *
-     * @param option: execution option, see ExecuteOption.
+     * Evaluate the expressions and update the properties they are bound to.
+     *
+     * @param[in] option: execution option, see ExecuteOption.
+     * @param[out] touched: if not null, set to true if any property was
+     * changed.
+     *
+     * @return On success a pointer to DocumentObject::StdReturn is returned.  On failure, it
+     * returns a pointer to a newly created App::DocumentObjectExecReturn that contains the error
+     * message.
      */
     DocumentObjectExecReturn* execute(ExecuteOption option = ExecuteAll, bool* touched = nullptr);
 
-    void getPathsToDocumentObject(DocumentObject*, std::vector<App::ObjectIdentifier>& paths) const;
+    /**
+     * @brief Find the paths to a given document object.
+     *
+     * @param[in] obj The document object to find paths to.
+     * @param[out] paths Object identifiers that point to @a obj.
+     */
+    void getPathsToDocumentObject(DocumentObject* obj,
+                                  std::vector<App::ObjectIdentifier>& paths) const;
 
+    /**
+     * @brief Check if any dependencies are touched.
+     *
+     * Determine whether any dependencies of any of the registered expressions
+     * have been touched.
+     *
+     * @return True if at least on dependency has been touched.
+     */
     bool depsAreTouched() const;
 
-    /* Expression validator */
+    /**
+     * @brief Set an extra validator function.
+     *
+     * @param[in] f The validator function.
+     */
     void setValidator(ValidatorFunc f)
     {
         validator = f;
     }
 
+    /**
+     * @brief Validate the expression expression for a given path.
+     *
+     * @param[in] path The object identifier that the expression is targeting.
+     * @param expr The expression to validate.
+     *
+     * @return An empty string on success, an error message on failure.
+     */
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr) const;
 
+    /**
+     * @brief Rename object identifiers in the registered expressions.
+     *
+     * @param[in] paths A map with the current and new object identifiers.
+     */
     void renameExpressions(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
+    /**
+     * @brief Rename object identifiers in the registered expressions.
+     *
+     * @param[in] paths A map with the current and new object identifiers.
+     */
     void
     renameObjectIdentifiers(const std::map<App::ObjectIdentifier, App::ObjectIdentifier>& paths);
 
-    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier& p) const override;
+    /**
+     * @brief Create a canonical object identifier of the given object \a p.
+     *
+     * @param oid The object identifier from which we want a canonical path.
+     * @return The canonical object identifier.
+     */
+    App::ObjectIdentifier canonicalPath(const App::ObjectIdentifier& oid) const override;
 
+    /// Get the number of expressions managed by this object.
     size_t numExpressions() const;
 
     /// signal called when an expression was changed
@@ -201,7 +320,6 @@ protected:
     void hasSetValue() override;
 
 private:
-    using DiGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS>;
     using Edge = std::pair<int, int>;
 // Note: use std::map instead of unordered_map to keep the binding order stable
 #if defined(FC_OS_MACOSX) || defined(FC_OS_BSD) || defined(_LIBCPP_VERSION)
@@ -210,18 +328,21 @@ private:
     using ExpressionMap = std::map<const App::ObjectIdentifier, ExpressionInfo>;
 #endif
 
+    /**
+     * @brief Compute the evaluation order of the expressions.
+     *
+     * This method builds a graph for all expressions in the engine, and finds
+     * any circular dependencies.  It also computes the internal evaluation
+     * order, in case properties depend on each other.
+     *
+     * @param[in] option Execution option, see ExecuteOption.
+     *
+     * @return A vector with the evaluation order of the properties and their
+     * dependencies in terms of object identifiers.
+     *
+     * @throws Base::RuntimeError if a circular dependency is detected.
+     */
     std::vector<App::ObjectIdentifier> computeEvaluationOrder(ExecuteOption option);
-
-    void buildGraphStructures(const App::ObjectIdentifier& path,
-                              const std::shared_ptr<Expression> expression,
-                              boost::unordered_map<App::ObjectIdentifier, int>& nodes,
-                              boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
-                              std::vector<Edge>& edges) const;
-
-    void buildGraph(const ExpressionMap& exprs,
-                    boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
-                    DiGraph& g,
-                    ExecuteOption option = ExecuteAll) const;
 
     void slotChangedObject(const App::DocumentObject& obj, const App::Property& prop);
     void slotChangedProperty(const App::DocumentObject& obj, const App::Property& prop);
@@ -243,6 +364,8 @@ private:
     /**< Expressions are read from file to this map first before they are validated and inserted
      * into the actual map */
     std::unique_ptr<std::vector<RestoredExpression>> restoredExpressions;
+
+    void tryRestoreExpression(DocumentObject* docObj, const RestoredExpression& info);
 
     struct Private;
     std::unique_ptr<Private> pimpl;

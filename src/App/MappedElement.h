@@ -34,21 +34,36 @@ class DocumentObject;
 namespace Data
 {
 
-/// A MappedElement combines a MappedName and and IndexedName into a single entity and provides
-/// simple comparison operators for the combination (including operator< so that the entity can
-/// be sorted, or used in sorted containers).
+/**
+ * @brief A combination of a MappedName and an IndexedName.
+ * @ingroup ElementMapping
+ *
+ * A mapped element combines a mapped name and an indexed name into a single
+ * entity and provides simple comparison operators for the combination
+ * (including operator< so that the entity can be sorted, or used in sorted
+ * containers).
+ */
 struct AppExport MappedElement
 {
+    /// The indexed name.
     IndexedName index;
+    /// The mapped name.
     MappedName name;
 
     MappedElement() = default;
 
+    /**
+     * @brief Construct a mapped element from an indexed name and a mapped name.
+     *
+     * @param[in] idx The indexed name.
+     * @param[in] n The mapped name.
+     */
     MappedElement(const IndexedName& idx, MappedName n)
         : index(idx)
         , name(std::move(n))
     {}
 
+    ///@copydoc MappedElement(const IndexedName& idx, MappedName n)
     MappedElement(MappedName n, const IndexedName& idx)
         : index(idx)
         , name(std::move(n))
@@ -82,9 +97,14 @@ struct AppExport MappedElement
         return this->index != other.index || this->name != other.name;
     }
 
-    /// For sorting purposes, one MappedElement is considered "less" than another if its index
-    /// compares less (which is first alphabetical, and then by numeric index). If the index of this
-    /// MappedElement is the same, then the names are compared lexicographically.
+    /**
+     * @brief Compare two mapped elements.
+     *
+     * For sorting purposes, one MappedElement is considered "less" than
+     * another if its index compares less (which is first alphabetical, and
+     * then by numeric index). If the index of this MappedElement is the same,
+     * then the names are compared lexicographically.
+     */
     bool operator<(const MappedElement& other) const
     {
         int res = this->index.compare(other.index);
@@ -98,6 +118,7 @@ struct AppExport MappedElement
     }
 };
 
+/// Struct to represent an item in the history of an object.
 struct AppExport HistoryItem
 {
     App::DocumentObject* obj;
@@ -108,19 +129,20 @@ struct AppExport HistoryItem
     HistoryItem(App::DocumentObject* obj, const Data::MappedName& name);
 };
 
+///Comparator struct to make element name sorting more stable.
 struct AppExport ElementNameComparator
 {
-    /** Comparison function to make topo name more stable
+    /**
+     * @brief Comparison function to make topo name more stable.
      *
-     * The sorting decomposes the name into either of the following two forms
-     *      '#' + hex_digits + tail
-     *      non_digits + digits + tail
+     * The sorting decomposes the name into either of the following two forms:
+     * - '#' + hex_digits + tail
+     * - non_digits + digits + tail
      *
-     * The non-digits part is compared lexically, while the digits part is
-     * compared by its integer value.
-     *
-     * The reason for this is to prevent names with bigger digits (which usually means
-     * they come later in history) from coming earlier when sorting.
+     * The non-digits part is compared lexicographically, while the digits part
+     * is compared by its integer value.  The reason for this is to prevent
+     * names with bigger digits (which usually means they come later in
+     * history) from coming earlier when sorting.
      */
     bool operator()(const MappedName& leftName, const MappedName& rightName) const;
 };

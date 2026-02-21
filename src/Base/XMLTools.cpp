@@ -117,6 +117,44 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
     return str;
 }
 
+/*!
+ * \brief Escape special XML characters in a string.
+ *
+ * Replaces XML special characters (&, <, >, ", ') with their entity equivalents
+ * (&amp;, &lt;, &gt;, &quot;, &apos;).
+ *
+ * \param input The string to escape
+ * \return The escaped string safe for use in XML content or attributes
+ */
+std::string XMLTools::escapeXml(const std::string& input)
+{
+    std::string output;
+    output.reserve(input.size());
+    for (char ch : input) {
+        switch (ch) {
+            case '&':
+                output.append("&amp;");
+                break;
+            case '<':
+                output.append("&lt;");
+                break;
+            case '>':
+                output.append("&gt;");
+                break;
+            case '"':
+                output.append("&quot;");
+                break;
+            case '\'':
+                output.append("&apos;");
+                break;
+            default:
+                output.push_back(ch);
+                break;
+        }
+    }
+    return output;
+}
+
 void XMLTools::terminate()
 {
     transcoder.reset();

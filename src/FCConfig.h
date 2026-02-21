@@ -268,11 +268,10 @@ typedef unsigned __int64    uint64_t;
 //**************************************************************************
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
-#   pragma warning( disable : 4251 )
-#   pragma warning( disable : 4996 )  // suppress deprecated warning for e.g. open()
+#   pragma warning( disable : 4251 )  // Member that is not marked for DLL export
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
-#   pragma warning( disable : 4244 )
-#   pragma warning( disable : 4267 )
+#   pragma warning( disable : 4244 )  // Narrowing conversion
+#   pragma warning( disable : 4267 )  // Implicit conversion from size_t to a smaller integer type
 #endif
 
 #endif

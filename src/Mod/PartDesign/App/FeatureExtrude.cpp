@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
  *   Copyright (c) 2020 Werner Mayer <wmayer[at]users.sourceforge.net>     *
@@ -849,7 +850,6 @@ TopoShape FeatureExtrude::generateSingleExtrusionSide(
         || method == "UpToShape") {
         // Note: This will return an unlimited planar face if support is a datum plane
         TopoShape supportface = getTopoShapeSupportFace();
-        auto invObjLoc = getLocation().Inverted();
         supportface.move(invObjLoc);
 
         if (!supportface.hasSubShape(TopAbs_WIRE)) {

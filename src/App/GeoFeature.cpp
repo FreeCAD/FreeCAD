@@ -139,7 +139,7 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
                                            bool append,
                                            ElementNameType type,
                                            const DocumentObject* filter,
-                                           const char** _element,
+                                           const char** element,
                                            GeoFeature** geoFeature)
 {
     elementName.newName.clear();
@@ -150,11 +150,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
     if (!subname) {
         subname = "";
     }
-    const char* element = Data::findElementName(subname);
-    if (_element) {
-        *_element = element;
+    const char* foundElement = Data::findElementName(subname);
+    if (element) {
+        *element = foundElement;
     }
-    auto sobj = obj->getSubObject(std::string(subname, element).c_str());
+    auto sobj = obj->getSubObject(std::string(subname, foundElement).c_str());
     if (!sobj) {
         return nullptr;
     }
@@ -172,16 +172,16 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
     if (filter && geo != filter) {
         return nullptr;
     }
-    if (!element || !element[0]) {
+    if (!foundElement || !foundElement[0]) {
         if (append) {
             elementName.oldName = Data::oldElementName(subname);
         }
         return sobj;
     }
 
-    if (!geo || hasHiddenMarker(element)) {
+    if (!geo || hasHiddenMarker(foundElement)) {
         if (!append) {
-            elementName.oldName = element;
+            elementName.oldName = foundElement;
         }
         else {
             elementName.oldName = Data::oldElementName(subname);
@@ -189,11 +189,11 @@ DocumentObject* GeoFeature::resolveElement(const DocumentObject* obj,
         return sobj;
     }
     if (!append) {
-        elementName = geo->getElementName(element, type);
+        elementName = geo->getElementName(foundElement, type);
     }
     else {
-        const auto& names = geo->getElementName(element, type);
-        std::string prefix(subname, element - subname);
+        const auto& names = geo->getElementName(foundElement, type);
+        std::string prefix(subname, foundElement - subname);
         if (!names.newName.empty()) {
             elementName.newName = prefix + names.newName;
         }

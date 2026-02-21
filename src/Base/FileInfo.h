@@ -29,6 +29,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
+#include <optional>
 
 #include <FCGlobal.h>
 
@@ -124,6 +125,8 @@ public:
     bool isFile() const;
     /// Checks if it is a directory (not a file)
     bool isDir() const;
+    /// Checks if it is a symbolic link (returns false if the file doesn't exist)
+    bool isSymlink() const;
     /// The size of the file
     unsigned int size() const;
     /// Returns the time when the file was last modified.
@@ -151,6 +154,11 @@ public:
     bool renameFile(const char* NewName);
     /// Rename the file
     bool copyTo(const char* NewName) const;
+
+    /// Returns the folder or directory the symlink points
+    std::optional<std::string> getSymlinkTarget();
+    /// Returns the absolute path without any "..", "." or symlinks
+    std::optional<std::string> getCannonicalPath();
 
     /** @name Tools */
     //@{

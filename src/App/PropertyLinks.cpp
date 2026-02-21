@@ -3349,7 +3349,8 @@ public:
             throw Base::RuntimeError("Owner document not saved");
         }
 
-        QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
+        QFileInfo docFileInfo{QString::fromUtf8(docPath)};
+        QDir docDir(docFileInfo.canonicalPath());
         if (!absolute) {
             path = QDir::cleanPath(docDir.absoluteFilePath(path));
             if (fullPath) {
@@ -4281,14 +4282,12 @@ void PropertyXLink::Restore(Base::XMLReader& reader)
         name = reader.getAttribute<const char*>("name");
     }
 
-    assert(getContainer()->isDerivedFrom<App::DocumentObject>());
     DocumentObject* object = nullptr;
     if (!name.empty() && file.empty()) {
-        DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
-        Document* document = parent->getDocument();
-        object = document ? document->getObject(name.c_str()) : nullptr;
-        if (!object) {
-            if (reader.isVerbose()) {
+        if (auto parent = freecad_cast<DocumentObject*>(getContainer())) {
+            Document* document = parent->getDocument();
+            object = document ? document->getObject(name.c_str()) : nullptr;
+            if (!object && reader.isVerbose()) {
                 FC_WARN("Lost link to '" << name
                                          << "' while loading, maybe "
                                             "an object was not loaded correctly");

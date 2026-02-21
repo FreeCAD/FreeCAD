@@ -48,6 +48,12 @@ protected:
     //@}
 };
 
+enum CommonBehavior
+{
+    CommonOfAllShapes,
+    CommonOfFirstAndRest,
+};
+
 class PartExport MultiCommon: public Part::Feature
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Part::MultiCommon);
@@ -58,6 +64,7 @@ public:
     App::PropertyLinkList Shapes;
     PropertyShapeHistory History;
     App::PropertyBool Refine;
+    App::PropertyEnumeration Behavior;
 
     /** @name methods override feature */
     //@{
@@ -65,11 +72,17 @@ public:
     App::DocumentObjectExecReturn* execute() override;
     short mustExecute() const override;
     //@}
+
+    void Restore(Base::XMLReader& reader) override;
+
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
     {
         return "PartGui::ViewProviderMultiCommon";
     }
+
+private:
+    static const char* BehaviorEnums[];
 };
 
 }  // namespace Part

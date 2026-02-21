@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 #pragma once
+
 #include "OpenGlWrapper.h"
 #include "linmath.h"
-
 
 constexpr auto EPSILON = 0.00001f;
 #define EQ_FLOAT(x, y) (fabs((x) - (y)) < EPSILON)
@@ -45,7 +45,6 @@ constexpr auto EPSILON = 0.00001f;
             __debugbreak(); \
     }
 
-
 #define GLDELETE(type, x) \
     { \
         if (x != 0) \
@@ -61,10 +60,11 @@ constexpr auto EPSILON = 0.00001f;
 
 namespace MillSim
 {
+
+extern const mat4x4 identityMat;
+
 void GLClearError();
 bool GLLogError();
-extern mat4x4 identityMat;
-extern int gDebug;
-extern int gWindowSizeW;
-extern int gWindowSizeH;
+
 }  // namespace MillSim
+

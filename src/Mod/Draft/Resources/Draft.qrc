@@ -178,6 +178,8 @@
         <file>translations/Draft_be.qm</file>
         <file>translations/Draft_da.qm</file>
         <file>translations/Draft_ms.qm</file>
+        <file>translations/Draft_ta.qm</file>
+        <file>translations/Draft_ga-IE.qm</file>
         <file>ui/preferences-draft.ui</file>
         <file>ui/preferences-draftinterface.ui</file>
         <file>ui/preferences-draftsnap.ui</file>

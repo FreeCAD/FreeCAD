@@ -130,6 +130,8 @@ ViewProviderAssembly::ViewProviderAssembly()
 ViewProviderAssembly::~ViewProviderAssembly()
 {
     m_preTransactionConn.disconnect();
+
+    removeTaskSolver();
 };
 
 QIcon ViewProviderAssembly::getIcon() const
@@ -354,11 +356,7 @@ void ViewProviderAssembly::unsetEdit(int mode)
             );
         }
 
-        Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
-        if (taskView) {
-            // Waiting for the solver to support reporting information.
-            taskView->removeContextualPanel(taskSolver);
-        }
+        removeTaskSolver();
 
         connectSolverUpdate.disconnect();
         connectActivatedVP.disconnect();
@@ -366,6 +364,15 @@ void ViewProviderAssembly::unsetEdit(int mode)
         return;
     }
     ViewProviderPart::unsetEdit(mode);
+}
+
+void ViewProviderAssembly::removeTaskSolver()
+{
+    Gui::TaskView::TaskView* taskView = Gui::Control().taskPanel();
+    if (taskView) {
+        // Waiting for the solver to support reporting information.
+        taskView->removeContextualPanel(taskSolver);
+    }
 }
 
 void ViewProviderAssembly::slotActivatedVP(const Gui::ViewProviderDocumentObject* vp, const char* name)
@@ -1209,21 +1216,37 @@ void ViewProviderAssembly::draggerMotionCallback(void* data, SoDragger* d)
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
+    // onSelectionChanged is called from both Selection.cpp and SelectionObserver.
+    // In the case where you have nested assemblies, that would cause issues. See #27532
+    bool singleAssembly
+        = getDocument()->getDocument()->getObjectsOfType<Assembly::AssemblyObject>().size() == 1;
+    if (!isInEditMode() && !singleAssembly) {
+        return;
+    }
+
     // Joint components isolation
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         auto selection = Gui::Selection().getSelection();
         if (selection.size() == 1) {
             App::DocumentObject* obj = selection[0].pObject;
-            // A simple way to identify a joint is to check for its "JointType" property.
-            if (obj && obj->getPropertyByName("JointType")) {
+            if (obj
+                && (obj->getPropertyByName("JointType") || obj->getPropertyByName("ObjectToGround"))) {
                 isolateJointReferences(obj);
                 return;
             }
+            else if (explodeTemporarily(obj)) {
+                return;
+            }
+        }
+        else {
+            clearIsolate();
+            clearTemporaryExplosion();
         }
     }
     if (msg.Type == Gui::SelectionChanges::ClrSelection
         || msg.Type == Gui::SelectionChanges::RmvSelection) {
         clearIsolate();
+        clearTemporaryExplosion();
     }
 
     if (!isInEditMode()) {
@@ -1330,20 +1353,24 @@ bool ViewProviderAssembly::canDelete(App::DocumentObject* objBeingDeleted) const
                     continue;
                 }
 
-                if (dynamic_cast<App::PropertyLink*>(parent->getPropertyByName("ObjectToGround"))) {
-                    objToDel.push_back(parent);
+                if (parent->getPropertyByName("ObjectToGround")) {
+                    if (std::ranges::find(objToDel, parent) == objToDel.end()) {
+                        objToDel.push_back(parent);
+                    }
                 }
             }
         }
 
         // Deletes them.
         for (auto* joint : objToDel) {
-            Gui::Command::doCommand(
-                Gui::Command::Doc,
-                "App.getDocument(\"%s\").removeObject(\"%s\")",
-                joint->getDocument()->getName(),
-                joint->getNameInDocument()
-            );
+            if (joint && joint->getNameInDocument() != nullptr) {
+                Gui::Command::doCommand(
+                    Gui::Command::Doc,
+                    "App.getDocument(\"%s\").removeObject(\"%s\")",
+                    joint->getDocument()->getName(),
+                    joint->getNameInDocument()
+                );
+            }
         }
     }
     return res;
@@ -1407,6 +1434,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : group->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
     else if (auto* part = dynamic_cast<App::Part*>(current)) {
         // As App::Part currently don't have material override
@@ -1422,6 +1450,7 @@ void ViewProviderAssembly::applyIsolationRecursively(
         for (auto* child : part->Group.getValues()) {
             applyIsolationRecursively(child, isolateSet, mode, visited);
         }
+        return;
     }
 
     auto* vp = Gui::Application::Instance->getViewProvider(current);
@@ -1493,6 +1522,20 @@ void ViewProviderAssembly::isolateComponents(std::set<App::DocumentObject*>& iso
 void ViewProviderAssembly::isolateJointReferences(App::DocumentObject* joint, IsolateMode mode)
 {
     if (!joint || isolatedJoint == joint) {
+        return;
+    }
+
+    clearIsolate();
+
+    if (auto* prop = joint->getPropertyByName<App::PropertyLink>("ObjectToGround")) {
+        auto* groundedObj = prop->getValue();
+
+        isolatedJoint = joint;
+        isolatedJointVisibilityBackup = joint->Visibility.getValue();
+        joint->Visibility.setValue(true);
+
+        std::set<App::DocumentObject*> isolateSet = {groundedObj};
+        isolateComponents(isolateSet, mode);
         return;
     }
 
@@ -1602,6 +1645,76 @@ void ViewProviderAssembly::slotAboutToOpenTransaction(const std::string& cmdName
 {
     Q_UNUSED(cmdName);
     this->clearIsolate();
+    this->clearTemporaryExplosion();
+}
+
+bool ViewProviderAssembly::explodeTemporarily(App::DocumentObject* explodedView)
+{
+    if (!explodedView || temporaryExplosion == explodedView) {
+        return false;
+    }
+
+    clearTemporaryExplosion();
+
+    Base::PyGILStateLocker lock;
+
+    App::PropertyPythonObject* proxy = explodedView
+        ? dynamic_cast<App::PropertyPythonObject*>(explodedView->getPropertyByName("Proxy"))
+        : nullptr;
+
+    if (!proxy) {
+        return false;
+    }
+
+    Py::Object jointPy = proxy->getValue();
+
+    if (!jointPy.hasAttr("explodeTemporarily")) {
+        return false;
+    }
+
+    Py::Object attr = jointPy.getAttr("explodeTemporarily");
+    if (attr.ptr() && attr.isCallable()) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(explodedView->getPyObject()));
+        Py::Callable(attr).apply(args);
+        temporaryExplosion = explodedView;
+        temporaryExplosion->purgeTouched();
+        return true;
+    }
+
+    return false;
+}
+
+void ViewProviderAssembly::clearTemporaryExplosion()
+{
+    if (!temporaryExplosion) {
+        return;
+    }
+
+    Base::PyGILStateLocker lock;
+
+    App::PropertyPythonObject* proxy = temporaryExplosion
+        ? dynamic_cast<App::PropertyPythonObject*>(temporaryExplosion->getPropertyByName("Proxy"))
+        : nullptr;
+
+    if (!proxy) {
+        return;
+    }
+
+    Py::Object jointPy = proxy->getValue();
+
+    if (!jointPy.hasAttr("restoreAssembly")) {
+        return;
+    }
+
+    Py::Object attr = jointPy.getAttr("restoreAssembly");
+    if (attr.ptr() && attr.isCallable()) {
+        Py::Tuple args(1);
+        args.setItem(0, Py::asObject(temporaryExplosion->getPyObject()));
+        Py::Callable(attr).apply(args);
+        temporaryExplosion->purgeTouched();
+        temporaryExplosion = nullptr;
+    }
 }
 
 // UTILS

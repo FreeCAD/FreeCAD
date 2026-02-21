@@ -594,6 +594,8 @@ void TaskAttacher::onSelectionChanged(const Gui::SelectionChanges& msg)
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
         SubAndObjName pair = {msg.pObjectName, msg.pSubName};
         addToReference(pair);
+
+        Q_EMIT placementUpdated();
     }
 }
 
@@ -736,6 +738,8 @@ void TaskAttacher::onAttachmentOffsetChanged(double /*val*/, int idx)
 
     pcAttach->AttachmentOffset.setValue(pl);
     updatePreview();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onAttachmentOffsetXChanged(double val)
@@ -778,6 +782,8 @@ void TaskAttacher::onCheckFlip(bool on)
         = ViewProvider->getObject()->getExtensionByType<Part::AttachExtension>();
     pcAttach->MapReversed.setValue(on);
     ViewProvider->getObject()->recomputeFeature();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
@@ -794,6 +800,8 @@ void TaskAttacher::onButtonRef(const bool checked, unsigned idx)
     updateRefButton(1);
     updateRefButton(2);
     updateRefButton(3);
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::onButtonRef1(const bool checked)
@@ -873,6 +881,7 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
         ui->lineRef4->setText(refstrings[3]);
         ui->lineRef4->setProperty("RefName", QByteArray(newrefnames[3].c_str()));
         updateReferencesUI();
+        Q_EMIT placementUpdated();
         return;
     }
 
@@ -963,6 +972,8 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     selectMapMode(getActiveMapMode());
 
     updateReferencesUI();
+
+    Q_EMIT placementUpdated();
 }
 
 void TaskAttacher::updateRefButton(int idx)

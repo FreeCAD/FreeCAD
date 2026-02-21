@@ -271,9 +271,6 @@ protected:
 private:
     void spinInternal(const SbVec2f& pointerpos, const SbVec2f& lastpos);
     void spinSimplifiedInternal(const SbVec2f curpos, const SbVec2f prevpos);
-    bool isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const;
-    QWidget* findView3DInventorWidget() const;
-    void applyNavigationStyleChange(QAction* selectedAction);
 
 protected:
     void clearLog();

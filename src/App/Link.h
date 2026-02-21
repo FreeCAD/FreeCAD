@@ -24,6 +24,9 @@
 
 #pragma once
 
+#include <boost/preprocessor/seq/for_each.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+
 #include <unordered_set>
 #include <Base/Parameter.h>
 #include <Base/Bitmask.h>
@@ -50,6 +53,13 @@
 namespace App
 {
 
+/**
+ * @brief The base class of the link extension.
+ * @ingroup LinksGroup
+ *
+ * The functionality in this class is reused in LinkExtension, LinkElement, and
+ * LinkGroup.
+ */
 class AppExport LinkBaseExtension: public App::DocumentObjectExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
@@ -59,25 +69,31 @@ public:
     LinkBaseExtension();
     ~LinkBaseExtension() override = default;
 
+    /// Whether the link has been touched (i.e. its linked object changed)
     PropertyBool _LinkTouched;
+    /// Contains the object ID of the object that owns the link.
     PropertyInteger _LinkOwner;
+    /// Cache of children of the link group.
     PropertyLinkList _ChildCache;  // cache for plain group expansion
 
+    /// Options for the link mode.
     enum
     {
-        LinkModeNone,
-        LinkModeAutoDelete,
-        LinkModeAutoLink,
-        LinkModeAutoUnlink,
+        LinkModeNone, ///< No mode for the link.
+        LinkModeAutoDelete, ///< Delete the linked object when the link is deleted.
+        LinkModeAutoLink,   ///< Create link elements of sub-element automatically (unused).
+        LinkModeAutoUnlink, ///< Unused option.
     };
 
-    /** \name Parameter definition
+    /**
+     * @name Parameter definition.
+     * @brief Parameter definition (Name, Type, Property Type, Default, Document).
      *
-     * Parameter definition (Name, Type, Property Type, Default, Document).
      * The variadic is here so that the parameter can be extended by adding
-     * extra fields.  See LINK_PARAM_EXT() for an example
+     * extra fields.  See LINK_PARAM_EXT() for an example.
+     *
+     * @{
      */
-    //@{
 
 #define LINK_PARAM_LINK_PLACEMENT(...)                                                             \
     (LinkPlacement,                                                                                \
@@ -119,12 +135,12 @@ public:
      long,                                                                                         \
      App::PropertyEnumeration,                                                                     \
      ((long)0),                                                                                    \
-     "Disabled: disable copy on change\n"                                                          \
-     "Enabled: enable copy linked object on change of any of its properties marked as "            \
-     "CopyOnChange\n"                                                                              \
-     "Owned: indicate the linked object has been copied and is own owned by the link. And the\n"   \
-     "       the link will try to sync any change of the original linked object back to the "      \
-     "copy.",                                                                                      \
+     "Disabled: turns off copy-on-change\n"                                                        \
+     "Enabled: copies the linked object when any property marked CopyOnChange changes\n"           \
+     "Owned: the linked object has been copied and is owned by the link; changes to the original\n"\
+     "       will be synced back to the copy\n"                                                    \
+     "Tracking: copies the linked object when any property marked CopyOnChange changes, and keeps\n"\
+     "       future edits to the link in sync with the original",                                  \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_SOURCE(...)                                                      \
@@ -132,7 +148,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "The copy on change source object",                                                           \
+     "The copy-on-change source object",                                                           \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_GROUP(...)                                                       \
@@ -140,7 +156,7 @@ public:
      App::DocumentObject*,                                                                         \
      App::PropertyLink,                                                                            \
      0,                                                                                            \
-     "Linked to a internal group object for holding on change copies",                             \
+     "Linked to an internal group object for holding on change copies",                             \
      ##__VA_ARGS__)
 
 #define LINK_PARAM_COPY_ON_CHANGE_TOUCHED(...)                                                     \
@@ -228,7 +244,7 @@ public:
 #define LINK_PDOC(_param) BOOST_PP_TUPLE_ELEM(4, _param)
 
 #define LINK_PINDEX(_param) BOOST_PP_CAT(Prop, LINK_PNAME(_param))
-    //@}
+    /// @}
 
 #define LINK_PARAMS                                                                                \
     LINK_PARAM(PLACEMENT)                                                                          \
@@ -252,6 +268,7 @@ public:
     LINK_PARAM(COPY_ON_CHANGE_GROUP)                                                               \
     LINK_PARAM(COPY_ON_CHANGE_TOUCHED)
 
+    /// The property indices.
     enum PropIndex
     {
 #define LINK_PINDEX_DEFINE(_1, _2, _param) LINK_PINDEX(_param),
@@ -260,17 +277,49 @@ public:
         BOOST_PP_SEQ_FOR_EACH(LINK_PINDEX_DEFINE, _, LINK_PARAMS) PropMax
     };
 
+    /**
+     * @brief Set a property to a given index..
+     *
+     * @param[in] idx The property index obtained from the PropIndex enum.
+     * @param[in] prop The property to set.
+     */
     virtual void setProperty(int idx, Property* prop);
+
+    /**
+     * @brief Get a property by its index.
+     *
+     * @param[in] idx The property index obtained from the PropIndex enum.
+     *
+     * @return The property at the given index, or nullptr if the index is out
+     * of range or the property is not set.
+     */
     Property* getProperty(int idx);
+
+    /**
+     *
+     * @brief Get a property by its name.
+     *
+     * @param[in] name The name of the property to get.
+     * @return The property with the given name, or nullptr if not found.
+     */
     Property* getProperty(const char*);
 
+    /// Information about a link property.
     struct PropInfo
     {
-        int index;
-        const char* name;
-        Base::Type type;
-        const char* doc;
+        int index; ///< The property index obtained from the PropIndex enum.
+        const char* name; ///< The name of the property.
+        Base::Type type; ///< The type of the property.
+        const char* doc; ///< The documentation string of the property.
 
+        /**
+         * @brief Construct a property info.
+         *
+         * @param[in] index The property index obtained from the PropIndex enum.
+         * @param[in] name The name of the property.
+         * @param[in] type The type of the property.
+         * @param[in] doc The documentation string of the property.
+         */
         PropInfo(int index, const char* name, Base::Type type, const char* doc)
             : index(index)
             , name(name)
@@ -291,17 +340,22 @@ public:
                                                LINK_PPTYPE(_param)::getClassTypeId(),              \
                                                LINK_PDOC(_param)));
 
+    /// Get the property info of this link.
     virtual const std::vector<PropInfo>& getPropertyInfo() const;
 
+    /// A mapping from property name to its info.
     using PropInfoMap = std::map<std::string, PropInfo>;
+
+    /// Get the property info map of this link.
     virtual const PropInfoMap& getPropertyInfoMap() const;
 
+    /// The types for copy on change links.
     enum LinkCopyOnChangeType
     {
-        CopyOnChangeDisabled = 0,
-        CopyOnChangeEnabled = 1,
-        CopyOnChangeOwned = 2,
-        CopyOnChangeTracking = 3
+        CopyOnChangeDisabled = 0, ///< No copy on change behavior.
+        CopyOnChangeEnabled = 1, ///< Copy on change is enabled but not necessarily in effect.
+        CopyOnChangeOwned = 2, ///< Copy on change is enabled and in effect.
+        CopyOnChangeTracking = 3 ///< Tracking copy-on-change behavior.
     };
 
 #define LINK_PROP_GET(_1, _2, _param)                                                              \
@@ -326,35 +380,95 @@ public:
     // defines get##Name##Property() and get##Name##Value() accessor
     BOOST_PP_SEQ_FOR_EACH(LINK_PROP_GET, _, LINK_PARAMS)
 
+    /// Get the element list of this link.
     PropertyLinkList* _getElementListProperty() const;
+
+    /// Get the element value list of this link.
     const std::vector<App::DocumentObject*>& _getElementListValue() const;
 
+    /// Get the show element property.
     PropertyBool* _getShowElementProperty() const;
+
+    /// Get the show element value.
     bool _getShowElementValue() const;
 
+    /// Get the element count property.
     PropertyInteger* _getElementCountProperty() const;
+
+    /// Get the element count value.
     int _getElementCountValue() const;
 
+    /**
+     * @brief Get the linked children of this link.
+     *
+     * @param[in] filter If true, it will filter out objects that are a group.
+     *
+     * @return A vector of linked children.
+     */
     std::vector<DocumentObject*> getLinkedChildren(bool filter = true) const;
 
+    /**
+     * @brief Get a flattened subname.
+     *
+     * Get a flattened subname in case it references an object inside a linked
+     * plain group.
+     *
+     * @param[in] subname The subname to flatten.
+     * @return Returns the flattened subname.
+     */
     const char* flattenSubname(const char* subname) const;
+
+    /**
+     * @brief Expand the subname.
+     *
+     * Expand the subname in case it references an object inside a linked plain
+     * group.
+     *
+     * @param[in,out] subname The subname to expand. It will be modified in place.
+     */
     void expandSubname(std::string& subname) const;
 
+    /**
+     * @brief Get the object the link points to.
+     *
+     * This method returns the linked object of this link. The @p depth
+     * parameter is used as an indication of how deep the recursion is as a
+     * safeguard against infinite recursion caused by cyclic dependencies.
+     *
+     * @param[in] depth The level on which we are resolving the link.
+     *
+     * @return Returns the linked object or @c nullptr if there is no linked value.
+     */
     DocumentObject* getLink(int depth = 0) const;
 
+    /**
+     * @brief Get the transformation matrix of the link.
+     *
+     * @param[in] transform If true, it will take into account the placement of
+     * the link or the original object, if false, it will only provide the
+     * scaling.
+     *
+     * @return The transformation matrix of the link.
+     */
     Base::Matrix4D getTransform(bool transform) const;
+
+    /// Get the scale vector of the link.
     Base::Vector3d getScaleVector() const;
 
+    /// Get the linked plain group if the linked object is a plain group.
     App::GroupExtension* linkedPlainGroup() const;
 
+    /// Whether to transform the link together with the linked object.
     bool linkTransform() const;
 
+    /// Get the subname of the link.
     const char* getSubName() const
     {
         parseSubName();
         return !mySubName.empty() ? mySubName.c_str() : nullptr;
     }
 
+    /// Get the sub-elements of the link.
     const std::vector<std::string>& getSubElements() const
     {
         parseSubName();
@@ -390,69 +504,192 @@ public:
 
     Property* extensionGetPropertyByName(const char* name) const override;
 
+    /**
+     * @brief Get the array index from a subname.
+     *
+     * @param[in] subname The subname to get the array index from.
+     * @param[in,out] psubname If not null, it will point to the position
+     * in the subname after the array index.
+     *
+     * @return The array index, or -1 if there is no array index.
+     */
     static int getArrayIndex(const char* subname, const char** psubname = nullptr);
+
+    /**
+     * @brief Get the element index from a subname.
+     *
+     * This method will acquire the element index from a subname using various
+     * strategies.
+     *
+     * @param[in] subname The subname to get the element index from.
+     * @param[in,out] psubname If not null, it will point to the position
+     * in the subname after the element index.
+     *
+     * @return The element index, or -1 if there is no element index.
+     */
     int getElementIndex(const char* subname, const char** psubname = nullptr) const;
+
+    /**
+     *
+     * @brief Get the element name from an index.
+     *
+     * This method will return the element name corresponding to the given
+     * index.
+     *
+     * @param[in] idx The index of the element.
+     * @param[out] ss The output stream to write the element name to.
+     */
     void elementNameFromIndex(int idx, std::ostream& ss) const;
 
+    /// Get the container object of this link.
     DocumentObject* getContainer();
+    /// Get the container object of this link (const version).
     const DocumentObject* getContainer() const;
 
+    /**
+     * @brief Set the linked object.
+     *
+     * @param[in] index The index of the link property to set.
+     * @param[in] obj The object to link to.
+     * @param[in] subname The subname to link to.
+     * @param[in] subs The sub-elements to link to.
+     */
     void setLink(int index,
                  DocumentObject* obj,
                  const char* subname = nullptr,
                  const std::vector<std::string>& subs = std::vector<std::string>());
 
+    /**
+     * @brief Get the true linked object.
+     *
+     * This method returns the true linked object, which is the object that the
+     * link points to.  The @p depth parameter is used as an indication of the
+     * current level of recursion is as a safeguard against infinite recursion
+     * caused by cyclic dependencies.
+     *
+     * @param recurse If true, it will recursively resolve the link until it reaches
+     * the final linked object, or until it reaches the maximum recursion depth.
+     * @param mat If non-null, it is used as the current transformation matrix on
+     * input. On output it is used as the accumulated transformation up until
+     * the final linked object.
+     * @param depth This parameter indicates the level on which we are
+     * resolving the link.
+     * @param noElement If true, it will not return the linked object if it is
+     * a link to an element.
+     * @return Returns the true linked object. If the linked object is not found
+     * or is invalid, it returns @c nullptr.
+     *
+     * @sa DocumentObject::getLinkedObject() which may return itself if it is not a link.
+     *
+     */
     DocumentObject* getTrueLinkedObject(bool recurse,
                                         Base::Matrix4D* mat = nullptr,
                                         int depth = 0,
                                         bool noElement = false) const;
 
-    using LinkPropMap = std::map<const Property*, std::pair<LinkBaseExtension*, int>>;
-
+    /// Check whether the link has a placement property.
     bool hasPlacement() const
     {
         return getLinkPlacementProperty() || getPlacementProperty();
     }
 
+    /**
+     * @brief Enable the cache for child labels.
+     *
+     * @param[in] enable If -1, it will enable the cache and only clear it. If
+     * 0, it will clear the cache and disableit. If 1, it will enable the cache and fill it
+     * with the current child elements.
+     */
     void cacheChildLabel(int enable = -1) const;
 
+    /**
+     * @brief Setup copy on change behavior.
+     *
+     * This static method sets up the copy on change behavior for a given object.
+     *
+     * @param[in] obj The object to set up copy on change for.
+     * @param[in] linked The linked object to copy from.
+     * @param[in,out] copyOnChangeConns The vector to store the connections for copy on change.
+     * @param[in] checkExisting If true, it will check the links properties
+     * against the properties of the linked object.
+     *
+     * @return True if the setup was successful, false otherwise.
+     */
     static bool
     setupCopyOnChange(App::DocumentObject* obj,
                       App::DocumentObject* linked,
                       std::vector<fastsignals::scoped_connection>* copyOnChangeConns,
                       bool checkExisting);
 
+    /**
+     * @brief Check if a property is marked as copy on change.
+     *
+     * @param[in] obj The object to check the property on.
+     * @param[in] prop The property to check.
+     * @return True if the property is marked as copy on change, false otherwise.
+     */
     static bool isCopyOnChangeProperty(App::DocumentObject* obj, const Property& prop);
 
+    /**
+     * @brief Synchronize the copy on change object with the source object.
+     *
+     * This means updating the mutated copy in the copy-on-change group.
+     */
     void syncCopyOnChange();
 
-    /** Options used in setOnChangeCopyObject()
-     * Multiple options can be combined by bitwise or operator
+    /**
+     * @brief Options used in setOnChangeCopyObject()
+     *
+     * Multiple options can be combined by bitwise or operator.
      */
     enum class OnChangeCopyOptions
     {
-        /// No options set
-        None = 0,
-        /// If set, then exclude the input from object list to copy on change, or else, include the
-        /// input object.
-        Exclude = 1,
-        /// If set , then apply the setting to all links to the input object, or else, apply only to
-        /// this link.
-        ApplyAll = 2,
+        None = 0, ///< No options set
+        Exclude = 1, ///< Exclude an object to be copied when the configuration changes.
+        ApplyAll = 2, ///< Apply the configuration to all links.
     };
 
-    /** Include or exclude object from list of objects to copy on change
-     * @param obj: input object
-     * @param options: control options. @sa OnChangeCopyOptions.
+    /**
+     * @brief Include or exclude an object from the list of objects to copy on change.
+     *
+     * @param[in] obj: The object to include or exclude.
+     * @param[in] options: control options of type OnChangeCopyOptions.
      */
     void setOnChangeCopyObject(App::DocumentObject* obj, OnChangeCopyOptions options);
 
+    /**
+     * @brief Get the list of objects that are set to be copied on change.
+     *
+     * @param[out] excludes: If not null, it will contain the objects that are
+     * excluded from copy-on-change.
+     * @param[in] src: The source of the copy on change link.  If `nullptr`, it
+     * will use the `LinkCopyOnChangeSource` property to determine the source
+     * or if not a copy-on-change link, the linked object.
+     *
+     * @return Objects that depend on the source of the copy-on-change link.
+     */
     std::vector<App::DocumentObject*>
     getOnChangeCopyObjects(std::vector<App::DocumentObject*>* excludes = nullptr,
                            App::DocumentObject* src = nullptr);
 
+    /**
+     * @brief Check whether this link is configurable one.
+     *
+     * This essentially means that the linked object has copy-on-change properties.
+     *
+     * @return True if the link is configurable, false otherwise.
+     */
     bool isLinkedToConfigurableObject() const;
 
+    /**
+     * @brief Monitor changes on the list of copy-on-change objects.
+     *
+     * This function has as input the list of dependencies of original
+     * dependencies of the copy-on-change link.  It sets up connections to
+     * monitor these original objects, to update the copy-on-change links.
+     *
+     * @param[in] objs The list of objects to monitor.
+     */
     void monitorOnChangeCopyObjects(const std::vector<App::DocumentObject*>& objs);
 
     /// Check if the linked object is a copy on change
@@ -461,43 +698,140 @@ public:
 protected:
     void
     _handleChangedPropertyName(Base::XMLReader& reader, const char* TypeName, const char* PropName);
+
+    /// Parse the subname into mySubName and mySubElements
     void parseSubName() const;
+
+    /**
+     * @brief Update the link when a property changes.
+     *
+     * It fullfills a role similar to DocumentObject::onChanged().
+     *
+     * @param[in] parent The parent document object.
+     * @param[in] prop The property that changed.
+     */
     void update(App::DocumentObject* parent, const Property* prop);
+
+    /**
+     * @brief Check a property in case of copy-on-change.
+     *
+     * If a copy is a copy-on-change property in the parent, copy the property
+     * from the source to the link (in the copy-on-change group).
+     *
+     * @param[in] parent The parent document object.
+     * @param[in] prop The property to check.
+     */
     void checkCopyOnChange(App::DocumentObject* parent, const App::Property& prop);
+
+    /**
+     * @brief Setup copy-on-change behavior for this link.
+     *
+     * Transform a regular link into a copy-on-change link.  This means that
+     * the linked object is copied in the copy-on-change group and that the
+     * linked object will point to this copy, while the copy-on-change source
+     * will point to the original.
+     *
+     * @param[in] parent The parent document object.
+     * @param[in] checkSource If true, it will check the and set the
+     * copy-on-change source property.
+     */
     void setupCopyOnChange(App::DocumentObject* parent, bool checkSource = false);
+
+    /**
+     * @brief Make a copy-of-change link from this link.
+     *
+     * This function retrieves the dependencies from the linked object and
+     * copies them.  It will put these copies into the copy-on-change group and
+     * the linked object will be the root of these list of dependencies, making
+     * it equivalent to the original linked object.
+     *
+     * @return The new copy-on-change link object.
+     */
     App::DocumentObject* makeCopyOnChange();
+
+    /// Sync the link elements in this link.
     void syncElementList();
+
+    /**
+     * @brief Detach a linked element.
+     *
+     * Depending on earlier set options, the object may be deleted.
+     *
+     * @param[in] obj The object to detach.
+     */
     void detachElement(App::DocumentObject* obj);
+
+    /// Detach all linked elements.
     void detachElements();
+
+    /**
+     * @brief Check the geo element map for a linked object.
+     *
+     * This method checks if subnames are in accordance with the geo element
+     * map.
+     *
+     * @param[in] obj The document object containing the link.
+     * @param[in] linked The linked document object.
+     * @param[in] pyObj The Python object corresponding to the linked object.
+     * @param[in] postfix The postfix that should be taken into account regarding subelements.
+     */
     void checkGeoElementMap(const App::DocumentObject* obj,
                             const App::DocumentObject* linked,
                             PyObject** pyObj,
                             const char* postfix) const;
+
+    /// Update the connections for a group of link elements.
     void updateGroup();
-    void slotChangedPlainGroup(const App::DocumentObject&, const App::Property&);
+
+    /**
+     * @brief Slot called when a plain group changes.
+     *
+     * @param[in] obj The document object that changed.
+     * @param[in] prop The property that changed.
+     */
+    void slotChangedPlainGroup(const App::DocumentObject& obj, const App::Property& prop);
 
 protected:
+    /// The properties for the link.
     std::vector<Property*> props;
+
+    /// A set of elements to hide.
     std::unordered_set<const App::DocumentObject*> myHiddenElements;
+
+    /// Cached subelements.
     mutable std::vector<std::string> mySubElements;
+
+    /// Cached subname.
     mutable std::string mySubName;
 
+    /// Connections to monitor plain group changes.
     std::unordered_map<const App::DocumentObject*, fastsignals::scoped_connection>
         plainGroupConns;
 
-    long prevLinkedObjectID = 0;
-
-    mutable std::unordered_map<std::string, int> myLabelCache;  // for label based subname lookup
+    /// Cache for label based subname lookup.
+    mutable std::unordered_map<std::string, int> myLabelCache;
+    /// Whether the label cache is enabled.
     mutable bool enableLabelCache {false};
+
+    /// Whether the link has old style subelement.
     bool hasOldSubElement {false};
 
+    /// Connections for copy on change behavior.
     std::vector<fastsignals::scoped_connection> copyOnChangeConns;
+
+    /// Connections for the source objects for copy on change.
     std::vector<fastsignals::scoped_connection> copyOnChangeSrcConns;
+
+    /// Whether the link has copy on change behavior.
     bool hasCopyOnChange {true};
 
+    /// Whether we are checking properties to avoid recursion.
     mutable bool checkingProperty = false;
+
+    /// Whether to pause copy on change updates.
     bool pauseCopyOnChange = false;
 
+    /// Connection for monitoring changes on the copy on change source.
     fastsignals::scoped_connection connCopyOnChangeSource;
 };
 
@@ -507,6 +841,14 @@ using LinkBaseExtensionPython = ExtensionPythonT<LinkBaseExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+/**
+ * @brief The link extension class.
+ * @ingroup LinksGroup
+ *
+ * This class implements the link extension functionality and is the extension
+ * that makes @ref App::Link "Link" a link.
+ */
 class AppExport LinkExtension: public LinkBaseExtension
 {
     EXTENSION_PROPERTY_HEADER_WITH_OVERRIDE(App::LinkExtension);
@@ -516,20 +858,23 @@ public:
     LinkExtension();
     ~LinkExtension() override = default;
 
-    /** \name Helpers for defining extended parameter
+    /**
+     * @name Helpers for defining extended properties.
+     * @brief Macros that help define properties that extend the properties of the linked object.
      *
-     * extended parameter definition
-     * (Name, Type, Property_Type, Default, Document, Property_Name,
-     *  Derived_Property_Type, App_Property_Type, Group)
+     * Extended property definition:
+     * `(Name, Type, Property_Type, Default, %Document, Property_Name,
+     *  Derived_Property_Type, App_Property_Type, Group)`
      *
-     * This helper simply reuses Name as Property_Name, Property_Type as
-     * Derived_Property_type, Prop_None as App_Propert_Type
+     * This helper simply reuses `Name` as `Property_Name`, `Property_Type` as
+     * `Derived_Property_type`, `Prop_None` as `App_Propert_Type`.
      *
-     * Note: Because PropertyView will merge linked object's properties into
+     * @note
+     * Because PropertyView will merge linked object's properties into
      * ours, we set the default group name as ' Link' with a leading space to
      * try to make our group before others
+     * {@
      */
-    //@{
 
 #define LINK_ENAME(_param) BOOST_PP_TUPLE_ELEM(5, _param)
 #define LINK_ETYPE(_param) BOOST_PP_TUPLE_ELEM(6, _param)
@@ -620,6 +965,14 @@ using LinkExtensionPython = ExtensionPythonT<LinkExtension>;
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+/**
+ * @brief The %Link class.
+ * @ingroup LinksGroup
+ *
+ * Instances of this class represent links to other objects in the document or
+ * even to objects in other documents.
+ */
 class AppExport Link: public App::DocumentObject, public App::LinkExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::Link);
@@ -676,6 +1029,17 @@ using LinkPython = App::FeaturePythonT<Link>;
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+/**
+ * @brief A class that represents an element of a link.
+ * @ingroup LinksGroup
+ *
+ * A link with an element count greater than 0 will contain multiple links to
+ * the linked object, all with their own placement, scale, and visibility.
+ * These links are instances of this class.  The link itself becomes a special
+ * link pointing to the same linked object, but its element list will contain
+ * references to the element links.
+ */
 class AppExport LinkElement: public App::DocumentObject, public App::LinkBaseExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkElement);
@@ -694,10 +1058,12 @@ public:
     LINK_PARAM_EXT(COPY_ON_CHANGE_GROUP)                                                           \
     LINK_PARAM_EXT(COPY_ON_CHANGE_TOUCHED)
 
-    // defines the actual properties
+
+    /// Define the various properties for a link element.
     LINK_PROPS_DEFINE(LINK_PARAMS_ELEMENT)
 
     LinkElement();
+
     const char* getViewProviderName() const override
     {
         return "Gui::ViewProviderLink";
@@ -709,6 +1075,7 @@ public:
         inherited::onDocumentRestored();
     }
 
+    /// Check whether this link element can be deleted.
     bool canDelete() const;
 
     void handleChangedPropertyName(Base::XMLReader& reader,
@@ -720,6 +1087,7 @@ public:
 
     bool isLink() const override;
 
+    /// Get the parent link of this link element.
     App::Link* getLinkGroup() const;
 
     Base::Placement getPlacementOf(const std::string& sub, DocumentObject* targetObj = nullptr) override;
@@ -729,6 +1097,21 @@ using LinkElementPython = App::FeaturePythonT<LinkElement>;
 
 ///////////////////////////////////////////////////////////////////////////
 
+
+/**
+ * @brief A class that represents a group of links.
+ * @ingroup LinksGroup
+ *
+ * Other than "upgrading" a normal Link to having multiple @ref
+ * App::LinkElement "LinkElements", a link group is a grouping for document
+ * objects where the group itself has a separate placement or visibility of the
+ * elements.
+ *
+ * A link group can contain the objects directly as children (called a simple
+ * group), or it can contain links to the objects.  In the latter case, it is
+ * possible to create a group with transform links which means that the
+ * placement of the original objects affect the placement of the links as well.
+ */
 class AppExport LinkGroup: public App::DocumentObject, public App::LinkBaseExtension
 {
     PROPERTY_HEADER_WITH_EXTENSIONS(App::LinkGroup);
@@ -742,7 +1125,7 @@ public:
     LINK_PARAM_EXT(MODE)                                                                           \
     LINK_PARAM_EXT_ATYPE(COLORED_ELEMENTS, App::Prop_Hidden)
 
-    // defines the actual properties
+    /// Define the various properties of the link group.
     LINK_PROPS_DEFINE(LINK_PARAMS_GROUP)
 
     LinkGroup();
@@ -770,13 +1153,14 @@ import LinkParams
 LinkParams.declare()
 ]]]*/
 
-namespace App
-{
-/** Convenient class to obtain App::Link related parameters
-
+// Auto generated code (App/params_utils.py:90)
+namespace App {
+/**
+ * @brief Convenient class to obtain App::Link related parameters
+ *
  * The parameters are under group "User parameter:BaseApp/Preferences/Link"
  *
- * This class is auto generated by LinkParams.py. Modify that file
+ * This class is auto generated by App/LinkParams.py. Modify that file
  * instead of this one, if you want to add any parameter. You need
  * to install Cog Python package for code generation:
  * @code
@@ -788,7 +1172,7 @@ namespace App
  *     python3 -m cogapp -r Link.h Link.cpp
  * @endcode
  *
- * You can add a new parameter by adding lines in LinkParams.py. Available
+ * You can add a new parameter by adding lines in App/LinkParams.py. Available
  * parameter types are 'Int, UInt, String, Bool, Float'. For example, to add
  * a new Int type parameter,
  * @code
@@ -802,26 +1186,27 @@ namespace App
  *     void LinkParams:on<parameter_name>Changed()
  * @endcode
  */
-class AppExport LinkParams
-{
+class AppExport LinkParams {
 public:
     static ParameterGrp::handle getHandle();
 
-    //@{
-    /// Accessor for parameter CopyOnChangeApplyToAll
+    // Auto generated code (App/params_utils.py:139)
+    /// @name CopyOnChangeApplyToAll accessors
+    /// @brief Accessors for parameter CopyOnChangeApplyToAll
     ///
     /// Stores the last user choice of whether to apply CopyOnChange setup to all link
     /// that links to the same configurable object
-    static const bool& getCopyOnChangeApplyToAll();
-    static const bool& defaultCopyOnChangeApplyToAll();
+    /// @{
+    static const bool & getCopyOnChangeApplyToAll();
+    static const bool & defaultCopyOnChangeApplyToAll();
     static void removeCopyOnChangeApplyToAll();
-    static void setCopyOnChangeApplyToAll(const bool& v);
-    static const char* docCopyOnChangeApplyToAll();
-    //@}
+    static void setCopyOnChangeApplyToAll(const bool &v);
+    static const char *docCopyOnChangeApplyToAll();
+    /// @}
 
-    // Auto generated code. See class document of LinkParams.
-};
-}  // namespace App
+// Auto generated code (App/params_utils.py:180)
+}; // class LinkParams
+} // namespace App
 //[[[end]]]
 
 

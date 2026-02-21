@@ -54,6 +54,9 @@ public:
     bool canDelete(App::DocumentObject* obj) const override;
 
     void regroupSubViews();
+    void updateData(const App::Property* prop) override;
+    void onChangeAutoDistribute();
+
 
 protected:
     bool setEdit(int ModNum) override;

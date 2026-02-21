@@ -61,104 +61,85 @@ import LinkParams
 LinkParams.define()
 ]]]*/
 
-namespace
-{
-
-// Auto generated code. See class document of LinkParams.
-class LinkParamsP: public ParameterGrp::ObserverType
-{
+// Auto generated code (App/params_utils.py:209)
+namespace {
+class LinkParamsP: public ParameterGrp::ObserverType {
 public:
-    // Auto generated code. See class document of LinkParams.
     ParameterGrp::handle handle;
+    std::unordered_map<const char *,void(*)(LinkParamsP*),App::CStringHasher,App::CStringHasher> funcs;
 
-    // Auto generated code. See class document of LinkParams.
-    std::unordered_map<const char*, void (*)(LinkParamsP*), App::CStringHasher, App::CStringHasher>
-        funcs;
+    bool CopyOnChangeApplyToAll;
 
-    bool CopyOnChangeApplyToAll;  // Auto generated code. See class document of LinkParams.
-
-    // Auto generated code. See class document of LinkParams.
-    LinkParamsP()
-    {
-        handle = App::GetApplication().GetParameterGroupByPath(
-            "User parameter:BaseApp/Preferences/Link");
+    // Auto generated code (App/params_utils.py:247)
+    LinkParamsP() {
+        handle = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Link");
         handle->Attach(this);
 
         CopyOnChangeApplyToAll = handle->GetBool("CopyOnChangeApplyToAll", true);
         funcs["CopyOnChangeApplyToAll"] = &LinkParamsP::updateCopyOnChangeApplyToAll;
     }
 
-    // Auto generated code. See class document of LinkParams.
-    ~LinkParamsP() override = default;
+    // Auto generated code (App/params_utils.py:265)
+    ~LinkParamsP() {
+    }
 
-    // Auto generated code. See class document of LinkParams.
-    void OnChange(Base::Subject<const char*>&, const char* sReason) override
-    {
-        if (!sReason) {
+    // Auto generated code (App/params_utils.py:272)
+    void OnChange(Base::Subject<const char*> &, const char* sReason) {
+        if(!sReason)
             return;
-        }
         auto it = funcs.find(sReason);
-        if (it == funcs.end()) {
+        if(it == funcs.end())
             return;
-        }
         it->second(this);
+        
     }
 
 
-    // Auto generated code. See class document of LinkParams.
-    static void updateCopyOnChangeApplyToAll(LinkParamsP* self)
-    {
+    // Auto generated code (App/params_utils.py:290)
+    static void updateCopyOnChangeApplyToAll(LinkParamsP *self) {
         self->CopyOnChangeApplyToAll = self->handle->GetBool("CopyOnChangeApplyToAll", true);
     }
 };
 
-// Auto generated code. See class document of LinkParams.
-LinkParamsP* instance()
-{
-    static LinkParamsP* inst = new LinkParamsP;
+// Auto generated code (App/params_utils.py:312)
+LinkParamsP *instance() {
+    static LinkParamsP *inst = new LinkParamsP;
     return inst;
 }
 
-}  // Anonymous namespace
+} // Anonymous namespace
 
-// Auto generated code. See class document of LinkParams.
-ParameterGrp::handle LinkParams::getHandle()
-{
+// Auto generated code (App/params_utils.py:323)
+ParameterGrp::handle LinkParams::getHandle() {
     return instance()->handle;
 }
 
-// Auto generated code. See class document of LinkParams.
-const char* LinkParams::docCopyOnChangeApplyToAll()
-{
-    return QT_TRANSLATE_NOOP(
-        "LinkParams",
-        "Stores the last user choice of whether to apply CopyOnChange setup to all links\n"
-        "that reference the same configurable object");
+// Auto generated code (App/params_utils.py:352)
+const char *LinkParams::docCopyOnChangeApplyToAll() {
+    return QT_TRANSLATE_NOOP("LinkParams",
+"Stores the last user choice of whether to apply CopyOnChange setup to all link\n"
+"that links to the same configurable object");
 }
 
-// Auto generated code. See class document of LinkParams.
-const bool& LinkParams::getCopyOnChangeApplyToAll()
-{
+// Auto generated code (App/params_utils.py:360)
+const bool & LinkParams::getCopyOnChangeApplyToAll() {
     return instance()->CopyOnChangeApplyToAll;
 }
 
-// Auto generated code. See class document of LinkParams.
-const bool& LinkParams::defaultCopyOnChangeApplyToAll()
-{
-    static const bool def = true;
+// Auto generated code (App/params_utils.py:368)
+const bool & LinkParams::defaultCopyOnChangeApplyToAll() {
+    const static bool def = true;
     return def;
 }
 
-// Auto generated code. See class document of LinkParams.
-void LinkParams::setCopyOnChangeApplyToAll(const bool& v)
-{
-    instance()->handle->SetBool("CopyOnChangeApplyToAll", v);
+// Auto generated code (App/params_utils.py:377)
+void LinkParams::setCopyOnChangeApplyToAll(const bool &v) {
+    instance()->handle->SetBool("CopyOnChangeApplyToAll",v);
     instance()->CopyOnChangeApplyToAll = v;
 }
 
-// Auto generated code. See class document of LinkParams.
-void LinkParams::removeCopyOnChangeApplyToAll()
-{
+// Auto generated code (App/params_utils.py:386)
+void LinkParams::removeCopyOnChangeApplyToAll() {
     instance()->handle->RemoveBool("CopyOnChangeApplyToAll");
 }
 //[[[end]]]

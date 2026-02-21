@@ -96,10 +96,31 @@ public:
      */
     virtual bool extensionGetSubObjects(std::vector<std::string>& ret, int reason) const;
 
-    /** Get the linked object
-     *  @sa DocumentObject::getLinkedObject()
+    /**
+     * @brief Get the linked object of this extension.
      *
-     * @return Return turn if handled, the linked object is returned in \c ret
+     * This method returns the linked object of this document object.  If there
+     * is no linked object, it will return the container object of the
+     * extension.
+     *
+     * @param[out] ret The linked object is returned in this parameter.
+     *
+     * @param[in] recurse If true, it will recursively resolve the link until it
+     * reaches the final linked object.
+     *
+     * @param mat[in,out] If non-null, it is used as the current transformation
+     * matrix on input. On output it is used as the accumulated transformation
+     * up until the final linked object.
+     *
+     * @param[in] transform If false, then it will not accumulate the object's own
+     * placement into @p mat, which lets you override the object's placement.
+     *
+     * @param[in] depth This parameter indicates the level on which we are
+     * resolving the link.
+     *
+     * @return Returns true if the linked object is successfully retrieved and
+     * returned in @p ret. If the linked object is not found or is invalid, it
+     * returns false.
      */
     virtual bool extensionGetLinkedObject(DocumentObject*& ret,
                                           bool recursive,

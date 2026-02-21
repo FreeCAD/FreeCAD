@@ -155,22 +155,34 @@ protected:
     void keyPressEvent(QKeyEvent*) override;
 };
 
-
+/**
+ * @brief Line number widget (left margin gutter).
+ *
+ * Handles line number and mouse-based line range selections.
+ */
 class LineMarker: public QWidget
 {
     Q_OBJECT
 
 public:
     explicit LineMarker(TextEditor* editor);
-    ~LineMarker() override;
+    ~LineMarker() override = default;
 
     QSize sizeHint() const override;
 
 protected:
-    void paintEvent(QPaintEvent*) override;
+    void paintEvent(QPaintEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-    TextEditor* textEditor;
+    TextEditor* const textEditor;
+    int anchorLine = -1;
+    bool dragging = false;
+
+    QTextBlock blockAtPosition(int y) const;
+    void selectBlocks(int startLine, int endLine);
 };
 
 /**

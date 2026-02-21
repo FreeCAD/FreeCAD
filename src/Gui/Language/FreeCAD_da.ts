@@ -3446,7 +3446,7 @@ ikon i trævisningen for at genindlæse det.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="603"/>
       <source>Disable partial loading of external linked objects</source>
-      <translation>Deaktivér delvis indlæsning af eksternt tilknyttede objekter</translation>
+      <translation>Deaktiver delvis indlæsning af eksternt tilknyttede objekter</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="619"/>
@@ -3848,7 +3848,7 @@ Du kan også bruge metoden: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="211"/>
       <source>Log all commands issued by menus to file</source>
-      <translation type="unfinished">Log all commands issued by menus to file</translation>
+      <translation>Log alle kommandoer fra menuerne til en fil</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="243"/>
@@ -4157,9 +4157,9 @@ Some navigation styles (OpenInventor, Gesture, OpenSCAD) require Ctrl+LMB instea
       <source>Prevents view tilting when pinch-zooming.
 Affects only Gesture navigation style.
 Mouse tilting is not disabled by this setting.</source>
-      <translation type="unfinished">Prevents view tilting when pinch-zooming.
-Affects only Gesture navigation style.
-Mouse tilting is not disabled by this setting.</translation>
+      <translation>Forhindrer at visningen tipper, når der knibes for at zoome.
+Påvirker kun navigation med gestures.
+Tipning med musen deaktiveres ikke.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="743"/>
@@ -4258,7 +4258,7 @@ Et zoom trin på '1' betyder en faktor på 7,5 for hvert zoom trin.</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="724"/>
       <source>Disable touchscreen tilt gesture</source>
-      <translation>Deaktivér tilt-gesture på touch-skærme</translation>
+      <translation>Deaktiver tilt-gesture på touch-skærme</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.cpp" line="211"/>
@@ -4368,12 +4368,12 @@ vandrette plads i Python-konsollen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (ms)</source>
-      <translation type="unfinished">Python profiler interval (ms)</translation>
+      <translation>Python profilerings-interval (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation type="unfinished">The interval in milliseconds at which the profiler runs when there is Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+      <translation>Intervallet (i millisekunder) hvor profileringen kører når der er en kørende Python-kode (for at sikre svar fra brugerfladen). Sæt til 0 for at deaktivere.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="125"/>
@@ -6537,7 +6537,7 @@ I Sketcher og andre redigeringstilstande, hold Alt-tasten nede samtidigt.</trans
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="867"/>
       <source>Expand to Default</source>
-      <translation type="unfinished">Expand to Default</translation>
+      <translation>Udvid til standard</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="869"/>
@@ -6552,7 +6552,7 @@ I Sketcher og andre redigeringstilstande, hold Alt-tasten nede samtidigt.</trans
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="877"/>
       <source>Default Expand</source>
-      <translation type="unfinished">Default Expand</translation>
+      <translation>Standardudvidelse</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="880"/>
@@ -8607,12 +8607,12 @@ Vælg 'Afbryd' for at afbryde</translation>
       <translation>Kan ikke åbne systembrowseren.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Ikke mere hukommelse</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Ikke nok hukommelse til at vise dataene.</translation>
     </message>
@@ -8796,7 +8796,7 @@ Vælg 'Afbryd' for at afbryde</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3053"/>
       <source>Copy on Change</source>
-      <translation type="unfinished">Copy on Change</translation>
+      <translation>Kopier ved ændring</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3054"/>
@@ -8825,7 +8825,7 @@ Gendanner også kopien automatisk hvis det oprindeligt linkede objekt ændres.
     <message>
       <location filename="../ViewProviderLink.cpp" line="3094"/>
       <source>Disable Copy on Change</source>
-      <translation type="unfinished">Disable Copy on Change</translation>
+      <translation>Deaktiver kopi ved ændring</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="3112"/>
@@ -9080,7 +9080,7 @@ i den aktuelle kopi vil gå tabt.
       <translation>Ikke tilladt:</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Valget tillades ikke af filteret</translation>
     </message>
@@ -9274,7 +9274,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../CommandDoc.cpp" line="286"/>
       <source>Exports an object in the active document</source>
-      <translation type="unfinished">Exports an object in the active document</translation>
+      <translation>Eksporterer et objekt i det aktive dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="434"/>
@@ -9284,7 +9284,7 @@ i den aktuelle kopi vil gå tabt.
     <message>
       <location filename="../CommandDoc.cpp" line="435"/>
       <source>Select objects to export before using the Export command.</source>
-      <translation type="unfinished">Select objects to export before using the Export command.</translation>
+      <translation>Vælg objekter der skal eksporteres før brug af eksport-kommandoen.</translation>
     </message>
   </context>
   <context>
@@ -10070,7 +10070,7 @@ Fortsæt?
     <message>
       <location filename="../CommandView.cpp" line="780"/>
       <source>Normal mode</source>
-      <translation>Normal visning</translation>
+      <translation>Standardvisning</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="782"/>
@@ -10249,7 +10249,7 @@ Vil du gemme dokumentet nu?</translation>
     <message>
       <location filename="../Workbench.cpp" line="610"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Link handlinger</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="595"/>
@@ -12196,12 +12196,12 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="325"/>
       <source>Python &amp;Modules Documentation</source>
-      <translation type="unfinished">Python &amp;Modules Documentation</translation>
+      <translation>Python modulets dokumentation</translation>
     </message>
     <message>
       <location filename="../OnlineDocumentation.cpp" line="326"/>
       <source>Opens the Python Modules documentation</source>
-      <translation type="unfinished">Opens the Python Modules documentation</translation>
+      <translation>Åbner dokumentationen for Python modulet</translation>
     </message>
   </context>
   <context>
@@ -12227,7 +12227,7 @@ er kun aktiveret hvis alle pixels i området er ugennemsigtige.</translation>
     <message>
       <location filename="../CommandStd.cpp" line="538"/>
       <source>Opens the Help documentation</source>
-      <translation type="unfinished">Opens the Help documentation</translation>
+      <translation>Åbner hjælpe- og dokumentation-siderne</translation>
     </message>
   </context>
   <context>
@@ -13121,12 +13121,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="84"/>
       <source>Link Group</source>
-      <translation type="unfinished">Link Group</translation>
+      <translation>Link gruppe</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="85"/>
       <source>Creates a group of links</source>
-      <translation type="unfinished">Creates a group of links</translation>
+      <translation>Opretter en gruppe af links</translation>
     </message>
   </context>
   <context>
@@ -13134,12 +13134,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="258"/>
       <source>Make Link</source>
-      <translation type="unfinished">Make Link</translation>
+      <translation>Opret link</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="259"/>
       <source>A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</source>
-      <translation type="unfinished">A link is an object that references another object, either within the same or in another document. Unlike clones, links reference the original shape directly, making them more memory-efficient, which helps with the creation of complex assemblies.</translation>
+      <translation>Et link er et objekt, der henviser (linker) til et andet objekt, enten i samme dokument eller i et andet dokument. Til forskel fra kloner, henviser links direkte til den oprindelige geometri, hvilket gør dem mere hukommelseseffektive, og hjælper ved oprettelsen af komplekse samlinger.</translation>
     </message>
   </context>
   <context>
@@ -13173,12 +13173,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="646"/>
       <source>Import Links</source>
-      <translation type="unfinished">Import Links</translation>
+      <translation>Importer links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="647"/>
       <source>Imports selected external links</source>
-      <translation type="unfinished">Imports selected external links</translation>
+      <translation>Importerer valgte eksterne links</translation>
     </message>
   </context>
   <context>
@@ -13186,12 +13186,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="720"/>
       <source>Import All Links</source>
-      <translation type="unfinished">Import All Links</translation>
+      <translation>Importer alle links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="721"/>
       <source>Imports all links of the active document</source>
-      <translation type="unfinished">Imports all links of the active document</translation>
+      <translation>Importerer alle links i det aktive dokument</translation>
     </message>
   </context>
   <context>
@@ -13225,7 +13225,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="956"/>
       <source>Select &amp;All Links</source>
-      <translation type="unfinished">Select &amp;All Links</translation>
+      <translation>Vælg alle links</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="957"/>
@@ -13238,12 +13238,12 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandLink.cpp" line="1029"/>
       <source>Link Actions</source>
-      <translation type="unfinished">Link Actions</translation>
+      <translation>Link handlinger</translation>
     </message>
     <message>
       <location filename="../CommandLink.cpp" line="1030"/>
       <source>Commands that operate on link objects</source>
-      <translation type="unfinished">Commands that operate on link objects</translation>
+      <translation>Kommandoer der virker på linkobjekter</translation>
     </message>
   </context>
   <context>
@@ -13433,7 +13433,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandStd.cpp" line="593"/>
       <source>Donate to FreeCA&amp;D</source>
-      <translation>Doner til FreeCA&amp;D</translation>
+      <translation>Støt FreeCA&amp;D</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="594"/>
@@ -13550,7 +13550,7 @@ Fortsæt?</translation>
     <message>
       <location filename="../CommandView.cpp" line="275"/>
       <source>Restore Saved Camera</source>
-      <translation type="unfinished">Restore Saved Camera</translation>
+      <translation>Gendan kameraindstillinger</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="276"/>
@@ -14358,7 +14358,7 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Eksakt match</translation>
     </message>
@@ -14366,7 +14366,7 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Exact Match</translation>
     </message>
@@ -14568,12 +14568,12 @@ Dette gør at vinduet til enhver tid er gennemsigtigt.</translation>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Ja</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Nej</translation>
     </message>

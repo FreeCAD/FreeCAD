@@ -48,7 +48,7 @@
       <translation type="unfinished">Assembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="140"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="143"/>
       <source>Active object</source>
       <translation>Ενεργό αντικείμενο</translation>
     </message>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1700"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Απόσταση</translation>
     </message>
@@ -170,27 +170,27 @@
       <translation>Ιμάντας</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="757"/>
+      <location filename="../../../JointObject.py" line="812"/>
       <source>Broken link in: </source>
       <translation>Σπασμένος σύνδεσμος στο: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1529"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>Επιλέξτε 2 στοιχεία από 2 ξεχωριστά μέρη</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1702"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Ακτίνα 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1704"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Βήμα Σπειρώματος</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1706"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Ακτίνα βήματος</translation>
     </message>
@@ -515,119 +515,119 @@ H2 είναι το ύψος στο T2, στο τέλος της κλίσης.
       <translation>Ο τύπος της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="211"/>
+      <location filename="../../../JointObject.py" line="370"/>
       <source>The first reference of the joint</source>
       <translation>Η πρώτη αναφορά της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="223"/>
+      <location filename="../../../JointObject.py" line="218"/>
       <source>This is the local coordinate system within Reference1's object that will be used for the joint</source>
       <translation>Αυτό είναι το τοπικό σύστημα συντεταγμένων εντός του αντικειμένου της Αναφοράς1 που θα χρησιμοποιηθεί για τη σύνδεση</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="235"/>
+      <location filename="../../../JointObject.py" line="230"/>
       <source>This prevents Placement1 from recomputing, enabling custom positioning of the placement</source>
       <translation>Αυτό εμποδίζει τον επαναϋπολογισμό της Θέσης1, επιτρέποντας την προσαρμοσμένη τοποθέτησή της</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="247"/>
-      <location filename="../../../JointObject.py" line="556"/>
+      <location filename="../../../JointObject.py" line="242"/>
+      <location filename="../../../JointObject.py" line="563"/>
       <source>This is the attachment offset of the first connector of the joint</source>
       <translation>Αυτή είναι η μετατόπιση προσάρτησης (offset) του πρώτου συνδέσμου της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="269"/>
+      <location filename="../../../JointObject.py" line="258"/>
       <source>This is the local coordinate system within Reference2's object that will be used for the joint</source>
       <translation>Αυτό είναι το τοπικό σύστημα συντεταγμένων εντός του αντικειμένου της Αναφοράς2 που θα χρησιμοποιηθεί για τη σύνδεση</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="281"/>
+      <location filename="../../../JointObject.py" line="270"/>
       <source>This prevents Placement2 from recomputing, enabling custom positioning of the placement</source>
       <translation>Αυτό εμποδίζει τον επαναϋπολογισμό της Θέσης2, επιτρέποντας την προσαρμοσμένη τοποθέτησή της</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="293"/>
-      <location filename="../../../JointObject.py" line="567"/>
+      <location filename="../../../JointObject.py" line="282"/>
+      <location filename="../../../JointObject.py" line="574"/>
       <source>This is the attachment offset of the second connector of the joint</source>
       <translation>Αυτή είναι η μετατόπιση προσάρτησης (offset) του δεύτερου συνδέσμου της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="315"/>
+      <location filename="../../../JointObject.py" line="304"/>
       <source>Enable the minimum length limit of the joint</source>
       <translation>Ενεργοποίηση του ορίου ελάχιστου μήκους της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="328"/>
+      <location filename="../../../JointObject.py" line="317"/>
       <source>Enable the maximum length limit of the joint</source>
       <translation>Ενεργοποίηση του ορίου μέγιστου μήκους της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="341"/>
+      <location filename="../../../JointObject.py" line="330"/>
       <source>Enable the minimum angle limit of the joint</source>
       <translation>Ενεργοποίηση του ορίου ελάχιστης γωνίας της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="354"/>
+      <location filename="../../../JointObject.py" line="343"/>
       <source>Enable the maximum angle limit of the joint</source>
       <translation>Ενεργοποίηση του ορίου μέγιστης γωνίας της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="384"/>
+      <location filename="../../../JointObject.py" line="391"/>
       <source>This is the angle of the joint. It is used only by the Angle joint.</source>
       <translation>Αυτή είναι η γωνία της σύνδεσης. Χρησιμοποιείται μόνο στη γωνιακή σύνδεση.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="420"/>
+      <location filename="../../../JointObject.py" line="427"/>
       <source>This is the minimum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Αυτό είναι το ελάχιστο όριο για το μήκος μεταξύ των δύο συστημάτων συντεταγμένων (κατά μήκος του άξονα Z τους)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="432"/>
+      <location filename="../../../JointObject.py" line="439"/>
       <source>This is the maximum limit for the length between both coordinate systems (along their z-axis)</source>
       <translation>Αυτό είναι το μέγιστο όριο για το μήκος μεταξύ των δύο συστημάτων συντεταγμένων (κατά μήκος του άξονα Z τους)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="444"/>
+      <location filename="../../../JointObject.py" line="451"/>
       <source>This is the minimum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Αυτό είναι το ελάχιστο όριο για τη γωνία μεταξύ των δύο συστημάτων συντεταγμένων (μεταξύ των αξόνων Χ τους)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="456"/>
+      <location filename="../../../JointObject.py" line="463"/>
       <source>This is the maximum limit for the angle between both coordinate systems (between their x-axis)</source>
       <translation>Αυτό είναι το μέγιστο όριο για τη γωνία μεταξύ των δύο συστημάτων συντεταγμένων (μεταξύ των αξόνων Χ τους)</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="257"/>
+      <location filename="../../../JointObject.py" line="379"/>
       <source>The second reference of the joint</source>
       <translation>Η δεύτερη αναφορά της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="475"/>
+      <location filename="../../../JointObject.py" line="482"/>
       <source>The first object of the joint</source>
       <translation>Το πρώτο αντικείμενο της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="495"/>
+      <location filename="../../../JointObject.py" line="502"/>
       <source>The second object of the joint</source>
       <translation>Το δεύτερο αντικείμενο της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="396"/>
+      <location filename="../../../JointObject.py" line="403"/>
       <source>This is the distance of the joint. It is used only by the Distance joint and Rack and Pinion (pitch radius), Screw and Gears and Belt (radius1)</source>
       <translation>Αυτή είναι η απόσταση της σύνδεσης. Χρησιμοποιείται μόνο στη σύνδεση απόστασης, καθώς και από τις συνδέσεις Κρεμαγιέρας και Πινιόν (ακτίνα βήματος), Βίδας, Γραναζιών και Ιμάντα (ακτίνα1).</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="408"/>
+      <location filename="../../../JointObject.py" line="415"/>
       <source>This is the second distance of the joint. It is used only by the gear joint to store the second radius.</source>
       <translation>Αυτή είναι η δεύτερη απόσταση της σύνδεσης. Χρησιμοποιείται μόνο από τη σύνδεση γραναζιών για την αποθήκευση της δεύτερης ακτίνας.</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="509"/>
+      <location filename="../../../JointObject.py" line="516"/>
       <source>The {order} reference of the joint</source>
       <translation>{order} αναφορά της σύνδεσης</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1151"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>Το αντικείμενο προς ακινητοποίηση</translation>
     </message>
@@ -889,63 +889,63 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="206"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Το αντικείμενο συνδέεται με μία ή περισσότερες αρθρώσεις.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="208"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Θέλετε να μετακινήσετε το αντικείμενο και να διαγράψετε τις σχετικές συνδέσεις?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1051"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Μετακίνηση εξαρτήματος</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1596"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ΠάροχοςΠροβολήςΣυναρμολόγησης (ViewProviderAssembly)</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1613"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
       <source>Empty Assembly</source>
       <translation>Κενή Συναρμολόγηση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1618"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
       <source>Over-constrained:</source>
       <translation>Υπερ-περιορισμένη:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1626"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
       <source>Malformed joints:</source>
       <translation>Ελαττωματικές Συνδέσεις:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1634"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
       <source>Redundant joints:</source>
       <translation>Πλεονάζουσες Συνδέσεις:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1642"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
       <source>Partially redundant:</source>
       <translation>Μερικώς πλεονάζουσα:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1650"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
       <source>Solver failed to converge</source>
       <translation>Ο επιλύτης (solver) δεν μπόρεσε να βρει λύση</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1658"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
       <source>Under-constrained:</source>
       <translation>Μη πλήρως περιορισμένη:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1660"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n ελεύθερη κίνηση</numerusform>
@@ -953,7 +953,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1664"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
       <source>Fully constrained</source>
       <translation>Πλήρως περιορισμένη</translation>
     </message>
@@ -1089,7 +1089,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly::AssemblyLink</name>
     <message>
-      <location filename="../../../App/AssemblyLink.cpp" line="651"/>
+      <location filename="../../../App/AssemblyLink.cpp" line="690"/>
       <source>Joints</source>
       <translation>Συνδέσεις</translation>
     </message>
@@ -1428,12 +1428,12 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
   <context>
     <name>Assembly_ToggleGrounded</name>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="429"/>
+      <location filename="../../../CommandCreateJoint.py" line="431"/>
       <source>Toggle Grounded</source>
       <translation>Ενεργοποίηση/Απενεργοποίηση ακινητοποίησης</translation>
     </message>
     <message>
-      <location filename="../../../CommandCreateJoint.py" line="435"/>
+      <location filename="../../../CommandCreateJoint.py" line="437"/>
       <source>&lt;p&gt;Toggles the grounding of a part.&lt;/p&gt;&lt;p&gt;Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.</source>
       <translation>&lt;p&gt;Εναλλάσσει την ακινητοποίηση (grounding) ενός εξαρτήματος&lt;/p&gt;&lt;p&gt;Η ακινητοποίηση ενός εξαρτήματος κλειδώνει μόνιμα τη θέση του στη συναρμολόγηση, αποτρέποντας οποιαδήποτε κίνηση ή περιστροφή. Χρειάζεστε τουλάχιστον ένα ακινητοποιημένο εξάρτημα πριν ξεκινήσετε τη συναρμολόγηση.</translation>
     </message>
@@ -1477,7 +1477,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>Έχει φορτωθεί εν μέρει</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Πλήρης φόρτωση εγγράφου</translation>
     </message>

@@ -165,7 +165,8 @@ False = roue dentée planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation>Applique un lissage à une esquisse ou un profil sélectionné suivant une trajectoire et ajoute le résultat au corps.</translation>
+      <translation>Le lissage additif crée un solide dans le corps actif en faisant une transition entre deux ou plusieurs esquisses (également appelées
+sections transversales). Si le corps contient déjà des éléments, le lissage additif sera fusionné avec eux. </translation>
     </message>
   </context>
   <context>
@@ -725,7 +726,8 @@ avec des objets dans le même document ou dans des documents externes.</translat
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation>Applique un lissage à une esquisse ou un profil sélectionné suivant une trajectoire et soustrait le résultat au corps.</translation>
+      <translation>Le Lissage soustractif crée un solide soustractif dans le corps actif en effectuant une transition entre deux esquisses ou plus (également
+appelés coupes transversales). Sa forme est ensuite soustraite du solide existant. </translation>
     </message>
   </context>
   <context>
@@ -885,7 +887,7 @@ avec des objets dans le même document ou dans des documents externes.</translat
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Edit Shape Binder</source>
-      <translation>Modifier la forme liée</translation>
+      <translation>Éditer une forme liée</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -950,7 +952,7 @@ avec des objets dans le même document ou dans des documents externes.</translat
       <translation>Dupliquer un objet de PartDesign</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1105"/>
+      <location filename="../../CommandBody.cpp" line="1110"/>
       <source>Move a feature inside body</source>
       <translation>Déplacer une fonction dans un corps</translation>
     </message>
@@ -1217,8 +1219,7 @@ Sélectionner un corps parmi la liste ci-dessous ou créer en un nouveau.</trans
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local Y-direction
 If zero, it is equal to Radius2</source>
-      <translation>Rayon dans la direction Y locale
-S'il est égal à zéro, il est égal à Radius2.</translation>
+      <translation>Rayon dans la direction Y locale. S'il est égal à zéro, il est égal à Radius2.</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -3102,27 +3103,27 @@ measured along the specified direction</source>
   <context>
     <name>PartDesign_MoveFeatureInTree</name>
     <message>
-      <location filename="../../CommandBody.cpp" line="1090"/>
+      <location filename="../../CommandBody.cpp" line="1095"/>
       <source>Move Feature After…</source>
       <translation>Déplacer une fonction après…</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1091"/>
+      <location filename="../../CommandBody.cpp" line="1096"/>
       <source>Select a feature from the list</source>
       <translation>Sélectionner une fonction dans la liste</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1178"/>
+      <location filename="../../CommandBody.cpp" line="1183"/>
       <source>Move Tip</source>
       <translation>Déplacer une fonction résultante</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1184"/>
+      <location filename="../../CommandBody.cpp" line="1189"/>
       <source>Set tip to last feature?</source>
       <translation>Voulez-vous désigner comme fonction résultante la dernière fonction ?</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1179"/>
+      <location filename="../../CommandBody.cpp" line="1184"/>
       <source>The moved feature appears after the currently set tip.</source>
       <translation>La fonction déplacée apparaît après la fonction résultante en cours.</translation>
     </message>
@@ -3154,12 +3155,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="810"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation>Sélectionnez une seule face comme support pour une esquisse !</translation>
+      <translation>Sélectionner une seule face comme support pour une esquisse !</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="817"/>
       <source>Select a face as support for a sketch!</source>
-      <translation>Sélectionnez une face comme support pour une esquisse !</translation>
+      <translation>Sélectionner une face comme support pour une esquisse !</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="824"/>
@@ -3213,7 +3214,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation>Il n'y a pas de corps actif. Activez un corps avant d'insérer une entité de référence.</translation>
+      <translation>Il n'y a pas de corps actif. Activer un corps avant d'insérer une entité de référence.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="467"/>
@@ -3237,7 +3238,7 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
       <source>Close this dialog?</source>
-      <translation>Voulez-vous fermer cette boîte de dialogue ?</translation>
+      <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
@@ -3386,19 +3387,19 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="422"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation>Il n'y a aucune fonction de Part Design sans corps trouvé. Il n'y a rien à migrer.</translation>
+      <translation>Il n'y a aucune fonction de PartDesign sans corps trouvé. Il n'y a rien à migrer.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Veuillez éditer '%1' et définir son plan selon un plan de base ou de référence.</translation>
+      <translation>Éditer « %1 » et le redéfinir afin d'utiliser un plan de base ou un plan de référence comme plan d'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="691"/>
       <location filename="../../CommandBody.cpp" line="699"/>
       <location filename="../../CommandBody.cpp" line="711"/>
-      <location filename="../../CommandBody.cpp" line="1056"/>
-      <location filename="../../CommandBody.cpp" line="1066"/>
+      <location filename="../../CommandBody.cpp" line="1061"/>
+      <location filename="../../CommandBody.cpp" line="1071"/>
       <source>Selection error</source>
       <translation>Erreur de sélection</translation>
     </message>
@@ -3425,27 +3426,27 @@ This may lead to unexpected results.</source>
       <translation>Il n'y a aucun autre corps vers lequel déplacer</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1057"/>
+      <location filename="../../CommandBody.cpp" line="1062"/>
       <source>Impossible to move the base feature of a body.</source>
       <translation>Impossible de déplacer la fonction de base d’un corps.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1067"/>
+      <location filename="../../CommandBody.cpp" line="1072"/>
       <source>Select one or more features from the same body.</source>
       <translation>Sélectionner une ou plusieurs fonctions dans le même corps.</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1082"/>
+      <location filename="../../CommandBody.cpp" line="1087"/>
       <source>Beginning of the body</source>
       <translation>Début du corps</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1163"/>
+      <location filename="../../CommandBody.cpp" line="1168"/>
       <source>Dependency violation</source>
       <translation>Violation de dépendance</translation>
     </message>
     <message>
-      <location filename="../../CommandBody.cpp" line="1164"/>
+      <location filename="../../CommandBody.cpp" line="1169"/>
       <source>Early feature must not depend on later feature.
 
 </source>
@@ -3513,12 +3514,12 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Pour utiliser cette fonction, elle doit appartenir à un corps dans le document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>La fonction ne fait pas partie d'une pièce</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
@@ -3528,7 +3529,7 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <source>Edit %1</source>
-      <translation>Modifier %1</translation>
+      <translation>Éditer %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="105"/>
@@ -3572,13 +3573,12 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <location filename="../../ViewProviderDressUp.cpp" line="92"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation>%1 manque d'une fonction de base.
-Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
+      <translation>%1 manque d'une fonction de base. Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="220"/>
       <source>Edit Shape Binder</source>
-      <translation>Modifier la forme liée</translation>
+      <translation>Éditer une forme liée</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="350"/>
@@ -3615,7 +3615,7 @@ Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctions de PartDesign comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Cependant, vous pourrez migrer à tout moment par la suite avec "PartDesign → Migrer".</translation>
+      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctions de PartDesign comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Cependant, vous pourrez migrer à tout moment par la suite avec « PartDesign → Migrer ».</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="189"/>
@@ -3625,77 +3625,77 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="67"/>
       <source>Edit Boolean</source>
-      <translation>Éditer l'opération booléenne</translation>
+      <translation>Éditer une opération booléenne</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="40"/>
       <source>Edit Chamfer</source>
-      <translation>Éditer le chanfrein</translation>
+      <translation>Éditer un chanfrein</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="41"/>
       <source>Edit Draft</source>
-      <translation>Éditer la dépouille</translation>
+      <translation>Éditer une dépouille</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="40"/>
       <source>Edit Fillet</source>
-      <translation>Éditer le congé</translation>
+      <translation>Éditer un congé</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="43"/>
       <source>Edit Groove</source>
-      <translation>Éditer la rainure</translation>
+      <translation>Éditer une rainure</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="48"/>
       <source>Edit Helix</source>
-      <translation>Éditer l'hélice</translation>
+      <translation>Éditer une hélice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="63"/>
       <source>Edit Hole</source>
-      <translation>Éditer le perçage</translation>
+      <translation>Éditer un perçage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="38"/>
       <source>Edit Linear Pattern</source>
-      <translation>Éditer la répétition linéaire</translation>
+      <translation>Éditer une répétition linéaire</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="65"/>
       <source>Edit Loft</source>
-      <translation>Éditer le lissage</translation>
+      <translation>Éditer un lissage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>
       <source>Edit Mirror</source>
-      <translation>Éditer la symétrie</translation>
+      <translation>Éditer une symétrie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="47"/>
       <source>Edit Multi-Transform</source>
-      <translation>Éditer la transformation multiple</translation>
+      <translation>Éditer une transformation multiple</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="43"/>
       <source>Edit Pad</source>
-      <translation>Éditer la protrusion</translation>
+      <translation>Éditer une protrusion</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="75"/>
       <source>Edit Pipe</source>
-      <translation>Éditer le balayage</translation>
+      <translation>Éditer un balayage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="45"/>
       <source>Edit Pocket</source>
-      <translation>Éditer la cavité</translation>
+      <translation>Éditer une cavité</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit Polar Pattern</source>
-      <translation>Éditer la répétition circulaire</translation>
+      <translation>Éditer une répétition circulaire</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="49"/>
@@ -3705,17 +3705,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="43"/>
       <source>Edit Revolution</source>
-      <translation>Éditer la révolution</translation>
+      <translation>Éditer une révolution</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="38"/>
       <source>Edit Scale</source>
-      <translation>Éditer l'échelle</translation>
+      <translation>Éditer une échelle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="40"/>
       <source>Edit Thickness</source>
-      <translation>Éditer l'évidemment</translation>
+      <translation>Éditer un évidemment</translation>
     </message>
   </context>
   <context>
@@ -4223,7 +4223,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Dress-Up Features</source>
-      <translation>Appliquer une fonction d'habillage</translation>
+      <translation>Appliquer une fonction de finition</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -4390,7 +4390,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="118"/>
       <source>Missing Module</source>
-      <translation>Une extension est manquante</translation>
+      <translation>Une extension est manquante.</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="124"/>
@@ -4484,12 +4484,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation>Il n'est pas possible de créer une protrusion dont la longueur totale est nulle.</translation>
+      <translation>Il n'est pas possible de créer une protrusion dont la longueur totale est zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation>Il n'est pas possible de créer une cavité dont la longueur totale est nulle.</translation>
+      <translation>Il n'est pas possible de créer une cavité dont la longueur totale est zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
@@ -4499,7 +4499,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation>L'extrusion fusionnée résultante est nulle.</translation>
+      <translation>L'extrusion fusionnée résultante est sans résultat.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
@@ -5159,7 +5159,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="226"/>
       <source>Starts the shaft design wizard</source>
-      <translation>Démarre l'assistant de conception d'arbre</translation>
+      <translation>Démarre l'assistant de conception d'arbre.</translation>
     </message>
   </context>
   <context>

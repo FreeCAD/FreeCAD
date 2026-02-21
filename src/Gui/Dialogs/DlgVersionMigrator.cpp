@@ -38,6 +38,7 @@
 #include <string>
 #include <ranges>
 #include <cstdlib>
+#include <filesystem>
 
 #include "DlgVersionMigrator.h"
 #include "SplitButton.h"
@@ -225,43 +226,112 @@ Q_SIGNALS:
     void cancelled();
 };
 
-class PathMigrationWorker: public QObject
+PathMigrationWorker::PathMigrationWorker(std::string configDir, std::string userAppDir, int major, int minor)
+    : _configDir(std::move(configDir))
+    , _userAppDir(std::move(userAppDir))
+    , _major(major)
+    , _minor(minor)
+{}
+
+void PathMigrationWorker::run()
 {
-    Q_OBJECT
-
-public:
-    void run()
-    {
-        try {
-            App::GetApplication().GetUserParameter().SaveDocument();
-            App::Application::directories()->migrateAllPaths(
-                {App::Application::directories()->getUserAppDataDir(),
-                 App::Application::directories()->getUserConfigPath()}
-            );
-            Q_EMIT(complete());
-        }
-        catch (const Base::Exception& e) {
-            Base::Console().error("Error migrating configuration data: %s\n", e.what());
-            Q_EMIT(failed());
-        }
-        catch (const std::exception& e) {
-            Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
-            Q_EMIT(failed());
-        }
-        catch (...) {
-            Base::Console().error("Error migrating configuration data\n");
-            Q_EMIT(failed());
-        }
-        Q_EMIT(finished());
+    try {
+        App::GetApplication().GetUserParameter().SaveDocument();
+        App::Application::directories()->migrateAllPaths({_userAppDir, _configDir});
+        replaceOccurrencesInPreferences();
+        Q_EMIT(complete());
     }
+    catch (const Base::Exception& e) {
+        Base::Console().error("Error migrating configuration data: %s\n", e.what());
+        Q_EMIT(failed());
+    }
+    catch (const std::exception& e) {
+        Base::Console().error("Unrecognized error migrating configuration data: %s\n", e.what());
+        Q_EMIT(failed());
+    }
+    catch (...) {
+        Base::Console().error("Error migrating configuration data\n");
+        Q_EMIT(failed());
+    }
+    Q_EMIT(finished());
+}
 
-Q_SIGNALS:
-    void finished();
+void PathMigrationWorker::replaceOccurrencesInPreferences()
+{
+    std::filesystem::path prefPath = locateNewPreferences();
+    std::map<std::string, std::string> replacements = {
+        {_configDir, generateNewUserAppPathString(_configDir)},
+        {_userAppDir, generateNewUserAppPathString(_userAppDir)}
+    };
 
-    void complete();
+    try {
+        std::ifstream prefFile(prefPath);
+        std::string contents(
+            (std::istreambuf_iterator<char>(prefFile)),
+            std::istreambuf_iterator<char>()
+        );
 
-    void failed();
-};
+        for (const auto& [oldString, newString] : replacements) {
+            replaceInContents(contents, oldString, newString);
+        }
+
+        std::ofstream newPrefFile(prefPath);
+        newPrefFile << contents;
+    }
+    catch (const std::exception& e) {
+        Base::Console().error("Error reading preferences file: %s\n", e.what());
+    }
+}
+
+std::filesystem::path PathMigrationWorker::locateNewPreferences() const
+{
+    std::filesystem::path path(_configDir);
+    if (path.filename().empty()) {
+        // Handle the case where the path was constructed from a std::string with a trailing /
+        path = path.parent_path();
+    }
+    fs::path newPath;
+
+    if (App::Application::directories()->isVersionedPath(path)) {
+        newPath = path.parent_path()
+            / App::ApplicationDirectories::versionStringForPath(_major, _minor);
+    }
+    else {
+        newPath = path / App::ApplicationDirectories::versionStringForPath(_major, _minor);
+    }
+    newPath /= "user.cfg";
+    return newPath;
+}
+
+std::string PathMigrationWorker::generateNewUserAppPathString(const std::string& oldPath) const
+{
+    std::filesystem::path newPath = Base::FileInfo::stringToPath(oldPath);
+    if (App::Application::directories()->isVersionedPath(newPath)) {
+        newPath = newPath.parent_path();
+    }
+    newPath /= App::ApplicationDirectories::versionStringForPath(_major, _minor);
+    std::string result = Base::FileInfo::pathToString(newPath);
+    if (oldPath.back() == std::filesystem::path::preferred_separator) {
+        result += std::filesystem::path::preferred_separator;
+    }
+    return result;
+}
+
+void PathMigrationWorker::replaceInContents(
+    std::string& contents,
+    const std::string& oldString,
+    const std::string& newString
+)
+{
+    if (oldString.empty()) {
+        return;
+    }
+    std::size_t pos = 0;
+    while ((pos = contents.find(oldString, pos)) != std::string::npos) {
+        contents.replace(pos, oldString.length(), newString);
+        pos += newString.length();
+    }
+}
 
 void DlgVersionMigrator::calculateMigrationSize()
 {
@@ -310,7 +380,12 @@ void DlgVersionMigrator::migrate()
 {
     hide();
     auto* workerThread = new QThread(mainWindow);
-    auto* worker = new PathMigrationWorker();
+    auto* worker = new PathMigrationWorker(
+        App::Application::getUserConfigPath(),
+        App::Application::getUserAppDataDir(),
+        std::stoi(App::Application::Config()["BuildVersionMajor"]),
+        std::stoi(App::Application::Config()["BuildVersionMinor"])
+    );
     worker->moveToThread(workerThread);
     connect(workerThread, &QThread::started, worker, &PathMigrationWorker::run);
     connect(worker, &PathMigrationWorker::finished, workerThread, &QThread::quit);

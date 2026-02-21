@@ -39,30 +39,44 @@
 namespace Data
 {
 
-/// The IndexedName class provides a very memory-efficient data structure to hold a name and an
-/// index value, and to perform various comparisons and validations of those values. The name must
-/// only consist of upper- and lower-case ASCII characters and the underscore ('_') character. The
-/// index must be a positive integer. The string representation of this IndexedName is the name
-/// followed by the index, with no spaces between: an IndexedName may be constructed from this
-/// string. For example "EDGE1" or "FACE345" might be the names of elements that use an IndexedName.
-/// If there is then an "EDGE2", only a pointer to the original stored name "EDGE" is retained.
-///
-/// The memory efficiency of the class comes from reusing the same character storage for names that
-/// match, while retaining their differing indices. This is achieved by either using user-provided
-/// const char * names (provided as a list of typeNames and presumed to never be deallocated), or by
-/// maintaining an internal list of names that have been used before, and can be reused later.
+/**
+ * @brief A data structure to hold a name and an index value.
+ * @ingroup ElementMapping
+ *
+ * The IndexedName class provides a very memory-efficient data structure to hold a name and an
+ * index value, and to perform various comparisons and validations of those values. The name must
+ * only consist of upper- and lower-case ASCII characters and the underscore ('_') character. The
+ * index must be a positive integer. The string representation of this IndexedName is the name
+ * followed by the index, with no spaces between: an IndexedName may be constructed from this
+ * string. For example "Edge1" or "Face345" might be the names of elements that use an IndexedName.
+ * If there is then an "Edge2", only a pointer to the original stored name "Edge" is retained.
+ *
+ * The memory efficiency of the class comes from reusing the same character storage for names that
+ * match, while retaining their differing indices. This is achieved by either using user-provided
+ * const char * names (provided as a list of typeNames and presumed to never be deallocated), or by
+ * maintaining an internal list of names that have been used before, and can be reused later.
+ */
 class AppExport IndexedName
 {
 public:
-    /// Construct from a name and an optional index. If the name contains an index it is read, but
-    /// is used as the index *only* if _index parameter is unset. If the _index parameter is given
-    /// it overrides any trailing integer in the name. Index must be positive, and name must contain
-    /// only ASCII letters and the underscore character. If these conditions are not met, name is
-    /// set to the empty string, and isNull() will return true.
-    ///
-    /// \param name The new name - ASCII letters and underscores only, with optional integer suffix.
-    /// This memory will be copied into a new internal storage location and need not be persistent.
-    /// \param _index The new index - if provided, it overrides any suffix provided by name
+    /**
+     * @brief Construct an indexed name from a name and optional index.
+     *
+     * Construct an indexed name from a name and an optional index. If the name
+     * contains an index, it is read, but is used as the index *only* if @p
+     * _index is unset. If the @p _index is given, it overrides any trailing
+     * integer in the name.  The index must be positive, and the name must
+     * contain only ASCII letters and the underscore character. If these
+     * conditions are not met, the name is set to the empty string, and
+     * isNull() will return true.
+     *
+     * @param[in] name The new name - ASCII letters and underscores only, with
+     * optional integer suffix.  This memory will be copied into a new internal
+     * storage location and need not be persistent.
+     *
+     * @param[in] _index The new index.  If provided, it overrides any suffix
+     * provided by name.
+     */
     explicit IndexedName(const char* name = nullptr, int _index = 0)
         : index(0)
     {
@@ -78,20 +92,31 @@ public:
         }
     }
 
-    /// Create an indexed name that is restricted to a list of preset type names. If it appears in
-    /// that list, only a pointer to the character storage in the list is retained: the memory
-    /// locations pointed at by the list must never be destroyed once they have been used to create
-    /// names. If allowOthers is true (the default) then a requested name that is not in the list
-    /// will be added to a static internal storage table, and its memory then reused for later
-    /// objects with the same name. If allowOthers is false, then the name request is rejected, and
-    /// the name is treated as null.
-    ///
-    /// \param name The new name - ASCII letters and underscores only, with optional integer suffix
-    /// \param allowedTypeNames A vector of allowed names. Storage locations must persist for the
-    /// entire run of the program.
-    /// \param allowOthers Whether a name not in allowedTypeNames is permitted. If true (the
-    /// default) then a name not in allowedTypeNames is added to a static internal storage vector
-    /// so that it can be reused later without additional memory allocation.
+    /**
+     * @brief Construct an indexed name from a name and a list of preset type
+     * names.
+     *
+     * Create an indexed name that is restricted to a list of preset type
+     * names. If it appears in that list, only a pointer to the character
+     * storage in the list is retained: the memory locations pointed at by the
+     * list must never be destroyed once they have been used to create
+     * names. If @p allowOthers is true (the default) then a requested name
+     * that is not in the list will be added to a static internal storage
+     * table, and its memory then reused for later objects with the same
+     * name. If @p allowOthers is false, then the name request is rejected, and
+     * the name is treated as null.
+     *
+     * @param[in] name The new name - ASCII letters and underscores only, with
+     * optional integer suffix.
+     *
+     * @param allowedTypeNames A vector of allowed names. Storage locations
+     * must persist for the entire run of the program.
+     *
+     * @param allowOthers Whether a name not in allowedTypeNames is
+     * permitted. If true (the default) then a name not in allowedTypeNames is
+     * added to a static internal storage vector so that it can be reused later
+     * without additional memory allocation.
+     */
     IndexedName(const char* name,
                 const std::vector<const char*>& allowedTypeNames,
                 bool allowOthers = true)
@@ -101,11 +126,15 @@ public:
         set(name, -1, allowedTypeNames, allowOthers);
     }
 
-    /// Construct from a QByteArray, but explicitly making a copy of the name on its first
-    /// occurrence. If this is a name that has already been stored internally, no additional copy
-    /// is made.
-    ///
-    /// \param data The QByteArray to copy the data from
+    /**
+     * @brief Construct a mapped name from a QByteArray.
+     *
+     * Construct from a QByteArray, but explicitly making a copy of the name on
+     * its first occurrence. If this is a name that has already been stored
+     * internally, no additional copy is made.
+     *
+     * @param[in] data The QByteArray to copy the data from.
+     */
     explicit IndexedName(const QByteArray& data)
         : type("")
         , index(0)
@@ -113,13 +142,21 @@ public:
         set(data.constData(), data.size());
     }
 
-    /// Given constant name and an index, reuse the existing memory for the name, not making a copy
-    /// of it, or scanning any existing storage for it. The name must never become invalid for the
-    /// lifetime of the object it names. This memory will never be reused by another object.
-    ///
-    /// \param name The name of the object. This memory is NOT copied and must be persistent.
-    /// \param index A positive, non-zero integer
-    /// \return An IndexedName with the given name and index, reusing the existing memory for name
+    /**
+     * @brief Create an indexed name from a string and index.
+     *
+     * Given constant name and an index, reuse the existing memory for the
+     * name, not making a copy of it, or scanning any existing storage for
+     * it. The name must never become invalid for the lifetime of the object it
+     * names. This memory will never be reused by another object.
+     *
+     * @param[in] name The name of the object. This memory is NOT copied and must be persistent.
+     *
+     * @param[in] index A positive, non-zero integer.
+     *
+     * @return An IndexedName with the given name and index, reusing the
+     * existing memory for name.
+     */
     static IndexedName fromConst(const char* name, int index)
     {
         assert(index >= 0);
@@ -129,11 +166,17 @@ public:
         return res;
     }
 
-    /// Given an existing std::string, *append* this name to it. If index is not zero, this will
-    /// include the index.
-    ///
-    /// \param buffer A (possibly non-empty) string buffer to append the name to.
-    /// \return A const char pointer to the name we appended to the buffer.
+    /**
+     * @brief Append this index name to a buffer.
+     *
+     * Given an existing std::string, *append* this name to it. If the index is
+     * not zero, this will include the index.
+     *
+     * @param[in,out] buffer A (possibly non-empty) string buffer to append the
+     * name to.
+     *
+     * @return A const char pointer to the name we appended to the buffer.
+     */
     const char* appendToStringBuffer(std::string& buffer) const
     {
         // Note! buffer is not cleared on purpose.
@@ -145,9 +188,11 @@ public:
         return buffer.c_str() + offset;
     }
 
-    /// Create and return a new std::string with this name in it.
-    ///
-    /// \return A newly-created string with the IndexedName in it (e.g. "EDGE42")
+    /**
+     * @brief Create and return a new std::string with this name in it.
+     *
+     * @return A newly-created string with the IndexedName in it (e.g. "EDGE42")
+     */
     std::string toString() const
     {
         std::string result;
@@ -155,8 +200,12 @@ public:
         return result;
     }
 
-    /// An indexedName is represented as the simple concatenation of the name and its index, e.g.
-    /// "EDGE1" or "FACE42".
+    /**
+     * @brief Append this indexed name to an output stream.
+     *
+     * An indexedName is represented as the simple concatenation of the name and its index, e.g.
+     * "EDGE1" or "FACE42".
+     */
     friend std::ostream& operator<<(std::ostream& stream, const IndexedName& indexedName)
     {
         stream << indexedName.type;
@@ -166,14 +215,26 @@ public:
         return stream;
     }
 
-    /// True only if both the name and index compare exactly equal.
+    /**
+     * Check if two indexed names are equal.
+     *
+     * @param[in] other The other IndexedName to compare against.
+     *
+     * @return True only if both the name and index compare exactly equal.
+     */
     bool operator==(const IndexedName& other) const
     {
         return this->index == other.index
             && (this->type == other.type || std::strcmp(this->type, other.type) == 0);
     }
 
-    /// Increments the index by the given offset. Does not affect the text part of the name.
+    /**
+     * @brief Increments the index by the given offset.
+     *
+     * Does not affect the text part of the name.
+     *
+     * @param[in] offset The amount to increase the index by.
+     */
     IndexedName& operator+=(int offset)
     {
         this->index += offset;
@@ -188,8 +249,12 @@ public:
         return *this;
     }
 
-    /// Pre-decrement operator: decreases the index of this element by one. Must not make the index
-    /// negative (only checked when compiled in debug mode).
+    /**
+     * @brief Pre-decrement operator: decreases the index of this element by one.
+     *
+     * Must not make the index negative (only checked when compiled in debug
+     * mode).
+     */
     IndexedName& operator--()
     {
         --this->index;
@@ -197,13 +262,28 @@ public:
         return *this;
     }
 
-    /// True if either the name or the index compare not equal.
+    /**
+     * @brief Check if two indexed names are not equal.
+     *
+     * @param[in] other The other IndexedName to compare against.
+     *
+     * @return True if either the name or the index compare not equal.
+     */
     bool operator!=(const IndexedName& other) const
     {
         return !(this->operator==(other));
     }
 
-    /// Equivalent to C++20's operator <=>
+    /**
+     * @brief Compare two IndexedNames.
+     *
+     * Equivalent to C++20's operator <=>.  The comparison is first
+     * lexicographical for the text and then numerical for the index.
+     *
+     * @param[in] other The other IndexedName to compare against.
+     *
+     * @return Negative value if this < other, positive if this > other, zero if equal.
+     */
     int compare(const IndexedName& other) const
     {
         int res = std::strcmp(this->type, other.type);
@@ -219,15 +299,19 @@ public:
         return 0;
     }
 
-    /// Provided to enable sorting operations: the comparison is first lexicographical for the text
-    /// element of the names, then numerical for the indices.
+    /// Check if this IndexedName is less than another.
     bool operator<(const IndexedName& other) const
     {
         return compare(other) < 0;
     }
 
-    /// Allow direct memory access to the individual characters of the text portion of the name.
-    /// NOTE: input is not range-checked when compiled in release mode.
+    /**
+     * @brief index into the text part of the name.
+     *
+     * Allow direct memory access to the individual characters of the text portion of the name.
+     *
+     * @note The input is not range-checked when compiled in release mode.
+     */
     char operator[](int input) const
     {
         assert(input >= 0);
@@ -237,7 +321,11 @@ public:
         return this->type[input];
     }
 
-    /// Get a pointer to text part of the name - does NOT make a copy, returns direct memory access
+    /**
+     * @brief Get a pointer to text part of the name.
+     *
+     * Does NOT make a copy, returns direct memory access.
+     */
     const char* getType() const
     {
         return this->type;
@@ -249,17 +337,25 @@ public:
         return this->index;
     }
 
-    /// Set the numerical part of the name (note that there is no equivalent function to allow
-    /// changing the text part of the name, which is immutable once created).
-    ///
-    /// \param input The new index. Must be a positive non-zero integer
+    /**
+     * @brief Set the numerical part of the name
+     *
+     * @note There is no equivalent function to allow changing the text part of
+     * the name, which is immutable once created).
+     *
+     * @param[in] input The new index. Must be a positive non-zero integer.
+     */
     void setIndex(int input)
     {
         assert(input >= 0);
         this->index = input;
     }
 
-    /// A name is considered "null" if its text component is an empty string.
+    /**
+     * @brief Check whether this index name is null.
+     *
+     * A name is considered "null" if its text component is an empty string.
+     */
     // When we support C++20 we can use std::span<> to eliminate the clang-tidy warning
     // NOLINTNEXTLINE cppcoreguidelines-pro-bounds-pointer-arithmetic
     bool isNull() const
@@ -267,26 +363,37 @@ public:
         return this->type[0] == '\0';
     }
 
-    /// Boolean conversion provides the opposite of isNull(), yielding true when the text part of
-    /// the name is NOT the empty string.
+    /**
+     * @brief Boolean conversion of the indexed name.
+     *
+     * Boolean conversion provides the opposite of isNull(), yielding true when
+     * the text part of the name is NOT the empty string.
+     */
     explicit operator bool() const
     {
         return !isNull();
     }
 
 protected:
-    /// Apply the IndexedName rules and either store the characters of a new type or a reference to
-    /// the characters in a type named in types, or stored statically within this function. If len
-    /// is not set, or set to -1 (the default), then the provided string in name is scanned for its
-    /// length using strlen (e.g. it must be null-terminated).
-    ///
-    /// \param name The new name. If necessary a copy is made, this char * need not be persistent
-    /// \param length The length of name
-    /// \param allowedNames A vector of storage locations of allowed names. These storage locations
-    /// must be persistent for the duration of the program run.
-    /// \param allowOthers If true (the default), then if name is not in allowedNames it is allowed,
-    /// and it is added to internal storage (making a copy of the name if this is its first
-    /// occurrence).
+    /**
+     * @brief Set the text part of the indexed name.
+     *
+     * Apply the IndexedName rules and either store the characters of a new
+     * type or a reference to the characters in a type named in types, or
+     * stored statically within this function. If len is not set, or set to -1
+     * (the default), then the provided string in name is scanned for its
+     * length using strlen (e.g. it must be null-terminated).
+     *
+     * @param[in] name The new name. If necessary, a copy is made.  The
+     * provided string need not be persistent.
+     * @param[in] length The length of name.
+     * @param allowedNames A vector of storage locations of allowed
+     * names. These storage locations must be persistent for the duration of
+     * the program run.
+     * @param[in] allowOthers If true (the default), then if name is not in
+     * allowedNames, it is allowed and it is added to internal storage (making
+     * a copy of the name if this is its first occurrence).
+     */
     void set(const char* name,
              int length = -1,
              const std::vector<const char*>& allowedNames = {},

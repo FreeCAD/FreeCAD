@@ -33,7 +33,25 @@ using namespace Part;
 // returns a string which represents the object e.g. when printed in python
 std::string AttachExtensionPy::representation() const
 {
-    return {"<Part::AttachableObject>"};
+    auto* P = getAttachExtensionPtr()->getExtendedObject()->getPropertyByName("Proxy");
+    if (P) {
+        PyObject* Featclass = static_cast<App::PropertyPythonObject*>(P)->getValue().ptr();
+        PyObject* repstr = PyObject_Repr(Featclass);
+        if (repstr) {
+            Py_ssize_t len;
+            std::string ret = fmt::format(
+                "<Attachable {} ({})>\n",
+                getAttachExtensionPtr()->getExtendedObject()->getTypeId().getName(),
+                PyUnicode_AsUTF8AndSize(repstr, &len)
+            );
+            Py_DECREF(repstr);
+            return ret;
+        }
+    }
+    return fmt::format(
+        "<Attachable {}>",
+        getAttachExtensionPtr()->getExtendedObject()->getTypeId().getName()
+    );
 }
 
 PyObject* AttachExtensionPy::positionBySupport(PyObject* args)

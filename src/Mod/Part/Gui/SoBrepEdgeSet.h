@@ -24,6 +24,7 @@
 
 #pragma once
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
 #include <vector>

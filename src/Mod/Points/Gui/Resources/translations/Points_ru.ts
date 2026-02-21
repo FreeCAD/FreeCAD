@@ -107,7 +107,7 @@
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
-      <translation>Преобразует точки в облако структурированных точек</translation>
+      <translation>Преобразует точки в структурированное облако точек</translation>
     </message>
   </context>
   <context>
@@ -246,7 +246,7 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation>I (серый значение)</translation>
+      <translation>I (gray value)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
@@ -281,7 +281,7 @@
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation>Граница импортируемых точек не содержит начала координат. переместить их в начало координат?</translation>
+      <translation>Бокс, ограничивающий импортируемые точки, не содержит начала координат. Переместить бокс?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -299,7 +299,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
-      <translation>Инструменты точек</translation>
+      <translation>Инструменты работы с точками</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>

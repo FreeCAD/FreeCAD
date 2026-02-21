@@ -148,7 +148,12 @@ void PropertyItemDelegate::paint(
             option.rect.right() - (checkboxOption.rect.right() + spacing),
             checkboxOption.rect.height()
         );
-        painter->setPen(palette.color(QPalette::Text));
+        if (readonly) {
+            painter->setPen(palette.color(QPalette::Disabled, QPalette::Text));
+        }
+        else {
+            painter->setPen(palette.color(QPalette::Text));
+        }
         painter->drawText(textRect, Qt::AlignVCenter | Qt::AlignLeft, labelText);
     }
     else {

@@ -23,6 +23,7 @@
 #pragma once
 
 #include <Inventor/SbBox3f.h>
+#include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
 #include <Inventor/fields/SoSFEnum.h>
 #include <Inventor/fields/SoSFFloat.h>
@@ -86,6 +87,7 @@ public:
     SoSFFloat param8;
     SoMFVec3f pnts;
     SoSFVec3f norm;
+    SoSFBool strikethrough;
     SoSFImage image;
     SoSFFloat lineWidth;
     SoSFFloat sampling;

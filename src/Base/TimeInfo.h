@@ -26,10 +26,13 @@
 
 #pragma once
 
+#include <FCGlobal.h>
+
 #include <chrono>
 #include <sstream>
 #include <string>
-#include <FCGlobal.h>
+
+#include "Console.h"
 
 namespace Base
 {
@@ -128,5 +131,71 @@ public:
         return ss.str();
     }
 };  // class TimeElapsed
+
+/**
+ * @class TimeTracker
+ * @brief A utility class for tracking time intervals and logging checkpoints.
+ *
+ * This class facilitates time tracking by recording named checkpoints and
+ * calculating time intervals between them. It logs the time elapsed between
+ * checkpoints and the total time since the start. The time tracking automatically
+ * begins upon object instantiation and ends when the object is destroyed.
+ *
+ * The recommended way to use this class for performance optimization is through
+ * manual bisection. If a specific operation (e.g., a feature recompute) is slow,
+ * instrument the top-level function with a `TimeTracker` and several checkpoints.
+ *
+ * Once the most time-consuming segment is identified, move the instrumentation
+ * into the underlying functions called during that segment. Repeat this process
+ * recursively to isolate the root cause of the performance bottleneck.
+ *
+ * @code
+ * {
+ *     Base::TimeTracker tracker("Document Loading");
+ *     // ... heavy computation ...
+ *     tracker.checkpoint("Parsing XML");
+ *     // ... more work ...
+ *     tracker.checkpoint("Building Topology");
+ *     // ... even more ...
+ * } // "finish" checkpoint is logged automatically here
+ * @endcode
+ */
+class TimeTracker
+{
+public:
+    explicit TimeTracker(std::string name)
+        : name(std::move(name))
+        , lastCheckpoint("start")
+    {}
+
+    FC_DISABLE_COPY_MOVE(TimeTracker);
+
+    void checkpoint(const std::string& checkpoint = "")
+    {
+        Console().log(
+            "(%s) %s -> %s: %f (%f total)\n",
+            name,
+            lastCheckpoint,
+            checkpoint,
+            TimeElapsed::diffTimeF(lastCheckpointTime),
+            TimeElapsed::diffTimeF(start)
+        );
+
+        lastCheckpoint = checkpoint;
+        lastCheckpointTime.setCurrent();
+    }
+
+    ~TimeTracker()
+    {
+        checkpoint("finish");
+    }
+
+private:
+    std::string name;
+    std::string lastCheckpoint;
+
+    TimeElapsed start;
+    TimeElapsed lastCheckpointTime;
+};
 
 }  // namespace Base

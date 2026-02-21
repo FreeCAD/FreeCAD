@@ -22,6 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost/graph/topological_sort.hpp>
+#include <boost/unordered/unordered_map.hpp>
+#include <boost_graph_adjacency_list.hpp>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -87,40 +90,147 @@ void PropertyExpressionContainer::slotRenameDynamicProperty(const App::Property&
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
+/* The cycle_detector struct is used by the boost graph routines to detect
+ * cycles in the graph. */
+struct cycle_detector: public boost::dfs_visitor<>
+{
+    cycle_detector(bool& has_cycle, int& src)
+        : _has_cycle(has_cycle)
+        , _src(src)
+    {}
+
+    template<class Edge, class Graph>
+    void back_edge(Edge e, Graph& g)
+    {
+        _has_cycle = true;
+        _src = source(e, g);
+    }
+
+protected:
+    bool& _has_cycle;
+    int& _src;
+};
+
+using DiGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::directedS>;
 struct PropertyExpressionEngine::Private
 {
     // For some reason, MSVC has trouble with vector of scoped_connection if
     // defined in header, hence the private structure here.
     std::vector<fastsignals::scoped_connection> conns;
     std::unordered_map<std::string, std::vector<ObjectIdentifier>> propMap;
+
+    /**
+     * @brief Build a graph of all expressions in \a exprs.
+     * @param exprs Expressions to use in graph
+     * @param revNodes Map from int[nodeid] to ObjectIndentifer.
+     * @param g Graph to update. May contain additional nodes than in revNodes, because of outside
+     * dependencies.
+     */
+    void buildGraph(const ExpressionMap& exprs,
+                    boost::unordered_map<int, App::ObjectIdentifier>& revNodes,
+                    DiGraph& g,
+                    ExecuteOption option = ExecuteAll) const
+    {
+        boost::unordered_map<ObjectIdentifier, int> nodes;
+        std::vector<Edge> edges;
+
+        // Build data structure for graph
+        for (const auto& expr : exprs) {
+            if (option != ExecuteAll) {
+                auto prop = expr.first.getProperty();
+                if (!prop) {
+                    throw Base::RuntimeError("Path does not resolve to a property.");
+                }
+                bool is_output =
+                    prop->testStatus(App::Property::Output) || (prop->getType() & App::Prop_Output);
+                if ((is_output && option == ExecuteNonOutput)
+                    || (!is_output && option == ExecuteOutput)) {
+                    continue;
+                }
+                if (option == ExecuteOnRestore && !prop->testStatus(Property::Transient)
+                    && !(prop->getType() & Prop_Transient)
+                    && !prop->testStatus(Property::EvalOnRestore)) {
+                    continue;
+                }
+            }
+            this->buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
+        }
+
+        // Create graph
+        g = DiGraph(nodes.size());
+
+        // Add edges to graph
+        for (const auto& edge : edges) {
+            add_edge(edge.first, edge.second, g);
+        }
+
+        // Check for cycles
+        bool has_cycle = false;
+        int src = -1;
+        cycle_detector vis(has_cycle, src);
+        depth_first_search(g, visitor(vis));
+
+        if (has_cycle) {
+            std::string s = revNodes[src].toString() + " reference creates a cyclic dependency.";
+
+            throw Base::RuntimeError(s.c_str());
+        }
+    }
+
+    void buildGraphStructures(
+    const ObjectIdentifier& path,
+    const std::shared_ptr<Expression> expression,
+    boost::unordered_map<ObjectIdentifier, int>& nodes,
+    boost::unordered_map<int, ObjectIdentifier>& revNodes,
+    std::vector<Edge>& edges) const
+    {
+        /* Insert target property into nodes structure */
+        if (nodes.find(path) == nodes.end()) {
+            int s = nodes.size();
+
+            revNodes[s] = path;
+            nodes[path] = s;
+        }
+        else {
+            revNodes[nodes[path]] = path;
+        }
+
+        /* Insert dependencies into nodes structure */
+        ExpressionDeps deps;
+        if (expression) {
+            deps = expression->getDeps();
+        }
+
+        for (auto& dep : deps) {
+            for (auto& info : dep.second) {
+                if (info.first.empty()) {
+                    continue;
+                }
+                for (auto& oid : info.second) {
+                    ObjectIdentifier cPath(oid.canonicalPath());
+                    if (nodes.find(cPath) == nodes.end()) {
+                        int s = nodes.size();
+                        nodes[cPath] = s;
+                    }
+                    edges.emplace_back(nodes[path], nodes[cPath]);
+                }
+            }
+        }
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 TYPESYSTEM_SOURCE(App::PropertyExpressionEngine, App::PropertyExpressionContainer)
 
-/**
- * @brief Construct a new PropertyExpressionEngine object.
- */
 
 PropertyExpressionEngine::PropertyExpressionEngine()
     : validator(0)
 {}
 
-/**
- * @brief Destroy the PropertyExpressionEngine object.
- */
-
 PropertyExpressionEngine::~PropertyExpressionEngine() = default;
 
-/**
- * @brief Estimate memory size of this property.
- *
- * \fixme Should probably return something else than 0.
- *
- * @return Size of object.
- */
-
+// fixme Should probably return something else than 0.
 unsigned int PropertyExpressionEngine::getMemSize() const
 {
     return 0;
@@ -360,62 +470,6 @@ void PropertyExpressionEngine::Restore(Base::XMLReader& reader)
     reader.readEndElement("ExpressionEngine");
 }
 
-/**
- * @brief Update graph structure with given path and expression.
- * @param path Path
- * @param expression Expression to query for dependencies
- * @param nodes Map with nodes of graph, including dependencies of 'expression'
- * @param revNodes Reverse map of the nodes, containing only the given paths, without dependencies.
- * @param edges Edges in graph
- */
-
-void PropertyExpressionEngine::buildGraphStructures(
-    const ObjectIdentifier& path,
-    const std::shared_ptr<Expression> expression,
-    boost::unordered_map<ObjectIdentifier, int>& nodes,
-    boost::unordered_map<int, ObjectIdentifier>& revNodes,
-    std::vector<Edge>& edges) const
-{
-    /* Insert target property into nodes structure */
-    if (nodes.find(path) == nodes.end()) {
-        int s = nodes.size();
-
-        revNodes[s] = path;
-        nodes[path] = s;
-    }
-    else {
-        revNodes[nodes[path]] = path;
-    }
-
-    /* Insert dependencies into nodes structure */
-    ExpressionDeps deps;
-    if (expression) {
-        deps = expression->getDeps();
-    }
-
-    for (auto& dep : deps) {
-        for (auto& info : dep.second) {
-            if (info.first.empty()) {
-                continue;
-            }
-            for (auto& oid : info.second) {
-                ObjectIdentifier cPath(oid.canonicalPath());
-                if (nodes.find(cPath) == nodes.end()) {
-                    int s = nodes.size();
-                    nodes[cPath] = s;
-                }
-                edges.emplace_back(nodes[path], nodes[cPath]);
-            }
-        }
-    }
-}
-
-/**
- * @brief Create a canonical object identifier of the given object \a p.
- * @param p ObjectIndentifier
- * @return New ObjectIdentifier
- */
-
 ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier& oid) const
 {
     DocumentObject* docObj = freecad_cast<DocumentObject*>(getContainer());
@@ -446,11 +500,6 @@ ObjectIdentifier PropertyExpressionEngine::canonicalPath(const ObjectIdentifier&
     return oid.canonicalPath();
 }
 
-/**
- * @brief Number of expressions managed by this object.
- * @return Number of expressions.
- */
-
 size_t PropertyExpressionEngine::numExpressions() const
 {
     return expressions.size();
@@ -467,19 +516,34 @@ void PropertyExpressionEngine::afterRestore()
         ObjectIdentifier::DocumentMapper mapper(this->_DocMap);
 
         for (auto& info : *restoredExpressions) {
-            ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
-            if (!info.expr.empty()) {
-                std::shared_ptr<Expression> expression(
-                    Expression::parse(docObj, info.expr.c_str()));
-                if (expression) {
-                    expression->comment = std::move(info.comment);
-                }
-                setValue(path, expression);
-            }
+            tryRestoreExpression(docObj, info);
         }
         signaller.tryInvoke();
     }
     restoredExpressions.reset();
+}
+
+void PropertyExpressionEngine::tryRestoreExpression(DocumentObject* docObj,
+                                                    const RestoredExpression& info)
+{
+    try {
+        ObjectIdentifier path = ObjectIdentifier::parse(docObj, info.path);
+        if (!info.expr.empty()) {
+            std::shared_ptr<Expression> expression(
+                Expression::parse(docObj, info.expr));
+            if (expression) {
+                expression->comment = info.comment;
+            }
+            setValue(path, expression);
+        }
+    }
+    catch (const Base::Exception& e) {
+        FC_ERR("Failed to restore " << docObj->getFullName()
+                                    << '.'
+                                    << getName()
+                                    << ": "
+                                    << e.what());
+    }
 }
 
 void PropertyExpressionEngine::onContainerRestored()
@@ -495,12 +559,6 @@ void PropertyExpressionEngine::onContainerRestored()
     }
 }
 
-/**
- * @brief Get expression for \a path.
- * @param path ObjectIndentifier to query for.
- * @return Expression for \a path, or empty boost::any if not found.
- */
-
 const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentifier& path) const
 {
     // Get a canonical path
@@ -513,13 +571,6 @@ const boost::any PropertyExpressionEngine::getPathValue(const App::ObjectIdentif
 
     return boost::any();
 }
-
-/**
- * @brief Set expression with optional comment for \a path.
- * @param path Path to update
- * @param expr New expression
- * @param comment Optional comment.
- */
 
 void PropertyExpressionEngine::setValue(const ObjectIdentifier& path,
                                         std::shared_ptr<Expression> expr)
@@ -558,95 +609,6 @@ void PropertyExpressionEngine::setValue(const ObjectIdentifier& path,
     }
 }
 
-/**
- * @brief The cycle_detector struct is used by the boost graph routines to detect cycles in the
- * graph.
- */
-
-struct cycle_detector: public boost::dfs_visitor<>
-{
-    cycle_detector(bool& has_cycle, int& src)
-        : _has_cycle(has_cycle)
-        , _src(src)
-    {}
-
-    template<class Edge, class Graph>
-    void back_edge(Edge e, Graph& g)
-    {
-        _has_cycle = true;
-        _src = source(e, g);
-    }
-
-protected:
-    bool& _has_cycle;
-    int& _src;
-};
-
-/**
- * @brief Build a graph of all expressions in \a exprs.
- * @param exprs Expressions to use in graph
- * @param revNodes Map from int[nodeid] to ObjectIndentifer.
- * @param g Graph to update. May contain additional nodes than in revNodes, because of outside
- * dependencies.
- */
-
-void PropertyExpressionEngine::buildGraph(const ExpressionMap& exprs,
-                                          boost::unordered_map<int, ObjectIdentifier>& revNodes,
-                                          DiGraph& g,
-                                          ExecuteOption option) const
-{
-    boost::unordered_map<ObjectIdentifier, int> nodes;
-    std::vector<Edge> edges;
-
-    // Build data structure for graph
-    for (const auto& expr : exprs) {
-        if (option != ExecuteAll) {
-            auto prop = expr.first.getProperty();
-            if (!prop) {
-                throw Base::RuntimeError("Path does not resolve to a property.");
-            }
-            bool is_output =
-                prop->testStatus(App::Property::Output) || (prop->getType() & App::Prop_Output);
-            if ((is_output && option == ExecuteNonOutput)
-                || (!is_output && option == ExecuteOutput)) {
-                continue;
-            }
-            if (option == ExecuteOnRestore && !prop->testStatus(Property::Transient)
-                && !(prop->getType() & Prop_Transient)
-                && !prop->testStatus(Property::EvalOnRestore)) {
-                continue;
-            }
-        }
-        buildGraphStructures(expr.first, expr.second.expression, nodes, revNodes, edges);
-    }
-
-    // Create graph
-    g = DiGraph(nodes.size());
-
-    // Add edges to graph
-    for (const auto& edge : edges) {
-        add_edge(edge.first, edge.second, g);
-    }
-
-    // Check for cycles
-    bool has_cycle = false;
-    int src = -1;
-    cycle_detector vis(has_cycle, src);
-    depth_first_search(g, visitor(vis));
-
-    if (has_cycle) {
-        std::string s = revNodes[src].toString() + " reference creates a cyclic dependency.";
-
-        throw Base::RuntimeError(s.c_str());
-    }
-}
-
-/**
- * The code below builds a graph for all expressions in the engine, and
- * finds any circular dependencies. It also computes the internal evaluation
- * order, in case properties depends on each other.
- */
-
 std::vector<App::ObjectIdentifier>
 PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
 {
@@ -654,7 +616,7 @@ PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
     boost::unordered_map<int, ObjectIdentifier> revNodes;
     DiGraph g;
 
-    buildGraph(expressions, revNodes, g, option);
+    pimpl->buildGraph(expressions, revNodes, g, option);
 
     /* Compute evaluation order for expressions */
     std::vector<int> c;
@@ -670,11 +632,6 @@ PropertyExpressionEngine::computeEvaluationOrder(ExecuteOption option)
 
     return evaluationOrder;
 }
-
-/**
- * @brief Compute and update values of all registered expressions.
- * @return StdReturn on success.
- */
 
 DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption option,
                                                                  bool* touched)
@@ -808,12 +765,6 @@ DocumentObjectExecReturn* App::PropertyExpressionEngine::execute(ExecuteOption o
     return DocumentObject::StdReturn;
 }
 
-/**
- * @brief Find paths to document object.
- * @param obj Document object
- * @param paths Object identifier
- */
-
 void PropertyExpressionEngine::getPathsToDocumentObject(
     DocumentObject* obj,
     std::vector<App::ObjectIdentifier>& paths) const
@@ -839,11 +790,6 @@ void PropertyExpressionEngine::getPathsToDocumentObject(
     }
 }
 
-/**
- * @brief Determine whether any dependencies of any of the registered expressions have been touched.
- * @return True if at least on dependency has been touched.
- */
-
 bool PropertyExpressionEngine::depsAreTouched() const
 {
     for (auto& v : _Deps) {
@@ -854,13 +800,6 @@ bool PropertyExpressionEngine::depsAreTouched() const
     }
     return false;
 }
-
-/**
- * @brief Validate the given path and expression.
- * @param path Object Identifier for expression.
- * @param expr Expression tree.
- * @return Empty string on success, error message on failure.
- */
 
 std::string
 PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
@@ -904,7 +843,7 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
         boost::unordered_map<int, ObjectIdentifier> revNodes;
         DiGraph g;
 
-        buildGraph(newExpressions, revNodes, g);
+        pimpl->buildGraph(newExpressions, revNodes, g);
     }
     catch (const Base::Exception& e) {
         return e.what();
@@ -912,11 +851,6 @@ PropertyExpressionEngine::validateExpression(const ObjectIdentifier& path,
 
     return {};
 }
-
-/**
- * @brief Rename paths based on \a paths.
- * @param paths Map with current and new object identifier.
- */
 
 void PropertyExpressionEngine::renameExpressions(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)
@@ -949,11 +883,6 @@ void PropertyExpressionEngine::renameExpressions(
 
     hasSetValue();
 }
-
-/**
- * @brief Rename object identifiers in the registered expressions.
- * @param paths Map with current and new object identifiers.
- */
 
 void PropertyExpressionEngine::renameObjectIdentifiers(
     const std::map<ObjectIdentifier, ObjectIdentifier>& paths)

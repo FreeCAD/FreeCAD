@@ -28,12 +28,12 @@ jobs:
       )
     steps:
       - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}
 
       - name: Create backport pull requests
-        uses: korthout/backport-action@d07416681cab29bf2661702f925f020aaa962997 # v3.4.1
+        uses: korthout/backport-action@01619ebc9a6e3f6820274221b9956b3e7365000a # v4.1.0
         with:
           # Inputs documented here: https://github.com/korthout/backport-action?tab=readme-ov-file#inputs
           github_token: ${{ secrets.GH_TOKEN_FOR_CI_RUNNERS }}

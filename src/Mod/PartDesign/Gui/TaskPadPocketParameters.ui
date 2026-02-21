@@ -27,7 +27,7 @@
       <widget class="QComboBox" name="sidesMode"/>
      </item>
      <item row="1" column="0" colspan="2">
-      <layout class="QHBoxLayout" name="verticalLayout_22">
+      <layout class="QHBoxLayout" name="verticalLayout_220">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -262,7 +262,7 @@
       </layout>
      </item>
      <item row="8" column="0" colspan="2">
-      <layout class="QHBoxLayout" name="verticalLayout_22">
+      <layout class="QHBoxLayout" name="verticalLayout_221">
        <property name="leftMargin">
         <number>0</number>
        </property>
@@ -424,7 +424,7 @@
         </item>
         <item>
          <widget class="QWidget" name="upToShapeFaces2" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_22">
+          <layout class="QVBoxLayout" name="verticalLayout_222">
            <property name="leftMargin">
             <number>0</number>
            </property>

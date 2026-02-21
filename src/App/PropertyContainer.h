@@ -26,9 +26,9 @@
 #pragma once
 
 #include <map>
-#include <cstring>
 #include <vector>
 #include <string>
+#include <memory>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
@@ -74,6 +74,8 @@ enum PropertyType
 
 struct AppExport PropertyData
 {
+  PropertyData();
+  ~PropertyData();
 
   /// @brief Struct to hold the property specification.
   struct PropertySpec
@@ -155,32 +157,6 @@ struct AppExport PropertyData
   private:
       const void* m_container;
   };
-
-    // clang-format off
-
-    /**
-     * @brief A multi index container for holding the property spec.
-     *
-     * The multi index has the following index:
-     * - a sequence, to preserve creation order
-     * - hash index on property name
-     * - hash index on property pointer offset
-     */
-    mutable bmi::multi_index_container<
-        PropertySpec,
-        bmi::indexed_by<
-            bmi::sequenced<>,
-            bmi::hashed_unique<
-                bmi::member<PropertySpec, const char*, &PropertySpec::Name>,
-                CStringHasher,
-                CStringHasher
-            >,
-            bmi::hashed_unique<
-                bmi::member<PropertySpec, short, &PropertySpec::Offset>
-            >
-        >
-    > propertyData;
-    // clang-format on
 
   /// Whether the property data is merged with the parent.
   mutable bool parentMerged = false;
@@ -300,6 +276,10 @@ struct AppExport PropertyData
    * @param[in] other The other PropertyData to split with; this can be the parent PropertyData.
    */
   void split(PropertyData *other);
+
+private:
+  struct Impl;
+  std::unique_ptr<Impl> impl;
 };
 
 

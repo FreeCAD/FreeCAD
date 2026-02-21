@@ -16,7 +16,7 @@
     <message>
       <location filename="../../Command.cpp" line="956"/>
       <source>Creates a new spreadsheet</source>
-      <translation>Eine neue Kalkulationstabelle erstellen</translation>
+      <translation>Erstellt eine neue Kalkulationstabelle</translation>
     </message>
   </context>
   <context>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../../Command.cpp" line="515"/>
       <source>Aligns cell contents to the bottom</source>
-      <translation>Zellinhalt unten ausrichten</translation>
+      <translation>Richtet den Zellinhalt am unteren Rand aus</translation>
     </message>
   </context>
   <context>
@@ -52,7 +52,7 @@
     <message>
       <location filename="../../Command.cpp" line="344"/>
       <source>Aligns cell contents to the horizontal center</source>
-      <translation>Zellinhalt horizontal zentriert ausrichten</translation>
+      <translation>Richtet den Zellinhalt zur horizontalen Mitte aus</translation>
     </message>
   </context>
   <context>
@@ -70,7 +70,7 @@
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Aligns cell contents to the left</source>
-      <translation>Zellinhalt links ausrichten</translation>
+      <translation>Richtet den Zellinhalt am linken Rand aus</translation>
     </message>
   </context>
   <context>
@@ -88,7 +88,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Aligns cell contents to the right</source>
-      <translation>Zellinhalt rechts ausrichten</translation>
+      <translation>Richtet den Zellinhalt am rechten Rand aus</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="458"/>
       <source>Aligns cell contents to the top</source>
-      <translation>Zellinhalt oben ausrichten</translation>
+      <translation>Richtet den Zellinhalt am oberen Rand aus</translation>
     </message>
   </context>
   <context>
@@ -124,7 +124,7 @@
     <message>
       <location filename="../../Command.cpp" line="572"/>
       <source>Aligns cell contents to the vertical center</source>
-      <translation>Zellinhalt vertikal zentrieren</translation>
+      <translation>Richtet den Zellinhalt zur vertikalen Mitte aus</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="241"/>
       <source>&amp;Export Spreadsheet</source>
-      <translation>Tabellenblatt &amp;exportieren</translation>
+      <translation>Tabelle &amp;exportieren</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="242"/>
       <source>Exports the spreadsheet to a CSV file</source>
-      <translation>Exportiert das Tabellenblatt in eine CSV-Datei</translation>
+      <translation>Exportiert die Tabelle in eine CSV-Datei</translation>
     </message>
   </context>
   <context>
@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="124"/>
       <source>Splits a previously merged cell</source>
-      <translation>Zuvor verbundene Zellen trennen</translation>
+      <translation>Teilt eine zuvor verbundene Zelle</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="629"/>
       <source>Sets the text in the selected cells bold</source>
-      <translation>Text in den ausgewählten Zellen fett formatieren</translation>
+      <translation>Stellt den Text in den ausgewählten Zellen auf fett um</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="714"/>
       <source>Sets the text in the selected cells italic</source>
-      <translation>Text in den ausgewählten Zellen kursiv formatieren</translation>
+      <translation>Stellt den Text in den ausgewählten Zellen auf kursiv um</translation>
     </message>
   </context>
   <context>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="798"/>
       <source>&amp;Underline Text</source>
-      <translation>Text &amp;unterstreichen</translation>
+      <translation>&amp;Unterstrichener Text</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="799"/>
       <source>Underlines the text in the selected cells</source>
-      <translation>Text in den ausgewählten Zellen unterstreichen</translation>
+      <translation>Stellt den Text in den ausgewählten Zellen auf unterstrichen um</translation>
     </message>
   </context>
   <context>
@@ -344,7 +344,7 @@
     <message>
       <location filename="../../PropertiesDialog.cpp" line="269"/>
       <source>Set cell properties</source>
-      <translation>Zelleneigenschaften festlegen</translation>
+      <translation>Zelleigenschaften festlegen</translation>
     </message>
     <message>
       <location filename="../../SheetModel.cpp" line="573"/>
@@ -575,7 +575,7 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../PropertiesDialog.ui" line="14"/>
       <source>Cell Properties</source>
-      <translation>Zellen-Eigenschaften</translation>
+      <translation>Zelleigenschaften</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="27"/>
@@ -1163,7 +1163,7 @@ Standard: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>&amp;Spreadsheet</source>
-      <translation>&amp;Kalkulationstabelle</translation>
+      <translation>&amp;Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

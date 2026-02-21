@@ -75,6 +75,23 @@ class DocumentBasicCases(unittest.TestCase):
         FreeCAD.closeDocument(doc.Name)
         self.Doc = FreeCAD.newDocument("CreateTest")
 
+    def testIssue24571(self):
+        obj = self.Doc.addObject("App::FeatureTest", "Object")
+        obj.ConstraintInt = (50, 0, 100, 1)
+        obj.ConstraintFloat = (50.0, 0.0, 100.0, 1.0)
+        self.Doc = self.saveAndRestore()
+        obj = self.Doc.getObject("Object")
+        # int
+        obj.ConstraintInt = -1
+        self.assertEqual(obj.ConstraintInt, 0)
+        obj.ConstraintInt = 101
+        self.assertEqual(obj.ConstraintInt, 100)
+        # float
+        obj.ConstraintFloat = -1.0
+        self.assertEqual(obj.ConstraintFloat, 0.0)
+        obj.ConstraintFloat = 101.0
+        self.assertEqual(obj.ConstraintFloat, 100.0)
+
     def testAccessByNameOrID(self):
         obj = self.Doc.addObject("App::DocumentObject", "MyName")
 

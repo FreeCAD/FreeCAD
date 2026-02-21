@@ -6,17 +6,17 @@
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>
       <source>Convert to Points</source>
-      <translation type="unfinished">Convert to Points</translation>
+      <translation>Konverter til punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="204"/>
       <source>Converts to points</source>
-      <translation type="unfinished">Converts to points</translation>
+      <translation>Konverterer til punkter</translation>
     </message>
   </context>
   <context>
@@ -24,18 +24,18 @@
     <message>
       <location filename="../../Command.cpp" line="151"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="152"/>
       <source>Export Points…</source>
-      <translation type="unfinished">Export Points…</translation>
+      <translation>Eksporter punkter…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="153"/>
       <location filename="../../Command.cpp" line="155"/>
       <source>Exports a point cloud</source>
-      <translation type="unfinished">Exports a point cloud</translation>
+      <translation>Eksporterer en punktsky</translation>
     </message>
   </context>
   <context>
@@ -43,17 +43,17 @@
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="69"/>
       <source>Import Points…</source>
-      <translation type="unfinished">Import Points…</translation>
+      <translation>Importer punkter…</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="70"/>
       <source>Imports a point cloud</source>
-      <translation type="unfinished">Imports a point cloud</translation>
+      <translation>Importerer en punktsky</translation>
     </message>
   </context>
   <context>
@@ -61,7 +61,7 @@
     <message>
       <location filename="../../Command.cpp" line="341"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="342"/>
@@ -79,7 +79,7 @@
     <message>
       <location filename="../../Command.cpp" line="291"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="292"/>
@@ -97,17 +97,17 @@
     <message>
       <location filename="../../Command.cpp" line="405"/>
       <source>Points</source>
-      <translation type="unfinished">Points</translation>
+      <translation>Punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Structured Point Cloud</source>
-      <translation type="unfinished">Structured Point Cloud</translation>
+      <translation>Struktureret punktsky</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="407"/>
       <source>Converts points to a structured point cloud</source>
-      <translation type="unfinished">Converts points to a structured point cloud</translation>
+      <translation>Konverterer punkter til en struktureret punktsky</translation>
     </message>
   </context>
   <context>
@@ -115,12 +115,12 @@
     <message>
       <location filename="../../Command.cpp" line="94"/>
       <source>Import points</source>
-      <translation type="unfinished">Import points</translation>
+      <translation>Importer punkter</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="238"/>
       <source>Convert to points</source>
-      <translation type="unfinished">Convert to points</translation>
+      <translation>Konverter til punkter</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="487"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
       <source>Point Format</source>
-      <translation type="unfinished">Point Format</translation>
+      <translation>Punktformat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
       <source>Points format</source>
-      <translation type="unfinished">Points format</translation>
+      <translation>Punktformat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="201"/>
@@ -271,7 +271,7 @@
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="173"/>
       <source>All Files</source>
-      <translation type="unfinished">All Files</translation>
+      <translation>Alle filer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="114"/>
@@ -299,12 +299,12 @@
     <message>
       <location filename="../../Workbench.cpp" line="35"/>
       <source>Points Tools</source>
-      <translation type="unfinished">Points Tools</translation>
+      <translation>Punktværktøjer</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>&amp;Points</source>
-      <translation type="unfinished">&amp;Points</translation>
+      <translation>&amp;Punkter</translation>
     </message>
   </context>
 </TS>

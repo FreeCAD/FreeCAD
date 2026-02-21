@@ -1,7 +1,70 @@
 /** \defgroup WEB Web
  *  \ingroup CWORKBENCHES
- *  \brief A simple remote-access server for FreeCAD
-
-See \ref src/Mod/Draft/draft.dox as an example of how to populate this page
-
+ *  \brief Remote-access TCP server for executing Python commands
+ *
+ * Provides a TCP server for remote control of FreeCAD via Python code execution.
+ *
+ * \section web_starting Starting the Server
+ *
+ * Run this in the FreeCAD python console to begin:
+ * \code{.py}
+ * import Web
+ * addr, port = Web.startServer("127.0.0.1", 54880)
+ * \endcode
+ *
+ * Inside the FreeCAD python console, run `help(Web)` to get the available functions.
+ *
+ * \section web_clients Client Connections
+ *
+ * Example client connection from a separate python console:
+ * \code{.py}
+ * import socket
+ *
+ * ip = "127.0.0.1"
+ * port = 54880
+ *
+ * def client(ip, port, message):
+ *     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+ *     sock.connect((ip, port))
+ *     try:
+ *         sock.sendall(message)
+ *         response = sock.recv(1024)
+ *         print ("Received: {}".format(response))
+ *     finally:
+ *         sock.close()
+ *
+ * client(ip, port, b"print('Hello World')")
+ * client(ip, port, b"import FreeCAD\nFreeCAD.newDocument()")
+ * \endcode
+ *
+ * There is a special GET command to return variables from python.
+ * If you run `globlals()` in python, you get a list of available values.
+ * \code{.py}
+ * client(ip, port, b"GET port") # returns the port variable inside FreeCAD
+ * client(ip, port, b"GET cmake")
+ * \endcode
+ *
+ * Example with netcat:
+ * \code{.sh}
+ * echo "print('Hello World')" | nc 127.0.0.1 54880
+ * \endcode
+ * Replace nc with ncat if you use NMap netcat on Windows.
+ *
+ * \section web_security Security Features
+ *
+ * %Commands execute as Python code in `__main__`.
+ * Restrict the allowed functions with `registerServerFirewall`:
+ * \code{.py}
+ * def my_firewall(command):
+ *    # This list is an example of "dangerous" commands
+ *    forbidden = ['os.system', 'subprocess', 'exec', 'eval', '__import__']
+ *    for f in forbidden:
+ *        if f in command:
+ *            print(f"Blocked: contains '{f}'")
+ *            return False
+ *    return True
+ *
+ * # The firewall becomes active on already running servers now:
+ * Web.registerServerFirewall(my_firewall)
+ * \endcode
  */

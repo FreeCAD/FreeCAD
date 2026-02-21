@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="513"/>
       <source>Spreadsheet</source>
-      <translation>Foglio di calcolo</translation>
+      <translation>Spreadsheet</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="514"/>
@@ -1035,25 +1035,25 @@ Predefinito a: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="145"/>
       <source>Insert %n Row(s) Below</source>
-      <translation type="unfinished">
-        <numerusform>Insert %n Row(s) Below</numerusform>
+      <translation>
+        <numerusform>Inserisci %n riga sotto</numerusform>
         <numerusform>Inserisci %n righe sotto</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="150"/>
       <source>Insert %n Non-Contiguous Rows</source>
-      <translation type="unfinished">
+      <translation>
         <numerusform>Inserisci %n riga non contigua</numerusform>
-        <numerusform>Insert %n Non-Contiguous Rows</numerusform>
+        <numerusform>Inserisci %n righe non contigue</numerusform>
       </translation>
     </message>
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="153"/>
       <source>Remove Rows</source>
-      <translation type="unfinished">
-        <numerusform>Rimuovi Righe</numerusform>
-        <numerusform>Remove Rows</numerusform>
+      <translation>
+        <numerusform>Rimuovi riga</numerusform>
+        <numerusform>Rimuovi righe</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1083,9 +1083,9 @@ Predefinito a: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="181"/>
       <source>Remove Column(s)</source>
-      <translation type="unfinished">
-        <numerusform>Rimuovi Colonne</numerusform>
-        <numerusform>Remove Column(s)</numerusform>
+      <translation>
+        <numerusform>Rimuovi colonna</numerusform>
+        <numerusform>Rimuovi colonne</numerusform>
       </translation>
     </message>
     <message>
@@ -1148,7 +1148,7 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="303"/>

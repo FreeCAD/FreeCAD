@@ -1158,6 +1158,24 @@ class _ArchWindowTaskPanel:
     def __init__(self):
 
         self.obj = None
+
+        # Window options task box
+        self.optionsform = QtGui.QWidget()
+        self.optionsform.setWindowTitle(
+            QtGui.QApplication.translate("Arch", "Window Options", None)
+        )
+        optLayout = QtGui.QFormLayout(self.optionsform)
+        loader = FreeCADGui.UiLoader()
+
+        self.widthWidget = loader.createWidget("Gui::QuantitySpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Width", None), self.widthWidget)
+
+        self.heightWidget = loader.createWidget("Gui::QuantitySpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Height", None), self.heightWidget)
+
+        self.openingWidget = loader.createWidget("Gui::IntSpinBox")
+        optLayout.addRow(QtGui.QApplication.translate("Arch", "Opening", None), self.openingWidget)
+
         self.baseform = QtGui.QWidget()
         self.baseform.setObjectName("TaskPanel")
         self.grid = QtGui.QGridLayout(self.baseform)
@@ -1165,7 +1183,7 @@ class _ArchWindowTaskPanel:
         self.title = QtGui.QLabel(self.baseform)
         self.grid.addWidget(self.title, 0, 0, 1, 7)
         self.basepanel = ArchComponent.ComponentTaskPanel()
-        self.form = [self.baseform, self.basepanel.baseform]
+        self.form = [self.optionsform, self.baseform, self.basepanel.baseform]
 
         # base object
         self.tree = QtGui.QTreeWidget(self.baseform)
@@ -1322,7 +1340,7 @@ class _ArchWindowTaskPanel:
 
     def getStandardButtons(self):
 
-        return QtGui.QDialogButtonBox.Close
+        return QtGui.QDialogButtonBox.Ok | QtGui.QDialogButtonBox.Cancel
 
     def check(self, wid, col):
 
@@ -1400,6 +1418,23 @@ class _ArchWindowTaskPanel:
         self.wiretree.clear()
         self.comptree.clear()
         if self.obj:
+
+            FreeCADGui.ExpressionBinding(self.widthWidget).bind(self.obj, "Width")
+            self.widthWidget.setProperty("value", self.obj.Width)
+
+            FreeCADGui.ExpressionBinding(self.heightWidget).bind(self.obj, "Height")
+            self.heightWidget.setProperty("value", self.obj.Height)
+
+            FreeCADGui.ExpressionBinding(self.openingWidget).bind(self.obj, "Opening")
+            # Opening is a scalar property, as opposed to a quantity property. It appears to have
+            # no "preferred unit" metadata. We cannot set the suffix manually either, but at least
+            # we can set some safe limits. These limits are hardcoded: the Property Editor clamps
+            # the property to these, so it must be reading them from metadata, but they might not
+            # be queryable via Python.
+            self.openingWidget.setProperty("minimum", 0)
+            self.openingWidget.setProperty("maximum", 100)
+            self.openingWidget.setProperty("value", self.obj.Opening)
+
             if self.obj.Base:
                 item = QtGui.QTreeWidgetItem(self.tree)
                 item.setText(0, self.obj.Base.Name)
@@ -1629,7 +1664,7 @@ class _ArchWindowTaskPanel:
 
     def retranslateUi(self, TaskPanel):
 
-        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window elements", None))
+        TaskPanel.setWindowTitle(QtGui.QApplication.translate("Arch", "Window Elements", None))
         self.holeLabel.setText(QtGui.QApplication.translate("Arch", "Hole wire", None))
         self.holeNumber.setToolTip(
             QtGui.QApplication.translate(
@@ -1690,6 +1725,14 @@ class _ArchWindowTaskPanel:
             self.field7.setItemText(
                 i, QtGui.QApplication.translate("Arch", WindowOpeningModes[i], None)
             )
+
+    def accept(self):
+        if self.obj:
+            self.obj.Width = self.widthWidget.property("value")
+            self.obj.Height = self.heightWidget.property("value")
+            self.obj.Opening = self.openingWidget.property("value")
+        self.basepanel.obj = self.obj
+        return self.basepanel.accept()
 
     def invertOpening(self):
 

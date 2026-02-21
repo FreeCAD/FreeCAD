@@ -448,23 +448,33 @@ def get_ifcfile(obj):
     """Returns the ifcfile that handles this object"""
 
     project = get_project(obj)
-    if project:
+    if project is None:
+        return None
+    if getattr(project, "Proxy", None):
+        if hasattr(project.Proxy, "ifcfile"):
+            return project.Proxy.ifcfile
+    if getattr(project, "IfcFilePath", None):
+        filepath = project.IfcFilePath
+        if filepath[0] == ".":
+            # path relative to the FreeCAD file directory
+            filepath = os.path.join(os.path.dirname(obj.Document.FileName), filepath)
+            # absolute path
+            filepath = os.path.abspath(filepath)
+        try:
+            ifcfile = ifcopenshell.open(filepath)
+        except OSError:
+            FreeCAD.Console.PrintError("Error: Cannot open IFC file: " + filepath + "\n")
+            return None
+        if hasattr(project, "Proxy"):
+            if project.Proxy is None:
+                if not isinstance(project, FreeCAD.DocumentObject):
+                    project.Proxy = ifc_objects.document_object()
         if getattr(project, "Proxy", None):
-            if hasattr(project.Proxy, "ifcfile"):
-                return project.Proxy.ifcfile
-        if getattr(project, "IfcFilePath", None):
-            ifcfile = ifcopenshell.open(project.IfcFilePath)
-            if hasattr(project, "Proxy"):
-                if project.Proxy is None:
-                    if not isinstance(project, FreeCAD.DocumentObject):
-                        project.Proxy = ifc_objects.document_object()
-            if getattr(project, "Proxy", None):
-                project.Proxy.ifcfile = ifcfile
-            return ifcfile
-        else:
-            FreeCAD.Console.PrintError(
-                "Error: No IFC file attached to this project: " + project.Label
-            )
+            project.Proxy.ifcfile = ifcfile
+        return ifcfile
+    FreeCAD.Console.PrintError(
+        "Error: No IFC file attached to this project: " + project.Label + "\n"
+    )
     return None
 
 
@@ -1179,6 +1189,11 @@ def save_ifc(obj, filepath=None):
     if not filepath:
         if getattr(obj, "IfcFilePath", None):
             filepath = obj.IfcFilePath
+            if filepath[0] == ".":
+                # path relative to the FreeCAD file directory
+                filepath = os.path.join(os.path.dirname(obj.Document.FileName), filepath)
+                # absolute path
+                filepath = os.path.abspath(filepath)
     if filepath:
         ifcfile = get_ifcfile(obj)
         if not ifcfile:

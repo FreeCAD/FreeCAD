@@ -24,15 +24,27 @@
 
 name: Build Windows
 on:
+  workflow_dispatch:
+    inputs:
+      artifactBasename:
+        description: "Base name for artifact"
+        required: false
+        type: string
+        default: "FreeCAD"
+      allowedToFail:
+        description: "whether a failed build is allowed"
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       artifactBasename:
-        type: string
         required: true
+        type: string
       allowedToFail:
+        required: false
         default: false
         type: boolean
-        required: false
     outputs:
       reportFile:
         value: ${{ jobs.Build.outputs.reportFile }}
@@ -66,12 +78,12 @@ jobs:
 
     steps:
       - name: Harden the runner (Audit all outbound calls)
-        uses: step-security/harden-runner@df199fb7be9f65074067a9eb93f12bb4c5547cf2 # v2.13.3
+        uses: step-security/harden-runner@5ef0c079ce82195b2a36a210272d6b661572d83e # v2.14.2
         with:
           egress-policy: audit
 
       - name: Checking out source code
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           submodules: true
 
@@ -99,7 +111,7 @@ jobs:
       - name: Restore compiler cache
         id: cache-restore
         if: always()
-        uses: actions/cache/restore@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/restore@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
@@ -114,7 +126,7 @@ jobs:
           . $env:ccachebindir\ccache -p
 
       - name: Install cmake
-        uses: jwlawson/actions-setup-cmake@802fa1a2c4e212495c05bf94dba2704a92a472be # v2.0.2
+        uses: jwlawson/actions-setup-cmake@3a6cbe35ba64df7ca70c51365c4aff65db9a9037 # v2.1.1
         with:
           cmake-version: '3.31.6'
 
@@ -157,14 +169,14 @@ jobs:
       - name: Save Compiler Cache
         id: cache-save
         if: always()
-        uses: actions/cache/save@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+        uses: actions/cache/save@cdf6c1fa76f9f475f3d7449005a359c84ca0f306 # v5.0.3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-${{ env.cacheKey }}-${{ github.ref }}-${{ github.run_id }}
 
       - name: Upload logs
         if: always()
-        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ inputs.artifactBasename }}-Logs
           path: |

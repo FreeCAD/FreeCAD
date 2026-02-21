@@ -173,12 +173,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="249"/>
       <source>Set Default Orientation</source>
-      <translation type="unfinished">Set Default Orientation</translation>
+      <translation>Définir l'orientation par défaut</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="250"/>
       <source>Sets the default orientation for subsequent commands for waypoint creation</source>
-      <translation type="unfinished">Sets the default orientation for subsequent commands for waypoint creation</translation>
+      <translation>Définit l’orientation par défaut pour les commandes suivantes pour la création du point de passage</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../CommandTrajectory.cpp" line="289"/>
       <source>Set Default Values</source>
-      <translation type="unfinished">Set Default Values</translation>
+      <translation>Définir les valeurs par défaut</translation>
     </message>
     <message>
       <location filename="../../CommandTrajectory.cpp" line="290"/>
       <source>Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</source>
-      <translation type="unfinished">Sets the default values for speed, acceleration, and continuity for subsequent commands of waypoint creation</translation>
+      <translation>Définit les valeurs par défaut pour la vitesse, l’accélération, et la continuité pour les commandes suivantes de la création des points de passage</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="82"/>
       <source>Set Home Position</source>
-      <translation type="unfinished">Set Home Position</translation>
+      <translation>Définir la position d’origine</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Sets the home position</source>
-      <translation type="unfinished">Sets the home position</translation>
+      <translation>Définit la position de l'origine</translation>
     </message>
   </context>
   <context>
@@ -308,22 +308,22 @@
     <message>
       <location filename="../../Command.cpp" line="52"/>
       <source>Select VRML file for Robot</source>
-      <translation type="unfinished">Select VRML file for Robot</translation>
+      <translation>Sélectionnez le fichier VRML pour Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="54"/>
       <source>VRML Files (*.wrl *.vrml)</source>
-      <translation type="unfinished">VRML Files (*.wrl *.vrml)</translation>
+      <translation>Fichiers VRML (*.wrl *.vrml)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="66"/>
       <source>Select Kinematic CSV file for Robot</source>
-      <translation type="unfinished">Select Kinematic CSV file for Robot</translation>
+      <translation>Sélectionnez le fichier CSV Kinematic pour Robot</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="68"/>
       <source>CSV Files (*.csv)</source>
-      <translation type="unfinished">CSV Files (*.csv)</translation>
+      <translation>Fichiers CSV (*.csv)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="103"/>
@@ -823,7 +823,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="102"/>
       <source>Do not change continuous mode</source>
-      <translation type="unfinished">Do not change continuous mode</translation>
+      <translation>Ne pas modifier le mode continu</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="108"/>
@@ -838,7 +838,7 @@ pour utiliser cette commande. Consultez la documentation pour plus de détails.<
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="128"/>
       <source>Position and orientation</source>
-      <translation type="unfinished">Position and orientation</translation>
+      <translation>Position et orientation</translation>
     </message>
     <message>
       <location filename="../../TaskTrajectoryDressUpParameter.ui" line="160"/>

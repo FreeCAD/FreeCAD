@@ -7,7 +7,7 @@
       <location filename="../../Link.cpp" line="131"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Emmagatzema l'última tria de l'usuari sobre si aplicar la configuració de CopyOnChange (Copia al canviar) a tots els enllaços que fan referència al mateix objecte configurable</translation>
+      <translation>Emmagatzema l'última tria de l'usuari sobre si aplicar la configuració de CopyOnChange (Copia en canviar) a tots els enllaços que fan referència al mateix objecte configurable</translation>
     </message>
   </context>
   <context>

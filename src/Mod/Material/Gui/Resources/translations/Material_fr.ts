@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Inspect Material</source>
-      <translation>Inspecter le matériau</translation>
+      <translation>Inspecter un matériau</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -334,7 +334,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="172"/>
       <source>Internal name: </source>
-      <translation>Nom interne : </translation>
+      <translation>Nom interne :</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="190"/>
@@ -380,17 +380,17 @@
       <location filename="../../DlgInspectMaterial.cpp" line="273"/>
       <location filename="../../DlgInspectMaterial.cpp" line="346"/>
       <source>Library directory: </source>
-      <translation>Répertoire de la bibliothèque : </translation>
+      <translation>Répertoire de la bibliothèque :</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="276"/>
       <source>Subdirectory: </source>
-      <translation>Sous-répertoire : </translation>
+      <translation>Sous-répertoire :</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="348"/>
       <source>Sub directory: </source>
-      <translation>Sous-répertoire : </translation>
+      <translation>Sous-répertoire :</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="365"/>
@@ -405,7 +405,7 @@
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="377"/>
       <source>Appearance properties:</source>
-      <translation>Propriétés d'apparence :</translation>
+      <translation>Propriétés de l'apparence :</translation>
     </message>
     <message>
       <location filename="../../DlgInspectMaterial.cpp" line="383"/>
@@ -506,12 +506,12 @@
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="72"/>
       <source>Use materials from the Materials preference directory</source>
-      <translation>Utiliser les matériaux du répertoire des préférences de Material</translation>
+      <translation>Utiliser les matériaux du répertoire des préférences de Materials</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="88"/>
       <source>Material cards from the specified directory will also be listed as available</source>
-      <translation>Les jeux de paramètres de matériau du répertoire spécifié seront également listées comme disponibles.</translation>
+      <translation>Les jeux de paramètres de matériaux à partir du répertoire spécifié seront également listées comme disponibles.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMaterial.ui" line="91"/>
@@ -814,7 +814,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
       <source>Source reference</source>
-      <translation>Référence source</translation>
+      <translation>Référence de la source</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="202"/>
@@ -938,12 +938,12 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1320"/>
       <source>Inherit From</source>
-      <translation>Hériter de</translation>
+      <translation>Hérité de</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1324"/>
       <source>Inherit New Material</source>
-      <translation>Hériter un nouveau matériau</translation>
+      <translation>Hériter d'un nouveau matériau</translation>
     </message>
   </context>
   <context>
@@ -1046,7 +1046,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="22"/>
       <source>Material Card</source>
-      <translation>Jeu de paramètres du matériau</translation>
+      <translation>Jeu de paramètres de matériau</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="40"/>
@@ -1081,7 +1081,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="115"/>
       <source>Add/Remove Parameter</source>
-      <translation>Ajouter/supprimer le paramètre</translation>
+      <translation>Ajouter/supprimer un paramètre</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="126"/>
@@ -1155,7 +1155,7 @@ S'ils ne sont pas cochés, ils seront triés par leur nom.</translation>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1346"/>
       <source>Save changes to the material before closing?</source>
-      <translation>Enregistrer les modifications du matériau avant de fermer ?</translation>
+      <translation>Voulez-vous enregistrer les modifications du matériau avant de fermer ?</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.cpp" line="1347"/>

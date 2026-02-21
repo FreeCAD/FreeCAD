@@ -4332,7 +4332,7 @@ Pour les variables possibles, voir la zone de description ci-dessous.</translati
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master geometry of type: Face; click Add or Remove</source>
-      <translation>Sélectionner une géométrie maître de type : face. Cliquer sur Ajouter ou Supprimer</translation>
+      <translation>Sélectionner une géométrie maîtresse de type : face. Cliquer sur Ajouter ou Supprimer</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="79"/>

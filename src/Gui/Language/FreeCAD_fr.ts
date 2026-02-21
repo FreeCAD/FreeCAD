@@ -1855,7 +1855,7 @@ Perhaps a file permission error?</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
       <source>Duplicate Macro</source>
-      <translation>Dupliquer la macro</translation>
+      <translation>Dupliquer une macro</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
@@ -5714,7 +5714,7 @@ originally selected prior to opening this dialog</source>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="680"/>
       <source>Duplicate Subshape</source>
-      <translation>Dupliquer la sous-forme</translation>
+      <translation>Dupliquer une sous-forme</translation>
     </message>
     <message>
       <location filename="../Selection/SelectionView.cpp" line="656"/>
@@ -8585,12 +8585,12 @@ Choisissez "Interrompre" pour annuler.</translation>
       <translation>Impossible d'ouvrir le navigateur système.</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2562"/>
+      <location filename="../View3DInventorViewer.cpp" line="2567"/>
       <source>Out of memory</source>
       <translation>Mémoire insuffisante</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2563"/>
+      <location filename="../View3DInventorViewer.cpp" line="2568"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Mémoire insuffisante pour afficher les données.</translation>
     </message>
@@ -9033,18 +9033,18 @@ sera perdue.</translation>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="259"/>
       <source>The group '%1' contains %2 object(s). Do you want to delete them as well?</source>
-      <translation>Le groupe « %1 » contient %2 objet(s). Voulez-vous également les supprimer ?</translation>
+      <translation>Le groupe « %1 » contient %2 objet(s). Faut-il également les supprimer ?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="265"/>
       <source>The group '%1' contains %2 direct children and %3 total descendants (including nested groups). Do you want to delete all of them recursively?</source>
-      <translation>Le groupe « %1 » contient %2 enfants directs et %3 descendants au total (y compris les groupes
-imbriqués). Voulez-vous tous les supprimer de manière récursive ?</translation>
+      <translation>Le groupe « %1 » contient %2 enfants directs et %3 descendants au total (y compris les groupes imbriqués). Faut-il tous les supprimer de
+manière récursive ?</translation>
     </message>
     <message>
       <location filename="../ViewProviderGroupExtension.cpp" line="276"/>
       <source>Delete group contents recursively?</source>
-      <translation>Supprimer le contenu du groupe de manière récursive ?</translation>
+      <translation>Faut-il supprimer le contenu du groupe de manière récursive ?</translation>
     </message>
   </context>
   <context>
@@ -9055,7 +9055,7 @@ imbriqués). Voulez-vous tous les supprimer de manière récursive ?</translatio
       <translation>Non autorisé :</translation>
     </message>
     <message>
-      <location filename="../Selection/Selection.cpp" line="1226"/>
+      <location filename="../Selection/Selection.cpp" line="1232"/>
       <source>Selection not allowed by filter</source>
       <translation>Sélection non autorisée par filtre</translation>
     </message>
@@ -10322,7 +10322,8 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="66"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Maximum amount of time the notification will be shown (unless mouse buttons are clicked). It also controls when user notifications will be removed if the &amp;quot;Auto-remove user notifications&amp;quot; setting is checked.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation>Durée maximale d'affichage des notifications (sauf si l'on clique sur les boutons de la souris). Cela contrôle également le moment où les notifications de l'utilisateur seront supprimées si le paramètre "Supprimer automatiquement les notifications utilisateurs" est coché.</translation>
+      <translation>Durée maximale d'affichage des notifications (sauf si les boutons de la souris sont cliqués). Cela contrôle également le moment où les
+notifications de l'utilisateur seront supprimées si le paramètre « Supprimer automatiquement les notifications utilisateur » est coché.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="69"/>
@@ -12983,7 +12984,7 @@ activée ou désactivée.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="1282"/>
       <source>Duplicate Selecti&amp;on</source>
-      <translation>Dupliquer la &amp;sélection</translation>
+      <translation>Dupliquer une &amp;sélection</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1283"/>
@@ -14325,7 +14326,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionLineEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1070"/>
+      <location filename="../ExpressionCompleter.cpp" line="1082"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14333,7 +14334,7 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::ExpressionTextEdit</name>
     <message>
-      <location filename="../ExpressionCompleter.cpp" line="1259"/>
+      <location filename="../ExpressionCompleter.cpp" line="1271"/>
       <source>Exact Match</source>
       <translation>Correspondance exacte</translation>
     </message>
@@ -14535,12 +14536,12 @@ This makes the docked panel stay transparent at all times.</source>
   <context>
     <name>Gui::PropertyEditor::PropertyItemDelegate</name>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>Yes</source>
       <translation>Oui</translation>
     </message>
     <message>
-      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="142"/>
+      <location filename="../propertyeditor/PropertyItemDelegate.cpp" line="143"/>
       <source>No</source>
       <translation>Non</translation>
     </message>
