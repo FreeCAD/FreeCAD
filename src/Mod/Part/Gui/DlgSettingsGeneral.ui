@@ -80,7 +80,7 @@
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
         <property name="toolTip">
-         <string>Enable the multiple-solids Body option by default for newly created Part Design bodies.</string>
+         <string>Enable the multiple-solids Body option by default for newly created Part Design bodies</string>
         </property>
         <property name="text">
          <string>Allow multiple solids in Part Design bodies by default</string>
