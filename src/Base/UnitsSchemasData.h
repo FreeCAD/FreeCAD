@@ -648,7 +648,7 @@ inline const UnitsSchemaSpec s9
         { "Pressure" , {{ 0   , "psi"   , psi                      }}},
         { "Stiffness", {{ 0   , "lbf/in", lbf / in * 1000          }}},
         { "Velocity" , {{ 0   , "mph"   , mi / 3600                }}},
-        { "Angle"    , {{ 0   , "toDMS" , 0                        }}}  // <== !
+        { "Angle"    , {{ 0   , "°"     , 1.0                      }}}
     }
 };
 
