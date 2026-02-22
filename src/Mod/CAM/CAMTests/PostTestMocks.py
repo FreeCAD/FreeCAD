@@ -26,11 +26,13 @@ without requiring disk I/O or loading actual FreeCAD documents.
 """
 
 import Path
+import FreeCAD
 
 
 class MockTool:
     def __init__(self):
         self.ShapeName = "endmill"
+        self.Label = "cutting"
 
 
 class MockToolController:
@@ -42,12 +44,17 @@ class MockToolController:
         label="TC: Default Tool",
         spindle_speed=1000,
         spindle_dir="Forward",
+        feed=FreeCAD.Units.Quantity("1 mm/s"),
     ):
         self.Tool = MockTool()
         self.ToolNumber = tool_number
         self.Label = label
         self.SpindleSpeed = spindle_speed
         self.SpindleDir = spindle_dir
+        self.HorizFeed = feed
+        self.VertFeed = feed
+        self.HorizRapid = 2 * feed
+        self.VertRapid = 2 * feed
         self.Name = f"TC{tool_number}"
 
         # Create a simple path with tool change commands
@@ -151,7 +158,12 @@ def create_default_job_with_operation():
     job = MockJob()
 
     # Create default tool controller
-    tc = MockToolController(tool_number=1, label="TC: Default Tool", spindle_speed=1000)
+    tc = MockToolController(
+        tool_number=1,
+        label="TC: Default Tool",
+        spindle_speed=1000,
+        feed=FreeCAD.Units.Quantity("10 mm/s"),
+    )
     job.Tools.Group = [tc]
 
     # Create default operation
