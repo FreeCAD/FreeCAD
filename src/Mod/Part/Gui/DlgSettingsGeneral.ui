@@ -224,7 +224,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowFinalPreview">
         <property name="toolTip">
-         <string>Show the computed final feature shape by default while editing Part Design features.</string>
+         <string>Show the computed final feature shape by default while editing Part Design features</string>
         </property>
         <property name="text">
          <string>Show final result by default when editing features</string>
