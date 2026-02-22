@@ -29,6 +29,7 @@
 
 
 class QStyleOptionSpinBox;
+class QFocusEvent;
 
 namespace App
 {
@@ -145,6 +146,7 @@ public:
     using ExpressionSpinBox::apply;
 
     void keyPressEvent(QKeyEvent* event) override;
+    void focusOutEvent(QFocusEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
 
@@ -163,6 +165,9 @@ protected:
     void setNumberExpression(App::NumberExpression*) override;
 
 private:
+    bool commitInlineExpressionTextForUi();
+    bool tryHandleVariableAssignment(const QString& text);
+    bool tryHandleRawExpression(const QString& text);
     void updateValidator();
     UIntSpinBoxPrivate* d;
 };

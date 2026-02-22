@@ -172,9 +172,19 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
     }
     else if (event->type() == QEvent::KeyPress) {
         QKeyEvent* ke = static_cast<QKeyEvent*>(event);
-        if (ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Return) {
+        if (ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Return || ke->key() == Qt::Key_Enter
+            || ke->key() == Qt::Key_Backtab) {
             for (int i = 0; i < nParameters; i++) {
-                if (object == getParameterSpinBox(i)) {
+                auto parameterSpinBox = getParameterSpinBox(i);
+                if (object == parameterSpinBox) {
+                    if (!parameterSpinBox->commitInlineExpressionTextForUi()) {
+                        parameterSpinBox->clearFocus();
+                    }
+
+                    if (ke->key() == Qt::Key_Backtab) {
+                        return false;
+                    }
+
                     signalParameterTabOrEnterPressed(i);
                     return true;
                 }

@@ -21,6 +21,10 @@
  ***************************************************************************/
 
 #include <limits>
+#include <set>
+#include <cctype>
+#include <unordered_set>
+#include <unordered_map>
 #include <QApplication>
 #include <QDebug>
 #include <QFocusEvent>
@@ -37,15 +41,16 @@
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObject.h>
+#include <App/Expression.h>
 #include <App/ExpressionParser.h>
 #include <Base/Exception.h>
+#include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Base/Tools.h>
 #include <Base/UnitsSchema.h>
 
 #include "QuantitySpinBox.h"
 #include "QuantitySpinBox_p.h"
-#include "Command.h"
 #include "Dialogs/DlgExpressionInput.h"
 #include "Tools.h"
 #include "Widgets.h"
@@ -54,6 +59,337 @@
 using namespace Gui;
 using namespace App;
 using namespace Base;
+
+namespace
+{
+bool extractParameterRow(const std::string& address, int& row)
+{
+    if (address.size() < 2 || (address[0] != 'A' && address[0] != 'B')) {
+        return false;
+    }
+
+    for (size_t i = 1; i < address.size(); ++i) {
+        if (!std::isdigit(static_cast<unsigned char>(address[i]))) {
+            return false;
+        }
+    }
+
+    // "A123"/"B123" -> 123
+    row = std::stoi(address.substr(1));
+    return row > 0;
+}
+
+std::string getParameterAliasCellAddressForRow(int row)
+{
+    return "A" + std::to_string(row);
+}
+
+std::string getParameterValueCellAddressForRow(int row)
+{
+    return "B" + std::to_string(row);
+}
+
+std::string getNextFreeParameterValueCellAddress(const std::vector<std::string>& usedCells)
+{
+    std::set<int> usedRows;
+    for (const auto& cell : usedCells) {
+        int row = 0;
+        if (extractParameterRow(cell, row)) {
+            usedRows.insert(row);
+        }
+    }
+
+    // find first empty row
+    int row = 1;
+    while (usedRows.find(row) != usedRows.end()) {
+        ++row;
+    }
+
+    return getParameterValueCellAddressForRow(row);
+}
+
+constexpr const char* kParametersSheetName = "Parameters";
+
+void readParameterSheetState(
+    App::Document* doc,
+    const std::string& alias,
+    std::string& existingAddress,
+    std::vector<std::string>& usedCells,
+    bool includeUsedCells = true
+)
+{
+    if (!doc) {
+        return;
+    }
+
+    Base::PyGILStateLocker lock;
+    PyObject* freecadMod = PyImport_ImportModule("FreeCAD");
+    if (!freecadMod) {
+        PyErr_Clear();
+        return;
+    }
+
+    PyObject* pyDoc = PyObject_CallMethod(freecadMod, "getDocument", "s", doc->getName());
+    if (!pyDoc) {
+        PyErr_Clear();
+        Py_DECREF(freecadMod);
+        return;
+    }
+
+    PyObject* pySheet = PyObject_CallMethod(pyDoc, "getObject", "s", kParametersSheetName);
+    if (!pySheet || pySheet == Py_None) {
+        PyErr_Clear();
+        Py_XDECREF(pySheet);
+        Py_DECREF(pyDoc);
+        Py_DECREF(freecadMod);
+        return;
+    }
+
+    if (!alias.empty()) {
+        PyObject* aliasResult = PyObject_CallMethod(pySheet, "getCellFromAlias", "s", alias.c_str());
+        if (aliasResult && PyUnicode_Check(aliasResult)) {
+            const char* address = PyUnicode_AsUTF8(aliasResult);
+            if (address) {
+                existingAddress = address;
+            }
+        }
+        Py_XDECREF(aliasResult);
+        PyErr_Clear();
+    }
+
+    if (includeUsedCells) {
+        PyObject* usedCellsResult = PyObject_CallMethod(pySheet, "getUsedCells", nullptr);
+        if (usedCellsResult) {
+            PyObject* iter = PyObject_GetIter(usedCellsResult);
+            if (iter) {
+                while (PyObject* item = PyIter_Next(iter)) {
+                    if (PyUnicode_Check(item)) {
+                        const char* cellAddress = PyUnicode_AsUTF8(item);
+                        if (cellAddress) {
+                            usedCells.emplace_back(cellAddress);
+                        }
+                    }
+                    Py_DECREF(item);
+                }
+                Py_DECREF(iter);
+            }
+        }
+
+        Py_XDECREF(usedCellsResult);
+        PyErr_Clear();
+    }
+
+    Py_DECREF(pySheet);
+    Py_DECREF(pyDoc);
+    Py_DECREF(freecadMod);
+}
+
+bool hasParameterAlias(App::Document* doc, const std::string& alias)
+{
+    if (!doc || alias.empty()) {
+        return false;
+    }
+
+    std::string existingAddress;
+    std::vector<std::string> unusedCells;
+
+    readParameterSheetState(doc, alias, existingAddress, unusedCells, false);
+    return !existingAddress.empty();
+}
+
+QString trimTrailingStatementDelimiter(QString text)
+{
+    text = text.trimmed();
+
+    while (text.endsWith(QLatin1Char(';'))) {
+        text.chop(1);
+        text = text.trimmed();
+    }
+
+    return text;
+}
+
+bool isIdentifierStart(char c)
+{
+    return std::isalpha(static_cast<unsigned char>(c)) || c == '_';
+}
+
+bool isIdentifierChar(char c)
+{
+    return std::isalnum(static_cast<unsigned char>(c)) || c == '_' || c == '@';
+}
+
+size_t skipSpaces(const std::string& input, size_t index)
+{
+    while (index < input.size() && std::isspace(static_cast<unsigned char>(input[index]))) {
+        ++index;
+    }
+    return index;
+}
+
+bool startsQualifiedPath(const std::string& input, size_t tokenEnd)
+{
+    size_t index = skipSpaces(input, tokenEnd);
+    return index < input.size() && input[index] == '.';
+}
+
+bool isFunctionCall(const std::string& input, size_t tokenEnd)
+{
+    size_t index = skipSpaces(input, tokenEnd);
+    return index < input.size() && input[index] == '(';
+}
+
+bool partOfQualifiedPath(const std::string& input, size_t tokenStart)
+{
+    if (tokenStart == 0) {
+        return false;
+    }
+
+    size_t index = tokenStart;
+    while (index > 0) {
+        --index;
+        if (!std::isspace(static_cast<unsigned char>(input[index]))) {
+            return input[index] == '.';
+        }
+    }
+    return false;
+}
+
+size_t endOfObjectReferenceString(const std::string& input, size_t start)
+{
+    size_t index = start + 2;
+    while (index < input.size()) {
+        const char c = input[index];
+        if (c == '\\') {
+            if (index + 1 < input.size()) {
+                index += 2;
+            }
+            else {
+                ++index;
+            }
+            continue;
+        }
+
+        if (c == '>' && index + 1 < input.size() && input[index + 1] == '>') {
+            return index + 2;
+        }
+        ++index;
+    }
+    return input.size();
+}
+
+bool isPlainQuantityLiteral(const QString& text)
+{
+    try {
+        return Base::Quantity::parse(text.toStdString()).isValid();
+    }
+    catch (...) {
+        return false;
+    }
+}
+
+bool isCommonUnitToken(const std::string& token)
+{
+    // Keep this list intentionally short and practical for inline dimension editing.
+    static const std::unordered_set<std::string> commonUnits = {
+        "mm",
+        "cm",
+        "m",
+        "km",
+        "um",
+        "nm",
+        "in",
+        "ft",
+        "yd",
+        "deg",
+        "rad",
+        "s",
+        "ms",
+        "min",
+        "h",
+    };
+
+    return commonUnits.find(token) != commonUnits.end();
+}
+
+std::string qualifyVariableAliasesInExpression(App::Document* doc, const std::string& input)
+{
+    if (!doc || input.empty()) {
+        return input;
+    }
+
+    std::string output;
+    output.reserve(input.size() + 16);
+
+    std::unordered_map<std::string, bool> aliasCache;
+
+    for (size_t i = 0; i < input.size();) {
+        const char c = input[i];
+        if (c == '<' && i + 1 < input.size() && input[i + 1] == '<') {
+            const size_t end = endOfObjectReferenceString(input, i);
+            output.append(input, i, end - i);
+            i = end;
+            continue;
+        }
+
+        if (!isIdentifierStart(c)) {
+            output.push_back(c);
+            ++i;
+            continue;
+        }
+
+        const bool inQualifiedPath = partOfQualifiedPath(input, i);
+
+        size_t j = i + 1;
+        while (j < input.size() && isIdentifierChar(input[j])) {
+            ++j;
+        }
+
+        const std::string token = input.substr(i, j - i);
+
+        const bool tokenStartsQualifiedPath = startsQualifiedPath(input, j);
+        const bool tokenIsFunctionCall = isFunctionCall(input, j);
+
+        bool skip = inQualifiedPath || tokenStartsQualifiedPath || tokenIsFunctionCall
+            || token == kParametersSheetName || isCommonUnitToken(token)
+            || App::ExpressionParser::isTokenAUnit(token)
+            || App::ExpressionParser::isTokenAConstant(token);
+
+        if (!skip) {
+            auto it = aliasCache.find(token);
+            bool hasAlias = false;
+            if (it != aliasCache.end()) {
+                hasAlias = it->second;
+            }
+            else {
+                hasAlias = hasParameterAlias(doc, token);
+                aliasCache.emplace(token, hasAlias);
+            }
+
+            if (hasAlias) {
+                output += kParametersSheetName;
+                output.push_back('.');
+            }
+        }
+
+        output += token;
+        i = j;
+    }
+
+    return output;
+}
+
+std::string buildQualifiedExpression(App::Document* doc, const QString& expressionText)
+{
+    std::string parseText = expressionText.toStdString();
+
+    if (!doc) {
+        return parseText;
+    }
+
+    return qualifyVariableAliasesInExpression(doc, parseText);
+}
+}  // namespace
 
 namespace Gui
 {
@@ -182,6 +518,52 @@ public:
         }
         if (locale.positiveSign() != plus) {
             copy.replace(locale.positiveSign(), plus);
+        }
+
+        if (copy.startsWith(QLatin1Char('='))) {
+            copy = copy.mid(1).trimmed();
+            if (copy.isEmpty()) {
+                state = QValidator::Intermediate;
+                return res;
+            }
+        }
+
+        // If the input looks like a variable assignment (e.g. "width=42") or
+        // a raw expression with identifiers (e.g. "sin(45)", "width*2"),
+        // accept it as Intermediate so the user can type freely.
+        // Actual parsing happens on Enter via tryHandleVariableAssignment /
+        // tryHandleRawExpression.
+        static const QRegularExpression varAssignPat(
+            QStringLiteral(R"(^\s*[a-zA-Z_][a-zA-Z0-9_]*\s*=(?!=))")
+        );
+        if (varAssignPat.match(copy).hasMatch()) {
+            state = QValidator::Intermediate;
+            return res;
+        }
+
+        // For raw expressions: if the text contains identifiers that aren't
+        // just trailing unit suffixes, try parsing as an expression first
+        // before the unit-mangling logic corrupts it.
+        static const QRegularExpression exprIdentPat(
+            QStringLiteral(R"(^\s*(?:[a-zA-Z_]|<<)|[+\-*/^(]\s*(?:[a-zA-Z_]|<<))")
+        );
+        if (exprIdentPat.match(copy).hasMatch()) {
+            // Try parsing as a raw expression
+            if (parseString(copy, res, value, path)) {
+                if (res.isDimensionless()) {
+                    res.setUnit(unit);
+                }
+                if (value >= min && value <= max) {
+                    state = QValidator::Acceptable;
+                }
+                else {
+                    state = QValidator::Intermediate;
+                }
+                return res;
+            }
+            // Expression didn't parse (yet) — allow typing to continue
+            state = QValidator::Intermediate;
+            return res;
         }
 
         QString reverseUnitStr = unitStr;
@@ -315,6 +697,7 @@ public:
     double maximum;
     double minimum;
     double singleStep;
+    std::string unboundExpressionText;
     QuantitySpinBox* q_ptr;
     std::unique_ptr<Base::UnitsSchema> scheme;
     Q_DECLARE_PUBLIC(QuantitySpinBox)
@@ -417,6 +800,46 @@ QString Gui::QuantitySpinBox::expressionText() const
     return {};
 }
 
+std::string QuantitySpinBox::takeUnboundExpressionText()
+{
+    Q_D(QuantitySpinBox);
+    std::string expression = std::move(d->unboundExpressionText);
+    d->unboundExpressionText.clear();
+    return expression;
+}
+
+bool QuantitySpinBox::commitInlineExpressionText()
+{
+    QString text = lineEdit()->text().trimmed();
+    if (text.isEmpty()) {
+        return false;
+    }
+
+    return tryHandleVariableAssignment(text) || tryHandleRawExpression(text);
+}
+
+void QuantitySpinBox::emitCommittedUnboundValue()
+{
+    Q_D(const QuantitySpinBox);
+
+    Q_EMIT valueChanged(d->quantity);
+    Q_EMIT valueChanged(d->quantity.getValue());
+    Q_EMIT textChanged(getUserString(d->quantity));
+}
+
+bool QuantitySpinBox::commitInlineExpressionTextForUi()
+{
+    if (!commitInlineExpressionText()) {
+        return false;
+    }
+
+    if (!isBound()) {
+        emitCommittedUnboundValue();
+    }
+
+    return true;
+}
+
 void QuantitySpinBox::evaluateExpression()
 {
     if (isBound() && getExpression()) {
@@ -451,6 +874,18 @@ void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent* event)
     Q_D(QuantitySpinBox);
 
     const auto isEnter = event->key() == Qt::Key_Enter || event->key() == Qt::Key_Return;
+
+    if (event->text() == QLatin1String("=") && lineEdit()->text().trimmed().isEmpty()) {
+        QAbstractSpinBox::keyPressEvent(event);
+        return;
+    }
+
+    // On Enter, check for variable assignment syntax (e.g. "width=42")
+    // or raw expression syntax (e.g. "sin(45)", "width*2").
+    if (isEnter && commitInlineExpressionTextForUi()) {
+        Q_EMIT returnPressed();
+        return;
+    }
 
     if (d->normalize && isEnter && !isNormalized()) {
         // ensure that input is up to date
@@ -607,10 +1042,373 @@ bool QuantitySpinBox::hasValidInput() const
     return d->validInput;
 }
 
+/**
+ * Detects "name=value" variable assignment syntax in dimension input.
+ *
+ * When the user types something like "width=42" or "h=10mm" or "ratio=x+5",
+ * this creates (or updates) a named variable in a Spreadsheet and binds
+ * the current property to reference that variable via an expression.
+ *
+ * This enables Fusion 360-style parametric workflow: define and assign
+ * variables inline from any dimension input field.
+ *
+ * Returns true if the input was handled as a variable assignment.
+ */
+bool QuantitySpinBox::tryHandleVariableAssignment(const QString& text)
+{
+    Q_D(QuantitySpinBox);
+
+    // Match: identifier = expression  (e.g. "width=42", "h=10 mm", "r=x+5")
+    // The identifier must start with a letter or underscore, followed by alphanumerics/underscores.
+    // Must not match things like "=42" (expression prefix) or "42" (plain number).
+    static const QRegularExpression varAssignRegex(
+        QStringLiteral(R"(^([a-zA-Z_][a-zA-Z0-9_]*)\s*=(?!=)\s*(.+)$)")
+    );
+
+    QRegularExpressionMatch match = varAssignRegex.match(text.trimmed());
+    if (!match.hasMatch()) {
+        return false;
+    }
+
+    QString varName = match.captured(1);
+    QString valueExpr = trimTrailingStatementDelimiter(match.captured(2));
+
+    if (varName.isEmpty() || valueExpr.isEmpty()) {
+        return false;
+    }
+
+    // Don't treat known units or constants as variable names
+    std::string nameStd = varName.toStdString();
+    if (App::ExpressionParser::isTokenAUnit(nameStd)
+        || App::ExpressionParser::isTokenAConstant(nameStd)) {
+        return false;
+    }
+
+    // Validate the identifier
+    if (nameStd != Base::Tools::getIdentifier(nameStd)) {
+        return false;
+    }
+
+    App::Document* doc = nullptr;
+    if (isBound()) {
+        auto* docObj = getPath().getDocumentObject();
+        if (docObj) {
+            doc = docObj->getDocument();
+        }
+    }
+
+    if (!doc) {
+        doc = App::GetApplication().getActiveDocument();
+    }
+
+    if (!doc) {
+        return false;
+    }
+
+    // Keep plain quantities as values and store everything else as a Spreadsheet formula.
+    std::string cellContent = valueExpr.toStdString();
+    if (!cellContent.empty() && cellContent[0] != '=') {
+        if (isPlainQuantityLiteral(valueExpr)) {
+            // Auto-inherit the field unit for dimensionless literals like "x=32" in
+            // length/angle inputs. Explicit unit literals (e.g. "32 mm", "45 deg")
+            // are preserved.
+            try {
+                Base::Quantity parsed = Base::Quantity::parse(cellContent);
+                if (parsed.isDimensionless() && d->unit != Base::Unit::One) {
+                    parsed.setUnit(d->unit);
+                    cellContent = Base::UnitsApi::schemaTranslate(parsed);
+                }
+            }
+            catch (...) {
+            }
+        }
+        else {
+            cellContent = "=" + cellContent;
+        }
+    }
+
+    try {
+        const std::string escapedDocName = Base::Tools::escapeQuotesFromString(doc->getName());
+        const char* sheetName = kParametersSheetName;
+
+        // Find or create a Spreadsheet named "Parameters".
+        App::DocumentObject* sheetObj = doc->getObject(sheetName);
+        if (!sheetObj) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').addObject('Spreadsheet::Sheet', '%s')",
+                escapedDocName.c_str(),
+                sheetName
+            );
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').Label = '%s'",
+                escapedDocName.c_str(),
+                sheetName,
+                sheetName
+            );
+            sheetObj = doc->getObject(sheetName);
+        }
+
+        if (!sheetObj) {
+            return false;
+        }
+
+        std::string existingAddr;
+        std::vector<std::string> usedCells;
+        readParameterSheetState(doc, nameStd, existingAddr, usedCells);
+
+        bool aliasAlreadyExists = !existingAddr.empty();
+        int row = 0;
+        if (aliasAlreadyExists) {
+            if (!extractParameterRow(existingAddr, row)) {
+                return false;
+            }
+        }
+        else {
+            const std::string nextValueCellAddr = getNextFreeParameterValueCellAddress(usedCells);
+            if (!extractParameterRow(nextValueCellAddr, row)) {
+                return false;
+            }
+        }
+
+        const std::string valueCellAddr = getParameterValueCellAddressForRow(row);
+        const std::string aliasCellAddr = getParameterAliasCellAddressForRow(row);
+
+        std::string escapedContent = Base::Tools::escapeQuotesFromString(cellContent);
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').set('%s', '%s')",
+            escapedDocName.c_str(),
+            sheetName,
+            valueCellAddr.c_str(),
+            escapedContent.c_str()
+        );
+
+        if (aliasAlreadyExists && existingAddr != valueCellAddr) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').setAlias('%s', '')",
+                escapedDocName.c_str(),
+                sheetName,
+                existingAddr.c_str()
+            );
+        }
+
+        if (!aliasAlreadyExists || existingAddr != valueCellAddr) {
+            Base::Interpreter().runStringArg(
+                "App.getDocument('%s').getObject('%s').setAlias('%s', '%s')",
+                escapedDocName.c_str(),
+                sheetName,
+                valueCellAddr.c_str(),
+                nameStd.c_str()
+            );
+        }
+
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').set('%s', '%s')",
+            escapedDocName.c_str(),
+            sheetName,
+            aliasCellAddr.c_str(),
+            nameStd.c_str()
+        );
+
+        // Recompute the spreadsheet to evaluate the cell
+        Base::Interpreter().runStringArg(
+            "App.getDocument('%s').getObject('%s').recompute()",
+            escapedDocName.c_str(),
+            sheetName
+        );
+
+        App::DocumentObject* contextObj = nullptr;
+        if (isBound()) {
+            contextObj = getPath().getDocumentObject();
+        }
+        if (!contextObj) {
+            contextObj = doc->getObject(sheetName);
+        }
+        if (!contextObj && !doc->getObjects().empty()) {
+            contextObj = doc->getObjects().front();
+        }
+
+        if (contextObj) {
+            const std::string exprStr = std::string(sheetName) + "." + nameStd;
+            std::shared_ptr<App::Expression> expr(
+                App::ExpressionParser::parse(contextObj, exprStr.c_str())
+            );
+            if (!expr) {
+                return false;
+            }
+
+            std::unique_ptr<App::Expression> result(expr->eval());
+            auto* number = freecad_cast<App::NumberExpression*>(result.get());
+            if (!number) {
+                return false;
+            }
+
+            if (isBound()) {
+                d->pendingEmit = false;
+                d->validInput = true;
+                setExpression(expr);
+                updateExpression();
+            }
+            else {
+                d->pendingEmit = false;
+                d->validInput = true;
+
+                const Base::Unit targetUnit = d->unit;
+                Base::Quantity resolvedQuantity = number->getQuantity();
+                const bool needsUnitPromotion = resolvedQuantity.isDimensionless()
+                    && targetUnit != Base::Unit::One;
+                if (needsUnitPromotion) {
+                    resolvedQuantity.setUnit(targetUnit);
+                }
+
+                {
+                    // Prevent reentrant valueChanged emissions from setValue() while
+                    // we are still preparing transient unbound expression state.
+                    QSignalBlocker blocker(this);
+                    setValue(resolvedQuantity);
+                }
+
+                std::string expressionToStore = exprStr;
+                if (needsUnitPromotion) {
+                    std::string unitFactor = Base::UnitsApi::schemaTranslate(
+                        Base::Quantity(1.0, targetUnit)
+                    );
+                    expressionToStore = "(" + expressionToStore + ")*(" + unitFactor + ")";
+                }
+                d->unboundExpressionText = std::move(expressionToStore);
+            }
+        }
+        else {
+            return false;
+        }
+
+        return true;
+    }
+    catch (const Base::Exception& e) {
+        qWarning() << "Variable assignment failed:" << e.what();
+        return false;
+    }
+    catch (...) {
+        qWarning() << "Variable assignment failed with unknown error";
+        return false;
+    }
+}
+
+bool QuantitySpinBox::tryHandleRawExpression(const QString& text)
+{
+    Q_D(QuantitySpinBox);
+
+    QString expressionText = text.trimmed();
+
+    if (expressionText.startsWith(QLatin1Char('='))) {
+        expressionText = expressionText.mid(1).trimmed();
+    }
+
+    expressionText = trimTrailingStatementDelimiter(expressionText);
+
+    // Skip empty input or plain numbers (let normal validation handle those)
+    if (expressionText.isEmpty()) {
+        return false;
+    }
+
+    // Let plain quantities go through the regular unit path.
+    if (isPlainQuantityLiteral(expressionText)) {
+        return false;
+    }
+
+    // Try to parse as an expression
+    App::DocumentObject* docObj = nullptr;
+    App::Document* doc = nullptr;
+    if (isBound()) {
+        docObj = getPath().getDocumentObject();
+        if (docObj) {
+            doc = docObj->getDocument();
+        }
+    }
+
+    if (!docObj) {
+        doc = App::GetApplication().getActiveDocument();
+        if (doc) {
+            docObj = doc->getObject(kParametersSheetName);
+            if (!docObj && !doc->getObjects().empty()) {
+                docObj = doc->getObjects().front();
+            }
+        }
+    }
+
+    std::shared_ptr<App::Expression> expr;
+    std::string parseText = buildQualifiedExpression(doc, expressionText);
+
+    try {
+        expr.reset(App::ExpressionParser::parse(docObj, parseText.c_str()));
+    }
+    catch (...) {
+    }
+
+    try {
+        if (expr) {
+            std::unique_ptr<App::Expression> result(expr->eval());
+            auto* number = freecad_cast<App::NumberExpression*>(result.get());
+            if (!number) {
+                return false;
+            }
+
+            if (isBound()) {
+                d->pendingEmit = false;
+                d->validInput = true;
+                setExpression(expr);
+                updateExpression();
+            }
+            else {
+                d->pendingEmit = false;
+                d->validInput = true;
+
+                const Base::Unit targetUnit = d->unit;
+                Base::Quantity resolvedQuantity = number->getQuantity();
+                const bool needsUnitPromotion = resolvedQuantity.isDimensionless()
+                    && targetUnit != Base::Unit::One;
+                if (needsUnitPromotion) {
+                    resolvedQuantity.setUnit(targetUnit);
+                }
+
+                {
+                    // Prevent reentrant valueChanged emissions from setValue() while
+                    // we are still preparing transient unbound expression state.
+                    QSignalBlocker blocker(this);
+                    setValue(resolvedQuantity);
+                }
+
+                std::string expressionString = expr->toString();
+                if (doc) {
+                    expressionString = qualifyVariableAliasesInExpression(doc, expressionString);
+                }
+
+                if (needsUnitPromotion) {
+                    std::string unitFactor = Base::UnitsApi::schemaTranslate(
+                        Base::Quantity(1.0, targetUnit)
+                    );
+                    expressionString = "(" + expressionString + ")*(" + unitFactor + ")";
+                }
+
+                d->unboundExpressionText = std::move(expressionString);
+            }
+            return true;
+        }
+    }
+    catch (...) {
+        // Expression parse failed — fall through to normal input handling
+    }
+
+    return false;
+}
+
 // Gets called after call of 'validateAndInterpret'
 void QuantitySpinBox::userInput(const QString& text)
 {
     Q_D(QuantitySpinBox);
+
+    if (!isBound()) {
+        d->unboundExpressionText.clear();
+    }
 
     d->pendingEmit = true;
 
@@ -629,7 +1427,8 @@ void QuantitySpinBox::userInput(const QString& text)
         // temporarily invalid
         const QString trimmedText = text.trimmed();
         static const QRegularExpression partialNumberRegex(QStringLiteral(R"([+-]?(\d+)?(\.,\d*)?)"));
-        if (trimmedText.isEmpty() || !trimmedText.contains(partialNumberRegex)) {
+        if ((trimmedText.isEmpty() || !trimmedText.contains(partialNumberRegex))
+            && !lineEdit()->hasFocus()) {
             // we have to emit here signal explicitly as validator will not pass
             // this value further but we want to check it to disable isSet flag if
             // it has been set previously
@@ -1007,6 +1806,14 @@ void QuantitySpinBox::focusInEvent(QFocusEvent* event)
 void QuantitySpinBox::focusOutEvent(QFocusEvent* event)
 {
     Q_D(const QuantitySpinBox);
+
+    // Some flows commit via focus transfer (e.g. click OK) instead of pressing
+    // Enter inside the field. Handle inline expression/assignment here too.
+    if (commitInlineExpressionTextForUi()) {
+        QToolTip::hideText();
+        QAbstractSpinBox::focusOutEvent(event);
+        return;
+    }
 
     validateInput();
 

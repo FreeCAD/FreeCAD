@@ -690,6 +690,11 @@ void DSHLineController::addConstraints()
     auto p3 = onViewParameters[OnViewParameter::Third]->getValue();
     auto p4 = onViewParameters[OnViewParameter::Fourth]->getValue();
 
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto p3Expr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto p4Expr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto p3set = onViewParameters[OnViewParameter::Third]->isSet;
@@ -702,14 +707,31 @@ void DSHLineController::addConstraints()
     };
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::start),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::start), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::start),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintp3DistanceX = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         if (fabs(p3) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Vertical',%d)) ", firstCurve);
         }
@@ -725,22 +747,34 @@ void DSHLineController::addConstraints()
                 fabs(p3)
             );
         }
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
 
     auto constraintp3length = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Distance',%d,%f)) ",
             firstCurve,
             fabs(p3)
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
 
     auto constraintp3x = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::end), GeoElementId::VAxis, p3, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::end),
+            GeoElementId::VAxis,
+            p3,
+            obj,
+            !p3Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p3Expr);
     };
 
     auto constraintp4DistanceY = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         if (fabs(p4) < Precision::Confusion()) {
             Gui::cmdAppObjectArgs(obj, "addConstraint(Sketcher.Constraint('Horizontal',%d)) ", firstCurve);
         }
@@ -756,14 +790,25 @@ void DSHLineController::addConstraints()
                 fabs(p4)
             );
         }
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
     };
 
     auto constraintp4angle = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         ConstraintLineByAngle(firstCurve, Base::toRadians(p4), obj);
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
     };
 
     auto constraintp4y = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::end), GeoElementId::HAxis, p4, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::end),
+            GeoElementId::HAxis,
+            p4,
+            obj,
+            !p4Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, p4Expr);
     };
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.

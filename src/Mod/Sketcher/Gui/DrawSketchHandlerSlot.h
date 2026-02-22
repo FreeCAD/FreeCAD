@@ -594,6 +594,12 @@ void DSHSlotController::addConstraints()
     auto x0 = onViewParameters[OnViewParameter::First]->getValue();
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
 
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto lengthExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+    auto angleExpr = onViewParameters[OnViewParameter::Fourth]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Fifth]->constraintExpression();
+
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto lengthSet = onViewParameters[OnViewParameter::Third]->isSet;
@@ -607,14 +613,31 @@ void DSHSlotController::addConstraints()
     };
 
     auto constraintx0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid), GeoElementId::VAxis, x0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::mid),
+            GeoElementId::VAxis,
+            x0,
+            obj,
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, x0Expr);
     };
 
     auto constrainty0 = [&]() {
-        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid), GeoElementId::HAxis, y0, obj);
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
+        ConstraintToAttachment(
+            GeoElementId(firstCurve, PointPos::mid),
+            GeoElementId::HAxis,
+            y0,
+            obj,
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, y0Expr);
     };
 
     auto constraintLength = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
@@ -624,9 +647,11 @@ void DSHSlotController::addConstraints()
             3,
             handler->length
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, lengthExpr);
     };
 
     auto constraintAngle = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         ConstraintType lastType = handler->sugConstraints[1].empty()
             ? ConstraintType::None
             : handler->sugConstraints[1].back().Type;
@@ -640,6 +665,7 @@ void DSHSlotController::addConstraints()
                 handler->angle
             );
         }
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, angleExpr);
     };
 
     if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
@@ -707,12 +733,14 @@ void DSHSlotController::addConstraints()
 
     // No auto constraint in seekThird.
     if (radiusSet) {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             obj,
             "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
             firstCurve,
             handler->radius
         );
+        applyExpressionToLatestConstraint(handler->getSketchObject(), oldConstraintCount, obj, radiusExpr);
     }
 }
 

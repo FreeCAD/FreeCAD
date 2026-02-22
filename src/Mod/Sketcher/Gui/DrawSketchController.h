@@ -486,6 +486,24 @@ public:
     virtual void addConstraints()
     {}
 
+    /**
+     * Commit pending inline expression/assignment text in on-view parameter spinboxes.
+     *
+     * This is needed for click-to-finish flows where focus-out may happen after
+     * constraint creation. In those cases, the active editor text would otherwise
+     * be committed too late and the new constraint would keep only a literal value.
+     */
+    void commitPendingOnViewParameterInputs()
+    {
+        for (auto& parameter : onViewParameters) {
+            if (!parameter) {
+                continue;
+            }
+
+            parameter->commitPendingInlineExpression();
+        }
+    }
+
     /// Configures on-view parameters
     void configureOnViewParameters()
     {}

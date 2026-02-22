@@ -24,10 +24,10 @@
 
 
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <QAbstractSpinBox>
 #include <QApplication>
 #include <QEvent>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
+#include <QLineEdit>
 
 
 #include "ViewProviderSketch.h"
@@ -93,15 +93,28 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
 void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEvent)
 {
-    QRegularExpression rx(QStringLiteral("^[0-9]$"));
-    auto match = rx.match(keyEvent->text());
-    if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
-        || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma
-        || match.hasMatch()
+    QWidget* focusWidget = QApplication::focusWidget();
+    bool isTextInputFocused = focusWidget
+        && (qobject_cast<QAbstractSpinBox*>(focusWidget) || qobject_cast<QLineEdit*>(focusWidget)
+            || qobject_cast<QAbstractSpinBox*>(focusWidget->parentWidget()));
+
+    if (!isTextInputFocused) {
+        return;
+    }
+
+    // Route all printable characters (letters, digits, symbols like '=', '*', '+')
+    // plus editing keys to the spinbox. This allows users to type expressions
+    // and variable assignments (e.g. "width=42", "sin(45deg)") without sketch
+    // shortcuts intercepting the keypresses.
+    bool isPrintable = !keyEvent->text().isEmpty() && keyEvent->text().at(0).isPrint();
+    bool isEditingKey = keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
+        || keyEvent->key() == Qt::Key_Tab
+        || keyEvent->key() == Qt::Key_Backtab
         // double check for backspace as there may be windows/unix inconsistencies
         || keyEvent->key() == Qt::Key_Backspace || keyEvent->matches(QKeySequence::Backspace)
-        || keyEvent->matches(QKeySequence::Delete)) {
+        || keyEvent->matches(QKeySequence::Delete);
+
+    if (isPrintable || isEditingKey) {
         keyMode = KeyboardEventHandlingMode::DSHControl;
         timer.start(timeOutValue);
     }

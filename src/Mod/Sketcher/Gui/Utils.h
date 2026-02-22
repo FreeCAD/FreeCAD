@@ -222,7 +222,15 @@ void ConstraintToAttachment(
     Sketcher::GeoElementId element,
     Sketcher::GeoElementId attachment,
     double distance,
-    App::DocumentObject* obj
+    App::DocumentObject* obj,
+    bool forceDimensional = false
+);
+
+bool applyExpressionToLatestConstraint(
+    Sketcher::SketchObject* sketch,
+    int previousConstraintCount,
+    App::DocumentObject* obj,
+    const std::string& expression
 );
 
 void ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj);

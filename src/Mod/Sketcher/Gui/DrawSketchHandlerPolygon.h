@@ -493,6 +493,10 @@ void DSHPolygonController::addConstraints()
     auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
     auto radius = onViewParameters[OnViewParameter::Third]->getValue();
 
+    auto x0Expr = onViewParameters[OnViewParameter::First]->constraintExpression();
+    auto y0Expr = onViewParameters[OnViewParameter::Second]->constraintExpression();
+    auto radiusExpr = onViewParameters[OnViewParameter::Third]->constraintExpression();
+
     auto x0set = onViewParameters[OnViewParameter::First]->isSet;
     auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
     auto radiusSet = onViewParameters[OnViewParameter::Third]->isSet;
@@ -500,29 +504,52 @@ void DSHPolygonController::addConstraints()
     using namespace Sketcher;
 
     auto constraintx0 = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         ConstraintToAttachment(
             GeoElementId(lastCurve, PointPos::mid),
             GeoElementId::VAxis,
             x0,
-            handler->sketchgui->getObject()
+            handler->sketchgui->getObject(),
+            !x0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            handler->sketchgui->getObject(),
+            x0Expr
         );
     };
 
     auto constrainty0 = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         ConstraintToAttachment(
             GeoElementId(lastCurve, PointPos::mid),
             GeoElementId::HAxis,
             y0,
-            handler->sketchgui->getObject()
+            handler->sketchgui->getObject(),
+            !y0Expr.empty()
+        );
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            handler->sketchgui->getObject(),
+            y0Expr
         );
     };
 
     auto constraintradius = [&]() {
+        int oldConstraintCount = handler->getSketchObject()->Constraints.getSize();
         Gui::cmdAppObjectArgs(
             handler->sketchgui->getObject(),
             "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
             lastCurve,
             radius
+        );
+        applyExpressionToLatestConstraint(
+            handler->getSketchObject(),
+            oldConstraintCount,
+            handler->sketchgui->getObject(),
+            radiusExpr
         );
     };
 

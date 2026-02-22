@@ -147,11 +147,15 @@ private:
         If this behaviour is not acceptable, then the function must be specialised.*/
     void onButtonPressed(Base::Vector2d onSketchPos) override
     {
+        // Commit inline text before the click advances the state machine; otherwise
+        // click-to-finish flows may create literal constraints instead of expressions.
+        toolWidgetManager.commitPendingOnViewParameterInputs();
         DSDefaultHandler::onButtonPressed(onSketchPos);
     }
 
     void beforeCreateAutoConstraints() override
     {
+        toolWidgetManager.commitPendingOnViewParameterInputs();
         toolWidgetManager.addConstraints();
     }
 

@@ -26,6 +26,8 @@
 #include <QLocale>
 #include <QRegularExpression>
 
+#include <algorithm>
+
 #include <App/Application.h>
 #include <Base/Quantity.h>
 #include <Base/UnitsApi.h>
@@ -700,10 +702,11 @@ void SketcherGui::ConstraintToAttachment(
     Sketcher::GeoElementId element,
     Sketcher::GeoElementId attachment,
     double distance,
-    App::DocumentObject* obj
+    App::DocumentObject* obj,
+    bool forceDimensional
 )
 {
-    if (distance == 0.) {
+    if (distance == 0. && !forceDimensional) {
 
         if (attachment.isCurve()) {
             Gui::cmdAppObjectArgs(
@@ -744,7 +747,52 @@ void SketcherGui::ConstraintToAttachment(
                 distance
             );
         }
+        else if (distance == 0.) {
+            // Fallback to geometric attachment when no dimensional axis constraint exists.
+            ConstraintToAttachment(element, attachment, distance, obj, false);
+        }
     }
+}
+
+bool SketcherGui::applyExpressionToLatestConstraint(
+    Sketcher::SketchObject* sketch,
+    int previousConstraintCount,
+    App::DocumentObject* obj,
+    const std::string& expression
+)
+{
+    if (!sketch || !obj || expression.empty()) {
+        return false;
+    }
+
+    int newConstraintCount = sketch->Constraints.getSize();
+    if (newConstraintCount <= previousConstraintCount) {
+        return false;
+    }
+
+    int firstCandidate = std::max(previousConstraintCount, 0);
+    int constraintIndex = -1;
+    for (int i = newConstraintCount - 1; i >= firstCandidate; --i) {
+        const auto* constraint = sketch->Constraints[i];
+        if (constraint && constraint->isDimensional()) {
+            constraintIndex = i;
+            break;
+        }
+    }
+
+    if (constraintIndex < 0) {
+        return false;
+    }
+
+    std::string escapedExpr = Base::Tools::escapeQuotesFromString(expression);
+    Gui::cmdAppObjectArgs(
+        obj,
+        "setExpression('Constraints[%d]', '%s')",
+        constraintIndex,
+        escapedExpr.c_str()
+    );
+
+    return true;
 }
 
 void SketcherGui::ConstraintLineByAngle(int geoId, double angle, App::DocumentObject* obj)
