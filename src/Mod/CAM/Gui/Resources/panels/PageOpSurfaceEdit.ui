@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>498</width>
-    <height>541</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,7 +22,7 @@
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QGridLayout" name="gridLayout_Top">
       <item row="0" column="0">
        <widget class="QLabel" name="toolController_label">
         <property name="text">
@@ -62,246 +62,303 @@
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QWidget" name="widget">
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="boundBoxSelect_label">
-        <property name="text">
-         <string>Bounding box</string>
-        </property>
+    <widget class="QGroupBox" name="meshConversionGroup">
+     <property name="title">
+      <string>Speed vs Accuracy</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QWidget" name="accuracySliderWidget" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Speed</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QSlider" name="accuracySlider">
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>7</number>
+           </property>
+           <property name="value">
+            <number>5</number>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="tickPosition">
+            <enum>QSlider::TicksBelow</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Accuracy</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="0" column="1" colspan="2">
-       <widget class="QComboBox" name="boundBoxSelect">
-        <property name="toolTip">
-         <string>Select the overall boundary for the operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="scanType_label">
-        <property name="text">
-         <string>Scan type</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1" colspan="2">
-       <widget class="QComboBox" name="scanType">
-        <property name="toolTip">
-         <string>Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="layerMode_label">
-        <property name="text">
-         <string>Layer mode</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="layerMode">
-        <property name="toolTip">
-         <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="cutPattern_label">
-        <property name="text">
-         <string>Cut pattern</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1" colspan="2">
-       <widget class="QComboBox" name="cutPattern">
-        <property name="toolTip">
-         <string>Set the geometric clearing pattern to use for the operation</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="profileEdges_label">
-        <property name="text">
-         <string>Profile edges</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1" colspan="2">
-       <widget class="QComboBox" name="profileEdges">
-        <property name="toolTip">
-         <string>Profile the edges of the selection</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="avoidLastX_Faces_label">
-        <property name="text">
-         <string>Avoid last X faces</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1" colspan="2">
-       <widget class="QSpinBox" name="avoidLastX_Faces">
-        <property name="toolTip">
-         <string>Avoid cutting the last 'n' faces in the base geometry list of selected faces</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QLabel" name="boundBoxExtraOffset_label">
-        <property name="text">
-         <string>Bounding box extra offset X, Y</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1" colspan="2">
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="Gui::InputField" name="boundBoxExtraOffsetX">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="toolTip">
-           <string>Additional offset to the selected bounding box along the X axis</string>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::InputField" name="boundBoxExtraOffsetY">
-          <property name="toolTip">
-           <string>Additional offset to the selected bounding box along the Y axis</string>
-          </property>
-          <property name="unit" stdset="0">
-           <string notr="true">mm</string>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item row="8" column="0">
-       <widget class="QLabel" name="dropCutterDirSelect_label">
-        <property name="text">
-         <string>Drop cutter direction</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1" colspan="2">
-       <widget class="QComboBox" name="dropCutterDirSelect">
-        <property name="toolTip">
-         <string>Dropcutter lines are created parallel to this axis.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QLabel" name="depthOffset_label">
-        <property name="text">
-         <string>Depth offset</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1" colspan="2">
-       <widget class="Gui::InputField" name="depthOffset">
-        <property name="toolTip">
-         <string>Set the Z-axis depth offset from the target surface</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QLabel" name="stepOver_label">
-        <property name="text">
-         <string>Stepover</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1" colspan="2">
-       <widget class="QSpinBox" name="stepOver">
-        <property name="toolTip">
-         <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
-
-A step over of 100% results in no overlap between two different cycles.</string>
-        </property>
-        <property name="minimum">
-         <number>1</number>
-        </property>
-        <property name="maximum">
-         <number>100</number>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
-       <widget class="QLabel" name="sampleInterval_label">
-        <property name="text">
-         <string>Sample interval</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="1" colspan="2">
-       <widget class="Gui::InputField" name="sampleInterval">
-        <property name="toolTip">
-         <string>Set the sampling resolution. Smaller values quickly increase processing time.</string>
-        </property>
-        <property name="unit" stdset="0">
-         <string notr="true">mm</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="0">
-       <widget class="QCheckBox" name="useStartPoint">
-        <property name="toolTip">
-         <string>Set to true if specifying a start point</string>
-        </property>
-        <property name="text">
-         <string>Use start point</string>
-        </property>
-       </widget>
-      </item>
-      <item row="14" column="1">
-       <widget class="QCheckBox" name="optimizeEnabled">
-        <property name="toolTip">
-         <string>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</string>
-        </property>
-        <property name="text">
-         <string>Optimize linear paths</string>
-        </property>
-       </widget>
-      </item>
-      <item row="15" column="0">
-       <widget class="QCheckBox" name="boundaryEnforcement">
-        <property name="toolTip">
-         <string>If true, the cutter will remain inside the boundaries of the model or selected faces</string>
-        </property>
-        <property name="text">
-         <string>Boundary enforcement</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-     <item row="15" column="1">
-       <widget class="QCheckBox" name="optimizeStepOverTransitions">
-        <property name="toolTip">
-         <string>Enable separate optimization of transitions between, and breaks within, each step over path.</string>
-        </property>
-        <property name="text">
-         <string>Optimize stepover transitions</string>
-        </property>
-       </widget>
-      </item>
-      </layout>
+     </layout>
     </widget>
    </item>
    <item row="2" column="0">
+    <layout class="QGridLayout" name="gridLayout_Params">
+     <item row="0" column="0">
+      <widget class="QLabel" name="boundBoxSelect_label">
+       <property name="text">
+        <string>Bounding box</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="boundBoxSelect">
+       <property name="toolTip">
+        <string>Select the overall boundary for the operation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="scanType_label">
+       <property name="text">
+        <string>Scan type</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QComboBox" name="scanType">
+       <property name="toolTip">
+        <string>Planar: flat, 3D surface scan. Rotational: 4th-axis rotational scan.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="layerMode_label">
+       <property name="text">
+        <string>Layer mode</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QComboBox" name="layerMode">
+       <property name="toolTip">
+        <string>Complete the operation in a single pass at depth, or multiple passes to final depth</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="cutPattern_label">
+       <property name="text">
+        <string>Cut pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QComboBox" name="cutPattern">
+       <property name="toolTip">
+        <string>Set the geometric clearing pattern to use for the operation</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="profileEdges_label">
+       <property name="text">
+        <string>Profile edges</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QComboBox" name="profileEdges">
+       <property name="toolTip">
+        <string>Profile the edges of the selection</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="0">
+      <widget class="QLabel" name="avoidLastX_Faces_label">
+       <property name="text">
+        <string>Avoid last X faces</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="1">
+      <widget class="QSpinBox" name="avoidLastX_Faces">
+       <property name="toolTip">
+        <string>Avoid cutting the last 'n' faces in the base geometry list of selected faces</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="boundBoxExtraOffset_label">
+       <property name="text">
+        <string>Bounding box extra offset X, Y</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="Gui::InputField" name="boundBoxExtraOffsetX">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Additional offset to the selected bounding box along the X axis</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Gui::InputField" name="boundBoxExtraOffsetY">
+         <property name="toolTip">
+          <string>Additional offset to the selected bounding box along the Y axis</string>
+         </property>
+         <property name="unit" stdset="0">
+          <string notr="true">mm</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="8" column="0">
+      <widget class="QLabel" name="dropCutterDirSelect_label">
+       <property name="text">
+        <string>Drop cutter direction</string>
+       </property>
+      </widget>
+     </item>
+     <item row="8" column="1">
+      <widget class="QComboBox" name="dropCutterDirSelect">
+       <property name="toolTip">
+        <string>Dropcutter lines are created parallel to this axis.</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="0">
+      <widget class="QLabel" name="depthOffset_label">
+       <property name="text">
+        <string>Depth offset</string>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="1">
+      <widget class="Gui::InputField" name="depthOffset">
+       <property name="toolTip">
+        <string>Set the Z-axis depth offset from the target surface</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="0">
+      <widget class="QLabel" name="stepOver_label">
+       <property name="text">
+        <string>Stepover</string>
+       </property>
+      </widget>
+     </item>
+     <item row="10" column="1">
+      <widget class="QSpinBox" name="stepOver">
+       <property name="toolTip">
+        <string>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
+
+A step over of 100% results in no overlap between two different cycles.</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="QLabel" name="sampleInterval_label">
+       <property name="text">
+        <string>Sample interval</string>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="Gui::InputField" name="sampleInterval">
+       <property name="toolTip">
+        <string>Set the sampling resolution. Smaller values quickly increase processing time.</string>
+       </property>
+       <property name="unit" stdset="0">
+        <string notr="true">mm</string>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_Checkbox1">
+       <item>
+        <widget class="QCheckBox" name="useStartPoint">
+         <property name="toolTip">
+          <string>Set to true if specifying a start point</string>
+         </property>
+         <property name="text">
+          <string>Use start point</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="optimizeEnabled">
+         <property name="toolTip">
+          <string>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</string>
+         </property>
+         <property name="text">
+          <string>Optimize linear paths</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item row="15" column="1">
+      <layout class="QHBoxLayout" name="horizontalLayout_Checkbox2">
+       <item>
+        <widget class="QCheckBox" name="boundaryEnforcement">
+         <property name="toolTip">
+          <string>If true, the cutter will remain inside the boundaries of the model or selected faces</string>
+         </property>
+         <property name="text">
+          <string>Boundary enforcement</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="optimizeStepOverTransitions">
+         <property name="toolTip">
+          <string>Enable separate optimization of transitions between, and breaks within, each step over path.</string>
+         </property>
+         <property name="text">
+          <string>Optimize stepover transitions</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item row="3" column="0">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
