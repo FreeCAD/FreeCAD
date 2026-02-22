@@ -1004,11 +1004,7 @@ public:
         return "Gui::ViewProviderLink";
     }
 
-    void onDocumentRestored() override
-    {
-        LINK_PROPS_SET(LINK_PARAMS_LINK);
-        inherited::onDocumentRestored();
-    }
+    void onDocumentRestored() override;
 
     void handleChangedPropertyName(Base::XMLReader& reader,
                                    const char* TypeName,
@@ -1024,6 +1020,15 @@ public:
     bool isLink() const override;
 
     bool isLinkGroup() const override;
+
+    void onParentLabelChanged(App::DocumentObject* parent) override;
+
+    static void updateLabelUtility(App::DocumentObject* link, App::DocumentObject* linked);
+    static void migrateLabelUtility(App::DocumentObject* link, App::DocumentObject* linked);
+
+
+protected:
+    void onChanged(const Property* prop) override;
 };
 
 using LinkPython = App::FeaturePythonT<Link>;

@@ -30,6 +30,7 @@
 
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
+#include <Base/UniqueNameManager.h>
 
 #include "Application.h"
 #include "ElementNamingUtils.h"
@@ -2693,6 +2694,112 @@ bool Link::isLink() const
 bool Link::isLinkGroup() const
 {
     return ElementCount.getValue() > 0;
+}
+
+void Link::onChanged(const Property* prop)
+{
+    if (prop == &LinkedObject && !isRestoring()) {
+        updateLabelUtility(this, getLinkedObject());
+    }
+    inherited::onChanged(prop);
+}
+
+void Link::onParentLabelChanged(App::DocumentObject* parent)
+{
+    if (getLinkedObject() != parent) {
+        return;
+    }
+
+    updateLabelUtility(this, getLinkedObject());
+}
+
+void Link::onDocumentRestored()
+{
+    LINK_PROPS_SET(LINK_PARAMS_LINK);
+    inherited::onDocumentRestored();
+
+    migrateLabelUtility(this, getLinkedObject());
+}
+
+void Link::migrateLabelUtility(App::DocumentObject* link, App::DocumentObject* linked)
+{
+    if (!link || !linked || !link->getDocument() || link->isRestoring()) {
+        return;
+    }
+
+    std::string currentLabel = link->Label.getValue();
+    std::string base, inst;
+    if (Base::UniqueNameManager::parseLabelInstance(currentLabel, base, inst)) {
+        return;
+    }
+
+    std::string targetLabel = linked->Label.getValue();
+
+    // Case 1: Handle identical labels (e.g., "SubAssembly" link to "SubAssembly")
+    // We want "SubAssembly <1>", "SubAssembly <2>", etc., not "SubAssembly <SubAssembly>"
+    if (currentLabel == targetLabel) {
+        std::string migrated = link->getDocument()->makeUniqueLinkLabel(targetLabel);
+        link->Label.setValue(migrated);
+        link->Label.purgeTouched();
+        return;
+    }
+
+    std::string newInst;
+
+    // Case 2: Standard Numeric Uniqueness (e.g., "Cube001" -> "Cube <1>")
+    // We use decomposeLabel to see if the existing label is just the target + numbers.
+    auto [pref, suff, count, val] = link->getDocument()->decomposeLabel(currentLabel);
+    if (count > 0 && pref == targetLabel && suff.empty()) {
+        newInst = val.toString();
+    }
+    else if (currentLabel.size() > targetLabel.size()
+             && currentLabel.compare(0, targetLabel.size(), targetLabel) == 0) {
+        // Case 3: Prefixed custom name (e.g., "Cube left" -> "Cube <left>")
+        newInst = currentLabel.substr(targetLabel.size());
+        // Clean up separators like "Cube-left" or "Cube left"
+        auto firstPos = newInst.find_first_not_of(" -_");
+        newInst = (firstPos != std::string::npos) ? newInst.substr(firstPos) : currentLabel;
+    }
+    else {
+        // Case 4: Totally custom name (e.g., "Coco" -> "Cube <Coco>")
+        newInst = currentLabel;
+    }
+
+    // Apply the migrated label
+    if (!newInst.empty()) {
+        std::string migrated = targetLabel + " <" + newInst + ">";
+        if (link->getDocument()->containsLabel(migrated)) {
+            migrated = link->getDocument()->makeUniqueLabel(migrated);
+        }
+
+        link->Label.setValue(migrated);
+        link->Label.purgeTouched();
+    }
+}
+
+void Link::updateLabelUtility(App::DocumentObject* link, App::DocumentObject* linked)
+{
+    if (!link || !linked || !link->getDocument()) {
+        return;
+    }
+
+    std::string targetLabel = linked->Label.getValue();
+    std::string currentLabel = link->Label.getValue();
+
+    std::string currentBase, inst;
+    bool isPattern = Base::UniqueNameManager::parseLabelInstance(currentLabel, currentBase, inst);
+
+    if (isPattern) {
+        // Pattern exists. Check if base name (linked object label) matches.
+        if (currentBase != targetLabel) {
+            // The linked object was renamed. We try to keep the same instance number.
+            link->Label.setValue(targetLabel + " <" + inst + ">");
+        }
+    }
+    else {
+        // Pattern broken or new link: generate fresh label
+        link->Label.setValue(link->getDocument()->makeUniqueLinkLabel(targetLabel));
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////

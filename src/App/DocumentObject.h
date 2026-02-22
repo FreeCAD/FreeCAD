@@ -1329,6 +1329,8 @@ protected:
      * @param[in] oldStatus The old status of the property.
      */
     void onPropertyStatusChanged(const Property& prop, unsigned long oldStatus) override;
+    /// get called when a parent object had its Label updated
+    virtual void onParentLabelChanged(App::DocumentObject* parent) {};
 
 private:
     void printInvalidLinks() const;

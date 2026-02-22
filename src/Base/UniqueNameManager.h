@@ -207,17 +207,18 @@ private:
     // collection. This does not contain entries for singleton names.
     std::map<std::string, unsigned int> duplicateCounts;
 
-    /// @brief Break a uniquified name into its parts
-    /// @param name The name to break up
-    /// @return a tuple(basePrefix, nameSuffix, uniqueDigitCount, uniqueDigitsValue);
-    /// The two latter values will be (0,0) if name is a base name without uniquifying digits.
-    std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned> decomposeName(
-        const std::string& name
-    ) const;
+    std::string trailer;
 
 public:
     UniqueNameManager() = default;
     virtual ~UniqueNameManager() = default;
+
+    /// Configure a trailer string (e.g. ">").
+    /// If set, the manager will look for digits *before* this trailer.
+    void setTrailer(const std::string& t)
+    {
+        trailer = t;
+    }
 
     /// Check if two names are unique forms of the same base name
     bool haveSameBaseName(const std::string& first, const std::string& second) const;
@@ -237,12 +238,27 @@ public:
     void removeExactName(const std::string& name);
     /// Test if the given name is already in the collection
     bool containsName(const std::string& name) const;
+    /// @brief Break a uniquified name into its parts
+    /// @param name The name to break up
+    /// @return a tuple(basePrefix, nameSuffix, uniqueDigitCount, uniqueDigitsValue);
+    /// The two latter values will be (0,0) if name is a base name without uniquifying digits.
+    std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned> decomposeName(
+        const std::string& name
+    ) const;
+
     /// @brief Empty (clear) out the contents from this collection
     void clear()
     {
         uniqueSeeds.clear();
         duplicateCounts.clear();
     }
+
+    /// Split link labels formated like "Name <Instance>" into "Name" and "Instance".
+    static bool parseLabelInstance(
+        const std::string& fullLabel,
+        std::string& outBase,
+        std::string& outInstance
+    );
 };
 }  // namespace Base
 

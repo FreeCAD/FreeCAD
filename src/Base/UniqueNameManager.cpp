@@ -33,33 +33,45 @@ std::tuple<std::string, std::string, unsigned int, Base::UnlimitedUnsigned> Base
     const std::string& name
 ) const
 {
+    // 1. Trailer Logic
+    if (!trailer.empty() && name.size() > trailer.size()
+        && name.compare(name.size() - trailer.size(), trailer.size(), trailer) == 0) {
+
+        auto trailerStart = name.rbegin() + trailer.size();
+        auto digitsStart = std::find_if_not(trailerStart, name.crend(), [](char c) {
+            return std::isdigit(static_cast<unsigned char>(c));
+        });
+
+        // Even if digitCount is 0 (digitsStart == trailerStart), we found the trailer.
+        // We must return the trailer as the suffix so makeUniqueName injects digits before it.
+        unsigned int digitCount = std::distance(trailerStart, digitsStart);
+
+        std::string base = std::string(name.cbegin(), digitsStart.base());
+        std::string numStr(digitsStart.base(), digitsStart.base() + digitCount);
+
+        return {base, trailer, digitCount, UnlimitedUnsigned::fromString(numStr)};
+    }
+
+    // 2. Standard Logic (unchanged)
     auto suffixStart = getNameSuffixStartPosition(name);
     auto digitsStart = std::find_if_not(suffixStart, name.crend(), [](char c) {
-        return std::isdigit(c);
+        return std::isdigit(static_cast<unsigned char>(c));
     });
-    unsigned int digitCount = digitsStart - suffixStart;
-    return std::tuple<std::string, std::string, unsigned int, UnlimitedUnsigned> {
+    unsigned int digitCount = std::distance(suffixStart, digitsStart);
+
+    return {
         name.substr(0, name.crend() - digitsStart),
         name.substr(name.crend() - suffixStart),
         digitCount,
         UnlimitedUnsigned::fromString(name.substr(name.crend() - digitsStart, digitCount))
     };
 }
+
 bool Base::UniqueNameManager::haveSameBaseName(const std::string& first, const std::string& second) const
 {
-    auto firstSuffixStart = getNameSuffixStartPosition(first);
-    auto secondSuffixStart = getNameSuffixStartPosition(second);
-    if (firstSuffixStart - first.crbegin() != secondSuffixStart - second.crbegin()) {
-        // The suffixes are different lengths
-        return false;
-    }
-    auto firstDigitsStart = std::find_if_not(firstSuffixStart, first.crend(), [](char c) {
-        return std::isdigit(c);
-    });
-    auto secondDigitsStart = std::find_if_not(secondSuffixStart, second.crend(), [](char c) {
-        return std::isdigit(c);
-    });
-    return std::equal(firstDigitsStart, first.crend(), secondDigitsStart, second.crend());
+    auto [base1, suffix1, digits1, val1] = decomposeName(first);
+    auto [base2, suffix2, digits2, val2] = decomposeName(second);
+    return (base1 == base2) && (suffix1 == suffix2);
 }
 
 void Base::UniqueNameManager::addExactName(const std::string& name)
@@ -91,6 +103,7 @@ void Base::UniqueNameManager::addExactName(const std::string& name)
     }
     baseNameAndDigitCountEntry.add(digitsValue);
 }
+
 std::string Base::UniqueNameManager::makeUniqueName(
     const std::string& modelName,
     std::size_t minDigits
@@ -100,6 +113,14 @@ std::string Base::UniqueNameManager::makeUniqueName(
     std::string baseName = namePrefix + nameSuffix;
     auto baseNameEntry = uniqueSeeds.find(baseName);
     if (baseNameEntry == uniqueSeeds.end()) {
+        // If we are using a trailer (like ">") and the model name already
+        // has digits (like "Cube <1>"), we keep them because "Cube <>"
+        // is not a desired label.
+        // Otherwise, for standard names like "Body123", we strip digits
+        // to return "Body" (as it was before).
+        if (!trailer.empty() && digitCount > 0) {
+            return modelName;
+        }
         // First use of baseName, just return it with no unique digits
         return baseName;
     }
@@ -181,4 +202,28 @@ bool Base::UniqueNameManager::containsName(const std::string& name) const
         return false;
     }
     return baseNameEntry->second[digitCount].contains(digitsValue);
+}
+
+bool Base::UniqueNameManager::parseLabelInstance(
+    const std::string& fullLabel,
+    std::string& outBase,
+    std::string& outInstance
+)
+{
+    if (fullLabel.empty() || fullLabel.back() != '>') {
+        return false;
+    }
+    auto openBracket = fullLabel.rfind('<');
+    if (openBracket == std::string::npos || openBracket == 0) {
+        return false;
+    }
+
+    // Check if space exists before bracket " <"
+    if (fullLabel[openBracket - 1] != ' ') {
+        return false;
+    }
+
+    outBase = fullLabel.substr(0, openBracket - 1);  // trim space
+    outInstance = fullLabel.substr(openBracket + 1, fullLabel.size() - openBracket - 2);
+    return true;
 }

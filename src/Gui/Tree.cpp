@@ -44,6 +44,7 @@
 #include <Base/Reader.h>
 #include <Base/Sequencer.h>
 #include <Base/Tools.h>
+#include <Base/UniqueNameManager.h>
 #include <Base/Writer.h>
 
 #include <Base/Color.h>
@@ -487,6 +488,9 @@ public:
         const QStyleOptionViewItem& option,
         const QModelIndex& index
     ) const;
+
+    void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
 };
 
 }  // namespace Gui
@@ -656,6 +660,102 @@ QSize TreeWidgetItemDelegate::sizeHint(const QStyleOptionViewItem& option, const
     int spacing = std::max(0, static_cast<int>(TreeParams::getItemSpacing()));
     size.setHeight(size.height() + spacing);
     return size;
+}
+
+void TreeWidgetItemDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
+{
+    if (TreeParams::getLabelExpression() || (index.column() != 0)) {
+        inherited::setEditorData(editor, index);
+        return;
+    }
+
+    auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+    if (ti->type() == TreeWidget::ObjectType) {
+        auto item = static_cast<DocumentObjectItem*>(ti);
+        App::DocumentObject* obj = item->object()->getObject();
+
+        // Check if Link
+        if (obj->getPropertyByName("LinkedObject")) {
+            std::string label = obj->Label.getValue();
+            std::string base, inst;
+
+            // Check pattern
+            if (Base::UniqueNameManager::parseLabelInstance(label, base, inst)) {
+                // Pattern matches: "Base <Inst>".
+                // We show only "Inst" in the editor.
+                auto* lineEdit = static_cast<DynamicQLineEdit*>(editor);
+                if (lineEdit) {
+                    lineEdit->setText(QString::fromStdString(inst));
+                }
+                return;
+            }
+        }
+
+        // Default behavior for non-links or broken patterns
+        QString rawValue = QString::fromUtf8(obj->Label.getValue());
+        auto* lineEdit = static_cast<DynamicQLineEdit*>(editor);
+        if (lineEdit) {
+            lineEdit->setText(rawValue);
+        }
+        else {
+            inherited::setEditorData(editor, index);
+        }
+    }
+    else {
+        inherited::setEditorData(editor, index);
+    }
+}
+
+void TreeWidgetItemDelegate::setModelData(
+    QWidget* editor,
+    QAbstractItemModel* model,
+    const QModelIndex& index
+) const
+{
+    if (TreeParams::getLabelExpression() || (index.column() != 0)) {
+        inherited::setModelData(editor, model, index);
+        return;
+    }
+
+    auto* lineEdit = static_cast<DynamicQLineEdit*>(editor);
+    if (!lineEdit) {
+        inherited::setModelData(editor, model, index);
+        return;
+    }
+
+    QString text = lineEdit->text();
+    auto ti = static_cast<QTreeWidgetItem*>(index.internalPointer());
+
+    if (ti->type() == TreeWidget::ObjectType) {
+        auto item = static_cast<DocumentObjectItem*>(ti);
+        App::DocumentObject* obj = item->object()->getObject();
+
+        if (auto* prop = obj->getPropertyByName<App::PropertyLink>("LinkedObject")) {
+            App::DocumentObject* linked = prop->getValue();
+            if (linked && linked != obj) {
+                std::string currentLabel = obj->Label.getValue();
+                std::string base, oldInst;
+
+                // We only reconstruct if the previous label was also in the valid pattern.
+                if (Base::UniqueNameManager::parseLabelInstance(currentLabel, base, oldInst)) {
+
+                    std::string linkedLabel = linked->Label.getValue();
+
+                    // Reconstruct: LinkedLabel <UserInput>
+                    // Use QStringLiteral for literals to avoid runtime allocation/conversion
+                    QString newLabel = QString::fromStdString(linkedLabel) + QStringLiteral(" <")
+                        + text + QStringLiteral(">");
+
+                    if (newLabel.toStdString() != currentLabel) {
+                        model->setData(index, newLabel, Qt::EditRole);
+                    }
+                    return;
+                }
+            }
+        }
+    }
+
+    inherited::setModelData(editor, model, index);
 }
 // ---------------------------------------------------------------------------
 
@@ -6379,7 +6479,9 @@ void DocumentObjectItem::setData(int column, int role, const QVariant& value)
         label.setValue(value.toString().toUtf8().constData());
         doc->commitTransaction();
 
-        myValue = QString::fromUtf8(label.getValue());
+        // We explicitly `return` here to prevent the call to the base class below,
+        // which would overwrite our carefully managed display text with the raw label.
+        return;
     }
     QTreeWidgetItem::setData(column, role, myValue);
 }
