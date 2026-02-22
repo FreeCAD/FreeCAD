@@ -263,6 +263,7 @@ public:
     static void initOpenInventor();
     static void runInitGuiScript();
     static void runApplication();
+    static void init3DMouse(MainWindow* mainWindow, QApplication* qtApp);
     void tryClose(QCloseEvent* e);
     //@}
 
