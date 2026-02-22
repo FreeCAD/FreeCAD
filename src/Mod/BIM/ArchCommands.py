@@ -1727,3 +1727,158 @@ def makeIfcSpreadsheet(archobj=None):
             FreeCAD.ActiveDocument.removeObject(ifc_spreadsheet)
     else:
         return ifc_spreadsheet
+
+
+def getFaceName(shape, view_vector=None):
+    """
+    Returns the name of the best candidate face (e.g. 'Face1') for a covering.
+    Heuristics:
+    1. Filter for faces with the largest area (within 5% tolerance).
+    2. Preference for face opposing the view direction (Camera facing).
+    """
+    # Allow passing an App Object directly
+    if hasattr(shape, "Shape"):
+        shape = shape.Shape
+
+    if not hasattr(shape, "Faces") or not shape.Faces:
+        return None
+
+    # 1. Gather Face Data: (Name, FaceObj, Area)
+    faces_data = []
+    for i, f in enumerate(shape.Faces):
+        # Check for planarity
+        if f.findPlane() is None:
+            continue
+        faces_data.append((f"Face{i+1}", f, f.Area))
+
+    # 2. Filter by Area (Keep faces within 95% of max area)
+    if not faces_data:
+        return None
+
+    faces_data.sort(key=lambda x: x[2], reverse=True)
+    max_area = faces_data[0][2]
+    candidates = [x for x in faces_data if x[2] >= max_area * 0.95]
+
+    if not candidates:
+        return None
+
+    # 3. Heuristic: View Direction (Camera facing)
+    if view_vector:
+        # Dot product: Lower value means vectors are opposing (face looks at camera)
+        candidates.sort(key=lambda x: x[1].normalAt(0, 0).dot(view_vector))
+        return candidates[0][0]
+
+    # Default: Return the first large face found
+    return candidates[0][0]
+
+
+def getFaceGeometry(obj, subname=None):
+    """
+    Resolves the 'Base' link to identify and return the target planar face for the covering.
+    Handles sub-element selection, solid top-face detection, and closed-wire conversion.
+    Returns a Part.Face or None if a valid planar surface cannot be determined.
+    """
+    import Part
+
+    if isinstance(obj, tuple):
+        subname = obj[1][0] if obj[1] else None
+        obj = obj[0]
+
+    face = None
+    if subname:
+        try:
+            sub_shape = obj.getSubObject(subname)
+            if sub_shape.ShapeType == "Face":
+                face = sub_shape
+        except Exception as e:
+            FreeCAD.Console.PrintWarning(f"ArchCommands: Unable to retrieve subobject: {e}\n")
+
+    if not face and hasattr(obj, "Shape"):
+        if not obj.Shape or obj.Shape.isNull():
+            pass
+        elif obj.Shape.ShapeType == "Face":
+            face = obj.Shape
+        elif obj.Shape.Solids:
+            best_face_name = getFaceName(obj.Shape)
+            if best_face_name:
+                face = obj.getSubObject(best_face_name)
+        elif obj.Shape.Wires:
+            # Attempt to create a face from any available wires if no face/solid exists
+            try:
+                # Filter for closed wires to ensure makeFace works correctly
+                closed_wires = [w for w in obj.Shape.Wires if w.isClosed()]
+                if closed_wires:
+                    face = makeFace(closed_wires)
+                else:
+                    FreeCAD.Console.PrintWarning(translate("Arch", "No closed wires found.") + "\n")
+            except Exception as e:
+                FreeCAD.Console.PrintWarning(
+                    f"ArchCommands: Unable to create face from wires: {e}\n"
+                )
+
+    if face and face.findPlane() is None:
+        FreeCAD.Console.PrintWarning(translate("Arch", "Face is not planar.") + "\n")
+        return None
+    return face
+
+
+def getFaceUV(face):
+    """
+    Computes the local coordinate system basis vectors for a face.
+    Returns (u_vec, v_vec, normal, center_point).
+    """
+    u_p, v_p = face.Surface.parameter(face.BoundBox.Center)
+    u_vec, v_vec = face.Surface.tangent(u_p, v_p)
+    u_vec.normalize()
+
+    normal = u_vec.cross(v_vec)
+    normal.normalize()
+    v_vec = normal.cross(u_vec)
+    v_vec.normalize()
+
+    center_point = face.Surface.value(u_p, v_p)
+    return u_vec, v_vec, normal, center_point
+
+
+def getFaceGridOrigin(face, center_point, u_vec, v_vec, alignment="Center", offset=None):
+    """
+    Calculates the starting 3D point for the tiling grid based on alignment.
+    """
+    v0 = face.Vertexes[0].Point
+    vec0 = v0.sub(center_point)
+
+    min_u = max_u = vec0.dot(u_vec)
+    min_v = max_v = vec0.dot(v_vec)
+
+    for v in face.Vertexes[1:]:
+        vec_to_vert = v.Point.sub(center_point)
+        proj_u = vec_to_vert.dot(u_vec)
+        proj_v = vec_to_vert.dot(v_vec)
+        if proj_u < min_u:
+            min_u = proj_u
+        if proj_u > max_u:
+            max_u = proj_u
+        if proj_v < min_v:
+            min_v = proj_v
+        if proj_v > max_v:
+            max_v = proj_v
+
+    origin_offset = FreeCAD.Vector(0, 0, 0)
+    if alignment == "Center":
+        mid_u = (min_u + max_u) / 2
+        mid_v = (min_v + max_v) / 2
+        origin_offset = (u_vec * mid_u) + (v_vec * mid_v)
+    elif alignment == "BottomLeft":
+        origin_offset = (u_vec * min_u) + (v_vec * min_v)
+    elif alignment == "BottomRight":
+        origin_offset = (u_vec * max_u) + (v_vec * min_v)
+    elif alignment == "TopLeft":
+        origin_offset = (u_vec * min_u) + (v_vec * max_v)
+    elif alignment == "TopRight":
+        origin_offset = (u_vec * max_u) + (v_vec * max_v)
+
+    if offset:
+        align_shift = (u_vec * offset.x) + (v_vec * offset.y)
+        origin_offset = origin_offset.add(align_shift)
+
+    return center_point.add(origin_offset)

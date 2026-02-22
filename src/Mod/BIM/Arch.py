@@ -2378,6 +2378,12 @@ def _initializeArchObject(
         if FreeCAD.GuiUp:
             viewProvider = getattr(module, viewProviderName, None)
             if not viewProvider:
+                try:
+                    guiModule = importlib.import_module(moduleName + "Gui")
+                    viewProvider = getattr(guiModule, viewProviderName, None)
+                except ImportError:
+                    pass
+            if not viewProvider:
                 FreeCAD.Console.PrintWarning(
                     f"View provider '{viewProviderName}' not found in module '{moduleName}'.\n"
                 )
@@ -2439,3 +2445,37 @@ def makeReport(name=None):
         FreeCADGui.ActiveDocument.setEdit(report_obj.Name, 0)
 
     return report_obj
+
+
+def makeCovering(baseobj=None, name=None):
+    """
+    Creates a covering object from the given base object.
+
+    Parameters
+    ----------
+    baseobj : Part::FeaturePython, optional
+        The base object for the covering. Defaults to None.
+    name : str, optional
+        The name to assign to the created covering. Defaults to None.
+
+    Returns
+    -------
+    Part::FeaturePython
+        The created covering object.
+    """
+    covering = _initializeArchObject(
+        "Part::FeaturePython",
+        baseClassName="_Covering",
+        internalName="Covering",
+        defaultLabel=name if name else translate("Arch", "Covering"),
+        moduleName="ArchCovering",
+        viewProviderName="_ViewProviderCovering",
+    )
+
+    # Initialize all relevant properties
+    if baseobj:
+        covering.Base = baseobj
+    covering.IfcType = "Covering"
+    covering.IfcPredefinedType = "FLOORING"
+
+    return covering
