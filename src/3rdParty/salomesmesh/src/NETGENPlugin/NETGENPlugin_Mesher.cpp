@@ -4191,7 +4191,7 @@ void NETGENPlugin_NetgenLibWrapper::setMesh( Ng_Mesh* mesh )
 std::string NETGENPlugin_NetgenLibWrapper::getOutputFileName()
 {
 //  std::string aTmpDir = SALOMEDS_Tool::GetTmpDir();
-  std::string aTmpDir = "/tmp";
+  std::string aTmpDir = "/tmp/";
 
   TCollection_AsciiString aGenericName = (char*)aTmpDir.c_str();
   aGenericName += "NETGEN_";
