@@ -2484,6 +2484,43 @@ TEST_F(ParserTest, BlendTwoGradientsThrows)
 
 // Shade function tests
 
+TEST_F(ParserTest, CoalesceReturnsFirstDefined)
+{
+    Parser parser("coalesce(@UndefinedParam, @TestParam)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Numeric>());
+    EXPECT_DOUBLE_EQ(result.get<Numeric>().value, 10.0);
+    EXPECT_EQ(result.get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, CoalesceReturnsFirstWhenDefined)
+{
+    Parser parser("coalesce(@TestColor, @TestParam)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+    EXPECT_NEAR(result.get<Base::Color>().r, 1.0F, 0.01F);
+}
+
+TEST_F(ParserTest, CoalesceAllUndefinedReturnsFallbackString)
+{
+    Parser parser("coalesce(@Undefined1, @Undefined2)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<std::string>());
+    EXPECT_EQ(result.get<std::string>(), "@Undefined2");
+}
+
+TEST_F(ParserTest, CoalesceSkipsMultipleUndefined)
+{
+    Parser parser("coalesce(@A, @B, @C, @TestNumber)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Numeric>());
+    EXPECT_DOUBLE_EQ(result.get<Numeric>().value, 5.0);
+}
+
 TEST_F(ParserTest, ShadeBasicColor)
 {
     // Position 0.8 = darker than anchor (0.5), so result should be darker than original

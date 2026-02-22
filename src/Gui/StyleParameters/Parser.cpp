@@ -56,6 +56,19 @@ Value Color::evaluate([[maybe_unused]] const EvaluationContext& context) const
 
 Value FunctionCall::evaluate(const EvaluationContext& context) const
 {
+    if (functionName == "coalesce") {
+        if (arguments.elements.empty()) {
+            THROWM(Base::ExpressionError, "coalesce requires at least one argument");
+        }
+        for (const auto& element : arguments.elements) {
+            Value result = element.expression->evaluate(context);
+            if (!result.holds<std::string>() || !result.get<std::string>().starts_with("@")) {
+                return result;
+            }
+        }
+        return arguments.elements.back().expression->evaluate(context);
+    }
+
     auto argsValue = arguments.evaluate(context);
     const auto& args = argsValue.get<Tuple>();
 
