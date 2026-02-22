@@ -78,7 +78,9 @@ parser.add_argument(
     help="don't pop up editor before writing output",
 )
 parser.add_argument("--scale", default="1", help="Scale factor for coordinates")
-parser.add_argument("--precision", default="3", help="number of digits of precision, default=3")
+parser.add_argument(
+    "--precision", help="number of digits of precision, default=3 (metric) or 4 (inches)"
+)
 parser.add_argument("--fixed-length", default="0", help="use fixed length coordinates, default=0")
 parser.add_argument(
     "--preamble",
@@ -210,7 +212,6 @@ def processArguments(argstring):
         if args.no_show_editor:
             SHOW_EDITOR = False
         SCALE = int(args.scale)
-        PRECISION = args.precision
         FIXED_LENGTH = int(args.fixed_length)
         if args.preamble is not None:
             PREAMBLE = args.preamble.replace("\\n", "\n")
@@ -221,6 +222,8 @@ def processArguments(argstring):
             UNIT_SPEED_FORMAT = "in/min"
             UNIT_FORMAT = "in"
             PRECISION = 4
+        if args.precision is not None:
+            PRECISION = int(args.precision)
         if args.modal:
             MODAL = True
         if args.no_tlo:
