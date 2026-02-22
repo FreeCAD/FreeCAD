@@ -219,7 +219,7 @@ public:
      * first checked view is the current active view.
      * If a view supports the message true is returned and false otherwise.
      */
-    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg, const char** ppReturn);
+    bool sendMsgToFirstView(const Base::Type& typeId, const char* pMsg);
     /// Attach a view (get called by the MDIView constructor)
     void attachView(Gui::BaseView* pcView, bool bPassiv = false);
     /// Detach a view (get called by the MDIView destructor)

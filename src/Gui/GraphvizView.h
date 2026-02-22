@@ -49,7 +49,7 @@ public:
     QByteArray exportGraph(const QString& filter);
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     /// Message handler test
     bool onHasMsg(const char* pMsg) const override;
     /** @name Printing */

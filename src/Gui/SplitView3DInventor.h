@@ -56,7 +56,7 @@ public:
     const char* getName() const override;
 
     /// Message handler
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
     void onUpdate() override;
     void deleteSelf() override;

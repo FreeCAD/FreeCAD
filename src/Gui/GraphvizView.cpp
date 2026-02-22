@@ -471,7 +471,7 @@ QByteArray GraphvizView::exportGraph(const QString& format)
     return dotProc.readAll();
 }
 
-bool GraphvizView::onMsg(const char* pMsg, const char**)
+bool GraphvizView::onMsg(const char* pMsg)
 {
     if (strcmp("Save", pMsg) == 0 || strcmp("SaveAs", pMsg) == 0) {
         QList<QPair<QString, QString>> formatMap;
