@@ -53,6 +53,7 @@
 #include <App/AutoTransaction.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
+#include <App/SuppressibleExtension.h>
 
 #include "Tree.h"
 #include "BitmapFactory.h"
@@ -6157,6 +6158,17 @@ void DocumentObjectItem::testStatus(bool resetStatus)
 {
     QIcon icon, icon2;
     testStatus(resetStatus, icon, icon2);
+    // check if the object is suppressed and apply strikethrough
+    auto docObj = object()->getObject();
+    bool suppressed = false;
+    if (docObj && docObj->hasExtension(App::SuppressibleExtension::getExtensionClassTypeId())) {
+        suppressed = docObj->getExtensionByType<App::SuppressibleExtension>()->Suppressed.getValue();
+    }
+    QFont f = font(0);
+    if (f.strikeOut() != suppressed) {
+        f.setStrikeOut(suppressed);
+        setFont(0, f);
+    }
 }
 
 namespace
