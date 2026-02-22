@@ -43,6 +43,8 @@ namespace Part
 {
 extern void throwIfInvalidIfCheckModel(const TopoDS_Shape& shape);
 extern bool getRefineModelParameter();
+extern bool containsSolid(const TopoDS_Shape& shape);
+extern const char* shapeTypeName(TopAbs_ShapeEnum type);
 }  // namespace Part
 
 PROPERTY_SOURCE(Part::Fuse, Part::Boolean)
@@ -136,11 +138,33 @@ App::DocumentObjectExecReturn* MultiFuse::execute()
             if (shape.isNull()) {
                 throw Base::RuntimeError("Input shape is null");
             }
+            if (!containsSolid(shape.getShape())) {
+                const std::string label = (!argumentsAreInCompound && !obj.empty())
+                    ? obj[0]->Label.getValue()
+                    : "shape 1";
+                throw Base::CADKernelError(
+                    (std::string("'") + label + "' is a " + shapeTypeName(shape.getShape().ShapeType())
+                     + ", not a Solid. Boolean operations require Solid inputs.")
+                        .c_str()
+                );
+            }
             shapeArguments.Append(shape.getShape());
 
             for (auto it2 = shapes.begin() + 1; it2 != shapes.end(); ++it2) {
                 if (it2->isNull()) {
                     throw Base::RuntimeError("Input shape is null");
+                }
+                if (!containsSolid(it2->getShape())) {
+                    std::size_t idx = std::distance(shapes.begin(), it2);
+                    const std::string label = (!argumentsAreInCompound && idx < obj.size())
+                        ? obj[idx]->Label.getValue()
+                        : ("shape " + std::to_string(idx + 1));
+                    throw Base::CADKernelError(
+                        (std::string("'") + label + "' is a "
+                         + shapeTypeName(it2->getShape().ShapeType())
+                         + ", not a Solid. Boolean operations require Solid inputs.")
+                            .c_str()
+                    );
                 }
                 shapeTools.Append(it2->getShape());
             }
