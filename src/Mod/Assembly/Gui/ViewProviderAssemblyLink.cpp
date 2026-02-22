@@ -34,6 +34,7 @@
 #include <App/DocumentObject.h>
 #include <App/Part.h>
 
+#include <Gui/Action.h>
 #include <Gui/ActionFunction.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -146,6 +147,15 @@ void ViewProviderAssemblyLink::setupContextMenu(QMenu* menu, QObject* receiver, 
         Gui::Command::commitCommand();
         Gui::Selection().clearSelection();
     });
+
+    Gui::CommandManager& mgr = Gui::Application::Instance->commandManager();
+    Gui::Command* cmd = mgr.getCommandByName("Assembly_LinkSelectLinked");
+    if (cmd) {
+        QAction* action = cmd->getAction()->action();
+        if (action) {
+            menu->addAction(action);
+        }
+    }
 
     Q_UNUSED(receiver)
     Q_UNUSED(member)

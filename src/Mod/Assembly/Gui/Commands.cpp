@@ -28,8 +28,11 @@
 #include <Gui/Application.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
+#include <Gui/MainWindow.h>
 #include <Gui/Selection/Selection.h>
+#include <Gui/Tree.h>
 
+#include <Mod/Assembly/App/AssemblyLink.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
 #include <Mod/Assembly/App/AssemblyUtils.h>
 
@@ -85,6 +88,71 @@ void selectObjectsByName(AssemblyObject* assembly, const std::vector<std::string
 
     selectObjects(objectsToSelect);
 }
+
+// ================================================================================
+// Go to Linked Assembly
+// ================================================================================
+
+DEF_STD_CMD_A(CmdAssemblyLinkSelectLinked)
+
+CmdAssemblyLinkSelectLinked::CmdAssemblyLinkSelectLinked()
+    : Command("Assembly_LinkSelectLinked")
+{
+    sGroup = QT_TR_NOOP("Assembly");
+    sMenuText = QT_TR_NOOP("Go to linked Assembly");
+    sToolTipText = QT_TR_NOOP("Selects the linked assembly and switches to its original document");
+    sWhatsThis = "Assembly_LinkSelectLinked";
+    sStatusTip = sToolTipText;
+    eType = AlterSelection;
+    sPixmap = "LinkSelect";
+    sAccel = "S, G";
+}
+
+void CmdAssemblyLinkSelectLinked::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    if (selection.size() != 1) {
+        return;
+    }
+
+    auto* asmLink = dynamic_cast<Assembly::AssemblyLink*>(selection[0].getObject());
+
+    if (!asmLink) {
+        return;
+    }
+
+    // Get the linked object (usually an AssemblyObject in another doc)
+    App::DocumentObject* linkedObj = asmLink->getLinkedAssembly();
+    if (!linkedObj) {
+        return;
+    }
+
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(linkedObj->getDocument()->getName(), linkedObj->getNameInDocument());
+
+    // Switch view/tab
+    Gui::Document* guiDoc = Gui::Application::Instance->getDocument(linkedObj->getDocument());
+    if (guiDoc) {
+        // Try to activate the view containing the object
+        Gui::ViewProvider* vp = guiDoc->getViewProvider(linkedObj);
+        auto vpDoc = dynamic_cast<Gui::ViewProviderDocumentObject*>(vp);
+        if (vpDoc) {
+            guiDoc->setActiveView(vpDoc);
+        }
+    }
+}
+
+bool CmdAssemblyLinkSelectLinked::isActive()
+{
+    std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+    return (
+        selection.size() == 1 && selection[0].getObject()
+        && selection[0].getObject()->isDerivedFrom(Assembly::AssemblyLink::getClassTypeId())
+    );
+}
+
 
 // ================================================================================
 // Select Conflicting Constraints
@@ -240,6 +308,7 @@ void AssemblyGui::CreateAssemblyCommands()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
+    rcCmdMgr.addCommand(new CmdAssemblyLinkSelectLinked());
     rcCmdMgr.addCommand(new CmdAssemblySelectConflictingConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectRedundantConstraints());
     rcCmdMgr.addCommand(new CmdAssemblySelectMalformedConstraints());
