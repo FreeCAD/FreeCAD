@@ -260,9 +260,16 @@ def export(objectslist, filename, argstring):
         major = int(FreeCAD.ConfigGet("BuildVersionMajor"))
         minor = int(FreeCAD.ConfigGet("BuildVersionMinor"))
 
-        # the filename variable always contain "-", so unable to
-        # provide more accurate information.
-        gcode += "(" + "FREECAD-FILENAME-GOES-HERE" + ", " + "JOB-NAME-GOES-HERE" + ")\n"
+        # the filename variable always contain "-", use more relevant
+        # information
+        job = PathUtils.findParentJob(objectslist[0])
+        if job:
+            body, job = job.FullName.split("#")
+        else:
+            # Workaround for the TestFanucPost code, where there is no
+            # job returned by findParentJob
+            body, job = ("FREECAD-FILENAME-GOES-HERE", "JOB-NAME-GOES-HERE")
+        gcode += "(" + body.upper() + ", " + job.upper() + ")\n"
         gcode += (
             linenumber() + "(POST PROCESSOR: FANUC USING FREECAD %d.%d" % (major, minor) + ")\n"
         )
