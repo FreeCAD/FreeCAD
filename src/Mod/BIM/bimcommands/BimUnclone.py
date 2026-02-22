@@ -87,7 +87,7 @@ class BIM_Unclone:
                     ]:
                         setattr(newobj, prop, getattr(cloned, prop))
                         FreeCAD.ActiveDocument.recompute()
-                        newobj.Placement = cloned.Placement.multiply(placement)
+                        newobj.Placement = placement
                 # update/reset view properties too? no i think...
                 # for prop in cloned.ViewObject.PropertiesList:
                 #    if not prop in ["Proxy"]:
