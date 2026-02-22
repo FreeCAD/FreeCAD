@@ -88,7 +88,7 @@
 
 #include <QtCore.h>
 #ifndef HAVE_Q_DISABLE_COPY_MOVE
-#define Q_DISABLE_COPY_MOVE FC_DEFAULT_COPY_MOVE
+#define Q_DISABLE_COPY_MOVE FC_DISABLE_COPY_MOVE
 #endif
 
 #endif //FC_GLOBAL_H
