@@ -23,7 +23,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
         <property name="toolTip">
-         <string>Run a geometry validity check automatically after each Part boolean operation.</string>
+         <string>Run a geometry validity check automatically after each Part boolean operation</string>
         </property>
         <property name="text">
          <string>Automatically check model after boolean operation</string>
