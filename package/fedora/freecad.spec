@@ -215,7 +215,7 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    if wlheadless-run -- %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
+    if RPM_BUILD_NCPUS=1 wlheadless-run -- %ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
         echo "**** Failed ctest ****"
