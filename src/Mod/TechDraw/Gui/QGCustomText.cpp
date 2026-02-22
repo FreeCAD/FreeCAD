@@ -26,6 +26,9 @@
 # include <QPainter>
 # include <QRectF>
 # include <QStyleOptionGraphicsItem>
+#include <QKeyEvent>
+#include <QTextBlock>
+#include <QTextCursor>
 
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -167,6 +170,8 @@ void QGCustomText::setTightBounding(bool tight)
 
 void QGCustomText::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
+    // Remove HasFocus state to prevent the dashed rectangle from being drawn
+    myOption.state &= ~QStyle::State_HasFocus;
     myOption.state &= ~QStyle::State_Selected;
 
 //    painter->setPen(Qt::green);
@@ -269,3 +274,78 @@ void QGCustomText::makeMark(Base::Vector3d v)
     makeMark(v.x, v.y);
 }
 
+void QGCustomText::focusInEvent(QFocusEvent* event)
+{
+    // Store the initial cursor state when the item gains focus
+    m_lastCursor = textCursor();
+    QGraphicsTextItem::focusInEvent(event);
+}
+
+void QGCustomText::keyPressEvent(QKeyEvent* event)
+{
+    // If the user returns more than once, then the format (the font
+    // size we set as default) is lost. So we need to handle manually
+    if (event->key() == Qt::Key_Return || event->key() == Qt::Key_Enter) {
+        QTextCursor cursor = textCursor();
+
+        // 1. Preserve the all-important character format from the current cursor position.
+        QTextCharFormat formatToPreserve = cursor.charFormat();
+
+        // 2. Preserve the block format (for things like alignment, indentation).
+        QTextBlockFormat blockFormatToPreserve = cursor.blockFormat();
+
+        // 3. Manually insert a new block (a newline).
+        //    This automatically deletes any selected text, which is the correct behavior.
+        cursor.insertBlock(blockFormatToPreserve, formatToPreserve);
+
+        // 4. After inserting the block, the cursor is at the start of the new line.
+        //    Its charFormat should already be correct because we passed it to insertBlock.
+        //    We don't need to do anything further with the cursor.
+
+        // 5. Explicitly apply the cursor back to the item to ensure the view updates.
+        setTextCursor(cursor);
+
+        // 6. Notify that the selection/cursor has changed.
+        checkCursorChange();
+
+        // 7. Accept the event to stop it from being processed further.
+        event->accept();
+        return;
+    }
+
+    // Let the base class handle the key press first (which moves the cursor)
+    QGraphicsTextItem::keyPressEvent(event);
+    // Now check if the cursor or selection changed as a result
+    checkCursorChange();
+}
+
+void QGCustomText::mousePressEvent(QGraphicsSceneMouseEvent* event)
+{
+    // Let the base class handle the mouse press first
+    QGraphicsTextItem::mousePressEvent(event);
+    checkCursorChange();
+}
+
+void QGCustomText::mouseReleaseEvent(QGraphicsSceneMouseEvent* event)
+{
+    // Let the base class handle the mouse release first
+    QGraphicsTextItem::mouseReleaseEvent(event);
+    checkCursorChange();
+}
+
+void QGCustomText::checkCursorChange()
+{
+    QTextCursor currentCursor = textCursor();
+
+    // Compare the properties of the cursors that define selection and position.
+    if (currentCursor.position() != m_lastCursor.position()
+        || currentCursor.anchor() != m_lastCursor.anchor()) {
+        // The anchor and position define the selection. If either has changed,
+        // the selection/cursor has changed.
+        Q_EMIT selectionChanged();
+    }
+
+    m_lastCursor = currentCursor;
+}
+
+#include <Mod/TechDraw/Gui/moc_QGCustomText.cpp>

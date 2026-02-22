@@ -38,7 +38,7 @@
 /**
  * @brief A simple rich-text editor
  */
-class MRichTextEdit : public QWidget, protected Ui::MRichTextEdit {
+class MRichTextEdit : public QFrame, protected Ui::MRichTextEdit {
     Q_OBJECT
 
 public:
@@ -55,6 +55,8 @@ public:
     QString getDefFontSize();
     int getDefFontSizeNum();
     QFont getDefFont();
+
+    void setMinimalMode(bool on);
 
 public Q_SLOTS:
     void setText(const QString &text);
@@ -73,6 +75,7 @@ protected:
   void focusInEvent(QFocusEvent *event) override;
   void keyPressEvent(QKeyEvent *event) override;
   bool hasMultipleSizes();
+  void updateFontSizeDisplay();
 
   void addFontSize(QString fontSize);
 

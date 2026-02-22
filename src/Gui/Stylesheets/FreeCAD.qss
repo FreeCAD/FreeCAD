@@ -922,6 +922,12 @@ QToolBar::separator:vertical {
   background-color: @GeneralBorderColor;
 }
 
+MRichTextEdit[floating="true"] {
+  border: 1px solid @GeneralBorderColor;
+  border-radius: 2px;
+  padding: 1px;
+}
+
 /*The "show more" button  (it can also be stylable with "QToolBarExtension"  icon is not working
 Qproperty works but breaks when you move the toolbar*/
 
