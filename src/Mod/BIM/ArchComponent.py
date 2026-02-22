@@ -1473,6 +1473,15 @@ class AreaCalculator:
         import TechDraw
         import DraftGeomUtils
 
+        # In TechDraw edges longer than 9999.9 (ca. 10m) are considered 'crazy'.
+        # See also Draft/draftobjects/hatch.py.
+        param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/TechDraw/debug")
+        if "allowCrazyEdge" not in param_grp.GetBools():
+            old_allow_crazy_edge = None
+        else:
+            old_allow_crazy_edge = param_grp.GetBool("allowCrazyEdge")
+        param_grp.SetBool("allowCrazyEdge", True)
+
         direction = FreeCAD.Vector(0, 0, 1)
         projectedFaces = []
         for face in horizontalAreaFaces:
@@ -1509,6 +1518,11 @@ class AreaCalculator:
                 )
                 self.resetAreas()
                 return
+
+        if old_allow_crazy_edge is None:
+            param_grp.RemBool("allowCrazyEdge")
+        else:
+            param_grp.SetBool("allowCrazyEdge", old_allow_crazy_edge)
 
         if projectedFaces:
             fusedFace = projectedFaces.pop()
