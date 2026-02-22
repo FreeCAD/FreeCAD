@@ -92,10 +92,15 @@ bool SheetModel::insertRows(int row, int count, const QModelIndex& parent)
     if (rows + count > CellAddress::MAX_ROWS) {
         return false;
     }
+
     beginInsertRows(parent, rows, rows + count - 1);
     rows += count;
     endInsertRows();
+
+    // Called after endInsertRows to avoid potential nesting. It will call
+    // `SheetModel::(cell|range)Updated` on modified cells anyways, sending necessary view signals.
     sheet->insertRows(row, count);
+
     return true;
 }
 
@@ -104,10 +109,15 @@ bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
     if (cols + count > CellAddress::MAX_COLUMNS) {
         return false;
     }
+
     beginInsertColumns(parent, column, column + count - 1);
     cols += count;
     endInsertColumns();
+
+    // Called after endInsertColumns to avoid potential nesting. It will call
+    // `SheetModel::(cell|range)Updated` on modified cells anyways, sending necessary view signals.
     sheet->insertColumns(column, count);
+
     return true;
 }
 
