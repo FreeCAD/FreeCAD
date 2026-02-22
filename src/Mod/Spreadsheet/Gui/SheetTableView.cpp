@@ -57,7 +57,7 @@ using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
 
-/// Gathers adjecent columns/rows into ranges. Returns the ranges in descending order.
+/// Gathers adjacent columns/rows into ranges. Returns the ranges in descending order.
 static std::vector<std::pair<int, int>> selectionRanges(
     const QModelIndexList& selection,
     Qt::Orientation orientation
