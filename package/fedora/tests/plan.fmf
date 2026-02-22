@@ -3,7 +3,8 @@ summary:
 prepare:
     how: install
     package: 
-    - xorg-x11-server-Xvfb
+    - xwayland-run 
+    - weston
 discover:
     how: fmf
 execute:

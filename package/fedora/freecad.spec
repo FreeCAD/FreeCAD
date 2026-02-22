@@ -44,7 +44,7 @@ Source0:        freecad-sources.tar.gz
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build strace
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions 
+BuildRequires:  xwayland-run python3-typing-extensions weston
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
@@ -73,7 +73,7 @@ Requires:       %{name}-data = %{epoch}:%{version}-%{release}
 # Obsolete old doc package since it's required for functionality.
 Obsoletes:      %{name}-doc < 0.22-1
 
-Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant python3-typing-extensions python3-defusedxml
+Requires:       hicolor-icon-theme fmt python3-matplotlib python3-pivy python3-collada python3-pyside6 qt6-assistant python3-typing-extensions python3-defusedxml  python3-ply
 
 %if %{with bundled_smesh}
 Provides:       bundled(smesh) = %{bundled_smesh_version}
@@ -215,19 +215,12 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    if %ctest -E '^QuantitySpinBox_Tests_run$' &> %{buildroot}%tests_resultdir/ctest.result ; then
+    if wlheadless-run -- \%ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
-    fi
-
-    if xvfb-run \%ctest -R '^QuantitySpinBox_Tests_run$' &>> %{buildroot}%tests_resultdir/ctest_gui.result ; then
-        echo "ctest gui OK"
-    else
-        echo "**** Failed ctest gui ****"
-        touch %{buildroot}%tests_resultdir/ctest_gui.failed
-    fi
+    fi    
 %endif
 
     desktop-file-validate %{buildroot}%{_datadir}/applications/org.freecad.FreeCAD.desktop

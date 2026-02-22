@@ -2,13 +2,16 @@
 #include <Base/FileInfo.h>
 #include <Base/Stream.h>
 #include <Base/TimeInfo.h>
+#include "RandomUtils.h"
 
 class FileInfoTest: public ::testing::Test
 {
 protected:
     FileInfoTest()
     {
-        tmp.setFile(Base::FileInfo::getTempPath() + "fctest");
+        // Generate random directory name for parallel test execution
+        std::string randomSuffix = Base::generateRandomName("fctest");
+        tmp.setFile(Base::FileInfo::getTempPath() + randomSuffix);
         tmp.createDirectory();
 
         file.setFile(tmp.filePath() + "/test.txt");
