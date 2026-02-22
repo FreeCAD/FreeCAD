@@ -835,14 +835,14 @@ void TaskMassProperties::tryupdate()
             return;
         }
 
-        if (addObject(resolved, nullptr, currentPlacement, objectKeys)) {
-            return;
-        }
-
         if (auto* group = resolved->getExtensionByType<App::GroupExtension>(true)) {
             for (auto* child : group->getObjects()) {
                 self(self, child, currentPlacement);
             }
+            return;
+        }
+
+        if (addObject(resolved, nullptr, currentPlacement, objectKeys)) {
             return;
         }
     };
@@ -882,21 +882,6 @@ void TaskMassProperties::tryupdate()
             continue;
         }
 
-        if (selObj.pObject->getTypeId().getName() == std::string("Assembly::AssemblyObject") && !(selObj.SubName && selObj.SubName[0])) {
-
-            Base::Placement rootPlacement = getGlobalPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
-
-            if (auto* group = selObj.pObject->getExtensionByType<App::GroupExtension>(true)) {
-                for (auto* child : group->getObjects()) {
-                    collectBodies(collectBodies, child, rootPlacement);
-                }
-            }
-            else {
-                collectBodies(collectBodies, selObj.pObject, Base::Placement());
-            }
-            continue;
-        }
-
         App::DocumentObject* coordSystem = selObj.pObject;
         if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
             coordSystem = selObj.pResolvedObject;
@@ -921,26 +906,24 @@ void TaskMassProperties::tryupdate()
             continue;
         }
 
+        App::DocumentObject* leaf = nullptr;
         if (selObj.SubName && selObj.SubName[0]) {
             App::SubObjectT sub(selObj.pObject, selObj.SubName);
-            App::DocumentObject* leaf = nullptr;
-
             if (selObj.pResolvedObject && selObj.pResolvedObject != selObj.pObject) {
                 leaf = selObj.pResolvedObject;
             }
             if (!leaf) {
                 leaf = sub.getSubObject();
             }
-            if (!leaf) {
-                leaf = selObj.pObject;
-            }
-            Base::Placement placement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
-            addObject(leaf, nullptr, placement, objectKeys);
         }
-        else {
-            Base::Placement placement = getGlobalPlacement(selObj.pObject, nullptr, selObj.pResolvedObject);
-            addObject(selObj.pObject, nullptr, placement, objectKeys);
+        if (!leaf) {
+            leaf = selObj.pObject;
         }
+
+        Base::Placement rootPlacement = getGlobalPlacement(selObj.pObject, selObj.SubName, selObj.pResolvedObject);
+        Base::Placement parentPlacement = rootPlacement * getPlacementFromObject(leaf).inverse();
+        visited.clear();
+        collectBodies(collectBodies, leaf, parentPlacement);
     }
 
     if (currentMode == "Custom") {
