@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   Copyright (c) 2013 Luke Parry <l.parry@warwick.ac.uk>                 *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
@@ -76,7 +76,7 @@ enum class SnapMode
 };
 
 
-QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_lineWidth(0.0)
+QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_lineWidth(0.0), isAreaLeaderPointDragged(false)
 {
     setHandlesChildEvents(false);
     setFlag(QGraphicsItem::ItemIsMovable, false);
@@ -87,7 +87,17 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     datumLabel = new QGIDatumLabel();
     datumLabel->setQDim(this);
 
+    // origin label for area dimensions
+    areaLeaderPointLabel = new QGIDatumLabel();
+    areaLeaderPointLabel->setQDim(this);
+
     addToGroup(datumLabel);
+    addToGroup(areaLeaderPointLabel);
+
+
+    // set frame to area dim origin label
+    // to enable better selection of label
+    areaLeaderPointLabel->setFramed(true);
 
     dimLines = new QGIDimLines();
     addToGroup(dimLines);
@@ -99,6 +109,7 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     addToGroup(aHead2);
 
     datumLabel->setZValue(ZVALUE::DIMENSION);
+    areaLeaderPointLabel->setZValue(ZVALUE::DIMENSION);
     aHead1->setZValue(ZVALUE::DIMENSION);
     aHead2->setZValue(ZVALUE::DIMENSION);
     dimLines->setZValue(ZVALUE::DIMENSION);
@@ -114,6 +125,15 @@ QGIViewDimension::QGIViewDimension() : dvDimension(nullptr), hasHover(false), m_
     QObject::connect(datumLabel, &QGIDatumLabel::hover, this, &QGIViewDimension::hover);
 
     QObject::connect(datumLabel, &QGIDatumLabel::setPretty, this, &QGIViewDimension::onPrettyChanged);
+
+    // connect area dim leader point signals
+    QObject::connect(areaLeaderPointLabel, &QGIDatumLabel::dragging, this, &QGIViewDimension::areaLeaderPointLabelDragged);
+
+    QObject::connect(areaLeaderPointLabel, &QGIDatumLabel::selected, this, &QGIViewDimension::select);
+
+    QObject::connect(areaLeaderPointLabel, &QGIDatumLabel::hover, this, &QGIViewDimension::hover);
+
+    // ---------
 
     setZValue(ZVALUE::DIMENSION);//note: this won't paint dimensions over another View if it stacks
                                  //above this Dimension's parent view.   need Layers?
@@ -184,7 +204,7 @@ void QGIViewDimension::setViewPartFeature(TechDraw::DrawViewDimension* obj)
     if (!obj) {
         return;
     }
-
+    
     setViewFeature(static_cast<TechDraw::DrawView*>(obj));
     dvDimension = obj;
 
@@ -291,6 +311,13 @@ void QGIViewDimension::updateDim()
 void QGIViewDimension::datumLabelDragged(bool ctrl)
 {
     Q_UNUSED(ctrl);
+    draw();
+}
+
+void QGIViewDimension::areaLeaderPointLabelDragged()
+{
+    if (!areaLeaderPointLabel->isSelected()) return;
+    if (!isAreaLeaderPointDragged) { isAreaLeaderPointDragged = true; }
     draw();
 }
 
@@ -2221,9 +2248,27 @@ void QGIViewDimension::drawArea(TechDraw::DrawViewDimension* dimension,
         fromQtGui(mapRectFromItem(datumLabel, datumLabel->tightBoundingRect())));
     areaPoint areaPoint = dimension->getAreaPoint();
 
+    Base::Vector2d origin;
+    if (isAreaLeaderPointDragged) {
+        // if origin has been dragged, use the new coordinates
+        origin = Base::Vector2d(Rez::appX(areaLeaderPointLabel->X()), -Rez::appX(areaLeaderPointLabel->Y()));
+    } 
+    else {
+        // use clicked location or area center as default origin
+        origin = fromQtApp(
+            dimension->UseAreaLeaderPoint.getValue() ? dimension->AreaLeaderPoint.getValue()
+                                                     : areaPoint.center );
+    }
+
     drawAreaExecutive(
-        fromQtApp(areaPoint.center), areaPoint.area, labelRectangle, 0.0, viewProvider->StandardAndStyle.getValue(),
+        origin, areaPoint.area, labelRectangle, 0.0, viewProvider->StandardAndStyle.getValue(),
         viewProvider->RenderingExtent.getValue(), viewProvider->FlipArrowheads.getValue());
+
+    // update the origin label to dragged position
+    if (!isAreaLeaderPointDragged) {
+        const QPointF qp = toQtGui(origin);
+        areaLeaderPointLabel->setPosFromCenter(qp.x(), qp.y());
+    }
 }
 
 QColor QGIViewDimension::prefNormalColor()

@@ -194,6 +194,11 @@ DrawViewDimension::DrawViewDimension()
     ADD_PROPERTY_TYPE(LineAngle, (0.0), "Override", App::Prop_Output, "Dimension line angle");
     ADD_PROPERTY_TYPE(ExtensionAngle, (0.0), "Override", App::Prop_Output, "Extension line angle");
 
+    ADD_PROPERTY_TYPE(UseAreaLeaderPoint, (false), "Area", App::Prop_None,
+                  "If true, the area leader end pt uses user clicked pt instead of face center.");
+    ADD_PROPERTY_TYPE(AreaLeaderPoint, (Base::Vector3d(0,0,0)), "Area", App::Prop_None,
+                  "Area leader end point");
+
     ADD_PROPERTY_TYPE(SavedGeometry,
                       (),
                       "References",

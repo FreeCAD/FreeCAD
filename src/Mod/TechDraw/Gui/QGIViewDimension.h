@@ -96,6 +96,7 @@ public:
 public Q_SLOTS:
     void onPrettyChanged(int state);
     void datumLabelDragged(bool ctrl);
+    void areaLeaderPointLabelDragged();
     void datumLabelDragFinished();
     void select(bool state);
     void hover(bool state);
@@ -171,7 +172,7 @@ protected:
                              double endAngle, double startRotation, const Base::BoundBox2d &labelRectangle,
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
-    void drawAreaExecutive(const Base::Vector2d &centerPoint, double area, const Base::BoundBox2d &labelRectangle,
+    void drawAreaExecutive(const Base::Vector2d &centerPoint, double area, const Base::BoundBox2d &labelRectangle, 
                              double centerOverhang, int standardStyle, int renderExtent, bool flipArrow) const;
 
     void drawDistance(TechDraw::DrawViewDimension *dimension, ViewProviderDimension *viewProvider) const;
@@ -220,6 +221,8 @@ private:
     QGIArrow* aHead1;
     QGIArrow* aHead2;
     double m_lineWidth;
+    QGIDatumLabel* areaLeaderPointLabel;
+    bool isAreaLeaderPointDragged;
 
     // needs Phase2 of autocorrect to be useful
     // QGCustomSvg* m_refFlag;
