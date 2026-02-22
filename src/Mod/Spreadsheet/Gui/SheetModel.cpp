@@ -94,8 +94,8 @@ bool SheetModel::insertRows(int row, int count, const QModelIndex& parent)
     }
     beginInsertRows(parent, rows, rows + count - 1);
     rows += count;
-    sheet->insertRows(row, count);
     endInsertRows();
+    sheet->insertRows(row, count);
     return true;
 }
 
@@ -106,8 +106,8 @@ bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
     }
     beginInsertColumns(parent, column, column + count - 1);
     cols += count;
-    sheet->insertColumns(column, count);
     endInsertColumns();
+    sheet->insertColumns(column, count);
     return true;
 }
 
@@ -119,8 +119,8 @@ bool SheetModel::removeRows(int row, int count, const QModelIndex& parent)
     }
     beginRemoveRows(parent, row, row + count - 1);
     rows -= count;
-    sheet->removeRows(row, count);
     endRemoveRows();
+    sheet->removeRows(row, count);
     return true;
 }
 
@@ -132,8 +132,8 @@ bool SheetModel::removeColumns(int column, int count, const QModelIndex& parent)
     }
     beginRemoveColumns(parent, column, column + count - 1);
     cols -= count;
-    sheet->removeColumns(column, count);
     endRemoveColumns();
+    sheet->removeColumns(column, count);
     return true;
 }
 
