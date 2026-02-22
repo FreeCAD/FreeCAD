@@ -240,7 +240,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowTransparentPreview">
         <property name="toolTip">
-         <string>Display a transparent overlay of the existing body while editing a Part Design feature.</string>
+         <string>Display a temporary transparent overlay preview while editing Part Design features</string>
         </property>
         <property name="text">
          <string>Show transparent preview overlay by default when editing features</string>
