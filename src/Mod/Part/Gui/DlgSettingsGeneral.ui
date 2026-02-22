@@ -22,6 +22,9 @@
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanCheck">
+        <property name="toolTip">
+         <string>Run a geometry validity check automatically after each Part boolean operation.</string>
+        </property>
         <property name="text">
          <string>Automatically check model after boolean operation</string>
         </property>
@@ -38,6 +41,9 @@
       </item>
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
+        <property name="toolTip">
+         <string>Automatically apply Refine after each Part boolean operation to remove residual edges and faces.</string>
+        </property>
         <property name="text">
          <string>Automatically refine model after boolean operation</string>
         </property>
@@ -54,6 +60,9 @@
       </item>
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
+        <property name="toolTip">
+         <string>Automatically refine Part Design feature results to remove residual edges and faces.</string>
+        </property>
         <property name="text">
          <string>Automatically refine model after applying operations</string>
         </property>
@@ -70,6 +79,9 @@
       </item>
       <item row="3" column="0">
        <widget class="Gui::PrefCheckBox" name="checkAllowCompoundBody">
+        <property name="toolTip">
+         <string>Enable the multiple-solids Body option by default for newly created Part Design bodies.</string>
+        </property>
         <property name="text">
          <string>Allow multiple solids in Part Design bodies by default</string>
         </property>
@@ -101,6 +113,9 @@
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
+        <property name="toolTip">
+         <string>Include the base object name when automatically naming new Part features.</string>
+        </property>
         <property name="text">
          <string>Add name of base object</string>
         </property>
@@ -131,6 +146,9 @@
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
          <widget class="QLabel" name="label">
+          <property name="toolTip">
+           <string>Choose which sketch geometry types are accepted as the default base profile for Hole features.</string>
+          </property>
           <property name="text">
            <string>Default profile type for holes</string>
           </property>
@@ -138,6 +156,9 @@
         </item>
         <item>
          <widget class="Gui::PrefComboBox" name="comboDefaultProfileTypeForHole">
+          <property name="toolTip">
+           <string>Choose which sketch geometry types are accepted as the default base profile for Hole features.</string>
+          </property>
           <property name="currentIndex">
            <number>1</number>
           </property>
@@ -202,6 +223,9 @@
      <layout class="QVBoxLayout" name="verticalLayout_31">
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowFinalPreview">
+        <property name="toolTip">
+         <string>Show the computed final feature shape by default while editing Part Design features.</string>
+        </property>
         <property name="text">
          <string>Show final result by default when editing features</string>
         </property>
@@ -215,6 +239,9 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowTransparentPreview">
+        <property name="toolTip">
+         <string>Display a transparent overlay of the existing body while editing a Part Design feature.</string>
+        </property>
         <property name="text">
          <string>Show transparent preview overlay by default when editing features</string>
         </property>
@@ -231,6 +258,9 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowProfilePreview">
+        <property name="toolTip">
+         <string>Highlight the sketch/profile geometry used by the feature currently being edited.</string>
+        </property>
         <property name="text">
          <string>Highlight the profile used to create features</string>
         </property>
@@ -272,6 +302,9 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="enableGizmos">
+        <property name="toolTip">
+         <string>Enable draggable 3D gizmos for interactive editing of supported Part Design feature parameters.</string>
+        </property>
         <property name="text">
          <string>Show interactive draggers when editing features</string>
         </property>
@@ -288,6 +321,9 @@
       </item>
       <item>
        <widget class="Gui::PrefCheckBox" name="delayedGizmoUpdate">
+        <property name="toolTip">
+         <string>Delay recompute until dragging ends when using gizmos, improving interaction speed.</string>
+        </property>
         <property name="text">
          <string>Disable recompute while dragging</string>
         </property>
