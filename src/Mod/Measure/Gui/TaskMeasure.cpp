@@ -37,6 +37,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/ViewProvider.h>
+#include <Gui/InputHint.h>
+
+using enum Gui::InputHint::UserInput;
 
 #include <QFormLayout>
 #include <QVBoxLayout>
@@ -528,6 +531,7 @@ void TaskMeasure::initViewObject(Measure::MeasureBase* measure)
 void TaskMeasure::closeDialog()
 {
     Gui::Control().closeDialog();
+    Gui::getMainWindow()->hideHints();
 }
 
 
@@ -559,6 +563,20 @@ void TaskMeasure::ensureGroup(Measure::MeasureBase* measurement)
 void TaskMeasure::invoke()
 {
     update();
+
+    bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
+    std::list<Gui::InputHint> hints;
+    if (greedy) {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 start new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    else {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 bool TaskMeasure::apply()
@@ -755,6 +773,19 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
         settings.setValue(QLatin1String(taskMeasureGreedySelection), true);
     }
     settings.endGroup();
+
+    std::list<Gui::InputHint> hints;
+    if (checked) {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    else {
+        hints = std::list<Gui::InputHint> {
+            {tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
+        };
+    }
+    Gui::getMainWindow()->showHints(hints);
 }
 
 void TaskMeasure::setModeSilent(App::MeasureType* mode)
