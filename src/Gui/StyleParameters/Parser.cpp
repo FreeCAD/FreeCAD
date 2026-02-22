@@ -28,12 +28,12 @@
 #include "ParameterManager.h"
 
 #include <Utilities.h>
+#include <Base/ColorShading.h>
 #include <Base/OkLch.h>
 #include <Base/Tools.h>
 
 #include <QColor>
 #include <algorithm>
-#include <cmath>
 #include <variant>
 
 namespace Gui::StyleParameters
@@ -123,6 +123,14 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
             });
         }
 
+        if (!fromValue->holds<Base::Color>()) {
+            THROWM(Base::ExpressionError, "Expected color as from argument");
+        }
+
+        if (!toValue->holds<Base::Color>()) {
+            THROWM(Base::ExpressionError, "Expected color as to argument");
+        }
+
         return blendColors(fromValue->get<Base::Color>(), toValue->get<Base::Color>());
     };
 
@@ -133,14 +141,40 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return static_cast<float>(numeric.value);
     };
 
-    const auto shade = [&args, &lightnessFromNumeric]() -> Value {
-        auto resolved = ArgumentParser {{"color"}, {"lightness"}}.resolve(args);
-        auto targetLightness = lightnessFromNumeric(resolved.get<Numeric>("lightness"));
+    const auto parseShadingParams = [&lightnessFromNumeric](const Tuple& resolved) {
+        return Base::ColorShading::Parameters {
+            .range = lightnessFromNumeric(resolved.get<Numeric>("range")),
+            .minLightness = lightnessFromNumeric(resolved.get<Numeric>("min")),
+            .maxLightness = lightnessFromNumeric(resolved.get<Numeric>("max")),
+        };
+    };
+
+    const auto applyShade = [](float position,
+                               const Base::Color& color,
+                               const Base::OkLch& oklch,
+                               const Base::ColorShading::Parameters& shadingParams) -> Base::Color {
+        auto shadeOklch = Base::ColorShading::computeShade(position, oklch, shadingParams);
+        if (shadeOklch.lightness == oklch.lightness && shadeOklch.chroma == oklch.chroma) {
+            return color;
+        }
+        return Base::fromOkLch(shadeOklch, color.a);
+    };
+
+    const auto shade = [&args, &lightnessFromNumeric, &parseShadingParams, &applyShade]() -> Value {
+        auto resolved = ArgumentParser {
+            {.name = "color"},
+            {.name = "lightness"},
+            {.name = "range", .defaultValue = Numeric {0.8, ""}},
+            {.name = "min", .defaultValue = Numeric {0.17, ""}},
+            {.name = "max", .defaultValue = Numeric {0.97, ""}},
+        }.resolve(args);
+
+        auto position = lightnessFromNumeric(resolved.get<Numeric>("lightness"));
+        auto shadingParams = parseShadingParams(resolved);
 
         const auto applyToColor = [&](const Base::Color& color) -> Base::Color {
             auto oklch = Base::toOkLch(color);
-            oklch.lightness = targetLightness;
-            return Base::fromOkLch(oklch, color.a);
+            return applyShade(position, color, oklch, shadingParams);
         };
 
         const Value* colorValue = resolved.find("color");
@@ -151,58 +185,17 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         return applyToColor(resolved.get<Base::Color>("color"));
     };
 
-    const auto shades = [&args, &lightnessFromNumeric]() -> Value {
+    const auto shades = [&args, &lightnessFromNumeric, &parseShadingParams, &applyShade]() -> Value {
         auto resolved = ArgumentParser {
             {.name = "color"},
             {.name = "shades"},
-            {.name = "range", .defaultValue = Numeric {0.6, ""}},
-            {.name = "min", .defaultValue = Numeric {0.13, ""}},
+            {.name = "range", .defaultValue = Numeric {0.8, ""}},
+            {.name = "min", .defaultValue = Numeric {0.17, ""}},
             {.name = "max", .defaultValue = Numeric {0.97, ""}},
         }.resolve(args);
 
         const auto& shadesSpec = resolved.get<Tuple>("shades");
-        float range = lightnessFromNumeric(resolved.get<Numeric>("range"));
-        float minLightness = lightnessFromNumeric(resolved.get<Numeric>("min"));
-        float maxLightness = lightnessFromNumeric(resolved.get<Numeric>("max"));
-
-        constexpr float anchorPosition = 0.5F;
-        constexpr float minExponent = 0.1F;
-        constexpr float maxExponent = 10.0F;
-
-        const auto computeLightnessRange = [&](float anchorLightness) -> std::pair<float, float> {
-            float halfRange = range / 2.0F;
-            float high = std::min(maxLightness, anchorLightness + halfRange);
-            float low = std::max(minLightness, anchorLightness - halfRange);
-            return {high, low};
-        };
-
-        const auto computeExponent = [&](float anchorLightness, float high, float low) -> float {
-            float totalRange = high - low;
-            if (totalRange < 1e-6F) {
-                return 1.0F;
-            }
-            float ratio = (high - anchorLightness) / totalRange;
-            ratio = std::clamp(ratio, 0.01F, 0.99F);
-            float exponent = std::log(ratio) / std::log(anchorPosition);
-            return std::clamp(exponent, minExponent, maxExponent);
-        };
-
-        const auto lightnessForPosition =
-            [](float position, float exponent, float high, float low) -> float {
-            return high - (high - low) * std::pow(position, exponent);
-        };
-
-        const auto applyShade =
-            [&](float position, const Base::Color& color, const Base::OkLch& oklch) -> Base::Color {
-            if (std::abs(position - anchorPosition) < 1e-3F) {
-                return color;
-            }
-            auto [high, low] = computeLightnessRange(oklch.lightness);
-            float exponent = computeExponent(oklch.lightness, high, low);
-            auto shadeOklch = oklch;
-            shadeOklch.lightness = lightnessForPosition(position, exponent, high, low);
-            return Base::fromOkLch(shadeOklch, color.a);
-        };
+        auto shadingParams = parseShadingParams(resolved);
 
         const auto appendElement = [](Tuple& result, const Tuple::Element& spec, Value shadeValue) {
             if (spec.name) {
@@ -224,7 +217,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
                     gradientTuple,
                     [&](const Base::Color& stopColor) -> Base::Color {
                         auto oklch = Base::toOkLch(stopColor);
-                        return applyShade(position, stopColor, oklch);
+                        return applyShade(position, stopColor, oklch, shadingParams);
                     }
                 );
                 appendElement(result, element, std::move(shadedGradient));
@@ -238,7 +231,7 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         Tuple result;
         for (const auto& element : shadesSpec.elements) {
             float position = lightnessFromNumeric(element.value->get<Numeric>());
-            auto shadeColor = applyShade(position, baseColor, baseOklch);
+            auto shadeColor = applyShade(position, baseColor, baseOklch, shadingParams);
             appendElement(result, element, shadeColor);
         }
         return result;

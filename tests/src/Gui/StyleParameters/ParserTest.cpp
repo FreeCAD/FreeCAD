@@ -1109,6 +1109,42 @@ TEST_F(ParserTest, TupleScalarMultiplyScalarFirst)
     EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 6.0);
 }
 
+TEST_F(ParserTest, TupleScalarMultiplyUnitOnScalar)
+{
+    Parser parser("4px * (1, 2, 3, 4)");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 4);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 4.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 8.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(2).get<Numeric>().value, 12.0);
+    EXPECT_EQ(tuple.at(2).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(3).get<Numeric>().value, 16.0);
+    EXPECT_EQ(tuple.at(3).get<Numeric>().unit, "px");
+}
+
+TEST_F(ParserTest, TupleScalarDivideUnitOnTuple)
+{
+    Parser parser("(10px, 20px) / 2");
+    auto expr = parser.parse();
+
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    EXPECT_TRUE(result.holds<Tuple>());
+
+    const auto& tuple = result.get<Tuple>();
+    EXPECT_EQ(tuple.size(), 2);
+    EXPECT_DOUBLE_EQ(tuple.at(0).get<Numeric>().value, 5.0);
+    EXPECT_EQ(tuple.at(0).get<Numeric>().unit, "px");
+    EXPECT_DOUBLE_EQ(tuple.at(1).get<Numeric>().value, 10.0);
+    EXPECT_EQ(tuple.at(1).get<Numeric>().unit, "px");
+}
+
 TEST_F(ParserTest, TupleScalarDivide)
 {
     Parser parser("(10, 20) / 2");
@@ -2450,61 +2486,68 @@ TEST_F(ParserTest, BlendTwoGradientsThrows)
 
 TEST_F(ParserTest, ShadeBasicColor)
 {
+    // Position 0.8 = darker than anchor (0.5), so result should be darker than original
     Parser parser("shade(#ff0000, 0.8)");
     auto expr = parser.parse();
     auto result = expr->evaluate({.manager = &manager, .context = {}});
     ASSERT_TRUE(result.holds<Base::Color>());
 
     auto shaded = result.get<Base::Color>();
-    auto oklch = Base::toOkLch(shaded);
-    EXPECT_NEAR(oklch.lightness, 0.8f, 0.02f);
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
 
     // Hue should be approximately preserved
-    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
-    EXPECT_NEAR(oklch.hue, originalOklch.hue, 5.0f);
+    EXPECT_NEAR(shadedOklch.hue, originalOklch.hue, 5.0f);
 }
 
 TEST_F(ParserTest, ShadeWithPercentage)
 {
+    // 80% = position 0.8, same as shade(#ff0000, 0.8)
     Parser parser("shade(#ff0000, 80%)");
     auto expr = parser.parse();
     auto result = expr->evaluate({.manager = &manager, .context = {}});
     ASSERT_TRUE(result.holds<Base::Color>());
 
     auto shaded = result.get<Base::Color>();
-    auto oklch = Base::toOkLch(shaded);
-    EXPECT_NEAR(oklch.lightness, 0.8f, 0.02f);
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_LT(shadedOklch.lightness, originalOklch.lightness);
 }
 
-TEST_F(ParserTest, ShadeBlack)
+TEST_F(ParserTest, ShadeAnchorReturnsOriginal)
 {
-    Parser parser("shade(#000000, 0.5)");
+    // Position 0.5 = anchor, color should be returned unchanged
+    Parser parser("shade(#E01B24, 0.5)");
+    auto expr = parser.parse();
+    auto result = expr->evaluate({.manager = &manager, .context = {}});
+    ASSERT_TRUE(result.holds<Base::Color>());
+
+    // NOLINTNEXTLINE(*-magic-numbers)
+    Base::Color original(0xE0 / 255.0F, 0x1B / 255.0F, 0x24 / 255.0F);
+    auto shaded = result.get<Base::Color>();
+    EXPECT_NEAR(shaded.r, original.r, 0.01f);
+    EXPECT_NEAR(shaded.g, original.g, 0.01f);
+    EXPECT_NEAR(shaded.b, original.b, 0.01f);
+}
+
+TEST_F(ParserTest, ShadeLighterPosition)
+{
+    // Position 0.2 = lighter than anchor, result should be lighter than original
+    Parser parser("shade(#ff0000, 0.2)");
     auto expr = parser.parse();
     auto result = expr->evaluate({.manager = &manager, .context = {}});
     ASSERT_TRUE(result.holds<Base::Color>());
 
     auto shaded = result.get<Base::Color>();
-    // Should produce a non-black color with L ~ 0.5
-    auto oklch = Base::toOkLch(shaded);
-    EXPECT_NEAR(oklch.lightness, 0.5f, 0.02f);
-    EXPECT_TRUE(shaded.r > 0.0f || shaded.g > 0.0f || shaded.b > 0.0f);
-}
-
-TEST_F(ParserTest, ShadeWhite)
-{
-    Parser parser("shade(#ffffff, 0.3)");
-    auto expr = parser.parse();
-    auto result = expr->evaluate({.manager = &manager, .context = {}});
-    ASSERT_TRUE(result.holds<Base::Color>());
-
-    auto shaded = result.get<Base::Color>();
-    // Should produce a darker color
-    auto oklch = Base::toOkLch(shaded);
-    EXPECT_NEAR(oklch.lightness, 0.3f, 0.02f);
+    auto shadedOklch = Base::toOkLch(shaded);
+    auto originalOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    EXPECT_GT(shadedOklch.lightness, originalOklch.lightness);
 }
 
 TEST_F(ParserTest, ShadeGradient)
 {
+    // Position 0.5 = anchor, gradient stops should be unchanged
     Parser parser("shade(linear_gradient(#ff0000, #0000ff), 0.5)");
     auto expr = parser.parse();
     auto result = expr->evaluate({.manager = &manager, .context = {}});
@@ -2517,11 +2560,12 @@ TEST_F(ParserTest, ShadeGradient)
     auto stops = gradient.colorStops();
     ASSERT_EQ(stops.size(), 2);
 
-    // Each stop should have lightness ~ 0.5
+    auto originalRedOklch = Base::toOkLch(Base::Color(1.0f, 0.0f, 0.0f));
+    auto originalBlueOklch = Base::toOkLch(Base::Color(0.0f, 0.0f, 1.0f));
     auto firstOklch = Base::toOkLch(stops[0].color);
     auto secondOklch = Base::toOkLch(stops[1].color);
-    EXPECT_NEAR(firstOklch.lightness, 0.5f, 0.05f);
-    EXPECT_NEAR(secondOklch.lightness, 0.5f, 0.05f);
+    EXPECT_NEAR(firstOklch.lightness, originalRedOklch.lightness, 0.01f);
+    EXPECT_NEAR(secondOklch.lightness, originalBlueOklch.lightness, 0.01f);
 
     // Positions should be preserved
     EXPECT_DOUBLE_EQ(stops[0].position.value, 0.0);
