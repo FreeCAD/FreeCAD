@@ -28,6 +28,7 @@
 
 #include <Gui/Workbench.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
+#include <Mod/PartDesign/App/Body.h>
 
 namespace Gui
 {
@@ -61,6 +62,19 @@ public:
 protected:
     Gui::MenuItem* setupMenuBar() const override;
     Gui::ToolBarItem* setupToolBars() const override;
+
+private:
+    /**
+     * Check whether a given feature is eligible for the "Move Tip" command.
+     *
+     * @param feature The DocumentObject to check.
+     * @param relatedBody The Body related to the feature.
+     * @return true if the feature is eligible, false otherwise.
+     */
+    inline bool isFeatureEligibleForMoveTip(
+        const App::DocumentObject* const feature,
+        const PartDesign::Body* const relatedBody
+    ) const;
 };
 
 }  // namespace PartDesignGui
