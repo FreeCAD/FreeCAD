@@ -31,7 +31,7 @@ import tempfile
 import os
 import shutil
 
-from vtk.util import numpy_support as vtk_np
+from vtkmodules.util import numpy_support as vtk_np
 
 import FreeCAD
 import Fem
