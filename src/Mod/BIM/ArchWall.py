@@ -1794,20 +1794,24 @@ if FreeCAD.GuiUp:
             self.wallWidget.setWindowTitle(translate("Arch", "Wall Options"))
 
             layout = QtGui.QFormLayout(self.wallWidget)
+            loader = FreeCADGui.UiLoader()
 
-            self.length = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.length.setProperty("unit", "mm")
-            self.length.setText(obj.Length.UserString)
+            # Length
+            self.length = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.length).bind(self.obj, "Length")
+            self.length.setProperty("value", self.obj.Length)
             layout.addRow(translate("Arch", "Length"), self.length)
 
-            self.width = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.width.setProperty("unit", "mm")
-            self.width.setText(obj.Width.UserString)
+            # Width
+            self.width = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.width).bind(self.obj, "Width")
+            self.width.setProperty("value", self.obj.Width)
             layout.addRow(translate("Arch", "Width"), self.width)
 
-            self.height = FreeCADGui.UiLoader().createWidget("Gui::InputField")
-            self.height.setProperty("unit", "mm")
-            self.height.setText(obj.Height.UserString)
+            # Height
+            self.height = loader.createWidget("Gui::QuantitySpinBox")
+            FreeCADGui.ExpressionBinding(self.height).bind(self.obj, "Height")
+            self.height.setProperty("value", self.obj.Height)
             layout.addRow(translate("Arch", "Height"), self.height)
 
             self.alignLayout = QtGui.QHBoxLayout()
@@ -1847,9 +1851,9 @@ if FreeCAD.GuiUp:
             self.obj.recompute()
 
         def accept(self):
-            self.obj.Length = self.length.text()
-            self.obj.Width = self.width.text()
-            self.obj.Height = self.height.text()
+            self.obj.Length = self.length.property("value")
+            self.obj.Width = self.width.property("value")
+            self.obj.Height = self.height.property("value")
             return super().accept()
 
 

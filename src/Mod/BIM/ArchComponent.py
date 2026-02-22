@@ -2758,6 +2758,161 @@ class ComponentTaskPanel:
         FreeCADGui.runCommand("BIM_Classification")
 
 
+class ComponentOptionsTaskPanel(ComponentTaskPanel):
+    """
+    A generic TaskPanel that generates UI widgets based on a provided configuration.
+    It inherits from ComponentTaskPanel to keep the standard 'Components' tree functionality.
+    """
+
+    def __init__(self, obj, property_definitions):
+        """
+        obj: The FreeCAD object being edited.
+        property_definitions: A list of dictionaries defining the properties.
+                              e.g. [{'prop': 'Length'}]
+                              or [{'prop': 'Length', 'label': translate("Arch", "Total Length")}]
+        """
+        import re
+
+        super().__init__()
+        self.obj = obj
+        self.update()  # Populate the components tree now that self.obj is set
+        self.property_definitions = property_definitions
+        self.property_widgets = {}  # Map property name to {'widget': widget, 'type': type_id}
+
+        self.options_widget = QtGui.QWidget()
+        self.options_widget.setWindowTitle(translate("Arch", "Options"))
+        layout = QtGui.QFormLayout(self.options_widget)
+        loader = FreeCADGui.UiLoader()
+
+        for item in self.property_definitions:
+            prop_name = item["prop"]
+
+            # Heuristics for label: Use provided label or fallback to split CamelCase
+            label_text = item.get("label", re.sub(r"(?<!^)(?=[A-Z])", " ", prop_name))
+
+            # Check if property exists on Data object or View object
+            target_obj = self.obj
+            if not hasattr(target_obj, prop_name):
+                if hasattr(self.obj, "ViewObject") and hasattr(self.obj.ViewObject, prop_name):
+                    target_obj = self.obj.ViewObject
+                else:
+                    continue
+
+            prop_val = getattr(target_obj, prop_name)
+            prop_type_id = target_obj.getTypeIdOfProperty(prop_name)
+            widget = None
+
+            # Quantity types and Floats
+            if prop_type_id in [
+                "App::PropertyLength",
+                "App::PropertyDistance",
+                "App::PropertyArea",
+                "App::PropertyVolume",
+                "App::PropertyAngle",
+                "App::PropertyFloat",
+            ]:
+                widget = loader.createWidget("Gui::QuantitySpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", prop_val)
+
+            # Integer types
+            elif prop_type_id in ["App::PropertyInteger", "App::PropertyPercent"]:
+                widget = loader.createWidget("Gui::IntSpinBox")
+                FreeCADGui.ExpressionBinding(widget).bind(target_obj, prop_name)
+                widget.setProperty("value", int(prop_val))
+
+                if prop_type_id == "App::PropertyPercent":
+                    widget.setProperty("minimum", 0)
+                    widget.setProperty("maximum", 100)
+
+            # Boolean
+            elif prop_type_id == "App::PropertyBool":
+                widget = QtGui.QCheckBox()
+                widget.setChecked(prop_val)
+
+            # Enumeration (ComboBox)
+            elif prop_type_id == "App::PropertyEnumeration":
+                widget = QtGui.QComboBox()
+                # Combo boxes tend to have long texts in BIM. Do not use them to calculate the
+                # size of the task boxes, which would appear too wide and would grow beyond their
+                # task panel container
+                widget.setSizeAdjustPolicy(QtGui.QComboBox.AdjustToMinimumContentsLengthWithIcon)
+                widget.setMinimumContentsLength(20)
+                widget.addItems(target_obj.getEnumerationsOfProperty(prop_name))
+                idx = widget.findText(prop_val)
+                if idx >= 0:
+                    widget.setCurrentIndex(idx)
+
+            # String
+            elif prop_type_id == "App::PropertyString":
+                widget = QtGui.QLineEdit()
+                widget.setText(prop_val)
+
+            # String List
+            elif prop_type_id == "App::PropertyStringList":
+                widget = QtGui.QPlainTextEdit()
+                widget.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+                if prop_val:
+                    widget.setPlainText("\n".join(prop_val))
+
+            if widget:
+                tooltip = target_obj.getDocumentationOfProperty(prop_name)
+                if tooltip:
+                    widget.setToolTip(tooltip)
+                layout.addRow(label_text, widget)
+                self.property_widgets[prop_name] = {
+                    "widget": widget,
+                    "type": prop_type_id,
+                    "object": target_obj,
+                }
+
+        # Prepend the options widget to the form list (inherited from ComponentTaskPanel)
+        self.form = [self.options_widget, self.baseform]
+
+    def accept(self):
+        """Automatically save values back to the object"""
+        for prop_name, data in self.property_widgets.items():
+            widget = data["widget"]
+            prop_type = data["type"]
+            target_obj = data["object"]
+
+            try:
+                # Quantities, Floats and Integers
+                if prop_type in [
+                    "App::PropertyLength",
+                    "App::PropertyDistance",
+                    "App::PropertyArea",
+                    "App::PropertyVolume",
+                    "App::PropertyAngle",
+                    "App::PropertyFloat",
+                    "App::PropertyInteger",
+                    "App::PropertyPercent",
+                ]:
+                    setattr(target_obj, prop_name, widget.property("value"))
+
+                # Bools
+                elif prop_type == "App::PropertyBool":
+                    setattr(target_obj, prop_name, widget.isChecked())
+
+                # Enumerations
+                elif prop_type == "App::PropertyEnumeration":
+                    setattr(target_obj, prop_name, widget.currentText())
+
+                # Strings
+                elif prop_type == "App::PropertyString":
+                    setattr(target_obj, prop_name, widget.text())
+
+                # String Lists
+                elif prop_type == "App::PropertyStringList":
+                    setattr(target_obj, prop_name, widget.toPlainText().splitlines())
+
+            except Exception as e:
+                msg = translate("Arch", "Error saving property")
+                FreeCAD.Console.PrintError(f"{msg} {prop_name}: {str(e)}\n")
+
+        return super().accept()
+
+
 if FreeCAD.GuiUp:
 
     class IfcEditorDelegate(QtGui.QStyledItemDelegate):

@@ -406,6 +406,23 @@ class Truss(ArchComponent.Component):
         return rod
 
 
+class TrussTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+    """A task panel for Arch Trusses using the generic options box"""
+
+    def __init__(self, obj):
+        property_definitions = [
+            {"prop": "HeightStart", "label": translate("Arch", "Height Start")},
+            {"prop": "HeightEnd", "label": translate("Arch", "Height End")},
+            {"prop": "StrutHeight", "label": translate("Arch", "Strut Height")},
+            {"prop": "StrutWidth", "label": translate("Arch", "Strut Width")},
+            {"prop": "RodSections", "label": translate("Arch", "Rod Sections")},
+            {"prop": "RodSize", "label": translate("Arch", "Rod Size")},
+            {"prop": "RodMode", "label": translate("Arch", "Rod Mode")},
+            {"prop": "RodType", "label": translate("Arch", "Rod Type")},
+        ]
+        super().__init__(obj, property_definitions)
+
+
 class ViewProviderTruss(ArchComponent.ViewProviderComponent):
     "A View Provider for the Truss object"
 
@@ -418,3 +435,11 @@ class ViewProviderTruss(ArchComponent.ViewProviderComponent):
         import Arch_rc
 
         return ":/icons/Arch_Truss_Tree.svg"
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        taskd = TrussTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True

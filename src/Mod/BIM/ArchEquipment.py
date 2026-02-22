@@ -146,6 +146,19 @@ def createMeshView(obj, direction=FreeCAD.Vector(0, 0, -1), outeronly=False, lar
     return shape
 
 
+if FreeCAD.GuiUp:
+
+    class EquipmentTaskPanel(ArchComponent.ComponentOptionsTaskPanel):
+        """A task panel for Arch Equipment using the generic options box"""
+
+        def __init__(self, obj):
+            property_definitions = [
+                {"prop": "Model", "label": translate("Arch", "Model")},
+                {"prop": "EquipmentPower", "label": translate("Arch", "Equipment Power")},
+            ]
+            super().__init__(obj, property_definitions)
+
+
 class _Equipment(ArchComponent.Component):
     "The Equipment object"
 
@@ -347,3 +360,11 @@ class _ViewProviderEquipment(ArchComponent.ViewProviderComponent):
                 self.coords.point.deleteValues(0)
         else:
             ArchComponent.ViewProviderComponent.updateData(self, obj, prop)
+
+    def setEdit(self, vobj, mode):
+        if mode != 0:
+            return None
+
+        taskd = EquipmentTaskPanel(vobj.Object)
+        FreeCADGui.Control.showDialog(taskd)
+        return True
