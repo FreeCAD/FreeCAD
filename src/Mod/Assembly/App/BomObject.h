@@ -76,7 +76,13 @@ public:
     App::DocumentObjectExecReturn* execute() override;
 
     void generateBOM();
-    void addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored = false);
+    void addObjectToBom(
+        App::DocumentObject* obj,
+        size_t row,
+        std::string index,
+        bool isMirrored = false,
+        int quantity = 1
+    );
     void addObjectChildrenToBom(std::vector<App::DocumentObject*> objs, size_t& row, std::string index);
     void saveCustomColumnData();
     bool isObjMirrored(App::DocumentObject* obj);
