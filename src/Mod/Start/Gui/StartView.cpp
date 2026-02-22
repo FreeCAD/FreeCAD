@@ -362,6 +362,9 @@ bool StartView::onHasMsg(const char* pMsg) const
     if (strcmp("AllowsOverlayOnHover", pMsg) == 0) {
         return false;
     }
+    if (strcmp("AllowsOverlayReveal", pMsg) == 0) {
+        return false;
+    }
 
     return MDIView::onHasMsg(pMsg);
 }
