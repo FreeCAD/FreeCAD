@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 
+#include <QAbstractItemModel>
 #include <QFont>
 #include <QLocale>
-
 
 #include <App/Document.h>
 #include <Base/Interpreter.h>
@@ -36,6 +36,7 @@
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include "SheetModel.h"
+#include "App/Range.h"
 
 
 using namespace SpreadsheetGui;
@@ -46,13 +47,17 @@ namespace sp = std::placeholders;
 SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     : QAbstractTableModel(parent)
     , sheet(_sheet)
+    , rows(1000)
+    , cols(26)
 {
+    containSheetDataInView();
+
     // NOLINTBEGIN
-    cellUpdatedConnection = sheet->cellUpdated.connect(
-        std::bind(&SheetModel::cellUpdated, this, sp::_1)
+    connections.emplace_back(
+        sheet->cellUpdated.connect(std::bind(&SheetModel::cellUpdated, this, sp::_1))
     );
-    rangeUpdatedConnection = sheet->rangeUpdated.connect(
-        std::bind(&SheetModel::rangeUpdated, this, sp::_1)
+    connections.emplace_back(
+        sheet->rangeUpdated.connect(std::bind(&SheetModel::rangeUpdated, this, sp::_1))
     );
     // NOLINTEND
 
@@ -65,53 +70,98 @@ SheetModel::SheetModel(Sheet* _sheet, QObject* parent)
     textFgColor = QColor(QString::fromStdString(hGrp->GetASCII("TextColor", "#000000")));
     positiveFgColor = QColor(QString::fromStdString(hGrp->GetASCII("PositiveNumberColor", "#000000")));
     negativeFgColor = QColor(QString::fromStdString(hGrp->GetASCII("NegativeNumberColor", "#000000")));
-
-
-    const QStringList alphabet {QStringLiteral("A"), QStringLiteral("B"), QStringLiteral("C"),
-                                QStringLiteral("D"), QStringLiteral("E"), QStringLiteral("F"),
-                                QStringLiteral("G"), QStringLiteral("H"), QStringLiteral("I"),
-                                QStringLiteral("J"), QStringLiteral("K"), QStringLiteral("L"),
-                                QStringLiteral("M"), QStringLiteral("N"), QStringLiteral("O"),
-                                QStringLiteral("P"), QStringLiteral("Q"), QStringLiteral("R"),
-                                QStringLiteral("S"), QStringLiteral("T"), QStringLiteral("U"),
-                                QStringLiteral("V"), QStringLiteral("W"), QStringLiteral("X"),
-                                QStringLiteral("Y"), QStringLiteral("Z")};
-
-    for (const QString& letter : alphabet) {
-        columnLabels << letter;
-    }
-
-    for (const QString& left : alphabet) {
-        for (const QString& right : alphabet) {
-            columnLabels << left + right;
-        }
-    }
-
-    for (int i = 1; i <= maxRowCount; i++) {
-        rowLabels << QString::number(i);
-    }
 }
 
 SheetModel::~SheetModel()
-{
-    cellUpdatedConnection.disconnect();
-    rangeUpdatedConnection.disconnect();
-}
+{}
 
 int SheetModel::rowCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return maxRowCount;
+    return rows;
 }
 
 int SheetModel::columnCount(const QModelIndex& parent) const
 {
     Q_UNUSED(parent);
-    return maxColumnCount;
+    return cols;
+}
+
+bool SheetModel::insertRows(int row, int count, const QModelIndex& parent)
+{
+    if (rows + count > CellAddress::MAX_ROWS) {
+        return false;
+    }
+    beginInsertRows(parent, rows, rows + count - 1);
+    rows += count;
+    endInsertRows();
+    sheet->insertRows(row, count);
+    return true;
+}
+
+bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
+{
+    if (cols + count > CellAddress::MAX_COLUMNS) {
+        return false;
+    }
+    beginInsertColumns(parent, column, column + count - 1);
+    cols += count;
+    endInsertColumns();
+    sheet->insertColumns(column, count);
+    return true;
+}
+
+bool SheetModel::removeRows(int row, int count, const QModelIndex& parent)
+{
+    if (count >= rows) {
+        // Prevent the header from disappearing
+        return false;
+    }
+    beginRemoveRows(parent, row, row + count - 1);
+    rows -= count;
+    endRemoveRows();
+    sheet->removeRows(row, count);
+    return true;
+}
+
+bool SheetModel::removeColumns(int column, int count, const QModelIndex& parent)
+{
+    if (count >= cols) {
+        // Prevent the header from disappearing
+        return false;
+    }
+    beginRemoveColumns(parent, column, column + count - 1);
+    cols -= count;
+    endRemoveColumns();
+    sheet->removeColumns(column, count);
+    return true;
 }
 
 namespace
 {
+QString encodeColumn(int column)
+{
+    int toSkipTotal = 0;
+    int toSkipNext = 26;
+    int length = 1;
+
+    while (toSkipTotal + toSkipNext <= column) {
+        toSkipTotal += toSkipNext;
+        toSkipNext *= 26;
+        length += 1;
+    }
+
+    column -= toSkipTotal;
+
+    QString res;
+    for (int i = 0; i < length; i++) {
+        res = QString(static_cast<char>('A' + (column % 26))) + res;
+        column /= 26;
+    }
+
+    return res;
+}
+
 QVariant formatCellDisplay(QString value, const Cell* cell)
 {
     std::string alias;
@@ -552,16 +602,12 @@ QVariant SheetModel::data(const QModelIndex& index, int role) const
 QVariant SheetModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
     if (role == Qt::SizeHintRole) {
-        const int width
-            = (orientation == Qt::Horizontal ? sheet->getColumnWidth(section)
-                                             : PropertyColumnWidths::defaultHeaderWidth);
-        const int height
-            = (orientation == Qt::Horizontal ? PropertyRowHeights::defaultHeight
-                                             : sheet->getRowHeight(section));
-        return QSize {width, height};
+        return orientation == Qt::Horizontal
+            ? QSize(sheet->getColumnWidth(section), PropertyRowHeights::defaultHeight)
+            : QSize(PropertyColumnWidths::defaultHeaderWidth, sheet->getRowHeight(section));
     }
     if (role == Qt::DisplayRole) {
-        return (orientation == Qt::Horizontal ? columnLabels.at(section) : rowLabels.at(section));
+        return orientation == Qt::Horizontal ? encodeColumn(section) : QString::number(section + 1);
     }
     return {};
 }
@@ -621,19 +667,39 @@ Qt::ItemFlags SheetModel::flags(const QModelIndex& /*index*/) const
     return Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled;
 }
 
+void SheetModel::containSheetDataInView()
+{
+    CellAddress address = std::get<1>(sheet->getUsedRange());
+    if (address.row() >= rows) {
+        beginInsertRows(QModelIndex(), rows, address.row());
+        rows = address.row() + 1;
+        endInsertRows();
+    }
+    if (address.col() >= cols) {
+        beginInsertColumns(QModelIndex(), cols, address.col());
+        cols = address.col() + 1;
+        endInsertColumns();
+    }
+}
+
 void SheetModel::cellUpdated(CellAddress address)
 {
-    QModelIndex i = index(address.row(), address.col());
-
-    Q_EMIT dataChanged(i, i);
+    containSheetDataInView();
+    if (address.row() < rows && address.col() < cols) {
+        QModelIndex i = index(address.row(), address.col());
+        Q_EMIT dataChanged(i, i);
+    }
 }
 
 void SheetModel::rangeUpdated(const Range& range)
 {
-    QModelIndex i = index(range.from().row(), range.from().col());
-    QModelIndex j = index(range.to().row(), range.to().col());
-
-    Q_EMIT dataChanged(i, j);
+    containSheetDataInView();
+    if (range.from().row() < rows && range.from().col() < cols) {
+        QModelIndex i = index(range.from().row(), range.from().col());
+        QModelIndex j
+            = index(std::min(range.to().row(), rows - 1), std::min(range.to().col(), cols - 1));
+        Q_EMIT dataChanged(i, j);
+    }
 }
 
 #include "moc_SheetModel.cpp"

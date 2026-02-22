@@ -84,18 +84,17 @@ public Q_SLOTS:
 protected Q_SLOTS:
     void commitData(QWidget* editor) override;
     void updateCellSpan();
-    void insertRows();
-    void insertRowsAfter();
-    void removeRows();
-    void insertColumns();
-    void insertColumnsAfter();
-    void removeColumns();
     void cellProperties();
     void onRecompute();
     void onBind();
     void onConfSetup();
 
 protected:
+    void insertRows(bool after);
+    void insertColumns(bool after);
+    void removeRows();
+    void removeColumns();
+
     bool edit(const QModelIndex& index, EditTrigger trigger, QEvent* event) override;
     bool event(QEvent* event) override;
     void closeEditor(QWidget* editor, QAbstractItemDelegate::EndEditHint hint) override;

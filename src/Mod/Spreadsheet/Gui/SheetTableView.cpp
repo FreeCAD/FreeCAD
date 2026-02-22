@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <algorithm>
 #include <limits>
 #include <QAction>
 #include <QApplication>
@@ -44,10 +45,10 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
+#include <qnamespace.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
-#include "LineEdit.h"
 #include "PropertiesDialog.h"
 #include "SheetTableView.h"
 
@@ -55,6 +56,31 @@
 using namespace SpreadsheetGui;
 using namespace Spreadsheet;
 using namespace App;
+
+/// Gathers adjecent columns/rows into ranges. Returns the ranges in descending order.
+static std::vector<std::pair<int, int>> selectionRanges(
+    const QModelIndexList& selection,
+    Qt::Orientation orientation
+)
+{
+    std::vector<int> values;
+    for (const auto& index : selection) {
+        values.emplace_back(orientation == Qt::Horizontal ? index.column() : index.row());
+    }
+    std::ranges::sort(values, std::greater<>());
+
+    std::vector<std::pair<int, int>> ranges;
+    for (int value : values) {
+        if (ranges.empty() || value < ranges.back().first - 1) {
+            ranges.emplace_back(value, value);
+        }
+        else {
+            ranges.back().first = value;
+        }
+    }
+
+    return ranges;
+}
 
 void SheetViewHeader::mouseMoveEvent(QMouseEvent* e)
 {
@@ -95,30 +121,6 @@ bool SheetViewHeader::viewportEvent(QEvent* e)
     return QHeaderView::viewportEvent(e);
 }
 
-static std::pair<int, int> selectedMinMaxRows(QModelIndexList list)
-{
-    int min = std::numeric_limits<int>::max();
-    int max = 0;
-    for (const auto& item : list) {
-        int row = item.row();
-        min = std::min(row, min);
-        max = std::max(row, max);
-    }
-    return {min, max};
-}
-
-static std::pair<int, int> selectedMinMaxColumns(QModelIndexList list)
-{
-    int min = std::numeric_limits<int>::max();
-    int max = 0;
-    for (const auto& item : list) {
-        int column = item.column();
-        min = std::min(column, min);
-        max = std::max(column, max);
-    }
-    return {min, max};
-}
-
 SheetTableView::SheetTableView(QWidget* parent)
     : QTableView(parent)
     , sheet(nullptr)
@@ -132,23 +134,17 @@ SheetTableView::SheetTableView(QWidget* parent)
     connect(verticalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
         Q_UNUSED(point)
         QMenu menu {nullptr};
-        const auto selection = selectionModel()->selectedRows();
-        const auto& [min, max] = selectedMinMaxRows(selection);
-        if (bool isContiguous = max - min == selection.size() - 1) {
-            Q_UNUSED(isContiguous)
-            /*: This is shown in the context menu for the vertical header in a spreadsheet.
-                The number refers to how many lines are selected and will be inserted. */
+        const auto& selection = selectionModel()->selectedRows();
+        const auto& ranges = selectionRanges(selection, Qt::Vertical);
+        if (ranges.size() <= 1) {
             auto insertBefore = menu.addAction(tr("Insert %n Rows Above", "", selection.size()));
-            connect(insertBefore, &QAction::triggered, this, &SheetTableView::insertRows);
-
-            if (max < model()->rowCount() - 1) {
-                auto insertAfter = menu.addAction(tr("Insert %n Rows Below", "", selection.size()));
-                connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertRowsAfter);
-            }
+            connect(insertBefore, &QAction::triggered, [this] { insertRows(false); });
+            auto insertAfter = menu.addAction(tr("Insert %n Rows Below", "", selection.size()));
+            connect(insertAfter, &QAction::triggered, [this] { insertRows(true); });
         }
         else {
             auto insert = menu.addAction(tr("Insert %n Non-Contiguous Rows", "", selection.size()));
-            connect(insert, &QAction::triggered, this, &SheetTableView::insertRows);
+            connect(insert, &QAction::triggered, [this] { insertRows(false); });
         }
         auto remove = menu.addAction(tr("Remove Rows", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeRows);
@@ -158,23 +154,17 @@ SheetTableView::SheetTableView(QWidget* parent)
     connect(horizontalHeader(), &QWidget::customContextMenuRequested, [this](const QPoint& point) {
         Q_UNUSED(point)
         QMenu menu {nullptr};
-        const auto selection = selectionModel()->selectedColumns();
-        const auto& [min, max] = selectedMinMaxColumns(selection);
-        if (bool isContiguous = max - min == selection.size() - 1) {
-            Q_UNUSED(isContiguous)
-            /*: This is shown in the context menu for the horizontal header in a spreadsheet.
-                The number refers to how many lines are selected and will be inserted. */
+        const auto& selection = selectionModel()->selectedColumns();
+        const auto& ranges = selectionRanges(selection, Qt::Horizontal);
+        if (ranges.size() <= 1) {
             auto insertAbove = menu.addAction(tr("Insert %n Columns Left", "", selection.size()));
-            connect(insertAbove, &QAction::triggered, this, &SheetTableView::insertColumns);
-
-            if (max < model()->columnCount() - 1) {
-                auto insertAfter = menu.addAction(tr("Insert %n Columns Right", "", selection.size()));
-                connect(insertAfter, &QAction::triggered, this, &SheetTableView::insertColumnsAfter);
-            }
+            connect(insertAbove, &QAction::triggered, [this] { insertColumns(false); });
+            auto insertAfter = menu.addAction(tr("Insert %n Columns Right", "", selection.size()));
+            connect(insertAfter, &QAction::triggered, [this] { insertColumns(true); });
         }
         else {
             auto insert = menu.addAction(tr("Insert %n Non-Contiguous Columns", "", selection.size()));
-            connect(insert, &QAction::triggered, this, &SheetTableView::insertColumns);
+            connect(insert, &QAction::triggered, [this] { insertColumns(false); });
         }
         auto remove = menu.addAction(tr("Remove Columns", ""));
         connect(remove, &QAction::triggered, this, &SheetTableView::removeColumns);
@@ -328,151 +318,55 @@ QModelIndexList SheetTableView::selectedIndexesRaw() const
     return selectedIndexes();
 }
 
-void SheetTableView::insertRows()
+void SheetTableView::insertRows(bool after)
 {
-    assert(sheet);
-
-    QModelIndexList rows = selectionModel()->selectedRows();
-    std::vector<int> sortedRows;
-
-    /* Make sure rows are sorted in ascending order */
-    for (const auto& it : rows) {
-        sortedRows.push_back(it.row());
-    }
-    std::sort(sortedRows.begin(), sortedRows.end());
-
-    /* Insert rows */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
-    std::vector<int>::const_reverse_iterator it = sortedRows.rbegin();
-    while (it != sortedRows.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring rows into one chunk */
-        ++it;
-        while (it != sortedRows.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else {
-                break;
-            }
+    for (const auto& [begin, end] : selectionRanges(selectionModel()->selectedRows(), Qt::Vertical)) {
+        if (!model()->insertRows(after ? end + 1 : begin, end - begin + 1)) {
+            Gui::Command::abortCommand();
+            return;
         }
-
-        Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(prev).c_str(), count);
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
-void SheetTableView::insertRowsAfter()
+void SheetTableView::insertColumns(bool after)
 {
-    assert(sheet);
-    const auto rows = selectionModel()->selectedRows();
-    const auto& [min, max] = selectedMinMaxRows(rows);
-    assert(max - min == rows.size() - 1);
-    Q_UNUSED(min)
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Rows"));
-    Gui::cmdAppObjectArgs(sheet, "insertRows('%s', %d)", rowName(max + 1).c_str(), rows.size());
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
+    for (const auto& [begin, end] :
+         selectionRanges(selectionModel()->selectedColumns(), Qt::Horizontal)) {
+        if (!model()->insertColumns(after ? end + 1 : begin, end - begin + 1)) {
+            Gui::Command::abortCommand();
+            return;
+        }
+    }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 void SheetTableView::removeRows()
 {
-    assert(sheet);
-
-    QModelIndexList rows = selectionModel()->selectedRows();
-    std::vector<int> sortedRows;
-
-    /* Make sure rows are sorted in descending order */
-    for (const auto& it : rows) {
-        sortedRows.push_back(it.row());
-    }
-    std::sort(sortedRows.begin(), sortedRows.end(), std::greater<>());
-
-    /* Remove rows */
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
-    for (const auto& it : sortedRows) {
-        Gui::cmdAppObjectArgs(sheet, "removeRows('%s', %d)", rowName(it).c_str(), 1);
-    }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-}
-
-void SheetTableView::insertColumns()
-{
-    assert(sheet);
-
-    QModelIndexList cols = selectionModel()->selectedColumns();
-    std::vector<int> sortedColumns;
-
-    /* Make sure rows are sorted in ascending order */
-    for (const auto& it : cols) {
-        sortedColumns.push_back(it.column());
-    }
-    std::sort(sortedColumns.begin(), sortedColumns.end());
-
-    /* Insert columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
-    std::vector<int>::const_reverse_iterator it = sortedColumns.rbegin();
-    while (it != sortedColumns.rend()) {
-        int prev = *it;
-        int count = 1;
-
-        /* Collect neighbouring columns into one chunk */
-        ++it;
-        while (it != sortedColumns.rend()) {
-            if (*it == prev - 1) {
-                prev = *it;
-                ++count;
-                ++it;
-            }
-            else {
-                break;
-            }
+    for (const auto& [begin, end] : selectionRanges(selectionModel()->selectedRows(), Qt::Vertical)) {
+        if (!model()->removeRows(begin, end - begin + 1)) {
+            Gui::Command::abortCommand();
+            return;
         }
-
-        Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(prev).c_str(), count);
     }
-    Gui::Command::commitCommand();
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-}
-
-void SheetTableView::insertColumnsAfter()
-{
-    assert(sheet);
-    const auto columns = selectionModel()->selectedColumns();
-    const auto& [min, max] = selectedMinMaxColumns(columns);
-    assert(max - min == columns.size() - 1);
-    Q_UNUSED(min)
-
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert Columns"));
-    Gui::cmdAppObjectArgs(sheet, "insertColumns('%s', %d)", columnName(max + 1).c_str(), columns.size());
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
 }
 
 void SheetTableView::removeColumns()
 {
-    assert(sheet);
-
-    QModelIndexList cols = selectionModel()->selectedColumns();
-    std::vector<int> sortedColumns;
-
-    /* Make sure rows are sorted in descending order */
-    for (const auto& it : cols) {
-        sortedColumns.push_back(it.column());
-    }
-    std::sort(sortedColumns.begin(), sortedColumns.end(), std::greater<>());
-
-    /* Remove columns */
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Rows"));
-    for (const auto& it : sortedColumns) {
-        Gui::cmdAppObjectArgs(sheet, "removeColumns('%s', %d)", columnName(it).c_str(), 1);
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Remove Columns"));
+    for (const auto& [begin, end] :
+         selectionRanges(selectionModel()->selectedColumns(), Qt::Horizontal)) {
+        if (!model()->removeColumns(begin, end - begin + 1)) {
+            Gui::Command::abortCommand();
+            return;
+        }
     }
     Gui::Command::commitCommand();
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
