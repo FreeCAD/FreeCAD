@@ -55,7 +55,11 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
     """Proxy object for Pocket operation."""
 
     def areaOpFeatures(self, obj):
-        return super(self.__class__, self).areaOpFeatures(obj) | PathOp.FeatureLocations
+        return (
+            super(self.__class__, self).areaOpFeatures(obj)
+            | PathOp.FeatureLocations
+            | PathOp.FeatureBaseEdges
+        )
 
     def removeHoles(self, solid, face):
         """removeHoles(solid, face) ... Remove hole wires from a face, keeping outer wire and boss wires.
@@ -201,13 +205,26 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
             Path.Log.debug("base items exist.  Processing...")
             self.horiz = []
             self.vert = []
+            self.edges = []
             for base, subList in obj.Base:
                 for sub in subList:
-                    if "Face" in sub:
-                        if sub not in avoidFeatures and not self.classifySub(base, sub):
-                            Path.Log.error(
-                                "Pocket does not support shape {}.{}".format(base.Label, sub)
-                            )
+                    if sub in avoidFeatures:
+                        # skip this sub shape
+                        continue
+                    if "Edge" in sub and self.classifySubEdge(base, sub):
+                        # edge added to list
+                        continue
+                    if "Face" in sub and self.classifySubFace(base, sub):
+                        # face added to list
+                        continue
+                    Path.Log.error("Pocket does not support shape {}.{}".format(base.Label, sub))
+
+            # Create horizonatal face from edges
+            for sortEdges in Part.sortEdges(self.edges):
+                wire = Part.Wire(sortEdges)
+                if wire.isClosed():
+                    face = Part.Face(wire)
+                    self.horiz.append((face, base))
 
             # Convert horizontal faces to use outline only if requested
             Path.Log.debug("UseOutline: {}".format(obj.UseOutline))
@@ -302,8 +319,19 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                 return True
         return False
 
-    def classifySub(self, bs, sub):
-        """classifySub(bs, sub)...
+    def classifySubEdge(self, bs, sub):
+        """classifySubFace(bs, sub)...
+        Given a base and a sub-feature name, returns True
+        if the sub-feature is a horizontal edge.
+        """
+        edge = bs.Shape.getElement(sub)
+        if Path.Geom.isHorizontal(edge):
+            self.edges.append(edge)
+            return True
+        return False
+
+    def classifySubFace(self, bs, sub):
+        """classifySubFace(bs, sub)...
         Given a base and a sub-feature name, returns True
         if the sub-feature is a horizontally or vertically oriented flat face.
         """
