@@ -43,6 +43,7 @@
 #include <math_Vector.hxx>
 
 #include <map>
+#include <unordered_set>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -99,10 +100,25 @@ MassPropertiesData CalculateMassProperties(
 
         double density = 1.0e-6;
 
-        Part::Feature* part = nullptr;
-        if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-            part = static_cast<Part::Feature*>(obj);
-        }
+        auto materialFeature = [](App::DocumentObject* candidate) -> Part::Feature* {
+            std::unordered_set<App::DocumentObject*> visited;
+
+            while (candidate && visited.insert(candidate).second) {
+                if (candidate->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    return static_cast<Part::Feature*>(candidate);
+                }
+
+                App::DocumentObject* linked = candidate->getLinkedObject(true);
+                if (!linked || linked == candidate) {
+                    break;
+                }
+                candidate = linked;
+            }
+
+            return nullptr;
+        };
+
+        Part::Feature* part = materialFeature(obj);
 
         Materials::Material mat;
         if (part) {
@@ -114,8 +130,7 @@ MassPropertiesData CalculateMassProperties(
                     density = 1.0e-6;
                 }
                 else {
-                    const double densityValue = mat.getPhysicalQuantity(QStringLiteral("Density")).getValue();
-                    density = densityValue / 1.0e9;
+                    density = mat.getPhysicalQuantity(QStringLiteral("Density")).getValue();
                 }
             } catch (...) {}
         }
@@ -162,7 +177,7 @@ MassPropertiesData CalculateMassProperties(
 
     GProp_PrincipalProps principal;
     
-    if (mode == "Center of Gravity") {
+    if (mode == "Center of gravity") {
         data.inertiaJox = inertia(1, 1);
         data.inertiaJoy = inertia(2, 2);
         data.inertiaJoz = inertia(3, 3);
