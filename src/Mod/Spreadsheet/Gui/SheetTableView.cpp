@@ -45,7 +45,6 @@
 #include <Gui/CommandT.h>
 #include <Gui/MainWindow.h>
 #include <Mod/Spreadsheet/App/Cell.h>
-#include <qnamespace.h>
 
 #include "DlgBindSheet.h"
 #include "DlgSheetConf.h"
