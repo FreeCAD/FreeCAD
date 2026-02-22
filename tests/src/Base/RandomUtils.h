@@ -22,7 +22,7 @@ inline std::string generateRandomName(const std::string& prefix, bool includeThr
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 999999); 
+    std::uniform_int_distribution<> dis(0, 999999);
     std::ostringstream oss;
     oss << prefix;
     if (includeThreadId) {
@@ -31,6 +31,6 @@ inline std::string generateRandomName(const std::string& prefix, bool includeThr
     oss << "_" << std::setfill('0') << std::setw(6) << dis(gen);
     return oss.str();
 }
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_RANDOMUTILS_H
+#endif  // BASE_RANDOMUTILS_H

@@ -175,7 +175,7 @@ private Q_SLOTS:
     }
 
     std::unique_ptr<TestablePathMigrationWorker> makeWorker(int major, int minor)
-    {    
+    {
         std::string userConfigDir = Base::FileInfo::pathToString(
             std::filesystem::temp_directory_path() / Base::generateRandomName("Config_")
         );
@@ -188,7 +188,7 @@ private Q_SLOTS:
     void generateNewUserAppPathString_no_version_now()
     {
         auto worker = makeWorker(1, 1);
-        std::filesystem::path testPath = std::filesystem::temp_directory_path() / "foo" / "bar";
+        std::filesystem::path testPath = std::filesystem::temp_directory_path() / Base::generateRandomName("foo") / "bar";
         std::string oldPath = Base::FileInfo::pathToString(testPath);
         std::string newPath = worker->testableGenerateNewUserAppPathString(oldPath);
 
@@ -202,7 +202,7 @@ private Q_SLOTS:
     void generateNewUserAppPathString_version_in_current()
     {
         auto worker = makeWorker(1, 1);
-        std::filesystem::path testPath = std::filesystem::temp_directory_path() / "foo" / "bar"
+        std::filesystem::path testPath = std::filesystem::temp_directory_path() / Base::generateRandomName("foo") / "bar"
             / "v1-0";
         std::string oldPath = Base::FileInfo::pathToString(testPath);
         std::string newPath = worker->testableGenerateNewUserAppPathString(oldPath);
