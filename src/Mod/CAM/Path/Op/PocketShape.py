@@ -248,7 +248,10 @@ class ObjectPocket(PathPocketBase.ObjectPocket):
                             self.exts.append(f)
 
             # check all faces and see if they are touching/overlapping and combine and simplify
-            self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz)
+            if getattr(obj, "SortingMode", None) != "Manual":
+                self.horizontal = Path.Geom.combineHorizontalFaces(self.horiz)
+            else:
+                self.horizontal = self.horiz
 
             # Move all faces to final depth less buffer before extrusion
             # Small negative buffer is applied to compensate for internal significant digits/rounding issue

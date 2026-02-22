@@ -74,6 +74,10 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 (translate("CAM_Pocket", "Line"), "Line"),
                 (translate("CAM_Pocket", "Grid"), "Grid"),
             ],  # Fill Pattern
+            "SortingMode": [
+                (translate("CAM_Pocket", "Automatic"), "Automatic"),
+                (translate("CAM_Pocket", "Manual"), "Manual"),
+            ],
         }
 
         if dataType == "raw":
@@ -195,6 +199,17 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 "Skips machining regions that have already been cleared by previous operations.",
             ),
         )
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "Order processing of the shapes"
+                "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                "\nManual: uses order of shapes selection",
+            ),
+        )
 
         for n in self.pocketPropertyEnumerations():
             setattr(obj, n[0], n[1])
@@ -268,6 +283,18 @@ class ObjectPocket(PathAreaOp.ObjectOp):
                 ),
             )
 
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Order processing of the shapes"
+                    "\nAutomatic: uses nearest neighbour algorithm to sort shapes"
+                    "\nManual: uses order of shapes selection",
+                ),
+            )
         if hasattr(obj, "OffsetPattern"):
             obj.setGroupOfProperty("OffsetPattern", "Pocket")
             obj.renameProperty("OffsetPattern", "ClearingPattern")
