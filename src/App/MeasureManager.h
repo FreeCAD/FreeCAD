@@ -51,6 +51,7 @@ enum class MeasureElementType
     CIRCLE,
     ARC,
     CURVE,  // Has a length but no radius or axis
+    DISC,
     PLANE,
     CYLINDER,
     VOLUME,
