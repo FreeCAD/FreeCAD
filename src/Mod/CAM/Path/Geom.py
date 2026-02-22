@@ -101,11 +101,7 @@ def isRoughly(float1, float2, error=Tolerance):
 def pointsCoincide(p1, p2, error=Tolerance):
     """pointsCoincide(p1, p2, [error=Tolerance])
     Return True if two points are roughly identical (see also isRoughly)."""
-    return (
-        isRoughly(p1.x, p2.x, error)
-        and isRoughly(p1.y, p2.y, error)
-        and isRoughly(p1.z, p2.z, error)
-    )
+    return len(p1) == len(p2) and all(isRoughly(p1[i], p2[i], error) for i in range(len(p1)))
 
 
 def edgesMatch(e0, e1, error=Tolerance):
