@@ -1,0 +1,35 @@
+# Variant config for macOS ARM legacy builds (Big Sur / macOS 11 compat).
+# CI copies this over variants.yaml for the osx-arm64 deploy_target=11.0 build.
+# See build_release.yml.
+#
+# This is variants.yaml with arm64 also pinned to Qt 6.7.
+# Keep non-Qt entries in sync with variants.yaml.
+
+c_compiler:
+- if: win
+  then: vs2022
+cxx_compiler:
+- if: win
+  then: vs2022
+
+c_stdlib_version:
+- if: osx and x86_64
+  then: "11.0"
+MACOSX_SDK_VERSION:
+- if: osx and x86_64
+  then: "11.0"
+MACOSX_DEPLOYMENT_TARGET:
+- if: osx and x86_64
+  then: "11.0"
+
+# Pin Qt 6.7 for ALL macOS — last Qt version supporting macOS 11 (Big Sur).
+qt6_ver:
+- if: osx
+  then: "6.7"
+- if: not osx
+  then: "6.8"
+qt6_ver_max:
+- if: osx
+  then: "6.8"
+- if: not osx
+  then: "6.9"
