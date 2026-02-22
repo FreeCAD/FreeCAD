@@ -415,14 +415,14 @@ void TaskMeasure::invoke()
     update();
 
     bool greedy = Gui::Selection().getSelectionStyle() == SelectionStyle::GreedySelection;
-    std::list<InputHint> hints;
+    std::list<Gui::InputHint> hints;
     if (greedy) {
-        hints = std::list<InputHint>{
+        hints = std::list<Gui::InputHint>{
             {tr("%1 start new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}
         };
     }
     else {
-        hints = std::list<InputHint>{{tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
+        hints = std::list<Gui::InputHint>{{tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
     }
     Gui::getMainWindow()->showHints(hints);
 }
@@ -610,12 +610,12 @@ void TaskMeasure::newMeasurementBehaviourChanged(bool checked)
     }
     settings.endGroup();
 
-    std::list<InputHint> hints;
+    std::list<Gui::InputHint> hints;
     if (checked) {
-        hints = std::list<InputHint>{{tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
+        hints = std::list<Gui::InputHint>{{tr("%1 new measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
     }
     else {
-        hints = std::list<InputHint>{{tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
+        hints = std::list<Gui::InputHint>{{tr("%1 add to measurement, %2 toggle auto-save"), {{ModifierCtrl}, {ModifierShift}}}};
     }
     Gui::getMainWindow()->showHints(hints);
 }
