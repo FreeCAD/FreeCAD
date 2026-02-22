@@ -259,7 +259,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="checkShowProfilePreview">
         <property name="toolTip">
-         <string>Highlight the sketch/profile geometry used by the feature currently being edited.</string>
+         <string>Highlight the sketch or profile geometry used by the feature currently being edited</string>
         </property>
         <property name="text">
          <string>Highlight the profile used to create features</string>
