@@ -322,7 +322,7 @@
       <item>
        <widget class="Gui::PrefCheckBox" name="delayedGizmoUpdate">
         <property name="toolTip">
-         <string>Delay recompute until dragging ends when using gizmos, improving interaction speed.</string>
+         <string>Delay recompute until dragging ends when using draggers, improving interaction speed</string>
         </property>
         <property name="text">
          <string>Disable recompute while dragging</string>
