@@ -99,8 +99,6 @@ TaskMassProperties::TaskMassProperties()
         }
     }
 
-    this->setButtonPosition(TaskMassProperties::North);
-
     auto physicalProperties = new Gui::TaskView::TaskBox(
         Gui::BitmapFactory().pixmap("PropertiesIcon"),
         tr("Physical Properties"),
@@ -193,16 +191,16 @@ TaskMassProperties::TaskMassProperties()
     basicLayout->setContentsMargins(10, 10, 10, 10);
     basicLayout->setSpacing(8);
 
-    QLabel* volumeLabel = new QLabel(tr("Volume "));
+    QLabel* volumeLabel = new QLabel(tr("Volume"));
     volumeEdit = new QLineEdit();
     volumeEdit->setReadOnly(true);
-    QLabel* massLabel = new QLabel(tr("Mass "));
+    QLabel* massLabel = new QLabel(tr("Mass"));
     massEdit = new QLineEdit();
     massEdit->setReadOnly(true);
-    QLabel* densityLabel = new QLabel(tr("Density "));
+    QLabel* densityLabel = new QLabel(tr("Density"));
     densityEdit = new QLineEdit();
     densityEdit->setReadOnly(true);
-    QLabel* surfaceAreaLabel = new QLabel(tr("Surface Area "));
+    QLabel* surfaceAreaLabel = new QLabel(tr("Surface Area"));
     surfaceAreaEdit = new QLineEdit();
     surfaceAreaEdit->setReadOnly(true);
 
@@ -232,13 +230,13 @@ TaskMassProperties::TaskMassProperties()
     QHBoxLayout* cogFields = new QHBoxLayout();
     cogFields->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* cogXLabel = new QLabel(QStringLiteral("X "));
+    QLabel* cogXLabel = new QLabel(QStringLiteral("X"));
     cogXText = new QLineEdit();
     cogXText->setReadOnly(true);
-    QLabel* cogYLabel = new QLabel(QStringLiteral("Y "));
+    QLabel* cogYLabel = new QLabel(QStringLiteral("Y"));
     cogYText = new QLineEdit();
     cogYText->setReadOnly(true);
-    QLabel* cogZLabel = new QLabel(QStringLiteral("Z "));
+    QLabel* cogZLabel = new QLabel(QStringLiteral("Z"));
     cogZText = new QLineEdit();
     cogZText->setReadOnly(true);
 
@@ -276,13 +274,13 @@ TaskMassProperties::TaskMassProperties()
     QHBoxLayout* covFields = new QHBoxLayout();
     covFields->setContentsMargins(0, 0, 0, 0);
 
-    QLabel* covXLabel = new QLabel(QStringLiteral("X "));
+    QLabel* covXLabel = new QLabel(QStringLiteral("X"));
     covXText = new QLineEdit();
     covXText->setReadOnly(true);
-    QLabel* covYLabel = new QLabel(QStringLiteral("Y "));
+    QLabel* covYLabel = new QLabel(QStringLiteral("Y"));
     covYText = new QLineEdit();
     covYText->setReadOnly(true);
-    QLabel* covZLabel = new QLabel(QStringLiteral("Z "));
+    QLabel* covZLabel = new QLabel(QStringLiteral("Z"));
     covZText = new QLineEdit();
     covZText->setReadOnly(true);
 
@@ -326,24 +324,24 @@ TaskMassProperties::TaskMassProperties()
     inertiaGrid->setHorizontalSpacing(6);
     inertiaGrid->setVerticalSpacing(6);
 
-    QLabel* inertiaJoxLabel = new QLabel(QStringLiteral("Jox "));
+    QLabel* inertiaJoxLabel = new QLabel(QStringLiteral("Jox"));
     inertiaJoxText = new QLineEdit(); 
     inertiaJoxText->setReadOnly(true);
-    QLabel* inertiaJxyLabel = new QLabel(QStringLiteral("Jxy "));
+    QLabel* inertiaJxyLabel = new QLabel(QStringLiteral("Jxy"));
     inertiaJxyText = new QLineEdit(); 
     inertiaJxyText->setReadOnly(true);
-    QLabel* inertiaJzxLabel = new QLabel(QStringLiteral("Jzx "));
+    QLabel* inertiaJzxLabel = new QLabel(QStringLiteral("Jzx"));
     inertiaJzxText = new QLineEdit(); 
     inertiaJzxText->setReadOnly(true);
 
-    QLabel* inertiaJoyLabel = new QLabel(QStringLiteral("Joy "));
+    QLabel* inertiaJoyLabel = new QLabel(QStringLiteral("Joy"));
     inertiaJoyText = new QLineEdit(); 
     inertiaJoyText->setReadOnly(true);
-    QLabel* inertiaJzyLabel = new QLabel(QStringLiteral("Jzy "));
+    QLabel* inertiaJzyLabel = new QLabel(QStringLiteral("Jzy"));
     inertiaJzyText = new QLineEdit(); 
     inertiaJzyText->setReadOnly(true);
 
-    QLabel* inertiaJozLabel = new QLabel(QStringLiteral("Joz "));
+    QLabel* inertiaJozLabel = new QLabel(QStringLiteral("Joz"));
     inertiaJozText = new QLineEdit(); 
     inertiaJozText->setReadOnly(true);
 
@@ -376,13 +374,13 @@ TaskMassProperties::TaskMassProperties()
     QHBoxLayout* inertiaDiag = new QHBoxLayout(inertiaDiagWidget);
     inertiaDiag->setContentsMargins(0, 0, 0, 0);
     inertiaDiag->setSpacing(6);
-    QLabel* inertiaJxLabel = new QLabel(QStringLiteral("Jx "));
+    QLabel* inertiaJxLabel = new QLabel(QStringLiteral("Jx"));
     inertiaJxText = new QLineEdit();
     inertiaJxText->setReadOnly(true);
-    QLabel* inertiaJyLabel = new QLabel(QStringLiteral("Jy "));
+    QLabel* inertiaJyLabel = new QLabel(QStringLiteral("Jy"));
     inertiaJyText = new QLineEdit(); 
     inertiaJyText->setReadOnly(true);
-    QLabel* inertiaJzLabel = new QLabel(QStringLiteral("Jz "));
+    QLabel* inertiaJzLabel = new QLabel(QStringLiteral("Jz"));
     inertiaJzText = new QLineEdit(); 
     inertiaJzText->setReadOnly(true);
 
@@ -409,7 +407,7 @@ TaskMassProperties::TaskMassProperties()
     axisInertiaWidget = new QWidget();
     QHBoxLayout* axisDiag = new QHBoxLayout(axisInertiaWidget);
 
-    QLabel* axisLabel = new QLabel(tr("Inertia around axis "));
+    QLabel* axisLabel = new QLabel(tr("Inertia around axis"));
     axisLabel->setWordWrap(true);
     axisDiag->addWidget(axisLabel);
 
