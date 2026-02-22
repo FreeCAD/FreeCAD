@@ -105,6 +105,14 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Size of measurement text"
     );
+    ADD_PROPERTY_TYPE(
+        LabelPosition,
+        (Base::Vector3d(0.0, 0.0, 0.0)),
+        agroup,
+        App::Prop_None,
+        "Saved label offset for the measurement"
+    );
+    ADD_PROPERTY_TYPE(LabelPositionCustom, (false), agroup, App::Prop_None, "Use the saved label offset");
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -265,6 +273,11 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+    else if (prop == &LabelPosition || prop == &LabelPositionCustom) {
+        if (LabelPositionCustom.getValue()) {
+            setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
+        }
+    }
 
     ViewProviderDocumentObject::onChanged(prop);
 }
@@ -273,6 +286,17 @@ void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 {
     auto me = static_cast<ViewProviderMeasureBase*>(data);
     me->onLabelMoved();
+}
+
+void ViewProviderMeasureBase::onLabelMoved()
+{
+    if (!pDragger) {
+        return;
+    }
+
+    const SbVec3f pos = pDragger->translation.getValue();
+    LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
+    LabelPositionCustom.setValue(true);
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
@@ -328,6 +352,11 @@ SoSeparator* ViewProviderMeasureBase::getSoSeparatorText()
 void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureObject)
 {
     (void)measureObject;
+    if (LabelPositionCustom.getValue()) {
+        setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
+        return;
+    }
+    setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
 }
 
 
@@ -647,6 +676,12 @@ ViewProviderMeasure::~ViewProviderMeasure()
 void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject)
 {
     (void)measureObject;
+
+    if (LabelPositionCustom.getValue()) {
+        setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
+        updateView();
+        return;
+    }
 
     // Initialize the text position
     Base::Vector3d textPos = getTextPosition();
