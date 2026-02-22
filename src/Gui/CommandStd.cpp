@@ -41,7 +41,9 @@
 #include "Action.h"
 #include "BitmapFactory.h"
 #include "Command.h"
+#include "Control.h"
 #include "Dialogs/DlgAbout.h"
+#include "Dialogs/DlgAnnotation.h"
 #include "Dialogs/DlgCustomizeImp.h"
 #include "Dialogs/DlgParameterImp.h"
 #include "Dialogs/DlgPreferencesImp.h"
@@ -813,6 +815,36 @@ bool StdCmdTextDocument::isActive()
 }
 
 //===========================================================================
+// Std_AnnotationLabel
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdAnnotationLabel)
+
+StdCmdAnnotationLabel::StdCmdAnnotationLabel()
+    : Command("Std_AnnotationLabel")
+{
+    sGroup = "Tools";
+    sMenuText = QT_TR_NOOP("Annotation Label");
+    sToolTipText = QT_TR_NOOP("Creates new annotation labels at the picked position");
+    sWhatsThis = "Std_AnnotationLabel";
+    sStatusTip = sToolTipText;
+    sPixmap = "Tree_Annotation";
+    eType = 0;
+}
+
+void StdCmdAnnotationLabel::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document* doc = getActiveDocument();
+    Gui::Control().showDialog(new Gui::Dialog::TaskAnnotation(doc));
+}
+
+bool StdCmdAnnotationLabel::isActive()
+{
+    return hasActiveDocument() && !Gui::Control().activeDialog();
+}
+
+//===========================================================================
 // Std_UnitsCalculator
 //===========================================================================
 DEF_STD_CMD(StdCmdUnitsCalculator)
@@ -971,81 +1003,6 @@ void StdCmdReloadStyleSheet::activated(int)
     Application::Instance->reloadStyleSheet();
 }
 
-// ==================================================================
-// Std_AnnotationLabel
-// ==================================================================
-DEF_STD_CMD_A(StdCmdAnnotationLabel)
-
-StdCmdAnnotationLabel::StdCmdAnnotationLabel()
-    : Command("Std_AnnotationLabel")
-{
-    // Put it under Tools menu
-    sGroup = QT_TR_NOOP("Tools");
-    sMenuText = QT_TR_NOOP("Annotation Label");
-    sToolTipText = QT_TR_NOOP("Creates a new annotation label at the picked location in the 3D view");
-    sWhatsThis = "Std_AnnotationLabel";
-    sStatusTip = sToolTipText;
-    sPixmap = "Tree_Annotation";
-    eType = AlterDoc;
-}
-
-bool StdCmdAnnotationLabel::isActive()
-{
-    return (
-        App::GetApplication().getActiveDocument() != nullptr
-        && !Gui::Selection().getSelectionEx().empty()
-    );
-}
-
-void StdCmdAnnotationLabel::activated(int)
-{
-    auto* doc = App::GetApplication().getActiveDocument();
-    if (!doc) {
-        return;
-    }
-
-    auto selEx = Gui::Selection().getSelectionEx();
-    if (selEx.empty()) {
-        return;
-    }
-
-    // Use first selected item in active 3D view
-    const auto& sel = selEx.front();
-
-    const auto* support = sel.getObject();
-    const auto* supportObj = freecad_cast<App::DocumentObject*>(support);
-
-    // Compute base position. Fallback: object placement position, else origin
-    Base::Vector3d basePos;
-    const auto& picked = sel.getPickedPoints();
-    if (!picked.empty()) {
-        basePos = picked.front();
-    }
-    else if (auto* gf = freecad_cast<App::GeoFeature*>(supportObj); supportObj && gf) {
-        const auto& gp = gf->globalPlacement();
-        basePos = gp.getPosition();
-    }
-
-    // Create the label object
-    openCommand(QT_TRANSLATE_NOOP("Command", "Create Annotation Label"));
-    auto* obj = doc->addObject("App::AnnotationLabel", "Label");
-    if (!obj) {
-        abortCommand();
-        return;
-    }
-
-    // Set basic properties
-    auto* label = freecad_cast<App::AnnotationLabel*>(obj);
-    label->LabelText.setValue(std::vector<std::string> {"Annotation"});
-
-    // BasePosition at anchor, TextPosition slightly offset for visibility
-    label->BasePosition.setValue(basePos);
-    const auto textPos = basePos + Base::Vector3d(10, 10, 10);
-    label->TextPosition.setValue(textPos);
-
-    commitCommand();
-}
-
 namespace Gui
 {
 
@@ -1074,13 +1031,13 @@ void CreateStdCommands()
     rcCmdMgr.addCommand(new StdCmdFreeCADForum());
     rcCmdMgr.addCommand(new StdCmdReportBug());
     rcCmdMgr.addCommand(new StdCmdTextDocument());
+    rcCmdMgr.addCommand(new StdCmdAnnotationLabel());
     rcCmdMgr.addCommand(new StdCmdUnitsCalculator());
     rcCmdMgr.addCommand(new StdCmdUserEditMode());
     rcCmdMgr.addCommand(new StdCmdReloadStyleSheet());
     rcCmdMgr.addCommand(new StdCmdDevHandbook());
     // rcCmdMgr.addCommand(new StdCmdDownloadOnlineHelp());
     // rcCmdMgr.addCommand(new StdCmdDescription());
-    rcCmdMgr.addCommand(new StdCmdAnnotationLabel());
 }
 
 }  // namespace Gui
