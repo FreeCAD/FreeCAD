@@ -331,6 +331,16 @@ class SolverCalculiX(base_fempythonobject.BaseFemPythonObject):
                 value=False,
             )
         )
+        prop.append(
+            _PropHelper(
+                type="App::PropertyBool",
+                name="DisplaceMesh",
+                group="Solver",
+                doc="Deform the mesh by the displacement field",
+                value=False,
+            )
+        )
+
         return prop
 
     def onDocumentRestored(self, obj):
