@@ -29,7 +29,6 @@
 #include <QAbstractTableModel>
 
 #include <App/Range.h>
-#include <qcolor.h>
 
 
 namespace Spreadsheet
