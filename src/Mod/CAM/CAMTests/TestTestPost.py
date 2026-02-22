@@ -22,6 +22,7 @@
 # *                                                                         *
 # ***************************************************************************
 from os import linesep, path, remove
+import re
 import tempfile
 from unittest.mock import mock_open, patch
 
@@ -1300,6 +1301,8 @@ G0 Z8.000
 
         self.job.PostProcessorArgs = "--output_all_arguments"
         gcode = self.post.export()[0][1]
+        # Strip ANSI color codes from output
+        gcode = re.sub(r"\x1b\[[0-9;]*m", "", gcode)
         # print(f"--------{nl}{gcode}--------{nl}")
         # The argparse help routine turns out to be sensitive to the
         # number of columns in the terminal window that the tests

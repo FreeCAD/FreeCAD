@@ -26,6 +26,7 @@ from PathScripts.PathUtils import waiting_effects
 from PySide.QtCore import QT_TRANSLATE_NOOP
 import Path
 import Path.Base.Util as PathUtil
+import Path.Geom
 import PathScripts.PathUtils as PathUtils
 import math
 import time
@@ -169,6 +170,14 @@ class ObjectOp(object):
             ),
         )
         obj.addProperty(
+            "App::PropertyBool",
+            "BlockDelete",
+            "Path",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Enable post processor to add block delete commands"
+            ),
+        )
+        obj.addProperty(
             "App::PropertyString",
             "Comment",
             "Path",
@@ -187,6 +196,12 @@ class ObjectOp(object):
             QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
         )
         obj.setEditorMode("CycleTime", 1)  # read-only
+
+        # Add attachment extension to enable attaching operations to geometry
+        # This allows operations to automatically position/orient based on attached faces
+        # Only add to real objects, not OpPrototypes
+        if hasattr(obj, "hasExtension") and not obj.hasExtension("Part::AttachExtension"):
+            obj.addExtension("Part::AttachExtensionPython")
 
         features = self.opFeatures(obj)
 
@@ -442,6 +457,15 @@ class ObjectOp(object):
                 "CycleTime",
                 "Path",
                 QT_TRANSLATE_NOOP("App::Property", "Operations Cycle Time Estimation"),
+            )
+        if not hasattr(obj, "BlockDelete"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "BlockDelete",
+                "Path",
+                QT_TRANSLATE_NOOP(
+                    "App::Property", "Enable post processor to add block delete commands"
+                ),
             )
 
         if FeatureStepDown & features and not hasattr(obj, "StepDown"):
@@ -792,10 +816,73 @@ class ObjectOp(object):
         # in case they still have an expression referencing any op values
         obj.recompute()
 
+        # Update placement from attachment if operation is attached to geometry
+        # This must be called before path generation to ensure correct positioning
+        if hasattr(obj, "positionBySupport"):
+            obj.positionBySupport()
+
         self.commandlist = []
         self.commandlist.append(Path.Command("(%s)" % obj.Label))
         if obj.Comment:
             self.commandlist.append(Path.Command("(%s)" % obj.Comment))
+
+        """
+        # Check if operation placement rotation is needed and possible
+        # Requirements: 1) Placement not Z-aligned, 2) Job has machine, 3) Machine has rotary axes
+        if hasattr(obj, "Placement") and obj.Placement:
+            # Check if placement rotation is identity (Z-up) - compare with default placement
+            default_placement = FreeCAD.Placement()
+            if not obj.Placement.Rotation.isSame(default_placement.Rotation, 1e-6):
+                # Placement needs rotation - check if machine supports it
+                machine = self.job.Proxy.getMachine() if self.job else None
+                if machine and machine.has_rotary_axes:
+                    # Calculate rotation commands using the rotation generator
+                    try:
+                        import Path.Base.Generator.rotation as rotation
+
+                        # Get rotation limits from machine (default to unlimited if not specified)
+                        aMin, aMax = -360, 360
+                        cMin, cMax = -360, 360
+
+                        if "A" in machine.rotary_axes:
+                            aMin = machine.rotary_axes["A"].min_limit
+                            aMax = machine.rotary_axes["A"].max_limit
+                        if "C" in machine.rotary_axes:
+                            cMin = machine.rotary_axes["C"].min_limit
+                            cMax = machine.rotary_axes["C"].max_limit
+
+                        # Generate rotation commands to align placement with Z
+                        # Extract the Z-axis (normal vector) from the operation placement
+                        # The Z-axis of the placement is what needs to be aligned with global Z
+                        placement_z_axis = obj.Placement.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
+
+                        # Use compound moves if machine supports it
+                        rotation_commands = rotation.generate(
+                            placement_z_axis,
+                            aMin=aMin,
+                            aMax=aMax,
+                            cMin=cMin,
+                            cMax=cMax,
+                            compound=machine.compound_moves
+                        )
+
+                        self.commandlist.extend(rotation_commands)
+
+                    except ValueError as e:
+                        # No valid rotation solution found within machine limits
+                        Path.Log.error(
+                            f"Operation {obj.Label}: Cannot find valid rotation for placement within machine limits: {e}"
+                        )
+                    except Exception as e:
+                        Path.Log.error(
+                            f"Operation {obj.Label}: Error calculating placement rotation: {e}"
+                        )
+                else:
+                    # Machine doesn't support rotation or no machine configured
+                    Path.Log.warning(
+                        f"Operation {obj.Label} requires placement rotation but machine does not have rotary axes"
+                    )
+        """
 
         result = self.opExecute(obj)
 
@@ -803,7 +890,50 @@ class ObjectOp(object):
             # Let's finish by rapid to clearance...just for safety
             self.commandlist.append(Path.Command("G0", {"Z": obj.ClearanceHeight.Value}))
 
+        # Add block delete annotations if enabled
+        if obj.BlockDelete:
+            for command in self.commandlist:
+                annotations = command.Annotations
+                annotations["BlockDelete"] = True
+                command.Annotations = annotations
+
+        # Add handling of coolant commands.
+        # if the coolant mode is not None, add the command to turn it on right before the first non-rapid
+        # move in the command list.
+        # Add the command to turn it off right after the last non-rapid move in the command list.
+        if hasattr(obj, "CoolantMode") and obj.CoolantMode != "None":
+            # Find the first and last cutting moves (includes G1, G2, G3, and canned drill cycles)
+            # Use Path.Geom.CmdMove which includes: G1, G2, G3, G73, G81, G82, G83, G85
+            first_feed_index = None
+            last_feed_index = None
+
+            for i, cmd in enumerate(self.commandlist):
+                if cmd.Name in Path.Geom.CmdMove:
+                    if first_feed_index is None:
+                        first_feed_index = i
+                    last_feed_index = i
+
+            # Insert coolant commands if we found cutting moves
+            if first_feed_index is not None:
+                # Insert coolant on command before first cutting move
+                if obj.CoolantMode == "Flood":
+                    coolant_on = Path.Command("M8", {})
+                elif obj.CoolantMode == "Mist":
+                    coolant_on = Path.Command("M7", {})
+                else:
+                    coolant_on = None
+
+                if coolant_on:
+                    self.commandlist.insert(first_feed_index, coolant_on)
+                    # Adjust last_feed_index since we inserted a command
+                    last_feed_index += 1
+
+                    # Insert coolant off command after last cutting move
+                    coolant_off = Path.Command("M9", {})
+                    self.commandlist.insert(last_feed_index + 1, coolant_off)
+
         path = Path.Path(self.commandlist)
+
         obj.Path = path
         obj.CycleTime = getCycleTimeEstimate(obj)
         self.job.Proxy.getCycleTime()

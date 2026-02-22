@@ -29,15 +29,16 @@ import FreeCAD
 import FreeCADGui
 import Path
 from PathScripts import PathUtils
-from Path.Post.Utils import FilenameGenerator
+from Path.Post.Utils import FilenameGenerator, GCodeEditorDialog
 import os
 from Path.Post.Processor import PostProcessor, PostProcessorFactory
+from Machine.models.machine import MachineFactory
 from PySide import QtCore, QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 LOG_MODULE = Path.Log.thisModule()
 
-DEBUG = False
+DEBUG = True
 if DEBUG:
     Path.Log.setLevel(Path.Log.Level.DEBUG, Path.Log.thisModule())
     Path.Log.trackModule(Path.Log.thisModule())
@@ -202,20 +203,53 @@ class CommandPathPost:
         Path.Log.debug(self.candidate.Name)
         FreeCAD.ActiveDocument.openTransaction("Post Process the Selected Job")
 
-        postprocessor_name = _resolve_post_processor_name(self.candidate)
+        # Determine if we use new flow (machine-based) or old flow (legacy)
+        # New flow: Job has Machine property -> get postprocessor from machine config -> use export2()
+        # Old flow: Job lacks Machine -> get postprocessor from job property -> use export()
+        use_new_flow = hasattr(self.candidate, "Machine") and self.candidate.Machine
+
+        if use_new_flow:
+            Path.Log.debug("Using new flow (machine-based)")
+            # New flow: Get postprocessor from machine configuration
+            try:
+                machine = MachineFactory.get_machine(self.candidate.Machine)
+                postprocessor_name = machine.postprocessor_file_name
+
+                if not postprocessor_name:
+                    FreeCAD.Console.PrintError(
+                        f"Machine '{machine.name}' does not specify a postprocessor\n"
+                    )
+                    FreeCAD.ActiveDocument.abortTransaction()
+                    return
+
+            except FileNotFoundError as e:
+                FreeCAD.Console.PrintError(f"Machine configuration error: {e}\n")
+                FreeCAD.ActiveDocument.abortTransaction()
+                return
+        else:
+            Path.Log.debug("Using old flow (legacy)")
+            # Old flow: Get postprocessor from job property
+            postprocessor_name = _resolve_post_processor_name(self.candidate)
+
         Path.Log.debug(f"Post Processor: {postprocessor_name}")
 
         if not postprocessor_name:
             FreeCAD.ActiveDocument.abortTransaction()
             return
 
-        # get a postprocessor
+        # Get postprocessor (same factory for both flows)
         postprocessor = PostProcessorFactory.get_post_processor(
             self.candidate,
             postprocessor_name,
         )
 
-        post_data = postprocessor.export()
+        # Call appropriate export method
+        if use_new_flow:
+            # export2() returns [(section_name, gcode), ...]
+            post_data = postprocessor.export2()
+        else:
+            # export() returns [(subpart, gcode), ...]
+            post_data = postprocessor.export()
         # None is returned if there was an error during argument processing
         # otherwise the "usual" post_data data structure is returned.
         if not post_data:
@@ -223,7 +257,11 @@ class CommandPathPost:
             return
 
         policy = Path.Preferences.defaultOutputPolicy()
-        generator = FilenameGenerator(job=self.candidate)
+        file_ext = postprocessor.get_file_extension() if use_new_flow else None
+        generator = FilenameGenerator(
+            job=self.candidate,
+            file_extension=file_ext,
+        )
         generated_filename = generator.generate_filenames()
 
         for item in post_data:
@@ -253,8 +291,27 @@ class CommandPathPost:
             # a file.  There may be other uses found for this capability over time.
             #
             if gcode is not None:
+                # Show editor if user preference is enabled and GUI is available
+                final_gcode = gcode
+                if FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
+                    if len(gcode) > 100000:
+                        FreeCAD.Console.PrintWarning(
+                            "Skipping editor since output is greater than 100kb\n"
+                        )
+                    else:
+                        dia = GCodeEditorDialog(gcode, refactored=True)
+                        # Enable OK button so user can accept without editing
+                        dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
+                        editor_result = dia.exec_()
+                        if editor_result == 1:  # User clicked OK
+                            final_gcode = dia.editor.toPlainText()
+                        else:
+                            # User cancelled - skip writing this file
+                            FreeCAD.Console.PrintMessage(f"Post-processing cancelled for {fname}\n")
+                            continue
+
                 # write the results to the file
-                self._write_file(fname, gcode, policy)
+                self._write_file(fname, final_gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -349,8 +406,27 @@ class CommandPathPostSelected(CommandPathPost):
             fname = next(generated_filename)
 
             if gcode is not None:
+                # Show editor if user preference is enabled and GUI is available
+                final_gcode = gcode
+                if FreeCAD.GuiUp and Path.Preferences.showEditorOnPostProcess():
+                    if len(gcode) > 100000:
+                        FreeCAD.Console.PrintWarning(
+                            "Skipping editor since output is greater than 100kb\n"
+                        )
+                    else:
+                        dia = GCodeEditorDialog(gcode, refactored=True)
+                        # Enable OK button so user can accept without editing
+                        dia.buttons.button(QtGui.QDialogButtonBox.Ok).setDisabled(False)
+                        editor_result = dia.exec_()
+                        if editor_result == 1:  # User clicked OK
+                            final_gcode = dia.editor.toPlainText()
+                        else:
+                            # User cancelled - skip writing this file
+                            FreeCAD.Console.PrintMessage(f"Post-processing cancelled for {fname}\n")
+                            continue
+
                 # write the results to the file
-                self._write_file(fname, gcode, policy)
+                self._write_file(fname, final_gcode, policy)
 
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
