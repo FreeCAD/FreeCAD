@@ -353,6 +353,17 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def delExternals(self, extGeoIds: List[int], /) -> None:
+        """
+        Delete a list of external geometry links from the sketch.
+
+        delExternals(extGeoIds:List(int))
+
+            Args:
+                extGeoIds: A list of zero-based indices of the external geometry to remove.
+        """
+        ...
+
     @overload
     def delConstraintOnPoint(self, vertexId: int, /) -> None: ...
     @overload

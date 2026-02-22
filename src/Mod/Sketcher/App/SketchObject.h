@@ -291,6 +291,8 @@ public:
     {
         return ExternalGeo.getSize();
     }
+    /// Ensure ExternalGeo contains H and V axis.
+    void fixCorruptedExternalGeo();
     /// auto fix external geometry references
     void fixExternalGeometry(const std::vector<int>& geoIds = {});
 
