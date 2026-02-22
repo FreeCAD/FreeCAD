@@ -32,6 +32,7 @@
 #include "App/ApplicationDirectories.h"
 
 #include <src/App/InitApplication.h>
+#include "../../Base/RandomUtils.h"
 
 
 class TestablePathMigrationWorker: public Gui::Dialog::PathMigrationWorker
@@ -174,12 +175,12 @@ private Q_SLOTS:
     }
 
     std::unique_ptr<TestablePathMigrationWorker> makeWorker(int major, int minor)
-    {
+    {    
         std::string userConfigDir = Base::FileInfo::pathToString(
-            std::filesystem::temp_directory_path() / "Config"
+            std::filesystem::temp_directory_path() / Base::generateRandomName("Config_")
         );
         std::string userAppDataDir = Base::FileInfo::pathToString(
-            std::filesystem::temp_directory_path() / "AppData"
+            std::filesystem::temp_directory_path() / Base::generateRandomName("AppData_")
         );
         return std::make_unique<TestablePathMigrationWorker>(userConfigDir, userAppDataDir, major, minor);
     }
