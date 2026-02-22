@@ -99,7 +99,7 @@ G21
 (begin operation: TC: Default Tool)
 (machine: Wire EDM, mm/min)
 M5
-M6 T1 
+M6 T1
 G43 H1
 M3 S1000
 (finish operation: TC: Default Tool)
@@ -129,7 +129,7 @@ M2
         expected = """G17 G54 G40 G49 G80 G90
 G21
 M5
-M6 T1 
+M6 T1
 G43 H1
 M3 S1000
 G54
