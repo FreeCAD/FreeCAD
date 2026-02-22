@@ -103,7 +103,6 @@ protected:
 
     void contextMenuEvent(QContextMenuEvent* e) override;
 
-    void _insertRowsColumns(bool after, Qt::Orientation orientation);
     void _copySelection(const std::vector<App::Range>& ranges, bool copy);
 
     QModelIndex currentEditIndex;

@@ -23,9 +23,9 @@
  ***************************************************************************/
 
 
+#include <QAbstractItemModel>
 #include <QFont>
 #include <QLocale>
-
 
 #include <App/Document.h>
 #include <Base/Interpreter.h>
@@ -34,8 +34,6 @@
 #include <Gui/Application.h>
 #include <Gui/Command.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
-#include <qabstractitemmodel.h>
-#include <qnamespace.h>
 
 #include "SheetModel.h"
 #include "App/Range.h"
@@ -94,7 +92,7 @@ bool SheetModel::insertRows(int row, int count, const QModelIndex& parent)
     if (rows + count > CellAddress::MAX_ROWS) {
         return false;
     }
-    beginInsertRows(parent, rows + 1, rows + count);
+    beginInsertRows(parent, rows, rows + count - 1);
     rows += count;
     sheet->insertRows(row, count);
     endInsertRows();
@@ -106,7 +104,7 @@ bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
     if (cols + count > CellAddress::MAX_COLUMNS) {
         return false;
     }
-    beginInsertColumns(parent, cols + 1, cols + count);
+    beginInsertColumns(parent, cols, cols + count - 1);
     cols += count;
     sheet->insertColumns(column, count);
     endInsertColumns();
@@ -698,7 +696,8 @@ void SheetModel::rangeUpdated(const Range& range)
     containSheetDataInView();
     if (range.from().row() < rows && range.from().col() < cols) {
         QModelIndex i = index(range.from().row(), range.from().col());
-        QModelIndex j = index(range.to().row(), range.to().col());
+        QModelIndex j
+            = index(std::min(range.to().row(), rows - 1), std::min(range.to().col(), cols - 1));
         Q_EMIT dataChanged(i, j);
     }
 }
