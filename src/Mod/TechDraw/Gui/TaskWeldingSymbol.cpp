@@ -555,15 +555,15 @@ bool TaskWeldingSymbol::accept()
 {
 //    Base::Console().message("TWS::accept()\n");
     if (m_createMode) {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Weld Symbol"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Create Weld Symbol"));
         m_weldFeat = createWeldingSymbol();
         updateTiles();
         Gui::Command::updateActive();
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     } else {
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit Weld Symbol"));
+        int tid = Gui::Command::openActiveDocumentCommand(QT_TRANSLATE_NOOP("Command", "Edit Weld Symbol"));
         try {
             updateWeldingSymbol();
             updateTiles();
@@ -573,7 +573,7 @@ bool TaskWeldingSymbol::accept()
         }
 
         Gui::Command::updateActive();
-        Gui::Command::commitCommand();
+        Gui::Command::commitCommand(tid);
         m_weldFeat->recomputeFeature();
     //    m_weldFeat->requestPaint();    //not a dv!
     }

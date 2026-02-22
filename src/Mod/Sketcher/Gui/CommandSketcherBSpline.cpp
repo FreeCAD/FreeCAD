@@ -850,7 +850,7 @@ public:
     {
         Q_UNUSED(onSketchPos);
 
-        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
+        openCommand(QT_TRANSLATE_NOOP("Command", "Insert knot"));
 
         bool applied = false;
         boost::uuids::uuid bsplinetag = Obj->getGeometry(GeoId)->getTag();
@@ -915,10 +915,10 @@ public:
         }
 
         if (applied) {
-            Gui::Command::commitCommand();
+            commitCommand();
         }
         else {
-            Gui::Command::abortCommand();
+            abortCommand();
         }
 
         tryAutoRecomputeIfNotSolve(Obj);
@@ -1162,7 +1162,7 @@ void CmdSketcherJoinCurves::activated(int iMsg)
         }
     }
 
-    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
+    openCommand(QT_TRANSLATE_NOOP("Command", "Join Curves"));
     bool applied = false;
 
     try {
@@ -1190,10 +1190,10 @@ void CmdSketcherJoinCurves::activated(int iMsg)
     }
 
     if (applied) {
-        Gui::Command::commitCommand();
+        commitCommand();
     }
     else {
-        Gui::Command::abortCommand();
+        abortCommand();
     }
 
     tryAutoRecomputeIfNotSolve(Obj);

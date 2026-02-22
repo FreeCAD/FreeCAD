@@ -394,8 +394,14 @@ bool TaskDlgBooleanParameters::accept()
         }
         str << "])";
         Gui::Command::runCommand(Gui::Command::Doc, str.str().c_str());
+        FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
+
+        Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        obj->getDocument()->commitTransaction();
     }
     catch (const Base::Exception& e) {
+        obj->getDocument()->abortTransaction();
         QMessageBox::warning(
             parameter,
             tr("Boolean: Accept: Input error"),
@@ -403,12 +409,6 @@ bool TaskDlgBooleanParameters::accept()
         );
         return false;
     }
-
-    FCMD_OBJ_CMD(obj, "Type = " << parameter->getType());
-    Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-    Gui::Command::commitCommand();
-
     return true;
 }
 
@@ -425,14 +425,20 @@ bool TaskDlgBooleanParameters::reject()
                 doc->setShow(body->getNameInDocument());
             }
         }
+        // roll back the done things
+        doc->abortCommand();
+        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
     }
 
-    // roll back the done things
-    Gui::Command::abortCommand();
-    Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
-
-
     return true;
+}
+void TaskDlgBooleanParameters::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgBooleanParameters::deactivate()
+{
+    parameter->detachSelection();
 }
 
 

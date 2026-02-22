@@ -65,8 +65,9 @@ public:
      */
     //@{
     /// This method starts a task dialog in the task view
-    void showDialog(Gui::TaskView::TaskDialog* dlg);
-    Gui::TaskView::TaskDialog* activeDialog() const;
+    /// The dialog is relative to a specific document
+    void showDialog(Gui::TaskView::TaskDialog* dlg, App::Document* attachTo = nullptr);
+    Gui::TaskView::TaskDialog* activeDialog(App::Document* attachedTo = nullptr) const;
     // void closeDialog();
     //@}
 
@@ -82,28 +83,29 @@ public:
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the document while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterDocument() const;
+    bool isAllowedAlterDocument(App::Document* attachedTo = nullptr) const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the 3d view while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterView() const;
+    bool isAllowedAlterView(App::Document* attachedTo = nullptr) const;
     /*!
       If a task dialog is open then it indicates whether this task dialog allows other commands to
       modify the selection while it is open. If no task dialog is open true is returned.
      */
-    bool isAllowedAlterSelection() const;
+    bool isAllowedAlterSelection(App::Document* attachedTo = nullptr) const;
 
 public Q_SLOTS:
-    void accept();
-    void reject();
-    void closeDialog();
+    void accept(App::Document* attachedTo = nullptr);
+    void reject(App::Document* attachedTo = nullptr);
+    void closeDialog(App::Document* attachedTo = nullptr);
+
     /// raises the task view panel
     void showTaskView();
 
-private Q_SLOTS:
+private:
     /// This get called by the TaskView when the Dialog is finished
-    void closedDialog();
+    void closedDialog(App::Document* attachedTo = nullptr);
 
 private:
     struct status
@@ -113,7 +115,7 @@ private:
 
     std::stack<status> StatusStack;
 
-    Gui::TaskView::TaskDialog* ActiveDialog;
+    std::map<App::Document*, Gui::TaskView::TaskDialog*> ActiveDialogs;
     int oldTabIndex;
 
 private:
@@ -125,6 +127,9 @@ private:
     QTabBar* findTabBar(QDockWidget*) const;
     void aboutToShowDialog(QDockWidget* widget);
     void aboutToHideDialog(QDockWidget* widget);
+
+    // Returns attachTo if not nullptr, otherwise return the active document
+    static App::Document* docOrDefault(App::Document* attachedTo);
 
     static ControlSingleton* _pcSingleton;
 };

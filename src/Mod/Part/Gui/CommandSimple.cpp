@@ -247,7 +247,8 @@ CmdPartSimpleCopy::CmdPartSimpleCopy()
 static void _copyShape(const char* cmdName, bool resolve, bool needElement = false, bool refine = false)
 {
     Gui::WaitCursor wc;
-    Gui::Command::openCommand(cmdName);
+
+    int tid = Gui::Command::openActiveDocumentCommand(cmdName);
     for (auto& sel : Gui::Selection().getSelectionEx(
              "*",
              App::DocumentObject::getClassTypeId(),
@@ -300,7 +301,7 @@ static void _copyShape(const char* cmdName, bool resolve, bool needElement = fal
             Gui::Command::copyVisual(newObj, "PointColor", v.second);
         }
     }
-    Gui::Command::commitCommand();
+    Gui::Command::commitCommand(tid);
     Gui::Command::updateActive();
 }
 

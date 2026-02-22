@@ -33,6 +33,7 @@
 # include <QTextDocumentFragment>
 
 #include <App/Application.h>
+#include <App/AutoTransaction.h>
 #include <Mod/TechDraw/App/DrawRichAnno.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 
@@ -351,9 +352,8 @@ void QGIRichAnno::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event) {
     if (dialog.exec()) {
         QString newText = richEdit.toHtml();
         if (newText != text) {
-            App::GetApplication().setActiveTransaction("Set Rich Annotation Text");
+            App::AutoTransaction commiter(getViewObject()->getDocument(), "Set Rich Annotation Text");
             annotation->AnnoText.setValue(newText.toStdString());
-            App::GetApplication().closeActiveTransaction();
         }
     }
 }

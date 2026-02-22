@@ -26,7 +26,9 @@
 #define GUI_TASKVIEW_TASKVIEW_H
 
 #include <vector>
+#include <optional>
 #include <QScrollArea>
+#include <QStackedWidget>
 
 #include <Base/Parameter.h>
 #include <Gui/QSint/include/QSint>
@@ -119,7 +121,7 @@ private:
     bool wasShown;
 };
 
-class GuiExport TaskPanel: public QSint::ActionPanel
+class GuiExport TaskPanel: public QWidget
 {
     Q_OBJECT
 
@@ -127,6 +129,14 @@ public:
     explicit TaskPanel(QWidget* parent = nullptr);
     ~TaskPanel() override;
     QSize minimumSizeHint() const override;
+
+public:
+    QVBoxLayout* mainLayout;
+    QScrollArea* scrollArea;
+    QVBoxLayout* contextualPanelsLayout;
+    QVBoxLayout* dialogLayout;
+    QList<QWidget*> contextualPanels;
+    QSint::ActionPanel* actionPanel;
 };
 
 /// Father class of content of a Free widget (without header and Icon), shut be an exception!
@@ -139,12 +149,20 @@ public:
     ~TaskWidget() override;
 };
 
+struct TaskInfo
+{
+    TaskPanel* taskPanel {nullptr};
+    TaskDialog* ActiveDialog {nullptr};
+    TaskEditControl* ActiveCtrl {nullptr};
+    App::Document* Document {nullptr};
+};
+
 /** TaskView class
  * handles the FreeCAD task view panel. Keeps track of the inserted content elements.
  * This elements get injected mostly by the ViewProvider classes of the selected
  * DocumentObjects.
  */
-class GuiExport TaskView: public QWidget, public Gui::SelectionSingleton::ObserverType
+class GuiExport TaskView: public QStackedWidget, public Gui::SelectionSingleton::ObserverType
 {
     Q_OBJECT
 
@@ -161,6 +179,7 @@ public:
     friend class Gui::DockWnd::ComboView;
     friend class Gui::ControlSingleton;
 
+    /// sets the task watcher and shows it
     void addTaskWatcher(const std::vector<TaskWatcher*>& Watcher);
     void clearTaskWatcher();
     void takeTaskWatcher(TaskView* other);
@@ -171,8 +190,8 @@ public:
     void restoreActionStyle();
 
     /// Add a persistent panel at the top of the task view, independent of the active dialog.
-    void addContextualPanel(QWidget* panel);
-    void removeContextualPanel(QWidget* panel);
+    void addContextualPanel(QWidget* panel, App::Document* doc);
+    void removeContextualPanel(QWidget* panel, App::Document* doc);
 
     QSize minimumSizeHint() const override;
 
@@ -180,14 +199,22 @@ public:
     void setRestoreWidth(bool on);
     bool shouldRestoreWidth() const;
 
+    std::optional<TaskInfo> currentTaskInfo() const;
+
+    TaskDialog* dialog(App::Document* doc);
+
+    // Show the task info at the index
+    // or taskwatcher if index = -1
+    void setShownTaskInfo(int index);
+
 Q_SIGNALS:
     void taskUpdate();
 
-protected Q_SLOTS:
-    void accept();
-    void reject();
-    void helpRequested();
-    void clicked(QAbstractButton* button);
+protected:
+    void accept(App::Document* doc);
+    void reject(App::Document* doc);
+    void helpRequested(App::Document* doc);
+    void clicked(QAbstractButton* button, App::Document* doc);
 
 private:
     void triggerMinimumSizeHint();
@@ -201,11 +228,6 @@ private:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
     void transactionChangeOnDocument(const App::Document&, bool undo);
-    QVBoxLayout* mainLayout;
-    QScrollArea* scrollArea;
-    QVBoxLayout* contextualPanelsLayout;
-    QVBoxLayout* dialogLayout;
-    QList<QWidget*> contextualPanels;
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -215,18 +237,19 @@ protected:
     void removeTaskWatcher();
     /// update the visibility of the TaskWatcher accordant to the selection
     void updateWatcher();
-    /// used by Gui::Control to register Dialogs
-    void showDialog(TaskDialog* dlg);
+    /// used by Gui::Control to register Dialogs, returns true if the dialog was not already there
+    bool showDialog(TaskDialog* dlg, App::Document* doc);
     // removes the running dialog after accept() or reject() from the TaskView
-    void removeDialog();
+    void removeDialog(App::Document* doc);
+    void removeDialog(std::vector<TaskInfo>::iterator infoIt);
 
     void setShowTaskWatcher(bool show);
 
     std::vector<TaskWatcher*> ActiveWatcher;
+    TaskPanel* TaskWatcherPanel;
 
-    QSint::ActionPanel* taskPanel;
-    TaskDialog* ActiveDialog;
-    TaskEditControl* ActiveCtrl;
+    // First index of the stack is reserved to the active watcher
+    std::vector<TaskInfo> taskInfos;
     bool restoreWidth = false;
     int currentWidth = 0;
     ParameterGrp::handle hGrp;

@@ -95,6 +95,7 @@ public:
     bool accept();
     bool reject();
     void setEditedObject(Surface::Sections* obj);
+    void setSelectionGate();
 
 protected:
     void changeEvent(QEvent* e) override;
@@ -132,6 +133,8 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {
@@ -140,6 +143,7 @@ public:
 
 private:
     SectionsPanel* widget1;
+    Surface::Sections* editedObj;
 };
 
 }  // namespace SurfaceGui

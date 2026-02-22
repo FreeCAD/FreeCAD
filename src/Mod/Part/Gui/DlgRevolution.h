@@ -43,6 +43,7 @@ public:
     explicit DlgRevolution(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgRevolution() override;
     void accept() override;
+    void setSelectionGate();
 
     Base::Vector3d getDirection() const;
     Base::Vector3d getPosition() const;
@@ -84,6 +85,7 @@ private:
     std::unique_ptr<Ui_DlgRevolution> ui;
     class EdgeSelection;
     EdgeSelection* filter;
+    bool filterSelection;
 };
 
 class TaskRevolution: public Gui::TaskView::TaskDialog
@@ -95,6 +97,8 @@ public:
 
 public:
     bool accept() override;
+    void activate() override;
+    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

@@ -476,13 +476,12 @@ class TempoVis(object):
                         result.append(obj)
         return result
 
-    def sketchClipPlane(self, sketch, enable=None, reverted=False):
+    def sketchClipPlane(self, sketch, editDoc, enable=None, reverted=False):
         """sketchClipPlane(sketch, enable = None): Clips all objects by plane of sketch.
         If enable argument is omitted, calling the routine repeatedly will toggle clipping plane."""
 
         from .SceneDetails.ClipPlane import ClipPlane
 
-        editDoc = Gui.editDocument()
         if editDoc is None:
             doc = sketch.Document
             pla = sketch.getGlobalPlacement()

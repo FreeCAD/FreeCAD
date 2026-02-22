@@ -433,10 +433,11 @@ bool TaskDlgShapeBinder::accept()
                 throw Base::RuntimeError(vp->getObject()->getStatusString());
             }
             Gui::cmdGuiDocument(vp->getObject(), "resetEdit()");
-            Gui::Command::commitCommand();
+            vp->getDocument()->commitCommand();
         }
     }
     catch (const Base::Exception& e) {
+        vp->getDocument()->abortCommand();
         QMessageBox::warning(
             parameter,
             tr("Input error"),
@@ -451,13 +452,22 @@ bool TaskDlgShapeBinder::accept()
 bool TaskDlgShapeBinder::reject()
 {
     if (!vp.expired()) {
-        App::Document* doc = vp->getObject()->getDocument();
         // roll back the done things (deletes 'vp')
-        Gui::Command::abortCommand();
+        // Gui::Command::abortCommand();
+        vp->getDocument()->abortCommand();
+        App::Document* doc = vp->getObject()->getDocument();
         Gui::cmdGuiDocument(doc, "resetEdit()");
         Gui::cmdAppDocument(doc, "recompute()");
     }
     return true;
+}
+void TaskDlgShapeBinder::activate()
+{
+    parameter->attachSelection();
+}
+void TaskDlgShapeBinder::deactivate()
+{
+    parameter->detachSelection();
 }
 
 #include "moc_TaskShapeBinder.cpp"

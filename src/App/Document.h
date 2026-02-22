@@ -36,6 +36,7 @@
 #include "PropertyLinks.h"
 #include "PropertyStandard.h"
 #include "ExportInfo.h"
+#include "TransactionDefs.h"
 
 #include <map>
 #include <vector>
@@ -859,7 +860,19 @@ public:
      * setup a potential transaction that will only be created if there are
      * actual changes.
      */
-    void openTransaction(const char* name = nullptr);
+    int openTransaction(TransactionName name, int tid = 0);
+    int openTransaction(std::string name, int tid = 0);
+
+    // If the tid != 0, it will take the transaction id if it exists
+    int setActiveTransaction(TransactionName name, int tid = 0);
+
+    void lockTransaction();
+    void unlockTransaction();
+    bool isTransactionLocked() const;
+
+    bool transacting() const;
+
+    int getBookedTransactionID() const;
 
     /**
      * @brief Rename the current transaction.
@@ -869,7 +882,7 @@ public:
      * @param[in] name The new name of the transaction.
      * @param[in] id The transaction ID to match.
      */
-    void renameTransaction(const char* name, int id) const;
+    void renameTransaction(const std::string& name, int id) const;
 
     /**
      * @brief Commit the Command transaction.
@@ -1238,7 +1251,7 @@ public:
 
     /// Check if there is any document restoring/importing.
     static bool isAnyRestoring();
-
+                                                                
     /// Register a new label.
     void registerLabel(const std ::string& newLabel);
     /// Unregister a label.
@@ -1403,8 +1416,7 @@ protected:
      * This function creates an actual transaction regardless of Application
      * AutoTransaction setting.
      */
-    int _openTransaction(const char* name = nullptr, int id = 0);
-
+    int _openTransaction(std::string name = "", int id = 0);
     /**
      * @brief Commit the Command transaction.
      *
@@ -1413,8 +1425,7 @@ protected:
      *
      * @param notify If true, notify the application to close the transaction.
      */
-    void _commitTransaction(bool notify = false);
-
+    bool _commitTransaction(bool notify = false);
     /**
      * @brief Abort the running transaction.
      *

@@ -560,6 +560,8 @@ public:
     virtual ViewProvider* startEditing(int ModNum = 0);
     bool isEditing() const;
     void finishEditing();
+    virtual void setActive(bool active);
+
     /// adjust viewer settings when editing a view provider
     virtual void setEditViewer(View3DInventorViewer*, int ModNum);
     /// restores viewer settings when leaving editing mode

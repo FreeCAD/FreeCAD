@@ -130,8 +130,7 @@ ShapeBuilderWidget::ShapeBuilderWidget(QWidget* parent)
     connect(d->ui.createButton, &QPushButton::clicked, this, &ShapeBuilderWidget::onCreateButtonClicked);
     connect(&d->bg, &QButtonGroup::idClicked, this, &ShapeBuilderWidget::switchMode);
 
-    d->gate = new ShapeSelection();
-    Gui::Selection().addSelectionGate(d->gate);
+    setSelectionGate();
 
     d->bg.button(0)->setChecked(true);
     switchMode(0);
@@ -605,6 +604,11 @@ bool ShapeBuilderWidget::reject()
 {
     return true;
 }
+void ShapeBuilderWidget::setSelectionGate()
+{
+    d->gate = new ShapeSelection();
+    Gui::Selection().addSelectionGate(d->gate);
+}
 
 void ShapeBuilderWidget::changeEvent(QEvent* e)
 {
@@ -639,6 +643,15 @@ bool TaskShapeBuilder::accept()
 bool TaskShapeBuilder::reject()
 {
     return widget->reject();
+}
+void TaskShapeBuilder::activate()
+{
+    widget->setSelectionGate();
+    widget->attachSelection();
+}
+void TaskShapeBuilder::deactivate()
+{
+    widget->detachSelection();
 }
 
 #include "moc_TaskShapeBuilder.cpp"
