@@ -127,17 +127,20 @@ class ObjectOp(PathOp.ObjectOp):
 
         try:
             shape = base.Shape.getElement(sub)
-            if shape.ShapeType == "Vertex":
+            if isinstance(shape, Part.Vertex):
                 return FreeCAD.Vector(shape.X, shape.Y, 0)
 
-            if shape.ShapeType == "Edge" and hasattr(shape.Curve, "Center"):
+            if isinstance(shape, Part.Edge) and isinstance(shape.Curve, Part.Circle):
                 return FreeCAD.Vector(shape.Curve.Center.x, shape.Curve.Center.y, 0)
 
-            if shape.ShapeType == "Face":
-                if hasattr(shape.Surface, "Center"):
+            if isinstance(shape, Part.Face):
+                if isinstance(shape.Surface, Part.Cylinder):
                     return FreeCAD.Vector(shape.Surface.Center.x, shape.Surface.Center.y, 0)
-                if len(shape.Edges) == 1 and type(shape.Edges[0].Curve) == Part.Circle:
-                    return shape.Edges[0].Curve.Center
+                if all(isinstance(e.Curve, Part.Circle) for e in shape.Edges):
+                    center = shape.Edges[0].Curve.Center
+                    if all(Path.Geom.pointsCoincide(center, e.Curve.Center) for e in shape.Edges):
+                        return FreeCAD.Vector(center.x, center.y, 0)
+
         except Part.OCCError as e:
             Path.Log.error(e)
 
