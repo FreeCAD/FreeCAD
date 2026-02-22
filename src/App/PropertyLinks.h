@@ -1623,6 +1623,8 @@ public:
                   bool all = false,
                   std::vector<std::string>* subs = nullptr,
                   bool newStyle = true) const override;
+    void getLinksProp(std::vector<std::pair<std::string, App::DocumentObject*>>& links,
+                      bool all = false) const;
 
     bool isLinkedToDocument(const App::Document& doc) const;
 
@@ -1634,13 +1636,16 @@ protected:
     {}
     virtual void onRemoveDep(App::DocumentObject*)
     {}
-    void updateDeps(std::map<DocumentObject*, bool>&& newDeps);
+    void updateDepsProp(std::map<std::pair<std::string, DocumentObject*>, bool>& newPropDeps);
+    void updateDeps(std::map<DocumentObject*, bool>&& newDeps,
+                    std::map<std::pair<std::string, DocumentObject*>, bool>* propDeps = nullptr);
     void clearDeps();
 
     void _onBreakLink(App::DocumentObject* obj);
 
 protected:
     std::map<App::DocumentObject*, bool> _Deps;
+    std::map<std::pair<std::string, App::DocumentObject*>, bool> _PropDeps;
     std::map<std::string, std::unique_ptr<PropertyXLink>> _XLinks;
     std::map<std::string, std::string> _DocMap;
     bool _LinkRestored;

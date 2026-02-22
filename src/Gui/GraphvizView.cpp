@@ -296,8 +296,10 @@ void GraphvizView::updateSvgItem(const App::Document& doc)
     QStringList args, flatArgs;
     // TODO: Make -Granksep flag value variable depending on number of edges,
     // the downside is that the value affects all subgraphs
-    args << QLatin1String("-Granksep=2") << QLatin1String("-Goutputorder=edgesfirst")
-         << QLatin1String("-Gsplines=ortho") << QLatin1String("-Tsvg");
+    args << QLatin1String("-Granksep=2") << QLatin1String("-Tsvg");
+    if (!App::GetApplication().fineGrained) {
+        args << QLatin1String("-Gsplines=ortho") << QLatin1String("-Goutputorder=edgesfirst");
+    }
     flatArgs << QLatin1String("-c2 -l2");
     auto dot = QStringLiteral("dot");
     auto unflatten = QStringLiteral("unflatten");

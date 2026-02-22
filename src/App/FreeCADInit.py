@@ -671,6 +671,7 @@ class PropertyType(IntEnum):
     Prop_Output = 8
     Prop_NoRecompute = 16
     Prop_NoPersist = 32
+    Prop_Input = 64
 
 App.PropertyType = PropertyType
 

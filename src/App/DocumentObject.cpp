@@ -206,6 +206,15 @@ bool DocumentObject::recomputeFeature(bool recursive)
     return isValid();
 }
 
+void DocumentObject::setTouched(const char* name)
+{
+    // This function is not a replacement for touch(), it is only
+    // used internally for fine-grained document recompute and replaces
+    // the coarse grained equivalent of StatusBits.set(ObjectStatus::Touch);
+    touchedProps.insert(name);
+    StatusBits.set(ObjectStatus::Touch);
+}
+
 void DocumentObject::touch(bool noRecompute)
 {
     if (!noRecompute) {
@@ -259,6 +268,12 @@ void DocumentObject::unfreeze(bool noRecompute)
 bool DocumentObject::isTouched() const
 {
     return ExpressionEngine.isTouched() || StatusBits.test(ObjectStatus::Touch);
+}
+
+void DocumentObject::enforceRecompute(std::string& propName)
+{
+    touch(false);
+    touchedProps.insert(propName);
 }
 
 void DocumentObject::enforceRecompute()
@@ -394,6 +409,72 @@ const char* DocumentObject::detachFromDocument()
     return name ? name->c_str() : nullptr;
 }
 
+// Fully mimics getOutList()
+const std::vector<DepEdge>& DocumentObject::getOutListProp()
+{
+    if (!_outListCachedProp) {
+        _outListProp.clear();
+        getOutListProp(0, _outListProp);
+        _outListCachedProp = true;
+    }
+    return _outListProp;
+}
+
+// Fully mimics getOutList(int options)
+std::vector<DepEdge>
+DocumentObject::getOutListProp(int options)
+{
+    std::vector<DepEdge> res;
+    getOutListProp(options, res);
+    return res;
+}
+
+// Mimics getOutList(int options, std::vector<DocumentObject*>& res) except for
+// an extra filter for ExpressionEngine that is handled in a later case.
+void DocumentObject::getOutListProp(int options, std::vector<DepEdge>& res)
+{
+    if (_outListCachedProp && !options) {
+        res.insert(res.end(), _outListProp.begin(), _outListProp.end());
+        return;
+    }
+    std::vector<Property*> props;
+    getPropertyList(props);
+    bool noHidden = !!(options & OutListNoHidden);
+    std::size_t size = res.size();
+    for (auto prop : props) {
+        std::vector<DocumentObject*> objs;
+        auto* linkProp = freecad_cast<PropertyLinkBase*>(prop);
+        // Filter for ExpressionEngine, because it is handled in the next if
+        // outside of this for loop.
+        if (linkProp && linkProp != &ExpressionEngine) {
+            linkProp->getLinks(objs, noHidden);
+        }
+        for (auto* obj : objs) {
+            res.emplace_back(this, prop->getName(), obj, "");
+        }
+    }
+
+    if (!(options & OutListNoExpression)) {
+        std::vector<std::pair<std::string, DocumentObject*>> linksProp;
+        ExpressionEngine.getLinksProp(linksProp);
+        for (auto& [propObj, obj] : linksProp) {
+            res.emplace_back(this, "ExpressionEngine", obj, propObj);
+        }
+    }
+
+    if (options & OutListNoXLinked) {
+        for (auto it = res.begin() + size; it != res.end();) {
+            auto& [objFrom, propFrom, objTo, propTo] = *it;
+            if (objTo && objTo->getDocument() != getDocument()) {
+                it = res.erase(it);
+            }
+            else {
+                ++it;
+            }
+        }
+    }
+}
+
 const std::vector<DocumentObject*>& DocumentObject::getOutList() const
 {
     if (!_outListCached) {
@@ -463,6 +544,12 @@ const std::vector<App::DocumentObject*>& DocumentObject::getInList() const
     return _inList;
 }
 
+// Fully mimics getInList()
+const std::vector<DepEdge>& DocumentObject::getInListProp() const
+{
+    return _inListProp;
+}
+
 // The original algorithm is highly inefficient in some special case.
 // Considering an object is linked by every other objects. After excluding this
 // object, there is another object linked by every other of the remaining
@@ -511,12 +598,48 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*>& inSet,
     }
 }
 
+// Fully mimics getInListExProp(std::set<App::DocumentObject*>& inSet, bool
+// recursive, std::vector<App::DocumentObject*>*) except for the extra vector
+// parameter that is not needed here.
+void DocumentObject::getInListExProp(
+    std::set<DepEdge>& inSet,
+    bool recursive) const
+{
+    if (!recursive) {
+        inSet.insert(_inListProp.begin(), _inListProp.end());
+        return;
+    }
+
+    std::stack<DocumentObject*> pendings;
+    pendings.push(const_cast<DocumentObject*>(this));
+    while (!pendings.empty()) {
+        auto obj = pendings.top();
+        pendings.pop();
+        for (const auto& edge : obj->getInListProp()) {
+            if (edge.fromObj && edge.fromObj->isAttachedToDocument()
+                && inSet.insert(edge).second) {
+                pendings.push(edge.fromObj);
+            }
+        }
+    }
+}
+
 std::set<App::DocumentObject*> DocumentObject::getInListEx(bool recursive) const
 {
     std::set<App::DocumentObject*> ret;
     getInListEx(ret, recursive);
     return ret;
 }
+
+// Fully mimics getInListEx(bool recursive)
+std::set<DepEdge>
+DocumentObject::getInListExProp(bool recursive) const
+{
+    std::set<DepEdge> ret;
+    getInListExProp(ret, recursive);
+    return ret;
+}
+
 
 void _getOutListRecursive(std::set<DocumentObject*>& objSet,
                           const DocumentObject* obj,
@@ -657,6 +780,34 @@ bool DocumentObject::testIfLinkDAGCompatible(PropertyLinkSub& linkTo) const
     linkTo_in_vector.reserve(1);
     linkTo_in_vector.push_back(linkTo.getValue());
     return this->testIfLinkDAGCompatible(linkTo_in_vector);
+}
+
+bool DocumentObject::isInputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isInputProperty(prop);
+}
+
+bool DocumentObject::isInputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Input) || prop->testStatus(Property::Input);
+}
+
+bool DocumentObject::isOutputProperty(const std::string& propName) const
+{
+    Property* prop = getPropertyByName(propName.c_str());
+    if (!prop) {
+        return false;
+    }
+    return isOutputProperty(prop);
+}
+
+bool DocumentObject::isOutputProperty(const Property* prop) const
+{
+    return (prop->getType() & Prop_Output) || prop->testStatus(Property::Output);
 }
 
 void DocumentObject::onLostLinkToObject(DocumentObject*)
@@ -892,16 +1043,40 @@ void DocumentObject::onChanged(const Property* prop)
         _pDoc->signalRelabelObject(*this);
     }
 
-    // set object touched if it is an input property
-    if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
-        && !prop->testStatus(Property::Output)) {
-        if (!StatusBits.test(ObjectStatus::Touch)) {
-            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
-            StatusBits.set(ObjectStatus::Touch);
+    bool fineGrained = GetApplication().fineGrained;
+
+    auto outputHasDeps = [this](const Property* prop) {
+        return std::ranges::any_of(getInListProp(), [this, prop](const DepEdge& edge) {
+            return edge.toObj == this && edge.toProp == prop->getName();
+        });
+    };
+
+    if (fineGrained) {
+        // set object touched if it is not an output property unless it has dependencies
+        if (!testStatus(ObjectStatus::NoTouch)
+            && ((isOutputProperty(prop) && outputHasDeps(prop)) ||
+                !isOutputProperty(prop))) {
+            FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName()
+                     << "'");
+            setTouched(prop->getName());
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
-        // must execute on document recompute
-        if (!(prop->getType() & Prop_NoRecompute)) {
-            StatusBits.set(ObjectStatus::Enforce);
+    }
+    else {
+        // set object touched if it is not an output property
+        if (!testStatus(ObjectStatus::NoTouch) && !(prop->getType() & Prop_Output)
+            && !prop->testStatus(Property::Output)) {
+            if (!StatusBits.test(ObjectStatus::Touch)) {
+                FC_TRACE("touch '" << getFullName() << "' on change of '" << prop->getName() << "'");
+                StatusBits.set(ObjectStatus::Touch);
+            }
+            // must execute on document recompute
+            if (!(prop->getType() & Prop_NoRecompute)) {
+                StatusBits.set(ObjectStatus::Enforce);
+            }
         }
     }
 
@@ -921,6 +1096,9 @@ void DocumentObject::clearOutListCache() const
     _outList.clear();
     _outListMap.clear();
     _outListCached = false;
+
+    _outListProp.clear();
+    _outListCachedProp = false;
 }
 
 PyObject* DocumentObject::getPyObject()
@@ -1278,6 +1456,22 @@ void App::DocumentObject::_addBackLink(DocumentObject* newObj)
     // only once this removal would clear the object from the inlist, even though there may be other
     // link properties from this object that link to us.
     _inList.push_back(newObj);
+}
+
+// Fully mimics _removeBackLink()
+void App::DocumentObject::_removeBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    DepEdge key(obj, objProp, this, myProp ? myProp : "");
+    auto it = std::ranges::find(_inListProp, key);
+    if (it != _inListProp.end()) {
+        _inListProp.erase(it);
+    }
+}
+
+// Fully mimics _addBackLink()
+void App::DocumentObject::_addBackLinkProp(const char* objProp, DocumentObject* obj, const char* myProp)
+{
+    _inListProp.emplace_back(obj, objProp, this, myProp ? myProp : "");
 }
 
 int DocumentObject::setElementVisible(const char* element, bool visible)

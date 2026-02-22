@@ -493,9 +493,18 @@ void TransactionDocumentObject::applyDel(Document& Doc, TransactionalObject* pcO
         // Make sure the backlinks of all linked objects are updated. As the links of the removed
         // object are never set to [] they also do not remove the backlink. But as they are
         // not in the document anymore we need to remove them anyway to ensure a correct graph
-        auto list = obj->getOutList();
-        for (auto link : list) {
-            link->_removeBackLink(obj);
+        {
+            auto list = obj->getOutList();
+            for (auto link : list) {
+                link->_removeBackLink(obj);
+            }
+        }
+
+        {
+            auto list = obj->getOutListProp();
+            for (const auto& [fromObj, fromProp, toObj, toProp] : list) {
+                toObj->_removeBackLinkProp(fromProp.c_str(), fromObj, toProp.c_str());
+            }
         }
 
         // simply filling in the saved object
@@ -510,9 +519,18 @@ void TransactionDocumentObject::applyNew(Document& Doc, TransactionalObject* pcO
         Doc._addObject(obj, _NameInDocument.c_str());
 
         // make sure the backlinks of all linked objects are updated
-        auto list = obj->getOutList();
-        for (auto link : list) {
-            link->_addBackLink(obj);
+        {
+            auto list = obj->getOutList();
+            for (auto link : list) {
+                link->_addBackLink(obj);
+            }
+        }
+
+        {
+            auto list = obj->getOutListProp();
+            for (const auto& [fromObj, fromProp, toObj, toProp] : list) {
+                toObj->_addBackLinkProp(fromProp.c_str(), fromObj, toProp.c_str());
+            }
         }
     }
 }

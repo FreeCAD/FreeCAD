@@ -386,6 +386,19 @@ public:
     void exportGraphviz(std::ostream& out) const;
 
     /**
+     * @brief Write the dependency graph of this document on the property
+     * level.
+     *
+     * The Graphviz output represents dependencies between properties
+     * (fine-grained recompute) instead of document objects.
+     *
+     * The output is in the DOT format of Graphviz.
+     *
+     * @param[in, out] out: The output stream to write to.
+     */
+    void exportGraphvizProp(std::ostream& out) const;
+
+    /**
      * @brief Import objects from a stream.
      *
      * @param[in, out] reader: The XML reader to read from.

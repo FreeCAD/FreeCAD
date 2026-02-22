@@ -434,8 +434,14 @@ public:
      * @param[in,out] deps The map to fill with dependent document objects to a
      * boolean indicating whether they are hidden (`href` references).
      * @param[in,out] labels Optional vector to fill with labels of dependent objects.
+     * @param[in,out] propDeps Optional mapping with property names. The boolean
+     * indicates whether this is a hidden reference.
      */
-    void getDepObjects(std::map<App::DocumentObject*,bool>& deps, std::vector<std::string> *labels=nullptr) const;
+    void getDepObjects(
+        std::map<App::DocumentObject*, bool>& deps,
+        std::vector<std::string>* labels = nullptr,
+        std::map<std::pair<std::string, DocumentObject*>, bool>* propDeps = nullptr
+    ) const;
 
     /**
      * @brief Import sub-names in the expression after importing external objects.
