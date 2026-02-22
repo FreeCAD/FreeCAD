@@ -114,7 +114,7 @@
       <item row="0" column="0">
        <widget class="Gui::PrefCheckBox" name="checkObjectNaming">
         <property name="toolTip">
-         <string>Include the base object name when automatically naming new Part features.</string>
+         <string>Include the base object name when automatically naming new Part features</string>
         </property>
         <property name="text">
          <string>Add name of base object</string>
