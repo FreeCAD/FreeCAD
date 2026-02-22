@@ -202,6 +202,15 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     "and disabled UseStartPoint",
                 ),
             ),
+            (
+                "App::PropertyLength",
+                "RetractThreshold",
+                "Profile",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Set distance which will attempts to avoid unnecessary retractions",
+                ),
+            ),
         ]
 
     @classmethod
@@ -286,6 +295,8 @@ class ObjectProfile(PathAreaOp.ObjectOp):
                     setattr(prop, "Value", val)
                 else:
                     setattr(obj, n, val)
+
+        obj.setExpression("RetractThreshold", "0 * OpToolDiameter")
 
     def areaOpSetDefaultValues(self, obj, job):
         if self.addNewProps and self.addNewProps.__len__() > 0:
