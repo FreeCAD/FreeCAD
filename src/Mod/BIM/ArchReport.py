@@ -901,6 +901,10 @@ class ReportTaskPanel:
         self.table_statements.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
         self.table_statements.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
         self.table_statements.setDragDropOverwriteMode(False)
+        self.table_statements.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
+        self.table_statements.setSizePolicy(
+            QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Fixed
+        )
         # Allow in-place editing of the description with F2, but disable the
         # default double-click editing so we can repurpose it.
         self.table_statements.setEditTriggers(QtWidgets.QAbstractItemView.EditKeyPressed)
@@ -1365,6 +1369,26 @@ class ReportTaskPanel:
 
         # Re-enable signals after population so user edits are handled
         self.table_statements.blockSignals(False)
+        self._adjust_statements_table_height()
+
+    def _adjust_statements_table_height(self):
+        """Resize overview table to content, capped to keep panel usable."""
+        row_count = self.table_statements.rowCount()
+        visible_rows = min(max(row_count, 1), 6)
+
+        row_height = self.table_statements.verticalHeader().defaultSectionSize()
+        if row_count > 0:
+            first_row_height = self.table_statements.rowHeight(0)
+            if first_row_height > 0:
+                row_height = first_row_height
+
+        header_height = self.table_statements.horizontalHeader().height()
+        frame = self.table_statements.frameWidth() * 2
+        extra = 2
+        total_height = frame + header_height + (visible_rows * row_height) + extra
+
+        self.table_statements.setFixedHeight(total_height)
+        self.table_statements.updateGeometry()
 
     # --- Explicit Qt Slot Wrappers ---
     @Slot()

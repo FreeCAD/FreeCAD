@@ -31,6 +31,7 @@
 #include <gp_Dir.hxx>
 #include <gp_Pnt.hxx>
 #include <QMessageBox>
+#include <QLayout>
 #include <QSignalMapper>
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
@@ -2149,6 +2150,97 @@ DlgPrimitives::DlgPrimitives(QWidget* parent, Part::Primitive* feature)
     , featurePtr(feature)
 {
     ui->setupUi(this);
+    if (auto rootLayout = layout()) {
+        rootLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    }
+    if (auto paramLayout = ui->groupBox_2->layout()) {
+        paramLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    }
+
+    // Keep primitive parameter pages compact in task panels.
+    // Several pages include vertical spacer items to push controls upward.
+    // In overlay task view these spacers can consume large extra height.
+    auto compactVerticalSpacers = [](QLayout* root) {
+        if (!root) {
+            return;
+        }
+        QList<QLayout*> stack;
+        stack.push_back(root);
+        while (!stack.isEmpty()) {
+            QLayout* layout = stack.takeLast();
+            layout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+            for (int i = 0; i < layout->count(); ++i) {
+                if (QLayoutItem* item = layout->itemAt(i)) {
+                    if (QSpacerItem* spacer = item->spacerItem()) {
+                        if (!(spacer->expandingDirections() & Qt::Vertical)) {
+                            continue;
+                        }
+                        const QSize size = spacer->sizeHint();
+                        spacer->changeSize(
+                            size.width(),
+                            0,
+                            spacer->sizePolicy().horizontalPolicy(),
+                            QSizePolicy::Minimum
+                        );
+                    }
+                    if (QLayout* childLayout = item->layout()) {
+                        stack.push_back(childLayout);
+                    }
+                }
+            }
+        }
+        root->invalidate();
+    };
+    for (int i = 0; i < ui->widgetStack2->count(); ++i) {
+        if (QWidget* page = ui->widgetStack2->widget(i)) {
+            compactVerticalSpacers(page->layout());
+        }
+    }
+    ui->widgetStack2->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+    ui->groupBox_2->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+
+    // Keep hidden primitive pages from affecting layout and make the
+    // stacked-widget height follow the active page content only.
+    auto refreshStackPageGeometry = [this]() {
+        const int current = ui->widgetStack2->currentIndex();
+        for (int i = 0; i < ui->widgetStack2->count(); ++i) {
+            QWidget* page = ui->widgetStack2->widget(i);
+            if (!page) {
+                continue;
+            }
+            if (i == current) {
+                page->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Maximum);
+            }
+            else {
+                page->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+            }
+            if (auto layout = page->layout()) {
+                layout->invalidate();
+            }
+        }
+        int contentHeight = 0;
+        if (QWidget* currentPage = ui->widgetStack2->currentWidget()) {
+            if (QLayout* pageLayout = currentPage->layout()) {
+                pageLayout->activate();
+                contentHeight = pageLayout->sizeHint().height();
+            }
+            if (contentHeight <= 0) {
+                contentHeight = currentPage->sizeHint().height();
+            }
+        }
+        if (contentHeight > 0) {
+            ui->widgetStack2->setMinimumHeight(contentHeight);
+            ui->widgetStack2->setMaximumHeight(contentHeight);
+        }
+        ui->groupBox_2->adjustSize();
+        adjustSize();
+        ui->widgetStack2->updateGeometry();
+        ui->groupBox_2->updateGeometry();
+        updateGeometry();
+    };
+    connect(ui->widgetStack2, &QStackedWidget::currentChanged, this, refreshStackPageGeometry);
+    refreshStackPageGeometry();
+
     connect(
         ui->buttonCircleFromThreePoints,
         &QPushButton::clicked,

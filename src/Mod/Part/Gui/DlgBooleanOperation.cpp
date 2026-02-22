@@ -24,8 +24,11 @@
 
 #include <QMessageBox>
 #include <QTreeWidget>
+#include <QHeaderView>
+#include <QLayout>
 #include <TopExp_Explorer.hxx>
 #include <TopoDS_Shape.hxx>
+#include <algorithm>
 
 
 #include <Base/Exception.h>
@@ -52,6 +55,66 @@ namespace sp = std::placeholders;
 
 namespace PartGui
 {
+namespace
+{
+int countVisibleRows(const QTreeWidgetItem* item)
+{
+    if (!item) {
+        return 0;
+    }
+
+    int rows = 1;
+    if (item->isExpanded()) {
+        for (int i = 0; i < item->childCount(); ++i) {
+            rows += countVisibleRows(item->child(i));
+        }
+    }
+    return rows;
+}
+
+void adjustTreeHeightToContent(QTreeWidget* tree, int minRows = 4, int maxRows = 10)
+{
+    if (!tree) {
+        return;
+    }
+
+    int rowCount = 0;
+    for (int i = 0; i < tree->topLevelItemCount(); ++i) {
+        rowCount += countVisibleRows(tree->topLevelItem(i));
+    }
+
+    const int visibleRows = std::max(minRows, std::min(maxRows, rowCount > 0 ? rowCount : 1));
+    int rowHeight = tree->sizeHintForRow(0);
+    if (rowHeight <= 0) {
+        rowHeight = tree->fontMetrics().height() + 6;
+    }
+
+    const int headerHeight = tree->header() && !tree->header()->isHidden() ? tree->header()->height()
+                                                                           : 0;
+    const int frame = 2 * tree->frameWidth();
+    const int totalHeight = frame + headerHeight + visibleRows * rowHeight + 2;
+
+    tree->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    tree->setFixedHeight(totalHeight);
+}
+
+void adjustWidgetHeightToContent(QWidget* widget)
+{
+    if (!widget || !widget->layout()) {
+        return;
+    }
+
+    widget->layout()->activate();
+    const int layoutHeight = widget->layout()->sizeHint().height();
+    const int marginHeight = widget->contentsMargins().top() + widget->contentsMargins().bottom();
+    const int totalHeight = layoutHeight + marginHeight;
+
+    widget->setMinimumHeight(totalHeight);
+    widget->setMaximumHeight(totalHeight);
+    widget->updateGeometry();
+}
+}  // namespace
+
 class BooleanOperationItem: public QTreeWidgetItem
 {
 public:
@@ -90,6 +153,16 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
     , ui(new Ui_DlgBooleanOperation)
 {
     ui->setupUi(this);
+    ui->gridLayout->setAlignment(Qt::AlignTop);
+    ui->gridLayout->setSizeConstraint(QLayout::SetMinAndMaxSize);
+    QSizePolicy panelPolicy = this->sizePolicy();
+    panelPolicy.setVerticalPolicy(QSizePolicy::Maximum);
+    this->setSizePolicy(panelPolicy);
+
+    QSizePolicy groupPolicy = ui->groupBox->sizePolicy();
+    groupPolicy.setVerticalPolicy(QSizePolicy::Maximum);
+    ui->groupBox->setSizePolicy(groupPolicy);
+
     connect(ui->swapButton, &QPushButton::clicked, this, &DlgBooleanOperation::onSwapButtonClicked);
     connect(
         ui->firstShape,
@@ -103,6 +176,22 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
         this,
         &DlgBooleanOperation::currentItemChanged
     );
+    connect(ui->firstShape, &QTreeWidget::itemExpanded, this, [this](QTreeWidgetItem*) {
+        adjustTreeHeightToContent(ui->firstShape);
+        adjustWidgetHeightToContent(this);
+    });
+    connect(ui->firstShape, &QTreeWidget::itemCollapsed, this, [this](QTreeWidgetItem*) {
+        adjustTreeHeightToContent(ui->firstShape);
+        adjustWidgetHeightToContent(this);
+    });
+    connect(ui->secondShape, &QTreeWidget::itemExpanded, this, [this](QTreeWidgetItem*) {
+        adjustTreeHeightToContent(ui->secondShape);
+        adjustWidgetHeightToContent(this);
+    });
+    connect(ui->secondShape, &QTreeWidget::itemCollapsed, this, [this](QTreeWidgetItem*) {
+        adjustTreeHeightToContent(ui->secondShape);
+        adjustWidgetHeightToContent(this);
+    });
     // NOLINTBEGIN
     this->connectNewObject = App::GetApplication().signalNewObject.connect(
         std::bind(&DlgBooleanOperation::slotCreatedObject, this, sp::_1)
@@ -112,6 +201,7 @@ DlgBooleanOperation::DlgBooleanOperation(QWidget* parent)
     );
     // NOLINTEND
     findShapes();
+    adjustWidgetHeightToContent(this);
 }
 
 /*
@@ -207,6 +297,9 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj, cons
 
             // remove the watched object because now it is added to the tree
             observe.erase(it);
+            adjustTreeHeightToContent(ui->firstShape);
+            adjustTreeHeightToContent(ui->secondShape);
+            adjustWidgetHeightToContent(this);
         }
     }
 }
@@ -228,10 +321,16 @@ void DlgBooleanOperation::findShapes()
 {
     App::Document* activeDoc = App::GetApplication().getActiveDocument();
     if (!activeDoc) {
+        adjustTreeHeightToContent(ui->firstShape);
+        adjustTreeHeightToContent(ui->secondShape);
+        adjustWidgetHeightToContent(this);
         return;
     }
     Gui::Document* activeGui = Gui::Application::Instance->getDocument(activeDoc);
     if (!activeGui) {
+        adjustTreeHeightToContent(ui->firstShape);
+        adjustTreeHeightToContent(ui->secondShape);
+        adjustWidgetHeightToContent(this);
         return;
     }
 
@@ -323,6 +422,10 @@ void DlgBooleanOperation::findShapes()
             group->setExpanded(true);
         }
     }
+
+    adjustTreeHeightToContent(ui->firstShape);
+    adjustTreeHeightToContent(ui->secondShape);
+    adjustWidgetHeightToContent(this);
 }
 
 bool DlgBooleanOperation::indexOfCurrentItem(QTreeWidgetItem* item, int& top_ind, int& child_ind) const
@@ -513,7 +616,10 @@ void DlgBooleanOperation::accept()
 TaskBooleanOperation::TaskBooleanOperation()
 {
     widget = new DlgBooleanOperation();
-    addTaskBox(Gui::BitmapFactory().pixmap("Part_Booleans"), widget, false);
+    auto* box = addTaskBox(Gui::BitmapFactory().pixmap("Part_Booleans"), widget, false);
+    QSizePolicy boxPolicy = box->sizePolicy();
+    boxPolicy.setVerticalPolicy(QSizePolicy::Maximum);
+    box->setSizePolicy(boxPolicy);
 }
 
 void TaskBooleanOperation::clicked(int id)
