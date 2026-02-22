@@ -45,6 +45,8 @@ void DlgPrefsMeasureAppearanceImp::saveSettings()
     ui->cbText->onSave();
     ui->cbLine->onSave();
     ui->cbBackground->onSave();
+    ui->sbArrowRadius->onSave();
+    ui->sbArrowHeight->onSave();
 }
 
 void DlgPrefsMeasureAppearanceImp::loadSettings()
@@ -53,6 +55,8 @@ void DlgPrefsMeasureAppearanceImp::loadSettings()
     ui->cbText->onRestore();
     ui->cbBackground->onRestore();
     ui->cbLine->onRestore();
+    ui->sbArrowRadius->onRestore();
+    ui->sbArrowHeight->onRestore();
 }
 
 /**

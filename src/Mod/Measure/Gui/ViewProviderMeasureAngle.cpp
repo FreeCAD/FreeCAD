@@ -23,11 +23,15 @@
  **************************************************************************/
 
 
+#include <numbers>
 #include <sstream>
 #include <QApplication>
 #include <Inventor/draggers/SoTranslate2Dragger.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
+#include <Inventor/nodes/SoCone.h>
+#include <Inventor/nodes/SoLightModel.h>
+#include <Inventor/nodes/SoMaterial.h>
 #include <Inventor/nodes/SoCoordinate3.h>
 #include <Inventor/nodes/SoDrawStyle.h>
 #include <Inventor/nodes/SoFontStyle.h>
@@ -35,6 +39,7 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoText2.h>
 #include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoSwitch.h>
 #include <Inventor/engines/SoCalculator.h>
 #include <Inventor/engines/SoComposeVec3f.h>
 #include <Inventor/engines/SoConcatenate.h>
@@ -51,7 +56,7 @@
 #include <Inventor/nodes/SoTransform.h>
 #include <Inventor/nodes/SoVertexProperty.h>
 #include <Inventor/nodekits/SoBaseKit.h>
-
+#include <Inventor/nodes/SoScale.h>
 
 #include <Precision.hxx>
 #include <Geom_Curve.hxx>
@@ -72,10 +77,21 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/ViewParams.h>
-
+#include <Gui/Control.h>
 #include <Mod/Measure/App/Preferences.h>
 
+#include "SoScreenSpaceScale.h"
+#include "TaskMeasure.h"
 #include "ViewProviderMeasureAngle.h"
+
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopExp_Explorer.hxx>
+#include <TopoDS_Shape.hxx>
+
+#include <Mod/Part/App/PartFeature.h>
+
+#include <BRep_Tool.hxx>
 
 
 using namespace MeasureGui;
@@ -87,6 +103,7 @@ gp_Lin getLine(gp_Vec& vec, gp_Vec& origin)
     tempOrigin.SetXYZ(origin.XYZ());
     return gp_Lin(tempOrigin, gp_Dir(vec));
 }
+
 
 SbMatrix ViewProviderMeasureAngle::getMatrix()
 {
@@ -120,7 +137,6 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
     gp_Lin lin2 = getLine(vector2, loc2);
 
     SbMatrix dimSys = SbMatrix();
-    double radius;
 
     if (vector1.IsParallel(vector2, Precision::Angular())) {
         // take first point project it onto second vector.
@@ -186,60 +202,86 @@ SbMatrix ViewProviderMeasureAngle::getMatrix()
             0.0,
             1.0
         );
-        dimSys = dimSys.transpose();
 
-        radius = midPointProjection.Magnitude();
+        dimSys = dimSys.transpose();
     }
     else {
-        Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
-        Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
+        gp_Pnt dimensionOriginPoint;
+        dimensionOriginPoint.SetCoord(0, 0, 0);
+        bool originFound = false;
+        gp_Vec thirdPoint;
+        gp_Vec adjustedVector1;
+        gp_Vec adjustedVector2;
+        measurement->getDirections(adjustedVector1, adjustedVector2);
 
-        GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
+        auto measurmentCase = measurement->measurementCase();
 
-        if (extrema.NbExtrema() < 1) {
-            throw Base::RuntimeError("Could not get extrema");
+        originFound = measurement->getOrigin(dimensionOriginPoint);
+
+        // need testing before removethis
+        if (!originFound) {
+            Handle(Geom_Curve) heapLine1 = new Geom_Line(lin1);
+            Handle(Geom_Curve) heapLine2 = new Geom_Line(lin2);
+
+            GeomAPI_ExtremaCurveCurve extrema(heapLine1, heapLine2);
+
+            if (extrema.NbExtrema() < 1) {
+                throw Base::RuntimeError("Could not get extrema");
+            }
+
+            gp_Pnt extremaPoint1, extremaPoint2;
+            extrema.Points(1, extremaPoint1, extremaPoint2);
+
+            bool linesIntersect = extremaPoint1.Distance(extremaPoint2) < Precision::Confusion();
+
+            if (linesIntersect) {
+                dimensionOriginPoint = extremaPoint1;
+            }
+            else {
+                dimensionOriginPoint.SetXYZ(loc2.XYZ());
+            }
+
+            gp_Vec originVector(dimensionOriginPoint.XYZ());
+            gp_Vec extrema2Vector(extremaPoint2.XYZ());
+            double radiusCalc = (loc1 - originVector).Magnitude();
+            double legOne = (extrema2Vector - originVector).Magnitude();
+            if (linesIntersect && legOne > Precision::Confusion() && radiusCalc > legOne) {
+                double legTwo = sqrt(pow(radiusCalc, 2) - pow(legOne, 2));
+                gp_Vec projectionVector(adjustedVector2);
+                projectionVector.Normalize();
+                projectionVector *= legTwo;
+                thirdPoint = extrema2Vector + projectionVector;
+            }
+            else {
+                thirdPoint = originVector + adjustedVector2.Normalized();
+            }
         }
 
-        gp_Pnt extremaPoint1, extremaPoint2, dimensionOriginPoint;
-        extrema.Points(1, extremaPoint1, extremaPoint2);
-        if (extremaPoint1.Distance(extremaPoint2) < Precision::Confusion()) {
-            dimensionOriginPoint = extremaPoint1;
-        }
-        else {
-            // find halfway point in between extrema points for dimension origin.
-            gp_Vec vec1(extremaPoint1.XYZ());
-            gp_Vec vec2(extremaPoint2.XYZ());
-            gp_Vec connection(vec2 - vec1);
-            Standard_Real distance = connection.Magnitude();
-            connection.Normalize();
-            connection *= (distance / 2.0);
-            dimensionOriginPoint.SetXYZ((vec1 + connection).XYZ());
-        }
-
-        gp_Vec thirdPoint(loc2);
         gp_Vec originVector(dimensionOriginPoint.XYZ());
-        gp_Vec extrema2Vector(extremaPoint2.XYZ());
-        radius = (loc1 - originVector).Magnitude();
-        double legOne = (extrema2Vector - originVector).Magnitude();
-        if (legOne > Precision::Confusion() && legOne < radius) {
-            double legTwo = sqrt(pow(radius, 2) - pow(legOne, 2));
-            gp_Vec projectionVector(vector2);
-            projectionVector.Normalize();
-            projectionVector *= legTwo;
-            thirdPoint = extrema2Vector + projectionVector;
-            gp_Vec hyp(thirdPoint - originVector);
-            hyp.Normalize();
-            gp_Vec otherSide(loc1 - originVector);
-            otherSide.Normalize();
+        gp_Vec xAxis = (loc1 - originVector).Normalized();
+        gp_Vec zAxis;
+        gp_Vec yAxis;
+
+        // need to review this but works
+        if (originFound) {
+            if (measurmentCase == MeasureAngle::EdgeEdge) {
+                xAxis = adjustedVector1.Normalized();
+            }
+            if (measurmentCase == MeasureAngle::FaceFace) {
+                zAxis = adjustedVector1.Crossed(adjustedVector2);
+            }
+            else {
+                zAxis = adjustedVector2.Crossed(adjustedVector1);
+            }
+            zAxis.Normalize();
+            yAxis = zAxis.Crossed(xAxis).Normalized();
+            xAxis = zAxis.Crossed(yAxis).Normalized();
         }
         else {
-            thirdPoint = originVector + vector2.Normalized() * radius;
+            gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
+            zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
+            yAxis = zAxis.Crossed(xAxis).Normalized();
         }
-
-        gp_Vec xAxis = (loc1 - originVector).Normalized();
-        gp_Vec fakeYAxis = (thirdPoint - originVector).Normalized();
-        gp_Vec zAxis = (xAxis.Crossed(fakeYAxis)).Normalized();
-        gp_Vec yAxis = zAxis.Crossed(xAxis).Normalized();
 
         dimSys = SbMatrix(
             xAxis.X(),
@@ -273,8 +315,27 @@ PROPERTY_SOURCE(MeasureGui::ViewProviderMeasureAngle, MeasureGui::ViewProviderMe
 ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 {
     sPixmap = "Measurement-Angle";
+    const char* agroup = "Appearance";
+    ADD_PROPERTY_TYPE(IsFlipped, (false), agroup, App::Prop_None, "Is flipped(vertically opposite)");
 
-    // Primary Arc
+    // Visuals node
+    auto pVisualsSep = new SoSeparator();
+
+    // Primary Arc with rotation transform (sector rotation)
+    auto pArcVisCalc = new SoComposeRotation();
+    pArcVisCalc->axis.setValue(0, 0, 1);
+    pArcVisCalc->angle.connectFrom(&sectorArcRotation);
+
+    auto pArcTransform = new SoTransform();
+    pArcTransform->rotation.connectFrom(&pArcVisCalc->rotation);
+    pVisualsSep->addChild(pArcTransform);
+
+    pLineSeparator->addChild(pVisualsSep);
+
+
+    auto pArcGeomNode = new SoSeparator();
+
+    // ========================== ARC ==========================
     Gui::ArcEngine* arcEngine = new Gui::ArcEngine();
     arcEngine->angle.connectFrom(&fieldAngle);
 
@@ -286,20 +347,23 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
 
     SoCoordinate3* coordinates = new SoCoordinate3();
     coordinates->point.connectFrom(&arcEngine->points);
+    pArcGeomNode->addChild(coordinates);
 
     SoLineSet* lineSet = new SoLineSet();
-    lineSet->vertexProperty.setValue(coordinates);
     lineSet->numVertices.connectFrom(&arcEngine->pointCount);
     lineSet->startIndex.setValue(0);
 
-    pLineSeparator->addChild(lineSet);
+    pArcGeomNode->addChild(lineSet);
 
     // Secondary Arc, from midpoint to label
     auto engineAngle = new SoCalculator();
     engineAngle->A.connectFrom(&arcEngine->midpoint);
     engineAngle->B.connectFrom(&pLabelTranslation->translation);
+    engineAngle->c.connectFrom(&isArcFlipped);
+    // as for now we just have two sector so this trick works
     engineAngle->expression.setValue(
-        "tA=normalize(A); tB=normalize(B); oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
+        "tA=normalize(A); tB=(c>0)?-normalize(B):normalize(B); "
+        "oa=atan2(tB[1], tB[0])-atan2(tA[1], tA[0])"
     );
 
     Gui::ArcEngine* arcEngineSecondary = new Gui::ArcEngine();
@@ -326,19 +390,232 @@ ViewProviderMeasureAngle::ViewProviderMeasureAngle()
     lineSetSecondary->numVertices.connectFrom(&arcEngineSecondary->pointCount);
     lineSetSecondary->startIndex.setValue(0);
 
-    pLineSeparatorSecondary->addChild(lineSetSecondary);
-}
+    pArcGeomNode->addChild(lineSetSecondary);
+    pVisualsSep->addChild(pArcGeomNode);
 
+
+    // ========================== ARROWS ==========================
+
+    auto pArrowGeomNode = new SoSeparator();
+    // single arrow for arc
+    auto pArrowNode = new SoSeparator();
+
+    auto pLightModel = new SoLightModel();
+    pLightModel->model.setValue(SoLightModel::BASE_COLOR);
+    pArrowNode->addChild(pLightModel);
+
+    // apply zoom based scaling
+    auto pScreenSpaceScale = new SoScreenSpaceScale();
+    pScreenSpaceScale->referenceSize.setValue(1.0f);  // 1 unit = 1 pixel
+    pArrowNode->addChild(pScreenSpaceScale);
+
+    // scale arrows based on arc length prevent overlap
+    auto pScaleCalc = new SoCalculator();
+    pScaleCalc->a.connectFrom(&calculatorRadius->oa);
+    pScaleCalc->b.connectFrom(&fieldAngle);
+    pScaleCalc->c.connectFrom(&fieldArrowHeight);
+    pScaleCalc->d.connectFrom(&pScreenSpaceScale->finalScale);
+    pScaleCalc->expression.setValue("ta = (a*b)/(3*c*d);tb = ta<1?ta:1; oA = vec3f(tb, tb, tb)");
+
+    auto pScale = new SoScale();
+    pScale->scaleFactor.connectFrom(&pScaleCalc->oA);
+    pArrowNode->addChild(pScale);
+
+    // Offset cone tip
+    auto pTipOffsetCalc = new SoCalculator();
+    pTipOffsetCalc->a.connectFrom(&fieldArrowHeight);
+    pTipOffsetCalc->expression.setValue("oA = vec3f(0, -a*0.5, 0)");
+
+    auto pTipOffsetTrans = new SoTranslation();
+    pTipOffsetTrans->translation.connectFrom(&pTipOffsetCalc->oA);
+    pArrowNode->addChild(pTipOffsetTrans);
+
+    // Create cone shape as Arrow
+    auto pCone = new SoCone();
+    pCone->bottomRadius.connectFrom(&fieldArrowRadius);
+    pCone->height.connectFrom(&fieldArrowHeight);
+    pArrowNode->addChild(pCone);
+
+    auto pLeftArrowSep = new SoSeparator();
+    auto pLeftArrowTrans = new SoTransform();
+    pLeftArrowSep->addChild(pLeftArrowTrans);
+    pLeftArrowSep->addChild(pArrowNode);
+    pArrowGeomNode->addChild(pLeftArrowSep);
+
+    auto pRightArrowSep = new SoSeparator();
+    auto pRightArrowTrans = new SoTransform();
+    pRightArrowSep->addChild(pRightArrowTrans);
+    pRightArrowSep->addChild(pArrowNode);
+    pArrowGeomNode->addChild(pRightArrowSep);
+
+    pLeftArrowTrans->rotation.setValue(SbRotation(SbVec3f(0, 0, 1), std::numbers::pi));
+
+    auto rightRotCalc = new SoComposeRotation();
+    rightRotCalc->axis.setValue(0, 0, 1);
+    rightRotCalc->angle.connectFrom(&fieldAngle);
+    pRightArrowTrans->rotation.connectFrom(&rightRotCalc->rotation);
+
+    pVisualsSep->addChild(pArrowGeomNode);
+
+
+    // ========================== Normals ==========================
+
+    // arc normals standerd
+    auto pNormalsSwitch = new SoSwitch();
+    pNormalsSwitch->whichChild.connectFrom(&visualMode);
+
+    auto pNormalsStandardSep = new SoSeparator();
+
+    auto pNormalsCoords = new SoCoordinate3();
+    auto pNormalsLines = new SoLineSet();
+
+    auto pNormalsStandardStyle = new SoDrawStyle();
+    pNormalsStandardStyle->style.setValue(SoDrawStyle::LINES);
+    pNormalsStandardStyle->lineWidth.setValue(0.8f);
+
+    // Arrowtip for normal lines
+    auto tipCalc = new SoCalculator();
+    tipCalc->a.connectFrom(&calculatorRadius->oa);
+    tipCalc->b.connectFrom(&fieldAngle);
+
+    // oC is used as the local origin
+    tipCalc->expression.setValue("oA = vec3f(a, 0, 0); oB = vec3f(a*cos(b), a*sin(b), 0);");
+
+    // set arrow position
+    pLeftArrowTrans->translation.connectFrom(&tipCalc->oA);
+    pRightArrowTrans->translation.connectFrom(&tipCalc->oB);
+
+    // Calculator normal start points
+    auto pNormalsStartPointCalc = new SoCalculator();
+    pNormalsStartPointCalc->A.connectFrom(&normalStartPoint1);
+    pNormalsStartPointCalc->B.connectFrom(&normalStartPoint2);
+    pNormalsStartPointCalc->c.connectFrom(&sectorArcRotation);
+    pNormalsStartPointCalc->expression.setValue(
+        "oA = (c > 0) ? vec3f(-A[0], -A[1], A[2]) : A; "
+        "oB = (c > 0) ? vec3f(-B[0], -B[1], B[2]) : B"
+    );
+
+    auto normalsConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    normalsConcat->input[0]->connectFrom(&pNormalsStartPointCalc->oA);
+    normalsConcat->input[1]->connectFrom(&tipCalc->oA);
+
+    normalsConcat->input[2]->connectFrom(&pNormalsStartPointCalc->oB);
+    normalsConcat->input[3]->connectFrom(&tipCalc->oB);
+
+    pNormalsCoords->point.connectFrom(normalsConcat->output);
+
+    pNormalsLines->numVertices.setNum(2);
+    pNormalsLines->numVertices.set1Value(0, 2);
+    pNormalsLines->numVertices.set1Value(1, 2);
+
+    pNormalsStandardSep->addChild(pArcTransform);
+    pNormalsStandardSep->addChild(pNormalsStandardStyle);
+    pNormalsStandardSep->addChild(pNormalsCoords);
+    pNormalsStandardSep->addChild(pNormalsLines);
+
+    pNormalsSwitch->addChild(pNormalsStandardSep);
+
+
+    // arc normal for imgOrigin
+    auto pNormalsImgSep = new SoSeparator();
+
+    auto pNormalsPointingSep = new SoSeparator();
+    auto pNormalsSupportingSep = new SoSeparator();
+    pNormalsImgSep->addChild(pNormalsPointingSep);
+    pNormalsImgSep->addChild(pNormalsSupportingSep);
+
+
+    auto pNormalsStyle = new SoDrawStyle();
+    pNormalsStyle->style.setValue(SoDrawStyle::LINES);
+    pNormalsStyle->lineWidth.setValue(1.0f);
+    pNormalsStyle->linePattern.setValue(0xF0F0);
+    auto pNormalsColor = new SoBaseColor();
+    pNormalsColor->rgb.setValue(0, 0, 1);
+
+    pNormalsPointingSep->addChild(pNormalsStyle);
+    pNormalsPointingSep->addChild(pNormalsColor);
+
+    pNormalsSupportingSep->addChild(pNormalsStandardStyle);
+    pNormalsSupportingSep->addChild(pColor);
+
+    auto pNormalsImgPointingCoords = new SoCoordinate3();
+    auto pNormalsImgPointingLines = new SoLineSet();
+
+    auto pNormalsImgPointingConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    auto pNormalsImgSupportingCoords = new SoCoordinate3();
+    auto pNormalsImgSupportingLines = new SoLineSet();
+
+    auto pNormalsImgSupportingConcat = new SoConcatenate(SoMFVec3f::getClassTypeId());
+
+    auto pAxisCalc = new SoCalculator();
+    pAxisCalc->A.connectFrom(&element1Location);
+    pAxisCalc->B.connectFrom(&element2Location);
+    pAxisCalc->expression.setValue(
+        "oA = vec3f(0, 0, 0); "
+        "oB = vec3f(A[0], A[1], 0); "
+        "oC = vec3f(B[0], B[1], 0)"
+    );
+    auto pNormalsRotPointCalc = new SoCalculator();
+    pNormalsRotPointCalc->A.connectFrom(&tipCalc->oA);
+    pNormalsRotPointCalc->B.connectFrom(&tipCalc->oB);
+    pNormalsRotPointCalc->c.connectFrom(&sectorArcRotation);
+    pNormalsRotPointCalc->expression.setValue(
+        "oA = (c > 0) ? -A : A; "
+        "oB = (c > 0) ? -B : B"
+    );
+
+    pNormalsImgPointingConcat->input[0]->connectFrom(&pAxisCalc->oB);
+    pNormalsImgPointingConcat->input[1]->connectFrom(&element1Location);
+
+    pNormalsImgPointingConcat->input[2]->connectFrom(&pAxisCalc->oC);
+    pNormalsImgPointingConcat->input[3]->connectFrom(&element2Location);
+
+    pNormalsImgPointingCoords->point.connectFrom(pNormalsImgPointingConcat->output);
+
+    pNormalsImgPointingLines->numVertices.setNum(4);
+    pNormalsImgPointingLines->numVertices.set1Value(0, 2);
+    pNormalsImgPointingLines->numVertices.set1Value(1, 2);
+
+    pNormalsImgSupportingConcat->input[0]->connectFrom(&pNormalsRotPointCalc->oA);
+    pNormalsImgSupportingConcat->input[1]->connectFrom(&pAxisCalc->oB);
+
+    pNormalsImgSupportingConcat->input[2]->connectFrom(&pNormalsRotPointCalc->oB);
+    pNormalsImgSupportingConcat->input[3]->connectFrom(&pAxisCalc->oC);
+
+
+    pNormalsImgSupportingCoords->point.connectFrom(pNormalsImgSupportingConcat->output);
+
+    pNormalsImgSupportingLines->numVertices.setNum(2);
+    pNormalsImgSupportingLines->numVertices.set1Value(0, 2);
+    pNormalsImgSupportingLines->numVertices.set1Value(1, 2);
+
+
+    pNormalsPointingSep->addChild(pNormalsImgPointingCoords);
+    pNormalsPointingSep->addChild(pNormalsImgPointingLines);
+    pNormalsSupportingSep->addChild(pNormalsImgSupportingCoords);
+    pNormalsSupportingSep->addChild(pNormalsImgSupportingLines);
+
+    pNormalsSwitch->addChild(pNormalsImgSep);
+
+    pLineSeparator->addChild(pNormalsSwitch);
+}
 
 void ViewProviderMeasureAngle::redrawAnnotation()
 {
-    auto obj = dynamic_cast<Measure::MeasureAngle*>(getMeasureObject());
+    auto obj = getMeasureAngle();
     double angleDeg = obj->Angle.getValue();
     this->fieldAngle = Base::toRadians(angleDeg);
 
+    // update arrow sizes from preferences, (same arrow size for all)
+    ArrowHeight.setValue(Measure::Preferences::defaultArrowHeight());
+    ArrowRadius.setValue(Measure::Preferences::defaultArrowRadius());
+
     // Set matrix
+    SbMatrix matrix;
     try {
-        SbMatrix matrix = getMatrix();
+        matrix = getMatrix();
         pcTransform->setMatrix(matrix);
     }
     catch (const Base::Exception& e) {
@@ -346,8 +623,35 @@ void ViewProviderMeasureAngle::redrawAnnotation()
         return;
     }
 
+    // imaginary origin case
+    if (obj->isImgOrigin()) {
+        gp_Vec loc1 = obj->location1();
+        gp_Vec loc2 = obj->location2();
+        SbMatrix invMatrix = matrix.inverse();
+        SbVec3f globalLoc1(loc1.X(), loc1.Y(), loc1.Z());
+        SbVec3f globalLoc2(loc2.X(), loc2.Y(), loc2.Z());
+
+        SbVec3f localLoc1, localLoc2;
+        invMatrix.multVecMatrix(globalLoc1, localLoc1);
+        invMatrix.multVecMatrix(globalLoc2, localLoc2);
+
+        visualMode.setValue(1);
+
+        element1Location.setValue(localLoc1);
+        element2Location.setValue(localLoc2);
+    }
+    else {
+        visualMode.setValue(0);
+    }
+    normalStartPoint1.setValue(0, 0, 0);
+    normalStartPoint2.setValue(0, 0, 0);
+
     // Set Label
     setLabelValue(static_cast<Measure::MeasureBase*>(pcObject)->getResultString());
+
+    bool flipped = IsFlipped.getValue();
+    isArcFlipped.setValue(flipped);
+    sectorArcRotation.setValue(flipped ? M_PI : 0.0f);
 }
 
 
@@ -364,6 +668,84 @@ Measure::MeasureAngle* ViewProviderMeasureAngle::getMeasureAngle()
 
 void ViewProviderMeasureAngle::positionAnno(const Measure::MeasureBase* measureObject)
 {
-    (void)measureObject;
+    // for imgOrigin, the initial radius is set to the center of the two obj
+    auto obj = getMeasureAngle();
+    if (obj->isImgOrigin()) {
+        gp_Vec loc1 = obj->location1();
+        gp_Vec loc2 = obj->location2();
+        if (loc1.Magnitude() < Precision::Confusion() || loc2.Magnitude() < Precision::Confusion()) {
+            return;
+        }
+
+        SbMatrix invMatrix = getMatrix().inverse();
+
+        SbVec3f globalLoc1(loc1.X(), loc1.Y(), loc1.Z());
+        SbVec3f globalLoc2(loc2.X(), loc2.Y(), loc2.Z());
+
+        SbVec3f localLoc1, localLoc2;
+        invMatrix.multVecMatrix(globalLoc1, localLoc1);
+        invMatrix.multVecMatrix(globalLoc2, localLoc2);
+
+        // arc radius = distance to the center of the two edge locations
+        SbVec3f center = (localLoc1 + localLoc2) / 2.0f;
+        center[2] = 0.0f;
+        setLabelTranslation(center);
+        return;
+    }
+
     setLabelTranslation(SbVec3f(0, 0.1 * getViewScale(), 0));
+}
+
+void ViewProviderMeasureAngle::onLabelMoved()
+{
+    if (!Gui::Control().activeDialog()
+        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
+        return;
+    }
+    SbVec3f trans = pDragger->translation.getValue();
+
+    // The 4 sectors are defined by the two intersecting lines
+    float measuredAngle = fieldAngle.getValue();
+
+    // Get dragger angle in local coordinate system
+    float draggerAngle = std::atan2(trans[1], trans[0]);
+    if (draggerAngle < 0) {
+        draggerAngle += 2.0f * M_PI;
+    }
+
+    float theta = measuredAngle;
+    if (theta > M_PI) {
+        theta = 2.0f * M_PI - theta;
+    }
+
+    // sector 1: between 0 and θ
+    if (draggerAngle >= 0 && draggerAngle < theta) {
+        sectorArcRotation.setValue(0);
+        isArcFlipped.setValue(false);
+    }
+    // sector 3: between π and π+θ
+    else if (draggerAngle >= M_PI && draggerAngle < M_PI + theta) {
+        sectorArcRotation.setValue(M_PI);
+        isArcFlipped.setValue(true);
+    }
+}
+
+void ViewProviderMeasureAngle::onLabelMoveEnd()
+{
+    if (!Gui::Control().activeDialog()
+        || !dynamic_cast<MeasureGui::TaskMeasure*>(Gui::Control().activeDialog())) {
+        return;
+    }
+    IsFlipped.setValue(isArcFlipped.getValue());
+}
+
+void ViewProviderMeasureAngle::onChanged(const App::Property* prop)
+{
+    if (prop == &IsFlipped) {
+        bool flipped = IsFlipped.getValue();
+        isArcFlipped.setValue(flipped);
+        sectorArcRotation.setValue(flipped ? M_PI : 0);
+    }
+
+    ViewProviderMeasureBase::onChanged(prop);
 }

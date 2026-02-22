@@ -50,6 +50,8 @@ public:
     static Base::Color defaultTextColor();
     static int defaultFontSize();
     static Base::Color defaultTextBackgroundColor();
+    static int defaultArrowRadius();
+    static int defaultArrowHeight();
 };
 
 

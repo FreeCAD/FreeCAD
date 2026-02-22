@@ -105,6 +105,27 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Size of measurement text"
     );
+    ADD_PROPERTY_TYPE(
+        ArrowHeight,
+        (Preferences::defaultArrowHeight()),
+        agroup,
+        App::Prop_None,
+        "Height of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        ArrowRadius,
+        (Preferences::defaultArrowRadius()),
+        agroup,
+        App::Prop_None,
+        "Radius of arrow indicators"
+    );
+    ADD_PROPERTY_TYPE(
+        LabelPosition,
+        (Base::Vector3d(0, 0, 0)),
+        agroup,
+        App::Prop_None,
+        "Position of measurement label"
+    );
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -178,6 +199,7 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     auto dragger = pDragger;
 
     dragger->addValueChangedCallback(draggerChangedCallback, this);
+    dragger->addFinishCallback(draggerFinishedCallback, this);
 
 
     // Use the label node as the transform handle
@@ -203,11 +225,17 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
     FontSize.touch();
     LineColor.touch();
     fieldFontSize.setValue(FontSize.getValue());
+    // Arrow properties
+    ArrowHeight.touch();
+    ArrowRadius.touch();
+    fieldArrowHeight.setValue(ArrowHeight.getValue());
+    fieldArrowRadius.setValue(ArrowRadius.getValue());
 }
 
 ViewProviderMeasureBase::~ViewProviderMeasureBase()
 {
     pDragger->removeValueChangedCallback(draggerChangedCallback, this);
+    pDragger->removeFinishCallback(draggerFinishedCallback, this);
     _mVisibilityChangedConnection.disconnect();
     pGlobalSeparator->unref();
     pLabel->unref();
@@ -239,6 +267,10 @@ void ViewProviderMeasureBase::setDisplayMode(const char* ModeName)
 
 void ViewProviderMeasureBase::finishRestoring()
 {
+    // Restore dragger position from saved property
+    Base::Vector3d pos = LabelPosition.getValue();
+    pDragger->translation.setValue(SbVec3f(pos.x, pos.y, pos.z));
+
     if (Visibility.getValue() && isSubjectVisible()) {
         show();
     }
@@ -265,6 +297,12 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
         pLabel->size = FontSize.getValue();
         fieldFontSize.setValue(FontSize.getValue());
     }
+    else if (prop == &ArrowHeight) {
+        fieldArrowHeight.setValue(ArrowHeight.getValue());
+    }
+    else if (prop == &ArrowRadius) {
+        fieldArrowRadius.setValue(ArrowRadius.getValue());
+    }
 
     ViewProviderDocumentObject::onChanged(prop);
 }
@@ -272,7 +310,17 @@ void ViewProviderMeasureBase::onChanged(const App::Property* prop)
 void ViewProviderMeasureBase::draggerChangedCallback(void* data, SoDragger*)
 {
     auto me = static_cast<ViewProviderMeasureBase*>(data);
+    SbVec3f pos = me->pDragger->translation.getValue();
+    me->LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
     me->onLabelMoved();
+}
+
+void ViewProviderMeasureBase::draggerFinishedCallback(void* data, SoDragger*)
+{
+    auto me = static_cast<ViewProviderMeasureBase*>(data);
+    if (me) {
+        me->onLabelMoveEnd();
+    }
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)

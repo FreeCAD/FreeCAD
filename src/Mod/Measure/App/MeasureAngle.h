@@ -27,6 +27,7 @@
 
 #include <Mod/Measure/MeasureGlobal.h>
 
+#include <TopoDS_Edge.hxx>
 #include <gp_Vec.hxx>
 
 #include <App/PropertyGeo.h>
@@ -48,6 +49,13 @@ class MeasureExport MeasureAngle: public Measure::MeasureBaseExtendable<Part::Me
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureAngle);
 
 public:
+    enum MeasurementCase
+    {
+        FaceFace,
+        EdgeEdge,
+        FaceEdge
+    };
+
     /// Constructor
     MeasureAngle();
     ~MeasureAngle() override;
@@ -91,7 +99,27 @@ public:
     gp_Vec location1();
     gp_Vec location2();
 
+    MeasurementCase measurementCase() const
+    {
+        return mCase;
+    };
+    bool isImgOrigin();
+    bool getOrigin(gp_Pnt& outOrigin);               // get origin of the angle
+    bool getDirections(gp_Vec& vec1, gp_Vec& vec2);  // this is not the normals(its is adjusted for
+                                                     // arc visualization)
+
 private:
+    gp_Vec direction1;
+    gp_Vec direction2;
+    gp_Pnt outOrigin;
+    MeasurementCase mCase;
+    // if no common vertex/edge found, use imaginary origin by extending
+    bool _isImgOrigin;
+
+    bool setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2);
+    bool setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2);  // not the actual normals adjusted for
+                                                             // arc visualization
+    bool isGeometricalSameEdge(const TopoDS_Edge& e1, const TopoDS_Edge& e2);
     void onChanged(const App::Property* prop) override;
 };
 

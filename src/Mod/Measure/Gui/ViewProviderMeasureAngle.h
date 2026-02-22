@@ -25,6 +25,7 @@
 #ifndef GUI_VIEWPROVIDERMEASUREANGLE_H
 #define GUI_VIEWPROVIDERMEASUREANGLE_H
 
+#include <Inventor/fields/SoMFFloat.h>
 #include <Mod/Measure/MeasureGlobal.h>
 
 #include <QObject>
@@ -43,6 +44,11 @@ class SoTranslation;
 class SoCoordinate3;
 class SoIndexedLineSet;
 class SoTransform;
+class SoSeparator;
+class SoCone;
+class SoLineSet;
+class SoBaseColor;
+class SoDrawStyle;
 // NOLINTEND
 
 namespace MeasureGui
@@ -53,6 +59,7 @@ class MeasureGuiExport ViewProviderMeasureAngle: public MeasureGui::ViewProvider
     PROPERTY_HEADER_WITH_OVERRIDE(MeasureGui::ViewProviderMeasureAngle);
 
 public:
+    App::PropertyBool IsFlipped;
     /// Constructor
     ViewProviderMeasureAngle();
 
@@ -62,9 +69,20 @@ public:
 
 private:
     // Fields
+    SoSFVec3f element1Location;
+    SoSFVec3f element2Location;
     SoSFFloat fieldAngle;  // radians.
+    SoSFFloat sectorArcRotation;
+    SoSFBool isArcFlipped;
+    SoSFVec3f normalStartPoint1;  // start point for normal line 1
+    SoSFVec3f normalStartPoint2;  // start point for normal line 2
+    SoSFInt32 visualMode;         // 0 for normal, 1 for skew
 
     SbMatrix getMatrix();
+
+    void onLabelMoved() override;
+    void onLabelMoveEnd() override;
+    void onChanged(const App::Property* prop) override;
 };
 
 

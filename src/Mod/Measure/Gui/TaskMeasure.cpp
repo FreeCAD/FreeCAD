@@ -585,8 +585,8 @@ bool TaskMeasure::reject()
     removeObject();
     closeDialog();
 
-    // Abort transaction
-    App::GetApplication().closeActiveTransaction(true);
+    // Commit transaction
+    App::GetApplication().closeActiveTransaction();
     return false;
 }
 
