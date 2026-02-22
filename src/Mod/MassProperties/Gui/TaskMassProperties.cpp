@@ -119,9 +119,9 @@ TaskMassProperties::TaskMassProperties()
     objectsLabel->setWordWrap(true);
     physicalLayout->addWidget(objectsLabel);
 
-    listWidget = new QListWidget();
-    listWidget->setMaximumHeight(50);
-    physicalLayout->addWidget(listWidget);
+    objectList = new QListWidget();
+    objectList->setMaximumHeight(50);
+    physicalLayout->addWidget(objectList);
 
     QLabel* referenceLabel = new QLabel(tr("Reference"));
     physicalLayout->addWidget(referenceLabel);
@@ -462,7 +462,7 @@ void TaskMassProperties::modifyStandardButtons(QDialogButtonBox* box)
         Gui::Selection().clearSelection();
         removeTemporaryObjects();
         clearUiFields();
-        listWidget->clear();
+        objectList->clear();
     });
 }
 
@@ -492,7 +492,7 @@ void TaskMassProperties::escape()
     Gui::Selection().clearSelection();
     this->removeTemporaryObjects();
     this->clearUiFields();
-    listWidget->clear();
+    objectList->clear();
 
     selectingCustomCoordSystem = false;
     currentDatum = nullptr;
@@ -673,7 +673,7 @@ void TaskMassProperties::tryupdate()
     std::vector<MassPropertiesInput> objectsToMeasure;
     App::DocumentObject const* referenceDatum = nullptr;
     
-    listWidget->clear();
+    objectList->clear();
     
     auto coordLabel = [](App::DocumentObject* obj) {
         if (auto* datum = dynamic_cast<App::DatumElement*>(obj)) {
@@ -795,7 +795,6 @@ void TaskMassProperties::tryupdate()
         }
 
         objectsToMeasure.push_back({materialObj, shape, placement});
-        listWidget->addItem(QString::fromStdString(materialObj->getFullLabel()));
         return true;
     };
 
@@ -880,6 +879,10 @@ void TaskMassProperties::tryupdate()
     for (const auto& selObj : guiSelection) {
         if (!selObj.pObject) {
             continue;
+        }
+        
+        if (!isReferenceObject(selObj.pObject)) {
+            objectList->addItem(QString::fromStdString(selObj.pObject->getFullLabel()));
         }
 
         App::DocumentObject* coordSystem = selObj.pObject;
@@ -1185,7 +1188,7 @@ void TaskMassProperties::saveResult()
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
     
-    if (!doc || listWidget->count() == 0) {
+    if (!doc || objectList->count() == 0) {
         return;
     }
 

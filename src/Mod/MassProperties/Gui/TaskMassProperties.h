@@ -79,7 +79,7 @@ private:
     void clearUiFields();
     void saveResult();
 
-    QListWidget* listWidget = nullptr;
+    QListWidget* objectList = nullptr;
     QLineEdit* customEdit = nullptr;
     QComboBox* unitsComboBox = nullptr;
 
