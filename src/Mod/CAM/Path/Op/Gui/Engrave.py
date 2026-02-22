@@ -55,7 +55,11 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
 
     def selectionSupportedAsBaseGeometry(self, sel, ignoreErrors):
         # allow selection of an entire 2D object, which is generally not the case
-        if not sel.HasSubObjects and sel.Object.isDerivedFrom("Part::Part2DObject"):
+        if (
+            not sel.HasSubObjects
+            and sel.Object.isDerivedFrom("Part::Feature")
+            and sel.Object.Shape.Volume == 0
+        ):
             return True
 
         # Let general logic handle all other cases.
@@ -79,7 +83,7 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     % (sel.Object.Label)
                 )
                 continue
-            if base.isDerivedFrom("Part::Part2DObject"):
+            if base.isDerivedFrom("Part::Feature") and base.Shape.Volume == 0:
                 if sel.HasSubObjects:
                     # selectively add some elements of the drawing to the Base
                     for sub in sel.SubElementNames:
@@ -93,12 +97,15 @@ class TaskPanelBaseGeometryPage(PathOpGui.TaskPanelBaseGeometryPage):
                     shapes.append(base)
                     self.obj.BaseShapes = shapes
                 added = True
-            else:
+            elif self.super().addBaseGeometry(selection):
                 # user wants us to engrave an edge of face of a base model
-                base = self.super().addBaseGeometry(selection)
-                added = added or base
+                added = True
 
         return added
+
+    def clearBase(self):
+        self.obj.BaseShapes = []
+        self.super().clearBase()
 
     def setFields(self, obj):
         self.super().setFields(obj)
