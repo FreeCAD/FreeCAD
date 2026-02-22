@@ -393,7 +393,7 @@ void QGIViewPart::drawAllEdges()
 
     const TechDraw::BaseGeomPtrVector& geoms = dvp->getEdgeGeometry();
     TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
-    QGIEdge* item;
+    QGIEdge* item{};
     for (int iEdge = 0; itGeom != geoms.end(); itGeom++, iEdge++) {
         bool showItem = true;
         if (!showThisEdge(*itGeom)) {
@@ -418,8 +418,10 @@ void QGIViewPart::drawAllEdges()
                 showItem = formatGeomFromCenterLine(cTag, item);
             }
             else {
-                Base::Console().message("QGIVP::drawVP - cosmetic edge: %d is confused - source: %d\n",
-                                        iEdge, static_cast<int>(source));
+                // there are 3 source types (GEOMETRY, COSMETICEDGE, CENTERLINE). Something broke if we
+                // get here for for an edge that claims to be cosmetic.
+                Base::Console().warning("In %s, cosmetic edge: %d is neither COSMETICEDGE nor CENTERLINE - actual source type: %d\n",
+                                        dvp->Label.getValue(), iEdge, static_cast<int>(source));
             }
         } else {
             // geometry edge - apply format if applicable
@@ -444,8 +446,11 @@ void QGIViewPart::drawAllEdges()
                     item->setZValue(ZVALUE::HIDEDGE);
                 } else {
                     // unformatted visible line, draw as continuous line
-                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
-                    item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
+                    // "smooth" edges should use the "thin" width as used for hidden lines.
+                    double width = (*itGeom)->getClassOfEdge() == EdgeClass::SMOOTH ?
+                                            vp->HiddenWidth.getValue() : vp->LineWidth.getValue();
+                    item->setLinePen(m_dashedLineGenerator->getLinePen(1, width));
+                    item->setWidth(Rez::guiX(width));
                 }
             }
         }
