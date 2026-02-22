@@ -76,7 +76,7 @@
 using namespace MassPropertiesGui;
 
 MassPropertiesData currentInfo;
-std::string currentMode = "Center of Gravity";
+std::string currentMode = "Center of gravity";
 App::DocumentObject* currentDatum = nullptr;
 
 TaskMassProperties::TaskMassProperties()
@@ -84,7 +84,7 @@ TaskMassProperties::TaskMassProperties()
     , selectingCustomCoordSystem(false)
 {
     currentInfo = MassPropertiesData {};
-    currentMode = "Center of Gravity";
+    currentMode = "Center of gravity";
     currentDatum = nullptr;
     hasCurrentDatumPlacement = false;
 
@@ -126,11 +126,11 @@ TaskMassProperties::TaskMassProperties()
     QLabel* referenceLabel = new QLabel(tr("Reference"));
     physicalLayout->addWidget(referenceLabel);
     
-    QRadioButton *centerOfGravityRadioButton = new QRadioButton(tr("Center of Gravity"));
+    QRadioButton *centerOfGravityRadioButton = new QRadioButton(tr("Center of gravity"));
     centerOfGravityRadioButton->setChecked(true);
     QObject::connect(centerOfGravityRadioButton, &QRadioButton::toggled, [=](bool checked){
         if (checked) {
-            onCoordinateSystemChanged("Center of Gravity");
+            onCoordinateSystemChanged("Center of gravity");
         }
     });
 
@@ -146,7 +146,7 @@ TaskMassProperties::TaskMassProperties()
 
     customEdit = new QLineEdit();
     customEdit->setReadOnly(true);
-    QPushButton* selectButton = new QPushButton(tr("Select..."));
+    QPushButton* selectButton = new QPushButton(tr("Select…"));
     QObject::connect(selectButton, &QPushButton::pressed, this, &TaskMassProperties::onSelectCustomCoordinateSystem);
     selectButton->setEnabled(true);
 
@@ -200,7 +200,7 @@ TaskMassProperties::TaskMassProperties()
     QLabel* densityLabel = new QLabel(tr("Density"));
     densityEdit = new QLineEdit();
     densityEdit->setReadOnly(true);
-    QLabel* surfaceAreaLabel = new QLabel(tr("Surface Area"));
+    QLabel* surfaceAreaLabel = new QLabel(tr("Surface area"));
     surfaceAreaEdit = new QLineEdit();
     surfaceAreaEdit->setReadOnly(true);
 
@@ -217,7 +217,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(basicProperties);
     
     auto centerOfGravity = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("PropertiesIcon"),
+        Gui::BitmapFactory().pixmap("Std_Point"),
         tr("Center of Gravity"),
         true,
         nullptr
@@ -261,7 +261,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(centerOfGravity);
 
     auto centerOfVolume = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("PropertiesIcon"),
+        Gui::BitmapFactory().pixmap("Std_Point"),
         tr("Center of Volume"),
         true,
         nullptr
@@ -306,7 +306,7 @@ TaskMassProperties::TaskMassProperties()
     Content.emplace_back(centerOfVolume);
 
     auto inertiaProperties = new Gui::TaskView::TaskBox(
-        Gui::BitmapFactory().pixmap("PropertiesIcon"),
+        Gui::BitmapFactory().pixmap("Std_CoordinateSystem"),
         tr("Inertia"),
         true,
         nullptr
@@ -396,7 +396,7 @@ TaskMassProperties::TaskMassProperties()
     inertiaLayout->addWidget(inertiaDiagWidget);
 
     inertiaLcsWidget = new QWidget();
-    QPushButton* inertiaLCSButton = new QPushButton(tr("Create principal axes LCS"));
+    QPushButton* inertiaLCSButton = new QPushButton(tr("Create Principal Axes LCS"));
     QObject::connect(inertiaLCSButton, &QPushButton::pressed, this, &TaskMassProperties::onLcsButtonPressed);
     QHBoxLayout* inertiaLCSButtonLayout = new QHBoxLayout(inertiaLcsWidget);
     inertiaLCSButtonLayout->addStretch();
@@ -966,7 +966,7 @@ void TaskMassProperties::tryupdate()
 
     currentInfo = info;
 
-    if (currentMode == "Center of Gravity") {
+    if (currentMode == "Center of gravity") {
         info.cogX = 0.0;
         info.cogY = 0.0;
         info.cogZ = 0.0;
