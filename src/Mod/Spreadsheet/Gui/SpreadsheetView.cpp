@@ -161,7 +161,7 @@ SheetView::~SheetView()
     delete delegate;
 }
 
-bool SheetView::onMsg(const char* pMsg, const char**)
+bool SheetView::onMsg(const char* pMsg)
 {
     if (strcmp("Undo", pMsg) == 0) {
         getGuiDocument()->undo(1);

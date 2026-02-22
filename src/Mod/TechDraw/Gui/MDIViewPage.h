@@ -73,7 +73,7 @@ public:
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 
-    bool onMsg(const char* pMsg, const char** ppReturn) override;
+    bool onMsg(const char* pMsg) override;
     bool onHasMsg(const char* pMsg) const override;
 
     void print() override;

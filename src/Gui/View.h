@@ -105,7 +105,7 @@ public:
         return "Base view";
     }
     /// Message handler
-    virtual bool onMsg(const char* pMsg, const char** ppReturn) = 0;
+    virtual bool onMsg(const char* pMsg) = 0;
     /// Message handler test
     virtual bool onHasMsg(const char* pMsg) const = 0;
     /// overwrite when checking on close state

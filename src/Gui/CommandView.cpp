@@ -393,8 +393,8 @@ void StdCmdFreezeViews::activated(int iMsg)
     }
     else if (iMsg == 3) {
         // Create a new view
-        const char* ppReturn = nullptr;
-        getGuiApplication()->sendMsgToActiveView("GetCamera", &ppReturn);
+        const std::string& camera
+            = freecad_cast<View3DInventor*>(getGuiApplication()->activeView())->getCamera();
 
         QList<QAction*> acts = pcAction->actions();
         int index = 1;
@@ -403,7 +403,7 @@ void StdCmdFreezeViews::activated(int iMsg)
                 savedViews++;
                 QString viewnr = QString(QObject::tr("Restore View &%1")).arg(index);
                 (*it)->setText(viewnr);
-                (*it)->setToolTip(QString::fromLatin1(ppReturn));
+                (*it)->setToolTip(QString::fromLatin1(camera));
                 (*it)->setVisible(true);
                 if (index < 10) {
                     (*it)->setShortcut(QKeySequence(QStringLiteral("CTRL+%1").arg(index)));
@@ -423,8 +423,10 @@ void StdCmdFreezeViews::activated(int iMsg)
         // Activate a view
         QList<QAction*> acts = pcAction->actions();
         QString data = acts[iMsg]->toolTip();
-        QString send = QStringLiteral("SetCamera %1").arg(data);
-        getGuiApplication()->sendMsgToActiveView(send.toLatin1());
+        MDIView* view = getGuiApplication()->activeView();
+        if (auto* view3D = freecad_cast<View3DInventor*>(view)) {
+            view3D->setCamera(data.toLatin1());
+        }
     }
 }
 
@@ -2630,34 +2632,30 @@ StdCmdViewIvIssueCamPos::StdCmdViewIvIssueCamPos()
 void StdCmdViewIvIssueCamPos::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    std::string Temp, Temp2;
-    std::string::size_type pos;
 
-    const char* ppReturn = nullptr;
-    getGuiApplication()->sendMsgToActiveView("GetCamera", &ppReturn);
+    std::string camera = freecad_cast<View3DInventor*>(getGuiApplication()->activeView())->getCamera();
 
     // remove the #inventor line...
-    Temp2 = ppReturn;
-    pos = Temp2.find_first_of("\n");
-    Temp2.erase(0, pos);
+    std::string::size_type pos = camera.find_first_of('\n');
+    camera.erase(0, pos);
 
     // remove all returns
-    while ((pos = Temp2.find('\n')) != std::string::npos) {
-        Temp2.replace(pos, 1, " ");
+    while ((pos = camera.find('\n')) != std::string::npos) {
+        camera.replace(pos, 1, " ");
     }
 
     // build up the command string
-    Temp += "Gui.SendMsgToActiveView(\"SetCamera ";
-    Temp += Temp2;
-    Temp += "\")";
+    std::string command = "Gui.activeView().setCamera(\"";
+    command += camera;
+    command += "\")";
 
-    Base::Console().message("%s\n", Temp2.c_str());
-    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, Temp.c_str());
+    Base::Console().message("%s\n", camera.c_str());
+    getGuiApplication()->macroManager()->addLine(MacroManager::Gui, command.c_str());
 }
 
 bool StdCmdViewIvIssueCamPos::isActive()
 {
-    return getGuiApplication()->sendHasMsgToActiveView("GetCamera");
+    return freecad_cast<View3DInventor*>(getGuiApplication()->activeView());
 }
 
 
