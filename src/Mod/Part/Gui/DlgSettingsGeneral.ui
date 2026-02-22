@@ -42,7 +42,7 @@
       <item row="1" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBooleanRefine">
         <property name="toolTip">
-         <string>Automatically apply Refine after each Part boolean operation to remove residual edges and faces.</string>
+         <string>Automatically refine the shape after each Part boolean operation to remove residual edges and faces</string>
         </property>
         <property name="text">
          <string>Automatically refine model after boolean operation</string>
