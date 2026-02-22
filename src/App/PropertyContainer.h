@@ -30,6 +30,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <climits>
 #include <Base/Persistence.h>
 
 #include "DynamicProperty.h"
