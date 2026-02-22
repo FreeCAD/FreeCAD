@@ -3491,8 +3491,7 @@ void ViewProviderSketch::attach(App::DocumentObject* pcFeat)
 void ViewProviderSketch::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     menu->addAction(tr("Edit Sketch"), receiver, member);
-    // Call the extensions
-    ViewProvider::setupContextMenu(menu, receiver, member);
+    ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
 
 bool ViewProviderSketch::setEdit(int ModNum)
