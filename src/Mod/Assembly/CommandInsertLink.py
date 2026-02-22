@@ -208,6 +208,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
         self.doc_item_map.clear()
 
         docList = App.listDocuments().values()
+        if len(docList) > 20:
+            collapse = True
+        else:
+            collapse = False
 
         for doc in docList:
             # Create a new tree item for the document
@@ -281,7 +285,10 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
             guiDoc = Gui.getDocument(doc.Name)
             process_objects(guiDoc.TreeRootObjects, docItem)
-            self.form.partList.expandAll()
+            if collapse:
+                self.form.partList.collapseAll()
+            else:
+                self.form.partList.expandToDepth(0)
 
         self.adjustTreeWidgetSize()
 
