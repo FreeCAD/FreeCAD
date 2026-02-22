@@ -25,8 +25,6 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 #define SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
 
-#include <boost/math/special_functions/fpclassify.hpp>
-
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
@@ -52,31 +50,30 @@ class DrawSketchHandlerArcOfHyperbola: public DrawSketchHandler
 
 public:
     DrawSketchHandlerArcOfHyperbola()
-        : Mode(STATUS_SEEK_First)
+        : Mode(SelectMode::First)
         , EditCurve(34)
         , arcAngle(0)
-        , arcAngle_t(0)
     {}
 
     ~DrawSketchHandlerArcOfHyperbola() override = default;
     /// mode table
-    enum SelectMode
+    enum class SelectMode
     {
-        STATUS_SEEK_First,
-        STATUS_SEEK_Second,
-        STATUS_SEEK_Third,
-        STATUS_SEEK_Fourth,
-        STATUS_Close
+        First,
+        Second,
+        Third,
+        Fourth,
+        End
     };
 
     void mouseMove(SnapManager::SnapHandle snapHandle) override
     {
         Base::Vector2d onSketchPos = snapHandle.compute();
-        if (Mode == STATUS_SEEK_First) {
+        if (Mode == SelectMode::First) {
             setPositionText(onSketchPos);
             seekAndRenderAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-        else if (Mode == STATUS_SEEK_Second) {
+        else if (Mode == SelectMode::Second) {
             EditCurve[1] = onSketchPos;
 
             // Display radius for user
@@ -96,103 +93,120 @@ public:
                 AutoConstraint::CURVE
             );
         }
-        else if (Mode == STATUS_SEEK_Third) {
+        else if (Mode == SelectMode::Third) {
             // angle between the major axis of the hyperbola and the X axis
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatpoint = acosh(
-                ((onSketchPos.x - centerPoint.x) * cos(phi)
-                 + (onSketchPos.y - centerPoint.y) * sin(phi))
-                / a
+            double a = delta12.Length();
+            assert(
+                a > Precision::Confusion()
+                && "DrawSketchHandlerArcOfHyperbola: First and second point are at the same place"
             );
-            double b = ((onSketchPos.y - centerPoint.y) * cos(phi)
-                        - (onSketchPos.x - centerPoint.x) * sin(phi))
-                / sinh(angleatpoint);
 
-            if (!boost::math::isnan(b)) {
-                for (int i = 15; i >= -15; i--) {
-                    // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle = i*std::numbers::pi/16.0;
-                    double angle = i * angleatpoint / 15;
-                    double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
-                    double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
-                    EditCurve[15 + i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
-                }
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
 
-                // Display radius for user
-                if (showCursorCoords()) {
-                    SbString text;
-                    std::string aString = lengthToDisplayFormat(a, 1);
-                    std::string bString = lengthToDisplayFormat(b, 1);
-                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
-                    setPositionText(onSketchPos, text);
-                }
+            Base::Vector2d delta13 = onSketchPos - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
+            );
 
-                drawEdit(EditCurve);
-                seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
+            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
+            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+
+            if (denom <= Precision::Confusion() || b < Precision::Confusion()) {
+                a = 0;
+                b = 0;
             }
+
+            double angleatpoint = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
+
+            for (int i = 16; i >= -16; i--) {
+                // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
+                double angle = i * angleatpoint / 16.0;
+                double rx = a * cosh(angle) * aDir.x + b * sinh(angle) * bDir.x;
+                double ry = a * cosh(angle) * aDir.y + b * sinh(angle) * bDir.y;
+                EditCurve[16 + i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
+            }
+
+            // Display radius for user
+            if (showCursorCoords()) {
+                SbString text;
+                std::string aString = lengthToDisplayFormat(a, 1);
+                std::string bString = lengthToDisplayFormat(b, 1);
+                text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
+                setPositionText(onSketchPos, text);
+            }
+
+            if (denom > Precision::Confusion() && b > Precision::Confusion()) {
+                drawEdit(EditCurve);
+            }
+            else {
+                drawEdit(std::vector<Base::Vector2d>());
+            }
+
+            seekAndRenderAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f));
         }
-        else if (Mode == STATUS_SEEK_Fourth) {
+        else if (Mode == SelectMode::Fourth) {
             // angle between the major axis of the hyperbola and the X axis
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // This is the angle at cursor point
-            double angleatstartingpoint = acosh(
-                ((startingPoint.x - centerPoint.x) * cos(phi)
-                 + (startingPoint.y - centerPoint.y) * sin(phi))
-                / a
-            );
-            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
-                        - (startingPoint.x - centerPoint.x) * sin(phi))
-                / sinh(angleatstartingpoint);
-
-            double startAngle = angleatstartingpoint;
-
-            // double angleatpoint =
-            // acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
-
-            double angleatpoint = atanh(
-                (((onSketchPos.y - centerPoint.y) * cos(phi)
-                  - (onSketchPos.x - centerPoint.x) * sin(phi))
-                 * a)
-                / (((onSketchPos.x - centerPoint.x) * cos(phi)
-                    + (onSketchPos.y - centerPoint.y) * sin(phi))
-                   * b)
+            double a = delta12.Length();
+            assert(
+                a > Precision::Confusion()
+                && "DrawSketchHandlerArcOfHyperbola: First and second point are at the same place"
             );
 
-            /*double angle1 = angleatpoint - startAngle;
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
 
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * std::numbers::pi ;
-            arcAngle = abs(angle1-arcAngle) < abs(angle2-arcAngle) ? angle1 : angle2;*/
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
+            );
+
+            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
+            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+
+            if (denom <= Precision::Confusion()) {
+                a = 0;
+                b = 0;
+            }
+
+            double startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
+
+            Base::Vector2d delta14 = onSketchPos - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
+            );
+
+            double angleatpoint = atanh((delta14Prime.y * a) / (delta14Prime.x * b));
 
             arcAngle = angleatpoint - startAngle;
 
-            // if(!boost::math::isnan(angle1) && !boost::math::isnan(angle2)){
-            if (!boost::math::isnan(arcAngle)) {
-                EditCurve.resize(33);
-                for (int i = 0; i < 33; i++) {
-                    // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
-                    // double angle=i*angleatpoint/16;
-                    double angle = startAngle + i * arcAngle / 32.0;
-                    double rx = a * cosh(angle) * cos(phi) - b * sinh(angle) * sin(phi);
-                    double ry = a * cosh(angle) * sin(phi) + b * sinh(angle) * cos(phi);
-                    EditCurve[i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
-                }
-
-                // Display radius for user
-                if (showCursorCoords()) {
-                    SbString text;
-                    std::string aString = lengthToDisplayFormat(a, 1);
-                    std::string bString = lengthToDisplayFormat(b, 1);
-                    text.sprintf(" (R%s, R%s)", aString.c_str(), bString.c_str());
-                    setPositionText(onSketchPos, text);
-                }
+            if (abs((delta14Prime.y * a) / (delta14Prime.x * b)) > 1) {
+                arcAngle = 0;
             }
-            else {
-                arcAngle = 0.;
+
+            for (int i = 0; i < 33; i++) {
+                // P(U) = O + MajRad*Cosh(U)*XDir + MinRad*Sinh(U)*YDir
+                double angle = startAngle + i * arcAngle / 32.0;
+                double rx = a * cosh(angle) * aDir.x + b * sinh(angle) * bDir.x;
+                double ry = a * cosh(angle) * aDir.y + b * sinh(angle) * bDir.y;
+                EditCurve[i] = Base::Vector2d(centerPoint.x + rx, centerPoint.y + ry);
+            }
+
+            // Display radius for user
+            if (showCursorCoords()) {
+                SbString text;
+                std::string aString = lengthToDisplayFormat(a, 1);
+                std::string bString = lengthToDisplayFormat(b, 1);
+                std::string arcAngleString = angleToDisplayFormat(arcAngle / 2 * 180, 1);
+                text.sprintf(" (R%s, R%s, %s)", aString.c_str(), bString.c_str(), arcAngleString.c_str());
+                setPositionText(onSketchPos, text);
             }
 
             drawEdit(EditCurve);
@@ -202,28 +216,28 @@ public:
 
     bool pressButton(Base::Vector2d onSketchPos) override
     {
-        if (Mode == STATUS_SEEK_First) {
+        if (Mode == SelectMode::First) {
             EditCurve[0] = onSketchPos;
             centerPoint = onSketchPos;
             EditCurve.resize(2);
-            Mode = STATUS_SEEK_Second;
+            Mode = SelectMode::Second;
         }
-        else if (Mode == STATUS_SEEK_Second) {
+        else if (Mode == SelectMode::Second
+                 && (centerPoint - onSketchPos).Length() > Precision::Confusion()) {
             EditCurve[1] = onSketchPos;
             axisPoint = onSketchPos;
-            EditCurve.resize(31);
-            Mode = STATUS_SEEK_Third;
+            EditCurve.resize(33);
+            Mode = SelectMode::Third;
         }
-        else if (Mode == STATUS_SEEK_Third) {
+        else if (Mode == SelectMode::Third && validThirdPoint(onSketchPos)) {
             startingPoint = onSketchPos;
             arcAngle = 0.;
-            arcAngle_t = 0.;
-            Mode = STATUS_SEEK_Fourth;
+            Mode = SelectMode::Fourth;
         }
-        else {  // Fourth
+        else if (Mode == SelectMode::Fourth && arcAngle != 0) {
             endPoint = onSketchPos;
 
-            Mode = STATUS_Close;
+            Mode = SelectMode::End;
         }
 
         updateHint();
@@ -232,88 +246,48 @@ public:
 
     bool releaseButton(Base::Vector2d /*onSketchPos*/) override
     {
-        if (Mode == STATUS_Close) {
+        if (Mode == SelectMode::End) {
             unsetCursor();
             resetPositionText();
 
+            Base::Vector2d delta12 = axisPoint - centerPoint;
 
-            // angle between the major axis of the hyperbola and the X axis
-            double a = (axisPoint - centerPoint).Length();
-            double phi = atan2(axisPoint.y - centerPoint.y, axisPoint.x - centerPoint.x);
+            double a = delta12.Length();
 
-            // This is the angle at cursor point
-            double angleatstartingpoint = acosh(
-                ((startingPoint.x - centerPoint.x) * cos(phi)
-                 + (startingPoint.y - centerPoint.y) * sin(phi))
-                / a
+            Base::Vector2d aDir = delta12.Normalize();
+            Base::Vector2d bDir(-aDir.y, aDir.x);
+
+            Base::Vector2d delta13 = startingPoint - centerPoint;
+            Base::Vector2d delta13Prime(
+                delta13.x * aDir.x + delta13.y * aDir.y,
+                delta13.x * bDir.x + delta13.y * bDir.y
             );
 
-            double b = ((startingPoint.y - centerPoint.y) * cos(phi)
-                        - (startingPoint.x - centerPoint.x) * sin(phi))
-                / sinh(angleatstartingpoint);
+            double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
+            double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
 
-            double startAngle = angleatstartingpoint;
+            double startAngle = atanh((delta13Prime.y * a) / (delta13Prime.x * b));
 
-            // double angleatpoint =
-            // acosh(((onSketchPos.x-centerPoint.x)*cos(phi)+(onSketchPos.y-centerPoint.y)*sin(phi))/a);
-
-            double endAngle = atanh(
-                (((endPoint.y - centerPoint.y) * cos(phi) - (endPoint.x - centerPoint.x) * sin(phi))
-                 * a)
-                / (((endPoint.x - centerPoint.x) * cos(phi) + (endPoint.y - centerPoint.y) * sin(phi))
-                   * b)
+            Base::Vector2d delta14 = endPoint - centerPoint;
+            Base::Vector2d delta14Prime(
+                delta14.x * aDir.x + delta14.y * aDir.y,
+                delta14.x * bDir.x + delta14.y * bDir.y
             );
-
-            if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
-                Gui::NotifyError(
-                    sketchgui,
-                    QT_TRANSLATE_NOOP("Notifications", "Error"),
-                    QT_TRANSLATE_NOOP(
-                        "Notifications",
-                        "Cannot create arc of hyperbola from invalid angles, try again!"
-                    )
-                );
-                sketchgui->purgeHandler();
-                return false;
-            }
-
+            double endAngle = atanh((delta14Prime.y * a) / (delta14Prime.x * b));
 
             bool isOriginalArcCCW = true;
 
-            if (arcAngle > 0) {
-                endAngle = startAngle + arcAngle;
-            }
-            else {
-                endAngle = startAngle;
-                startAngle += arcAngle;
+            if (endAngle < startAngle) {
+                std::swap(startAngle, endAngle);
                 isOriginalArcCCW = false;
             }
 
-            Base::Vector2d majAxisDir, minAxisDir, minAxisPoint, majAxisPoint;
+            Base::Vector2d minAxisPoint, majAxisPoint;
             // We always create a CCW hyperbola, because we want our XY reference system to be in
             // the +X +Y direction Our normal will then always be in the +Z axis (local +Z axis of
             // the sketcher)
-
-            if (a > b) {
-                // force second semidiameter to be perpendicular to first semidiamater
-                majAxisDir = axisPoint - centerPoint;
-                Base::Vector2d perp(-majAxisDir.y, majAxisDir.x);
-                perp.Normalize();
-                perp.Scale(abs(b));
-                minAxisPoint = centerPoint + perp;
-                majAxisPoint = centerPoint + majAxisDir;
-            }
-            else {
-                // force second semidiameter to be perpendicular to first semidiamater
-                minAxisDir = axisPoint - centerPoint;
-                Base::Vector2d perp(minAxisDir.y, -minAxisDir.x);
-                perp.Normalize();
-                perp.Scale(abs(b));
-                majAxisPoint = centerPoint + perp;
-                minAxisPoint = centerPoint + minAxisDir;
-                endAngle += std::numbers::pi / 2;
-                startAngle += std::numbers::pi / 2;
-            }
+            majAxisPoint = centerPoint + (aDir * a);
+            minAxisPoint = centerPoint + (bDir * b);
 
             int currentgeoid = getHighestCurveIndex();
 
@@ -400,7 +374,7 @@ public:
 
             if (continuousMode) {
                 // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
+                Mode = SelectMode::First;
                 EditCurve.clear();
                 drawEdit(EditCurve);
                 EditCurve.resize(34);
@@ -432,22 +406,22 @@ private:
         return Gui::lookupHints<SelectMode>(
             Mode,
             {
-                {.state = STATUS_SEEK_First,
+                {.state = SelectMode::First,
                  .hints =
                      {
                          {tr("%1 pick center point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Second,
+                {.state = SelectMode::Second,
                  .hints =
                      {
                          {tr("%1 pick axis point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Third,
+                {.state = SelectMode::Third,
                  .hints =
                      {
                          {tr("%1 pick arc start point"), {MouseLeft}},
                      }},
-                {.state = STATUS_SEEK_Fourth,
+                {.state = SelectMode::Fourth,
                  .hints =
                      {
                          {tr("%1 pick arc end point"), {MouseLeft}},
@@ -455,11 +429,32 @@ private:
             });
     }
 
+    bool validThirdPoint(Base::Vector2d onSketchPos)
+    {
+        Base::Vector2d delta12 = axisPoint - centerPoint;
+
+        double a = delta12.Length();
+
+        Base::Vector2d aDir = delta12.Normalize();
+        Base::Vector2d bDir(-aDir.y, aDir.x);
+
+        Base::Vector2d delta13 = onSketchPos - centerPoint;
+        Base::Vector2d delta13Prime(
+            delta13.x * aDir.x + delta13.y * aDir.y,
+            delta13.x * bDir.x + delta13.y * bDir.y
+        );
+
+        double denom = (delta13Prime.x * delta13Prime.x) / (a * a) - 1.0;
+        double b = std::sqrt((delta13Prime.y * delta13Prime.y) / denom);
+
+        return denom > Precision::Confusion() && b > Precision::Confusion();
+    }
+
 protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d centerPoint, axisPoint, startingPoint, endPoint;
-    double arcAngle, arcAngle_t;
+    double arcAngle;
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3, sugConstr4;
 };
 
