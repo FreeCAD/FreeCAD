@@ -31,6 +31,8 @@ import tempfile
 import os
 import shutil
 
+from vtk.util import numpy_support as vtk_np
+
 import FreeCAD
 import Fem
 
@@ -172,6 +174,8 @@ class CalculiXTools(ObjectTools):
                 vtm_file = os.path.join(self.obj.WorkingDirectory, f)
                 pipeline.read(vtm_file)
                 pipeline.renameArrays(self.frd_var_conversion(self.obj.AnalysisType))
+                if self.obj.DisplaceMesh:
+                    self._generate_disp_mesh(pipeline)
                 break
 
         if create:
@@ -213,6 +217,24 @@ class CalculiXTools(ObjectTools):
                 return "Temperature"
             case "electromagnetic":
                 return "Potential"
+
+    def _generate_disp_mesh(self, pipeline):
+        try:
+            mb = pipeline.Data
+            for i in range(mb.GetNumberOfBlocks()):
+                grid = mb.GetBlock(i)
+                if not grid.GetPointData().HasArray("Displacement"):
+                    return
+                points = grid.GetPoints()
+                pd = points.GetData()
+                disp = grid.GetPointData().GetAbstractArray("Displacement")
+                disp_points = vtk_np.vtk_to_numpy(pd) + vtk_np.vtk_to_numpy(disp)
+                disp_points = vtk_np.numpy_to_vtk(disp_points)
+                points.SetData(disp_points)
+
+            pipeline.Data = mb
+        except Exception as e:
+            pass
 
     def version(self):
         p = QProcess()
