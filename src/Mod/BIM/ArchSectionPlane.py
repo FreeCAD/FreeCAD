@@ -90,7 +90,7 @@ def getSectionData(source):
     p = FreeCAD.Placement(source.Placement)
     direction = p.Rotation.multVec(FreeCAD.Vector(0, 0, 1))
     if objs:
-        objs = Draft.get_group_contents(objs, walls=True, addgroups=True)
+        objs = Draft.get_group_contents(objs, walls=True)
     return objs, cutplane, onlySolids, clip, direction
 
 
