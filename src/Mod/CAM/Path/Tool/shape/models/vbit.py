@@ -28,7 +28,6 @@ from .base import ToolBitShape
 
 class ToolBitShapeVBit(ToolBitShape):
     name = "VBit"
-    aliases = "vbit", "v-bit"
 
     @classmethod
     def schema(cls) -> Mapping[str, Tuple[str, str]]:

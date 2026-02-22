@@ -83,7 +83,13 @@ class ToolBit(Asset, ABC):
     asset_type: str = "toolbit"
     SHAPE_CLASS: Type[ToolBitShape]  # Abstract class attribute
 
-    def __init__(self, tool_bit_shape: ToolBitShape, id: Optional[str] = None):
+    def __init__(
+        self,
+        tool_bit_shape: ToolBitShape,
+        id: Optional[str] = None,
+        attrs: Optional[Mapping] = None,
+    ):
+        super().__init__()
         Path.Log.track("ToolBit __init__ called")
         self.id = id if id is not None else str(uuid.uuid4())
         self.obj = DetachedDocumentObject()
@@ -96,9 +102,13 @@ class ToolBit(Asset, ABC):
         self.obj.ShapeID = tool_bit_shape.get_id()
         self.obj.ShapeType = tool_bit_shape.name
         self.obj.Label = tool_bit_shape.label or f"New {tool_bit_shape.name}"
-
         # Initialize properties
         self._update_tool_properties()
+
+        # Preserve the original shape-type from attrs (e.g., "compression", "roughing")
+        # This is what the user selected and should be saved back to disk
+        # If not provided, default to the class name (e.g., "Endmill")
+        self._shape_type = attrs.get("shape-type") if attrs else tool_bit_shape.name
 
     def __eq__(self, other):
         """Compare ToolBit objects based on their unique ID."""
@@ -133,6 +143,14 @@ class ToolBit(Asset, ABC):
             attrs["shape-type"] = attrs["shape"]
         shape_type = attrs.get("shape-type")
         shape_class = ToolBitShape.get_shape_class_from_id(shape_id, shape_type)
+
+        if shape_class and shape_type:
+            shape_type_lower = shape_type.lower()
+            # Normalize aliases to canonical name, but preserve subtypes
+            if shape_type_lower in shape_class.aliases:
+                attrs["shape-type"] = shape_class.name
+            # If it's a subtype, keep it as-is (already set in attrs)
+
         if not shape_class:
             Path.Log.debug(
                 f"Failed to find usable shape for ID '{shape_id}'"
@@ -149,7 +167,8 @@ class ToolBit(Asset, ABC):
                 Path.Log.debug(f"ToolBit.from_dict: Shape asset {shape_asset_uri} not found.")
                 # Rely on the fallback below
             else:
-                return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+                toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+                return toolbit
 
         # Ending up here means we either could not load the shape asset,
         # or we are in shallow mode and do not want to load it.
@@ -162,7 +181,9 @@ class ToolBit(Asset, ABC):
         )
 
         # Now that we have a shape, create the toolbit instance.
-        return cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+        toolbit = cls.from_shape(tool_bit_shape, attrs, id=attrs.get("id"))
+
+        return toolbit
 
     @classmethod
     def from_shape(
@@ -172,7 +193,7 @@ class ToolBit(Asset, ABC):
         id: Optional[str] = None,
     ) -> "ToolBit":
         selected_toolbit_subclass = cls._find_subclass_for_shape(tool_bit_shape)
-        toolbit = selected_toolbit_subclass(tool_bit_shape, id=id)
+        toolbit = selected_toolbit_subclass(tool_bit_shape, id=id, attrs=attrs)
         toolbit.label = attrs.get("name") or tool_bit_shape.label
 
         # Get params and attributes.
@@ -1016,3 +1037,10 @@ class ToolBit(Asset, ABC):
         This mostly exists as a safe-hold for probes, which should never rotate.
         """
         return True
+
+    def get_subtype(self) -> Optional[str]:
+        """Returns the alias/subtype used to instantiate this toolbit, if any."""
+        # Only return the subtype if it differs from the class name
+        if self._shape_type.lower() != self._tool_bit_shape.name.lower():
+            return self._shape_type.lower()
+        return None
