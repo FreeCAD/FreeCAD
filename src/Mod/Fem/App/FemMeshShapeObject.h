@@ -39,6 +39,8 @@ public:
     ~FemMeshShapeBaseObject() override;
 
     App::PropertyLink Shape;
+    App::PropertyPythonObject Tool;
+    App::PropertyPath WorkingDirectory;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
