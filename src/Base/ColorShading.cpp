@@ -34,7 +34,6 @@ namespace Base::ColorShading
 namespace
 {
 
-constexpr float anchorPosition = 0.5F;
 constexpr float anchorTolerance = 1e-3F;
 constexpr float minExponent = 0.1F;
 constexpr float maxExponent = 10.0F;
@@ -48,7 +47,7 @@ std::pair<float, float> computeLightnessRange(float anchorLightness, const Param
     return {high, low};
 }
 
-float computeExponent(float anchorLightness, float high, float low)
+float computeExponent(float anchorLightness, float high, float low, float pivot)
 {
     float totalRange = high - low;
     if (totalRange < minRangeDelta) {
@@ -56,7 +55,7 @@ float computeExponent(float anchorLightness, float high, float low)
     }
     float ratio = (high - anchorLightness) / totalRange;
     ratio = std::clamp(ratio, 0.01F, 0.99F);
-    float exponent = std::log(ratio) / std::log(anchorPosition);
+    float exponent = std::log(ratio) / std::log(pivot);
     return std::clamp(exponent, minExponent, maxExponent);
 }
 
@@ -69,11 +68,11 @@ float lightnessForPosition(float position, float exponent, float high, float low
 
 OkLch computeShade(float position, const OkLch& anchor, const Parameters& parameters)
 {
-    if (std::abs(position - anchorPosition) < anchorTolerance) {
+    if (std::abs(position - parameters.pivot) < anchorTolerance) {
         return anchor;
     }
     auto [high, low] = computeLightnessRange(anchor.lightness, parameters);
-    float exponent = computeExponent(anchor.lightness, high, low);
+    float exponent = computeExponent(anchor.lightness, high, low, parameters.pivot);
     float targetLightness = lightnessForPosition(position, exponent, high, low);
     float darkScale = (anchor.lightness > 0.0F) ? targetLightness / anchor.lightness : 0.0F;
     float lightScale = (anchor.lightness < 1.0F)

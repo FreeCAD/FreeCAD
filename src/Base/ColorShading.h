@@ -36,6 +36,7 @@ struct Parameters
     float range = 0.8F;
     float minLightness = 0.17F;
     float maxLightness = 0.97F;
+    float pivot = 0.5F;
 };
 
 /**
