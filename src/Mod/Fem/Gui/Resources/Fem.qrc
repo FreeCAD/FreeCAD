@@ -16,7 +16,7 @@
         <file>icons/FEM_ConstraintCurrentDensity.svg</file>
         <file>icons/FEM_ConstraintDisplacement.svg</file>
         <file>icons/FEM_ConstraintElectricChargeDensity.svg</file>
-        <file>icons/FEM_ConstraintElectrostaticPotential.svg</file>
+        <file>icons/FEM_ConstraintElectromagnetic.svg</file>
         <file>icons/FEM_ConstraintFixed.svg</file>
         <file>icons/FEM_ConstraintFlowVelocity.svg</file>
         <file>icons/FEM_ConstraintFluidBoundary.svg</file>
@@ -136,7 +136,7 @@
         <file>ui/CurrentDensity.ui</file>
         <file>ui/DlgSettingsNetgen.ui</file>
         <file>ui/ElectricChargeDensity.ui</file>
-        <file>ui/ElectrostaticPotential.ui</file>
+        <file>ui/Electromagnetic.ui</file>
         <file>ui/ElementFluid1D.ui</file>
         <file>ui/ElementGeometry1D.ui</file>
         <file>ui/ElementGeometry2D.ui</file>

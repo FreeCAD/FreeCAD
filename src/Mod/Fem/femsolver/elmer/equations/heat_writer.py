@@ -112,8 +112,8 @@ class Heatwriter:
                     if obj.ConstraintType == "Temperature":
                         temperature = float(obj.Temperature.getValueAs("K"))
                         self.write.boundary(name, "Temperature", temperature)
-                    elif obj.ConstraintType == "CFlux":
-                        flux = float(obj.CFlux.getValueAs("W"))
+                    elif obj.ConstraintType == "Flux":
+                        flux = float(obj.ConcentratedHeatFlux.getValueAs("W"))
                         # CFLUX is the flux per mesh node
                         flux = flux / NumberOfNodes
                         self.write.boundary(name, "Temperature Load", flux)
@@ -126,8 +126,8 @@ class Heatwriter:
                         temp = obj.AmbientTemp.getValueAs("K").Value
                         self.write.boundary(name, "Heat Transfer Coefficient", film)
                         self.write.boundary(name, "External Temperature", temp)
-                    elif obj.ConstraintType == "DFlux":
-                        flux = obj.DFlux.getValueAs("W/m^2").Value
+                    elif obj.ConstraintType == "Flux":
+                        flux = obj.DistributedHeatFlux.getValueAs("W/m^2").Value
                         self.write.boundary(name, "Heat Flux BC", True)
                         self.write.boundary(name, "Heat Flux", flux)
                 self.write.handled(obj)
@@ -135,7 +135,7 @@ class Heatwriter:
     def handleHeatInitial(self, bodies):
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = float(tempObj.initialTemperature.getValueAs("K"))
+            refTemp = float(tempObj.InitialTemperature.getValueAs("K"))
             for name in bodies:
                 self.write.initial(name, "Temperature", refTemp)
             self.write.handled(tempObj)
@@ -198,7 +198,7 @@ class Heatwriter:
     def handleHeatMaterial(self, bodies):
         tempObj = self.write.getSingleMember("Fem::ConstraintInitialTemperature")
         if tempObj is not None:
-            refTemp = float(tempObj.initialTemperature.getValueAs("K"))
+            refTemp = float(tempObj.InitialTemperature.getValueAs("K"))
             for name in bodies:
                 self.write.material(name, "Reference Temperature", refTemp)
         for obj in self.write.getMember("App::MaterialObject"):

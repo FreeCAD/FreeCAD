@@ -150,7 +150,7 @@ def setup(doc=None, solvertype="ccxtools"):
         )
     if solvertype == "ccxtools":
         solver_obj.AnalysisType = "static"
-        solver_obj.BeamShellResultOutput3D = True
+        solver_obj.Output3d = True
         solver_obj.GeometricalNonlinearity = "linear"  # really?
         # TODO iterations parameter !!!
         solver_obj.ThermoMechSteadyState = False

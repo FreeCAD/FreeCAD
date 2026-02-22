@@ -46,7 +46,7 @@ public:
     /*App::PropertyFloat FaceTemp;*/
     App::PropertyThermalTransferCoefficient FilmCoef;
     App::PropertyFloat Emissivity;
-    App::PropertyHeatFlux DFlux;
+    App::PropertyHeatFlux DistributedHeatFlux;
     App::PropertyEnumeration ConstraintType;
     App::PropertyBool CavityRadiation;
     App::PropertyString CavityName;
@@ -62,6 +62,11 @@ protected:
         Base::XMLReader& reader,
         const char* typeName,
         App::Property* prop
+    ) override;
+    void handleChangedPropertyName(
+        Base::XMLReader& reader,
+        const char* typeName,
+        const char* propName
     ) override;
     void onChanged(const App::Property* prop) override;
 };
