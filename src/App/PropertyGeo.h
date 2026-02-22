@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_PROPERTYGEO_H
-#define APP_PROPERTYGEO_H
+#pragma once
 
 #include <Base/BoundBox.h>
 #include <Base/Matrix.h>
@@ -579,6 +578,3 @@ public:
 };
 
 }  // namespace App
-
-
-#endif  // APP_PROPERTYGEO_H

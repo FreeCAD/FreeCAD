@@ -21,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef SRC_BASE_UNITSSCHEMAS_H
-#define SRC_BASE_UNITSSCHEMAS_H
+#pragma once
 
 #include <functional>
 #include <string>
@@ -75,4 +74,3 @@ private:
 
 
 }  // namespace Base
-#endif  // SRC_BASE_UNITSSCHEMAS_H

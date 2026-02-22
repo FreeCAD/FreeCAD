@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef QT_CXX_PRECOMPILED_H
-#define QT_CXX_PRECOMPILED_H
+#pragma once
 
 #ifdef FC_OS_WIN32
 // cmake generates this define
@@ -14,7 +13,4 @@
 #else  // for Linux
 # define FC_PLUGIN_EXPORT
 # define MeshExport
-#endif
-
-
 #endif

@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef FEM_CONSTRAINTHEATFLUX_H
-#define FEM_CONSTRAINTHEATFLUX_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -67,5 +66,3 @@ protected:
 };
 
 }  // namespace Fem
-
-#endif  // FEM_CONSTRAINTHEATFLUX_H

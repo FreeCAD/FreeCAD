@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FREECAD_BASE_DUAL_NUMBER_H
-#define FREECAD_BASE_DUAL_NUMBER_H
+#pragma once
 
 #include <cmath>
 
@@ -111,6 +110,3 @@ inline DualNumber pow(DualNumber a, double pw)
 }
 }  // namespace Base
 // NOLINTEND(readability-identifier-length)
-
-
-#endif

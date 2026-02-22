@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_DIMENSIONGEOMETRY_h_
-#define TECHDRAW_DIMENSIONGEOMETRY_h_
+#pragma once
 
 #include <string>
 
@@ -180,5 +179,3 @@ public:
 };
 
 }   //end namespace TechDraw
-
-#endif

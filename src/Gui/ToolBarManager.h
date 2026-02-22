@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TOOLBARMANAGER_H
-#define GUI_TOOLBARMANAGER_H
+#pragma once
 
 #include <string>
 #include <fastsignals/signal.h>
@@ -243,6 +242,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_TOOLBARMANAGER_H

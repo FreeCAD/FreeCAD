@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVER_H
-#define APP_DOCUMENTOBSERVER_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <Base/Bitmask.h>
@@ -628,5 +627,3 @@ struct std::hash<App::DocumentObjectWeakPtrT>
 };
 
 ENABLE_BITMASK_OPERATORS(App::SubObjectT::NormalizeOption)
-
-#endif  // APP_DOCUMENTOBSERVER_H

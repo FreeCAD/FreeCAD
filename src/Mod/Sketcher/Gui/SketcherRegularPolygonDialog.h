@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SketcherRegularPolygonDialog_H
-#define SKETCHERGUI_SketcherRegularPolygonDialog_H
+#pragma once
 
 #include <QDialog>
 
@@ -52,5 +51,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SketcherRegularPolygonDialog_H

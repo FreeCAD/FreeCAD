@@ -5,8 +5,7 @@
  *   LGPL                                                                  *
  ***************************************************************************/
 
-#ifndef JTREADER_APP_PRECOMPILED_H
-#define JTREADER_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -30,5 +29,3 @@
 
 // sys
 #include <sys/types.h>
-
-#endif

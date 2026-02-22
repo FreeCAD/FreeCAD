@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_DATUMS_H
-#define PART_DATUMS_H
+#pragma once
 
 #include <App/Datums.h>
 
@@ -87,6 +86,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_DATUMS_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_ViewProviderSolver_H
-#define FEM_ViewProviderSolver_H
+#pragma once
 
 #include <Gui/ViewProviderFeaturePython.h>
 #include <Mod/Fem/FemGlobal.h>
@@ -64,6 +63,3 @@ public:
 using ViewProviderSolverPython = Gui::ViewProviderFeaturePythonT<ViewProviderSolver>;
 
 }  // namespace FemGui
-
-
-#endif  // FEM_ViewProviderSolver_H

@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4SEGMENT3_H
-#define WM4SEGMENT3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector3.h"
@@ -60,5 +59,3 @@ typedef Segment3<float> Segment3f;
 typedef Segment3<double> Segment3d;
 
 }
-
-#endif

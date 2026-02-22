@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef DRAWINGGUI_VIEWPROVIDERHATCH_H
-#define DRAWINGGUI_VIEWPROVIDERHATCH_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 #include <App/PropertyGeo.h>
@@ -69,6 +68,3 @@ private:
 };
 
 } // namespace TechDrawGui
-
-
-#endif // DRAWINGGUI_VIEWPROVIDERHATCH_H

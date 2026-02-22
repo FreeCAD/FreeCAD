@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureLinearPattern_H
-#define PARTDESIGN_FeatureLinearPattern_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 #include "FeatureTransformed.h"
@@ -127,6 +126,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureLinearPattern_H

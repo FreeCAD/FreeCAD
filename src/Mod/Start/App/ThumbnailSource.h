@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_THUMBNAIL_SOURCE_H
-#define FREECAD_THUMBNAIL_SOURCE_H
+#pragma once
 
 #include <QMutex>
 #include <QObject>
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_THUMBNAIL_SOURCE_H

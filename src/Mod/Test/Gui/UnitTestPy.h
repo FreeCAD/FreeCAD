@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TESTGUI_UNITTESTPY_H
-#define TESTGUI_UNITTESTPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 #include <CXX/Extensions.hxx>
@@ -66,6 +65,3 @@ private:
 };
 
 }  // namespace TestGui
-
-
-#endif

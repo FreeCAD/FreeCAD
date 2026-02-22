@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4BANDEDMATRIX_H
-#define WM4BANDEDMATRIX_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -75,5 +74,3 @@ namespace Wm4
 typedef BandedMatrix<float> BandedMatrixf;
 typedef BandedMatrix<double> BandedMatrixd;
 }
-
-#endif

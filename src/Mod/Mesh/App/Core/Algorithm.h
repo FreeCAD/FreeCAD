@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHALGORITHM_H
-#define MESHALGORITHM_H
+#pragma once
 
 #include <map>
 #include <set>
@@ -706,5 +705,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif  // MESH_ALGORITHM_H

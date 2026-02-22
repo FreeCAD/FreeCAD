@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
-#define PARTGUI_VIEWPROVIDERGRIDEXTENSION_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Base/Rotation.h>
@@ -101,6 +100,3 @@ using ViewProviderGridExtensionPython
 
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERGRIDEXTENSION_H

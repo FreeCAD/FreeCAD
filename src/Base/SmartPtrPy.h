@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PY_SMARTPTRPY_H
-#define PY_SMARTPTRPY_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -88,5 +87,3 @@ public:
 BaseExport PyObject* new_reference_to(const SmartPtr&);
 
 }  // namespace Py
-
-#endif  // PY_SMARTPTRPY_H

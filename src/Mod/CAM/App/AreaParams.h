@@ -21,8 +21,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PATH_AreaParams_H
-#define PATH_AreaParams_H
+#pragma once
 
 // define this to enable offset algo selection
 // #define AREA_OFFSET_ALGO
@@ -437,5 +436,3 @@
     AREA_PARAMS_OPCODE
 
 #define AREA_PARAMS_STATIC_CONF AREA_PARAMS_CONF
-
-#endif  // PATH_AreaParam_H

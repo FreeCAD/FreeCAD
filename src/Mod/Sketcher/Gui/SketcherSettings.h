@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SKETCHERSETTINGS_H
-#define SKETCHERGUI_SKETCHERSETTINGS_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -144,5 +143,3 @@ enum class AutoScaleMode : int
 };
 
 }  // namespace SketcherGui
-
-#endif  // SKETCHERGUI_SKETCHERSETTINGS_H

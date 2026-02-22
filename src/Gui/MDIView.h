@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_MDIVIEW_H
-#define GUI_MDIVIEW_H
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QMainWindow>
@@ -214,5 +213,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_MDIVIEW_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
-#define SKETCHERGUI_DrawSketchHandlerOffset_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -1332,6 +1331,3 @@ void DSHOffsetController::computeNextDrawSketchHandlerMode()
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerOffset_H

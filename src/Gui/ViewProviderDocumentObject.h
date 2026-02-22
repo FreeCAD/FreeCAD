@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
-#define GUI_VIEWPROVIDER_DOCUMENTOBJECT_H
+#pragma once
 
 #include <Inventor/SoType.h>
 
@@ -270,5 +269,3 @@ private:
 
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDER_DOCUMENTOBJECT_H

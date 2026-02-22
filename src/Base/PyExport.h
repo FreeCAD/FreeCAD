@@ -30,8 +30,7 @@
  *  \date    5.2001
  */
 
-#ifndef BASE_PYEXPORT_H
-#define BASE_PYEXPORT_H
+#pragma once
 
 // (re-)defined in pyconfig.h
 #if defined(_POSIX_C_SOURCE)
@@ -257,5 +256,3 @@ private:
 
 
 }  // namespace Base
-
-#endif  // BASE_PYEXPORT_H

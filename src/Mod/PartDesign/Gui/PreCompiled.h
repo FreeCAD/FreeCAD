@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_DESIGN_PRECOMPILED_H
-#define PART_DESIGN_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -56,5 +55,3 @@
 
 // Inventor
 #include <Gui/InventorAll.h>
-
-#endif  // PART_DESIGN_PRECOMPILED_H

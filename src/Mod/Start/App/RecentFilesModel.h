@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_RECENTFILESMODEL_H
-#define FREECAD_START_RECENTFILESMODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <Base/Parameter.h>
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_RECENTFILESMODEL_H

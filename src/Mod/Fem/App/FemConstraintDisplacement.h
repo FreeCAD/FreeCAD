@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTDISPLACEMENT_H
-#define FEM_CONSTRAINTDISPLACEMENT_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -80,6 +79,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTDISPLACEMENT_H

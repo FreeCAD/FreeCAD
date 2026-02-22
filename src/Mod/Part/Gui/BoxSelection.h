@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_BOXSELECTION_H
-#define PARTGUI_BOXSELECTION_H
+#pragma once
 
 #include <TopAbs_ShapeEnum.hxx>
 
@@ -74,5 +73,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_BOXSELECTION_H

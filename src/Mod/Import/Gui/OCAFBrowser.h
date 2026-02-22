@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef IMPORT_OCAFBROWSER_H
-#define IMPORT_OCAFBROWSER_H
+#pragma once
 
 #include <QIcon>
 #include <TCollection_ExtendedString.hxx>
@@ -59,5 +58,3 @@ private:
 };
 
 }  // namespace ImportGui
-
-#endif  // IMPORT_OCAFBROWSER_H

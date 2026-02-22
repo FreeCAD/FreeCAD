@@ -6,8 +6,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ACTIONLABEL_H
-#define ACTIONLABEL_H
+#pragma once
 
 #include <QToolButton>
 #include "qsint_global.h"
@@ -68,5 +67,3 @@ protected:
 };
 
 } // namespace
-
-#endif // ACTIONLABEL_H

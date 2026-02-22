@@ -27,8 +27,7 @@
  * of attachment modes, as well as help texts, and the like.
  */
 
-#ifndef PARTATTACHERTEXTS_H
-#define PARTATTACHERTEXTS_H
+#pragma once
 
 #include <vector>
 #include <QString>
@@ -68,4 +67,3 @@ public:
 };
 
 }  // namespace AttacherGui
-#endif

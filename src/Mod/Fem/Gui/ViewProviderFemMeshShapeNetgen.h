@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_ViewProviderFemMeshShapeNetgen_H
-#define FEM_ViewProviderFemMeshShapeNetgen_H
+#pragma once
 
 #include "ViewProviderFemMeshShape.h"
 
@@ -47,6 +46,3 @@ protected:
 };
 
 }  // namespace FemGui
-
-
-#endif  // FEM_ViewProviderFemMeshShapeNetgen_H

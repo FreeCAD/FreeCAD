@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef DLG_BINDSHEET_H
-#define DLG_BINDSHEET_H
+#pragma once
 
 #include <Mod/Spreadsheet/App/Sheet.h>
 #include <QDialog>
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace SpreadsheetGui
-
-#endif  // DLG_BINDSHEET_H

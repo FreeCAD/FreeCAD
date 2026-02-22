@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef COMPASSWIDGET_H
-#define COMPASSWIDGET_H
+#pragma once
 
 #include <QDoubleSpinBox>
 #include <QKeyEvent>
@@ -105,4 +104,3 @@ private:
 };
 
 }//namespace TechDrawGui
-#endif// COMPASSWIDGET_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REVERSE_ENGINEERING_GUI_PRECOMPILED_H
-#define REVERSE_ENGINEERING_GUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -44,5 +43,3 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QPushButton>
-
-#endif  // __PRECOMPILED_GUI__

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderLoft_H
-#define PARTGUI_ViewProviderLoft_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -69,6 +68,3 @@ private:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderLoft_H

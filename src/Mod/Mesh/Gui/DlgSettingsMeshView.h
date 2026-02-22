@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_DLGSETTINGSMESHVIEW_H
-#define MESHGUI_DLGSETTINGSMESHVIEW_H
+#pragma once
 
 #ifndef MESH_GLOBAL_H
 # include <Mod/Mesh/MeshGlobal.h>
@@ -61,5 +60,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGSETTINGSMESHVIEW_H

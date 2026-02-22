@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUINATIVEEVENT_H
-#define GUINATIVEEVENT_H
+#pragma once
 
 #include "GuiAbstractNativeEvent.h"
 
@@ -109,5 +108,3 @@ private:
     static Gui::GuiNativeEvent* gMouseInput;
 };
 }  // namespace Gui
-
-#endif  // GUINATIVEEVENT_H

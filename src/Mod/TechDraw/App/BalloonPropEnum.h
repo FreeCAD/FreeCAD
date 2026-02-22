@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BALLOONENUMS_H_
-#define BALLOONENUMS_H_
+#pragma once
 
 #include <string>
 #include <vector>
@@ -57,4 +56,3 @@ private:
 };
 
 } //end namespace TechDraw
-#endif

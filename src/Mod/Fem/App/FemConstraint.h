@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINT_H
-#define FEM_CONSTRAINT_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -238,6 +237,3 @@ using ConstraintPython = App::FeaturePythonT<Constraint>;
 
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINT_H

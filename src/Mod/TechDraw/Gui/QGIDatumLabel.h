@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_QGRAPHICSITEMVIEWDATUMLABEL_H
-#define TECHDRAWGUI_QGRAPHICSITEMVIEWDATUMLABEL_H
+#pragma once
 
 #include <QGraphicsObject>
 
@@ -130,5 +129,3 @@ private:
 };
 
 }  // namespace TechDrawGui
-
-#endif

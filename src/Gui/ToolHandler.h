@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ToolHandler_H
-#define GUI_ToolHandler_H
+#pragma once
 
 #include <QCursor>
 #include <QPixmap>
@@ -128,6 +127,3 @@ protected:
 
 
 }  // namespace Gui
-
-
-#endif  // GUI_ToolHandler_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREE_H
-#define GUI_TREE_H
+#pragma once
 
 #include <unordered_map>
 #include <QElapsedTimer>
@@ -575,5 +574,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TREE_H

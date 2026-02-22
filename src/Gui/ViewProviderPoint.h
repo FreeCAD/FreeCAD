@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ViewProviderPoint_H
-#define GUI_ViewProviderPoint_H
+#pragma once
 
 #include "ViewProviderDatum.h"
 
@@ -43,6 +42,3 @@ public:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ViewProviderPoint_H

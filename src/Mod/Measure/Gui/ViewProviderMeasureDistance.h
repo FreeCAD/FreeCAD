@@ -23,8 +23,7 @@
  **************************************************************************/
 
 
-#ifndef MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
-#define MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H
+#pragma once
 
 #include <QObject>
 
@@ -120,6 +119,3 @@ private:
 };
 
 }  // namespace MeasureGui
-
-
-#endif  // MEASUREGUI_VIEWPROVIDERMEASUREDISTANCE_H

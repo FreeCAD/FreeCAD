@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SCENEINSPECTOR_H
-#define GUI_SCENEINSPECTOR_H
+#pragma once
 
 #include <QDialog>
 #include <QHash>
@@ -97,5 +96,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_SCENEINSPECTOR_H

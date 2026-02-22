@@ -25,8 +25,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_COMPLEX_GEO_DATA_H
-#define APP_COMPLEX_GEO_DATA_H
+#pragma once
 
 #include <algorithm>
 #include <optional>
@@ -749,4 +748,3 @@ protected:
 }  // namespace Data
 
 ENABLE_BITMASK_OPERATORS(Data::SearchOption)
-#endif

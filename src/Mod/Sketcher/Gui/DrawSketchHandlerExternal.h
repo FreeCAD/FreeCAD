@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerExternal_H
-#define SKETCHERGUI_DrawSketchHandlerExternal_H
+#pragma once
 
 #include <App/Datums.h>
 #include <Mod/Part/App/DatumFeature.h>
@@ -267,6 +266,3 @@ public:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

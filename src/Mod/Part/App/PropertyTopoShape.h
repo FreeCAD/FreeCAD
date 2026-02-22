@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PROPERTYTOPOSHAPE_H
-#define PART_PROPERTYTOPOSHAPE_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -314,6 +313,3 @@ private:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_PROPERTYTOPOSHAPE_H

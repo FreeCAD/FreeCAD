@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGICAPTION_H
-#define DRAWINGGUI_QGICAPTION_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,5 +42,3 @@ public:
 };
 
 }
-
-#endif // DRAWINGGUI_QGICAPTION_H

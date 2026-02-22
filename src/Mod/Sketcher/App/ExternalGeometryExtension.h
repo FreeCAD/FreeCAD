@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_EXTERNALGEOMETRYEXTENSION_H
-#define SKETCHER_EXTERNALGEOMETRYEXTENSION_H
+#pragma once
 
 #include <array>
 #include <bitset>
@@ -178,6 +177,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_EXTERNALGEOMETRYEXTENSION_H

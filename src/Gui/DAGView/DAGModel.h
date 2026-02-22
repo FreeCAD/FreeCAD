@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGMODEL_H
-#define DAGMODEL_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -169,5 +168,3 @@ private:
 };
 }  // namespace DAG
 }  // namespace Gui
-
-#endif  // DAGMODEL_H

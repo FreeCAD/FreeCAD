@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_Origin_H
-#define APP_Origin_H
+#pragma once
 
 #include "Datums.h"
 
@@ -57,5 +56,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_Origin_H

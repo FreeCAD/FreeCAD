@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef IMPORT_EXPORTOCAF2_H
-#define IMPORT_EXPORTOCAF2_H
+#pragma once
 
 #include <functional>
 #include <map>
@@ -118,5 +117,3 @@ private:
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_EXPORTOCAF2_H

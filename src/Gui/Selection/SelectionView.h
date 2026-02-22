@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_SELECTIONVIEW_H
-#define GUI_DOCKWND_SELECTIONVIEW_H
+#pragma once
 
 #include "DockWindow.h"
 #include "Selection.h"
@@ -208,5 +207,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_SELECTIONVIEW_H

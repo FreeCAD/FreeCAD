@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_AUTOTRANSACTION_H
-#define APP_AUTOTRANSACTION_H
+#pragma once
 
 #include <cstddef>
 #include <FCGlobal.h>
@@ -158,5 +157,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_AUTOTRANSACTION_H

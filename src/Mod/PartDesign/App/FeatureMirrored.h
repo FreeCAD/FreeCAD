@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureMirrored_H
-#define PARTDESIGN_FeatureMirrored_H
+#pragma once
 
 #include "FeatureTransformed.h"
 
@@ -65,6 +64,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureMirrored_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_PropertyCosmeticEdgeList_H
-#define TECHDRAW_PropertyCosmeticEdgeList_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -88,6 +87,3 @@ private:
 };
 
 } // namespace TechDraw
-
-
-#endif // TECHDRAW_PropertyCosmeticEdgeList_H

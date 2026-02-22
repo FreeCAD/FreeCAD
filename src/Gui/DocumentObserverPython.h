@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCUMENTOBSERVERPYTHON_H
-#define GUI_DOCUMENTOBSERVERPYTHON_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <fastsignals/signal.h>
@@ -111,5 +110,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_DOCUMENTOBSERVERPYTHON_H

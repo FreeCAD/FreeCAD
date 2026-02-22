@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4MESHCURVATURE_H
-#define WM4MESHCURVATURE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Matrix3.h"
@@ -66,5 +65,3 @@ typedef MeshCurvature<float> MeshCurvaturef;
 typedef MeshCurvature<double> MeshCurvatured;
 
 }
-
-#endif

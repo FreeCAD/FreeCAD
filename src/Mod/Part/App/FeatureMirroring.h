@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREMIRRORING_H
-#define PART_FEATUREMIRRORING_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 
@@ -70,6 +69,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREMIRRORING_H

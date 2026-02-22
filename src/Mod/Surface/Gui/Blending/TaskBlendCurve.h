@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef SURFACEGUI_TASKBLENDCURVE_H
-#define SURFACEGUI_TASKBLENDCURVE_H
+#pragma once
 
 #include <memory>
 
@@ -127,5 +126,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKBLENDCURVE_H

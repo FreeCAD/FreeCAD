@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_ACTIONFUNCTION_H
-#define GUI_ACTIONFUNCTION_H
+#pragma once
 
 #include <QObject>
 #include <QVariant>
@@ -115,6 +114,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ACTIONFUNCTION_H

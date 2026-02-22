@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PROGRESSDIALOG_H
-#define GUI_PROGRESSDIALOG_H
+#pragma once
 
 #include <Base/Sequencer.h>
 #include <QProgressDialog>
@@ -116,5 +115,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PROGRESSDIALOG_H

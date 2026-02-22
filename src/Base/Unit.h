@@ -19,8 +19,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef BASE_Unit_H
-#define BASE_Unit_H
+#pragma once
 
 #include <array>
 #include <cstdint>
@@ -177,5 +176,3 @@ public:
 };
 
 }  // namespace Base
-
-#endif  // BASE_Unit_H

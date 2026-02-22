@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PART_SHAPEMAPHASHER_H
-#define PART_SHAPEMAPHASHER_H
+#pragma once
 
 #include <limits>
 
@@ -49,5 +48,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_SHAPEMAPHASHER_H

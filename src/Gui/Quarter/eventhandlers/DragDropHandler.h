@@ -1,5 +1,4 @@
-#ifndef QUARTER_DRAGDROPHANDLER_H
-#define QUARTER_DRAGDROPHANDLER_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -58,5 +57,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_DRAGDROPHANDLER_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPocketParameters_H
-#define GUI_TASKVIEW_TaskPocketParameters_H
+#pragma once
 
 #include "TaskExtrudeParameters.h"
 #include "ViewProviderPocket.h"
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

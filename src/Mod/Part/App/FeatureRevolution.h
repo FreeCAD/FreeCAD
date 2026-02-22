@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREREVOLUTION_H
-#define PART_FEATUREREVOLUTION_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 #include <Base/Vector3D.h>
@@ -94,6 +93,3 @@ protected:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREREVOLUTION_H

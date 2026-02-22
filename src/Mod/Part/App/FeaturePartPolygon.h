@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTPOLYGON_H
-#define PART_FEATUREPARTPOLYGON_H
+#pragma once
 
 #include <App/PropertyGeo.h>
 
@@ -53,5 +52,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTPOLYGON_H

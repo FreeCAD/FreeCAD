@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOMPLEXSECTION_H
-#define TECHDRAWGUI_TASKCOMPLEXSECTION_H
+#pragma once
 
 #include <QString>
 
@@ -185,5 +184,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKCOMPLEXSECTION_H

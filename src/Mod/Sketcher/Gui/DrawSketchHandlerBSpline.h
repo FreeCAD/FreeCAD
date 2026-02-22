@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerBSpline_H
-#define SKETCHERGUI_DrawSketchHandlerBSpline_H
+#pragma once
 
 #include <QApplication>
 
@@ -1314,6 +1313,3 @@ void DSHBSplineController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerBSpline_H

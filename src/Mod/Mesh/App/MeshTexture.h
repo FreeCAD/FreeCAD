@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_MESHTEXTURE_H
-#define MESH_MESHTEXTURE_H
+#pragma once
 
 #include <memory>
 
@@ -111,5 +110,3 @@ private:
 };
 
 }  // namespace Mesh
-
-#endif  // MESH_MESHTEXTURE_H

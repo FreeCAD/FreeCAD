@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_KERNEL_H
-#define MESH_KERNEL_H
+#pragma once
 
 #include <cassert>
 #include <iosfwd>
@@ -640,5 +639,3 @@ inline void MeshKernel::SetFacetPoints(
 
 
 }  // namespace MeshCore
-
-#endif  // MESH_KERNEL_H

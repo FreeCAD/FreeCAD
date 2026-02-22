@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
-#define GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -57,5 +56,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLG_SETTINGS_REPORT_VIEW

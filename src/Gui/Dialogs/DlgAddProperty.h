@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_DIALOG_DLG_ADD_PROPERTY_H
-#define GUI_DIALOG_DLG_ADD_PROPERTY_H
+#pragma once
 
 #include <qcompleter.h>
 
@@ -247,5 +246,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLG_ADD_PROPERTY_H

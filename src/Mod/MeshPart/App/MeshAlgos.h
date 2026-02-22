@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _MeshAlgos_h_
-#define _MeshAlgos_h_
+#pragma once
 
 #include <vector>
 
@@ -94,5 +93,3 @@ public:
 };
 
 }  // namespace MeshPart
-
-#endif

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_TEXTEDIT_H
-#define MATGUI_TEXTEDIT_H
+#pragma once
 
 #include <memory>
 
@@ -64,5 +63,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_TEXTEDIT_H

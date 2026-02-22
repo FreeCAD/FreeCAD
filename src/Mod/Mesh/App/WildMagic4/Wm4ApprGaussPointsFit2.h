@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4APPRGAUSSPOINTSFIT2_H
-#define WM4APPRGAUSSPOINTSFIT2_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Box2.h"
@@ -26,5 +25,3 @@ template <class Real> WM4_FOUNDATION_ITEM
 Box2<Real> GaussPointsFit2 (int iQuantity, const Vector2<Real>* akPoint);
 
 }
-
-#endif

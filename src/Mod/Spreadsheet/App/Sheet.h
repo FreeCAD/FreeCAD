@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_MOD_SPREADSHEET_APP_SHEET_H_
-#define SRC_MOD_SPREADSHEET_APP_SHEET_H_
+#pragma once
 
 #ifdef signals
 # undef signals
@@ -317,6 +316,3 @@ protected:
 using SheetPython = App::FeaturePythonT<Sheet>;
 
 }  // namespace Spreadsheet
-
-
-#endif  // SRC_MOD_SPREADSHEET_APP_SHEET_H_

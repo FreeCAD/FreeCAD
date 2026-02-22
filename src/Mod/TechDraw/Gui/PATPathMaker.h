@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_PATPATHMAKER_H
-#define TECHDRAWGUI_PATPATHMAKER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -73,5 +72,3 @@ private:
 };
 
 }
-#endif // TECHDRAWGUI_PATPATHMAKER_H
-

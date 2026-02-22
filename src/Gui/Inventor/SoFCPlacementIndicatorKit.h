@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef SOFCPLACEMENTINDICATORKIT_H
-#define SOFCPLACEMENTINDICATORKIT_H
+#pragma once
 
 #include <Inventor/nodekits/SoBaseKit.h>
 
@@ -106,5 +105,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // SOFCPLACEMENTINDICATORKIT_H

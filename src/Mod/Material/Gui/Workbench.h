@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MATGUI_WORKBENCH_H
-#define MATGUI_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Material/MaterialGlobal.h>
@@ -49,6 +48,3 @@ protected:
 };
 
 }  // namespace MatGui
-
-
-#endif  // MATGUI_WORKBENCH_H

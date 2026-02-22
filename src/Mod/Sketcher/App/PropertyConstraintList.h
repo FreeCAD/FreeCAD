@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PropertyConstraintList_H
-#define APP_PropertyConstraintList_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -186,6 +185,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // APP_PropertyConstraintList_H

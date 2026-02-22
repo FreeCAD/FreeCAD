@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_BASECLASS_H
-#define BASE_BASECLASS_H
+#pragma once
 
 #include "Type.h"
 
@@ -240,5 +239,3 @@ const U* freecad_cast(const Base::BaseClass* type)
 // of the important freecad_cast. In that case the name is prefixed with freecad so there is no
 // chance of symbols collision.
 using Base::freecad_cast;
-
-#endif  // BASE_BASECLASS_H

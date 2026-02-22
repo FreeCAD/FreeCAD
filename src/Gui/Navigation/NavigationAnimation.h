@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_NAVIGATIONANIMATION_H
-#define GUI_NAVIGATIONANIMATION_H
+#pragma once
 
 #include "Navigation/NavigationStyle.h"
 #include <Inventor/SbRotation.h>
@@ -101,5 +100,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_NAVIGATIONANIMATION_H

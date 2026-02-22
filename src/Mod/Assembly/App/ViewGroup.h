@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_ViewGroup_H
-#define ASSEMBLY_ViewGroup_H
+#pragma once
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -53,6 +52,3 @@ public:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_ViewGroup_H

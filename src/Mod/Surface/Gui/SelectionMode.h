@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_SELECTIONMODE_H
-#define SURFACEGUI_SELECTIONMODE_H
+#pragma once
 
 namespace SurfaceGui
 {
@@ -41,5 +40,3 @@ enum SelectionMode
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_SELECTIONMODE_H

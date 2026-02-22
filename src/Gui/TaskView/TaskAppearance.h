@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TASKAPPERANCE_H
-#define GUI_TASKVIEW_TASKAPPERANCE_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include "TaskView.h"
@@ -84,5 +83,3 @@ private:
 
 }  // namespace TaskView
 }  // namespace Gui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

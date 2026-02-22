@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_MEASUREMENTBASE_H
-#define GUI_VIEWPROVIDER_MEASUREMENTBASE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -269,5 +268,3 @@ public:
 
 
 }  // namespace MeasureGui
-
-#endif  // GUI_VIEWPROVIDER_MEASUREMENTBASE_H

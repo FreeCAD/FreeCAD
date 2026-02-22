@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRECOMPILED_H
-#define PART_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -72,6 +71,4 @@
 
 #ifndef _Standard_Version_HeaderFile
 # include <Standard_Version.hxx>
-#endif
-
 #endif

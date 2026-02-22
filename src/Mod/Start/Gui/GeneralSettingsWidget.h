@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_GENERALSETTINGSWIDGET_H
-#define FREECAD_START_GENERALSETTINGSWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <gsl/pointers>
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace StartGui
-
-#endif  // FREECAD_START_GENERALSETTINGSWIDGET_H

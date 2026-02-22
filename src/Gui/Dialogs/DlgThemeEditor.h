@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef DLGTHEMEEDITOR_H
-#define DLGTHEMEEDITOR_H
+#pragma once
 
 
 #include "StyleParameters/ParameterManager.h"
@@ -153,5 +152,3 @@ private:
     std::unique_ptr<StyleParametersModel> model;
 };
 }  // namespace Gui
-
-#endif  // DLGTHEMEEDITOR_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef START_PRECOMPILED_H
-#define START_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -59,5 +58,3 @@
 #include <QTimeZone>
 #include <QTimer>
 #include <QUrl>
-
-#endif  // START_PRECOMPILED_H

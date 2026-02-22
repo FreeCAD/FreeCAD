@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STATUSBARLABEL_H
-#define STATUSBARLABEL_H
+#pragma once
 
 #include <string>
 
@@ -62,4 +61,3 @@ private:
 };
 
 }  // Namespace Gui
-#endif  // STATUSBARLABEL_H

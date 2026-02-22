@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcSlot_H
-#define SKETCHERGUI_DrawSketchHandlerArcSlot_H
+#pragma once
 
 #include <QApplication>
 
@@ -1036,6 +1035,3 @@ void DSHArcSlotController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcSlot_H

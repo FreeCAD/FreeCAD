@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4IMPLICITSURFACE_H
-#define WM4IMPLICITSURFACE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Matrix3.h"
@@ -82,5 +81,3 @@ typedef ImplicitSurface<float> ImplicitSurfacef;
 typedef ImplicitSurface<double> ImplicitSurfaced;
 
 }
-
-#endif

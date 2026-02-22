@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TASK_TRANSFORM_DRAGGER_H
-#define TASK_TRANSFORM_DRAGGER_H
+#pragma once
 
 #include "TaskView/TaskDialog.h"
 #include "TaskView/TaskView.h"
@@ -196,5 +195,3 @@ private:
     TaskTransform* transform;
 };
 }  // namespace Gui
-
-#endif  // TASK_TRANSFORM_DRAGGER_H

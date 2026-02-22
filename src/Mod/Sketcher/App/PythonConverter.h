@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHER_PythonConverter_H
-#define SKETCHER_PythonConverter_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -104,6 +103,3 @@ private:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_PythonConverter_H

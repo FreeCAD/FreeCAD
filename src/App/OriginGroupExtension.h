@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ORIGINGROUP_H_QHTU73IF
-#define ORIGINGROUP_H_QHTU73IF
+#pragma once
 
 #include "GeoFeatureGroupExtension.h"
 #include "QCoreApplication"
@@ -97,5 +96,3 @@ private:
 using OriginGroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<OriginGroupExtension>>;
 
 }  // namespace App
-
-#endif /* end of include guard: ORIGINGROUP_H_QHTU73IF */

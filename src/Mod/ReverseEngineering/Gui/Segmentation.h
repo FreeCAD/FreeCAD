@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REVERSEENGINEERINGGUI_SEGMENTATION_H
-#define REVERSEENGINEERINGGUI_SEGMENTATION_H
+#pragma once
 
 #include <memory>
 
@@ -85,5 +84,3 @@ private:
 };
 
 }  // namespace ReverseEngineeringGui
-
-#endif  // REVERSEENGINEERINGGUI_SEGMENTATION_H

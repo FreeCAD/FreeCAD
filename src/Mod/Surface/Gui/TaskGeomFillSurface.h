@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_TASKGEOMFILLSURFACE_H
-#define SURFACEGUI_TASKGEOMFILLSURFACE_H
+#pragma once
 
 #include <GeomFill_FillingStyle.hxx>
 
@@ -140,5 +139,3 @@ private:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_TASKGEOMFILLSURFACE_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PLANEGCS_GCS_H
-#define PLANEGCS_GCS_H
+#pragma once
 
 #include <Eigen/QR>
 
@@ -675,5 +674,3 @@ void deleteAllContent(std::vector<Constraint*>& constrvec);
 void deleteAllContent(std::vector<SubSystem*>& subsysvec);
 
 }  // namespace GCS
-
-#endif  // PLANEGCS_GCS_H

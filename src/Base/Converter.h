@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_CONVERTER_H
-#define BASE_CONVERTER_H
+#pragma once
 
 #include <tuple>
 #include "Rotation.h"
@@ -133,5 +132,3 @@ inline Vec1 convertTo(const Vec2& vec)
 }
 
 }  // namespace Base
-
-#endif  // BASE_CONVERTER_H

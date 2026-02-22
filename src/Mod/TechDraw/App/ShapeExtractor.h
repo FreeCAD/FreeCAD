@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ShapeExtractor_h_
-#define ShapeExtractor_h_
+#pragma once
 
 #include <TopoDS_Shape.hxx>
 
@@ -73,5 +72,3 @@ private:
 };
 
 } //namespace TechDraw
-
-#endif  // #ifndef ShapeExtractor_h_

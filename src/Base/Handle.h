@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_HANDLE_H
-#define BASE_HANDLE_H
+#pragma once
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
@@ -190,5 +189,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_HANDLE_H

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_UNIQUENAMEMANAGER_H_
-#define SRC_BASE_UNIQUENAMEMANAGER_H_
+#pragma once
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
@@ -245,5 +244,3 @@ public:
     }
 };
 }  // namespace Base
-
-#endif  // SRC_BASE_UNIQUENAMEMANAGER_H_

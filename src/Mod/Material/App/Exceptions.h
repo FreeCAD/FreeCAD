@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_EXCEPTIONS_H
-#define MATERIAL_EXCEPTIONS_H
+#pragma once
 
 #include <QString>
 
@@ -222,5 +221,3 @@ public:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_EXCEPTIONS_H

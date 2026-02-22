@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTDESIGNGUI_SKETCHWORKFLOW_H
-#define PARTDESIGNGUI_SKETCHWORKFLOW_H
+#pragma once
 
 #include <tuple>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // PARTDESIGNGUI_SKETCHWORKFLOW_H

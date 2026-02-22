@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOFCINDEXEDFACESET_H
-#define MESHGUI_SOFCINDEXEDFACESET_H
+#pragma once
 
 #include <Inventor/engines/SoSubEngine.h>
 #include <Inventor/fields/SoMFColor.h>
@@ -153,6 +152,3 @@ private:
 // NOLINTEND
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_SOFCINDEXEDFACESET_H

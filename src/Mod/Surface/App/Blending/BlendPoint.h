@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACE_BLEND_POINT_H
-#define SURFACE_BLEND_POINT_H
+#pragma once
 
 
 #include <Base/Vector3D.h>
@@ -73,5 +72,3 @@ public:
 private:
 };
 }  // namespace Surface
-
-#endif

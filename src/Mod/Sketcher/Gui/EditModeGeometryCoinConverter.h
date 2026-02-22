@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_GeometryCoinConverter_H
-#define SKETCHERGUI_GeometryCoinConverter_H
+#pragma once
 
 #include <vector>
 
@@ -194,6 +193,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_GeometryCoinConverter_H

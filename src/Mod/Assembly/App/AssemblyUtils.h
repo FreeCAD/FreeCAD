@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyUtils_H
-#define ASSEMBLY_AssemblyUtils_H
+#pragma once
 
 #include <GeomAbs_CurveType.hxx>
 #include <GeomAbs_SurfaceType.hxx>
@@ -191,6 +190,3 @@ AssemblyExport std::vector<std::string> getSubAsList(
 AssemblyExport void syncPlacements(App::DocumentObject* src, App::DocumentObject* to);
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyUtils_H

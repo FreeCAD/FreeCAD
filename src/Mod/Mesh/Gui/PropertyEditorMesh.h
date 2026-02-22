@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_PROPERTYEDITOR_MESH_H
-#define MESHGUI_PROPERTYEDITOR_MESH_H
+#pragma once
 
 #include <Gui/propertyeditor/PropertyItem.h>
 #ifndef MESH_GLOBAL_H
@@ -76,6 +75,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_PROPERTYEDITOR_MESH_H

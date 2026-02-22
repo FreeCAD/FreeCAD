@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Hole_H
-#define PARTDESIGN_Hole_H
+#pragma once
 
 #include <optional>
 #include <App/PropertyUnits.h>
@@ -303,6 +302,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Hole_H

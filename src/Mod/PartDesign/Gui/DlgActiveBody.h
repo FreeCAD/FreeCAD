@@ -25,8 +25,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGNGUI_DLGACTIVEBODY_H
-#define PARTDESIGNGUI_DLGACTIVEBODY_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -63,5 +62,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // PARTDESIGNGUI_DLGACTIVEBODY_H

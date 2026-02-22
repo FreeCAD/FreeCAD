@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRYDEFAULTEXTENSION_H
-#define PART_GEOMETRYDEFAULTEXTENSION_H
+#pragma once
 
 #include <string>
 #include "GeometryExtension.h"
@@ -140,5 +139,3 @@ using GeometryStringExtension = GeometryDefaultExtension<std::string>;
 using GeometryBoolExtension = GeometryDefaultExtension<bool>;
 using GeometryDoubleExtension = GeometryDefaultExtension<double>;
 }  // namespace Part
-
-#endif  // PART_GEOMETRYDEFAULTEXTENSION_H

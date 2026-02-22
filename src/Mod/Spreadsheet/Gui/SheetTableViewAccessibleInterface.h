@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETTABLEVIEW_INTERFACE_H
-#define SHEETTABLEVIEW_INTERFACE_H
+#pragma once
 
 #include <Mod/Spreadsheet/Gui/SheetTableView.h>
 #include <QtWidgets/qaccessiblewidget.h>
@@ -57,5 +56,3 @@ public:
     static QAccessibleInterface* ifactory(const QString& key, QObject* obj);
 };
 }  // namespace SpreadsheetGui
-
-#endif  // SHEETTABLEVIEW_INTERFACE_H

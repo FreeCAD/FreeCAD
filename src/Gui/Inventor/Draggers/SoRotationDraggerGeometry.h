@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GUI_ROTATION_DRAGGER_GEOMETRY_H
-#define GUI_ROTATION_DRAGGER_GEOMETRY_H
+#pragma once
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -211,5 +210,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif /* GUI_ROTATION_DRAGGER_GEOMETRY_H */

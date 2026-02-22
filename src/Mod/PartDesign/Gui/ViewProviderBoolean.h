@@ -25,8 +25,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBoolean_H
-#define PARTGUI_ViewProviderBoolean_H
+#pragma once
 
 #include "ViewProvider.h"
 #include <Gui/ViewProviderGeoFeatureGroupExtension.h>
@@ -74,6 +73,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderBoolean_H

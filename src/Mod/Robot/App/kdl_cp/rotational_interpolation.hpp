@@ -43,8 +43,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_ROTATIONALINTERPOLATION_H
-#define KDL_ROTATIONALINTERPOLATION_H
+#pragma once
 
 #include "frames.hpp"
 #include "frames_io.hpp"
@@ -115,6 +114,3 @@ class RotationalInterpolation
 	};
 
 }
-
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTIONGUI_VISUALINSPECTION_H
-#define INSPECTIONGUI_VISUALINSPECTION_H
+#pragma once
 
 #include <QDialog>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace InspectionGui
-
-#endif  // INSPECTIONGUI_VISUALINSPECTION_H

@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_SelectionObject_H
-#define GUI_SelectionObject_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <Base/Vector3D.h>
@@ -130,6 +129,3 @@ private:
 
 
 }  // namespace Gui
-
-
-#endif  // GUI_SelectionObject_H

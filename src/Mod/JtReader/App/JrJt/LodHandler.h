@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef LodHandler_HEADER
-#define LodHandler_HEADER
+#pragma once
 
 
 class LodHandler
@@ -31,6 +30,3 @@ class LodHandler
 public:
     virtual void startLod() {};
 };
-
-
-#endif

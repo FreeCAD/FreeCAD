@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW_H
-#define GUI_VIEW_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <FCGlobal.h>
@@ -124,5 +123,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW_H

@@ -23,8 +23,7 @@
 //based on a python widget from:
 //https://github.com/tcalmant/demo-ipopo-qt/blob/master/pc/details/compass.py
 
-#ifndef COMPASSDIALWIDGET_H
-#define COMPASSDIALWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <QSize>
@@ -68,4 +67,3 @@ private:
 };
 
 } //namespace TechDrawGui
-#endif // COMPASSDIALWIDGET_H

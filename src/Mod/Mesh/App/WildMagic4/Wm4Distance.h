@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DISTANCE_H
-#define WM4DISTANCE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Vector2.h"
@@ -98,5 +97,3 @@ typedef Distance<double,Vector2d> Distance2d;
 typedef Distance<double,Vector3d> Distance3d;
 
 }
-
-#endif

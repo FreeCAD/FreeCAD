@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_EDITABLEPATH_H
-#define TECHDRAWGUI_EDITABLEPATH_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -140,5 +139,3 @@ private:
 };
 
 }
-
-#endif // TECHDRAWGUI_EDITABLEPATH_H

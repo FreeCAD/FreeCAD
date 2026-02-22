@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef APP_LINK_H
-#define APP_LINK_H
+#pragma once
 
 #include <boost/preprocessor/seq/for_each.hpp>
 #include <boost/algorithm/string/predicate.hpp>
@@ -1214,5 +1213,3 @@ public:
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #endif
-
-#endif  // APP_LINK_H

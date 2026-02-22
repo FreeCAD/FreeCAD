@@ -20,8 +20,7 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#ifndef APP_MAPPED_ELEMENT_H
-#define APP_MAPPED_ELEMENT_H
+#pragma once
 
 #include "IndexedName.h"
 #include "MappedName.h"
@@ -149,6 +148,3 @@ struct AppExport ElementNameComparator
 };
 
 }  // namespace Data
-
-
-#endif  // APP_MAPPED_ELEMENT_H

@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef PART_TOPOSHAPE_OPCODE_H
-#define PART_TOPOSHAPE_OPCODE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -102,5 +101,3 @@ public:
 };
 
 }  // namespace Part
-
-#endif  // PART_TOPOSHAPE_OPCODE_H

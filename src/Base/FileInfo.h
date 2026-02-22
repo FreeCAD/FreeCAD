@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_FILEINFO_H
-#define BASE_FILEINFO_H
+#pragma once
 
 #include <filesystem>
 #include <string>
@@ -178,6 +177,3 @@ private:
 };
 
 }  // namespace Base
-
-
-#endif  // BASE_FILEINFO_H

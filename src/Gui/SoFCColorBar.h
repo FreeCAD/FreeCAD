@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCCOLORBAR_H
-#define GUI_SOFCCOLORBAR_H
+#pragma once
 
 #include <QElapsedTimer>
 #include <vector>
@@ -249,6 +248,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCCOLORBAR_H

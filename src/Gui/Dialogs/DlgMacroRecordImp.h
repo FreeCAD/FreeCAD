@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGMACRORECORDIMP_H
-#define GUI_DIALOG_DLGMACRORECORDIMP_H
+#pragma once
 
 #include <QDialog>
 #include <memory>
@@ -66,5 +65,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGMACRORECORDIMP_H

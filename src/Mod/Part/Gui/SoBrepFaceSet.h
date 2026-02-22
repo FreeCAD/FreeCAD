@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPFACESET_H
-#define PARTGUI_SOBREPFACESET_H
+#pragma once
 
 #include <Inventor/fields/SoMFInt32.h>
 #include <Inventor/fields/SoSFInt32.h>
@@ -180,5 +179,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_SOBREPFACESET_H

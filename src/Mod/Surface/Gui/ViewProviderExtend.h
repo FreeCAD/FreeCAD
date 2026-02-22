@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SURFACEGUI_VIEWPROVIDEREXTEND_H
-#define SURFACEGUI_VIEWPROVIDEREXTEND_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProviderSpline.h>
 
@@ -40,5 +39,3 @@ public:
 };
 
 }  // namespace SurfaceGui
-
-#endif  // SURFACEGUI_VIEWPROVIDEREXTEND_H

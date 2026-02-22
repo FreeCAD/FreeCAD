@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_CONSTRAINT_H
-#define SKETCHER_CONSTRAINT_H
+#pragma once
 
 #include <array>
 
@@ -249,6 +248,3 @@ protected:
 };
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_CONSTRAINT_H

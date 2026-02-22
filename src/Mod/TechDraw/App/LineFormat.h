@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_LINEFORMAT_H
-#define TECHDRAW_LINEFORMAT_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -91,6 +90,3 @@ private:
 };
 
 } //end namespace TechDraw
-
-#endif //TECHDRAW_LINEFORMAT_H
-

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGSCALE_H
-#define PARTGUI_DLGSCALE_H
+#pragma once
 
 #include <QDialog>
 #include <string>
@@ -94,5 +93,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGSCALE_H

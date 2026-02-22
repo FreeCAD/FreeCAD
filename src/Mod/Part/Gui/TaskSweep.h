@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_TASKSWEEP_H
-#define PARTGUI_TASKSWEEP_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_TASKSWEEP_H

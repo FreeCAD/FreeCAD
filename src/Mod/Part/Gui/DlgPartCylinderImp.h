@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGPARTCYLINDERIMP_H
-#define PARTGUI_DLGPARTCYLINDERIMP_H
+#pragma once
 
 #include <Gui/InputVector.h>
 
@@ -48,5 +47,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGPARTCYLINDERIMP_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTIMPORTSTEP_H
-#define PART_FEATUREPARTIMPORTSTEP_H
+#pragma once
 
 #include <App/PropertyStandard.h>
 
@@ -56,6 +55,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FEATUREPARTIMPORTSTEP_H

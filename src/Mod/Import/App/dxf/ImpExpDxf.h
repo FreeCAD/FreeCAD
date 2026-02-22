@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef IMPEXPDXF_H
-#define IMPEXPDXF_H
+#pragma once
 
 #include <set>
 #include <gp_Pnt.hxx>
@@ -583,5 +582,3 @@ protected:
 };
 
 }  // namespace Import
-
-#endif  // IMPEXPDXFGUI_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_DEBUGGER_H
-#define BASE_DEBUGGER_H
+#pragma once
 
 #include <QEventLoop>
 #include <QObject>
@@ -83,5 +82,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_DEBUGGER_H

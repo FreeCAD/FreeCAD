@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_Body_H
-#define PARTDESIGN_Body_H
+#pragma once
 
 #include <Mod/Part/App/BodyBase.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -168,6 +167,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PART_Body_H

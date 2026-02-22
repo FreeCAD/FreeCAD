@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TYPE_H
-#define BASE_TYPE_H
+#pragma once
 
 // Std. configurations
 
@@ -202,6 +201,3 @@ inline bool Type::isBad() const
 }
 
 }  // namespace Base
-
-
-#endif  // BASE_TYPE_H

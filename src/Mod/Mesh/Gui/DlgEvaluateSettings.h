@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLG_EVALUATE_SETTINGS_H
-#define MESHGUI_DLG_EVALUATE_SETTINGS_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -62,5 +61,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLG_EVALUATE_SETTINGS_H

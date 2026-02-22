@@ -20,8 +20,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef GUI_TREE_PARAMS_H
-#define GUI_TREE_PARAMS_H
+#pragma once
 
 /*[[[cog
 import TreeParams
@@ -508,5 +507,3 @@ public:
 };  // class TreeParams
 }  // namespace Gui
 //[[[end]]]
-
-#endif  // GUI_TREE_PARAMS_H

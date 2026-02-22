@@ -22,8 +22,7 @@
  *                                                                            *
  ******************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskMultiTransformParameters_H
-#define GUI_TASKVIEW_TaskMultiTransformParameters_H
+#pragma once
 
 #include "TaskTransformedParameters.h"
 #include "ViewProviderMultiTransform.h"
@@ -120,5 +119,3 @@ public:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -1,5 +1,4 @@
-#ifndef QUARTER_FOCUSHANDLER_H
-#define QUARTER_FOCUSHANDLER_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -57,5 +56,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_FOCUSHANDLER_H

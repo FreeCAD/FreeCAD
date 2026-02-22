@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_STARTVIEW_H
-#define FREECAD_STARTVIEW_H
+#pragma once
 
 #include <Mod/Start/StartGlobal.h>
 #include <Base/Type.h>
@@ -123,5 +122,3 @@ private:
 };  // namespace StartGui
 
 }  // namespace StartGui
-
-#endif  // FREECAD_STARTVIEW_H

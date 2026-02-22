@@ -23,8 +23,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_APPLICATION_H_
-#define SRC_APP_APPLICATION_H_
+#pragma once
 
 #include <fastsignals/signal.h>
 #include <QtCore/qtextstream.h>
@@ -1035,6 +1034,3 @@ inline App::Application &GetApplication(){
 }
 
 } // namespace App
-
-
-#endif // SRC_APP_APPLICATION_H_

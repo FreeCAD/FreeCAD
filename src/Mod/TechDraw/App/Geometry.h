@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_GEOMETRY_H
-#define TECHDRAW_GEOMETRY_H
+#pragma once
 
 #include <memory>
 #include <boost/uuid/uuid.hpp>
@@ -474,5 +473,3 @@ class TechDrawExport GeometryUtils
 };
 
 } //end namespace TechDraw
-
-#endif //TECHDRAW_GEOMETRY_H

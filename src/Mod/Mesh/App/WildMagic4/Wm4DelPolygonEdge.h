@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4DELPOLYGONEDGE_H
-#define WM4DELPOLYGONEDGE_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4VEManifoldMesh.h"
@@ -43,5 +42,3 @@ typedef DelPolygonEdge<float> DelPolygonEdgef;
 typedef DelPolygonEdge<double> DelPolygonEdged;
 
 }
-
-#endif

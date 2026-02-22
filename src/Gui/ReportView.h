@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCKWND_REPORTVIEW_H
-#define GUI_DOCKWND_REPORTVIEW_H
+#pragma once
 
 #include <QPointer>
 #include <QTextEdit>
@@ -242,5 +241,3 @@ protected:
 
 }  // namespace DockWnd
 }  // namespace Gui
-
-#endif  // GUI_DOCKWND_REPORTVIEW_H

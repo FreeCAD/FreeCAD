@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_DLGBOOLEANOPERATION_H
-#define PARTGUI_DLGBOOLEANOPERATION_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -99,5 +98,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGBOOLEANOPERATION_H

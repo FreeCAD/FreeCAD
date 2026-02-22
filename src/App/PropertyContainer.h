@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_APP_PROPERTYCONTAINER_H_
-#define SRC_APP_PROPERTYCONTAINER_H_
+#pragma once
 
 #include <map>
 #include <vector>
@@ -851,5 +850,3 @@ template<> void _class_::init(void){\
 // clang-format on
 
 } // namespace App
-
-#endif // SRC_APP_PROPERTYCONTAINER_H_

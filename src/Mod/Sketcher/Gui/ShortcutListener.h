@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SHORTCUTLISTENER_H
-#define SKETCHERGUI_SHORTCUTLISTENER_H
+#pragma once
 
 #include <QObject>
 
@@ -48,6 +47,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_SHORTCUTLISTENER_H

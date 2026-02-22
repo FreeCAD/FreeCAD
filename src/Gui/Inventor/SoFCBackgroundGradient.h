@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCBACKGROUNDGRADIENT_H
-#define GUI_SOFCBACKGROUNDGRADIENT_H
+#pragma once
 
 #include <Inventor/SbColor.h>
 #include <Inventor/nodes/SoNode.h>
@@ -69,6 +68,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCBACKGROUNDGRADIENT_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchDefaultHandler_H
-#define SKETCHERGUI_DrawSketchDefaultHandler_H
+#pragma once
 
 #include <Inventor/events/SoKeyboardEvent.h>
 
@@ -1297,6 +1296,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchDefaultHandler_H

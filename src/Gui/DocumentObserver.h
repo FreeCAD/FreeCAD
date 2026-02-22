@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_DOCUMENTOBSERVER_H
-#define GUI_DOCUMENTOBSERVER_H
+#pragma once
 
 #include <Base/BaseClass.h>
 #include <fastsignals/signal.h>
@@ -388,5 +387,3 @@ private:
 #endif
 
 }  // namespace Gui
-
-#endif  // GUI_DOCUMENTOBSERVER_H

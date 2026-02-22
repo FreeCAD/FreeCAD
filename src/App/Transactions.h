@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTION_H
-#define APP_TRANSACTION_H
+#pragma once
 
 #include <unordered_map>
 #include <Base/Factory.h>
@@ -346,5 +345,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_TRANSACTION_H

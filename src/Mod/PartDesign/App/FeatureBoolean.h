@@ -23,8 +23,7 @@
  ******************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureBoolean_H
-#define PARTDESIGN_FeatureBoolean_H
+#pragma once
 
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/PropertyStandard.h>
@@ -75,6 +74,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureBoolean_H

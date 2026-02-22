@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRY2D_H
-#define PART_GEOMETRY2D_H
+#pragma once
 
 #include <Adaptor2d_Curve2d.hxx>
 #include <Geom2d_BezierCurve.hxx>
@@ -614,5 +613,3 @@ std::unique_ptr<Geom2dCurve> makeFromTrimmedCurve2d(const Handle(Geom2d_Curve) &
 std::unique_ptr<Geom2dCurve> makeFromCurveAdaptor2d(const Adaptor2d_Curve2d&);
 
 }  // namespace Part
-
-#endif  // PART_GEOMETRY2D_H

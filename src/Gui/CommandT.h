@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_T_H
-#define GUI_COMMAND_T_H
+#pragma once
 
 #include <App/Document.h>
 #include <App/DocumentObject.h>
@@ -544,5 +543,3 @@ void copyVisualT(Args&&... args)
 //@}
 
 };  // namespace Gui
-
-#endif  // GUI_COMMAND_T_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef IMPORT_STEPSHAPE_H
-#define IMPORT_STEPSHAPE_H
+#pragma once
 
 #include <Mod/Import/ImportGlobal.h>
 
@@ -46,6 +45,3 @@ public:
 };
 
 }  // namespace Import
-
-
-#endif  // IMPORT_STEPSHAPE_H

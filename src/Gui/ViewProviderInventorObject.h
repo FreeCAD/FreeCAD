@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDER_INVENTOROBJECT_H
-#define GUI_VIEWPROVIDER_INVENTOROBJECT_H
+#pragma once
 
 #include "ViewProviderDocumentObject.h"
 
@@ -59,6 +58,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDER_INVENTOROBJECT_H

@@ -2,8 +2,7 @@
 
 // clang-format off
 // NOLINTBEGIN
-#ifndef __STACKWALKER_H__
-#define __STACKWALKER_H__
+#pragma once
 
 #if defined(_MSC_VER)
 
@@ -261,21 +260,20 @@ protected:
     __asm    mov c.Esp, esp                                       \
   } while (0)
 // clang-format on
-#   endif
-
-#  else
-
-// The following is defined for x86 (XP and higher), x64 and IA64:
-#   define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags) \
-          do { \
-              memset(&c, 0, sizeof(CONTEXT)); \
-              c.ContextFlags = contextFlags; \
-              RtlCaptureContext(&c); \
-          } while (0);
 #  endif
 
-# endif  // defined(_MSC_VER)
+# else
 
-#endif  // __STACKWALKER_H__
+// The following is defined for x86 (XP and higher), x64 and IA64:
+#  define GET_CURRENT_CONTEXT_STACKWALKER_CODEPLEX(c, contextFlags) \
+      do { \
+          memset(&c, 0, sizeof(CONTEXT)); \
+          c.ContextFlags = contextFlags; \
+          RtlCaptureContext(&c); \
+      } while (0);
+# endif
+
+#endif  // defined(_MSC_VER)
+
 // NOLINTEND
 // clang-format on

@@ -22,8 +22,7 @@
 
 /* Text completion mechanism */
 
-#ifndef GUI_TEXTEDIT_H
-#define GUI_TEXTEDIT_H
+#pragma once
 
 #include <QListWidget>
 #include <QPlainTextEdit>
@@ -214,5 +213,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TEXTEDIT_H

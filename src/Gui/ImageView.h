@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef GUI_IMAGE_VIEW_H
-#define GUI_IMAGE_VIEW_H
+#pragma once
 
 #include <Gui/MDIView.h>
 
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_IMAGE_VIEW_H

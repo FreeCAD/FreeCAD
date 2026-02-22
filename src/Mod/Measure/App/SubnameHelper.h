@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef MEASURE_SUBNAMEMANIPULATOR_H
-#define MEASURE_SUBNAMEMANIPULATOR_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -53,5 +52,3 @@ public:
 };
 
 }  // namespace Measure
-
-#endif  // MEASURE_SUBNAMEMANIPULATOR_H

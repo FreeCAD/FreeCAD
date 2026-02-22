@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef _AppPlacement_h_
-#define _AppPlacement_h_
+#pragma once
 
 #include "FeaturePython.h"
 
@@ -53,6 +52,3 @@ using PlacementPython = App::FeaturePythonT<App::Placement>;
 
 
 }  // namespace App
-
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeaturePathShape_H
-#define PATH_FeaturePathShape_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -70,6 +69,3 @@ protected:
 using FeatureShapePython = App::FeaturePythonT<FeatureShape>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeaturePathShape_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ViewProviderPlacement_H
-#define GUI_ViewProviderPlacement_H
+#pragma once
 
 #include "AxisOrigin.h"
 #include "ViewProviderGeometryObject.h"
@@ -72,6 +71,3 @@ protected:
 using ViewProviderPlacementPython = ViewProviderFeaturePythonT<ViewProviderPlacement>;
 
 }  // namespace Gui
-
-
-#endif  // GUI_ViewProviderPlacement_H

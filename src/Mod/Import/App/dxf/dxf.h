@@ -5,8 +5,7 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#ifndef Included_dxf_h_
-#define Included_dxf_h_
+#pragma once
 
 #ifdef _MSC_VER
 # pragma warning(disable : 4251)
@@ -1012,4 +1011,3 @@ protected:
     }
 #endif
 };
-#endif

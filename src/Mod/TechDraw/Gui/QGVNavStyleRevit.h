@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_REVITNAVSTYLE_H
-#define TECHDRAW_REVITNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -50,4 +49,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_REVITNAVSTYLE_H

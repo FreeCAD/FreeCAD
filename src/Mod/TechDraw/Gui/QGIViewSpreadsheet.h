@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
-#define DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -49,5 +48,3 @@ public:
 };
 
 } // end namespace TechDrawGui
-
-#endif // DRAWINGGUI_QGRAPHICSITEMVIEWSPREADSHEET_H

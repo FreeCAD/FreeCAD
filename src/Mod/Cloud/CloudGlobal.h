@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef CLOUD_GLOBAL_H
-#define CLOUD_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -43,6 +42,3 @@
 #  define CloudGuiExport FREECAD_DECL_IMPORT
 # endif
 #endif
-
-
-#endif  // CLOUD_GLOBAL_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 // clang-format off
-#ifndef NURBS_H
-#define NURBS_H
+#pragma once
 
 #include <tuple>
 
@@ -117,5 +116,4 @@ struct NurbsBase1D
 
 }
 
-#endif
 // clang-format on

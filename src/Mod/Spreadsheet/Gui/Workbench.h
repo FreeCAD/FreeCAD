@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef SPREADSHEET_WORKBENCH_H
-#define SPREADSHEET_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 #include <Mod/Spreadsheet/SpreadsheetGlobal.h>
@@ -69,6 +68,3 @@ protected:
 };
 
 }  // namespace SpreadsheetGui
-
-
-#endif  // SPREADSHEET_WORKBENCH_H

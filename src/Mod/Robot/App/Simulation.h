@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef _Simulation_h_
-#define _Simulation_h_
+#pragma once
 
 #include <Base/Placement.h>
 
@@ -81,6 +80,3 @@ public:
 
 
 }  // namespace Robot
-
-
-#endif

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_UTILITIES_H
-#define GUI_UTILITIES_H
+#pragma once
 
 #include <vector>
 #include <QColor>
@@ -543,5 +542,3 @@ struct TransformComponents
 }
 
 }  // namespace Gui
-
-#endif  // GUI_UTILITIES_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEWPROVIDEREXTENSIONPYTHON_H
-#define GUI_VIEWPROVIDEREXTENSIONPYTHON_H
+#pragma once
 
 #include "ViewProviderExtension.h"
 #include <App/PropertyPythonObject.h>
@@ -58,5 +57,3 @@ public:
 using ViewProviderExtensionPython = ViewProviderExtensionPythonT<Gui::ViewProviderExtension>;
 
 }  // namespace Gui
-
-#endif  // GUI_VIEWPROVIDEREXTENSIONPYTHON_H

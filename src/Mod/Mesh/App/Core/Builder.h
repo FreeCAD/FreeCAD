@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_BUILDER_H
-#define MESH_BUILDER_H
+#pragma once
 
 #include <set>
 #include <vector>
@@ -233,5 +232,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-#endif

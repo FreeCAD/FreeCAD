@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_VTK_TOOLS_H
-#define FEM_VTK_TOOLS_H
+#pragma once
 
 #include <vtkDataSet.h>
 #include <vtkSmartPointer.h>
@@ -74,5 +73,3 @@ public:
     static void frdToVTK(const char* filename, bool binary = true);
 };
 }  // namespace Fem
-
-#endif  // FEM_VTK_TOOLS_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SANDBOX_DOCUMENTTHREAD_H
-#define SANDBOX_DOCUMENTTHREAD_H
+#pragma once
 
 #include <QThread>
 #include <Base/Mutex.h>
@@ -129,6 +128,3 @@ private:
 };
 
 }
-
-#endif // SANDBOX_DOCUMENTTHREAD_H
-

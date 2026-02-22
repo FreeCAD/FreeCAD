@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCCOLORLEGEND_H
-#define GUI_SOFCCOLORLEGEND_H
+#pragma once
 
 #include <Inventor/SbBox2f.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -116,6 +115,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCCOLORLEGEND_H

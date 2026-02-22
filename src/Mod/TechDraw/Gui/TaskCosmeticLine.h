@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_TASKCOSMETICLINE_H
-#define TECHDRAWGUI_TASKCOSMETICLINE_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -124,5 +123,3 @@ private:
 };
 
 } //namespace TechDrawGui
-
-#endif // #ifndef TECHDRAWGUI_TASKCOSMETICLINE_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef GIZMO_HELPER_H
-#define GIZMO_HELPER_H
+#pragma once
 
 #include <Base/Vector3D.h>
 #include <Mod/Part/App/Geometry.h>
@@ -89,5 +88,3 @@ struct PartExport DraggerPlacementPropsWithNormals
 };
 std::optional<DraggerPlacementPropsWithNormals> PartExport
 getDraggerPlacementFromPlaneAndFace(Part::TopoShape& face, gp_Pln& plane);
-
-#endif /* GIZMO_HELPER_H */

@@ -1,5 +1,4 @@
-#ifndef QUARTER_MOUSE_H
-#define QUARTER_MOUSE_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -54,5 +53,3 @@ private:
 };
 
 }}} // namespace
-
-#endif // QUARTER_MOUSEHANDLER_H

@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTIONALOBJECT_H
-#define APP_TRANSACTIONALOBJECT_H
+#pragma once
 
 #include <App/ExtensionContainer.h>
 
@@ -72,6 +71,3 @@ protected:
 };
 
 }  // namespace App
-
-
-#endif  // APP_TRANSACTIONALOBJECT_H

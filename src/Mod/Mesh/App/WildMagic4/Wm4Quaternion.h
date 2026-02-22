@@ -8,8 +8,7 @@
 //
 // File Version: 4.10.0 (2009/11/18)
 
-#ifndef WM4QUATERNION_H
-#define WM4QUATERNION_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Matrix3.h"
@@ -324,5 +323,3 @@ typedef Quaternion<float> Quaternionf;
 typedef Quaternion<double> Quaterniond;
 
 }
-
-#endif

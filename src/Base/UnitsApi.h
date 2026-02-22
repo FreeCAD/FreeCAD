@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef BASE_UNITSAPI_H
-#define BASE_UNITSAPI_H
+#pragma once
 
 #include "UnitsSchema.h"
 #include "UnitsSchemas.h"
@@ -90,5 +89,3 @@ protected:
 };
 
 }  // namespace Base
-
-#endif  // BASE_UNITSAPI_H

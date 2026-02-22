@@ -25,8 +25,7 @@
 // http://www.boost.org/LICENSE_1_0.txt)
 //**************************************************************************
 
-#ifndef TECHDRAW_EDGEWALKER_H
-#define TECHDRAW_EDGEWALKER_H
+#pragma once
 
 #include <vector>
 
@@ -191,5 +190,3 @@ private:
 };
 
 }  //end namespace TechDraw
-
-#endif //TECHDRAW_EDGEWALKER_H

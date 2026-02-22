@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INPUTVECTOR_H
-#define GUI_INPUTVECTOR_H
+#pragma once
 
 #include <memory>
 #include <QApplication>
@@ -615,5 +614,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_INPUTVECTOR_H

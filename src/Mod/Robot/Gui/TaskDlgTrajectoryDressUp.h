@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOTGUI_TaskDlgTrajectoryDressUp_H
-#define ROBOTGUI_TaskDlgTrajectoryDressUp_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Robot/App/TrajectoryDressUpObject.h>
@@ -78,5 +77,3 @@ protected:
 
 
 }  // namespace RobotGui
-
-#endif  // ROBOTGUI_TASKDLGSIMULATE_H

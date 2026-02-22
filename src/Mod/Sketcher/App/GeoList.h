@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_GeoList_H
-#define SKETCHER_GeoList_H
+#pragma once
 
 #include <memory>
 #include <vector>
@@ -274,6 +273,3 @@ using GeoListFacade = GeoListModel<GeometryFacadeUniquePtr>;
 GeoListFacade getGeoListFacade(const GeoList& geolist);
 
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_GeoList_H

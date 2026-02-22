@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
-#define ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H
+#pragma once
 
 #include <Mod/Robot/RobotGlobal.h>
 
@@ -46,6 +45,3 @@ protected:
 };
 
 }  // namespace RobotGui
-
-
-#endif  // ROBOT_VIEWPROVIDEREDGE2TRACOBJECT_H

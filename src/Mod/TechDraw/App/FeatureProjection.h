@@ -22,8 +22,7 @@
 //this file originally part of TechDraw workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#ifndef TECHDRAW_FEATUREPROJECTION
-#define TECHDRAW_FEATUREPROJECTION
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -66,7 +65,3 @@ public:
 };
 
 } //namespace TechDraw
-
-
-
-#endif // TECHDRAW_FEATUREPROJECTION

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PYTHONCONSOLE_H
-#define GUI_PYTHONCONSOLE_H
+#pragma once
 
 #include <Python.h>
 #include <QTimer>
@@ -193,5 +192,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PYTHONCONSOLE_H

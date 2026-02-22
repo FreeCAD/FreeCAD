@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_VIEW3DINVENTORVIEWER_H
-#define GUI_VIEW3DINVENTORVIEWER_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -634,5 +633,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTORVIEWER_H

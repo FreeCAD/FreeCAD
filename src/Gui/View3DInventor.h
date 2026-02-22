@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEW3DINVENTOR_H
-#define GUI_VIEW3DINVENTOR_H
+#pragma once
 
 #include <memory>
 #include <optional>
@@ -171,5 +170,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VIEW3DINVENTOR_H

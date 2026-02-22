@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4UNIQUEVERTICESTRIANGLES_H
-#define WM4UNIQUEVERTICESTRIANGLES_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4System.h"
@@ -89,5 +88,3 @@ private:
 }
 
 #include "Wm4UniqueVerticesTriangles.inl"
-
-#endif

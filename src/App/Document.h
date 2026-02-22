@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SRC_APP_DOCUMENT_H_
-#define SRC_APP_DOCUMENT_H_
+#pragma once
 
 #include <CXX/Objects.hxx>
 #include <Base/Observer.h>
@@ -1470,5 +1469,3 @@ T* Document::addObject(const char* pObjectName, bool isNew, const char* viewType
 }
 
 }  // namespace App
-
-#endif  // SRC_APP_DOCUMENT_H_

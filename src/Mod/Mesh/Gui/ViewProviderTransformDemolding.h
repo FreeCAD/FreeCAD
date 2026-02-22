@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
-#define MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -96,6 +95,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESGUI_VIEWPROVIDERMESHTRANSFORMDEMOLDING_H

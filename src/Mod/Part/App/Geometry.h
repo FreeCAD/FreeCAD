@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_GEOMETRY_H
-#define PART_GEOMETRY_H
+#pragma once
 
 #include <Adaptor3d_Curve.hxx>
 #include <Approx_ParametrizationType.hxx>
@@ -1419,5 +1418,3 @@ PartExport std::unique_ptr<GeomCurve> makeFromTrimmedCurve(
 
 PartExport std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&, bool silent = false);
 }  // namespace Part
-
-#endif  // PART_GEOMETRY_H

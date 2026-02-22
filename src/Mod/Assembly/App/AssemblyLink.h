@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_AssemblyLink_H
-#define ASSEMBLY_AssemblyLink_H
+#pragma once
 
 #include <unordered_map>
 
@@ -102,6 +101,3 @@ protected:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_AssemblyLink_H

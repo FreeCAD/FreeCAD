@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_COSMETIC_VERTEX_H
-#define TECHDRAW_COSMETIC_VERTEX_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <Base/Persistence.h>
@@ -81,5 +80,3 @@ protected:
 };
 
 } //end namespace TechDraw
-
-#endif  // TECHDRAW_COSMETIC_VERTEX_H

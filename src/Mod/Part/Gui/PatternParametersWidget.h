@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_PATTERNPARAMETERSWIDGET_H
-#define PARTGUI_PATTERNPARAMETERSWIDGET_H
+#pragma once
 
 #include <QWidget>
 #include <App/PropertyStandard.h>  // For Property types
@@ -224,6 +223,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_PATTERNPARAMETERSWIDGET_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_VIEWPROVIDERPARTEXT_H
-#define PARTGUI_VIEWPROVIDERPARTEXT_H
+#pragma once
 
 #include "SoFCShapeObject.h"
 
@@ -260,5 +259,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_VIEWPROVIDERPARTEXT_H

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DIALOG_DLGSETTINGSNAVIGATION_H
-#define GUI_DIALOG_DLGSETTINGSNAVIGATION_H
+#pragma once
 
 #include <memory>
 #include "PropertyPage.h"
@@ -91,5 +90,3 @@ private:
 
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // GUI_DIALOG_DLGSETTINGSNAVIGATION_H

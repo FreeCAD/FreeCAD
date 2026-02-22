@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_ViewProviderPath_H
-#define PATH_ViewProviderPath_H
+#pragma once
 
 #include <App/PropertyGeo.h>
 #include <Gui/Selection/Selection.h>
@@ -129,6 +128,3 @@ protected:
 using ViewProviderPathPython = Gui::ViewProviderFeaturePythonT<ViewProviderPath>;
 
 }  // namespace PathGui
-
-
-#endif  // PATH_VIEWPROVIDERPATH_H

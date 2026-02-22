@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskSketcherElements_H
-#define GUI_TASKVIEW_TaskSketcherElements_H
+#pragma once
 
 #include <unordered_map>
 #include <QListWidget>
@@ -182,5 +181,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

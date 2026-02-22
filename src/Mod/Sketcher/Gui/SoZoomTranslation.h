@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_SOZOOMTRANSLATION_H
-#define SKETCHERGUI_SOZOOMTRANSLATION_H
+#pragma once
 
 #include <Inventor/nodes/SoTranslation.h>
 
@@ -64,4 +63,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-#endif  // SKETCHERGUI_SOZOOMTRANSLATION_H

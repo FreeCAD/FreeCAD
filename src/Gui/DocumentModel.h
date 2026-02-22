@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_DOCUMENTMODEL_H
-#define GUI_DOCUMENTMODEL_H
+#pragma once
 
 #include <QAbstractItemModel>
 #include <vector>
@@ -84,6 +83,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_DOCUMENTMODEL_H
