@@ -147,7 +147,7 @@
         <item>
          <widget class="QLabel" name="label">
           <property name="toolTip">
-           <string>Choose which sketch geometry types are accepted as the default base profile for Hole features.</string>
+           <string>Choose which geometry types of the selected profile are accepted as the Part Design Hole command</string>
           </property>
           <property name="text">
            <string>Default profile type for holes</string>
