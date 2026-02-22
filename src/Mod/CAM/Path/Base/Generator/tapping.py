@@ -119,4 +119,6 @@ def generate(
     else:
         cmd = "G84"
 
-    return [Path.Command(cmd, cmdParams)]
+    command = Path.Command(cmd, cmdParams)
+    command.addAnnotations({"rigid": "False"})
+    return [command]

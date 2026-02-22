@@ -193,10 +193,10 @@ class CAMWorkbench(Workbench):
                 QT_TRANSLATE_NOOP("CAM_EngraveTools", "Engraving Operations"),
             ),
         )
-        if Path.Preferences.experimentalFeaturesEnabled():
-            drillingcmdlist.append("CAM_Tapping")
+        # Tapping command removed - use Drilling operation with Strategy=Tapping instead
+        # Old Tapping operations will continue to work but new ones cannot be created
 
-        if set(["CAM_Drilling", "CAM_Tapping"]).issubset(drillingcmdlist):
+        if set(["CAM_Drilling"]).issubset(drillingcmdlist):
             drillingcmdgroup = ["CAM_DrillingTools"]
             FreeCADGui.addCommand(
                 "CAM_DrillingTools",
