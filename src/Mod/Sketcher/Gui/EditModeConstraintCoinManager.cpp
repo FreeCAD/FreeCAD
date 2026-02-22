@@ -26,6 +26,7 @@
 
 #include <QPainter>
 #include <QRegularExpression>
+#include <Bnd_Box.hxx>
 #include <limits>
 #include <memory>
 #include <map>
@@ -46,6 +47,8 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
+
+#include <BRepBndLib.hxx>
 
 #include <Base/Converter.h>
 #include <Base/Exception.h>
@@ -791,6 +794,87 @@ Restart:
 
                     // Reference Position that is scaled according to zoom
                     translation->translation = SbVec3f(relpos2.x - relpos1.x, relpos2.y - relpos1.y, 0);
+
+                } break;
+                case Text:
+                case Group: {
+                    if (Constr->isElementsEmpty()) {
+                        break;  // Nothing to do if the group is empty
+                    }
+
+                    Bnd_Box totalBBox;
+                    int elementIndex = 0;
+                    while (Constr->hasElement(elementIndex)) {
+                        auto element = Constr->getElement(elementIndex);
+                        if (element.GeoId < -extGeoCount || element.GeoId >= intGeoCount) {
+                            elementIndex++;
+                            continue;
+                        }
+                        const Part::Geometry* geo = geolistfacade.getGeometryFromGeoId(element.GeoId);
+                        if (!geo) {
+                            elementIndex++;
+                            continue;
+                        }
+                        TopoDS_Shape shape = geo->toShape();
+                        if (!shape.IsNull()) {
+                            BRepBndLib::Add(shape, totalBBox, false);
+                        }
+                        elementIndex++;
+                    }
+
+                    if (!totalBBox.HasFinitePart() || totalBBox.IsVoid()) {
+                        // If no valid box, hide the geometry by setting all points to the origin.
+                        SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+
+                        // Use startEditing() to get a writable pointer to the internal array.
+                        SbVec3f* points = coords->point.startEditing();
+                        for (int j = 0; j < 5; ++j) {
+                            points[j].setValue(0.0f, 0.0f, 0.0f);
+                        }
+                        coords->point.finishEditing();
+                    }
+
+                    // 1. Get the original min/max points and dimensions
+                    gp_Pnt min_pnt_orig = totalBBox.CornerMin();
+                    gp_Pnt max_pnt_orig = totalBBox.CornerMax();
+                    double width = max_pnt_orig.X() - min_pnt_orig.X();
+                    double height = max_pnt_orig.Y() - min_pnt_orig.Y();
+
+                    // 2. Calculate the offset amount
+                    // Using the average of width and height is a good heuristic for a uniform
+                    // offset.
+                    double offset = (width + height) / 2.0 * 0.05;  // 5% of the average dimension
+
+                    // 3. Create new, "inflated" corner points by applying the offset
+                    gp_Pnt min_pnt(
+                        min_pnt_orig.X() - offset,
+                        min_pnt_orig.Y() - offset,
+                        min_pnt_orig.Z()
+                    );
+                    gp_Pnt max_pnt(
+                        max_pnt_orig.X() + offset,
+                        max_pnt_orig.Y() + offset,
+                        max_pnt_orig.Z()
+                    );
+
+                    // 4. Define the 4 corners of the rectangle using the inflated points
+                    SbVec3f p0(min_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-left
+                    SbVec3f p1(max_pnt.X(), min_pnt.Y(), zConstrH);  // bottom-right
+                    SbVec3f p2(max_pnt.X(), max_pnt.Y(), zConstrH);  // top-right
+                    SbVec3f p3(min_pnt.X(), max_pnt.Y(), zConstrH);  // top-left
+
+                    // 3. Get the SoCoordinate3 node we created in rebuildConstraintNodes
+                    //    Index 0: SoMaterial, Index 1: SoDrawStyle, Index 2: SoCoordinate3
+                    SoCoordinate3* coords = static_cast<SoCoordinate3*>(sep->getChild(2));
+
+                    // 4. Update the points in the node to draw the rectangle
+                    SbVec3f* points = coords->point.startEditing();
+                    points[0] = p0;
+                    points[1] = p1;
+                    points[2] = p2;
+                    points[3] = p3;
+                    points[4] = p0;  // Repeat the first point to close the loop
+                    coords->point.finishEditing();
 
                 } break;
                 case Distance:
@@ -1795,12 +1879,16 @@ void EditModeConstraintCoinManager::updateConstraintColor(
             }
         }
         else {
+            bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+                viewProvider,
+                constraint
+            );
             if (hasDatumLabel) {
                 SoDatumLabel* l = static_cast<SoDatumLabel*>(
                     s->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                 );
 
-                l->textColor = constraint->isActive
+                l->textColor = isActive
                     ? ViewProviderSketchCoinAttorney::constraintHasExpression(viewProvider, i)
                         ? drawingParameters.ExprBasedConstrDimColor
                         : (constraint->isDriving ? drawingParameters.ConstrDimColor
@@ -1808,7 +1896,7 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                     : drawingParameters.DeactivatedConstrDimColor;
             }
             else if (hasMaterial) {
-                m->diffuseColor = constraint->isActive
+                m->diffuseColor = isActive
                     ? (constraint->isDriving ? drawingParameters.ConstrDimColor
                                              : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
@@ -1884,7 +1972,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
         // every constrained visual node gets its own material for preselection and selection
         SoMaterial* mat = new SoMaterial;
         mat->ref();
-        mat->diffuseColor = (*it)->isActive
+        bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(viewProvider, *it);
+        mat->diffuseColor = isActive
             ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                 : drawingParameters.NonDrivingConstrDimColor)
             : drawingParameters.DeactivatedConstrDimColor;
@@ -1902,7 +1991,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 SoDatumLabel* text = new SoDatumLabel();
                 text->norm.setValue(norm);
                 text->string = "";
-                text->textColor = (*it)->isActive
+                text->textColor = isActive
                     ? ((*it)->isDriving ? drawingParameters.ConstrDimColor
                                         : drawingParameters.NonDrivingConstrDimColor)
                     : drawingParameters.DeactivatedConstrDimColor;
@@ -1936,6 +2025,31 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 sep->addChild(new SoInfo());
 
                 // remember the type of this constraint node
+                vConstrType.push_back((*it)->Type);
+            } break;
+            case Group:
+            case Text: {
+                // For a group, we will draw a dashed rectangle.
+                // We need a Material, a DrawStyle, Coordinates, and a LineSet.
+
+                // 1. Material (for color, re-using the one already created)
+                sep->addChild(mat);
+
+                // 2. DrawStyle (to make the line dashed)
+                SoDrawStyle* drawStyle = new SoDrawStyle();
+                drawStyle->linePattern = 0x0F0F;  // A standard 50% dashed pattern
+                sep->addChild(drawStyle);
+
+                // 3. Coordinates (for the 4 corners + 1 to close the loop)
+                SoCoordinate3* coords = new SoCoordinate3();
+                coords->point.setNum(5);  // Pre-allocate 5 points for a closed rectangle
+                sep->addChild(coords);
+
+                // 4. LineSet (to connect the coordinates)
+                SoLineSet* lineSet = new SoLineSet();
+                lineSet->numVertices.set1Value(0, 5);  // A single polyline of 5 vertices
+                sep->addChild(lineSet);
+
                 vConstrType.push_back((*it)->Type);
             } break;
             case Coincident:  // no visual for coincident so far
@@ -2861,6 +2975,10 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     };
 
     const auto constraints = ViewProviderSketchCoinAttorney::getConstraints(viewProvider);
+    bool isActive = ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+        viewProvider,
+        constraints[constraintId]
+    );
 
     if (ViewProviderSketchCoinAttorney::isConstraintPreselected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.PreselectColor);
@@ -2868,7 +2986,7 @@ QColor EditModeConstraintCoinManager::constrColor(int constraintId)
     else if (ViewProviderSketchCoinAttorney::isConstraintSelected(viewProvider, constraintId)) {
         return toQColor(drawingParameters.SelectColor);
     }
-    else if (!constraints[constraintId]->isActive) {
+    else if (!isActive) {
         return toQColor(drawingParameters.DeactivatedConstrDimColor);
     }
     else if (!constraints[constraintId]->isDriving) {

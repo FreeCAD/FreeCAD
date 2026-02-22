@@ -889,6 +889,9 @@ private:
     /// or null if it doesn't exist.
     Sketcher::Constraint* getConstraint(int constid) const;
 
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
+
     // gets the list of geometry of the sketchobject or of the solver instance
     const GeoList getGeoList() const;
 

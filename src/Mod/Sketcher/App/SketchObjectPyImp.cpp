@@ -724,6 +724,61 @@ PyObject* SketchObjectPy::delConstraintsToExternal()
     Py_Return;
 }
 
+PyObject* SketchObjectPy::setTextAndFont(PyObject* args, PyObject* kwd)
+{
+    int constrIndex = -1;
+    char* textStr;
+    char* fontStr;
+    PyObject* isHeightObj = Py_True;
+    PyObject* isConstrObj = Py_False;  // Default to null (parameter not provided)
+
+    // "iss|O!O!" (int, str, str, | bool, bool)
+    if (!PyArg_ParseTuple(
+            args,
+            "iss|O!O!",
+            &constrIndex,
+            &textStr,
+            &fontStr,
+            &PyBool_Type,
+            &isHeightObj,
+            &PyBool_Type,
+            &isConstrObj
+        )) {
+        return nullptr;
+    }
+
+    std::string text(textStr);
+    std::string font(fontStr);
+
+    // Call the C++ implementation
+    int err = this->getSketchObjectPtr()->setTextAndFont(
+        constrIndex,
+        text,
+        font,
+        Base::asBoolean(isHeightObj),
+        Base::asBoolean(isConstrObj)
+    );
+
+    // Handle errors returned from the C++ function
+    if (err) {
+        std::stringstream str;
+        if (err == -1) {
+            str << "Invalid constraint index or not a Text constraint: " << constrIndex;
+        }
+        else if (err == -6) {
+            str << "Cannot set text/font because of invalid geometry in the sketch";
+        }
+        else {  // Generic error for solver failures etc.
+            str << "Failed to set text/font for constraint with index " << constrIndex
+                << ". The operation would result in an invalid sketch.";
+        }
+        PyErr_SetString(PyExc_ValueError, str.str().c_str());
+        return nullptr;
+    }
+
+    Py_Return;
+}
+
 PyObject* SketchObjectPy::setDatum(PyObject* args)
 {
     double Datum;

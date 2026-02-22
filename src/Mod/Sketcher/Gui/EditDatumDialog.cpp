@@ -451,6 +451,14 @@ bool hasVisualFeature(App::DocumentObject* obj, App::DocumentObject* rootObj, Gu
 
 void EditDatumDialog::performAutoScale(double newDatum)
 {
+    const std::vector<Sketcher::Constraint*>& constraints = sketch->Constraints.getValues();
+    for (auto* constr : constraints) {
+        if (constr->Type == Sketcher::Group || constr->Type == Sketcher::Text) {
+            // Do not attempt to scale if there's a group
+            return;
+        }
+    }
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning"
     );

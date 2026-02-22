@@ -143,6 +143,21 @@ public:
      \retval bool - true if the geometry is supported
      */
     bool isSupportedGeometry(const Part::Geometry* geo) const;
+
+    /*!
+     \brief Returns true if the geometry is in a group
+     \param geoId - the geometry id in the sketch
+     \param includeHandle - return true if geoId is the group construction line handle
+     \retval bool - true if the geometry is supported
+     */
+    bool isInGroup(int geoId, bool includeHandle = true) const;
+    bool isGroupHandle(int geoId) const;
+    /*!
+     \brief Returns geoId if it's not in a group. Or the group handle if it is in a group.
+     \param geoId - the geometry id in the sketch
+     */
+    int getGroupHandleIfInGroup(int geoId);
+
     /*!
      \brief Add geometry to a sketch - It adds a copy with a different uuid (internally uses copy()
      instead of clone()) \param geo - geometry to add \param construction - true for construction
@@ -337,6 +352,14 @@ public:
     int setDatum(int ConstrId, double Datum);
     /// get the datum of a Distance or Angle constraint
     double getDatum(int ConstrId) const;
+    /// set the text and font of a text constraint
+    int setTextAndFont(
+        int ConstrId,
+        std::string& newText,
+        std::string& newFont,
+        bool isHeight,
+        bool isConstruction = false
+    );
     /// set the driving status of this constraint and solve
     int setDriving(int ConstrId, bool isdriving);
     /// get the driving status of this constraint
@@ -351,6 +374,8 @@ public:
     int setActive(int ConstrId, bool isactive);
     /// get the driving status of this constraint
     int getActive(int ConstrId, bool& isactive);
+    // Return true if the constraint is active, includes checking if it's not in a group
+    bool isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const;
     /// toggle the driving status of this constraint
     int toggleActive(int ConstrId);
 

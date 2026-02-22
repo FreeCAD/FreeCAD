@@ -197,6 +197,17 @@ int Sketch::setUpSketch(
 
     clear();
 
+    // The geometries that are in groups are going to be ignored by the solver.
+    std::set<int> inGroupGeoIds;
+    for (const auto& c : ConstraintList) {
+        if (c->Type == Group || c->Type == Text) {
+            // Start from index 1, as 0 is the frame.
+            for (int i = 1; c->hasElement(i); ++i) {
+                inGroupGeoIds.insert(c->getGeoId(i));
+            }
+        }
+    }
+
     std::vector<Part::Geometry*> intGeoList, extGeoList;
     std::copy(GeoList.begin(), GeoList.end() - extGeoCount, std::back_inserter(intGeoList));
     std::copy(GeoList.end() - extGeoCount, GeoList.end(), std::back_inserter(extGeoList));
@@ -248,7 +259,7 @@ int Sketch::setUpSketch(
 
     buildInternalAlignmentGeometryMap(ConstraintList);
 
-    addGeometry(intGeoList, onlyBlockedGeometry);
+    addGeometry(intGeoList, onlyBlockedGeometry, inGroupGeoIds);
     int extStart = Geoms.size();
     addGeometry(extGeoList, true);
     int extEnd = Geoms.size() - 1;
@@ -258,6 +269,22 @@ int Sketch::setUpSketch(
 
     // The Geoms list might be empty after an undo/redo
     if (!Geoms.empty()) {
+        // Disable any constraint that act on geometries that are in a group.
+        for (size_t i = 0; i < ConstraintList.size(); ++i) {
+            const auto& c = ConstraintList[i];
+
+            if (c->Type == Group || c->Type == Text) {
+                continue;
+            }
+
+            for (int j = 0; c->hasElement(j); ++j) {
+                if (inGroupGeoIds.count(c->getGeoId(j))) {
+                    unenforceableConstraints[i] = true;
+                    break;
+                }
+            }
+        }
+
         addConstraints(ConstraintList, unenforceableConstraints);
     }
     clearTemporaryConstraints();
@@ -738,18 +765,33 @@ int Sketch::addGeometry(const std::vector<Part::Geometry*>& geos, bool fixed)
     return ret;
 }
 
-int Sketch::addGeometry(const std::vector<Part::Geometry*>& geos, const std::vector<bool>& blockedGeometry)
+int Sketch::addGeometry(
+    const std::vector<Part::Geometry*>& geos,
+    const std::vector<bool>& blockedGeometry,
+    const std::set<int>& inGroupGeoIds
+)
 {
     assert(geos.size() == blockedGeometry.size());
 
     int ret = -1;
+    int geoIdCounter = 0;
     std::vector<Part::Geometry*>::const_iterator it;
     std::vector<bool>::const_iterator bit;
 
     for (it = geos.begin(), bit = blockedGeometry.begin();
          it != geos.end() && bit != blockedGeometry.end();
-         ++it, ++bit) {
-        ret = addGeometry(*it, *bit);
+         ++it, ++bit, ++geoIdCounter) {
+
+        // Check if the current geometry is in group.
+        bool isInGroup = inGroupGeoIds.count(geoIdCounter);
+        if (isInGroup) {
+            GeoDef def;
+            def.geo = (*it)->clone();
+            Geoms.push_back(def);
+        }
+        else {
+            ret = addGeometry(*it, *bit);
+        }
     }
     return ret;
 }
@@ -1874,6 +1916,7 @@ int Sketch::checkGeoId(int geoId) const
         geoId += Geoms.size();  // convert negative external-geometry index to index into Geoms
     }
     if (!(geoId >= 0 && geoId < int(Geoms.size()))) {
+        Base::Console().warning("geoId %d  Geoms.size %d\n", geoId, int(Geoms.size()));
         throw Base::IndexError("Sketch::checkGeoId. GeoId index out range.");
     }
     return geoId;
@@ -2468,6 +2511,19 @@ int Sketch::addConstraint(const Constraint* constraint)
                 c.driving
             );
         } break;
+        case Text:
+        case Group: {
+            if (constraint->isElementsEmpty()) {
+                return -1;
+            }
+            // Check that the first element is correctly the group construction line
+            if (Geoms[checkGeoId(constraint->getGeoId(0))].type != Line) {
+                return -1;
+            }
+
+            rtn = ++ConstraintsCounter;
+            break;
+        }
         case Sketcher::None:   // ambiguous enum value
         case Sketcher::Block:  // handled separately while adding geometry
         case NumConstraintTypes:
@@ -4764,6 +4820,8 @@ bool Sketch::updateNonDrivingConstraints()
 
 int Sketch::solve()
 {
+    captureGroupStates();
+
     Base::TimeElapsed start_time;
     std::string solvername;
 
@@ -4781,6 +4839,10 @@ int Sketch::solve()
     }
 
     SolveTime = Base::TimeElapsed::diffTimeF(start_time, end_time);
+
+    if (result == GCS::Success) {
+        applyGroupTransformations();
+    }
 
     return result;
 }
@@ -5536,3 +5598,112 @@ void Sketch::Save(Writer&) const
 
 void Sketch::Restore(XMLReader&)
 {}
+
+// Group functions related -------------------------------------------------
+
+Sketch::GroupLineState Sketch::getGroupLineState(int geoId) const
+{
+    GroupLineState state;
+    state.startPoint = getPoint(geoId, PointPos::start);
+    state.endPoint = getPoint(geoId, PointPos::end);
+    return state;
+}
+
+void Sketch::captureGroupStates()
+{
+    preSolveGroupStates.clear();
+
+    // A set to keep track of which parameters we've already moved.
+    std::set<double*> movedParams;
+
+    for (const auto& constrDef : Constrs) {
+        const Constraint* c = constrDef.constr;
+
+        if ((c->Type != Group && c->Type != Text) || !c->hasElement(1)) {
+            continue;
+        }
+
+        // --- Capture Frame State ---
+        int frameGeoId = c->getGeoId(0);
+        preSolveGroupStates[frameGeoId] = getGroupLineState(frameGeoId);
+    }
+}
+
+void Sketch::applyGroupTransformations()
+{
+    if (preSolveGroupStates.empty()) {
+        return;
+    }
+
+    for (const auto& constrDef : Constrs) {
+        const Constraint* c = constrDef.constr;
+        if ((c->Type != Group && c->Type != Text) || !c->hasElement(1)) {
+            continue;
+        }
+
+        int frameGeoId = c->getGeoId(0);
+
+        // Get the "before" and "after" states of the frame line
+        GroupLineState preSolveFrame = preSolveGroupStates.at(frameGeoId);
+        GroupLineState postSolveFrame = getGroupLineState(frameGeoId);
+
+        // --- Calculate the Transformation ---
+        Base::Vector3d preVec = preSolveFrame.getVec();
+        Base::Vector3d postVec = postSolveFrame.getVec();
+
+        // Handle potential zero-length lines to avoid division by zero
+        double preLen = preVec.Length();
+        double scale = (preLen > Precision::Confusion()) ? postVec.Length() / preLen : 1.0;
+
+        // --- Create the Transformation Matrix ---
+
+        // 1. T1: Matrix to translate the group to the origin (using pre-solve start point)
+        Base::Matrix4D T1;  // Identity
+        T1[0][3] = -preSolveFrame.startPoint.x;
+        T1[1][3] = -preSolveFrame.startPoint.y;
+        T1[2][3] = 0;
+
+        // 2. S: Matrix for scaling
+        Base::Matrix4D S;  // Identity
+        S[0][0] = scale;
+        S[1][1] = scale;
+        S[2][2] = scale;
+
+        // 3. R: Matrix for rotation
+        Base::Matrix4D R;  // Identity
+        if (preLen > Precision::Confusion()) {
+            // We can get the axis and angle from the two vectors and use rotLine
+            Base::Vector3d rotationAxis = preVec.Cross(postVec);
+            double rotationAngle = preVec.GetAngle(postVec);
+            // Only apply rotation if the vectors are not collinear
+            if (rotationAxis.Length() > Precision::Confusion()) {
+                R.rotLine(rotationAxis, rotationAngle);
+            }
+        }
+
+        // 4. T2: Matrix to translate the group to its new final position
+        Base::Matrix4D T2;  // Identity
+        T2[0][3] = postSolveFrame.startPoint.x;
+        T2[1][3] = postSolveFrame.startPoint.y;
+        T2[2][3] = 0;
+
+        // 5. Combine the matrices in the correct order: T_final = T2 * R * S * T1
+        Base::Matrix4D transform = T2 * R * S * T1;
+
+        // --- Loop through grouped elements and apply the transform ---
+        for (int i = 1; c->hasElement(i); ++i) {
+            int groupedGeoId = c->getGeoId(i);
+            if (groupedGeoId == GeoEnum::GeoUndef) {
+                continue;
+            }
+
+            // Get the slave's current (pre-solve) state
+            Part::Geometry* groupedGeo = Geoms[checkGeoId(groupedGeoId)].geo;
+
+            // Apply the calculated transformation
+            groupedGeo->transform(transform);
+        }
+    }
+
+    preSolveGroupStates.clear();
+}

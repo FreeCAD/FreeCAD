@@ -19,6 +19,8 @@
         <file>icons/constraints/Constraint_Ellipse_Radii.svg</file>
         <file>icons/constraints/Constraint_EqualLength.svg</file>
         <file>icons/constraints/Constraint_ExternalAngle.svg</file>
+        <file>icons/constraints/Constraint_Group.svg</file>
+        <file>icons/constraints/Constraint_Text.svg</file>
         <file>icons/constraints/Constraint_Horizontal.svg</file>
         <file>icons/constraints/Constraint_HorizontalDistance.svg</file>
         <file>icons/constraints/Constraint_HorizontalDistance_Driven.svg</file>
@@ -91,6 +93,8 @@
         <file>icons/elements/Sketcher_Element_Line_Edge.svg</file>
         <file>icons/elements/Sketcher_Element_Line_EndPoint.svg</file>
         <file>icons/elements/Sketcher_Element_Line_StartingPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Text_EndPoint.svg</file>
+        <file>icons/elements/Sketcher_Element_Text_StartPoint.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_Centre_Point.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_Edge.svg</file>
         <file>icons/elements/Sketcher_Element_Parabolic_Arc_End_Point.svg</file>
@@ -188,6 +192,7 @@
         <file>icons/geometry/Sketcher_CreateSquare.svg</file>
         <file>icons/geometry/Sketcher_CreateSquare_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateText.svg</file>
+        <file>icons/geometry/Sketcher_CreateText_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle.svg</file>
         <file>icons/geometry/Sketcher_CreateTriangle_Constr.svg</file>
         <file>icons/geometry/Sketcher_Extend.svg</file>

@@ -58,10 +58,11 @@ using DSHTranslateController = DrawSketchDefaultWidgetController<
     DrawSketchHandlerTranslate,
     StateMachines::ThreeSeekEnd,
     /*PAutoConstraintSize =*/0,
-    /*OnViewParametersT =*/OnViewParameters<6>,
-    /*WidgetParametersT =*/WidgetParameters<2>,
-    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,
-    /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+    /*OnViewParametersT =*/OnViewParameters<6>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<2>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<1>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<0>,  // NOLINT
+    /*WidgetLineEditsT =*/WidgetLineEdits<0>>;   // NOLINT
 
 using DSHTranslateControllerBase = DSHTranslateController::ControllerBase;
 

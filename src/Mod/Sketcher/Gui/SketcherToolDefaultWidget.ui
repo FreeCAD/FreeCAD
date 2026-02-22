@@ -87,6 +87,34 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="lineEditLayout1">
+     <item>
+      <widget class="QLabel" name="lineEditLabel1">
+       <property name="text">
+        <string>Line edit 1</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit1"/>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="lineEditLayout2">
+     <item>
+      <widget class="QLabel" name="lineEditLabel2">
+       <property name="text">
+        <string>Line edit 2</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit2"/>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="QLabel" name="label">

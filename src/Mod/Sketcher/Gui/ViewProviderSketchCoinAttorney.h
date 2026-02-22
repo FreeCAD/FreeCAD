@@ -86,6 +86,10 @@ class ViewProviderSketchCoinAttorney
 private:
     static inline bool constraintHasExpression(const ViewProviderSketch& vp, int constrid);
     static inline const std::vector<Sketcher::Constraint*> getConstraints(const ViewProviderSketch& vp);
+    static inline bool isConstraintActiveInSketch(
+        const ViewProviderSketch& vp,
+        const Sketcher::Constraint* cstr
+    );
     static inline const GeoList getGeoList(const ViewProviderSketch& vp);
     static inline const GeoListFacade getGeoListFacade(const ViewProviderSketch& vp);
     static inline Base::Placement getEditingPlacement(const ViewProviderSketch& vp);
@@ -143,6 +147,14 @@ inline const std::vector<Sketcher::Constraint*> ViewProviderSketchCoinAttorney::
 )
 {
     return vp.getConstraints();
+}
+
+inline bool ViewProviderSketchCoinAttorney::isConstraintActiveInSketch(
+    const ViewProviderSketch& vp,
+    const Sketcher::Constraint* cstr
+)
+{
+    return vp.isConstraintActiveInSketch(cstr);
 }
 
 inline const GeoList ViewProviderSketchCoinAttorney::getGeoList(const ViewProviderSketch& vp)

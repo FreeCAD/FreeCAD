@@ -1418,6 +1418,36 @@ PartExport std::unique_ptr<GeomCurve> makeFromTrimmedCurve(
 );
 
 PartExport std::unique_ptr<GeomCurve> makeFromCurveAdaptor(const Adaptor3d_Curve&, bool silent = false);
+
+/**
+ * @brief Creates a series of edges representing a text string.
+ *
+ * This function generates geometric edges for a given text string using a specified font file.
+ * The text is scaled and positioned within a bounding box defined by two points.
+ *
+ * @param geos Output vector to be populated with geometry (GeomTrimmedCurve). The vector is cleared
+ * first.
+ * @param p1 The origin point for the text's baseline.
+ * @param p2 A point used to define the height and orientation. The text height will be
+ * (p2-p1).Length() and its orientation angle will be the angle of the vector (p2-p1).
+ * @param plainText The string to be rendered.
+ * @param fontFile The absolute path to the TTF, OTF, etc., font file.
+ * @param tracking Additional spacing between characters.
+ */
+PartExport void transformAndConvertToGeometry(
+    std::vector<std::unique_ptr<Part::Geometry>>& geos,
+    const std::vector<TopoDS_Shape>& baseShapes,
+    const Base::Vector3d& p1,
+    const Base::Vector3d& p2,
+    bool height
+);
+
+PartExport std::vector<TopoDS_Shape> makeTextWires(
+    std::string& text,
+    std::string& fontFile,
+    double height = 1.0,
+    double tracking = 0.0
+);
 }  // namespace Part
 
 #endif  // PART_GEOMETRY_H

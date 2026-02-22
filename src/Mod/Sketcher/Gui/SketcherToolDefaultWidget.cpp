@@ -26,7 +26,7 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QApplication>
 #include <QEvent>
-
+#include <QLineEdit>
 
 #include "ui_SketcherToolDefaultWidget.h"
 #include <Gui/Application.h>
@@ -56,6 +56,10 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
 {
     ui->setupUi(this);
 
+    ui->comboBox1->setMaxVisibleItems(25);
+    ui->comboBox2->setMaxVisibleItems(25);
+    ui->comboBox3->setMaxVisibleItems(25);
+
     // connecting the needed signals
     setupConnections();
 
@@ -65,6 +69,9 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     ui->parameterFour->installEventFilter(this);
     ui->parameterFive->installEventFilter(this);
     ui->parameterSix->installEventFilter(this);
+
+    ui->lineEdit1->installEventFilter(this);
+    ui->lineEdit2->installEventFilter(this);
 
     reset();
 }
@@ -155,6 +162,8 @@ void SketcherToolDefaultWidget::setupConnections()
         this,
         &SketcherToolDefaultWidget::comboBox3_currentIndexChanged
     );
+    connect(ui->lineEdit1, &QLineEdit::textChanged, this, &SketcherToolDefaultWidget::lineEdit1_textChanged);
+    connect(ui->lineEdit2, &QLineEdit::textChanged, this, &SketcherToolDefaultWidget::lineEdit2_textChanged);
 }
 
 // preselect the number of the spinbox when it gets the focus.
@@ -175,6 +184,13 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
         if (ke->key() == Qt::Key_Tab || ke->key() == Qt::Key_Return) {
             for (int i = 0; i < nParameters; i++) {
                 if (object == getParameterSpinBox(i)) {
+                    signalParameterTabOrEnterPressed(i);
+                    return true;
+                }
+            }
+
+            for (int i = 0; i < nLineEdit; i++) {
+                if (object == getLineEdit(i)) {
                     signalParameterTabOrEnterPressed(i);
                     return true;
                 }
@@ -205,6 +221,11 @@ void SketcherToolDefaultWidget::reset()
         setComboboxVisible(i, false);
         setComboboxIndex(i, 0);
         getComboBox(i)->clear();
+    }
+    for (int i = 0; i < nLineEdit; i++) {
+        setLineEditVisible(i, false);
+        QString str;
+        setLineEditText(i, str);
     }
 
     setNoticeVisible(false);
@@ -735,21 +756,18 @@ void SketcherToolDefaultWidget::comboBox1_currentIndexChanged(int val)
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::FirstCombo, val);
     }
-    ui->comboBox1->onSave();
 }
 void SketcherToolDefaultWidget::comboBox2_currentIndexChanged(int val)
 {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::SecondCombo, val);
     }
-    ui->comboBox2->onSave();
 }
 void SketcherToolDefaultWidget::comboBox3_currentIndexChanged(int val)
 {
     if (!blockParameterSlots) {
         signalComboboxSelectionChanged(Combobox::ThirdCombo, val);
     }
-    ui->comboBox3->onSave();
 }
 
 void SketcherToolDefaultWidget::initNComboboxes(int ncombobox)
@@ -833,6 +851,116 @@ int SketcherToolDefaultWidget::getComboboxIndex(int comboboxindex)
     THROWM(Base::IndexError, "ToolWidget combobox index out of range");
 }
 
+QString SketcherToolDefaultWidget::getComboboxCurrentText(int comboboxindex)
+{
+    if (comboboxindex < nCombobox) {
+        return getComboBox(comboboxindex)->currentText();
+    }
+    THROWM(Base::IndexError, "ToolWidget combobox index out of range");
+}
+
+int SketcherToolDefaultWidget::setComboboxCurrentText(int comboboxindex, const QString& text)
+{
+    if (comboboxindex < nCombobox) {
+        int index = getComboBox(comboboxindex)->findText(text, Qt::MatchFixedString);
+        if (index != -1) {
+            getComboBox(comboboxindex)->setCurrentIndex(index);
+        }
+        return index;
+    }
+    THROWM(Base::IndexError, "ToolWidget combobox index out of range");
+}
+
+void SketcherToolDefaultWidget::lineEdit1_textChanged(const QString& text)
+{
+    if (!blockParameterSlots) {
+        signalLineEditTextChanged(LineEdit::FirstEdit, text);
+    }
+}
+
+void SketcherToolDefaultWidget::lineEdit2_textChanged(const QString& text)
+{
+    if (!blockParameterSlots) {
+        signalLineEditTextChanged(LineEdit::SecondEdit, text);
+    }
+}
+
+void SketcherToolDefaultWidget::initNLineEdits(int nlineedit)
+{
+    Base::StateLocker lock(blockParameterSlots, true);
+    for (int i = 0; i < nLineEdit; ++i) {
+        setLineEditVisible(i, i < nlineedit);
+        QString str;
+        setLineEditText(i, str);
+    }
+}
+
+void SketcherToolDefaultWidget::setLineEditVisible(int lineeditindex, bool visible)
+{
+    if (lineeditindex < nLineEdit) {
+        getLineEdit(lineeditindex)->setVisible(visible);
+        getLineEditLabel(lineeditindex)->setVisible(visible);
+    }
+}
+
+void SketcherToolDefaultWidget::setLineEditText(int lineeditindex, const QString& text)
+{
+    if (lineeditindex < nLineEdit) {
+        getLineEdit(lineeditindex)->setText(text);
+        return;
+    }
+    THROWM(Base::IndexError, "ToolWidget line edit index out of range");
+}
+
+void SketcherToolDefaultWidget::setLineEditLabel(int lineeditindex, const QString& string)
+{
+    if (lineeditindex < nLineEdit) {
+        getLineEditLabel(lineeditindex)->setText(string);
+    }
+}
+
+void SketcherToolDefaultWidget::setLineEditFocus(int lineeditindex)
+{
+    if (lineeditindex < nLineEdit) {
+        QLineEdit* lineEdit = getLineEdit(lineeditindex);
+        lineEdit->setFocus(Qt::OtherFocusReason);
+        lineEdit->selectAll();
+        return;
+    }
+    THROWM(Base::IndexError, "ToolWidget line edit index out of range");
+}
+
+QString SketcherToolDefaultWidget::getLineEditText(int lineeditindex)
+{
+    if (lineeditindex < nLineEdit) {
+        return getLineEdit(lineeditindex)->text();
+    }
+    THROWM(Base::IndexError, "ToolWidget line edit index out of range");
+}
+
+QLabel* SketcherToolDefaultWidget::getLineEditLabel(int lineeditindex)
+{
+    switch (lineeditindex) {
+        case LineEdit::FirstEdit:
+            return ui->lineEditLabel1;
+        case LineEdit::SecondEdit:
+            return ui->lineEditLabel2;
+        default:
+            THROWM(Base::IndexError, "ToolWidget line edit index out of range");
+    }
+}
+
+QLineEdit* SketcherToolDefaultWidget::getLineEdit(int lineeditindex)
+{
+    switch (lineeditindex) {
+        case LineEdit::FirstEdit:
+            return ui->lineEdit1;
+        case LineEdit::SecondEdit:
+            return ui->lineEdit2;
+        default:
+            THROWM(Base::IndexError, "ToolWidget line edit index out of range");
+    }
+}
 
 void SketcherToolDefaultWidget::changeEvent(QEvent* ev)
 {

@@ -73,6 +73,7 @@
 
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
+#include "EditTextDialog.h"
 #include "EditModeCoinManager.h"
 #include "SnapManager.h"
 #include "StyleParameters.h"
@@ -1354,9 +1355,32 @@ void ViewProviderSketch::editDoubleClicked()
         Base::Console().log("double click point:%d\n", preselection.PreselectPoint);
     }
     else if (preselection.isPreselectCurveValid()) {
-        // We cannot do toggleWireSelelection directly here because the released event with
-        //STATUS_NONE return false which clears the selection.
-        setSketchMode(STATUS_SELECT_Wire);
+        int geoId = preselection.PreselectCurve;
+        Sketcher::SketchObject* sketch = getSketchObject();
+
+        // Check if the preselected edge is the handle of a Text constraint
+        int textConstrId = -1;
+        const auto& constraints = sketch->Constraints.getValues();
+        for (int i = 0; i < static_cast<int>(constraints.size()); ++i) {
+            if (constraints[i]->Type == Sketcher::Text && constraints[i]->hasElement(0)) {
+                if (constraints[i]->getGeoId(0) == geoId) {
+                    textConstrId = i;
+                    break;
+                }
+            }
+        }
+
+        if (textConstrId != -1) {
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
+            EditTextDialog editTextDialog(this, textConstrId);
+            editTextDialog.exec();
+            setSketchMode(STATUS_NONE);
+        }
+        else {
+            // We cannot do toggleWireSelelection directly here because the released event with
+            //STATUS_NONE return false which clears the selection.
+            setSketchMode(STATUS_SELECT_Wire);
+        }
     }
     else if (preselection.isCrossPreselected()) {
         Base::Console().log("double click cross:%d\n",
@@ -1378,6 +1402,12 @@ void ViewProviderSketch::editDoubleClicked()
                     QT_TRANSLATE_NOOP("Command", "Modify sketch constraints"));
                 EditDatumDialog editDatumDialog(this, id);
                 editDatumDialog.exec();
+            }
+            else if (Constr->Type == Sketcher::Text) {
+                Gui::Command::openCommand(
+                    QT_TRANSLATE_NOOP("Command", "Modify Text constraint"));
+                EditTextDialog editTextDialog(this, id);
+                editTextDialog.exec();
             }
         }
     }
@@ -1620,15 +1650,26 @@ void ViewProviderSketch::initDragging(int geoId, Sketcher::PointPos pos, Gui::Vi
         return; // don't drag externals
     }
 
+    // If we are trying to drag an edge that is in a group, we drag the group handle instead.
+    int oldgeoId = geoId;
+    geoId = getSketchObject()->getGroupHandleIfInGroup(geoId);
+    if (oldgeoId != geoId) {
+        // if replaced then we want to move the edge of the handle, not a point.
+        pos = PointPos::none;
+    }
+
     drag.reset();
     setSketchMode(STATUS_SKETCH_Drag);
     drag.Dragged.emplace_back(geoId, pos);
 
     // Adding selected geos that should be dragged as well.
-    for (auto& geoIdi : selection.SelCurvSet) {
+    for (auto geoIdi : selection.SelCurvSet) {
         if (geoIdi < 0) {
             continue; //skip externals
         }
+
+        // If in a group, we drag the group handle instead.
+        geoIdi = getSketchObject()->getGroupHandleIfInGroup(geoIdi);
 
         if (geoIdi == geoId) {
             // geoId is already added because it was the preselected.
@@ -2300,6 +2341,16 @@ void ViewProviderSketch::onSelectionChanged(const Gui::SelectionChanges& msg)
                     if (shapetype.size() > 4 && shapetype.substr(0, 4) == "Edge") {
                         int GeoId = std::atoi(&shapetype[4]) - 1;
                         selection.SelCurvSet.insert(GeoId);
+
+                        // Check if this is in a group.
+                        // If so we cancel this addition and select the group instead
+                        int handleId = getSketchObject()->getGroupHandleIfInGroup(GeoId);
+                        if (handleId != GeoId) {
+                            // Remove the selected edge
+                            Gui::Selection().rmvSelection(msg.pDocName, msg.pObjectName, msg.pSubName);
+                            std::string sub = "Edge" + std::to_string(handleId + 1);
+                            Gui::Selection().addSelection(msg.pDocName, msg.pObjectName, sub.c_str());
+                        }
                     }
                     else if (shapetype.size() > 12 && shapetype.substr(0, 12) == "ExternalEdge") {
                         int GeoId = std::atoi(&shapetype[12]) - 1;
@@ -2490,6 +2541,16 @@ bool ViewProviderSketch::detectAndShowPreselection(SoPickedPoint* Point)
         }
         else if (result.GeoIndex != -1
                  && result.GeoIndex != preselection.PreselectCurve) {// if a new curve is hit
+
+            // If the picked edge is part of a text/group, treat the handle as the preselected item
+            int handleId = getSketchObject()->getGroupHandleIfInGroup(result.GeoIndex);
+            if (handleId != result.GeoIndex) {
+                if (handleId == preselection.PreselectCurve) {
+                    return false;
+                }
+                result.GeoIndex = handleId;
+            }
+
             std::stringstream ss;
             if (result.GeoIndex >= 0)
                 ss << "Edge" << result.GeoIndex + 1;
@@ -4139,6 +4200,8 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
         Gui::Selection().clearSelection();
         resetPreselectPoint();
 
+        const auto& constraints = getSketchObject()->Constraints.getValues();
+
         std::set<int> delInternalGeometries, delExternalGeometries, delCoincidents, delConstraints;
         // go through the selected subelements
         for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end();
@@ -4147,6 +4210,18 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 int GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
                 if (GeoId >= 0) {
                     delInternalGeometries.insert(GeoId);
+
+                    // Handle group deletion
+                    for (const auto* c : constraints) {
+                        if ((c->Type == Sketcher::Text || c->Type == Sketcher::Group)
+                            && c->hasElement(0) && c->getGeoId(0) == GeoId) {
+                            // This is a group handle. Add all members to the delete list.
+                            for (int j = 1; c->hasElement(j); ++j) {
+                                delInternalGeometries.insert(c->getGeoId(j));
+                            }
+                            break; // A geo can only be a handle for one constraint.
+                        }
+                    }
                 }
                 else
                     delExternalGeometries.insert(Sketcher::GeoEnum::RefExt - GeoId);
@@ -4432,6 +4507,11 @@ Sketcher::Constraint* ViewProviderSketch::getConstraint(int constid) const
     }
 
     return nullptr;
+}
+
+bool ViewProviderSketch::isConstraintActiveInSketch(const Sketcher::Constraint* cstr) const
+{
+    return getSketchObject()->isConstraintActiveInSketch(cstr);
 }
 
 const GeoList ViewProviderSketch::getGeoList() const

@@ -25,7 +25,12 @@
 #include <limits>
 
 #include <Precision.hxx>
+#include <Bnd_Box.hxx>
 #include <QPainter>
+#include <algorithm>
+#include <sstream>
+
+#include <BRepBndLib.hxx>
 
 #include <boost/range/adaptor/reversed.hpp>
 
@@ -10391,6 +10396,246 @@ bool CmdSketcherConstrainSnellsLaw::isActive()
 }
 
 // ======================================================================================
+
+DEF_STD_CMD_A(CmdSketcherConstrainGroup)
+
+CmdSketcherConstrainGroup::CmdSketcherConstrainGroup()
+    : Command("Sketcher_ConstrainGroup")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Group Constrain");
+    sToolTipText = QT_TR_NOOP("Constrains the selected geometries together as a single entity."
+        "The position and size of the grouped geometries can be defined by constraining the construction line that is generated."
+        "Constraints applied to grouped edges are ignored as long as the Group constraint is here.");
+    sWhatsThis = "Sketcher_ConstrainGroup";
+    sStatusTip = sToolTipText;
+    sPixmap = "Constraint_Group";
+    sAccel = "K, G";
+    eType = ForEdit;
+}
+
+void CmdSketcherConstrainGroup::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection = getSelection().getSelectionEx();
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1
+        || !selection[0].isObjectTypeOf(Sketcher::SketchObject::getClassTypeId())) {
+        const char dmbg[] = "Constraint_Group";
+
+        QString strError = QObject::tr("Selected objects are not just geometry "
+                                       "from one sketch.",
+                                       dmbg);
+
+        Gui::TranslatedUserWarning(getActiveGuiDocument()->getDocument(),
+                                   QObject::tr("Wrong selection"),
+                                   std::move(strError));
+    }
+
+    // get the needed lists and objects
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string>& SubNames = selection[0].getSubNames();
+
+    if (SubNames.empty()) {
+        Gui::TranslatedUserWarning(Obj,
+                                   QObject::tr("Wrong selection"),
+                                   QObject::tr("No geometries selected"));
+        return;
+    }
+
+    std::vector<Sketcher::GeoElementId> elts;
+
+    for (auto& subName : SubNames) {
+        int geoId;
+        Sketcher::PointPos posId;
+        getIdsFromName(subName, Obj, geoId, posId);
+
+        bool alreadyAdded = std::any_of(elts.begin(), elts.end(),
+                                [geoId](const Sketcher::GeoElementId& elem) {
+                                    return elem.GeoId == geoId;
+                                });
+
+        if (geoId < 0 || alreadyAdded || Obj->getGeometryFacade(geoId)->isInternalAligned()) {
+            continue;
+        }
+
+        elts.push_back(Sketcher::GeoElementId(geoId, Sketcher::PointPos::none));
+    }
+
+    if (elts.size() < 2) {
+        Base::Console().warning("Cannot create group : minimum 2 geometries must be selected.\n");
+        return;
+    }
+
+    openCommand(QT_TRANSLATE_NOOP("Command", "Add Group constraint"));
+
+    if (!addListConstraint(Obj, elts, "Group")) {
+        abortCommand();
+        return;
+    }
+
+    tryAutoRecompute(Obj);
+
+    commitCommand();
+
+    getSelection().clearSelection();
+}
+
+/**
+ * @brief Escapes a string for safe embedding within a single-quoted Python string literal.
+ *
+ * This function handles backslashes and single quotes.
+ *
+ * @param input The raw string to escape.
+ * @return A new string with special characters escaped.
+ */
+std::string SketcherGui::escapeForPython(const std::string& input)
+{
+    std::string result;
+    // Pre-allocating can be a small optimization if strings are long
+    result.reserve(input.length());
+
+    for (char c : input) {
+        if (c == '\\') {
+            result += "\\\\";
+        } else if (c == '\'') {
+            result += "\\'";
+        } else {
+            result += c;
+        }
+    }
+    return result;
+}
+
+bool SketcherGui::addListConstraint(Sketcher::SketchObject* Obj,
+                       std::vector<Sketcher::GeoElementId>& elts,
+                       const std::string& constraintType,
+                       Base::Vector2d frame_p1,
+                       Base::Vector2d frame_p2,
+                       bool isTextHeight,
+                       const std::string& text,
+                       const std::string& font)
+{
+
+    std::vector<int> geoIdsWithInternalGeos;
+    // The lambda defines the condition for REMOVAL.
+    // It returns 'true' if an element should be erased.
+    auto new_end = std::remove_if(elts.begin(), elts.end(),
+        [&](const Sketcher::GeoElementId& element) -> bool {
+            int geoId = element.GeoId;
+
+            // Condition 1: Check for invalid or already-aligned geometries.
+            // If true, this element should be removed.
+            if (geoId < 0 || Obj->getGeometryFacade(geoId)->isInternalAligned()) {
+                return true; // Mark for removal
+            }
+
+            // Condition 2: Check for internal geometries that need cleanup later.
+            // This does not mark the element for removal, but collects its ID.
+            const Part::Geometry* geo = Obj->getGeometry(geoId);
+            if (Obj->hasInternalGeometry(geo)) {
+                // Collect the ID for later processing.
+                geoIdsWithInternalGeos.push_back(geoId);
+            }
+
+            // If we reached here, the element is valid and should be kept.
+            return false; // Do not remove
+    });
+
+    // Actually erase the elements that were moved to the end.
+    elts.erase(new_end, elts.end());
+
+    if (elts.size() < 2) {
+        Base::Console().warning("Cannot create %s constraint: minimum 2 geometries.\n", constraintType.c_str());
+        return false;
+    }
+
+    if ((frame_p1 - frame_p2).Length() < Precision::Confusion()) {
+        // --- 1. Calculate Bounding Box ---
+        Bnd_Box totalBBox;
+        for (const auto& element : elts) {
+            const Part::Geometry* geo = Obj->getGeometry(element.GeoId);
+            if (geo) {
+                BRepBndLib::Add(geo->toShape(), totalBBox, false);
+            }
+        }
+
+        if (!totalBBox.HasFinitePart()) {
+            Base::Console().warning("Cannot create %s constraint: bounding box is infinite\n", constraintType.c_str());
+            return false;
+        }
+
+        gp_Pnt min_pnt = totalBBox.CornerMin();
+        gp_Pnt max_pnt = totalBBox.CornerMax();
+
+        // --- 2. Define and create the Construction Line "Frame" ---
+        frame_p1 = Base::Vector2d(min_pnt.X(), min_pnt.Y());
+        frame_p2 = Base::Vector2d(min_pnt.X(), max_pnt.Y());
+    }
+
+    Gui::cmdAppObjectArgs(Obj,
+                          "addGeometry(Part.LineSegment(App.Vector(%f,%f,0), App.Vector(%f,%f,0)), True)",
+                          frame_p1.x, frame_p1.y, frame_p2.x, frame_p2.y);
+
+    int frameGeoId = Obj->getHighestCurveIndex();
+
+    // --- 3. Prepend the Frame to the Element List ---
+    elts.insert(elts.begin(), Sketcher::GeoElementId(frameGeoId, Sketcher::PointPos::none));
+
+    // --- 4. Create the Python list of elements as a string ---
+    std::stringstream elements_list_ss;
+    elements_list_ss << "[";
+    if (!elts.empty()) {
+        for (size_t i = 0; i < elts.size() - 1; ++i) {
+            elements_list_ss << elts[i].GeoId << ", " << elts[i].posIdAsInt() << ", ";
+        }
+        elements_list_ss << elts.back().GeoId << ", " << elts.back().posIdAsInt();
+    }
+    elements_list_ss << "]";
+    std::string elements_list_string = elements_list_ss.str();
+
+    // --- 5. Add the appropriate constraint via Python command ---
+    if (constraintType == "Group") {
+        Gui::cmdAppObjectArgs(
+            Obj,
+            "addConstraint(Sketcher.Constraint('Group', %s))",
+            elements_list_string.c_str());
+    }
+    else if (constraintType == "Text") {
+        std::string escaped_text = escapeForPython(text);
+        std::string escaped_font = escapeForPython(font);
+        Gui::cmdAppObjectArgs(
+            Obj,
+            "addConstraint(Sketcher.Constraint('Text', %s, '%s', '%s', %s))",
+            elements_list_string.c_str(),
+            escaped_text.c_str(),
+            escaped_font.c_str(),
+            isTextHeight ? "True" : "False");
+    }
+    else {
+        Base::Console().error("Unsupported list constraint type: %s\n", constraintType.c_str());
+        return false;
+    }
+
+    // We remove the internal alignment of the geometries that were grouped.
+    std::sort(geoIdsWithInternalGeos.begin(), geoIdsWithInternalGeos.end(), std::greater<>());
+    for (auto& geoId : geoIdsWithInternalGeos) {
+        Obj->deleteUnusedInternalGeometry(geoId);
+    }
+
+    return true;
+}
+
+bool CmdSketcherConstrainGroup::isActive()
+{
+    return isCreateConstraintActive(getActiveGuiDocument());
+}
+
+// ======================================================================================
 DEF_STD_CMD_A(CmdSketcherChangeDimensionConstraint)
 
 CmdSketcherChangeDimensionConstraint::CmdSketcherChangeDimensionConstraint()
@@ -10715,6 +10960,7 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherConstrainPointOnObject());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSymmetric());
     rcCmdMgr.addCommand(new CmdSketcherConstrainSnellsLaw());
+    rcCmdMgr.addCommand(new CmdSketcherConstrainGroup());
     rcCmdMgr.addCommand(new CmdSketcherChangeDimensionConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());

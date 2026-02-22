@@ -21,6 +21,7 @@ set(SketcherGui_UIC_SRCS
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
     InsertDatum.ui
+    EditTextDialog.ui
     SketchOrientationDialog.ui
     SketchMirrorDialog.ui
     SketcherSettings.ui
@@ -53,6 +54,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
     DrawSketchHandlerArcSlot.h
+    DrawSketchHandlerText.h
     DrawSketchHandlerBSpline.h
     DrawSketchHandlerPoint.h
     DrawSketchHandlerFillet.h
@@ -136,6 +138,9 @@ SET(SketcherGui_SRCS
     Workbench.h
     EditDatumDialog.cpp
     EditDatumDialog.h
+    EditTextDialog.ui
+    EditTextDialog.cpp
+    EditTextDialog.h
     PropertyVisualLayerList.cpp
     PropertyVisualLayerList.h
     SketchOrientationDialog.cpp

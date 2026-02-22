@@ -398,6 +398,23 @@ class SketchObject(Part2DObject):
         """
         ...
 
+    def setTextAndFont(
+        self, constraint: int, text: str, font: str, isheight: bool, isConstruction: bool
+    ) -> None:
+        """
+        Set the text and font of a Text constraint.
+
+        setTextAndFont(constraint: int, text: str, font: str, isHeight: bool, isConstruction: bool)
+
+            Args:
+                constraint: The index of the Text constraint.
+                text: The text string to display.
+                font: The full path to the font file (.ttf, .otf, etc.).
+                isHeight: Is the line handle of the group the height of the text.
+                isConstruction: Are text geometry construction of not.
+        """
+        ...
+
     @constmethod
     def getDatum(self, constraint: Union[int, str], /) -> Quantity:
         """
