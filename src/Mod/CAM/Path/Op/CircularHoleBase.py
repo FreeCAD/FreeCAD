@@ -2,6 +2,7 @@
 
 # ***************************************************************************
 # *   Copyright (c) 2017 sliptonic <shopinthewoods@gmail.com>               *
+# *   Copyright (c) 2025 Billy Huddleston <billy@ivdc.com>                  *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -81,7 +82,55 @@ class ObjectOp(PathOp.ObjectOp):
             "Base",
             QT_TRANSLATE_NOOP("App::Property", "List of disabled features"),
         )
+        # Handle SortingMode property with migration support
+        obj.addProperty(
+            "App::PropertyEnumeration",
+            "SortingMode",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+        )
+        obj.SortingMode = ("Automatic", "Manual")  # Set available options
+        obj.SortingMode = "Automatic"  # Set default value
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "StartPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "Start point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
+        obj.addProperty(
+            "App::PropertyBool",
+            "UseEndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+        )
+
+        obj.addProperty(
+            "App::PropertyVectorDistance",
+            "EndPoint",
+            "Sorting",
+            QT_TRANSLATE_NOOP(
+                "App::Property", "End point for automatic sorting (x,y used, z ignored)"
+            ),
+        )
+
         self.initCircularHoleOperation(obj)
+
+    def updateSortingVisibility(self, obj):
+        """Show or hide StartPoint, EndPoint and UseEndPoint based on SortingMode."""
+        if hasattr(obj, "SortingMode"):
+            mode = 0 if obj.SortingMode == "Automatic" else 2  # 0=visible, 2=hidden
+            for prop in ("StartPoint", "EndPoint", "UseEndPoint"):
+                if hasattr(obj, prop):
+                    obj.setEditorMode(prop, mode)
+
+    def opOnChanged(self, obj, prop):
+        """opOnChanged(obj, prop) ... react to SortingMode changes to update property visibility."""
+        if prop == "SortingMode" and hasattr(obj, "StartPoint"):
+            self.updateSortingVisibility(obj)
 
     def initCircularHoleOperation(self, obj):
         """initCircularHoleOperation(obj) ... overwrite if the subclass needs initialisation.
@@ -189,7 +238,13 @@ class ObjectOp(PathOp.ObjectOp):
                 holes.append({"x": location.x, "y": location.y, "r": 0})
 
         if len(holes) > 0:
-            holes = PathUtils.sort_locations(holes, ["x", "y"])
+            if obj.SortingMode == "Automatic":
+                # Use the c++ implementation of the TSP sorting algorithm for better performance
+                startPoint = [obj.StartPoint.x, obj.StartPoint.y]
+                endPoint = [obj.EndPoint.x, obj.EndPoint.y] if obj.UseEndPoint else None
+                holes = PathUtils.sort_locations_tsp(
+                    holes, ["x", "y"], startPoint=startPoint, endPoint=endPoint
+                )
             self.circularHoleExecute(obj, holes)
 
     def circularHoleExecute(self, obj, holes):
@@ -216,3 +271,49 @@ class ObjectOp(PathOp.ObjectOp):
             )
         obj.Base = features
         obj.Disabled = []
+
+    def onDocumentRestored(self, obj):
+        self.opOnDocumentRestored(obj)
+        # Migration logic for SortingMode
+        if not hasattr(obj, "SortingMode"):
+            obj.addProperty(
+                "App::PropertyEnumeration",
+                "SortingMode",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Manual or Automatic mode sorting of holes"),
+            )
+            obj.SortingMode = ("Automatic", "Manual")
+            obj.SortingMode = "Automatic"
+
+        # Migration logic for StartPoint
+        if not hasattr(obj, "StartPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "StartPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "Start point for automatic sorting (x,y used, z ignored)",
+                ),
+            )
+
+        # Migration logic for UseEndPoint
+        if not hasattr(obj, "UseEndPoint"):
+            obj.addProperty(
+                "App::PropertyBool",
+                "UseEndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP("App::Property", "Enable to use end point for automatic sorting"),
+            )
+
+        # Migration logic for EndPoint
+        if not hasattr(obj, "EndPoint"):
+            obj.addProperty(
+                "App::PropertyVectorDistance",
+                "EndPoint",
+                "Sorting",
+                QT_TRANSLATE_NOOP(
+                    "App::Property",
+                    "End point for automatic sorting (x,y used, z ignored)",
+                ),
+            )
