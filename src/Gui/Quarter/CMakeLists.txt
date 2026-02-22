@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 INCLUDE(SimQtMacros)
 
 SET(Library Quarter)

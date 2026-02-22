@@ -1,3 +1,5 @@
+@REM SPDX-FileNotice: Part of the FreeCAD project.
+
 @echo on
 
 @REM :: free up extra disk space, compare

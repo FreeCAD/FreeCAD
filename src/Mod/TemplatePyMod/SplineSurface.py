@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
-# FreeCAD TemplatePyMod module
 # (c) 2013 Werner Mayer LGPL
 
 # http://de.wikipedia.org/wiki/Non-Uniform_Rational_B-Spline

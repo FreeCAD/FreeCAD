@@ -1,4 +1,4 @@
-
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>

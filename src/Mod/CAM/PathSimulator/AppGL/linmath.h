@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: WTFPL
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 //*************************************************************************************************
 //* Taken from https://github.com/datenwolf/linmath.h under 'Do whatever you want' license        *

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: CC-BY-SA-4.0 */
+/* SPDX-FileNotice: Part of the FreeCAD project. */
 ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('Open CASCADE Model'),'2;1');

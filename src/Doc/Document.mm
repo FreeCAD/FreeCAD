@@ -1,4 +1,5 @@
 <map version="0.8.0">
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
 <!-- To view this file, download free mind mapping software FreeMind from http://freemind.sourceforge.net -->
 <node CREATED="1193391478406" ID="Freemind_Link_1740027576" MODIFIED="1193391490154" TEXT="Document">
 <node CREATED="1193391508104" ID="_" MODIFIED="1193391698800" POSITION="right" TEXT="Transactions (Undo/Redo)">

@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 add_executable(Base_tests_run
         Axis.cpp
         Base64.cpp

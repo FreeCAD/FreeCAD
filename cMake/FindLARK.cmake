@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # - Find the lark library
 # This module finds if lark is installed, and sets the following variables
 # indicating where it is.

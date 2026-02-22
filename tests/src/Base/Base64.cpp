@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /*
 Copyright (C) 2004-2008 René Nyffenegger
 

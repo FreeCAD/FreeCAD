@@ -1,4 +1,6 @@
 # SPDX-License-Identifier: MIT
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 #
 # Copyright (c) 2019 Daniel Furtlehner (furti)
 # Copyright (c) 2025 The FreeCAD Project

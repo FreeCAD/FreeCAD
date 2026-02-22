@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 """
 GUI framework and application for use with Python unit testing framework.
 Execute tests written using the framework provided by the 'unittest' module.

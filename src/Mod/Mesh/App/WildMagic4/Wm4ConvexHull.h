@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSL-1.0
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // Geometric Tools, LLC
 // Copyright (c) 1998-2010

@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(PrintFinalReport)
 
     # name and value

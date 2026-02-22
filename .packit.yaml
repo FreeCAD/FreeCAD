@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 specfile_path: package/fedora/freecad.spec
 files_to_sync:
     - .packit.yaml

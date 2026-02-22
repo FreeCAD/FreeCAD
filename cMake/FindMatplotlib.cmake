@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # - Find the matplotlib libraries
 # This module finds IF matplotlib is installed, and sets the following variables
 # indicating where it is.

@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 include(GNUInstallDirs)
 
 if(NOT DEFINED APPDATA_RELEASE_DATE)

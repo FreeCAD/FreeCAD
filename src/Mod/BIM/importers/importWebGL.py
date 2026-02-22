@@ -1,12 +1,11 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2013 Yorik van Havre <yorik@uncreated.net>              *
 # *   Copyright (c) 2020 Travis Apple <travisapple@gmail.com>               *
 # *   Copyright (c) 2025 baidakovil <baidakovil@icloud.com>                 *
-# *                                                                         *
-# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
 # *   FreeCAD is free software: you can redistribute it and/or modify it    *
 # *   under the terms of the GNU Lesser General Public License as           *

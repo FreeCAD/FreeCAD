@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # basic test script for TechDraw Py functions migrated from Drawing
 

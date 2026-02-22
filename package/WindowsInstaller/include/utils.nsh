@@ -1,4 +1,6 @@
-﻿# This script contains the following functions:
+﻿; SPDX-FileNotice: Part of the FreeCAD project.
+
+# This script contains the following functions:
 #
 # - un.DelAppPathSub and UnAppPreSuff,
 #    (delete the folder ~\Documents and Settings\username\Application Data\FreeCAD for all users), uses:

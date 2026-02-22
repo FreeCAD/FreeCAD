@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: BSD-3-Clause
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 def process_nested_parent_str(attr_str):
     """

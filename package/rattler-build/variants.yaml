@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 c_compiler:
 - if: win
   then: vs2022

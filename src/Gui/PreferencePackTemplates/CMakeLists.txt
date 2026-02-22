@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 SET(PreferencePackTemplates_Files
     Arch_Colors.cfg

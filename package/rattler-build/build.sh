@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 if [[ ${HOST} =~ .*linux.*  ]]; then
     CMAKE_PRESET=conda-linux-release
 fi

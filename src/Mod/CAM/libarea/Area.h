@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // Area.h
 // Copyright 2011, Dan Heeks

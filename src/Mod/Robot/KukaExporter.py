@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # Kuka export lib (c) Jürgen Riegel 2009 LGPL 2.1 or higher
 

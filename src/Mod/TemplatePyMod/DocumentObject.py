@@ -1,4 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 # FreeCAD module providing base classes for document objects and view provider
 # (c) 2011 Werner Mayer LGPL

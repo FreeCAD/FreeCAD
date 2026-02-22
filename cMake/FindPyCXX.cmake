@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Locate PyCXX headers and source files
 
 # This module defines

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
+// SPDX-FileNotice: Part of the FreeCAD project.
 /////////////////////////////////////////////////////////////////////////////
 // For info about the file structrure see
 // https://docs.microsoft.com/en-us/windows/win32/menurc/versioninfo-resource

@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-#
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # this script is meant to be called by nsis installer scripts, it gets version information
 # from freecad and writes version.nsh file in the directory the script is located at
 import FreeCAD

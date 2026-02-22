@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 import Cocoa
 import Quartz
 import UniformTypeIdentifiers

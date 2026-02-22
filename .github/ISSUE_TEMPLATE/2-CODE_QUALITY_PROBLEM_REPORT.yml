@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 name: Report a Code Quality Issue
 description: Report problems related to code structure, maintainability, performance, correctness, or technical debt that do not directly affect end-user behavior.
 labels: ["Status: Needs triage", "Status: Needs confirmation", "Type: Code Quality"]

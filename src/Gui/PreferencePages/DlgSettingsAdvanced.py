@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2022 Zheng Lei (realthunder) <realthunder.dev@gmail.com>*
 # *                                                                         *

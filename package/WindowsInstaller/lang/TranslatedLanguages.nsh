@@ -1,4 +1,6 @@
-﻿!macro LANG LANG_NAME
+﻿; SPDX-FileNotice: Part of the FreeCAD project.
+
+!macro LANG LANG_NAME
   # NSIS language file
   !insertmacro MUI_LANGUAGE "${LANG_NAME}"
   # FreeCAD language file

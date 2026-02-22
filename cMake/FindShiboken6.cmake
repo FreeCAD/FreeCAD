@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # The Qt for Python project officially recommends using pip to install Shiboken, so we expect to find Shiboken in the
 # site-packages directory. FreeCAD also requires shiboken6_generator, so this find script also locates that package
 # and ensures the inclusion of its include directory when using the pip finding mechanism

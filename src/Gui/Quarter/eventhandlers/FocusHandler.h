@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef QUARTER_FOCUSHANDLER_H
 #define QUARTER_FOCUSHANDLER_H
 

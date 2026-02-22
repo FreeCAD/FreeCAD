@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 # FreeCAD Project Code of Conduct
 
 ## Statement

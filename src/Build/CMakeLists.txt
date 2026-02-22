@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 set(PACKAGE_WCREF "$WCREV$")
 set(PACKAGE_WCDATE "$WCDATE$")

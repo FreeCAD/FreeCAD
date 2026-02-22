@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // written by g.j.hawkesford 2006 for Camtek Gmbh
 //

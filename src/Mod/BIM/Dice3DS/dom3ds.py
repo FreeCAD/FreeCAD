@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 """Slice and dice 3DS files.
 
 Provides for reading, writing, and manipulating 3DS files.  It's

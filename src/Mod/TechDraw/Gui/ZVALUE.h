@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef TECHDRAW_ZVALUE_
 #define TECHDRAW_ZVALUE_
 namespace ZVALUE {

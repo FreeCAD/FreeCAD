@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /*
 ** Copyright (C) 2013 Jiří Procházka (Hobrasoft)
 ** Contact: http://www.hobrasoft.cz/

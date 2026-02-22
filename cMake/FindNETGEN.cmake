@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # Try to find nglib/netgen
 #
 # Optional input NETGENDATA is path to the netgen libsrc source tree - this is

@@ -1,3 +1,5 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 #ifndef GUI_CORNERCROSSLETTERS_H
 #define GUI_CORNERCROSSLETTERS_H
 

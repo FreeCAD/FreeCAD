@@ -1,4 +1,4 @@
-
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 import FreeCAD
 import unittest

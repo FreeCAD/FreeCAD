@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2023 Peter McB                                          *
 # *   added the function, mesh_2_femmesh, to convert the MESH               *

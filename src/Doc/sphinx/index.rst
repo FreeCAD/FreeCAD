@@ -1,4 +1,5 @@
 .. SPDX-License-Identifier: LGPL-2.1-or-later
+.. SPDX-FileNotice: Part of the FreeCAD project.
 
 .. FreeCAD documentation master file, created by
    sphinx-quickstart on Wed Nov 30 10:49:09 2011.

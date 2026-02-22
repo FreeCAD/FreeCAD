@@ -1,3 +1,5 @@
+<!-- SPDX-FileNotice: Part of the FreeCAD project. -->
+
 # FreeCAD Contribution Process (FCP)
 
 FreeCAD's contribution process is inspired by the Collective Code Construction Contract which itself is an evolution of the github.com Fork and Pull Model.

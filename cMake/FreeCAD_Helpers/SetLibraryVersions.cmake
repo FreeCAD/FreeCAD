@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(SetLibraryVersions)
     # version information of libraries
     #

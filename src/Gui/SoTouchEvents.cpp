@@ -1,7 +1,7 @@
+// SPDX-FileNotice: Part of the FreeCAD project.
+
 /***************************************************************************
  *   Copyright (c) 2015 Victor Titov (DeepSOIC) <vv.titov@gmail.com)>      *
- *                                                                         *
- *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
  *   This library is free software; you can redistribute it and/or         *
  *   modify it under the terms of the GNU Library General Public           *

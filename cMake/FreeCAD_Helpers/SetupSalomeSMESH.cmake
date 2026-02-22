@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(SetupSalomeSMESH)
 # -------------------------------- Salome SMESH --------------------------
     # Salome SMESH sources are under src/3rdParty now

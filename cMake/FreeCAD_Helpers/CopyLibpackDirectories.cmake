@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(CopyLibpackDirectories)
     # Copy libpack dependency directories to build folder for user as part of overall build process
     if(FREECAD_COPY_DEPEND_DIRS_TO_BUILD)

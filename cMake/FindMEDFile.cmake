@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # - Find MED file installation
 #
 # The following variable are set:

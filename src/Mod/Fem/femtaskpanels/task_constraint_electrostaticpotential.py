@@ -1,10 +1,10 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 # ***************************************************************************
 # *   Copyright (c) 2017 Markus Hovorka <m.hovorka@live.de>                 *
 # *   Copyright (c) 2020 Bernd Hahnebach <bernd@bimstatik.org>              *
 # *   Copyright (c) 2023 Uwe Stöhr <uwestoehr@lyx.org>                      *
 # *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
-# *                                                                         *
-# *   This file is part of the FreeCAD CAx development system.              *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *

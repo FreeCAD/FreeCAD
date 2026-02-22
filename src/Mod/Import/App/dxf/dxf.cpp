@@ -1,4 +1,5 @@
 ﻿// SPDX-License-Identifier: BSD-3-Clause
+// SPDX-FileNotice: Part of the FreeCAD project.
 
 // dxf.cpp
 // Copyright (c) 2009, Dan Heeks

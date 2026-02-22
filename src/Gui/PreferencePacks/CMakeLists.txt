@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 SET(PreferencePacks_Files
         "package.xml"
 )

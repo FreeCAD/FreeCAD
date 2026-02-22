@@ -1,3 +1,4 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
 
 if(BUILD_FEM_VTK)
     add_definitions(-DFC_USE_VTK)

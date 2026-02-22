@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 /***************************************************************************
- *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *
- *                                                                         *
- *   This file is part of FreeCAD.                                         *
+ *   Copyright (c) 2024 Mario Passaglia <mpassaglia[at]cbc.uba.ar>         *  *
  *                                                                         *
  *   FreeCAD is free software: you can redistribute it and/or modify it    *
  *   under the terms of the GNU Lesser General Public License as           *

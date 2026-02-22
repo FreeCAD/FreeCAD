@@ -1,3 +1,5 @@
+# SPDX-FileNotice: Part of the FreeCAD project.
+
 macro(SetupOpenCasCade)
     find_package(OCC)
     if(NOT OCC_FOUND)
