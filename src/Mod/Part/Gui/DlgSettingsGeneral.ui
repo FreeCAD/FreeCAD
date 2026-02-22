@@ -61,7 +61,7 @@
       <item row="2" column="0">
        <widget class="Gui::PrefCheckBox" name="checkSketchBaseRefine">
         <property name="toolTip">
-         <string>Automatically refine Part Design feature results to remove residual edges and faces.</string>
+         <string>Automatically refine Part Design features to remove residual edges and faces</string>
         </property>
         <property name="text">
          <string>Automatically refine model after applying operations</string>
