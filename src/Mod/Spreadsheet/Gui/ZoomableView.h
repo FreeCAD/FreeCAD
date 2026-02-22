@@ -49,10 +49,6 @@ public:
     int zoomLevel() const;
     void setZoomLevel(int new_scale);
 
-
-    static constexpr int min {60}, max {160};
-    static void checkLimits(int& zoom_level);
-
 Q_SIGNALS:
     void zoomLevelChanged(int);  /// This signal is emitted whenever zoom level is changed. It is
                                  /// used to show the zoom level in the zoom button.
@@ -65,6 +61,7 @@ public Q_SLOTS:
 private:
     void updateView(void);
 
+    const int zoomMin, zoomMax;
     QPointer<SpreadsheetGui::SheetTableView> stv;
     QGraphicsScene m_scene;
     QGraphicsProxyWidget* qpw {nullptr};

@@ -40,14 +40,15 @@ set(SpreadsheetGui_UIC_SRCS
    PropertiesDialog.ui
    DlgBindSheet.ui
    DlgSheetConf.ui
+   DlgSettings.ui
 )
 
 SET(SpreadsheetGui_SRCS
     ${SpreadsheetGui_QRC_SRCS}
     ${SpreadsheetGui_XML_SRCS}
+    ${SpreadsheetGui_UIC_SRCS}
     AppSpreadsheetGui.cpp
     Command.cpp
-    DlgSettings.ui
     DlgSettingsImp.cpp
     DlgSettingsImp.h
     LineEdit.h
@@ -79,7 +80,6 @@ SET(SpreadsheetGui_SRCS
     DlgSheetConf.cpp
     ZoomableView.h
     ZoomableView.cpp
-    ${SpreadsheetGui_UIC_HDRS}
 )
 
 SET(SpreadsheetGuiIcon_SVG
@@ -95,10 +95,6 @@ SOURCE_GROUP("Moc" FILES ${SpreadsheetGui_MOC_SRCS})
 SET(Resource_SRCS
     ${Resource_SRCS}
     Resources/Spreadsheet.qrc
-)
-
-set(SpreadsheetGui_UIC_SRCS
-    DlgSettings.ui
 )
 
 add_library(SpreadsheetGui SHARED
