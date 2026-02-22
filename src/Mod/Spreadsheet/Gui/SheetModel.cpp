@@ -104,7 +104,7 @@ bool SheetModel::insertColumns(int column, int count, const QModelIndex& parent)
     if (cols + count > CellAddress::MAX_COLUMNS) {
         return false;
     }
-    beginInsertColumns(parent, cols, cols + count - 1);
+    beginInsertColumns(parent, column, column + count - 1);
     cols += count;
     sheet->insertColumns(column, count);
     endInsertColumns();
