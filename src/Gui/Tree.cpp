@@ -3722,7 +3722,7 @@ void TreeWidget::scrollItemToTop()
                     continue;
                 }
                 auto doc = docItem->document()->getDocument();
-                if (Gui::Selection().hasSelection(doc->getName())) {
+                if (Gui::Selection().hasSelection(doc->getName(), ResolveMode::OldStyleElement)) {
                     tree->currentDocItem = docItem;
                     docItem->selectItems(DocumentItem::SR_FORCE_EXPAND);
                     tree->currentDocItem = nullptr;
