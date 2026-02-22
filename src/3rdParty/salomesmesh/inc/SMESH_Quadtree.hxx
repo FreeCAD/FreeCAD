@@ -29,7 +29,7 @@
 
 #include "SMESH_Utils.hxx"
 #include "SMESH_tree.hxx"
-#include <Bnd_B2d.hxx>
+#include <Bnd_B2.hxx>
 
 /*!
  * \brief 2D tree of anything.

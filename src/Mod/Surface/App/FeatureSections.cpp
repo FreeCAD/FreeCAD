@@ -29,6 +29,7 @@
 #include <Geom_TrimmedCurve.hxx>
 #include <Precision.hxx>
 #include <Standard_Version.hxx>
+#include <TColGeom_SequenceOfCurve.hxx>
 #include <TopLoc_Location.hxx>
 #include <TopoDS.hxx>
 

@@ -38,6 +38,7 @@
 #include <ShapeFix_Wireframe.hxx>
 #include <Standard_Failure.hxx>
 #include <TopExp_Explorer.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Builder.hxx>
 #include <sstream>

@@ -34,7 +34,7 @@
 #include "StdMeshers_QuadrangleParams.hxx"
 
 #include <TopoDS_Face.hxx>
-#include <Bnd_B2d.hxx>
+#include <Bnd_B2.hxx>
 
 class SMDS_MeshNode;
 class SMESH_Mesh;

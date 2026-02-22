@@ -455,7 +455,7 @@ TopoDS_Shape Transformed::getRemainingSolids(const TopoDS_Shape& shape)
     builder.MakeCompound(compShape);
 
     if (shape.IsNull()) {
-        Standard_Failure::Raise("Shape is null");
+        throw Standard_Failure("Shape is null");
     }
     TopExp_Explorer xp;
     xp.Init(shape, TopAbs_SOLID);

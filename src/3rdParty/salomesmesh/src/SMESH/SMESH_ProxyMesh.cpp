@@ -26,7 +26,7 @@
 #include "SMDS_SetIterator.hxx"
 #include "SMESH_MesherHelper.hxx"
 
-#include <TopTools_ListIteratorOfListOfShape.hxx>
+#include <TopTools_ListOfShape.hxx>
 #include <TopExp.hxx>
 #include <TopTools_IndexedMapOfShape.hxx>
 

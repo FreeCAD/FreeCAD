@@ -41,7 +41,6 @@
 #include <TDF_ChildIDIterator.hxx>
 #include <TDF_IDList.hxx>
 #include <TDF_Label.hxx>
-#include <TDF_ListIteratorOfIDList.hxx>
 #include <TDF_TagSource.hxx>
 #include <TDF_Tool.hxx>
 #include <TDocStd_Document.hxx>

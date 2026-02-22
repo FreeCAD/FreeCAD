@@ -34,7 +34,7 @@
 #include <vector>
 #include <math_Function.hxx>
 #include <ExprIntrp_GenExp.hxx>
-#include <Expr_Array1OfNamedUnknown.hxx>
+#include <Expr_NamedUnknown.hxx>
 #include <TColStd_Array1OfReal.hxx>
 
 namespace StdMeshers
@@ -86,6 +86,9 @@ private:
 private:
   std::vector<double>  myData;
 };
+
+// Unused in OCC, but this is the definition.
+using Expr_Array1OfNamedUnknown = NCollection_Array1<occ::handle<Expr_NamedUnknown>>;
 
 class STDMESHERS_EXPORT FunctionExpr : public Function, public math_Function
 {
