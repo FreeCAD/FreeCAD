@@ -1456,24 +1456,33 @@ void StdCmdDelete::activated(int iMsg)
         Gui::getMainWindow()->setUpdatesEnabled(false);
         auto editDoc = Application::Instance->editDocument();
         ViewProviderDocumentObject* vpedit = nullptr;
+        auto sels = Selection().getSelectionEx();
         if (editDoc) {
             vpedit = freecad_cast<ViewProviderDocumentObject*>(editDoc->getInEdit());
         }
+        bool handledInEditDeletion = false;
         if (vpedit && !vpedit->acceptDeletionsInEdit()) {
             for (auto& sel : Selection().getSelectionEx(editDoc->getDocument()->getName())) {
                 if (sel.getObject() == vpedit->getObject()) {
                     if (!sel.getSubNames().empty()) {
                         vpedit->onDelete(sel.getSubNames());
                         docs.insert(editDoc->getDocument());
+                        handledInEditDeletion = true;
                     }
                     break;
                 }
             }
         }
-        else {
+        if (!handledInEditDeletion) {
+            if (vpedit && std::ranges::any_of(sels, [&](const auto& sel) {
+                    return sel.getObject() == vpedit->getObject();
+                })) {
+                editDoc->resetEdit();
+                vpedit = nullptr;
+            }
+
             std::set<QString> affectedLabels;
             bool more = false;
-            auto sels = Selection().getSelectionEx();
             bool autoDeletion = true;
             for (auto& sel : sels) {
                 auto obj = sel.getObject();
