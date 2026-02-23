@@ -50,6 +50,7 @@ from Path.Post.PathOptimizationUtils import modal_gcode, modal_axis
 from Path.Post.CAMErrors import CAMError, CAMValueError, CAMAttributeError, CAMNotImplementedError
 from Path.Base.MachineState import MachineState
 from Machine.models.machine import MachineFactory, OutputUnits, ToolheadType
+from PathScripts.PathUtils import getPathWithPlacement
 
 translate = FreeCAD.Qt.translate
 
@@ -1265,6 +1266,13 @@ class PostProcessor:
 
         return gcodeheader
 
+    def _expand_placement(self, postables):
+        """Apply placement to path if needed."""
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.path and hasattr(item, "Placement"):
+                    item.path = getPathWithPlacement(item)
+
     def _add_line_numbers(self, postables):
         """Add N word if we are line-numbering
         Subclasses are expected to render N as line-number (if present)
@@ -2365,6 +2373,7 @@ class PostProcessor:
         # postables = self._expand_pre_job(postables) # FIXME: need an item for a job, handled by _expand_prefix for now
         postables = self._expand_pre_item(postables)
 
+        self._expand_placement(postables)
         self._expand_canned_cycles(postables)
         self._expand_translate_drill_cycles(postables)
         self._expand_split_arcs(postables)
