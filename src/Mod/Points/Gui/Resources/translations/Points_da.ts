@@ -66,12 +66,12 @@
     <message>
       <location filename="../../Command.cpp" line="342"/>
       <source>Merge Point Clouds</source>
-      <translation type="unfinished">Merge Point Clouds</translation>
+      <translation>Flet punktskyer</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="343"/>
       <source>Merges several point clouds into one</source>
-      <translation type="unfinished">Merges several point clouds into one</translation>
+      <translation>Fletter flere punktskyer sammen til en</translation>
     </message>
   </context>
   <context>
@@ -84,12 +84,12 @@
     <message>
       <location filename="../../Command.cpp" line="292"/>
       <source>Cut Point Cloud</source>
-      <translation type="unfinished">Cut Point Cloud</translation>
+      <translation>Klip punktsky</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="293"/>
       <source>Cuts a point cloud with a selected polygon</source>
-      <translation type="unfinished">Cuts a point cloud with a selected polygon</translation>
+      <translation>Klipper en punktsky med en valgt polygon</translation>
     </message>
   </context>
   <context>
@@ -126,7 +126,7 @@
       <location filename="../../ViewProvider.cpp" line="487"/>
       <location filename="../../ViewProvider.cpp" line="655"/>
       <source>Cut points</source>
-      <translation type="unfinished">Cut points</translation>
+      <translation>Klip punkter</translation>
     </message>
   </context>
   <context>
@@ -164,7 +164,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="14"/>
       <source>ASCII Points Import</source>
-      <translation type="unfinished">ASCII Points Import</translation>
+      <translation>Importer ASCII-punkter</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="34"/>
@@ -174,22 +174,22 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="46"/>
       <source>Special Lines</source>
-      <translation type="unfinished">Special Lines</translation>
+      <translation>Særlige linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="58"/>
       <source>First Line</source>
-      <translation type="unfinished">First Line</translation>
+      <translation>Første linje</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="101"/>
       <source>Cluster by lines starting with</source>
-      <translation type="unfinished">Cluster by lines starting with</translation>
+      <translation>Saml linjer der starter med</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="111"/>
       <source>Ignore lines starting with</source>
-      <translation type="unfinished">Ignore lines starting with</translation>
+      <translation>Ignorer linjer som starter med</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="126"/>
@@ -199,7 +199,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="146"/>
       <source>Number separator</source>
-      <translation type="unfinished">Number separator</translation>
+      <translation>Talseparator</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="180"/>
@@ -211,7 +211,7 @@
       <location filename="../../DlgPointsRead.ui" line="237"/>
       <location filename="../../DlgPointsRead.ui" line="273"/>
       <source>Next block</source>
-      <translation type="unfinished">Next block</translation>
+      <translation>Næste blok</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="209"/>
@@ -246,17 +246,17 @@
       <location filename="../../DlgPointsRead.ui" line="265"/>
       <location filename="../../DlgPointsRead.ui" line="301"/>
       <source>I (gray value)</source>
-      <translation type="unfinished">I (gray value)</translation>
+      <translation>I (grå værdi)</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="341"/>
       <source>Number of previewed lines</source>
-      <translation type="unfinished">Number of previewed lines</translation>
+      <translation>Antal forhåndsviste linjer</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="314"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Forhåndsvisning</translation>
     </message>
   </context>
   <context>
@@ -265,7 +265,7 @@
       <location filename="../../Command.cpp" line="85"/>
       <location filename="../../Command.cpp" line="173"/>
       <source>Point formats</source>
-      <translation type="unfinished">Point formats</translation>
+      <translation>Punktformater</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="85"/>
@@ -276,12 +276,12 @@
     <message>
       <location filename="../../Command.cpp" line="114"/>
       <source>Points not at Origin</source>
-      <translation type="unfinished">Points not at Origin</translation>
+      <translation>Punkter ikke på origo</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="116"/>
       <source>The bounding box of the imported points does not contain the origin. Translate it to the origin?</source>
-      <translation type="unfinished">The bounding box of the imported points does not contain the origin. Translate it to the origin?</translation>
+      <translation>Afgrænsningsboksen for de importerede punkter indeholder ikke origo. Forskyd den til origo?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="224"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../Command.cpp" line="225"/>
       <source>Enter maximum distance:</source>
-      <translation type="unfinished">Enter maximum distance:</translation>
+      <translation>Indtast maksimal afstand:</translation>
     </message>
   </context>
   <context>

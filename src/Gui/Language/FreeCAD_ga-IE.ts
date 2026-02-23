@@ -18,7 +18,7 @@
       <location filename="../propertyeditor/PropertyItem.cpp" line="2425"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2712"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ais</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2717"/>
@@ -34,7 +34,7 @@
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="274"/>
       <source>Base</source>
-      <translation type="unfinished">Base</translation>
+      <translation>Bonn</translation>
     </message>
   </context>
   <context>
@@ -1319,12 +1319,12 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="294"/>
       <source>Up</source>
-      <translation type="unfinished">Up</translation>
+      <translation>Up</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgKeyboard.ui" line="304"/>
       <source>Down</source>
-      <translation type="unfinished">Down</translation>
+      <translation>Síos</translation>
     </message>
     <message>
       <source/>
@@ -1371,7 +1371,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgKeyboardImp.cpp" line="434"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>Gach</translation>
     </message>
   </context>
   <context>
@@ -1409,7 +1409,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="177"/>
       <source>Move Up</source>
-      <translation type="unfinished">Move Up</translation>
+      <translation>Bog Suas</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="180"/>
@@ -1419,7 +1419,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="203"/>
       <source>Move Down</source>
-      <translation type="unfinished">Move Down</translation>
+      <translation>Bog Síos</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgToolbars.ui" line="206"/>
@@ -1709,63 +1709,63 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../Dialogs/DlgMacroExecute.ui" line="310"/>
       <source>Download</source>
-      <translation type="unfinished">Download</translation>
+      <translation>Íoslódáil</translation>
     </message>
   </context>
   <context>
     <name>Gui::Dialog::DlgMacroExecuteImp</name>
     <message>
       <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="121"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="794"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="809"/>
       <source>Macros</source>
       <translation>Macraí</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="471"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="486"/>
       <source>Macro file</source>
       <translation>Comhad macra</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="497"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="907"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1070"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="512"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="922"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1085"/>
       <source>Existing file</source>
       <translation>Comhad atá ann cheana féin</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="498"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="513"/>
       <source>'%1'.
 This file already exists.</source>
       <translation>'%1'.
 Tá an comhad seo ann cheana féin.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="506"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="521"/>
       <source>Cannot create file</source>
       <translation>Ní féidir comhad a chruthú</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="507"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="522"/>
       <source>Creation of file '%1' failed.</source>
       <translation>Theip ar chruthú comhaid '%1'.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="548"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="563"/>
       <source>Delete macro</source>
       <translation>Scrios macra</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="583"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="598"/>
       <source>Do not show again</source>
       <translation>Ná taispeáin arís</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="584"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="599"/>
       <source>Guided Walkthrough</source>
       <translation>Siúlóid Threoraithe</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="586"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="601"/>
       <source>This will guide you in setting up this macro in a custom global toolbar.  Instructions will be in red text inside the dialog.
 
 Note: your changes will be applied when you next switch workbenches
@@ -1776,93 +1776,93 @@ Tabhair faoi deara: cuirfear do chuid athruithe i bhfeidhm an chéad uair eile a
 </translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="667"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="682"/>
       <source>Walkthrough instructions: Fill in missing fields (optional) then click Add, then Close</source>
       <translation>Treoracha siúil: Líon na réimsí atá ar iarraidh (roghnach) agus cliceáil Cuir leis, agus ansin Dún</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="745"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="760"/>
       <source>Walkthrough instructions: Select macro from list, then click right arrow button (-&gt;), then Close.</source>
       <translation>Treoracha siúil: Roghnaigh macra ón liosta, ansin cliceáil an cnaipe saighead ar dheis (-&gt;), ansin Dún.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="769"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="784"/>
       <source>Walkthrough instructions: Click New, select macro, then right arrow (-&gt;) button, then Close.</source>
       <translation>Treoracha siúil: Cliceáil Nua, roghnaigh macra, ansin an cnaipe saighead ar dheis (-&gt;), ansin Dún.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="885"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="900"/>
       <source>Renaming Macro File</source>
       <translation>Athainmniú Comhaid Macra</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="452"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="467"/>
       <source>Read-Only</source>
       <translation>Léamh Amháin</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="472"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="487"/>
       <source>Enter a file name:</source>
       <translation>Cuir isteach ainm comhaid:</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="549"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="564"/>
       <source>Delete the macro '%1'?</source>
       <translation>Scrios an macra '%1'?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="641"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="656"/>
       <source>Walkthrough, Dialog 1 of 2</source>
       <translation>Treoir, Dialóg 1 de 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 1 of 1</source>
       <translation>Treoir, Dialóg 1 de 1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="709"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="724"/>
       <source>Walkthrough, Dialog 2 of 2</source>
       <translation>Treoir, Dialóg 2 de 2</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="886"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1051"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="901"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1066"/>
       <source>Enter new name</source>
       <translation>Cuir isteach ainm nua</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="908"/>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1071"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="923"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1086"/>
       <source>'%1'
  already exists.</source>
       <translation>Tá '%1'
 ann cheana féin.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="914"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="929"/>
       <source>Rename Failed</source>
       <translation>Theip ar Athainmniú</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="915"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="930"/>
       <source>Failed to rename to '%1'.
 Perhaps a file permission error?</source>
       <translation>Theip ar athainmniú go '%1'.
 B'fhéidir earráid cead comhaid?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1050"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1065"/>
       <source>Duplicate Macro</source>
       <translation>Macra Dúblach</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1077"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1092"/>
       <source>Duplicate Failed</source>
       <translation>Theip ar Dhúbláil</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1078"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="1093"/>
       <source>Failed to duplicate to '%1'.
 Perhaps a file permission error?</source>
       <translation>Theip ar dhúbailt chuig '%1'.
@@ -1997,7 +1997,7 @@ B'fhéidir earráid cead comhaid?</translation>
     <message>
       <location filename="../Dialogs/DlgMaterialProperties.ui" line="155"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
     <message>
       <source/>
@@ -2069,7 +2069,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="86"/>
       <source>Find</source>
-      <translation type="unfinished">Find</translation>
+      <translation>Aimsigh</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameter.ui" line="109"/>
@@ -2098,7 +2098,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="14"/>
       <source>Find</source>
-      <translation type="unfinished">Find</translation>
+      <translation>Aimsigh</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterFind.ui" line="32"/>
@@ -2264,7 +2264,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="196"/>
       <source>Header</source>
-      <translation type="unfinished">Header</translation>
+      <translation>Ceanntásc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgPreferences.ui" line="233"/>
@@ -2419,7 +2419,7 @@ Sonraigh eolaire eile.</translation>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="308"/>
       <source>Open in Browser</source>
-      <translation type="unfinished">Open in Browser</translation>
+      <translation>Oscail sa Bhrabhsálaí</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgProjectInformation.ui" line="317"/>
@@ -3476,7 +3476,7 @@ Is féidir leat an fhoirm seo a úsáid freisin: John Doe &lt;john@doe.com&gt;</
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="663"/>
       <source>Company</source>
-      <translation type="unfinished">Company</translation>
+      <translation>Cuideachta</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="670"/>
@@ -3556,7 +3556,7 @@ Is féidir leat an fhoirm seo a úsáid freisin: John Doe &lt;john@doe.com&gt;</
     <message>
       <location filename="../Dialogs/DlgProjectInformationImp.cpp" line="52"/>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Eile</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="709"/>
@@ -3968,7 +3968,7 @@ Is féidir leat an fhoirm seo a úsáid freisin: John Doe &lt;john@doe.com&gt;</
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="252"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="259"/>
@@ -4383,7 +4383,7 @@ cothrománach atá ar fáil i gconsól Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="119"/>
       <source>Other</source>
-      <translation type="unfinished">Other</translation>
+      <translation>Eile</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="144"/>
@@ -4406,7 +4406,7 @@ cothrománach atá ar fáil i gconsól Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="67"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="93"/>
@@ -5174,7 +5174,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="702"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Athraigh Luach</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="707"/>
@@ -5290,7 +5290,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Placement.ui" line="284"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ais</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="306"/>
@@ -5526,7 +5526,7 @@ Léiríonn an colún 'Stádas' an bhféadfaí an doiciméad a aisghabháil.</tra
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="133"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>Gach</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgObjectSelection.cpp" line="163"/>
@@ -5601,7 +5601,7 @@ a roghnaíodh ar dtús sular osclaíodh an dialóg seo</translation>
     <message>
       <location filename="../ReportView.cpp" line="733"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Sábháil Mar…</translation>
     </message>
     <message>
       <location filename="../ReportView.cpp" line="745"/>
@@ -7025,7 +7025,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../TaskView/TaskAppearance.ui" line="168"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
   </context>
   <context>
@@ -7429,7 +7429,7 @@ Sonraigh eolaire eile?</translation>
     <message>
       <location filename="../Tree.cpp" line="3763"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="3764"/>
@@ -7968,47 +7968,47 @@ Seiceáil an radharc tuarascála le haghaidh tuilleadh sonraí.</translation>
       <translation>%1</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="372"/>
+      <location filename="../StartupProcess.cpp" line="373"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Upgrade the graphics driver and/or card as required.</source>
       <translation>Tá OpenGL %1.%2 á rith ag an gcóras seo. Éilíonn FreeCAD OpenGL 2.0 nó níos airde. Uasghrádaigh an tiománaí grafaicí agus/nó an cárta de réir mar is gá.</translation>
     </message>
     <message>
-      <location filename="../StartupProcess.cpp" line="383"/>
+      <location filename="../StartupProcess.cpp" line="384"/>
       <source>Invalid OpenGL Version</source>
       <translation>Leagan Neamhbhailí OpenGL</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="321"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="396"/>
       <source>Migrating</source>
       <translation>Ag imirce</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="382"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="457"/>
       <source>Restarting</source>
       <translation>Atosú</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="336"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="411"/>
       <source>Migration failed</source>
       <translation>Theip ar an imirce</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="304"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="374"/>
       <source>Estimated size of data to copy: %1</source>
       <translation>Méid measta na sonraí le cóipeáil: %1</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="322"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="397"/>
       <source>Migrating configuration data and addons…</source>
       <translation>Ag aistriú sonraí cumraíochta agus breiseán…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="337"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="412"/>
       <source>Migration failed. See the Report View for details.</source>
       <translation>Theip ar an imirce. Féach ar an Amharc Tuairisce le haghaidh tuilleadh sonraí.</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="381"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="456"/>
       <source> → Restarting…</source>
       <translation> → Atosú…</translation>
     </message>
@@ -8328,7 +8328,7 @@ Lean ar aghaidh?</translation>
     <message>
       <location filename="../Dialogs/DlgParameterImp.cpp" line="1303"/>
       <source>Change Value</source>
-      <translation type="unfinished">Change Value</translation>
+      <translation>Athraigh Luach</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="454"/>
@@ -8668,12 +8668,12 @@ Roghnaigh 'Cealaigh' chun cealú</translation>
       <translation>Níorbh fhéidir roinnt doiciméad a shábháil. Cealaigh an dúnadh?</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="539"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="554"/>
       <source>Delete macro</source>
       <translation>Scrios macra</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="540"/>
+      <location filename="../Dialogs/DlgMacroExecuteImp.cpp" line="555"/>
       <source>Not allowed to delete system-wide macros</source>
       <translation>Ní cheadaítear macraí uilechórais a scriosadh</translation>
     </message>
@@ -8861,7 +8861,7 @@ dhéantar ar an gcóip reatha.
     <message>
       <location filename="../ViewProviderDocumentObject.cpp" line="275"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Cuir %1 in Eagar</translation>
     </message>
     <message>
       <location filename="../SoFCColorGradient.cpp" line="101"/>
@@ -9031,14 +9031,14 @@ dhéantar ar an gcóip reatha.
       <translation>Cuspóir Gníomhach</translation>
     </message>
     <message>
-      <location filename="../ViewProviderTextDocument.cpp" line="105"/>
+      <location filename="../ViewProviderTextDocument.cpp" line="107"/>
       <source>Edit Text</source>
       <translation>Cuir Téacs in Eagar</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="96"/>
       <source>Close this dialog?</source>
-      <translation type="unfinished">Close this dialog?</translation>
+      <translation>An bhfuil tú ag iarraidh an dialóg seo a dhúnadh?</translation>
     </message>
     <message>
       <location filename="../ViewProviderDocumentObjectGroup.cpp" line="107"/>
@@ -10568,7 +10568,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="14"/>
       <source>Choose Orientation</source>
-      <translation type="unfinished">Choose Orientation</translation>
+      <translation>Roghnaigh Treoshuíomh</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
@@ -10598,7 +10598,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="53"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Treo droim ar ais</translation>
     </message>
   </context>
   <context>
@@ -10611,7 +10611,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="73"/>
       <source>Reverse direction</source>
-      <translation type="unfinished">Reverse direction</translation>
+      <translation>Treo droim ar ais</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="234"/>
@@ -10661,7 +10661,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="156"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="188"/>
@@ -10987,12 +10987,12 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="346"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="375"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsEditor.ui" line="163"/>
@@ -11620,7 +11620,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="68"/>
@@ -11665,7 +11665,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="145"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="152"/>
@@ -12041,7 +12041,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="306"/>
       <source>Font size</source>
-      <translation type="unfinished">Font size</translation>
+      <translation>Méid cló</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.ui" line="316"/>
@@ -12286,7 +12286,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="25"/>
       <source>Coordinate system</source>
-      <translation type="unfinished">Coordinate system</translation>
+      <translation>Córas comhordanáidí</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="36"/>
@@ -12405,7 +12405,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskTransform.ui" line="584"/>
       <source>Mode</source>
-      <translation type="unfinished">Mode</translation>
+      <translation>Mód</translation>
     </message>
     <message>
       <location filename="../TaskTransform.ui" line="600"/>
@@ -12567,7 +12567,7 @@ neamh-theimhneach.</translation>
       <location filename="../InputHintWidget.cpp" line="256"/>
       <source>Del</source>
       <extracomment>Keyboard key for Delete</extracomment>
-      <translation type="unfinished">Del</translation>
+      <translation>Scrios</translation>
     </message>
     <message>
       <location filename="../InputHintWidget.cpp" line="258"/>
@@ -12742,7 +12742,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="22"/>
       <source>A</source>
-      <translation type="unfinished">A</translation>
+      <translation>A</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="43"/>
@@ -12752,7 +12752,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="64"/>
       <source>C</source>
-      <translation type="unfinished">C</translation>
+      <translation>C</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgLocationAngle.ui" line="86"/>
@@ -12770,7 +12770,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="20"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.ui" line="29"/>
@@ -12828,7 +12828,7 @@ neamh-theimhneach.</translation>
     <message>
       <location filename="../TaskView/TaskSolverMessages.ui" line="72"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
   </context>
   <context>
@@ -14475,7 +14475,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="68"/>
       <source>Color</source>
-      <translation type="unfinished">Color</translation>
+      <translation>Dath</translation>
     </message>
   </context>
   <context>
@@ -14511,7 +14511,7 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="504"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Réamhamharc</translation>
     </message>
     <message>
       <location filename="../Dialogs/DlgThemeEditor.cpp" line="506"/>
@@ -14642,42 +14642,42 @@ Fágann sé seo go bhfanann an painéal dugaithe trédhearcach i gcónaí.</tran
       <translation>Cabhair</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="160"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="161"/>
       <source>Copy Configuration (Recommended)</source>
       <translation>Cumraíocht Cóipeála (Molta)</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="139"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="140"/>
       <source>Welcome to %1 %2.%3</source>
       <translation>Fáilte go %1 %2.%3</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="142"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="143"/>
       <source>Calculating size…</source>
       <translation>Ag ríomh an mhéid…</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="146"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="147"/>
       <source>Share configuration between versions</source>
       <translation>Cumraíocht a roinnt idir leaganacha</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="170"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
       <source>Share configuration with previous version</source>
       <translation>Comhroinn cumraíocht leis an leagan roimhe seo</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="171"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="172"/>
       <source>Use a new default configuration</source>
       <translation>Úsáid cumraíocht réamhshocraithe nua</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="331"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="406"/>
       <source>Migration complete</source>
       <translation>Imirce críochnaithe</translation>
     </message>
     <message>
-      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="368"/>
+      <location filename="../Dialogs/DlgVersionMigrator.cpp" line="443"/>
       <source>New default configuration created</source>
       <translation>Cumraíocht réamhshocraithe nua cruthaithe</translation>
     </message>

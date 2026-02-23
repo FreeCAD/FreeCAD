@@ -24,7 +24,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
       <source>Component</source>
-      <translation type="unfinished">Component</translation>
+      <translation>Comhpháirt</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../JointObject.py" line="50"/>
       <source>Fixed</source>
-      <translation type="unfinished">Fixed</translation>
+      <translation>Seasta</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="51"/>
@@ -137,7 +137,7 @@
     <message>
       <location filename="../../../JointObject.py" line="56"/>
       <source>Parallel</source>
-      <translation type="unfinished">Parallel</translation>
+      <translation>Comhthreomhar</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="57"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="48"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="49"/>
@@ -272,7 +272,7 @@
     <message>
       <location filename="../../../CommandCreateBom.py" line="385"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Colúin</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateBom.py" line="398"/>
@@ -479,7 +479,7 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
     <message>
       <location filename="../../../InitGui.py" line="158"/>
       <source>Activate</source>
-      <translation type="unfinished">Activate</translation>
+      <translation>Gníomhachtaigh</translation>
     </message>
     <message>
       <location filename="../../../InitGui.py" line="192"/>
@@ -504,7 +504,7 @@ Sainmhíníonn FÁNA géire an aistrithe idir 0 agus H1 agus H2 go 0 thart ar am
     <message>
       <location filename="../../../InitGui.py" line="259"/>
       <source>Simulation</source>
-      <translation type="unfinished">Simulation</translation>
+      <translation>Insamhalta</translation>
     </message>
   </context>
   <context>
@@ -904,61 +904,61 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
       <translation>Bog cuid</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>TionólSoláthraíAmhairc</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
       <translation>Tionól Folamh</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
-      <translation type="unfinished">Over-constrained:</translation>
+      <translation>Ró-shrianta:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Ailt mhífhoirmithe:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Ailt iomarcacha:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
-      <translation type="unfinished">Partially redundant:</translation>
+      <translation>Go páirteach iomarcach:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
-      <translation type="unfinished">Solver failed to converge</translation>
+      <translation>Theip ar an réiteoir teacht le chéile</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
-      <translation type="unfinished">Under-constrained:</translation>
+      <translation>Faoi shrianta:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
-      <translation type="unfinished">
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
-        <numerusform>%n Degrees of Freedom</numerusform>
+      <translation>
+        <numerusform>%n Céim Saoirse</numerusform>
+        <numerusform>%n Céim Saoirse</numerusform>
+        <numerusform>%n Céim Saoirse</numerusform>
+        <numerusform>%n Céim Saoirse</numerusform>
+        <numerusform>%n Céim Saoirse</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
-      <translation type="unfinished">Fully constrained</translation>
+      <translation>Srianta go hiomlán</translation>
     </message>
   </context>
   <context>
@@ -1057,7 +1057,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="77"/>
       <source>Columns</source>
-      <translation type="unfinished">Columns</translation>
+      <translation>Colúin</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateBom.ui" line="86"/>
@@ -1137,7 +1137,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="14"/>
       <source>Simulation</source>
-      <translation type="unfinished">Simulation</translation>
+      <translation>Insamhalta</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="89"/>
@@ -1206,7 +1206,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="181"/>
       <source>Frame</source>
-      <translation type="unfinished">Frame</translation>
+      <translation>Fráma</translation>
     </message>
     <message>
       <location filename="../panels/TaskAssemblyCreateSimulation.ui" line="201"/>
@@ -1445,7 +1445,7 @@ Is iad "runPreDrag.asmt" agus "dragging.log" na hainmneacha ar na comhaid agus t
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="67"/>
       <source>Simulation</source>
-      <translation type="unfinished">Simulation</translation>
+      <translation>Insamhalta</translation>
     </message>
     <message>
       <location filename="../../../CommandCreateSimulation.py" line="72"/>

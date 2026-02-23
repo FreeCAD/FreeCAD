@@ -222,7 +222,7 @@
     <message>
       <location filename="../../TaskMeasure.cpp" line="122"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../TaskMeasure.cpp" line="134"/>
@@ -288,7 +288,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="139"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="147"/>
@@ -303,7 +303,7 @@
     <message>
       <location filename="../../../App/AppMeasure.cpp" line="163"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
   </context>
 </TS>

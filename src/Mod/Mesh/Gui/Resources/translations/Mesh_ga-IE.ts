@@ -65,7 +65,7 @@
     <message>
       <location filename="../../Command.cpp" line="999"/>
       <source>Cross-Sections</source>
-      <translation type="unfinished">Cross-Sections</translation>
+      <translation>Trasghearrthacha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1000"/>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="173"/>
       <source>Difference</source>
-      <translation type="unfinished">Difference</translation>
+      <translation>Difríocht</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="174"/>
@@ -520,7 +520,7 @@
     <message>
       <location filename="../../Command.cpp" line="1684"/>
       <source>Segmentation</source>
-      <translation type="unfinished">Segmentation</translation>
+      <translation>Deighilt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1685"/>
@@ -878,7 +878,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="838"/>
       <source>Number of points</source>
-      <translation type="unfinished">Number of points</translation>
+      <translation>Líon na bpointí</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="754"/>
@@ -1003,7 +1003,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="142"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="534"/>
@@ -1144,7 +1144,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="20"/>
       <source>Settings</source>
-      <translation type="unfinished">Settings</translation>
+      <translation>Socruithe</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="26"/>
@@ -1209,7 +1209,7 @@
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length</source>
-      <translation type="unfinished">Length</translation>
+      <translation>Fad</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>
@@ -1225,7 +1225,7 @@
       <location filename="../../DlgRegularSolid.ui" line="219"/>
       <location filename="../../DlgRegularSolid.ui" line="501"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="273"/>
@@ -1515,12 +1515,12 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../DlgSmoothing.ui" line="49"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="55"/>
       <source>Iterations</source>
-      <translation type="unfinished">Iterations</translation>
+      <translation>Athruithe</translation>
     </message>
     <message>
       <location filename="../../DlgSmoothing.ui" line="72"/>
@@ -1633,7 +1633,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="183"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Paraiméadair</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="188"/>
@@ -1686,7 +1686,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../RemeshGmsh.ui" line="32"/>
       <source>Meshing</source>
-      <translation type="unfinished">Meshing</translation>
+      <translation>Mogallrú</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="42"/>
@@ -1756,7 +1756,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
       <location filename="../../RemoveComponents.ui" line="52"/>
       <location filename="../../RemoveComponents.ui" line="138"/>
       <source>All</source>
-      <translation type="unfinished">All</translation>
+      <translation>Gach</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="72"/>
@@ -1773,17 +1773,17 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
       <location filename="../../RemoveComponents.ui" line="89"/>
       <location filename="../../RemoveComponents.ui" line="175"/>
       <source>Pick Triangle</source>
-      <translation type="unfinished">Pick Triangle</translation>
+      <translation>Triantán Roghnaigh</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="192"/>
       <source>Region Options</source>
-      <translation type="unfinished">Region Options</translation>
+      <translation>Roghanna Réigiúin</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="208"/>
       <source>Respect only triangles with screen-facing normals</source>
-      <translation type="unfinished">Respect only triangles with screen-facing normals</translation>
+      <translation>Ná tabhair meas ach ar thriantáin a bhfuil gnáth-thrianta os comhair an scáileáin acu</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.ui" line="96"/>
@@ -1816,7 +1816,7 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../Segmentation.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Deighilt Mogaill</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="20"/>
@@ -1896,14 +1896,14 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
     <message>
       <location filename="../../SegmentationBestFit.ui" line="14"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Deighilt Mogaill</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="29"/>
       <location filename="../../SegmentationBestFit.ui" line="82"/>
       <location filename="../../SegmentationBestFit.ui" line="135"/>
       <source>Parameters</source>
-      <translation type="unfinished">Parameters</translation>
+      <translation>Paraiméadair</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.ui" line="36"/>
@@ -1933,23 +1933,23 @@ Más uillinn aghaidhe &lt; uillinn fillte, úsáidtear scáthú réidh</translat
       <location filename="../../SegmentationBestFit.cpp" line="376"/>
       <location filename="../../SegmentationBestFit.cpp" line="401"/>
       <source>Base</source>
-      <translation type="unfinished">Base</translation>
+      <translation>Bonn</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="377"/>
       <source>Normal</source>
-      <translation type="unfinished">Normal</translation>
+      <translation>Gnáth</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="402"/>
       <source>Axis</source>
-      <translation type="unfinished">Axis</translation>
+      <translation>Ais</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="403"/>
       <location filename="../../SegmentationBestFit.cpp" line="429"/>
       <source>Radius</source>
-      <translation type="unfinished">Radius</translation>
+      <translation>Ga</translation>
     </message>
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="428"/>
@@ -2105,29 +2105,29 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
       <location filename="../../Command.cpp" line="361"/>
       <location filename="../../Command.cpp" line="425"/>
       <source>Alias Mesh</source>
-      <translation type="unfinished">Alias Mesh</translation>
+      <translation>Mogalra Ailias</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="362"/>
       <location filename="../../Command.cpp" line="427"/>
       <source>Object File Format</source>
-      <translation type="unfinished">Object File Format</translation>
+      <translation>Formáid Comhaid Réada</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="363"/>
       <source>Inventor V2.1 ASCII</source>
-      <translation type="unfinished">Inventor V2.1 ASCII</translation>
+      <translation>Aireagóir V2.1 ASCII</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="364"/>
       <location filename="../../Command.cpp" line="432"/>
       <source>Stanford Polygon</source>
-      <translation type="unfinished">Stanford Polygon</translation>
+      <translation>Polagán Stanford</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="365"/>
       <source>NASTRAN</source>
-      <translation type="unfinished">NASTRAN</translation>
+      <translation>NASTRAN</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="366"/>
@@ -2143,92 +2143,92 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Command.cpp" line="426"/>
       <source>Simple Model Format</source>
-      <translation type="unfinished">Simple Model Format</translation>
+      <translation>Formáid Mhúnla Simplí</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="428"/>
       <source>Inventor V2.1 ascii</source>
-      <translation type="unfinished">Inventor V2.1 ascii</translation>
+      <translation>Aireagóir V2.1 ascii</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="429"/>
       <source>X3D Extensible 3D</source>
-      <translation type="unfinished">X3D Extensible 3D</translation>
+      <translation>3T Inleathnaithe X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="430"/>
       <source>Compressed X3D</source>
-      <translation type="unfinished">Compressed X3D</translation>
+      <translation>X3D Comhbhrúite</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="431"/>
       <source>WebGL/X3D</source>
-      <translation type="unfinished">WebGL/X3D</translation>
+      <translation>WebGL/X3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="433"/>
       <source>VRML V2.0</source>
-      <translation type="unfinished">VRML V2.0</translation>
+      <translation>VRML L2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="434"/>
       <source>Compressed VRML 2.0</source>
-      <translation type="unfinished">Compressed VRML 2.0</translation>
+      <translation>VRML Comhbhrúite 2.0</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="435"/>
       <source>Nastran</source>
-      <translation type="unfinished">Nastran</translation>
+      <translation>Nastran</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="436"/>
       <source>Python module def</source>
-      <translation type="unfinished">Python module def</translation>
+      <translation>Modúl Python def</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="437"/>
       <source>Asymptote Format</source>
-      <translation type="unfinished">Asymptote Format</translation>
+      <translation>Formáid Asimptóit</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="438"/>
       <source>3D Manufacturing Format</source>
-      <translation type="unfinished">3D Manufacturing Format</translation>
+      <translation>Formáid Déantúsaíochta 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <source>Export Mesh</source>
-      <translation type="unfinished">Export Mesh</translation>
+      <translation>Mogalra Easpórtála</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
       <source>Meshing Tolerance</source>
-      <translation type="unfinished">Meshing Tolerance</translation>
+      <translation>Caoinfhulaingt Mogaill</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="499"/>
       <source>Enter tolerance for meshing geometry:</source>
-      <translation type="unfinished">Enter tolerance for meshing geometry:</translation>
+      <translation>Cuir isteach lamháltas le haghaidh geoiméadracht mogaill:</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1329"/>
       <source>The mesh '%1' is not a solid.</source>
-      <translation type="unfinished">The mesh '%1' is not a solid.</translation>
+      <translation>Ní soladach an mogalra '%1'.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1333"/>
       <source>The mesh '%1' is a solid.</source>
-      <translation type="unfinished">The mesh '%1' is a solid.</translation>
+      <translation>Is soladach an mogalra '%1'.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1336"/>
       <source>Solid Mesh</source>
-      <translation type="unfinished">Solid Mesh</translation>
+      <translation>Mogalra Soladach</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1529"/>
       <source>Boundings</source>
-      <translation type="unfinished">Boundings</translation>
+      <translation>Teorainneacha</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
@@ -2238,37 +2238,37 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation type="unfinished">Fill holes with maximum number of edges</translation>
+      <translation>Líon na poill leis an líon uasta imill</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
       <source>Scaling</source>
-      <translation type="unfinished">Scaling</translation>
+      <translation>Scálú</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1871"/>
       <source>Enter scaling factor:</source>
-      <translation type="unfinished">Enter scaling factor:</translation>
+      <translation>Cuir isteach fachtóir scálaithe:</translation>
     </message>
     <message>
       <location filename="../../PropertyEditorMesh.cpp" line="81"/>
       <source>[Points: %1, Edges: %2, Faces: %3]</source>
-      <translation type="unfinished">[Points: %1, Edges: %2, Faces: %3]</translation>
+      <translation>[Pointí: %1, Imill: %2, Aghaidheanna: %3]</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation type="unfinished">Display Components</translation>
+      <translation>Comhpháirteanna Taispeána</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation type="unfinished">Display Segments</translation>
+      <translation>Deighleoga Taispeána</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation type="unfinished">Display Colors</translation>
+      <translation>Dathanna Taispeána</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1701"/>
@@ -2279,62 +2279,62 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="1771"/>
       <source>Index: %1</source>
-      <translation type="unfinished">Index: %1</translation>
+      <translation>Innéacs: %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1799"/>
       <source>Leave Hole-Filling Mode</source>
-      <translation type="unfinished">Leave Hole-Filling Mode</translation>
+      <translation>Fág Mód Líonadh Poill</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1846"/>
       <source>Leave Removal Mode</source>
-      <translation type="unfinished">Leave Removal Mode</translation>
+      <translation>Mód Bainte Duilleog</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1847"/>
       <source>Delete Selected Faces</source>
-      <translation type="unfinished">Delete Selected Faces</translation>
+      <translation>Scrios Aghaidheanna Roghnaithe</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1848"/>
       <source>Clear Selected Faces</source>
-      <translation type="unfinished">Clear Selected Faces</translation>
+      <translation>Glan Aghaidheanna Roghnaithe</translation>
     </message>
     <message>
       <location filename="../../ViewProviderCurvature.cpp" line="532"/>
       <source>Annotation</source>
-      <translation type="unfinished">Annotation</translation>
+      <translation>Anótáil</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="69"/>
       <source>Number of points</source>
-      <translation type="unfinished">Number of points</translation>
+      <translation>Líon na bpointí</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="72"/>
       <source>Number of facets</source>
-      <translation type="unfinished">Number of facets</translation>
+      <translation>Líon na ngnéithe</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="78"/>
       <source>Minimum bound</source>
-      <translation type="unfinished">Minimum bound</translation>
+      <translation>Teorainn íosta</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="81"/>
       <source>Maximum bound</source>
-      <translation type="unfinished">Maximum bound</translation>
+      <translation>Uasmhéid teorann</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="88"/>
       <source>Mesh Info Box</source>
-      <translation type="unfinished">Mesh Info Box</translation>
+      <translation>Bosca Eolais Mogaill</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="89"/>
       <source>Mesh Info</source>
-      <translation type="unfinished">Mesh Info</translation>
+      <translation>Eolas Mogaill</translation>
     </message>
   </context>
   <context>
@@ -2347,27 +2347,27 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="45"/>
       <source>Boolean</source>
-      <translation type="unfinished">Boolean</translation>
+      <translation>Booleánach</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="46"/>
       <source>&amp;Meshes</source>
-      <translation type="unfinished">&amp;Meshes</translation>
+      <translation>&amp;Mogaill</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Cutting</source>
-      <translation type="unfinished">Cutting</translation>
+      <translation>Gearradh</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
       <source>Mesh Tools</source>
-      <translation type="unfinished">Mesh Tools</translation>
+      <translation>Uirlisí Mogaill</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Mesh Modify</source>
-      <translation type="unfinished">Mesh Modify</translation>
+      <translation>Modhnaigh Mogalra</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
@@ -2377,17 +2377,17 @@ Tabhair cuairt ar https://openscad.org/ chun é a shuiteáil.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation type="unfinished">Mesh Cutting</translation>
+      <translation>Gearradh Mogaill</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
       <source>Mesh Segmentation</source>
-      <translation type="unfinished">Mesh Segmentation</translation>
+      <translation>Deighilt Mogaill</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>Mesh Analyze</source>
-      <translation type="unfinished">Mesh Analyze</translation>
+      <translation>Anailís Mogaill</translation>
     </message>
   </context>
 </TS>
