@@ -6919,7 +6919,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="718"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Forhåndsvisning</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.ui" line="136"/>
@@ -8430,7 +8430,7 @@ using the given X/Y spacings</translation>
     <message>
       <location filename="../../TaskSectionView.ui" line="447"/>
       <source>Preview</source>
-      <translation type="unfinished">Preview</translation>
+      <translation>Forhåndsvisning</translation>
     </message>
     <message>
       <location filename="../../TaskSectionView.ui" line="458"/>
@@ -9444,17 +9444,17 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="138"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="139"/>
       <source>Fill Template Fields In </source>
       <translation type="unfinished">Fill Template Fields In </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="145"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="146"/>
       <source>Update</source>
       <translation>Opdatering</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="425"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="406"/>
       <source>Update All</source>
       <translation>Opdatér alt</translation>
     </message>
@@ -9472,27 +9472,27 @@ there is an open task dialog.</source>
   <context>
     <name>Techdraw_FillTemplateFields</name>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="81"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="82"/>
       <source> file does not contain the correct field names therefore exiting</source>
       <translation> fil har ikke de korrekte feltnavne, afslutter derfor</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="87"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="88"/>
       <source> file has not been found therefore exiting</source>
       <translation> fil blev ikke fundet, afslutter derfor</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="108"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="109"/>
       <source>View or projection group missing</source>
       <translation type="unfinished">View or projection group missing</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="465"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="446"/>
       <source>Corresponding template fields missing</source>
       <translation>Korresponderende skabelonfelter mangler</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="554"/>
+      <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="535"/>
       <source>Fill template fields</source>
       <translation type="unfinished">Fill template fields</translation>
     </message>

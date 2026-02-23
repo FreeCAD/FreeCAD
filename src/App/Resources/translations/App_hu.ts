@@ -30,7 +30,7 @@ amelyek ugyanarra a konfigurálható tárgyra hivatkoznak</translation>
   <context>
     <name>Notifications</name>
     <message>
-      <location filename="../../Document.cpp" line="1110"/>
+      <location filename="../../Document.cpp" line="1117"/>
       <source>
 It is recommended that the user right-click the root of the document and select Mark to recompute.
 The user should then click the Refresh button in the main toolbar.

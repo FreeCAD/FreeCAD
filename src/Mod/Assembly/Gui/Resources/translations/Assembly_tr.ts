@@ -19,7 +19,7 @@
     <message>
       <location filename="../../../CommandInsertLink.py" line="56"/>
       <source>&lt;p&gt;Inserts a component into the active assembly. This will create dynamic links to parts, bodies, primitives, and assemblies. To insert external components, make sure that the file is &lt;b&gt;open in the current session&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Insert by left clicking items in the list.&lt;/li&gt;&lt;li&gt;Remove by right clicking items in the list.&lt;/li&gt;&lt;li&gt;Press shift to add several instances of the component while clicking on the view.&lt;/li&gt;&lt;/ul&gt;</source>
-      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, primitiflere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
+      <translation>&lt;p&gt;Etkin montaja bir bileşen ekler. Bu işlem parçalara, gövdelere, temel şekillere ve montajlara dinamik bağlantılar oluşturur. Harici bileşen eklemek için dosyanın &lt;b&gt;geçerli oturumda açık&lt;/b&gt; olduğundan emin olun.&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Listeden bir öğeye sol tıklayarak ekleyin.&lt;/li&gt;&lt;li&gt;Listeden bir öğeye sağ tıklayarak kaldırın.&lt;/li&gt;&lt;li&gt;Görünümde tıklarken Shift tuşunu basılı tutarak bileşenin birden fazla örneğini ekleyin.&lt;/li&gt;&lt;/ul&gt;</translation>
     </message>
     <message>
       <location filename="../../../CommandInsertLink.py" line="81"/>
@@ -60,22 +60,22 @@
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="127"/>
       <source>Your sub-assembly is currently rigid. This will make it flexible instead.</source>
-      <translation>Alt montajınız şu anda rijit. Bu işlem onu esnek yapacak.</translation>
+      <translation>Alt montajınız şu an katı. Bu işlem onu esnek hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="131"/>
       <source>Turn rigid</source>
-      <translation>Rijit yap</translation>
+      <translation>Katı yap</translation>
     </message>
     <message>
       <location filename="../../ViewProviderAssemblyLink.cpp" line="133"/>
       <source>Your sub-assembly is currently flexible. This will make it rigid instead.</source>
-      <translation>Alt montajınız şu anda esnek. Bu işlem onu rijit yapacak.</translation>
+      <translation>Alt montajınız şu an esnek. Bu işlem onu katı hale getirecektir.</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="287"/>
       <source>N/A</source>
-      <translation>Uygun Değil</translation>
+      <translation>Yok</translation>
     </message>
     <message>
       <location filename="../../../App/BomObject.cpp" line="311"/>
@@ -111,7 +111,7 @@
     <message>
       <location filename="../../../JointObject.py" line="51"/>
       <source>Revolute</source>
-      <translation>Döner</translation>
+      <translation>Dönel</translation>
     </message>
     <message>
       <location filename="../../../JointObject.py" line="52"/>
@@ -130,7 +130,7 @@
     </message>
     <message>
       <location filename="../../../JointObject.py" line="55"/>
-      <location filename="../../../JointObject.py" line="1777"/>
+      <location filename="../../../JointObject.py" line="1793"/>
       <source>Distance</source>
       <translation>Uzaklık</translation>
     </message>
@@ -175,22 +175,22 @@
       <translation>Bozuk bağlantı: </translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1596"/>
+      <location filename="../../../JointObject.py" line="1612"/>
       <source>Select 2 elements from 2 separate parts</source>
       <translation>İki ayrı parçadan 2 öğe seçin</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1779"/>
+      <location filename="../../../JointObject.py" line="1795"/>
       <source>Radius 1</source>
       <translation>Yarıçap 1</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1781"/>
+      <location filename="../../../JointObject.py" line="1797"/>
       <source>Thread pitch</source>
       <translation>Vida adımı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1783"/>
+      <location filename="../../../JointObject.py" line="1799"/>
       <source>Pitch radius</source>
       <translation>Hatve yarıçapı</translation>
     </message>
@@ -627,7 +627,7 @@ SLOPE, sırasıyla time = T1 civarında 0 ile H1 arasındaki ve time = T2 civar�
       <translation>Bağlantının {order}. referansı</translation>
     </message>
     <message>
-      <location filename="../../../JointObject.py" line="1218"/>
+      <location filename="../../../JointObject.py" line="1221"/>
       <source>The object to ground</source>
       <translation>Zemine sabitlenecek nesne</translation>
     </message>
@@ -889,63 +889,63 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
   <context>
     <name>AssemblyGui::ViewProviderAssembly</name>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="210"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="211"/>
       <source>The object is associated to one or more joints.</source>
       <translation>Nesne bir veya daha fazla bağlantıyla ilişkilendirilmiş.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="212"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="213"/>
       <source>Do you want to move the object and delete associated joints?</source>
       <translation>Nesneyi taşımak ve ilişkili bağlantıları silmek istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1057"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1085"/>
       <source>Move part</source>
       <translation>Parçayı taşı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1635"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>ViewProviderAssembly</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1652"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
       <translation>Boş Montaj</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1657"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
       <translation>Aşırı kısıtlı:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1665"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>Bozuk bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1673"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>Gereksiz bağlantılar:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1681"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>Kısmen gereksiz:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1689"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>Çözücü yakınsamadı</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1697"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>Yetersiz kısıtlı:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Serbestlik Derecesi</numerusform>
@@ -953,7 +953,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1703"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>Tam kısıtlı</translation>
     </message>
@@ -1476,7 +1476,7 @@ Dosyalar "runPreDrag.asmt" ve "dragging.log" olarak adlandırılır ve std::ofst
       <translation>Kısmen yüklü</translation>
     </message>
     <message>
-      <location filename="../../../CommandInsertLink.py" line="573"/>
+      <location filename="../../../CommandInsertLink.py" line="609"/>
       <source>Fully load document</source>
       <translation>Belgeyi tamamen yükle</translation>
     </message>
