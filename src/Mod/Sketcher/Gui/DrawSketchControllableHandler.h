@@ -146,11 +146,17 @@ private:
         If this behaviour is not acceptable, then the function must be specialised.*/
     void onButtonPressed(Base::Vector2d onSketchPos) override
     {
+        if (!toolWidgetManager.commitPendingOnViewParameterInputs()) {
+            return;
+        }
         DSDefaultHandler::onButtonPressed(onSketchPos);
     }
 
     void beforeCreateAutoConstraints() override
     {
+        if (!toolWidgetManager.commitPendingOnViewParameterInputs()) {
+            return;
+        }
         toolWidgetManager.addConstraints();
     }
 

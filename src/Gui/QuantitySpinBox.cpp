@@ -572,7 +572,8 @@ QuantitySpinBox::InlineCommitResult QuantitySpinBox::commitInlineExpression(QStr
         QSignalBlocker blocker(this);
         setValue(quantity);
     }
-    d->unboundExpressionText = expr->toString();
+    // store document-qualified name
+    d->unboundExpressionText = parseText.toStdString();
     return InlineCommitResult::Success;
 }
 
@@ -843,12 +844,12 @@ void QuantitySpinBox::userInput(const QString& text)
     else {
         d->validInput = false;
 
-        // only emit signal to reset EditableDatumLabel if the input is truly empty or has
-        // no meaningful number don't emit for partially typed numbers like "71." which are
-        // temporarily invalid
+        // Do not emit reset on empty input; keep current OVP value while editing.
+        // For non-expression invalid text without digits, keep legacy unset behavior.
         const QString trimmedText = text.trimmed();
-        static const QRegularExpression partialNumberRegex(QStringLiteral(R"([+-]?(\d+)?(\.,\d*)?)"));
-        if (trimmedText.isEmpty() || !trimmedText.contains(partialNumberRegex)) {
+        static const QRegularExpression digitRegex(QStringLiteral(R"([0-9])"));
+        if (!trimmedText.isEmpty() && !InlineExpression::looksLikeExpressionInput(trimmedText)
+            && !trimmedText.contains(digitRegex)) {
             // we have to emit here signal explicitly as validator will not pass
             // this value further but we want to check it to disable isSet flag if
             // it has been set previously

@@ -186,8 +186,8 @@ App::DocumentObject* getOrCreateDefaultVarSet(App::Document* doc, QString& messa
 
     App::DocumentObject* varSet = doc->getObject(Gui::InlineExpression::DefaultVarSetName);
     if (varSet && !varSet->isDerivedFrom(App::VarSet::getClassTypeId())) {
-        message = QObject::tr("Object is not a VarSet: %1")
-                      .arg(Gui::InlineExpression::DefaultVarSetName);
+        message
+            = QObject::tr("Object is not a VarSet: %1").arg(Gui::InlineExpression::DefaultVarSetName);
         return nullptr;
     }
 
@@ -235,19 +235,9 @@ bool hasPropertyInDefaultVarSet(App::DocumentObject* varSet, const std::string& 
 namespace Gui::InlineExpression
 {
 
-QString trimLeadingFormulaEquals(QString text)
-{
-    text = text.trimmed();
-    if (text.startsWith(QLatin1Char('='))) {
-        text.remove(0, 1);
-        text = text.trimmed();
-    }
-    return text;
-}
-
 QString normalizeInput(QString text)
 {
-    return trimTrailingStatementDelimiter(trimLeadingFormulaEquals(text));
+    return trimTrailingStatementDelimiter(text);
 }
 
 Assignment parseAssignment(const QString& text)
@@ -266,7 +256,8 @@ Assignment parseAssignment(const QString& text)
         assignment.varSet = match.captured(1).trimmed();
         assignment.name = match.captured(2).trimmed();
         assignment.valueExpr = trimTrailingStatementDelimiter(match.captured(3));
-        if (assignment.varSet.isEmpty() || assignment.name.isEmpty() || assignment.valueExpr.isEmpty()) {
+        if (assignment.varSet.isEmpty() || assignment.name.isEmpty()
+            || assignment.valueExpr.isEmpty()) {
             assignment = Assignment {};
         }
         return assignment;
@@ -282,7 +273,8 @@ Assignment parseAssignment(const QString& text)
         assignment.varSet = match.captured(1).trimmed();
         assignment.name = match.captured(2).trimmed();
         assignment.valueExpr = trimTrailingStatementDelimiter(match.captured(3));
-        if (assignment.varSet.isEmpty() || assignment.name.isEmpty() || assignment.valueExpr.isEmpty()) {
+        if (assignment.varSet.isEmpty() || assignment.name.isEmpty()
+            || assignment.valueExpr.isEmpty()) {
             assignment = Assignment {};
         }
         return assignment;
@@ -450,6 +442,8 @@ App::Property* ensureProperty(
 
     const std::string propName = name.toStdString();
     App::Property* prop = varSet->getPropertyByName(propName.c_str());
+    // Intentionally reuse an existing property regardless of requested type.
+    // Assignment semantics target the existing variable if it already exists.
     if (prop && prop->getContainer() == varSet) {
         return prop;
     }
@@ -482,8 +476,8 @@ bool assignExpressionToProperty(
             }
         }
 
-        if (const auto* op = freecad_cast<const App::OperatorExpression*>(expression);
-            op && op->getOperator() == App::OperatorExpression::Operator::UNIT
+        if (const auto* op = freecad_cast<const App::OperatorExpression*>(expression); op
+            && op->getOperator() == App::OperatorExpression::Operator::UNIT
             && freecad_cast<const App::NumberExpression*>(op->getLeft())) {
             std::unique_ptr<App::Expression> result(op->eval());
             if (const auto* number = freecad_cast<App::NumberExpression*>(result.get())) {
@@ -501,9 +495,12 @@ bool assignExpressionToProperty(
 
             Binding binding;
             binding.bind(*prop);
+            // setExpression() writes to ExpressionEngine and manages a transaction;
+            // apply() is command-dispatch and is intentionally not used here.
             binding.setExpression(std::shared_ptr<App::Expression>(expression->copy()));
 
             varSet->renameObjectIdentifiers(idsFromObjToVarSet);
+            varSet->ExpressionEngine.execute();
             return true;
         }
     }
@@ -574,7 +571,7 @@ std::string makeReferenceExpression(const App::DocumentObject* varSet, const QSt
 
 bool looksLikeExpressionInput(const QString& text)
 {
-    const QString normalized = trimLeadingFormulaEquals(text).trimmed();
+    const QString normalized = text.trimmed();
     if (normalized.isEmpty()) {
         return false;
     }

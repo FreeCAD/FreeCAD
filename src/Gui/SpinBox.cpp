@@ -393,7 +393,12 @@ void UIntSpinBox::setRange(uint minVal, uint maxVal)
 
 QValidator::State UIntSpinBox::validate(QString& input, int& pos) const
 {
-    return d->mValidator->validate(input, pos);
+    QValidator::State state = d->mValidator->validate(input, pos);
+    if (state == QValidator::Invalid && InlineExpression::looksLikeExpressionInput(input)) {
+        return QValidator::Intermediate;
+    }
+
+    return state;
 }
 
 uint UIntSpinBox::value() const

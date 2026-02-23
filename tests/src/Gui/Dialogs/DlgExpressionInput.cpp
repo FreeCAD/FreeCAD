@@ -282,20 +282,15 @@ private Q_SLOTS:
         QVERIFY(doc->getObject("Parameters") == nullptr);
     }
 
-    void assignment_allowsLeadingFormulaEquals()  // NOLINT
+    void assignment_rejectsLeadingFormulaEquals()  // NOLINT
     {
         QWidget parent;
         Gui::Dialog::DlgExpressionInput dlg(path(), nullptr, Base::Unit::One, &parent);
         setInputText(dlg, QStringLiteral("=x=42"));
-        QVERIFY(okButton(dlg)->isEnabled());
-
+        QVERIFY(!okButton(dlg)->isEnabled());
         dlg.accept();
-        QCOMPARE(dlg.result(), static_cast<int>(QDialog::Accepted));
-        auto* parameters = freecad_cast<App::VarSet*>(doc->getObject("Parameters"));
-        QVERIFY(parameters != nullptr);
-        auto* x = freecad_cast<App::PropertyFloat*>(parameters->getPropertyByName("x"));
-        QVERIFY(x != nullptr);
-        QCOMPARE(x->getValue(), 42.0);
+        QCOMPARE(dlg.result(), static_cast<int>(QDialog::Rejected));
+        QVERIFY(doc->getObject("Parameters") == nullptr);
     }
 
     void assignment_integerTarget_writesIntegerValue()  // NOLINT
@@ -318,6 +313,49 @@ private Q_SLOTS:
         auto* x = freecad_cast<App::PropertyInteger*>(parameters->getPropertyByName("x"));
         QVERIFY(x != nullptr);
         QCOMPARE(x->getValue(), 42L);
+    }
+
+    void assignment_reusesExistingIntegerPropertyType()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(5);
+
+        QWidget parent;
+        Gui::Dialog::DlgExpressionInput dlg(path(), nullptr, Base::Unit::One, &parent);
+        setInputText(dlg, QStringLiteral("x=42"));
+        QVERIFY(okButton(dlg)->isEnabled());
+
+        dlg.accept();
+        QCOMPARE(dlg.result(), static_cast<int>(QDialog::Accepted));
+
+        auto* sameX = parameters->getPropertyByName("x");
+        QVERIFY(sameX == x);
+        QCOMPARE(x->getValue(), 42L);
+    }
+
+    void assignment_rejectsNonIntegerForExistingIntegerProperty()  // NOLINT
+    {
+        auto* parameters = freecad_cast<App::VarSet*>(doc->addObject("App::VarSet", "Parameters"));
+        QVERIFY(parameters != nullptr);
+        auto* x = freecad_cast<App::PropertyInteger*>(
+            parameters->addDynamicProperty("App::PropertyInteger", "x", "Variables")
+        );
+        QVERIFY(x != nullptr);
+        x->setValue(5);
+
+        QWidget parent;
+        Gui::Dialog::DlgExpressionInput dlg(path(), nullptr, Base::Unit::One, &parent);
+        setInputText(dlg, QStringLiteral("x=42.5"));
+        QVERIFY(okButton(dlg)->isEnabled());
+
+        dlg.accept();
+        QCOMPARE(dlg.result(), static_cast<int>(QDialog::Rejected));
+        QCOMPARE(x->getValue(), 5L);
     }
 
 private:

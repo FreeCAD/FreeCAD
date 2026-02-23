@@ -24,10 +24,10 @@
 
 
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <QAbstractSpinBox>
 #include <QApplication>
 #include <QEvent>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
+#include <QLineEdit>
 
 
 #include "ViewProviderSketch.h"
@@ -93,15 +93,24 @@ bool DrawSketchKeyboardManager::eventFilter(QObject* object, QEvent* event)
 
 void DrawSketchKeyboardManager::detectKeyboardEventHandlingMode(QKeyEvent* keyEvent)
 {
-    QRegularExpression rx(QStringLiteral("^[0-9]$"));
-    auto match = rx.match(keyEvent->text());
-    if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
-        || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma
-        || match.hasMatch()
-        // double check for backspace as there may be windows/unix inconsistencies
+    QWidget* focusWidget = QApplication::focusWidget();
+    bool isTextInputFocused = focusWidget
+        && (qobject_cast<QAbstractSpinBox*>(focusWidget) || qobject_cast<QLineEdit*>(focusWidget)
+            || qobject_cast<QAbstractSpinBox*>(focusWidget->parentWidget()));
+
+    if (!isTextInputFocused) {
+        return;
+    }
+
+    bool isPrintable = !keyEvent->text().isEmpty() && keyEvent->text().at(0).isPrint();
+    bool isEditingKey = keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
+        || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
+        || keyEvent->key() == Qt::Key_Left || keyEvent->key() == Qt::Key_Right
+        || keyEvent->key() == Qt::Key_Up || keyEvent->key() == Qt::Key_Down
         || keyEvent->key() == Qt::Key_Backspace || keyEvent->matches(QKeySequence::Backspace)
-        || keyEvent->matches(QKeySequence::Delete)) {
+        || keyEvent->matches(QKeySequence::Delete);
+
+    if (isPrintable || isEditingKey) {
         keyMode = KeyboardEventHandlingMode::DSHControl;
         timer.start(timeOutValue);
     }

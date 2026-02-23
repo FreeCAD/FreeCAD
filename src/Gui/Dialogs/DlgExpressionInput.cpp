@@ -413,7 +413,7 @@ static const bool NoCheckExpr = false;
 
 void DlgExpressionInput::textChanged()
 {
-    const QString text = InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText());
+    const QString text = ui->expression->toPlainText().trimmed();
 
     if (text.isEmpty()) {
         okBtn->setDisabled(true);
@@ -599,7 +599,11 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    const QString text = InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText());
+    if (!okBtn->isEnabled()) {
+        return;
+    }
+
+    const QString text = ui->expression->toPlainText().trimmed();
     const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
     if (assignment.isAssignment) {
         QString error;
@@ -847,7 +851,7 @@ void DlgExpressionInput::onCheckVarSets(int state)
     }
     else {
         try {
-            checkExpression(InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText()));
+            checkExpression(ui->expression->toPlainText().trimmed());
         }
         catch (Base::Exception&) {
             okBtn->setEnabled(false);
@@ -987,9 +991,7 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         return;
     }
 
-    const QString expressionText = InlineExpression::trimLeadingFormulaEquals(
-        ui->expression->toPlainText()
-    );
+    const QString expressionText = ui->expression->toPlainText().trimmed();
     if (expressionText.isEmpty()) {
         okBtn->setEnabled(false);
         return;

@@ -27,6 +27,7 @@
 #include <QPointer>
 #include <QLabel>
 #include <Gui/QuantitySpinBox.h>
+#include <string>
 
 #include "SoDatumLabel.h"
 
@@ -92,6 +93,8 @@ public:
     void setLockedAppearance(bool locked);  ///< Sets visual appearance to indicate locked state
                                             ///< (finished editing)
     void resetLockedState();  ///< Resets both hasFinishedEditing flag and locked appearance
+    std::string constraintExpression() const;
+    bool commitPendingInlineExpression();
 
     Function getFunction();
 
@@ -103,6 +106,7 @@ public:
     bool autoDistanceReverse;
     bool avoidMouseCursor;
     double value;
+    std::string expression;
     // NOLINTEND
 
 Q_SIGNALS:
@@ -123,7 +127,8 @@ private:
     SoAnnotation* annotation;
     SoTransform* transform;
     QPointer<View3DInventorViewer> viewer;
-    QuantitySpinBox* spinBox;
+    QPointer<QuantitySpinBox> spinBox;
+    bool hasUserEditedText {false};
     QLabel* lockIconLabel;  ///< Label to display lock icon next to spinbox
     SoNodeSensor* cameraSensor;
     SbVec3f midpos;

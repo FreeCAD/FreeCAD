@@ -33,7 +33,6 @@ struct Assignment
     QString valueExpr;
 };
 
-QString trimLeadingFormulaEquals(QString text);
 QString normalizeInput(QString text);
 Assignment parseAssignment(const QString& text);
 bool isValidName(const QString& name, QString& message);
