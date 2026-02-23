@@ -1424,7 +1424,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="143"/>
       <source>Spiral</source>
-      <translation type="unfinished">Spiral</translation>
+      <translation>Spiral</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="148"/>
@@ -1684,7 +1684,7 @@ The latter can be used to face of the entire stock area to ensure uniform height
       <location filename="../panels/PageOpSlotEdit.ui" line="104"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="176"/>
       <source>Center of mass</source>
-      <translation type="unfinished">Center of mass</translation>
+      <translation>Massemidtpunkt</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSlotEdit.ui" line="109"/>
@@ -6060,7 +6060,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
       <location filename="../../../Path/Op/Waterline.py" line="129"/>
       <source>Spiral</source>
-      <translation type="unfinished">Spiral</translation>
+      <translation>Spiral</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="117"/>
@@ -6461,7 +6461,7 @@ Aborting op creation</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
       <source>Tangent</source>
-      <translation type="unfinished">Tangent</translation>
+      <translation>Tangent</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="58"/>
@@ -8040,7 +8040,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="68"/>
       <source>Edge</source>
-      <translation type="unfinished">Edge</translation>
+      <translation>Linje</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
@@ -8344,7 +8344,7 @@ This will not delete the toolbits contained within it.</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="454"/>
       <source>Spiral</source>
-      <translation type="unfinished">Spiral</translation>
+      <translation>Spiral</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="455"/>
