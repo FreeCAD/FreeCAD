@@ -107,5 +107,6 @@
 #include <gp_Pln.hxx>
 #include <gp_Pnt.hxx>
 
-#elif defined(FC_OS_WIN32)
-# include <windows.h>
+#ifdef FC_OS_WIN32
+#   include <windows.h>
+#endif
