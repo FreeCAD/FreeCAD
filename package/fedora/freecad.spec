@@ -44,7 +44,7 @@ Source0:        freecad-sources.tar.gz
 # Utilities
 BuildRequires:  cmake gcc-c++ gettext doxygen swig graphviz gcc-gfortran desktop-file-utils tbb-devel ninja-build strace
 %if %{with tests}
-BuildRequires:  xorg-x11-server-Xvfb python3-typing-extensions 
+BuildRequires:  python3-typing-extensions xwayland-run weston
 %if %{without bundled_gtest}
 BuildRequires: gtest-devel gmock-devel
 %endif
@@ -215,18 +215,11 @@ Development file for OndselSolver
 
 %if %{with tests}
     mkdir -p %{buildroot}%tests_resultdir
-    if %ctest -E '^QuantitySpinBox_Tests_run$' &> %{buildroot}%tests_resultdir/ctest.result ; then
+    if wlheadless-run -- \%ctest &> %{buildroot}%tests_resultdir/ctest.result ; then
         echo "ctest OK"
     else
         echo "**** Failed ctest ****"
         touch %{buildroot}%tests_resultdir/ctest.failed
-    fi
-
-    if xvfb-run \%ctest -R '^QuantitySpinBox_Tests_run$' &>> %{buildroot}%tests_resultdir/ctest_gui.result ; then
-        echo "ctest gui OK"
-    else
-        echo "**** Failed ctest gui ****"
-        touch %{buildroot}%tests_resultdir/ctest_gui.failed
     fi
 %endif
 
