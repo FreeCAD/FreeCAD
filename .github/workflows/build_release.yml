@@ -10,6 +10,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: build-release-${{ github.event_name }}
+  cancel-in-progress: true
+
 jobs:
   upload_src:
     runs-on: ubuntu-latest
@@ -21,7 +25,7 @@ jobs:
         with:
           egress-policy: audit
 
-      - name: Checkout Source
+      - name: Checkout source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
@@ -29,7 +33,7 @@ jobs:
           fetch-tags: true
           submodules: 'recursive'
 
-      - name: get tag and create release if weekly
+      - name: Get tag and create release if weekly
         id: get_tag
         shell: bash -l {0}
         env:
@@ -39,7 +43,10 @@ jobs:
             export BUILD_TAG="${{ github.event.release.tag_name }}"
           else
             export BUILD_TAG=weekly-$(date "+%Y.%m.%d")
-            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" -F .github/workflows/weekly-build-notes.md --prerelease || true
+            gh release create ${BUILD_TAG} --title "Development Build ${BUILD_TAG}" \
+                                           -F .github/workflows/weekly-build-notes.md \
+                                           --prerelease || \
+            gh release view ${BUILD_TAG} > /dev/null  # fail if it doesn't exist
           fi
           echo "BUILD_TAG=${BUILD_TAG}" >> "$GITHUB_ENV"
           echo "build_tag=${BUILD_TAG}" >> "$GITHUB_OUTPUT"
@@ -118,7 +125,7 @@ jobs:
           remove-android: 'true'      # (frees ~9 GB)
           remove-cached-tools: 'true' # (frees ~8.3 GB)
 
-      - name: Set Platform Environment Variables
+      - name: Set platform environment variables
         shell: bash -l {0}
         env:
           OPERATING_SYSTEM: ${{ runner.os }}
@@ -128,7 +135,7 @@ jobs:
             echo 'RATTLER_CACHE_DIR=D:\rattler' >> "$GITHUB_ENV"
           fi
 
-      - name: Checkout Source
+      - name: Checkout source
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: ${{ github.sha }}
@@ -142,7 +149,7 @@ jobs:
           cache: false
 
       - name: Install the Apple certificate and provisioning profile
-        id: get_cert
+        id: macos_get_cert
         if: runner.os == 'macOS'
         env:
           APP_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
@@ -150,7 +157,6 @@ jobs:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           DEVELOPER_TEAM_ID: ${{ secrets.DEVELOPER_TEAM_ID }}
-          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
         run: |
           if [ -z "$BUILD_CERTIFICATE_BASE64" ]; then
@@ -186,23 +192,81 @@ jobs:
 
           xcrun notarytool store-credentials "FreeCAD" --keychain "$KEYCHAIN_PATH" --apple-id "${APPLE_ID}" --password "${APP_SPECIFIC_PASSWORD}" --team-id "${DEVELOPER_TEAM_ID}"
 
-      - name: Build and Release Packages
+      - name: Setup .NET 10 SDK
+        if: runner.os == 'Windows'
+        uses: actions/setup-dotnet@baa11fbfe1d6520db94683bd5c7a3818018e4309 # v5.1.0
+        with:
+          dotnet-version: '10.0.103'
+
+      - name: Install sign tool
+        if: runner.os == 'Windows'
+        run: |
+          # NOTE: The sign tool is ONLY available as a prerelease package, they never issue real releases.
+          dotnet tool install --global --prerelease sign --version 0.9.1-beta.26127.1
+          echo "$env:USERPROFILE\.dotnet\tools" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          dotnet --info
+          sign --version
+
+      - name: Build packages
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
-          SIGNING_KEY_ID: ${{ secrets.SIGNING_KEY_ID }}
-          SIGN_RELEASE: ${{ steps.get_cert.outputs.has_cert }}
           TARGET_PLATFORM: ${{ matrix.target }}
-          MAKE_INSTALLER: "true"
-          UPLOAD_RELEASE: "true"
           BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
         run: |
+          set -euo pipefail
           if [[ "${{ runner.os }}" == "macOS" ]]; then
             export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
           fi
           python3 package/scripts/write_version_info.py ../freecad_version.txt
           cd package/rattler-build
           pixi install
+
+      - name: Azure login for Windows build code signing
+        id: azure_login
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        uses: azure/login@a457da9ea143d694b1b9c7c869ebb04ebe844ef5 # v2.3.0
+        with:
+          creds: '{"clientId":"${{ secrets.AZURE_CLIENT_ID }}","clientSecret":"${{ secrets.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZURE_TENANT_ID }}"}'
+
+      - name: Release packages with optional code-signing on Windows and macOS
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_PLATFORM: ${{ matrix.target }}
+          MAKE_INSTALLER: "true"
+          UPLOAD_RELEASE: "true"
+          BUILD_TAG: ${{ needs.upload_src.outputs.build_tag }}
+        run: |
+          set -euo pipefail
+
+          export MACOS_SIGN_RELEASE=0
+          export WINDOWS_SIGN_RELEASE=0
+
+          case "${RUNNER_OS}" in
+            Windows)
+              export WINDOWS_SIGN_RELEASE="${{ steps.azure_login.outcome }}"
+              export WINDOWS_AZURE_ENDPOINT="${{ vars.AZURE_TRUSTED_SIGNING_ENDPOINT }}"
+              export WINDOWS_AZURE_CERTIFICATE_PROFILE="${{ vars.AZURE_TRUSTED_SIGNING_CERTIFICATE_PROFILE }}"
+              export WINDOWS_AZURE_SIGNING_ACCOUNT="${{ vars.AZURE_TRUSTED_SIGNING_ACCOUNT }}"
+
+              # For good measure, normalize the azure_login result to 1 or 0
+              if [[ "${WINDOWS_SIGN_RELEASE:-}" == "success" ]]; then
+                export WINDOWS_SIGN_RELEASE=1
+              else
+                export WINDOWS_SIGN_RELEASE=0
+              fi
+              ;;
+
+            macOS)
+              export MACOS_SIGN_RELEASE="${{ steps.macos_get_cert.outputs.has_cert }}"
+              export MACOS_SIGNING_KEY_ID="${{ secrets.SIGNING_KEY_ID }}"
+              export MACOS_DEPLOYMENT_TARGET="${{ matrix.deploy_target }}"
+              ;;
+          esac
+
+          cd package/rattler-build
           pixi run -e package create_bundle
 
       ## Needed if running on a self-hosted runner:
