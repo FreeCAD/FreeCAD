@@ -121,7 +121,6 @@ private:
     bool reportName();
     bool reportGroup(const QString& nameGroup);
     void updateVarSetInfo(bool checkExpr = true);
-    void createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet);
     void acceptWithVarSet();
     bool isPropertyNameValid(
         const QString& nameProp,

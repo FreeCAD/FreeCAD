@@ -27,12 +27,8 @@
 #include <QMenu>
 #include <QMouseEvent>
 #include <QPushButton>
-#include <QRegularExpression>
 #include <QTreeWidget>
 #include <QStyledItemDelegate>
-
-#include <cmath>
-#include <limits>
 
 #include <fmt/format.h>
 
@@ -49,10 +45,9 @@
 #include "Dialogs/DlgExpressionInput.h"
 #include "ui_DlgExpressionInput.h"
 #include "Application.h"
-#include "Command.h"
 #include "Tools.h"
-#include "ExpressionBinding.h"
 #include "BitmapFactory.h"
+#include "InlineExpression.h"
 #include "ViewProviderDocumentObject.h"
 
 using namespace App;
@@ -186,220 +181,6 @@ static std::vector<App::VarSet*> getAllVarSets()
     }
 
     return varSets;
-}
-
-constexpr const char* InlineAssignmentVarSetName = "Parameters";
-constexpr const char* InlineAssignmentVarSetGroup = "Variables";
-
-struct InlineAssignment
-{
-    bool isAssignment = false;
-    bool hasExplicitVarSet = false;
-    bool isLabelVarSet = false;
-    QString varSet;
-    QString name;
-    QString valueExpr;
-};
-
-static QString trimTrailingStatementDelimiter(QString text)
-{
-    text = text.trimmed();
-    while (text.endsWith(QLatin1Char(';'))) {
-        text.chop(1);
-        text = text.trimmed();
-    }
-    return text;
-}
-
-static QString trimLeadingFormulaEquals(QString text)
-{
-    text = text.trimmed();
-    if (text.startsWith(QLatin1Char('='))) {
-        text.remove(0, 1);
-        text = text.trimmed();
-    }
-    return text;
-}
-
-static InlineAssignment parseInlineAssignment(const QString& text)
-{
-    InlineAssignment assignment;
-    QRegularExpressionMatch match;
-
-    static const QRegularExpression labelAssignRegex(
-        QStringLiteral(R"(^\s*<<(.*?)>>\s*\.\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=(?!=)\s*(.+)$)")
-    );
-    match = labelAssignRegex.match(text);
-    if (match.hasMatch()) {
-        assignment.isAssignment = true;
-        assignment.hasExplicitVarSet = true;
-        assignment.isLabelVarSet = true;
-        assignment.varSet = match.captured(1).trimmed();
-        assignment.name = match.captured(2).trimmed();
-        assignment.valueExpr = trimTrailingStatementDelimiter(match.captured(3));
-        if (assignment.varSet.isEmpty() || assignment.name.isEmpty()
-            || assignment.valueExpr.isEmpty()) {
-            assignment = InlineAssignment {};
-        }
-        return assignment;
-    }
-
-    static const QRegularExpression qualifiedAssignRegex(QStringLiteral(
-        R"(^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*\.\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=(?!=)\s*(.+)$)"
-    ));
-    match = qualifiedAssignRegex.match(text);
-    if (match.hasMatch()) {
-        assignment.isAssignment = true;
-        assignment.hasExplicitVarSet = true;
-        assignment.varSet = match.captured(1).trimmed();
-        assignment.name = match.captured(2).trimmed();
-        assignment.valueExpr = trimTrailingStatementDelimiter(match.captured(3));
-        if (assignment.varSet.isEmpty() || assignment.name.isEmpty()
-            || assignment.valueExpr.isEmpty()) {
-            assignment = InlineAssignment {};
-        }
-        return assignment;
-    }
-
-    static const QRegularExpression assignRegex(
-        QStringLiteral(R"(^\s*([a-zA-Z_][a-zA-Z0-9_]*)\s*=(?!=)\s*(.+)$)")
-    );
-    match = assignRegex.match(text);
-    if (!match.hasMatch()) {
-        return assignment;
-    }
-
-    assignment.isAssignment = true;
-    assignment.name = match.captured(1).trimmed();
-    assignment.valueExpr = trimTrailingStatementDelimiter(match.captured(2));
-    if (assignment.name.isEmpty() || assignment.valueExpr.isEmpty()) {
-        assignment = InlineAssignment {};
-    }
-    return assignment;
-}
-
-static bool isInlineAssignmentNameValid(const QString& name, QString& message)
-{
-    std::string nameStd = name.toStdString();
-    if (nameStd != Base::Tools::getIdentifier(nameStd)) {
-        message = QObject::tr("Invalid property name: %1")
-                      .arg(
-                          QObject::tr("must contain only alphanumeric characters, underscore, and must not start with a digit")
-                      );
-        return false;
-    }
-    if (ExpressionParser::isTokenAUnit(nameStd)) {
-        message = QObject::tr("Invalid property name: %1 is a unit").arg(name);
-        return false;
-    }
-    if (ExpressionParser::isTokenAConstant(nameStd)) {
-        message = QObject::tr("Invalid property name: %1 is a constant").arg(name);
-        return false;
-    }
-    return true;
-}
-
-static App::DocumentObject* getOrCreateInlineAssignmentVarSet(App::Document* doc, QString& message)
-{
-    if (!doc) {
-        return nullptr;
-    }
-
-    App::DocumentObject* varSet = doc->getObject(InlineAssignmentVarSetName);
-    if (varSet && !varSet->isDerivedFrom(App::VarSet::getClassTypeId())) {
-        message = QObject::tr("Object is not a VarSet: %1").arg(InlineAssignmentVarSetName);
-        return nullptr;
-    }
-    if (!varSet) {
-        for (auto* obj : doc->getObjects()) {
-            if (obj && std::string(obj->Label.getValue()) == InlineAssignmentVarSetName
-                && !obj->isDerivedFrom(App::VarSet::getClassTypeId())) {
-                message = QObject::tr("Object labeled '%1' is not a VarSet")
-                              .arg(InlineAssignmentVarSetName);
-                return nullptr;
-            }
-        }
-        varSet = doc->addObject("App::VarSet", InlineAssignmentVarSetName);
-        if (!varSet) {
-            message = QObject::tr("Could not create VarSet: %1").arg(InlineAssignmentVarSetName);
-            return nullptr;
-        }
-        // move new "Parameters" VarSet to the top of the document
-        if (auto* vp = freecad_cast<Gui::ViewProviderDocumentObject*>(
-                Gui::Application::Instance->getViewProvider(varSet)
-            )) {
-            vp->setTreeRank(std::numeric_limits<int>::min());
-        }
-    }
-    return varSet;
-}
-
-static App::DocumentObject* getInlineAssignmentVarSet(
-    App::Document* doc,
-    const InlineAssignment& assignment,
-    bool createDefault,
-    QString& message
-)
-{
-    if (!doc) {
-        message = QObject::tr("Unknown document");
-        return nullptr;
-    }
-    if (!assignment.hasExplicitVarSet) {
-        if (!createDefault) {
-            return nullptr;
-        }
-        return getOrCreateInlineAssignmentVarSet(doc, message);
-    }
-
-    // Lookup VarSet from <<label>>.x = ...
-    if (assignment.isLabelVarSet) {
-        App::DocumentObject* varSet = nullptr;
-        const std::string label = assignment.varSet.toStdString();
-        for (auto* obj : doc->getObjects()) {
-            if (obj && obj->Label.getValue() == label
-                && obj->isDerivedFrom(App::VarSet::getClassTypeId())) {
-                if (varSet) {
-                    // fail if multiple objects share the same requested label
-                    message = QObject::tr("VarSet label is ambiguous: %1").arg(assignment.varSet);
-                    return nullptr;
-                }
-                varSet = obj;
-            }
-        }
-        if (!varSet) {
-            message = QObject::tr("VarSet not found by label: %1").arg(assignment.varSet);
-        }
-        return varSet;
-    }
-
-    // Lookup VarSet from name.x = ...
-    App::DocumentObject* obj = doc->getObject(assignment.varSet.toUtf8());
-    if (!obj) {
-        // Fallback to lookup by label, failing if not unique
-        App::DocumentObject* byLabel = nullptr;
-        const std::string label = assignment.varSet.toStdString();
-        for (auto* candidate : doc->getObjects()) {
-            if (candidate && candidate->Label.getValue() == label
-                && candidate->isDerivedFrom(App::VarSet::getClassTypeId())) {
-                if (byLabel) {
-                    message = QObject::tr("VarSet label is ambiguous: %1").arg(assignment.varSet);
-                    return nullptr;
-                }
-                byLabel = candidate;
-            }
-        }
-        if (byLabel) {
-            return byLabel;
-        }
-        message = QObject::tr("VarSet not found: %1").arg(assignment.varSet);
-        return nullptr;
-    }
-    if (!obj->isDerivedFrom(App::VarSet::getClassTypeId())) {
-        message = QObject::tr("Object is not a VarSet: %1").arg(assignment.varSet);
-        return nullptr;
-    }
-    return obj;
 }
 
 Base::Type DlgExpressionInput::getTypePath()
@@ -632,7 +413,7 @@ static const bool NoCheckExpr = false;
 
 void DlgExpressionInput::textChanged()
 {
-    const QString text = trimLeadingFormulaEquals(ui->expression->toPlainText());
+    const QString text = InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText());
 
     if (text.isEmpty()) {
         okBtn->setDisabled(true);
@@ -643,16 +424,16 @@ void DlgExpressionInput::textChanged()
     okBtn->setDefault(true);
 
     try {
-        const InlineAssignment assignment = parseInlineAssignment(text);
+        const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
         if (assignment.isAssignment) {
             QString error;
-            if (!isInlineAssignmentNameValid(assignment.name, error)) {
+            if (!InlineExpression::isValidName(assignment.name, error)) {
                 throw Base::RuntimeError(error.toStdString().c_str());
             }
             if (assignment.hasExplicitVarSet) {
                 App::DocumentObject* docObj = path.getDocumentObject();
                 App::Document* doc = docObj ? docObj->getDocument() : nullptr;
-                if (!getInlineAssignmentVarSet(doc, assignment, false, error)) {
+                if (!InlineExpression::resolveVarSet(doc, assignment, false, error)) {
                     throw Base::RuntimeError(error.toStdString().c_str());
                 }
             }
@@ -710,19 +491,6 @@ void DlgExpressionInput::show()
     this->activateWindow();
     ui->expression->selectAll();
 }
-
-class Binding: public Gui::ExpressionBinding
-{
-    // helper class to compensate for the fact that
-    // ExpressionBinding::setExpression is protected.
-public:
-    Binding() = default;
-
-    void setExpression(std::shared_ptr<App::Expression> expr) override
-    {
-        ExpressionBinding::setExpression(expr);
-    }
-};
 
 static constexpr const char* InvalidIdentifierMessage = QT_TR_NOOP(
     "must contain only alphanumeric characters, underscore, and must not start with a digit"
@@ -798,96 +566,6 @@ static void storePreferences(
     paramExpressionEditor->SetASCII("LastGroup", nameGroup);
 }
 
-static const App::NumberExpression* toNumberExpr(const App::Expression* expr)
-{
-    return freecad_cast<const App::NumberExpression*>(expr);
-}
-
-static const App::StringExpression* toStringExpr(const App::Expression* expr)
-{
-    return freecad_cast<const App::StringExpression*>(expr);
-}
-
-static const App::OperatorExpression* toUnitNumberExpr(const App::Expression* expr)
-{
-    auto* opExpr = freecad_cast<const App::OperatorExpression*>(expr);
-    if (opExpr && opExpr->getOperator() == App::OperatorExpression::Operator::UNIT
-        && toNumberExpr(opExpr->getLeft())) {
-        return opExpr;
-    }
-    return nullptr;
-}
-
-static bool toIntegerLiteral(double value, long long& integer)
-{
-    if (!std::isfinite(value)) {
-        return false;
-    }
-    double intPart = 0.0;
-    if (std::modf(value, &intPart) != 0.0) {
-        return false;
-    }
-    if (intPart < static_cast<double>(std::numeric_limits<long long>::min())
-        || intPart > static_cast<double>(std::numeric_limits<long long>::max())) {
-        return false;
-    }
-    integer = static_cast<long long>(intPart);
-    return true;
-}
-
-static void assignNumberToVarSetProperty(
-    App::DocumentObject* obj,
-    App::Property* prop,
-    const App::NumberExpression* ne
-)
-{
-    // set type as integer or float literal depending on property type
-    // e.g. UIntSpinBox fails if you attempt to assign a float
-    long long integer = 0;
-    if (prop && prop->isDerivedFrom(App::PropertyInteger::getClassTypeId())
-        && toIntegerLiteral(ne->getValue(), integer)) {
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = %lld",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            integer
-        );
-        return;
-    }
-    Gui::Command::doCommand(
-        Gui::Command::Doc,
-        "App.getDocument('%s').getObject('%s').%s = %f",
-        obj->getDocument()->getName(),
-        obj->getNameInDocument(),
-        prop->getName(),
-        ne->getValue()
-    );
-}
-
-void DlgExpressionInput::createBindingVarSet(App::Property* propVarSet, App::DocumentObject* varSet)
-{
-    ObjectIdentifier varSetId(*propVarSet);
-
-    // rewrite the identifiers of the expression to be relative to the VarSet
-    std::map<App::ObjectIdentifier, bool> identifiers = expression->getIdentifiers();
-
-    std::map<ObjectIdentifier, ObjectIdentifier> idsFromObjToVarSet;
-    for (const auto& idPair : identifiers) {
-        ObjectIdentifier exprId = idPair.first;
-        ObjectIdentifier relativeId = exprId.relativeTo(varSetId);
-        idsFromObjToVarSet[exprId] = relativeId;
-    }
-
-    Binding binding;
-    binding.bind(*propVarSet);
-    binding.setExpression(expression);
-    binding.apply();
-
-    varSet->renameObjectIdentifiers(idsFromObjToVarSet);
-}
-
 void DlgExpressionInput::acceptWithVarSet()
 {
     // all checks have been performed in updateVarSetInfo and textChanged that
@@ -907,41 +585,9 @@ void DlgExpressionInput::acceptWithVarSet()
     std::string type = getType();
     auto prop = obj->addDynamicProperty(type.c_str(), name.c_str(), group.c_str());
 
-    // Set the value of the property in the VarSet
-    //
-    // The value of the property is going to be the value that was originally
-    // meant to be the value for the property that this dialog is targeting.
-    const Expression* expr = expression.get();
-    if (const NumberExpression* ne = toNumberExpr(expr)) {
-        // the value is a number: directly assign it to the property instead of
-        // making it an expression in the variable set
-        assignNumberToVarSetProperty(obj, prop, ne);
-    }
-    else if (const StringExpression* se = toStringExpr(expr)) {
-        // the value is a string: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            se->getText().c_str()
-        );
-    }
-    else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
-        // the value is a unit number: directly assign it to the property.
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-            obj->getDocument()->getName(),
-            obj->getNameInDocument(),
-            prop->getName(),
-            une->toString().c_str()
-        );
-    }
-    else {
-        // the value is an expression: make an expression binding in the VarSet
-        createBindingVarSet(prop, obj);
+    QString error;
+    if (!InlineExpression::assignExpressionToProperty(obj, prop, expression.get(), error)) {
+        throw Base::RuntimeError(error.toStdString().c_str());
     }
 
     // Create a new expression that refers to the property in the VarSet
@@ -953,11 +599,11 @@ void DlgExpressionInput::acceptWithVarSet()
 
 void DlgExpressionInput::accept()
 {
-    const QString text = trimLeadingFormulaEquals(ui->expression->toPlainText());
-    const InlineAssignment assignment = parseInlineAssignment(text);
+    const QString text = InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText());
+    const InlineExpression::Assignment assignment = InlineExpression::parseAssignment(text);
     if (assignment.isAssignment) {
         QString error;
-        if (!isInlineAssignmentNameValid(assignment.name, error)) {
+        if (!InlineExpression::isValidName(assignment.name, error)) {
             message = error.toStdString();
             setMsgText();
             QPalette p(ui->msg->palette());
@@ -972,57 +618,31 @@ void DlgExpressionInput::accept()
 
             App::DocumentObject* docObj = path.getDocumentObject();
             App::Document* doc = docObj ? docObj->getDocument() : nullptr;
-            App::DocumentObject* varSet = getInlineAssignmentVarSet(doc, assignment, true, error);
+            App::DocumentObject* varSet = InlineExpression::resolveVarSet(doc, assignment, true, error);
             if (!varSet) {
                 throw Base::RuntimeError(error.toStdString().c_str());
             }
 
-            const std::string propName = assignment.name.toStdString();
-            App::Property* prop = varSet->getPropertyByName(propName.c_str());
-            if (!prop || prop->getContainer() != varSet) {
-                const Base::Type type = determineTypeVarSet();
-                if (type.isBad()) {
-                    throw Base::RuntimeError("Cannot determine variable type.");
-                }
-                prop = varSet->addDynamicProperty(
-                    type.getName(),
-                    propName.c_str(),
-                    InlineAssignmentVarSetGroup
-                );
+            const Base::Type type = determineTypeVarSet();
+            if (type.isBad()) {
+                throw Base::RuntimeError("Cannot determine variable type.");
             }
+            App::Property* prop = InlineExpression::ensureProperty(
+                varSet,
+                assignment.name,
+                type,
+                InlineExpression::DefaultVarSetGroup
+            );
             if (!prop) {
                 throw Base::RuntimeError("Could not create variable property.");
             }
 
-            const Expression* expr = expression.get();
-            if (const NumberExpression* ne = toNumberExpr(expr)) {
-                assignNumberToVarSetProperty(varSet, prop, ne);
-            }
-            else if (const StringExpression* se = toStringExpr(expr)) {
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,
-                    "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-                    varSet->getDocument()->getName(),
-                    varSet->getNameInDocument(),
-                    prop->getName(),
-                    se->getText().c_str()
-                );
-            }
-            else if (const OperatorExpression* une = toUnitNumberExpr(expr)) {
-                Gui::Command::doCommand(
-                    Gui::Command::Doc,
-                    "App.getDocument('%s').getObject('%s').%s = \"%s\"",
-                    varSet->getDocument()->getName(),
-                    varSet->getNameInDocument(),
-                    prop->getName(),
-                    une->toString().c_str()
-                );
-            }
-            else {
-                createBindingVarSet(prop, varSet);
+            if (!InlineExpression::assignExpressionToProperty(varSet, prop, expression.get(), error)) {
+                throw Base::RuntimeError(error.toStdString().c_str());
             }
 
-            const std::string refExpr = std::string(varSet->getNameInDocument()) + "." + propName;
+            const std::string refExpr
+                = InlineExpression::makeReferenceExpression(varSet, assignment.name);
             expression.reset(ExpressionParser::parse(path.getDocumentObject(), refExpr.c_str()));
             QDialog::accept();
             return;
@@ -1042,7 +662,18 @@ void DlgExpressionInput::accept()
         if (needReportOnVarSet()) {
             return;
         }
-        acceptWithVarSet();
+        try {
+            acceptWithVarSet();
+        }
+        catch (Base::Exception& e) {
+            message = e.what();
+            setMsgText();
+            QPalette p(ui->msg->palette());
+            p.setColor(QPalette::WindowText, Qt::red);
+            ui->msg->setPalette(p);
+            okBtn->setDisabled(true);
+            return;
+        }
     }
     QDialog::accept();
 }
@@ -1216,7 +847,7 @@ void DlgExpressionInput::onCheckVarSets(int state)
     }
     else {
         try {
-            checkExpression(trimLeadingFormulaEquals(ui->expression->toPlainText()));
+            checkExpression(InlineExpression::trimLeadingFormulaEquals(ui->expression->toPlainText()));
         }
         catch (Base::Exception&) {
             okBtn->setEnabled(false);
@@ -1356,7 +987,9 @@ void DlgExpressionInput::updateVarSetInfo(bool checkExpr)
         return;
     }
 
-    const QString expressionText = trimLeadingFormulaEquals(ui->expression->toPlainText());
+    const QString expressionText = InlineExpression::trimLeadingFormulaEquals(
+        ui->expression->toPlainText()
+    );
     if (expressionText.isEmpty()) {
         okBtn->setEnabled(false);
         return;

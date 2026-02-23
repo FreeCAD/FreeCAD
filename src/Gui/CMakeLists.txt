@@ -1223,6 +1223,7 @@ SET(Widget_CPP_SRCS
     InputField.cpp
     ProgressBar.cpp
     ProgressDialog.cpp
+    InlineExpression.cpp
     QuantitySpinBox.cpp
     SpinBox.cpp
     SplashScreen.cpp
@@ -1248,6 +1249,7 @@ SET(Widget_HPP_SRCS
     InputField.h
     ProgressBar.h
     ProgressDialog.h
+    InlineExpression.h
     QuantitySpinBox.h
     QuantitySpinBox_p.h
     SpinBox.h
