@@ -66,9 +66,9 @@ sed -i '1s/.*/\nLIST OF PACKAGES:/' FreeCAD.app/Contents/packages.txt
 cp -a ${conda_env}/Library ${conda_env}/..
 rm -rf ${conda_env}/Library
 
-if [[ "${SIGN_RELEASE}" == "true" ]]; then
+if [[ "${MACOS_SIGN_RELEASE}" == "true" ]]; then
     # create the signed dmg
-    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${SIGNING_KEY_ID} -o "${version_name}.dmg"
+    ../../scripts/macos_sign_and_notarize.zsh -p "FreeCAD" -k ${MACOS_SIGNING_KEY_ID} -o "${version_name}.dmg"
 else
     # create the dmg
     dmgbuild -s dmg_settings.py "FreeCAD" "${version_name}.dmg"
