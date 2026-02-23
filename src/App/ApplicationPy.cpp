@@ -266,6 +266,14 @@ PyMethodDef ApplicationPy::Methods[] = {
      "There is an active sequencer during document restore and recomputation. User may\n"
      "abort the operation by pressing the ESC key. Once detected, this function will\n"
      "trigger a Base.FreeCADAbort exception."},
+    {"setFineGrainedRecompute",
+     (PyCFunction)ApplicationPy::sSetFineGrainedRecompute,
+     METH_VARARGS,
+     "setFineGrainedRecompute(enabled) -- enable/disable fine grained recompute"},
+    {"getFineGrainedRecompute",
+     (PyCFunction)ApplicationPy::sGetFineGrainedRecompute,
+     METH_NOARGS,
+     "getFineGrainedRecompute() -- Get whether fine grained recompute is enabled"},
     {nullptr, nullptr, 0, nullptr} /* Sentinel */
 };
 
@@ -1191,4 +1199,28 @@ PyObject* ApplicationPy::sCheckAbort(PyObject* /*self*/, PyObject* args)
         Py_Return;
     }
     PY_CATCH
+}
+
+PyObject* ApplicationPy::sSetFineGrainedRecompute(PyObject* /*self*/, PyObject* args)
+{
+    PyObject* enabled = Py_False;
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &enabled)) {
+        return nullptr;
+    }
+
+    PY_TRY
+    {
+        GetApplication().fineGrained = Base::asBoolean(enabled);
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* ApplicationPy::sGetFineGrainedRecompute(PyObject* /*self*/)
+{
+    PY_TRY
+    {
+        return Py::new_reference_to(Py::Boolean(GetApplication().fineGrained));
+    }
+    PY_CATCH;
 }

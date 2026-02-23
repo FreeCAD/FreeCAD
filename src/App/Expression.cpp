@@ -908,14 +908,15 @@ ExpressionDeps Expression::getDeps(int option)  const {
     return deps;
 }
 
-void Expression::getDepObjects(
-        std::map<App::DocumentObject*,bool> &deps, std::vector<std::string> *labels) const
+void Expression::getDepObjects(std::map<App::DocumentObject*, bool>& deps,
+                               std::vector<std::string>* labels,
+                               std::map<std::pair<std::string, App::DocumentObject*>, bool>* propDeps) const
 {
     for(auto &v : getIdentifiers()) {
         bool hidden = v.second;
         const ObjectIdentifier &var = v.first;
         std::vector<std::string> strings;
-        for(auto &dep : var.getDep(false, &strings)) {
+        for(auto &dep : var.getDep(true, &strings)) {
             DocumentObject *obj = dep.first;
             if (!obj->testStatus(ObjectStatus::Remove)) {
                 if (labels) {
@@ -925,6 +926,11 @@ void Expression::getDepObjects(
                 auto res = deps.insert(std::make_pair(obj, hidden));
                 if (!hidden || res.second)
                     res.first->second = hidden;
+                if (propDeps) {
+                    for (auto &propName : dep.second) {
+                        (*propDeps)[std::make_pair(propName, obj)] = hidden;
+                    }
+                }
             }
 
             strings.clear();
