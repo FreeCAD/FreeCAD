@@ -40,6 +40,7 @@ import Path
 import Path.Post.Utils as PostUtils
 from Path.Base.MachineState import MachineState
 from Path.Post.DrillCycleExpander import DrillCycleExpander
+from PathScripts.PathUtils import getPathWithPlacement
 
 # Define some types that are used throughout this file
 CommandLine = List[str]
@@ -710,7 +711,8 @@ def parse_a_path(values: Values, gcode: Gcode, pathobj) -> None:
     )
     adaptive_op_variables = determine_adaptive_op(values, pathobj)
 
-    path_to_process = pathobj.Path
+    # Apply placement to operations
+    path_to_process = getPathWithPlacement(pathobj)
 
     # Process canned cycles for drilling operations
     path_to_process = PostUtils.cannedCycleTerminator(path_to_process)

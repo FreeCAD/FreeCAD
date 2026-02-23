@@ -43,6 +43,7 @@ import Path.Post.Utils as PostUtils
 from Path.Post.PostList import Postable
 from Path.Post.DrillCycleExpander import DrillCycleExpander
 from Machine.models.machine import MachineFactory, OutputUnits
+from PathScripts.PathUtils import getPathWithPlacement
 
 translate = FreeCAD.Qt.translate
 
@@ -265,7 +266,7 @@ class PostProcessorFactory:
                             )
                             # Return a mock instance that can be used for schema inspection
                             return PostClass.__new__(PostClass)
-                        except:
+                        except Exception:
                             pass
                     raise
 
@@ -969,6 +970,13 @@ class PostProcessor:
                                     gcodeheader.add_fixture(fixture_name)
 
         return gcodeheader
+
+    def _expand_placement(self, postables):
+        """Apply placement to path if needed."""
+        for section_name, sublist in postables:
+            for item in sublist:
+                if item.path and hasattr(item, "Placement"):
+                    item.path = getPathWithPlacement(item)
 
     def _expand_canned_cycles(self, postables):
         """Terminate canned drill cycles in postable paths.
@@ -1735,6 +1743,7 @@ class PostProcessor:
 
         # ===== STAGE 2: COMMAND EXPANSION =====
         gcodeheader = self._build_header(postables)
+        self._expand_placement(postables)
         self._expand_translate_drill_cycles(postables)
         self._expand_canned_cycles(postables)
         self._expand_split_arcs(postables)
