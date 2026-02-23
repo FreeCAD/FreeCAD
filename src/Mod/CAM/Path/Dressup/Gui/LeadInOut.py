@@ -1451,13 +1451,16 @@ class ViewProviderDressup:
         return [self.obj.Base]
 
     def setEdit(self, vobj, mode=0):
-        FreeCADGui.Control.closeDialog()
-        panel = TaskDressupLeadInOut(vobj.Object, self)
-        FreeCADGui.Control.showDialog(panel)
+        if mode == 1:
+            FreeCADGui.runCommand("Std_TransformManip")
+        elif mode == 0:
+            FreeCADGui.Control.closeDialog()
+            panel = TaskDressupLeadInOut(vobj.Object, self)
+            FreeCADGui.Control.showDialog(panel)
         return True
 
     def unsetEdit(self, vobj, mode=0):
-        if self.panel:
+        if mode == 0 and self.panel:
             self.panel.abort()
 
     def onDelete(self, arg1=None, arg2=None):
