@@ -117,6 +117,8 @@ void EditModeCoinManager::ParameterObserver::initParameters()
          [this](const std::string& param) { updateLineRenderingOrderParameters(param); }},
         {"MidRenderGeometryId",
          [this](const std::string& param) { updateLineRenderingOrderParameters(param); }},
+        {"AxisTransparency",
+         [this](const std::string& param) { updateAxisTransparencyParameter(param); }},
         {"HideUnits",
          [this](const std::string& param) { updateConstraintPresentationParameters(param); }},
         {"ShowDimensionalName",
@@ -267,6 +269,23 @@ void EditModeCoinManager::ParameterObserver::updateCurvedEdgeCountSegmentsParame
     }
 
     Client.drawingParameters.curvedEdgeCountSegments = stdcountsegments;
+}
+
+void EditModeCoinManager::ParameterObserver::updateAxisTransparencyParameter(
+    const std::string& parametername
+)
+{
+    (void)parametername;
+
+    ParameterGrp::handle hGrpp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/General"
+    );
+
+    int transparencyInt = hGrpp->GetInt("AxisTransparency", 50);
+    Base::clamp(transparencyInt, 0, 100);
+
+    Client.drawingParameters.axisTransparency = static_cast<float>(transparencyInt) / 100.0f;
+    Client.updateInventorColors();
 }
 
 void EditModeCoinManager::ParameterObserver::updateLineRenderingOrderParameters(
@@ -739,19 +758,17 @@ EditModeCoinManager::PreselectionResult EditModeCoinManager::detectPreselection(
         }
     }
     // checking for a hit in the axes
-    if (tail == editModeScenegraphNodes.RootCrossSet) {
-        const SoDetail* cross_detail = Point->getDetail(editModeScenegraphNodes.RootCrossSet);
+    if (tail == editModeScenegraphNodes.RootCrossHSet) {
+        const SoDetail* cross_detail = Point->getDetail(editModeScenegraphNodes.RootCrossHSet);
         if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
-            // get the index (reserve index 0 for root point)
-            int CrossIndex = static_cast<const SoLineDetail*>(cross_detail)->getLineIndex();
-
-            if (CrossIndex == 0) {
-                result.Cross = PreselectionResult::Axes::HorizontalAxis;
-            }
-            else if (CrossIndex == 1) {
-                result.Cross = PreselectionResult::Axes::VerticalAxis;
-            }
-
+            result.Cross = PreselectionResult::Axes::HorizontalAxis;
+            return result;
+        }
+    }
+    if (tail == editModeScenegraphNodes.RootCrossVSet) {
+        const SoDetail* cross_detail = Point->getDetail(editModeScenegraphNodes.RootCrossVSet);
+        if (cross_detail && cross_detail->getTypeId() == SoLineDetail::getClassTypeId()) {
+            result.Cross = PreselectionResult::Axes::VerticalAxis;
             return result;
         }
     }
@@ -840,10 +857,12 @@ void EditModeCoinManager::updateAxesLength(const Base::BoundBox2d& bb)
 {
     auto zCrossH = ViewProviderSketchCoinAttorney::getViewOrientationFactor(viewProvider)
         * drawingParameters.zCross;
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(0, SbVec3f(bb.MinX, 0.0f, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(1, SbVec3f(bb.MaxX, 0.0f, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(2, SbVec3f(0.0f, bb.MinY, zCrossH));
-    editModeScenegraphNodes.RootCrossCoordinate->point.set1Value(3, SbVec3f(0.0f, bb.MaxY, zCrossH));
+
+    editModeScenegraphNodes.RootCrossHCoordinate->point.set1Value(0, SbVec3f(bb.MinX, 0.0f, zCrossH));
+    editModeScenegraphNodes.RootCrossHCoordinate->point.set1Value(1, SbVec3f(bb.MaxX, 0.0f, zCrossH));
+
+    editModeScenegraphNodes.RootCrossVCoordinate->point.set1Value(0, SbVec3f(0.0f, bb.MinY, zCrossH));
+    editModeScenegraphNodes.RootCrossVCoordinate->point.set1Value(1, SbVec3f(0.0f, bb.MaxY, zCrossH));
 }
 
 void EditModeCoinManager::updateColor()
@@ -899,29 +918,48 @@ void EditModeCoinManager::createEditModeInventorNodes()
     editModeScenegraphNodes.pickStyleAxes->style = SoPickStyle::SHAPE;
     crossRoot->addChild(editModeScenegraphNodes.pickStyleAxes);
     editModeScenegraphNodes.EditRoot->addChild(crossRoot);
-    auto MtlBind = new SoMaterialBinding;
-    MtlBind->setName("RootCrossMaterialBinding");
-    MtlBind->value = SoMaterialBinding::PER_FACE;
-    crossRoot->addChild(MtlBind);
 
     editModeScenegraphNodes.RootCrossDrawStyle = new SoDrawStyle;
     editModeScenegraphNodes.RootCrossDrawStyle->setName("RootCrossDrawStyle");
     editModeScenegraphNodes.RootCrossDrawStyle->lineWidth = 2 * drawingParameters.pixelScalingFactor;
     crossRoot->addChild(editModeScenegraphNodes.RootCrossDrawStyle);
 
-    editModeScenegraphNodes.RootCrossMaterials = new SoMaterial;
-    editModeScenegraphNodes.RootCrossMaterials->setName("RootCrossMaterials");
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossMaterials);
+    // horizontal axis
+    editModeScenegraphNodes.RootCrossHMaterials = new SoMaterial;
+    editModeScenegraphNodes.RootCrossHMaterials->setName("RootCrossHMaterials");
+    editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.setValue(drawingParameters.CrossColorH);
+    editModeScenegraphNodes.RootCrossHMaterials->transparency.setValue(
+        drawingParameters.axisTransparency
+    );
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossHMaterials);
 
-    editModeScenegraphNodes.RootCrossCoordinate = new SoCoordinate3;
-    editModeScenegraphNodes.RootCrossCoordinate->setName("RootCrossCoordinate");
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossCoordinate);
+    editModeScenegraphNodes.RootCrossHCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.RootCrossHCoordinate->setName("RootCrossHCoordinate");
+    editModeScenegraphNodes.RootCrossHCoordinate->point.setNum(2);
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossHCoordinate);
 
-    editModeScenegraphNodes.RootCrossSet = new SoLineSet;
-    editModeScenegraphNodes.RootCrossSet->setName("RootCrossLineSet");
-    crossRoot->addChild(editModeScenegraphNodes.RootCrossSet);
+    editModeScenegraphNodes.RootCrossHSet = new SoLineSet;
+    editModeScenegraphNodes.RootCrossHSet->setName("RootCrossHLineSet");
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossHSet);
+
+    // V axis
+    editModeScenegraphNodes.RootCrossVMaterials = new SoMaterial;
+    editModeScenegraphNodes.RootCrossVMaterials->setName("RootCrossVMaterials");
+    editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorV);
+    editModeScenegraphNodes.RootCrossVMaterials->transparency.set1Value(
+        0,
+        drawingParameters.axisTransparency
+    );
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossVMaterials);
+
+    editModeScenegraphNodes.RootCrossVCoordinate = new SoCoordinate3;
+    editModeScenegraphNodes.RootCrossVCoordinate->setName("RootCrossVCoordinate");
+    editModeScenegraphNodes.RootCrossVCoordinate->point.setNum(2);
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossVCoordinate);
+
+    editModeScenegraphNodes.RootCrossVSet = new SoLineSet;
+    editModeScenegraphNodes.RootCrossVSet->setName("RootCrossVLineSet");
+    crossRoot->addChild(editModeScenegraphNodes.RootCrossVSet);
 
     // stuff for the Origin Point
     SoGroup* originPointRoot = new Gui::SoSkipBoundingGroup;
@@ -1027,7 +1065,7 @@ void EditModeCoinManager::createEditModeInventorNodes()
     pEditModeConstraintCoinManager->createEditModeInventorNodes();
 
     // group node for the Geometry information visual +++++++++++++++++++++++++++++++++++
-    MtlBind = new SoMaterialBinding;
+    auto MtlBind = new SoMaterialBinding;
     MtlBind->setName("InformationMaterialBinding");
     MtlBind->value = SoMaterialBinding::OVERALL;
     editModeScenegraphNodes.EditRoot->addChild(MtlBind);
@@ -1220,8 +1258,16 @@ void EditModeCoinManager::updateInventorPatterns()
 
 void EditModeCoinManager::updateInventorColors()
 {
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
-    editModeScenegraphNodes.RootCrossMaterials->diffuseColor.set1Value(1, drawingParameters.CrossColorV);
+    editModeScenegraphNodes.RootCrossHMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorH);
+    editModeScenegraphNodes.RootCrossHMaterials->transparency.set1Value(
+        0,
+        drawingParameters.axisTransparency
+    );
+    editModeScenegraphNodes.RootCrossVMaterials->diffuseColor.set1Value(0, drawingParameters.CrossColorV);
+    editModeScenegraphNodes.RootCrossVMaterials->transparency.set1Value(
+        0,
+        drawingParameters.axisTransparency
+    );
     editModeScenegraphNodes.textMaterial->diffuseColor = drawingParameters.CursorTextColor;
 }
 
