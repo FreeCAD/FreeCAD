@@ -2018,53 +2018,6 @@ bool Adaptive2d::FindEntryPoint(
     return found;
 }
 
-// TODO delete, unused
-bool Adaptive2d::FindEntryPointOutside(
-    const Paths& toolBoundPaths,
-    ClearedArea& clearedArea /*output-initial cleared area by helix*/,
-    IntPoint& entryPoint /*output*/,
-    IntPoint& toolPos,
-    DoublePoint& toolDir
-)
-{
-
-    Clipper clip;
-    ClipperOffset clipof;
-    Paths clearedPaths;
-    // check if boundary shape to cut is outside the stock
-    for (const auto& pth : toolBoundPaths) {
-        for (size_t i = 0; i < pth.size(); i++) {
-            IntPoint checkPoint = pth[i];
-            IntPoint lastPoint = i > 0 ? pth[i - 1] : pth.back();
-            // if point is outside the stock
-            if (PointInPolygon(checkPoint, stockInputPaths.front()) == 0) {
-
-                clipof.Clear();
-                clipof.AddPaths(stockInputPaths, JoinType::jtSquare, EndType::etClosedPolygon);
-                clipof.Execute(clearedPaths, 1000 * toolRadiusScaled);
-
-                clip.Clear();
-                clip.AddPaths(clearedPaths, PolyType::ptSubject, true);
-                clip.AddPaths(stockInputPaths, PolyType::ptClip, true);
-                clip.Execute(ClipType::ctDifference, clearedPaths);
-                CleanPolygons(clearedPaths);
-                SimplifyPolygons(clearedPaths);
-                clearedArea.AddClearedPaths(clearedPaths);
-                entryPoint = checkPoint;
-                toolPos = entryPoint;
-                // find tool dir
-                double len = sqrt(DistanceSqrd(lastPoint, checkPoint));
-                toolDir = DoublePoint(
-                    (checkPoint.X - lastPoint.X) / len,
-                    (checkPoint.Y - lastPoint.Y) / len
-                );
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 //************************************************************
 //  IsClearPath - returns true if path is clear from obstacles
 //***********************************************************
