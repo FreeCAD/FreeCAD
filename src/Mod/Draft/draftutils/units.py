@@ -80,7 +80,7 @@ def display_external(internal_value, decimals=None, dim="Length", showUnit=True,
         A value that will be transformed depending on the other parameters.
 
     decimals: float, optional
-        It defaults ot `None`, in which case, the decimals are 2.
+        It defaults to `None`, in which case, the decimals are 2.
 
     dim: str, optional
         It defaults to `'Length'`. It can also be `'Angle'`.

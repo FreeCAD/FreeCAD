@@ -433,7 +433,7 @@ class _SummaryWidget(QtGui.QWidget):
     def _position_dialog(self, dialog):
 
         # the scroll area does mess the mapping to global up, somehow
-        # the transformation from the widget ot the scroll area gives
+        # the transformation from the widget to the scroll area gives
         # very weird values. Hence we build the coords of the widget
         # ourself
 

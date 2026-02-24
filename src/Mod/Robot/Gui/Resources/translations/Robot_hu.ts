@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="103"/>
       <source>Select one Robot to set home position</source>
-      <translation>Válasszon egy Robot -ot a kiinduló helyzet beállításához</translation>
+      <translation>Válasszon egy Robot -to a kiinduló helyzet beállításához</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="166"/>

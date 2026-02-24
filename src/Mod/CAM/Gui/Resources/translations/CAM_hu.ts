@@ -3287,7 +3287,7 @@ A névkonfliktusok kezeléséről lásd az alábbi fájlmentési szabályzatot.<
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="68"/>
       <source>Launch CAMotics</source>
-      <translation>Indítsa el a CAMotics-ot</translation>
+      <translation>Indítsa el a CAMotics-to</translation>
     </message>
     <message>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="75"/>

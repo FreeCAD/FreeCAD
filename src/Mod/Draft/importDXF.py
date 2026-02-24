@@ -468,7 +468,7 @@ def getACI(ob, text=False):
         Any object.
 
     text : bool, optional
-        It defaults ot `False`. If `True`, use the `TextColor`
+        It defaults to `False`. If `True`, use the `TextColor`
         instead of the `LineColor` of the object.
 
     Returns

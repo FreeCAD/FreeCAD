@@ -548,7 +548,7 @@ Az IFC-terv nevének használatával a terv összes IFC-entitásához hozzáfér
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="30"/>
       <source>Adds a default building structure consisting of IfcSite, IfcBuilding, and IfcBuildingStorey. The structure can also be added manually at a later stage.</source>
-      <translation>Hozzáad egy alapértelmezett épületszerkezetet, amely magában foglalja az IfcSite-ot, IfcBuilding-et és IfcBuildingStorey-t. A szerkezetet később manuálisan is hozzá lehet adni.</translation>
+      <translation>Hozzáad egy alapértelmezett épületszerkezetet, amely magában foglalja az IfcSite-to, IfcBuilding-et és IfcBuildingStorey-t. A szerkezetet később manuálisan is hozzá lehet adni.</translation>
     </message>
     <message>
       <location filename="../ui/dialogConvertDocument.ui" line="33"/>
@@ -8257,7 +8257,7 @@ Hozzon létre többet a faltípusok meghatározásához.</translation>
     <message>
       <location filename="../../ArchWall.py" line="393"/>
       <source>Selected edges (or group of edges) of the base Sketch/ArchSketch, to use in creating the shape of this Arch Wall (instead of using all the Base Sketch/ArchSketch's edges by default).  Input are index numbers of edges or groups.  Disabled and ignored if Base object (ArchSketch) provides selected edges (as Wall Axis) information, with getWallBaseShapeEdgesInfo() method.  [ENHANCEMENT by ArchSketch] GUI 'Edit Wall Segment' Tool is provided in external SketchArch Add-on to let users to (de)select the edges interactively.  'Toponaming-Tolerant' if ArchSketch is used in Base (and SketchArch Add-on is installed).  Warning : Not 'Toponaming-Tolerant' if just Sketch is used.</source>
-      <translation>Az alapvázlat/rajzvázlat kiválasztott élei (vagy élek csoportja), amelyeket az ívfal alakjának létrehozásához használni kell (ahelyett, hogy alapértelmezés szerint az alapvázlat/rajzvázlat összes élét használná).  A bemenet az élek vagy csoportok indexszámai.  Kikapcsolva és figyelmen kívül hagyva, ha az alapobjektum (ÉpítészetVázlat) a getWallBaseShapeEdgesInfo() metódussal biztosítja a kiválasztott élek (mint a fal tengelye) adatait.  [BŐVÍTÉS az ÉpítészetVázlat által] A GUI 'Fal szegmens szerkesztés' eszköz a külső VázlatÉpítészet kiegészítőben található, hogy a felhasználók interaktívan (de)kijelölhessék az éleket.  'Toponaming-toleráns', ha az ÉpítészetVázlat-ot az alapban használják (és a VázlatÉpítészet bővítmény telepítve van).  Figyelmeztetés : Nem 'Toponaming-toleráns', ha csak a Vázlat-ot használja.</translation>
+      <translation>Az alapvázlat/rajzvázlat kiválasztott élei (vagy élek csoportja), amelyeket az ívfal alakjának létrehozásához használni kell (ahelyett, hogy alapértelmezés szerint az alapvázlat/rajzvázlat összes élét használná).  A bemenet az élek vagy csoportok indexszámai.  Kikapcsolva és figyelmen kívül hagyva, ha az alapobjektum (ÉpítészetVázlat) a getWallBaseShapeEdgesInfo() metódussal biztosítja a kiválasztott élek (mint a fal tengelye) adatait.  [BŐVÍTÉS az ÉpítészetVázlat által] A GUI 'Fal szegmens szerkesztés' eszköz a külső VázlatÉpítészet kiegészítőben található, hogy a felhasználók interaktívan (de)kijelölhessék az éleket.  'Toponaming-toleráns', ha az ÉpítészetVázlat-to az alapban használják (és a VázlatÉpítészet bővítmény telepítve van).  Figyelmeztetés : Nem 'Toponaming-toleráns', ha csak a Vázlat-to használja.</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="404"/>

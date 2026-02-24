@@ -157,7 +157,7 @@ def make_label(
             o------- L text
 
         The `oL` segment's length is defined by `distance`
-        while the `oT` segment is automatically calculated depending
+        while the `to` segment is automatically calculated depending
         on the values of `placement` (L) and `distance` (o).
 
         This `distance` is oriented, meaning that if it is positive
