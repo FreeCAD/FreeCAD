@@ -32,7 +32,6 @@
 #include <Mod/Mesh/MeshGlobal.h>
 
 
-
 class SoGLCoordinateElement;
 class SoTextureCoordinateBundle;
 

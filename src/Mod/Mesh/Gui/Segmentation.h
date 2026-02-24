@@ -31,7 +31,6 @@
 #include <Mod/Mesh/MeshGlobal.h>
 
 
-
 // forward declarations
 namespace Mesh
 {

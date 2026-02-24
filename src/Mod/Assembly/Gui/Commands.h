@@ -31,4 +31,3 @@ namespace AssemblyGui
 void CreateAssemblyCommands();
 
 }  // namespace AssemblyGui
-

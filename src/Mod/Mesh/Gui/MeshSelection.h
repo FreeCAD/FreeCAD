@@ -32,7 +32,6 @@
 #include <Mod/Mesh/MeshGlobal.h>
 
 
-
 namespace Gui
 {
 class View3DInventorViewer;
