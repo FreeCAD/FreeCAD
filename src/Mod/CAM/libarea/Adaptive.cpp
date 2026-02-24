@@ -3878,7 +3878,7 @@ void Adaptive2d::ProcessPolyNode(
             for (const Path& fp : finishingPaths) {
                 clipof.Clear();
                 clipof.AddPath(fp, JoinType::jtRound, EndType::etClosedPolygon);
-                int offset = (getPathNestingLevel(fp, finishingPaths) % 2 == 1) ? 2 : -2;
+                int offset = (getPathNestingLevel(fp, finishingPaths) % 2 == 1) ? 3 : -3;
                 Paths out;
                 clipof.Execute(out, offset);
 
@@ -3973,6 +3973,7 @@ void Adaptive2d::ProcessPolyNode(
             );
             if (!linkPath) {
                 cerr << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
+                fout << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
             }
             else {
                 auto newPos = AppendToolPath(output, finCleaned, *linkPath, cleared, toolBoundPaths);
