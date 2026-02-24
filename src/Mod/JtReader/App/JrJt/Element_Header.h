@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Element_Header_HEADER
-#define Element_Header_HEADER
+#pragma once
 
 #include <assert.h>
 #include <istream>
@@ -61,6 +60,3 @@ struct Element_Header
     GUID Object_Type_ID;
     UChar Object_Base_Type;
 };
-
-
-#endif

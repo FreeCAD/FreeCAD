@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_PRECOMPILED_H
-#define ROBOT_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -51,5 +50,3 @@
 #include <CPnts_AbscissaPoint.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_GRID_H
-#define MESH_GRID_H
+#pragma once
 
 #include <limits>
 #include <set>
@@ -649,5 +648,3 @@ inline void MeshFacetGrid::AddFacet(const MeshGeomFacet& rclFacet, ElementIndex 
 }
 
 }  // namespace MeshCore
-
-#endif  // MESH_GRID_H

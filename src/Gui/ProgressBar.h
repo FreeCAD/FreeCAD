@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_PROGRESSBAR_H
-#define GUI_PROGRESSBAR_H
+#pragma once
 
 #include <QProgressBar>
 #ifdef QT_WINEXTRAS_LIB
@@ -208,5 +207,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_PROGRESSBAR_H

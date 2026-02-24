@@ -1,5 +1,4 @@
-#ifndef TECHDRAW_ZVALUE_
-#define TECHDRAW_ZVALUE_
+#pragma once
 namespace ZVALUE {
     const int BACKGROUND = -999999;
     const int TEMPLATE = -1000;
@@ -21,4 +20,3 @@ namespace ZVALUE {
     const int TRACKER = 125;
     const int LOCK = 200;
 }
-#endif

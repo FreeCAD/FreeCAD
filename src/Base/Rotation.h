@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_ROTATION_H
-#define BASE_ROTATION_H
+#pragma once
 
 #include "Vector3D.h"
 #ifndef FC_GLOBAL_H
@@ -199,5 +198,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_ROTATION_H

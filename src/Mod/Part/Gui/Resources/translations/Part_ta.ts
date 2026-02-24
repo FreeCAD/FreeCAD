@@ -1972,7 +1972,7 @@ of the projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="240"/>
       <source>Simple Copy</source>
-      <translation type="unfinished">Simple Copy</translation>
+      <translation>எளிய நகல்</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="241"/>
@@ -4106,7 +4106,7 @@ Check one or more edge entities first.</translation>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="257"/>
       <source>Experimental</source>
-      <translation type="unfinished">Experimental</translation>
+      <translation>ஆய்வு</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsGeneral.ui" line="266"/>
@@ -5986,7 +5986,7 @@ Continue?</translation>
       <translation type="unfinished">Attachment Editor</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation type="unfinished">Appearance per Face</translation>
     </message>

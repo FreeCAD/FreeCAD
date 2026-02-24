@@ -848,7 +848,7 @@ class Component(ArchIFC.IfcProduct):
                                 if Draft.getType(o) == "Roof":
                                     continue
                             o.ViewObject.hide()
-            elif prop in ["Mesh"]:
+            elif prop == "HiRes":
                 if hasattr(obj, prop):
                     o = getattr(obj, prop)
                     if o:
@@ -1882,7 +1882,7 @@ class ViewProviderComponent:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     c.extend(objlink)
-            for link in ["Tool", "Subvolume", "Mesh", "HiRes"]:
+            for link in ["Tool", "Subvolume", "HiRes"]:
                 if hasattr(self.Object, link):
                     objlink = getattr(self.Object, link)
                     if objlink:

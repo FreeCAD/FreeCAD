@@ -20,8 +20,7 @@
 **
 ** $QT_END_LICENSE$
 */
-#ifndef MTEXTEDIT_H_
-#define MTEXTEDIT_H_
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -43,5 +42,3 @@ class MTextEdit : public QTextEdit {
     QMimeData  *createMimeDataFromSelection() const override;
 
 };
-
-#endif

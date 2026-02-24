@@ -905,48 +905,48 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       <translation>பகுதியை நகர்த்தவும்</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1669"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1679"/>
       <source>ViewProviderAssembly</source>
       <comment>and %1 more</comment>
       <translation>வழங்குநர்தொகுப்பைக் காண்க</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1686"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1696"/>
       <source>Empty Assembly</source>
       <translation>காலியான பேரவை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1691"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1701"/>
       <source>Over-constrained:</source>
       <translation>அதிகப்படியான கட்டுப்பாடு:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1699"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1709"/>
       <source>Malformed joints:</source>
       <translation>தவறான மூட்டுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1707"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1717"/>
       <source>Redundant joints:</source>
       <translation>தேவையற்ற மூட்டுகள்:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1715"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1725"/>
       <source>Partially redundant:</source>
       <translation>பகுதி தேவையற்றது:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1723"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
       <source>Solver failed to converge</source>
       <translation>கரைப்பான் ஒன்றிணைக்க முடியவில்லை</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1731"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1741"/>
       <source>Under-constrained:</source>
       <translation>கீழ்-கட்டுப்படுத்தப்பட்டவை:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderAssembly.cpp" line="1733"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1743"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n சுதந்திர நிலை</numerusform>
@@ -954,7 +954,7 @@ The files are named "runPreDrag.asmt" and "dragging.log" and are located in the 
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAssembly.cpp" line="1737"/>
+      <location filename="../../ViewProviderAssembly.cpp" line="1747"/>
       <source>Fully constrained</source>
       <translation>முழுமையாக கட்டுப்படுத்தப்பட்டது</translation>
     </message>

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SECTIONCUTTING_H
-#define PARTGUI_SECTIONCUTTING_H
+#pragma once
 
 #include <functional>
 #include <Inventor/SbBox3f.h>
@@ -210,5 +209,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_SECTIONCUTTING_H

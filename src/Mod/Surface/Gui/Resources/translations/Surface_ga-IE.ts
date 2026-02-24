@@ -21,17 +21,17 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="46"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Cuir Imeall leis</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="65"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Bain Imeall</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="93"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../TaskFillingEdge.ui" line="113"/>
@@ -46,7 +46,7 @@
     <message>
       <location filename="../../TaskFillingEdge.ui" line="156"/>
       <source>Ignore</source>
-      <translation type="unfinished">Ignore</translation>
+      <translation>Déan neamhaird de</translation>
     </message>
   </context>
   <context>
@@ -74,12 +74,12 @@
     <message>
       <location filename="../../TaskFilling.ui" line="64"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Cuir Imeall leis</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="83"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Bain Imeall</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="95"/>
@@ -90,7 +90,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="131"/>
       <source>Faces</source>
-      <translation type="unfinished">Faces</translation>
+      <translation>Aghaidheanna</translation>
     </message>
     <message>
       <location filename="../../TaskFilling.ui" line="151"/>
@@ -105,7 +105,7 @@
     <message>
       <location filename="../../TaskFilling.ui" line="194"/>
       <source>Ignore</source>
-      <translation type="unfinished">Ignore</translation>
+      <translation>Déan neamhaird de</translation>
     </message>
   </context>
   <context>
@@ -124,12 +124,12 @@
     <message>
       <location filename="../../TaskSections.ui" line="40"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Cuir Imeall leis</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="59"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Bain Imeall</translation>
     </message>
     <message>
       <location filename="../../TaskSections.ui" line="71"/>
@@ -167,12 +167,12 @@
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="76"/>
       <source>Add Edge</source>
-      <translation type="unfinished">Add Edge</translation>
+      <translation>Cuir Imeall leis</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.ui" line="95"/>
       <source>Remove Edge</source>
-      <translation type="unfinished">Remove Edge</translation>
+      <translation>Bain Imeall</translation>
     </message>
     <message>
       <location filename="../../TaskGeomFillSurface.cpp" line="217"/>
@@ -262,7 +262,7 @@
       <location filename="../../Blending/TaskBlendCurve.ui" line="79"/>
       <location filename="../../Blending/TaskBlendCurve.ui" line="172"/>
       <source>Parameter</source>
-      <translation type="unfinished">Parameter</translation>
+      <translation>Paraiméadar</translation>
     </message>
     <message>
       <location filename="../../Blending/TaskBlendCurve.ui" line="96"/>
@@ -446,7 +446,7 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
     <message>
       <location filename="../../Command.cpp" line="333"/>
       <source>Sections</source>
-      <translation type="unfinished">Sections</translation>
+      <translation>Rannóga</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="334"/>
@@ -509,7 +509,7 @@ Ní oibríonn an t-ordú seo ach le réad mogaill.</translation>
     <message>
       <location filename="../../Blending/ViewProviderBlendCurve.cpp" line="47"/>
       <source>Edit %1</source>
-      <translation type="unfinished">Edit %1</translation>
+      <translation>Cuir %1 in Eagar</translation>
     </message>
   </context>
   <context>

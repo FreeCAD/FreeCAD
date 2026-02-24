@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef APP_PRECOMPILED_H
-#define APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -92,5 +91,3 @@
 #include <QProcessEnvironment>
 #include <QStandardPaths>
 #include <QString>
-
-#endif  // APP_PRECOMPILED_H

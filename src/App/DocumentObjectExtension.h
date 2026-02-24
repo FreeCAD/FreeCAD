@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBJECTEXTENSION_H
-#define APP_DOCUMENTOBJECTEXTENSION_H
+#pragma once
 
 #include "Extension.h"
 
@@ -144,5 +143,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_DOCUMENTOBJECTEXTENSION_H

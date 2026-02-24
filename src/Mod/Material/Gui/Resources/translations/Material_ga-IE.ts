@@ -97,12 +97,12 @@
     <message>
       <location filename="../../ArrayDelegate.cpp" line="148"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Bréagach</translation>
     </message>
     <message>
       <location filename="../../ArrayDelegate.cpp" line="149"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Fíor</translation>
     </message>
   </context>
   <context>
@@ -110,12 +110,12 @@
     <message>
       <location filename="../../BaseDelegate.cpp" line="430"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Bréagach</translation>
     </message>
     <message>
       <location filename="../../BaseDelegate.cpp" line="431"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Fíor</translation>
     </message>
   </context>
   <context>
@@ -158,7 +158,7 @@
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="237"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
     <message>
       <location filename="../../DlgDisplayProperties.ui" line="289"/>
@@ -271,7 +271,7 @@
     <message>
       <location filename="../../DlgInspectAppearance.cpp" line="248"/>
       <source>Transparency</source>
-      <translation type="unfinished">Transparency</translation>
+      <translation>Trédhearcacht</translation>
     </message>
   </context>
   <context>
@@ -591,7 +591,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../ImageEdit.ui" line="14"/>
       <source>Image</source>
-      <translation type="unfinished">Image</translation>
+      <translation>Íomhá</translation>
     </message>
     <message>
       <location filename="../../ImageEdit.ui" line="30"/>
@@ -647,12 +647,12 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="474"/>
       <source>False</source>
-      <translation type="unfinished">False</translation>
+      <translation>Bréagach</translation>
     </message>
     <message>
       <location filename="../../MaterialDelegate.cpp" line="475"/>
       <source>True</source>
-      <translation type="unfinished">True</translation>
+      <translation>Fíor</translation>
     </message>
   </context>
   <context>
@@ -688,63 +688,63 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>Scrios</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="196"/>
+      <location filename="../../MaterialSave.cpp" line="198"/>
       <source>Saving over the original file may cause other documents to break. This is not recommended.</source>
       <translation type="unfinished">Saving over the original file may cause other documents to break. This is not recommended.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="220"/>
+      <location filename="../../MaterialSave.cpp" line="222"/>
       <source>Save as new material</source>
       <translation type="unfinished">Save as new material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="193"/>
+      <location filename="../../MaterialSave.cpp" line="195"/>
       <source>Save over &apos;%1&apos;?</source>
       <translation type="unfinished">Save over &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="218"/>
+      <location filename="../../MaterialSave.cpp" line="220"/>
       <source>Confirm Save as New Material</source>
       <translation type="unfinished">Confirm Save as New Material</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="223"/>
+      <location filename="../../MaterialSave.cpp" line="225"/>
       <source>This material already exists in this library. Save as a new material?</source>
       <translation type="unfinished">This material already exists in this library. Save as a new material?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="245"/>
+      <location filename="../../MaterialSave.cpp" line="247"/>
       <source>Confirm Save as Copy</source>
       <translation type="unfinished">Confirm Save as Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="247"/>
+      <location filename="../../MaterialSave.cpp" line="249"/>
       <source>Save as copy</source>
       <translation type="unfinished">Save as copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="250"/>
+      <location filename="../../MaterialSave.cpp" line="252"/>
       <source>Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</source>
       <translation type="unfinished">Saving a copy is not recommended as it can break other documents. It is recommended to save as a new material.</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="253"/>
+      <location filename="../../MaterialSave.cpp" line="255"/>
       <source>Save Copy</source>
       <translation type="unfinished">Save Copy</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="254"/>
+      <location filename="../../MaterialSave.cpp" line="256"/>
       <source>Save As New</source>
       <translation type="unfinished">Save As New</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="486"/>
-      <location filename="../../MaterialSave.cpp" line="496"/>
+      <location filename="../../MaterialSave.cpp" line="488"/>
+      <location filename="../../MaterialSave.cpp" line="498"/>
       <source>New folder</source>
       <translation type="unfinished">New folder</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="536"/>
+      <location filename="../../MaterialSave.cpp" line="538"/>
       <source>Context Menu</source>
       <translation type="unfinished">Context Menu</translation>
     </message>
@@ -784,7 +784,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="74"/>
       <source>Parent</source>
-      <translation type="unfinished">Parent</translation>
+      <translation>Tuismitheoir</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="84"/>
@@ -799,7 +799,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="101"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="108"/>
@@ -809,7 +809,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../MaterialsEditor.ui" line="141"/>
       <source>Author</source>
-      <translation type="unfinished">Author</translation>
+      <translation>Údar</translation>
     </message>
     <message>
       <location filename="../../MaterialsEditor.ui" line="151"/>
@@ -962,13 +962,13 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../ModelSelect.ui" line="49"/>
       <location filename="../../ModelSelect.cpp" line="365"/>
       <source>URL</source>
-      <translation type="unfinished">URL</translation>
+      <translation>URL</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="56"/>
       <location filename="../../ModelSelect.cpp" line="364"/>
       <source>Description</source>
-      <translation type="unfinished">Description</translation>
+      <translation>Cur síos</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.ui" line="63"/>
@@ -995,7 +995,7 @@ If unchecked, they will be sorted by their name.</translation>
       <location filename="../../ModelSelect.cpp" line="443"/>
       <location filename="../../ModelSelect.cpp" line="459"/>
       <source>Properties</source>
-      <translation type="unfinished">Properties</translation>
+      <translation>Airíonna</translation>
     </message>
     <message>
       <location filename="../../ModelSelect.cpp" line="337"/>
@@ -1071,7 +1071,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../ui/materials-editor.ui" line="80"/>
       <source>Save As…</source>
-      <translation type="unfinished">Save As…</translation>
+      <translation>Sábháil Mar…</translation>
     </message>
     <message>
       <location filename="../ui/materials-editor.ui" line="96"/>
@@ -1122,23 +1122,23 @@ If unchecked, they will be sorted by their name.</translation>
       <translation>Ábhar</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="190"/>
+      <location filename="../../MaterialSave.cpp" line="192"/>
       <source>Confirm Overwrite</source>
       <translation type="unfinished">Confirm Overwrite</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="380"/>
-      <location filename="../../MaterialSave.cpp" line="381"/>
+      <location filename="../../MaterialSave.cpp" line="382"/>
+      <location filename="../../MaterialSave.cpp" line="383"/>
       <source>No writeable library</source>
       <translation type="unfinished">No writeable library</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="568"/>
+      <location filename="../../MaterialSave.cpp" line="570"/>
       <source>Delete &apos;%1&apos;?</source>
       <translation type="unfinished">Delete &apos;%1&apos;?</translation>
     </message>
     <message>
-      <location filename="../../MaterialSave.cpp" line="572"/>
+      <location filename="../../MaterialSave.cpp" line="574"/>
       <source>Removing this will also remove all contents.</source>
       <translation type="unfinished">Removing this will also remove all contents.</translation>
     </message>
@@ -1165,7 +1165,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Array2D.cpp" line="170"/>
       <location filename="../../ListEdit.cpp" line="142"/>
-      <location filename="../../MaterialSave.cpp" line="565"/>
+      <location filename="../../MaterialSave.cpp" line="567"/>
       <source>Confirm Delete</source>
       <translation type="unfinished">Confirm Delete</translation>
     </message>
@@ -1376,7 +1376,7 @@ If unchecked, they will be sorted by their name.</translation>
     <message>
       <location filename="../../Command.cpp" line="202"/>
       <source>Migrate</source>
-      <translation type="unfinished">Migrate</translation>
+      <translation>Imirce</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="203"/>

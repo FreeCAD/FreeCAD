@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef ASSEMBLYGUI_VIEWPROVIDER_ViewProviderJointGroup_H
-#define ASSEMBLYGUI_VIEWPROVIDER_ViewProviderJointGroup_H
+#pragma once
 
 #include <Mod/Assembly/AssemblyGlobal.h>
 
@@ -69,5 +68,3 @@ public:
 };
 
 }  // namespace AssemblyGui
-
-#endif  // ASSEMBLYGUI_VIEWPROVIDER_ViewProviderJointGroup_H

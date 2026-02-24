@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef EXPRESSIONBINDING_H
-#define EXPRESSIONBINDING_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -111,5 +110,3 @@ protected:
 };
 
 }  // namespace Gui
-
-#endif  // EXPRESSIONBINDING_H

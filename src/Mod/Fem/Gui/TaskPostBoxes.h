@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskPostDisplay_H
-#define GUI_TASKVIEW_TaskPostDisplay_H
+#pragma once
 
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -594,5 +593,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskPostDisplay_H

@@ -394,6 +394,7 @@ class _Window(ArchComponent.Component):
         self.vshapes = []
         shapes = []
         rotdata = None
+        transdata = None
         for i in range(int(len(obj.WindowParts) / 5)):
             wires = []
             hinge = None
@@ -439,7 +440,11 @@ class _Window(ArchComponent.Component):
                             FreeCAD.Vector(0, 0, 1)
                         )
                         norm = norm.negative()
-                if hinge and omode:
+                if hinge is not None and omode:
+                    # A new movement is defined for this part, clear any inherited sticky movement
+                    # data
+                    rotdata = None
+                    transdata = None
                     opening = None
                     if hasattr(obj, "Opening"):
                         if obj.Opening:
@@ -541,10 +546,42 @@ class _Window(ArchComponent.Component):
                             vsymbols.append(Part.LineSegment(v4, ev2).toShape())
                             if opening:
                                 rotdata = [v1, ev2.sub(ev1), -90 * opening]
-                        elif omode == 9:  # sliding
-                            pass
-                        elif omode == 10:  # -sliding
-                            pass
+                        elif omode in [9, 10]:  # Sliding or -Sliding
+                            # Sort points by coordinate (X, then Y, then Z) to ensure consistent
+                            # sliding direction regardless of edge direction in the base sketch
+                            # Ensure the sliding direction is relative to the door's local
+                            # coordinate system, rather than the global world space.
+                            inv_placement = obj.Base.Placement.inverse()
+
+                            # Pair the calculated local vectors with their original global vectors
+                            pts = [
+                                (inv_placement.multVec(ev1), ev1),
+                                (inv_placement.multVec(ev2), ev2),
+                            ]
+
+                            # Sort by local coordinates
+                            pts.sort(
+                                key=lambda p: (round(p[0].x, 3), round(p[0].y, 3), round(p[0].z, 3))
+                            )
+
+                            global_min = pts[0][1]
+                            global_max = pts[1][1]
+
+                            # Mode 9: Slide Min -> Max. Mode 10: Slide Max -> Min.
+                            p_start, p_end = (
+                                (global_min, global_max) if omode == 9 else (global_max, global_min)
+                            )
+
+                            travel = p_end.sub(p_start)
+
+                            if opening:
+                                # Travel is exactly % of width, but clamped to (width - 80mm)
+                                # so the door handle is left exposed at 100% opening.
+                                width = travel.Length
+                                dist = min(width * opening, max(0.0, width - 80.0))
+                                travel.normalize()
+                                transdata = [travel.multiply(dist)]
+
                 exv = FreeCAD.Vector()
                 zov = FreeCAD.Vector()
                 V = 0
@@ -606,7 +643,12 @@ class _Window(ArchComponent.Component):
                                 )
                                 shape = shape.cut(self.boxes)
                 if rotdata:
+                    # Apply rotation for hinged parts if it exists
                     shape.rotate(rotdata[0], rotdata[1], rotdata[2])
+                elif transdata:
+                    # Apply translation for sliding parts if it exists
+                    shape.translate(transdata[0])
+
                 shapes.append(shape)
                 self.sshapes.extend(ssymbols)
                 self.vshapes.extend(vsymbols)
@@ -1083,7 +1125,11 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
             )
             menu.addAction(actionInvertOpening)
 
-        if len(hingeIdxs) == 1:
+        # Check if this is a sliding window/door
+        parts_str = "".join(vobj.Object.WindowParts)
+        is_sliding = "Mode9" in parts_str or "Mode10" in parts_str
+
+        if len(hingeIdxs) == 1 and not is_sliding:
             actionInvertHinge = QtGui.QAction(
                 QtGui.QIcon(":/icons/Arch_Window_Tree.svg"),
                 translate("Arch", "Invert Hinge Position"),
@@ -1134,15 +1180,15 @@ class _ViewProviderWindow(ArchComponent.ViewProviderComponent):
         if hasattr(self, "Object"):
             windowparts = self.Object.WindowParts
             nparts = []
+
+            # Build a bidirectional pair lookup map
+            swap_map = {p[0]: p[1] for p in pairs}
+            swap_map.update({p[1]: p[0] for p in pairs})
+
             for part in windowparts:
-                for pair in pairs:
-                    if pair[0] in part:
-                        part = part.replace(pair[0], pair[1])
-                        break
-                    elif pair[1] in part:
-                        part = part.replace(pair[1], pair[0])
-                        break
-                nparts.append(part)
+                # Split to tokens to ensure exact matching (e.g. avoid Mode1 matching inside Mode10)
+                new_tokens = [swap_map.get(t, t) for t in part.split(",")]
+                nparts.append(",".join(new_tokens))
             if nparts != self.Object.WindowParts:
                 self.Object.WindowParts = nparts
                 FreeCAD.ActiveDocument.recompute()
@@ -1460,11 +1506,15 @@ class _ArchWindowTaskPanel:
             self.retranslateUi(self.baseform)
             self.basepanel.obj = self.obj
             self.basepanel.update()
+            has_movement = False
+            is_sliding = False
             for wp in self.obj.WindowParts:
                 if ("Edge" in wp) and ("Mode" in wp):
-                    self.invertOpeningButton.setEnabled(True)
-                    self.invertHingeButton.setEnabled(True)
-                    break
+                    has_movement = True
+                    if "Mode9" in wp or "Mode10" in wp:
+                        is_sliding = True
+            self.invertOpeningButton.setEnabled(has_movement)
+            self.invertHingeButton.setEnabled(has_movement and not is_sliding)
 
     def addElement(self):
         "opens the component creation dialog"
@@ -1689,7 +1739,7 @@ class _ArchWindowTaskPanel:
         self.new3.setText(QtGui.QApplication.translate("Arch", "Wires", None))
         self.new4.setText(QtGui.QApplication.translate("Arch", "Frame depth", None))
         self.new5.setText(QtGui.QApplication.translate("Arch", "Offset", None))
-        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge", None))
+        self.new6.setText(QtGui.QApplication.translate("Arch", "Hinge/Track", None))
         self.new7.setText(QtGui.QApplication.translate("Arch", "Opening mode", None))
         self.addp4.setText(QtGui.QApplication.translate("Arch", "+ Frame property", None))
         self.addp4.setToolTip(

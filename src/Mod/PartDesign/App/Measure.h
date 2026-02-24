@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef PARTDESIGN_MEASURE_H
-#define PARTDESIGN_MEASURE_H
+#pragma once
 
 #include <Mod/PartDesign/PartDesignGlobal.h>
 
@@ -39,5 +38,3 @@ public:
 
 
 }  // namespace PartDesign
-
-#endif

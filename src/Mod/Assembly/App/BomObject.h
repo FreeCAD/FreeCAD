@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef ASSEMBLY_BomObject_H
-#define ASSEMBLY_BomObject_H
+#pragma once
 
 #include <App/PropertyFile.h>
 
@@ -104,6 +103,3 @@ private:
 
 
 }  // namespace Assembly
-
-
-#endif  // ASSEMBLY_BomObject_H

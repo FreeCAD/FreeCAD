@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBody_H
-#define PARTGUI_ViewProviderBody_H
+#pragma once
 
 #include <Mod/Part/Gui/ViewProvider.h>
 #include <Mod/PartDesign/PartDesignGlobal.h>
@@ -114,6 +113,3 @@ private:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHole_H

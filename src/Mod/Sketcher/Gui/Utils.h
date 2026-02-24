@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_Recompute_H
-#define SKETCHERGUI_Recompute_H
+#pragma once
 
 #include <Base/Exception.h>
 #include <Base/Tools.h>
@@ -313,5 +312,3 @@ void setSafeGeomLayerId(T geom, int layerindex)
 
     vpext->setVisualLayerId(layerindex);
 }
-
-#endif  // SKETCHERGUI_Recompute_H

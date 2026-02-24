@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_SEGMENTATION_H
-#define REEN_SEGMENTATION_H
+#pragma once
 
 #include <list>
 #include <vector>
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_SEGMENTATION_H

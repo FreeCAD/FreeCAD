@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureBase_H
-#define PARTDESIGN_FeatureBase_H
+#pragma once
 
 #include "Feature.h"
 
@@ -57,6 +56,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureBase_H

@@ -22,8 +22,7 @@
 //this file originally part of Drawing workbench
 //migrated to TechDraw workbench 2022-01-26 by Wandererfan
 
-#ifndef TechDrawProjectionAlgos_h_
-#define TechDrawProjectionAlgos_h_
+#pragma once
 
 #include <map>
 #include <string>
@@ -85,6 +84,3 @@ public:
 };
 
 } //namespace TechDraw
-
-
-#endif

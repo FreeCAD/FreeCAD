@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef REEN_SAMPLECONSENSUS_H
-#define REEN_SAMPLECONSENSUS_H
+#pragma once
 
 #include <vector>
 
@@ -62,5 +61,3 @@ private:
 };
 
 }  // namespace Reen
-
-#endif  // REEN_SAMPLECONSENSUS_H

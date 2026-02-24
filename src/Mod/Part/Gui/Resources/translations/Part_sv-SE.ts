@@ -5986,7 +5986,7 @@ Fortsättning?</translation>
       <translation>Redigerare för bilaga</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderExt.cpp" line="1003"/>
+      <location filename="../../ViewProviderExt.cpp" line="1005"/>
       <source>Appearance per Face</source>
       <translation>Utseende per yta</translation>
     </message>

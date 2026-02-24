@@ -29,6 +29,7 @@ from . import manager
 from .ccx_cantilever_base_face import setup_cantilever_base_face
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -80,16 +81,10 @@ def setup(doc=None, solvertype="ccxtools"):
     # load the quad8 mesh
     from .meshes.mesh_canticcx_quad8 import create_nodes, create_elements
 
-    new_fem_mesh = Fem.FemMesh()
-    control = create_nodes(new_fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(new_fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
+    fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
 
     # overwrite mesh with the quad8 mesh
-    femmesh_obj.FemMesh = new_fem_mesh
+    femmesh_obj.FemMesh = fem_mesh
 
     # set mesh obj parameter
     femmesh_obj.Shape = geom_obj

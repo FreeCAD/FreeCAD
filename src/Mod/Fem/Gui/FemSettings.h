@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef FEMGUI_SETTINGS_H
-#define FEMGUI_SETTINGS_H
+#pragma once
 
 #include <Base/Parameter.h>
 
@@ -41,5 +40,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // FEMGUI_SETTINGS_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_PRECOMPILED_H
-#define MATGUI_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -48,7 +47,3 @@
 
 // Inventor includes OpenGL
 # include <Gui/InventorAll.h>
-
-
-
-#endif  // MATGUI_PRECOMPILED_H

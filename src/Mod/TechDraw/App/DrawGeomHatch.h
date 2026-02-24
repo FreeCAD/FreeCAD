@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TechDraw_DrawGeomHatch_h_
-#define TechDraw_DrawGeomHatch_h_
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/FeaturePython.h>
@@ -125,4 +124,3 @@ using DrawGeomHatchPython = App::FeaturePythonT<DrawGeomHatch>;
 
 
 } //namespace TechDraw
-#endif

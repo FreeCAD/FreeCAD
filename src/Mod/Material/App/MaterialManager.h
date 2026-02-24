@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALMANAGER_H
-#define MATERIAL_MATERIALMANAGER_H
+#pragma once
 
 #include <memory>
 
@@ -173,5 +172,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_MATERIALMANAGER_H

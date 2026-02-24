@@ -26,8 +26,7 @@
  * FCBRepAlgoAPI provides a wrapper for various OCCT functions.
  */
 
-#ifndef FCREPALGOAPISECTION_H
-#define FCREPALGOAPISECTION_H
+#pragma once
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Command.hxx>
 #include <Mod/Part/App/FCBRepAlgoAPI_BooleanOperation.h>
@@ -69,4 +68,3 @@ public:
     // set fuzzyness based on size
     void setAutoFuzzy();
 };
-#endif

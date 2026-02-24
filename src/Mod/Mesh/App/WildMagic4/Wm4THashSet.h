@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4THASHSET_H
-#define WM4THASHSET_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 
@@ -94,5 +93,3 @@ private:
 }
 
 #include "Wm4THashSet.inl"
-
-#endif

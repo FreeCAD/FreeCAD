@@ -35,6 +35,7 @@ WindowPresets = [
     "Sash 2-pane",
     "Sliding 2-pane",
     "Simple door",
+    "Sliding door",
     "Glass door",
     "Sliding 4-pane",
     "Awning",
@@ -484,6 +485,15 @@ def makeWindowPreset(windowtype, width, height, h1, h2, h3, w1, w2, o1, o2, plac
 
             wp = doorFrame(s, width, height, h1, w1, o1)
             wp.extend(["Door", "Solid panel", "Wire1,Edge8,Mode1", str(w2), str(o2) + "+V"])
+
+        elif windowtype == "Sliding door":
+            wp = doorFrame(s, width, height, h1, w1, o1)
+            # Use Wire1 (inner frame boundary) as the door leaf profile to be extruded
+            # Use Edge 7 (the top edge of the inner frame) as the track. Edge5 (bottom edge) could
+            # be an alternative, but it's difficult to select in the window editor, as the outer
+            # frame's bottom edge is drawn on top.
+            # Use Mode 9 (Sliding) to open from left to right.
+            wp.extend(["Door", "Solid panel", "Wire1,Edge7,Mode9", str(w2), str(o2) + "+V"])
 
         elif windowtype == "Glass door":
 

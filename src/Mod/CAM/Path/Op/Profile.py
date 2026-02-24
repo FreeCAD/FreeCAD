@@ -1050,9 +1050,10 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         part0 = Part.Wire(Part.__sortEdges__(edgs0))
         part1 = Part.Wire(Part.__sortEdges__(edgs1))
 
-        # Determine which part is nearest original edge(s)
-        distToPart0 = self._distMidToMid(wire.Wires[0], part0.Wires[0])
-        distToPart1 = self._distMidToMid(wire.Wires[0], part1.Wires[0])
+        # Determine which part is nearest original edge(s) using middle points of wires
+        point = wire.Wires[0].discretize(3)[1]
+        distToPart0 = point.sub(part0.Wires[0].discretize(3)[1]).Length
+        distToPart1 = point.sub(part1.Wires[0].discretize(3)[1]).Length
         if distToPart0 < distToPart1:
             rtnWIRES.append(part0)
         else:
@@ -1440,28 +1441,6 @@ class ObjectProfile(PathAreaOp.ObjectOp):
         factor = dist / toEnd.Length
         perp = FreeCAD.Vector(-1 * toEnd.y, toEnd.x, 0.0).multiply(factor)
         return p1.add(toEnd.add(perp))
-
-    def _distMidToMid(self, wireA, wireB):
-        mpA = self._findWireMidpoint(wireA)
-        mpB = self._findWireMidpoint(wireB)
-        return mpA.sub(mpB).Length
-
-    def _findWireMidpoint(self, wire):
-        midPnt = None
-        dist = 0.0
-        wL = wire.Length
-        midW = wL / 2
-
-        for E in Part.sortEdges(wire.Edges)[0]:
-            elen = E.Length
-            d_ = dist + elen
-            if dist < midW and midW <= d_:
-                dtm = midW - dist
-                midPnt = E.valueAt(E.getParameterByLength(dtm))
-                break
-            else:
-                dist += elen
-        return midPnt
 
     # Method to add temporary debug object
     def _addDebugObject(self, objName, objShape):

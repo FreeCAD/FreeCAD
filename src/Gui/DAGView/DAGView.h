@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGVIEW_H
-#define DAGVIEW_H
+#pragma once
 
 #include <memory>
 #include <QGraphicsView>
@@ -75,5 +74,3 @@ private:
 };
 }  // namespace DAG
 }  // namespace Gui
-
-#endif  // DAGVIEW_H

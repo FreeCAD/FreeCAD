@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SHEETOBSERVER_H
-#define SHEETOBSERVER_H
+#pragma once
 
 #include <App/DocumentObserver.h>
 
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace Spreadsheet
-
-#endif  // SHEETOBSERVER_H

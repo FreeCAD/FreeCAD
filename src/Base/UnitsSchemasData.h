@@ -21,8 +21,7 @@
  *                                                                      *
  ************************************************************************/
 
-#ifndef BASE_UNITSSCHEMASDATA_H
-#define BASE_UNITSSCHEMASDATA_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -795,4 +794,3 @@ inline const UnitsSchemasDataPack unitSchemasDataPack {schemaSpecs, defDecimals,
 
 
 }  // namespace Base::UnitsSchemasData
-#endif  // BASE_UNITSSCHEMASDATA_H

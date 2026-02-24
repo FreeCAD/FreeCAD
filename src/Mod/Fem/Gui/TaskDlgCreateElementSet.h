@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef FemGui_TaskDlgCreateElementSet_H
-#define FemGui_TaskDlgCreateElementSet_H
+#pragma once
 
 #include <Gui/TaskView/TaskDialog.h>
 #include <Mod/Fem/App/FemSetElementNodesObject.h>
@@ -80,5 +79,3 @@ protected:
 
 
 }  // namespace FemGui
-
-#endif  // FemGui_TaskDlgCreateElementSet_H

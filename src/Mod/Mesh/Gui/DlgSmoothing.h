@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef MESHGUI_DLGSMOOTHING_H
-#define MESHGUI_DLGSMOOTHING_H
+#pragma once
 
 #include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
@@ -142,5 +141,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_DLGSMOOTHING_H

@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_START_DISPLAYED_FILES_MODEL_H
-#define FREECAD_START_DISPLAYED_FILES_MODEL_H
+#pragma once
 
 #include <QAbstractListModel>
 #include <Base/Parameter.h>
@@ -78,5 +77,3 @@ private:
 };
 
 }  // namespace Start
-
-#endif  // FREECAD_START_DISPLAYED_FILES_MODEL_H

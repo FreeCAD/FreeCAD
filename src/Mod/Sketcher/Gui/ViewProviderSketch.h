@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#pragma once
 
 #include <boost/smart_ptr/scoped_ptr.hpp>
 
@@ -1019,6 +1018,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

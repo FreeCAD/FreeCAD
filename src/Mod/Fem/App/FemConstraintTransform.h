@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEM_CONSTRAINTTransform_H
-#define FEM_CONSTRAINTTransform_H
+#pragma once
 
 #include "FemConstraint.h"
 
@@ -62,6 +61,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // FEM_CONSTRAINTTransform_H

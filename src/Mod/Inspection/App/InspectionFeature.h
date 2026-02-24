@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTION_FEATURE_H
-#define INSPECTION_FEATURE_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -290,6 +289,3 @@ public:
 };
 
 }  // namespace Inspection
-
-
-#endif  // INSPECTION_FEATURE_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_EditModeGeometryCoinManager_H
-#define SKETCHERGUI_EditModeGeometryCoinManager_H
+#pragma once
 
 #include <functional>
 #include <vector>
@@ -130,6 +129,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_EditModeGeometryCoinManager_H
