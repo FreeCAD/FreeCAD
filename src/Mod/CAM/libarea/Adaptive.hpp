@@ -145,13 +145,6 @@ private:
         IntPoint& toolPos,
         DoublePoint& toolDir
     );
-    bool FindEntryPointOutside(
-        const Paths& toolBoundPaths,
-        ClearedArea& cleared /*output*/,
-        IntPoint& entryPoint /*output*/,
-        IntPoint& toolPos,
-        DoublePoint& toolDir
-    );
     std::pair<double, double> CalcCutArea(
         Clipper& clip,
         IntPoint toolPos,
