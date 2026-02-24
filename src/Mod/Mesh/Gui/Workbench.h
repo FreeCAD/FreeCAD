@@ -25,9 +25,7 @@
 #pragma once
 
 #include <Gui/Workbench.h>
-#ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
-#endif
+#include <Mod/Mesh/MeshGlobal.h>
 
 
 namespace MeshGui

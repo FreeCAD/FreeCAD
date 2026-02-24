@@ -45,9 +45,7 @@
 #pragma once
 
 #include <Windows.h>
-#ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
-#endif
 
 // special defines for VC5/6 (if no actual PSDK is installed):
 #if _MSC_VER < 1300

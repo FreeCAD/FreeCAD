@@ -24,9 +24,7 @@
 
 #pragma once
 
-#ifndef FC_GLOBAL_H
-# include <FCGlobal.h>
-#endif
+#include <FCGlobal.h>
 #include <vector>
 #include <string>
 #include <set>
