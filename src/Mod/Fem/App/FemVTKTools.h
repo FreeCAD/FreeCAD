@@ -71,5 +71,10 @@ public:
     static void writeResult(const char* filename, const App::DocumentObject* res = nullptr);
 
     static void frdToVTK(const char* filename, bool binary = true);
+
+    static void addArrayFromFunction(
+        vtkSmartPointer<vtkDataObject>& data,
+        const std::map<std::string, std::string>& functions
+    );
 };
 }  // namespace Fem
