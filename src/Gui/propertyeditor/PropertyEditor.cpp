@@ -25,8 +25,11 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <QApplication>
 #include <QClipboard>
+#include <QCompleter>
 #include <QInputDialog>
 #include <QHeaderView>
+#include <QKeyEvent>
+#include <QLineEdit>
 #include <QMenu>
 #include <QPainter>
 #include <QActionGroup>
@@ -51,6 +54,76 @@
 FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
+
+namespace
+{
+class GroupNameCompleter: public QCompleter
+{
+public:
+    using QCompleter::QCompleter;
+
+    bool stepSelection(int delta)
+    {
+        if (!popup() || !popup()->isVisible()) {
+            return false;
+        }
+        auto* model = popup()->model();
+        if (!model) {
+            return false;
+        }
+        const QModelIndex root = popup()->rootIndex();
+        const int rowCount = model->rowCount(root);
+        if (rowCount <= 0) {
+            return false;
+        }
+        int row = popup()->currentIndex().row();
+        if (row < 0) {
+            row = 0;
+        }
+        else {
+            row = std::clamp(row + delta, 0, rowCount - 1);
+        }
+        popup()->setCurrentIndex(model->index(row, 0, root));
+        return true;
+    }
+
+    bool eventFilter(QObject* object, QEvent* event) override
+    {
+        if (event->type() == QEvent::KeyPress && (object == widget() || object == popup())) {
+            auto* keyEvent = static_cast<QKeyEvent*>(event);
+            switch (keyEvent->key()) {
+                case Qt::Key_Tab:
+                case Qt::Key_Down:
+                    return stepSelection(+1);
+                case Qt::Key_Backtab:
+                case Qt::Key_Up:
+                    return stepSelection(-1);
+                case Qt::Key_Enter:
+                case Qt::Key_Return: {
+                    if (!popup() || !popup()->isVisible()) {
+                        break;
+                    }
+                    auto* lineEdit = qobject_cast<QLineEdit*>(widget());
+                    if (!lineEdit) {
+                        return true;
+                    }
+                    const QModelIndex index = popup()->currentIndex();
+                    if (index.isValid()) {
+                        lineEdit->setText(index.data().toString());
+                    }
+                    if (auto* dialog = qobject_cast<QInputDialog*>(lineEdit->window())) {
+                        dialog->accept();
+                    }
+                    return true;
+                }
+                default:
+                    break;
+            }
+        }
+        return QCompleter::eventFilter(object, event);
+    }
+};
+}  // namespace
 
 PropertyEditor::PropertyEditor(QWidget* parent)
     : QTreeView(parent)
@@ -1233,14 +1306,47 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent*)
             if (!groupName) {
                 groupName = "Base";
             }
-            QString res = QInputDialog::getText(
-                Gui::getMainWindow(),
-                tr("Rename property group"),
-                tr("Group name:"),
-                QLineEdit::Normal,
-                QString::fromUtf8(groupName)
-            );
-            if (res.size()) {
+
+            QInputDialog dialog(Gui::getMainWindow());
+            dialog.setInputMode(QInputDialog::TextInput);
+            dialog.setWindowTitle(tr("Rename property group"));
+            dialog.setLabelText(tr("Group name:"));
+            dialog.setTextValue(QString::fromUtf8(groupName));
+
+            if (auto* lineEdit = dialog.findChild<QLineEdit*>()) {
+                QStringList groups;
+                if (auto* container = (*props.begin())->getContainer()) {
+                    std::vector<App::Property*> properties;
+                    container->getPropertyList(properties);
+                    for (auto* property : properties) {
+                        const char* group = property ? property->getGroup() : nullptr;
+                        if (!group || !*group) {
+                            continue;
+                        }
+                        const QString groupName = QString::fromUtf8(group);
+                        if (!groups.contains(groupName)) {
+                            groups.push_back(groupName);
+                        }
+                    }
+                }
+                if (!groups.isEmpty()) {
+                    auto* completer = new GroupNameCompleter(groups, lineEdit);
+                    completer->setCaseSensitivity(Qt::CaseInsensitive);
+                    completer->setCompletionMode(QCompleter::PopupCompletion);
+                    completer->setWidget(lineEdit);
+                    lineEdit->setCompleter(completer);
+                    lineEdit->installEventFilter(completer);
+                    if (completer->popup()) {
+                        completer->popup()->installEventFilter(completer);
+                    }
+                }
+            }
+
+            if (dialog.exec() == QDialog::Accepted) {
+                QString res = dialog.textValue().trimmed();
+                if (res.isEmpty()) {
+                    return;
+                }
                 std::string group = res.toUtf8().constData();
                 for (auto prop : props) {
                     prop->getContainer()->changeDynamicProperty(prop, group.c_str(), nullptr);
