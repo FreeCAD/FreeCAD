@@ -2458,7 +2458,7 @@ bool Adaptive2d::MakeLeadPath(
     return false;
 }
 
-TPaths Adaptive2d::FindLinkPath(
+std::optional<TPaths> Adaptive2d::FindLinkPath(
     const std::optional<IntPoint>& prevPoint,
     const IntPoint& pathStart,
     const DoublePoint& pathDir,
@@ -2518,6 +2518,11 @@ TPaths Adaptive2d::FindLinkPath(
             cout << "\t(" << p.X << "," << p.Y << ")" << endl;
         }
         cout << endl;
+
+        if (!leadInOk) {
+            Perf_AppendToolPath.Stop();
+            return {};
+        }
 
         // Compute linking path
         Path linkPath;
@@ -2621,7 +2626,7 @@ TPaths Adaptive2d::FindLinkPath(
     }
 
     Perf_AppendToolPath.Stop();
-    return result;
+    return {result};
 }
 
 std::optional<std::pair<IntPoint, DoublePoint>> Adaptive2d::AppendToolPath(
@@ -3317,9 +3322,13 @@ void Adaptive2d::ProcessPolyNode(
             {baseDir.Y, -baseDir.X}
         };
         std::optional<std::pair<DoublePoint, double>> bestDir;
+        bool allZero = true;
         for (const auto& testDir : testDirs) {
             fout << endl << "testing dir (" << testDir.X << "," << testDir.Y << ")" << endl;
             const auto itResult = iterateNextStep(toolPos, testDir, false);
+            if (itResult.area != 0) {
+                allZero = false;
+            }
             if (!itResult.failed) {
                 fout << "Found a candidate tool direction\n";
                 if (!bestDir || itResult.errorFraction < bestDir->second) {
@@ -3330,6 +3339,16 @@ void Adaptive2d::ProcessPolyNode(
 
         if (bestDir) {
             return std::optional<DoublePoint> {bestDir->first};
+        }
+        else if (allZero) {
+            Paths clearedArea = cleared.GetCleared();
+            if (DistancePointToPathsSqrd(clearedArea, toolPos, clp, clpPathIndex, clpSegmentIndex, clpParameter)
+                < toolRadiusScaled * toolRadiusScaled) {
+                IntPoint p2 = Compute2DPolygonCentroid(clearedArea[clpPathIndex]);
+                DoublePoint dir = DirectionV(toolPos, p2);
+                return std::optional<DoublePoint> {dir};
+            }
+            return std::optional<DoublePoint> {};
         }
         else {
             return std::optional<DoublePoint> {};
@@ -3454,31 +3473,13 @@ void Adaptive2d::ProcessPolyNode(
                 }
 
                 if (!added) {
-                    if (open.size() > 1) {
-                        IntPoint p1 = open[0];
-                        IntPoint p2 = open[1];
-                        DoublePoint dir = {-(p2.Y - p1.Y), p2.X - p1.X};
-                        NormalizeV(dir);
-                        addEngagePoint(p1, dir);
-
-                        fout << "Open path fallback adds point: (" << p1.X << ", " << p1.Y << ", "
-                             << p1.Z << ") [";
-                        for (IntPoint p : open) {
-                            fout << "(" << p.X << "," << p.Y << ")_";
-                        }
-                        fout << "], ";
-
-                        fout << "fallback tool dir" << endl;
+                    fout << "Open path: [";
+                    for (IntPoint p : open) {
+                        fout << "(" << p.X << "," << p.Y << ")_";
                     }
-                    else {
-                        fout << "Open path: [";
-                        for (IntPoint p : open) {
-                            fout << "(" << p.X << "," << p.Y << ")_";
-                        }
-                        fout << "], ";
+                    fout << "], ";
 
-                        fout << "failed to find a tool dir" << endl;
-                    }
+                    fout << "failed to find a tool dir" << endl;
                 }
             }
         }
@@ -3509,19 +3510,22 @@ void Adaptive2d::ProcessPolyNode(
 
         for (const auto& ep : engagePoints) {
             if (std::get<double>(ep) < bestCost) {
-                TPaths link = FindLinkPath(
+                std::optional<TPaths> link = FindLinkPath(
                     prevPos,
                     std::get<IntPoint>(ep),
                     std::get<DoublePoint>(ep),
                     cleared,
                     toolBoundPaths
                 );
+                if (!link) {
+                    continue;
+                }
 
                 double cost_mm = 0;
                 std::optional<DPoint> prev = prevPos
                     ? std::optional<DPoint> {{prevPos->X / (double)scaleFactor, prevPos->Y / (double)scaleFactor}}
                     : std::optional<DPoint> {};
-                for (TPath tp : link) {
+                for (TPath tp : *link) {
                     fout << "TP type " << tp.first << ": cost ";
                     if (tp.first == MotionType::mtLinkNotClear) {
                         fout << "retraction 10000 ";
@@ -3551,7 +3555,7 @@ void Adaptive2d::ProcessPolyNode(
 
                 if (cost_mm < bestCost) {
                     bestCost = cost_mm;
-                    bestLink = link;
+                    bestLink = *link;
                     bestPos = std::get<IntPoint>(ep);
                     bestDir = std::get<DoublePoint>(ep);
                 }
@@ -3853,6 +3857,14 @@ void Adaptive2d::ProcessPolyNode(
             }
 
             cerr << "NO ENGAGEMENTS LEFT BUT NOT ALL CELARED!!! " << endl;
+            for (Path& path : remaining) {
+                cout << "[" << endl;
+                for (IntPoint& p : path) {
+                    cout << "(" << p.X << ", " << p.Y << ")" << endl;
+                }
+                cout << "]" << endl;
+            }
+            cout << endl;
             break;
         }
     }
@@ -3882,12 +3894,11 @@ void Adaptive2d::ProcessPolyNode(
             toolBoundPaths = tbpModified;
         }
 
-        IntPoint lastPoint = toolPos;
         Path finShiftedPath;
 
         bool allCutsAllowed = true;
         while (!stopProcessing
-               && PopPathWithClosestPoint(finishingPaths, lastPoint, finShiftedPath, stepOverScaled)) {
+               && PopPathWithClosestPoint(finishingPaths, toolPos, finShiftedPath, stepOverScaled)) {
             if (finShiftedPath.empty()) {
                 continue;
             }
@@ -3953,42 +3964,42 @@ void Adaptive2d::ProcessPolyNode(
                 finCleaned.pop_back();
             }
             finCleaned.push_back(finCleaned.front());
-            TPaths linkPath = FindLinkPath(
+            std::optional<TPaths> linkPath = FindLinkPath(
                 toolPos,
                 finCleaned[0],
                 GetPathDirectionV(finCleaned, 1),
                 cleared,
                 toolBoundPaths
             );
-            auto newPos = AppendToolPath(output, finCleaned, linkPath, cleared, toolBoundPaths);
-            if (newPos) {
-                toolPos = newPos->first;
-                toolDir = newPos->second;
+            if (!linkPath) {
+                cerr << "Failed to generate lead-in for finishing pass; skipping pass" << endl;
             }
             else {
-                toolPos = finCleaned.back();
-                toolDir = GetPathDirectionV(finCleaned, finCleaned.size() - 1);
-            }
-
-            cleared.ExpandCleared(finCleaned);
-            for (TPath lp : linkPath) {
-                if (lp.first == MotionType::mtCutting) {
-                    Path scaledP;
-                    for (auto& p : lp.second) {
-                        scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
-                    }
-                    cleared.ExpandCleared(scaledP);
+                auto newPos = AppendToolPath(output, finCleaned, *linkPath, cleared, toolBoundPaths);
+                if (newPos) {
+                    toolPos = newPos->first;
+                    toolDir = newPos->second;
                 }
-            }
+                else {
+                    toolPos = finCleaned.back();
+                    toolDir = GetPathDirectionV(finCleaned, finCleaned.size() - 1);
+                }
 
-            if (!finCleaned.empty()) {
-                lastPoint.X = finCleaned.back().X;
-                lastPoint.Y = finCleaned.back().Y;
+                cleared.ExpandCleared(finCleaned);
+                for (TPath lp : *linkPath) {
+                    if (lp.first == MotionType::mtCutting) {
+                        Path scaledP;
+                        for (auto& p : lp.second) {
+                            scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                        }
+                        cleared.ExpandCleared(scaledP);
+                    }
+                }
             }
         }
 
         Path returnPath;
-        returnPath << lastPoint;
+        returnPath << toolPos;
         returnPath << entryPoint;
         output.ReturnMotionType = IsClearPath(returnPath, cleared) ? MotionType::mtLinkClear
                                                                    : MotionType::mtLinkNotClear;

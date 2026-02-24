@@ -160,7 +160,7 @@ private:
         IntPoint newToolPos,
         ClearedArea& clearedArea
     );
-    TPaths FindLinkPath(
+    std::optional<TPaths> FindLinkPath(
         const std::optional<IntPoint>& prevPoint,
         const IntPoint& pathStart,
         const DoublePoint& pathDir,
