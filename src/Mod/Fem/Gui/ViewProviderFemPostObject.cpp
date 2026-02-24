@@ -433,10 +433,11 @@ void ViewProviderFemPostObject::updateProperties()
         }
     }
 
-    vtkCellData* cell = poly->GetCellData();
-    for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
-        colorArrays.emplace_back(cell->GetArrayName(i));
-    }
+    // don't add cell data arrays until they are supported in the 3d view
+    // vtkCellData* cell = poly->GetCellData();
+    // for (int i = 0; i < cell->GetNumberOfArrays(); ++i) {
+    //    colorArrays.emplace_back(cell->GetArrayName(i));
+    //}
 
     App::Enumeration empty;
     Field.setValue(empty);
