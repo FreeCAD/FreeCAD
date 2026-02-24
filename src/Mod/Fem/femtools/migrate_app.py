@@ -42,6 +42,7 @@ class FemMigrateApp:
             "femsolver.elmer.equations",
             "femsolver.elmer.equations.fluxsolver",
             "femsolver.elmer.solver",
+            "femsolver.calculix.solver",
             "femobjects",
             "femobjects._FemConstraintBodyHeatSource",
             "femobjects._FemConstraintElectrostaticPotential",
@@ -132,6 +133,15 @@ class FemMigrateApp:
                 from femviewprovider.view_solver_elmer import VPSolverElmer
 
                 module.ViewProxy = VPSolverElmer
+
+        if module.__name__ == "femsolver.calculix.solver":
+            from femobjects.solver_calculix import SolverCalculiX
+
+            module.Proxy = SolverCalculiX
+            if FreeCAD.GuiUp:
+                from femviewprovider.view_solver_calculix import VPSolverCalculiX
+
+                module.ViewProxy = VPSolverCalculiX
 
         if module.__name__ == "femobjects":
             module.__path__ = "femobjects"
