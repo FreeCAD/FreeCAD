@@ -155,15 +155,14 @@ def get_windows(obj):
     Parameters
     ----------
     obj: App::DocumentObject
-        A scripted object of type `'Wall'` or `'Structure'`
-        (Arch Workbench).
+        A scripted object of type `'Wall'`, `'Roof'`, `'Structure'` or
+        `'CurtainWall'` (BIM Workbench).
         This will be searched for objects of type `'Window'` and `'Rebar'`,
         and clones of them, and the found elements will be added
         to the output list.
 
         The function will search recursively all elements under `obj.OutList`,
-        in case the windows and rebars are nested under other walls
-        and structures.
+        in case the windows and rebars are nested under other hosts.
 
     Returns
     -------
@@ -173,7 +172,7 @@ def get_windows(obj):
         it will return the same `obj` element.
     """
     out = []
-    if utils.get_type(obj) in ("Wall", "Structure"):
+    if utils.get_type(obj) in ("Wall", "Roof", "Structure", "CurtainWall"):
         for o in obj.OutList:
             out.extend(get_windows(o))
         for i in obj.InList:
@@ -211,9 +210,9 @@ def get_group_contents(objectslist, walls=False, addgroups=False, spaces=False, 
 
     walls: bool, optional
         It defaults to `False`.
-        If it is `True`, Wall and Structure objects (Arch Workbench)
-        are treated as groups; they are scanned for Window, Door,
-        and Rebar objects, and these are added to the output list.
+        If it is `True`, Wall, Roof, Structure and CurtainWall objects
+        (BIM Workbench) are treated as groups; they are scanned for Window,
+        Door, and Rebar objects, and these are added to the output list.
 
     addgroups: bool, optional
         It defaults to `False`.
