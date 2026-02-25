@@ -134,13 +134,7 @@ bool ViewProvider::setEdit(int ModNum)
             featureDlg = nullptr;  // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
-            QMessageBox msgBox(Gui::getMainWindow());
-            msgBox.setText(QObject::tr("A dialog is already open in the task panel"));
-            msgBox.setInformativeText(QObject::tr("Close this dialog?"));
-            msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-            msgBox.setDefaultButton(QMessageBox::Yes);
-            int ret = msgBox.exec();
-            if (ret == QMessageBox::Yes) {
+            if (dlg->canClose()) {
                 Gui::ViewProviderWeakPtrT that(this);
                 Gui::Control().reject();
                 if (that.expired()) {
