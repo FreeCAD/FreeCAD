@@ -260,6 +260,7 @@ private:
 
     const double CLEAN_PATH_TOLERANCE = 1.415;            // should be >sqrt(2)
     const double FINISHING_CLEAN_PATH_TOLERANCE = 1.415;  // should be >sqrt(2)
+    const double FINISHING_THICKNESS_SCALE = 1 / 10.;     // finish at this fraction of stepover
 
     const long PASSES_LIMIT = __LONG_MAX__;              // limit used while debugging
     const long POINTS_PER_PASS_LIMIT = __LONG_MAX__;     // limit used while debugging
