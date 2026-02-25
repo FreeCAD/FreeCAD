@@ -27,7 +27,7 @@ import Path
 import math
 
 from FreeCAD import Vector
-import CONSTANTS
+import Constants
 
 # lazily loaded modules
 from lazy_loader.lazy_loader import LazyLoader
@@ -84,14 +84,14 @@ class Side:
 
 
 # Import G-code command constants from centralized CONSTANTS module
-CmdMoveRapid = CONSTANTS.GCODE_MOVE_RAPID
-CmdMoveStraight = CONSTANTS.GCODE_MOVE_STRAIGHT
-CmdMoveCW = CONSTANTS.GCODE_MOVE_CW
-CmdMoveCCW = CONSTANTS.GCODE_MOVE_CCW
-CmdMoveDrill = CONSTANTS.GCODE_MOVE_DRILL
-CmdMoveArc = CONSTANTS.GCODE_MOVE_ARC
-CmdMove = CONSTANTS.GCODE_MOVE
-CmdMoveAll = CONSTANTS.GCODE_MOVE_ALL
+CmdMoveRapid = Constants.GCODE_MOVE_RAPID
+CmdMoveStraight = Constants.GCODE_MOVE_STRAIGHT
+CmdMoveCW = Constants.GCODE_MOVE_CW
+CmdMoveCCW = Constants.GCODE_MOVE_CCW
+CmdMoveDrill = Constants.GCODE_MOVE_DRILL
+CmdMoveArc = Constants.GCODE_MOVE_ARC
+CmdMove = Constants.GCODE_MOVE
+CmdMoveAll = Constants.GCODE_MOVE_ALL
 
 
 def isRoughly(float1, float2, error=Tolerance):
