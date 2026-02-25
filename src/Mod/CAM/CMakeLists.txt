@@ -9,6 +9,7 @@ if(BUILD_GUI)
 endif(BUILD_GUI)
 
 set(Path_Scripts
+    CONSTANTS.py
     Init.py
     PathCommands.py
     TestCAMApp.py
