@@ -34,9 +34,10 @@ from PySide.QtCore import QProcess, QThread, QProcessEnvironment
 import FreeCAD
 import Fem
 from freecad import utils
+from femtools.objecttools import ObjectTools
 
 
-class NetgenTools:
+class NetgenTools(ObjectTools):
 
     # to change order of nodes from netgen to smesh
     order_edge = {
@@ -73,11 +74,9 @@ class NetgenTools:
     __param_grp = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Fem/Netgen")
 
     def __init__(self, obj):
-        self.obj = obj
+        super().__init__(obj)
         self.fem_mesh = None
-        self.process = None
         self.tmpdir = ""
-        self.process = QProcess()
         self.mesh_params = {}
 
     def write_geom(self):
@@ -266,6 +265,9 @@ def run_netgen(
         groups["Solids"].append([i, volume_i])
 
     np.save(result_file, [result, groups])
+
+# remove traceback
+sys.excepthook = lambda type, value, traceback: print(value)
 
 run_netgen(**{kwds})
     """

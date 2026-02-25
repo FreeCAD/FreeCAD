@@ -21,8 +21,7 @@
  ***************************************************************************/
 // a class to handle changes to dimension reference geometry
 
-#ifndef GEOMETRYMATCHER_H
-#define GEOMETRYMATCHER_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -71,4 +70,3 @@ private:
 };
 
 }  // end namespace TechDraw
-#endif

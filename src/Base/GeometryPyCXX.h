@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PY_GEOMETRYPY_H
-#define PY_GEOMETRYPY_H
+#pragma once
 
 #include <CXX/Extensions.hxx>
 #include <FCGlobal.h>
@@ -290,5 +289,3 @@ using Rotation = GeometryT<Base::Rotation, Base::RotationPy, &Base::RotationPy::
 using Placement = GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
 
 }  // namespace Py
-
-#endif  // PY_GEOMETRYPY_H

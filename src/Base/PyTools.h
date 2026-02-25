@@ -61,8 +61,7 @@ for any purpose and without fee is hereby granted.  This software
 is provided on an as is basis, without warranties of any kind.
 */
 
-#ifndef PPEMBED_H
-#define PPEMBED_H
+#pragma once
 
 #ifdef __cplusplus
 extern "C" {             /* a C library, but callable from C++ */
@@ -193,5 +192,4 @@ extern PyObject *PP_last_exception_type;   /* saved exception type */
 }
 #endif
 
-#endif /*PREEMBED_H*/
 // clang-format on

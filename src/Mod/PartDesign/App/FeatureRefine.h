@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_FeatureRefine_H
-#define PARTDESIGN_FeatureRefine_H
+#pragma once
 
 #include "Feature.h"
 
@@ -70,6 +69,3 @@ protected:
 using FeatureRefinePython = App::FeaturePythonT<FeatureRefine>;
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_FeatureRefine_H

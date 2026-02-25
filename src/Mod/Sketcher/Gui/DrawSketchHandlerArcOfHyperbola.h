@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
-#define SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
+#pragma once
 
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -464,6 +463,3 @@ protected:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCVECTORIZESVGACTION_H
-#define GUI_SOFCVECTORIZESVGACTION_H
+#pragma once
 
 #include <Inventor/annex/HardCopy/SoVectorizeAction.h>
 #include <Inventor/annex/HardCopy/SoVectorOutput.h>
@@ -105,5 +104,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOFCVECTORIZESVGACTION_H

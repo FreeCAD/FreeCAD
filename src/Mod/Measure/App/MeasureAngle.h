@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef APP_MEASUREANGLE_H
-#define APP_MEASUREANGLE_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -96,6 +95,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // APP_MEASUREANGLE_H

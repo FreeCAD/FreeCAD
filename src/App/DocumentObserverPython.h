@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_DOCUMENTOBSERVERPYTHON_H
-#define APP_DOCUMENTOBSERVERPYTHON_H
+#pragma once
 
 #include <FCGlobal.h>
 #include <fastsignals/signal.h>
@@ -165,5 +164,3 @@ private:
 };
 
 }  // namespace App
-
-#endif  // APP_DOCUMENTOBSERVERPYTHON_H

@@ -71,6 +71,10 @@ class BIMWorkbench(Workbench):
         from nativeifc import ifc_commands
 
         # build menus and toolbars
+
+        # as a workaround for issue #26539 a list without grouped commands
+        # is created later (self.draftingtools_for_watcher)
+        # https://github.com/FreeCAD/FreeCAD/issues/26539
         self.draftingtools = [
             "BIM_Sketch",
             "Draft_Line",
@@ -398,6 +402,15 @@ class BIMWorkbench(Workbench):
         FreeCADGui.addCommand("BIM_GenericTools", BIM_GenericTools(self.generictools))
         FreeCADGui.addCommand("BIM_Create2DViews", BIM_Create2DViews(self.create_2dviews))
 
+        # workaround for issue #26539: create draftingtools list without grouped commands
+        # https://github.com/FreeCAD/FreeCAD/issues/26539
+        tmplist = self.draftingtools[:]
+        for itm in (("BIM_ArcTools", BIM_ArcTools), ("BIM_SplineTools", BIM_SplineTools)):
+            idx = tmplist.index(itm[0])
+            cmds = list(itm[1].GetCommands(itm[1]))
+            tmplist = tmplist[:idx] + cmds + tmplist[idx + 1 :]
+        self.draftingtools_for_watcher = tmplist
+
         # Inject some of the grouped commands
         self.bimtools.append("BIM_GenericTools")
         insert_at_index = self.annotationtools.index("BIM_TDPage")
@@ -636,7 +649,7 @@ class BIMWorkbench(Workbench):
 
         FreeCADGui.Control.addTaskWatcher(
             [
-                BimWatcher(self.draftingtools + self.annotationtools, "2D Geometry"),
+                BimWatcher(self.draftingtools_for_watcher + self.annotationtools, "2D Geometry"),
                 BimWatcher(self.bimtools, "3D/BIM Geometry"),
                 BimWatcher(self.modify, "Modify", invert=True),
             ]

@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef TECHDRAW_SOLIDWORKSNAVSTYLE_H
-#define TECHDRAW_SOLIDWORKSNAVSTYLE_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -49,4 +48,3 @@ private:
 };
 
 }
-#endif // TECHDRAW_SOLIDWORKSNAVSTYLE_H

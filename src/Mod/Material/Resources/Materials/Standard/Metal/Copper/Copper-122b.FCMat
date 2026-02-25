@@ -1,0 +1,86 @@
+﻿---
+# File created by FreeCAD 1.0.2 Revision: 39319 (Git)
+General:
+  UUID: "8fdb7f5b-62e7-4489-8fa2-09d55355c5d5"
+  Name: "Copper-122b"
+  Author: "Joe Da Silva"
+  License: "LGPL-2.0-or-later"
+  SourceURL: "https://copper.org/publications/pub_list/pdf/144-8-mechanical.pdf"
+  ReferenceSource: "144-8-mechanical.pdf"
+  Tags:
+    - "C12200"
+    - "Wrought"
+    - "Coppers"
+    - "Cold drawn"
+    - "Phosphorus"
+  Description: >
+    Copper-122, Phosphorus Deoxidized (DHP), High Residual Phosphorus, Cold drawn 26%.
+    Cu≥99.9% Pb=0.0002% Fe=0.003% Sn=0.00035% Zn=0.001% P=0.028%
+    Ag,Bi,Sb,Mn,As,Ni=(trace). IACS=85%.
+    Values for 295°K imported from 'cda144-8-mechanical-low-temperature.pdf'
+    with permission and credit to the 'Copper Development Association' (CDA).
+    For your own production accuracy, please use values provided by the
+    material vendors you are working with.
+Inherits:
+  Copper:
+    UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Cold drawn"
+    StandardCode: "Copper-122"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "8940 kg/m^3"
+    UltimateStrain: "1.46"
+    UltimateTensileStrength: "357 MPa"
+    YieldStrain: "0.63"
+    YieldStrength: "341 MPa"
+    Elongation: "17"
+    FractureStrength: "206 MPa"
+    ReductionOfArea: "76"
+    YoungsModulus: "130 GPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "385 J/kg/K"
+    ThermalConductivity: "339 W/m/K"
+    ThermalExpansionCoefficient: "16.9 µm/m/K"
+    ThermalExpansionReferenceTemperature: "293.00 K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    ElectricalConductivity: "49.3 MS/m"
+  Hardness:
+    UUID: '3d1a6141-d032-4d82-8bb5-a8f339fff8ad'
+    Hardness: "50"
+    HardnessUnits: "HRB"
+  Toughness:
+    UUID: '5bd8188b-2e72-4891-b9fb-7c5abc62ff2d'
+    ImpactCharpy: "152 J"
+    NotchTensileStrength: "558 MPa"
+  IsotropicLinearElasticArrays:
+    UUID: '2afbba4b-55c0-4c4a-a6dc-4f5716cc5571'
+    ElasticProperties:
+      - [["295 K", "", "", "", "130 GPa"],
+         ["195 K", "", "", "", "137 GPa"],
+         ["76 K",  "", "", "", "140 GPa"],
+         ["20 K",  "", "", "", "143 GPa"],
+         ["4 K",   "", "", "", "145 GPa"]]
+  LinearElasticArrays:
+    UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+    PlasticUniaxialProperties:
+      - [["295 K", "1.46", "357 MPa", "0.63", "341 MPa", "17.0", "206 MPa", "76.0"],
+         ["195 K", "7.2",  "392 MPa", "0.63", "370 MPa", "21.0", "248 MPa", "79.0"],
+         ["76 K",  "17.1", "472 MPa", "0.82", "413 MPa", "28.0", "310 MPa", "76.0"],
+         ["20 K",  "37.3", "561 MPa", "0.58", "442 MPa", "46.0", "347 MPa", "78.0"],
+         ["4 K",   "37.3", "558 MPa", "0.51", "439 MPa", "44.0", "417 MPa", "72.0"]]
+  ToughnessArrays:
+    UUID: '930ae69e-f51e-4cb4-831f-05f233fc0360'
+    PlasticTriaxialProperties:
+      - [["295 K", "152 J", "558 MPa"],
+         ["195 K", "152 J", "598 MPa"],
+         ["76 K",  "152 J", "688 MPa"],
+         ["20 K",  "162 J", "749 MPa"],
+         ["4 K",   "",      "754 MPa"]]

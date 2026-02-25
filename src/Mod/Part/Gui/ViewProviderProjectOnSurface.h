@@ -23,8 +23,7 @@
  **************************************************************************/
 
 
-#ifndef PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
-#define PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -51,6 +50,3 @@ public:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_VIEWPROVIDERPROJECTONSURFACE_H

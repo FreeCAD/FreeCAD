@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemMeshShapeObject_H
-#define Fem_FemMeshShapeObject_H
+#pragma once
 
 #include "FemMeshObject.h"
 
@@ -39,6 +38,8 @@ public:
     ~FemMeshShapeBaseObject() override;
 
     App::PropertyLink Shape;
+    App::PropertyPythonObject Tool;
+    App::PropertyPath WorkingDirectory;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override
@@ -75,6 +76,3 @@ protected:
 using FemMeshShapeBaseObjectPython = App::FeaturePythonT<FemMeshShapeBaseObject>;
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemMeshShapeObject_H

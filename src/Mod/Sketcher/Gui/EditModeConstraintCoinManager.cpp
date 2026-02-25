@@ -363,13 +363,7 @@ Restart:
                             }
                         }
 
-                        Base::Vector3d relpos = seekConstraintPosition(
-                            midpos,
-                            norm,
-                            dir,
-                            2.5,
-                            editModeScenegraphNodes.constrGroup->getChild(i)
-                        );
+                        Base::Vector3d relpos = seekConstraintPosition(norm, 2.5);
 
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
@@ -399,13 +393,7 @@ Restart:
                         norm1 = Base::Vector3d(-dir1.y, dir1.x, 0.);
                         norm2 = norm1;
 
-                        Base::Vector3d relpos1 = seekConstraintPosition(
-                            midpos1,
-                            norm1,
-                            dir1,
-                            4.0,
-                            editModeScenegraphNodes.constrGroup->getChild(i)
-                        );
+                        Base::Vector3d relpos1 = seekConstraintPosition(norm1, 4.0);
 
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
@@ -414,14 +402,7 @@ Restart:
                         translation->abPos = SbVec3f(midpos1.x, midpos1.y, zConstrH);
                         translation->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
-                        Base::Vector3d relpos2 = seekConstraintPosition(
-                            midpos2,
-                            norm2,
-                            dir2,
-                            4.0,
-                            editModeScenegraphNodes.constrGroup->getChild(i)
-                        );
-
+                        Base::Vector3d relpos2 = seekConstraintPosition(norm2, 4.0);
                         Base::Vector3d secondPos = midpos2 - midpos1;
 
                         translation = static_cast<SoZoomTranslation*>(sep->getChild(
@@ -540,13 +521,7 @@ Restart:
                         twoIcons = true;
                     }
 
-                    Base::Vector3d relpos1 = seekConstraintPosition(
-                        midpos1,
-                        norm1,
-                        dir1,
-                        4.0,
-                        editModeScenegraphNodes.constrGroup->getChild(i)
-                    );
+                    Base::Vector3d relpos1 = seekConstraintPosition(norm1, 4.0);
 
                     auto translation = static_cast<SoZoomTranslation*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
@@ -556,14 +531,7 @@ Restart:
                     translation->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                     if (twoIcons) {
-                        Base::Vector3d relpos2 = seekConstraintPosition(
-                            midpos2,
-                            norm2,
-                            dir2,
-                            4.0,
-                            editModeScenegraphNodes.constrGroup->getChild(i)
-                        );
-
+                        Base::Vector3d relpos2 = seekConstraintPosition(norm2, 4.0);
                         Base::Vector3d secondPos = midpos2 - midpos1;
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)
@@ -800,20 +768,8 @@ Restart:
                         norm2 = Base::Vector3d(-dir2.y, dir2.x, 0.);
                     }
 
-                    Base::Vector3d relpos1 = seekConstraintPosition(
-                        midpos1,
-                        norm1,
-                        dir1,
-                        4.0,
-                        editModeScenegraphNodes.constrGroup->getChild(i)
-                    );
-                    Base::Vector3d relpos2 = seekConstraintPosition(
-                        midpos2,
-                        norm2,
-                        dir2,
-                        4.0,
-                        editModeScenegraphNodes.constrGroup->getChild(i)
-                    );
+                    Base::Vector3d relpos1 = seekConstraintPosition(norm1, 4.0);
+                    Base::Vector3d relpos2 = seekConstraintPosition(norm2, 4.0);
 
                     auto translation = static_cast<SoZoomTranslation*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::FirstTranslationIndex))
@@ -936,6 +892,7 @@ Restart:
                             asciiText->string = SbString(
                                 getPresentationString(Constr, "◠ ").toUtf8().constData()
                             );
+                            asciiText->strikethrough = !Constr->isActive;
 
                             asciiText->pnts.setNum(3);
                             SbVec3f* verts = asciiText->pnts.startEditing();
@@ -958,6 +915,7 @@ Restart:
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
+                    asciiText->strikethrough = !Constr->isActive;
 
                     if (Constr->Type == Distance) {
                         asciiText->datumtype = SoDatumLabel::DISTANCE;
@@ -1112,13 +1070,7 @@ Restart:
                         Base::Vector3d dir = norm;
                         dir.RotateZ(-pi / 2.0);
 
-                        relPos = seekConstraintPosition(
-                            pos,
-                            norm,
-                            dir,
-                            2.5,
-                            editModeScenegraphNodes.constrGroup->getChild(i)
-                        );
+                        relPos = seekConstraintPosition(norm, 2.5);
 
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
@@ -1149,20 +1101,8 @@ Restart:
                             Base::Vector3d norm1 = Base::Vector3d(-dir1.y, dir1.x, 0.f);
                             Base::Vector3d norm2 = Base::Vector3d(-dir2.y, dir2.x, 0.f);
 
-                            Base::Vector3d relpos1 = seekConstraintPosition(
-                                midpos1,
-                                norm1,
-                                dir1,
-                                4.0,
-                                editModeScenegraphNodes.constrGroup->getChild(i)
-                            );
-                            Base::Vector3d relpos2 = seekConstraintPosition(
-                                midpos2,
-                                norm2,
-                                dir2,
-                                4.0,
-                                editModeScenegraphNodes.constrGroup->getChild(i)
-                            );
+                            Base::Vector3d relpos1 = seekConstraintPosition(norm1, 4.0);
+                            Base::Vector3d relpos2 = seekConstraintPosition(norm2, 4.0);
 
                             auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                                 static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)
@@ -1468,6 +1408,7 @@ Restart:
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex))
                     );
                     asciiText->string = SbString(getPresentationString(Constr).toUtf8().constData());
+                    asciiText->strikethrough = !Constr->isActive;
                     asciiText->datumtype = SoDatumLabel::ANGLE;
                     asciiText->param1 = distance;
                     asciiText->param2 = startangle;
@@ -1543,6 +1484,7 @@ Restart:
                     asciiText->string = SbString(
                         getPresentationString(Constr, "⌀").toUtf8().constData()
                     );
+                    asciiText->strikethrough = !Constr->isActive;
 
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
@@ -1625,6 +1567,7 @@ Restart:
                         asciiText->string = SbString(
                             getPresentationString(Constr, "R").toUtf8().constData()
                         );
+                        asciiText->strikethrough = !Constr->isActive;
                     }
 
                     asciiText->datumtype = SoDatumLabel::RADIUS;
@@ -1703,11 +1646,8 @@ void EditModeConstraintCoinManager::findHelperAngles(
 }
 
 Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(
-    const Base::Vector3d& origPos,
     const Base::Vector3d& norm,
-    const Base::Vector3d& dir,
-    float step,
-    const SoNode* constraint
+    float step
 )
 {
     return norm * 0.5f * step;
@@ -2164,14 +2104,6 @@ QString EditModeConstraintCoinManager::getPresentationString(
 
     if (!constraint->isDriving) {
         fixedValueStr = QStringLiteral("(") + fixedValueStr + QStringLiteral(")");
-    }
-
-    if (!constraint->isActive) {
-        QString result = QStringLiteral("\u0336");
-        for (auto c : std::as_const(fixedValueStr)) {
-            result += c + QStringLiteral("\u0336");
-        }
-        return result;
     }
 
     return fixedValueStr;

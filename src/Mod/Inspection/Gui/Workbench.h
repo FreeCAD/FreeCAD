@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef Inspection_WORKBENCH_H
-#define Inspection_WORKBENCH_H
+#pragma once
 
 #include <Gui/Workbench.h>
 
@@ -45,6 +44,3 @@ protected:
 };
 
 }  // namespace InspectionGui
-
-
-#endif  // Inspection_WORKBENCH_H

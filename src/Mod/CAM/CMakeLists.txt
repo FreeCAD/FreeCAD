@@ -458,6 +458,7 @@ SET(Tools_Bit_SRCS
     Tools/Bit/6mm_Ball_End.fctb
     Tools/Bit/6mm_Bullnose.fctb
     Tools/Bit/90degree_Vbit.fctb
+    Tools/Bit/M8x1.25_Tap.fctb
     Tools/Bit/probe.fctb
     Tools/Bit/slittingsaw.fctb
 )

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskTrajectory_H
-#define GUI_TASKVIEW_TaskTrajectory_H
+#pragma once
 
 #include <Gui/Selection/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -103,5 +102,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

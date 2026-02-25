@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchDefaultWidgetController_H
-#define SKETCHERGUI_DrawSketchDefaultWidgetController_H
+#pragma once
 
 #include <Base/Tools.h>
 #include <Gui/EditableDatumLabel.h>
@@ -462,6 +461,3 @@ private:
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchDefaultWidgetController_H

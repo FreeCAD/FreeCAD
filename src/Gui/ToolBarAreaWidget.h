@@ -19,8 +19,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TOOLBARAREAWIDGET_H
-#define GUI_TOOLBARAREAWIDGET_H
+#pragma once
 
 #include <QLayout>
 #include <QToolBar>
@@ -115,5 +114,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_TOOLBARAREAWIDGET_H

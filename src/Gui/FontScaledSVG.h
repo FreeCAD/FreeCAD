@@ -23,8 +23,7 @@
 
 // This custom widget scales an svg according to fonts
 
-#ifndef FONTSCALEDSVG_H
-#define FONTSCALEDSVG_H
+#pragma once
 
 #include <QWidget>
 #include <QSvgRenderer>
@@ -55,5 +54,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // FONTSCALEDSVG_H

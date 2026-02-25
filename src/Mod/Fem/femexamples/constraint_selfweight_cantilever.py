@@ -29,6 +29,7 @@ import ObjectsFem
 from . import manager
 from .manager import get_meshname
 from .manager import init_doc
+from .meshes import generate_mesh
 
 
 def get_information():
@@ -64,7 +65,7 @@ max deformation = 576.8 mm
     )
 
 
-def setup(doc=None, solvertype="ccxtools"):
+def setup(doc=None, solvertype="ccxtools", test_mode=False):
 
     # init FreeCAD document
     if doc is None:
@@ -116,6 +117,7 @@ def setup(doc=None, solvertype="ccxtools"):
     mat["PoissonRatio"] = "0.30"
     mat["Density"] = "7900 kg/m^3"
     material_obj.Material = mat
+    material_obj.References = [(geom_obj, "Solid1")]
     analysis.addObject(material_obj)
 
     # constraint fixed
@@ -129,19 +131,20 @@ def setup(doc=None, solvertype="ccxtools"):
     analysis.addObject(con_selfweight)
 
     # mesh
-    from .meshes.mesh_selfweight_cantilever_tetra10 import create_nodes, create_elements
-
-    fem_mesh = Fem.FemMesh()
-    control = create_nodes(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating nodes.\n")
-    control = create_elements(fem_mesh)
-    if not control:
-        FreeCAD.Console.PrintError("Error on creating elements.\n")
     femmesh_obj = analysis.addObject(ObjectsFem.makeMeshGmsh(doc, get_meshname()))[0]
-    femmesh_obj.FemMesh = fem_mesh
     femmesh_obj.Shape = geom_obj
     femmesh_obj.SecondOrderLinear = False
+
+    # generate the mesh
+    success = False
+    if not test_mode:
+        success = generate_mesh.mesh_from_mesher(femmesh_obj, "gmsh")
+    if not success:
+        # try to create from existing rough mesh
+        from .meshes.mesh_selfweight_cantilever_tetra10 import create_nodes, create_elements
+
+        fem_mesh = generate_mesh.mesh_from_existing(create_nodes, create_elements)
+        femmesh_obj.FemMesh = fem_mesh
 
     doc.recompute()
     return doc

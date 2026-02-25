@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PATH_FeaturePath_H
-#define PATH_FeaturePath_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
@@ -66,6 +65,3 @@ protected:
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace Path
-
-
-#endif  // PATH_FeaturePath_H

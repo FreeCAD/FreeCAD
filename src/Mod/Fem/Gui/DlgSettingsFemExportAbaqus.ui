@@ -45,6 +45,9 @@ not belonging to faces and faces not belonging to volumes.</string>
           <property name="whatsThis">
            <string>element parameter: All: all elements, Highest: highest elements only, FEM: FEM elements only (only edges not belonging to faces and faces not belonging to volumes)</string>
           </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
           <property name="prefEntry" stdset="0">
            <cstring>AbaqusElementChoice</cstring>
           </property>

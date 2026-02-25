@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAWGUI_MDIVIEWPAGE_H
-#define TECHDRAWGUI_MDIVIEWPAGE_H
+#pragma once
 
 #include <QPrinter>
 
@@ -184,5 +183,3 @@ protected:
 
 
 } // namespace MDIViewPageGui
-
-#endif // TECHDRAWGUI_MDIVIEWPAGE_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_LISTMODEL_H
-#define MATGUI_LISTMODEL_H
+#pragma once
 
 #include <memory>
 
@@ -67,5 +66,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_LISTMODEL_H

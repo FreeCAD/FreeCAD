@@ -327,7 +327,7 @@ void Shape::ExtrudeProfileLinear(
     SetModelData(vbuffer, ibuffer);
 }
 
-void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int nIndices)
+void Shape::GenerateModel(const float* vbuffer, const GLushort* ibuffer, int numVerts, int nIndices)
 {
     // GLuint vbo, ibo, vao;
 
@@ -354,9 +354,9 @@ void Shape::GenerateModel(float* vbuffer, GLushort* ibuffer, int numVerts, int n
     numIndices = nIndices;
 }
 
-void MillSim::Shape::SetModelData(std::vector<Vertex>& vbuffer, std::vector<GLushort>& ibuffer)
+void Shape::SetModelData(const std::vector<Vertex>& vbuffer, const std::vector<GLushort>& ibuffer)
 {
-    GenerateModel((float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
+    GenerateModel((const float*)vbuffer.data(), ibuffer.data(), (int)vbuffer.size(), (int)ibuffer.size());
 }
 
 void Shape::Render()
@@ -366,7 +366,7 @@ void Shape::Render()
     glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_SHORT, nullptr);
 }
 
-void Shape::Render(mat4x4 modelMat, mat4x4 normallMat)  // normals are rotated only
+void Shape::Render(const mat4x4& modelMat, const mat4x4& normallMat)  // normals are rotated only
 {
     CurrentShader->UpdateModelMat(modelMat, normallMat);
     Render();

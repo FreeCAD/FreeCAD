@@ -41,6 +41,7 @@
 
 #include <boost/iostreams/device/array.hpp>
 #include <boost/iostreams/stream.hpp>
+#include <boost/algorithm/string/predicate.hpp>
 
 
 using namespace Data;

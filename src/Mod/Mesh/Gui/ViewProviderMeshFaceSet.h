@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_VIEWPROVIDERMESHFACESET_H
-#define MESHGUI_VIEWPROVIDERMESHFACESET_H
+#pragma once
 
 #include <Mod/Mesh/Gui/ViewProvider.h>
 
@@ -77,6 +76,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_VIEWPROVIDERMESHFACESET_H
