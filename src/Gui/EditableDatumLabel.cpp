@@ -362,6 +362,16 @@ bool EditableDatumLabel::commitPendingInlineExpression()
     if (!spinBox) {
         return false;
     }
+    auto* lineEdit = spinBox->findChild<QLineEdit*>();
+    const QString input = lineEdit ? lineEdit->text() : QString();
+    const QString normalized = InlineExpression::normalizeInput(input);
+
+    // Untouched OVA fields should not become explicit constraints on click-out.
+    // Keep this as a no-op commit so tool flow can continue.
+    if (!hasUserEditedText && !InlineExpression::looksLikeExpressionInput(normalized)) {
+        return true;
+    }
+
     if (spinBox->commitInlineExpressionTextForUi()) {
         return true;
     }
@@ -369,9 +379,7 @@ bool EditableDatumLabel::commitPendingInlineExpression()
         return false;
     }
 
-    auto* lineEdit = spinBox->findChild<QLineEdit*>();
-    const QString input = lineEdit ? lineEdit->text() : QString();
-    if (InlineExpression::looksLikeExpressionInput(InlineExpression::normalizeInput(input))) {
+    if (InlineExpression::looksLikeExpressionInput(normalized)) {
         return false;
     }
     const Base::Quantity quant = spinBox->valueFromText(input);
