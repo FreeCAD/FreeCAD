@@ -112,7 +112,6 @@ ViewProviderMeasureBase::ViewProviderMeasureBase()
         App::Prop_None,
         "Saved label offset for the measurement"
     );
-    ADD_PROPERTY_TYPE(LabelPositionCustom, (false), agroup, App::Prop_None, "Use the saved label offset");
     // NOLINTEND
 
     pGlobalSeparator = new SoSeparator();
@@ -294,7 +293,6 @@ void ViewProviderMeasureBase::onLabelMoved()
 
     const SbVec3f pos = pDragger->translation.getValue();
     LabelPosition.setValue(Base::Vector3d(pos[0], pos[1], pos[2]));
-    LabelPositionCustom.setValue(true);
 }
 
 void ViewProviderMeasureBase::setLabelValue(const Base::Quantity& value)
@@ -350,7 +348,7 @@ SoSeparator* ViewProviderMeasureBase::getSoSeparatorText()
 void ViewProviderMeasureBase::positionAnno(const Measure::MeasureBase* measureObject)
 {
     (void)measureObject;
-    if (!LabelPositionCustom.getValue()) {
+    if (LabelPosition.getValue().Length() < defaultTolerance) {
         LabelPosition.setValue(Base::Vector3d(0, 0.1 * getViewScale(), 0));
     }
     setLabelTranslation(toSbVec3f(LabelPosition.getValue()));
@@ -674,7 +672,7 @@ void ViewProviderMeasure::positionAnno(const Measure::MeasureBase* measureObject
 {
     (void)measureObject;
 
-    if (!LabelPositionCustom.getValue()) {
+    if (LabelPosition.getValue().Length() < defaultTolerance) {
         // Initialize the text position
         Base::Vector3d textPos = getTextPosition();
         auto srcVec = SbVec3f(textPos.x, textPos.y, textPos.z);

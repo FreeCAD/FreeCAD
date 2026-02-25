@@ -88,7 +88,6 @@ public:
     App::PropertyColor LineColor;
     App::PropertyInteger FontSize;
     App::PropertyVector LabelPosition;
-    App::PropertyBool LabelPositionCustom;
     // NOLINTEND
 
     // Fields
