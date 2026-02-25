@@ -4981,9 +4981,9 @@ TopoShape& TopoShape::makeElementBSplineFace(
         auto e4 = mk4.Edge();
 
         ShapeMapper mapper;
-        mapper.populate(MappingStatus::Modified, e, {e1, e2, e3, e4});
-        mapper.populate(MappingStatus::Generated, v, {TopExp::FirstVertex(e1)});
-        mapper.populate(MappingStatus::Generated, v, {TopExp::LastVertex(e4)});
+        mapper.populate(MappingStatus::Modified, e, std::vector<Part::TopoShape>{e1, e2, e3, e4});
+        mapper.populate(MappingStatus::Generated, v, std::vector<Part::TopoShape>{TopExp::FirstVertex(e1)});
+        mapper.populate(MappingStatus::Generated, v, std::vector<Part::TopoShape>{TopExp::LastVertex(e4)});
 
         BRep_Builder builder;
         TopoDS_Compound comp;
