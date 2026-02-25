@@ -75,6 +75,7 @@ void Gui::GuiNativeEvent::initSpaceball(QMainWindow* window)
             .log("Couldn't connect to spacenav daemon on X11. Please ignore if you don't have a spacemouse.\n");
     }
     else {
+        spnav_client_name("FreeCAD");
         Base::Console().log("Connected to spacenav daemon on X11\n");
         mainApp->setSpaceballPresent(true);
         mainApp->installNativeEventFilter(new Gui::RawInputEventFilter(&xcbEventFilter));

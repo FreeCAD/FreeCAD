@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_VRMLOROBJECT_H
-#define APP_VRMLOROBJECT_H
+#pragma once
 
 #include "GeoFeature.h"
 #include "PropertyFile.h"
@@ -81,6 +80,3 @@ private:
 };
 
 }  // namespace App
-
-
-#endif  // APP_INVENTOROBJECT_H

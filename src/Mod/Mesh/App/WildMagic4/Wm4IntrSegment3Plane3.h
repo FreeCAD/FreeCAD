@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4INTRSEGMENT3PLANE3_H
-#define WM4INTRSEGMENT3PLANE3_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Intersector.h"
@@ -66,5 +65,3 @@ typedef IntrSegment3Plane3<float> IntrSegment3Plane3f;
 typedef IntrSegment3Plane3<double> IntrSegment3Plane3d;
 
 }
-
-#endif

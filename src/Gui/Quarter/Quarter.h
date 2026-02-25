@@ -1,5 +1,4 @@
-#ifndef QUARTER_QUARTER_H
-#define QUARTER_QUARTER_H
+#pragma once
 
 /**************************************************************************\
  * Copyright (c) Kongsberg Oil & Gas Technologies AS
@@ -44,5 +43,3 @@ namespace Quarter {
 }
 
 }}} // namespace
-
-#endif // QUARTER_QUARTER_H

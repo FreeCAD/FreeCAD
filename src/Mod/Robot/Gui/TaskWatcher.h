@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOTGUI_TASKWATCHER_H
-#define ROBOTGUI_TASKWATCHER_H
+#pragma once
 
 #include <Gui/TaskView/TaskWatcher.h>
 
@@ -56,5 +55,3 @@ protected:
 
 
 }  // namespace RobotGui
-
-#endif  // ROBOTGUI_TASKWATCHER_H

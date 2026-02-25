@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEATURE_BLEND_CURVE_H
-#define FEATURE_BLEND_CURVE_H
+#pragma once
 
 #include <App/PropertyLinks.h>
 #include <App/PropertyStandard.h>
@@ -74,5 +73,3 @@ protected:
 };
 
 }  // Namespace Surface
-
-#endif

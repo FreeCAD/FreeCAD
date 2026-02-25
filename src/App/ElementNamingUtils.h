@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
-#ifndef ELEMENT_NAMING_UTILS_H
-#define ELEMENT_NAMING_UTILS_H
+#pragma once
 
 #include <string>
 #include <utility>
@@ -122,5 +121,3 @@ AppExport const std::string indexSuffix(int index, const char *label=ELEMENT_MAP
 
 }  // namespace Data
 // clang-format on
-
-#endif  // ELEMENT_NAMING_UTILS_H

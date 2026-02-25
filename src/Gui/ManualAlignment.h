@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_MANUALALIGNMENT_H
-#define GUI_MANUALALIGNMENT_H
+#pragma once
 
 #include <QObject>
 #include <QPointer>
@@ -283,6 +282,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_MANUALALIGNMENT_H

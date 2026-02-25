@@ -22,8 +22,7 @@
  ***************************************************************************/
 
 
-#ifndef SRC_BASE_UNLIMITEDUNSIGNED_H_
-#define SRC_BASE_UNLIMITEDUNSIGNED_H_
+#pragma once
 
 #ifndef FC_GLOBAL_H
 # include <FCGlobal.h>
@@ -236,5 +235,3 @@ private:
     std::vector<PartType> parts;
 };
 }  // namespace Base
-
-#endif  // SRC_BASE_UNLIMITEDUNSIGNED_H_

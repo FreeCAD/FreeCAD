@@ -22,8 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_VIEWPROVIDERSKETCH_H
-#define SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#pragma once
+
+#include <boost/smart_ptr/scoped_ptr.hpp>
 
 #include <Inventor/SoRenderManager.h>
 #include <Inventor/sensors/SoNodeSensor.h>
@@ -1017,6 +1018,3 @@ private:
 };
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

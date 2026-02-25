@@ -378,7 +378,7 @@
        style="fill:none;stroke:#000000;stroke-width:0.540802;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1185-7)"
        sodipodi:nodetypes="cc" /><text
        transform="scale(0.97131606,1.029531)"
-       id="torus_radius"
+       id="corner_radius"
        y="279.48972"
        x="34.310169"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"

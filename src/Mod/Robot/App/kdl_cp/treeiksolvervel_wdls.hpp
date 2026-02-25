@@ -7,8 +7,7 @@
  *      Author: rubensmits
  */
 
-#ifndef TREEIKSOLVERVEL_WDLS_HPP_
-#define TREEIKSOLVERVEL_WDLS_HPP_
+#pragma once
 
 #include "treeiksolver.hpp"
 #include "treejnttojacsolver.hpp"
@@ -92,5 +91,3 @@ namespace KDL {
     };
     
 }
-
-#endif /* TREEIKSOLVERVEL_WDLS_HPP_ */

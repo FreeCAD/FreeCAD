@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2010 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -21,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTDESIGN_SketchBased_H
-#define PARTDESIGN_SketchBased_H
+#pragma once
 
 #include <Mod/Part/App/Part2DObject.h>
 #include "FeatureAddSub.h"
@@ -217,6 +218,3 @@ private:
 };
 
 }  // namespace PartDesign
-
-
-#endif  // PARTDESIGN_SketchBased_H

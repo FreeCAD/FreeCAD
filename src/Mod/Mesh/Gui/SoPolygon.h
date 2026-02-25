@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SOPOLYGON_H
-#define MESHGUI_SOPOLYGON_H
+#pragma once
 
 #include <Inventor/elements/SoReplacedElement.h>
 #include <Inventor/fields/SoSFBool.h>
@@ -66,6 +65,3 @@ private:
 // NOLINTEND
 
 }  // namespace MeshGui
-
-
-#endif  // MESHGUI_SOPOLYGON_H

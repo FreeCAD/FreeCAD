@@ -19,7 +19,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8881"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Dimension rayon/diamètre</translation>
+      <translation>Rayon/diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8882"/>
@@ -241,7 +241,7 @@ référence de miroir.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1924"/>
       <source>Rectangular Array</source>
-      <translation>Réseau rectangulaire</translation>
+      <translation>Créer une répétition linéaire</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1925"/>
@@ -491,7 +491,7 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="4925"/>
       <location filename="../../CommandConstraints.cpp" line="5302"/>
       <source>Add point to line distance constraint</source>
-      <translation>Ajouter une contrainte de distance point à ligne</translation>
+      <translation>Ajouter une contrainte de distance d'un point à une ligne</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4955"/>
@@ -705,7 +705,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Ajouter une ellipse à l’esquisse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="315"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="325"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Ajouter un arc d'ellipse à l'esquisse</translation>
     </message>
@@ -746,7 +746,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Diviser une arête</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="180"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="183"/>
       <source>Add external geometry</source>
       <translation>Ajouter une géométrie externe</translation>
     </message>
@@ -788,7 +788,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1163"/>
       <source>Join Curves</source>
-      <translation>Joindre des courbes</translation>
+      <translation>Relier des courbes</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="274"/>
@@ -852,17 +852,17 @@ invalid constraints, and degenerate geometry</source>
       <translation>Renommer la contrainte d'esquisse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1833"/>
       <source>Drag Point</source>
       <translation>Faire glisser le point</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1833"/>
       <source>Drag Curve</source>
       <translation>Faire glisser la courbe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1825"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1834"/>
       <source>Drag geometries</source>
       <translation>Faire glisser les géométries</translation>
     </message>
@@ -894,7 +894,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="204"/>
       <source>Add sketch arc slot</source>
-      <translation>Ajouter un contour oblong en arc dans l'esquisse</translation>
+      <translation>Ajouter un contour oblong en arc</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRotate.h" line="147"/>
@@ -956,54 +956,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6757"/>
+      <location filename="../../../App/SketchObject.cpp" line="6796"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Vous ne demandez aucun changement dans la multiplicité du nœud.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6749"/>
-      <location filename="../../../App/SketchObject.cpp" line="6927"/>
+      <location filename="../../../App/SketchObject.cpp" line="6788"/>
+      <location filename="../../../App/SketchObject.cpp" line="6966"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>L'index de la géométrie de la B-spline (GeoID) est en dehors des limites.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6982"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>L’Index de la géométrie (GeoID) fourni n’est pas une B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6778"/>
+      <location filename="../../../App/SketchObject.cpp" line="6817"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>L’index du nœud est hors limites. Notez que, conformément à la notation OCC, le premier nœud a un indice de 1 et non pas de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6794"/>
+      <location filename="../../../App/SketchObject.cpp" line="6833"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>La multiplicité ne peut pas être augmentée au-delà du degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6844"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>La multiplicité ne peut pas être diminuée au-delà de zéro.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6821"/>
+      <location filename="../../../App/SketchObject.cpp" line="6860"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC ne parvient pas à diminuer la multiplicité selon la tolérance maximale.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6934"/>
+      <location filename="../../../App/SketchObject.cpp" line="6973"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Le nœud ne peut pas avoir une multiplicité nulle.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6956"/>
+      <location filename="../../../App/SketchObject.cpp" line="6995"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>La multiplicité des nœuds ne peut pas être supérieure au degré de la B-spline.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6966"/>
+      <location filename="../../../App/SketchObject.cpp" line="7005"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Le nœud de la B-spline ne peut pas être inséré en dehors de la plage de paramètres de la B-spline.</translation>
     </message>
@@ -1301,7 +1301,8 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <source>Cannot add a constraint between two fixed geometries. Fixed geometries include external geometry, blocked geometry, and special points such as B-spline knot points.</source>
-      <translation>Impossible d'ajouter une contrainte entre deux géométries fixes. Les géométries fixes comprennent la géométrie externe, la géométrie bloquée et les points spéciaux tels que les points de nœuds des B-splines.</translation>
+      <translation>Impossible d'ajouter une contrainte entre deux géométries fixes. Les géométries fixes comprennent la géométrie externe, la géométrie
+bloquée et les points spéciaux tels que les points de nœuds des B-splines.</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="752"/>
@@ -1871,7 +1872,7 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1001"/>
       <source>Nothing is selected. Select a B-spline.</source>
-      <translation>Rien n'est sélectionné. Sélectionner une B-spline.</translation>
+      <translation>Aucun élément n'est sélectionné. Sélectionner une B-spline.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1022"/>
@@ -1881,7 +1882,7 @@ Combinaisons acceptées : deux courbes ; une extrémité et une courbe ; deux ex
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1080"/>
       <source>Nothing is selected. Select end points of curves.</source>
-      <translation>Rien n'est sélectionné. Sélectionner les extrémités des courbes.</translation>
+      <translation>Aucun élément n'est sélectionné. Sélectionner les extrémités des courbes.</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1108"/>
@@ -2376,22 +2377,22 @@ en tenir compte.</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="69"/>
       <source>Vertical Constraint</source>
-      <translation>Contrainte verticale</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="71"/>
       <source>Horizontal Constraint</source>
-      <translation>Contrainte horizontale</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="73"/>
       <source>Parallel Constraint</source>
-      <translation>Contrainte parallèle</translation>
+      <translation>Parallèle</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="75"/>
       <source>Perpendicular Constraint</source>
-      <translation>Contrainte perpendiculaire</translation>
+      <translation>Perpendiculaire</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="77"/>
@@ -2401,32 +2402,32 @@ en tenir compte.</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="83"/>
       <source>Block Constraint</source>
-      <translation>Contrainte de blocage</translation>
+      <translation>Blocage</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="79"/>
       <source>Equal Constraint</source>
-      <translation>Contrainte d'égalité</translation>
+      <translation>Égalité</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="65"/>
       <source>Coincident Constraint</source>
-      <translation>Contrainte de coïncidence</translation>
+      <translation>Coïncidence</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="67"/>
       <source>Point-On-Object Constraint</source>
-      <translation>Contrainte point sur objet</translation>
+      <translation>Point sur objet</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
       <source>Symmetric Constraint</source>
-      <translation>Contrainte de symétrie</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="85"/>
       <source>Lock Position</source>
-      <translation>Contrainte de fixation de position</translation>
+      <translation>Fixage</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="87"/>
@@ -2441,12 +2442,12 @@ en tenir compte.</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="93"/>
       <source>Radius Dimension</source>
-      <translation>Dimension du rayon</translation>
+      <translation>Rayon</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="95"/>
       <source>Diameter Dimension</source>
-      <translation>Dimension de diamètre</translation>
+      <translation>Diamètre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="91"/>
@@ -2456,7 +2457,7 @@ en tenir compte.</translation>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="97"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Dimension rayon/diamètre</translation>
+      <translation>Rayon/diamètre</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="99"/>
@@ -2687,8 +2688,8 @@ en tenir compte.</translation>
       <location filename="../../SketchRectangularArrayDialog.ui" line="115"/>
       <source>Substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is reflected on copies</source>
-      <translation>Remplace les contraintes dimensionnelles par des contraintes géométriques dans les copies,
-de sorte qu'une modification de l'élément d'origine se retrouve dans les copies.</translation>
+      <translation>Remplace les contraintes dimensionnelles par des contraintes géométriques dans les copies, de sorte qu'une modification de l'élément
+d'origine se retrouve dans les copies.</translation>
     </message>
     <message>
       <location filename="../../SketchRectangularArrayDialog.ui" line="99"/>
@@ -2802,7 +2803,8 @@ Cela nécessite de re-rentrer en mode édition pour que cela prenne effet.</tran
     <message>
       <location filename="../../SketcherSettings.ui" line="202"/>
       <source>Shows a command group button that contains both the polyline and line commands. Otherwise, each command has its own separate button.</source>
-      <translation>Affiche un bouton de groupe de commandes qui contient à la fois les commandes polyligne et ligne. Dans le cas contraire, chaque commande dispose de son propre bouton.</translation>
+      <translation>Affiche un bouton de groupe de commandes qui contient à la fois les commandes polyligne et ligne. Dans le cas contraire, chaque
+commande dispose de son propre bouton.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="221"/>
@@ -2889,9 +2891,9 @@ que s'il n'y a aucun objet visible dans la vue 3D.</translation>
 'Both': You will have both the 'Dimension' tool and the separated tools.
 This setting is only for the toolbar. Whichever you choose, all tools are always available in the menu and through shortcuts.</source>
       <translation>Sélectionner le type de barre d'outils des contraintes de dimensions :
-« Outil unique » : un seul outil pour toutes les contraintes de dimensions dans la barre d'outils : Distance, Distance X/Y, Angle, Rayon. (Autres dans le menu déroulant)
-« Outils séparés » : outils dédiés à chaque contrainte de dimension.
-« Les deux » : à la fois l'outil de "Dimension" et les outils séparés.
+- « Outil unique » : un seul outil pour toutes les contraintes de dimensions dans la barre d'outils : Distance, Distance X/Y, Angle, Rayon. (Autres dans le menu déroulant)
+- « Outils séparés » : outils dédiés à chaque contrainte de dimension.
+- « Les deux » : à la fois l'outil de "Dimension" et les outils séparés.
 
 Ce paramètre ne concerne que la barre d'outils. Quel que soit votre choix, tous les outils sont toujours disponibles dans le menu et par l'intermédiaire des raccourcis.</translation>
     </message>
@@ -2902,9 +2904,9 @@ Ce paramètre ne concerne que la barre d'outils. Quel que soit votre choix, tous
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
       <translation>Lorsque vous utilisez la contrainte de dimension, vous pouvez choisir comment travailler avec les cercles et les arcs :
-- "Automatique" : l'outil appliquera une contrainte de rayon aux arcs et de diamètre aux cercles.
-- "Diamètre" : l'outil appliquera une contrainte de diamètre à la fois aux arcs et aux cercles.
-- "Rayon" : l'outil appliquera une contrainte de rayon à la fois aux arcs et aux cercles.</translation>
+- « Automatique » : l'outil applique une contrainte de rayon aux arcs et de diamètre aux cercles.
+- « Diamètre »: l'outil applique une contrainte de diamètre à la fois aux arcs et aux cercles.
+- « Rayon » : l'outil applique une contrainte de rayon à la fois aux arcs et aux cercles.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="345"/>
@@ -2913,9 +2915,9 @@ Ce paramètre ne concerne que la barre d'outils. Quel que soit votre choix, tous
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
       <translation>Choisir un mode de visibilité pour les paramètres dans la vue :
-- "Désactivé" : les paramètres dans la vue sont complètement désactivés.
-- "Dimensions seulement" : seuls les paramètres dans la vue des dimensions sont visibles. Ce sont les plus utiles. Par exemple, le rayon d'un cercle.
-- "Tous" : les paramètres dans la vue des dimensions et des positions sont visibles. Les paramètres des positions correspondent aux positions (X, Y) du curseur. Par exemple, le centre d'un cercle.</translation>
+- « Désactivé » : les paramètres dans la vue sont complètement désactivés.
+- « Dimensions uniquement » : seuls les paramètres dans la vue des dimensions sont visibles. Ce sont les plus utiles. Par exemple, le rayon d'un cercle.
+- « Tous » : les paramètres dans la vue des dimensions et des positions sont visibles. Les paramètres des positions correspondent aux positions (X, Y) du curseur. Par exemple, le centre d'un cercle.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="198"/>
@@ -2960,7 +2962,7 @@ Ce paramètre ne concerne que la barre d'outils. Quel que soit votre choix, tous
     <message>
       <location filename="../../SketcherSettings.cpp" line="236"/>
       <source>When no scale feature is visible</source>
-      <translation>Lorsque aucune fonction de mise à l'échelle n'est visible</translation>
+      <translation>Lorsque aucune fonction de mise à l'échelle n'est visible.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="244"/>
@@ -3081,7 +3083,7 @@ Cela prend en charge tous les systèmes d'unités sauf les "unités états-unien
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="296"/>
       <source>Opens a dialog to input a value for new dimensional constraints after creation</source>
-      <translation>Ouvre une boîte de dialogue pour entrer une valeur pour de nouvelles contraintes dimensionnelles après création.</translation>
+      <translation>Ouvre une boîte de dialogue pour saisir des valeurs pour de nouvelles contraintes dimensionnelles après création.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="315"/>
@@ -3106,7 +3108,7 @@ Cela prend en charge tous les systèmes d'unités sauf les "unités états-unien
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="405"/>
       <source>Shows objects the opened sketch is attached to</source>
-      <translation>Affiche les objets auxquels l'esquisse ouverte est attachée.</translation>
+      <translation>Affiche les objets auxquels l'esquisse ouverte est ancrée.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsDisplay.ui" line="424"/>
@@ -3300,7 +3302,7 @@ Cependant, aucune contrainte liée aux extrémités n'a été trouvée.</transla
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="397"/>
       <source>Delete Constraints to External Geometry</source>
-      <translation>Supprimer les contraintes à la géométrie externe</translation>
+      <translation>Supprimer les contraintes aux géométries externes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.cpp" line="398"/>
@@ -3366,7 +3368,7 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="40"/>
       <source>Toggles the chosen constraint filters</source>
-      <translation>Active/désactive les filtres de contrainte choisis.</translation>
+      <translation>Active/désactive les filtres des contraintes choisies.</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherConstraints.ui" line="59"/>
@@ -3641,7 +3643,7 @@ Notez que pour toutes les contraintes futures, le verrouillage restera activé p
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="20"/>
       <source>Open and Non-Manifold Vertices</source>
-      <translation>Sommets ouverts et non-manifold</translation>
+      <translation>Sommets ouverts et non-manifolds</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="38"/>
@@ -3734,7 +3736,7 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="205"/>
       <source>Constraint Orientation Locking</source>
-      <translation>Verrouillage de l'orientation des contraintes</translation>
+      <translation>Fixage de l'orientation des contraintes</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherValidation.ui" line="114"/>
@@ -3795,120 +3797,120 @@ Cela est fait en analysant les géométries et les contraintes de l'esquisse.</t
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3432"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3445"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3454"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>L'esquisse n'est pas valide et ne peut pas être éditée.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3611"/>
       <source>The following constraint is partially redundant:</source>
       <translation>La contrainte suivante est partiellement redondante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3603"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3612"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Les contraintes suivantes sont partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3412"/>
       <source>Edit Sketch</source>
       <translation>Modifier une esquisse</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3424"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3433"/>
       <source>Close this dialog?</source>
-      <translation>Voulez-vous fermer cette boîte de dialogue ?</translation>
+      <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3443"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3452"/>
       <source>Invalid Sketch</source>
       <translation>Esquisse non valide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3453"/>
       <source>Open the sketch validation tool?</source>
-      <translation>Ouvrir l'outil de validation de l'esquisse ?</translation>
+      <translation>Faut-il ouvrir l'outil de validation des esquisses ?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3588"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3597"/>
       <source>Remove the following constraint:</source>
       <translation>Supprimer la contrainte suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3598"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Supprimer au moins une des contraintes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3604"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Supprimer la contrainte redondante suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3605"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Supprimer les contraintes redondantes suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3618"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Supprimer la contrainte défectueuse suivante :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Supprimer les contraintes défectueuses suivantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3678"/>
       <source>Empty sketch</source>
       <translation>Esquisse vide</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3674"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3683"/>
       <source>Over-constrained:</source>
       <translation>Esquisse sur-contrainte :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3680"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3689"/>
       <source>Malformed constraints:</source>
       <translation>Esquisse avec contraintes défectueuses :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3688"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3697"/>
       <source>Redundant constraints:</source>
       <translation>Esquisse avec contraintes redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3694"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3703"/>
       <source>Partially redundant:</source>
       <translation>Esquisse avec contraintes partiellement redondantes :</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3701"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3710"/>
       <source>Solver failed to converge</source>
       <translation>Le solveur n'a pas pu converger</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3707"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3716"/>
       <source>Under-constrained:</source>
       <translation>L'esquisse manque de contraintes :</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3709"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3718"/>
       <source>%n Degrees of Freedom</source>
       <translation>
-        <numerusform>%n degrés de liberté</numerusform>
+        <numerusform>%n degré de liberté</numerusform>
         <numerusform>%n degrés de liberté</numerusform>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3713"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3722"/>
       <source>Fully constrained</source>
       <translation>Esquisse entièrement contrainte</translation>
     </message>
@@ -4396,7 +4398,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3652"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3661"/>
       <source>and %1 more</source>
       <translation>et %1 de plus</translation>
     </message>
@@ -4456,7 +4458,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Sketcher Edit Tools</source>
-      <translation>Outils de modification de l'esquisse</translation>
+      <translation>Outils de modification de Sketcher</translation>
     </message>
   </context>
   <context>
@@ -4499,7 +4501,7 @@ L'algorithme Eigen Sparse QR est optimisé pour les matrices peu denses, génér
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="20"/>
       <source>Grid Settings</source>
-      <translation/>
+      <translation>Paramètres de grille</translation>
     </message>
     <message>
       <location filename="../../SketcherSettingsGrid.ui" line="35"/>
@@ -4601,17 +4603,17 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>L'esquisse a des contraintes partiellement redondantes !</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10219"/>
+      <location filename="../../../App/SketchObject.cpp" line="10286"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>La modification non gérée d'une propriété géométrique entraîne des indices de contrainte non valides.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10250"/>
+      <location filename="../../../App/SketchObject.cpp" line="10317"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>La modification non gérée d'une propriété de contrainte entraîne des indices de contrainte non valides.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10873"/>
+      <location filename="../../../App/SketchObject.cpp" line="10940"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Les paraboles ont été migrées. Les fichiers migrés ne pourront pas être ouverts par les versions précédentes de FreeCAD !!
@@ -4619,7 +4621,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4631,7 +4633,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <location filename="../../DrawSketchHandlerPolygon.h" line="133"/>
       <location filename="../../DrawSketchHandlerRotate.h" line="173"/>
       <location filename="../../DrawSketchHandlerTrimming.h" line="195"/>
-      <location filename="../../DrawSketchHandlerExternal.h" line="208"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="211"/>
       <location filename="../../DrawSketchHandlerSplitting.h" line="173"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="263"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="513"/>
@@ -4645,7 +4647,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="268"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="348"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="340"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="350"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <source>Error</source>
       <translation>Erreur</translation>
@@ -4706,7 +4708,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Impossible d'ajouter un arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="341"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="351"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Impossible d'ajouter un arc d'ellipse</translation>
     </message>
@@ -4756,7 +4758,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Impossible d'étendre l'arête</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="209"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="212"/>
       <source>Failed to add external geometry</source>
       <translation>Impossible d'ajouter la géométrie externe</translation>
     </message>
@@ -4774,7 +4776,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="297"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="220"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="160"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="153"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
@@ -4880,7 +4882,7 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <translation>Facteur d'échelle non valide. Le facteur d'échelle doit être un nombre positif.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="152"/>
       <source>Failed to scale</source>
       <translation>Impossible de mettre à l'échelle</translation>
     </message>
@@ -5051,8 +5053,8 @@ L'espacement de la grille change s'il devient inférieur à la taille en pixels 
       <location filename="../../DrawSketchHandlerRotate.h" line="480"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>Si cette option est sélectionnée, les contraintes dimensionnelles sont exclues de l'opération.
-Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets originaux et leurs copies.</translation>
+      <translation>Si cette option est sélectionnée, les contraintes dimensionnelles sont exclues de l'opération. Au lieu de cela, des contraintes d'égalité sont
+appliquées entre les objets originaux et leurs copies.</translation>
     </message>
   </context>
   <context>
@@ -5426,7 +5428,7 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="656"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="659"/>
       <source>Keep original geometries (U)</source>
       <translation>Garder les géométries d'origine (U)</translation>
     </message>
@@ -5598,8 +5600,8 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
       <location filename="../../DrawSketchHandlerTranslate.h" line="530"/>
       <source>If this option is selected dimensional constraints are excluded from the operation.
 Instead equal constraints are applied between the original objects and their copies.</source>
-      <translation>Si cette option est sélectionnée, les contraintes dimensionnelles sont exclues de l'opération.
-Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets originaux et leurs copies.</translation>
+      <translation>Si cette option est sélectionnée, les contraintes dimensionnelles sont exclues de l'opération. Au lieu de cela, des contraintes d'égalité sont
+appliquées entre les objets originaux et leurs copies.</translation>
     </message>
   </context>
   <context>
@@ -5646,7 +5648,7 @@ Au lieu de cela, des contraintes d'égalité sont appliquées entre les objets o
     <message>
       <location filename="../../Command.cpp" line="403"/>
       <source>Stop Operation</source>
-      <translation>Arrêter l'opération</translation>
+      <translation>Arrêter une opération</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="404"/>
@@ -5848,7 +5850,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="1664"/>
       <source>Toggle Constraints</source>
-      <translation>Activer/désactiver les contraintes</translation>
+      <translation>Activer/désactiver des contraintes</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1665"/>
@@ -5861,7 +5863,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3217"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation>Contrainte horizontale/verticale</translation>
+      <translation>Horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3218"/>
@@ -5874,7 +5876,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3535"/>
       <source>Horizontal/Vertical Constraint</source>
-      <translation>Contrainte horizontale/verticale</translation>
+      <translation>Horizontal/vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3536"/>
@@ -5887,7 +5889,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3581"/>
       <source>Horizontal Constraint</source>
-      <translation>Contrainte horizontale</translation>
+      <translation>Horizontal</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3582"/>
@@ -5900,7 +5902,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3626"/>
       <source>Vertical Constraint</source>
-      <translation>Contrainte verticale</translation>
+      <translation>Vertical</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3627"/>
@@ -5913,7 +5915,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3672"/>
       <source>Lock Position</source>
-      <translation>Contrainte de fixation de position</translation>
+      <translation>Fixage</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3673"/>
@@ -5926,7 +5928,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="3957"/>
       <source>Block Constraint</source>
-      <translation>Contrainte de blocage</translation>
+      <translation>Blocage</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3958"/>
@@ -5939,7 +5941,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="4159"/>
       <source>Coincident Constraint</source>
-      <translation>Contrainte de coïncidence</translation>
+      <translation>Coïncidence</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4160"/>
@@ -5952,7 +5954,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="4676"/>
       <source>Coincident Constraint</source>
-      <translation>Contrainte de coïncidence</translation>
+      <translation>Coïncidence</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4677"/>
@@ -5965,7 +5967,7 @@ Les points doivent être placés à moins d'un cinquième de l'espacement de la 
     <message>
       <location filename="../../CommandConstraints.cpp" line="4726"/>
       <source>Point-On-Object Constraint</source>
-      <translation>Contrainte point sur objet</translation>
+      <translation>Point sur objet</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4727"/>
@@ -6018,7 +6020,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6029"/>
       <source>Parallel Constraint</source>
-      <translation>Contrainte parallèle</translation>
+      <translation>Parallèle</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6030"/>
@@ -6031,7 +6033,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6192"/>
       <source>Perpendicular Constraint</source>
-      <translation>Contrainte perpendiculaire</translation>
+      <translation>Perpendiculaire</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6193"/>
@@ -6044,7 +6046,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6957"/>
       <source>Tangent/Collinear Constraint</source>
-      <translation>Contrainte tangente ou colinéaire</translation>
+      <translation>Tangent/colinéaire</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6958"/>
@@ -6057,7 +6059,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7832"/>
       <source>Radius Dimension</source>
-      <translation>Contrainte de rayon</translation>
+      <translation>Rayon</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7833"/>
@@ -6070,7 +6072,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8195"/>
       <source>Diameter Dimension</source>
-      <translation>Contrainte de diamètre</translation>
+      <translation>Diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8196"/>
@@ -6083,7 +6085,7 @@ sélectionné.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8513"/>
       <source>Radius/Diameter Dimension</source>
-      <translation>Dimension rayon/diamètre</translation>
+      <translation>Rayon/diamètre</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8514"/>
@@ -6110,7 +6112,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9494"/>
       <source>Equal Constraint</source>
-      <translation>Contrainte d'égalité</translation>
+      <translation>Égalité</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9496"/>
@@ -6123,7 +6125,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9736"/>
       <source>Symmetric Constraint</source>
-      <translation>Contrainte de symétrie</translation>
+      <translation>Symétrie</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9737"/>
@@ -6136,12 +6138,12 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10097"/>
       <source>Refraction Constraint</source>
-      <translation>Contrainte de réfraction</translation>
+      <translation>Réfraction</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10098"/>
       <source>Constrains the selected elements based on the refraction law (Snell's Law)</source>
-      <translation>Contraint les éléments sélectionnés en se basant sur la loi de réfraction (loi de nell).</translation>
+      <translation>Contraint les éléments sélectionnés en se basant sur la loi de réfraction (loi de Snell).</translation>
     </message>
   </context>
   <context>
@@ -6167,7 +6169,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10349"/>
       <source>Toggles between driving and reference mode of the selected constraints and commands</source>
-      <translation>Active/désactive entre le mode pilotante/piloté des contraintes et des commandes sélectionnées.</translation>
+      <translation>Active/désactive entre le mode pilotant/piloté des contraintes et des commandes sélectionnées.</translation>
     </message>
   </context>
   <context>
@@ -6175,7 +6177,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10503"/>
       <source>Toggle Constraints</source>
-      <translation>Activer/désactiver les contraintes</translation>
+      <translation>Activer/désactiver des contraintes</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10504"/>
@@ -6799,7 +6801,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1044"/>
       <source>Join Curves</source>
-      <translation>Joindre des courbes</translation>
+      <translation>Relier des courbes</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="1045"/>
@@ -7064,7 +7066,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="553"/>
       <source>Select Redundant Constraints</source>
-      <translation>Sélectionner les contraintes redondantes</translation>
+      <translation>Sélectionner des contraintes redondantes</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="554"/>
@@ -7077,7 +7079,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="611"/>
       <source>Select Malformed Constraints</source>
-      <translation>Sélectionner les contraintes défectueuses</translation>
+      <translation>Sélectionner des contraintes défectueuses</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="612"/>
@@ -7090,7 +7092,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="666"/>
       <source>Select Partially Redundant Constraints</source>
-      <translation>Sélectionner les contraintes partiellement redondantes</translation>
+      <translation>Sélectionner des contraintes partiellement redondantes</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="667"/>
@@ -7103,7 +7105,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="722"/>
       <source>Select Conflicting Constraints</source>
-      <translation>Sélectionner les contraintes en conflit</translation>
+      <translation>Sélectionner des contraintes en conflit</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="723"/>
@@ -7116,7 +7118,7 @@ sélectionnée.</translation>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="780"/>
       <source>Select Associated Geometry</source>
-      <translation>Sélectionner les géométries associées</translation>
+      <translation>Sélectionner des géométries associées</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="782"/>
@@ -7301,22 +7303,22 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="437"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="447"/>
       <source>%1 pick ellipse center</source>
       <translation>%1 Sélectionner un centre de l'ellipse</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="442"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
       <source>%1 pick axis point</source>
       <translation>%1 Sélectionner un point de l'axe</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="447"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="457"/>
       <source>%1 pick arc start point</source>
       <translation>%1 Sélectionner un point de départ de l'arc</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="462"/>
       <source>%1 pick arc end point</source>
       <translation>%1 Sélectionner un point de fin de l'arc</translation>
     </message>
@@ -7349,7 +7351,7 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="358"/>
       <source>%1 pick focus point</source>
-      <translation>%1 Sélectionner un point focal</translation>
+      <translation>%1 Sélectionner un foyer</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="363"/>
@@ -7364,7 +7366,7 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
     <message>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="373"/>
       <source>%1 pick end point</source>
-      <translation>%1 Sélectionner un point final</translation>
+      <translation>%1 Sélectionner un point de fin</translation>
     </message>
   </context>
   <context>
@@ -7565,7 +7567,7 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
   <context>
     <name>SketcherGui::DrawSketchHandlerExternal</name>
     <message>
-      <location filename="../../DrawSketchHandlerExternal.h" line="258"/>
+      <location filename="../../DrawSketchHandlerExternal.h" line="261"/>
       <source>%1 pick external geometry</source>
       <comment>Sketcher External: hint</comment>
       <translation>%1 Sélectionner une géométrie externe</translation>
@@ -7596,7 +7598,7 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="430"/>
       <source>%1 toggle preserve corner</source>
-      <translation>%1 activer/désactiver la préservation du coin</translation>
+      <translation>%1 Activer/désactiver la préservation du coin</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerFillet.h" line="439"/>
@@ -7726,12 +7728,12 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="125"/>
       <source>%1 toggle rounded corners</source>
-      <translation>%1 activer/désactiver les coins arrondis</translation>
+      <translation>%1 Activer/désactiver les coins arrondis</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="128"/>
       <source>%1 toggle frame</source>
-      <translation>%1 activer/désactiver le cadre</translation>
+      <translation>%1 Activer/désactiver le cadre</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="137"/>
@@ -7751,13 +7753,13 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
       <location filename="../../DrawSketchHandlerRectangle.h" line="229"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="263"/>
       <source>%1 set corner radius or frame thickness</source>
-      <translation>%1 Définir un rayon des coins ou une épaisseur du cadre.</translation>
+      <translation>%1 Définir un rayon des coins ou une épaisseur du cadre</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="161"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="195"/>
       <source>%1 set frame thickness</source>
-      <translation>%1 Définir une 'épaisseur du cadre</translation>
+      <translation>%1 Définir une épaisseur du cadre</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="171"/>
@@ -7768,7 +7770,7 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="179"/>
       <source>%1 pick corner</source>
-      <translation>%1 Sélectionner un coin</translation>
+      <translation>%1 Sélectionner un premier coin</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="213"/>
@@ -7816,17 +7818,17 @@ décalent vers l'extérieur, les valeurs négatives vers l'intérieur.</translat
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="179"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="180"/>
       <source>%1 pick reference point</source>
       <translation>%1 Sélectionner un point de référence</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="184"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="185"/>
       <source>%1 set scale factor</source>
       <translation>%1 Définir un facteur d'échelle</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="247"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="248"/>
       <source>Scale Parameters</source>
       <translation>Paramètres de la mise à l'échelle</translation>
     </message>

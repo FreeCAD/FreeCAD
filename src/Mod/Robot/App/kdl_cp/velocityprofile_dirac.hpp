@@ -28,8 +28,7 @@
  ***************************************************************************/
 
 
-#ifndef MOTIONPROFILE_DIRAC_H
-#define MOTIONPROFILE_DIRAC_H
+#pragma once
 
 #include "velocityprofile.hpp"
 
@@ -68,6 +67,3 @@ namespace KDL {
 	};
 
 }
-
-
-#endif

@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef TECHDRAW_GEOMETRYOBJECT_H
-#define TECHDRAW_GEOMETRYOBJECT_H
+#pragma once
 
 //! a class to the projection of shapes, removal/identifying hidden lines and
 //  converting the output for OCC HLR into the BaseGeom intermediate representation.
@@ -170,6 +169,3 @@ protected:
 using GeometryObjectPtr = std::shared_ptr<GeometryObject>;
 
 }//namespace TechDraw
-
-#endif
-

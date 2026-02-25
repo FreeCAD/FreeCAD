@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_TOOLS_H
-#define MESH_TOOLS_H
+#pragma once
 
 #include <functional>
 #include <limits>
@@ -227,6 +226,3 @@ private:
 };
 
 }  // namespace MeshCore
-
-
-#endif  // MESH_TOOLS_H

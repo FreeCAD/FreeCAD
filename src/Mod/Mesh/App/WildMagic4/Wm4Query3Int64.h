@@ -16,8 +16,7 @@
 //
 // Version: 4.0.0 (2006/06/28)
 
-#ifndef WM4QUERY3INT64_H
-#define WM4QUERY3INT64_H
+#pragma once
 
 #include "Wm4FoundationLIB.h"
 #include "Wm4Query3.h"
@@ -72,5 +71,3 @@ typedef Query3Int64<float> Query3Int64f;
 typedef Query3Int64<double> Query3Int64d;
 
 }
-
-#endif

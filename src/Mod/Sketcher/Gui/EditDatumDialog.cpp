@@ -227,6 +227,7 @@ int EditDatumDialog::exec(bool atCursor)
 
 void EditDatumDialog::typeChanged(bool checked)
 {
+    Q_UNUSED(checked);
     if (!ui_ins_datum->rbRadius->isVisible()) {
         return;
     }

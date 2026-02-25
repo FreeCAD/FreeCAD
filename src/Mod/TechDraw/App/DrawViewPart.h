@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewPart_h_
-#define DrawViewPart_h_
+#pragma once
 
 #include <QFuture>
 #include <QFutureWatcher>
@@ -296,5 +295,3 @@ private:
 using DrawViewPartPython = App::FeaturePythonT<DrawViewPart>;
 
 }//namespace TechDraw
-
-#endif// #ifndef DrawViewPart_h_

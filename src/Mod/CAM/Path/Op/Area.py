@@ -219,6 +219,15 @@ class ObjectOp(PathOp.ObjectOp):
         Can safely be overwritten by subclasses."""
         pass
 
+    def getMiddlePointLongestEdge(self, shape):
+        """getMiddlePointLongestEdge(shape) ... return middle point of longest edge from shape."""
+        candidate = shape.Edges[0]
+        for edge in shape.Edges:
+            if edge.Length > candidate.Length:
+                candidate = edge
+
+        return candidate.discretize(3)[1]
+
     def _buildPathArea(self, obj, baseobject, isHole, start, getsim):
         """_buildPathArea(obj, baseobject, isHole, start, getsim) ... internal function."""
         Path.Log.track()
@@ -301,7 +310,13 @@ class ObjectOp(PathOp.ObjectOp):
         if not self.areaOpRetractTool(obj):
             pathParams["threshold"] = 2.001 * self.radius
 
-        if self.endVector is not None:
+        if (
+            not obj.UseStartPoint
+            and getattr(obj, "HandleMultipleFeatures", None) == "Individually"
+            and getattr(obj, "UseLongestEdge", False)
+        ):
+            pathParams["start"] = self.getMiddlePointLongestEdge(shapelist[0])
+        elif self.endVector is not None:
             if self.endVector[:2] != (0, 0):
                 pathParams["start"] = self.endVector
         elif PathOp.FeatureStartPoint & self.opFeatures(obj) and obj.UseStartPoint:

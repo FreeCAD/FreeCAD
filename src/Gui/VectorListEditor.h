@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VECTORLISTEDITOR_H
-#define GUI_VECTORLISTEDITOR_H
+#pragma once
 
 #include <QAbstractTableModel>
 #include <QDialog>
@@ -118,5 +117,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_VECTORLISTEDITOR_H

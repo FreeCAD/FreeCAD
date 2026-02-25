@@ -873,7 +873,11 @@ class ghostTracker(Tracker):
             sep.addChild(obj.ViewObject.RootNode.copy())
             # add Part container offset
             if parent_place is not None:
-                if hasattr(obj, "Placement"):
+                if hasattr(obj, "Placement") and utils.get_type(obj) not in (
+                    "Label",
+                    "SectionPlane",
+                    "WorkingPlaneProxy",
+                ):
                     gpl = parent_place * obj.Placement
                 else:
                     gpl = parent_place

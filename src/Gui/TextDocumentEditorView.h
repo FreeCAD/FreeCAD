@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TEXTDOCUMENTEDITORVIEW_H
-#define GUI_TEXTDOCUMENTEDITORVIEW_H
+#pragma once
 
 #include <QPlainTextEdit>
 
@@ -81,5 +80,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif

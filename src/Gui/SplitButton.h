@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef FREECAD_FCSPLITBUTTON_H
-#define FREECAD_FCSPLITBUTTON_H
+#pragma once
 
 #include <QWidget>
 #include <QPushButton>
@@ -65,5 +64,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // FREECAD_FCSPLITBUTTON_H

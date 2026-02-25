@@ -21,8 +21,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef STYLEPARAMETERS_PARSER_H
-#define STYLEPARAMETERS_PARSER_H
+#pragma once
 
 #include <memory>
 #include <string>
@@ -166,5 +165,3 @@ private:
 };
 
 }  // namespace Gui::StyleParameters
-
-#endif  // STYLEPARAMETERS_PARSER_H

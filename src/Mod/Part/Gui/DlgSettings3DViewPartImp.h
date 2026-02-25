@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_DLGSETTINGS3DVIEWIMP_H
-#define PARTGUI_DLGSETTINGS3DVIEWIMP_H
+#pragma once
 
 #include <Gui/PropertyPage.h>
 #include <memory>
@@ -60,5 +59,3 @@ private:
 };
 
 }  // namespace PartGui
-
-#endif  // PARTGUI_DLGSETTINGS3DVIEWIMP_H

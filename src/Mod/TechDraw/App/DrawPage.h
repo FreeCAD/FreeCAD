@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawPage_h_
-#define DrawPage_h_
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -132,6 +131,3 @@ private:
 using DrawPagePython = App::FeaturePythonT<DrawPage>;
 
 }//namespace TechDraw
-
-
-#endif

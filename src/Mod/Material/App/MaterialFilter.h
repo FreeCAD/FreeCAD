@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALFILTER_H
-#define MATERIAL_MATERIALFILTER_H
+#pragma once
 
 #include <memory>
 
@@ -208,5 +207,3 @@ private:
 }  // namespace Materials
 
 Q_DECLARE_METATYPE(Materials::MaterialFilter)
-
-#endif  // MATERIAL_MATERIALFILTER_H

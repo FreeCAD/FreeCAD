@@ -37,5 +37,7 @@
         <file>translations/Help_da.qm</file>
         <file>translations/Help_lt.qm</file>
         <file>translations/Help_ms.qm</file>
+        <file>translations/Help_ta.qm</file>
+        <file>translations/Help_ga-IE.qm</file>
     </qresource>
 </RCC>

@@ -434,7 +434,7 @@
              d="m 76.574219,239.24609 a 0.18591908,0.18591908 0 0 0 -0.19336,0.10743 l -2.826172,6.32226 a 0.18591908,0.18591908 0 0 0 0.25,0.24414 l 6.248047,-2.98633 A 0.18591908,0.18591908 0 0 0 80,242.58203 c -1.67308,-0.25297 -2.995101,-1.53528 -3.267578,-3.18359 a 0.18591908,0.18591908 0 0 0 -0.158203,-0.15235 z m -0.0059,0.59766 c 0.404884,1.45072 1.518948,2.53298 2.990235,2.91406 l -5.457032,2.60742 z"
              id="path30745" /></g></g></g><text
        transform="scale(0.97131606,1.029531)"
-       id="torus_radius"
+       id="corner_radius"
        y="279.48972"
        x="34.310169"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:35.7707px;line-height:1.25;font-family:'URW Bookman L';-inkscape-font-specification:'URW Bookman L, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-align:start;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:3.35351"

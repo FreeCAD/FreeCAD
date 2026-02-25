@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATUREPARTCIRCLE_H
-#define PART_FEATUREPARTCIRCLE_H
+#pragma once
 
 #include <App/PropertyUnits.h>
 
@@ -71,5 +70,3 @@ private:
 };
 
 }  // namespace Part
-
-#endif  // PART_FEATUREPARTCIRCLE_H
