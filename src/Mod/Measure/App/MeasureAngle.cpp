@@ -339,11 +339,24 @@ bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
     _isImgOrigin = true;
-    gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
-    gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+
+    bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
+    gp_Vec faceNormal = ((faceIsS1) ? vector1() : vector2()).Normalized();
+    gp_Vec edgeDir = ((faceIsS1) ? vector2() : vector1()).Normalized();
+    gp_Pnt faceLoc = gp_Pnt(((faceIsS1) ? location1() : location2()).XYZ());
+    gp_Pnt edgeLoc = gp_Pnt(((faceIsS1) ? location2() : location1()).XYZ());
+
+    // projection direction from the edge onto the face
+    gp_Vec projection = edgeDir - (faceNormal * edgeDir.Dot(faceNormal));
+    projection.Normalize();
+
+    gp_Lin linEdge(edgeLoc, gp_Dir(edgeDir));
+    gp_Lin linProj(faceLoc, gp_Dir(projection));
     gp_Pnt p1, p2;
-    Part::closestPointsOnLines(lin1, lin2, p1, p2);
-    outOrigin = p2;
+    Part::closestPointsOnLines(linEdge, linProj, p1, p2);
+
+    outOrigin = (faceIsS1) ? p2 : p1;
+
     return true;
 }
 
@@ -386,15 +399,27 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
         }
     }
     else if (mCase == FaceEdge) {
-        // here we take the face as deciding factor
-        gp_Vec faceNormal;
-        faceNormal = (s1.ShapeType() == TopAbs_FACE) ? vector1() : vector2();
-        if (direction1.Dot(faceNormal) < 0) {
-            direction1 = -direction1;
+        bool faceIsS1 = (s1.ShapeType() == TopAbs_FACE);
+
+        gp_Vec& faceNormal = (faceIsS1 ? direction1 : direction2);
+        gp_Vec& edgeDir = faceIsS1 ? direction2 : direction1;
+        gp_Vec edgeLoc = faceIsS1 ? loc2 : loc1;
+
+        faceNormal.Normalize();
+        edgeDir.Normalize();
+
+        // project edge exactly onto the face plane
+        gp_Vec projection = edgeDir - (faceNormal * edgeDir.Dot(faceNormal));
+        projection.Normalize();
+
+        if (edgeDir.Dot(gp_Vec(outOrigin.XYZ()) - edgeLoc) > 0) {
+            edgeDir.Reverse();
         }
-        if (direction2.Dot(faceNormal) < 0) {
-            direction2 = -direction2;
+        if (projection.Dot(edgeDir) < 0) {
+            projection.Reverse();
         }
+
+        faceNormal = projection;
     }
     else {
         // should not reach here
