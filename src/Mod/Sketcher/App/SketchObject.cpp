@@ -3097,8 +3097,8 @@ void SketchObject::setOrientation(Constraint* constr, bool reset)
 
         if (geo1AsCirc && geo2AsCirc) { // circle-circle distance
 
-            // If one of the circle is completly within the other, we will say that
-            // it is internal, if they are not within each other or intersect we won't
+            // If one of the circles is completely within the other, we will say that
+            // it is internal, if they are not within each other orcompletly intersect we won't
             // make a call
 
             double centerDistance = Base::Distance(geo1AsCirc->getLocation(), geo2AsCirc->getLocation());
