@@ -37,6 +37,7 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
+#include <Gui/DocumentObserver.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
@@ -138,9 +139,14 @@ bool ViewProvider::setEdit(int ModNum)
             msgBox.setInformativeText(QObject::tr("Close this dialog?"));
             msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
             msgBox.setDefaultButton(QMessageBox::Yes);
-
-            if (msgBox.exec() == QMessageBox::Yes) {
+            int ret = msgBox.exec();
+            if (ret == QMessageBox::Yes) {
+                Gui::ViewProviderWeakPtrT that(this);
                 Gui::Control().reject();
+                if (that.expired()) {
+                    Base::Console().Warning("Closing the dialog has deleted the feature.\n");
+                    return false;
+                }
             }
             else {
                 return false;
