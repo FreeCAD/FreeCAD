@@ -1612,7 +1612,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
 
     helixRampMaxRadiusScaled = long(helixRampTargetDiameter * scaleFactor / 2);
     helixRampMinRadiusScaled = long(helixRampMinDiameter * scaleFactor / 2);
-    finishPassOffsetScaled = finishingProfile ? long(stepOverScaled / 10) : 0;
+    finishPassOffsetScaled = finishingProfile ? long(stepOverScaled * FINISHING_THICKNESS_SCALE) : 0;
 
     ClipperOffset clipof;
     Clipper clip;
@@ -1845,6 +1845,14 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
                 }
             }
 
+            Paths currentTBP;
+            for (Path& p : currentTBF) {
+                currentTBP.push_back(p);
+            }
+            for (Path& p : currentTBU) {
+                currentTBP.push_back(p);
+            }
+
             // 7) finishingPass = offset(any located parts from the TBF category, finishingThickness)
             Paths finishingPass;
             clipof.Clear();
@@ -1875,7 +1883,7 @@ std::list<AdaptiveOutput> Adaptive2d::Execute(
             }
 
             // 9) Run core algorithm on (bounds, toolBounds, finishingPass, clearedArea)
-            ProcessPolyNode(boundPath, toolBounds, finishingPass, initialClearedPaths);
+            ProcessPolyNode(boundPath, currentTBP, finishingPass, initialClearedPaths);
         }
     }
 
@@ -2001,6 +2009,14 @@ bool Adaptive2d::FindEntryPoint(
 
     if (!found) {
         cerr << "Start point not found!" << endl;
+        cout << "Tool bound paths (" << toolBoundPaths.size() << "):" << endl;
+        for (const Path& path : toolBoundPaths) {
+            cout << "[" << endl;
+            for (const IntPoint& p : path) {
+                cout << "(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            cout << "]" << endl;
+        }
     }
     if (found) {
         // visualize/progress for helix
@@ -2298,7 +2314,7 @@ bool Adaptive2d::MakeLeadPath(
 )
 {
     output.push_back(startPoint);
-    double stepSize = 0.2 * stepOverScaled + 1;
+    double stepSize = min(MIN_STEP_CLIPPER * 8, 0.2 * stepOverScaled + 1);
 
     // make a copy of clearedArea to update as the path progresses (for lead out only)
     ClearedArea clearedArea(toolRadiusScaled);
@@ -2393,9 +2409,15 @@ bool Adaptive2d::MakeLeadPath(
 
             // if traveled too far without getting to a clear area, exit with failure
             if (pathLen > maxLength) {
-                (*fout) << "Failed: overtravel without getting to cleared area" << endl;
-                cerr << "MakeLeadPath failed: overtravel without getting to cleared area" << endl;
-                return false;
+                if (getPathNestingLevel({currentPoint}, clearedArea.GetCleared()) % 2 == 1) {
+                    (*fout) << "Success, barely into cleared area" << endl;
+                    return true;
+                }
+                else {
+                    (*fout) << "Failed: overtravel without getting to cleared area" << endl;
+                    cerr << "MakeLeadPath failed: overtravel without getting to cleared area" << endl;
+                    return false;
+                }
             }
         }
         else {
@@ -2871,7 +2893,7 @@ void Adaptive2d::ProcessPolyNode(
 {
     ofstream& fout = *this->fout;
     fout << "\n" << "\n" << "----------------------" << "\n";
-    fout << "Start ProcessPolyNode" << "\n";
+    fout << "Start ProcessPolyNode (tbp size " << toolBoundPaths.size() << ")" << "\n";
     Perf_ProcessPolyNode.Start();
     current_region++;
     cout << "** Processing region: " << current_region << endl;
@@ -3310,7 +3332,6 @@ void Adaptive2d::ProcessPolyNode(
 
     const auto _getEngagePoint = [&](const std::optional<IntPoint>& prevPos,
                                      const std::optional<DoublePoint>& prevDir,
-                                     long engageBuffer,
                                      long engagementProtrusion) {
         // engagePoint, engageDir, heuristicCost
         std::vector<std::tuple<IntPoint, DoublePoint, double>> engagePoints;
@@ -3325,6 +3346,8 @@ void Adaptive2d::ProcessPolyNode(
         Paths clearedArea = cleared.GetCleared();
 
         // offset inward to find places the tool can start
+        long engageBuffer = 2;  // smooths out the integer rounding in the two offsets, +toolRadius
+                                // and -toolRadius
         Paths preEngage;
         clipof.Clear();
         clipof.AddPaths(clearedArea, JoinType::jtRound, EndType::etClosedPolygon);
@@ -3529,9 +3552,6 @@ void Adaptive2d::ProcessPolyNode(
                                     const std::optional<DoublePoint>& prevDir) {
         Perf_NextEngagePoint.Start();
 
-        const long engageBuffer = MIN_STEP_CLIPPER;  // smoothing, to ensure space for the tool's
-                                                     // path in
-
         // Compute how far into the material the first engagement should be
         const double targetArea = optimalCutAreaPD * MIN_STEP_CLIPPER;
         // Area of a segment of a circle: A = R^2 / 2 * (theta - sin(theta))
@@ -3539,13 +3559,14 @@ void Adaptive2d::ProcessPolyNode(
         // Solve for theta: theta = (12 * A / R^2)^(1/3)
         const double theta = std::pow(12 * targetArea / toolRadiusScaled / toolRadiusScaled, 1 / 3.);
         const double protrusion = toolRadiusScaled - cos(theta / 2) * toolRadiusScaled;
-        const long engagementProtrusion = (long)protrusion;
+        const long engagementProtrusion
+            = (long)min(protrusion, stepOverScaled * FINISHING_THICKNESS_SCALE);
 
         // Get engagement point. First attempt with the desired offsets, then fallback
-        auto result = _getEngagePoint(prevPos, prevDir, engageBuffer, engagementProtrusion);
+        auto result = _getEngagePoint(prevPos, prevDir, engagementProtrusion);
         if (!result) {
             // TODO consider retry at tiny protrusion?
-            // result = _getEngagePoint(prevPos, prevDir, 0, 4);
+            // result = _getEngagePoint(prevPos, prevDir, 4);
         }
 
         // update cleared area
@@ -3613,6 +3634,17 @@ void Adaptive2d::ProcessPolyNode(
         toClearPath.clear();
         angleHistory.clear();
         angleHistory.push_back(0);
+
+        // include linking path in cleared area
+        for (TPath lp : linkPath) {
+            if (lp.first == MotionType::mtCutting || lp.first == MotionType::mtLinkClear) {
+                Path scaledP;
+                for (auto& p : lp.second) {
+                    scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
+                }
+                cleared.ExpandCleared(scaledP);
+            }
+        }
 
         // append a new path to progress info paths
         if (progressPaths.empty()) {
@@ -3727,6 +3759,11 @@ void Adaptive2d::ProcessPolyNode(
         for (Path& a : newlyClearedAreas) {
             int nesting = getPathNestingLevel(a, newlyClearedAreas);
             cumulativeCutArea += (nesting <= 1 ? 1 : -1) * Area(a);
+            fout << "accumulating area " << (nesting <= 1 ? 1 : -1) * Area(a) << " [" << endl;
+            for (IntPoint& p : a) {
+                fout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl;
         }
 
         if (cumulativeCutArea >= 1) {
@@ -3737,15 +3774,6 @@ void Adaptive2d::ProcessPolyNode(
             if (newPos) {
                 toolPos = newPos->first;
                 toolDir = newPos->second;
-            }
-            for (TPath lp : linkPath) {
-                if (lp.first == MotionType::mtCutting || lp.first == MotionType::mtLinkClear) {
-                    Path scaledP;
-                    for (auto& p : lp.second) {
-                        scaledP.push_back({p.first * scaleFactor, p.second * scaleFactor});
-                    }
-                    cleared.ExpandCleared(scaledP);
-                }
             }
             CheckReportProgress(progressPaths);
             bad_engage_count = 0;
@@ -3822,10 +3850,63 @@ void Adaptive2d::ProcessPolyNode(
         }
     }
 
+    // sanity check for finishing paths - check the area of finishing cut
+    Paths clearedLocations;
+    clipof.Clear();
+    clipof.AddPaths(cleared.GetCleared(), JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(clearedLocations, long(-toolRadiusScaled));
+
+    Paths tbpShrink;
+    clipof.Clear();
+    clipof.AddPaths(toolBoundPaths, JoinType::jtRound, EndType::etClosedPolygon);
+    clipof.Execute(tbpShrink, long(-stepOverScaled * FINISHING_THICKNESS_SCALE - MIN_STEP_CLIPPER));
+
+    Paths uncut;
+    clip.Clear();
+    clip.AddPaths(tbpShrink, PolyType::ptSubject, true);
+    clip.AddPaths(clearedLocations, PolyType::ptClip, true);
+    clip.Execute(ClipType::ctDifference, uncut);
+
+    if (uncut.size() > 0) {
+        cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
+                "results."
+             << endl
+             << "Hint: try to modify accuracy and/or step-over." << endl;
+
+        fout << "REMAINING tbpShrink" << endl;
+        for (auto& path : tbpShrink) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl << endl;
+        }
+
+        fout << "REMAINING clearedLocations" << endl;
+        for (auto& path : clearedLocations) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl << endl;
+        }
+
+        fout << "REMAINING uncut" << endl;
+        for (auto& path : uncut) {
+            fout << "[" << endl;
+            for (IntPoint& p : path) {
+                fout << "\t(" << p.X << ", " << p.Y << ")" << endl;
+            }
+            fout << "]" << endl << endl;
+        }
+    }
+
+
     //**********************************
     //*  FINISHING PASS                *
     //**********************************
     if (finishingProfile) {
+        // update tool bound paths to correspond to the finishing paths instead of the interior
         {
             Paths tbpModified;
             for (const Path& fp : finishingPaths) {
@@ -3849,7 +3930,6 @@ void Adaptive2d::ProcessPolyNode(
 
         Path finShiftedPath;
 
-        bool allCutsAllowed = true;
         while (!stopProcessing
                && PopPathWithClosestPoint(finishingPaths, toolPos, finShiftedPath, stepOverScaled)) {
             if (finShiftedPath.empty()) {
@@ -3896,20 +3976,6 @@ void Adaptive2d::ProcessPolyNode(
 
             Path finCleaned;
             CleanPath(finShiftedPath, finCleaned, FINISHING_CLEAN_PATH_TOLERANCE);
-
-            // sanity check for finishing paths - check the area of finishing cut
-            for (size_t i = 1; i < finCleaned.size(); i++) {
-                if (!IsAllowedToCutTrough(
-                        finCleaned.at(i - 1),
-                        finCleaned.at(i),
-                        cleared,
-                        toolBoundPaths,
-                        2.0,
-                        true
-                    )) {
-                    allCutsAllowed = false;
-                }
-            }
 
             // make sure it's closed, but don't ruin the final direction
             if (sqrt(DistanceSqrd(finCleaned.front(), finCleaned.back()))
@@ -3988,14 +4054,6 @@ void Adaptive2d::ProcessPolyNode(
         (void)total_iterations;
         (void)perf_total_len;
 #endif
-
-        // warn about invalid paths being detected
-        if (!allCutsAllowed) {
-            cerr << "Warning: some cuts may be above optimal step-over. Please double check the "
-                    "results."
-                 << endl
-                 << "Hint: try to modify accuracy and/or step-over." << endl;
-        }
     }
     results.push_back(output);
 }
