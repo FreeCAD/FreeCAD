@@ -33,6 +33,7 @@
 
 #include "ViewProviderPoint.h"
 #include "ViewProviderCoordinateSystem.h"
+#include "ViewParams.h"
 
 using namespace Gui;
 
@@ -59,15 +60,24 @@ void ViewProviderPoint::attach(App::DocumentObject* obj)
     pCoords->point.setValue(point);
     sep->addChild(pCoords);
 
-    static const float size = App::GetApplication()
-                                  .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
-                                  ->GetFloat("DatumPointSize", 2.5);
-    auto sphere = new SoSphere();
-    sphere->radius.setValue(size);
-    sep->addChild(sphere);
+    pSphere = new SoSphere();
+    sep->addChild(pSphere);
 
     // Add pick style to define how the point can be selected
     auto ps = new SoPickStyle();
     ps->style.setValue(SoPickStyle::BOUNDING_BOX);
     sep->addChild(ps);
+
+    handlers.addDelayedHandler(
+        ViewParams::instance()->getHandle(),
+        {"DatumPointSize"},
+        [this](const ParameterGrp::handle&) { updatePointSize(); }
+    );
+
+    updatePointSize();
+}
+
+void ViewProviderPoint::updatePointSize()
+{
+    pSphere->radius.setValue(static_cast<float>(ViewParams::instance()->getDatumPointSize()));
 }
