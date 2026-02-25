@@ -46,6 +46,11 @@ namespace Gui
 class MDIView;
 class Document;
 
+namespace TaskView
+{
+class TaskDialog;
+}
+
 class GuiExport ViewProviderDocumentObject: public ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Gui::ViewProviderDocumentObject);
@@ -252,6 +257,8 @@ protected:
 
     /** Adds a menu item and bind it with \ref startDefaultEditMode().  */
     void addDefaultAction(QMenu*, const QString&);
+
+    bool tryCloseDialog(Gui::TaskView::TaskDialog* dlg);
 
 protected:
     App::DocumentObject* pcObject {nullptr};
