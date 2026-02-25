@@ -117,9 +117,12 @@ private:
     bool _isImgOrigin;
 
     bool setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2);
-    bool setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2);  // not the actual normals adjusted for
-                                                             // arc visualization
-    bool isGeometricalSameEdge(const TopoDS_Edge& e1, const TopoDS_Edge& e2);
+    bool computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2);
+    bool computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2);
+    bool computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2);
+
+    bool setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2);  // not the actual normals adjusted
+                                                             // for arc visualization
     void onChanged(const App::Property* prop) override;
 };
 

@@ -42,7 +42,10 @@
 #include <BRep_Tool.hxx>
 
 #include "MeasureAngle.h"
-#include "Mod/Part/App/PartFeature.h"
+#include <Mod/Part/App/Geometry.h>
+#include <Mod/Part/App/PartFeature.h>
+#include <Mod/Part/App/Tools.h>
+#include <TopTools_IndexedMapOfShape.hxx>
 
 using namespace Measure;
 
@@ -224,8 +227,86 @@ gp_Vec MeasureAngle::location2()
     return {temp.x, temp.y, temp.z};
 }
 
-bool MeasureAngle::isGeometricalSameEdge(const TopoDS_Edge& e1, const TopoDS_Edge& e2)
+bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
+    if (s1.IsNull() || s2.IsNull()) {
+        return false;
+    }
+
+    switch (mCase) {
+        case FaceFace:
+            return computeOriginFaceFace(s1, s2);
+        case EdgeEdge:
+            return computeOriginEdgeEdge(s1, s2);
+        case FaceEdge:
+            return computeOriginFaceEdge(s1, s2);
+    }
+
+    // cant reach here
+    return false;
+}
+
+bool MeasureAngle::computeOriginFaceFace(TopoDS_Shape& s1, TopoDS_Shape& s2)
+{
+    auto setOriginFromEdgeMidpoint = [this](const TopoDS_Edge& edge) -> bool {
+        TopoDS_Vertex v1, v2;
+        TopExp::Vertices(edge, v1, v2);
+        outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
+        return true;
+    };
+
+    TopTools_IndexedMapOfShape edges1, edges2;
+    TopExp::MapShapes(s1, TopAbs_EDGE, edges1);
+    TopExp::MapShapes(s2, TopAbs_EDGE, edges2);
+
+    for (int i = 1; i <= edges1.Extent(); i++) {
+        const TopoDS_Edge& ed1 = TopoDS::Edge(edges1(i));
+        for (int j = 1; j <= edges2.Extent(); j++) {
+            const TopoDS_Edge& ed2 = TopoDS::Edge(edges2(j));
+
+            if (ed1.IsSame(ed2)) {
+                return setOriginFromEdgeMidpoint(ed1);
+            }
+
+            auto geom1 = Part::Geometry::fromShape(ed1, true);
+            auto geom2 = Part::Geometry::fromShape(ed2, true);
+            if (geom1 && geom2
+                && geom1->isSame(*geom2, Precision::Confusion(), Precision::Angular())) {
+                return setOriginFromEdgeMidpoint(ed1);
+            }
+        }
+    }
+
+    _isImgOrigin = true;
+
+    gp_Pln pln1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
+    gp_Pln pln2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+
+    gp_Lin intersectionLine;
+    if (Part::intersect(pln1, pln2, intersectionLine)) {
+        gp_Pnt refPnt(location1().XYZ());
+        GeomAPI_ProjectPointOnCurve proj(refPnt, new Geom_Line(intersectionLine));
+        if (proj.NbPoints() > 0) {
+            outOrigin = proj.Point(1);
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MeasureAngle::computeOriginEdgeEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
+{
+    TopoDS_Edge e1 = TopoDS::Edge(s1);
+    TopoDS_Edge e2 = TopoDS::Edge(s2);
+    TopoDS_Vertex common;
+
+    if (TopExp::CommonVertex(e1, e2, common)) {
+        outOrigin = BRep_Tool::Pnt(common);
+        return true;
+    }
+
+    // get geometricall same vertex
     TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
     TopExp::Vertices(e1, v1_1, v1_2);
     TopExp::Vertices(e2, v2_1, v2_2);
@@ -236,127 +317,34 @@ bool MeasureAngle::isGeometricalSameEdge(const TopoDS_Edge& e1, const TopoDS_Edg
     gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
 
     double tol = Precision::Confusion();
-    bool matchStartStart = p1_1.IsEqual(p2_1, tol) && p1_2.IsEqual(p2_2, tol);
-    bool matchStartEnd = p1_1.IsEqual(p2_2, tol) && p1_2.IsEqual(p2_1, tol);
+    if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
+        outOrigin = p1_1;
+        return true;
+    }
+    if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
+        outOrigin = p1_2;
+        return true;
+    }
 
-    return matchStartStart || matchStartEnd;
+    _isImgOrigin = true;
+
+    gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
+    gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+    gp_Pnt p1, p2;
+    Part::closestPointsOnLines(lin1, lin2, p1, p2);
+    outOrigin = p1;
+    return true;
 }
 
-bool MeasureAngle::setOrigin(TopoDS_Shape& s1, TopoDS_Shape& s2)
+bool MeasureAngle::computeOriginFaceEdge(TopoDS_Shape& s1, TopoDS_Shape& s2)
 {
-    if (s1.IsNull() || s2.IsNull()) {
-        return false;
-    }
-    if (mCase == FaceFace) {
-        // find common edge
-        TopExp_Explorer exp1(s1, TopAbs_EDGE);
-        TopExp_Explorer exp2(s2, TopAbs_EDGE);
-        while (exp1.More()) {
-            auto ed1 = TopoDS::Edge(exp1.Current());
-            exp2.Init(s2, TopAbs_EDGE);
-            while (exp2.More()) {
-                auto ed2 = TopoDS::Edge(exp2.Current());
-                if (ed1.IsSame(ed2) || isGeometricalSameEdge(ed1, ed2)) {
-                    // calculate outOrigin from the common edge
-                    TopoDS_Vertex v1, v2;
-                    TopExp::Vertices(ed1, v1, v2);
-                    outOrigin = gp_Pnt((BRep_Tool::Pnt(v1).XYZ() + BRep_Tool::Pnt(v2).XYZ()) / 2);
-                    return true;
-                }
-                exp2.Next();
-            }
-            exp1.Next();
-        }
-
-        _isImgOrigin = true;
-
-        // now try for imaginary origin
-        gp_Vec loc1 = location1();
-        gp_Vec loc2 = location2();
-        gp_Vec vector1 = this->vector1();
-        gp_Vec vector2 = this->vector2();
-
-        Handle(Geom_Plane) P1 = new Geom_Plane(gp_Pln(gp_Pnt(loc1.XYZ()), gp_Dir(vector1)));
-        Handle(Geom_Plane) P2 = new Geom_Plane(gp_Pln(gp_Pnt(loc2.XYZ()), gp_Dir(vector2)));
-        GeomAPI_IntSS intersector(P1, P2, Precision::Confusion());
-        if (intersector.IsDone() && intersector.NbLines() > 0) {
-            Handle(Geom_Curve) curve = intersector.Line(1);
-
-            gp_Pnt refPnt = loc1.XYZ();
-
-            GeomAPI_ProjectPointOnCurve proj(refPnt, curve);
-            if (proj.NbPoints() > 0) {
-                outOrigin = proj.Point(1);
-                return true;
-            }
-        }
-    }
-    else if (mCase == EdgeEdge) {
-        TopoDS_Edge e1 = TopoDS::Edge(s1);
-        TopoDS_Edge e2 = TopoDS::Edge(s2);
-        TopoDS_Vertex common;
-
-        if (TopExp::CommonVertex(e1, e2, common)) {
-            outOrigin = BRep_Tool::Pnt(common);
-            return true;
-        }
-
-        // get geometricall same vertex
-        TopoDS_Vertex v1_1, v1_2, v2_1, v2_2;
-        TopExp::Vertices(e1, v1_1, v1_2);
-        TopExp::Vertices(e2, v2_1, v2_2);
-
-        gp_Pnt p1_1 = BRep_Tool::Pnt(v1_1);
-        gp_Pnt p1_2 = BRep_Tool::Pnt(v1_2);
-        gp_Pnt p2_1 = BRep_Tool::Pnt(v2_1);
-        gp_Pnt p2_2 = BRep_Tool::Pnt(v2_2);
-
-        double tol = Precision::Confusion();
-        if (p1_1.IsEqual(p2_1, tol) || p1_1.IsEqual(p2_2, tol)) {
-            outOrigin = p1_1;
-            return true;
-        }
-        if (p1_2.IsEqual(p2_1, tol) || p1_2.IsEqual(p2_2, tol)) {
-            outOrigin = p1_2;
-            return true;
-        }
-
-        _isImgOrigin = true;
-
-        // now try for imaginary origin
-        gp_Vec loc1 = location1();
-        gp_Vec loc2 = location2();
-        gp_Vec vector1 = this->vector1();
-        gp_Vec vector2 = this->vector2();
-
-        Handle(Geom_Line) line1 = new Geom_Line(loc1.XYZ(), vector1);
-        Handle(Geom_Line) line2 = new Geom_Line(loc2.XYZ(), vector2);
-
-        GeomAPI_ExtremaCurveCurve intersector(line1, line2);
-        if (intersector.NbExtrema() > 0) {
-            gp_Pnt p1, p2;
-            intersector.NearestPoints(p1, p2);
-            outOrigin = p1;
-            return true;
-        }
-    }
-    else if (mCase == FaceEdge) {
-        _isImgOrigin = true;
-        Handle(Geom_Line) line1 = new Geom_Line(location1().XYZ(), vector1());
-        Handle(Geom_Line) line2 = new Geom_Line(location2().XYZ(), vector2());
-
-        GeomAPI_ExtremaCurveCurve intersector(line1, line2);
-        if (intersector.NbExtrema() > 0) {
-            gp_Pnt p1, p2;
-            intersector.NearestPoints(p1, p2);
-            outOrigin = p2;
-            return true;
-        }
-    }
-
-
-    // cant reach here
-    return false;
+    _isImgOrigin = true;
+    gp_Lin lin1(gp_Pnt(location1().XYZ()), gp_Dir(vector1()));
+    gp_Lin lin2(gp_Pnt(location2().XYZ()), gp_Dir(vector2()));
+    gp_Pnt p1, p2;
+    Part::closestPointsOnLines(lin1, lin2, p1, p2);
+    outOrigin = p2;
+    return true;
 }
 
 
@@ -418,7 +406,8 @@ bool MeasureAngle::setDirections(TopoDS_Shape& s1, TopoDS_Shape& s2)
 
 bool MeasureAngle::getDirections(gp_Vec& dir1, gp_Vec& dir2)
 {
-    if (direction1.Magnitude() == 0 || direction2.Magnitude() == 0) {
+    if (direction1.Magnitude() < Precision::Confusion()
+        || direction2.Magnitude() < Precision::Confusion()) {
         return false;
     }
     dir1 = direction1;
