@@ -3619,10 +3619,7 @@ bool ViewProviderSketch::setEdit(int ModNum)
         sketchDlg = nullptr;// another sketch left open its task panel
     }
     if (dlg && !sketchDlg) {
-        if (dlg->canClose()) {
-            Gui::Control().closeDialog();
-        }
-        else {
+        if (!tryCloseDialog(dlg)) {
             return false;
         }
     }

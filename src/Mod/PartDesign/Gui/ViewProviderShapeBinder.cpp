@@ -93,10 +93,7 @@ bool ViewProviderShapeBinder::setEdit(int ModNum)
         Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
         TaskDlgShapeBinder* sbDlg = qobject_cast<TaskDlgShapeBinder*>(dlg);
         if (dlg && !sbDlg) {
-            if (dlg->canClose()) {
-                Gui::Control().reject();
-            }
-            else {
+            if (!tryCloseDialog(dlg)) {
                 return false;
             }
         }

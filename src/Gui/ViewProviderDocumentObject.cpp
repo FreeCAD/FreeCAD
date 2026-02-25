@@ -310,7 +310,7 @@ bool ViewProviderDocumentObject::tryCloseDialog(Gui::TaskView::TaskDialog* dlg)
         Gui::ViewProviderWeakPtrT self(this);
         Gui::Control().reject();
         if (self.expired()) {
-            Base::Console().Warning("Closing the dialog has deleted the feature.\n");
+            Base::Console().warning("Closing the dialog has deleted the feature.\n");
             return false;
         }
         return true;

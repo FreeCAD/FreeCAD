@@ -255,10 +255,7 @@ bool ViewProviderDatum::setEdit(int ModNum)
             datumDlg = nullptr;  // another datum feature left open its task panel
         }
         if (dlg && !datumDlg) {
-            if (dlg->canClose()) {
-                Gui::Control().closeDialog();
-            }
-            else {
+            if (!tryCloseDialog(dlg)) {
                 return false;
             }
         }

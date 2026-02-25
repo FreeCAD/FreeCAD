@@ -37,7 +37,6 @@
 #include <Gui/CommandT.h>
 #include <Gui/Control.h>
 #include <Gui/Document.h>
-#include <Gui/DocumentObserver.h>
 #include <Gui/Selection/SoFCUnifiedSelection.h>
 #include <Gui/Inventor/So3DAnnotation.h>
 #include <Gui/MainWindow.h>
@@ -134,15 +133,7 @@ bool ViewProvider::setEdit(int ModNum)
             featureDlg = nullptr;  // another feature left open its task panel
         }
         if (dlg && !featureDlg) {
-            if (dlg->canClose()) {
-                Gui::ViewProviderWeakPtrT that(this);
-                Gui::Control().reject();
-                if (that.expired()) {
-                    Base::Console().Warning("Closing the dialog has deleted the feature.\n");
-                    return false;
-                }
-            }
-            else {
+            if (!tryCloseDialog(dlg)) {
                 return false;
             }
         }
