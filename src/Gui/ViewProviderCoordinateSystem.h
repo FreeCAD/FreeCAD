@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderOrigin_H
-#define GUI_VIEWPROVIDER_ViewProviderOrigin_H
+#pragma once
 
 #include <functional>
 #include <Base/Bitmask.h>
@@ -120,5 +119,3 @@ private:
 }  // namespace Gui
 
 ENABLE_BITMASK_OPERATORS(Gui::DatumElement)
-
-#endif  // GUI_VIEWPROVIDER_ViewProviderOrigin_H

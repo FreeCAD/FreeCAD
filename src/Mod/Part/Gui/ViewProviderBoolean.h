@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderBoolean_H
-#define PARTGUI_ViewProviderBoolean_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -105,6 +104,3 @@ public:
 
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_ViewProviderBoolean_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESH_FEATURE_H
-#define MESH_FEATURE_H
+#pragma once
 
 #include <App/FeatureCustom.h>
 #include <App/FeaturePython.h>
@@ -94,6 +93,3 @@ using FeatureCustom = App::FeatureCustomT<Feature>;
 using FeaturePython = App::FeaturePythonT<Feature>;
 
 }  // namespace Mesh
-
-
-#endif

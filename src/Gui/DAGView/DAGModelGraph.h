@@ -21,8 +21,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DAGMODELGRAPH_H
-#define DAGMODELGRAPH_H
+#pragma once
 
 #include <bitset>
 #include <memory>
@@ -318,5 +317,3 @@ const GraphLinkRecord& findRecord(const std::string& stringIn, const GraphLinkCo
 void eraseRecord(const Gui::ViewProviderDocumentObject* VPDObjectIn, GraphLinkContainer& containerIn);
 }  // namespace DAG
 }  // namespace Gui
-
-#endif  // DAGMODELGRAPH_H

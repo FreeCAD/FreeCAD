@@ -22,8 +22,7 @@
 // Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-#ifndef KDL_SEGMENT_HPP
-#define KDL_SEGMENT_HPP
+#pragma once
 
 #include "frames.hpp"
 #include "rigidbodyinertia.hpp"
@@ -156,5 +155,3 @@ namespace KDL {
 
     };
 }//end of namespace KDL
-
-#endif

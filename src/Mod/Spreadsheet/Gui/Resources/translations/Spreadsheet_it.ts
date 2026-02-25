@@ -1148,7 +1148,7 @@ Predefinito a: %V = %A
     <message>
       <location filename="../../SpreadsheetView.cpp" line="301"/>
       <source>Export PDF</source>
-      <translation>Esporta in formato PDF</translation>
+      <translation>Esporta PDF</translation>
     </message>
     <message>
       <location filename="../../SpreadsheetView.cpp" line="303"/>
@@ -1191,12 +1191,12 @@ Predefinito a: %V = %A
   <context>
     <name>ZoomableView</name>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>New zoom level:</source>
       <translation>Nuovo livello di zoom:</translation>
     </message>
     <message>
-      <location filename="../../ZoomableView.cpp" line="113"/>
+      <location filename="../../ZoomableView.cpp" line="116"/>
       <source>Zoom Level</source>
       <translation>Livello zoom</translation>
     </message>

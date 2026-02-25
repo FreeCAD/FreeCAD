@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_COMMAND_H
-#define GUI_COMMAND_H
+#pragma once
 
 #include <list>
 #include <map>
@@ -1287,5 +1286,3 @@ private:
         X& operator=(const X&) = delete; \
         X& operator=(X&&) = delete; \
     };
-
-#endif  // GUI_COMMAND_H

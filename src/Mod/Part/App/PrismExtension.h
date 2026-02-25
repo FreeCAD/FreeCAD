@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_PRISM_EXTENSION_H
-#define PART_PRISM_EXTENSION_H
+#pragma once
 
 #include <App/DocumentObjectExtension.h>
 #include <App/PropertyUnits.h>
@@ -57,5 +56,3 @@ protected:
 };
 
 }  // namespace Part
-
-#endif  // PART_PRISM_EXTENSION_H

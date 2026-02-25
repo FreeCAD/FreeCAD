@@ -20,8 +20,7 @@
  *                                                                                                 *
  **************************************************************************************************/
 
-#ifndef APP_STRING_ID_H
-#define APP_STRING_ID_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -830,5 +829,3 @@ inline void StringID::setPersistent(bool enable)
     _flags.setFlag(Flag::Persistent, enable);
 }
 }  // namespace App
-
-#endif  // APP_STRING_ID_H

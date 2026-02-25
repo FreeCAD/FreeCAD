@@ -536,6 +536,7 @@ void System::clear()
     reference.clear();
     clearSubSystems();
     deleteAllContent(clist);
+    drivenConstraints.clear();
     c2p.clear();
     p2c.clear();
 }
@@ -566,6 +567,9 @@ int System::addConstraint(Constraint* constr)
     if (constr->getTag() >= 0) {  // negatively tagged constraints have no impact
         hasDiagnosis = false;     // on the diagnosis
     }
+    if (!constr->isDriving()) {
+        drivenConstraints.push_back(constr);
+    }
 
     clist.push_back(constr);
     VEC_pD constr_params = constr->params();
@@ -579,13 +583,11 @@ int System::addConstraint(Constraint* constr)
 
 void System::removeConstraint(Constraint* constr)
 {
-    std::vector<Constraint*>::iterator it;
-    it = std::ranges::find(clist, constr);
-    if (it == clist.end()) {
+    if (std::erase(clist, constr) == 0) {
         return;
     }
+    std::erase(drivenConstraints, constr);
 
-    clist.erase(it);
     if (constr->getTag() >= 0) {
         hasDiagnosis = false;
     }
@@ -1743,11 +1745,13 @@ void System::initSolution(Algorithm alg)
     std::vector<Constraint*> clistR;
     if (!redundant.empty()) {
         std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
-            return this->redundant.count(constr) == 0;
+            return this->redundant.count(constr) == 0 && constr->isDriving();
         });
     }
     else {
-        clistR = clist;
+        std::ranges::copy_if(clist, std::back_inserter(clistR), [this](auto constr) {
+            return constr->isDriving();
+        });
     }
 
     // partitioning into decoupled components
@@ -1834,7 +1838,7 @@ void System::initSolution(Algorithm alg)
             clists[cid],
             std::back_inserter(clist0),
             std::back_inserter(clist1),
-            [](auto constr) { return constr->getTag() >= 0 && constr->isDriving(); }
+            [](auto constr) { return constr->getTag() >= 0; }
         );
 
         if (!clist0.empty()) {
@@ -4683,6 +4687,13 @@ void System::applySolution()
             *(it->first) = *(it->second);
         }
     }
+    evaluateDrivenConstraints();
+}
+void System::evaluateDrivenConstraints()
+{
+    for (auto dconstr : drivenConstraints) {
+        dconstr->evaluate();
+    }
 }
 
 void System::undoSolution()
@@ -5412,12 +5423,12 @@ void System::eliminateNonZerosOverPivotInUpperTriangularMatrix(Eigen::MatrixXd& 
         // eliminate non zeros above pivot
         assert(R(i, i) != 0);
         for (int row = 0; row < i; row++) {
-            if (R(row, i) != 0) {
+            if (fabs(R(row, i)) > 1e-10) {
                 double coef = R(row, i) / R(i, i);
                 R.block(row, i + 1, 1, R.cols() - i - 1) -= coef
                     * R.block(i, i + 1, 1, R.cols() - i - 1);
-                R(row, i) = 0;
             }
+            R(row, i) = 0;
         }
     }
 }

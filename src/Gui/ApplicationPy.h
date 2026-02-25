@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_APPLICATIONPY_H
-#define GUI_APPLICATIONPY_H
+#pragma once
 
 #include <Base/PyObjectBase.h>
 
@@ -120,5 +119,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif

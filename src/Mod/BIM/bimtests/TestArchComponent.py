@@ -547,3 +547,174 @@ class TestArchComponent(TestArchBase.TestArchBase):
                     f"Got: {area_actual:.3f} m²"
                 ),
             )
+
+    def test_rotated_component_area(self):
+        """Verify AreaCalculator respects Placement for generic ArchComponents."""
+        self.printTestMessage("ArchComponent rotated area calculation...")
+
+        # Create a horizontal slab (1 m x 1 m x 0.01 m)
+        # Area of one large face = 1.0 m2
+        box = self.document.addObject("Part::Box", "HorizontalSlab")
+        box.Length = 1000.0
+        box.Width = 1000.0
+        box.Height = 10.0
+        self.document.recompute()
+
+        # Wrap in a generic Component and rotate 90 degrees around the X axis to turn it into a
+        # vertical panel.
+        comp = Arch.makeComponent(box)
+        comp.Placement.Rotation = App.Rotation(App.Vector(1, 0, 0), 90)
+        self.document.recompute()
+
+        # Check the VerticalArea property.
+        # FreeCAD sums all vertical faces (front + back + vertical side edges).
+        # Expected: (1.0 * 1.0)*2 + (1.0 * 0.01)*2 = 2.02 m2
+        expected_v_area = 2.02
+        actual_v_area = comp.VerticalArea.getValueAs("m^2").Value
+
+        self.assertAlmostEqual(
+            actual_v_area,
+            expected_v_area,
+            places=2,
+            msg=f"Vertical area calculation failed for rotated component. Got {actual_v_area}",
+        )
+
+    def test_moved_component_subtraction(self):
+        """Verify subtractions align correctly for moved/rotated components."""
+        self.printTestMessage("moved component boolean subtraction...")
+
+        # Create a base component and move it 5 meters away
+        base_box = self.document.addObject("Part::Box", "BaseBox")
+        base_box.Length = base_box.Width = base_box.Height = 100.0
+        comp = Arch.makeComponent(base_box)
+        comp.Placement.Base = App.Vector(5000.0, 0, 0)
+        self.document.recompute()
+
+        initial_volume = comp.Shape.Volume  # Should be 1,000,000 mm^3
+
+        # Create a "Cutter" box at the same global 5-meter position
+        cutter = self.document.addObject("Part::Box", "CutterBox")
+        cutter.Length = cutter.Width = cutter.Height = 100.0
+        cutter.Placement.Base = App.Vector(5000.0, 0, 0)
+        self.document.recompute()
+
+        # Add the cutter to subtractions.
+        # processSubShapes must inverse-transform the cutter into the component's local space.
+        comp.Subtractions = [cutter]
+        self.document.recompute()
+
+        # Assert: If the fix works, the volumes overlap perfectly and result is 0.
+        # If the fix fails, the cutter is ignored because it looks for the box at the origin.
+        final_volume = comp.Shape.Volume
+        self.assertLess(
+            final_volume,
+            initial_volume,
+            "Subtraction failed. The global cutter did not intersect the moved local shape.",
+        )
+        self.assertAlmostEqual(final_volume, 0.0, places=5)
+
+    def test_apply_shape_spread(self):
+        """Ensure generic components handle spreading (automatic arraying) via the Axis property."""
+        self.printTestMessage("applyShape spread logic (generic component)...")
+
+        # Create base geometry at identity (0,0,0)
+        box = self.document.addObject("Part::Box", "SpreadBase")
+        box.Length = box.Width = box.Height = 100.0
+        self.document.recompute()
+
+        # Create a generic Arch Component
+        comp = Arch.makeComponent(box)
+
+        # Create an Axis system with 2 points (at 0 and 2000mm)
+        axis = Arch.makeAxis(num=2, size=2000)
+        self.document.recompute()
+
+        # Link the axis to the component
+        comp.Axis = axis
+        self.document.recompute()
+
+        # Verify that the resulting shape contains 2 instances (solids)
+        # This confirms that the execute() loop correctly processes the Axis property.
+        self.assertEqual(
+            len(comp.Shape.Solids),
+            2,
+            "Generic Arch Component failed to spread geometry to Axis points.",
+        )
+
+    def test_component_double_transformation(self):
+        """Test that Arch Components do not suffer from double-transformation."""
+        self.printTestMessage("ArchComponent placement and coordinate integrity...")
+
+        # Scenario 1: translation and vertex check
+        with self.subTest(case="Translation Only"):
+            base_box = self.document.addObject("Part::Box", "BaseBoxTrans")
+            base_box.Length = base_box.Width = base_box.Height = 1000.0
+
+            # Move the box 10 meters away. Raw vertices are at 0, Shape.Placement is at 10 m.
+            base_box.Placement.Base = App.Vector(10000, 0, 0)
+            self.document.recompute()
+
+            comp = Arch.makeComponent(base_box, name="TestTrans")
+            self.document.recompute()
+
+            # The component object should match the base object's placement
+            self.assertEqual(comp.Placement.Base.x, 10000.0)
+
+            # Verification of localization:
+            # Visual Center = Object.Placement (10000) + Shape.Center (500) = 10500.
+            # If the bug were present (double transform), it would be 20500.
+            actual_center_x = comp.Shape.BoundBox.Center.x
+            self.assertAlmostEqual(
+                actual_center_x,
+                10500.0,
+                places=3,
+                msg="Double transformation detected! Object is offset twice.",
+            )
+
+        # Scenario 2: CSG alignment (Additions)
+        with self.subTest(case="CSG Alignment"):
+            # Base box (1m cube) moved to 5m
+            base_box_csg = self.document.addObject("Part::Box", "BaseBoxCSG")
+            base_box_csg.Length = base_box_csg.Width = base_box_csg.Height = 1000.0
+            base_box_csg.Placement.Base = App.Vector(5000, 0, 0)
+
+            comp_csg = Arch.makeComponent(base_box_csg, name="TestCSG")
+            self.document.recompute()
+
+            # Addition box (identical 1m cube) at exactly the same global location (5m)
+            # They should overlap perfectly.
+            add_box = self.document.addObject("Part::Box", "AdditionBox")
+            add_box.Length = add_box.Width = add_box.Height = 1000.0
+            add_box.Placement.Base = App.Vector(5000, 0, 0)
+            if App.GuiUp:
+                add_box.ViewObject.hide()
+
+            comp_csg.Additions = [add_box]
+            self.document.recompute()
+
+            # If sanitized, they overlap perfectly: Total Volume = 1,000,000,000 mm3
+            # If not sanitized, they would be 5m apart: Volume = 2,000,000,000 mm3
+            self.assertAlmostEqual(
+                comp_csg.Shape.Volume,
+                1000000000.0,
+                delta=100.0,
+                msg="CSG pieces did not align. Base shape likely retained the offset.",
+            )
+
+    def test_component_base_removal_cleanup(self):
+        """Test that removing the Base property clears the component shape."""
+        self.printTestMessage("ArchComponent Base Removal Cleanup...")
+
+        box = self.document.addObject("Part::Box", "StaleTestBox")
+        comp = Arch.makeComponent(box)
+        self.document.recompute()
+
+        self.assertFalse(comp.Shape.isNull(), "Component should have a shape initially.")
+
+        # Trigger the 'else' block
+        comp.Base = None
+        self.document.recompute()
+
+        self.assertTrue(
+            comp.Shape.isNull(), "Component retained a stale shape after its Base was removed."
+        )

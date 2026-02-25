@@ -2182,6 +2182,7 @@ bool CDxfRead::ReadText()
     // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     double height = 0.03082;
     double rotation = 0;
+    // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
     std::string textPrefix;
 
     Setup3DVectorAttribute(ePrimaryPoint, insertionPoint);

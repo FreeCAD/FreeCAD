@@ -18,8 +18,7 @@
  *
  */
 
-#ifndef SIM_COIN3D_SOQTQUARTERADAPTOR_H
-#define SIM_COIN3D_SOQTQUARTERADAPTOR_H
+#pragma once
 
 #include <Inventor/SoType.h>
 #include <Inventor/actions/SoGetMatrixAction.h>
@@ -163,5 +162,3 @@ protected:
 } //Quarter
 } //Coin3D
 } //
-
-#endif // SIM_COIN3D_SOQTQUARTERADAPTOR_H

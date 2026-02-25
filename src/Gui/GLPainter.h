@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_GLPAINTER_H
-#define GUI_GLPAINTER_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -141,5 +140,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GLPAINTER_H

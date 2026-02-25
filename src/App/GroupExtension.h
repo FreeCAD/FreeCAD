@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef APP_GROUPEXTENSION_H
-#define APP_GROUPEXTENSION_H
+#pragma once
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectExtension.h>
@@ -195,6 +194,3 @@ public:
 using GroupExtensionPython = ExtensionPythonT<GroupExtensionPythonT<GroupExtension>>;
 
 }  // namespace App
-
-
-#endif  // APP_GROUPEXTENSION_H

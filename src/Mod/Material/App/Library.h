@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_LIBRARY_H
-#define MATERIAL_LIBRARY_H
+#pragma once
 
 #include <QDir>
 #include <QByteArray>
@@ -188,5 +187,3 @@ private:
 };
 
 }  // namespace Materials
-
-#endif  // MATERIAL_LIBRARY_H

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskRobot6Axis_H
-#define GUI_TASKVIEW_TaskRobot6Axis_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Robot/App/RobotObject.h>
@@ -80,5 +79,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALSEDITOR_H
-#define MATGUI_MATERIALSEDITOR_H
+#pragma once
 
 #include <memory>
 
@@ -241,5 +240,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALSEDITOR_H

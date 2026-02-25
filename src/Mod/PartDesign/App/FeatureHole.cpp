@@ -1962,21 +1962,20 @@ App::DocumentObjectExecReturn* Hole::execute()
             );
         }
 
-
         // Make thread
         if (Threaded.getValue() && ModelThread.getValue()) {
             TopoDS_Shape protoThread = makeThread(xDir, zDir, length);
 
-            // fuse the thread to the hole
-            FCBRepAlgoAPI_Fuse mkFuse(protoHole, protoThread);
-            if (!mkFuse.IsDone()) {
-                return new App::DocumentObjectExecReturn(
-                    QT_TRANSLATE_NOOP("Exception", "Error: Adding the thread failed")
-                );
-            }
+            TopoDS_Compound holeWithThread;
+            holeWithThread.Nullify();
+
+            BRep_Builder builder;
+            builder.MakeCompound(holeWithThread);
+            builder.Add(holeWithThread, protoHole);
+            builder.Add(holeWithThread, protoThread);
 
             // we reuse the name protoHole (only now it is threaded)
-            protoHole = mkFuse.Shape();
+            protoHole = holeWithThread;
         }
         std::vector<TopoShape> holes;
         auto compound = findHoles(holes, profileshape, protoHole);
@@ -2012,7 +2011,12 @@ App::DocumentObjectExecReturn* Hole::execute()
                 result = compound;
             }
             else {
-                result.makeElementBoolean(maker, {base, compound});
+                result.makeElementBoolean(
+                    maker,
+                    {base, compound},
+                    getNameInDocument(),
+                    Precision::Confusion()
+                );
             }
             result = getSolid(result);
             retry = false;
@@ -2034,7 +2038,12 @@ App::DocumentObjectExecReturn* Hole::execute()
             for (auto& hole : holes) {
                 ++i;
                 try {
-                    result.makeElementBoolean(maker, {base, hole});
+                    result.makeElementBoolean(
+                        maker,
+                        {base, hole},
+                        getNameInDocument(),
+                        Precision::Confusion()
+                    );
                 }
                 catch (Standard_Failure&) {
                     std::string msg(
@@ -2171,6 +2180,7 @@ Base::Vector3d Hole::guessNormalDirection(const TopoShape& profileshape) const
 
     return getProfileNormal();
 }
+
 TopoShape Hole::findHoles(
     std::vector<TopoShape>& holes,
     const TopoShape& profileshape,

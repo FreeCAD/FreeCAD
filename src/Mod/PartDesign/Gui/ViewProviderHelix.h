@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef PARTGUI_ViewProviderHelix_H
-#define PARTGUI_ViewProviderHelix_H
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -56,6 +55,3 @@ protected:
 
 
 }  // namespace PartDesignGui
-
-
-#endif  // PARTGUI_ViewProviderHelix_H

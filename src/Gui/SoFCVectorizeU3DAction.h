@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCVECTORIZEU3DACTION_H
-#define GUI_SOFCVECTORIZEU3DACTION_H
+#pragma once
 
 #include <fstream>
 
@@ -82,5 +81,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOFCVECTORIZEU3DACTION_H

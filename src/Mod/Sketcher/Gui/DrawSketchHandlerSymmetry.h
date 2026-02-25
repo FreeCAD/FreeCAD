@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef SKETCHERGUI_DrawSketchHandlerSymmetry_H
-#define SKETCHERGUI_DrawSketchHandlerSymmetry_H
+#pragma once
 
 #include <QApplication>
 
@@ -323,6 +322,3 @@ void DSHSymmetryController::adaptDrawingToCheckboxChange(int checkboxindex, bool
 
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerSymmetry_H

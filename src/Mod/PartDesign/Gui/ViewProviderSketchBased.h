@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
-#define VIEWPROVIDERSKETCHBASED_H_QKP3UG9A
+#pragma once
 
 #include "ViewProvider.h"
 
@@ -68,5 +67,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif /* end of include guard: VIEWPROVIDERSKETCHBASED_H_QKP3UG9A */

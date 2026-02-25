@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHER_SKETCHOBJECT_H
-#define SKETCHER_SKETCHOBJECT_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/IndexedName.h>
@@ -1265,6 +1264,3 @@ using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
 // ---------------------------------------------------------
 }  // namespace Sketcher
-
-
-#endif  // SKETCHER_SKETCHOBJECT_H

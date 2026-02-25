@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
-#define GUI_TASKVIEW_TaskTrajectoryDressUpParameter_h
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/Robot/App/TrajectoryDressUpObject.h>
@@ -64,5 +63,3 @@ private:
 };
 
 }  // namespace RobotGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

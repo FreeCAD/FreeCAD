@@ -39,6 +39,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
+#include <boost/graph/topological_sort.hpp>
 
 #include <boost/regex.hpp>
 #include <random>
@@ -3276,6 +3277,14 @@ bool Document::containsObject(const DocumentObject* pcObject) const
     // in objectIdMap would be fastest.
     auto found = d->objectIdMap.find(pcObject->getID());
     return found != d->objectIdMap.end() && found->second == pcObject;
+}
+
+/// Remove an object out of the document
+void Document::removeObject(const DocumentObject* object)
+{
+    if (object->getDocument() == this) {
+        removeObject(object->getNameInDocument());
+    }
 }
 
 /// Remove an object out of the document

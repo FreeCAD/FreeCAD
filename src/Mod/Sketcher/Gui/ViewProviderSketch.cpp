@@ -22,6 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <boost/bind/bind.hpp>
 #include <boost/core/ignore_unused.hpp>
 #include <Inventor/SbBox3f.h>
 #include <Inventor/SbLine.h>

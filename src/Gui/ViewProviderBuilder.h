@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDERBUILDER_H
-#define GUI_VIEWPROVIDERBUILDER_H
+#pragma once
 
 #include <map>
 #include <vector>
@@ -66,6 +65,3 @@ public:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_VIEWPROVIDERBUILDER_H

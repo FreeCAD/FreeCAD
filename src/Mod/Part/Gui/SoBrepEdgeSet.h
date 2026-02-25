@@ -22,9 +22,9 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PARTGUI_SOBREPEDGESET_H
-#define PARTGUI_SOBREPEDGESET_H
+#pragma once
 
+#include <boost/algorithm/string/predicate.hpp>
 #include <Inventor/nodes/SoIndexedLineSet.h>
 #include <memory>
 #include <vector>
@@ -95,6 +95,3 @@ private:
 };
 
 }  // namespace PartGui
-
-
-#endif  // PARTGUI_SOBREPEDGESET_H

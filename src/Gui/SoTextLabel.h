@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOTEXTLABEL_H
-#define GUI_SOTEXTLABEL_H
+#pragma once
 
 #include <Inventor/fields/SoSFBool.h>
 #include <Inventor/fields/SoSFColor.h>
@@ -156,5 +155,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_SOTEXTLABEL_H

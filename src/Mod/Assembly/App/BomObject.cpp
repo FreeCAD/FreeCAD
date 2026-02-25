@@ -272,6 +272,7 @@ bool BomObject::isObjMirrored(App::DocumentObject* obj)
 void BomObject::addObjectToBom(App::DocumentObject* obj, size_t row, std::string index, bool isMirrored)
 {
     obj_list.push_back(obj);
+    obj_mirrored_list.push_back(isMirrored);
     size_t col = 0;
     for (auto& columnName : columnsNames.getValues()) {
         if (columnName == "Index") {

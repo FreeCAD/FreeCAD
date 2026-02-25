@@ -28,7 +28,6 @@
 #include <fstream>
 #include <yaml-cpp/yaml.h>
 
-#include <QColor>
 #include <QRegularExpression>
 #include <QString>
 #include <ranges>
@@ -41,72 +40,6 @@ FC_LOG_LEVEL_INIT("Gui", true, true)
 
 namespace Gui::StyleParameters
 {
-
-Numeric Numeric::operator+(const Numeric& rhs) const
-{
-    ensureEqualUnits(rhs);
-    return {value + rhs.value, unit};
-}
-
-Numeric Numeric::operator-(const Numeric& rhs) const
-{
-    ensureEqualUnits(rhs);
-    return {value - rhs.value, unit};
-}
-
-Numeric Numeric::operator-() const
-{
-    return {-value, unit};
-}
-
-Numeric Numeric::operator/(const Numeric& rhs) const
-{
-    if (rhs.value == 0) {
-        THROWM(Base::RuntimeError, "Division by zero");
-    }
-
-    if (rhs.unit.empty() || unit.empty()) {
-        return {value / rhs.value, unit};
-    }
-
-    ensureEqualUnits(rhs);
-    return {value / rhs.value, unit};
-}
-
-Numeric Numeric::operator*(const Numeric& rhs) const
-{
-    if (rhs.unit.empty() || unit.empty()) {
-        return {value * rhs.value, unit};
-    }
-
-    ensureEqualUnits(rhs);
-    return {value * rhs.value, unit};
-}
-
-void Numeric::ensureEqualUnits(const Numeric& rhs) const
-{
-    if (unit != rhs.unit) {
-        THROWM(
-            Base::RuntimeError,
-            fmt::format("Units mismatch left expression is '{}', right expression is '{}'", unit, rhs.unit)
-        );
-    }
-}
-
-std::string Value::toString() const
-{
-    if (std::holds_alternative<Numeric>(*this)) {
-        auto [value, unit] = std::get<Numeric>(*this);
-        return fmt::format("{}{}", value, unit);
-    }
-
-    if (std::holds_alternative<Base::Color>(*this)) {
-        auto color = std::get<Base::Color>(*this);
-        return fmt::format("#{:0>6x}", color.getPackedRGB() >> 8);  // NOLINT(*-magic-numbers)
-    }
-
-    return std::get<std::string>(*this);
-}
 
 ParameterSource::ParameterSource(const Metadata& metadata)
     : metadata(metadata)

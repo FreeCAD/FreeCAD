@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHGUI_SEGMENTATION_H
-#define MESHGUI_SEGMENTATION_H
+#pragma once
 
 #include <QWidget>
 
@@ -86,5 +85,3 @@ private:
 };
 
 }  // namespace MeshGui
-
-#endif  // MESHGUI_SEGMENTATION_H

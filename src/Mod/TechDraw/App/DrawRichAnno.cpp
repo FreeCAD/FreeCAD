@@ -20,6 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
+#include <Base/Reader.h>
 
 #include "DrawRichAnno.h"
 #include "DrawRichAnnoPy.h"  // generated from DrawRichAnnoPy.xml
@@ -41,11 +42,47 @@ DrawRichAnno::DrawRichAnno()
                       "Object to which this annontation is attached");
     ADD_PROPERTY_TYPE(AnnoText, (""), group, App::Prop_None, "Annotation text");
     ADD_PROPERTY_TYPE(ShowFrame, (true), group, App::Prop_None, "Outline rectangle on/off");
+    // Necessary to support legacy files made before #24624.
+    ADD_PROPERTY_TYPE(OriginCentered, (false), group, App::Prop_None, "Center the annotation on it's origin.");
     ADD_PROPERTY_TYPE(MaxWidth, (-1.0), group, App::Prop_None, "Width limit before auto wrap");
     Caption.setStatus(App::Property::Hidden, true);
     Scale.setStatus(App::Property::Hidden, true);
     ScaleType.setStatus(App::Property::Hidden, true);
 
+}
+
+void DrawRichAnno::Restore(Base::XMLReader& reader)
+{
+    bool originCenteredFound = false;
+
+    // Start parsing the properties block.
+    reader.readElement("Properties");
+    int propCount = reader.getAttribute<long>("Count");
+
+    for (int i = 0; i < propCount; i++) {
+        reader.readElement("Property");
+        const char* propName = reader.getAttribute<const char*>("name");
+
+        // The "checking" part:
+        if (strcmp(propName, "OriginCentered") == 0) {
+            originCenteredFound = true;
+        }
+
+        // The "restoring" part:
+        App::Property* prop = getPropertyByName(propName);
+        if (prop) {
+            prop->Restore(reader);  // Restore the value
+        }
+
+        reader.readEndElement("Property");
+    }
+
+    reader.readEndElement("Properties");
+
+    // Ensure backward compatibility: Old files have their anno centered on origin.
+    if (!originCenteredFound) {
+        OriginCentered.setValue(true);
+    }
 }
 
 void DrawRichAnno::onChanged(const App::Property* prop)

@@ -2040,34 +2040,6 @@ SbBool NavigationStyle::isPopupMenuEnabled() const
     return this->menuenabled;
 }
 
-bool NavigationStyle::isNavigationStyleAction(QAction* action, QActionGroup* navMenuGroup) const
-{
-    return action && navMenuGroup->actions().indexOf(action) >= 0 && action->isChecked();
-}
-
-QWidget* NavigationStyle::findView3DInventorWidget() const
-{
-    QWidget* widget = viewer->getWidget();
-    while (widget && !widget->inherits("Gui::View3DInventor")) {
-        widget = widget->parentWidget();
-    }
-    return widget;
-}
-
-void NavigationStyle::applyNavigationStyleChange(QAction* selectedAction)
-{
-    QByteArray navigationStyleTypeName = selectedAction->data().toByteArray();
-    QWidget* view3DWidget = findView3DInventorWidget();
-
-    if (view3DWidget) {
-        Base::Type newNavigationStyle = Base::Type::fromName(navigationStyleTypeName.constData());
-        if (newNavigationStyle != this->getTypeId()) {
-            QEvent* navigationChangeEvent = new NavigationStyleEvent(newNavigationStyle);
-            QApplication::postEvent(view3DWidget, navigationChangeEvent);
-        }
-    }
-}
-
 void NavigationStyle::openPopupMenu(const SbVec2s& position)
 {
     // store the right-click position for potential use by Clarify Selection
@@ -2080,37 +2052,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
     auto contextMenu = new QMenu(viewer->getGLWidget());
     MenuManager::getInstance()->setupContextMenu(&view, *contextMenu);
     contextMenu->setAttribute(Qt::WA_DeleteOnClose);
-
-    auto navMenu = contextMenu->addMenu(QObject::tr("Navigation styles"));
-    auto navMenuGroup = new QActionGroup(navMenu);
-
-    // add submenu at the end to select navigation style
-    const std::map<Base::Type, std::string> styles = UserNavigationStyle::getUserFriendlyNames();
-    for (const auto& style : styles) {
-        const QString name = QApplication::translate(style.first.getName(), style.second.c_str());
-        QAction* item = navMenuGroup->addAction(name);
-        navMenu->addAction(item);
-        item->setCheckable(true);
-        item->setData(QByteArray(style.first.getName()));
-
-        if (const Base::Type item_style = style.first; item_style != this->getTypeId()) {
-            auto triggeredFun = [this, item_style]() {
-                QWidget* widget = viewer->getWidget();
-                while (widget && !widget->inherits("Gui::View3DInventor")) {
-                    widget = widget->parentWidget();
-                }
-                if (widget) {
-                    // this is the widget where the viewer is embedded
-                    QEvent* ns_event = new NavigationStyleEvent(item_style);
-                    QApplication::postEvent(widget, ns_event);
-                }
-            };
-            item->connect(item, &QAction::triggered, triggeredFun);
-        }
-        else {
-            item->setChecked(true);
-        }
-    }
 
     // Add Clarify Selection option if there are objects under cursor
     bool separator = false;
@@ -2149,14 +2090,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         contextMenu->insertSeparator(posAction);
     }
 
-    auto navigationFunction = [this, navMenuGroup](QAction* selectedAction) {
-        // handle navigation style change if user selected a navigation style option
-        if (isNavigationStyleAction(selectedAction, navMenuGroup)) {
-            applyNavigationStyleChange(selectedAction);
-            rightClickPosition.reset();
-        }
-    };
-
     auto clarifyFunction = [pickAction](QAction* selectedAction) {
         if (selectedAction == pickAction) {
             // Execute the Clarify Selection command at this position
@@ -2167,7 +2100,6 @@ void NavigationStyle::openPopupMenu(const SbVec2s& position)
         }
     };
 
-    QObject::connect(contextMenu, &QMenu::triggered, navigationFunction);
     QObject::connect(contextMenu, &QMenu::triggered, clarifyFunction);
 
     contextMenu->popup(QCursor::pos());

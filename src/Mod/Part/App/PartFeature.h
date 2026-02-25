@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FEATURE_H
-#define PART_FEATURE_H
+#pragma once
 
 #include <App/FeaturePython.h>
 #include <App/GeoFeature.h>
@@ -347,5 +346,3 @@ PartExport bool checkIntersection(
 }  // namespace Part
 
 ENABLE_BITMASK_OPERATORS(Part::ShapeOption)
-
-#endif  // PART_FEATURE_H

@@ -165,7 +165,8 @@ False = roue dentée planétaire</translation>
     <message>
       <location filename="../../Command.cpp" line="1563"/>
       <source>Lofts the selected sketch or profile along a path and adds it to the body</source>
-      <translation>Applique un lissage à une esquisse ou un profil sélectionné suivant une trajectoire et ajoute le résultat au corps.</translation>
+      <translation>Le lissage additif crée un solide dans le corps actif en faisant une transition entre deux ou plusieurs esquisses (également appelées
+sections transversales). Si le corps contient déjà des éléments, le lissage additif sera fusionné avec eux. </translation>
     </message>
   </context>
   <context>
@@ -725,7 +726,8 @@ avec des objets dans le même document ou dans des documents externes.</translat
     <message>
       <location filename="../../Command.cpp" line="1613"/>
       <source>Lofts the selected sketch or profile along a path and removes it from the body</source>
-      <translation>Applique un lissage à une esquisse ou un profil sélectionné suivant une trajectoire et soustrait le résultat au corps.</translation>
+      <translation>Le Lissage soustractif crée un solide soustractif dans le corps actif en effectuant une transition entre deux esquisses ou plus (également
+appelés coupes transversales). Sa forme est ensuite soustraite du solide existant. </translation>
     </message>
   </context>
   <context>
@@ -885,7 +887,7 @@ avec des objets dans le même document ou dans des documents externes.</translat
     <message>
       <location filename="../../Command.cpp" line="335"/>
       <source>Edit Shape Binder</source>
-      <translation>Modifier la forme liée</translation>
+      <translation>Éditer une forme liée</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="346"/>
@@ -1217,8 +1219,7 @@ Sélectionner un corps parmi la liste ci-dessous ou créer en un nouveau.</trans
       <location filename="../../TaskPrimitiveParameters.ui" line="850"/>
       <source>Radius in local Y-direction
 If zero, it is equal to Radius2</source>
-      <translation>Rayon dans la direction Y locale
-S'il est égal à zéro, il est égal à Radius2.</translation>
+      <translation>Rayon dans la direction Y locale. S'il est égal à zéro, il est égal à Radius2.</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="916"/>
@@ -2769,19 +2770,19 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="242"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="254"/>
       <source>Base X-axis</source>
       <translation>Axe X de base</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="255"/>
       <source>Base Y-axis</source>
       <translation>Axe Y de base</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="60"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="244"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="256"/>
       <source>Base Z-axis</source>
       <translation>Axe Z de base</translation>
     </message>
@@ -2817,20 +2818,20 @@ measured along the specified direction</source>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="75"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="252"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="264"/>
       <source>Select reference…</source>
       <translation>Sélectionnez une référence…</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="87"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="195"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
       <source>Angle</source>
       <translation>Angle</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="170"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="158"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="160"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="491"/>
       <source>Face</source>
       <translation>Face</translation>
     </message>
@@ -2840,32 +2841,32 @@ measured along the specified direction</source>
       <translation>Recalculer en cas de modification</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="199"/>
       <source>To last</source>
       <translation>À la dernière</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="200"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
       <source>Through all</source>
       <translation>À travers tout</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
       <source>To first</source>
       <translation>Au plus proche</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="215"/>
       <source>Up to face</source>
       <translation>Jusqu'à la face</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="204"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="216"/>
       <source>Two angles</source>
       <translation>Deux angles</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="467"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="479"/>
       <source>No face selected</source>
       <translation>Aucune face sélectionnée</translation>
     </message>
@@ -3154,12 +3155,12 @@ measured along the specified direction</source>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="810"/>
       <source>Select a single face as support for a sketch!</source>
-      <translation>Sélectionnez une seule face comme support pour une esquisse !</translation>
+      <translation>Sélectionner une seule face comme support pour une esquisse !</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="817"/>
       <source>Select a face as support for a sketch!</source>
-      <translation>Sélectionnez une face comme support pour une esquisse !</translation>
+      <translation>Sélectionner une face comme support pour une esquisse !</translation>
     </message>
     <message>
       <location filename="../../SketchWorkflow.cpp" line="824"/>
@@ -3213,7 +3214,7 @@ measured along the specified direction</source>
     <message>
       <location filename="../../Command.cpp" line="161"/>
       <source>There is no active body. Please activate a body before inserting a datum entity.</source>
-      <translation>Il n'y a pas de corps actif. Activez un corps avant d'insérer une entité de référence.</translation>
+      <translation>Il n'y a pas de corps actif. Activer un corps avant d'insérer une entité de référence.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="467"/>
@@ -3237,7 +3238,7 @@ measured along the specified direction</source>
       <location filename="../../Command.cpp" line="1139"/>
       <location filename="../../SketchWorkflow.cpp" line="729"/>
       <source>Close this dialog?</source>
-      <translation>Voulez-vous fermer cette boîte de dialogue ?</translation>
+      <translation>Faut-il fermer cette boîte de dialogue ?</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1821"/>
@@ -3386,12 +3387,12 @@ This may lead to unexpected results.</source>
     <message>
       <location filename="../../CommandBody.cpp" line="422"/>
       <source>No Part Design features without body found Nothing to migrate.</source>
-      <translation>Il n'y a aucune fonction de Part Design sans corps trouvé. Il n'y a rien à migrer.</translation>
+      <translation>Il n'y a aucune fonction de PartDesign sans corps trouvé. Il n'y a rien à migrer.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="617"/>
       <source>Please edit '%1' and redefine it to use a Base or Datum plane as the sketch plane.</source>
-      <translation>Veuillez éditer '%1' et définir son plan selon un plan de base ou de référence.</translation>
+      <translation>Éditer « %1 » et le redéfinir afin d'utiliser un plan de base ou un plan de référence comme plan d'esquisse.</translation>
     </message>
     <message>
       <location filename="../../CommandBody.cpp" line="691"/>
@@ -3463,18 +3464,18 @@ This may lead to unexpected results.</source>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="439"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="228"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="240"/>
       <source>Vertical sketch axis</source>
       <translation>Axe vertical de l'esquisse</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="440"/>
-      <location filename="../../TaskRevolutionParameters.cpp" line="229"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="241"/>
       <source>Horizontal sketch axis</source>
       <translation>Axe horizontal de l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="231"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="243"/>
       <source>Construction line %1</source>
       <translation>Ligne de construction %1</translation>
     </message>
@@ -3513,12 +3514,12 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <translation>Pour utiliser cette fonction, elle doit appartenir à un corps dans le document.</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="316"/>
+      <location filename="../../Utils.cpp" line="320"/>
       <source>Feature is not in a part</source>
       <translation>La fonction ne fait pas partie d'une pièce</translation>
     </message>
     <message>
-      <location filename="../../Utils.cpp" line="317"/>
+      <location filename="../../Utils.cpp" line="321"/>
       <source>In order to use this feature it needs to belong to a part object in the document.</source>
       <translation>Afin d'utiliser cette fonction, elle doit appartenir à un objet pièce dans le document.</translation>
     </message>
@@ -3528,7 +3529,7 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <location filename="../../ViewProvider.cpp" line="92"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="225"/>
       <source>Edit %1</source>
-      <translation>Modifier %1</translation>
+      <translation>Éditer %1</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="105"/>
@@ -3572,13 +3573,12 @@ Pour les documents historiques contenant des objets PartDesign sans corps, utili
       <location filename="../../ViewProviderDressUp.cpp" line="92"/>
       <source>%1 misses a base feature.
 This feature is broken and cannot be edited.</source>
-      <translation>%1 manque d'une fonction de base.
-Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
+      <translation>%1 manque d'une fonction de base. Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="220"/>
       <source>Edit Shape Binder</source>
-      <translation>Modifier la forme liée</translation>
+      <translation>Éditer une forme liée</translation>
     </message>
     <message>
       <location filename="../../ViewProviderShapeBinder.cpp" line="350"/>
@@ -3615,7 +3615,7 @@ Cette fonction est défectueuse et ne peut pas être modifiée.</translation>
       <source>Note: If you choose to migrate you won't be able to edit the file with an older FreeCAD version.
 If you refuse to migrate you won't be able to use new PartDesign features like Bodies and Parts. As a result you also won't be able to use your parts in the assembly workbench.
 Although you will be able to migrate any moment later with 'Part Design -&gt; Migrate'.</source>
-      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctions de PartDesign comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Cependant, vous pourrez migrer à tout moment par la suite avec "PartDesign → Migrer".</translation>
+      <translation>Remarque : si vous choisissez de migrer, vous ne serez pas en mesure d'éditer le fichier avec d’anciennes versions de FreeCAD. Si vous refusez de migrer, vous ne serez pas en mesure d’utiliser les nouvelles fonctions de PartDesign comme les corps et les pièces. Pour résultat, vous ne serez pas en mesure d’utiliser vos pièces dans l'atelier assemblage. Cependant, vous pourrez migrer à tout moment par la suite avec « PartDesign → Migrer ».</translation>
     </message>
     <message>
       <location filename="../../WorkflowManager.cpp" line="189"/>
@@ -3625,77 +3625,77 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderBoolean.cpp" line="67"/>
       <source>Edit Boolean</source>
-      <translation>Éditer l'opération booléenne</translation>
+      <translation>Éditer une opération booléenne</translation>
     </message>
     <message>
       <location filename="../../ViewProviderChamfer.cpp" line="40"/>
       <source>Edit Chamfer</source>
-      <translation>Éditer le chanfrein</translation>
+      <translation>Éditer un chanfrein</translation>
     </message>
     <message>
       <location filename="../../ViewProviderDraft.cpp" line="41"/>
       <source>Edit Draft</source>
-      <translation>Éditer la dépouille</translation>
+      <translation>Éditer une dépouille</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFillet.cpp" line="40"/>
       <source>Edit Fillet</source>
-      <translation>Éditer le congé</translation>
+      <translation>Éditer un congé</translation>
     </message>
     <message>
       <location filename="../../ViewProviderGroove.cpp" line="43"/>
       <source>Edit Groove</source>
-      <translation>Éditer la rainure</translation>
+      <translation>Éditer une rainure</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHelix.cpp" line="48"/>
       <source>Edit Helix</source>
-      <translation>Éditer l'hélice</translation>
+      <translation>Éditer une hélice</translation>
     </message>
     <message>
       <location filename="../../ViewProviderHole.cpp" line="63"/>
       <source>Edit Hole</source>
-      <translation>Éditer le perçage</translation>
+      <translation>Éditer un perçage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLinearPattern.cpp" line="38"/>
       <source>Edit Linear Pattern</source>
-      <translation>Éditer la répétition linéaire</translation>
+      <translation>Éditer une répétition linéaire</translation>
     </message>
     <message>
       <location filename="../../ViewProviderLoft.cpp" line="65"/>
       <source>Edit Loft</source>
-      <translation>Éditer le lissage</translation>
+      <translation>Éditer un lissage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMirrored.cpp" line="38"/>
       <source>Edit Mirror</source>
-      <translation>Éditer la symétrie</translation>
+      <translation>Éditer une symétrie</translation>
     </message>
     <message>
       <location filename="../../ViewProviderMultiTransform.cpp" line="47"/>
       <source>Edit Multi-Transform</source>
-      <translation>Éditer la transformation multiple</translation>
+      <translation>Éditer une transformation multiple</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPad.cpp" line="43"/>
       <source>Edit Pad</source>
-      <translation>Éditer la protrusion</translation>
+      <translation>Éditer une protrusion</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPipe.cpp" line="75"/>
       <source>Edit Pipe</source>
-      <translation>Éditer le balayage</translation>
+      <translation>Éditer un balayage</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPocket.cpp" line="45"/>
       <source>Edit Pocket</source>
-      <translation>Éditer la cavité</translation>
+      <translation>Éditer une cavité</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPolarPattern.cpp" line="38"/>
       <source>Edit Polar Pattern</source>
-      <translation>Éditer la répétition circulaire</translation>
+      <translation>Éditer une répétition circulaire</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPrimitive.cpp" line="49"/>
@@ -3705,17 +3705,17 @@ Although you will be able to migrate any moment later with 'Part Design -&gt; Mi
     <message>
       <location filename="../../ViewProviderRevolution.cpp" line="43"/>
       <source>Edit Revolution</source>
-      <translation>Éditer la révolution</translation>
+      <translation>Éditer une révolution</translation>
     </message>
     <message>
       <location filename="../../ViewProviderScaled.cpp" line="38"/>
       <source>Edit Scale</source>
-      <translation>Éditer l'échelle</translation>
+      <translation>Éditer une échelle</translation>
     </message>
     <message>
       <location filename="../../ViewProviderThickness.cpp" line="40"/>
       <source>Edit Thickness</source>
-      <translation>Éditer l'évidemment</translation>
+      <translation>Éditer un évidemment</translation>
     </message>
   </context>
   <context>
@@ -4223,7 +4223,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../Workbench.cpp" line="47"/>
       <source>Dress-Up Features</source>
-      <translation>Appliquer une fonction d'habillage</translation>
+      <translation>Appliquer une fonction de finition</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="48"/>
@@ -4390,7 +4390,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="118"/>
       <source>Missing Module</source>
-      <translation>Une extension est manquante</translation>
+      <translation>Une extension est manquante.</translation>
     </message>
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="124"/>
@@ -4463,8 +4463,8 @@ over 90: larger hole radius at the bottom</source>
       <location filename="../../../App/FeatureLoft.cpp" line="375"/>
       <location filename="../../../App/FeaturePipe.cpp" line="480"/>
       <location filename="../../../App/FeaturePipe.cpp" line="529"/>
-      <location filename="../../../App/FeatureRevolution.cpp" line="285"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="254"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="284"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="253"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="773"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="789"/>
       <location filename="../../../App/FeatureExtrude.cpp" line="802"/>
@@ -4484,12 +4484,12 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="351"/>
       <source>Cannot create a pad with a total length of zero.</source>
-      <translation>Il n'est pas possible de créer une protrusion dont la longueur totale est nulle.</translation>
+      <translation>Il n'est pas possible de créer une protrusion dont la longueur totale est zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="356"/>
       <source>Cannot create a pocket with a total length of zero.</source>
-      <translation>Il n'est pas possible de créer une cavité dont la longueur totale est nulle.</translation>
+      <translation>Il n'est pas possible de créer une cavité dont la longueur totale est zéro.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="704"/>
@@ -4499,7 +4499,7 @@ over 90: larger hole radius at the bottom</source>
     <message>
       <location filename="../../../App/FeatureExtrude.cpp" line="728"/>
       <source>Resulting fused extrusion is null.</source>
-      <translation>L'extrusion fusionnée résultante est nulle.</translation>
+      <translation>L'extrusion fusionnée résultante est sans résultat.</translation>
     </message>
     <message>
       <location filename="../../../App/FeatureLoft.cpp" line="368"/>
@@ -4605,14 +4605,14 @@ de congés ensemble. Essayer de créer des congés sur chaque arête ou des cong
       <translation>L'axe de révolution coupe l'esquisse</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="295"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="264"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="294"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="263"/>
       <source>Could not revolve the sketch!</source>
       <translation>Impossible de faire tourner l'esquisse !</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="307"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="276"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="306"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="275"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Impossible de créer une face à partir de l'esquisse.
@@ -5159,7 +5159,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
     <message>
       <location filename="../../../WizardShaft/WizardShaft.py" line="226"/>
       <source>Starts the shaft design wizard</source>
-      <translation>Démarre l'assistant de conception d'arbre</translation>
+      <translation>Démarre l'assistant de conception d'arbre.</translation>
     </message>
   </context>
   <context>
@@ -5298,7 +5298,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="823"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="835"/>
       <source>Revolution Parameters</source>
       <translation>Paramètres de la révolution</translation>
     </message>
@@ -5306,7 +5306,7 @@ Les entités d'esquisse qui se croisent ou les faces multiples dans une esquisse
   <context>
     <name>PartDesignGui::TaskDlgGrooveParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.cpp" line="833"/>
+      <location filename="../../TaskRevolutionParameters.cpp" line="845"/>
       <source>Groove Parameters</source>
       <translation>Paramètres de la rainure</translation>
     </message>
