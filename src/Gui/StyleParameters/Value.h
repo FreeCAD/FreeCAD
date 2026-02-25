@@ -229,7 +229,13 @@ struct GuiExport Value: std::variant<Numeric, Base::Color, std::string, Tuple>
     template<typename T>
     const T& get() const
     {
-        return std::get<T>(*this);
+        try {
+            return std::get<T>(*this);
+        }
+        catch (...) {
+            assert(false && "This should never happen, probably missing holds<T> check.");
+            throw;
+        }
     }
 
     /**
