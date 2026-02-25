@@ -54,4 +54,3 @@ protected:
 };
 
 }  // namespace CAMSimulator
-
