@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DRAWINGGUI_QGIProjGroup_H
-#define DRAWINGGUI_QGIProjGroup_H
+#pragma once
 
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
@@ -84,5 +83,3 @@ private:
 };
 
 } // namespace MDIViewPageGui
-
-#endif // DRAWINGGUI_QGIProjGroup_H

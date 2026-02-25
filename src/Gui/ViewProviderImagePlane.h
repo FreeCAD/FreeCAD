@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_ViewProviderImagePlane_H
-#define GUI_ViewProviderImagePlane_H
+#pragma once
 
 #include <Gui/ViewProviderGeometryObject.h>
 
@@ -76,6 +75,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_ViewProviderImagePlane_H

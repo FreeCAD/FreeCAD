@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREEITEMMODE_H
-#define GUI_TREEITEMMODE_H
+#pragma once
 
 namespace Gui
 {
@@ -49,5 +48,3 @@ enum class TreeItemMode
     ToggleItem
 };
 }  // namespace Gui
-
-#endif  // GUI_TREEITEMMODE_H

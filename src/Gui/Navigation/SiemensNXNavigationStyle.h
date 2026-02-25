@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef GUI_SIEMENSNXNAVIGATIONSTYLE_H
-#define GUI_SIEMENSNXNAVIGATIONSTYLE_H
+#pragma once
 
 #include <Gui/Navigation/NavigationStateChart.h>
 
@@ -60,5 +59,3 @@ private:
 
 }  // namespace Gui
 // NOLINTEND(cppcoreguidelines-avoid*, readability-avoid-const-params-in-decls)
-
-#endif  // GUI_SIEMENSNXNAVIGATIONSTYLE_H

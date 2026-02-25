@@ -33,8 +33,7 @@
  *                                                                              *
  *******************************************************************************/
 
-#ifndef clipper_hpp
-#define clipper_hpp
+#pragma once
 
 #define CLIPPER_VERSION "6.4.2"
 
@@ -500,5 +499,3 @@ private:
 //------------------------------------------------------------------------------
 
 }  // namespace ClipperLib
-
-#endif  // clipper_hpp

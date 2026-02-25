@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef INSPECTION_APP_PRECOMPILED_H
-#define INSPECTION_APP_PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -47,5 +46,3 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QtConcurrentMap>
-
-#endif

@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef ROBOT_GLOBAL_H
-#define ROBOT_GLOBAL_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -44,5 +43,3 @@
 #  define RobotGuiExport FREECAD_DECL_IMPORT
 # endif
 #endif
-
-#endif  // ROBOT_GLOBAL_H

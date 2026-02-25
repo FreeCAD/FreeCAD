@@ -116,6 +116,7 @@ SET(FemExamples_SRCS
 
 SET(FemExampleMeshes_SRCS
     femexamples/meshes/__init__.py
+    femexamples/meshes/generate_mesh.py
     femexamples/meshes/mesh_beamsimple_tetra10.py
     femexamples/meshes/mesh_boxanalysis_tetra10.py
     femexamples/meshes/mesh_boxes_2_vertikal_tetra10.py
@@ -517,6 +518,7 @@ SET(FemTools_SRCS
     femtools/geomtools.py
     femtools/membertools.py
     femtools/migrate_app.py
+    femtools/objecttools.py
     femtools/tokrules.py
 )
 

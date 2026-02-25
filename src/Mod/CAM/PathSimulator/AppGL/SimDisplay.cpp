@@ -131,7 +131,6 @@ void SimDisplay::UniformCircle(vec3& randVec)
     randVec[2] = 0;
 }
 
-
 void SimDisplay::CreateDisplayFbos()
 {
     // setup frame buffer for simulation
@@ -178,7 +177,6 @@ void SimDisplay::CreateDisplayFbos()
 
 void SimDisplay::CreateSsaoFbos()
 {
-
     mSsaoValid = true;
 
     // setup framebuffer for SSAO processing
@@ -240,7 +238,7 @@ SimDisplay::~SimDisplay()
     CleanGL();
 }
 
-void SimDisplay::InitGL(qreal devicePixelRatio)
+void SimDisplay::InitGL()
 {
     if (displayInitiated) {
         return;
@@ -249,16 +247,12 @@ void SimDisplay::InitGL(qreal devicePixelRatio)
     // setup light object
     mlightObject.GenerateBoxStock(-0.5f, -0.5f, -0.5f, 1, 1, 1);
 
-    mDevicePixelRatio = devicePixelRatio;
-    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
-    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
     InitShaders();
-    CreateDisplayFbos();
-    CreateSsaoFbos();
     CreateFboQuad();
 
-    UpdateProjection();
     displayInitiated = true;
+
+    UpdateWindowScale(800, 600);
 }
 
 void SimDisplay::CleanFbos()
@@ -299,7 +293,7 @@ void SimDisplay::CleanGL()
     displayInitiated = false;
 }
 
-void SimDisplay::PrepareDisplay(vec3 objCenter)
+void SimDisplay::PrepareDisplay(const vec3& objCenter)
 {
     mat4x4_look_at(mMatLookAt, eye, target, upvec);
     mat4x4_translate_in_place(mMatLookAt, mEyeX * mEyeXZFactor, 0, mEyeZ * mEyeXZFactor);
@@ -327,7 +321,7 @@ void SimDisplay::StartDepthPass()
     shaderFlat.UpdateViewMat(mMatLookAt);
 }
 
-void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
+void SimDisplay::StartGeometryPass(const vec3& objColor, bool invertNormals)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeom.Activate();
@@ -340,7 +334,7 @@ void SimDisplay::StartGeometryPass(vec3 objColor, bool invertNormals)
 
 // A 'closer' geometry pass is similar to std geometry pass, but render the objects
 // slightly closer to the camera. This mitigates overlapping faces artifacts.
-void SimDisplay::StartCloserGeometryPass(vec3 objColor)
+void SimDisplay::StartCloserGeometryPass(const vec3& objColor)
 {
     glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
     shaderGeomCloser.Activate();
@@ -363,15 +357,18 @@ void SimDisplay::ScaleViewToStock(StockObject* obj)
     mMaxStockDim = fmaxf(obj->size[0], obj->size[1]);
     maxFar = mMaxStockDim * 16;
     UpdateProjection();
+
     vec3_set(eye, 0, 0, 0);
+    mEyeDistFactor = NAN;
     UpdateEyeFactor(0.1f);
+
     vec3_set(lightPos, obj->position[0], obj->position[1], obj->position[2] + mMaxStockDim / 3);
     mlightObject.SetPosition(lightPos);
 }
 
-void SimDisplay::RenderResult(bool recalculate)
+void SimDisplay::RenderResult(bool recalculate, bool ssao)
 {
-    if (mSsaoValid && applySSAO) {
+    if (mSsaoValid && ssao) {
         RenderResultSSAO(recalculate);
     }
     else {
@@ -549,12 +546,20 @@ void SimDisplay::UpdateEyeFactor(float factor)
     eye[1] = -factor * maxFar;
 }
 
-void SimDisplay::UpdateWindowScale()
+void SimDisplay::UpdateWindowScale(int width, int height)
 {
-    mWidth = (int)(gWindowSizeW * mDevicePixelRatio);
-    mHeight = (int)(gWindowSizeH * mDevicePixelRatio);
-    glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
-    CleanFbos();
+    if (!displayInitiated || (width == mWidth && height == mHeight)) {
+        return;
+    }
+
+    mWidth = width;
+    mHeight = height;
+
+    if (mFbo != 0) {
+        glBindFramebuffer(GL_FRAMEBUFFER, mFbo);
+        CleanFbos();
+    }
+
     CreateDisplayFbos();
     CreateSsaoFbos();
     UpdateProjection();
@@ -564,7 +569,7 @@ void SimDisplay::UpdateProjection()
 {
     // Setup projection
     mat4x4 projmat;
-    mat4x4_perspective(projmat, 0.7f, (float)gWindowSizeW / gWindowSizeH, 1.0f, maxFar);
+    mat4x4_perspective(projmat, 0.7f, (float)mWidth / mHeight, 1.0f, maxFar);
     shader3D.Activate();
     shader3D.UpdateProjectionMat(projmat);
     shaderInv3D.Activate();
@@ -584,5 +589,9 @@ void SimDisplay::UpdateProjection()
     shaderGeomCloser.UpdateProjectionMat(projmat);
 }
 
+float SimDisplay::GetEyeFactor()
+{
+    return mEyeDistFactor;
+}
 
 }  // namespace MillSim

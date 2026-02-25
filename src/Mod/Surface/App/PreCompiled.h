@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PRECOMPILED_H
-#define PRECOMPILED_H
+#pragma once
 
 #include <FCConfig.h>
 
@@ -32,5 +31,3 @@
 
 // opencascade
 #include <Mod/Part/App/OpenCascadeAll.h>
-
-#endif

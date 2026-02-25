@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef SKETCHERGUI_DrawSketchHandlerPoint_H
-#define SKETCHERGUI_DrawSketchHandlerPoint_H
+#pragma once
 
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
@@ -304,6 +303,3 @@ void DSHPointController::addConstraints()
 }
 
 }  // namespace SketcherGui
-
-
-#endif  // SKETCHERGUI_DrawSketchHandlerPoint_H

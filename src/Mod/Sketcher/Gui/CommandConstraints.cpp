@@ -9724,6 +9724,14 @@ public:
 protected:
     void activated(int iMsg) override;
     void applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex) override;
+
+private:
+    bool hasEndpoints(const Part::Geometry& geom)
+    {
+        return isLineSegment(geom) || isArcOfCircle(geom) || isArcOfEllipse(geom)
+               || isArcOfHyperbola(geom) || isArcOfParabola(geom)
+               || (isBSplineCurve(geom) && !isPeriodicBSplineCurve(geom));
+    }
 };
 
 CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
@@ -9747,7 +9755,11 @@ CmdSketcherConstrainSymmetric::CmdSketcherConstrainSymmetric()
                            {SelVertexOrRoot, SelVertexOrRoot, SelEdge},
                            {SelVertexOrRoot, SelVertexOrRoot, SelExternalEdge},
                            {SelVertex, SelVertex, SelEdgeOrAxis},
-                           {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot}};
+                           {SelVertexOrRoot, SelVertexOrRoot, SelVertexOrRoot},
+                           {SelEdge, SelEdgeOrAxis},
+                           {SelEdge, SelExternalEdge},
+                           {SelExternalEdge, SelEdge},
+                           {SelEdgeOrAxis, SelEdge}};
 }
 
 void CmdSketcherConstrainSymmetric::activated(int iMsg)
@@ -9772,8 +9784,9 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
                 getActiveGuiDocument()->getDocument(),
                 QObject::tr("Wrong selection"),
                 QObject::tr("Select two points and a symmetry line, "
-                            "two points and a symmetry point "
-                            "or a line and a symmetry point from the sketch."));
+                            "two points and a symmetry point, "
+                            "an element and a symmetry line "
+                            "or an element and a symmetry point from the sketch."));
         }
         return;
     }
@@ -9786,8 +9799,9 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("Select two points and a symmetry line, "
-                                               "two points and a symmetry point "
-                                               "or a line and a symmetry point from the sketch."));
+                                               "two points and a symmetry point, "
+                                               "an element and a symmetry line "
+                                               "or an element and a symmetry point from the sketch."));
         return;
     }
 
@@ -9805,45 +9819,74 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
             std::swap(GeoId1, GeoId2);
             std::swap(PosId1, PosId2);
         }
-        if (isEdge(GeoId1, PosId1) && isVertex(GeoId2, PosId2)) {
-            const Part::Geometry* geom = Obj->getGeometry(GeoId1);
-
-            if (isLineSegment(*geom)) {
-                if (GeoId1 == GeoId2) {
-                    Gui::TranslatedUserWarning(Obj,
-                                               QObject::tr("Wrong selection"),
-                                               QObject::tr("Cannot add a symmetry constraint "
-                                                           "between a line and its end points."));
-                    return;
-                }
-
-                // undo command open
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
-                Gui::cmdAppObjectArgs(
-                    selection[0].getObject(),
-                    "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
-                    GeoId1,
-                    static_cast<int>(Sketcher::PointPos::start),
-                    GeoId1,
-                    static_cast<int>(Sketcher::PointPos::end),
-                    GeoId2,
-                    static_cast<int>(PosId2));
-
-                // finish the transaction and update
-                commitCommand();
-                tryAutoRecompute(Obj);
-
-                // clear the selection (convenience)
-                getSelection().clearSelection();
+        if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2)) {
+            if (GeoId1 == Sketcher::GeoEnum::HAxis || GeoId1 == Sketcher::GeoEnum::VAxis) {
+                std::swap(GeoId1, GeoId2);
+                std::swap(PosId1, PosId2);
+            }
+        }
+        if (isEdge(GeoId1, PosId1) && (isVertex(GeoId2, PosId2) || isEdge(GeoId2, PosId2))) {
+            const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
+            if (!hasEndpoints(*geom1)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "because the first selected element has no endpoints. "
+                                "Select a line or an open curve instead."));
                 return;
             }
+
+            const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
+            if (isEdge(GeoId2, PosId2) && !isLineSegment(*geom2)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "because the second selected element is not a line. "
+                                "Select a line or an axis instead."));
+                return;
+            }
+
+            if (GeoId1 == GeoId2
+                && (isEdge(GeoId2, PosId2)
+                    || (isVertex(GeoId2, PosId2)
+                        && (PosId2 == Sketcher::PointPos::start || PosId2 == Sketcher::PointPos::end)) )) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "between an element and its end points!"));
+                return;
+            }
+
+            // undo command open
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add symmetric constraint"));
+            Gui::cmdAppObjectArgs(
+                selection[0].getObject(),
+                "addConstraint(Sketcher.Constraint('Symmetric',%d,%d,%d,%d,%d,%d))",
+                GeoId1,
+                static_cast<int>(Sketcher::PointPos::start),
+                GeoId1,
+                static_cast<int>(Sketcher::PointPos::end),
+                GeoId2,
+                static_cast<int>(PosId2));
+
+            // finish the transaction and update
+            commitCommand();
+            tryAutoRecompute(Obj);
+
+            // clear the selection (convenience)
+            getSelection().clearSelection();
+            return;
         }
 
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
                                    QObject::tr("Select two points and a symmetry line, "
-                                               "two points and a symmetry point "
-                                               "or a line and a symmetry point from the sketch."));
+                                               "two points and a symmetry point, "
+                                               "an element and a symmetry line "
+                                               "or an element and a symmetry point from the sketch."));
         return;
     }
 
@@ -9922,8 +9965,9 @@ void CmdSketcherConstrainSymmetric::activated(int iMsg)
     Gui::TranslatedUserWarning(Obj,
                                QObject::tr("Wrong selection"),
                                QObject::tr("Select two points and a symmetry line, "
-                                           "two points and a symmetry point "
-                                           "or a line and a symmetry point from the sketch."));
+                                           "two points and a symmetry point, "
+                                           "an element and a symmetry line "
+                                           "or an element and a symmetry point from the sketch."));
 }
 
 void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selSeq, int seqIndex)
@@ -9946,17 +9990,29 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             PosId2 = Sketcher::PointPos::end;
             PosId3 = selSeq.at(1).PosId;
 
-            if (GeoId1 == GeoId3) {
+            if (GeoId1 == GeoId3
+                && (PosId2 == Sketcher::PointPos::start || PosId2 == Sketcher::PointPos::end)) {
                 Gui::TranslatedUserWarning(
                     Obj,
                     QObject::tr("Wrong selection"),
-                    QObject::tr(
-                        "Cannot add a symmetry constraint between a line and its end points!"));
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "between an element and its end points!"));
                 return;
             }
 
             if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)) {
                 showNoConstraintBetweenFixedGeometry(Obj);
+                return;
+            }
+
+            const Part::Geometry* geom = Obj->getGeometry(GeoId1);
+            if (!hasEndpoints(*geom)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "because the first selected element has no endpoints. "
+                                "Select a line or an open curve instead."));
                 return;
             }
             break;
@@ -10020,8 +10076,9 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
                     Obj,
                     QObject::tr("Wrong selection"),
                     QObject::tr("Select two points and a symmetry line, "
-                                "two points and a symmetry point "
-                                "or a line and a symmetry point from the sketch."));
+                                "two points and a symmetry point, "
+                                "an element and a symmetry line "
+                                "or an element and a symmetry point from the sketch."));
             }
             return;
         }
@@ -10057,6 +10114,58 @@ void CmdSketcherConstrainSymmetric::applyConstraint(std::vector<SelIdPair>& selS
             tryAutoRecompute(Obj);
             getSelection().clearSelection();
             return;
+        }
+        case 9:// {SelEdge, SelEdgeOrAxis}
+        case 10:// {SelEdge, SelExternalEdge}
+        case 11:// {SelExternalEdge, SelEdge}
+        case 12:// {SelEdgeOrAxis, SelEdge}
+        {
+            if (selSeq.at(0).GeoId == Sketcher::GeoEnum::HAxis || selSeq.at(0).GeoId == Sketcher::GeoEnum::VAxis) {
+                GeoId1 = GeoId2 = selSeq.at(1).GeoId;
+                GeoId3 = selSeq.at(0).GeoId;
+            } else {
+                GeoId1 = GeoId2 = selSeq.at(0).GeoId;
+                GeoId3 = selSeq.at(1).GeoId;
+            }
+            PosId1 = Sketcher::PointPos::start;
+            PosId2 = Sketcher::PointPos::end;
+            PosId3 = Sketcher::PointPos::none;
+
+            if (areAllPointsOrSegmentsFixed(Obj, GeoId1, GeoId2, GeoId3)) {
+                showNoConstraintBetweenFixedGeometry(Obj);
+                return;
+            }
+
+            if (GeoId1 == GeoId3) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "between an element and itself."));
+                return;
+            }
+
+            const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
+            if (!hasEndpoints(*geom1)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "because the first selected element has no endpoints. "
+                                "Select a line or an open curve instead."));
+                return;
+            }
+            const Part::Geometry* geom3 = Obj->getGeometry(GeoId3);
+            if (!isLineSegment(*geom3)) {
+                Gui::TranslatedUserWarning(
+                    Obj,
+                    QObject::tr("Wrong selection"),
+                    QObject::tr("Cannot add a symmetry constraint "
+                                "because the second selected element is not a line. "
+                                "Select a line or an axis instead."));
+                return;
+            }
+            break;
         }
         default:
             break;

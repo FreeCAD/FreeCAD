@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_EDITORVIEW_H
-#define GUI_EDITORVIEW_H
+#pragma once
 
 #include "MDIView.h"
 #include "Window.h"
@@ -189,5 +188,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_EDITORVIEW_H

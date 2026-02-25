@@ -22,8 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
-#ifndef QLISTWIDGETDRAGBUGFIX_HPP
-#define QLISTWIDGETDRAGBUGFIX_HPP
+#pragma once
 
 #include <QDragMoveEvent>
 #include <QListWidget>
@@ -47,5 +46,3 @@ public:
 protected:
     void dragMoveEvent(QDragMoveEvent* e) override;
 };
-
-#endif

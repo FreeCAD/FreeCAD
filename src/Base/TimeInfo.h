@@ -24,8 +24,7 @@
  ***************************************************************************/
 
 
-#ifndef BASE_TIMEINFO_H
-#define BASE_TIMEINFO_H
+#pragma once
 
 #include <FCGlobal.h>
 
@@ -200,5 +199,3 @@ private:
 };
 
 }  // namespace Base
-
-#endif  // BASE_TIMEINFO_H

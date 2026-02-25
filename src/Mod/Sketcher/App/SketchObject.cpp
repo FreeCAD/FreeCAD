@@ -24,6 +24,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <limits>
 #include <vector>
 
@@ -3360,7 +3361,8 @@ void createNewConstraintsForTrim(
     const std::vector<const Part::Geometry*> newGeos,
     std::vector<int>& idsOfOldConstraints,
     std::vector<Constraint*>& newConstraints,
-    std::set<int, std::greater<>>& geoIdsToBeDeleted
+    std::set<int, std::greater<>>& geoIdsToBeDeleted,
+    std::map<Constraint*, int>& newToOldConstraintMap
 )
 {
     const auto& allConstraints = obj->Constraints.getValues();
@@ -3385,6 +3387,7 @@ void createNewConstraintsForTrim(
                 PointPos::end
             )) {
             newConstraints.push_back(newConstr.release());
+            newToOldConstraintMap[newConstraints.back()] = oldConstrId;  // Map new to old
             isPoint1ConstrainedOnGeoId1 = true;
             continue;
         }
@@ -3398,6 +3401,7 @@ void createNewConstraintsForTrim(
                 PointPos::start
             )) {
             newConstraints.push_back(newConstr.release());
+            newToOldConstraintMap[newConstraints.back()] = oldConstrId;  // Map new to old
             isPoint2ConstrainedOnGeoId2 = true;
             continue;
         }
@@ -3407,7 +3411,12 @@ void createNewConstraintsForTrim(
             continue;
         }
         // constraint has not yet been changed
+        size_t sizeBefore = newConstraints.size();
         obj->deriveConstraintsForPieces(GeoId, newIds, newGeos, con, newConstraints);
+        // Map all newly added derived constraints to the old ID
+        for (size_t i = sizeBefore; i < newConstraints.size(); ++i) {
+            newToOldConstraintMap[newConstraints[i]] = oldConstrId;
+        }
     }
 
     // Add point-on-object/coincidence constraints with the newly exposed points.
@@ -3517,6 +3526,7 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
     std::vector<int> newIds;
     std::vector<Part::Geometry*> newGeos;
     std::vector<const Part::Geometry*> newGeosAsConsts;
+    std::map<Constraint*, int> newToOldConstraintMap;
 
     switch (paramsOfNewGeos.size()) {
         case 0: {
@@ -3579,7 +3589,8 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         newGeosAsConsts,
         idsOfOldConstraints,
         newConstraints,
-        geoIdsToBeDeleted
+        geoIdsToBeDeleted,
+        newToOldConstraintMap
     );
 
     //******************* Step D => Replacing geometries and constraints
@@ -3597,6 +3608,16 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         newConstr->SecondPos = Sketcher::PointPos::none;
         addConstraint(std::move(newConstr));
     };
+
+    std::map<Constraint*, std::shared_ptr<App::Expression>> exprBackup;
+    for (auto const& [newConstr, oldId] : newToOldConstraintMap) {
+        if (oldId >= 0 && oldId < (int)allConstraints.size()) {
+            auto exprInfo = getExpression(Constraints.createPath(oldId));
+            if (exprInfo.expression) {
+                exprBackup[newConstr] = std::shared_ptr<App::Expression>(exprInfo.expression->copy());
+            }
+        }
+    }
 
     delConstraints(std::move(idsOfOldConstraints), DeleteOption::NoFlag);
 
@@ -3651,7 +3672,17 @@ int SketchObject::trim(int GeoId, const Base::Vector3d& point)
         return constr->Type == ConstraintType::None;
     });
     delGeometries(geoIdsToBeDeleted.begin(), geoIdsToBeDeleted.end());
-    addConstraints(newConstraints);
+
+    int lastAddedIndex = addConstraints(newConstraints);
+    int firstAddedIndex = lastAddedIndex - (int)newConstraints.size() + 1;
+
+    // Restore expressions
+    for (int i = 0; i < (int)newConstraints.size(); ++firstAddedIndex, ++i) {
+        auto it = exprBackup.find(newConstraints[i]);
+        if (it != exprBackup.end()) {
+            setExpression(Constraints.createPath(firstAddedIndex), it->second);
+        }
+    }
 
     if (noRecomputes) {
         solve();
@@ -5666,9 +5697,10 @@ int SketchObject::removeAxesAlignment(const std::vector<int>& geoIdList)
         {{Sketcher::Horizontal, GeoEnum::GeoUndef},
          {Sketcher::Vertical, GeoEnum::GeoUndef}};
 
-    int cindex = 0;
+    size_t cindex = 0;
     for (size_t i = 0; i < constrvals.size(); i++) {
-        if (i != changeConstraintIndices[cindex].first) {
+        if (cindex >= changeConstraintIndices.size()
+        || i != changeConstraintIndices[cindex].first) {
             newconstrVals.push_back(constrvals[i]);
             continue;
         }
@@ -11637,20 +11669,28 @@ std::vector<Data::IndexedName>
 SketchObject::getHigherElements(const char *element, bool silent) const
 {
     std::vector<Data::IndexedName> res;
+    // App::ObjEditing is not in main yet. Only in LinkStage.
+    // It is not a problem yet because getHigherElements is still unused.
+    // see https://github.com/FreeCAD/FreeCAD/issues/20753
+    if (false /*testStatus(App::ObjEditing)*/) {
         if (boost::istarts_with(element, "vertex")) {
             int n = 0;
             int index = atoi(element+6);
             for (auto cstr : Constraints.getValues()) {
                 ++n;
-                if (cstr->Type != Sketcher::Coincident)
+                if (cstr->Type != Sketcher::Coincident) {
                     continue;
-                if(cstr->First >= 0 && index == getSolvedSketch().getPointId(cstr->First, cstr->FirstPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
-                if(cstr->Second >= 0 && index == getSolvedSketch().getPointId(cstr->Second, cstr->SecondPos) + 1)
-                    res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                }
+                for (int i=0; i<2; ++i) {
+                    int geoid = i ? cstr->Second : cstr->First;
+                    const Sketcher::PointPos &pos = i ? cstr->SecondPos : cstr->FirstPos;
+                    if(geoid >= 0 && index == getSolvedSketch().getPointId(geoid, pos) + 1)
+                        res.push_back(Data::IndexedName::fromConst("Constraint", n));
+                };
             }
         }
         return res;
+    }
 
     auto getNames = [this, &silent, &res](const char *element) {
         bool internal = boost::starts_with(element, internalPrefix());

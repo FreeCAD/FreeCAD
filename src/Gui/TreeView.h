@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TREEVIEW_H
-#define GUI_TREEVIEW_H
+#pragma once
 
 #include <QTreeView>
 #include <FCGlobal.h>
@@ -44,6 +43,3 @@ protected:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_TREEVIEW_H

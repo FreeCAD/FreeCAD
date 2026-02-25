@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_WORKBENCHFACTORY_H
-#define GUI_WORKBENCHFACTORY_H
+#pragma once
 
 #include <list>
 #include <string>
@@ -88,5 +87,3 @@ public:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_WORKBENCHFACTORY_H

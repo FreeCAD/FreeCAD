@@ -22,8 +22,7 @@
  **************************************************************************/
 
 
-#ifndef MEASURE_MEASURERADIUS_H
-#define MEASURE_MEASURERADIUS_H
+#pragma once
 
 #include <Mod/Measure/MeasureGlobal.h>
 
@@ -88,6 +87,3 @@ private:
 };
 
 }  // namespace Measure
-
-
-#endif  // MEASURE_MEASURERADIUS_H

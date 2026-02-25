@@ -1,0 +1,91 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2026 Joe Da Silva <digital@joescat.com>                 *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Linear Elastic Arrays'
+  UUID: '767bb39f-f32b-4401-88e3-1d019e6056a1'
+  URL: ''
+  Description: "Temperature arrays for Metal Linear Properties"
+  DOI: ''
+  PlasticUniaxialProperties:
+    Type: '2DArray'
+    Columns:
+      Temperature:
+        Type: 'Quantity'
+        Units: 'C'
+        URL: ''
+        Description: "Temperature"
+      UltimateStrain:
+        DisplayName: "Ultimate Strain"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+        Description: >
+          Maximum deformation a material can endure before it fails or fractures.
+          ΔL/L as percent value [unitless].
+      UltimateTensileStrength:
+        DisplayName: "Ultimate Tensile Strength"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: 'https://en.wikipedia.org/wiki/Ultimate_tensile_strength'
+        Description: "Ultimate tensile strength in [FreeCAD Pressure unit]"
+      YieldStrain:
+        DisplayName: "Yield Strain"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Yield_(engineering)'
+        Description: >
+          Elastic strain approximate limit before bending/stretching becomes permanent.
+          ΔL/L as percent value [unitless].
+      YieldStrength:
+        DisplayName: "Yield Strength"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: 'https://en.wikipedia.org/wiki/Yield_Strength'
+        Description: "Yield strength in [FreeCAD Pressure unit]"
+      Elongation:
+        DisplayName: "Elongation"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Elongation'
+        Description: >
+          Measure of ductility and formability. Increase in length a material
+          undergoes when stretched to its breaking point during a tensile test.
+          ΔL/L as percent value [unitless].
+      FractureStrength:
+        DisplayName: "Fracture Strength"
+        Type: 'Quantity'
+        Units: 'kPa'
+        URL: ''
+        Description: >
+          Actual fracture stress point where the final break occurs. This is often
+          lower than the UTS in the stress-strain curve [FreeCAD Pressure unit].
+      ReductionOfArea:
+        DisplayName: "Reduction Of Area (RA)"
+        Type: 'Float'
+        Units: ''
+        URL: 'https://en.wikipedia.org/wiki/Deformation_(mechanics)'
+        Description: >
+          Measure of ductility by calculating the decrease in cross-sectional area
+          at the fracture point during a tensile test.
+          ΔArea/Area as percent value [unitless].

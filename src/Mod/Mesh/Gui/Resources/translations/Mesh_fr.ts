@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="755"/>
       <source>Add Triangle</source>
-      <translation>Ajout d'un triangle</translation>
+      <translation>Ajouter un triangle</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="756"/>
       <source>Adds a triangle manually to a mesh</source>
-      <translation>Ajoute un triangle manuellement à un maillage</translation>
+      <translation>Ajoute un triangle manuellement à un maillage.</translation>
     </message>
   </context>
   <context>
@@ -106,7 +106,7 @@
     <message>
       <location filename="../../Command.cpp" line="174"/>
       <source>Creates a boolean difference of the selected meshes</source>
-      <translation>Crée une différence booléenne de maillages sélectionnés.</translation>
+      <translation>Crée une différence booléenne des maillages sélectionnés.</translation>
     </message>
   </context>
   <context>
@@ -178,7 +178,7 @@
     <message>
       <location filename="../../Command.cpp" line="401"/>
       <source>Exports a mesh to a file</source>
-      <translation>Exporte un maillage vers un fichier</translation>
+      <translation>Exporte un maillage vers un fichier.</translation>
     </message>
   </context>
   <context>
@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="1581"/>
       <source>Fill Holes</source>
-      <translation>Remplir les trous</translation>
+      <translation>Remplir des trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1582"/>
@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="1455"/>
       <source>Flip Normals</source>
-      <translation>Inverser les normales‏‎</translation>
+      <translation>Inverser des normales‏‎</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1456"/>
@@ -764,7 +764,7 @@
     <message>
       <location filename="../../DlgEvaluateMeshImp.cpp" line="1196"/>
       <source>Repair Mesh</source>
-      <translation>Réparation du maillage</translation>
+      <translation>Réparer un maillage</translation>
     </message>
     <message>
       <location filename="../../RemoveComponents.cpp" line="164"/>
@@ -1592,12 +1592,12 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
     <message>
       <location filename="../../MeshEditor.cpp" line="393"/>
       <source>Add Triangle</source>
-      <translation>Ajout d'un triangle</translation>
+      <translation>Ajouter un triangle</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="394"/>
       <source>Flip Normal</source>
-      <translation>Inverser la normale</translation>
+      <translation>Inverser une normale</translation>
     </message>
     <message>
       <location filename="../../MeshEditor.cpp" line="395"/>
@@ -2048,8 +2048,7 @@ Avec l'ombrage plat, les normales de la surface ne sont pas définies par les so
       <location filename="../../Command.cpp" line="321"/>
       <source>OpenSCAD cannot be found on the system.
 Visit https://openscad.org/ to install it.</source>
-      <translation>OpenSCAD est introuvable sur le système.
-Consulter le site https://openscad.org/ pour l'installer.</translation>
+      <translation>OpenSCAD est introuvable sur le système. Voir le site https://openscad.org/ pour l'installer.</translation>
     </message>
   </context>
   <context>
@@ -2193,7 +2192,7 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Command.cpp" line="449"/>
       <source>Export Mesh</source>
-      <translation>Exporter le maillage</translation>
+      <translation>Exporter un maillage</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
@@ -2228,12 +2227,12 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Command.cpp" line="1596"/>
       <source>Fill Holes</source>
-      <translation>Remplir les trous</translation>
+      <translation>Remplir des trous</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1597"/>
       <source>Fill holes with maximum number of edges</source>
-      <translation>Remplir les trous avec un nombre maximum de contours </translation>
+      <translation>Remplir les trous avec un nombre maximum de contours</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1870"/>
@@ -2253,17 +2252,17 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../ViewProvider.cpp" line="796"/>
       <source>Display Components</source>
-      <translation>Affichage des composants</translation>
+      <translation>Afficher les composants</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="804"/>
       <source>Display Segments</source>
-      <translation>Affichage des segments</translation>
+      <translation>Afficher les segments</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="812"/>
       <source>Display Colors</source>
-      <translation>Affichage des couleurs</translation>
+      <translation>Afficher les couleurs</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1701"/>
@@ -2372,7 +2371,7 @@ Consulter le site https://openscad.org/ pour l'installer.</translation>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
       <source>Mesh Cutting</source>
-      <translation>Coupe du maillage</translation>
+      <translation>Découpe du maillage</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>

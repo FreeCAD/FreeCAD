@@ -24,13 +24,20 @@
  ***************************************************************************/
 
 
-#ifndef APP_TRANSACTION_H
-#define APP_TRANSACTION_H
+#pragma once
 
 #include <unordered_map>
 #include <Base/Factory.h>
 #include <Base/Persistence.h>
 #include <App/PropertyContainer.h>
+
+#include <boost/multi_index_container.hpp>
+#include <boost/multi_index/hashed_index.hpp>
+#include <boost/multi_index/sequenced_index.hpp>
+#include <boost/multi_index/member.hpp>
+#include <boost/multi_index/mem_fun.hpp>
+
+namespace bmi = boost::multi_index;
 
 namespace App
 {
@@ -338,5 +345,3 @@ public:
 };
 
 }  // namespace App
-
-#endif  // APP_TRANSACTION_H

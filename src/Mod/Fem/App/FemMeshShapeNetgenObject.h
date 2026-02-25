@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef Fem_FemMeshShapeNetgenObject_H
-#define Fem_FemMeshShapeNetgenObject_H
+#pragma once
 
 #include "FemMeshShapeObject.h"
 #include <App/PropertyStandard.h>
@@ -65,6 +64,3 @@ protected:
 };
 
 }  // namespace Fem
-
-
-#endif  // Fem_FemMeshShapeNetgenObject_H

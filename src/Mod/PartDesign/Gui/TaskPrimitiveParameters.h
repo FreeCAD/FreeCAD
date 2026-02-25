@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
 /***************************************************************************
  *   Copyright (c) 2015 Stefan Tröger <stefeantroeger@gmx.net>             *
  *                                                                         *
@@ -21,10 +23,11 @@
  ***************************************************************************/
 
 
-#ifndef GUI_TASKVIEW_TaskPrimitiveParameters_H
-#define GUI_TASKVIEW_TaskPrimitiveParameters_H
+#pragma once
 
 #include <memory>
+#include <unordered_map>
+
 #include <Gui/DocumentObserver.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
@@ -41,7 +44,9 @@ class Property;
 namespace Gui
 {
 class ViewProvider;
-}
+class GizmoContainer;
+class LinearGizmo;
+}  // namespace Gui
 
 namespace PartDesignGui
 {
@@ -100,6 +105,8 @@ public Q_SLOTS:
     void onWedgeZ2maxChanged(double);
     void onWedgeZ2minChanged(double);
 
+    void onPlacementChanged();
+
 private:
     /** Notifies when the object is about to be removed. */
     void slotDeletedObject(const Gui::ViewProviderDocumentObject& Obj) override;
@@ -119,6 +126,14 @@ private:
     QWidget* proxy;
     std::unique_ptr<Ui_DlgPrimitives> ui;
     ViewProviderPrimitive* vp;
+
+    std::unique_ptr<Gui::GizmoContainer> gizmoContainer;
+    Gui::LinearGizmo* lengthGizmo = nullptr;
+    Gui::LinearGizmo* heightGizmo = nullptr;
+    Gui::LinearGizmo* widthGizmo = nullptr;
+    Gui::LinearGizmo* radiusGizmo = nullptr;
+    void setupGizmos();
+    void setGizmoPositions();
 };
 
 class TaskDlgPrimitiveParameters: public TaskDlgFeatureParameters
@@ -142,5 +157,3 @@ private:
 };
 
 }  // namespace PartDesignGui
-
-#endif  // GUI_TASKVIEW_TASKAPPERANCE_H

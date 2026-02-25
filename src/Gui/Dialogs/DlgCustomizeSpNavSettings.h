@@ -23,8 +23,7 @@
  ***************************************************************************/
 
 
-#ifndef DLGCUSTOMIZESPNAVSETTINGS_H
-#define DLGCUSTOMIZESPNAVSETTINGS_H
+#pragma once
 
 #include "PropertyPage.h"
 #include <Base/Parameter.h>
@@ -91,5 +90,3 @@ private:
 };
 }  // namespace Dialog
 }  // namespace Gui
-
-#endif  // DLGCUSTOMIZESPNAVSETTINGS_H

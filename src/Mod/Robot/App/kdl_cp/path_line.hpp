@@ -44,8 +44,7 @@
  *		$Name:  $
  ****************************************************************************/
 
-#ifndef KDL_MOTION_PATH_LINE_H
-#define KDL_MOTION_PATH_LINE_H
+#pragma once
 
 #include "path.hpp"
 #include "rotational_interpolation.hpp"
@@ -135,6 +134,3 @@ class Path_Line : public Path
 
 
 }
-
-
-#endif

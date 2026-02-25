@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef FEMGUI_TaskAnalysisInfo_H
-#define FEMGUI_TaskAnalysisInfo_H
+#pragma once
 
 #include <Gui/TaskView/TaskView.h>
 
@@ -72,5 +71,3 @@ private:
 };
 
 }  // namespace FemGui
-
-#endif  // GUI_TASKVIEW_TaskAnalysisInfo_H

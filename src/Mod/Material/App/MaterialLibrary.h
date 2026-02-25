@@ -19,8 +19,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATERIAL_MATERIALLIBRARY_H
-#define MATERIAL_MATERIALLIBRARY_H
+#pragma once
 
 #include <memory>
 
@@ -130,5 +129,3 @@ protected:
 
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibrary>)
 Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibraryLocal>)
-
-#endif  // MATERIAL_MATERIALLIBRARY_H

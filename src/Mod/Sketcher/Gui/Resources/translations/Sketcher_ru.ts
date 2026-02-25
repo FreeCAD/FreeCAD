@@ -24,17 +24,17 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8882"/>
       <source>Constrains the radius or diameter of an arc or a circle</source>
-      <translation>Ограничивает радиус или диаметр дуги или окружности</translation>
+      <translation>Фиксировать радиус/диаметр дуги/ окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8992"/>
       <source>Constrain radius</source>
-      <translation>Размер радиуса</translation>
+      <translation>Фиксировать радиус</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="8998"/>
       <source>Constrain diameter</source>
-      <translation>Размер диаметра</translation>
+      <translation>Фиксировать диаметр</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="9004"/>
@@ -83,12 +83,12 @@
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="114"/>
       <source>Geometry to B-Spline</source>
-      <translation>Геометрию в B-сплайн</translation>
+      <translation>Преобразовать фигуру в B-сплайн</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherBSpline.cpp" line="115"/>
       <source>Converts the selected geometry to B-splines</source>
-      <translation>Преобразует выбранную геометрию в B-сплайны</translation>
+      <translation>Преобразует выбранную фигуру в B-сплайны</translation>
     </message>
   </context>
   <context>
@@ -234,7 +234,7 @@ as mirroring reference</source>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="1582"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрию, взяв за точку отсчёта последнюю выбранную точку</translation>
+      <translation>Сдвигает фигуры, ведя отсчет от последней выбранной точки</translation>
     </message>
   </context>
   <context>
@@ -274,8 +274,7 @@ as mirroring reference</source>
       <location filename="../../Command.cpp" line="833"/>
       <source>Validates a sketch by checking for missing coincidences,
 invalid constraints, and degenerate geometry</source>
-      <translation>Проверяет эскиз на наличие пропущенных ограничений совпадения,
-некорректных ограничений и вырожденной геометрии</translation>
+      <translation>Проверяет эскиз на пропуск совпадений, неверных фиксаций и невозможной геометрии</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="849"/>
@@ -420,12 +419,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2372"/>
       <source>Add Horizontal constraint</source>
-      <translation>Добавить ограничение горизонтальности</translation>
+      <translation>Добавить фиксацию горизонтальности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2377"/>
       <source>Add Vertical constraint</source>
-      <translation>Добавить ограничение вертикальности</translation>
+      <translation>Добавить фиксацию вертикальности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2381"/>
@@ -481,24 +480,24 @@ invalid constraints, and degenerate geometry</source>
       <location filename="../../CommandConstraints.cpp" line="4357"/>
       <location filename="../../CommandConstraints.cpp" line="4538"/>
       <source>Add point on object constraint</source>
-      <translation>Добавить ограничение точки на объекте</translation>
+      <translation>Добавить фиксацию точки на объекте</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2470"/>
       <location filename="../../CommandConstraints.cpp" line="2502"/>
       <source>Add arc length constraint</source>
-      <translation>Добавить ограничение длины дуги</translation>
+      <translation>Добавить фиксацию длины дуги</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4925"/>
       <location filename="../../CommandConstraints.cpp" line="5302"/>
       <source>Add point to line distance constraint</source>
-      <translation>Добавить ограничение расстояния от точки до линии</translation>
+      <translation>Добавить фиксацию расстояния между точкой и линией</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="4955"/>
       <source>Add point to circle distance constraint</source>
-      <translation>Добавить ограничение расстояния от точки до окружности</translation>
+      <translation>Добавить фиксацию расстояния от точки до окружности</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5543"/>
@@ -509,7 +508,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5584"/>
       <source>Add fixed x-coordinate constraint</source>
-      <translation>Добавить ограничение фиксировать X-координату</translation>
+      <translation>Добавить фиксацию X-координаты</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5843"/>
@@ -520,7 +519,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="5881"/>
       <source>Add fixed y-coordinate constraint</source>
-      <translation>Добавить ограничение фиксировать Y-координату</translation>
+      <translation>Добавить фиксацию Y-координаты</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="6114"/>
@@ -639,12 +638,12 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10230"/>
       <source>Add Snell's law constraint</source>
-      <translation>Добавить ограничение приломления</translation>
+      <translation>Добавить фиксацию преломления</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="10459"/>
       <source>Toggle constraint to driving/reference</source>
-      <translation>Переключить ограничения в основные/вспомогательные</translation>
+      <translation>Переключить фиксации между основными/вспомогательными</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="246"/>
@@ -684,7 +683,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="132"/>
       <source>Add sketch line</source>
-      <translation>Добавить эскиз линии</translation>
+      <translation>Добавить линию в эскиз</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="504"/>
@@ -694,7 +693,7 @@ invalid constraints, and degenerate geometry</source>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="283"/>
       <source>Add sketch arc</source>
-      <translation>Добавить эскиз дуги</translation>
+      <translation>Добавить в эскиз дугу</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="212"/>
@@ -707,7 +706,7 @@ invalid constraints, and degenerate geometry</source>
       <translation>Добавить эскиз эллипса</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="315"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="325"/>
       <source>Add sketch arc of ellipse</source>
       <translation>Добавить эскиз дуги эллипса</translation>
     </message>
@@ -854,17 +853,17 @@ invalid constraints, and degenerate geometry</source>
       <translation>Переименовать ограничение эскиза</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1833"/>
       <source>Drag Point</source>
       <translation>Перетащить точку</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1824"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1833"/>
       <source>Drag Curve</source>
       <translation>Перетащить кривую</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="1825"/>
+      <location filename="../../ViewProviderSketch.cpp" line="1834"/>
       <source>Drag geometries</source>
       <translation>Перетащить геометрию</translation>
     </message>
@@ -958,54 +957,54 @@ invalid constraints, and degenerate geometry</source>
   <context>
     <name>Exceptions</name>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6766"/>
+      <location filename="../../../App/SketchObject.cpp" line="6796"/>
       <source>You are requesting no change in knot multiplicity.</source>
       <translation>Вы не запрашиваете никаких изменений в кратности узла.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6758"/>
-      <location filename="../../../App/SketchObject.cpp" line="6936"/>
+      <location filename="../../../App/SketchObject.cpp" line="6788"/>
+      <location filename="../../../App/SketchObject.cpp" line="6966"/>
       <source>B-spline Geometry Index (GeoID) is out of bounds.</source>
       <translation>Индекс (GeoID) фигуры B-сплайна выходит за пределы допустимого диапазона.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6775"/>
-      <location filename="../../../App/SketchObject.cpp" line="6952"/>
+      <location filename="../../../App/SketchObject.cpp" line="6805"/>
+      <location filename="../../../App/SketchObject.cpp" line="6982"/>
       <source>The Geometry Index (GeoId) provided is not a B-spline.</source>
       <translation>Предоставленный индекс геометрии (GeoId) не является B-сплайном.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6787"/>
+      <location filename="../../../App/SketchObject.cpp" line="6817"/>
       <source>The knot index is out of bounds. Note that in accordance with OCC notation, the first knot has index 1 and not zero.</source>
       <translation>Индекс узла выходит за границы. Обратите внимание, что в соответствии с нотацией OCC первый узел имеет индекс 1, а не ноль.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6803"/>
+      <location filename="../../../App/SketchObject.cpp" line="6833"/>
       <source>The multiplicity cannot be increased beyond the degree of the B-spline.</source>
       <translation>Кратность не может быть увеличена сверх степени B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6814"/>
+      <location filename="../../../App/SketchObject.cpp" line="6844"/>
       <source>The multiplicity cannot be decreased beyond zero.</source>
       <translation>Кратность не может быть уменьшена ниже нуля.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6830"/>
+      <location filename="../../../App/SketchObject.cpp" line="6860"/>
       <source>OCC is unable to decrease the multiplicity within the maximum tolerance.</source>
       <translation>OCC неспособен уменьшить кратность в пределах максимального допуска.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6943"/>
+      <location filename="../../../App/SketchObject.cpp" line="6973"/>
       <source>Knot cannot have zero multiplicity.</source>
       <translation>Узел не может иметь нулевую кратность.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6965"/>
+      <location filename="../../../App/SketchObject.cpp" line="6995"/>
       <source>Knot multiplicity cannot be higher than the degree of the B-spline.</source>
       <translation>Кратность узла не может быть выше степени B-сплайна.</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="6975"/>
+      <location filename="../../../App/SketchObject.cpp" line="7005"/>
       <source>Knot cannot be inserted outside the B-spline parameter range.</source>
       <translation>Узел не может быть вставлен за пределами диапазона параметров B-сплайна.</translation>
     </message>
@@ -3791,112 +3790,112 @@ This is done by analyzing the sketch geometries and constraints.</source>
   <context>
     <name>SketcherGui::ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3423"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3432"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт в панели задач</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3445"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3454"/>
       <source>The sketch is invalid and cannot be edited.</source>
       <translation>Эскиз некорректный и не может редактироваться.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3602"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3611"/>
       <source>The following constraint is partially redundant:</source>
       <translation>Следующее ограничение частично избыточно:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3603"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3612"/>
       <source>The following constraints are partially redundant:</source>
       <translation>Следующие ограничения частично избыточны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3403"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3412"/>
       <source>Edit Sketch</source>
       <translation>Редактировать эскиз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3424"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3433"/>
       <source>Close this dialog?</source>
       <translation>Закрыть диалоговое окно?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3443"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3452"/>
       <source>Invalid Sketch</source>
       <translation>Недопустимый эскиз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3444"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3453"/>
       <source>Open the sketch validation tool?</source>
       <translation>Открыть инструмент проверки эскиза?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3588"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3597"/>
       <source>Remove the following constraint:</source>
       <translation>Удалите следующее ограничение:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3589"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3598"/>
       <source>Remove at least one of the following constraints:</source>
       <translation>Удалите хотя бы одно из следующих ограничений:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3595"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3604"/>
       <source>Remove the following redundant constraint:</source>
       <translation>Удалите следующее избыточное ограничение:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3596"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3605"/>
       <source>Remove the following redundant constraints:</source>
       <translation>Удалите следующие избыточные ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3609"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3618"/>
       <source>Remove the following malformed constraint:</source>
       <translation>Удалите следующее некорректное ограничение:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3610"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3619"/>
       <source>Remove the following malformed constraints:</source>
       <translation>Удалите следующие некорректные ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3669"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3678"/>
       <source>Empty sketch</source>
       <translation>Пустой эскиз</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3674"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3683"/>
       <source>Over-constrained:</source>
       <translation>Конфликтующие ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3680"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3689"/>
       <source>Malformed constraints:</source>
       <translation>Неверные ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3688"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3697"/>
       <source>Redundant constraints:</source>
       <translation>Избыточные ограничения:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3694"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3703"/>
       <source>Partially redundant:</source>
       <translation>Частично избыточны:</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3701"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3710"/>
       <source>Solver failed to converge</source>
       <translation>Решатель не смог свести решение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3707"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3716"/>
       <source>Under-constrained:</source>
       <translation>Недостаточно ограничен:</translation>
     </message>
     <message numerus="yes">
-      <location filename="../../ViewProviderSketch.cpp" line="3709"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3718"/>
       <source>%n Degrees of Freedom</source>
       <translation>
         <numerusform>%n Степень свободы</numerusform>
@@ -3906,7 +3905,7 @@ This is done by analyzing the sketch geometries and constraints.</source>
       </translation>
     </message>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3713"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3722"/>
       <source>Fully constrained</source>
       <translation>Полностью ограничен</translation>
     </message>
@@ -4069,7 +4068,7 @@ Select the method to attach this sketch to selected objects.</source>
       <location filename="../../CommandSketcherTools.cpp" line="1706"/>
       <location filename="../../CommandSketcherTools.cpp" line="1708"/>
       <source>Moves the geometry taking as reference the last selected point</source>
-      <translation>Перемещает геометрию, взяв за точку отсчёта последнюю выбранную точку</translation>
+      <translation>Сдвигает фигуры, ведя отсчет от последней выбранной точки</translation>
     </message>
   </context>
   <context>
@@ -4394,7 +4393,7 @@ Eigen Sparse QR algorithm is optimized for sparse matrices; usually faster</sour
   <context>
     <name>ViewProviderSketch</name>
     <message>
-      <location filename="../../ViewProviderSketch.cpp" line="3652"/>
+      <location filename="../../ViewProviderSketch.cpp" line="3661"/>
       <source>and %1 more</source>
       <translation>и еще %1</translation>
     </message>
@@ -4599,17 +4598,17 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>В эскизе есть частично избыточные ограничения!</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10256"/>
+      <location filename="../../../App/SketchObject.cpp" line="10286"/>
       <source>Unmanaged change of Geometry Property results in invalid constraint indices</source>
       <translation>Неуправляемое изменение Свойства Геометрии приводит к недействительным индексам ограничений</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10287"/>
+      <location filename="../../../App/SketchObject.cpp" line="10317"/>
       <source>Unmanaged change of Constraint Property results in invalid constraint indices</source>
       <translation>Неуправляемое изменение Свойства Ограничения приводит к недействительным индексам ограничения</translation>
     </message>
     <message>
-      <location filename="../../../App/SketchObject.cpp" line="10910"/>
+      <location filename="../../../App/SketchObject.cpp" line="10940"/>
       <source>Parabolas were migrated. Migrated files won't open in previous versions of FreeCAD!!
 </source>
       <translation>Параболы были перенесены. Перемещённые файлы не будут открываться в предыдущих версиях FreeCAD!!
@@ -4617,7 +4616,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="213"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="150"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="146"/>
       <location filename="../../CommandSketcherTools.cpp" line="1290"/>
       <location filename="../../CommandSketcherTools.cpp" line="1870"/>
@@ -4643,7 +4642,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <location filename="../../DrawSketchHandlerPoint.h" line="109"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="268"/>
       <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="348"/>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="340"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="350"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="221"/>
       <source>Error</source>
       <translation>Ошибка</translation>
@@ -4704,7 +4703,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Не удалось добавить дугу</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="341"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="351"/>
       <source>Failed to add arc of ellipse</source>
       <translation>Не удалось добавить дугу эллипса</translation>
     </message>
@@ -4772,7 +4771,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="297"/>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="220"/>
-      <location filename="../../DrawSketchHandlerScale.h" line="159"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="160"/>
       <location filename="../../DrawSketchHandlerTranslate.h" line="153"/>
       <location filename="../../DrawSketchHandlerSymmetry.h" line="160"/>
       <location filename="../../DrawSketchHandlerPolygon.h" line="140"/>
@@ -4878,7 +4877,7 @@ The grid spacing changes if it becomes smaller than the specified pixel size.</s
       <translation>Недопустимый масштабный коэффициент. Масштабный коэффициент должен быть положительным числом.</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="151"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="152"/>
       <source>Failed to scale</source>
       <translation>Не удалось масштабировать</translation>
     </message>
@@ -5423,7 +5422,7 @@ Instead equal constraints are applied between the original objects and their cop
   <context>
     <name>TaskSketcherTool_c1_scale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="656"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="659"/>
       <source>Keep original geometries (U)</source>
       <translation>Сохранить исходную геометрию (U)</translation>
     </message>
@@ -7293,22 +7292,22 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerArcOfEllipse</name>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="437"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="447"/>
       <source>%1 pick ellipse center</source>
       <translation>%1 укажите центр эллипса</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="442"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
       <source>%1 pick axis point</source>
       <translation>%1 укажите осевую точку</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="447"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="457"/>
       <source>%1 pick arc start point</source>
       <translation>%1 укажите начальную точку дуги</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="452"/>
+      <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="462"/>
       <source>%1 pick arc end point</source>
       <translation>%1 укажите конечную точку</translation>
     </message>
@@ -7808,17 +7807,17 @@ Points must be set closer than a fifth of the grid spacing to a grid line to sna
   <context>
     <name>SketcherGui::DrawSketchHandlerScale</name>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="179"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="180"/>
       <source>%1 pick reference point</source>
       <translation>%1 задайте точку отсчёта</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="184"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="185"/>
       <source>%1 set scale factor</source>
       <translation>%1 задайте масштабный коэффициент</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerScale.h" line="247"/>
+      <location filename="../../DrawSketchHandlerScale.h" line="248"/>
       <source>Scale Parameters</source>
       <translation>Параметры масштабирования</translation>
     </message>

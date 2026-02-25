@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FeatureGeometrySet_H
-#define PART_FeatureGeometrySet_H
+#pragma once
 
 #include <Mod/Part/PartGlobal.h>
 
@@ -56,6 +55,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FeatureGeometrySet_H

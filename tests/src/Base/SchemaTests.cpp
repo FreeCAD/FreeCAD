@@ -90,6 +90,22 @@ protected:
         return quantity.getSafeUserString();
     }
 
+    static void sweepCheck(std::initializer_list<std::initializer_list<const char*>> groups)
+    {
+        for (const auto& group : groups) {
+            for (const char* str : group) {
+                SCOPED_TRACE(str);
+                auto q = Quantity::parse(str);
+                QuantityFormat fmt(QuantityFormat::Default);
+                q.setFormat(fmt);
+                double factor {};
+                std::string unitString;
+                auto result = UnitsApi::schemaTranslate(q, factor, unitString);
+                EXPECT_EQ(result, str);
+            }
+        }
+    }
+
     std::unique_ptr<UnitsSchemas> schemas;  // NOLINT
 };
 
@@ -689,4 +705,567 @@ TEST_F(SchemaTest, round_trip_test)
             EXPECT_DOUBLE_EQ(q2.getValue(), value);
         }
     }
+}
+
+// Sweep round-trip tests: parse a string, translate it back, verify identical output.
+// Each string is both the input and the expected result. Values are chosen to land
+// cleanly in each threshold band so the unit selection is tested across the full range.
+
+TEST_F(SchemaTest, sweep_internal)
+{
+    UnitsApi::setSchema("Internal");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        // Length
+        {"1 nm",
+         "10 nm",
+         "100 nm",
+         "1 \xC2\xB5m",
+         "10 \xC2\xB5m",
+         "1 mm",
+         "10 mm",
+         "100 mm",
+         "1000 mm",
+         "10 m",
+         "100 m",
+         "1000 m",
+         "10 km",
+         "100 km",
+         "1000 km",
+         /* default */ "1e+09 m"},
+        // Mass
+        {"1 \xC2\xB5g",
+         "10 \xC2\xB5g",
+         "100 \xC2\xB5g",
+         "1 mg",
+         "10 mg",
+         "100 mg",
+         "1 g",
+         "10 g",
+         "100 g",
+         "1 kg",
+         "10 kg",
+         "100 kg",
+         "1 t",
+         "10 t",
+         /* default */ "1e+06 t"},
+        // Area
+        {"1 mm^2",
+         "10 mm^2",
+         "1 cm^2",
+         "10 cm^2",
+         "100 cm^2",
+         "1000 cm^2",
+         "1 m^2",
+         "10 m^2",
+         "100 m^2",
+         "1000 m^2",
+         "1 km^2",
+         /* default */ "1e+06 km^2"},
+        // Volume
+        {"1 mm^3",
+         "10 mm^3",
+         "100 mm^3",
+         "1 ml",
+         "10 ml",
+         "100 ml",
+         "1 l",
+         "10 l",
+         "100 l",
+         "1 m^3",
+         "10 m^3",
+         /* default */ "1e+06 m^3"},
+        // Pressure
+        {"1 Pa",
+         "10 Pa",
+         "100 Pa",
+         "1000 Pa",
+         "10 kPa",
+         "100 kPa",
+         "1000 kPa",
+         "10 MPa",
+         "100 MPa",
+         "1000 MPa",
+         "10 GPa",
+         "100 GPa",
+         "1000 GPa",
+         /* default */ "1e+15 Pa"},
+        // Force
+        {"1 mN",
+         "10 mN",
+         "100 mN",
+         "1 N",
+         "10 N",
+         "100 N",
+         "1 kN",
+         "10 kN",
+         "100 kN",
+         "1 MN",
+         "10 MN",
+         /* default */ "1e+06 MN"},
+        // Power
+        {"1 mW",
+         "10 mW",
+         "100 mW",
+         "1 W",
+         "10 W",
+         "100 W",
+         "1 kW",
+         "10 kW",
+         /* default */ "1e+06 kW"},
+        // ElectricPotential
+        {"1 mV",
+         "10 mV",
+         "100 mV",
+         "1 V",
+         "10 V",
+         "100 V",
+         "1 kV",
+         "10 kV",
+         "100 kV",
+         /* default */ "1e+07 V"},
+        // Frequency
+        {"1 Hz",
+         "10 Hz",
+         "100 Hz",
+         "1 kHz",
+         "10 kHz",
+         "100 kHz",
+         "1 MHz",
+         "10 MHz",
+         "100 MHz",
+         "1 GHz",
+         "10 GHz",
+         "100 GHz",
+         "1 THz",
+         /* default */ "1e+06 THz"},
+        // ThermalConductivity
+        {"1 W/m/K",
+         "10 W/m/K",
+         "100 W/m/K",
+         "1 W/mm/K",
+         "10 W/mm/K",
+         /* default */ "1e+06 W/mm/K"},
+        // ElectricalConductivity
+        {"1 mS/m",
+         "10 mS/m",
+         "100 mS/m",
+         "1 S/m",
+         "10 S/m",
+         "100 S/m",
+         "1 kS/m",
+         "10 kS/m",
+         "100 kS/m",
+         "1 MS/m",
+         /* default */ "1e+06 MS/m"},
+        // SurfaceChargeDensity
+        {"1 C/m^2",
+         "10 C/m^2",
+         "100 C/m^2",
+         "1 C/cm^2",
+         "10 C/cm^2",
+         "1 C/mm^2",
+         /* default */ "1e+06 C/mm^2"},
+        // VolumeChargeDensity
+        {"1 C/m^3",
+         "10 C/m^3",
+         "100 C/m^3",
+         "1 C/cm^3",
+         "10 C/cm^3",
+         "100 C/cm^3",
+         "1 C/mm^3",
+         /* default */ "1e+06 C/mm^3"},
+        // CurrentDensity
+        {"1 A/m^2",
+         "10 A/m^2",
+         "100 A/m^2",
+         "1 A/cm^2",
+         "10 A/cm^2",
+         "1 A/mm^2",
+         /* default */ "1e+06 A/mm^2"},
+        // ElectricalCapacitance
+        {"1 pF",
+         "10 pF",
+         "100 pF",
+         "1 nF",
+         "10 nF",
+         "100 nF",
+         "1 \xC2\xB5"
+         "F",
+         "10 \xC2\xB5"
+         "F",
+         "100 \xC2\xB5"
+         "F",
+         "1 mF",
+         "10 mF",
+         "100 mF",
+         "1 F",
+         /* default */ "1e+06 F"},
+        // ElectricalInductance
+        {"1 nH",
+         "10 nH",
+         "100 nH",
+         "1 \xC2\xB5H",
+         "10 \xC2\xB5H",
+         "100 \xC2\xB5H",
+         "1 mH",
+         "10 mH",
+         "100 mH",
+         "1 H",
+         /* default */ "1e+06 H"},
+        // ElectricalConductance
+        {"1 \xC2\xB5S",
+         "10 \xC2\xB5S",
+         "100 \xC2\xB5S",
+         "1 mS",
+         "10 mS",
+         "100 mS",
+         "1 S",
+         /* default */ "1e+06 S"},
+        // ElectricalResistance
+        {"1 Ohm",
+         "10 Ohm",
+         "100 Ohm",
+         "1 kOhm",
+         "10 kOhm",
+         "100 kOhm",
+         "1 MOhm",
+         /* default */ "1e+06 MOhm"},
+        // MagneticFluxDensity
+        {"1 mT",
+         "10 mT",
+         "100 mT",
+         "1 T",
+         /* default */ "1e+06 T"},
+        // Stiffness
+        {"1 mN/m",
+         "10 mN/m",
+         "100 mN/m",
+         "1 N/m",
+         "10 N/m",
+         "100 N/m",
+         "1 kN/m",
+         "10 kN/m",
+         "100 kN/m",
+         "1 MN/m",
+         /* default */ "1e+06 MN/m"},
+        // KinematicViscosity
+        {"1 mm^2/s",
+         "10 mm^2/s",
+         "100 mm^2/s",
+         "1 m^2/s",
+         /* default */ "1e+06 m^2/s"},
+        // VolumeFlowRate
+        {"1 mm^3/s",
+         "10 mm^3/s",
+         "100 mm^3/s",
+         "1 ml/s",
+         "10 ml/s",
+         "100 ml/s",
+         "1 l/s",
+         "10 l/s",
+         "100 l/s",
+         "1 m^3/s",
+         /* default */ "1e+06 m^3/s"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_mks)
+{
+    UnitsApi::setSchema("MKS");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        // Length
+        {"1 nm",
+         "10 nm",
+         "100 nm",
+         "1 \xC2\xB5m",
+         "10 \xC2\xB5m",
+         "1 mm",
+         "10 mm",
+         "100 mm",
+         "1000 mm",
+         "10 m",
+         "100 m",
+         "1000 m",
+         "10 km",
+         "100 km",
+         "1000 km",
+         /* default */ "1e+09 m"},
+        // Mass
+        {"1 \xC2\xB5g",
+         "10 \xC2\xB5g",
+         "100 \xC2\xB5g",
+         "1 mg",
+         "10 mg",
+         "100 mg",
+         "1 g",
+         "10 g",
+         "100 g",
+         "1 kg",
+         "10 kg",
+         "100 kg",
+         "1 t",
+         "10 t",
+         /* default */ "1e+06 t"},
+        // Area
+        {"1 mm^2",
+         "10 mm^2",
+         "1 cm^2",
+         "10 cm^2",
+         "100 cm^2",
+         "1000 cm^2",
+         "1 m^2",
+         "10 m^2",
+         "100 m^2",
+         "1000 m^2",
+         "1 km^2",
+         /* default */ "1e+06 km^2"},
+        // Volume
+        {"1 mm^3",
+         "10 mm^3",
+         "100 mm^3",
+         "1 ml",
+         "10 ml",
+         "100 ml",
+         "1 l",
+         "10 l",
+         "100 l",
+         "1 m^3",
+         "10 m^3",
+         /* default */ "1e+06 m^3"},
+        // Pressure
+        {"1 Pa",
+         "10 Pa",
+         "100 Pa",
+         "1000 Pa",
+         "10 kPa",
+         "100 kPa",
+         "1000 kPa",
+         "10 MPa",
+         "100 MPa",
+         "1000 MPa",
+         "10 GPa",
+         "100 GPa",
+         "1000 GPa",
+         /* default */ "1e+15 Pa"},
+        // Force
+        {"1 mN",
+         "10 mN",
+         "100 mN",
+         "1 N",
+         "10 N",
+         "100 N",
+         "1 kN",
+         "10 kN",
+         "100 kN",
+         "1 MN",
+         "10 MN",
+         /* default */ "1e+06 MN"},
+        // Power
+        {"1 mW",
+         "10 mW",
+         "100 mW",
+         "1 W",
+         "10 W",
+         "100 W",
+         "1 kW",
+         "10 kW",
+         /* default */ "1e+06 kW"},
+        // ElectricPotential
+        {"1 mV",
+         "10 mV",
+         "100 mV",
+         "1 V",
+         "10 V",
+         "100 V",
+         "1 kV",
+         "10 kV",
+         "100 kV",
+         /* default */ "1e+07 V"},
+        // Frequency
+        {"1 Hz",
+         "10 Hz",
+         "100 Hz",
+         "1 kHz",
+         "10 kHz",
+         "100 kHz",
+         "1 MHz",
+         "10 MHz",
+         "100 MHz",
+         "1 GHz",
+         "10 GHz",
+         "100 GHz",
+         "1 THz",
+         /* default */ "1e+06 THz"},
+        // ThermalConductivity
+        {"1 W/m/K",
+         "10 W/m/K",
+         "100 W/m/K",
+         "1 W/mm/K",
+         "10 W/mm/K",
+         /* default */ "1e+06 W/mm/K"},
+        // ElectricalConductivity
+        {"1 mS/m",
+         "10 mS/m",
+         "100 mS/m",
+         "1 S/m",
+         "10 S/m",
+         "100 S/m",
+         "1 kS/m",
+         "10 kS/m",
+         "100 kS/m",
+         "1 MS/m",
+         /* default */ "1e+06 MS/m"},
+        // CurrentDensity
+        {"1 A/m^2",
+         "10 A/m^2",
+         "1 A/mm^2",
+         /* default */ "1e+06 A/mm^2"},
+        // ElectricalInductance
+        {"1 nH",
+         "10 nH",
+         "100 nH",
+         "1 \xC2\xB5H",
+         "10 \xC2\xB5H",
+         "100 \xC2\xB5H",
+         "1 mH",
+         "10 mH",
+         "100 mH",
+         "1 H",
+         /* default */ "1e+06 H"},
+        // ElectricalCapacitance
+        {"1 pF",
+         "10 pF",
+         "100 pF",
+         "1 nF",
+         "10 nF",
+         "100 nF",
+         "1 \xC2\xB5"
+         "F",
+         "10 \xC2\xB5"
+         "F",
+         "100 \xC2\xB5"
+         "F",
+         "1 mF",
+         "10 mF",
+         "100 mF",
+         "1 F",
+         /* default */ "1e+06 F"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_imperial)
+{
+    UnitsApi::setSchema("Imperial");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        // Length
+        {"1 thou",
+         "10 thou",
+         "1\"",
+         "10\"",
+         "1'",
+         "2'",
+         "1 yd",
+         "10 yd",
+         "100 yd",
+         "1 mi",
+         /* default */ "1e+09 in"},
+        // Pressure
+        {"1 psi",
+         "10 psi",
+         "100 psi",
+         "1 ksi",
+         /* default */ "1e+06 psi"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_imperial_decimal)
+{
+    UnitsApi::setSchema("ImperialDecimal");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 in", "10 in", "100 in"},
+        {"1 in^2", "10 in^2", "100 in^2"},
+        {"1 in^3", "10 in^3"},
+        {"1 lb", "10 lb", "100 lb"},
+        {"1 psi", "10 psi", "100 psi"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_imperial_building)
+{
+    UnitsApi::setSchema("ImperialBuilding");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        // Length (toFractional)
+        {"1/8\"", "1/4\"", "3/8\"", "1/2\"", "5/8\"", "3/4\"", "7/8\"", "1\"", "6\"", "1'"},
+        // Area, Volume
+        {"1 sqft", "10 sqft", "100 sqft"},
+        {"1 cft", "10 cft", "100 cft"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_imperial_civil)
+{
+    UnitsApi::setSchema("ImperialCivil");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 ft", "10 ft", "100 ft"},
+        {"1 ft^2", "10 ft^2", "100 ft^2"},
+        {"1 ft^3", "10 ft^3"},
+        {"1 lb", "10 lb", "100 lb"},
+        {"1 psi", "10 psi", "100 psi"},
+        {"1 mph", "10 mph", "100 mph"},
+        // Angle (toDMS)
+        {"1°", "1°30′", "10°", "10°6′36″", "45°", "45°30′", "90°", "180°", "360°"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_centimeter)
+{
+    UnitsApi::setSchema("Centimeter");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 cm", "10 cm", "100 cm", "1000 cm"},
+        {"1 m^2", "10 m^2", "100 m^2"},
+        {"1 m^3", "10 m^3"},
+        {"1 W", "10 W", "100 W"},
+        {"1 V", "10 V", "100 V"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_fem)
+{
+    UnitsApi::setSchema("FEM");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 mm", "10 mm", "100 mm", "1000 mm"},
+        {"1 t", "10 t", "100 t"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_mmmin)
+{
+    UnitsApi::setSchema("MmMin");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 mm", "10 mm", "100 mm", "1000 mm"},
+        {"1 mm/min", "10 mm/min", "100 mm/min"},
+    });
+}
+
+TEST_F(SchemaTest, sweep_meter_decimal)
+{
+    UnitsApi::setSchema("MeterDecimal");
+    UnitsApi::setDecimals(6);
+    sweepCheck({
+        {"1 m", "10 m", "100 m", "1000 m"},
+        {"1 m^2", "10 m^2", "100 m^2"},
+        {"1 m^3", "10 m^3"},
+        {"1 W", "10 W", "100 W"},
+        {"1 V", "10 V", "100 V"},
+        {"1 m/s", "10 m/s", "100 m/s"},
+    });
 }

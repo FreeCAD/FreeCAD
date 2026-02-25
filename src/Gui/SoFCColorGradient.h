@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_SOFCCOLORGRADIENT_H
-#define GUI_SOFCCOLORGRADIENT_H
+#pragma once
 
 #include <vector>
 #include <Inventor/SbBox2f.h>
@@ -135,6 +134,3 @@ private:
 };
 
 }  // namespace Gui
-
-
-#endif  // GUI_SOFCCOLORGRADIENT_H

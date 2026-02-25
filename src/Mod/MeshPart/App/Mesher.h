@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef MESHPART_MESHER_H
-#define MESHPART_MESHER_H
+#pragma once
 
 #include <sstream>
 
@@ -259,5 +258,3 @@ private:
 };
 
 }  // namespace MeshPart
-
-#endif  // MESHPART_MESHER_H

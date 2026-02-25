@@ -21,8 +21,7 @@
  ***************************************************************************/
 
 
-#ifndef GUI_CALLTIPS_H
-#define GUI_CALLTIPS_H
+#pragma once
 
 #include <QListWidget>
 
@@ -98,5 +97,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_CALLTIPS_H

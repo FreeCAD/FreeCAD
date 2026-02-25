@@ -5,8 +5,7 @@ Development tools and related technology provided under license from 3Dconnexion
 */
 
 
-#ifndef T3D_MOUSE_PARAMS_H
-#define T3D_MOUSE_PARAMS_H
+#pragma once
 
 #include "I3dMouseParams.h"
 
@@ -50,5 +49,3 @@ private:
     bool fIsRotate;
     ESpeed fSpeed;
 };
-
-#endif  // T3D_MOUSE_PARAMS_H

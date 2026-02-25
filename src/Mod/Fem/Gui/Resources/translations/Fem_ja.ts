@@ -3743,7 +3743,7 @@ with harmonic/oscillating driving current</source>
       <translation>グループ</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="316"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
       <translation>本当に続行しますか？</translation>
     </message>
@@ -4114,7 +4114,7 @@ For possible variables, see the description box below.</source>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="324"/>
       <source>Object dependencies</source>
       <translation>オブジェクトの依存関係</translation>
     </message>
@@ -5420,12 +5420,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_Analysis</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="61"/>
+      <location filename="../../../femcommands/commands.py" line="58"/>
       <source>New Analysis</source>
       <translation>新しい解析</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="65"/>
+      <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
       <translation>デフォルトのソルバーを使用して解析のコンテナーを作成</translation>
     </message>
@@ -5433,12 +5433,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="161"/>
+      <location filename="../../../femcommands/commands.py" line="158"/>
       <source>Remove All Clipping Planes</source>
       <translation>すべてのクリッピング平面を削除</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="164"/>
+      <location filename="../../../femcommands/commands.py" line="161"/>
       <source>Removes all clipping planes</source>
       <translation>すべてのクリッピング平面を削除</translation>
     </message>
@@ -5446,12 +5446,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="551"/>
+      <location filename="../../../femcommands/commands.py" line="548"/>
       <source>FEM Examples</source>
       <translation>FEMの例</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="552"/>
+      <location filename="../../../femcommands/commands.py" line="549"/>
       <source>Opens the FEM examples</source>
       <translation>FEMサンプルを開く</translation>
     </message>
@@ -5459,12 +5459,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="566"/>
+      <location filename="../../../femcommands/commands.py" line="563"/>
       <source>Material Editor</source>
       <translation>材料エディター</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="569"/>
+      <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>FreeCAD 材料エディターを開く</translation>
     </message>
@@ -5472,12 +5472,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="662"/>
+      <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Reinforced Material (Concrete)</source>
       <translation>強化材料（コンクリート）</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
+      <location filename="../../../femcommands/commands.py" line="663"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>コンクリートなどの強化マトリックス材料のための材料を作成</translation>
     </message>
@@ -5485,12 +5485,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="688"/>
+      <location filename="../../../femcommands/commands.py" line="685"/>
       <source>FEM Mesh to Mesh</source>
       <translation>FEMメッシュからメッシュへ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="691"/>
+      <location filename="../../../femcommands/commands.py" line="688"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>FEMメッシュの表面をメッシュに変換</translation>
     </message>
@@ -5498,12 +5498,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="763"/>
+      <location filename="../../../femcommands/commands.py" line="760"/>
       <source>Display Mesh Info</source>
       <translation>メッシュ情報を表示</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="764"/>
+      <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
       <translation>FEMメッシュ情報を表示</translation>
     </message>
@@ -5511,12 +5511,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="787"/>
+      <location filename="../../../femcommands/commands.py" line="784"/>
       <source>Mesh From Shape by Gmsh</source>
       <translation>Gmshを使用して形状からFEMメッシュへ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="790"/>
+      <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>Gmshメッシャーを使用して形状からFEMメッシュを作成</translation>
     </message>
@@ -5524,12 +5524,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="848"/>
+      <location filename="../../../femcommands/commands.py" line="845"/>
       <source>Mesh From Shape by Netgen</source>
       <translation>Netgenを使用して形状からFEMメッシュへ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="852"/>
+      <location filename="../../../femcommands/commands.py" line="849"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Netgen内部メッシャーを使用してソリッド、またはフェイス形状からFEMメッシュを作成</translation>
     </message>
@@ -5537,12 +5537,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1045"/>
+      <location filename="../../../femcommands/commands.py" line="1042"/>
       <source>Solver CalculiX Standard</source>
       <translation>ソルバー CalculiX 標準</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1050"/>
+      <location filename="../../../femcommands/commands.py" line="1047"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>標準FEMソルバーであるccxツール付属CalculiXを作成</translation>
     </message>
@@ -5550,12 +5550,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1098"/>
       <source>Solver Job Control</source>
       <translation>ソルバージョブ制御</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1103"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>ソルバー属性を変更し、選択したソルバーのための計算を実行</translation>
     </message>
@@ -5563,12 +5563,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1115"/>
       <source>Solver Elmer</source>
       <translation>ソルバー Elmer</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1117"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>FEMソルバーElmerを作成</translation>
     </message>
@@ -5576,12 +5576,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1157"/>
+      <location filename="../../../femcommands/commands.py" line="1154"/>
       <source>Solver Mystran</source>
       <translation>ソルバー Mystran</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>FEMソルバーMystranを作成</translation>
     </message>
@@ -5589,12 +5589,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <location filename="../../../femcommands/commands.py" line="1166"/>
       <source>Run Solver</source>
       <translation>ソルバーを実行</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1173"/>
+      <location filename="../../../femcommands/commands.py" line="1170"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>選択したソルバーの計算を実行</translation>
     </message>
@@ -5602,12 +5602,12 @@ normal vector of the face is used as direction</source>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1230"/>
+      <location filename="../../../femcommands/commands.py" line="1187"/>
       <source>Solver Z88</source>
       <translation>ソルバー Z88</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1189"/>
       <source>Creates a FEM solver Z88</source>
       <translation>FEMソルバーZ88を作成</translation>
     </message>
@@ -6368,12 +6368,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="201"/>
+      <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body Heat Source</source>
       <translation>体積熱源</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="204"/>
+      <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Creates a body heat source</source>
       <translation>体積熱源を作成</translation>
     </message>
@@ -6381,12 +6381,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="214"/>
+      <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Centrifugal Load</source>
       <translation>遠心荷重</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="215"/>
+      <location filename="../../../femcommands/commands.py" line="212"/>
       <source>Creates a centrifugal load</source>
       <translation>遠心荷重を作成</translation>
     </message>
@@ -6394,12 +6394,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="228"/>
+      <location filename="../../../femcommands/commands.py" line="225"/>
       <source>Current Density Boundary Condition</source>
       <translation>電流密度境界条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="229"/>
       <source>Creates a current density boundary condition</source>
       <translation>電流密度境界条件を作成</translation>
     </message>
@@ -6407,12 +6407,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
+      <location filename="../../../femcommands/commands.py" line="258"/>
       <source>Electrostatic Potential Boundary Condition</source>
       <translation>静電ポテンシャル境界条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="262"/>
       <source>Creates an electrostatic potential boundary condition</source>
       <translation>静電ポテンシャル境界条件を作成</translation>
     </message>
@@ -6420,12 +6420,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="277"/>
+      <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Flow Velocity Boundary Condition</source>
       <translation>流速境界条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="280"/>
+      <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation>流速境界条件を作成</translation>
     </message>
@@ -6433,12 +6433,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
+      <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Initial Pressure Condition</source>
       <translation>初期圧力条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="311"/>
+      <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Creates an initial pressure condition</source>
       <translation>初期圧力条件を作成</translation>
     </message>
@@ -6446,12 +6446,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="323"/>
+      <location filename="../../../femcommands/commands.py" line="320"/>
       <source>Magnetization Boundary Condition</source>
       <translation>磁化境界条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="326"/>
+      <location filename="../../../femcommands/commands.py" line="323"/>
       <source>Creates a magnetization boundary condition</source>
       <translation>磁化境界条件を作成</translation>
     </message>
@@ -6459,12 +6459,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="336"/>
+      <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Section Print Feature</source>
       <translation>断面表示フィーチャー</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="339"/>
+      <location filename="../../../femcommands/commands.py" line="336"/>
       <source>Creates a section print feature</source>
       <translation>断面表示フィーチャーを作成</translation>
     </message>
@@ -6472,12 +6472,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
+      <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Gravity Load</source>
       <translation>重力負荷</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="350"/>
+      <location filename="../../../femcommands/commands.py" line="347"/>
       <source>Creates a gravity load</source>
       <translation>重力負荷を作成</translation>
     </message>
@@ -6485,12 +6485,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="360"/>
+      <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Tie Constraint</source>
       <translation>結合拘束</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="361"/>
+      <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Creates a tie constraint</source>
       <translation>結合拘束を作成</translation>
     </message>
@@ -6498,12 +6498,12 @@ No matching module was found in the current Python path.</source>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="902"/>
+      <location filename="../../../femcommands/commands.py" line="899"/>
       <source>Mesh Refinement</source>
       <translation>メッシュ再分割</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="903"/>
+      <location filename="../../../femcommands/commands.py" line="900"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>FEMメッシュ再分割を作成</translation>
     </message>
@@ -6915,12 +6915,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1068"/>
       <source>Solver CalculiX</source>
       <translation>ソルバー CalculiX</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1073"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation>FEMソルバーCalculiXを作成</translation>
     </message>
@@ -7429,12 +7429,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ClippingPlaneAdd</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="105"/>
+      <location filename="../../../femcommands/commands.py" line="102"/>
       <source>Clipping Plane on Face</source>
       <translation>面上のクリッピング平面</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="108"/>
+      <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Adds a clipping plane on a selected face</source>
       <translation>選択した面にクリッピング平面を追加</translation>
     </message>
@@ -7442,12 +7442,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ConstantVacuumPermittivity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="185"/>
+      <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constant Vacuum Permittivity</source>
       <translation>一定の真空誘電率</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
+      <location filename="../../../femcommands/commands.py" line="186"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
       <translation>標準値を上書きする定数の真空誘電率を作成</translation>
     </message>
@@ -7455,12 +7455,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ConstraintElectricChargeDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="245"/>
+      <location filename="../../../femcommands/commands.py" line="242"/>
       <source>Electric Charge Density</source>
       <translation>電荷密度</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="245"/>
       <source>Creates an electric charge density</source>
       <translation>電荷密度を作成</translation>
     </message>
@@ -7468,12 +7468,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="292"/>
+      <location filename="../../../femcommands/commands.py" line="289"/>
       <source>Initial Flow Velocity Condition</source>
       <translation>初期流速条件</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="296"/>
+      <location filename="../../../femcommands/commands.py" line="293"/>
       <source>Creates an initial flow velocity condition</source>
       <translation>初期流速条件を作成</translation>
     </message>
@@ -7481,12 +7481,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="371"/>
+      <location filename="../../../femcommands/commands.py" line="368"/>
       <source>Fluid Section for 1D Flow</source>
       <translation>1次元流れのための流体セクション</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="374"/>
+      <location filename="../../../femcommands/commands.py" line="371"/>
       <source>Creates a fluid section for 1D flow</source>
       <translation>1次元流れのための流体セクションを作成</translation>
     </message>
@@ -7494,12 +7494,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="384"/>
+      <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Beam Cross Section</source>
       <translation>ビーム断面</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="385"/>
+      <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Creates a beam cross section</source>
       <translation>ビーム断面を作成</translation>
     </message>
@@ -7507,12 +7507,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="395"/>
+      <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Shell Plate Thickness</source>
       <translation>シェルの板厚</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="398"/>
+      <location filename="../../../femcommands/commands.py" line="395"/>
       <source>Creates a shell plate thickness</source>
       <translation>シェルの板厚を作成</translation>
     </message>
@@ -7520,12 +7520,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="408"/>
+      <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Beam Rotation</source>
       <translation>ビーム回転</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="409"/>
+      <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Creates a beam rotation</source>
       <translation>ビーム回転を作成</translation>
     </message>
@@ -7533,12 +7533,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationDeformation</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="419"/>
+      <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Deformation Equation</source>
       <translation>変形方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
+      <location filename="../../../femcommands/commands.py" line="420"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
       <translation>変形のための方程式を作成（非線形弾性）</translation>
     </message>
@@ -7546,12 +7546,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="433"/>
+      <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Elasticity Equation</source>
       <translation>弾性方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="436"/>
+      <location filename="../../../femcommands/commands.py" line="433"/>
       <source>Creates an equation for elasticity (stress)</source>
       <translation>弾性のための方程式を作成（応力）</translation>
     </message>
@@ -7559,12 +7559,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="446"/>
+      <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Electricforce Equation</source>
       <translation>電気力方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="449"/>
+      <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Creates an equation for electric forces</source>
       <translation>電気力のための方程式を作成</translation>
     </message>
@@ -7572,12 +7572,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="459"/>
+      <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Electrostatic Equation</source>
       <translation>静電方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="462"/>
+      <location filename="../../../femcommands/commands.py" line="459"/>
       <source>Creates an equation for electrostatic</source>
       <translation>静電のための方程式を作成</translation>
     </message>
@@ -7585,12 +7585,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
+      <location filename="../../../femcommands/commands.py" line="469"/>
       <source>Flow Equation</source>
       <translation>流れ方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>Creates an equation for flow</source>
       <translation>流れのための方程式を作成</translation>
     </message>
@@ -7598,12 +7598,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationFlux</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="483"/>
+      <location filename="../../../femcommands/commands.py" line="480"/>
       <source>Flux Equation</source>
       <translation>流束方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="484"/>
+      <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Creates an equation for flux</source>
       <translation>流束のための方程式を作成</translation>
     </message>
@@ -7611,12 +7611,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationHeat</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="494"/>
+      <location filename="../../../femcommands/commands.py" line="491"/>
       <source>Heat Equation</source>
       <translation>熱方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
+      <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Creates an equation for heat</source>
       <translation>熱のための方程式を作成</translation>
     </message>
@@ -7624,12 +7624,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="507"/>
+      <location filename="../../../femcommands/commands.py" line="504"/>
       <source>Magnetodynamic Equation</source>
       <translation>磁気力学方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="511"/>
+      <location filename="../../../femcommands/commands.py" line="508"/>
       <source>Creates an equation for magnetodynamic forces</source>
       <translation>磁気力学的な力のための方程式を作成</translation>
     </message>
@@ -7637,12 +7637,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="523"/>
+      <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Magnetodynamic 2D Equation</source>
       <translation>2次元磁気力学方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="527"/>
+      <location filename="../../../femcommands/commands.py" line="524"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
       <translation>2次元の磁気力学的な力のための方程式を作成</translation>
     </message>
@@ -7650,12 +7650,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_EquationStaticCurrent</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="537"/>
+      <location filename="../../../femcommands/commands.py" line="534"/>
       <source>Static Current Equation</source>
       <translation>静電方程式</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="540"/>
+      <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates an equation for static current</source>
       <translation>静電流のための方程式を作成</translation>
     </message>
@@ -7663,12 +7663,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
+      <location filename="../../../femcommands/commands.py" line="579"/>
       <source>Fluid Material</source>
       <translation>流体材料</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="583"/>
+      <location filename="../../../femcommands/commands.py" line="580"/>
       <source>Creates a fluid material</source>
       <translation>流体材料を作成</translation>
     </message>
@@ -7676,12 +7676,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
+      <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Non-Linear Mechanical Material</source>
       <translation>非線形機械材料</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="598"/>
+      <location filename="../../../femcommands/commands.py" line="595"/>
       <source>Creates a non-linear mechanical material</source>
       <translation>非線形機械材料を作成</translation>
     </message>
@@ -7689,12 +7689,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="676"/>
+      <location filename="../../../femcommands/commands.py" line="673"/>
       <source>Solid Material</source>
       <translation>固体材料</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="678"/>
+      <location filename="../../../femcommands/commands.py" line="675"/>
       <source>Creates a solid material</source>
       <translation>固体材料を作成</translation>
     </message>
@@ -7702,12 +7702,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="730"/>
+      <location filename="../../../femcommands/commands.py" line="727"/>
       <source>Mesh Boundary Layer</source>
       <translation>メッシュ境界レイヤー</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="733"/>
+      <location filename="../../../femcommands/commands.py" line="730"/>
       <source>Creates a mesh boundary layer</source>
       <translation>メッシュ境界レイヤーを作成</translation>
     </message>
@@ -7715,12 +7715,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="743"/>
+      <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Clear FEM Mesh</source>
       <translation>FEMメッシュを削除</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="744"/>
+      <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Clears the mesh of a FEM mesh object</source>
       <translation>FEMメッシュオブジェクトのメッシュを削除</translation>
     </message>
@@ -7728,12 +7728,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="837"/>
+      <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Mesh Group</source>
       <translation>メッシュグループ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
+      <location filename="../../../femcommands/commands.py" line="835"/>
       <source>Creates a mesh group</source>
       <translation>メッシュグループを作成</translation>
     </message>
@@ -7741,12 +7741,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="913"/>
+      <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Show Result</source>
       <translation>結果を表示</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="917"/>
+      <location filename="../../../femcommands/commands.py" line="914"/>
       <source>Shows and visualizes the selected result data</source>
       <translation>選択した結果データを表示、可視化</translation>
     </message>
@@ -7754,12 +7754,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="929"/>
+      <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Purge Results</source>
       <translation>結果を削除</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="933"/>
+      <location filename="../../../femcommands/commands.py" line="930"/>
       <source>Purges all results from the active analysis</source>
       <translation>アクティブな解析からすべての結果を削除</translation>
     </message>
@@ -7767,12 +7767,12 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1242"/>
+      <location filename="../../../femcommands/commands.py" line="1199"/>
       <source>Glyph Filter</source>
       <translation>グリフ・フィルター</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1247"/>
+      <location filename="../../../femcommands/commands.py" line="1204"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation>頂点データ可視化のためにメッシュ頂点にグリフを追加する後処理フィルターを追加</translation>
     </message>
@@ -7963,7 +7963,7 @@ Leave blank to use default Python executable</source>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
       <translation>解析をアクティブ化</translation>
     </message>

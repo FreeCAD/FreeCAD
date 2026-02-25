@@ -79,6 +79,7 @@ set(Part_tests
     parttests/ColorTransparencyTest.py
     parttests/TopoShapeTest.py
     parttests/TestTangentMode3-0.21.FCStd
+    parttests/TestPartMirror.py
 )
 
 add_custom_target(PartScripts ALL SOURCES

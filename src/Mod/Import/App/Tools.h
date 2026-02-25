@@ -22,8 +22,7 @@
  *                                                                          *
  ****************************************************************************/
 
-#ifndef IMPORT_TOOLS_H
-#define IMPORT_TOOLS_H
+#pragma once
 
 #include <limits>
 
@@ -83,5 +82,3 @@ struct Tools
 };
 
 }  // namespace Import
-
-#endif  // IMPORT_IMPORTOCAF2_H

@@ -21,8 +21,7 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_MATERIALSAVE_H
-#define MATGUI_MATERIALSAVE_H
+#pragma once
 
 #include <memory>
 
@@ -104,5 +103,3 @@ private:
 };
 
 }  // namespace MatGui
-
-#endif  // MATGUI_MATERIALSAVE_H

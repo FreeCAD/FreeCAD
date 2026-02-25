@@ -385,15 +385,15 @@
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="37"/>
       <source>Radial distance</source>
-      <translation>Radialabstand</translation>
+      <translation>Radialer Abstand</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="57"/>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="68"/>
       <source>Distance from one element in one ring of the array to the next element in the same ring.
 It cannot be zero.</source>
-      <translation>Abstand von einem Element in einem Ring des Anordnung zum nächsten Element im gleichen Ring.
-Es kann nicht Null sein.</translation>
+      <translation>Abstand von einem Element in einem Ring der Anordnung zum nächsten Element im gleichen Ring.
+Er kann nicht Null sein.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_CircularArray.ui" line="61"/>
@@ -492,7 +492,7 @@ Eine Verknüpfungsanordnung ist effizienter, wenn mehrere Kopien erstellt werden
       <location filename="../ui/TaskPanel_OrthoArray.ui" line="79"/>
       <source>Number of elements in the array in the specified direction, including a copy of the original object.
 The number must be at least 1 in each direction.</source>
-      <translation>Anzahl der Elemente im Array in der angegebenen Richtung, inklusive einer Kopie des ursprünglichen Objekts.
+      <translation>Anzahl der Elemente in der Anordnung in der angegebenen Richtung, inklusive einer Kopie des ursprünglichen Objekts.
 Die Zahl muss mindestens 1 in jede Richtung sein.</translation>
     </message>
     <message>
@@ -675,8 +675,8 @@ Der maximale Absolutwert beträgt 360 Grad.</translation>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="78"/>
       <source>Number of elements in the array, including a copy of the original object.
 It must be at least 2.</source>
-      <translation>Anzahl der Elemente im Array, inklusive einer Kopie des Originalobjekts.
-Es muss mindestens 2 sein.</translation>
+      <translation>Anzahl der Elemente in der Anordnung, inklusive einer Kopie des Originalobjekts.
+Es müssen mindestens 2 sein.</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_PolarArray.ui" line="71"/>
@@ -772,7 +772,7 @@ Eine Verknüpfungsanordnung ist effizienter, wenn mehrere Kopien erstellt werden
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Koordinaten relativ zum globalen Koordinatensystem.
-Deaktivieren um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</translation>
+Deaktivieren, um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</translation>
     </message>
     <message>
       <location filename="../ui/TaskShapeString.ui" line="89"/>
@@ -988,7 +988,7 @@ die Ebene in die Mitte der Ansicht verschoben.</translation>
       <location filename="../ui/TaskSelectPlane.ui" line="240"/>
       <location filename="../ui/TaskSelectPlane.ui" line="250"/>
       <source>The distance at which a point can be snapped to</source>
-      <translation>Die Entfernung, in der ein Punkt gefangen werden kann</translation>
+      <translation>Die Entfernung, in der auf einen Punkt eingerastet werden kann</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="265"/>
@@ -1003,7 +1003,7 @@ die Ebene in die Mitte der Ansicht verschoben.</translation>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="290"/>
       <source>Next</source>
-      <translation>Weiter</translation>
+      <translation>Nächste</translation>
     </message>
     <message>
       <location filename="../ui/TaskSelectPlane.ui" line="177"/>
@@ -1039,7 +1039,7 @@ die Ebene in die Mitte der Ansicht verschoben.</translation>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="26"/>
       <source>Load preset</source>
-      <translation>Lade Voreinstellung</translation>
+      <translation>Voreinstellung laden</translation>
     </message>
     <message>
       <location filename="../ui/TaskPanel_SetStyle.ui" line="57"/>
@@ -2546,14 +2546,14 @@ Hauptrasterlinien sind breiter als Nebenrasterlinien.</translation>
       <location filename="../ui/preferences-draftsnap.ui" line="465"/>
       <location filename="../ui/preferences-draftsnap.ui" line="503"/>
       <source>Ctrl</source>
-      <translation>Strg - Taste</translation>
+      <translation>Strg-Taste</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="435"/>
       <location filename="../ui/preferences-draftsnap.ui" line="470"/>
       <location filename="../ui/preferences-draftsnap.ui" line="508"/>
       <source>Alt</source>
-      <translation>Alt - Taste</translation>
+      <translation>Alt-Taste</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="443"/>
@@ -2575,7 +2575,7 @@ Hauptrasterlinien sind breiter als Nebenrasterlinien.</translation>
       <source>If checked, the grid will always be visible in new views.
 Use Draft ToggleGrid to change this for the active view.</source>
       <translation>Wenn aktiviert, ist das Raster in neuen Ansichten immer sichtbar.
-Draft Raster ein-/ausblenden verwenden, um dies für die aktive Ansicht zu ändern.</translation>
+Draft Raster umschalten verwenden, um dies für die aktive Ansicht zu ändern.</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftsnap.ui" line="188"/>
@@ -2997,7 +2997,7 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="790"/>
       <source>Only show the Draft Snap toolbar during commands</source>
-      <translation>Die Symbolleiste Draft-Einrasten nur während der Ausführung von Befehlen anzeigen</translation>
+      <translation>Die Symbolleiste Draft Einrasten nur während der Ausführung von Befehlen anzeigen</translation>
     </message>
     <message>
       <location filename="../ui/preferences-draftinterface.ui" line="806"/>
@@ -3155,8 +3155,8 @@ gefärbt, wenn sie mit der X-, Y- oder Z-Achse des globalen Koordinatensystems �
     <message>
       <location filename="../../DraftGui.py" line="553"/>
       <location filename="../../DraftGui.py" line="582"/>
-      <location filename="../../DraftGui.py" line="1664"/>
-      <location filename="../../DraftGui.py" line="1682"/>
+      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1706"/>
       <location filename="../../draftguitools/gui_groups.py" line="273"/>
       <source>None</source>
       <translation>Ohne</translation>
@@ -3279,7 +3279,7 @@ if is the first point to set</source>
       <source>Coordinates relative to global coordinate system.
 Uncheck to use working plane coordinate system</source>
       <translation>Koordinaten relativ zum globalen Koordinatensystem.
-Deaktivieren um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</translation>
+Deaktivieren, um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</translation>
     </message>
     <message>
       <location filename="../../DraftGui.py" line="635"/>
@@ -3292,12 +3292,12 @@ Deaktivieren um das Koordinatensystem der aktuellen Arbeitsebene zu verwenden</t
       <translation>Beendet die aktuelle Zeichen- oder Bearbeitungsoperation</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1889"/>
+      <location filename="../../DraftGui.py" line="1913"/>
       <source>Modify Objects</source>
       <translation>Objekte ändern</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2046"/>
+      <location filename="../../DraftGui.py" line="2070"/>
       <source>Facebinder Elements</source>
       <translation>Flächenverbinder-Elemente</translation>
     </message>
@@ -3390,8 +3390,8 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
     </message>
     <message>
       <location filename="../../DraftGui.py" line="738"/>
-      <location filename="../../DraftGui.py" line="1670"/>
-      <location filename="../../DraftGui.py" line="1688"/>
+      <location filename="../../DraftGui.py" line="1694"/>
+      <location filename="../../DraftGui.py" line="1712"/>
       <source>Autogroup off</source>
       <translation>Autogruppe aus</translation>
     </message>
@@ -3460,12 +3460,12 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Trimex</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1054"/>
-      <location filename="../../DraftGui.py" line="1056"/>
-      <location filename="../../DraftGui.py" line="1057"/>
-      <location filename="../../DraftGui.py" line="1059"/>
-      <location filename="../../DraftGui.py" line="1060"/>
-      <location filename="../../DraftGui.py" line="1061"/>
+      <location filename="../../DraftGui.py" line="1078"/>
+      <location filename="../../DraftGui.py" line="1080"/>
+      <location filename="../../DraftGui.py" line="1081"/>
+      <location filename="../../DraftGui.py" line="1083"/>
+      <location filename="../../DraftGui.py" line="1084"/>
+      <location filename="../../DraftGui.py" line="1085"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="122"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="123"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="124"/>
@@ -3473,12 +3473,12 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Lokales {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1063"/>
-      <location filename="../../DraftGui.py" line="1064"/>
-      <location filename="../../DraftGui.py" line="1065"/>
-      <location filename="../../DraftGui.py" line="1067"/>
-      <location filename="../../DraftGui.py" line="1068"/>
-      <location filename="../../DraftGui.py" line="1069"/>
+      <location filename="../../DraftGui.py" line="1087"/>
+      <location filename="../../DraftGui.py" line="1088"/>
+      <location filename="../../DraftGui.py" line="1089"/>
+      <location filename="../../DraftGui.py" line="1091"/>
+      <location filename="../../DraftGui.py" line="1092"/>
+      <location filename="../../DraftGui.py" line="1093"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="118"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="119"/>
       <location filename="../../drafttaskpanels/task_shapestring.py" line="120"/>
@@ -3486,22 +3486,22 @@ Steht nicht zur Verfügung, wenn die Einstellung 'Part-Grundkörper verwenden' a
       <translation>Globales {}</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="1678"/>
+      <location filename="../../DraftGui.py" line="1702"/>
       <source>Autogroup:</source>
       <translation>Autogruppe:</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2043"/>
+      <location filename="../../DraftGui.py" line="2067"/>
       <source>Faces</source>
       <translation>Flächen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2044"/>
+      <location filename="../../DraftGui.py" line="2068"/>
       <source>Remove</source>
       <translation>Entfernen</translation>
     </message>
     <message>
-      <location filename="../../DraftGui.py" line="2045"/>
+      <location filename="../../DraftGui.py" line="2069"/>
       <source>Add</source>
       <translation>Hinzufügen</translation>
     </message>
@@ -3626,43 +3626,43 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
       <location filename="../../draftmake/make_patharray.py" line="327"/>
       <location filename="../../draftutils/utils.py" line="1073"/>
       <location filename="../../draftutils/groups.py" line="100"/>
-      <location filename="../../draftutils/gui_utils.py" line="906"/>
+      <location filename="../../draftutils/gui_utils.py" line="915"/>
       <source>No active document. Aborting.</source>
       <translation>Kein aktives Dokument. Abbruch.</translation>
     </message>
     <message>
       <location filename="../../draftutils/groups.py" line="136"/>
-      <location filename="../../draftutils/gui_utils.py" line="914"/>
+      <location filename="../../draftutils/gui_utils.py" line="923"/>
       <source>Wrong input: object {} not in document.</source>
       <translation>Falsche Eingabe: Objekt {} nicht im Dokument.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="166"/>
+      <location filename="../../draftutils/gui_utils.py" line="175"/>
       <source>Unable to insert new object into a scaled part</source>
       <translation>Kann kein neues Objekt in einen skaliertes Teil einfügen</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="274"/>
+      <location filename="../../draftutils/gui_utils.py" line="283"/>
       <source>Symbol not implemented. Using a default symbol.</source>
       <translation>Symbol nicht implementiert. Ein Standardsymbol wird verwendet.</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="788"/>
+      <location filename="../../draftutils/gui_utils.py" line="797"/>
       <source>image is Null</source>
       <translation>Bild ist Null</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="796"/>
+      <location filename="../../draftutils/gui_utils.py" line="805"/>
       <source>filename does not exist on the system or in the resource file</source>
       <translation>Dateiname existiert nicht auf dem System oder in der Ressourcendatei</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="855"/>
+      <location filename="../../draftutils/gui_utils.py" line="864"/>
       <source>unable to load texture</source>
       <translation>Textur kann nicht geladen werden</translation>
     </message>
     <message>
-      <location filename="../../draftutils/gui_utils.py" line="922"/>
+      <location filename="../../draftutils/gui_utils.py" line="931"/>
       <source>Does not have 'ViewObject.RootNode'.</source>
       <translation>Hat keinen 'ViewObject.RootNode'.</translation>
     </message>
@@ -3960,7 +3960,7 @@ Bitte die DWG-Datei in einen Verzeichnispfad ohne Leerzeichen und nicht-lateinis
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="83"/>
       <source>%1 snap</source>
-      <translation>%1 fangen</translation>
+      <translation>%1 einrasten</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_tool_utils.py" line="100"/>
@@ -6062,12 +6062,12 @@ Um FreeCAD das Herunterladen dieser Bibliotheken zu ermöglichen, mit Ja antwort
       <translation>_BSpline.createGeometry: Geschlossene Kurve mit identischem Start- und Endpunkt gefunden. Geometrie wurde nicht aktualisiert.</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="104"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="105"/>
       <source>Writing camera position</source>
       <translation>Kameraposition schreiben</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="122"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="123"/>
       <source>Writing objects shown/hidden state</source>
       <translation>Schreibe sichtbare Objekte/ausgeblendeter Zustand</translation>
     </message>
@@ -7699,34 +7699,34 @@ den Werten der Eigenschaften 'Erster Winkel' und 'Letzter Winkel' berechnet wird
       <translation>Textfarbe</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="76"/>
+      <location filename="../../draftviewproviders/view_label.py" line="77"/>
       <location filename="../../draftviewproviders/view_text.py" line="60"/>
       <source>Line spacing (relative to font size)</source>
       <translation>Zeilenabstand (relativ zur Schriftgröße)</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="59"/>
+      <location filename="../../draftviewproviders/view_label.py" line="60"/>
       <source>Vertical alignment</source>
       <translation>Vertikale Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="67"/>
+      <location filename="../../draftviewproviders/view_label.py" line="68"/>
       <source>Maximum number of characters on each line of the text box</source>
       <translation>Maximale Anzahl von Zeichen pro Zeile im Textfeld</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="71"/>
+      <location filename="../../draftviewproviders/view_label.py" line="72"/>
       <location filename="../../draftviewproviders/view_text.py" line="55"/>
       <source>Horizontal alignment</source>
       <translation>Horizontale Ausrichtung</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="89"/>
+      <location filename="../../draftviewproviders/view_label.py" line="90"/>
       <source>The type of frame around the text of this object</source>
       <translation>Die Art des Rahmens um den Text dieses Objekts</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_label.py" line="94"/>
+      <location filename="../../draftviewproviders/view_label.py" line="95"/>
       <source>Display a leader line or not</source>
       <translation>Eine Hinweislinie anzeigen oder nicht</translation>
     </message>
@@ -7897,12 +7897,12 @@ beyond the dimension line</source>
       <translation>Zeigt die Maßlinie und Pfeile an</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="50"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="51"/>
       <source>The display length of this section plane</source>
       <translation>Die Länge der Darstellung dieser Schnittebene</translation>
     </message>
     <message>
-      <location filename="../../draftviewproviders/view_wpproxy.py" line="53"/>
+      <location filename="../../draftviewproviders/view_wpproxy.py" line="54"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Die Größe der Pfeile dieser Schnittebene</translation>
     </message>
@@ -8402,7 +8402,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="91"/>
       <source>Snaps to the midpoint of edges</source>
-      <translation>Fängt den Mittelpunkt von Kanten</translation>
+      <translation>Rastet auf Mittelpunkte von Kanten ein</translation>
     </message>
   </context>
   <context>
@@ -8441,7 +8441,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="146"/>
       <source>Snaps to the intersection of 2 edges, and the intersection of a face and an edge</source>
-      <translation>Fängt den Schnittpunkt zweier Kanten und den Schnittpunkt einer Fläche und einer Kante</translation>
+      <translation>Rastet auf der Kreuzung zweier Kanten oder dem Durchstoßpunkt einer Kante durch eine Fläche ein</translation>
     </message>
   </context>
   <context>
@@ -8454,7 +8454,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="164"/>
       <source>Snaps to an imaginary line parallel to straight edges</source>
-      <translation>Fängt auf eine imaginären Linie parallel zu geraden Kanten</translation>
+      <translation>Rastet auf einer imaginären Linie parallel zu geraden Kanten ein</translation>
     </message>
   </context>
   <context>
@@ -8462,12 +8462,12 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="179"/>
       <source>Snap Endpoint</source>
-      <translation>Endpunkt fangen</translation>
+      <translation>Einrasten auf Endpunkt</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="180"/>
       <source>Snaps to the endpoints of edges</source>
-      <translation>Fängt die Endpunkte von Kanten</translation>
+      <translation>Rastet auf dem Endpunkt einer Kante ein</translation>
     </message>
   </context>
   <context>
@@ -8480,7 +8480,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="199"/>
       <source>Snaps to the special cardinal points on circular edges, at multiples of 30° and 45°</source>
-      <translation>Fängt auf spezielle Kardinalpunkte kreisförmiger Kanten, bei Vielfachen von 30° und 45°</translation>
+      <translation>Rastet auf bestimmte Punkte kreisförmiger Kanten ein, bei den Vielfachen von 30° und 45°</translation>
     </message>
   </context>
   <context>
@@ -8493,7 +8493,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="218"/>
       <source>Snaps to the center point of faces and circular edges, and to the placement point of working plane proxies and building parts</source>
-      <translation>Fängt auf Mittelpunkte von Flächen und kreisförmigen Kanten, und auf dem Positionierungspunkt von Arbeitsebenen Proxies und Gebäudeteilen</translation>
+      <translation>Rastet auf Mittelpunkte von Flächen und kreisförmigen Kanten ein, sowie auf dem Positionierungspunkt von Arbeitsebenen-Proxies und Gebäudeteilen</translation>
     </message>
   </context>
   <context>
@@ -8506,7 +8506,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="237"/>
       <source>Snaps to an imaginary line that extends beyond the endpoints of straight edges</source>
-      <translation>Fängt an einer imaginären Linie, die über die Endpunkte gerader Kanten hinausragt</translation>
+      <translation>Rastet auf einer imaginären Linie ein, die über die Endpunkte gerader Kanten hinausragt</translation>
     </message>
   </context>
   <context>
@@ -8514,12 +8514,12 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="252"/>
       <source>Snap Near</source>
-      <translation>Fangen in der Nähe</translation>
+      <translation>Einrasten in der Nähe</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="255"/>
       <source>Snaps to the nearest point on faces and edges</source>
-      <translation>Fängt an den nächstgelegenen Punkt auf Flächen und Kanten ein</translation>
+      <translation>Rastet an den nächstgelegenen Punkt auf Flächen und Kanten ein</translation>
     </message>
   </context>
   <context>
@@ -8527,12 +8527,12 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="270"/>
       <source>Snap Ortho</source>
-      <translation>Fang Orthogonal</translation>
+      <translation>Einrasten Ortho</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="274"/>
       <source>Snaps to imaginary lines that cross the previous point at multiples of 45°</source>
-      <translation>Fängt an imaginären Linien, die den vorherigen Punkt in Vielfachen von 45° kreuzen</translation>
+      <translation>Rastet auf imaginären Linien ein, die in einem Winkel, der ein Vielfaches von 45° beträgt, durch den vorherigen Punkt verlaufen</translation>
     </message>
   </context>
   <context>
@@ -8540,12 +8540,12 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="289"/>
       <source>Snap Special</source>
-      <translation>Fang Spezial</translation>
+      <translation>Einrasten spezial</translation>
     </message>
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="292"/>
       <source>Snaps to special points defined by the object</source>
-      <translation>Fängt an speziellen Punkten, die durch das Objekt definiert sind</translation>
+      <translation>Rastet auf spezielle Punkte ein, die vom Objekt bestimmt werden</translation>
     </message>
   </context>
   <context>
@@ -8558,7 +8558,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="310"/>
       <source>Shows temporary X and Y dimensions</source>
-      <translation>Zeigt temporäre X  und Y Maße</translation>
+      <translation>Zeigt temporäre X- und Y-Maße an</translation>
     </message>
   </context>
   <context>
@@ -8571,7 +8571,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="328"/>
       <source>Projects snap points onto the current working plane</source>
-      <translation>Projiziert Fangpunkte auf die aktuelle Arbeitsebene</translation>
+      <translation>Projiziert Einrastpunkte auf die aktuelle Arbeitsebene</translation>
     </message>
   </context>
   <context>
@@ -8584,7 +8584,7 @@ Die anfängliche Projektionsrichtung ist entgegengesetzt zur aktuell aktiven Bli
     <message>
       <location filename="../../draftguitools/gui_snaps.py" line="346"/>
       <source>Shows the snap toolbar if it is hidden</source>
-      <translation>Zeigt die Werkzeugleiste Draft Fang an, wenn diese ausgeblendet ist</translation>
+      <translation>Zeigt die Symbolleiste Draft Einrasten an, wenn diese ausgeblendet ist</translation>
     </message>
   </context>
   <context>

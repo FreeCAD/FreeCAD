@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_INVENTOR_SODRAWINGGRID_H
-#define GUI_INVENTOR_SODRAWINGGRID_H
+#pragma once
 
 #include <Inventor/nodes/SoShape.h>
 #include <FCGlobal.h>
@@ -60,5 +59,3 @@ private:
 }  // namespace Inventor
 
 }  // namespace Gui
-
-#endif  // GUI_INVENTOR_SODRAWINGGRID_H

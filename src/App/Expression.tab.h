@@ -37,8 +37,7 @@
    especially those whose name start with YY_ or yy_.  They are
    private implementation details that can be changed or removed.  */
 
-#ifndef YY_YY_EXPRESSION_TAB_H_INCLUDED
-# define YY_YY_EXPRESSION_TAB_H_INCLUDED
+#pragma once
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -91,6 +90,3 @@ extern YYSTYPE yylval;
 
 
 int yyparse (void);
-
-
-#endif /* !YY_YY_EXPRESSION_TAB_H_INCLUDED  */

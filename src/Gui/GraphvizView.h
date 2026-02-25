@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_GRAPHVIZVIEW_H
-#define GUI_GRAPHVIZVIEW_H
+#pragma once
 
 #include <fastsignals/signal.h>
 
@@ -89,5 +88,3 @@ private:
 };
 
 }  // namespace Gui
-
-#endif  // GUI_GRAPHVIZVIEW_H

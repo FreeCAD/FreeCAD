@@ -76,7 +76,7 @@ class TestCcxTools(unittest.TestCase):
         # set up
         from femexamples.boxanalysis_frequency import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         base_name = get_namefromdef("test_")
         res_obj_name = "CCX_EigenMode_1_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
@@ -100,7 +100,7 @@ class TestCcxTools(unittest.TestCase):
         # set up
         from femexamples.boxanalysis_static import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         base_name = get_namefromdef("test_")
         res_obj_name = "CCX_Results"
         analysis_dir = testtools.get_fem_test_tmp_dir(self.pre_dir_name + base_name)
@@ -201,21 +201,21 @@ class TestCcxTools(unittest.TestCase):
     def test_ccx_cantilever_faceload(self):
         from femexamples.ccx_cantilever_faceload import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
     def test_ccx_cantilever_nodeload(self):
         from femexamples.ccx_cantilever_nodeload import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
     def test_ccx_cantilever_prescribeddisplacement(self):
         from femexamples.ccx_cantilever_prescribeddisplacement import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -256,7 +256,7 @@ class TestCcxTools(unittest.TestCase):
     def test_constraint_selfweight_cantilever(self):
         from femexamples.constraint_selfweight_cantilever import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************
@@ -333,7 +333,7 @@ class TestCcxTools(unittest.TestCase):
     def test_thermomech_bimetal(self):
         from femexamples.thermomech_bimetal import setup
 
-        setup(self.document, "ccxtools")
+        setup(self.document, "ccxtools", test_mode=True)
         self.input_file_writing_test(get_namefromdef("test_"))
 
     # ********************************************************************************************

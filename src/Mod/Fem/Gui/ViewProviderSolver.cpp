@@ -45,6 +45,11 @@ ViewProviderSolver::ViewProviderSolver()
 
 ViewProviderSolver::~ViewProviderSolver() = default;
 
+std::vector<std::string> ViewProviderSolver::getDisplayModes() const
+{
+    return {"Solver"};
+}
+
 bool ViewProviderSolver::onDelete(const std::vector<std::string>&)
 {
     // warn the user if the object has unselected children

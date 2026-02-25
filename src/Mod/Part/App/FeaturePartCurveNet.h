@@ -22,8 +22,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef PART_FeaturePartCurveNet_H
-#define PART_FeaturePartCurveNet_H
+#pragma once
 
 #include "PartFeature.h"
 
@@ -54,6 +53,3 @@ public:
 };
 
 }  // namespace Part
-
-
-#endif  // PART_FeaturePartCurveNet_H

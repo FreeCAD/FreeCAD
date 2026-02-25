@@ -3752,7 +3752,7 @@ with harmonic/oscillating driving current</source>
       <translation>Gruplar</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="316"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
       <source>Are you sure you want to continue?</source>
       <translation>Devam etmek istediğinizden emin misiniz?</translation>
     </message>
@@ -4125,7 +4125,7 @@ Kullanılabilecek değişkenler için aşağıdaki açıklama kutusuna bakın.</
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="320"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="324"/>
       <source>Object dependencies</source>
       <translation>Nesne bağımlılıkları</translation>
     </message>
@@ -5437,12 +5437,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_Analysis</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="61"/>
+      <location filename="../../../femcommands/commands.py" line="58"/>
       <source>New Analysis</source>
       <translation>Yeni Analiz</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="65"/>
+      <location filename="../../../femcommands/commands.py" line="62"/>
       <source>Creates an analysis container with default solver</source>
       <translation>Varsayılan çözücüyle bir analiz kapsayıcısı oluşturur</translation>
     </message>
@@ -5450,12 +5450,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="161"/>
+      <location filename="../../../femcommands/commands.py" line="158"/>
       <source>Remove All Clipping Planes</source>
       <translation>Tüm Kırpma Düzlemlerini Kaldır</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="164"/>
+      <location filename="../../../femcommands/commands.py" line="161"/>
       <source>Removes all clipping planes</source>
       <translation>Tüm kırpma düzlemlerini kaldırır</translation>
     </message>
@@ -5463,12 +5463,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_Examples</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="551"/>
+      <location filename="../../../femcommands/commands.py" line="548"/>
       <source>FEM Examples</source>
       <translation>FEM Örnekleri</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="552"/>
+      <location filename="../../../femcommands/commands.py" line="549"/>
       <source>Opens the FEM examples</source>
       <translation>FEM örneklerini açar</translation>
     </message>
@@ -5476,12 +5476,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_MaterialEditor</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="566"/>
+      <location filename="../../../femcommands/commands.py" line="563"/>
       <source>Material Editor</source>
       <translation>Malzeme Düzenleyicisi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="569"/>
+      <location filename="../../../femcommands/commands.py" line="566"/>
       <source>Opens the FreeCAD material editor</source>
       <translation>FreeCAD malzeme düzenleyicisini açar</translation>
     </message>
@@ -5489,12 +5489,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_MaterialReinforced</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="662"/>
+      <location filename="../../../femcommands/commands.py" line="659"/>
       <source>Reinforced Material (Concrete)</source>
       <translation>Donatılı Malzeme (Beton)</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="666"/>
+      <location filename="../../../femcommands/commands.py" line="663"/>
       <source>Creates a material for reinforced matrix material such as concrete</source>
       <translation>Beton gibi donatılı matris malzemeler için bir malzeme oluşturur</translation>
     </message>
@@ -5502,12 +5502,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_FEMMesh2Mesh</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="688"/>
+      <location filename="../../../femcommands/commands.py" line="685"/>
       <source>FEM Mesh to Mesh</source>
       <translation>FEM Ağından Ağa</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="691"/>
+      <location filename="../../../femcommands/commands.py" line="688"/>
       <source>Converts the surface of a FEM mesh to a mesh</source>
       <translation>Bir FEM ağının yüzeyini bir ağ nesnesine dönüştürür</translation>
     </message>
@@ -5515,12 +5515,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="763"/>
+      <location filename="../../../femcommands/commands.py" line="760"/>
       <source>Display Mesh Info</source>
       <translation>Ağ Bilgisini Göster</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="764"/>
+      <location filename="../../../femcommands/commands.py" line="761"/>
       <source>Displays FEM mesh information</source>
       <translation>FEM ağı bilgilerini görüntüler</translation>
     </message>
@@ -5528,12 +5528,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_MeshGmshFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="787"/>
+      <location filename="../../../femcommands/commands.py" line="784"/>
       <source>Mesh From Shape by Gmsh</source>
       <translation>Gmsh ile Şekilden Ağ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="790"/>
+      <location filename="../../../femcommands/commands.py" line="787"/>
       <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
       <translation>Gmsh ağ oluşturucusunu kullanarak bir şekilden FEM ağı oluşturur</translation>
     </message>
@@ -5541,12 +5541,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_MeshNetgenFromShape</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="848"/>
+      <location filename="../../../femcommands/commands.py" line="845"/>
       <source>Mesh From Shape by Netgen</source>
       <translation>Netgen ile Şekilden Ağ</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="852"/>
+      <location filename="../../../femcommands/commands.py" line="849"/>
       <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
       <translation>Netgen dahili ağ oluşturucusuyla katı veya yüz şekilden FEM ağı oluşturur</translation>
     </message>
@@ -5554,12 +5554,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverCalculiXCcxTools</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1045"/>
+      <location filename="../../../femcommands/commands.py" line="1042"/>
       <source>Solver CalculiX Standard</source>
       <translation>CalculiX Standard Çözücü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1050"/>
+      <location filename="../../../femcommands/commands.py" line="1047"/>
       <source>Creates a standard FEM solver CalculiX with ccx tools</source>
       <translation>ccx araçlarıyla standart CalculiX FEM çözücüsü oluşturur</translation>
     </message>
@@ -5567,12 +5567,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverControl</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1101"/>
+      <location filename="../../../femcommands/commands.py" line="1098"/>
       <source>Solver Job Control</source>
       <translation>Çözücü İş Denetimi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1106"/>
+      <location filename="../../../femcommands/commands.py" line="1103"/>
       <source>Changes solver attributes and runs the calculations for the selected solver</source>
       <translation>Çözücü özniteliklerini değiştirir ve seçili çözücü için hesaplamaları çalıştırır</translation>
     </message>
@@ -5580,12 +5580,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverElmer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1118"/>
+      <location filename="../../../femcommands/commands.py" line="1115"/>
       <source>Solver Elmer</source>
       <translation>Elmer Çözücü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1120"/>
+      <location filename="../../../femcommands/commands.py" line="1117"/>
       <source>Creates a FEM solver Elmer</source>
       <translation>Elmer FEM çözücüsü oluşturur</translation>
     </message>
@@ -5593,12 +5593,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverMystran</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1157"/>
+      <location filename="../../../femcommands/commands.py" line="1154"/>
       <source>Solver Mystran</source>
       <translation>Mystran Çözücü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1159"/>
+      <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Creates a FEM solver Mystran</source>
       <translation>Mystran FEM çözücüsü oluşturur</translation>
     </message>
@@ -5606,12 +5606,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverRun</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1169"/>
+      <location filename="../../../femcommands/commands.py" line="1166"/>
       <source>Run Solver</source>
       <translation>Çözücüyü Çalıştır</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1173"/>
+      <location filename="../../../femcommands/commands.py" line="1170"/>
       <source>Runs the calculations for the selected solver</source>
       <translation>Seçili çözücü için hesaplamaları çalıştırır</translation>
     </message>
@@ -5619,12 +5619,12 @@ yön olarak kullanılır</translation>
   <context>
     <name>FEM_SolverZ88</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1230"/>
+      <location filename="../../../femcommands/commands.py" line="1187"/>
       <source>Solver Z88</source>
       <translation>Z88 Çözücü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1232"/>
+      <location filename="../../../femcommands/commands.py" line="1189"/>
       <source>Creates a FEM solver Z88</source>
       <translation>Z88 FEM çözücüsü oluşturur</translation>
     </message>
@@ -6385,12 +6385,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintBodyHeatSource</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="201"/>
+      <location filename="../../../femcommands/commands.py" line="198"/>
       <source>Body Heat Source</source>
       <translation>Gövde Isı Kaynağı</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="204"/>
+      <location filename="../../../femcommands/commands.py" line="201"/>
       <source>Creates a body heat source</source>
       <translation>Bir gövde ısı kaynağı oluşturur</translation>
     </message>
@@ -6398,12 +6398,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintCentrif</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="214"/>
+      <location filename="../../../femcommands/commands.py" line="211"/>
       <source>Centrifugal Load</source>
       <translation>Merkezkaç Yükü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="215"/>
+      <location filename="../../../femcommands/commands.py" line="212"/>
       <source>Creates a centrifugal load</source>
       <translation>Bir merkezkaç yükü oluşturur</translation>
     </message>
@@ -6411,12 +6411,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintCurrentDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="228"/>
+      <location filename="../../../femcommands/commands.py" line="225"/>
       <source>Current Density Boundary Condition</source>
       <translation>Akım Yoğunluğu Sınır Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="232"/>
+      <location filename="../../../femcommands/commands.py" line="229"/>
       <source>Creates a current density boundary condition</source>
       <translation>Bir akım yoğunluğu sınır koşulu oluşturur</translation>
     </message>
@@ -6424,12 +6424,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintElectrostaticPotential</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="261"/>
+      <location filename="../../../femcommands/commands.py" line="258"/>
       <source>Electrostatic Potential Boundary Condition</source>
       <translation>Elektrostatik Potansiyel Sınır Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="265"/>
+      <location filename="../../../femcommands/commands.py" line="262"/>
       <source>Creates an electrostatic potential boundary condition</source>
       <translation>Bir elektrostatik potansiyel sınır koşulu oluşturur</translation>
     </message>
@@ -6437,12 +6437,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="277"/>
+      <location filename="../../../femcommands/commands.py" line="274"/>
       <source>Flow Velocity Boundary Condition</source>
       <translation>Akış Hızı Sınır Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="280"/>
+      <location filename="../../../femcommands/commands.py" line="277"/>
       <source>Creates a flow velocity boundary condition</source>
       <translation>Bir akış hızı sınır koşulu oluşturur</translation>
     </message>
@@ -6450,12 +6450,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintInitialPressure</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="308"/>
+      <location filename="../../../femcommands/commands.py" line="305"/>
       <source>Initial Pressure Condition</source>
       <translation>Başlangıç Basıncı Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="311"/>
+      <location filename="../../../femcommands/commands.py" line="308"/>
       <source>Creates an initial pressure condition</source>
       <translation>Bir başlangıç basıncı koşulu oluşturur</translation>
     </message>
@@ -6463,12 +6463,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintMagnetization</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="323"/>
+      <location filename="../../../femcommands/commands.py" line="320"/>
       <source>Magnetization Boundary Condition</source>
       <translation>Mıknatıslanma Sınır Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="326"/>
+      <location filename="../../../femcommands/commands.py" line="323"/>
       <source>Creates a magnetization boundary condition</source>
       <translation>Bir mıknatıslanma sınır koşulu oluşturur</translation>
     </message>
@@ -6476,12 +6476,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintSectionPrint</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="336"/>
+      <location filename="../../../femcommands/commands.py" line="333"/>
       <source>Section Print Feature</source>
       <translation>Kesit Yazdırma Özelliği</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="339"/>
+      <location filename="../../../femcommands/commands.py" line="336"/>
       <source>Creates a section print feature</source>
       <translation>Bir kesit yazdırma özelliği oluşturur</translation>
     </message>
@@ -6489,12 +6489,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintSelfWeight</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="349"/>
+      <location filename="../../../femcommands/commands.py" line="346"/>
       <source>Gravity Load</source>
       <translation>Yerçekimi Yükü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="350"/>
+      <location filename="../../../femcommands/commands.py" line="347"/>
       <source>Creates a gravity load</source>
       <translation>Bir yerçekimi yükü oluşturur</translation>
     </message>
@@ -6502,12 +6502,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_ConstraintTie</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="360"/>
+      <location filename="../../../femcommands/commands.py" line="357"/>
       <source>Tie Constraint</source>
       <translation>Bağlama Kısıtı</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="361"/>
+      <location filename="../../../femcommands/commands.py" line="358"/>
       <source>Creates a tie constraint</source>
       <translation>Bir bağlama kısıtı oluşturur</translation>
     </message>
@@ -6515,12 +6515,12 @@ Geçerli Python yolunda eşleşen bir modül bulunamadı.</translation>
   <context>
     <name>FEM_MeshRegion</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="902"/>
+      <location filename="../../../femcommands/commands.py" line="899"/>
       <source>Mesh Refinement</source>
       <translation>Ağ İnceltme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="903"/>
+      <location filename="../../../femcommands/commands.py" line="900"/>
       <source>Creates a FEM mesh refinement</source>
       <translation>Bir FEM ağ inceltmesi oluşturur</translation>
     </message>
@@ -6931,12 +6931,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_SolverCalculiX</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1071"/>
+      <location filename="../../../femcommands/commands.py" line="1068"/>
       <source>Solver CalculiX</source>
       <translation>CalculiX Çözücüsü</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1076"/>
+      <location filename="../../../femcommands/commands.py" line="1073"/>
       <source>Creates a FEM solver CalculiX</source>
       <translation>CalculiX FEM çözücüsü oluşturur</translation>
     </message>
@@ -7445,12 +7445,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ClippingPlaneAdd</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="105"/>
+      <location filename="../../../femcommands/commands.py" line="102"/>
       <source>Clipping Plane on Face</source>
       <translation>Yüz Üzerinde Kırpma Düzlemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="108"/>
+      <location filename="../../../femcommands/commands.py" line="105"/>
       <source>Adds a clipping plane on a selected face</source>
       <translation>Seçilen yüze bir kırpma düzlemi ekler</translation>
     </message>
@@ -7458,12 +7458,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ConstantVacuumPermittivity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="185"/>
+      <location filename="../../../femcommands/commands.py" line="182"/>
       <source>Constant Vacuum Permittivity</source>
       <translation>Sabit Vakum Permitivitesi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="189"/>
+      <location filename="../../../femcommands/commands.py" line="186"/>
       <source>Creates a constant vacuum permittivity to overwrite standard value</source>
       <translation>Standart değerin üzerine yazmak için sabit bir vakum permitivitesi oluşturur</translation>
     </message>
@@ -7471,12 +7471,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ConstraintElectricChargeDensity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="245"/>
+      <location filename="../../../femcommands/commands.py" line="242"/>
       <source>Electric Charge Density</source>
       <translation>Elektrik Yük Yoğunluğu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="248"/>
+      <location filename="../../../femcommands/commands.py" line="245"/>
       <source>Creates an electric charge density</source>
       <translation>Bir elektrik yük yoğunluğu oluşturur</translation>
     </message>
@@ -7484,12 +7484,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ConstraintInitialFlowVelocity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="292"/>
+      <location filename="../../../femcommands/commands.py" line="289"/>
       <source>Initial Flow Velocity Condition</source>
       <translation>Başlangıç Akış Hızı Koşulu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="296"/>
+      <location filename="../../../femcommands/commands.py" line="293"/>
       <source>Creates an initial flow velocity condition</source>
       <translation>Bir başlangıç akış hızı koşulu oluşturur</translation>
     </message>
@@ -7497,12 +7497,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ElementFluid1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="371"/>
+      <location filename="../../../femcommands/commands.py" line="368"/>
       <source>Fluid Section for 1D Flow</source>
       <translation>1B Akış için Akışkan Kesiti</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="374"/>
+      <location filename="../../../femcommands/commands.py" line="371"/>
       <source>Creates a fluid section for 1D flow</source>
       <translation>1B akış için bir akışkan kesiti oluşturur</translation>
     </message>
@@ -7510,12 +7510,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ElementGeometry1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="384"/>
+      <location filename="../../../femcommands/commands.py" line="381"/>
       <source>Beam Cross Section</source>
       <translation>Kiriş Kesiti</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="385"/>
+      <location filename="../../../femcommands/commands.py" line="382"/>
       <source>Creates a beam cross section</source>
       <translation>Bir kiriş kesiti oluşturur</translation>
     </message>
@@ -7523,12 +7523,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ElementGeometry2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="395"/>
+      <location filename="../../../femcommands/commands.py" line="392"/>
       <source>Shell Plate Thickness</source>
       <translation>Kabuk Plaka Kalınlığı</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="398"/>
+      <location filename="../../../femcommands/commands.py" line="395"/>
       <source>Creates a shell plate thickness</source>
       <translation>Bir kabuk plaka kalınlığı oluşturur</translation>
     </message>
@@ -7536,12 +7536,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ElementRotation1D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="408"/>
+      <location filename="../../../femcommands/commands.py" line="405"/>
       <source>Beam Rotation</source>
       <translation>Kiriş Rotasyonu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="409"/>
+      <location filename="../../../femcommands/commands.py" line="406"/>
       <source>Creates a beam rotation</source>
       <translation>Bir kiriş rotasyonu oluşturur</translation>
     </message>
@@ -7549,12 +7549,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationDeformation</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="419"/>
+      <location filename="../../../femcommands/commands.py" line="416"/>
       <source>Deformation Equation</source>
       <translation>Deformasyon Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="423"/>
+      <location filename="../../../femcommands/commands.py" line="420"/>
       <source>Creates an equation for deformation (nonlinear elasticity)</source>
       <translation>Deformasyon için (doğrusal olmayan elastisite) bir denklem oluşturur</translation>
     </message>
@@ -7562,12 +7562,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationElasticity</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="433"/>
+      <location filename="../../../femcommands/commands.py" line="430"/>
       <source>Elasticity Equation</source>
       <translation>Elastisite Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="436"/>
+      <location filename="../../../femcommands/commands.py" line="433"/>
       <source>Creates an equation for elasticity (stress)</source>
       <translation>Elastisite (gerilme) için bir denklem oluşturur</translation>
     </message>
@@ -7575,12 +7575,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationElectricforce</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="446"/>
+      <location filename="../../../femcommands/commands.py" line="443"/>
       <source>Electricforce Equation</source>
       <translation>Elektrik Kuvveti Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="449"/>
+      <location filename="../../../femcommands/commands.py" line="446"/>
       <source>Creates an equation for electric forces</source>
       <translation>Elektrik kuvvetleri için bir denklem oluşturur</translation>
     </message>
@@ -7588,12 +7588,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationElectrostatic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="459"/>
+      <location filename="../../../femcommands/commands.py" line="456"/>
       <source>Electrostatic Equation</source>
       <translation>Elektrostatik Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="462"/>
+      <location filename="../../../femcommands/commands.py" line="459"/>
       <source>Creates an equation for electrostatic</source>
       <translation>Elektrostatik için bir denklem oluşturur</translation>
     </message>
@@ -7601,12 +7601,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationFlow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="472"/>
+      <location filename="../../../femcommands/commands.py" line="469"/>
       <source>Flow Equation</source>
       <translation>Akış Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="473"/>
+      <location filename="../../../femcommands/commands.py" line="470"/>
       <source>Creates an equation for flow</source>
       <translation>Akış için bir denklem oluşturur</translation>
     </message>
@@ -7614,12 +7614,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationFlux</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="483"/>
+      <location filename="../../../femcommands/commands.py" line="480"/>
       <source>Flux Equation</source>
       <translation>Akı Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="484"/>
+      <location filename="../../../femcommands/commands.py" line="481"/>
       <source>Creates an equation for flux</source>
       <translation>Akı için bir denklem oluşturur</translation>
     </message>
@@ -7627,12 +7627,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationHeat</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="494"/>
+      <location filename="../../../femcommands/commands.py" line="491"/>
       <source>Heat Equation</source>
       <translation>Isı Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="495"/>
+      <location filename="../../../femcommands/commands.py" line="492"/>
       <source>Creates an equation for heat</source>
       <translation>Isı için bir denklem oluşturur</translation>
     </message>
@@ -7640,12 +7640,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationMagnetodynamic</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="507"/>
+      <location filename="../../../femcommands/commands.py" line="504"/>
       <source>Magnetodynamic Equation</source>
       <translation>Manyetodinamik Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="511"/>
+      <location filename="../../../femcommands/commands.py" line="508"/>
       <source>Creates an equation for magnetodynamic forces</source>
       <translation>Manyetodinamik kuvvetler için bir denklem oluşturur</translation>
     </message>
@@ -7653,12 +7653,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="523"/>
+      <location filename="../../../femcommands/commands.py" line="520"/>
       <source>Magnetodynamic 2D Equation</source>
       <translation>Manyetodinamik 2B Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="527"/>
+      <location filename="../../../femcommands/commands.py" line="524"/>
       <source>Creates an equation for 2D magnetodynamic forces</source>
       <translation>2B manyetodinamik kuvvetler için bir denklem oluşturur</translation>
     </message>
@@ -7666,12 +7666,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_EquationStaticCurrent</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="537"/>
+      <location filename="../../../femcommands/commands.py" line="534"/>
       <source>Static Current Equation</source>
       <translation>Durağan Akım Denklemi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="540"/>
+      <location filename="../../../femcommands/commands.py" line="537"/>
       <source>Creates an equation for static current</source>
       <translation>Durağan akım için bir denklem oluşturur</translation>
     </message>
@@ -7679,12 +7679,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MaterialFluid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="582"/>
+      <location filename="../../../femcommands/commands.py" line="579"/>
       <source>Fluid Material</source>
       <translation>Akışkan Malzeme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="583"/>
+      <location filename="../../../femcommands/commands.py" line="580"/>
       <source>Creates a fluid material</source>
       <translation>Bir akışkan malzeme oluşturur</translation>
     </message>
@@ -7692,12 +7692,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MaterialMechanicalNonlinear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="595"/>
+      <location filename="../../../femcommands/commands.py" line="592"/>
       <source>Non-Linear Mechanical Material</source>
       <translation>Doğrusal Olmayan Mekanik Malzeme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="598"/>
+      <location filename="../../../femcommands/commands.py" line="595"/>
       <source>Creates a non-linear mechanical material</source>
       <translation>Doğrusal olmayan bir mekanik malzeme oluşturur</translation>
     </message>
@@ -7705,12 +7705,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MaterialSolid</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="676"/>
+      <location filename="../../../femcommands/commands.py" line="673"/>
       <source>Solid Material</source>
       <translation>Katı Malzeme</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="678"/>
+      <location filename="../../../femcommands/commands.py" line="675"/>
       <source>Creates a solid material</source>
       <translation>Bir katı malzeme oluşturur</translation>
     </message>
@@ -7718,12 +7718,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MeshBoundaryLayer</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="730"/>
+      <location filename="../../../femcommands/commands.py" line="727"/>
       <source>Mesh Boundary Layer</source>
       <translation>Ağ Sınır Katmanı</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="733"/>
+      <location filename="../../../femcommands/commands.py" line="730"/>
       <source>Creates a mesh boundary layer</source>
       <translation>Bir ağ sınır katmanı oluşturur</translation>
     </message>
@@ -7731,12 +7731,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MeshClear</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="743"/>
+      <location filename="../../../femcommands/commands.py" line="740"/>
       <source>Clear FEM Mesh</source>
       <translation>FEM Ağını Temizle</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="744"/>
+      <location filename="../../../femcommands/commands.py" line="741"/>
       <source>Clears the mesh of a FEM mesh object</source>
       <translation>Bir FEM ağı nesnesinin ağını temizler</translation>
     </message>
@@ -7744,12 +7744,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_MeshGroup</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="837"/>
+      <location filename="../../../femcommands/commands.py" line="834"/>
       <source>Mesh Group</source>
       <translation>Ağ Grubu</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="838"/>
+      <location filename="../../../femcommands/commands.py" line="835"/>
       <source>Creates a mesh group</source>
       <translation>Bir ağ grubu oluşturur</translation>
     </message>
@@ -7757,12 +7757,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ResultShow</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="913"/>
+      <location filename="../../../femcommands/commands.py" line="910"/>
       <source>Show Result</source>
       <translation>Sonucu Göster</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="917"/>
+      <location filename="../../../femcommands/commands.py" line="914"/>
       <source>Shows and visualizes the selected result data</source>
       <translation>Seçili sonuç verisini gösterir ve görselleştirir</translation>
     </message>
@@ -7770,12 +7770,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_ResultsPurge</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="929"/>
+      <location filename="../../../femcommands/commands.py" line="926"/>
       <source>Purge Results</source>
       <translation>Sonuçları Temizle</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="933"/>
+      <location filename="../../../femcommands/commands.py" line="930"/>
       <source>Purges all results from the active analysis</source>
       <translation>Etkin analizdeki tüm sonuçları temizler</translation>
     </message>
@@ -7783,12 +7783,12 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FEM_PostFilterGlyph</name>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1242"/>
+      <location filename="../../../femcommands/commands.py" line="1199"/>
       <source>Glyph Filter</source>
       <translation>Glif Filtresi</translation>
     </message>
     <message>
-      <location filename="../../../femcommands/commands.py" line="1247"/>
+      <location filename="../../../femcommands/commands.py" line="1204"/>
       <source>Adds a post-processing filter that adds glyphs to the mesh vertices for vertex data visualization</source>
       <translation>Köşe verilerini görselleştirmek için ağın köşe noktalarına glif ekleyen bir son işlem filtresi ekler</translation>
     </message>
@@ -7979,7 +7979,7 @@ Varsayılan Python yürütücüsünü kullanmak için boş bırakın</translatio
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="164"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="168"/>
       <source>Activate Analysis</source>
       <translation>Analizi Etkinleştir</translation>
     </message>

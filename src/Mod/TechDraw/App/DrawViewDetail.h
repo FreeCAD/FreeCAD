@@ -20,8 +20,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef DrawViewDetail_h_
-#define DrawViewDetail_h_
+#pragma once
 
 #include <gp_Ax2.hxx>
 #include <TopoDS_Shape.hxx>
@@ -121,5 +120,3 @@ protected:
 using DrawViewDetailPython = App::FeaturePythonT<DrawViewDetail>;
 
 } //namespace TechDraw
-
-#endif

@@ -4358,7 +4358,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="212"/>
       <source>The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</source>
-      <translation type="unfinished">The depth where the ramp dressup is enabled. Above this ramps are not generated, but motion commands are passed through as is.</translation>
+      <translation>ランプドレスアップが有効な場所での深さ。この上ではランプは生成されませんが、モーションコマンドはそのまま渡されます。</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="71"/>
@@ -4373,7 +4373,7 @@ Can be useful for multi profile operations, e.g. Pocket with ZigZagOffset patter
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="88"/>
       <source>break segments into smaller segments of this length.</source>
-      <translation type="unfinished">break segments into smaller segments of this length.</translation>
+      <translation>この長さの小さなセグメントにセグメントを分割します。</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="116"/>
@@ -5034,7 +5034,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/PocketBase.py" line="196"/>
       <location filename="../../../Path/Op/PocketBase.py" line="268"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>前の操作ですでに除去されている加工領域をスキップ。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="56"/>
@@ -5122,7 +5122,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="128"/>
       <location filename="../../../Path/Op/Waterline.py" line="204"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary path construction objects when module is in DEBUG mode.</translation>
+      <translation>DEBUGモード時に一時的なパス構築オブジェクトを表示。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="284"/>
@@ -5141,7 +5141,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="123"/>
       <source>Show the temporary toolpath construction objects when module is in DEBUG mode.</source>
-      <translation type="unfinished">Show the temporary toolpath construction objects when module is in DEBUG mode.</translation>
+      <translation>DEBUGモード時に一時的なツールパス構築オブジェクトを表示。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Slot.py" line="131"/>
@@ -5207,7 +5207,7 @@ Use property KeepToolDown to change this</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="146"/>
       <source>Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</source>
-      <translation type="unfinished">Smaller values yield a finer, more accurate mesh. Smaller values do not increase processing time much.</translation>
+      <translation>値を小さくすると、より細かく、より正確なメッシュとなります。小さい値にしても、処理時間はそれほど大幅に増加しません。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="152"/>
@@ -5333,7 +5333,7 @@ Use property KeepToolDown to change this</translation>
       <location filename="../../../Path/Op/Surface.py" line="358"/>
       <location filename="../../../Path/Op/Waterline.py" line="402"/>
       <source>Set the stepover percentage, based on the tool&apos;s diameter.</source>
-      <translation type="unfinished">Set the stepover percentage, based on the tool&apos;s diameter.</translation>
+      <translation>ツールの直径に基づいてステップオーバーパーセントを設定。</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="367"/>
@@ -6361,10 +6361,10 @@ Aborting op creation</translation>
  Select one edge to search loop edges in horizontal plane
  Select two edges to search loop edges in wires of the shape
  Select one or more vertical faces to search loop faces which form the walls</source>
-      <translation type="unfinished">Completes the selection of edges that form a loop
- Select one edge to search loop edges in horizontal plane
- Select two edges to search loop edges in wires of the shape
- Select one or more vertical faces to search loop faces which form the walls</translation>
+      <translation>ループになったエッジの選択を実行
+ 1エッジの選択で水平面内のループしたエッジを検索
+ 2エッジの選択でシェイプのワイヤー内のループしたエッジを検索
+ 複数の垂直面の選択でその壁面を作るループした面を検索</translation>
     </message>
     <message>
       <location filename="../../../PathCommands.py" line="140"/>
