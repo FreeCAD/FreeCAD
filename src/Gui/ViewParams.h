@@ -73,6 +73,7 @@ public:
     FC_VIEW_PARAM(PlacementIndicatorScale, double, Float, 40.0) \
     FC_VIEW_PARAM(DraggerScale, double, Float, 0.03) \
     FC_VIEW_PARAM(DatumScale, double, Float, 100.0) \
+    FC_VIEW_PARAM(DatumPointSize, double, Float, 2.5) \
     FC_VIEW_PARAM(DatumPlaneSize, double, Float, 62.0) \
     FC_VIEW_PARAM(DatumLineSize, double, Float, 70.0) \
     FC_VIEW_PARAM(DatumTemporaryScaleFactor, double, Float, 2.0)

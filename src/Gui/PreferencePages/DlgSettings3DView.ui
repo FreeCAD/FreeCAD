@@ -545,6 +545,96 @@ bounding box size of the 3D object that is currently displayed.</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="groupBoxDatum">
+     <property name="title">
+      <string>Datum elements</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout2">
+      <property name="leftMargin">
+       <number>11</number>
+      </property>
+      <property name="topMargin">
+       <number>11</number>
+      </property>
+      <property name="rightMargin">
+       <number>11</number>
+      </property>
+      <property name="bottomMargin">
+       <number>11</number>
+      </property>
+      <property name="spacing">
+       <number>6</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="labelDatumPoint">
+        <property name="text">
+         <string>Point size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QDoubleSpinBox" name="spinDatumPoint">
+        <property name="minimum">
+         <double>1.00000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>10.0000000000000</double>
+        </property>
+        <property name="value">
+         <double>2.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="labelDatumLine">
+        <property name="text">
+         <string>Line size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QDoubleSpinBox" name="spinDatumLine">
+        <property name="minimum">
+         <double>10.00000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>500.00000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>10.00000000000000</double>
+        </property>
+        <property name="value">
+         <double>70.00000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="labelDatumPlane">
+        <property name="text">
+         <string>Plane size:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QDoubleSpinBox" name="spinDatumPlane">
+        <property name="minimum">
+         <double>10.00000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>500.00000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>10.00000000000000</double>
+        </property>
+        <property name="value">
+         <double>40.00000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QGroupBox" name="groupBoxCamera">
      <property name="title">
       <string>Camera Type</string>
