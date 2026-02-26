@@ -957,7 +957,10 @@ DlgThemeEditor::DlgThemeEditor(QWidget* parent)
     }
 
     ui->tokensTreeView->setColumnWidth(StyleParametersModel::ParameterName, nameColumnWidth);
-    ui->tokensTreeView->expandAll();
+
+    for (int row = 0; row < model->rowCount(QModelIndex()); ++row) {
+        ui->tokensTreeView->expand(model->index(row, 0, QModelIndex()));
+    }
 
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
     connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
@@ -972,7 +975,9 @@ DlgThemeEditor::DlgThemeEditor(QWidget* parent)
     );
 
     connect(model.get(), &StyleParametersModel::modelReset, ui->tokensTreeView, [this] {
-        ui->tokensTreeView->expandAll();
+        for (int row = 0; row < model->rowCount(QModelIndex()); ++row) {
+            ui->tokensTreeView->expand(model->index(row, 0, QModelIndex()));
+        }
     });
     connect(model.get(), &StyleParametersModel::newParameterAdded, this, [this](const QModelIndex& index) {
         const auto newParameterExpressionIndex = index.siblingAtColumn(
