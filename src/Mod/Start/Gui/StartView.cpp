@@ -389,7 +389,7 @@ void StartView::postStart(PostStartBehavior behavior)
             Gui::Application::Instance->activateWorkbench(wb.c_str());
         }
     }
-    if (auto closeStart = hGrp->GetBool("closeStart", false)) {
+    if (hGrp->GetBool("closeStart", false)) {
         for (QWidget* w = this; w != nullptr; w = w->parentWidget()) {
             if (auto mdiSub = qobject_cast<QMdiSubWindow*>(w)) {
                 mdiSub->close();
