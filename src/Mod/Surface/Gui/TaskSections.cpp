@@ -670,15 +670,6 @@ bool TaskSections::reject()
 
     return ok;
 }
-void TaskSections::activate()
-{
-    widget1->setSelectionGate();
-    widget1->attachSelection();
-}
-void TaskSections::deactivate()
-{
-    widget1->detachSelection();
-}
 
 }  // namespace SurfaceGui
 

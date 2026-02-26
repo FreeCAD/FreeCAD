@@ -432,14 +432,5 @@ bool TaskDlgBooleanParameters::reject()
 
     return true;
 }
-void TaskDlgBooleanParameters::activate()
-{
-    parameter->attachSelection();
-}
-void TaskDlgBooleanParameters::deactivate()
-{
-    parameter->detachSelection();
-}
-
 
 #include "moc_TaskBooleanParameters.cpp"

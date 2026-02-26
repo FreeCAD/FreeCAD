@@ -528,19 +528,13 @@ void DlgRevolution::accept()
 
     QDialog::accept();
 }
-void DlgRevolution::setSelectionGate()
-{
-    if (filterSelection) {
-        filter = new EdgeSelection();
-        Gui::Selection().addSelectionGate(filter);
-    }
-}
 
 void DlgRevolution::onSelectLineClicked()
 {
     if (!filterSelection) {
         filterSelection = true;
-        setSelectionGate();
+        filter = new EdgeSelection();
+        Gui::Selection().addSelectionGate(filter);
         ui->selectLine->setText(tr("Selecting… (Line or Arc)"));
     }
     else {
@@ -676,15 +670,6 @@ bool TaskRevolution::accept()
 {
     widget->accept();
     return (widget->result() == QDialog::Accepted);
-}
-void TaskRevolution::activate()
-{
-    widget->setSelectionGate();
-    widget->attachSelection();
-}
-void TaskRevolution::deactivate()
-{
-    widget->detachSelection();
 }
 
 #include "moc_DlgRevolution.cpp"

@@ -626,14 +626,10 @@ void TaskMeasure::reset()
 void TaskMeasure::activate()
 {
     updateSelectionType();
-    // engage the selectionObserver
-    attachSelection();
     qApp->installEventFilter(this);
 }
 void TaskMeasure::deactivate()
 {
-    Gui::Selection().setSelectionStyle(SelectionStyle::NormalSelection);
-    detachSelection();
     qApp->removeEventFilter(this);
 }
 

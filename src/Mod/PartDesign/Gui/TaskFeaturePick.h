@@ -130,9 +130,6 @@ public:
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
 
-    void activate() override;
-    void deactivate() override;
-
     bool isAllowedAlterDocument() const override
     {
         return false;

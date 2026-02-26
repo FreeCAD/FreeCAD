@@ -644,14 +644,5 @@ bool TaskShapeBuilder::reject()
 {
     return widget->reject();
 }
-void TaskShapeBuilder::activate()
-{
-    widget->setSelectionGate();
-    widget->attachSelection();
-}
-void TaskShapeBuilder::deactivate()
-{
-    widget->detachSelection();
-}
 
 #include "moc_TaskShapeBuilder.cpp"

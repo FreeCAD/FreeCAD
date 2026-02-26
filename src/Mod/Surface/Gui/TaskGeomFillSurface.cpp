@@ -687,14 +687,6 @@ bool TaskGeomFillSurface::reject()
 {
     return widget->reject();
 }
-void TaskGeomFillSurface::activate()
-{
-    widget->attachSelection();
-}
-void TaskGeomFillSurface::deactivate()
-{
-    widget->detachSelection();
-}
 
 }  // namespace SurfaceGui
 

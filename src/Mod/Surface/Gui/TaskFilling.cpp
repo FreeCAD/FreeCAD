@@ -1031,23 +1031,6 @@ bool TaskFilling::reject()
 
     return ok;
 }
-void TaskFilling::activate()
-{
-    widget1->attachSelection();
-    widget1->setSelectionGate();
-
-    widget2->attachSelection();
-    widget2->setSelectionGate();
-
-    widget3->attachSelection();
-    widget3->setSelectionGate();
-}
-void TaskFilling::deactivate()
-{
-    widget1->detachSelection();
-    widget2->detachSelection();
-    widget3->detachSelection();
-}
 
 }  // namespace SurfaceGui
 

@@ -129,8 +129,6 @@ public:
     void open() override;
     bool accept() override;
     bool reject() override;
-    void activate() override;
-    void deactivate() override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
     {

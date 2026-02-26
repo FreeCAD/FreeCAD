@@ -1554,17 +1554,5 @@ bool TaskDlgAttacher::reject()
 
     return true;
 }
-void TaskDlgAttacher::activate()
-{
-    if (parameter) {
-        parameter->attachSelection();
-    }
-}
-void TaskDlgAttacher::deactivate()
-{
-    if (parameter) {
-        parameter->detachSelection();
-    }
-}
 
 #include "moc_TaskAttacher.cpp"

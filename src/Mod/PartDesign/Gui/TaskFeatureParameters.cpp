@@ -285,27 +285,5 @@ bool TaskDlgFeatureParameters::reject()
 
     return true;
 }
-void TaskDlgFeatureParameters::activate()
-{
-    std::vector<QWidget*> subwidgets = getDialogContent();
-    for (auto it : subwidgets) {
-        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-        if (param) {
-            param->attachSelection();
-        }
-    }
-}
-void TaskDlgFeatureParameters::deactivate()
-{
-    // detach the task panel from the selection to avoid to invoke
-    // eventually onAddSelection when the selection changes
-    std::vector<QWidget*> subwidgets = getDialogContent();
-    for (auto it : subwidgets) {
-        TaskSketchBasedParameters* param = qobject_cast<TaskSketchBasedParameters*>(it);
-        if (param) {
-            param->detachSelection();
-        }
-    }
-}
 
 #include "moc_TaskFeatureParameters.cpp"
