@@ -426,6 +426,94 @@ class TestResolvingPostProcessorName(unittest.TestCase):
                     PathCommand._resolve_post_processor_name(self.job)
 
 
+class TestPostProcessZeroSpindleWarnings(unittest.TestCase):
+    class DummyContainer:
+        def __init__(self, group):
+            self.Group = group
+
+    class DummyToolController:
+        def __init__(self, name, label, spindle_speed, spindle_direction):
+            self.Name = name
+            self.Label = label
+            self.SpindleSpeed = spindle_speed
+            self.SpindleDir = spindle_direction
+
+    class DummyOperation:
+        def __init__(self, name, tool_controller=None):
+            self.Name = name
+            self.ToolController = tool_controller
+
+    class DummyJob:
+        def __init__(self, operations):
+            self.Operations = TestPostProcessZeroSpindleWarnings.DummyContainer(operations)
+
+    def test010_resolve_operations_prefers_explicit_operations(self):
+        tc = self.DummyToolController("TC1", "TC1", 1000.0, "Forward")
+        op_a = self.DummyOperation("OpA", tc)
+        op_b = self.DummyOperation("OpB", tc)
+        job = self.DummyJob([op_a])
+
+        resolved = PathCommand._resolve_operations(job, [op_b])
+        self.assertEqual([op_b], resolved)
+
+    def test020_get_zero_spindle_tool_controllers(self):
+        tc_zero_forward = self.DummyToolController("TC1", "Zero Forward", 0.0, "Forward")
+        tc_zero_reverse = self.DummyToolController("TC2", "Zero Reverse", 0.0, "Reverse")
+        tc_zero_none = self.DummyToolController("TC3", "Zero None", 0.0, "None")
+        tc_nonzero = self.DummyToolController("TC4", "Non Zero", 12000.0, "Forward")
+
+        operations = [
+            self.DummyOperation("Op1", tc_zero_forward),
+            self.DummyOperation("Op2", tc_zero_forward),  # duplicate should only appear once
+            self.DummyOperation("Op3", tc_zero_reverse),
+            self.DummyOperation("Op4", tc_zero_none),
+            self.DummyOperation("Op5", tc_nonzero),
+            self.DummyOperation("Op6", None),  # no tool controller
+        ]
+        job = self.DummyJob(operations)
+
+        zero_spindle_tool_controllers = PathCommand._get_zero_spindle_tool_controllers(job)
+        self.assertEqual(2, len(zero_spindle_tool_controllers))
+        self.assertEqual(
+            {"TC1", "TC2"},
+            {tool_controller.Name for tool_controller in zero_spindle_tool_controllers},
+        )
+
+    def test030_resolve_operations_falls_back_to_job_when_none(self):
+        tc = self.DummyToolController("TC1", "TC1", 1000.0, "Forward")
+        op_a = self.DummyOperation("OpA", tc)
+        job = self.DummyJob([op_a])
+
+        resolved = PathCommand._resolve_operations(job, None)
+        self.assertEqual([op_a], resolved)
+
+    def test040_resolve_operations_returns_empty_when_job_has_no_operations(self):
+        class NoOpJob:
+            pass
+
+        resolved = PathCommand._resolve_operations(NoOpJob(), None)
+        self.assertEqual([], resolved)
+
+    def test050_get_zero_spindle_handles_dressup_operations(self):
+        tc_zero = self.DummyToolController("TC1", "Zero Forward", 0.0, "Forward")
+        base_op = self.DummyOperation("Profile", tc_zero)
+
+        class DummyDressup:
+            Name = "ProfileDressup"
+            Base = base_op
+
+        job = self.DummyJob([DummyDressup()])
+        result = PathCommand._get_zero_spindle_tool_controllers(job)
+        self.assertEqual(1, len(result))
+        self.assertEqual("TC1", result[0].Name)
+
+    def test060_get_zero_spindle_returns_empty_when_all_speeds_nonzero(self):
+        tc = self.DummyToolController("TC1", "Non Zero", 5000.0, "Forward")
+        job = self.DummyJob([self.DummyOperation("Op1", tc)])
+        result = PathCommand._get_zero_spindle_tool_controllers(job)
+        self.assertEqual([], result)
+
+
 class TestPostProcessorFactory(unittest.TestCase):
     """Test creation of postprocessor objects."""
 
