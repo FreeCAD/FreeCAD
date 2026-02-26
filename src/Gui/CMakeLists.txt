@@ -1402,9 +1402,11 @@ SET(FreeCADGui_CPP_SRCS
     StartupProcess.cpp
     TransactionObject.cpp
     ToolHandler.cpp
+    ColorPy.cpp
     StyleParameters/Value.cpp
     StyleParameters/Parser.cpp
     StyleParameters/ParameterManager.cpp
+    StyleParameters/StyleParametersPy.cpp
 )
 SET(FreeCADGui_SRCS
     Application.h
@@ -1448,12 +1450,14 @@ SET(FreeCADGui_SRCS
     StatusBarLabel.h
     TransactionObject.h
     ToolHandler.h
+    ColorPy.h
     StyleParameters/Value.h
     StyleParameters/Parser.h
     StyleParameters/ParameterManager.h
     StyleParameters/Insets.h
     StyleParameters/Corners.h
     StyleParameters/Gradient.h
+    StyleParameters/StyleParametersPy.h
 )
 
 SET(FreeCADGui_SRCS

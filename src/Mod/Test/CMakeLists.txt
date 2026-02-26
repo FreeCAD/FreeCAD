@@ -10,6 +10,7 @@ SET(Test_SRCS
     Menu.py
     TestApp.py
     TestGui.py
+    TestStyleParameters.py
     UnicodeTests.py
     UnitTests.py
     Workbench.py

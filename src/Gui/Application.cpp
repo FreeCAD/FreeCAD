@@ -90,8 +90,10 @@
 #include "MDIViewPy.h"
 #include "Placement.h"
 #include "SoFCDB.h"
+#include "ColorPy.h"
 #include "Selection.h"
 #include "SelectionFilterPy.h"
+#include "StyleParameters/StyleParametersPy.h"
 #include "SoQtOffscreenRendererPy.h"
 #include "SplitView3DInventor.h"
 #include "StartupProcess.h"
@@ -584,6 +586,23 @@ Application::Application(bool GUIenabled)
 
         SelectionFilterPy::init_type();
         Base::Interpreter().addType(SelectionFilterPy::type_object(), pSelectionModule, "Filter");
+
+        ColorPy::init_type();
+        Base::Interpreter().addType(ColorPy::type_object(), module, "Color");
+
+        // insert StyleParameters module
+        auto* pStyleParamsModule =
+            Base::Interpreter().addModule(new StyleParameters::StyleParametersModule);
+        Py_INCREF(pStyleParamsModule);
+        PyModule_AddObject(module, "StyleParameters", pStyleParamsModule);
+
+        StyleParameters::NumericPy::init_type();
+        Base::Interpreter().addType(
+            StyleParameters::NumericPy::type_object(), pStyleParamsModule, "Numeric");
+
+        StyleParameters::TuplePy::init_type();
+        Base::Interpreter().addType(
+            StyleParameters::TuplePy::type_object(), pStyleParamsModule, "Tuple");
 
         Gui::TaskView::ControlPy::init_type();
         Py::Module(module).setAttr(std::string("Control"),
