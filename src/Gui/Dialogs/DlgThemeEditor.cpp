@@ -32,9 +32,13 @@
 #include <Base/ServiceProvider.h>
 #include <Base/Tools.h>
 
+#include <StyleParameters/Gradient.h>
+
 #include <ranges>
 #include <QImageReader>
+#include <QLinearGradient>
 #include <QPainter>
+#include <QRadialGradient>
 #include <QStyledItemDelegate>
 #include <QTimer>
 
@@ -53,6 +57,54 @@ QPixmap colorPreview(const QColor& color)
     return preview;
 }
 
+QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
+{
+    constexpr qsizetype size = 16;
+    constexpr int cornerRadius = 3;
+
+    QPixmap preview = Gui::BitmapFactory().empty({size, size});
+
+    try {
+        QBrush brush;
+
+        if (tuple.kind == Gui::StyleParameters::TupleKind::LinearGradient) {
+            const Gui::StyleParameters::LinearGradient lg(tuple);
+            QLinearGradient qGradient(lg.x1() * size, lg.y1() * size, lg.x2() * size, lg.y2() * size);
+            for (const auto& stop : lg.colorStops()) {
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+            }
+            brush = QBrush(qGradient);
+        }
+        else if (tuple.kind == Gui::StyleParameters::TupleKind::RadialGradient) {
+            const Gui::StyleParameters::RadialGradient rg(tuple);
+            QRadialGradient qGradient(
+                rg.cx() * size,
+                rg.cy() * size,
+                rg.radius() * size,
+                rg.fx() * size,
+                rg.fy() * size
+            );
+            for (const auto& stop : rg.colorStops()) {
+                qGradient.setColorAt(stop.position.value, stop.color.asValue<QColor>());
+            }
+            brush = QBrush(qGradient);
+        }
+        else {
+            return preview;
+        }
+
+        QPainter painter(&preview);
+        painter.setRenderHint(QPainter::Antialiasing);
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(brush);
+        painter.drawRoundedRect(QRect {0, 0, size, size}, cornerRadius, cornerRadius);
+    }
+    catch (...) {
+    }
+
+    return preview;
+}
+
 QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
 {
     // clang-format off
@@ -67,8 +119,15 @@ QString typeOfTokenValue(const Gui::StyleParameters::Value& value)
             [](const Base::Color&) {
                 return QWidget::tr("Color");
             },
-            [](const Gui::StyleParameters::Tuple&) {
-                return QWidget::tr("Tuple");
+            [](const Gui::StyleParameters::Tuple& tuple) {
+                switch (tuple.kind) {
+                    case Gui::StyleParameters::TupleKind::LinearGradient:
+                        return QWidget::tr("Linear Gradient");
+                    case Gui::StyleParameters::TupleKind::RadialGradient:
+                        return QWidget::tr("Radial Gradient");
+                    default:
+                        return QWidget::tr("Tuple");
+                }
             }
         },
         value
@@ -302,6 +361,27 @@ public:
         painter->drawText(rect, Qt::AlignLeft | Qt::AlignVCenter, tr("New parameter..."));
     }
 
+    void paintGradientPreview(
+        QPainter* painter,
+        const QStyleOptionViewItem& option,
+        const QModelIndex& index
+    ) const
+    {
+        // Draw background and selection highlight, suppressing text and icon.
+        QStyleOptionViewItem bgOnly(option);
+        bgOnly.text.clear();
+        bgOnly.icon = QIcon();
+        bgOnly.features.setFlag(QStyleOptionViewItem::HasDecoration, false);
+        bgOnly.features.setFlag(QStyleOptionViewItem::HasDisplay, false);
+        QStyledItemDelegate::paint(painter, bgOnly, index);
+
+        // Overlay the gradient bar stretched to the cell with a small margin.
+        constexpr int margin = 3;
+        const QRect drawRect = option.rect.adjusted(margin, margin, -margin, -margin);
+        const QPixmap gradientPixmap = index.data(Qt::UserRole).value<QPixmap>();
+        painter->drawPixmap(drawRect, gradientPixmap, gradientPixmap.rect());
+    }
+
     void paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const override
     {
         auto model = dynamic_cast<const StyleParametersModel*>(index.model());
@@ -329,6 +409,10 @@ public:
 
             painter->fillRect(option.rect, headerBackgroundColor);
             QStyledItemDelegate::paint(painter, option, index);
+        }
+        else if (index.column() == StyleParametersModel::ParameterPreview
+                 && !index.data(Qt::UserRole).value<QPixmap>().isNull()) {
+            paintGradientPreview(painter, opt, index);
         }
         else {
             QStyledItemDelegate::paint(painter, option, index);
@@ -603,9 +687,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
             }
         }
 
-        if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && std::holds_alternative<Base::Color>(*value)) {
+        if (role == Qt::DecorationRole && index.column() == ParameterPreview) {
+            if (std::holds_alternative<Base::Color>(*value)) {
                 return colorPreview(std::get<Base::Color>(*value).asValue<QColor>());
+            }
+            if (value->holds<StyleParameters::Tuple>()) {
+                const auto& tuple = value->get<StyleParameters::Tuple>();
+                if (tuple.kind == StyleParameters::TupleKind::LinearGradient
+                    || tuple.kind == StyleParameters::TupleKind::RadialGradient) {
+                    return gradientPreview(tuple);
+                }
             }
         }
     }
@@ -632,9 +723,16 @@ QVariant StyleParametersModel::data(const QModelIndex& index, int role) const
             }
         }
 
-        if (role == Qt::DecorationRole) {
-            if (index.column() == ParameterPreview && tupleElementItem->value.holds<Base::Color>()) {
+        if (role == Qt::DecorationRole && index.column() == ParameterPreview) {
+            if (tupleElementItem->value.holds<Base::Color>()) {
                 return colorPreview(tupleElementItem->value.get<Base::Color>().asValue<QColor>());
+            }
+            if (tupleElementItem->value.holds<StyleParameters::Tuple>()) {
+                const auto& tuple = tupleElementItem->value.get<StyleParameters::Tuple>();
+                if (tuple.kind == StyleParameters::TupleKind::LinearGradient
+                    || tuple.kind == StyleParameters::TupleKind::RadialGradient) {
+                    return gradientPreview(tuple);
+                }
             }
         }
     }
