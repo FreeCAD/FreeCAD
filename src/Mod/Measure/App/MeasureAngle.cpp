@@ -495,7 +495,7 @@ App::DocumentObjectExecReturn* MeasureAngle::execute()
 
     // because of face normal are perpendicular to face
     if (mCase == FaceFace) {
-        angleRad = M_PI - angleRad;
+        angleRad = std::numbers::pi - angleRad;
     }
 
     Angle.setValue(Base::toDegrees(angleRad));
