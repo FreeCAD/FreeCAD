@@ -399,6 +399,12 @@ void Application::initStyleParameterManager()
         return fmt::format("qss:parameters/{}.yaml", hMainWindowGrp->GetASCII("Theme", "Classic"));
     };
 
+    auto designSystemParametersSource = new StyleParameters::YamlParameterSource(
+        "qss:parameters/Design System.yaml",
+        {.name = QT_TR_NOOP("Design System Parameters"),
+         .options = StyleParameters::ParameterSourceOption::UserEditable}
+    );
+
     auto themeParametersSource = new StyleParameters::YamlParameterSource(
         deduceParametersFilePath(),
         {.name = QT_TR_NOOP("Theme Parameters"),
@@ -429,17 +435,7 @@ void Application::initStyleParameterManager()
         new StyleParameters::BuiltInParameterSource({.name = QT_TR_NOOP("Built-in Parameters")})
     );
 
-    // todo: left for compatibility with older theme versions, to be removed before release
-    Base::registerServiceImplementation<StyleParameters::ParameterSource>(
-        new StyleParameters::UserParameterSource(
-            App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Themes/UserTokens"
-            ),
-            {.name = QT_TR_NOOP("Theme Parameters - Fallback"),
-             .options = StyleParameters::ParameterSourceOption::ReadOnly}
-        )
-    );
-
+    Base::registerServiceImplementation<StyleParameters::ParameterSource>(designSystemParametersSource);
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(themeParametersSource);
 
     Base::registerServiceImplementation<StyleParameters::ParameterSource>(

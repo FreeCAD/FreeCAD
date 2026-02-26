@@ -75,10 +75,11 @@ Resetting everything helps to unify styles across different operating systems
   border-color: @GeneralBorderColor;
   border-style: none;
   outline: none;
-  color: @TextForegroundColor;
+  color: @BaseTextColor;
   selection-background-color: @TextSelectBackgroundColor;
   selection-color: @TextForegroundColor;
   gridline-color: @GeneralGridLinesColor;
+  font-family: 'Noto Sans';
 }
 
 /* specific reset for elements inside QToolBar */
@@ -1181,16 +1182,30 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
 
 --------------------------------------------------------------------------- */
 QPushButton {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
-  border: 1px solid @ButtonBorderColor;
-  border-radius: @InputFieldBorderRadius;
-  padding: 3px 12px;
-  min-width: 80px; /* changed from 64px to fix issue  #24604 and align with setting from 1.0.x */
+  color: @ButtonTextColor;
+  font-size: @ButtonFontSize;
+  font-weight: @ButtonFontWeight;
+  background-color: @ButtonBackground;
+  border-color: @ButtonBorderColor;
+  border-width: @ButtonBorderThickness;
+  border-radius: @ButtonBorderRadius;
+  border-style: solid;
+  padding: @ButtonPadding;
+  height: @{content_box(@ButtonHeight, @ButtonPadding).height};
+  min-width: @{content_box(@ButtonMinWidth, @ButtonPadding).width};
 }
 
 QPushButton:default {
-  background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @DefaultButtonTopBackgroundColor, stop:1 @DefaultButtonBottomBackgroundColor);
-  border: 1px solid @DefaultButtonBorderColor;
+  background-color: @ButtonPrimaryBackground;
+  border-color: @ButtonPrimaryBorderColor;
+}
+
+QPushButton:hover {
+  background-color: @{blend(@ButtonBackground, #ffffff, 50%)};
+}
+
+QPushButton:default:hover {
+  background-color: @{blend(@ButtonPrimaryBackground, #ffffff, 50%)};
 }
 
 QAbstractButton[flat="true"] {
@@ -1229,10 +1244,6 @@ QPushButton:checked:disabled {
 QPushButton:checked:selected {
   background-color: qlineargradient(x1:0, y1:0, x2:0, y2:1, stop:0 @ButtonTopBackgroundColor, stop:1 @ButtonBottomBackgroundColor);
   border: 1px solid  @AccentColor;
-}
-
-QPushButton:hover {
-  background-color: @GeneralBackgroundHoverColor;
 }
 
 QAbstractButton[flat="true"]:hover {
