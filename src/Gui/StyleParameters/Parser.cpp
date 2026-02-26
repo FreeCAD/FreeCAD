@@ -265,6 +265,51 @@ Value FunctionCall::evaluate(const EvaluationContext& context) const
         {"border_radius", [&args]() -> Value { return Corners(args).tuple(); }},
         {"linear_gradient", [&args]() -> Value { return LinearGradient(args).tuple(); }},
         {"radial_gradient", [&args]() -> Value { return RadialGradient(args).tuple(); }},
+        {
+            "content_box",
+            [&args]() -> Value {
+                if (args.size() < 2) {
+                    THROWM(Base::ExpressionError, "content_box requires at least 2 arguments: a size tuple and at least one inset");
+                }
+
+                const Value& sizeValue = args.at(0);
+                Numeric width, height;
+
+                if (sizeValue.holds<Tuple>()) {
+                    const auto& sizeTuple = sizeValue.get<Tuple>();
+                    width = sizeTuple.get<Numeric>("width");
+                    height = sizeTuple.get<Numeric>("height");
+                }
+                else if (sizeValue.holds<Numeric>()) {
+                    width = sizeValue.get<Numeric>();
+                    height = sizeValue.get<Numeric>();
+                }
+                else {
+                    THROWM(Base::TypeError, "content_box: first argument must be a (width, height) size tuple or a Numeric");
+                }
+
+                for (size_t index = 1; index < args.size(); ++index) {
+                    const Value& insetValue = args.at(index);
+                    if (!insetValue.holds<Tuple>()) {
+                        THROWM(
+                            Base::TypeError,
+                            fmt::format("content_box: argument {} must be an inset tuple", index)
+                        );
+                    }
+                    const auto& insetTuple = insetValue.get<Tuple>();
+                    const Insets insets(
+                        insetTuple.kind == TupleKind::Generic ? Insets::expand(insetTuple) : insetTuple
+                    );
+                    width = width - insets.horizontal();
+                    height = height - insets.vertical();
+                }
+
+                return Tuple({
+                    Tuple::Element::named("width", width),
+                    Tuple::Element::named("height", height),
+                });
+            },
+        },
     };
 
     if (functions.contains(functionName)) {
