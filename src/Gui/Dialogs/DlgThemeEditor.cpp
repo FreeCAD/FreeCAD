@@ -48,16 +48,16 @@
 QPixmap applyDropShadow(const QPixmap& source)
 {
     auto* effect = new QGraphicsDropShadowEffect;
-    effect->setBlurRadius(2.5);
-    effect->setOffset(QPointF(0.0, 1.0));
+    effect->setBlurRadius(4);
+    effect->setOffset(QPointF(0.0, 2.0));
     effect->setColor(QColor(0, 0, 0, 90));
 
-    QGraphicsPixmapItem item;
-    item.setPixmap(source);
-    item.setGraphicsEffect(effect);
+    auto* item = new QGraphicsPixmapItem;
+    item->setPixmap(source);
+    item->setGraphicsEffect(effect);
 
     QGraphicsScene scene;
-    scene.addItem(&item);
+    scene.addItem(item);
 
     QPixmap result(source.size());
     result.fill(Qt::transparent);
@@ -68,10 +68,10 @@ QPixmap applyDropShadow(const QPixmap& source)
 
 QPixmap colorPreview(const QColor& color)
 {
-    constexpr qsizetype iconSize = 20;
+    constexpr qsizetype iconSize = 24;
     constexpr qsizetype shapeSize = 16;
-    constexpr qsizetype shapeX = 2;
-    constexpr qsizetype shapeY = 2;
+    constexpr qsizetype shapeX = 4;
+    constexpr qsizetype shapeY = 4;
 
     QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
 
@@ -88,10 +88,10 @@ QPixmap colorPreview(const QColor& color)
 
 QPixmap gradientPreview(const Gui::StyleParameters::Tuple& tuple)
 {
-    constexpr qsizetype iconSize = 20;
+    constexpr qsizetype iconSize = 24;
     constexpr qsizetype shapeSize = 16;
-    constexpr qsizetype shapeX = 2;
-    constexpr qsizetype shapeY = 2;
+    constexpr qsizetype shapeX = 4;
+    constexpr qsizetype shapeY = 4;
     constexpr int cornerRadius = 3;
 
     QPixmap preview = Gui::BitmapFactory().empty({iconSize, iconSize});
